@@ -1,8 +1,8 @@
 PORTNAME=	essentia
 DISTVERSIONPREFIX=	v
 DISTVERSION=	2.1_beta5-859
-PORTREVISION=	4
 DISTVERSIONSUFFIX=	-gb247091f
+PORTREVISION=	5
 CATEGORIES=	audio
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
@@ -18,7 +18,7 @@ BUILD_DEPENDS=	${PYNUMPY} \
 LIB_DEPENDS=	libessentia.so:audio/essentia
 RUN_DEPENDS=	${PYNUMPY} \
 		${PYTHON_PKGNAMEPREFIX}six>0:devel/py-six@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}yaml>0:devel/py-yaml@${PY_FLAVOR}
+		${PYTHON_PKGNAMEPREFIX}pyyaml>=0:devel/py-pyyaml@${PY_FLAVOR}
 
 MASTER_SITES=	https://raw.githubusercontent.com/MTG/essentia/d02b6c752046802a711530e2bcd5feafca42247d/
 DISTFILES=	waf
@@ -43,6 +43,6 @@ do-install:
 	# install
 	cd ${BUILD_WRKSRC} && ${SETENV} ${BUILD_ENV} ${PYTHON_CMD} waf install --only-python --prefix ${PREFIX} --destdir ${STAGEDIR}
 	# strip
-	${STRIP_CMD} ${STAGEDIR}${PYTHONPREFIX_SITELIBDIR}/essentia/_essentia${PYTHON_EXT_SUFFIX}.so
+	${STRIP_CMD} ${STAGEDIR}${PYTHONPREFIX_SITELIBDIR}/essentia/_essentia${PYTHON_TAG}.so
 
 .include <bsd.port.mk>

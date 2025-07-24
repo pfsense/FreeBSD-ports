@@ -1,11 +1,11 @@
 PORTNAME=	agg
 DISTVERSIONPREFIX=	v
-DISTVERSION=	1.4.2
-PORTREVISION=	8
+DISTVERSION=	1.5.0
+PORTREVISION=	1
 CATEGORIES=	graphics
 PKGNAMEPREFIX=	asciinema-
 
-MAINTAINER=	DtxdF@disroot.org
+MAINTAINER=	dtxdf@FreeBSD.org
 COMMENT=	Asciinema gif generator
 WWW=		https://github.com/asciinema/agg
 
@@ -17,8 +17,5 @@ USE_GITHUB=	yes
 GH_ACCOUNT=	asciinema
 
 PLIST_FILES=	bin/agg
-
-post-install:
-	${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/agg
 
 .include <bsd.port.mk>

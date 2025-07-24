@@ -20,8 +20,6 @@
     SUBDIR += bootstrap-openjdk17
     SUBDIR += bootstrap-openjdk8
     SUBDIR += bouncycastle
-    SUBDIR += bouncycastle15
-    SUBDIR += cos
     SUBDIR += dbvis
     SUBDIR += eclipse
     SUBDIR += eclipse-EPIC
@@ -34,7 +32,6 @@
     SUBDIR += eclipse-yaml-editor
     SUBDIR += hamcrest
     SUBDIR += icedtea-web
-    SUBDIR += infobus
     SUBDIR += intellij
     SUBDIR += intellij-fsnotifier
     SUBDIR += intellij-pty4j
@@ -52,14 +49,12 @@
     SUBDIR += javahelp
     SUBDIR += javamail
     SUBDIR += javavmwrapper
-    SUBDIR += jaxen
     SUBDIR += jcalendar
     SUBDIR += jcckit
     SUBDIR += jcommon
     SUBDIR += jd-gui
     SUBDIR += jdk11-doc
     SUBDIR += jdk8-doc
-    SUBDIR += jdom
     SUBDIR += jflex
     SUBDIR += jfreechart
     SUBDIR += jgraph
@@ -80,7 +75,6 @@
     SUBDIR += linux-oracle-jre18
     SUBDIR += linux-oracle-serverjre10
     SUBDIR += mmake
-    SUBDIR += mx4j
     SUBDIR += netbeans
     SUBDIR += netrexx
     SUBDIR += netty
@@ -93,6 +87,8 @@
     SUBDIR += openjdk20
     SUBDIR += openjdk21
     SUBDIR += openjdk22
+    SUBDIR += openjdk23
+    SUBDIR += openjdk24
     SUBDIR += openjdk8
     SUBDIR += openjdk8-jre
     SUBDIR += openjfx14

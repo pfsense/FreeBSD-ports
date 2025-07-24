@@ -1,5 +1,5 @@
 PORTNAME=	mkdocstrings-python
-DISTVERSION=	1.10.3
+DISTVERSION=	1.16.12
 CATEGORIES=	textproc python
 MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -13,17 +13,19 @@ LICENSE=	ISCL
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
 BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}pdm-backend>0:devel/py-pdm-backend@${PY_FLAVOR}
-RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}griffe>=0.44:textproc/py-griffe@${PY_FLAVOR}
-TEST_DEPENDS=	${PYTHON_PKGNAMEPREFIX}mkdocstrings>0:textproc/py-mkdocstrings@${PY_FLAVOR}
+RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}griffe>=1.6.2:textproc/py-griffe@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}mkdocs-autorefs>=1.4:textproc/py-mkdocs-autorefs@${PY_FLAVOR}
 # textproc/py-mkdocstrings belongs to RUN_DEPENDS as well but would cause
 # a circular dependency (via py-mkdocstrings' PYTHON option).  It was therefore
 # moved to TEST_DEPENDS to at least allow the test suite to run.
+TEST_DEPENDS=	${PYTHON_PKGNAMEPREFIX}beautifulsoup>=4.12.3:www/py-beautifulsoup@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}inline-snapshot>=0.18.1:devel/py-inline-snapshot@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}mkdocs-material>=9.5:textproc/py-mkdocs-material@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}mkdocstrings>=0.28.3:textproc/py-mkdocstrings@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}ruff>=0.4:devel/py-ruff@${PY_FLAVOR}
 
 USES=		python
 USE_PYTHON=	autoplist pep517 pytest
-# These tests relies on files that aren't available in the sdist
-PYTEST_IGNORED_TESTS=	test_render_themes test_render_docstring \
-			test_rendering_object_source_without_lineno
 
 TEST_ENV=	PYTHONPATH=${STAGEDIR}${PYTHONPREFIX_SITELIBDIR}
 
@@ -31,4 +33,10 @@ CONFLICTS_INSTALL=	${PYTHON_PKGNAMEPREFIX}mkdocstrings-python-legacy
 
 NO_ARCH=	yes
 
-.include <bsd.port.mk>
+.include <bsd.port.pre.mk>
+
+.if ${PYTHON_REL} < 31100
+RUN_DEPENDS+=	${PYTHON_PKGNAMEPREFIX}typing-extensions>=4.0:devel/py-typing-extensions@${PY_FLAVOR}
+.endif
+
+.include <bsd.port.post.mk>

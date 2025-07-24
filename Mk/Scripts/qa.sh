@@ -399,7 +399,6 @@ proxydeps_suggest_uses() {
 		${pkg} = "textproc/libxml++26" -o \
 		${pkg} = "textproc/libxml2" -o \
 		${pkg} = "textproc/libxslt" -o \
-		${pkg} = "x11-wm/metacity" -o \
 		${pkg} = "x11-toolkits/pango" -o \
 		${pkg} = "x11-toolkits/pangomm" -o \
 		${pkg} = "x11-toolkits/pangox-compat" -o \
@@ -410,12 +409,12 @@ proxydeps_suggest_uses() {
 	# grep LIB_DEPENDS= Mk/Uses/gnome.mk |sed -e 's|\(.*\)_LIB_DEPENDS.*:\(.*\)\/\(.*\)|[ "\1" = "\3" ] \|\| echo "elif [ \\${pkg} = \\\"\2/\3\\\" ]; then; warn \\\"you need USE_GNOME+=\1\\\""|'|sort|sh
 	elif [ ${pkg} = "databases/evolution-data-server" ]; then warn "you need USE_GNOME+=evolutiondataserver3"
 	elif [ ${pkg} = "graphics/gdk-pixbuf" ]; then warn "you need USE_GNOME+=gdkpixbuf"
-	elif [ ${pkg} = "graphics/gdk-pixbuf2" ]; then warn "you need USE_GNOME+=gdkpixbuf2"
+	elif [ ${pkg} = "graphics/gdk-pixbuf2" ]; then warn "you need USE_GNOME+=gdkpixbuf"
 	elif [ ${pkg} = "x11/gnome-desktop" ]; then warn "you need USE_GNOME+=gnomedesktop3"
 	elif [ ${pkg} = "devel/gobject-introspection" ]; then warn "you need USE_GNOME+=introspection"
 	elif [ ${pkg} = "graphics/libart_lgpl" ]; then warn "you need USE_GNOME+=libartlgpl2"
 	elif [ ${pkg} = "devel/libIDL" ]; then warn "you need USE_GNOME+=libidl"
-	elif [ ${pkg} = "x11-fm/nautilus" ]; then warn "you need USE_GNOME+=nautilus3"
+	elif [ ${pkg} = "x11-fm/nautilus" ]; then warn "you need USE_GNOME+=nautilus4"
 	elif [ ${pkg} = "graphics/librsvg2-rust" ]; then warn "you need USE_GNOME+=librsvg2"
 	# mate
 	# grep LIB_DEPENDS= Mk/Uses/mate.mk |sed -e 's|\(.*\)_LIB_DEPENDS.*:\(.*\)\/\(.*\)|elif [ ${pkg} = "\2/\3" ]; then warn "you need USE_MATE+=\1"|'
@@ -475,7 +474,6 @@ proxydeps_suggest_uses() {
 	elif [ ${pkg} = "games/libkdegames" ]; then warn "you need to use USE_KDE+=libkdegames"
 	elif [ ${pkg} = "misc/libkeduvocdocument" ]; then warn "you need to use USE_KDE+=libkeduvocdocument"
 	elif [ ${pkg} = "graphics/libkexiv2" ]; then warn "you need to use USE_KDE+=libkexiv2"
-	elif [ ${pkg} = "graphics/libkipi" ]; then warn "you need to use USE_KDE+=libkipi"
 	elif [ ${pkg} = "graphics/libksane" ]; then warn "you need to use USE_KDE+=libksane"
 	elif [ ${pkg} = "astro/marble" ]; then warn "you need to use USE_KDE+=marble"
 	elif [ ${pkg} = "graphics/okular" ]; then warn "you need to use USE_KDE+=okular"
@@ -561,6 +559,9 @@ proxydeps_suggest_uses() {
 	# Qt5
 	elif expr ${pkg} : '.*/qt5-.*' > /dev/null; then
 		warn "you need USES=qt:5 and USE_QT+=$(echo ${pkg} | sed -E 's|.*/qt5-||')"
+	# Qt6
+	elif expr ${pkg} : '.*/qt6-.*' > /dev/null; then
+		warn "you need USES=qt:6 and USE_QT+=$(echo ${pkg} | sed -E 's|.*/qt6-||')"
 	# MySQL
 	elif expr ${lib_file} : "${LOCALBASE}/lib/mysql/[^/]*$" > /dev/null; then
 		warn "you need USES+=mysql"
@@ -577,7 +578,7 @@ proxydeps_suggest_uses() {
 	elif [ ${pkg} = "databases/firebird25-client" ]; then
 		warn "you need USES+=firebird"
 	# fuse
-	elif [ ${pkg} = "sysutils/fusefs-libs" ]; then
+	elif [ ${pkg} = "filesystems/fusefs-libs" ]; then
 		warn "you need USES+=fuse"
 	# gnustep
 	elif [ ${pkg} = "lang/gnustep-base" ]; then
@@ -623,7 +624,11 @@ proxydeps_suggest_uses() {
 	elif [ ${pkg} = "devel/readline" ]; then
 		warn "you need USES+=readline"
 	# ssl
+	# When updating this, please also update the versions list in
+	# bsd.default-versions.mk and ssl.mk!
 	elif [ ${pkg} = "security/openssl" -o ${pkg} = "security/openssl111" \
+	  -o ${pkg} = "security/openssl31" -o ${pkg} = "security/openssl32" \
+	  -o ${pkg} = "security/openssl33" \
 	  -o ${pkg} = "security/libressl" -o ${pkg} = "security/libressl-devel" \
 	  ]; then
 		warn "you need USES=ssl"
@@ -717,9 +722,9 @@ proxydeps() {
 		sed -e 's/^\.//')
 	EOT
 
-	# Check whether all files in LIB_DPEENDS are actually linked against
+	# Check whether all files in LIB_DEPENDS are actually linked against
 	for _library in ${WANTED_LIBRARIES} ; do
-		if ! listcontains ${_library} "${dep_lib_files}" ; then
+		if ! listcontains ${_library%%.so*}.so "${dep_lib_files}" ; then
 			warn "you might not need LIB_DEPENDS on ${_library}"
 		fi
 	done

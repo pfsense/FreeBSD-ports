@@ -1,4 +1,4 @@
---- media/base/audio_latency.cc.orig	2023-04-08 11:38:38 UTC
+--- media/base/audio_latency.cc.orig	2025-04-15 08:30:07 UTC
 +++ media/base/audio_latency.cc
 @@ -147,7 +147,7 @@ int AudioLatency::GetRtcBufferSize(int sample_rate, in
    }

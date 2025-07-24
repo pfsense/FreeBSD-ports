@@ -1,11 +1,16 @@
 PORTNAME=	aqualung
 DISTVERSION=	1.2
-PORTREVISION=	1
+PORTREVISION=	8
 CATEGORIES=	audio
 
 MAINTAINER=	portmaster@BSDforge.com
 COMMENT=	Music player with rich features
 WWW=		https://aqualung.jeremyevans.net/
+
+PATCH_SITES=	https://github.com/${GH_ACCOUNT}/${GH_PROJECT}/commit/
+PATCHFILES+=	a991c13d0df734a5d0fea7db6b181176858f3e58.patch:-p1 # Support newer audio/mac
+PATCHFILES+=	d2c88317b6042a05c236faf3c09f600337c6379e.patch:-p1 # Support newer audio/mac
+PATCHFILES+=	1c2a295a72e1e3abc6df40714d9753e311541550.patch:-p1 # Support newer audio/mac
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
@@ -19,8 +24,7 @@ LIB_DEPENDS=	libFLAC.so:audio/flac \
 		libsamplerate.so:audio/libsamplerate \
 		libsndfile.so:audio/libsndfile \
 		libvorbis.so:audio/libvorbis \
-		libmac.so:audio/mac \
-		libmpcdec.so:audio/musepack \
+		libMAC.so:audio/mac \
 		libspeex.so:audio/speex \
 		libwavpack.so:audio/wavpack \
 		libavcodec.so:multimedia/ffmpeg \
@@ -32,7 +36,7 @@ LIB_DEPENDS=	libFLAC.so:audio/flac \
 		libfontconfig.so:x11-fonts/fontconfig
 
 USES=		autoreconf compiler:c++11-lang cpe gettext gnome localbase lua:52 pkgconfig
-USE_GNOME=	cairo gdkpixbuf2 gtk20 libxml2 libxslt
+USE_GNOME=	cairo gdkpixbuf gtk20 libxml2 libxslt
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	jeremyevans
@@ -40,7 +44,8 @@ GH_ACCOUNT=	jeremyevans
 GNU_CONFIGURE=	yes
 
 CONFIGURE_ARGS=	--with-cddb=no \
-		--with-ifp=no
+		--with-ifp=no \
+		--with-mpc=no
 
 DESKTOP_ENTRIES="Aqualung" "" "${DATADIR}/general.png" "aqualung" \
 		"Audio;AudioVideo;GTK;" ""

@@ -1,6 +1,6 @@
 PORTNAME=	webmin
-PORTVERSION=	2.013
-PORTREVISION=	0
+PORTVERSION=	2.402
+PORTREVISION=	1
 CATEGORIES=	sysutils
 MASTER_SITES=	http://download.webmin.com/updates/:up \
 		SF/webadmin/${PORTNAME}/${PORTVERSION}:sf
@@ -21,9 +21,9 @@ RUN_DEPENDS=	p5-Authen-PAM>=0:security/p5-Authen-PAM \
 USES=		cpe perl5 python shebangfix
 USE_PYTHON=	py3kplist
 USE_RC_SUBR=	webmin
-SUB_LIST=	PERL=${PERL}
-SUB_FILES=	pkg-message
 SHEBANG_FILES=	${WRKSRC}/webmin/acme_tiny.py
+SUB_FILES=	pkg-message
+SUB_LIST=	PERL=${PERL}
 
 WEBMIN_MODULES=
 
@@ -51,8 +51,8 @@ post-patch:
 	@${FIND} ${WRKSRC} \( -name "*.orig" -or -name "*.bak" -or -name "*.pyc" \) -delete
 
 do-build:
-	@${PYTHON_CMD} -mcompileall ${WRKSRC}/ajaxterm/ajaxterm/
-	@${PYTHON_CMD} -O -mcompileall ${WRKSRC}/ajaxterm/ajaxterm/
+	@${PYTHON_CMD} -mcompileall ${WRKSRC}/webmin/acme_tiny.py
+	@${PYTHON_CMD} -O -mcompileall ${WRKSRC}/webmin/acme_tiny.py
 	@${CC} ${CFLAGS} -o ${WRKSRC}/mount/freebsd-mounts-7 ${WRKSRC}/mount/freebsd-mounts-7.c
 	@${STRIP_CMD} ${WRKSRC}/mount/freebsd-mounts-7
 

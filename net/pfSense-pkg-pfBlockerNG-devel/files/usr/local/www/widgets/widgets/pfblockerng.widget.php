@@ -3,8 +3,8 @@
  * pfblockerng.widget.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2016-2024 Rubicon Communications, LLC (Netgate)
- * Copyright (c) 2015-2023 BBcan177@gmail.com
+ * Copyright (c) 2016-2025 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2015-2024 BBcan177@gmail.com
  * All rights reserved.
  *
  * Originally based Upon pfBlocker
@@ -47,8 +47,7 @@ $pfb['err']	= '<i class="fa-solid fa-minus-circle text-danger" title="pf Errors 
 $wglobal_array = array ('popup' => 'off', 'sortcolumn' => 'none', 'sortmix' => 'off', 'sortdir' => 'asc', 'dnsblquery' => 5,
 			'maxfails' => 3, 'maxheight' => 2500, 'clearip' => 'never', 'cleardnsbl' => 'never');
 
-config_init_path('installedpackages/pfblockerngglobal');
-$pfb['wglobal'] = config_get_path('installedpackages/pfblockerngglobal');
+$pfb['wglobal'] = config_get_path('installedpackages/pfblockerngglobal', []);
 foreach ($wglobal_array as $type => $value) {
 	$pfb[$type] = $pfb['wglobal']['widget-' . "{$type}"] ?: $value;
 }

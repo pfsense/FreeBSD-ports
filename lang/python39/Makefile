@@ -12,6 +12,9 @@ WWW=		https://www.python.org/
 
 LICENSE=	PSFL
 
+DEPRECATED=	Upgrade to a newer Python version. 3.9 is in maintenance status and gets security fixes only. End-of-Life: 2025-10. See https://devguide.python.org/versions/
+EXPIRATION_DATE=2025-10-31
+
 LIB_DEPENDS=	libffi.so:devel/libffi
 
 USES=		compiler:c11 cpe ncurses pathfix pkgconfig \
@@ -103,7 +106,7 @@ PLIST_SUB+=	NO_NIS=""
 .endif
 
 post-patch:
-# disable the detection of includes and library from e2fsprogs-libuuid,
+# disable the detection of includes and library from libuuid,
 # which introduces hidden dependency and breaks build
 	@${REINPLACE_CMD} -e 's|uuid/uuid.h|ignore_&|' ${WRKSRC}/configure
 	@${REINPLACE_CMD} -e '/find_library_file/ s|uuid|ignore_&|' ${WRKSRC}/setup.py

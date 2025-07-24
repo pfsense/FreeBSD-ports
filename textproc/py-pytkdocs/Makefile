@@ -1,5 +1,6 @@
 PORTNAME=	pytkdocs
-DISTVERSION=	0.16.1
+DISTVERSION=	0.16.5
+PORTREVISION=	1
 CATEGORIES=	textproc python
 MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -11,13 +12,13 @@ WWW=		https://github.com/mkdocstrings/pytkdocs
 LICENSE=	ISCL
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-TEST_DEPENDS=	${PYTHON_PKGNAMEPREFIX}pytest>0:devel/py-pytest@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}django42>0:www/py-django42@${PY_FLAVOR} \
+BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}pdm-backend>0:devel/py-pdm-backend@${PY_FLAVOR}
+TEST_DEPENDS=	${PYTHON_PKGNAMEPREFIX}django42>0:www/py-django42@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}marshmallow>0:devel/py-marshmallow@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}pydantic>0:devel/py-pydantic@${PY_FLAVOR}
 
-USES=		python
-USE_PYTHON=	autoplist concurrent distutils
+USES=		python:3.9+
+USE_PYTHON=	autoplist concurrent pep517 pytest
 
 TEST_ENV=	PYTHONPATH=${STAGEDIR}${PYTHONPREFIX_SITELIBDIR}
 
@@ -27,18 +28,6 @@ OPTIONS_DEFINE=		NUMPYSTYLE
 OPTIONS_DEFAULT=	NUMPYSTYLE
 
 NUMPYSTYLE_DESC=	Enable support for Numpy docstrings
-NUMPYSTYLE_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}docstring-parser>=0.7:textproc/py-docstring-parser@${PY_FLAVOR}
+NUMPYSTYLE_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}docstring_parser>=0.7:textproc/py-docstring_parser@${PY_FLAVOR}
 
-.include <bsd.port.pre.mk>
-
-.if ${PYTHON_REL} < 30900
-RUN_DEPENDS+=	${PYTHON_PKGNAMEPREFIX}astunparse>=1.6:devel/py-astunparse@${PY_FLAVOR}
-.endif
-
-post-patch:
-	@${REINPLACE_CMD} -e 's|%%DISTVERSION%%|${DISTVERSION}|' ${WRKSRC}/setup.py
-
-do-test:
-	@cd ${WRKSRC} && ${SETENV} ${TEST_ENV} ${PYTHON_CMD} -m pytest -v -rs
-
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

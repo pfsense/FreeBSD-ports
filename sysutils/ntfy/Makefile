@@ -1,6 +1,7 @@
 PORTNAME=	ntfy
 DISTVERSIONPREFIX=	v
 DISTVERSION=	2.7.0-14
+PORTREVISION=	1
 DISTVERSIONSUFFIX=	-g0e922fa
 CATEGORIES=	sysutils deskutils
 
@@ -19,6 +20,8 @@ USES=		python
 USE_GITHUB=	yes
 GH_ACCOUNT=	dschep
 USE_PYTHON=	distutils noflavors autoplist
+
+CONFLICTS_INSTALL=	sysutils/go-ntfy
 
 NO_ARCH=	yes
 

@@ -1,6 +1,6 @@
 PORTNAME=	apache-beam
 DISTVERSION=	2.43.0
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	misc
 MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -48,7 +48,7 @@ TEST_DEPENDS=	${PYTHON_PKGNAMEPREFIX}freezegun>=0.3.12:devel/py-freezegun@${PY_F
 		${PYTHON_PKGNAMEPREFIX}tenacity>=5.0.2:devel/py-tenacity@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}scikit-learn>=0.20.0:science/py-scikit-learn@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}sqlalchemy14>=1.3:databases/py-sqlalchemy14@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}yaml>=3.12:devel/py-yaml@${PY_FLAVOR}
+		${PYTHON_PKGNAMEPREFIX}pyyaml>=3.12:devel/py-pyyaml@${PY_FLAVOR}
 		# testcontainers[mysql]>=3.0.3 is also required
 
 USES=		python zip
@@ -56,6 +56,6 @@ USE_PYTHON=	autoplist concurrent cryptography_test cython distutils pytest # 5 t
 
 post-install:
 	# strip binaries
-	@${FIND} ${STAGEDIR}${PREFIX} -name "*${PYTHON_EXT_SUFFIX}.so" | ${XARGS} ${STRIP_CMD}
+	@${FIND} ${STAGEDIR}${PREFIX} -name "*${PYTHON_TAG}.so" | ${XARGS} ${STRIP_CMD}
 
 .include <bsd.port.mk>

@@ -1,5 +1,6 @@
 PORTNAME=	tuxpaint
-PORTVERSION=	0.9.32
+PORTVERSION=	0.9.34
+PORTREVISION=	1
 CATEGORIES=	games
 MASTER_SITES=	SF
 #DISTNAME=	${PORTNAME}-${PORTVERSION}-sdl2
@@ -55,7 +56,7 @@ OPTIONS_DEFINE=	DOCS
 
 .include <bsd.port.options.mk>
 
-.if ${OPSYS} == FreeBSD && ( ${OSVERSION} >= 1400091 || ( ${OSVERSION} >= 1302507 && ${OSVERSION} < 1400000 ))
+.if ${OPSYS} == FreeBSD
 CFLAGS+=	-Wno-error=incompatible-function-pointer-types
 .endif
 

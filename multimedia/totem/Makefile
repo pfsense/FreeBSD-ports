@@ -1,51 +1,42 @@
 PORTNAME=	totem
-PORTVERSION=	3.38.2
-PORTREVISION=	6
+PORTVERSION=	43.2
 CATEGORIES=	multimedia gnome
 MASTER_SITES=	GNOME
 DIST_SUBDIR=	gnome
 
-PATCH_SITES=	https://gitlab.gnome.org/GNOME/${PORTNAME}/-/commit/
-PATCHFILES+=	61e3a957cb73.patch:-p1 # https://gitlab.gnome.org/GNOME/totem/-/merge_requests/218
-
 MAINTAINER=	gnome@FreeBSD.org
-COMMENT=	Gstreamer-based video player for the GNOME 3 Desktop
-WWW=		https://www.gnome.org/projects/totem/
+COMMENT=	Gstreamer-based video player for the GNOME Desktop
+WWW=		https://apps.gnome.org/Totem/
 
-LICENSE=	GPLv2
+LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-BUILD_DEPENDS=	${LOCALBASE}/libdata/pkgconfig/iso-codes.pc:misc/iso-codes \
-		pylint:devel/pylint@${PY_FLAVOR} \
-		appstream-glib>=0:devel/appstream-glib \
-		itstool:textproc/itstool \
-		grilo-plugins>=0:net/grilo-plugins
-LIB_DEPENDS=	libgdata.so:devel/libgdata \
-		libcogl.so:graphics/cogl \
-		libclutter-1.0.so:graphics/clutter \
-		libclutter-gst-3.0.so:multimedia/clutter-gst3 \
-		libclutter-gtk-1.0.so:graphics/clutter-gtk3 \
-		libpeas-1.0.so:devel/libpeas \
-		libjson-glib-1.0.so:devel/json-glib \
+BUILD_DEPENDS=	iso-codes>0:misc/iso-codes \
+		itstool:textproc/itstool
+LIB_DEPENDS=	libpeas-1.0.so:devel/libpeas1 \
 		libgrilo-0.3.so:net/grilo \
-		libtotem-plparser.so:multimedia/totem-pl-parser
-RUN_DEPENDS=	${LOCALBASE}/libdata/pkgconfig/iso-codes.pc:misc/iso-codes \
-		${PYTHON_PKGNAMEPREFIX}libpeas>=0:devel/py-libpeas@${PY_FLAVOR} \
-		gnome-settings-daemon>=2.91.0:sysutils/gnome-settings-daemon \
-		gnome-icon-theme-symbolic>=2.91.0:x11-themes/gnome-icon-theme-symbolic \
+		libtotem-plparser.so:multimedia/totem-pl-parser \
+		libhandy-1.so:x11-toolkits/libhandy \
+		libportal.so:deskutils/libportal \
+		libportal-gtk3.so:deskutils/libportal-gtk3 \
+		libepoxy.so:graphics/libepoxy
+RUN_DEPENDS=	iso-codes>0:misc/iso-codes \
+		gnome-settings-daemon>0:sysutils/gnome-settings-daemon \
 		grilo-plugins>=0:net/grilo-plugins
-
-PORTSCOUT=	limitw:1,even
 
 USES=		compiler desktop-file-utils gettext gl gnome gstreamer localbase meson \
-		pkgconfig python tar:xz xorg
-USE_GNOME=	cairo gtk30 intlhack introspection libxml2 pygobject3 gnomedesktop3
+		perl5 pkgconfig python tar:xz xorg
+USE_GNOME=	cairo gtk30 introspection libxml2 pygobject3 gnomedesktop3
+USE_PERL5=	build
 USE_XORG=	x11 xorgproto xtst ice sm
-USE_GSTREAMER=	core good bad soup ugly
+USE_GSTREAMER=	core good bad soup ugly gtk
 USE_GL=		egl
 USE_LDCONFIG=	yes
 
 BINARY_ALIAS=	python3=${PYTHON_VERSION}
+
+MESON_ARGS=	-Denable-easy-codec-installation=no \
+		-Dui-tests=false
 
 GLIB_SCHEMAS=	org.gnome.totem.enums.xml \
 		org.gnome.totem.gschema.xml \

@@ -1,7 +1,7 @@
 PORTNAME=	erlang
 DISTVERSIONPREFIX=	OTP-
 DISTVERSION=	21.3.8.24
-PORTREVISION=	4
+PORTREVISION=	6
 CATEGORIES=	lang parallel java
 PKGNAMESUFFIX=	-runtime21
 DIST_SUBDIR=	erlang
@@ -71,7 +71,7 @@ DTRACE_VARS=			STRIP=""
 HIPE_CONFIGURE_ENABLE=		hipe
 JAVA_CONFIGURE_WITH=		javac
 JAVA_CONFIGURE_ENV=		ac_cv_prog_JAVAC="${JAVAC}"
-JAVA_VARS=			USE_JAVA=yes
+JAVA_USES=			java
 KQUEUE_CONFIGURE_ENABLE=	kernel-poll
 NATIVE_IMPLIES=			HIPE
 NATIVE_CONFIGURE_ENABLE=	native-libs
@@ -90,7 +90,7 @@ WX_VARS=			USE_GL="gl glu" \
 
 .include <bsd.port.pre.mk>
 
-.if ${COMPILER_TYPE} == clang && ${COMPILER_VERSION} >= 130
+.if ${COMPILER_TYPE} == clang
 # PR 258494
 CONFIGURE_ARGS+=	--disable-pgo
 .endif

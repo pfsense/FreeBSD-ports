@@ -1,7 +1,7 @@
 PORTNAME=	openjdk
 DISTVERSIONPREFIX=	jdk-
 DISTVERSION=	${JDK_MAJOR_VERSION}.${JDK_MINOR_VERSION}.${JDK_PATCH_VERSION}+${JDK_BUILD_NUMBER}-${BSD_JDK_VERSION}
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	java devel
 PKGNAMESUFFIX?=	${JDK_MAJOR_VERSION}
 
@@ -131,6 +131,7 @@ JDK_BUILD_JVM=	server
 
 MAKE_ENV+=		--with-toolchain-type=${COMPILER_TYPE}
 CONFIGURE_ARGS+=	--with-toolchain-type=${COMPILER_TYPE}
+CONFIGURE_ARGS+=	--disable-warnings-as-errors
 
 .if ${COMPILER_TYPE} == gcc
 USE_GCC=	yes
@@ -139,22 +140,13 @@ CONFIGURE_ARGS+=	--with-extra-ldflags="-Wl,-rpath=${LOCALBASE}/lib/gcc${GCC_DEFA
 			--with-extra-cxxflags="-Wl,-rpath=${LOCALBASE}/lib/gcc${GCC_DEFAULT}"
 .else
 MAKE_ENV+=	USE_CLANG=true
-.if ${COMPILER_VERSION} >= 130
 EXTRA_CFLAGS+=		-Wno-unused-but-set-parameter
-.if ${COMPILER_VERSION} >= 140
 EXTRA_CFLAGS+=		-Wno-bitwise-instead-of-logical
-.endif
-.if ${COMPILER_VERSION} >= 160
 EXTRA_CFLAGS+=		-Wno-error=deprecated-non-prototype
-.endif
 CONFIGURE_ARGS+=	--with-extra-cflags="${EXTRA_CFLAGS}"
 CONFIGURE_ARGS+=	--with-extra-cxxflags="${EXTRA_CFLAGS}"
 .endif
-.endif
 
-.if ${ARCH} == aarch64 || ${ARCH:Mpowerpc64*}
-CONFIGURE_ARGS+=	--disable-warnings-as-errors
-.endif
 .if ${ARCH} == aarch64
 CONFIGURE_ARGS+=	--with-boot-jdk-jvmargs=-XX:-UseCompressedClassPointers --disable-dtrace
 MAKE_ENV+=		JAVA_TOOL_OPTIONS="-XX:-UseCompressedClassPointers"

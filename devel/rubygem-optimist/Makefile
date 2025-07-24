@@ -1,11 +1,12 @@
 PORTNAME=	optimist
-PORTVERSION=	3.1.0
+PORTVERSION=	3.2.1
 CATEGORIES=	devel rubygems
 MASTER_SITES=	RG
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Command-line option parser for Ruby
-WWW=		https://manageiq.github.io/optimist/
+WWW=		https://www.manageiq.org/optimist/ \
+		https://github.com/ManageIQ/optimist
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE.txt

@@ -1,5 +1,5 @@
 PORTNAME=	c-icap
-PORTVERSION=	0.5.6
+PORTVERSION=	0.5.7
 PORTREVISION=	1
 CATEGORIES=	www security
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}${PKGNAMESUFFIX}/0.5.x/
@@ -16,7 +16,7 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 LIB_DEPENDS=	libclamav.so:security/clamav \
 		libicapapi.so:www/c-icap
 
-USES=				libtool
+USES=				libtool autoreconf
 GNU_CONFIGURE=			yes
 GNU_CONFIGURE_MANPREFIX=	${PREFIX}/share
 CONFIGURE_ARGS=			--enable-static \

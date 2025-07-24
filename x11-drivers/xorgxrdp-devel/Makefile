@@ -1,6 +1,6 @@
 PORTNAME=	xorgxrdp
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.10.1
+DISTVERSION=	0.10.80.b20241215
 # Be sure to bump PORTREVISION after xorg-server update to force rebuild
 PORTREVISION=	1
 CATEGORIES=	x11-drivers
@@ -16,30 +16,34 @@ WWW=		https://www.xrdp.org/
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-RUN_DEPENDS=	xauth:x11/xauth
 BUILD_DEPENDS=	nasm:devel/nasm
+RUN_DEPENDS=	xauth:x11/xauth
 
 USES=		autoreconf libtool:build localbase pkgconfig xorg
-USE_XORG=	xorgproto xorg-server
 USE_LDCONFIG=	yes
+USE_XORG=	xorgproto xorg-server
 USE_GITHUB=	yes
 
 GH_ACCOUNT=	neutrinolabs
-GH_TUPLE=	neutrinolabs:xrdp:v0.10.0:xrdp
+GH_TAGNAME=	9698ba0
+GH_TUPLE=	neutrinolabs:xrdp:4c8c773:xrdp
 GNU_CONFIGURE=	yes
+CONFIGURE_ENV=	XRDP_CFLAGS=-I${WRKSRC_xrdp}/common
 INSTALL_TARGET=	install-strip
 
-CONFIGURE_ENV=	XRDP_CFLAGS=-I${WRKSRC_xrdp}/common
 CONFLICTS=	xorgxrdp
 
 OPTIONS_DEFINE=	DEBUG DRI3
 OPTIONS_DEFAULT=	DRI3
 
 DRI3_DESC=	DRI3/Glamor OpenGL Support
-DRI3_CONFIGURE_ENABLE=	glamor
 DRI3_LIB_DEPENDS=	libepoxy.so:graphics/libepoxy
+DRI3_CONFIGURE_ENABLE=	glamor
 DRI3_CFLAGS=		-I${LOCALBASE}/include/libdrm
 DRI3_SUB_FILES=		pkg-message
+
+# Bug 285815
+NO_SHLIB_REQUIRES_GLOB=	libglamoregl.so
 
 post-patch-DEBUG-on:
 	${FIND} ${WRKSRC} -type f | ${XARGS} ${REINPLACE_CMD} -e 's|#define LOG_LEVEL [0-9]*|#define LOG_LEVEL 20|'

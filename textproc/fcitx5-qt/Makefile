@@ -1,5 +1,5 @@
 PORTNAME=	fcitx5-qt
-DISTVERSION=	5.1.6
+DISTVERSION=	5.1.9
 CATEGORIES=	textproc
 MASTER_SITES=	https://download.fcitx-im.org/fcitx5/${PORTNAME}/
 
@@ -15,7 +15,7 @@ LICENSE_FILE_BSD3CLAUSE=	${WRKSRC}/LICENSES/BSD-3-Clause.txt
 LIB_DEPENDS=	libFcitx5Utils.so:textproc/fcitx5 \
 		libxkbcommon.so:x11/libxkbcommon
 
-FLAVORS?=	qt5 qt6
+FLAVORS?=	qt6 qt5
 FLAVOR?=	${FLAVORS:[1]}
 
 qt5_PKGNAMESUFFIX=	5

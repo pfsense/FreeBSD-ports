@@ -1,5 +1,6 @@
 PORTNAME=	tdiary
 DISTVERSION=	5.3.0
+PORTREVISION=	2
 CATEGORIES?=	www ruby
 MASTER_SITES=	https://github.com/tdiary/tdiary-core/releases/download/v${PORTVERSION}/
 DISTNAME=	${PORTNAME}-full-v${PORTVERSION}
@@ -11,17 +12,18 @@ WWW=		https://www.tdiary.org/
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-RUN_DEPENDS=	rubygem-bundler>=2.0.2:sysutils/rubygem-bundler \
+RUN_DEPENDS=	rubygem-base64>0:converters/rubygem-base64 \
+		rubygem-bundler>=2.0.2:sysutils/rubygem-bundler \
 		rubygem-emot>=0.0.4:textproc/rubygem-emot \
 		rubygem-fastimage>=2.2.6:graphics/rubygem-fastimage \
 		rubygem-hikidoc>=0.1.0:textproc/rubygem-hikidoc \
 		rubygem-mail>=2.7.1:mail/rubygem-mail \
 		rubygem-net-smtp>=0.3.1:mail/rubygem-net-smtp \
 		rubygem-rack>=3.0.1,3:www/rubygem-rack \
-		rubygem-rackup>=0.2.3:www/rubygem-rackup \
+		rubygem-rackup21>=0.2.3:www/rubygem-rackup21 \
 		rubygem-rake>=13.0.6:devel/rubygem-rake
 
-USES=		cpe shebangfix
+USES=		cpe ruby shebangfix
 
 SHEBANG_FILES=	bin/tdiary index.fcgi index.rb misc/convert2.rb misc/migrate.rb \
 		misc/plugin/xmlrpc/xmlrpc.rb update.fcgi update.rb

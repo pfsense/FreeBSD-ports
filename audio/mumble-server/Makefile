@@ -1,5 +1,6 @@
 PORTNAME=	mumble-server
-DISTVERSION=	1.5.634
+DISTVERSION=	1.5.735
+PORTREVISION=	3
 CATEGORIES=	audio net
 MASTER_SITES=	https://github.com/${PORTNAME:S/-server//}-voip/${PORTNAME:S/-server//}/releases/download/v${DISTVERSION}/
 DISTNAME=	${PORTNAME:S/-server//}-${DISTVERSION}
@@ -26,7 +27,6 @@ CMAKE_OFF=	client
 
 CXXFLAGS+=	-Wno-deprecated-declarations
 
-EXTRA_PATCHES+=	${.CURDIR}/../mumble/files/patch-src_MumbleProtocol.cpp
 SUB_LIST+=	USERS="${USERS}" GROUPS="${GROUPS}"
 
 USERS=		mumble-server
@@ -42,7 +42,7 @@ ICE_DESC=		Ice Support
 AVAHI_LIB_DEPENDS=	libdns_sd.so:net/avahi-libdns
 AVAHI_CMAKE_BOOL=	zeroconf
 
-ICE_LIB_DEPENDS=	libIce.so:devel/ice
+ICE_LIB_DEPENDS=	libIce.so:devel/ice37
 ICE_CMAKE_BOOL=		ice
 
 LTO_CMAKE_BOOL=		lto

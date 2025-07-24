@@ -1,25 +1,25 @@
 PORTNAME=	buildah
 DISTVERSIONPREFIX=	v
-DISTVERSION=	1.36.0
-PORTREVISION=	1
+DISTVERSION=	1.40.1
 CATEGORIES=	sysutils
 
 MAINTAINER=	dfr@FreeBSD.org
 COMMENT=	Manage Pods, Containers and Container Images
 WWW=		https://buildah.io/
 
-LICENSE=	GPLv2
+LICENSE=	APACHE20
+LICENSE_FILE=	${WRKSRC}/LICENSE
 
-BUILD_DEPENDS=	bash:shells/bash \
+BUILD_DEPENDS=	as:devel/binutils \
+		bash:shells/bash \
 		go-md2man:textproc/go-md2man \
-		gsed:textproc/gsed \
-		as:devel/binutils
+		gsed:textproc/gsed
 LIB_DEPENDS=	libgpgme.so:security/gpgme
 RUN_DEPENDS=	containernetworking-plugins>=0:net/containernetworking-plugins \
 		containers-common>=0:sysutils/containers-common \
 		ocijail:sysutils/ocijail
 
-USES=		gmake go:no_targets pkgconfig
+USES=		gmake go:no_targets,1.23 pkgconfig
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	containers

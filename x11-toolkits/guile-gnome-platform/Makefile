@@ -1,6 +1,6 @@
 PORTNAME=	guile-gnome-platform
 DISTVERSION=	2.16.5
-PORTREVISION=	9
+PORTREVISION=	10
 CATEGORIES=	x11-toolkits
 MASTER_SITES=	GNU/guile-gnome/${PORTNAME}
 
@@ -77,7 +77,7 @@ GTK2_IMPLIES=		CAIRO
 GTK2_LIB_DEPENDS=	libfontconfig.so:x11-fonts/fontconfig	\
 			libfreetype.so:print/freetype2 \
 			libharfbuzz.so:print/harfbuzz
-GTK2_USE=		gnome=gtk20,gdkpixbuf2
+GTK2_USE=		gnome=gtk20,gdkpixbuf
 GTK2_CONFIGURE_WITH=	gtk pixbuf
 GTK2_INFO=		guile-gnome-gtk guile-gnome-gdk
 

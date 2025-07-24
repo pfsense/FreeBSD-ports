@@ -3,7 +3,7 @@
  * zabbix-agent.inc
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2015-2024 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2015-2025 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2013 Danilo G. Baio
  * Copyright (c) 2013 Marcello Coutinho
  * All rights reserved.
@@ -137,8 +137,7 @@ function sync_package_zabbix_agent() {
 
 	// Check Zabbix Agent settings
 	if (is_array(config_get_path('installedpackages/%%ZABBIXUNIQNAME%%'))) {
-		config_init_path('installedpackages/%%ZABBIXUNIQNAME%%/config/0');
-		$zbagent_config = config_get_path('installedpackages/%%ZABBIXUNIQNAME%%/config/0');
+		$zbagent_config = config_get_path('installedpackages/%%ZABBIXUNIQNAME%%/config/0', []);
 		if ($zbagent_config['agentenabled'] == "on") {
 			$RefreshActChecks = (preg_match("/(\d+)/", $zbagent_config['refreshactchecks'], $matches)? $matches[1] : "120");
 			$BufferSend = (preg_match("/(\d+)/", $zbagent_config['buffersend'], $matches) ? $matches[1] : "5");
@@ -345,7 +344,6 @@ function zabbix_agent_certca($type) {
 
 function zabbixagent_plugin_certificates($pluginparams) {
 	$result = array();
-	config_init_path('installedpackages/zabbixagentlts/config');
 	$zabbixconf = config_get_path('installedpackages/zabbixagentlts/config/0');
 
 	if (($pluginparams['type'] == 'certificates') && !empty($zabbixconf) && ($zabbixconf['agentenabled'] == 'on')) {

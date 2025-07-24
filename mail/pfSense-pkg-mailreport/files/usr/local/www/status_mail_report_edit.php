@@ -3,7 +3,7 @@
  * status_mail_report_edit.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2011-2024 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2011-2025 Rubicon Communications, LLC (Netgate)
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -34,16 +34,12 @@ $cmdid = $_REQUEST['cmdid'];
 $logid = $_REQUEST['logid'];
 $id = $_REQUEST['id'];
 
-config_init_path('mailreports/schedule');
 $a_mailreports = isset($id) ? config_get_path("mailreports/schedule/{$id}") : null;
 
 if ($a_mailreports) {
-	config_init_path("mailreports/schedule/{$id}/cmd/row");
-	config_init_path("mailreports/schedule/{$id}/log/row");
-
+	$a_cmds = array_get_path($a_mailreports, 'cmd/row', []);
+	$a_logs = array_get_path($a_mailreports, 'log/row', []);
 	$pconfig = $a_mailreports;
-	$a_cmds = $a_mailreports['cmd']['row'];
-	$a_logs = $a_mailreports['log']['row'];
 }
 
 $frequencies = array("daily", "weekly", "monthly", "quarterly", "yearly");
@@ -208,11 +204,11 @@ if ($_POST) {
 	if ($a_mailreports) {
 		config_set_path("mailreports/schedule/{$id}", $pconfig);
 	} else {
-		config_set_path("mailreports/schedule/{$id}/", $pconfig);
+		config_set_path("mailreports/schedule/", $pconfig);
 	}
 
 	// Fix up cron job(s)
-	set_mail_report_cron_jobs(config_get_path('mailreports/schedule'));
+	set_mail_report_cron_jobs(config_get_path('mailreports/schedule', []));
 	write_config("mailreport: Settings updated");
 	configure_cron();
 	header("Location: status_mail_report.php");

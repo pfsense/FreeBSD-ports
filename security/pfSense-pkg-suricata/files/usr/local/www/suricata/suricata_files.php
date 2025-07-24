@@ -3,11 +3,11 @@
  * suricata_files.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2006-2024 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2006-2025 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2003-2004 Manuel Kasper
  * Copyright (c) 2005 Bill Marquette
  * Copyright (c) 2009 Robert Zelaya Sr. Developer
- * Copyright (c) 2023 Bill Meeks
+ * Copyright (c) 2025 Bill Meeks
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -71,10 +71,10 @@ if (isset($_POST['instance']) && is_numericint($_POST['instance']))
 elseif (isset($_GET['instance']) && is_numericint($_GET['instance']))
 	$instanceid = $_GET['instance'];
 
-if (is_null($instanceid))
+if (!is_numericint($instanceid))
 	$instanceid = 0;
 
-$a_instance = config_get_path("installedpackages/suricata/rule/{$id}", []);
+$a_instance = config_get_path("installedpackages/suricata/rule/{$instanceid}", []);
 $suricata_uuid = $a_instance['uuid'];
 $if_real = get_real_interface($a_instance['interface']);
 $suricatalogdir = SURICATALOGDIR;
@@ -459,8 +459,8 @@ if ($filterlogentries && count($filterfieldsarray)) {
 	<?php
 
 /* make sure alert file exists */
-if (file_exists("{$g['varlog_path']}/suricata/suricata_{$if_real}{$suricata_uuid}/eve.json")) {
-	exec("/usr/bin/grep filename {$g['varlog_path']}/suricata/suricata_{$if_real}{$suricata_uuid}/eve.json | /usr/bin/tail -{$fnentries} -r > {$g['tmp_path']}/files_suricata{$suricata_uuid}");
+if (file_exists("{$suricatalogdir}suricata_{$if_real}{$suricata_uuid}/eve.json")) {
+	exec("/usr/bin/grep filename {$suricatalogdir}suricata_{$if_real}{$suricata_uuid}/eve.json | /usr/bin/tail -{$fnentries} -r > {$g['tmp_path']}/files_suricata{$suricata_uuid}");
 	if (file_exists("{$g['tmp_path']}/files_suricata{$suricata_uuid}")) {
 		$tmpblocked = array_flip(suricata_get_blocked_ips());
 		$counter = 0;
@@ -574,7 +574,7 @@ if (file_exists("{$g['varlog_path']}/suricata/suricata_{$if_real}{$suricata_uuid
 				$file_hash = 'none';
 			}
 
-			$file_check = '<a class="fa-solid fa-info icon-pointer icon-primary" title="Click for File Check."' .
+			$file_check = '<a class="fa-solid fa-info icon-pointer" title="Click for File Check."' .
 				    'target="_blank" href="/suricata/suricata_filecheck.php?filehash=' . $file_hash .
 				    '&uuid=' . $suricata_uuid . '&filename=' . urlencode($file_name) . 
 				    '&filesize=' . urlencode($file_size) . '"></a>';

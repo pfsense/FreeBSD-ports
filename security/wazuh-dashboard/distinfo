@@ -1,5 +1,5 @@
-TIMESTAMP = 1718431867
-SHA256 (wazuh-4.7.5/wazuh-dashboard-plugins-4.7.5-2.10.0.tar.gz) = e1492d79d54fb84ef4023d07a223b723b74f7f54c2ff738f318f56ab1113bd4c
-SIZE (wazuh-4.7.5/wazuh-dashboard-plugins-4.7.5-2.10.0.tar.gz) = 33736907
-SHA256 (wazuh-4.7.5/opensearch_dashboards.yml) = 88affe6dab2e1299b6f8b5264e6dd9ea1aa42885f3aefb8822fe559f2b6bb5d5
-SIZE (wazuh-4.7.5/opensearch_dashboards.yml) = 806
+TIMESTAMP = 1746862021
+SHA256 (wazuh-4.12.0/wazuh-dashboard-plugins-4.12.0-2.19.1.tar.gz) = 1fdf778d027fb06b366cf3747df7269f743606ed481124fe3169ba82aac7dc73
+SIZE (wazuh-4.12.0/wazuh-dashboard-plugins-4.12.0-2.19.1.tar.gz) = 25461558
+SHA256 (wazuh-4.12.0/opensearch_dashboards.yml) = 88affe6dab2e1299b6f8b5264e6dd9ea1aa42885f3aefb8822fe559f2b6bb5d5
+SIZE (wazuh-4.12.0/opensearch_dashboards.yml) = 806

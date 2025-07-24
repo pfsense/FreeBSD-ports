@@ -1,12 +1,12 @@
 PORTNAME=	qTox
 DISTVERSIONPREFIX=	v
-DISTVERSION=	1.17.6
-PORTREVISION=	6
+DISTVERSION=	1.18.3-20250404
 CATEGORIES=	net-im net-p2p
 
 MAINTAINER=	yuri@FreeBSD.org
-COMMENT=	Qt 5 based Tox client
-WWW=		https://qtox.github.io/
+COMMENT=	Qt based Tox client
+WWW=		https://qtox.github.io/ \
+		https://github.com/TokTok/qTox
 
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/LICENSE
@@ -14,8 +14,6 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 BUILD_DEPENDS=	${LOCALBASE}/include/linux/videodev2.h:multimedia/v4l_compat
 LIB_DEPENDS=	libavcodec.so:multimedia/ffmpeg \
 		libexif.so:graphics/libexif \
-		libfontconfig.so:x11-fonts/fontconfig \
-		libfreetype.so:print/freetype2 \
 		libopus.so:audio/opus \
 		libqrencode.so:graphics/libqrencode \
 		libsodium.so:security/libsodium \
@@ -23,12 +21,17 @@ LIB_DEPENDS=	libavcodec.so:multimedia/ffmpeg \
 		libtox_extension_messages.so:net-im/tox_extension_messages \
 		libtoxcore.so:net-im/tox \
 		libtoxext.so:net-im/toxext \
+		libunwind.so:devel/libunwind \
+		libv4l2.so:multimedia/libv4l \
 		libvpx.so:multimedia/libvpx
 
-USES=		cmake compiler:c++11-lib desktop-file-utils gettext openal:soft pkgconfig qt:5
+USES=		cmake compiler:c++11-lib desktop-file-utils gettext gl openal:soft pkgconfig qt:6
+USE_GL=		opengl
+USE_QT=		base sqldriver-sqlite:run svg
+
 USE_GITHUB=	yes
-USE_QT=		core gui network xml opengl sql sql-sqlite3:run widgets svg \
-		concurrent:build buildtools:build linguisttools:build qmake:build testlib:build
+GH_ACCOUNT=	TokTok
+GH_TAGNAME=	f06e66e
 
 CMAKE_ARGS=	-DGIT_DESCRIBE:STRING=${DISTVERSIONPREFIX}${DISTVERSION}${DISTVERSIONSUFFIX}
 CMAKE_OFF=	USE_CCACHE
@@ -46,7 +49,7 @@ PLATFORM_EXTENSIONS_USES=	xorg
 PLATFORM_EXTENSIONS_USE=	XORG=x11,xscrnsaver
 
 SPELL_CHECK_DESC=	Spell checking support
-SPELL_CHECK_USES=	kde:5
+SPELL_CHECK_USES=	kde:6
 SPELL_CHECK_USE=	KDE=sonnet
 SPELL_CHECK_CMAKE_BOOL=	SPELL_CHECK
 
@@ -56,16 +59,16 @@ APPINDICATOR_BROKEN=	can not find appindicator-0.1
 GTK_SYSTRAY_DESC=	Enable GTK systray
 GTK_SYSTRAY_CMAKE_BOOL=	ENABLE_GTK_SYSTRAY
 GTK_SYSTRAY_USES=	gnome
-GTK_SYSTRAY_USE=	GNOME=atk,cairo,gdkpixbuf2,gtk20
+GTK_SYSTRAY_USE=	GNOME=atk,cairo,gdkpixbuf,gtk20
 
 STATUSNOTIFIER_DESC=	Enable status notifier
 STATUSNOTIFIER_CMAKE_BOOL=	ENABLE_STATUSNOTIFIER
 STATUSNOTIFIER_USES=	gnome
-STATUSNOTIFIER_USE=	GNOME=atk,cairo,gdkpixbuf2,gtk20
+STATUSNOTIFIER_USE=	GNOME=atk,cairo,gdkpixbuf,gtk20
 
 PLIST_FILES=	bin/qtox \
 		share/applications/io.github.qtox.qTox.desktop \
-		share/icons/hicolor/scalable/apps/qtox.svgz \
+		share/icons/hicolor/scalable/apps/qtox.svg \
 		share/metainfo/io.github.qtox.qTox.appdata.xml
 .for SZ in 14 16 22 24 32 36 48 64 72 96 128 192 256 512
 PLIST_FILES+=	share/icons/hicolor/${SZ}x${SZ}/apps/qtox.png
@@ -88,9 +91,5 @@ pre-everything::
 	@${ECHO_MSG}
 	@${ECHO_MSG} "Warning: qTox won't build if the option NaCl was selected for Tox!"
 	@${ECHO_MSG}
-
-pre-configure:
-	@${REINPLACE_CMD} '/Comment/s,=.*,=${COMMENT},' \
-		${WRKSRC}/io.github.qtox.qTox.desktop
 
 .include <bsd.port.post.mk>

@@ -1,6 +1,5 @@
 PORTNAME=	eduke32
-PORTVERSION=	20240316
-PORTREVISION=	1
+PORTVERSION=	20250411
 CATEGORIES=	games
 MASTER_SITES=	http://dukeworld.com/eduke32/synthesis/${PORTVERSION}-${GITREVISION}/:eduke32 \
 		LOCAL/pkubaj/:erp \
@@ -32,10 +31,10 @@ LIB_DEPENDS=	libFLAC.so:audio/flac \
 
 USES=		compiler:c11 dos2unix gl gmake gnome localbase pkgconfig sdl tar:xz
 USE_GL=		gl glu
-USE_GNOME=	gtk20
+USE_GNOME=	gdkpixbufextra gtk20
 USE_SDL=	sdl2 mixer2
 WRKSRC=		${WRKDIR}/${PORTNAME}_${PORTVERSION}-${GITREVISION}
-GITREVISION=	10564-0bc78c53d
+GITREVISION=	10619-b87598471
 DATADIR=	${PREFIX}/share/duke3d
 SUB_FILES=	pkg-message
 MAKEFILE=	GNUmakefile
@@ -71,7 +70,7 @@ FULL_PLIST_FILES=	${DATADIR}/duke3d.grp ${DATADIR}/duke.rts
 
 .include <bsd.port.options.mk>
 
-.if ${ARCH} == i386 || ${ARCH} == riscv64
+.if ${ARCH} == riscv64
 MAKE_ARGS+=	LTO=0
 .endif
 

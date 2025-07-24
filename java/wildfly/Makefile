@@ -1,5 +1,5 @@
 PORTNAME=	wildfly
-DISTVERSION=	31.0.1
+DISTVERSION=	36.0.1
 CATEGORIES=	java www
 MASTER_SITES=	https://github.com/${PORTNAME}/${PORTNAME}/releases/download/${WILDFLY_VERSION}/
 DISTNAME=	wildfly-${WILDFLY_VERSION}
@@ -10,15 +10,16 @@ WWW=		https://wildfly.org/
 
 LICENSE=	GPLv2
 
-USE_JAVA=	11+
+USES=		java
+JAVA_VERSION=	17+
 USE_RC_SUBR=	wildfly
 
 NO_BUILD=	yes
 SUB_FILES=	pkg-message
 SUB_LIST=	APP_SHORTNAME=${PORTNAME} \
 		LOG_DIR=${LOG_DIR} \
-		USERS=${USERS} \
-		GROUPS=${GROUPS} \
+		USER=${USERS} \
+		GROUP=${GROUPS} \
 		PID_FILE=${PID_FILE} \
 		APP_HOME=${PREFIX}/${PORTNAME}
 
@@ -64,10 +65,25 @@ post-extract:
 do-install:
 	${MKDIR} ${STAGEDIR}${PREFIX}/${PORTNAME}
 	(cd ${WRKSRC} && ${COPYTREE_SHARE} . ${STAGEDIR}${PREFIX}/${PORTNAME})
-	${RMDIR} ${STAGEDIR}${PREFIX}/${PORTNAME}/.installation
+	${RM} -rf ${STAGEDIR}${PREFIX}/${PORTNAME}/.installation
 .for FILE in ${CONFIG_FILES}
 	${MV} ${STAGEDIR}${PREFIX}/${PORTNAME}/${FILE} \
 		${STAGEDIR}${PREFIX}/${PORTNAME}/${FILE}.sample
 .endfor
+	${FIND} -s ${STAGEDIR}${PREFIX}/${PORTNAME} -not -type d | ${SORT} | \
+		${SED} -e 's#^${STAGEDIR}${PREFIX}/##' | \
+		${SED} -E -e '/sample$$/ s#^#@sample #' | \
+		${SED} -E -e '/bin\/.*sh$$/ s#^#@(,,755) #'>> ${TMPPLIST}
+	${FIND} -s ${STAGEDIR}${PORTNAME} -type d | ${SORT} | \
+		${SED} -e 's#^${STAGEDIR}${PREFIX}/#@dir #' >> ${TMPPLIST}
+	${ECHO_CMD} "@dir wildfly/.galleon/hashes/.installation" >> ${TMPPLIST}
+	${ECHO_CMD} "@dir wildfly/.galleon/hashes/.well-known/acme-challenge" >> ${TMPPLIST}
+	${ECHO_CMD} "@dir wildfly/.galleon/hashes/domain/tmp/auth" >> ${TMPPLIST}
+	${ECHO_CMD} "@dir wildfly/.galleon/hashes/standalone/lib/ext" >> ${TMPPLIST}
+	${ECHO_CMD} "@dir wildfly/.galleon/hashes/standalone/tmp/auth" >> ${TMPPLIST}
+	${ECHO_CMD} "@dir wildfly/.well-known/acme-challenge" >> ${TMPPLIST}
+	${ECHO_CMD} "@dir wildfly/domain/tmp/auth" >> ${TMPPLIST}
+	${ECHO_CMD} "@dir wildfly/standalone/lib/ext" >> ${TMPPLIST}
+	${ECHO_CMD} "@dir wildfly/standalone/tmp/auth" >> ${TMPPLIST}
 
 .include <bsd.port.mk>

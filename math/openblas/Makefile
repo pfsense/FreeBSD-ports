@@ -1,6 +1,6 @@
 PORTNAME=	openblas
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.3.27
+DISTVERSION=	0.3.30
 PORTEPOCH=	2
 CATEGORIES=	math
 MASTER_SITES=	NL/lapack/timing/:lapack_tmg
@@ -20,7 +20,6 @@ USES=		compiler:c11 cpe fortran gmake perl5 pkgconfig
 USE_GITHUB=	yes
 GH_ACCOUNT=	OpenMathLib
 GH_PROJECT=	OpenBLAS
-GH_TAGNAME=	ce3f668
 LARGE_FILE=	large.tgz
 TIMING_FILE=	timing.tgz
 CPE_VENDOR=	openblas_project
@@ -141,7 +140,11 @@ benchmark: build
 	cd ${WRKSRC} ; ${SETENV} ${MAKE_CMD} ${MAKE_ARGS} hpl
 	cd ${WRKSRC}/benchmark ; ${SETENV} ${BENCHMARK_THREADS_FLAG} ${MAKE_CMD} ${MAKE_ARGS}
 
+post-install-DYNAMIC_ARCH-on:
+	${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/libopenblasp-r${PORTVERSION}.so
+
 post-install-DYNAMIC_ARCH-off:
+	${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/libopenblas_*p-r${PORTVERSION}.so
 	cd ${STAGEDIR}${PREFIX} && ls lib/libopenblas_*p-r${PORTVERSION}.* >> ${TMPPLIST}
 
 .include <bsd.port.post.mk>

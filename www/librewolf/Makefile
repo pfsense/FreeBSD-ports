@@ -1,9 +1,9 @@
 PORTNAME=	librewolf
-DISTVERSION=	127.0.1
+DISTVERSION=	140.0.4
+LWPATCH=	-1
+DISTVERSIONSUFFIX=	${LWPATCH}.source
 CATEGORIES=	www wayland
-MASTER_SITES=	https://gitlab.com/api/v4/projects/32320088/packages/generic/librewolf-source/${DISTVERSION:R}-1/
-DISTNAME=	${PORTNAME}-${DISTVERSION:R}-1.source.
-EXTRACT_SUFX=	tar.gz
+MASTER_SITES=	https://gitlab.com/api/v4/projects/32320088/packages/generic/${PORTNAME}-source/${DISTVERSION}${LWPATCH}/
 
 MAINTAINER=	freebsd@sysctl.cz
 COMMENT=	Custom version of Firefox, focused on privacy, security and freedom
@@ -13,46 +13,45 @@ LICENSE=	MPL20
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
 BUILD_DEPENDS=	nspr>=4.32:devel/nspr \
-		nss>=3.95:security/nss \
-		icu>=73.1:devel/icu \
+		nss>=3.112:security/nss \
+		icu>=76.1:devel/icu \
 		libevent>=2.1.8:devel/libevent \
-		harfbuzz>=8.3.0:print/harfbuzz \
+		harfbuzz>=10.1.0:print/harfbuzz \
 		graphite2>=1.3.14:graphics/graphite2 \
-		png>=1.6.39:graphics/png \
+		png>=1.6.45:graphics/png \
 		dav1d>=1.0.0:multimedia/dav1d \
-		libvpx>=1.14.0:multimedia/libvpx \
+		libvpx>=1.15.0:multimedia/libvpx \
 		${PYTHON_PKGNAMEPREFIX}sqlite3>0:databases/py-sqlite3@${PY_FLAVOR} \
 		v4l_compat>0:multimedia/v4l_compat \
-		autoconf2.13:devel/autoconf2.13 \
 		nasm:devel/nasm \
 		yasm:devel/yasm \
-		zip:archivers/zip
-
-.include "${.CURDIR}/../../www/firefox/Makefile.options"
-
-.include <bsd.port.options.mk>
-
-.if ${ARCH} != powerpc64
-BUILD_DEPENDS+=	${LOCALBASE}/share/wasi-sysroot/lib/wasm32-wasi/libc++abi.a:devel/wasi-libcxx${LLVM_VERSION} \
-		${LOCALBASE}/share/wasi-sysroot/lib/wasm32-wasi/libc.a:devel/wasi-libc \
+		zip:archivers/zip \
+		${LOCALBASE}/share/wasi-sysroot/lib/wasm32-wasi/libc++abi.a:devel/wasi-libcxx${LLVM_VERSION} \
+		${LOCALBASE}/share/wasi-sysroot/lib/wasm32-wasi/libc.a:devel/wasi-libc@${LLVM_VERSION} \
 		wasi-compiler-rt${LLVM_VERSION}>0:devel/wasi-compiler-rt${LLVM_VERSION}
-.endif
 
 USE_GECKO=	gecko
 USE_MOZILLA=	-sqlite
-
-CFLAGS_powerpc64le=	-DSQLITE_BYTEORDER=1234
 # work around bindgen not finding ICU, e.g.
 # dist/include/mozilla/intl/ICU4CGlue.h:8:10: fatal error: 'unicode/uenum.h' file not found, err: true
 CONFIGURE_ENV+=	BINDGEN_CFLAGS="-I${LOCALBASE}/include"
 CONFIGURE_ENV+=	MOZ_REQUIRE_SIGNING=""
-MOZ_EXPORT+=	MOZ_TELEMETRY_REPORTING="" \
+
+WRKSRC=		${WRKDIR}/${PORTNAME}-${DISTVERSION}${LWPATCH}
+
+FIREFOX_ICON=		${MOZILLA}.png
+FIREFOX_ICON_SRC=	${PREFIX}/lib/${MOZILLA}/browser/chrome/icons/default/default48.png
+
+MOZILLA_CAP=	${MOZILLA:C/^(.).*/\1/:tu}${MOZILLA:C/^.//}
+
+MOZ_EXPORT=	MOZ_TELEMETRY_REPORTING="" \
 		MOZILLA_OFFICIAL="1" \
 		MOZ_OFFICIAL_BRANDING="1" \
-		MOZ_APP_DISPLAYNAME="Librewolf" \
-		MOZ_APP_NAME="librewolf"
+		MOZ_APP_DISPLAYNAME="${MOZILLA_CAP}" \
+		MOZ_APP_NAME="${MOZILLA}"
 
-MOZ_OPTIONs=	--enable-application=browser \
+MOZ_OPTIONS=	--enable-application=browser \
+		--with-wasi-sysroot=${LOCALBASE}/share/wasi-sysroot \
 		--allow-addon-sideload \
 		--disable-crashreporter \
 		--disable-debug \
@@ -62,31 +61,36 @@ MOZ_OPTIONs=	--enable-application=browser \
 		--enable-hardening \
 		--enable-optimize \
 		--enable-release \
-		--enable-rust-simd \
-		--with-app-name=librewolf \
-		--with-branding=browser/branding/librewolf \
+		--with-app-name=${MOZILLA} \
+		--with-branding=browser/branding/${MOZILLA} \
 		--with-unsigned-addon-scopes=app,system \
-		--with-l10n-base=$PWD/browser/locales/l10n \
 		--enable-bootstrap \
 		MOZ_CRASHREPORTER=0 \
-		MOZ_DATA_REPORTING=0 \
-		MOZ_SERVICES_HEALTHREPORT=0
+		MOZ_DATA_REPORTING=0
 
-# helpful when testing beta
-WRKSRC=		${WRKDIR}/${PORTNAME}-${DISTVERSION:R}-1
+.include "${.CURDIR}/../../www/firefox/Makefile.options"
 
-FIREFOX_ICON_SRC=	${PREFIX}/lib/${MOZILLA}/browser/chrome/icons/default/default48.png
-FIREFOX_DESKTOP=	${MOZSRC}/taskcluster/docker/firefox-snap/firefox.desktop
+.include <bsd.port.options.mk>
 
-.if ${ARCH} == powerpc64
-CFLAGS+=	-DHWY_COMPILE_ONLY_SCALAR
-MOZ_OPTIONS+=	--without-wasm-sandboxed-libraries
-.else
-BUILD_DEPENDS+=	${LOCALBASE}/share/wasi-sysroot/lib/wasm32-wasi/libc++abi.a:devel/wasi-libcxx${LLVM_VERSION} \
-		${LOCALBASE}/share/wasi-sysroot/lib/wasm32-wasi/libc.a:devel/wasi-libc \
-		wasi-compiler-rt${LLVM_VERSION}>0:devel/wasi-compiler-rt${LLVM_VERSION}
-MOZ_OPTIONS+=	--with-wasi-sysroot=${LOCALBASE}/share/wasi-sysroot
+.if ${ARCH} == i386
+BUILD_DEPENDS+=	node${NODEJS_VERSION}>=24:www/node${NODEJS_VERSION}
+USES+=		nodejs:24,build,env
+.  if ${MACHINE_CPU:Msse2}
+# is not enabled on i386 by default
+# Fix for error: always_inline function '_mm_setzero_si64' requires target feature 'sse2'
+CFLAGS_i386+=	-msse2
+.  endif
 .endif
+
+.if ${ARCH} == amd64
+MOZ_OPTIONS+=	--enable-rust-simd
+.endif
+
+post-extract:
+	@${SED} -e 's|@FIREFOX_ICON@|${FIREFOX_ICON:R}|;s|@MOZILLA@|${MOZILLA}|' \
+		-e 's|firefox|${MOZILLA}|' \
+		-e 's|Firefox|${MOZILLA_CAP}|' \
+		<${.CURDIR}/../firefox/files/firefox.desktop.in >${WRKDIR}/${MOZILLA_EXEC_NAME}.desktop
 
 post-patch:
 	@${REINPLACE_CMD} -e 's|%%LOCALBASE%%|${LOCALBASE}|g' \
@@ -94,9 +98,8 @@ post-patch:
 	@${RM} ${WRKSRC}/mozconfig
 
 post-install:
-	${CP} ${FIREFOX_DESKTOP} ${STAGEDIR}${PREFIX}/share/applications/librewolf.desktop
-	${REINPLACE_CMD} -e 's|Firefox|Librewolf|g' ${STAGEDIR}${PREFIX}/share/applications/librewolf.desktop
-	${REINPLACE_CMD} -e 's|firefox|librewolf|g' ${STAGEDIR}${PREFIX}/share/applications/librewolf.desktop
-	${REINPLACE_CMD} -e 's|Icon=.*|Icon=${FIREFOX_ICON_SRC}|g' ${STAGEDIR}${PREFIX}/share/applications/librewolf.desktop
+	${INSTALL_DATA} ${WRKDIR}/${MOZILLA_EXEC_NAME}.desktop ${STAGEDIR}${DESKTOPDIR}
+	${MKDIR} ${STAGEDIR}${PREFIX}/share/pixmaps
+	${LN} -sf ${FIREFOX_ICON_SRC} ${STAGEDIR}${PREFIX}/share/pixmaps/${FIREFOX_ICON}
 
 .include <bsd.port.mk>

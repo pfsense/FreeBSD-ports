@@ -1,13 +1,13 @@
 PORTNAME=	cbc
 DISTVERSIONPREFIX=	releases/
-DISTVERSION=	2.10.11
-PORTREVISION=	2
+DISTVERSION=	2.10.12
+PORTREVISION=	1
 CATEGORIES=	math
 PKGNAMEPREFIX=	coin-or-
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Coin-or Branch and Cut: mixed integer programming solver
-WWW=		https://projects.coin-or.org/Cbc
+WWW=		https://github.com/coin-or/Cbc
 
 LICENSE=	EPL
 LICENSE_FILE=	${WRKSRC}/Cbc/LICENSE

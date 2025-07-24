@@ -34,6 +34,7 @@ lib/tcl%%TCL_VER%%/encoding/cp1255.enc
 lib/tcl%%TCL_VER%%/encoding/cp1256.enc
 lib/tcl%%TCL_VER%%/encoding/cp1257.enc
 lib/tcl%%TCL_VER%%/encoding/cp1258.enc
+lib/tcl%%TCL_VER%%/encoding/cp165.enc
 lib/tcl%%TCL_VER%%/encoding/cp437.enc
 lib/tcl%%TCL_VER%%/encoding/cp737.enc
 lib/tcl%%TCL_VER%%/encoding/cp775.enc
@@ -106,6 +107,7 @@ lib/tcl%%TCL_VER%%/encoding/symbol.enc
 lib/tcl%%TCL_VER%%/encoding/tis-620.enc
 lib/tcl%%TCL_VER%%/foreachline.tcl
 lib/tcl%%TCL_VER%%/history.tcl
+lib/tcl%%TCL_VER%%/icu.tcl
 lib/tcl%%TCL_VER%%/init.tcl
 lib/tcl%%TCL_VER%%/install.tcl
 lib/tcl%%TCL_VER%%/msgs/af.msg
@@ -249,11 +251,11 @@ lib/tcl%%TCL_VER%%/tclooConfig.sh
 lib/tcl%%TCL_VER%%/tm.tcl
 lib/tcl%%TCL_VER%%/word.tcl
 lib/tcl%%TCL_VER%%/writefile.tcl
-lib/tcl9/%%TCL_VER%%/http-2.10b2.tm
+lib/tcl9/%%TCL_VER%%/http-2.10.0.tm
 lib/tcl9/%%TCL_VER%%/msgcat-1.7.1.tm
 lib/tcl9/%%TCL_VER%%/platform-1.0.19.tm
 lib/tcl9/%%TCL_VER%%/platform/shell-1.1.4.tm
-lib/tcl9/%%TCL_VER%%/tcltest-2.5.8.tm
+lib/tcl9/%%TCL_VER%%/tcltest-2.5.9.tm
 libdata/pkgconfig/tcl%%PKGNAMESUFFIX%%.pc
 %%TCLMAN%%share/man/man1/tclsh.tcl%%PKGNAMESUFFIX%%.1.gz
 %%TCLMAN%%share/man/man3/DString.tcl%%PKGNAMESUFFIX%%.3.gz
@@ -321,6 +323,7 @@ libdata/pkgconfig/tcl%%PKGNAMESUFFIX%%.pc
 %%TCLMAN%%share/man/man3/Tcl_ClassSetMetadata.tcl%%PKGNAMESUFFIX%%.3.gz
 %%TCLMAN%%share/man/man3/Tcl_ClearChannelHandlers.tcl%%PKGNAMESUFFIX%%.3.gz
 %%TCLMAN%%share/man/man3/Tcl_Close.tcl%%PKGNAMESUFFIX%%.3.gz
+%%TCLMAN%%share/man/man3/Tcl_CloseEx.tcl%%PKGNAMESUFFIX%%.3.gz
 %%TCLMAN%%share/man/man3/Tcl_CommandComplete.tcl%%PKGNAMESUFFIX%%.3.gz
 %%TCLMAN%%share/man/man3/Tcl_CommandTraceInfo.tcl%%PKGNAMESUFFIX%%.3.gz
 %%TCLMAN%%share/man/man3/Tcl_Concat.tcl%%PKGNAMESUFFIX%%.3.gz
@@ -485,6 +488,7 @@ libdata/pkgconfig/tcl%%PKGNAMESUFFIX%%.pc
 %%TCLMAN%%share/man/man3/Tcl_FSRenameFile.tcl%%PKGNAMESUFFIX%%.3.gz
 %%TCLMAN%%share/man/man3/Tcl_FSSplitPath.tcl%%PKGNAMESUFFIX%%.3.gz
 %%TCLMAN%%share/man/man3/Tcl_FSStat.tcl%%PKGNAMESUFFIX%%.3.gz
+%%TCLMAN%%share/man/man3/Tcl_FSTildeExpand.tcl%%PKGNAMESUFFIX%%.3.gz
 %%TCLMAN%%share/man/man3/Tcl_FSUnloadFile.tcl%%PKGNAMESUFFIX%%.3.gz
 %%TCLMAN%%share/man/man3/Tcl_FSUnregister.tcl%%PKGNAMESUFFIX%%.3.gz
 %%TCLMAN%%share/man/man3/Tcl_FSUtime.tcl%%PKGNAMESUFFIX%%.3.gz
@@ -579,6 +583,7 @@ libdata/pkgconfig/tcl%%PKGNAMESUFFIX%%.pc
 %%TCLMAN%%share/man/man3/Tcl_Gets.tcl%%PKGNAMESUFFIX%%.3.gz
 %%TCLMAN%%share/man/man3/Tcl_GetServiceMode.tcl%%PKGNAMESUFFIX%%.3.gz
 %%TCLMAN%%share/man/man3/Tcl_GetSizeFromStat.tcl%%PKGNAMESUFFIX%%.3.gz
+%%TCLMAN%%share/man/man3/Tcl_GetSizeIntFromObj.tcl%%PKGNAMESUFFIX%%.3.gz
 %%TCLMAN%%share/man/man3/Tcl_GetsObj.tcl%%PKGNAMESUFFIX%%.3.gz
 %%TCLMAN%%share/man/man3/Tcl_GetStackedChannel.tcl%%PKGNAMESUFFIX%%.3.gz
 %%TCLMAN%%share/man/man3/Tcl_GetStartupScript.tcl%%PKGNAMESUFFIX%%.3.gz
@@ -666,6 +671,7 @@ libdata/pkgconfig/tcl%%PKGNAMESUFFIX%%.pc
 %%TCLMAN%%share/man/man3/Tcl_MethodIsPrivate.tcl%%PKGNAMESUFFIX%%.3.gz
 %%TCLMAN%%share/man/man3/Tcl_MethodIsPublic.tcl%%PKGNAMESUFFIX%%.3.gz
 %%TCLMAN%%share/man/man3/Tcl_MethodIsType.tcl%%PKGNAMESUFFIX%%.3.gz
+%%TCLMAN%%share/man/man3/Tcl_MethodIsType2.tcl%%PKGNAMESUFFIX%%.3.gz
 %%TCLMAN%%share/man/man3/Tcl_MethodName.tcl%%PKGNAMESUFFIX%%.3.gz
 %%TCLMAN%%share/man/man3/Tcl_MutexFinalize.tcl%%PKGNAMESUFFIX%%.3.gz
 %%TCLMAN%%share/man/man3/Tcl_MutexLock.tcl%%PKGNAMESUFFIX%%.3.gz
@@ -676,10 +682,12 @@ libdata/pkgconfig/tcl%%PKGNAMESUFFIX%%.pc
 %%TCLMAN%%share/man/man3/Tcl_NewDictObj.tcl%%PKGNAMESUFFIX%%.3.gz
 %%TCLMAN%%share/man/man3/Tcl_NewDoubleObj.tcl%%PKGNAMESUFFIX%%.3.gz
 %%TCLMAN%%share/man/man3/Tcl_NewInstanceMethod.tcl%%PKGNAMESUFFIX%%.3.gz
+%%TCLMAN%%share/man/man3/Tcl_NewInstanceMethod2.tcl%%PKGNAMESUFFIX%%.3.gz
 %%TCLMAN%%share/man/man3/Tcl_NewIntObj.tcl%%PKGNAMESUFFIX%%.3.gz
 %%TCLMAN%%share/man/man3/Tcl_NewListObj.tcl%%PKGNAMESUFFIX%%.3.gz
 %%TCLMAN%%share/man/man3/Tcl_NewLongObj.tcl%%PKGNAMESUFFIX%%.3.gz
 %%TCLMAN%%share/man/man3/Tcl_NewMethod.tcl%%PKGNAMESUFFIX%%.3.gz
+%%TCLMAN%%share/man/man3/Tcl_NewMethod2.tcl%%PKGNAMESUFFIX%%.3.gz
 %%TCLMAN%%share/man/man3/Tcl_NewObj.tcl%%PKGNAMESUFFIX%%.3.gz
 %%TCLMAN%%share/man/man3/Tcl_NewObjectInstance.tcl%%PKGNAMESUFFIX%%.3.gz
 %%TCLMAN%%share/man/man3/Tcl_NewStringObj.tcl%%PKGNAMESUFFIX%%.3.gz
@@ -945,6 +953,7 @@ libdata/pkgconfig/tcl%%PKGNAMESUFFIX%%.pc
 %%TCLMAN%%share/man/mann/bgerror.tcl%%PKGNAMESUFFIX%%.n.gz
 %%TCLMAN%%share/man/mann/binary.tcl%%PKGNAMESUFFIX%%.n.gz
 %%TCLMAN%%share/man/mann/break.tcl%%PKGNAMESUFFIX%%.n.gz
+%%TCLMAN%%share/man/mann/buildinfo.tcl%%PKGNAMESUFFIX%%.n.gz
 %%TCLMAN%%share/man/mann/callback.tcl%%PKGNAMESUFFIX%%.n.gz
 %%TCLMAN%%share/man/mann/catch.tcl%%PKGNAMESUFFIX%%.n.gz
 %%TCLMAN%%share/man/mann/cd.tcl%%PKGNAMESUFFIX%%.n.gz
@@ -981,6 +990,7 @@ libdata/pkgconfig/tcl%%PKGNAMESUFFIX%%.pc
 %%TCLMAN%%share/man/mann/flush.tcl%%PKGNAMESUFFIX%%.n.gz
 %%TCLMAN%%share/man/mann/for.tcl%%PKGNAMESUFFIX%%.n.gz
 %%TCLMAN%%share/man/mann/foreach.tcl%%PKGNAMESUFFIX%%.n.gz
+%%TCLMAN%%share/man/mann/foreachLine.tcl%%PKGNAMESUFFIX%%.n.gz
 %%TCLMAN%%share/man/mann/format.tcl%%PKGNAMESUFFIX%%.n.gz
 %%TCLMAN%%share/man/mann/fpclassify.tcl%%PKGNAMESUFFIX%%.n.gz
 %%TCLMAN%%share/man/mann/gets.tcl%%PKGNAMESUFFIX%%.n.gz
@@ -1032,6 +1042,7 @@ libdata/pkgconfig/tcl%%PKGNAMESUFFIX%%.pc
 %%TCLMAN%%share/man/mann/oo_objdefine.tcl%%PKGNAMESUFFIX%%.n.gz
 %%TCLMAN%%share/man/mann/oo_object.tcl%%PKGNAMESUFFIX%%.n.gz
 %%TCLMAN%%share/man/mann/oo_singleton.tcl%%PKGNAMESUFFIX%%.n.gz
+%%TCLMAN%%share/man/mann/oo_Slot.tcl%%PKGNAMESUFFIX%%.n.gz
 %%TCLMAN%%share/man/mann/open.tcl%%PKGNAMESUFFIX%%.n.gz
 %%TCLMAN%%share/man/mann/package.tcl%%PKGNAMESUFFIX%%.n.gz
 %%TCLMAN%%share/man/mann/packagens.tcl%%PKGNAMESUFFIX%%.n.gz
@@ -1048,6 +1059,7 @@ libdata/pkgconfig/tcl%%PKGNAMESUFFIX%%.pc
 %%TCLMAN%%share/man/mann/pwd.tcl%%PKGNAMESUFFIX%%.n.gz
 %%TCLMAN%%share/man/mann/re_syntax.tcl%%PKGNAMESUFFIX%%.n.gz
 %%TCLMAN%%share/man/mann/read.tcl%%PKGNAMESUFFIX%%.n.gz
+%%TCLMAN%%share/man/mann/readFile.tcl%%PKGNAMESUFFIX%%.n.gz
 %%TCLMAN%%share/man/mann/refchan.tcl%%PKGNAMESUFFIX%%.n.gz
 %%TCLMAN%%share/man/mann/regexp.tcl%%PKGNAMESUFFIX%%.n.gz
 %%TCLMAN%%share/man/mann/registry.tcl%%PKGNAMESUFFIX%%.n.gz
@@ -1104,6 +1116,7 @@ libdata/pkgconfig/tcl%%PKGNAMESUFFIX%%.pc
 %%TCLMAN%%share/man/mann/variable.tcl%%PKGNAMESUFFIX%%.n.gz
 %%TCLMAN%%share/man/mann/vwait.tcl%%PKGNAMESUFFIX%%.n.gz
 %%TCLMAN%%share/man/mann/while.tcl%%PKGNAMESUFFIX%%.n.gz
+%%TCLMAN%%share/man/mann/writeFile.tcl%%PKGNAMESUFFIX%%.n.gz
 %%TCLMAN%%share/man/mann/yield.tcl%%PKGNAMESUFFIX%%.n.gz
 %%TCLMAN%%share/man/mann/yieldto.tcl%%PKGNAMESUFFIX%%.n.gz
 %%TCLMAN%%share/man/mann/zipfs.tcl%%PKGNAMESUFFIX%%.n.gz
@@ -1207,6 +1220,7 @@ libdata/pkgconfig/tcl%%PKGNAMESUFFIX%%.pc
 %%TZDATA%%lib/tcl%%TCL_VER%%/tzdata/America/Coral_Harbour
 %%TZDATA%%lib/tcl%%TCL_VER%%/tzdata/America/Cordoba
 %%TZDATA%%lib/tcl%%TCL_VER%%/tzdata/America/Costa_Rica
+%%TZDATA%%lib/tcl%%TCL_VER%%/tzdata/America/Coyhaique
 %%TZDATA%%lib/tcl%%TCL_VER%%/tzdata/America/Creston
 %%TZDATA%%lib/tcl%%TCL_VER%%/tzdata/America/Cuiaba
 %%TZDATA%%lib/tcl%%TCL_VER%%/tzdata/America/Curacao

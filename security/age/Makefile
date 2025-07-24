@@ -1,10 +1,10 @@
 PORTNAME=	age
 DISTVERSIONPREFIX=	v
-DISTVERSION=	1.1.1
-PORTREVISION=	14
+DISTVERSION=	1.2.1
+PORTREVISION=	5
 CATEGORIES=	security
 
-MAINTAINER=	dmgk@FreeBSD.org
+MAINTAINER=	bofh@FreeBSD.org
 COMMENT=	Simple, modern and secure file encryption tool
 WWW=		https://github.com/FiloSottile/age
 

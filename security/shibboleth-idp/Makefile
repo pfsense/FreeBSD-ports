@@ -1,8 +1,8 @@
 PORTNAME=	shibboleth
-PORTVERSION=	4.3.3
+PORTVERSION=	5.1.4
 CATEGORIES=	security www
 MASTER_SITES=	http://shibboleth.net/downloads/identity-provider/${PORTVERSION}/ \
-		http://shibboleth.net/downloads/identity-provider/latest4/${PORTVERSION}/ \
+		http://shibboleth.net/downloads/identity-provider/latest5/${PORTVERSION}/ \
 		http://shibboleth.net/downloads/identity-provider/archive/${PORTVERSION}/ \
 		https://repo1.maven.org/maven2/ch/qos/logback/logback-core/${LOGBACKVER}/:logback_core \
 		https://repo1.maven.org/maven2/ch/qos/logback/logback-classic/${LOGBACKVER}/:logback_classic
@@ -14,13 +14,13 @@ EXTRACT_ONLY=	shibboleth-identity-provider-${PORTVERSION}.tar.gz
 
 MAINTAINER=	zi@FreeBSD.org
 COMMENT=	Shibboleth Identity Provider (Internet2)
-WWW=		http://shibboleth.internet2.edu/
+WWW=		https://www.shibboleth.net/products/
 
 LICENSE=	APACHE20
 
-BUILD_DEPENDS=	jetty10>=0:www/jetty10
+BUILD_DEPENDS=	jetty12>=0:www/jetty12
 RUN_DEPENDS=	bash:shells/bash \
-		jetty10>=0:www/jetty10
+		jetty12>=0:www/jetty12
 
 USE_RC_SUBR=	shibboleth-idp
 CPE_VENDOR=	shibboleth
@@ -29,7 +29,8 @@ WRKSRC=		${WRKDIR}/shibboleth-identity-provider-${PORTVERSION}
 NO_ARCH=	yes
 NO_BUILD=	yes
 
-LOGBACKVER=	1.4.0
+LOGBACKVER=	1.5.6
+SHIBVER=	9.1.4
 SHIBUSER=	shibd
 SHIBGROUP=	shibd
 LOGDIR=		/var/log/${PORTNAME}
@@ -37,18 +38,19 @@ RUNDIR=		/var/run/${PORTNAME}
 USERS=		${SHIBUSER}
 GROUPS=		${SHIBGROUP}
 
-SUB_FILES=	shibboleth
+SUB_FILES=	shibboleth jetty-pid.xml
 
 SUB_LIST+=	SHIBUSER=${SHIBUSER} SHIBGROUP=${SHIBGROUP} \
 		RUNDIR=${RUNDIR} LOGDIR=${LOGDIR}
 PLIST_SUB+=	SHIBUSER=${SHIBUSER} SHIBGROUP=${SHIBGROUP} \
-		RUNDIR=${RUNDIR} LOGDIR=${LOGDIR} \
+		RUNDIR=${RUNDIR} LOGDIR=${LOGDIR} SHIBVER=${SHIBVER} \
 		LOGBACKVER=${LOGBACKVER} PORTVERSION=${PORTVERSION}
 
 do-install:
 	@${MKDIR} ${STAGEDIR}${DATADIR} ${STAGEDIR}${ETCDIR}
 	@${MKDIR} ${STAGEDIR}${LOGDIR} ${STAGEDIR}${RUNDIR}
 	@${MKDIR} ${STAGEDIR}${WWWDIR}/lib/logging
+	@${MKDIR} ${STAGEDIR}${WWWDIR}/jsp
 	@${MKDIR} ${STAGEDIR}${EXAMPLESDIR}
 .for dir in conf credentials etc modules resources start.d webapps/ROOT
 	@${MKDIR} ${STAGEDIR}${WWWDIR}/${dir}
@@ -59,6 +61,7 @@ do-install:
 .for jar in logback-classic-${LOGBACKVER}.jar logback-core-${LOGBACKVER}.jar
 	${INSTALL_DATA} ${DISTDIR}/${jar} ${STAGEDIR}${WWWDIR}/lib/logging
 .endfor
+	${INSTALL_DATA} ${WRKDIR}/jetty-pid.xml ${STAGEDIR}${WWWDIR}/etc
 	${INSTALL_DATA} ${WRKDIR}/shibboleth ${STAGEDIR}${ETCDIR}/shibboleth-idp
 	${INSTALL_DATA} ${FILESDIR}/index.html ${STAGEDIR}${EXAMPLESDIR}/index.html
 	${INSTALL_SCRIPT} ${FILESDIR}/shibboleth-idp.sh ${STAGEDIR}${PREFIX}/sbin

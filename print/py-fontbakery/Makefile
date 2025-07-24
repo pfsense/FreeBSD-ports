@@ -1,5 +1,6 @@
 PORTNAME=	fontbakery
-PORTVERSION=	0.12.7
+PORTVERSION=	1.0.1
+PORTREVISION=	1
 CATEGORIES=	print python
 MASTER_SITES=	PYPI \
 		https://github.com/fonttools/fontbakery/releases/download/v${PORTVERSION}/
@@ -18,18 +19,22 @@ BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}setuptools>=61.0:devel/py-setuptools@${PY_
 		${PYTHON_PKGNAMEPREFIX}wheel>=0:devel/py-wheel@${PY_FLAVOR}
 RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}beziers>=0.6.0<0.7:graphics/py-beziers@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}cmarkgfm>=0.4:textproc/py-cmarkgfm@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}fonttools>=4.46.0:print/py-fonttools@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}defcon>=0:x11-fonts/py-defcon@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}dehinter>=3.1.0:print/py-dehinter@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}fonttools>=4.47.0:print/py-fonttools@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}freetype-py>=0:print/py-freetype-py@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}Jinja2>=3.0.0:devel/py-Jinja2@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}munkres>=0:math/py-munkres@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}opentype-sanitizer>=9.1.0<10:x11-fonts/py-opentype-sanitizer@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}opentypespec>=0:x11-fonts/py-opentypespec@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}packaging>=0:devel/py-packaging@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}opentypespec>=1.9.2:x11-fonts/py-opentypespec@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}packaging>=14.5:devel/py-packaging@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}pip-api>=0:devel/py-pip-api@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}yaml>=0:devel/py-yaml@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}pyyaml>=0:devel/py-pyyaml@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}requests>=2.19:www/py-requests@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}rich>=0:textproc/py-rich@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}toml>=0:textproc/py-toml@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}ufo2ft>=2.25.2:x11-fonts/py-ufo2ft@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}ufolint>=0:x11-fonts/py-ufolint@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}uharfbuzz>=0:print/py-uharfbuzz@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}vharfbuzz>=0.2.0:print/py-vharfbuzz@${PY_FLAVOR}
 
@@ -38,43 +43,32 @@ USE_PYTHON=	autoplist concurrent pep517
 
 NO_ARCH=	yes
 
-# fontbakery[adobefonts] and fontbakery[iso15008] are empty
-OPTIONS_DEFINE=	FONTVAL FONTWERK GOOGLEFONTS NOTOFONTS SHAPING TYPENETWORK UFO
-OPTIONS_DEFAULT=FONTVAL FONTWERK GOOGLEFONTS NOTOFONTS SHAPING TYPENETWORK UFO
+# fontbakery[adobefonts], fontbakery[iso15008] and fontbakery[microsoft] are empty
+OPTIONS_DEFINE=	FONTVAL FONTWERK GOOGLEFONTS NOTOFONTS TYPENETWORK
+OPTIONS_DEFAULT=FONTVAL FONTWERK GOOGLEFONTS NOTOFONTS TYPENETWORK
 FONTVAL_DESC=		Checks for Font Validator
 FONTWERK_DESC=		Checks for Fontwerk.com
 FONTWERK_IMPLIES=	GOOGLEFONTS
 GOOGLEFONTS_DESC=	Checks for Google Fonts
-GOOGLEFONTS_IMPLIES=	SHAPING UFO
 NOTOFONTS_DESC=		Checks for Noto fonts
 NOTOFONTS_IMPLIES=	GOOGLEFONTS
-SHAPING_DESC=		Checks for shaping
 TYPENETWORK_DESC=	Checks for Type Network
-UFO_DESC=		Checks for UFO sources
 
-FONTVAL_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}lxml>=0:devel/py-lxml@${PY_FLAVOR}
-GOOGLEFONTS_RUN_DEPENDS=${PYTHON_PKGNAMEPREFIX}axisregistry>=0.4.9<0.5:x11-fonts/py-axisregistry@${PY_FLAVOR} \
+FONTVAL_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}lxml5>=0:devel/py-lxml5@${PY_FLAVOR}
+GOOGLEFONTS_RUN_DEPENDS=${PYTHON_PKGNAMEPREFIX}axisregistry>=0.4.12<0.5:x11-fonts/py-axisregistry@${PY_FLAVOR} \
 			${PYTHON_PKGNAMEPREFIX}beautifulsoup>=4.7.1:www/py-beautifulsoup@${PY_FLAVOR} \
-			${PYTHON_PKGNAMEPREFIX}dehinter>=3.1.0:print/py-dehinter@${PY_FLAVOR} \
+			${PYTHON_PKGNAMEPREFIX}collidoscope>=0.5.2:print/py-collidoscope@${PY_FLAVOR} \
 			${PYTHON_PKGNAMEPREFIX}fonttools>=0:print/py-fonttools@${PY_FLAVOR} \
-			${PYTHON_PKGNAMEPREFIX}gflanguages>=0.6.1<0.7:x11-fonts/py-gflanguages@${PY_FLAVOR} \
-			${PYTHON_PKGNAMEPREFIX}gfsubsets>=2024.5.9:x11-fonts/py-gfsubsets@${PY_FLAVOR} \
-			${PYTHON_PKGNAMEPREFIX}glyphsets>=1.0.0<2:print/py-glyphsets@${PY_FLAVOR} \
+			${PYTHON_PKGNAMEPREFIX}gflanguages>=0.7.3<0.8:x11-fonts/py-gflanguages@${PY_FLAVOR} \
+			${PYTHON_PKGNAMEPREFIX}gfsubsets>=2024.9.25:x11-fonts/py-gfsubsets@${PY_FLAVOR} \
+			${PYTHON_PKGNAMEPREFIX}glyphsets>=1.1.0<2:print/py-glyphsets@${PY_FLAVOR} \
 			${PYTHON_PKGNAMEPREFIX}protobuf>=3.7.0,1:devel/py-protobuf@${PY_FLAVOR} \
-			${PYTHON_PKGNAMEPREFIX}shaperglot>=0.5.0<0.6:x11-fonts/py-shaperglot@${PY_FLAVOR} \
-			${PYTHON_PKGNAMEPREFIX}unicodedata2>=0:devel/py-unicodedata2@${PY_FLAVOR}
-SHAPING_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}collidoscope>=0.5.2:print/py-collidoscope@${PY_FLAVOR} \
-			${PYTHON_PKGNAMEPREFIX}shaperglot>=0.3.0<0.6.0:x11-fonts/py-shaperglot@${PY_FLAVOR} \
+			${PYTHON_PKGNAMEPREFIX}shaperglot>=1.0.2<2:x11-fonts/py-shaperglot@${PY_FLAVOR} \
 			${PYTHON_PKGNAMEPREFIX}stringbrewer>=0:devel/py-stringbrewer@${PY_FLAVOR} \
-			${PYTHON_PKGNAMEPREFIX}ufo2ft>=2.25.2:x11-fonts/py-ufo2ft@${PY_FLAVOR}
-TYPENETWORK_RUN_DEPENDS=${PYTHON_PKGNAMEPREFIX}beautifulsoup>=4.7.1:www/py-beautifulsoup@${PY_FLAVOR} \
-			${PYTHON_PKGNAMEPREFIX}shaperglot>=0.3.0<0.6.0:x11-fonts/py-shaperglot@${PY_FLAVOR} \
-			${PYTHON_PKGNAMEPREFIX}ufo2ft>=2.25.2:x11-fonts/py-ufo2ft@${PY_FLAVOR} \
 			${PYTHON_PKGNAMEPREFIX}unicodedata2>=0:devel/py-unicodedata2@${PY_FLAVOR}
-UFO_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}defcon>=0:x11-fonts/py-defcon@${PY_FLAVOR} \
-			${PYTHON_PKGNAMEPREFIX}fonttools>=0:print/py-fonttools@${PY_FLAVOR} \
-			${PYTHON_PKGNAMEPREFIX}ufo2ft>=2.25.2:x11-fonts/py-ufo2ft@${PY_FLAVOR} \
-			${PYTHON_PKGNAMEPREFIX}ufolint>=0:x11-fonts/py-ufolint@${PY_FLAVOR}
+TYPENETWORK_RUN_DEPENDS=${PYTHON_PKGNAMEPREFIX}beautifulsoup>=4.7.1:www/py-beautifulsoup@${PY_FLAVOR} \
+			${PYTHON_PKGNAMEPREFIX}shaperglot>=1.0.0<2:x11-fonts/py-shaperglot@${PY_FLAVOR} \
+			${PYTHON_PKGNAMEPREFIX}unicodedata2>=0:devel/py-unicodedata2@${PY_FLAVOR}
 
 .include <bsd.port.pre.mk>
 

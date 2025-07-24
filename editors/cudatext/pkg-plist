@@ -2,9 +2,6 @@ bin/cudatext
 share/applications/cudatext.desktop
 %%DATADIR%%/data/autocomplete/Bash script.acp
 %%DATADIR%%/data/autocomplete/Batch files.acp
-%%DATADIR%%/data/autocomplete/C++.acp
-%%DATADIR%%/data/autocomplete/C.acp
-%%DATADIR%%/data/autocomplete/Lua.acp
 %%DATADIR%%/data/autocompletespec/css_colors.ini
 %%DATADIR%%/data/autocompletespec/css_list.ini
 %%DATADIR%%/data/autocompletespec/css_sel.ini
@@ -200,9 +197,7 @@ share/applications/cudatext.desktop
 %%DATADIR%%/data/filetypeicons/vscode_16x16/icon_bad.png
 %%DATADIR%%/data/filetypeicons/vscode_16x16/icon_server.png
 %%DATADIR%%/data/filetypeicons/vscode_16x16/icons.json
-%%DATADIR%%/data/lang/credits.txt
 %%DATADIR%%/data/lang/history.txt
-%%DATADIR%%/data/lang/ru_RU.ini
 %%DATADIR%%/data/lang/translation template.ini
 %%DATADIR%%/data/lexlib/Assembly.cuda-lexmap
 %%DATADIR%%/data/lexlib/Assembly.lcf
@@ -210,10 +205,6 @@ share/applications/cudatext.desktop
 %%DATADIR%%/data/lexlib/Bash script.lcf
 %%DATADIR%%/data/lexlib/Batch files.cuda-lexmap
 %%DATADIR%%/data/lexlib/Batch files.lcf
-%%DATADIR%%/data/lexlib/C++.cuda-lexmap
-%%DATADIR%%/data/lexlib/C++.lcf
-%%DATADIR%%/data/lexlib/C.cuda-lexmap
-%%DATADIR%%/data/lexlib/C.lcf
 %%DATADIR%%/data/lexlib/CSS.cuda-lexmap
 %%DATADIR%%/data/lexlib/CSS.lcf
 %%DATADIR%%/data/lexlib/HTML style.cuda-lexmap
@@ -226,8 +217,6 @@ share/applications/cudatext.desktop
 %%DATADIR%%/data/lexlib/JSON.lcf
 %%DATADIR%%/data/lexlib/JavaScript.cuda-lexmap
 %%DATADIR%%/data/lexlib/JavaScript.lcf
-%%DATADIR%%/data/lexlib/Lua.cuda-lexmap
-%%DATADIR%%/data/lexlib/Lua.lcf
 %%DATADIR%%/data/lexlib/Markdown.cuda-lexmap
 %%DATADIR%%/data/lexlib/Markdown.lcf
 %%DATADIR%%/data/lexlib/Python.cuda-lexmap
@@ -277,6 +266,7 @@ share/applications/cudatext.desktop
 %%DATADIR%%/data/projtoolbaricons/default_16x16/readme2.txt
 %%DATADIR%%/data/projtoolbaricons/default_16x16/recents.png
 %%DATADIR%%/data/projtoolbaricons/default_16x16/save.png
+%%DATADIR%%/data/projtoolbaricons/default_16x16/sync.png
 %%DATADIR%%/data/projtoolbaricons/default_white_16x16/add-dir.png
 %%DATADIR%%/data/projtoolbaricons/default_white_16x16/add-file.png
 %%DATADIR%%/data/projtoolbaricons/default_white_16x16/cfg.png
@@ -288,6 +278,7 @@ share/applications/cudatext.desktop
 %%DATADIR%%/data/projtoolbaricons/default_white_16x16/recents.png
 %%DATADIR%%/data/projtoolbaricons/default_white_16x16/save-min.png
 %%DATADIR%%/data/projtoolbaricons/default_white_16x16/save.png
+%%DATADIR%%/data/projtoolbaricons/default_white_16x16/sync.png
 %%DATADIR%%/data/projtoolbaricons/feather_black_16x16/add-dir.png
 %%DATADIR%%/data/projtoolbaricons/feather_black_16x16/add-dir.svg
 %%DATADIR%%/data/projtoolbaricons/feather_black_16x16/add-file.png
@@ -302,6 +293,7 @@ share/applications/cudatext.desktop
 %%DATADIR%%/data/projtoolbaricons/feather_black_16x16/recents.png
 %%DATADIR%%/data/projtoolbaricons/feather_black_16x16/save.png
 %%DATADIR%%/data/projtoolbaricons/feather_black_16x16/save.svg
+%%DATADIR%%/data/projtoolbaricons/feather_black_16x16/sync.png
 %%DATADIR%%/data/projtoolbaricons/feather_white_16x16/add-dir.png
 %%DATADIR%%/data/projtoolbaricons/feather_white_16x16/add-dir.svg
 %%DATADIR%%/data/projtoolbaricons/feather_white_16x16/add-file.png
@@ -316,6 +308,7 @@ share/applications/cudatext.desktop
 %%DATADIR%%/data/projtoolbaricons/feather_white_16x16/recents.png
 %%DATADIR%%/data/projtoolbaricons/feather_white_16x16/save.png
 %%DATADIR%%/data/projtoolbaricons/feather_white_16x16/save.svg
+%%DATADIR%%/data/projtoolbaricons/feather_white_16x16/sync.png
 %%DATADIR%%/data/sideicons/common_20x20/console.png
 %%DATADIR%%/data/sideicons/common_20x20/credits.txt
 %%DATADIR%%/data/sideicons/common_20x20/find.png
@@ -404,6 +397,7 @@ share/applications/cudatext.desktop
 %%DATADIR%%/py/cuda_addonman/work_install_helper.py
 %%DATADIR%%/py/cuda_addonman/work_local.py
 %%DATADIR%%/py/cuda_addonman/work_remote.py
+%%DATADIR%%/py/cuda_addonman/work_tempdir.py
 %%DATADIR%%/py/cuda_comments/__init__.py
 %%DATADIR%%/py/cuda_comments/cd_comments.py
 %%DATADIR%%/py/cuda_comments/cd_plug_lib.py
@@ -419,7 +413,9 @@ share/applications/cudatext.desktop
 %%DATADIR%%/py/cuda_make_plugin/events.py
 %%DATADIR%%/py/cuda_make_plugin/install.inf
 %%DATADIR%%/py/cuda_make_plugin/sample_begin.py
+%%DATADIR%%/py/cuda_make_plugin/sample_begin_config.py
 %%DATADIR%%/py/cuda_make_plugin/sample_body.py
+%%DATADIR%%/py/cuda_make_plugin/sample_body_config.py
 %%DATADIR%%/py/cuda_multi_installer/__init__.py
 %%DATADIR%%/py/cuda_multi_installer/install.inf
 %%DATADIR%%/py/cuda_new_file/__init__.py
@@ -470,10 +466,11 @@ share/applications/cudatext.desktop
 %%DATADIR%%/py/cuda_sort/__init__.py
 %%DATADIR%%/py/cuda_sort/app_specific.py
 %%DATADIR%%/py/cuda_sort/install.inf
-%%DATADIR%%/py/cuda_sort/readme/history.txt
 %%DATADIR%%/py/cuda_sort/readme/readme.txt
+%%DATADIR%%/py/cuda_sort/sort_dlg.py
 %%DATADIR%%/py/cuda_sort/sort_emails.py
 %%DATADIR%%/py/cuda_sort/sort_ini.py
+%%DATADIR%%/py/cuda_sort/sort_numeric.py
 %%DATADIR%%/py/cuda_sort/sort_sep.py
 %%DATADIR%%/py/cuda_tabs_list/__init__.py
 %%DATADIR%%/py/cuda_tabs_list/install.inf
@@ -500,6 +497,7 @@ share/applications/cudatext.desktop
 %%DATADIR%%/py/sys/certifi/core.py
 %%DATADIR%%/py/sys/certifi/py.typed
 %%DATADIR%%/py/sys/chardet/__init__.py
+%%DATADIR%%/py/sys/chardet/__main__.py
 %%DATADIR%%/py/sys/chardet/big5freq.py
 %%DATADIR%%/py/sys/chardet/big5prober.py
 %%DATADIR%%/py/sys/chardet/chardistribution.py
@@ -508,7 +506,7 @@ share/applications/cudatext.desktop
 %%DATADIR%%/py/sys/chardet/cli/__init__.py
 %%DATADIR%%/py/sys/chardet/cli/chardetect.py
 %%DATADIR%%/py/sys/chardet/codingstatemachine.py
-%%DATADIR%%/py/sys/chardet/compat.py
+%%DATADIR%%/py/sys/chardet/codingstatemachinedict.py
 %%DATADIR%%/py/sys/chardet/cp949prober.py
 %%DATADIR%%/py/sys/chardet/enums.py
 %%DATADIR%%/py/sys/chardet/escprober.py
@@ -522,6 +520,8 @@ share/applications/cudatext.desktop
 %%DATADIR%%/py/sys/chardet/gb2312prober.py
 %%DATADIR%%/py/sys/chardet/hebrewprober.py
 %%DATADIR%%/py/sys/chardet/jisfreq.py
+%%DATADIR%%/py/sys/chardet/johabfreq.py
+%%DATADIR%%/py/sys/chardet/johabprober.py
 %%DATADIR%%/py/sys/chardet/jpcntx.py
 %%DATADIR%%/py/sys/chardet/langbulgarianmodel.py
 %%DATADIR%%/py/sys/chardet/langgreekmodel.py
@@ -531,15 +531,19 @@ share/applications/cudatext.desktop
 %%DATADIR%%/py/sys/chardet/langthaimodel.py
 %%DATADIR%%/py/sys/chardet/langturkishmodel.py
 %%DATADIR%%/py/sys/chardet/latin1prober.py
+%%DATADIR%%/py/sys/chardet/macromanprober.py
 %%DATADIR%%/py/sys/chardet/mbcharsetprober.py
 %%DATADIR%%/py/sys/chardet/mbcsgroupprober.py
 %%DATADIR%%/py/sys/chardet/mbcssm.py
 %%DATADIR%%/py/sys/chardet/metadata/__init__.py
 %%DATADIR%%/py/sys/chardet/metadata/languages.py
+%%DATADIR%%/py/sys/chardet/py.typed
+%%DATADIR%%/py/sys/chardet/resultdict.py
 %%DATADIR%%/py/sys/chardet/sbcharsetprober.py
 %%DATADIR%%/py/sys/chardet/sbcsgroupprober.py
 %%DATADIR%%/py/sys/chardet/sjisprober.py
 %%DATADIR%%/py/sys/chardet/universaldetector.py
+%%DATADIR%%/py/sys/chardet/utf1632prober.py
 %%DATADIR%%/py/sys/chardet/utf8prober.py
 %%DATADIR%%/py/sys/chardet/version.py
 %%DATADIR%%/py/sys/idna/__init__.py
@@ -549,6 +553,7 @@ share/applications/cudatext.desktop
 %%DATADIR%%/py/sys/idna/idnadata.py
 %%DATADIR%%/py/sys/idna/intranges.py
 %%DATADIR%%/py/sys/idna/package_data.py
+%%DATADIR%%/py/sys/idna/py.typed
 %%DATADIR%%/py/sys/idna/uts46data.py
 %%DATADIR%%/py/sys/requests/__init__.py
 %%DATADIR%%/py/sys/requests/__version__.py
@@ -587,7 +592,9 @@ share/applications/cudatext.desktop
 %%DATADIR%%/py/sys/urllib3/exceptions.py
 %%DATADIR%%/py/sys/urllib3/fields.py
 %%DATADIR%%/py/sys/urllib3/filepost.py
-%%DATADIR%%/py/sys/urllib3/http2.py
+%%DATADIR%%/py/sys/urllib3/http2/__init__.py
+%%DATADIR%%/py/sys/urllib3/http2/connection.py
+%%DATADIR%%/py/sys/urllib3/http2/probe.py
 %%DATADIR%%/py/sys/urllib3/poolmanager.py
 %%DATADIR%%/py/sys/urllib3/py.typed
 %%DATADIR%%/py/sys/urllib3/response.py
@@ -620,10 +627,12 @@ share/applications/cudatext.desktop
 %%DATADIR%%/readme/tutorials/TutorialLexerLig.odt
 %%DATADIR%%/readme/wiki/atsynedit-carets.gif
 %%DATADIR%%/readme/wiki/atsynedit-sel.gif
+%%DATADIR%%/readme/wiki/atsynedit_ide_defines.png
 %%DATADIR%%/readme/wiki/atsynedit_tree.png
 %%DATADIR%%/readme/wiki/controls_autosizes.png
 %%DATADIR%%/readme/wiki/cudatext-breadcrumbs.png
 %%DATADIR%%/readme/wiki/cudatext-charmap.png
+%%DATADIR%%/readme/wiki/cudatext-cjk-len1024.png
 %%DATADIR%%/readme/wiki/cudatext-click-link.png
 %%DATADIR%%/readme/wiki/cudatext-color-text.png
 %%DATADIR%%/readme/wiki/cudatext-color-underline.png
@@ -698,17 +707,9 @@ share/applications/cudatext.desktop
 %%DATADIR%%/settings_default/default.json
 %%DATADIR%%/settings_default/lexer Assembly.json
 %%DATADIR%%/settings_default/lexer Bash script.json
-%%DATADIR%%/settings_default/lexer C++.json
-%%DATADIR%%/settings_default/lexer C.json
 %%DATADIR%%/settings_default/lexer CSS.json
 %%DATADIR%%/settings_default/lexer JSON.json
 %%DATADIR%%/settings_default/lexer JavaScript.json
-%%DATADIR%%/settings_default/lexer Lua.json
-%%DATADIR%%/settings_default/lexer PHP.json
-%%DATADIR%%/settings_default/lexer Pascal.json
 %%DATADIR%%/settings_default/lexer Python.json
-%%DATADIR%%/settings_default/lexer Ruby.json
-%%DATADIR%%/settings_default/lexer TypeScript.json
-%%DATADIR%%/settings_default/lexer VBScript.json
 %%DATADIR%%/settings_default/lexer YAML.json
 share/icons/hicolor/512x512/apps/cudatext.png

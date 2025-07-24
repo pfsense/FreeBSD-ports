@@ -1,7 +1,7 @@
 PORTNAME=	tealdeer
 DISTVERSIONPREFIX=	v
 DISTVERSION=	1.6.1
-PORTREVISION=	8
+PORTREVISION=	17
 CATEGORIES=	sysutils
 
 MAINTAINER=	lcook@FreeBSD.org
@@ -16,6 +16,8 @@ LICENSE_FILE_MIT=	${WRKSRC}/LICENSE-MIT
 USES=		cargo ssl
 USE_GITHUB=	yes
 GH_ACCOUNT=	dbrgn
+
+CONFLICTS_INSTALL=	tldr
 
 PLIST_FILES=	bin/tldr
 
@@ -33,7 +35,6 @@ COMPLETIONS_PLIST_FILES=	share/bash-completion/completions/${PORTNAME} \
 				share/zsh/site-functions/_${PORTNAME}
 
 post-install:
-	${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/tldr
 .for _shell in bash fish zsh
 	${INSTALL_DATA} ${WRKSRC}/completion/${_shell}_${PORTNAME} \
 		${STAGEDIR}${PREFIX}/${COMPLETIONS_PLIST_FILES:M*${_shell}*}

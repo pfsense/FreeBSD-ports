@@ -3,11 +3,11 @@
  * suricata.inc
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2006-2024 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2006-2025 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2005 Bill Marquette <bill.marquette@gmail.com>.
  * Copyright (c) 2003-2004 Manuel Kasper <mk@neon1.net>.
  * Copyright (c) 2009 Robert Zelaya Sr. Developer
- * Copyright (c) 2023 Bill Meeks
+ * Copyright (c) 2025 Bill Meeks
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -64,18 +64,29 @@ function suricata_is_running($suricata_uuid, $if_real, $type = 'suricata') {
 
 function suricata_stop($suricatacfg, $if_real) {
 	global $g;
-
 	$suricata_uuid = $suricatacfg['uuid'];
-	if (isvalidpid("{$g['varrun_path']}/suricata_{$if_real}{$suricata_uuid}.pid")) {
-		syslog(LOG_NOTICE, "[Suricata] Suricata STOP for {$suricatacfg['descr']}({$if_real})...");
+	$suricata_ctrl_sock = "{$g['varrun_path']}/suricata-ctrl-socket-{$suricata_uuid}";
+
+	syslog(LOG_NOTICE, "[Suricata] Suricata STOP for {$suricatacfg['descr']}({$if_real})...");
+
+	// Attempt to use UNIX control socket interface if present
+	if (file_exists($suricata_ctrl_sock)) {
+		if (mwexec("/usr/local/bin/suricatasc -c shutdown {$suricata_ctrl_sock}") == 0) {
+			// Give the Suricata daemon time to stop and cleanup before returning
+			sleep(3);
+			return;
+		}
+	} elseif (isvalidpid("{$g['varrun_path']}/suricata_{$if_real}{$suricata_uuid}.pid")) {
 		killbypid("{$g['varrun_path']}/suricata_{$if_real}{$suricata_uuid}.pid");
+		// Give the Suricata daemon time to stop and cleanup before returning
+		sleep(3);
+		return;
+	} else {
+		if (!isvalidpid("{$g['varrun_path']}/suricata_{$if_real}{$suricata_uuid}.pid")) {
+			// Make sure any zombie PID file is deleted so Suricata will start later without error
+			unlink_if_exists("{$g['varrun_path']}/suricata_{$if_real}{$suricata_uuid}.pid");
+		}
 	}
-
-	// Give the Suricata daemon some to actually stop and cleanup before returning
-	sleep(10);
-
-	// Make sure the PID file is actually deleted so Suricata will restart without error
-	unlink_if_exists("{$g['varrun_path']}/suricata_{$if_real}{$suricata_uuid}.pid");
 }
 
 function suricata_start($suricatacfg, $if_real) {
@@ -141,7 +152,7 @@ function suricata_restart_all_interfaces() {
 	suricata_start_all_interfaces(TRUE);
 }
 
-function suricata_reload_config($suricatacfg, $signal="SIGUSR2") {
+function suricata_reload_config($suricatacfg, $signal=SIGUSR2) {
 
 	/**************************************************************/
 	/* This function sends the passed SIGNAL to the Suricata      */
@@ -151,12 +162,13 @@ function suricata_reload_config($suricatacfg, $signal="SIGUSR2") {
 	/* as a background process and returns control immediately    */
 	/* to the caller.                                             */
 	/*                                                            */
-	/*  $signal = SIGUSR2 (default) parses and reloads config.    */
+	/*  $signal = SIGUSR2 (default) parses and reloads rules.     */
 	/**************************************************************/
 	global $g;
 
 	$suricata_uuid = $suricatacfg['uuid'];
 	$if_real = get_real_interface($suricatacfg['interface']);
+	$suricata_ctrl_sock = "{$g['varrun_path']}/suricata-ctrl-socket-{$suricata_uuid}";
 
 	/******************************************************/
 	/* Skip disabled Suricata instances or instances      */
@@ -171,27 +183,33 @@ function suricata_reload_config($suricatacfg, $signal="SIGUSR2") {
 	/* we can find a valid PID for the process.           */
 	/******************************************************/
 	if (isvalidpid("{$g['varrun_path']}/suricata_{$if_real}{$suricata_uuid}.pid")) {
-
-		// Send the SIGNAL to the Suricata process
-		mwexec_bg("/bin/pkill -{$signal} -F {$g['varrun_path']}/suricata_{$if_real}{$suricata_uuid}.pid");
-
-		// Log what we did
 		switch ($signal) {
 			case SIGHUP:
 				syslog(LOG_NOTICE, "[Suricata] Suricata LOGS ROTATION initiated for {$suricatacfg['descr']} ({$if_real})...");
+				if (mwexec("/usr/local/bin/suricatasc -c reopen-log-files {$suricata_ctrl_sock}") != 0) {
+					syslog(LOG_WARNING, "[Suricata] Suricata LOGS ROTATION command failed to execute!");
+				}
 				break;
 
 			case SIGUSR2:
 				syslog(LOG_NOTICE, "[Suricata] Suricata LIVE RULE RELOAD initiated for {$suricatacfg['descr']} ({$if_real})...");
+				if (mwexec("/usr/local/bin/suricatasc -c ruleset-reload-nonblocking {$suricata_ctrl_sock}") != 0) {
+					syslog(LOG_WARNING, "[Suricata] Suricata LIVE RULE RELOAD command failed to execute!");
+				}
 				break;
 
 			case SIGTERM:
 			case SIGINT:
 				syslog(LOG_NOTICE, "[Suricata] Suricata SHUTDOWN initiated for {$suricatacfg['descr']} ({$if_real})...");
+				if (mwexec("/usr/local/bin/suricatasc -c shutdown {$suricata_ctrl_sock}") != 0) {
+					syslog(LOG_WARNING, "[Suricata] Suricata SHUTDOWN command failed to execute!");
+				}
 				break;
 
 			default:
 				syslog(LOG_NOTICE, "[Suricata] Suricata signalled with {$signal} for {$suricatacfg['descr']} ({$if_real})...");
+				// Send the SIGNAL to the Suricata process
+				mwexec_bg("/bin/pkill -{$signal} -F {$g['varrun_path']}/suricata_{$if_real}{$suricata_uuid}.pid");
 		}
 	}
 }
@@ -916,7 +934,7 @@ function sync_suricata_package_config() {
 	suricata_rm_blocked_install_cron(config_get_path('installedpackages/suricata/config/0/rm_blocked', '') != "never_b" ? true : false);
 
 	// Do not attempt package sync if reinstalling package or booting
-	if (!isset($g['suricata_postinstall']) && !$g['booting']) {
+	if (!isset($g['suricata_postinstall']) && !is_platform_booting()) {
 		suricata_sync_on_changes();
 	}
 }
@@ -3536,7 +3554,6 @@ function suricata_create_rc() {
 		{$suricatabindir}suricata {$run_mode} -D -c {$suricatadir}suricata_{$suricata_uuid}_{$if_real}/suricata.yaml --pidfile {$g['varrun_path']}/suricata_{$if_real}{$suricata_uuid}.pid {$verbose_logging} > /dev/null 2>&1
 	fi
 
-	sleep 1
 EOE;
 
 		$start_suricata_iface_stop[] = <<<EOE
@@ -3544,7 +3561,11 @@ EOE;
 	if [ -f {$g['varrun_path']}/suricata_{$if_real}{$suricata_uuid}.pid ]; then
 		pid=`/bin/pgrep -F {$g['varrun_path']}/suricata_{$if_real}{$suricata_uuid}.pid`
 		/usr/bin/logger -p daemon.info -i -t SuricataStartup "Suricata STOP for {$value['descr']}({$suricata_uuid}_{$if_real})..."
-		/bin/pkill -TERM -F {$g['varrun_path']}/suricata_{$if_real}{$suricata_uuid}.pid
+		if [ -f {$g['varrun_path']}/suricata-ctrl-socket-{$suricata_uuid} ]; then
+			/usr/local/bin/suricatasc -c shutdown {$g['varrun_path']}/suricata-ctrl-socket-{$suricata_uuid} 2>/dev/null
+		else
+			/bin/pkill -TERM -F {$g['varrun_path']}/suricata_{$if_real}{$suricata_uuid}.pid
+		fi
 		time=0 timeout=30
 		while /bin/kill -TERM \$pid 2>/dev/null; do
 			sleep 1
@@ -3560,7 +3581,11 @@ EOE;
 		pid=`/bin/pgrep -fn "suricata {$run_mode} -D -c {$suricatadir}suricata_{$suricata_uuid}_{$if_real}/suricata.yaml "`
 		if [ ! -z \$pid ]; then
 			/usr/bin/logger -p daemon.info -i -t SuricataStartup "Suricata STOP for {$value['descr']}({$suricata_uuid}_{$if_real})..."
-			/bin/pkill -TERM -fn "suricata -i {$if_real} "
+			if [ -f {$g['varrun_path']}/suricata-ctrl-socket-{$suricata_uuid} ]; then
+				/usr/local/bin/suricatasc -c shutdown {$g['varrun_path']}/suricata-ctrl-socket-{$suricata_uuid} 2>/dev/null
+			else
+				/bin/pkill -TERM -fn "suricata {$run_mode} -D -c {$suricatadir}suricata_{$suricata_uuid}_{$if_real}/suricata.yaml "
+			fi
 			time=0 timeout=30
 			while /bin/kill -TERM \$pid 2>/dev/null; do
 				sleep 1
@@ -3572,7 +3597,6 @@ EOE;
 		fi
 	fi
 
-	sleep 1
 EOE;
 	}
 
@@ -3609,7 +3633,7 @@ case $1 in
 		if [ ! -f {$g['varrun_path']}/suricata_pkg_starting.lck ]; then
 			rc_start
 		else
-			/usr/bin/logger -p daemon.info -i -t SuricataStartup "Ignoring additional START command since Suricata is already starting..."
+			/usr/bin/logger -p daemon.info -i -t SuricataStartup "Ignoring spurious START command since Suricata is already starting..."
 		fi
 		;;
 	stop)
@@ -3617,7 +3641,7 @@ case $1 in
 		;;
 	restart)
 		rc_stop
-		sleep 5
+		sleep 2
 		rc_start
 		;;
 esac
@@ -3762,7 +3786,7 @@ function suricata_sync_on_changes() {
 	global $g;
 
 	/* Do not attempt a package sync while booting up or installing package */
-	if ($g['booting'] || $g['suricata_postinstall'] == TRUE) {
+	if (is_platform_booting() || $g['suricata_postinstall'] == TRUE) {
 		syslog(LOG_NOTICE, "[suricata] Skipping XMLRPC sync when booting up or during package reinstallation.");
 		return;
 	}
@@ -3864,7 +3888,7 @@ function suricata_do_xmlrpc_sync($syncdownloadrules, $sync_to_ip, $port, $protoc
 	global $g;
 
 	/* Do not attempt a package sync while booting up or installing package */
-	if ($g['booting'] || isset($g['suricata_postinstall'])) {
+	if (is_platform_booting() || isset($g['suricata_postinstall'])) {
 		syslog(LOG_NOTICE, "[suricata] Skipping XMLRPC sync when booting up or during package reinstallation.");
 		return;
 	}
@@ -3874,13 +3898,6 @@ function suricata_do_xmlrpc_sync($syncdownloadrules, $sync_to_ip, $port, $protoc
 		return;
 	}
 
-	/**************************************************/
-	/* Send over the <suricata> portion of config.xml */
-	/* $xml will hold the section to sync.            */
-	/**************************************************/
-	$xml = array();
-	$xml['suricata'] = config_get_path('installedpackages/suricata');
-	
 	$downloadrulescmd = "";
 	if ($syncdownloadrules == "yes") {
 		$downloadrulescmd = "syslog(LOG_NOTICE, gettext(\"[suricata] XMLRPC pkg sync: Update of downloaded rule sets requested...\"));\n";
@@ -3938,185 +3955,98 @@ EOD;
 	/*************************************************/
 	$execcmd2 = "exec(\"/usr/local/bin/php-cgi -f '/tmp/suricata_sync_cmds.php' > /dev/null 2>&1 &\");";
 	
-	if (pf_version() >= "2.4") {
+	$synctimeout = intval($synctimeout);
+	$rpc_client = new pfsense_xmlrpc_client();
+	$rpc_client->setConnectionData($sync_to_ip, $port, $username, $password, $protocol);
+	
+	/*************************************************/
+	/* Send over any auto-SID management files       */
+	/*************************************************/
+	$sid_files = glob(SURICATA_SID_MODS_PATH . '*');
+	foreach ($sid_files as $file) {
+		$content = base64_encode(file_get_contents($file));
+		$payload = "@file_put_contents('{$file}', base64_decode('{$content}'));";
+		$resp = $rpc_client->xmlrpc_exec_php($payload, $synctimeout);
+	}
+	/*************************************************/
+	/* Send over any IPREP IP List files             */
+	/*************************************************/
+	$iprep_files = glob(SURICATA_IPREP_PATH . '*');
+	foreach ($iprep_files as $file) {
+		$content = base64_encode(file_get_contents($file));
+		$payload = "@file_put_contents('{$file}', base64_decode('{$content}'));";
+		$resp = $rpc_client->xmlrpc_exec_php($payload, $synctimeout);
+	}
+
+	/*************************************************/
+	/* Sync the configuration in manual sync mode.   */
+	/* For HA the configuration itself is instead    */
+	/* synced via the XMLRPC plugins - the function  */
+	/* suricata_do_xmlrpc_sync() is called after.    */
+	/*************************************************/
+	if (config_get_path('installedpackages/suricatasync/config/0/varsynconchanges') != 'auto') {
+		/**************************************************/
+		/* Send over the <suricata> portion of config.xml */
+		/* $xml will hold the section to sync.            */
+		/**************************************************/
+		$xml = array();
+		$xml['suricata'] = config_get_path('installedpackages/suricata');
+
 		// xmlrpc cannot encode NULL objects/arrays..
 		foreach($xml as $xmlkey => $xmlvalue) {
 			if (gettype($xmlvalue) == "NULL") {
 				$xml[$xmlkey] = array();
 			}
 		}
-		$synctimeout = intval($synctimeout);
-		$rpc_client = new pfsense_xmlrpc_client();
-		$rpc_client->setConnectionData($sync_to_ip, $port, $username, $password, $protocol);
-		
-		/*************************************************/
-		/* Send over any auto-SID management files       */
-		/*************************************************/
-		$sid_files = glob(SURICATA_SID_MODS_PATH . '*');
-		foreach ($sid_files as $file) {
-			$content = base64_encode(file_get_contents($file));
-			$payload = "@file_put_contents('{$file}', base64_decode('{$content}'));";
-			$resp = $rpc_client->xmlrpc_exec_php($payload, $synctimeout);
-		}
-		/*************************************************/
-		/* Send over any IPREP IP List files             */
-		/*************************************************/
-		$iprep_files = glob(SURICATA_IPREP_PATH . '*');
-		foreach ($iprep_files as $file) {
-			$content = base64_encode(file_get_contents($file));
-			$payload = "@file_put_contents('{$file}', base64_decode('{$content}'));";
-			$resp = $rpc_client->xmlrpc_exec_php($payload, $synctimeout);
-		}
-		
+
 		$resp = $rpc_client->xmlrpc_method('merge_installedpackages_section', $xml, $synctimeout);
-		$resp = $rpc_client->xmlrpc_exec_php($execcmd, $synctimeout);
-		$resp = $rpc_client->xmlrpc_exec_php($execcmd2, $synctimeout);
-	} else {
-		// pfSense before 2.4
-		require_once('xmlrpc.inc');
-	
-		// Take care of IPv6 literal address
-		if (is_ipaddrv6($sync_to_ip)) {
-			$sync_to_ip = "[{$sync_to_ip}]";
-		}
-
-		$url = "{$protocol}://{$sync_to_ip}";
-
-		/*************************************************/
-		/* Send over any auto-SID management files       */
-		/*************************************************/
-		$sid_files = glob(SURICATA_SID_MODS_PATH . '*');
-		foreach ($sid_files as $file) {
-			$content = base64_encode(file_get_contents($file));
-			$payload = "@file_put_contents('{$file}', base64_decode('{$content}'));";
-
-			/* assemble xmlrpc payload */
-			$method = 'pfsense.exec_php';
-			$params = array( XML_RPC_encode($password), XML_RPC_encode($payload) );
-
-			syslog(LOG_NOTICE, "[suricata] XMLRPC sync sending auto-SID conf files to {$url}:{$port}.");
-			$msg = new XML_RPC_Message($method, $params);
-			$cli = new XML_RPC_Client('/xmlrpc.php', $url, $port);
-			$cli->setCredentials($username, $password);
-			$resp = $cli->send($msg, $synctimeout);
-			$error = "";
-			if (!$resp) {
-				$error = "ERROR: A communications error occurred while attempting Suricata XMLRPC sync with {$url}:{$port}.  Failed to transfer file: " . basename($file);
-				syslog(LOG_ERR, $error);
-				file_notice("sync_settings", $error, "Suricata Settings Sync", "");
-			} elseif ($resp->faultCode()) {
-				$error = "ERROR: An error was received while attempting Suricata XMLRPC sync with {$url}:{$port}. Failed to transfer file: " . basename($file) . " - Code " . $resp->faultCode() . ": " . $resp->faultString();
-				syslog(LOG_ERR, $error);
-				file_notice("sync_settings", $error, "Suricata Settings Sync", "");
-			}
-		}
-
-		if (!empty($sid_files) && $error == "") {
-			syslog(LOG_NOTICE, "[suricata] XMLRPC sync auto-SID conf files success with {$url}:{$port} (pfsense.exec_php).");
-		}
-
-		/*************************************************/
-		/* Send over any IPREP IP List files             */
-		/*************************************************/
-		$iprep_files = glob(SURICATA_IPREP_PATH . '*');
-		foreach ($iprep_files as $file) {
-			$content = base64_encode(file_get_contents($file));
-			$payload = "@file_put_contents('{$file}', base64_decode('{$content}'));";
-
-			/* assemble xmlrpc payload */
-			$method = 'pfsense.exec_php';
-			$params = array( XML_RPC_encode($password), XML_RPC_encode($payload) );
-
-			syslog(LOG_NOTICE, "[suricata] Suricata XMLRPC sync sending IPREP files to {$url}:{$port}.");
-			$msg = new XML_RPC_Message($method, $params);
-			$cli = new XML_RPC_Client('/xmlrpc.php', $url, $port);
-			$cli->setCredentials($username, $password);
-			$resp = $cli->send($msg, $synctimeout);
-			$error = "";
-			if (!$resp) {
-				$error = "ERROR: A communications error occurred while attempting Suricata XMLRPC sync with {$url}:{$port}.  Failed to transfer file: " . basename($file);
-				syslog(LOG_ERR, $error);
-				file_notice("sync_settings", $error, "Suricata Settings Sync", "");
-			} elseif ($resp->faultCode()) {
-				$error = "ERROR: An error was received while attempting Suricata XMLRPC sync with {$url}:{$port}. Failed to transfer file: " . basename($file) . " - Code " . $resp->faultCode() . ": " . $resp->faultString();
-				syslog(LOG_ERR, $error);
-				file_notice("sync_settings", $error, "Suricata Settings Sync", "");
-			}
-		}
-
-		if (!empty($iprep_files) && $error == "") {
-			syslog(LOG_NOTICE, "[suricata] XMLRPC sync IPREP files success with {$url}:{$port} (pfsense.exec_php).");
-		}
-
-		/* assemble xmlrpc payload */
-		$params = array(
-			XML_RPC_encode($password),
-			XML_RPC_encode($xml)
-		);
-
-		syslog(LOG_NOTICE, "[suricata] Beginning package configuration XMLRPC sync to {$url}:{$port}.");
-		$method = 'pfsense.merge_installedpackages_section_xmlrpc';
-		$msg = new XML_RPC_Message($method, $params);
-		$cli = new XML_RPC_Client('/xmlrpc.php', $url, $port);
-		$cli->setCredentials($username, $password);
-
-		/* send our XMLRPC message and timeout after defined sync timeout value*/
-		$resp = $cli->send($msg, $synctimeout);
-		if (!$resp) {
-			$error = "ERROR: A communications error occurred while attempting Suricata XMLRPC sync with {$url}:{$port}.";
-			syslog(LOG_ERR, $error);
-			file_notice("sync_settings", $error, "Suricata Settings Sync", "");
-		} elseif ($resp->faultCode()) {
-			$error = "ERROR: An error code was received while attempting Suricata XMLRPC sync with {$url}:{$port} - Code " . $resp->faultCode() . ": " . $resp->faultString();
-			syslog(LOG_ERR, $error);
-			file_notice("sync_settings", $error, "Suricata Settings Sync", "");
-		} else {
-			syslog(LOG_NOTICE, "[suricata] Package configuration XMLRPC sync successfully completed with {$url}:{$port}.");
-		}
-
-		/* assemble xmlrpc payload */
-		$method = 'pfsense.exec_php';
-		$params = array(
-			XML_RPC_encode($password),
-			XML_RPC_encode($execcmd)
-		);
-
-		syslog(LOG_NOTICE, "[suricata] XMLRPC sync sending reload configuration cmd set as a file to {$url}:{$port}.");
-		$msg = new XML_RPC_Message($method, $params);
-		$cli = new XML_RPC_Client('/xmlrpc.php', $url, $port);
-		$cli->setCredentials($username, $password);
-		$resp = $cli->send($msg, $synctimeout);
-		if (!$resp) {
-			$error = "ERROR: A communications error occurred while attempting Suricata XMLRPC sync with {$url}:{$port} (pfsense.exec_php).";
-			syslog(LOG_ERR, $error);
-			file_notice("sync_settings", $error, "Suricata Settings Sync", "");
-		} elseif ($resp->faultCode()) {
-			$error = "ERROR: An error code was received while attempting Suricata XMLRPC sync with {$url}:{$port} - Code " . $resp->faultCode() . ": " . $resp->faultString();
-			syslog(LOG_ERR, $error);
-			file_notice("sync_settings", $error, "Suricata Settings Sync", "");
-		} else {
-			syslog(LOG_NOTICE, "[suricata] XMLRPC sync reload configuration success with {$url}:{$port} (pfsense.exec_php).");
-		}
-
-		$params2 = array(
-			XML_RPC_encode($password),
-			XML_RPC_encode($execcmd2)
-		);
-		syslog(LOG_NOTICE, "[suricata] XMLRPC sync sending {$url}:{$port} cmd to execute configuration reload.");
-		$msg2 = new XML_RPC_Message($method, $params2);
-		$resp = $cli->send($msg2, $synctimeout);
-		if (!$resp) {
-			$error = "ERROR: A communications error occurred while attempting Suricata XMLRPC sync with {$url}:{$port} (pfsense.exec_php).";
-			syslog(LOG_ERR, $error);
-			file_notice("sync_settings", $error, "Suricata Settings Sync", "");
-		} elseif ($resp->faultCode()) {
-			$error = "ERROR: An error code was received while attempting Suricata XMLRPC sync with {$url}:{$port} - Code " . $resp->faultCode() . ": " . $resp->faultString();
-			syslog(LOG_ERR, $error);
-			file_notice("sync_settings", $error, "Suricata Settings Sync", "");
-		} else {
-			syslog(LOG_NOTICE, "[suricata] XMLRPC sync reload configuration success with {$url}:{$port} (pfsense.exec_php).");
-		}
 	}
+
+	$resp = $rpc_client->xmlrpc_exec_php($execcmd, $synctimeout);
+	$resp = $rpc_client->xmlrpc_exec_php($execcmd2, $synctimeout);
+}
+
+function suricata_plugin_xmlrpc_send() {
+	if (config_get_path('installedpackages/suricatasync/config/0/varsynconchanges') != 'auto') {
+		return [];
+	}
+
+	return [
+		'installedpackages/suricatasync/config/0/varsynconchanges',
+		'installedpackages/suricata'
+	];
+}
+
+function suricata_plugin_xmlrpc_recv($new_sections) {
+	if (array_get_path($new_sections, 'installedpackages/suricatasync/config/0/varsynconchanges') != 'auto') {
+		return [];
+	}
+
+	$section_paths = [
+		'installedpackages/suricata'
+	];
+
+	$ret = [
+		'xmlrpc_recv_result' => false
+	];
+	foreach ($section_paths as $path) {
+		$old_section = config_get_path($path, []);
+		$new_section = array_get_path($new_sections, $path, []);
+
+		// Don't save empty configuration sections.
+		if (empty($old_section) && empty($new_section)) {
+			continue;
+		}
+		// Ignore unchanged configuration sections.
+		if ($old_section === $new_section) {
+			continue;
+		}
+
+		$ret[$path] = array_merge($old_section, $new_section);
+		$ret['xmlrpc_recv_result'] = true;
+	}
+
+	return $ret;
 }
 
 function suricata_get_vpns_list() {
@@ -4162,7 +4092,7 @@ function suricata_get_vpns_list() {
 		/* Site-to-Site IPsec */
 		if (config_get_path('ipsec/phase2')) {
 			foreach (config_get_path('ipsec/phase2', []) as $ph2ent) {
-				if ((!$ph2ent['mobile']) && ($ph2ent['mode'] != 'transport') &&
+				if ((!isset($ph2ent['mobile'])) && ($ph2ent['mode'] != 'transport') &&
 				    !isset($ph2ent['disabled'])) {
 					if (!array_get_path($ph2ent, 'remoteid')) {
 						continue;

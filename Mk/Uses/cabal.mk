@@ -76,11 +76,6 @@ IGNORE=		USES=cabal: invalid arguments: ${arg}
 IGNORE=		CABAL_PROJECT: invalid value: ${CABAL_PROJECT}
 .  endif
 
-.  if ${ARCH} == i386 && defined(USE_CABAL) && ${USE_CABAL:Mbasement-0.0.1[4-5]}
-# Upstream issue: https://github.com/haskell-foundation/foundation/issues/565
-BROKEN=		${USE_CABAL:Mbasement-0.0.1[4-5]} package doesn't compile on i386
-.  endif
-
 PKGNAMEPREFIX?=	hs-
 
 CABAL_EXECUTABLES?=	${PORTNAME}
@@ -318,7 +313,7 @@ cabal-pre-configure:
 .  if !target(do-build)
 do-build:
 	cd ${WRKSRC} && \
-		${SETENVI} ${WRK_ENV} ${MAKE_ENV} ${CABAL_HOME_ENV} ${CABAL_CMD} build --offline --disable-benchmarks --disable-tests ${CABAL_WITH_ARGS} ${CABAL_LTO_ARGS} --flags "${CABAL_FLAGS}" ${BUILD_ARGS} ${BUILD_TARGET}
+		${SETENVI} ${WRK_ENV} ${MAKE_ENV} ${CABAL_HOME_ENV} ${CABAL_CMD} build --no-semaphore --disable-benchmarks --disable-tests ${CABAL_WITH_ARGS} ${CABAL_LTO_ARGS} --flags "${CABAL_FLAGS}" ${BUILD_ARGS} ${BUILD_TARGET}
 .  endif
 
 .  if !target(do-install)

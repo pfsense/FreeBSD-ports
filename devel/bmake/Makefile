@@ -4,11 +4,14 @@ PORTREVISION=	1
 CATEGORIES=	devel
 MASTER_SITES=	https://ftp.netbsd.org/pub/NetBSD/misc/sjg/
 
-MAINTAINER=	trociny@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Portable version of NetBSD 'make' utility
 WWW=		https://www.crufty.net/help/sjg/bmake.html
 
 LICENSE=	BSD3CLAUSE
+
+DEPRECATED=	Outdated and redundant
+EXPIRATION_DATE=2025-06-30
 
 PORTSCOUT=	skipv:200910007
 

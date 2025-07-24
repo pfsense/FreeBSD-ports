@@ -3,7 +3,7 @@
  * mail_report.inc
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2011-2024 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2011-2025 Rubicon Communications, LLC (Netgate)
  * Copyright (C) 2007-2011 Seth Mos <seth.mos@dds.nl>
  * All rights reserved.
  *
@@ -59,10 +59,8 @@ $logfile_friendly = array(
 function set_mail_report_cron_jobs($a_mailreports) {
 	global $g;
 
-	config_init_path('cron/item');
-
 	// Search for old report cron jobs and remove them all
-	for ($x=0, $numjobs=sizeof(config_get_path('cron/item')); $x < $numjobs; $x++) {
+	for ($x=0, $numjobs=sizeof(config_get_path('cron/item', [])); $x < $numjobs; $x++) {
 		if (strpos(config_get_path("cron/item/{$x}/command"), "mail_reports_generate.php") !== FALSE) {
 			config_del_path("cron/item/{$x}");
 		}

@@ -1,8 +1,8 @@
 PORTNAME=	libunicode
 PORTVERSION=	0.4
-PORTREVISION=	11
+PORTREVISION=	12
 CATEGORIES=	devel gnome
-MASTER_SITES=	GNOME/sources/libunicode/0.4
+MASTER_SITES=	GNOME/sources/libunicode
 DISTNAME=	${PORTNAME}-${PORTVERSION}.gnome
 
 MAINTAINER=	gnome@FreeBSD.org
@@ -10,12 +10,18 @@ COMMENT=	Library for manipulating Unicode characters and strings
 WWW=		https://www.gnome.org/
 
 USES=		iconv libtool
-GNU_CONFIGURE=	yes
+
 USE_LDCONFIG=	yes
+
+GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--localstatedir=${PREFIX}/share \
 		--datadir=${PREFIX}/share
+
 CPPFLAGS+=	-I${LOCALBASE}/include
 LIBS+=		-L${LOCALBASE}/lib
+
+CONFLICTS_INSTALL=	libunicode-contour
+
 WRKSRC=		${WRKDIR}/${PORTNAME}-${PORTVERSION}
 
 .include <bsd.port.mk>

@@ -1,16 +1,11 @@
---- pyproject.toml.orig	2024-05-08 13:44:40 UTC
+--- pyproject.toml.orig	1970-01-01 00:00:00 UTC
 +++ pyproject.toml
-@@ -41,11 +41,11 @@ installer = "^0.7.0"
- fastjsonschema = "^2.18.0"
- importlib-metadata = { version = ">=4.4", python = "<3.10" }
- installer = "^0.7.0"
--keyring = "^24.0.0"
-+keyring = ">=23.9.0,<25"
- # packaging uses calver, so version is unclamped
- packaging = ">=23.1"
- pexpect = "^4.7.0"
--pkginfo = "^1.10"
-+pkginfo = "^1.9.4"
- platformdirs = ">=3.0.0,<5"
- pyproject-hooks = "^1.0.0"
- requests = "^2.26"
+@@ -29,7 +29,7 @@ dependencies = [
+     "trove-classifiers (>=2022.5.19)",
+     "virtualenv (>=20.26.6,<21.0.0)",
+     "xattr (>=1.0.0,<2.0.0) ; sys_platform == 'darwin'",
+-    "findpython (>=0.6.2,<0.7.0)",
++    "findpython (>=0.6.2)",
+     "pbs-installer[download,install] (>=2025.1.6,<2026.0.0)",
+ ]
+ authors = [

@@ -1,6 +1,6 @@
 PORTNAME=	xscreensaver
-DISTVERSION=	6.08
-PORTREVISION=	2
+DISTVERSION=	6.09
+PORTREVISION=	1
 CATEGORIES=	x11
 MASTER_SITES=	http://www.jwz.org/xscreensaver/
 
@@ -23,7 +23,7 @@ USES=		cpe gettext gl gmake gnome jpeg localbase:ldflags perl5 \
 		pkgconfig shebangfix xorg
 CPE_VENDOR=	xscreensaver_project
 USE_GL=		gl glu
-USE_GNOME=	cairo gdkpixbuf2 gtk30 intltool libxml2
+USE_GNOME=	cairo gdkpixbuf gtk30 intltool libxml2
 USE_XORG=	ice sm x11 xext xft xi xinerama xmu xrandr xrender xt xxf86vm
 
 SHEBANG_FILES=	hacks/check-configs.pl

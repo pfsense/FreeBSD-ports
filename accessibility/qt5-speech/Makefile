@@ -11,6 +11,7 @@ USES=		compiler:c++11-lang gl pkgconfig perl5 qmake:outsource,norecursive \
 USE_GL=		gl
 USE_PERL5=	extract
 USE_QT=		core gui buildtools:build qmake:build
+USE_LDCONFIG=	${PREFIX}/${QT_LIBDIR_REL}
 
 OPTIONS_DEFINE=		ALSA
 OPTIONS_GROUP=		BACKEND

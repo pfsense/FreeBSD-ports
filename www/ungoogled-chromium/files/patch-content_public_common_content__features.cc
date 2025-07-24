@@ -1,27 +1,27 @@
---- content/public/common/content_features.cc.orig	2024-06-22 08:49:42 UTC
+--- content/public/common/content_features.cc.orig	2025-05-31 17:16:41 UTC
 +++ content/public/common/content_features.cc
-@@ -29,7 +29,7 @@ BASE_FEATURE(kAudioServiceOutOfProcess,
- // TODO(crbug.com/40118868): Remove !IS_CHROMEOS_LACROS once lacros starts being
- // built with OS_CHROMEOS instead of OS_LINUX.
- #if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || \
--    (BUILDFLAG(IS_LINUX) && !BUILDFLAG(IS_CHROMEOS_LACROS))
-+    (BUILDFLAG(IS_LINUX) && !BUILDFLAG(IS_CHROMEOS_LACROS) || BUILDFLAG(IS_BSD))
+@@ -80,7 +80,7 @@ BASE_FEATURE(kAudioServiceLaunchOnStartup,
+ // Runs the audio service in a separate process.
+ BASE_FEATURE(kAudioServiceOutOfProcess,
+              "AudioServiceOutOfProcess",
+-#if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX)
++#if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_BSD)
               base::FEATURE_ENABLED_BY_DEFAULT
  #else
               base::FEATURE_DISABLED_BY_DEFAULT
-@@ -1076,9 +1076,9 @@ BASE_FEATURE(kWebAssemblyTiering,
+@@ -1275,9 +1275,9 @@ BASE_FEATURE(kWebAssemblyTiering,
  BASE_FEATURE(kWebAssemblyTrapHandler,
               "WebAssemblyTrapHandler",
  #if ((BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_WIN) ||  \
 -      BUILDFLAG(IS_MAC)) &&                                                  \
-+      BUILDFLAG(IS_MAC) || BUILDFLAG(IS_BSD)) &&                                                  \
++      BUILDFLAG(IS_MAC) || BUILDFLAG(IS_BSD)) &&                             \
       defined(ARCH_CPU_X86_64)) ||                                            \
 -    ((BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_MAC)) && \
 +    ((BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_BSD)) && \
       defined(ARCH_CPU_ARM64))
               base::FEATURE_ENABLED_BY_DEFAULT
  #else
-@@ -1115,7 +1115,11 @@ BASE_FEATURE(kWebUICodeCache,
+@@ -1334,7 +1334,11 @@ BASE_FEATURE(kWebUIJSErrorReportingExtended,
  
  // Controls whether the WebUSB API is enabled:
  // https://wicg.github.io/webusb

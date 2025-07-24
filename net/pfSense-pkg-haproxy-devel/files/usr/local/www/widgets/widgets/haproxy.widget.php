@@ -3,7 +3,7 @@
  * haproxy.widget.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2016-2024 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2016-2025 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2013 PiBa-NL
  * Copyright (c) 2011 Thomas Schaefer - Tomschaefer.org
  * Copyright (c) 2011 Marcello Coutinho
@@ -38,7 +38,6 @@ require_once("haproxy/haproxy_gui.inc");
 $first_time = false;
 if (!is_array(config_get_path("widgets/haproxy"))) {
 	$first_time = true;
-	config_init_path("widgets/haproxy");
 }
 
 $getupdatestatus=false;
@@ -67,7 +66,7 @@ if(!empty($_GET['act']) and !empty($_GET['be']) and !empty($_GET['srv'])) {
 
 $simplefields = array("haproxy_widget_timer","haproxy_widget_showfrontends","haproxy_widget_showclients","haproxy_widget_showclienttraffic");
 if ($_POST['submit']) {
-	$a_config = config_get_path('widgets/haproxy');
+	$a_config = config_get_path('widgets/haproxy', []);
 	foreach($simplefields as $fieldname) {
 		$a_config[$fieldname] = $_POST[$fieldname];
 	}
@@ -84,7 +83,7 @@ $user = getUserEntry($_SESSION['Username']);
 $user = $user['item'];
 
 // Set default values
-$a_config = config_get_path('widgets/haproxy');
+$a_config = config_get_path('widgets/haproxy', []);
 if (!$a_config['haproxy_widget_timer']) {
 	$a_config['haproxy_widget_timer'] = 5000;
 	$a_config['haproxy_widget_showfrontends'] = 'no';

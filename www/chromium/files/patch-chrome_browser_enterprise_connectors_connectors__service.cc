@@ -1,7 +1,7 @@
---- chrome/browser/enterprise/connectors/connectors_service.cc.orig	2024-06-17 12:56:06 UTC
+--- chrome/browser/enterprise/connectors/connectors_service.cc.orig	2025-07-02 06:08:04 UTC
 +++ chrome/browser/enterprise/connectors/connectors_service.cc
-@@ -565,7 +565,7 @@ bool ConnectorsService::ConnectorsEnabled() const {
- 
+@@ -449,7 +449,7 @@ policy::PolicyScope ConnectorsService::GetPolicyScope(
+ bool ConnectorsService::ConnectorsEnabled() const {
    Profile* profile = Profile::FromBrowserContext(context_);
  
 -#if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX)

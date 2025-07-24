@@ -1,118 +1,112 @@
 PORTNAME=	ghidra
-DISTVERSIONPREFIX=	Ghidra_
-DISTVERSION=	9.1
-DISTVERSIONSUFFIX=	_build
+DISTVERSION=	11.3.1
 CATEGORIES=	devel security java
-MASTER_SITES=	SF/yajsw/yajsw/yajsw-stable-12.12/:yajsw \
-		SF/catacombae/HFSExplorer/0.21/:hfsexplorer \
-		https://storage.googleapis.com/google-code-archive-downloads/v2/code.google.com/android4me/:axml2printer \
-		https://github.com/pxb1988/dex2jar/releases/download/2.0/:dex2jar
-DISTFILES=	yajsw-stable-12.12.zip:yajsw \
-		hfsexplorer-0_21-bin.zip:hfsexplorer \
-		AXMLPrinter2.jar:axml2printer \
-		dex-tools-2.0.zip:dex2jar
-DIST_SUBDIR=	${PORTNAME}
-EXTRACT_ONLY=	${DISTNAME}${EXTRACT_SUFX}
+MASTER_SITES=	https://github.com/NationalSecurityAgency/${PORTNAME}/releases/download/Ghidra_${DISTVERSION}_build/
+DISTNAME=	${PORTNAME}_${DISTVERSION}_PUBLIC_20250219
 
-MAINTAINER=	sghctoma@gmail.com
+MAINTAINER=	tiago.gasiba@gmail.com
 COMMENT=	Software reverse engineering (SRE) framework
 WWW=		https://ghidra-sre.org/
 
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-FORBIDDEN=	outdated and contains a remote code injection
 ONLY_FOR_ARCHS=	amd64
 
-EXTRACT_DEPENDS=	${UNZIP_CMD}:archivers/unzip
-BUILD_DEPENDS=		${LOCALBASE}/share/xsl/docbook/html/docbook.xsl:textproc/docbook-xsl \
-			bash:shells/bash \
-			flex:textproc/flex \
-			fop:textproc/fop \
-			gradle5>=5.0:devel/gradle5
-RUN_DEPENDS=		bash:shells/bash
+BUILD_DEPENDS=	bash:shells/bash \
+		gradle>=8.12:devel/gradle
+RUN_DEPENDS=	bash:shells/bash
 
-USES=		bison cpe shebangfix
+USES=		compiler:gcc-c++11-lib cpe java shebangfix zip
 CPE_VENDOR=	nsa
+JAVA_VERSION=	21+
 
-USE_GITHUB=	yes
-GH_ACCOUNT=	NationalSecurityAgency
+SHEBANG_FILES=	Ghidra/Debug/Debugger-agent-gdb/data/debugger-launchers/local-gdb.sh \
+		Ghidra/Debug/Debugger-agent-gdb/data/debugger-launchers/qemu-gdb.sh \
+		Ghidra/Debug/Debugger-agent-gdb/data/debugger-launchers/qemu-sys-gdb.sh \
+		Ghidra/Debug/Debugger-agent-gdb/data/debugger-launchers/remote-gdb.sh \
+		Ghidra/Debug/Debugger-agent-gdb/data/debugger-launchers/ssh-gdb.sh \
+		Ghidra/Debug/Debugger-agent-gdb/data/debugger-launchers/ssh-gdbserver.sh \
+		Ghidra/Debug/Debugger-agent-gdb/data/debugger-launchers/wine-gdb.sh \
+		Ghidra/Debug/Debugger-agent-lldb/data/debugger-launchers/android-lldb.sh \
+		Ghidra/Debug/Debugger-agent-lldb/data/debugger-launchers/kernel-lldb.sh \
+		Ghidra/Debug/Debugger-agent-lldb/data/debugger-launchers/local-lldb.sh \
+		Ghidra/Debug/Debugger-agent-lldb/data/debugger-launchers/remote-lldb.sh \
+		Ghidra/Debug/Debugger-rmi-trace/data/debugger-launchers/raw-python3.sh \
+		Ghidra/Features/BSim/support/make-postgres.sh \
+		ghidraRun \
+		server/ghidraSvr \
+		server/jaas_external_program.example.sh \
+		server/svrAdmin \
+		server/svrInstall \
+		server/svrUninstall \
+		support/GhidraGo/ghidraGo \
+		support/analyzeHeadless \
+		support/bsim \
+		support/bsim_ctl \
+		support/buildGhidraJar \
+		support/convertStorage \
+		support/gdbGADPServerRun \
+		support/ghidraClean \
+		support/ghidraDebug \
+		support/launch.sh \
+		support/sleigh
 
-USE_JAVA=	yes
-JAVA_VERSION=	11+
-JAVA_BUILD=	yes
-JAVA_RUN=	yes
+SUB_FILES=	ghidra.desktop
 
-SHEBANG_FILES=	Ghidra/RuntimeScripts/Common/server/jaas_external_program.example.sh \
-		Ghidra/RuntimeScripts/Linux/* \
-		Ghidra/RuntimeScripts/Linux/server/* \
-		Ghidra/RuntimeScripts/Linux/support/*
+WRKSRC=		${WRKDIR}/${PORTNAME}_${DISTVERSION}_PUBLIC
 
-# Gradle cache path must be absolute (see https://github.com/gradle/gradle/issues/1338)
 GRADLE_HOME_BASE=	/tmp
-GRADLE_RUN=		${SETENV} ${MAKE_ENV} gradle5 --gradle-user-home \
+GRADLE_RUN=		${SETENV} ${MAKE_ENV} gradle --gradle-user-home \
 			${GRADLE_HOME_BASE}/gradle-${PORTNAME} --no-daemon
 
-# to rebuild the deps archive:
-#   1. set DEV_UPDATE_MODE=yes
-#   2. make makesum build
-#   3. upload the *-deps archive
-#   4. set DEV_UPDATE_MODE=no
-#   5. make clean makesum
+BUILD_SUBDIR=	build/os/freebsd_x86_64
+TMP_DIRS=	Ghidra/.gradle \
+		Ghidra/Features/Decompiler/build/objs \
+		Ghidra/Features/Decompiler/build/tmp \
+		Ghidra/Features/FileFormats/build/objs \
+		Ghidra/Features/FileFormats/build/tmp \
+		Ghidra/Ghidra/.gradle \
+		Ghidra/build \
+		GPL/.gradle \
+		GPL/DemanglerGnu/build/objs \
+		GPL/DemanglerGnu/build/tmp \
+		GPL/build \
+		GPL/nativeBuildProperties.gradle.orig \
+		support/gradle/.gradle
 
-DEV_UPDATE_MODE=	no
-
-.if (${DEV_UPDATE_MODE} == "no")
-MASTER_SITES+=	https://github.com/sghctoma/ghidra-deps/raw/master/:gradle
-DISTFILES+=	${PORTNAME}-${DISTVERSION}-deps${EXTRACT_SUFX}:gradle
-EXTRACT_ONLY+=	${PORTNAME}-${DISTVERSION}-deps${EXTRACT_SUFX}
-GRADLE_RUN+=	--offline
-.endif
-
-post-extract:
-	@${MKDIR} ${WRKDIR}/flatrepo
-	@${MKDIR} ${WRKDIR}/dummy.home
-	@${CP} ${DISTDIR}/${DIST_SUBDIR}/AXMLPrinter2.jar ${WRKDIR}/flatrepo
-	@${UNZIP_CMD} -j -d ${WRKDIR}/flatrepo ${DISTDIR}/${DIST_SUBDIR}/hfsexplorer-0_21-bin.zip \
-		lib/csframework.jar lib/hfsx_dmglib.jar lib/hfsx.jar lib/iharder-base64.jar
-	@${UNZIP_CMD} -j -d ${WRKDIR}/flatrepo ${DISTDIR}/${DIST_SUBDIR}/dex-tools-2.0.zip "dex2jar-2.0/lib/dex-*.jar"
-	@${MKDIR} ${WRKDIR}/ghidra.bin/Ghidra/Features/GhidraServer/
-	@${CP} ${DISTDIR}/${DIST_SUBDIR}/yajsw-stable-12.12.zip ${WRKDIR}/ghidra.bin/Ghidra/Features/GhidraServer/
-.if (${DEV_UPDATE_MODE} == "no")
-	@${LN} -sf ${WRKDIR}/gradle-${PORTNAME} ${GRADLE_HOME_BASE}
-.endif
+PROGRAM_FILES=	Ghidra/Features/FileFormats/${BUILD_SUBDIR}/lzfse \
+		Ghidra/Features/Decompiler/${BUILD_SUBDIR}/decompile \
+		Ghidra/Features/Decompiler/${BUILD_SUBDIR}/sleigh \
+		GPL/DemanglerGnu/${BUILD_SUBDIR}/demangler_gnu_v2_24 \
+		GPL/DemanglerGnu/${BUILD_SUBDIR}/demangler_gnu_v2_41
 
 post-patch:
-	@${REINPLACE_CMD} -e "s|/usr/share/sgml/docbook/xsl-stylesheets|${LOCALBASE}/share/xsl/docbook/|g" \
-		${WRKSRC}/Ghidra/Features/Decompiler/src/main/doc/*.xsl \
-		${WRKSRC}/Ghidra/Features/FunctionID/src/main/doc/*.xsl
-	@${REINPLACE_CMD} -e "s|JAVA_HOME_PLACEHOLDER|${JAVA_HOME}|" \
-		${WRKSRC}/Ghidra/RuntimeScripts/Linux/support/launch.sh
-	@${ECHO_CMD} "org.gradle.java.home=${JAVA_HOME}" > ${WRKSRC}/gradle.properties
+	${REINPLACE_CMD} -e 's|%%CC_BINARY%%|${CXX}|' -e 's|%%CPP_BINARY%%|${CXX}|' \
+		${WRKSRC}/GPL/nativeBuildProperties.gradle
 
 do-build:
-	@cd ${WRKSRC} && ${GRADLE_RUN} yajswDevUnpack buildGhidra
+	@cd ${WRKSRC}/support/gradle && ${GRADLE_RUN} build
 
-.if (${DEV_UPDATE_MODE} == "yes")
-post-build:
-	cd ${GRADLE_HOME_BASE} && ${TAR} czf ${DISTDIR}/${DIST_SUBDIR}/${PORTNAME}-${DISTVERSION}-deps${EXTRACT_SUFX} gradle-${PORTNAME}
-	@${ECHO} "(!!!) Please upload the Gradle deps archive: ${DISTDIR}/${DIST_SUBDIR}/${PORTNAME}-${DISTVERSION}-deps${EXTRACT_SUFX}"
-	@${RM} -r ${GRADLE_HOME_BASE}/gradle-${PORTNAME}
-.endif
+pre-install:
+	${REINPLACE_CMD} '1s|bash$$|bash\n\nexport JAVA_HOME="${JAVA_HOME}"|g' \
+		${WRKSRC}/ghidraRun
 
 do-install:
-	@${UNZIP_CMD} -d ${STAGEDIR} ${WRKSRC}/build/dist/*.zip
-	@${MV} ${STAGEDIR}/ghidra* ${STAGEDIR}${DATADIR}
-	@${RLN} ${STAGEDIR}/${DATADIR}/ghidraRun ${STAGEDIR}${PREFIX}/bin/ghidra
-	@${RLN} ${STAGEDIR}/${DATADIR}/server/ghidraSvr ${STAGEDIR}${PREFIX}/bin/ghidra-server
-	@${STRIP_CMD} ${STAGEDIR}/${DATADIR}/GPL/DemanglerGnu/os/freebsd64/demangler_gnu
-	@${STRIP_CMD} ${STAGEDIR}/${DATADIR}/Ghidra/Features/Decompiler/os/freebsd64/decompile
-	@${STRIP_CMD} ${STAGEDIR}/${DATADIR}/Ghidra/Features/Decompiler/os/freebsd64/sleigh
-
-post-install:
-	@${FIND} ${STAGEDIR} ! -type d | \
-		${SED} 's,${STAGEDIR}${PREFIX}/,,' >> ${TMPPLIST}
-	@${FIND} -ds ${STAGEDIR}${DATADIR} -type d -empty | \
-		${SED} 's,${STAGEDIR}${PREFIX}/,, ; s,^,@dir ,' >> ${TMPPLIST}
+.for F in ${TMP_DIRS}
+	${RM} -r ${WRKSRC}/${F}
+.endfor
+	cd ${WRKSRC} && ${COPYTREE_SHARE} . ${STAGEDIR}${DATADIR}
+.for F in ${SHEBANG_FILES}
+	${RM} ${STAGEDIR}${DATADIR}/${F}
+	${INSTALL_SCRIPT} ${WRKSRC}/${F} ${STAGEDIR}${DATADIR}/${F}
+.endfor
+.for F in ${PROGRAM_FILES}
+	${RM} ${STAGEDIR}${DATADIR}/${F}
+	${INSTALL_PROGRAM} ${WRKSRC}/${F} ${STAGEDIR}${DATADIR}/${F}
+.endfor
+	${INSTALL_DATA} ${WRKDIR}/ghidra.desktop ${STAGEDIR}/${PREFIX}/share/applications
+	${INSTALL_DATA} ${FILESDIR}/ghidra.svg ${STAGEDIR}${DATADIR}/ghidra.svg
+	${RLN} ${STAGEDIR}${DATADIR}/ghidraRun ${STAGEDIR}/${PREFIX}/bin/ghidra
 
 .include <bsd.port.mk>

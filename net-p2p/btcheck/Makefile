@@ -1,6 +1,6 @@
 PORTNAME=	btcheck
 PORTVERSION=	2.1
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	net-p2p
 MASTER_SITES=	SF/${PORTNAME}
 
@@ -11,7 +11,6 @@ WWW=		https://sourceforge.net/projects/btcheck/
 LICENSE=	GPLv3
 
 GNU_CONFIGURE=	yes
-GNU_CONFIGURE_MANPREFIX=	${PREFIX}/share
 
 CONFLICTS_INSTALL=	libbt # bin/btcheck
 
@@ -40,7 +39,7 @@ GNUTLS_USES=		localbase
 GNUTLS_CONFIGURE_ON=	--with-gnutls
 
 MBEDTLS_DESC=		Use SHA-1 implementation from mbedTLS/PolarSSL
-MBEDTLS_LIB_DEPENDS=	libmbedcrypto.so:security/mbedtls
+MBEDTLS_LIB_DEPENDS=	libmbedcrypto.so:security/mbedtls2
 MBEDTLS_USES=		localbase
 MBEDTLS_CONFIGURE_ON=	--with-polarssl
 

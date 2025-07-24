@@ -1,6 +1,6 @@
---- third_party/crashpad/crashpad/util/posix/symbolic_constants_posix.cc.orig	2022-10-05 07:34:01 UTC
+--- third_party/crashpad/crashpad/util/posix/symbolic_constants_posix.cc.orig	2025-05-07 06:48:23 UTC
 +++ third_party/crashpad/crashpad/util/posix/symbolic_constants_posix.cc
-@@ -67,7 +67,7 @@ constexpr const char* kSignalNames[] = {
+@@ -68,7 +68,7 @@ constexpr const char* kSignalNames[] = {
      "INFO",
      "USR1",
      "USR2",
@@ -9,7 +9,7 @@
  #if defined(ARCH_CPU_MIPS_FAMILY)
      "HUP",
      "INT",
-@@ -138,7 +138,7 @@ constexpr const char* kSignalNames[] = {
+@@ -139,7 +139,7 @@ constexpr const char* kSignalNames[] = {
  #endif  // defined(ARCH_CPU_MIPS_FAMILY)
  #endif
  };

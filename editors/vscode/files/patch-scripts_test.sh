@@ -1,11 +1,11 @@
---- scripts/test.sh.orig	2022-02-05 06:42:53 UTC
+--- scripts/test.sh.orig	2025-05-12 00:03:54 UTC
 +++ scripts/test.sh
-@@ -27,7 +27,7 @@ VSCODECRASHDIR=$ROOT/.build/crashes
- test -d node_modules || yarn
+@@ -24,7 +24,7 @@ test -d node_modules || npm i
+ test -d node_modules || npm i
  
  # Get electron
--yarn electron
-+# yarn electron
+-npm run electron
++# npm run electron
  
  # Unit Tests
  if [[ "$OSTYPE" == "darwin"* ]]; then

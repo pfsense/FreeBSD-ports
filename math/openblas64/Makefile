@@ -1,6 +1,6 @@
 PORTNAME=	openblas
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.3.27
+DISTVERSION=	0.3.30
 CATEGORIES=	math
 MASTER_SITES=	NL/lapack/timing/:lapack_tmg
 PKGNAMESUFFIX=	64
@@ -54,16 +54,17 @@ DYNAMIC_ARCH_DESC=	Optimize for multiple CPU types, otherwise for this CPU
 BENCHMARKS_CMAKE_BOOL=	BUILD_BENCHMARKS
 DYNAMIC_ARCH_CMAKE_BOOL=DYNAMIC_ARCH DYNAMIC_OLDER
 OPENMP_CMAKE_BOOL=	USE_OPENMP
-OPENMP_LDFLAGS=		-lomp
+OPENMP_CMAKE_ON=	-DOpenMP_omp_LIBRARY="/usr/lib/libomp.so"
 
 .include <bsd.port.options.mk>
 
 .if ${ARCH} == powerpc64
+CMAKE_ARGS+=		-DTARGET=PPC970
 USE_GCC=		yes
 .endif
 
 .if ${ARCH} == powerpc64le
-CFLAGS+=		-lm
+CMAKE_ARGS+=		-DTARGET=POWER8
 USE_GCC=		yes
 .endif
 

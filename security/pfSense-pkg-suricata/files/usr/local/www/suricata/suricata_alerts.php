@@ -3,11 +3,11 @@
  * suricata_alerts.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2006-2024 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2006-2025 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2003-2004 Manuel Kasper
  * Copyright (c) 2005 Bill Marquette
  * Copyright (c) 2009 Robert Zelaya Sr. Developer
- * Copyright (c) 2023 Bill Meeks
+ * Copyright (c) 2025 Bill Meeks
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -156,7 +156,7 @@ if (isset($_POST['instance']) && is_numericint($_POST['instance']))
 elseif (isset($_GET['instance']) && is_numericint($_GET['instance']))
 	$instanceid = $_GET['instance'];
 
-if (is_null($instanceid))
+if (!is_numericint($instanceid))
 	$instanceid = 0;
 
 $a_instance = config_get_path("installedpackages/suricata/rule/{$instanceid}", []);
@@ -604,7 +604,7 @@ if ($_POST['clear']) {
 	}
 
 	// Signal the Suricata instance that logs have been rotated
-	suricata_reload_config($a_instance, "SIGHUP");
+	suricata_reload_config($a_instance, SIGHUP);
 
 	/* XXX: This is needed if suricata is run as suricata user */
 	mwexec('/bin/chmod 660 {$suricatalogdir}*', true);
@@ -1001,8 +1001,8 @@ if ($filterlogentries && count($filterfieldsarray)) {
 	<?php
 
 /* make sure alert file exists */
-if (file_exists("{$g['varlog_path']}/suricata/suricata_{$if_real}{$suricata_uuid}/alerts.log")) {
-	exec("tail -{$anentries} -r {$g['varlog_path']}/suricata/suricata_{$if_real}{$suricata_uuid}/alerts.log > {$g['tmp_path']}/alerts_suricata{$suricata_uuid}");
+if (file_exists("{$suricatalogdir}suricata_{$if_real}{$suricata_uuid}/alerts.log")) {
+	exec("tail -{$anentries} -r {$suricatalogdir}suricata_{$if_real}{$suricata_uuid}/alerts.log > {$g['tmp_path']}/alerts_suricata{$suricata_uuid}");
 	if (file_exists("{$g['tmp_path']}/alerts_suricata{$suricata_uuid}")) {
 		$tmpblocked = array_flip(suricata_get_blocked_ips());
 		$counter = 0;

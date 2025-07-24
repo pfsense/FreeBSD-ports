@@ -1,18 +1,17 @@
 PORTNAME=	hey
 PORTVERSION=	0.1.4
 DISTVERSIONPREFIX=	v
-PORTREVISION=	21
+PORTREVISION=	28
 CATEGORIES=	benchmarks
 
-MAINTAINER=	dmgk@FreeBSD.org
-COMMENT=	Tiny program that sends some load to a web application
+MAINTAINER=	adamw@FreeBSD.org
+COMMENT=	Load-based HTTP benchmarking tool
 WWW=		https://github.com/rakyll/hey
 
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
 USES=		go:modules
-
 GO_MODULE=	github.com/rakyll/hey
 
 PLIST_FILES=	bin/hey

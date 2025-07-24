@@ -1,10 +1,10 @@
 PORTNAME=	terraform-provider-vultr
 PORTVERSION=	0.1.10
 DISTVERSIONPREFIX=	v
-PORTREVISION=	21
+PORTREVISION=	28
 CATEGORIES=	sysutils
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	zachary.crownover@gmail.com
 COMMENT=	Terraform provider for Vultr
 WWW=		https://github.com/squat/terraform-provider-vultr
 

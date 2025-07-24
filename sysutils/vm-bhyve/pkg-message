@@ -14,12 +14,11 @@ OR
     vm_dir="/directory/path"
 
 Then run 'vm init'.
-EOM
-}
-{ type: upgrade, maximum_version: 1.2
-  message: <<EOM
-Please note, if upgrading from version 1.1, it is advised to shutdown guests
-and restart the host in order to re-create all virtual switches using new identifiers.
+
+It might be needed to increase the values of the following tunables.
+They need to be high enough to allow for a proper shutdown of all VM's.
+- kern.init_shutdown_timeout (adjusted with sysctcl.conf)
+- rcshutdown_timeout (adjusted with rc.conf)
 EOM
 }
 ]

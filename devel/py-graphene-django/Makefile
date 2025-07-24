@@ -1,13 +1,13 @@
 PORTNAME=	graphene-django
-PORTVERSION=	3.0.2
-PORTREVISION=	2
+PORTVERSION=	3.2.3
 CATEGORIES=	devel python
 MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Graphene Django integration
-WWW=		https://github.com/graphql-python/graphene-django
+WWW=		https://docs.graphene-python.org/projects/django/en/latest/ \
+		https://github.com/graphql-python/graphene-django
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE

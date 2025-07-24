@@ -21,9 +21,9 @@ LIB_DEPENDS=	libfontconfig.so:x11-fonts/fontconfig \
 		libpng.so:graphics/png \
 		libTECkit.so:textproc/teckit
 
-USES=		compiler:c++11-lib localbase gnome perl5 pkgconfig \
+USES=		compiler:c++17-lang localbase gnome perl5 pkgconfig \
 		python:build tar:xz tex xorg
-USE_CXXSTD=	gnu++11
+USE_CXXSTD=	c++17
 USE_GNOME=	cairo
 USE_PERL5=	build
 USE_TEX=	kpathsea web2c formats fmtutil dvipdfmx
@@ -52,6 +52,7 @@ CONFIGURE_ARGS+=--with-system-$L \
 		--with-$L-libdir=${LOCALBASE}/lib
 .endfor
 
+PIE_UNSAFE=		yes
 MAKE_JOBS_UNSAFE=	yes
 
 CPPFLAGS=	-I${LOCALBASE}/include/harfbuzz

@@ -3,7 +3,7 @@
  * snort_check_cron_misc.inc
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2019-2024 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2019-2025 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2009-2010 Robert Zelaya
  * Copyright (c) 2022 Bill Meeks
  * All rights reserved.
@@ -182,7 +182,7 @@ function snort_check_rotate_log($log_file, $log_limit, $retention) {
  *************************/
 
 // If firewall is booting, do nothing
-if ($g['booting'] == true)
+if (is_platform_booting())
 	return;
 
 $logs = array ();

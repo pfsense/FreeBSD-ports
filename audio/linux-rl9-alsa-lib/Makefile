@@ -1,5 +1,5 @@
 PORTNAME=	alsa-lib
-PORTVERSION=	1.2.10
+PORTVERSION=	1.2.13
 DISTVERSIONSUFFIX=	-2.el9
 CATEGORIES=	audio linux
 
@@ -14,6 +14,7 @@ RUN_DEPENDS=	alsa-lib>0:audio/alsa-lib
 USES=		linux:rl9
 USE_LDCONFIG=	yes
 USE_LINUX_RPM=	yes
+WANT_LINUX32=	yes
 
 CONFLICTS=	linux-c7-${PORTNAME}
 

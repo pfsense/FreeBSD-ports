@@ -1,7 +1,7 @@
 PORTNAME=	htop
-DISTVERSION=	3.3.0
-PORTREVISION=	2
+DISTVERSION=	3.4.0
 CATEGORIES=	sysutils
+MASTER_SITES=	https://github.com/${PORTNAME}-dev/${PORTNAME}/releases/download/${DISTVERSION}/
 
 MAINTAINER=	gaod@hychen.org
 COMMENT=	Better top(1) - interactive process viewer
@@ -10,14 +10,9 @@ WWW=		https://htop.dev/
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-USES=		autoreconf compiler:c11 cpe libtool localbase \
-		ncurses pkgconfig python:build shebangfix
-
-USE_GITHUB=	yes
-GH_ACCOUNT=	htop-dev
+USES=		ncurses tar:xz
 
 GNU_CONFIGURE=	yes
-GNU_CONFIGURE_MANPREFIX=${PREFIX}/share
 CONFIGURE_ARGS=	--enable-unicode
 
 PLIST_FILES=	bin/htop \
@@ -29,5 +24,8 @@ PLIST_FILES=	bin/htop \
 OPTIONS_DEFINE=	LSOF
 
 LSOF_RUN_DEPENDS=	lsof:sysutils/lsof
+
+post-patch:
+	@${REINPLACE_CMD} -e 's/3.4.0-dev-3.4.0/3.4.0/' ${WRKSRC}/configure
 
 .include <bsd.port.mk>

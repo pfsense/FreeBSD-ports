@@ -1,27 +1,26 @@
 PORTNAME=	gpa
-PORTVERSION=	0.10.0
-PORTREVISION=	2
+PORTVERSION=	0.11.0
+PORTREVISION=	1
 CATEGORIES=	security
 MASTER_SITES=	GNUPG/gpa
 
 MAINTAINER=	jhale@FreeBSD.org
-COMMENT=	GTK2+ frontend for the GNU Privacy Guard
-WWW=		https://gpa.wald.intevation.org/
+COMMENT=	GTK3+ frontend for the GNU Privacy Guard
+WWW=		https://www.gnupg.org/software/gpa/index.html
 
 LICENSE=	GPLv3+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
+BUILD_DEPENDS=	gpgv2:security/gnupg
 LIB_DEPENDS=	libassuan.so:security/libassuan \
 		libgpgme.so:security/gpgme \
 		libgpg-error.so:security/libgpg-error
-BUILD_DEPENDS=	gpgv2:security/gnupg
 RUN_DEPENDS=	gpgv2:security/gnupg
 
 USES=		desktop-file-utils gmake gnome localbase pkgconfig tar:bzip2
-USE_GNOME=	gdkpixbuf2 gtk20
+USE_GNOME=	gdkpixbuf gtk30
 
 GNU_CONFIGURE=	yes
-GNU_CONFIGURE_MANPREFIX=	${PREFIX}/share
 CONFIGURE_ENV+=	GPGKEYS_LDAP="${LOCALBASE}/libexec/gpg2keys_ldap"
 LDFLAGS+=	-Wl,--as-needed
 

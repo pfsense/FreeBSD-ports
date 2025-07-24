@@ -1,8 +1,7 @@
 # PORTNAME block
 PORTNAME=	motion
 DISTVERSIONPREFIX=	release-
-DISTVERSION=	4.6.0
-PORTREVISION=	1
+DISTVERSION=	4.7.0
 CATEGORIES=	multimedia
 
 # Maintainer block
@@ -19,7 +18,7 @@ LIB_DEPENDS=	libwebp.so:graphics/webp \
 		libmicrohttpd.so:www/libmicrohttpd
 
 # USES block
-USES=		autoreconf cpe gmake jpeg localbase pkgconfig
+USES=		autoreconf cpe gettext-tools gmake jpeg localbase pkgconfig
 CPE_VENDOR=	${PORTNAME}_project
 
 USE_GITHUB=	yes
@@ -27,7 +26,6 @@ GH_ACCOUNT=	Motion-Project
 USE_RC_SUBR=	${PORTNAME}
 
 GNU_CONFIGURE=	yes
-GNU_CONFIGURE_MANPREFIX=${PREFIX}/share
 
 # Standard bsd.port.mk variables
 SUB_FILES=	pkg-message
@@ -37,17 +35,13 @@ OPTIONS_DEFINE=		DOCS EXAMPLES FFMPEG MYSQL PGSQL SQLITE3 NLS
 
 OPTIONS_DEFAULT=	WEBCAMD FFMPEG
 OPTIONS_RADIO=		VIDEO
-OPTIONS_RADIO_VIDEO=	BKTR PWCBSD WEBCAMD
+OPTIONS_RADIO_VIDEO=	PWCBSD WEBCAMD
 OPTIONS_SUB=		yes
-
-BKTR_DESC=		BKTR based TV capture cards
 
 PWCBSD_DESC=		PWCBSD based Webcams
 
 VIDEO_DESC=		Video capture driver (Netcam support only if none selected)
 WEBCAMD_DESC=		Webcams using webcamd
-
-BKTR_CONFIGURE_WITH=	bktr
 
 FFMPEG_LIB_DEPENDS=	libavformat.so.60:multimedia/ffmpeg
 FFMPEG_CONFIGURE_WITH=	ffmpeg

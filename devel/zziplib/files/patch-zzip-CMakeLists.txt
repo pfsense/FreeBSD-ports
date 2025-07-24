@@ -1,7 +1,7 @@
---- zzip/CMakeLists.txt.orig	2021-01-04 23:05:08 UTC
+--- zzip/CMakeLists.txt.orig	2025-04-18 21:40:05 UTC
 +++ zzip/CMakeLists.txt
-@@ -189,16 +189,16 @@ target_link_libraries(libzzipmmapped ZLIB::ZLIB )
- target_include_directories (libzzipmmapped PRIVATE ${CMAKE_SOURCE_DIR} ${CMAKE_BINARY_DIR})
+@@ -242,16 +242,16 @@ endif()
+ add_custom_target(libzzipmmapped.gcov DEPENDS libzzipmmapped.so.gcov)
  endif()
  
 -set_target_properties(libzzip PROPERTIES OUTPUT_NAME "zzip" RELEASE_POSTFIX "-${RELNUM}")

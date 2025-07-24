@@ -1,5 +1,5 @@
 PORTNAME=	osm2pgsql
-PORTVERSION=	1.11.0
+PORTVERSION=	2.1.1
 PORTREVISION=	1
 CATEGORIES=	converters geography
 
@@ -16,12 +16,12 @@ NOT_FOR_ARCHS=	armv7 i386 powerpc
 NOT_FOR_ARCHS_REASON=	needs a 64 bit architecture
 
 LIB_DEPENDS=	libproj.so:graphics/proj \
-		libboost_system.so:devel/boost-libs \
 		libexpat.so:textproc/expat2
 BUILD_DEPENDS=	${LOCALBASE}/include/osmium/version.hpp:astro/libosmium \
 		${LOCALBASE}/include/protozero/version.hpp:devel/protozero \
 		${LOCALBASE}/include/nlohmann/json.hpp:devel/nlohmann-json \
-		${LOCALBASE}/include/CLI/Version.hpp:devel/cli11
+		${LOCALBASE}/include/CLI/Version.hpp:devel/cli11 \
+		${LOCALBASE}/include/boost/geometry.hpp:devel/boost-libs
 
 USES=		cmake compiler:c++17-lang pgsql python:run shebangfix
 USE_GITHUB=	yes
@@ -31,7 +31,7 @@ CMAKE_ON=	CMAKE_DISABLE_FIND_PACKAGE_Git \
 		EXTERNAL_LIBOSMIUM \
 		EXTERNAL_PROTOZERO \
 		EXTERNAL_CLI11
-#		EXTERNAL_FMT  # XXX: does not build with libfmt 9.x from ports, so use bundled version until upstream fixes
+#		EXTERNAL_FMT  # XXX: does not build with libfmt from ports, so use bundled version until upstream fixes
 CMAKE_ARGS=	-DLUA_EXE="${LOCALBASE}/bin/${LUA_CMD}"
 
 PORTDOCS=	AUTHORS CONTRIBUTING.md README.md

@@ -1,9 +1,9 @@
 PORTNAME=	svgbob
 DISTVERSION=	0.7.1
-PORTREVISION=	11
+PORTREVISION=	20
 CATEGORIES=	graphics
 
-MAINTAINER=	mikael@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Convert ASCII diagrams to SVG
 WWW=		https://github.com/ivanceras/svgbob
 

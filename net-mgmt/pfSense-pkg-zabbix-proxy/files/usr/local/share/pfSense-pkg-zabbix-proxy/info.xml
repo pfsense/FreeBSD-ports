@@ -18,6 +18,8 @@
 		<configurationfile>zabbixproxy.xml</configurationfile>
 		<logging>
 			<logfilename>zabbix-proxy/zabbix_proxy.log</logfilename>
+			<logowner>zabbix:zabbix</logowner>
+			<logmode>664</logmode>
 		</logging>
 	</package>
 </pfsensepkgs>

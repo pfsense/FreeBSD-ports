@@ -1,7 +1,8 @@
 %%DATADIR%%/bin/AngleSharp.Xml.dll
 %%DATADIR%%/bin/AngleSharp.dll
-%%DATADIR%%/bin/BouncyCastle.Crypto.dll
+%%DATADIR%%/bin/BouncyCastle.Cryptography.dll
 %%DATADIR%%/bin/Dapper.dll
+%%DATADIR%%/bin/Diacritical.dll
 %%DATADIR%%/bin/DryIoc.Microsoft.DependencyInjection.dll
 %%DATADIR%%/bin/DryIoc.dll
 %%DATADIR%%/bin/Dynamitey.dll
@@ -26,6 +27,7 @@
 %%DATADIR%%/bin/FluentMigrator.dll
 %%DATADIR%%/bin/FluentValidation.dll
 %%DATADIR%%/bin/ICSharpCode.SharpZipLib.dll
+%%DATADIR%%/bin/IPAddressRange.dll
 %%DATADIR%%/bin/ImpromptuInterface.dll
 %%DATADIR%%/bin/LICENSE
 %%DATADIR%%/bin/Localization/Core/ar.json
@@ -71,6 +73,7 @@
 %%DATADIR%%/bin/Localization/Core/uk.json
 %%DATADIR%%/bin/Localization/Core/vi.json
 %%DATADIR%%/bin/Localization/Core/zh_CN.json
+%%DATADIR%%/bin/Localization/Core/zh_Hans.json
 %%DATADIR%%/bin/Localization/Core/zh_TW.json
 %%DATADIR%%/bin/MailKit.dll
 %%DATADIR%%/bin/Microsoft.AspNetCore.Antiforgery.dll
@@ -221,6 +224,7 @@
 %%DATADIR%%/bin/Mono.Posix.NETStandard.dll
 %%DATADIR%%/bin/MonoTorrent.dll
 %%DATADIR%%/bin/NLog.Extensions.Logging.dll
+%%DATADIR%%/bin/NLog.Layouts.ClefJsonLayout.dll
 %%DATADIR%%/bin/NLog.Targets.Syslog.dll
 %%DATADIR%%/bin/NLog.dll
 %%DATADIR%%/bin/Newtonsoft.Json.dll
@@ -440,13 +444,13 @@
 %%DATADIR%%/bin/System.Xml.XmlSerializer.dll
 %%DATADIR%%/bin/System.Xml.dll
 %%DATADIR%%/bin/System.dll
-%%DATADIR%%/bin/UI/341-f1819477002488dd0270.js
-%%DATADIR%%/bin/UI/341-f1819477002488dd0270.js.map
-%%DATADIR%%/bin/UI/727-323d0884f0fdc55c94f9.js
-%%DATADIR%%/bin/UI/727-323d0884f0fdc55c94f9.js.LICENSE.txt
-%%DATADIR%%/bin/UI/727-323d0884f0fdc55c94f9.js.map
-%%DATADIR%%/bin/UI/Content/341-5a53e5b32dea8f2900d9.css
-%%DATADIR%%/bin/UI/Content/341-5a53e5b32dea8f2900d9.css.map
+%%DATADIR%%/bin/UI/194-0bd4624df983e06e6ccb.js
+%%DATADIR%%/bin/UI/194-0bd4624df983e06e6ccb.js.LICENSE.txt
+%%DATADIR%%/bin/UI/194-0bd4624df983e06e6ccb.js.map
+%%DATADIR%%/bin/UI/286-7ee7ca0e6ec0168ce571.js
+%%DATADIR%%/bin/UI/286-7ee7ca0e6ec0168ce571.js.map
+%%DATADIR%%/bin/UI/Content/286-0d675ae17bab3c952d78.css
+%%DATADIR%%/bin/UI/Content/286-0d675ae17bab3c952d78.css.map
 %%DATADIR%%/bin/UI/Content/Fonts/Roboto-Light.ttf
 %%DATADIR%%/bin/UI/Content/Fonts/Roboto-Light.woff
 %%DATADIR%%/bin/UI/Content/Fonts/Roboto-Light.woff2
@@ -488,8 +492,8 @@
 %%DATADIR%%/bin/UI/Content/robots.txt
 %%DATADIR%%/bin/UI/Content/styles.css
 %%DATADIR%%/bin/UI/Content/styles.css.map
-%%DATADIR%%/bin/UI/index-e89b5418451650c62ec2.js
-%%DATADIR%%/bin/UI/index-e89b5418451650c62ec2.js.map
+%%DATADIR%%/bin/UI/index-2d5ba92aeb5517d26bea.js
+%%DATADIR%%/bin/UI/index-2d5ba92aeb5517d26bea.js.map
 %%DATADIR%%/bin/UI/index.html
 %%DATADIR%%/bin/UI/login.html
 %%DATADIR%%/bin/UI/oauth.html

@@ -3,7 +3,7 @@
  * status_mail_report_add_cmd.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2011-2024 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2011-2025 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2007-2011 Seth Mos <seth.mos@dds.nl>
  * All rights reserved.
  *
@@ -34,7 +34,6 @@ require_once('mailreport/mail_report.inc');
 $reportid = $_REQUEST['reportid'];
 $id = $_REQUEST['id'];
 
-config_init_path('mailreports/schedule');
 $a_mailreports = config_get_path("mailreports/schedule/{$reportid}");
 
 if (!isset($reportid) || !isset($a_mailreports)) {

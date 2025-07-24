@@ -1,10 +1,10 @@
 PORTNAME=	teleirc
 DISTVERSIONPREFIX=	v
 DISTVERSION=	2.3.0
-PORTREVISION=	8
+PORTREVISION=	15
 CATEGORIES=	net-im
 
-MAINTAINER=	DtxdF@disroot.org
+MAINTAINER=	dtxdf@FreeBSD.org
 COMMENT=	Telegram/IRC bridge for use with any IRC channel and Telegram group
 WWW=		https://teleirc.com/
 

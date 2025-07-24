@@ -3,7 +3,7 @@
  * suricata_rules.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2006-2024 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2006-2025 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2003-2004 Manuel Kasper
  * Copyright (c) 2005 Bill Marquette
  * Copyright (c) 2009 Robert Zelaya Sr. Developer
@@ -43,7 +43,7 @@ elseif (isset($_GET['id']) && is_numericint($_GET['id']))
 // $_POST['openruleset'] fields set in the response,
 // but the system function will pass back a
 // $_POST['if'] field we can use instead.
-if (is_null($id)) {
+if (!is_numericint($id)) {
 	if (isset($_POST['if'])) {
 		// Split the posted string at the '|' delimiter
 		$response = explode('|', $_POST['if']);

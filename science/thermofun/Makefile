@@ -1,6 +1,6 @@
 PORTNAME=	thermofun
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.4.5
+DISTVERSION=	0.5.1
 CATEGORIES=	science # chemistry
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -43,6 +43,6 @@ post-install-PYTHON-on:
 	@${FIND} ${STAGEDIR} -name "*.pyc" -delete
 	@${FIND} ${STAGEDIR} -name __pycache__ -delete
 	# strip binary
-	@${STRIP_CMD} ${STAGEDIR}${PYTHON_SITELIBDIR}/thermofun/PyThermoFun${PYTHON_EXT_SUFFIX}.so
+	@${STRIP_CMD} ${STAGEDIR}${PYTHON_SITELIBDIR}/thermofun/PyThermoFun${PYTHON_TAG}.so
 
 .include <bsd.port.mk>

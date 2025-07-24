@@ -1,5 +1,6 @@
 PORTNAME=	dialect
-DISTVERSION=	2.4.1
+DISTVERSION=	2.5.0
+PORTREVISION=	1
 CATEGORIES=	textproc gnome python
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
@@ -22,7 +23,7 @@ USES=		desktop-file-utils gettext-tools gnome gstreamer meson \
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	dialect-app
-GH_TUPLE=	dialect-app:po:6db04f8783e4a99528837aeb3c8266673fc3ef17:po/po
+GH_TUPLE=	dialect-app:po:1fdb2525674005ecde58f1498f00edfa0bd58b55:po/po
 
 USE_GNOME=	glib20 gtk40 introspection:build libadwaita pygobject3
 GLIB_SCHEMAS=	app.drey.Dialect.gschema.xml
@@ -32,15 +33,15 @@ MAKE_ENV+=	PYTHONDONTWRITEBYTECODE=1
 
 NO_ARCH=	yes
 
-PORTDOCS=	README.md
+PORTDOCS=	CONTRIBUTING.md NEWS.md README.md
 
 OPTIONS_DEFINE=	DOCS
 
 post-patch:
-	${REINPLACE_CMD} -e 's/python3/${PYTHON_VERSION}/' ${WRKSRC}/meson.build
+	@${REINPLACE_CMD} -e 's/python3/${PYTHON_VERSION}/' ${WRKSRC}/meson.build
 
 post-install-DOCS-on:
-	${MKDIR} ${STAGEDIR}${DOCSDIR}
+	@${MKDIR} ${STAGEDIR}${DOCSDIR}
 	${INSTALL_MAN} ${PORTDOCS:S|^|${WRKSRC}/|} ${STAGEDIR}${DOCSDIR}
 
 .include <bsd.port.pre.mk>

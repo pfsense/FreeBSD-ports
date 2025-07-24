@@ -1,6 +1,6 @@
 PORTNAME=	telepathy-gabble
 PORTVERSION=	0.18.4
-PORTREVISION=	4
+PORTREVISION=	6
 CATEGORIES=	net-im
 MASTER_SITES=	http://telepathy.freedesktop.org/releases/${PORTNAME}/
 
@@ -19,7 +19,7 @@ LIB_DEPENDS=	libsoup-2.4.so:devel/libsoup \
 		libdbus-glib-1.so:devel/dbus-glib \
 		libdbus-1.so:devel/dbus \
 		libgnutls.so:security/gnutls \
-		libuuid.so:misc/e2fsprogs-libuuid \
+		libuuid.so:misc/libuuid \
 		libloudmouth-1.so:net-im/loudmouth
 RUN_DEPENDS=	ca_root_nss>=0:security/ca_root_nss \
 		libnice-gst1>=0:net-im/libnice-gst1
@@ -45,7 +45,7 @@ PLIST_SUB=	PVERSION=${PORTVERSION}
 CONFIGURE_ENV+=	OPENSSL_LIBS="-L/usr/lib -ssl -crypto" OPENSSL_CFLAGS="-I/usr/include"
 .endif
 
-.if ${OPSYS} == FreeBSD && ( ${OSVERSION} >= 1400091 || ( ${OSVERSION} >= 1302507 && ${OSVERSION} < 1400000 ))
+.if ${OPSYS} == FreeBSD
 CFLAGS+=	-Wno-error=incompatible-function-pointer-types
 .endif
 

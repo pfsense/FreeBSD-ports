@@ -1,5 +1,6 @@
 PORTNAME=	gsequencer
-DISTVERSION=	6.16.3
+DISTVERSION=	7.5.5
+PORTREVISION=	2
 CATEGORIES=	audio
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -13,10 +14,7 @@ BUILD_DEPENDS=	dssi>0:audio/dssi \
 		gtkdocize:textproc/gtk-doc \
 		lv2>0:audio/lv2
 BUILD_DEPENDS+=	p5-File-Find-Rule>0:devel/p5-File-Find-Rule # only for bsd steps in custom configure
-LIB_DEPENDS=	libasound.so:audio/alsa-lib \
-		libfftw3.so:math/fftw3 \
-		libfontconfig.so:x11-fonts/fontconfig \
-		libfreetype.so:print/freetype2 \
+LIB_DEPENDS=	libfftw3.so:math/fftw3 \
 		libgraphene-1.0.so:graphics/graphene \
 		libharfbuzz.so:print/harfbuzz \
 		libinstpatch-1.0.so:audio/libinstpatch \
@@ -24,14 +22,14 @@ LIB_DEPENDS=	libasound.so:audio/alsa-lib \
 		libsamplerate.so:audio/libsamplerate \
 		libsndfile.so:audio/libsndfile \
 		libsoup-3.0.so:devel/libsoup3 \
-		libuuid.so:misc/e2fsprogs-libuuid \
+		libuuid.so:misc/libuuid \
 		libvulkan.so:graphics/vulkan-loader \
-		libwebkit2gtk-4.0.so:www/webkit2-gtk3
+		libwebkit2gtk-4.0.so:www/webkit2-gtk@40
 RUN_DEPENDS=	dssi>0:audio/dssi
 
 USES=		autoreconf desktop-file-utils gettext-runtime gettext-tools gmake gnome gstreamer \
 		libtool localbase:ldflags perl5 pkgconfig shared-mime-info
-USE_GNOME=	atk cairo gdkpixbuf2 glib20 gtk40 libxml2 pango
+USE_GNOME=	cairo gdkpixbuf glib20 gtk40 libxml2 pango
 USE_XORG=	x11
 USE_CSTD=	gnu99
 USE_LDCONFIG=	yes

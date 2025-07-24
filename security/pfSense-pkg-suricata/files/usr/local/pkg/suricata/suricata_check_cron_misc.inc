@@ -3,11 +3,11 @@
  * suricata_check_cron_misc.inc
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2006-2024 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2006-2025 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2005 Bill Marquette <bill.marquette@gmail.com>.
  * Copyright (c) 2003-2004 Manuel Kasper <mk@neon1.net>.
  * Copyright (c) 2009 Robert Zelaya Sr. Developer
- * Copyright (c) 2023 Bill Meeks
+ * Copyright (c) 2025 Bill Meeks
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -156,7 +156,7 @@ function suricata_check_dir_size_limit($suricataloglimitsize) {
 			}
 
 			// Signal Suricata on this interface that log files have been truncated
-			suricata_reload_config($value, "SIGHUP");
+			suricata_reload_config($value, SIGHUP);
 
 			// Stop deleting logs when directory size is below configured limit
 			if (suricata_Getdirsize(SURICATALOGDIR) < $suricataloglimitsizeKB) {
@@ -333,7 +333,7 @@ function suricata_check_rotate_log($log_file, $log_limit, $retention) {
  *************************/
 
 // If firewall is booting, do nothing
-if ($g['booting'] == true)
+if (is_platform_booting())
 	return;
 
 // If no interfaces defined, there is nothing to clean up
@@ -376,7 +376,7 @@ if (config_get_path('installedpackages/suricata/config/0/enable_log_mgmt') == 'o
 		if ($rotated > 0) {
 			// Send the running Suricata instance on this interface a SIGHUP signal
 			// so it will re-open the log files we rotated and truncated.
-			suricata_reload_config($value, "SIGHUP");
+			suricata_reload_config($value, SIGHUP);
 			syslog(LOG_NOTICE, gettext("[Suricata] Logs Mgmt job rotated {$rotated} file(s) in '{$suricata_log_dir}/' ..."));
 		}
 

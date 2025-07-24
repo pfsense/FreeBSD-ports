@@ -3,7 +3,7 @@
  * cellular.inc
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2017-2024 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2017-2025 Rubicon Communications, LLC (Netgate)
  * Copyright (C) 2016 Voleatech GmbH, Fabian Schweinfurth
  * All rights reserved.
  *
@@ -137,7 +137,7 @@ function cellular_before_everything() {
 	array_init_path($pkg, 'fields');
 	if (!empty($pkg['fields'])) {
 
-		$custom_str = $cellular["statuscmd"] ?: "I; +CSQ; +COPS?; +CGPADDR";
+		$custom_str = $cellular["statuscmd"] ?: "I; +CSQ; +COPS?; +CGPADDR=1";
 
 		exec(PYTHON_BIN . ' ' . INTERFACE_BIN . " custom " . escapeshellarg($custom_str) . " -v", $sig);
 

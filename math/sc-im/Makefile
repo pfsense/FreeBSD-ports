@@ -1,7 +1,7 @@
 PORTNAME=		sc-im
 DISTVERSIONPREFIX=	v
-DISTVERSION=		0.8.3
-PORTREVISION=		2
+DISTVERSION=		0.8.5
+PORTREVISION=	1
 CATEGORIES=		math
 
 MAINTAINER=	bapt@FreeBSD.org
@@ -14,7 +14,7 @@ LIB_DEPENDS=	libxlsreader.so:math/libxls \
 		libxlsxwriter.so:math/libxlsxwriter \
 		libzip.so:archivers/libzip
 
-USES=		compiler:c11 gmake gnome lua:51 ncurses pkgconfig
+USES=		compiler:c11 gmake gnome lua ncurses pkgconfig
 USE_GITHUB=	yes
 GH_ACCOUNT=	andmarti1424
 USE_GNOME=	libxml2
@@ -22,8 +22,8 @@ USE_GNOME=	libxml2
 WRKSRC_SUBDIR=	src
 CFLAGS+=	-DXLSX_EXPORT -DXLS
 LIBS+=		-lxlsreader -lxlsxwriter
-MAKE_ENV+=	LDLIBS="${LIBS}"
-MAKE_ARGS+=	CC="${CC}" prefix="${PREFIX}" MANDIR="${PREFIX}/share/man/man1"
+MAKE_ENV+=	LDLIBS="${LIBS}" LUA_PKGNAME=lua-${LUA_VER}
+MAKE_ARGS+=	CC="${CC}" prefix="${PREFIX}" MANDIR="${PREFIX}/share/man/man1" THEMEDIR="${DATADIR}/themes"
 
 post-install:
 	${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/sc-im

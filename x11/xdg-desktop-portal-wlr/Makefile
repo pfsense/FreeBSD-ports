@@ -3,6 +3,9 @@ DISTVERSIONPREFIX=	v
 DISTVERSION=	0.7.1
 CATEGORIES=	x11 wayland
 
+PATCH_SITES=	https://github.com/${GH_ACCOUNT}/${GH_PROJECT}/commit/
+PATCHFILES+=	32b009a12aa5.patch:-p1 # https://github.com/emersion/xdg-desktop-portal-wlr/pull/308
+
 MAINTAINER=	jbeich@FreeBSD.org
 COMMENT=	xdg-desktop-portal backend for wlroots
 WWW=		https://github.com/emersion/xdg-desktop-portal-wlr
@@ -29,7 +32,7 @@ PLIST_FILES=	libexec/${PORTNAME} \
 		share/dbus-1/services/org.freedesktop.impl.portal.desktop.wlr.service \
 		share/xdg-desktop-portal/portals/wlr.portal
 
-# XXX Drop after FreeBSD 13.4 EOL around 2026-01-31
+# XXX Drop after FreeBSD 13.5 EOL around 2026-04-30
 # https://cgit.freebsd.org/src/commit/?id=af93fea71038
 .if !exists(/usr/include/sys/timerfd.h)
 LIB_DEPENDS+=	libepoll-shim.so:devel/libepoll-shim

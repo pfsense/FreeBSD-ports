@@ -1,6 +1,7 @@
 PORTNAME=	spheral
 DISTVERSIONPREFIX=	v
-DISTVERSION=	2024.01.1
+DISTVERSION=	2024.06.1
+PORTREVISION=	5
 CATEGORIES=	science # physics
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -11,7 +12,7 @@ LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/License.txt
 
 BUILD_DEPENDS=	${LOCALBASE}/include/polyclipper2d.hh:math/polyclipper
-LIB_DEPENDS=	libaxom.so:science/axom \
+LIB_DEPENDS=	libaxom_core.so:science/axom \
 		libboost_filesystem.so:devel/boost-libs \
 		libconduit.so:science/conduit \
 		libhdf5.so:science/hdf5 \
@@ -45,7 +46,9 @@ CMAKE_ARGS=	-Daneos_DIR=${LOCALBASE} \
 		-Dqhull_DIR=${LOCALBASE} \
 		-Dsilo_DIR=${LOCALBASE} \
 		-Dzlib_DIR=/usr
-CMAKE_ARGS+=	-DPYTHON_EXECUTABLE=${PYTHON_CMD}
+CMAKE_ARGS+=	-DPYTHON_EXECUTABLE=${PYTHON_CMD} \
+		-DPython_EXECUTABLE=${PYTHON_CMD} \
+		-DPython3_EXECUTABLE=${PYTHON_CMD}
 CMAKE_OFF=	ENABLE_TESTS ENABLE_DOCS \
 		ENABLE_ANEOS \
 		ENABLE_CUDA

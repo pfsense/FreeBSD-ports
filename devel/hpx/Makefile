@@ -1,20 +1,19 @@
 PORTNAME=	hpx
 DISTVERSIONPREFIX=	v
-DISTVERSION=	1.10.0
+DISTVERSION=	1.11.0-20250715
 CATEGORIES=	devel
-
-PATCH_SITES=	https://github.com/${GH_ACCOUNT}/${GH_PROJECT}/commit/
-PATCHFILES=	03d01dc18987d9f080a4ff43dea7ac95ffdfa208.diff:-p1 # backport of https://github.com/STEllAR-GROUP/hpx/pull/6499
-PATCHFILES+=	d3bb5b140cf82fa582c2549873b1ee36f41ab855.diff:-p1 # backport of https://github.com/STEllAR-GROUP/hpx/pull/6503
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	C++ Standard Library for Parallelism and Concurrency
-WWW=		https://hpx.stellar-group.org/
+WWW=		https://hpx.stellar-group.org/ \
+		https://github.com/STEllAR-GROUP/hpx
 
 LICENSE=	BSL
 LICENSE_FILE=	${WRKSRC}/LICENSE_1_0.txt
 
+BROKEN_armv7=	compilation fails: no matching function for call to 'bit_cast', see https://github.com/STEllAR-GROUP/hpx/issues/6557
 BROKEN_i386=	compilation fails: detail/tagged_ptr_pair.hpp:117:27: error: no matching function for call to 'bit_cast', see https://github.com/STEllAR-GROUP/hpx/issues/6426
+BROKEN_powerpc=	compilation fails: detail/tagged_ptr_pair.hpp:117:27: error: no matching function for call to 'bit_cast', see https://github.com/STEllAR-GROUP/hpx/issues/6426
 BROKEN_riscv64=	hpx/hardware/timestamp.hpp:43:6: error: Unsupported platform
 
 BUILD_DEPENDS=	asio>0:net/asio
@@ -26,6 +25,7 @@ USE_LDCONFIG=	yes
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	STEllAR-GROUP
+GH_TAGNAME=	2114d4a # contains the fix for the asio-related build failure
 
 SHEBANG_FILES=	cmake/templates/hpxrun.py.in cmake/templates/hpxcxx.in
 SHEBANG_GLOB=	*.py

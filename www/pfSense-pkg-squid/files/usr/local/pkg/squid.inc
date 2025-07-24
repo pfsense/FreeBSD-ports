@@ -3,7 +3,7 @@
  * squid.inc
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2006-2024 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2006-2025 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2013-2016 Marcello Coutinho
  * Copyright (c) 2006 Fernando Lemos
  * Copyright (c) 2012 Martin Fuchs
@@ -497,7 +497,6 @@ function squid_fixup_user() {
 
 function squid_install_command() {
 	/* Set storage system for ramdisk */
-	config_init_path('installedpackages/squidcache');
 
 	// Fix user/group entry permissions
 	squid_fixup_user();
@@ -1226,7 +1225,7 @@ function squid_resync_general() {
 				}
 				// force squid user permission on /var/squid/lib/ssl_db/
 				squid_chown_recursive(SQUID_SSL_DB, SQUID_UID, SQUID_GID);
-				// cert, key, version, cipher, options, clientca, cafile, capath, crlfile, tls-dh, sslflags, sslcontext
+				// cert, key, version, cipher, options, clientca, tls-cafile, capath, crlfile, tls-dh, sslflags, sslcontext
 				$crt_pk = SQUID_CONFBASE . "/serverkey.pem";
 				$crt_capath = SQUID_LOCALBASE . "/share/certs/";
 				$crt_cafile = SQUID_LOCALBASE . "/share/certs/ca-root-nss.crt";
@@ -1236,10 +1235,9 @@ function squid_resync_general() {
 				 */
 				if (empty($settings['sslproxy_compatibility_mode']) || ($settings['sslproxy_compatibility_mode'] == 'modern')) {
 					// Modern cipher suites
-					$sslproxy_cipher = "EECDH+ECDSA+AESGCM:EECDH+aRSA+AESGCM:EECDH+ECDSA+SHA384:EECDH+ECDSA+SHA256:EECDH+aRSA+SHA384:EECDH+aRSA+SHA256:EECDH+aRSA+RC4:EECDH:EDH+aRSA:!RC4:!aNULL:!eNULL:!LOW:!3DES:!SHA1:!MD5:!EXP:!PSK:!SRP:!DSS";
-					$sslproxy_options .= ",NO_TLSv1";
+					$sslproxy_cipher = "EECDH+ECDSA+AESGCM:EECDH+aRSA+AESGCM:EECDH+ECDSA+SHA384:EECDH+ECDSA+SHA256:EECDH+aRSA+SHA384:EECDH+aRSA+SHA256:EECDH:EDH+aRSA:!RC4:!aNULL:!eNULL:!LOW:!3DES:!SHA1:!MD5:!EXP:!PSK:!SRP:!DSS";
 				} else {
-					$sslproxy_cipher = "EECDH+ECDSA+AESGCM:EECDH+aRSA+AESGCM:EECDH+ECDSA+SHA384:EECDH+ECDSA+SHA256:EECDH+aRSA+SHA384:EECDH+aRSA+SHA256:EECDH+aRSA+RC4:EECDH:EDH+aRSA:HIGH:!RC4:!aNULL:!eNULL:!LOW:!3DES:!MD5:!EXP:!PSK:!SRP:!DSS";
+					$sslproxy_cipher = "EECDH+ECDSA+AESGCM:EECDH+aRSA+AESGCM:EECDH+ECDSA+SHA384:EECDH+ECDSA+SHA256:EECDH+aRSA+SHA384:EECDH+aRSA+SHA256:EECDH:EDH+aRSA:HIGH:!RC4:!aNULL:!eNULL:!LOW:!3DES:!MD5:!EXP:!PSK:!SRP:!DSS";
 				}
 				if (!empty($settings["dhparams_size"])) {
 					if ($settings['dhparams_size'] == '4096') {
@@ -1249,18 +1247,16 @@ function squid_resync_general() {
 					} elseif ($settings['dhparams_size'] == '1024') {
 						$sslproxy_dhparams = "tls-dh=prime256v1:/etc/dh-parameters.1024";
 					}
-					$sslproxy_options .= ",SINGLE_DH_USE,SINGLE_ECDH_USE";
 				} elseif (file_exists("/etc/dh-parameters.2048")) {
 					// Fallback options for defaults on install
 					$sslproxy_dhparams = "tls-dh=prime256v1:/etc/dh-parameters.2048";
-					$sslproxy_options .= ",SINGLE_DH_USE,SINGLE_ECDH_USE";
 				} else {
 					// Should never get here
 					$sslproxy_dhparams = "";
 				}
 				file_put_contents($crt_pk, unixnewlines(base64_decode($srv_cert['prv']) . "\n" . base64_decode($srv_cert['crt'])));
 				$sslcrtd_children = ($settings['sslcrtd_children'] ? $settings['sslcrtd_children'] : 5);
-				$ssl_interception .= "ssl-bump generate-host-certificates=on dynamic_cert_mem_cache_size=" . ($sslcrtd_children*2) . "MB cert={$crt_pk} cafile={$crt_cafile} capath={$crt_capath} cipher={$sslproxy_cipher} {$sslproxy_dhparams} options={$sslproxy_options}\n";
+				$ssl_interception .= "ssl-bump generate-host-certificates=on dynamic_cert_mem_cache_size=" . ($sslcrtd_children*2) . "MB cert={$crt_pk} tls-cafile={$crt_cafile} capath={$crt_capath} cipher={$sslproxy_cipher} {$sslproxy_dhparams} options={$sslproxy_options}\n";
 				if ($squid4) {
 					$interception_checks = "sslcrtd_program " . SQUID_LOCALBASE . "/libexec/squid/security_file_certgen -s " . SQUID_SSL_DB . " -M 4MB -b 2048\n";
 					$interception_checks .= "tls_outgoing_options cafile={$crt_cafile}\n";
@@ -1898,7 +1894,6 @@ function squid_resync_auth() {
 	global $valid_acls;
 	$write_config = 0;
 	if (!is_array(config_get_path('installedpackages/squidauth/config'))) {
-		config_init_path('installedpackages/squidauth/config');
 		config_set_path('installedpackages/squidauth/config', [['auth_method' => "none"]]);
 		$write_config++;
 	}
@@ -2447,33 +2442,6 @@ function squid_sync_on_changes() {
 					return;
 				}
 				break;
-			case "auto":
-				if (is_array(config_get_path('hasync'))) {
-					$system_carp = config_get_path('hasync');
-					$rs[0]['ipaddress'] = $system_carp['synchronizetoip'];
-					$rs[0]['username'] = $system_carp['username'];
-					$rs[0]['password'] = $system_carp['password'];
-					$rs[0]['syncdestinenable'] = FALSE;
-
-					// XMLRPC sync is currently only supported over connections using the same protocol and port as this system
-					if (config_get_path('system/webgui/protocol') == "http") {
-						$rs[0]['syncprotocol'] = "http";
-						$rs[0]['syncport'] = config_get_path('system/webgui/port', '80');
-					} else {
-						$rs[0]['syncprotocol'] = "https";
-						$rs[0]['syncport'] = config_get_path('system/webgui/port', '443');
-					}
-					if ($system_carp['synchronizetoip'] == "") {
-						log_error("[squid] XMLRPC CARP/HA sync is enabled but there are no system backup hosts configured as replication targets.");
-						return;
-					} else {
-						$rs[0]['syncdestinenable'] = TRUE;
-					}
-				} else {
-					log_error("[squid] XMLRPC CARP/HA sync is enabled but there are no system backup hosts configured as replication targets.");
-					return;
-				}
-				break;
 			default:
 				return;
 				break;
@@ -2553,79 +2521,87 @@ function squid_do_xmlrpc_sync($sync_to_ip, $port, $protocol, $username, $passwor
 	$execcmd = "require_once('/usr/local/pkg/squid.inc');\n";
 	$execcmd .= "squid_resync('yes');";
 
-	if (pf_version() >= "2.4") {
-		// xmlrpc cannot encode NULL objects/arrays..
-		foreach($xml as $xmlkey => $xmlvalue) {
-			if (gettype($xmlvalue) == "NULL") {
-				$xml[$xmlkey] = array();
-			}
-		}
-		$synctimeout = intval($synctimeout);
-		$rpc_client = new pfsense_xmlrpc_client();
-		$rpc_client->setConnectionData($sync_to_ip, $port, $username, $password, $protocol);
-		$resp = $rpc_client->xmlrpc_method('merge_installedpackages_section', $xml, $synctimeout);
-		$resp = $rpc_client->xmlrpc_exec_php($execcmd, $synctimeout);
-	} else {
-		// pfSense before 2.4
-		require_once('xmlrpc.inc');
-
-		// Take care of IPv6 literal address
-		if (is_ipaddrv6($sync_to_ip)) {
-			$sync_to_ip = "[{$sync_to_ip}]";
-		}
-
-		$url = "{$protocol}://{$sync_to_ip}";
-
-		/* Assemble XMLRPC payload */
-		$params = array(XML_RPC_encode($password), XML_RPC_encode($xml));
-
-		/* Set a few variables needed for sync */
-		$method = 'pfsense.merge_installedpackages_section_xmlrpc';
-		$msg = new XML_RPC_Message($method, $params);
-		$cli = new XML_RPC_Client('/xmlrpc.php', $url, $port);
-		$cli->setCredentials($username, $password);
-		if (g_get('debug')) {
-			$cli->setDebug(1);
-		}
-		/* Send our XMLRPC message and timeout after defined sync timeout value*/
-		$resp = $cli->send($msg, $synctimeout);
-		if (!$resp) {
-			$error = "A communication error occurred while attempting XMLRPC sync with {$url}:{$port}.";
-			log_error("[squid] {$error}");
-			file_notice("sync_settings", $error, "Squid Settings Sync", "");
-		} elseif ($resp->faultCode()) {
-			$cli->setDebug(1);
-			$resp = $cli->send($msg, $synctimeout);
-			$error = "An error code was received while attempting XMLRPC sync with {$url}:{$port} - Code " . $resp->faultCode() . ": " . $resp->faultString();
-			log_error("[squid] {$error}");
-			file_notice("sync_settings", $error, "Squid Settings Sync", "");
-		} else {
-			log_error("[squid] XMLRPC sync successfully completed with {$url}:{$port}.");
-		}
-
-		/* Tell Squid to reload our settings on the destination sync host. */
-		$method = 'pfsense.exec_php';
-		/* Assemble XMLRPC payload */
-		$params = array(XML_RPC_encode($password), XML_RPC_encode($execcmd));
-
-		$msg = new XML_RPC_Message($method, $params);
-		$cli = new XML_RPC_Client('/xmlrpc.php', $url, $port);
-		$cli->setCredentials($username, $password);
-		$resp = $cli->send($msg, $synctimeout);
-		if (!$resp) {
-			$error = "A communication error occurred while attempting XMLRPC sync with {$url}:{$port} (pfsense.exec_php).";
-			log_error("[squid] {$error}");
-			file_notice("sync_settings", $error, "Squid Settings Sync", "");
-		} elseif ($resp->faultCode()) {
-			$cli->setDebug(1);
-			$resp = $cli->send($msg, $synctimeout);
-			$error = "An error code was received while attempting XMLRPC sync with {$url}:{$port} - Code " . $resp->faultCode() . ": " . $resp->faultString();
-			log_error("[squid] {$error}");
-			file_notice("sync_settings", $error, "Squid Settings Sync", "");
-		} else {
-			log_error("[squid] XMLRPC reload data success with {$url}:{$port} (pfsense.exec_php).");
+	// xmlrpc cannot encode NULL objects/arrays..
+	foreach($xml as $xmlkey => $xmlvalue) {
+		if (gettype($xmlvalue) == "NULL") {
+			$xml[$xmlkey] = array();
 		}
 	}
+	$synctimeout = intval($synctimeout);
+	$rpc_client = new pfsense_xmlrpc_client();
+	$rpc_client->setConnectionData($sync_to_ip, $port, $username, $password, $protocol);
+	$resp = $rpc_client->xmlrpc_method('merge_installedpackages_section', $xml, $synctimeout);//
+	$resp = $rpc_client->xmlrpc_exec_php($execcmd, $synctimeout);
+}
+
+function squid_plugin_xmlrpc_send() {
+	if (config_get_path('installedpackages/squidsync/config/0/synconchanges') != 'auto') {
+		return [];
+	}
+
+	return [
+		'installedpackages/squidsync/config/0/synconchanges',
+		'installedpackages/squid',
+		'installedpackages/squidremote',
+		'installedpackages/squidcache',
+		'installedpackages/squidantivirus',
+		'installedpackages/squidnac',
+		'installedpackages/squidtraffic',
+		'installedpackages/squidreversegeneral',
+		'installedpackages/squidreversepeer',
+		'installedpackages/squidreverseuri',
+		'installedpackages/squidauth',
+		'installedpackages/squidusers'
+	];
+}
+
+function squid_plugin_xmlrpc_recv($new_sections) {
+	if (array_get_path($new_sections, 'installedpackages/squidsync/config/0/synconchanges') != 'auto') {
+		return [];
+	}
+
+	$section_paths = [
+		'installedpackages/squid',
+		'installedpackages/squidremote',
+		'installedpackages/squidcache',
+		'installedpackages/squidantivirus',
+		'installedpackages/squidnac',
+		'installedpackages/squidtraffic',
+		'installedpackages/squidreversegeneral',
+		'installedpackages/squidreversepeer',
+		'installedpackages/squidreverseuri',
+		'installedpackages/squidauth',
+		'installedpackages/squidusers'
+	];
+
+	$ret = [
+		'xmlrpc_recv_result' => false
+	];
+	foreach ($section_paths as $path) {
+		$old_section = config_get_path($path, []);
+		$new_section = array_get_path($new_sections, $path, []);
+
+		// Don't save empty configuration sections.
+		if (empty($old_section) && empty($new_section)) {
+			continue;
+		}
+		// Ignore unchanged configuration sections.
+		if ($old_section === $new_section) {
+			continue;
+		}
+
+		$ret[$path] = array_merge($old_section, $new_section);
+		$ret['xmlrpc_recv_result'] = true;
+	}
+
+	return $ret;
+}
+
+function squid_plugin_xmlrpc_recv_done($xmlrpc_recv_result) {
+	if (array_get_path($xmlrpc_recv_result, 'squid/xmlrpc_recv_result') !== true) {
+		return;
+	}
+	squid_resync('yes');
 }
 
 /* Get a listing of CA entries which are valid for use with MITM/Splice.
@@ -2735,9 +2711,7 @@ function squid_plugin_carp($pluginparams) {
 
 function squid_plugin_certificates($pluginparams) {
 	$result = array('pkgname' => 'Squid', 'certificatelist' => array());
-	config_init_path('installedpackages/squid/config');
 	$squidconf = config_get_path('installedpackages/squid/config/0');
-	config_init_path('installedpackages/squidreversegeneral/config');
 	$squidrevconf = config_get_path('installedpackages/squidreversegeneral/config/0');
 
 	if (($pluginparams['type'] == 'certificates') && !empty($squidconf) &&

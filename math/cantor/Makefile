@@ -1,6 +1,6 @@
 PORTNAME=	cantor
 DISTVERSION=	${KDE_APPLICATIONS_VERSION}
-PORTREVISION=	4
+PORTREVISION=	1
 CATEGORIES=	math kde kde-applications
 
 MAINTAINER=	kde@FreeBSD.org
@@ -12,30 +12,28 @@ LIB_DEPENDS=	libAnalitza.so:math/analitza \
 		libqalculate.so:math/libqalculate \
 		libspectre.so:print/libspectre \
 		libpoppler.so:graphics/poppler \
-		libpoppler-qt5.so:graphics/poppler-qt5
+		libpoppler-qt6.so:graphics/poppler-qt6
 BUILD_DEPENDS=	${LOCALBASE}/share/xsl/docbook/html/docbook.xsl:textproc/docbook-xsl \
 		docbook-xml>0:textproc/docbook-xml
 
-USES=		cmake compiler:c++11-lang desktop-file-utils gettext kde:5 \
-		pkgconfig python qt:5 shared-mime-info tar:xz xorg
-USE_KDE=	attica auth archive bookmarks codecs completion config \
-		configwidgets coreaddons crash emoticons i18n iconthemes \
-		itemmodels itemviews init jobwidgets kdelibs4support kio \
-		newstuff parts pty service solid sonnet syntaxhighlighting \
-		texteditor textwidgets widgetsaddons windowsystem xmlgui \
+USES=		cmake compiler:c++11-lang desktop-file-utils gettext kde:6 \
+		pkgconfig python qt:6 shared-mime-info tar:xz xorg
+USE_KDE=	archive attica auth bookmarks codecs completion config \
+		configwidgets coreaddons crash i18n iconthemes itemmodels \
+		itemviews jobwidgets kio newstuff parts pty service solid \
+		sonnet syntaxhighlighting texteditor textwidgets widgetsaddons \
+		windowsystem xmlgui \
 		ecm:build
-USE_QT=		concurrent core dbus declarative gui help location network \
-		printsupport sql svg webchannel webengine \
-		widgets xml xmlpatterns \
-		buildtools:build qmake:build testlib:build
+USE_QT=		base svg webchannel webengine \
+		tools:build
 USE_XORG=	x11
 USE_LDCONFIG=	yes
 
-OPTIONS_DEFINE=	LUAJIT MAXIMA OCTAVE R SAGE SCILAB DOCS
+OPTIONS_DEFINE=	LUAJIT MAXIMA OCTAVE R SCILAB DOCS
 OPTIONS_SUB=	yes # R LUAJIT
 
 LUAJIT_DESC=	Build LuaJIT backend and install LuaJIT
-LUAJIT_LIB_DEPENDS=	libluajit-5.1.so:lang/luajit
+LUAJIT_USES=	luajit
 LUAJIT_CMAKE_OFF=	-DWITH_LuaJIT:BOOL=FALSE
 
 MAXIMA_DESC=	Install Maxima
@@ -44,20 +42,15 @@ MAXIMA_RUN_DEPENDS=	maxima:math/maxima
 OCTAVE_DESC=	Install Octave
 OCTAVE_RUN_DEPENDS=	octave:math/octave
 
-R_DESC=		Build R backend and install R
+R_DESC=		Build R backend and install R (broken)
 R_LIB_DEPENDS=	libR.so:math/R
 # Required to set CFLAGS for -lgfortran.
 R_USES=		fortran
 R_CMAKE_OFF=	-DWITH_R:BOOL=FALSE
-
-SAGE_DESC=	Install Sage
-SAGE_RUN_DEPENDS=	sage:math/sage
+R_BROKEN=	R backend fails with: /usr/include/c++/v1/__locale:1130:9: error: expected ';' at end of declaration list
 
 SCILAB_DESC=	Install Scilab
 SCILAB_RUN_DEPENDS=	scilab:math/scilab
-
-# Disable python2 binding
-CMAKE_ON=	CMAKE_DISABLE_FIND_PACKAGE_PythonLibs
 
 post-patch:
 	${REINPLACE_CMD} -e '/FIND_PROGRAM(_GFORTRAN_EXECUTABLE/s,gfortran,${FC},' \

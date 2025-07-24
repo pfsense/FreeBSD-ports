@@ -1,10 +1,10 @@
 PORTNAME=	liteide
 DISTVERSIONPREFIX=	x
 DISTVERSION=	38.2
-PORTREVISION=	10
+PORTREVISION=	17
 CATEGORIES=	devel editors
 
-MAINTAINER=	dmgk@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Simple, open source, cross-platform Go IDE
 WWW=		https://github.com/visualfc/liteide
 

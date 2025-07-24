@@ -1,6 +1,6 @@
 PORTNAME=	augeas
 DISTVERSION=	1.14.0
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	textproc
 MASTER_SITES=	https://github.com/hercules-team/augeas/releases/download/release-${DISTVERSION}/
 
@@ -29,7 +29,7 @@ LENSESDIR=	${PREFIX}/share/augeas/lenses
 
 .include <bsd.port.pre.mk>
 
-.if ${OPSYS} == FreeBSD && ( ${OSVERSION} >= 1400079 || ( ${OSVERSION} >= 1302505 && ${OSVERSION} < 1400000 ))
+.if ${OPSYS} == FreeBSD
 CFLAGS+=-Wno-error=int-conversion
 .endif
 

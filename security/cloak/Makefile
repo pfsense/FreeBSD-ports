@@ -1,10 +1,10 @@
 PORTNAME=	cloak
 DISTVERSIONPREFIX=	v
 DISTVERSION=	0.3.0
-PORTREVISION=	22
+PORTREVISION=	31
 CATEGORIES=	security
 
-MAINTAINER=	mikael@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Command line OTP Authenticator application
 WWW=		https://github.com/evansmurithi/cloak
 
@@ -102,8 +102,5 @@ CARGO_CRATES=	aho-corasick-0.7.18 \
 		winapi-x86_64-pc-windows-gnu-0.4.0
 
 PLIST_FILES=	bin/cloak
-
-post-install:
-	${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/cloak
 
 .include <bsd.port.mk>

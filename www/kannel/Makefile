@@ -1,6 +1,6 @@
 PORTNAME=	kannel
 PORTVERSION=	1.4.4
-PORTREVISION=	14
+PORTREVISION=	15
 PORTEPOCH=	1
 CATEGORIES=	www
 MASTER_SITES=	http://www.kannel.org/download/${PORTVERSION}/
@@ -27,7 +27,8 @@ GNU_CONFIGURE_MANPREFIX=${PREFIX}/share
 CONFIGURE_ARGS=	--enable-pcre=yes --enable-docs=no --with-malloc=native \
 		--enable-start-stop-daemon=no
 
-CFLAGS+=	-fcommon
+CFLAGS+=	-fcommon \
+		-fpermissive
 
 PORTSCOUT=	skipv:1.5.0
 

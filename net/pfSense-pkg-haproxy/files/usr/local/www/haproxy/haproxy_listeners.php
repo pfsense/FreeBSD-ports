@@ -4,7 +4,7 @@
  *
  * part of pfSense (https://www.pfsense.org)
  * Copyright (c) 2008 Remco Hoef <remcoverhoef@pfsense.com>
- * Copyright (c) 2009-2024 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2009-2025 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2013-2016 PiBa-NL
  * All rights reserved.
  *
@@ -137,7 +137,7 @@ if ($_POST) {
 			foreach($_POST['rule'] as $selection) {
 				$selected[] = get_frontend_id($selection);
 			}
-			$a_frontend = config_get_path('installedpackages/haproxy/ha_backends/item');
+			$a_frontend = config_get_path('installedpackages/haproxy/ha_backends/item', []);
 			array_moveitemsbefore($a_frontend, $moveto, $selected);
 			config_set_path('installedpackages/haproxy/ha_backends/item', $a_frontend);
 

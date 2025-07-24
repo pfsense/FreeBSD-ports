@@ -1,7 +1,7 @@
---- components/safe_browsing/core/browser/realtime/url_lookup_service_base.cc.orig	2022-03-28 18:11:04 UTC
+--- components/safe_browsing/core/browser/realtime/url_lookup_service_base.cc.orig	2025-06-19 07:37:57 UTC
 +++ components/safe_browsing/core/browser/realtime/url_lookup_service_base.cc
-@@ -109,7 +109,7 @@ RTLookupRequest::OSType GetRTLookupRequestOSType() {
-   return RTLookupRequest::OS_TYPE_FUCHSIA;
+@@ -113,7 +113,7 @@ RTLookupRequest::OSType GetRTLookupRequestOSType() {
+   return RTLookupRequest::OS_TYPE_CHROME_OS;
  #elif BUILDFLAG(IS_IOS)
    return RTLookupRequest::OS_TYPE_IOS;
 -#elif BUILDFLAG(IS_LINUX)

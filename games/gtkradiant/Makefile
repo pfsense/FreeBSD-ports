@@ -1,6 +1,6 @@
 PORTNAME=	gtkradiant
 PORTVERSION=	1.5.0
-PORTREVISION=	19
+PORTREVISION=	20
 CATEGORIES=	games cad
 MASTER_SITES=	IDSOFTWARE/source/:id \
 		http://www.bsd-geek.de/FreeBSD/distfiles/:fb
@@ -19,7 +19,7 @@ LIB_DEPENDS=	libgtkglext-x11-1.0.so:x11-toolkits/gtkglext \
 		libpng.so:graphics/png
 
 USES=		compiler:c++11-lang gnome pkgconfig python:build scons zip
-USE_GNOME=	gdkpixbuf2 gtk20 libxml2
+USE_GNOME=	gdkpixbuf gtk20 libxml2
 MAKE_ARGS=	${MAKE_ENV} BUILD=release
 SSP_UNSAFE=	yes
 

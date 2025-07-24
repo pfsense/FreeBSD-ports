@@ -15,9 +15,6 @@ WWW=		http://jonls.dk/redshift/
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-DEPRECATED=	Abandoned upstream, no activity for the past 4 years. Consider using accessibility/sct, accessibility/wlsunset or accessibility/wl-gammarelay-rs
-EXPIRATION_DATE=2024-06-30
-
 LIB_DEPENDS=	libdrm.so:graphics/libdrm
 
 USES=		autoreconf:build gettext gmake gnome libtool localbase \
@@ -60,9 +57,9 @@ WAYLAND_LIB_DEPENDS=	libwayland-client.so:graphics/wayland
 WAYLAND_CONFIGURE_ENABLE=	wayland
 
 GUI_USES=		python
+GUI_USE=		gnome=pygobject3:run
 GUI_CONFIGURE_ENABLE=	gui
-GUI_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}gobject3>0:devel/py-gobject3@${PY_FLAVOR} \
-			${PYTHON_PKGNAMEPREFIX}xdg>0:devel/py-xdg@${PY_FLAVOR}
+GUI_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}xdg>0:devel/py-xdg@${PY_FLAVOR}
 
 GEO_CONFIGURE_ON=	--enable-geoclue2
 GEO_CONFIGURE_OFF=	--disable-geoclue2

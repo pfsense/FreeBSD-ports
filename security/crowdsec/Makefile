@@ -1,9 +1,6 @@
 PORTNAME=	crowdsec
 DISTVERSIONPREFIX=	v
-DISTVERSION=	1.6.2
-# the remote tag was moved for 1.6.2, so we force another tag to avoid the version on proxy.golang.org
-DISTVERSIONSUFFIX=     -final
-PORTREVISION=	1
+DISTVERSION=	1.6.10
 CATEGORIES=	security
 
 MAINTAINER=	marco@crowdsec.net
@@ -16,8 +13,8 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 LIB_DEPENDS=	libabsl_base.so:devel/abseil \
 		libre2.so:devel/re2
 
-USES=		go:1.22,modules pkgconfig
-_COMMIT=	16bfab86
+USES=		go:modules pkgconfig
+_COMMIT=	79870769
 _BUILD_DATE=	$$(date -u "+%F_%T")
 USE_RC_SUBR=	crowdsec
 
@@ -32,8 +29,8 @@ GO_TARGET=	./cmd/crowdsec \
 
 GO_BUILDFLAGS=	-v -trimpath -tags netgo,osusergo,sqlite_omit_load_extension,re2_cgo \
 		-ldflags="\
-		-a -s -w \
-		-X github.com/crowdsecurity/go-cs-lib/version.Version=${DISTVERSIONPREFIX}${DISTVERSION} \
+		-a -s \
+		-X github.com/crowdsecurity/go-cs-lib/version.Version=${DISTVERSIONPREFIX}${PKGVERSION} \
 		-X github.com/crowdsecurity/go-cs-lib/version.BuildDate=${_BUILD_DATE} \
 		-X github.com/crowdsecurity/go-cs-lib/version.Tag=${_COMMIT} \
 		-X ${GO_MODULE}/pkg/cwversion.Codename=alphaga \

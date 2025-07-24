@@ -7,8 +7,10 @@ LIB_DEPENDS=	libappstream.so:devel/appstream \
 		libfreetype.so:print/freetype2 \
 		libfontconfig.so:x11-fonts/fontconfig \
 		libyaml.so:textproc/libyaml
+RUN_DEPENDS=	optipng:graphics/optipng \
+		ffprobe:multimedia/ffmpeg
 
-USE_GNOME=	cairo gdkpixbuf2 librsvg2 pango
+USE_GNOME=	cairo gdkpixbuf librsvg2 pango
 
 MESON_ARGS=	-Dcompose=true
 

@@ -1,6 +1,7 @@
 PORTNAME=	bitwarden-cli
 DISTVERSIONPREFIX=	cli-v
-DISTVERSION=	2024.4.1
+DISTVERSION=	2025.5.0
+PORTREVISION=	1
 CATEGORIES=	security
 MASTER_SITES=	https://nodejs.org/dist/v${PKG_NODE_VER}/:node
 DISTFILES=	node-v${PKG_NODE_VER}${EXTRACT_SUFX}:node \
@@ -24,13 +25,16 @@ BUILD_DEPENDS=	npm:www/npm${NODEJS_SUFFIX}
 LIB_DEPENDS=	libbrotlidec.so:archivers/brotli \
 		libicui18n.so:devel/icu \
 		libuv.so:devel/libuv \
+		libsimdjson.so:devel/simdjson \
 		libcares.so:dns/c-ares \
-		libnghttp2.so:www/libnghttp2
+		libngtcp2.so:net/libngtcp2 \
+		libnghttp2.so:www/libnghttp2 \
+		libnghttp3.so:www/libnghttp3
 RUN_DEPENDS=	xdg-open:devel/xdg-utils \
 		ca_root_nss>0:security/ca_root_nss
 TEST_DEPENDS=	npm:www/npm${NODEJS_SUFFIX}
 
-USES=		gmake localbase:ldflags nodejs:18,build pkgconfig \
+USES=		gmake localbase:ldflags nodejs:22,build pkgconfig \
 		python:build ssl
 
 USE_GITHUB=	yes
@@ -50,14 +54,17 @@ OPTIONS_DEFINE=	DOCS
 
 PREFETCH_FILE=	${PORTNAME}-${DISTVERSION}-node-modules${EXTRACT_SUFX}
 PREFETCH_TIMESTAMP=	61171200
-PKG_NODE_VER=	18.15.0
+PKG_NODE_VER=	22.10.0
 PKG_FETCH_VER=	3.5
 PKG_NODE_CONFIGURE_ARGS=--openssl-use-def-ca-store \
 			--shared-brotli \
 			--shared-cares \
 			--shared-libuv \
 			--shared-nghttp2 \
+			--shared-nghttp3 \
 			--shared-openssl \
+			--shared-ngtcp2 \
+			--shared-simdjson \
 			--shared-zlib \
 			--with-intl=system-icu
 NODE_ARCH=	${ARCH:S/aarch64/arm64/:S/amd64/x64/:S/i386/ia32/}
@@ -94,7 +101,7 @@ post-patch:
 	done
 	# apply node patch from pkg-fetch
 	${PATCH} -s -p1 -d ${WRKDIR}/node-v${PKG_NODE_VER} < \
-		${WRKSRC}/node_modules/pkg-fetch/patches/node.v${PKG_NODE_VER}.cpp.patch
+		${WRKSRC}/node_modules/@yao-pkg/pkg-fetch/patches/node.v${PKG_NODE_VER}.cpp.patch
 
 pre-build:
 	cd ${WRKSRC} && ${SETENV} ${MAKE_ENV} npm run postinstall
@@ -112,7 +119,7 @@ pre-build:
 
 do-build:
 	cd ${BUILD_WRKSRC} && ${SETENV} ${MAKE_ENV} \
-		npm run build:prod
+		npm run build:bit:prod
 	cd ${BUILD_WRKSRC} && ${SETENV} ${MAKE_ENV} \
 		npx pkg . --targets node${NODEJS_VERSION}-freebsd-${NODE_ARCH} --output ./dist/bw
 	cd ${BUILD_WRKSRC} && ${SETENV} ${MAKE_ENV} \
@@ -126,7 +133,7 @@ do-install:
 		${STAGEDIR}${PREFIX}/share/zsh/site-functions/_bw
 
 do-install-DOCS-on:
-	${MKDIR} ${STAGEDIR}${DOCSDIR}
+	@${MKDIR} ${STAGEDIR}${DOCSDIR}
 	${INSTALL_MAN} ${PORTDOCS:S|^|${WRKSRC}/|} ${STAGEDIR}${DOCSDIR}
 
 do-test:

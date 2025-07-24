@@ -1,11 +1,16 @@
---- cgi-fcgi/cgi-fcgi.c.orig	2018-08-28 13:21:00 UTC
+--- cgi-fcgi/cgi-fcgi.c.orig	2025-05-23 01:57:11 UTC
 +++ cgi-fcgi/cgi-fcgi.c
-@@ -531,7 +531,7 @@ static void FCGI_Start(char *bindPath, c
-             exit(OS_Errno);
- 	}
-     }
--    OS_Close(listenFd);
-+    //OS_Close(listenFd);
- }
- 
- /*
+@@ -812,11 +812,9 @@ int main(int argc, char **argv)
+                 for(pid=nServers; pid != 0; pid--) {
+                     wait(0);
+                 }
++                signal(SIGTERM, SIG_IGN);
++                kill(0, SIGTERM);
+             }
+-#endif
+-            signal(SIGTERM, SIG_IGN);
+-#ifndef _WIN32
+-            kill(0, SIGTERM);
+ #endif
+             exit(0);
+         } else {

@@ -4,7 +4,7 @@ DISTVERSION=	1.3.2
 CATEGORIES=	net-mgmt www
 PKGNAMESUFFIX=	${PHP_PKGNAMESUFFIX}
 
-MAINTAINER=	joneum@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Drill-down view for Icinga web 2 based on custom variables
 WWW=		https://github.com/Icinga/icingaweb2-module-cube
 
@@ -20,6 +20,7 @@ NO_BUILD=	yes
 NO_ARCH=	yes
 
 USES=		php:web,flavors
+IGNORE_WITH_PHP=81
 
 WWWDIR?=	${PREFIX}/www/icingaweb2/modules/${PORTNAME:C/^.*-//}
 

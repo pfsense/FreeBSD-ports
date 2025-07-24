@@ -1,10 +1,8 @@
 PORTNAME=	libsbml
-PORTVERSION=	5.20.2
+PORTVERSION=	5.20.5
+PORTREVISION=	1
 DISTVERSIONPREFIX=	v
 CATEGORIES=	biology devel
-
-PATCH_SITES=	https://github.com/sbmlteam/libsbml/commit/
-PATCHFILES=	a3e217851f18d3c5e8e2b0082fb98176738491e8.patch:-p1
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	API Library for Working with SBML File
@@ -18,6 +16,8 @@ LICENSE_FILE=	${WRKSRC}/COPYING.txt
 USES=		cmake:testing iconv:build pathfix
 
 CMAKE_OFF=	EXIT_ON_ERROR \
+		LIBSBML_SKIP_SHARED_LIBRARY \
+		LIBSBML_SKIP_STATIC_LIBRARY \
 		LIBSBML_USE_STRICT_INCLUDES \
 		PYTHON_USE_API2_WARNINGS \
 		WITH_ALL_PACKAGES \
@@ -74,7 +74,6 @@ post-patch:
 	@${REINPLACE_CMD} -e 's|/usr/local|${LOCALBASE}|g' ${WRKSRC}/CMakeLists.txt
 
 post-install-EXAMPLES-on:
-	${MV} ${STAGEDIR}${DATADIR}/examples ${STAGEDIR}${EXAMPLESDIR}
-	${RMDIR} ${STAGEDIR}${DATADIR}
+	${MV} ${STAGEDIR}${DATADIR}examples ${STAGEDIR}${EXAMPLESDIR}
 
 .include <bsd.port.mk>

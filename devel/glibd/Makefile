@@ -1,7 +1,7 @@
 PORTNAME=	glibd
 PORTVERSION=	2.4.3
 DISTVERSIONPREFIX=	v
-PORTREVISION=	1
+PORTREVISION=	3
 CATEGORIES=	devel
 
 MAINTAINER=	arrowd@FreeBSD.org
@@ -23,5 +23,7 @@ USE_GNOME=	glib20 introspection
 USE_GITHUB=	yes
 GH_ACCOUNT=	gtkd-developers
 GH_PROJECT=	GlibD
+
+PIE_UNSAFE=	yes
 
 .include <bsd.port.mk>

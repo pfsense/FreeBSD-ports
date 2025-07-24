@@ -1,6 +1,6 @@
 PORTNAME=	fvwm3
 DISTVERSION=	1.1.0
-PORTREVISION=	3
+PORTREVISION=	7
 CATEGORIES=	x11-wm
 MASTER_SITES=	https://github.com/fvwmorg/fvwm3/releases/download/${DISTVERSION}/ \
 		http://fvwm.sourceforge.net/generated/icon_download/:icons
@@ -65,7 +65,7 @@ PNG_LIB_DEPENDS=	libpng.so:graphics/png
 PNG_CONFIGURE_ENABLE=	png
 
 SVG_USES=		gnome
-SVG_USE=		gnome=cairo,glib20,gdkpixbuf2,librsvg2
+SVG_USE=		gnome=cairo,glib20,gdkpixbuf,librsvg2
 SVG_CONFIGURE_ENABLE=	rsvg
 
 XCURSOR_USE=			xorg=xcursor

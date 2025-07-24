@@ -1,6 +1,6 @@
 PORTNAME=	ignition-fuel-tools
 DISTVERSION=	1.2.0
-PORTREVISION=	7
+PORTREVISION=	9
 CATEGORIES=	misc
 MASTER_SITES=	https://bitbucket.org/${BB_ACCOUNT}/${BB_PROJECT}/get/${BB_COMMIT}.tar.gz?dummy=/
 
@@ -15,7 +15,7 @@ BUILD_DEPENDS=	ignition-cmake==2:devel/ignition-cmake
 LIB_DEPENDS=	libcurl.so:ftp/curl \
 		libignition-common3.so:devel/ignition-common \
 		libjsoncpp.so:devel/jsoncpp \
-		libuuid.so:misc/e2fsprogs-libuuid \
+		libuuid.so:misc/libuuid \
 		libyaml.so:textproc/libyaml \
 		libzip.so:archivers/libzip
 
@@ -32,7 +32,9 @@ WRKSRC=		${WRKDIR}/${BB_ACCOUNT}-${BB_PROJECT}-${BB_COMMIT}
 
 PLIST_SUB+=	FUEL_TOOLS_IGN_VER=fuel_tools${DISTVERSION:R:R}
 
-do-test: # 4 tests are known to fail: https://bitbucket.org/ignitionrobotics/ign-fuel-tools/issues/48/4-unit-tests-fail-unit_fuelclient_test
+TESTING_UNSAFE=	4 tests are known to fail: https://bitbucket.org/ignitionrobotics/ign-fuel-tools/issues/48/4-unit-tests-fail-unit_fuelclient_test
+
+do-test:
 	@cd ${BUILD_WRKSRC} && \
 		${SETENV} ${CONFIGURE_ENV} ${CMAKE_BIN} ${CMAKE_ARGS} -DBUILD_TESTING=ON ${CMAKE_SOURCE_PATH} && \
 		${SETENV} ${MAKE_ENV} ${MAKE_CMD} ${MAKE_ARGS} ${ALL_TARGET} && \

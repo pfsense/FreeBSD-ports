@@ -1,6 +1,6 @@
---- src/3rdparty/chromium/tools/licenses/licenses.py.orig	2023-12-12 22:08:45 UTC
+--- src/3rdparty/chromium/tools/licenses/licenses.py.orig	2025-02-21 12:29:33 UTC
 +++ src/3rdparty/chromium/tools/licenses/licenses.py
-@@ -751,6 +751,8 @@ def _GnBinary():
+@@ -808,6 +808,8 @@ def _GnBinary():
    exe = 'gn'
    if sys.platform.startswith('linux'):
      subdir = 'linux64'

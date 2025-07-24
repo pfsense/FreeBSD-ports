@@ -1,0 +1,7 @@
+TIMESTAMP = 1743426316
+SHA256 (rocky/l/libaom-3.12.0-1.el9.aarch64.rpm) = 9f67e775d44216377a502f51b9114022a03b5b8746c51c046b3a0504dd8018fb
+SIZE (rocky/l/libaom-3.12.0-1.el9.aarch64.rpm) = 1663414
+SHA256 (rocky/l/libaom-3.12.0-1.el9.x86_64.rpm) = fdaca4cc7f5ccc8241a05f123a361c7a8b6a1bf1e4ca64482a55279f50147f36
+SIZE (rocky/l/libaom-3.12.0-1.el9.x86_64.rpm) = 1859389
+SHA256 (rocky/a/aom-3.12.0-1.el9.src.rpm) = 5cb9355be8e7d856a9e4e74bb5a80a0518a5d5e688a58fa522f791a2f1020dfa
+SIZE (rocky/a/aom-3.12.0-1.el9.src.rpm) = 5560226

@@ -1,5 +1,5 @@
 PORTNAME=	freecol
-PORTVERSION=	1.1.0
+PORTVERSION=	1.2.0
 CATEGORIES=	games java
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/${PORTNAME}-${PORTVERSION}
 
@@ -9,14 +9,14 @@ WWW=		https://freecol.org/
 
 LICENSE=	GPLv2
 
-USES=		cpe zip
+USES=		cpe java zip
+JAVA_VERSION=	11+
 
 OPTIONS_DEFINE=	DOCS
 
 NO_BUILD=	yes
 NO_ARCH=	yes
 SUB_FILES=	freecol
-USE_JAVA=	11+
 
 PLIST_FILES=	bin/freecol \
 		${DESKTOPDIR:S,^${PREFIX}/,,}/freecol.desktop

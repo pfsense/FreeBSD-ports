@@ -1,6 +1,6 @@
 PORTNAME=	juce
 DISTVERSION=	7.0.6
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	devel
 PKGNAMESUFFIX=	706
 
@@ -20,7 +20,7 @@ LIB_DEPENDS=	libasound.so:audio/alsa-lib \
 		libcurl.so:ftp/curl \
 		libfreetype.so:print/freetype2 \
 		libharfbuzz.so:print/harfbuzz \
-		libjavascriptcoregtk-4.0.so:www/webkit2-gtk3 \
+		libjavascriptcoregtk-4.0.so:www/webkit2-gtk@40 \
 		libpng16.so:graphics/png \
 		libsoup-2.4.so:devel/libsoup \
 		libsysinfo.so:devel/libsysinfo
@@ -28,7 +28,7 @@ LIB_DEPENDS=	libasound.so:audio/alsa-lib \
 USES=		cmake compiler:c++11-lang dos2unix gl gnome localbase:ldflags pkgconfig xorg
 DOS2UNIX_FILES=	modules/juce_core/juce_core.h \
 		modules/juce_dsp/containers/juce_AudioBlock_test.cpp
-USE_GNOME=	atk cairo gdkpixbuf2 glib20 gtk30 pango
+USE_GNOME=	atk cairo gdkpixbuf glib20 gtk30 pango
 USE_GL=		gl
 USE_XORG=	x11 xcomposite xcursor xext xinerama xorgproto xrandr
 
@@ -54,9 +54,9 @@ DEMOS_DESC=		Build and install demo programs
 DEMOS_USES=		gnome pkgconfig
 DEMOS_CMAKE_BOOL=	JUCE_BUILD_EXAMPLES
 DEMOS_LDFLAGS=		-lexecinfo
-DEMOS_USE=		GNOME=atk,cairo,gdkpixbuf2,gtk30,pango
+DEMOS_USE=		GNOME=atk,cairo,gdkpixbuf,gtk30,pango
 DEMOS_LIB_DEPENDS=	libcurl.so:ftp/curl \
-			libwebkit2gtk-4.0.so:www/webkit2-gtk3 \
+			libwebkit2gtk-4.0.so:www/webkit2-gtk@40 \
 			libsoup-2.4.so:devel/libsoup
 DEMO_FILES=	\
 	AnalyticsCollectionDemo AnimationAppDemo AnimationDemo AudioAppDemo AudioLatencyDemo AudioPlaybackDemo AudioPluginDemo AudioRecordingDemo AudioSettingsDemo AudioSynthesiserDemo \

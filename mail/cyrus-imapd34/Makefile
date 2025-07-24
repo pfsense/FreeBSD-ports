@@ -1,6 +1,6 @@
 PORTNAME=	cyrus-imapd
-PORTVERSION=	3.4.8
-PORTREVISION=	0
+PORTVERSION=	3.4.9
+PORTREVISION=	4
 CATEGORIES=	mail
 MASTER_SITES=	https://github.com/cyrusimap/cyrus-imapd/releases/download/${PORTNAME}-${PORTVERSION}/
 PKGNAMESUFFIX=	${CYRUS_IMAPD_VER}
@@ -23,7 +23,7 @@ CYRUS_IMAPD_VER=	34
 LIB_DEPENDS=	libsasl2.so:security/cyrus-sasl2 \
 		libicuuc.so:devel/icu \
 		libjansson.so:devel/jansson \
-		libuuid.so:misc/e2fsprogs-libuuid
+		libuuid.so:misc/libuuid
 
 CONFLICTS_INSTALL=	cyrus-imapd2? cyrus-imapd3[0-35-] cyrus-imapd3[0-35-]-http
 
@@ -105,7 +105,7 @@ PCRE2_CONFIGURE_ON=	--disable-pcre
 PCRE2_CONFIGURE_OFF=	--disable-pcre2
 PGSQL_USES=		pgsql
 PGSQL_CONFIGURE_ON=	--with-pgsql=${LOCALBASE}
-REPLICATION_DESC=	Enable replication (experimental)
+REPLICATION_DESC=	Enable replication
 REPLICATION_CONFIGURE_ENABLE=replication
 SRS_DESC=		Enable Sender Rewriting Scheme support
 SRS_CONFIGURE_ENABLE=	srs
@@ -127,8 +127,12 @@ OPTIONS_RADIO_GSSAPI+=		GSSAPI_BASE
 OPTIONS_DEFAULT+=		GSSAPI_BASE
 .endif
 GSSAPI_BASE_USES=		gssapi
-GSSAPI_BASE_CONFIGURE_ON=	--enable-gssapi="${GSSAPIBASEDIR}" \
-				--with-gss_impl=heimdal
+GSSAPI_BASE_CONFIGURE_ON=	--enable-gssapi="${GSSAPIBASEDIR}"
+.if exists(/usr/libexec/krb5kdc)
+GSSAPI_BASE_CONFIGURE_ON+=	--with-gss_impl=mit
+.else
+GSSAPI_BASE_CONFIGURE_ON+=	--with-gss_impl=heimdal
+.endif
 GSSAPI_HEIMDAL_USES=		gssapi:heimdal,flags
 GSSAPI_HEIMDAL_CONFIGURE_ON=	--enable-gssapi="${GSSAPIBASEDIR}" \
 				--with-gss_impl=heimdal

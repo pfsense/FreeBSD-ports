@@ -1,8 +1,9 @@
 PORTNAME=       types-jsonschema
-PORTVERSION=    4.22.0.20240610
+PORTVERSION=    4.25.0.20250720
 CATEGORIES=     devel python
 MASTER_SITES=   PYPI
 PKGNAMEPREFIX=  ${PYTHON_PKGNAMEPREFIX}
+DISTNAME=	types_jsonschema-${PORTVERSION}
 
 MAINTAINER=     matthew@FreeBSD.org
 COMMENT=        Typing stubs for jsonschema

@@ -8,8 +8,8 @@
  * pfblockerng.xml
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2015-2024 Rubicon Communications, LLC (Netgate)
- * Copyright (c) 2015-2023 BBcan177@gmail.com
+ * Copyright (c) 2015-2025 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2015-2024 BBcan177@gmail.com
  * All rights reserved.
  *
  * Originally based upon pfBlocker by
@@ -54,6 +54,14 @@
 	</tabs>
 	<fields>
 	</fields>
+	<plugins>
+		<item>
+			<type>plugin_xmlrpc_send</type>
+		</item>
+		<item>
+			<type>plugin_xmlrpc_recv</type>
+		</item>
+	</plugins>
 	<custom_php_install_command>
 		<![CDATA[
 		include_once('/usr/local/pkg/pfblockerng/pfblockerng_install.inc');

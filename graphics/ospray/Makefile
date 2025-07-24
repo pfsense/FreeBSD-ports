@@ -1,7 +1,7 @@
 PORTNAME=	ospray
 DISTVERSIONPREFIX=	v
 DISTVERSION=	2.10.0
-PORTREVISION=	10
+PORTREVISION=	11
 CATEGORIES=	graphics
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -13,7 +13,7 @@ LICENSE_FILE=	${WRKSRC}/LICENSE.txt
 
 BUILD_DEPENDS=	ispc:devel/ispc
 LIB_DEPENDS=	libbenchmark.so:devel/benchmark \
-		libembree3.so:graphics/embree \
+		libembree3.so:graphics/embree3 \
 		libglfw.so:graphics/glfw \
 		libopenvkl.so:graphics/openvkl \
 		librkcommon.so:devel/rkcommon \

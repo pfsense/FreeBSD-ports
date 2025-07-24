@@ -1,6 +1,6 @@
 PORTNAME=	luminance-hdr
 DISTVERSION=	2.6.1.1
-PORTREVISION=	26
+PORTREVISION=	30
 CATEGORIES=	graphics
 MASTER_SITES=	SF/qtpfsgui/luminance/${DISTVERSION}
 
@@ -9,6 +9,8 @@ COMMENT=	Complete open source solution for HDR photography
 WWW=		https://qtpfsgui.sourceforge.net/
 
 LICENSE=	GPLv2
+
+BROKEN=		fails to build with Boost>=1.87
 
 BUILD_DEPENDS=	${LOCALBASE}/include/fftw3.h:math/fftw3
 LIB_DEPENDS=	libImath.so:math/Imath \
@@ -29,6 +31,8 @@ USE_QT=		concurrent core declarative gui location network \
 		printsupport sql svg widgets xml \
 		buildtools:build linguisttools:build qmake:build
 
+USE_CXXSTD=	c++14
+
 OPTIONS_DEFINE=		CFITSIO DOCS HELPBROWSER
 OPTIONS_DEFAULT=	CFITSIO
 OPTIONS_DEFAULT_aarch64=	HELPBROWSER
@@ -40,6 +44,12 @@ CFITSIO_LIB_DEPENDS=	libcfitsio.so:astro/cfitsio
 HELPBROWSER_DESC=	Build help browser (requires QtWebEngine)
 HELPBROWSER_USE=	QT=webchannel,webengine
 HELPBROWSER_CMAKE_BOOL=	WITH_HELPBROWSER
+
+.if !exists(/usr/include/omp.h)
+USES+=	compiler:gcc-c++11-lib
+.else
+USES+=	compiler:c++14-lang
+.endif
 
 .include <bsd.port.options.mk>
 

@@ -3,7 +3,7 @@
  * frr_bgp.inc
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2017-2024 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2017-2025 Rubicon Communications, LLC (Netgate)
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -848,7 +848,7 @@ function frr_bgp_generate_rpki_servers() {
 	if (!empty($frr_bgp_rpki_cs)) {
 		foreach ($frr_bgp_rpki_cs as $cs) {
 			$rpki_config .= " rpki cache {$cs['cacheserver']} {$cs['port']}";
-			foreach (array("username", "privkeypath", "pubkeypath", "knownhostspath") as $key) {
+			foreach (array("username", "privkeypath", "pubkeypath") as $key) {
 				if (empty($cs[$key])) {
 					continue;
 				}

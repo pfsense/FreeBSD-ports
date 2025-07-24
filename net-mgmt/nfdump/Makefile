@@ -1,5 +1,5 @@
 PORTNAME=	nfdump
-PORTVERSION=	1.7.4
+DISTVERSION=	1.7.6
 DISTVERSIONPREFIX=v
 CATEGORIES=	net-mgmt
 
@@ -23,11 +23,11 @@ GNU_CONFIGURE_MANPREFIX=${PREFIX}/share
 INSTALL_TARGET=	install-strip
 PLIST_FILES=	bin/nfanon bin/nfcapd bin/nfdump bin/nfexpire bin/nfreplay \
 		lib/libnfdump-${PORTVERSION}.so lib/libnfdump.so \
-		lib/libnfdump.a \
+		lib/libnffile-${PORTVERSION}.so lib/libnffile.so \
+		lib/libnfdump.a lib/libnffile.a \
 		share/man/man1/nfanon.1.gz share/man/man1/nfcapd.1.gz \
 		share/man/man1/nfdump.1.gz share/man/man1/nfexpire.1.gz \
-		share/man/man1/nfreplay.1.gz \
-		etc/nfdump.conf.sample
+		share/man/man1/nfreplay.1.gz etc/nfdump.conf.sample
 PORTDOCS=	AUTHORS ChangeLog INSTALL NEWS README
 
 #flow-tools support
@@ -68,7 +68,7 @@ GEODB_CONFIGURE_ENABLE=	maxmind
 
 .include <bsd.port.pre.mk>
 
-.if ${COMPILER_TYPE} == clang && ${COMPILER_VERSION} >= 160
+.if ${COMPILER_TYPE} == clang
 CPPFLAGS+=	-Wno-error=incompatible-function-pointer-types
 .endif
 
@@ -79,7 +79,8 @@ RUN_DEPENDS+=	rrdtool:databases/rrdtool
 .endif
 
 post-patch:
-	${REINPLACE_CMD} 's|-ggdb||' ${WRKSRC}/src/lib/Makefile.am
+	${REINPLACE_CMD} 's|-ggdb||' ${WRKSRC}/src/libnfdump/Makefile.am
+	${REINPLACE_CMD} 's|-ggdb||' ${WRKSRC}/src/libnffile/Makefile.am
 	${REINPLACE_CMD} 's|-ggdb||' ${WRKSRC}/src/nfcapd/Makefile.am
 	${REINPLACE_CMD} 's|-ggdb||' ${WRKSRC}/src/test/Makefile.am
 

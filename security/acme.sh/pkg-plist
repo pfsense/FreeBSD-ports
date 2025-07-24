@@ -2,6 +2,8 @@
 %%PORTEXAMPLES%%@sample etc/newsyslog.conf.d/acme.sh.conf.sample
 sbin/acme.sh
 %%PORTEXAMPLES%%%%EXAMPLESDIR%%/deploy/README.md
+%%PORTEXAMPLES%%%%EXAMPLESDIR%%/deploy/ali_cdn.sh
+%%PORTEXAMPLES%%%%EXAMPLESDIR%%/deploy/ali_dcdn.sh
 %%PORTEXAMPLES%%%%EXAMPLESDIR%%/deploy/apache.sh
 %%PORTEXAMPLES%%%%EXAMPLESDIR%%/deploy/cleverreach.sh
 %%PORTEXAMPLES%%%%EXAMPLESDIR%%/deploy/consul.sh
@@ -27,19 +29,23 @@ sbin/acme.sh
 %%PORTEXAMPLES%%%%EXAMPLESDIR%%/deploy/panos.sh
 %%PORTEXAMPLES%%%%EXAMPLESDIR%%/deploy/peplink.sh
 %%PORTEXAMPLES%%%%EXAMPLESDIR%%/deploy/proxmoxve.sh
+%%PORTEXAMPLES%%%%EXAMPLESDIR%%/deploy/proxmoxbs.sh
 %%PORTEXAMPLES%%%%EXAMPLESDIR%%/deploy/pureftpd.sh
 %%PORTEXAMPLES%%%%EXAMPLESDIR%%/deploy/qiniu.sh
 %%PORTEXAMPLES%%%%EXAMPLESDIR%%/deploy/routeros.sh
+%%PORTEXAMPLES%%%%EXAMPLESDIR%%/deploy/ruckus.sh
 %%PORTEXAMPLES%%%%EXAMPLESDIR%%/deploy/ssh.sh
 %%PORTEXAMPLES%%%%EXAMPLESDIR%%/deploy/strongswan.sh
 %%PORTEXAMPLES%%%%EXAMPLESDIR%%/deploy/synology_dsm.sh
 %%PORTEXAMPLES%%%%EXAMPLESDIR%%/deploy/truenas.sh
+%%PORTEXAMPLES%%%%EXAMPLESDIR%%/deploy/truenas_ws.sh
 %%PORTEXAMPLES%%%%EXAMPLESDIR%%/deploy/unifi.sh
 %%PORTEXAMPLES%%%%EXAMPLESDIR%%/deploy/vault.sh
 %%PORTEXAMPLES%%%%EXAMPLESDIR%%/deploy/vault_cli.sh
 %%PORTEXAMPLES%%%%EXAMPLESDIR%%/deploy/vsftpd.sh
 %%PORTEXAMPLES%%%%EXAMPLESDIR%%/dnsapi/README.md
 %%PORTEXAMPLES%%%%EXAMPLESDIR%%/dnsapi/dns_1984hosting.sh
+%%PORTEXAMPLES%%%%EXAMPLESDIR%%/dnsapi/dns_alviy.sh
 %%PORTEXAMPLES%%%%EXAMPLESDIR%%/dnsapi/dns_acmedns.sh
 %%PORTEXAMPLES%%%%EXAMPLESDIR%%/dnsapi/dns_acmeproxy.sh
 %%PORTEXAMPLES%%%%EXAMPLESDIR%%/dnsapi/dns_active24.sh
@@ -53,6 +59,7 @@ sbin/acme.sh
 %%PORTEXAMPLES%%%%EXAMPLESDIR%%/dnsapi/dns_aws.sh
 %%PORTEXAMPLES%%%%EXAMPLESDIR%%/dnsapi/dns_azion.sh
 %%PORTEXAMPLES%%%%EXAMPLESDIR%%/dnsapi/dns_azure.sh
+%%PORTEXAMPLES%%%%EXAMPLESDIR%%/dnsapi/dns_beget.sh
 %%PORTEXAMPLES%%%%EXAMPLESDIR%%/dnsapi/dns_bookmyname.sh
 %%PORTEXAMPLES%%%%EXAMPLESDIR%%/dnsapi/dns_bunny.sh
 %%PORTEXAMPLES%%%%EXAMPLESDIR%%/dnsapi/dns_cf.sh
@@ -66,6 +73,7 @@ sbin/acme.sh
 %%PORTEXAMPLES%%%%EXAMPLESDIR%%/dnsapi/dns_cyon.sh
 %%PORTEXAMPLES%%%%EXAMPLESDIR%%/dnsapi/dns_da.sh
 %%PORTEXAMPLES%%%%EXAMPLESDIR%%/dnsapi/dns_ddnss.sh
+%%PORTEXAMPLES%%%%EXAMPLESDIR%%/dnsapi/dns_edgecenter.sh
 %%PORTEXAMPLES%%%%EXAMPLESDIR%%/dnsapi/dns_desec.sh
 %%PORTEXAMPLES%%%%EXAMPLESDIR%%/dnsapi/dns_df.sh
 %%PORTEXAMPLES%%%%EXAMPLESDIR%%/dnsapi/dns_dnsexit.sh
@@ -73,7 +81,6 @@ sbin/acme.sh
 %%PORTEXAMPLES%%%%EXAMPLESDIR%%/dnsapi/dns_dnshome.sh
 %%PORTEXAMPLES%%%%EXAMPLESDIR%%/dnsapi/dns_dnsservices.sh
 %%PORTEXAMPLES%%%%EXAMPLESDIR%%/dnsapi/dns_dnsimple.sh
-%%PORTEXAMPLES%%%%EXAMPLESDIR%%/dnsapi/dns_do.sh
 %%PORTEXAMPLES%%%%EXAMPLESDIR%%/dnsapi/dns_doapi.sh
 %%PORTEXAMPLES%%%%EXAMPLESDIR%%/dnsapi/dns_domeneshop.sh
 %%PORTEXAMPLES%%%%EXAMPLESDIR%%/dnsapi/dns_dp.sh
@@ -90,6 +97,7 @@ sbin/acme.sh
 %%PORTEXAMPLES%%%%EXAMPLESDIR%%/dnsapi/dns_exoscale.sh
 %%PORTEXAMPLES%%%%EXAMPLESDIR%%/dnsapi/dns_fornex.sh
 %%PORTEXAMPLES%%%%EXAMPLESDIR%%/dnsapi/dns_freedns.sh
+%%PORTEXAMPLES%%%%EXAMPLESDIR%%/dnsapi/dns_freemyip.sh
 %%PORTEXAMPLES%%%%EXAMPLESDIR%%/dnsapi/dns_gandi_livedns.sh
 %%PORTEXAMPLES%%%%EXAMPLESDIR%%/dnsapi/dns_gcore.sh
 %%PORTEXAMPLES%%%%EXAMPLESDIR%%/dnsapi/dns_gcloud.sh
@@ -97,6 +105,7 @@ sbin/acme.sh
 %%PORTEXAMPLES%%%%EXAMPLESDIR%%/dnsapi/dns_geoscaling.sh
 %%PORTEXAMPLES%%%%EXAMPLESDIR%%/dnsapi/dns_googledomains.sh
 %%PORTEXAMPLES%%%%EXAMPLESDIR%%/dnsapi/dns_huaweicloud.sh
+%%PORTEXAMPLES%%%%EXAMPLESDIR%%/dnsapi/dns_he_ddns.sh
 %%PORTEXAMPLES%%%%EXAMPLESDIR%%/dnsapi/dns_he.sh
 %%PORTEXAMPLES%%%%EXAMPLESDIR%%/dnsapi/dns_hetzner.sh
 %%PORTEXAMPLES%%%%EXAMPLESDIR%%/dnsapi/dns_hexonet.sh
@@ -104,6 +113,7 @@ sbin/acme.sh
 %%PORTEXAMPLES%%%%EXAMPLESDIR%%/dnsapi/dns_infoblox.sh
 %%PORTEXAMPLES%%%%EXAMPLESDIR%%/dnsapi/dns_infomaniak.sh
 %%PORTEXAMPLES%%%%EXAMPLESDIR%%/dnsapi/dns_ionos.sh
+%%PORTEXAMPLES%%%%EXAMPLESDIR%%/dnsapi/dns_ionos_cloud.sh
 %%PORTEXAMPLES%%%%EXAMPLESDIR%%/dnsapi/dns_ipv64.sh
 %%PORTEXAMPLES%%%%EXAMPLESDIR%%/dnsapi/dns_internetbs.sh
 %%PORTEXAMPLES%%%%EXAMPLESDIR%%/dnsapi/dns_inwx.sh
@@ -117,6 +127,7 @@ sbin/acme.sh
 %%PORTEXAMPLES%%%%EXAMPLESDIR%%/dnsapi/dns_la.sh
 %%PORTEXAMPLES%%%%EXAMPLESDIR%%/dnsapi/dns_leaseweb.sh
 %%PORTEXAMPLES%%%%EXAMPLESDIR%%/dnsapi/dns_lexicon.sh
+%%PORTEXAMPLES%%%%EXAMPLESDIR%%/dnsapi/dns_limacity.sh
 %%PORTEXAMPLES%%%%EXAMPLESDIR%%/dnsapi/dns_linode.sh
 %%PORTEXAMPLES%%%%EXAMPLESDIR%%/dnsapi/dns_linode_v4.sh
 %%PORTEXAMPLES%%%%EXAMPLESDIR%%/dnsapi/dns_loopia.sh
@@ -124,6 +135,7 @@ sbin/acme.sh
 %%PORTEXAMPLES%%%%EXAMPLESDIR%%/dnsapi/dns_maradns.sh
 %%PORTEXAMPLES%%%%EXAMPLESDIR%%/dnsapi/dns_me.sh
 %%PORTEXAMPLES%%%%EXAMPLESDIR%%/dnsapi/dns_miab.sh
+%%PORTEXAMPLES%%%%EXAMPLESDIR%%/dnsapi/dns_mijnhost.sh
 %%PORTEXAMPLES%%%%EXAMPLESDIR%%/dnsapi/dns_misaka.sh
 %%PORTEXAMPLES%%%%EXAMPLESDIR%%/dnsapi/dns_myapi.sh
 %%PORTEXAMPLES%%%%EXAMPLESDIR%%/dnsapi/dns_mydevil.sh
@@ -145,6 +157,7 @@ sbin/acme.sh
 %%PORTEXAMPLES%%%%EXAMPLESDIR%%/dnsapi/dns_nsupdate.sh
 %%PORTEXAMPLES%%%%EXAMPLESDIR%%/dnsapi/dns_nw.sh
 %%PORTEXAMPLES%%%%EXAMPLESDIR%%/dnsapi/dns_oci.sh
+%%PORTEXAMPLES%%%%EXAMPLESDIR%%/dnsapi/dns_omglol.sh
 %%PORTEXAMPLES%%%%EXAMPLESDIR%%/dnsapi/dns_one.sh
 %%PORTEXAMPLES%%%%EXAMPLESDIR%%/dnsapi/dns_online.sh
 %%PORTEXAMPLES%%%%EXAMPLESDIR%%/dnsapi/dns_openprovider.sh
@@ -166,7 +179,9 @@ sbin/acme.sh
 %%PORTEXAMPLES%%%%EXAMPLESDIR%%/dnsapi/dns_selfhost.sh
 %%PORTEXAMPLES%%%%EXAMPLESDIR%%/dnsapi/dns_servercow.sh
 %%PORTEXAMPLES%%%%EXAMPLESDIR%%/dnsapi/dns_simply.sh
+%%PORTEXAMPLES%%%%EXAMPLESDIR%%/dnsapi/dns_technitium.sh
 %%PORTEXAMPLES%%%%EXAMPLESDIR%%/dnsapi/dns_tele3.sh
+%%PORTEXAMPLES%%%%EXAMPLESDIR%%/dnsapi/dns_timeweb.sh
 %%PORTEXAMPLES%%%%EXAMPLESDIR%%/dnsapi/dns_tencent.sh
 %%PORTEXAMPLES%%%%EXAMPLESDIR%%/dnsapi/dns_udr.sh
 %%PORTEXAMPLES%%%%EXAMPLESDIR%%/dnsapi/dns_ultra.sh
@@ -179,10 +194,12 @@ sbin/acme.sh
 %%PORTEXAMPLES%%%%EXAMPLESDIR%%/dnsapi/dns_vscale.sh
 %%PORTEXAMPLES%%%%EXAMPLESDIR%%/dnsapi/dns_vultr.sh
 %%PORTEXAMPLES%%%%EXAMPLESDIR%%/dnsapi/dns_websupport.sh
-%%PORTEXAMPLES%%%%EXAMPLESDIR%%/dnsapi/dns_yandex.sh
+%%PORTEXAMPLES%%%%EXAMPLESDIR%%/dnsapi/dns_west_cn.sh
+%%PORTEXAMPLES%%%%EXAMPLESDIR%%/dnsapi/dns_yandex360.sh
 %%PORTEXAMPLES%%%%EXAMPLESDIR%%/dnsapi/dns_yc.sh
 %%PORTEXAMPLES%%%%EXAMPLESDIR%%/dnsapi/dns_zilore.sh
 %%PORTEXAMPLES%%%%EXAMPLESDIR%%/dnsapi/dns_zone.sh
+%%PORTEXAMPLES%%%%EXAMPLESDIR%%/dnsapi/dns_zoneedit.sh
 %%PORTEXAMPLES%%%%EXAMPLESDIR%%/dnsapi/dns_zonomi.sh
 %%PORTEXAMPLES%%%%EXAMPLESDIR%%/notify/aws_ses.sh
 %%PORTEXAMPLES%%%%EXAMPLESDIR%%/notify/bark.sh
@@ -195,6 +212,8 @@ sbin/acme.sh
 %%PORTEXAMPLES%%%%EXAMPLESDIR%%/notify/ifttt.sh
 %%PORTEXAMPLES%%%%EXAMPLESDIR%%/notify/mail.sh
 %%PORTEXAMPLES%%%%EXAMPLESDIR%%/notify/mailgun.sh
+%%PORTEXAMPLES%%%%EXAMPLESDIR%%/notify/mattermost.sh
+%%PORTEXAMPLES%%%%EXAMPLESDIR%%/notify/ntfy.sh
 %%PORTEXAMPLES%%%%EXAMPLESDIR%%/notify/pop.sh
 %%PORTEXAMPLES%%%%EXAMPLESDIR%%/notify/postmark.sh
 %%PORTEXAMPLES%%%%EXAMPLESDIR%%/notify/pushbullet.sh

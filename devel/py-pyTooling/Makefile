@@ -1,6 +1,7 @@
 PORTNAME=	pyTooling
 DISTVERSIONPREFIX=	v
-DISTVERSION=	6.3.0
+DISTVERSION=	8.3.0
+PORTREVISION=	1
 CATEGORIES=	devel
 #MASTER_SITES=	PYPI # requirements.txt is missing
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -19,7 +20,7 @@ TEST_DEPENDS=	${PYTHON_PKGNAMEPREFIX}anytree>=2.8.0:devel/py-anytree@${PY_FLAVOR
 		${PYTHON_PKGNAMEPREFIX}coverage>0:devel/py-coverage@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}igraph>0:math/py-igraph@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}itertree>0:devel/py-itertree@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}lxml>0:devel/py-lxml@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}lxml5>0:devel/py-lxml5@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}mypy>=1.10:devel/py-mypy@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}networkx>=2.6:math/py-networkx@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}pytest-benchmark>=4.0.0:devel/py-pytest-benchmark@${PY_FLAVOR} \
@@ -28,11 +29,15 @@ TEST_DEPENDS=	${PYTHON_PKGNAMEPREFIX}anytree>=2.8.0:devel/py-anytree@${PY_FLAVOR
 		${PYTHON_PKGNAMEPREFIX}treelib>0:devel/py-treelib@${PY_FLAVOR}
 
 USES=		python
-USE_PYTHON=	pep517 autoplist pytest # 104 tests fail, see https://github.com/pyTooling/pyTooling/issues/123
+USE_PYTHON=	pep517 autoplist pytest # 8 tests fail, see https://github.com/pyTooling/pyTooling/issues/123#issuecomment-2362275029
 USE_GITHUB=	yes
+
+TEST_ARGS=	${WRKSRC}/tests/unit # skip performance and other tests
 
 NO_ARCH=	yes
 
-TEST_WRKSRC=	${WRKSRC}/tests
+TEST_WRKSRC=	${WRKSRC}
+
+# tests as of 8.3.0: 6 failed, 858 passed, 17 skipped, 6 xfailed in 20.75s
 
 .include <bsd.port.mk>

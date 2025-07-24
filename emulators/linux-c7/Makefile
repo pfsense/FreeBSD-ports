@@ -1,6 +1,6 @@
 PORTNAME=	linux-c7
 PORTVERSION=	${LINUX_DIST_VER}
-PORTREVISION=	1
+PORTREVISION=	3
 CATEGORIES=	emulators linux
 
 MAINTAINER=	emulation@FreeBSD.org
@@ -55,25 +55,20 @@ RUN_DEPENDS=	linux-c7-libasyncns>0:dns/linux-c7-libasyncns \
 		linux-c7-aspell>0:textproc/linux-c7-aspell \
 		linux-c7-libxml2>0:textproc/linux-c7-libxml2 \
 		linux-c7-dri>0:graphics/linux-c7-dri \
-		linux-c7-libpng>0:graphics/linux-c7-png \
-		linux-c7-libtiff>0:graphics/linux-c7-tiff \
-		linux-c7-jpeg>0:graphics/linux-c7-jpeg \
 		linux-c7-glx-utils>0:graphics/linux-c7-glx-utils \
 		linux-c7-gdk-pixbuf2>0:graphics/linux-c7-gdk-pixbuf2 \
 		linux-c7-cairo>0:graphics/linux-c7-cairo \
 		linux-c7-pixman>0:x11/linux-c7-pixman \
-		linux-c7-jasper-libs>0:graphics/linux-c7-jasper
+		linux-c7-imageformats-libs>0:graphics/linux-c7-imageformats-libs
 
 USES=		linux:c7 metaport
 
 .include <bsd.port.options.mk>
 
 .if ${ARCH} == amd64
-RUN_DEPENDS+=	linux-c7-sdl_image>0:graphics/linux-c7-sdl_image \
-		linux-c7-openal-soft>0:audio/linux-c7-openal-soft \
+RUN_DEPENDS+=	linux-c7-openal-soft>0:audio/linux-c7-openal-soft \
+		linux-c7-sdl12-extralibs>0:misc/linux-c7-sdl12-extralibs \
 		linux-c7-sdl20>0:devel/linux-c7-sdl20 \
-		linux-c7-sdl_mixer>0:audio/linux-c7-sdl_mixer \
-		linux-c7-sdl_ttf>0:graphics/linux-c7-sdl_ttf \
 		linux-c7-qtwebkit>0:www/linux-c7-qtwebkit
 .endif
 

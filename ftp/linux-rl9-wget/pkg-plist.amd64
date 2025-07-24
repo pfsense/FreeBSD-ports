@@ -1,6 +1,5 @@
 etc/wgetrc
 usr/bin/wget
-usr/lib/.build-id/0f/fc49554f27a679cf9d82dbec3044f4132cdcec
 %%PORTDOCS%%%%DOCSDIR%%/AUTHORS
 %%PORTDOCS%%%%DOCSDIR%%/COPYING
 %%PORTDOCS%%%%DOCSDIR%%/MAILING-LIST

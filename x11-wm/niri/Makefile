@@ -1,7 +1,7 @@
 PORTNAME=	niri
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.1.6
-PORTREVISION=	1
+DISTVERSION=	25.05.1
+PORTREVISION=	2
 CATEGORIES=	x11-wm wayland
 
 MAINTAINER=	jbeich@FreeBSD.org
@@ -12,6 +12,7 @@ LICENSE=	GPLv3+
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
 LIB_DEPENDS=	libudev.so:devel/libudev-devd \
+		libdisplay-info.so:sysutils/libdisplay-info \
 		libseat.so:sysutils/seatd \
 		libinput.so:x11/libinput \
 		libxkbcommon.so:x11/libxkbcommon
@@ -43,11 +44,13 @@ post-patch:
 # Extract (snapshot) version from the port instead of meson.build
 	@${REINPLACE_CMD} -i .nogit -e 's/unknown commit/${DISTVERSIONFULL}/' \
 		${WRKSRC}/src/main.rs
+# Respect PREFIX for system-wide config
+	@${REINPLACE_CMD} -e 's,/etc,${PREFIX}&,' \
+		${WRKSRC}/src/main.rs
 # Don't generate debuginfo as the binaries will be stripped
 	@${REINPLACE_CMD} '/line-tables-only/d' ${WRKSRC}/Cargo.toml
 
 post-install:
-	${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/${PORTNAME}
 # Install extras similar to package.metadata.generate-rpm
 .for f in resources/*.desktop resources/*-portals.conf
 	${MKDIR} ${STAGEDIR}${PREFIX}/${PLIST_FILES:M*.${f:E}:H}

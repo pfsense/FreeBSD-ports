@@ -16,7 +16,6 @@
 %%QT_INCDIR%%/QtSerialBus/%%FULLVER%%/QtSerialBus/private/qmodbustcpclient_p.h
 %%QT_INCDIR%%/QtSerialBus/%%FULLVER%%/QtSerialBus/private/qmodbustcpserver_p.h
 %%QT_INCDIR%%/QtSerialBus/%%FULLVER%%/QtSerialBus/private/qtserialbus-config_p.h
-%%QT_INCDIR%%/QtSerialBus/%%FULLVER%%/QtSerialBus/private/qtserialbusexports_p.h
 %%QT_INCDIR%%/QtSerialBus/QCanBus
 %%QT_INCDIR%%/QtSerialBus/QCanBusDevice
 %%QT_INCDIR%%/QtSerialBus/QCanBusDeviceInfo
@@ -95,6 +94,7 @@ lib/cmake/Qt6SerialBus/Qt6SerialBusDependencies.cmake
 lib/cmake/Qt6SerialBus/Qt6SerialBusPlugins.cmake
 lib/cmake/Qt6SerialBus/Qt6SerialBusTargets-%%CMAKE_BUILD_TYPE%%.cmake
 lib/cmake/Qt6SerialBus/Qt6SerialBusTargets.cmake
+lib/cmake/Qt6SerialBus/Qt6SerialBusVersionlessAliasTargets.cmake
 lib/cmake/Qt6SerialBus/Qt6SerialBusVersionlessTargets.cmake
 lib/cmake/Qt6SerialBus/Qt6TinyCanBusPluginAdditionalTargetInfo.cmake
 lib/cmake/Qt6SerialBus/Qt6TinyCanBusPluginConfig.cmake
@@ -108,6 +108,14 @@ lib/cmake/Qt6SerialBus/Qt6VirtualCanBusPluginConfigVersion.cmake
 lib/cmake/Qt6SerialBus/Qt6VirtualCanBusPluginConfigVersionImpl.cmake
 lib/cmake/Qt6SerialBus/Qt6VirtualCanBusPluginTargets-%%CMAKE_BUILD_TYPE%%.cmake
 lib/cmake/Qt6SerialBus/Qt6VirtualCanBusPluginTargets.cmake
+lib/cmake/Qt6SerialBusPrivate/Qt6SerialBusPrivateAdditionalTargetInfo.cmake
+lib/cmake/Qt6SerialBusPrivate/Qt6SerialBusPrivateConfig.cmake
+lib/cmake/Qt6SerialBusPrivate/Qt6SerialBusPrivateConfigVersion.cmake
+lib/cmake/Qt6SerialBusPrivate/Qt6SerialBusPrivateConfigVersionImpl.cmake
+lib/cmake/Qt6SerialBusPrivate/Qt6SerialBusPrivateDependencies.cmake
+lib/cmake/Qt6SerialBusPrivate/Qt6SerialBusPrivateTargets.cmake
+lib/cmake/Qt6SerialBusPrivate/Qt6SerialBusPrivateVersionlessAliasTargets.cmake
+lib/cmake/Qt6SerialBusPrivate/Qt6SerialBusPrivateVersionlessTargets.cmake
 %%QT_BINDIR%%/canbusutil
 %%QT_LIBDIR%%/libQt6SerialBus.prl
 %%QT_LIBDIR%%/libQt6SerialBus.so
@@ -120,5 +128,6 @@ lib/cmake/Qt6SerialBus/Qt6VirtualCanBusPluginTargets.cmake
 %%QT_PLUGINDIR%%/canbus/libqtpeakcanbus.so
 %%QT_PLUGINDIR%%/canbus/libqttinycanbus.so
 %%QT_PLUGINDIR%%/canbus/libqtvirtualcanbus.so
+%%QT_SBOMDIR%%/qtserialbus-%%FULLVER%%.spdx
 libdata/pkgconfig/Qt6SerialBus.pc
 %%QT_DATADIR%%/modules/SerialBus.json

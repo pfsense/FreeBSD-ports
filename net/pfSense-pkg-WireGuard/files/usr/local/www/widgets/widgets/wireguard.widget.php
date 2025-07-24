@@ -3,7 +3,7 @@
  * wireguard.widget.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2021-2024 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2021-2025 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2021 R. Christian McDonald (https://github.com/rcmcdonald91)
  * Copyright (c) 2021 Vajonam
  * Copyright (c) 2020 Ascrod
@@ -37,7 +37,23 @@ global $wgg;
 
 wg_globals();
 
-$widgetkey			= (isset($_POST['widgetkey'])) ? $_POST['widgetkey'] : $widgetkey;
+/*
+ * Validate the "widgetkey" value.
+ * When this widget is present on the Dashboard, $widgetkey is defined before
+ * the Dashboard includes the widget. During other types of requests, such as
+ * saving settings or AJAX, the value may be set via $_POST or similar.
+ */
+if ($_POST['widgetkey'] || $_GET['widgetkey']) {
+	$rwidgetkey = isset($_POST['widgetkey']) ? $_POST['widgetkey'] : (isset($_GET['widgetkey']) ? $_GET['widgetkey'] : null);
+	[$wname, $wid] = explode('-', $rwidgetkey, 2);
+	if (($wname == basename(__FILE__, '.widget.php')) &&
+	    is_numericint($wid)) {
+		$widgetkey = $rwidgetkey;
+	} else {
+		print gettext("Invalid Widget Key");
+		exit;
+	}
+}
 
 $widget_config			= $user_settings['widgets'][$widgetkey];
 

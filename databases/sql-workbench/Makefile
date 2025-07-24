@@ -1,5 +1,5 @@
 PORTNAME=	sql-workbench
-PORTVERSION=	138
+PORTVERSION=	141
 PORTEPOCH=	1
 CATEGORIES=	databases java
 MASTER_SITES=	http://www.sql-workbench.net/ \
@@ -12,8 +12,7 @@ WWW=		https://www.sql-workbench.eu/
 
 LICENSE=	APACHE20
 
-USES=		zip
-USE_JAVA=	yes
+USES=		java zip
 JAVA_VERSION=	11+
 
 NO_BUILD=	yes

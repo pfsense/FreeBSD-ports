@@ -1,6 +1,6 @@
 PORTNAME=	ctags
 PORTVERSION=	1.0.5
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	devel python
 MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -12,12 +12,12 @@ WWW=		https://pypi.org/project/python-ctags/
 
 LICENSE=	LGPL20+
 
-USES=		python:3.8-3.9
+USES=		python:3.9
 USE_PYTHON=	distutils autoplist
 
 .include <bsd.port.pre.mk>
 
-.if ${OPSYS} == FreeBSD && ( ${OSVERSION} >= 1400079 || ( ${OSVERSION} >= 1302505 && ${OSVERSION} < 1400000 ))
+.if ${OPSYS} == FreeBSD
 CFLAGS+=	-Wno-error=int-conversion
 .endif
 

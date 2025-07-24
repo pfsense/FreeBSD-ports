@@ -1,6 +1,6 @@
 PORTNAME=	nginx
-PORTVERSION=	1.26.1
-PORTREVISION=	0
+PORTVERSION=	1.28.0
+PORTREVISION=	2
 PORTEPOCH=	3
 CATEGORIES=	www
 MASTER_SITES=	https://nginx.org/download/ \
@@ -174,7 +174,7 @@ HTTPV3_BORING_RUN_DEPENDS=	${LOCALBASE}/bin/bssl:security/boringssl
 HTTPV3_BORING_IMPLIES=		HTTPV3
 HTTPV3_BORING_PREVENTS=		HTTPV3_LSSL HTTPV3_QTLS
 HTTPV3_LSSL_BUILD_DEPENDS=	${LOCALBASE}/include/tls.h:security/libressl-devel
-HTTPV3_LSSL_BUILD_DEPENDS=	${LOCALBASE}/include/tls.h:security/libressl-devel
+HTTPV3_LSSL_RUN_DEPENDS=	${LOCALBASE}/include/tls.h:security/libressl-devel
 HTTPV3_LSSL_IMPLIES=		HTTPV3
 HTTPV3_LSSL_PREVENTS=		HTTPV3_BORING HTTPV3_QTLS
 HTTPV3_QTLS_BUILD_DEPENDS=	${LOCALBASE}/include/openssl/quic.h:security/openssl-quictls
@@ -269,9 +269,6 @@ pre-everything::
 post-extract-NAXSI-on:
 	@${RMDIR} ${WRKSRC_naxsi}/naxsi_src/libinjection
 	@${LN} -s ${WRKSRC_libinjection} ${WRKSRC_naxsi}/naxsi_src/libinjection
-
-pre-patch-HTTPV3-on:
-	@${MV} ${WRKSRC}/README ${WRKSRC}/README.1st
 
 post-patch:
 	@${REINPLACE_CMD} 's!%%HTTP_PORT%%!${HTTP_PORT}!; \

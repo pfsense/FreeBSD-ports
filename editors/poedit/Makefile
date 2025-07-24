@@ -1,5 +1,6 @@
 PORTNAME=	poedit
 DISTVERSION=	3.4.2
+PORTREVISION=	7
 CATEGORIES=	editors
 MASTER_SITES=	https://github.com/vslavik/${PORTNAME}/releases/download/v${DISTVERSION}-oss/
 
@@ -20,7 +21,7 @@ LIB_DEPENDS=	libboost_thread.so:devel/boost-libs \
 
 USES=				desktop-file-utils gettext-tools:build,run \
 				gmake gnome pkgconfig
-USE_GNOME=			cairo gdkpixbuf2 glib20 gtk30 pango
+USE_GNOME=			cairo gdkpixbuf glib20 gtk30 pango
 USE_WX=				3.2
 WX_CONF_ARGS=			absolute
 GNU_CONFIGURE=			yes

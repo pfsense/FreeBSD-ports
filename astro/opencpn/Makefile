@@ -1,7 +1,7 @@
 PORTNAME=	opencpn
 PORTVERSION=	5.2.4
 DISTVERSIONPREFIX=	v
-PORTREVISION=	8
+PORTREVISION=	10
 CATEGORIES=	astro geography
 
 MAINTAINER=	ml@netfence.it
@@ -26,7 +26,7 @@ USE_GITHUB=	yes
 GH_ACCOUNT=	${GH_PROJECT}
 GH_PROJECT=	OpenCPN
 USE_GL=		gl glu
-USE_GNOME=	cairo gdkpixbuf2 gtk30 pango
+USE_GNOME=	cairo gdkpixbuf gtk30 pango
 USE_LDCONFIG=	${PREFIX}/lib/opencpn
 USE_WX=		3.0+
 WX_CONF_ARGS=	absolute

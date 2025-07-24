@@ -3,7 +3,7 @@
  * snort_ip_list_mgmt.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2004-2024 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2004-2025 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2009-2010 Robert Zelaya.
  * Copyright (c) 2022 Bill Meeks
  * All rights reserved.
@@ -167,8 +167,8 @@ display_top_tabs($tab_array, true);
 						<td><?=date('M-d Y g:i a', filemtime("{$iprep_path}{$file}")); ?></td>
 						<td><?=format_bytes(filesize("{$iprep_path}{$file}")); ?> </td>
 						<td>
-							<a href="#" class="fa-solid fa-pencil icon-primary" onClick="snort_iplist_action('edit', '<?=addslashes($file);?>');" title="<?=gettext('Edit this IP List');?>"></a>
-							<a href="#" class="fa-solid fa-trash-can icon-primary no-confirm" onClick="snort_iplist_action('delete', '<?=addslashes($file);?>');" title="<?=gettext('Delete this IP List');?>"></a>
+							<a href="#" class="fa-solid fa-pencil" onClick="snort_iplist_action('edit', '<?=addslashes($file);?>');" title="<?=gettext('Edit this IP List');?>"></a>
+							<a href="#" class="fa-solid fa-trash-can no-confirm" onClick="snort_iplist_action('delete', '<?=addslashes($file);?>');" title="<?=gettext('Delete this IP List');?>"></a>
 						</td>
 					</tr>
 				<?php endforeach; ?>

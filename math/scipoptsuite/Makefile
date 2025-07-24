@@ -1,5 +1,5 @@
 PORTNAME=	scipoptsuite
-DISTVERSION=	9.1.0
+DISTVERSION=	9.2.3
 CATEGORIES=	math
 MASTER_SITES=	https://scipopt.org/download/release/
 
@@ -10,7 +10,8 @@ WWW=		https://scipopt.org/
 LICENSE=	GPLv3
 
 BUILD_DEPENDS=	${LOCALBASE}/include/boost/variant.hpp:devel/boost-libs
-LIB_DEPENDS=	libgmp.so:math/gmp \
+LIB_DEPENDS=	libboost_iostreams.so:devel/boost-libs \
+		libgmp.so:math/gmp \
 		libgsl.so:math/gsl \
 		libipopt.so:math/ipopt \
 		libmpfr.so:math/mpfr \

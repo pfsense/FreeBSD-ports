@@ -1,8 +1,8 @@
 PORTNAME=	kterm
 PORTVERSION=	6.2.0
 DISTVERSIONPREFIX=	v
-DISTVERSIONSUFFIX=	.fb6
-PORTREVISION=	19
+DISTVERSIONSUFFIX=	.fb7
+PORTREVISION=	20
 CATEGORIES=	japanese x11
 MASTER_SITES=	LOCAL/hrs:pcemu
 DISTFILES=	pcemu1.01alpha.tar.gz:pcemu
@@ -10,7 +10,7 @@ DIST_SUBDIR=	${PORTNAME}
 
 MAINTAINER=	hrs@FreeBSD.org
 COMMENT=	Xterm variant with Japanese support
-WWW=		https://bogytech.blogspot.jp/search/label/kterm
+WWW=		https://bogytech.blogspot.com/search/label/kterm
 
 LICENSE=	MIT
 
@@ -19,7 +19,9 @@ USE_GITHUB=	yes
 GH_ACCOUNT=	hrs-allbsd
 USE_XORG=	ice sm x11 xaw xext xmu xpm xt
 
-CFLAGS+=	-Wno-return-type
+CFLAGS+=	-Wno-return-type -Wno-deprecated-non-prototype \
+		-Wno-implicit-function-declaration \
+		-Wno-implicit-int
 
 PORTDOCS=	README.kt README.wallpaper.ja dot.termcap
 
@@ -40,11 +42,11 @@ VGAFONT_EXTRACT_DEPENDS= \
 VGAFONT_BUILD_DEPENDS= \
     ${LOCALBASE}/bin/mkfontscale:x11-fonts/mkfontscale
 VGAFONT_USES=	fonts
-XAW3DLIB_LIB_DEPENDS=	libXaw3d.so:x11-toolkits/Xaw3d
+XAW3DLIB_LIB_DEPENDS=	libXaw3d.so:x11-toolkits/libXaw3d
 
 .include <bsd.port.options.mk>
 
-.if ${OPSYS} == FreeBSD && ( ${OSVERSION} >= 1400079 || ( ${OSVERSION} >= 1302505 && ${OSVERSION} < 1400000 ))
+.if ${OPSYS} == FreeBSD
 CFLAGS+=	-Wno-error=int-conversion
 .endif
 

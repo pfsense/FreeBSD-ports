@@ -1,7 +1,7 @@
 PORTNAME=	libthreadar
-PORTVERSION=	1.4.0
+DISTVERSION=	1.6.0
 CATEGORIES=	devel sysutils
-MASTER_SITES=	SF/${PORTNAME}/${PORTVERSION}/ \
+MASTER_SITES=	SF/${PORTNAME}/${DISTVERSION}/ \
 		https://dar.edrusb.org/libthreadar/Releases/
 
 MAINTAINER=	bofh@FreeBSD.org
@@ -15,7 +15,10 @@ USES=		libtool
 USE_LDCONFIG=	yes
 
 GNU_CONFIGURE=	yes
+
 INSTALL_TARGET=	install-strip
 TEST_TARGET=	check
+
+PLIST_SUB=	SOLIB_MINOR=${DISTVERSION:S/1.//}
 
 .include <bsd.port.mk>

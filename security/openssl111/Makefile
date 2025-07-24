@@ -17,7 +17,7 @@ DEPRECATED=	End-of-life since 2023-09-11, see https://www.openssl.org/blog/blog/
 		port will be removed when FreeBSD 13 is EoL
 EXPIRATION_DATE=	2026-04-30
 
-CONFLICTS_INSTALL=	boringssl libressl libressl-devel openssl openssl3[12] openssl-quictls
+CONFLICTS_INSTALL=	boringssl libressl libressl-devel openssl openssl3* openssl*-quictls
 
 USES=		cpe perl5
 USE_PERL5=	build
@@ -43,12 +43,10 @@ OPTIONS_GROUP_OPTIMIZE=	ASM SSE2 THREADS
 OPTIONS_DEFINE_i386=	I386
 OPTIONS_GROUP_PROTOCOLS=NEXTPROTONEG SCTP SSL3 TLS1 TLS1_1 TLS1_2
 
-OPTIONS_DEFINE=	ASYNC CRYPTODEV CT KTLS MAN3 RFC3779 SHARED ZLIB
+OPTIONS_DEFINE=	ASYNC CT KTLS MAN3 RFC3779 SHARED ZLIB
 
 OPTIONS_DEFAULT=ASM ASYNC CT GOST DES EC KTLS MAN3 MD4 NEXTPROTONEG RC2 \
 		RC4 RMD160 SCTP SHARED SSE2 THREADS TLS1 TLS1_1 TLS1_2
-
-OPTIONS_EXCLUDE=CRYPTODEV
 
 .if ${MACHINE_ARCH} == "amd64"
 OPTIONS_GROUP_OPTIMIZE+=	EC
@@ -62,7 +60,6 @@ ARIA_DESC=	ARIA (South Korean standard)
 ASM_DESC=	Assembler code
 ASYNC_DESC=	Asynchronous mode
 CIPHERS_DESC=	Block Cipher Support
-CRYPTODEV_DESC=	/dev/crypto support
 CT_DESC=	Certificate Transparency Support
 DES_DESC=	(Triple) Data Encryption Standard
 EC_DESC=	Optimize NIST elliptic curves
@@ -120,7 +117,7 @@ SHARED_USE=		ldconfig=yes
 SSL3_CONFIGURE_ON+=	enable-ssl3-method
 ZLIB_CONFIGURE_ON=	zlib-dynamic
 
-PORTSCOUT=		limit=^1\.1\.1
+PORTSCOUT=		limit:^1\.1\.1
 
 .include <bsd.port.pre.mk>
 .if ${PREFIX} == /usr

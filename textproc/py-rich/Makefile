@@ -1,5 +1,5 @@
 PORTNAME=	rich
-PORTVERSION=	13.7.1
+PORTVERSION=	14.0.0
 DISTVERSIONPREFIX=	v
 CATEGORIES=	textproc python
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -14,7 +14,7 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}poetry-core>=1.0.0:devel/py-poetry-core@${PY_FLAVOR}
 
 RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}markdown-it-py>=2.2.0:textproc/py-markdown-it-py@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}pygments>=2.13.0<3.0.0:textproc/py-pygments@${PY_FLAVOR}
+		${PYTHON_PKGNAMEPREFIX}pygments>=2.13.0:textproc/py-pygments@${PY_FLAVOR}
 
 NO_ARCH=	yes
 USES=		python
@@ -30,7 +30,7 @@ BINARY_ALIAS=	git=false
 
 .include <bsd.port.pre.mk>
 
-.if ${PYTHON_REL} < 30900
+.if ${PYTHON_REL} < 31100
 RUN_DEPENDS+=	${PYTHON_PKGNAMEPREFIX}typing-extensions>=4.0.0<5.0:devel/py-typing-extensions@${PY_FLAVOR}
 .endif
 

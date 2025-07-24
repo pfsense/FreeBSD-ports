@@ -1,6 +1,7 @@
 PORTNAME=	mpv
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.38.0
+DISTVERSION=	0.40.0
+PORTREVISION=	3
 PORTEPOCH=	1
 CATEGORIES=	multimedia audio
 
@@ -13,7 +14,7 @@ LICENSE_COMB=	multi
 LICENSE_FILE_GPLv2+ =	${WRKSRC}/LICENSE.GPL
 LICENSE_FILE_LGPL21+ =	${WRKSRC}/LICENSE.LGPL
 
-BUILD_DEPENDS=	ffmpeg>=4.0.2,1:multimedia/ffmpeg
+BUILD_DEPENDS=	ffmpeg>=6.1,1:multimedia/ffmpeg
 LIB_DEPENDS=	libplacebo.so:graphics/libplacebo \
 		libavcodec.so:multimedia/ffmpeg \
 		libass.so:multimedia/libass
@@ -26,15 +27,15 @@ SHEBANG_FILES=	TOOLS/*.py
 USE_GITHUB=	yes
 GH_ACCOUNT=	mpv-player
 MESON_ARGS=	--auto-features=auto \
-		-Dshaderc=disabled \
-		-Dlibmpv=true
+		-Dshaderc=disabled
 
-OPTIONS_DEFINE=		ARCHIVE DOCS LCMS2 MANPAGES MUJS RUBBERBAND UCHARDET EXAMPLES ZIMG
-OPTIONS_DEFAULT=	ARCHIVE DVDNAV LCMS2 LUAJIT MANPAGES NVDEC OPENGL UCHARDET \
+OPTIONS_DEFINE=		ARCHIVE DOCS EXAMPLES LCMS2 MANPAGES MUJS RUBBERBAND \
+			UCHARDET YTDLP ZIMG
+OPTIONS_DEFAULT=	ARCHIVE DRM DVDNAV LCMS2 LUAJIT MANPAGES NVDEC OPENGL UCHARDET \
 			V4L VAAPI VDPAU VULKAN WAYLAND X11 YTDLP
 OPTIONS_GROUP=		IN VO AO
 OPTIONS_GROUP_IN=	CDIO DVDNAV LIBBLURAY V4L VAPOURSYNTH
-OPTIONS_GROUP_VO=	CACA NVDEC OPENGL SIXEL VAAPI VDPAU VULKAN WAYLAND X11
+OPTIONS_GROUP_VO=	CACA DRM NVDEC OPENGL SIXEL VAAPI VDPAU VULKAN WAYLAND X11
 OPTIONS_GROUP_AO=	ALSA JACK OPENAL PIPEWIRE PULSEAUDIO SDL SNDIO
 OPTIONS_SINGLE=		LUA
 OPTIONS_SINGLE_LUA=	LUA LUAJIT LUA_NONE
@@ -50,6 +51,7 @@ SIXEL_DESC=		Sixel graphics support
 UCHARDET_DESC=		Guess subtitle encoding via uchardet
 VAPOURSYNTH_DESC=	VapourSynth filter bridge
 VULKAN_DESC=		Vulkan output support
+YTDLP_DESC=		Support ytdl protocol (installs yt-dlp)
 ZIMG_DESC=		High quality software scaling via "z" library
 IN_DESC=		Input
 VO_DESC=		Video Output
@@ -76,6 +78,11 @@ DVDNAV_MESON_ENABLED=		dvdnav
 JACK_LIB_DEPENDS=		libjack.so:audio/jack
 JACK_MESON_ENABLED=		jack
 
+DRM_DESC=			KMS console support
+DRM_LIB_DEPENDS=		libdrm.so:graphics/libdrm \
+				libdisplay-info.so:sysutils/libdisplay-info
+DRM_MESON_ENABLED=		drm
+
 LCMS2_LIB_DEPENDS=		liblcms2.so:graphics/lcms2
 LCMS2_MESON_ENABLED=		lcms2
 
@@ -89,6 +96,8 @@ LUAJIT_USES=			luajit
 LUAJIT_MESON_ON=		-Dlua=luajit
 
 LUA_NONE_MESON_ON=		-Dlua=disabled
+LUA_NONE_PREVENTS=		YTDLP
+LUA_NONE_PREVENTS_MSG=		Lua scripting is required for YouTube playback
 
 MANPAGES_BUILD_DEPENDS=		rst2man:textproc/py-docutils
 MANPAGES_MESON_ENABLED=		manpage-build

@@ -1,29 +1,29 @@
 PORTNAME=	encryptpad
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.5.0.2
-PORTREVISION=	1
+DISTVERSION=	0.5.0.4
+PORTREVISION=	2
 CATEGORIES=	editors security
 
-MAINTAINER=	dmgk@FreeBSD.org
+MAINTAINER=	eduardo@FreeBSD.org
 COMMENT=	Minimalist secure text editor and binary encryptor
 WWW=		https://evpo.net/encryptpad/
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/license.txt
 
-LIB_DEPENDS=	libbotan-2.so:security/botan2
+LIB_DEPENDS=	libbotan-3.so:security/botan3
 
 USES=		compiler:c++11-lang desktop-file-utils gl gmake pkgconfig \
-		python:build qt:5 shared-mime-info shebangfix
+		python:build qt:6 shared-mime-info
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	evpo
 GH_PROJECT=	EncryptPad
+GH_TAGNAME=	a0360d132b1367a9ba5328253a1c4d402266b4bd # qt6 branch (plus botan3 support) 20250623
+USE_GL=		opengl
+USE_QT=		base svg
 
-USE_GL=		gl
-USE_QT=		core gui widgets buildtools:build qmake:build
-BINARY_ALIAS=	python=${PYTHON_CMD} \
-		qmake=${QMAKE}
+BINARY_ALIAS=	python3=${PYTHON_CMD} qmake=${QMAKE}
 
 PORTDOCS=	*
 

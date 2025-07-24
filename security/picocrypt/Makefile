@@ -1,11 +1,11 @@
 PORTNAME=	picocrypt
-DISTVERSION=	1.34
-PORTREVISION=	2
+DISTVERSION=	1.48 # Missing modules.txt, generate one with `go mod vendor` and place it in ${FILESDIR}
+PORTREVISION=	4
 CATEGORIES=	security
 
 MAINTAINER=	eduardo@FreeBSD.org
 COMMENT=	Small, simple, yet very secure encryption tool
-WWW=		https://github.com/HACKERALERT/Picocrypt
+WWW=		https://github.com/Picocrypt/Picocrypt
 
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/../LICENSE
@@ -18,30 +18,31 @@ LIB_DEPENDS=	libharfbuzz.so:print/harfbuzz
 
 USES=		gl gnome go:modules pkgconfig xorg
 USE_GL=		gl
-USE_GNOME=	cairo gdkpixbuf2 gtk30
+USE_GNOME=	cairo gdkpixbuf gtk30
 USE_XORG=	x11 xau xcb xdmcp
 USE_GITHUB=	yes
-GH_ACCOUNT=	HACKERALERT
+GH_ACCOUNT=	Picocrypt
 GH_PROJECT=	Picocrypt
-GH_TUPLE=	HACKERALERT:dialog:af3bc34fe379:hackeralert_dialog/vendor/github.com/HACKERALERT/dialog \
-		HACKERALERT:giu:211c1da061d9:hackeralert_giu/vendor/github.com/HACKERALERT/giu \
-		HACKERALERT:gl:73af36e130d3:hackeralert_gl/vendor/github.com/HACKERALERT/gl \
-		HACKERALERT:glfw:c08d79e41abe:hackeralert_glfw_glfw/vendor/github.com/HACKERALERT/glfw \
-		HACKERALERT:imgui-go:1d1c00423178:hackeralert_imgui_go/vendor/github.com/HACKERALERT/imgui-go \
-		HACKERALERT:infectious:b9ce72346a19:hackeralert_infectious/vendor/github.com/HACKERALERT/infectious \
-		HACKERALERT:mainthread:2ec9e701cc14:hackeralert_mainthread/vendor/github.com/HACKERALERT/mainthread \
-		HACKERALERT:serpent:293b29869c66:hackeralert_serpent/vendor/github.com/HACKERALERT/serpent \
-		HACKERALERT:w32:76f2a4b526bd:hackeralert_w32/vendor/github.com/HACKERALERT/w32 \
-		HACKERALERT:zxcvbn-go:fa924b767f89:hackeralert_zxcvbn_go/vendor/github.com/HACKERALERT/zxcvbn-go \
-		golang:crypto:v0.22.0:golang_crypto/vendor/golang.org/x/crypto \
-		golang:sys:9a28524796a5:golang_sys/vendor/golang.org/x/sys
+GH_TUPLE=	Picocrypt:dialog:78f7b909315b:picocrypt_dialog/vendor/github.com/Picocrypt/dialog \
+		Picocrypt:giu:fe90a482e6f2:picocrypt_giu/vendor/github.com/Picocrypt/giu \
+		Picocrypt:gl:767b58dbf936:picocrypt_gl/vendor/github.com/Picocrypt/gl \
+		Picocrypt:glfw:7b96bfdb8dd8:picocrypt_glfw_glfw/vendor/github.com/Picocrypt/glfw \
+		Picocrypt:imgui-go:d86b230f5fbb:picocrypt_imgui_go/vendor/github.com/Picocrypt/imgui-go \
+		Picocrypt:infectious:9f88c6307b39:picocrypt_infectious/vendor/github.com/Picocrypt/infectious \
+		Picocrypt:mainthread:496f638392b3:picocrypt_mainthread/vendor/github.com/Picocrypt/mainthread \
+		Picocrypt:serpent:9ad6ab254fd7:picocrypt_serpent/vendor/github.com/Picocrypt/serpent \
+		Picocrypt:w32:1183079d4d57:picocrypt_w32/vendor/github.com/Picocrypt/w32 \
+		Picocrypt:zxcvbn-go:d59695960527:picocrypt_zxcvbn_go/vendor/github.com/Picocrypt/zxcvbn-go \
+		golang:crypto:v0.37.0:golang_crypto/vendor/golang.org/x/crypto \
+		golang:sys:v0.32.0:golang_sys/vendor/golang.org/x/sys
 
 WRKSRC_SUBDIR=	src
 
 PLIST_FILES=	bin/${PORTNAME}
 
-post-patch:
+pre-build:
 	@${LN} -sf dlgs_linux.go \
-	   ${WRKSRC}/vendor/github.com/HACKERALERT/dialog/dlgs_${OPSYS:tl}.go
+		${WRKSRC}/vendor/github.com/Picocrypt/dialog/dlgs_${OPSYS:tl}.go
+	${CP} ${FILESDIR}/modules.txt ${WRKSRC}/vendor/
 
 .include <bsd.port.mk>

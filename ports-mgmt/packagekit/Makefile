@@ -1,5 +1,5 @@
 PORTNAME=	PackageKit
-PORTVERSION=	1.2.8
+PORTVERSION=	1.3.1
 CATEGORIES=	ports-mgmt sysutils
 MASTER_SITES=	https://www.freedesktop.org/software/PackageKit/releases/
 
@@ -27,9 +27,12 @@ USE_LDCONFIG=	yes
 CPE_VENDOR=	packagekit_project
 SHEBANG_FILES=	contrib/cron/packagekit-background.cron
 
-MESON_ARGS=	-Dlocalstatedir=/var -Dsysconfdir=${PREFIX}/etc \
+MESON_ARGS=	-Dsysconfdir=${PREFIX}/etc \
 		-Dpackaging_backend=freebsd -Dsystemd=false -Doffline_update=false \
 		-Dbash_completion=false -Dbash_command_not_found=false \
 		-Dgstreamer_plugin=false
+
+post-install:
+	${MV} ${STAGEDIR}/var/lib/PackageKit/transactions.db ${STAGEDIR}/var/lib/PackageKit/transactions.db.sample
 
 .include <bsd.port.mk>

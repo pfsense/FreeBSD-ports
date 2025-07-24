@@ -1,5 +1,5 @@
 PORTNAME=	spf-engine
-DISTVERSION=	3.0.4
+DISTVERSION=	3.1.0
 CATEGORIES=	mail python
 MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -14,7 +14,7 @@ LICENSE_FILE_APACHE20=	${WRKSRC}/COPYING
 
 BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}flit-core>=3.8<4:devel/py-flit-core@${PY_FLAVOR}
 RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}authres>0:mail/py-authres@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}milter>0:mail/py-milter@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}pymilter>0:mail/py-pymilter@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}pyspf>0:mail/py-pyspf@${PY_FLAVOR}
 
 USES=		python shebangfix

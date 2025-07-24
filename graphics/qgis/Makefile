@@ -1,5 +1,5 @@
 PORTNAME=	qgis
-DISTVERSION=	3.38.0
+DISTVERSION=	3.44.1
 CATEGORIES=	graphics geography
 MASTER_SITES=	https://qgis.org/downloads/
 
@@ -12,6 +12,7 @@ LICENSE_FILE=	${WRKSRC}/doc/LICENSE
 
 BUILD_DEPENDS=	gpsbabel>=1.7.0:astro/gpsbabel \
 		opencl>=0:devel/opencl \
+		${PY_SETUPTOOLS} \
 		${PYTHON_PKGNAMEPREFIX}cycler>=0.11.0:devel/py-cycler@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}python-dateutil>=2.8.2:devel/py-python-dateutil@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}future>=0.18.2:devel/py-future@${PY_FLAVOR} \
@@ -31,7 +32,7 @@ BUILD_DEPENDS=	gpsbabel>=1.7.0:astro/gpsbabel \
 		${PYTHON_PKGNAMEPREFIX}requests>=2.28.0:www/py-requests@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}six>=1.16.0:devel/py-six@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}sqlite3>=3.7.16:databases/py-sqlite3@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}yaml>=5.4.1:devel/py-yaml@${PY_FLAVOR}
+		${PYTHON_PKGNAMEPREFIX}pyyaml>=5.4.1:devel/py-pyyaml@${PY_FLAVOR}
 LIB_DEPENDS=	libabsl_log_internal_check_op.so:devel/abseil \
 		libdraco.so:archivers/draco \
 		libexiv2.so:graphics/exiv2 \
@@ -41,15 +42,15 @@ LIB_DEPENDS=	libabsl_log_internal_check_op.so:devel/abseil \
 		libgeos.so:graphics/geos \
 		libgsl.so:math/gsl \
 		libhdf5.so:science/hdf5 \
-		libmdal.so:math/mdal \
 		libminizip.so:archivers/minizip \
 		libnetcdf.so:science/netcdf \
 		libOpenCL.so:devel/ocl-icd \
 		libpdalcpp.so:math/pdal \
 		libproj.so:graphics/proj \
 		libprotobuf-lite.so:devel/protobuf \
+		libqca-qt5.so:devel/qca@qt5 \
 		libqjson-qt5.so:devel/qjson \
-		libqscintilla2_qt5.so:devel/qscintilla2-qt5 \
+		libqscintilla2_qt5.so:devel/qscintilla2@qt5 \
 		libqt5keychain.so:security/qtkeychain@qt5 \
 		libqwt.so:x11-toolkits/qwt6@qt5 \
 		librttopo.so:devel/librttopo \
@@ -64,7 +65,7 @@ RUN_DEPENDS=	astyle:devel/astyle \
 		${PYTHON_PKGNAMEPREFIX}black>=22.10:devel/py-black@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}cycler>=0.11.0:devel/py-cycler@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}python-dateutil>=2.8.2:devel/py-python-dateutil@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}Fiona>=1.8.21:graphics/py-fiona@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}fiona>=1.8.21:graphics/py-fiona@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}future>=0.18.2:devel/py-future@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}gdal>=3.5.2:graphics/py-gdal@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}geojson>=2.3.0:devel/py-geojson@${PY_FLAVOR} \
@@ -103,21 +104,21 @@ RUN_DEPENDS=	astyle:devel/astyle \
 		${PYTHON_PKGNAMEPREFIX}termcolor>=2.1.0:devel/py-termcolor@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}xcffib>=0.11.1:x11/py-xcffib@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}xlrd>=2.0.1:textproc/py-xlrd@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}yaml>=5.4.1:devel/py-yaml@${PY_FLAVOR}
+		${PYTHON_PKGNAMEPREFIX}pyyaml>=5.4.1:devel/py-pyyaml@${PY_FLAVOR}
 
 ### Fortran is needed by numpy, GRASS, etc.
 USES=		bison cmake compiler:features desktop-file-utils \
-		fortran gl gmake gnome iconv pgsql pyqt:5 python qca qt:5 \
+		fortran gl gmake gnome iconv pgsql pyqt:5 python qt:5 \
 		shebangfix sqlite:3 tar:bz2
 USE_GL=		gl
 USE_GNOME=	libxml2
 USE_LDCONFIG=	yes
-USE_PYQT=	pyqt5 qscintilla2 pysip sip
+USE_PYQT=	pyqt5 pysip qscintilla2 qtbuilder:build sip:build webengine
 USE_QT=		3d buildtools:build core concurrent dbus declarative \
 		designer:build qdoc:build gamepad gui linguist:build location \
 		multimedia network printsupport qmake:build script serialport \
 		sql sql-pgsql sql-sqlite3 svg testlib uitools:build \
-		webengine widgets xml
+		webchannel webengine widgets xml
 
 SHEBANG_FILES=	src/plugins/grass/scripts/*.py
 
@@ -133,8 +134,10 @@ CMAKE_ARGS+=	-DCMAKE_BUILD_TYPE:STRING=Release \
 		-DQGIS_MANUAL_SUBDIR:PATH=share/man
 CMAKE_ON=	USE_OPENCL WITH_ASTYLE WITH_BINDINGS WITH_COPC \
 		WITH_CUSTOM_WIDGETS WITH_DRACO WITH_EPT \
-		WITH_INTERNAL_LAZPERF WITH_POSTGRESQL
-CMAKE_OFF=	ENABLE_TESTS WITH_INTERNAL_MDAL WITH_QTWEBKIT WITH_QWTPOLAR
+		WITH_INTERNAL_LAZPERF WITH_INTERNAL_MDAL \
+		WITH_POSTGRESQL WITH_QTWEBENGINE
+CMAKE_OFF=	BUILD_WITH_QT6 ENABLE_TESTS USE_CCACHE WITH_QTWEBKIT \
+		WITH_QWTPOLAR
 
 CONFLICTS_INSTALL=	qgis-ltr
 

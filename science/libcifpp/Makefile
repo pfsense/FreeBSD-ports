@@ -1,9 +1,9 @@
 PORTNAME=	libcifpp
 DISTVERSIONPREFIX=	v
-DISTVERSION=	5.1.0.1
-PORTREVISION=	1
+DISTVERSION=	7.0.8
+PORTREVISION=	2
 CATEGORIES=	science
-MASTER_SITES=	ftp://ftp.wwpdb.org/pub/pdb/data/monomers/:components
+MASTER_SITES=	https://files.wwpdb.org/pub/pdb/data/monomers/:components
 DISTFILES=	components.cif.gz:components
 DIST_SUBDIR=	${PORTNAME}-${PORTVERSION}
 EXTRACT_ONLY=	${GH_ACCOUNT}-${GH_PROJECT}-${DISTVERSIONFULL}_GH0${EXTRACT_SUFX}
@@ -15,6 +15,7 @@ WWW=		https://github.com/PDB-REDO/libcifpp
 LICENSE=	BSD2CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
+BUILD_DEPENDS=	catch>0:devel/catch
 LIB_DEPENDS=	libboost_iostreams.so:devel/boost-libs
 RUN_DEPENDS=	bash:shells/bash
 
@@ -34,5 +35,7 @@ post-install:
 	@cd ${STAGEDIR}${PREFIX} && \
 		${RM} -r var etc/libcifpp etc/periodic
 	@${RM} -r ${STAGEDIR}/var/cache/libcifpp
+	# workaround for https://github.com/PDB-REDO/libcifpp/issues/65
+	@${REINPLACE_CMD} -i '' -e 's|;std::atomic||' ${STAGEDIR}${PREFIX}/lib/cmake/cifpp/cifpp-targets.cmake
 
 .include <bsd.port.mk>

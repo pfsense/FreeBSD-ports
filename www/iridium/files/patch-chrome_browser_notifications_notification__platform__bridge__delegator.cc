@@ -1,6 +1,6 @@
---- chrome/browser/notifications/notification_platform_bridge_delegator.cc.orig	2022-03-28 18:11:04 UTC
+--- chrome/browser/notifications/notification_platform_bridge_delegator.cc.orig	2025-05-07 06:48:23 UTC
 +++ chrome/browser/notifications/notification_platform_bridge_delegator.cc
-@@ -57,7 +57,7 @@ bool SystemNotificationsEnabled(Profile* profile) {
+@@ -55,7 +55,7 @@ bool SystemNotificationsEnabled(Profile* profile) {
  #elif BUILDFLAG(IS_WIN)
    return NotificationPlatformBridgeWin::SystemNotificationEnabled();
  #else

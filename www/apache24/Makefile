@@ -1,5 +1,5 @@
 PORTNAME=	apache24
-PORTVERSION=	2.4.59
+PORTVERSION=	2.4.64
 CATEGORIES=	www
 MASTER_SITES=	APACHE_HTTPD
 DISTNAME=	httpd-${PORTVERSION}
@@ -33,8 +33,8 @@ SUB_FILES=	pkg-install pkg-deinstall
 # Fallback MPM after switching from static to modular MPM
 SUB_LIST+=	MPMF="000_mpm_prefork_fallback.conf"
 
-USERS=		www
-GROUPS=		www
+USERS?=		${WWWOWN}
+GROUPS?=	${WWWGRP}
 
 .include "${.CURDIR}/Makefile.options"
 .include "${.CURDIR}/Makefile.options.desc"
@@ -92,6 +92,7 @@ SOCACHE_DC_LIB_DEPENDS=		libdistcache.so:security/distcache
 #  apu-1-config --(includes|ldflags) and apr_rules.mk
 SSL_CONFIGURE_ON=		--with-ssl=${OPENSSLBASE}
 SSL_USES=			ssl
+TLS_BROKEN=			Module removed upstream, replaced by security/mod_tls
 SUEXEC_SYSLOG_CONFIGURE_ON=	--without-suexec-logfile --with-suexec-syslog
 XML2ENC_USE=			GNOME=libxml2
 XML2ENC_USES=			gnome

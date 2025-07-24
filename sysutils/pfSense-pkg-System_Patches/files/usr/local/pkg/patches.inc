@@ -3,7 +3,7 @@
  * patches.inc
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2012-2024 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2012-2025 Rubicon Communications, LLC (Netgate)
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -187,8 +187,6 @@ function is_github_url($url) {
 }
 
 function bootup_apply_patches() {
-	config_init_path('installedpackages/patches/item');
-
 	foreach (config_get_path('installedpackages/patches/item', []) as $id => $patch) {
 		/* Skip if it should not be automatically applied;
 		   only attempt to apply if it can be applied;
@@ -202,8 +200,6 @@ function bootup_apply_patches() {
 }
 
 function patch_add_shellcmd() {
-	config_init_path('system/earlyshellcmd');
-
 	$found = false;
 	foreach (config_get_path('system/earlyshellcmd', []) as $idx => $cmd) {
 		if (stristr($cmd, "apply_patches.php")) {
@@ -218,8 +214,6 @@ function patch_add_shellcmd() {
 }
 
 function patch_remove_shellcmd() {
-	config_init_path('system/earlyshellcmd');
-
 	$removed = 0;
 	foreach (config_get_path('system/earlyshellcmd', []) as $idx => $cmd) {
 		if (stristr($cmd, "apply_patches.php")) {

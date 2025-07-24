@@ -1,11 +1,12 @@
 PORTNAME=	fend
 DISTVERSIONPREFIX=	v
-DISTVERSION=	1.4.9
+DISTVERSION=	1.5.7
 CATEGORIES=	math
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Arbitrary-precision unit-aware calculator
-WWW=		https://printfn.github.io/fend
+WWW=		https://printfn.github.io/fend \
+		https://github.com/printfn/fend
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE.md
@@ -15,105 +16,210 @@ USES=		cargo
 USE_GITHUB=	yes
 GH_ACCOUNT=	printfn
 
-CARGO_CRATES=	base64-0.22.1 \
-		bitflags-2.5.0 \
-		bumpalo-3.16.0 \
-		cc-1.0.99 \
-		cfg-if-1.0.0 \
-		cfg_aliases-0.1.1 \
-		clipboard-win-5.3.1 \
+CARGO_CRATES=	addr2line-0.24.2 \
+		adler2-2.0.1 \
+		atomic-waker-1.1.2 \
+		backtrace-0.3.75 \
+		base64-0.22.1 \
+		bitflags-2.9.1 \
+		bumpalo-3.19.0 \
+		bytes-1.10.1 \
+		cc-1.2.29 \
+		cfg-if-1.0.1 \
+		cfg_aliases-0.2.1 \
+		clipboard-win-5.4.0 \
 		core-foundation-0.9.4 \
-		core-foundation-sys-0.8.6 \
-		ctrlc-3.4.4 \
+		core-foundation-0.10.1 \
+		core-foundation-sys-0.8.7 \
+		displaydoc-0.2.5 \
 		endian-type-0.1.2 \
-		equivalent-1.0.1 \
-		errno-0.3.9 \
-		error-code-3.2.0 \
-		fastrand-2.1.0 \
-		fd-lock-4.0.2 \
+		equivalent-1.0.2 \
+		errno-0.3.13 \
+		error-code-3.3.2 \
+		fastrand-2.3.0 \
+		fd-lock-4.0.4 \
+		fnv-1.0.7 \
 		foreign-types-0.3.2 \
 		foreign-types-shared-0.1.1 \
 		form_urlencoded-1.2.1 \
-		getrandom-0.2.15 \
-		hashbrown-0.14.5 \
-		home-0.5.9 \
-		idna-0.5.0 \
-		indexmap-2.2.6 \
-		instant-0.1.13 \
-		js-sys-0.3.69 \
-		libc-0.2.155 \
-		linux-raw-sys-0.4.14 \
-		log-0.4.21 \
-		memchr-2.7.4 \
-		native-tls-0.2.12 \
+		futures-channel-0.3.31 \
+		futures-core-0.3.31 \
+		futures-sink-0.3.31 \
+		futures-task-0.3.31 \
+		futures-util-0.3.31 \
+		getrandom-0.2.16 \
+		getrandom-0.3.3 \
+		gimli-0.31.1 \
+		h2-0.4.11 \
+		hashbrown-0.15.4 \
+		http-1.3.1 \
+		http-body-1.0.1 \
+		http-body-util-0.1.3 \
+		httparse-1.10.1 \
+		hyper-1.6.0 \
+		hyper-rustls-0.27.7 \
+		hyper-tls-0.6.0 \
+		hyper-util-0.1.15 \
+		icu_collections-2.0.0 \
+		icu_locale_core-2.0.0 \
+		icu_normalizer-2.0.0 \
+		icu_normalizer_data-2.0.0 \
+		icu_properties-2.0.1 \
+		icu_properties_data-2.0.1 \
+		icu_provider-2.0.0 \
+		idna-1.0.3 \
+		idna_adapter-1.2.1 \
+		indexmap-2.10.0 \
+		io-uring-0.7.8 \
+		ipnet-2.11.0 \
+		iri-string-0.7.8 \
+		itoa-1.0.15 \
+		js-sys-0.3.77 \
+		libc-0.2.174 \
+		linux-raw-sys-0.9.4 \
+		litemap-0.8.0 \
+		log-0.4.27 \
+		lru-slab-0.1.2 \
+		memchr-2.7.5 \
+		miniz_oxide-0.8.9 \
+		mio-1.0.4 \
+		native-tls-0.2.14 \
 		nibble_vec-0.1.0 \
-		nix-0.28.0 \
-		once_cell-1.19.0 \
-		openssl-0.10.64 \
+		nix-0.30.1 \
+		object-0.36.7 \
+		once_cell-1.21.3 \
+		openssl-0.10.73 \
 		openssl-macros-0.1.1 \
-		openssl-probe-0.1.5 \
-		openssl-sys-0.9.102 \
+		openssl-probe-0.1.6 \
+		openssl-sys-0.9.109 \
 		percent-encoding-2.3.1 \
-		pkg-config-0.3.30 \
-		ppv-lite86-0.2.17 \
-		proc-macro2-1.0.85 \
-		quote-1.0.36 \
+		pin-project-lite-0.2.16 \
+		pin-utils-0.1.0 \
+		pkg-config-0.3.32 \
+		potential_utf-0.1.2 \
+		ppv-lite86-0.2.21 \
+		proc-macro2-1.0.95 \
+		quinn-0.11.8 \
+		quinn-proto-0.11.12 \
+		quinn-udp-0.5.13 \
+		quote-1.0.40 \
+		r-efi-5.3.0 \
 		radix_trie-0.2.1 \
-		rand-0.8.5 \
-		rand_chacha-0.3.1 \
-		rand_core-0.6.4 \
-		ring-0.17.8 \
-		rustix-0.38.34 \
-		rustls-0.22.4 \
-		rustls-pki-types-1.7.0 \
-		rustls-webpki-0.102.4 \
-		rustyline-14.0.0 \
-		schannel-0.1.23 \
-		security-framework-2.11.0 \
-		security-framework-sys-2.11.0 \
-		serde-1.0.203 \
-		serde_derive-1.0.203 \
-		serde_spanned-0.6.6 \
-		smallvec-1.13.2 \
-		spin-0.9.8 \
-		subtle-2.6.0 \
-		syn-2.0.66 \
-		tempfile-3.10.1 \
-		tinyvec-1.6.0 \
+		rand-0.9.1 \
+		rand_chacha-0.9.0 \
+		rand_core-0.9.3 \
+		reqwest-0.12.22 \
+		ring-0.17.14 \
+		rustc-demangle-0.1.25 \
+		rustc-hash-2.1.1 \
+		rustix-1.0.7 \
+		rustls-0.23.29 \
+		rustls-native-certs-0.8.1 \
+		rustls-pki-types-1.12.0 \
+		rustls-webpki-0.103.4 \
+		rustversion-1.0.21 \
+		rustyline-16.0.0 \
+		ryu-1.0.20 \
+		schannel-0.1.27 \
+		security-framework-2.11.1 \
+		security-framework-3.2.0 \
+		security-framework-sys-2.14.0 \
+		serde-1.0.219 \
+		serde_derive-1.0.219 \
+		serde_json-1.0.140 \
+		serde_spanned-1.0.0 \
+		serde_urlencoded-0.7.1 \
+		shlex-1.3.0 \
+		signal-hook-registry-1.4.5 \
+		slab-0.4.10 \
+		smallvec-1.15.1 \
+		socket2-0.5.10 \
+		stable_deref_trait-1.2.0 \
+		subtle-2.6.1 \
+		syn-2.0.104 \
+		sync_wrapper-1.0.2 \
+		synstructure-0.13.2 \
+		system-configuration-0.6.1 \
+		system-configuration-sys-0.6.0 \
+		tempfile-3.20.0 \
+		thiserror-2.0.12 \
+		thiserror-impl-2.0.12 \
+		tinystr-0.8.1 \
+		tinyvec-1.9.0 \
 		tinyvec_macros-0.1.1 \
-		toml-0.8.14 \
-		toml_datetime-0.6.6 \
-		toml_edit-0.22.14 \
-		unicode-bidi-0.3.15 \
-		unicode-ident-1.0.12 \
-		unicode-normalization-0.1.23 \
-		unicode-segmentation-1.11.0 \
-		unicode-width-0.1.13 \
+		tokio-1.46.1 \
+		tokio-macros-2.5.0 \
+		tokio-native-tls-0.3.1 \
+		tokio-rustls-0.26.2 \
+		tokio-util-0.7.15 \
+		toml-0.9.2 \
+		toml_datetime-0.7.0 \
+		toml_parser-1.0.1 \
+		toml_writer-1.0.2 \
+		tower-0.5.2 \
+		tower-http-0.6.6 \
+		tower-layer-0.3.3 \
+		tower-service-0.3.3 \
+		tracing-0.1.41 \
+		tracing-core-0.1.34 \
+		try-lock-0.2.5 \
+		unicode-ident-1.0.18 \
+		unicode-segmentation-1.12.0 \
+		unicode-width-0.2.1 \
 		untrusted-0.9.0 \
-		ureq-2.9.7 \
-		url-2.5.2 \
+		url-2.5.4 \
+		utf8_iter-1.0.4 \
 		utf8parse-0.2.2 \
 		vcpkg-0.2.15 \
-		wasi-0.11.0+wasi-snapshot-preview1 \
-		wasm-bindgen-0.2.92 \
-		wasm-bindgen-backend-0.2.92 \
-		wasm-bindgen-macro-0.2.92 \
-		wasm-bindgen-macro-support-0.2.92 \
-		wasm-bindgen-shared-0.2.92 \
-		web-sys-0.3.69 \
-		webpki-roots-0.26.3 \
+		want-0.3.1 \
+		wasi-0.11.1+wasi-snapshot-preview1 \
+		wasi-0.14.2+wasi-0.2.4 \
+		wasm-bindgen-0.2.100 \
+		wasm-bindgen-backend-0.2.100 \
+		wasm-bindgen-futures-0.4.50 \
+		wasm-bindgen-macro-0.2.100 \
+		wasm-bindgen-macro-support-0.2.100 \
+		wasm-bindgen-shared-0.2.100 \
+		web-sys-0.3.77 \
+		web-time-1.1.0 \
+		windows-link-0.1.3 \
+		windows-registry-0.5.3 \
+		windows-result-0.3.4 \
+		windows-strings-0.4.2 \
 		windows-sys-0.52.0 \
-		windows-targets-0.52.5 \
-		windows_aarch64_gnullvm-0.52.5 \
-		windows_aarch64_msvc-0.52.5 \
-		windows_i686_gnu-0.52.5 \
-		windows_i686_gnullvm-0.52.5 \
-		windows_i686_msvc-0.52.5 \
-		windows_x86_64_gnu-0.52.5 \
-		windows_x86_64_gnullvm-0.52.5 \
-		windows_x86_64_msvc-0.52.5 \
-		winnow-0.6.13 \
-		zeroize-1.8.1
+		windows-sys-0.59.0 \
+		windows-sys-0.60.2 \
+		windows-targets-0.52.6 \
+		windows-targets-0.53.2 \
+		windows_aarch64_gnullvm-0.52.6 \
+		windows_aarch64_gnullvm-0.53.0 \
+		windows_aarch64_msvc-0.52.6 \
+		windows_aarch64_msvc-0.53.0 \
+		windows_i686_gnu-0.52.6 \
+		windows_i686_gnu-0.53.0 \
+		windows_i686_gnullvm-0.52.6 \
+		windows_i686_gnullvm-0.53.0 \
+		windows_i686_msvc-0.52.6 \
+		windows_i686_msvc-0.53.0 \
+		windows_x86_64_gnu-0.52.6 \
+		windows_x86_64_gnu-0.53.0 \
+		windows_x86_64_gnullvm-0.52.6 \
+		windows_x86_64_gnullvm-0.53.0 \
+		windows_x86_64_msvc-0.52.6 \
+		windows_x86_64_msvc-0.53.0 \
+		winnow-0.7.12 \
+		wit-bindgen-rt-0.39.0 \
+		writeable-0.6.1 \
+		yoke-0.8.0 \
+		yoke-derive-0.8.0 \
+		zerocopy-0.8.26 \
+		zerocopy-derive-0.8.26 \
+		zerofrom-0.1.6 \
+		zerofrom-derive-0.1.6 \
+		zeroize-1.8.1 \
+		zerotrie-0.2.2 \
+		zerovec-0.11.2 \
+		zerovec-derive-0.11.1
 
 OPENSSLINC=	/usr/include
 OPENSSLLIB=	/usr/lib
@@ -123,7 +229,7 @@ PLIST_FILES=	bin/${PORTNAME}
 do-install:
 	# workaround for error: found a virtual manifest at `xx` instead of a package manifest
 	${INSTALL_PROGRAM} \
-		${WRKDIR}/target/*/release/${PORTNAME} \
+		${WRKDIR}/target/release/${PORTNAME} \
 		${STAGEDIR}${PREFIX}/bin/${PORTNAME}
 
 .include <bsd.port.mk>

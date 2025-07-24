@@ -1,7 +1,8 @@
 PORTNAME=	mediawiki
-PORTVERSION=	1.39.7
+PORTVERSION=	1.39.13
 CATEGORIES=	www
-MASTER_SITES=	https://releases.wikimedia.org/mediawiki/${PORTVERSION:R}/
+MASTER_SITES=	https://releases.wikimedia.org/mediawiki/${PORTVERSION:R}/ \
+		LOCAL/wen
 PKGNAMESUFFIX=	139${PHP_PKGNAMESUFFIX}
 
 MAINTAINER=	wen@FreeBSD.org
@@ -10,7 +11,7 @@ WWW=		https://www.mediawiki.org/
 
 LICENSE=	GPLv2
 
-CONFLICTS=	mediawiki13[5-8] mediawiki14[0-9]
+CONFLICTS=	mediawiki14[0-9]
 
 USES=		cpe php:flavors shebangfix
 SHEBANG_FILES=	maintenance/dev/*.sh \

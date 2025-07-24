@@ -3,7 +3,7 @@
  * haproxy_files.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2016-2024 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2016-2025 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2014 PiBa-NL
  * All rights reserved.
  *
@@ -70,7 +70,7 @@ if ($_POST) {
 		}
 
 		// replace references in backends to renamed 'files'
-		$a_pools = config_get_path('installedpackages/haproxy/ha_pools/item');
+		$a_pools = config_get_path('installedpackages/haproxy/ha_pools/item', []);
 		foreach($a_pools as &$backend) {
 			$a_errorfiles = getarraybyref($backend, 'errorfiles', 'item');
 			foreach($a_errorfiles as &$errorfile) {

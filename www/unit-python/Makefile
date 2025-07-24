@@ -4,7 +4,7 @@ UNIT_MODNAME=	python${PYTHON_SUFFIX}
 
 COMMENT=	Python module for NGINX Unit
 
-USES=		python:3.8-3.11 gettext-runtime
+USES=		python:3.9-3.11 gettext-runtime
 USE_PYTHON=	flavors
 
 PLIST_FILES=	libexec/unit/modules/${UNIT_MODNAME}.unit.so
@@ -30,9 +30,5 @@ do-install:
 	${MKDIR} ${STAGEDIR}${PREFIX}/libexec/unit/modules/
 	${INSTALL_LIB} ${WRKSRC}/build/lib/unit/modules/${UNIT_MODNAME}.unit.so \
 		${STAGEDIR}${PREFIX}/libexec/unit/modules/
-
-# Overwrite the target in the ${MASTERDIR}/Makefile
-post-install:
-	@${DO_NADA}
 
 .include "${MASTERDIR}/Makefile"

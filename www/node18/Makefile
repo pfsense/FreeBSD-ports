@@ -3,7 +3,7 @@ PORTVERSION=	${NODEJS_PORTVERSION}
 DISTVERSIONPREFIX=	v
 CATEGORIES=	www
 MASTER_SITES=	https://nodejs.org/dist/v${PORTVERSION}/
-PKGNAMESUFFIX=	18
+PKGNAMESUFFIX=	${PORTVERSION:R:R}
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	V8 JavaScript for client and server
@@ -13,6 +13,8 @@ WWW=		https://nodejs.org/ \
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
+DEPRECATED=	Node.js 18.* has reached its EoL on 2025-04-30. Use Node.js 22.* (www/node22) instead
+EXPIRATION_DATE=2025-05-31
 BROKEN_SSL=	libressl libressl-devel
 BROKEN_SSL_REASON=	Node.js ${PORTVERSION:R:R}.x requires OpenSSL or the BUNDLED_SSL option enabled
 ONLY_FOR_ARCHS=	aarch64 amd64 armv6 armv7 i386 powerpc64 powerpc64le
@@ -52,21 +54,24 @@ SHEBANG_FILES=	deps/v8/third_party/inspector_protocol/*.py \
 		tools/*.py \
 		tools/inspector_protocol/*.py
 
-OPTIONS_DEFINE=	BUNDLED_SSL DOCS NLS
+OPTIONS_DEFINE=	BUNDLED_SSL DOCS ICU JIT
+OPTIONS_DEFAULT=ICU JIT
 OPTIONS_SUB=	yes
 BUNDLED_SSL_DESC=	Use bundled OpenSSL implementation from node.js
+JIT_DESC=		Use Just In Time compiler
 
 BUNDLED_SSL_CONFIGURE_OFF=	--openssl-use-def-ca-store --shared-openssl
 BUNDLED_SSL_RUN_DEPENDS_OFF=	ca_root_nss>=0:security/ca_root_nss
 BUNDLED_SSL_USES_OFF=	ssl
-NLS_BUILD_DEPENDS=	icu>=69.1:devel/icu
-NLS_CONFIGURE_ON=	--with-intl=system-icu
-NLS_LIB_DEPENDS=	libicui18n.so:devel/icu
+ICU_BUILD_DEPENDS=	icu>=69.1:devel/icu
+ICU_CONFIGURE_ON=	--with-intl=system-icu
+ICU_LIB_DEPENDS=	libicui18n.so:devel/icu
+JIT_CONFIGURE_OFF=	--v8-lite-mode
 
 .include "Makefile.version"
 .include <bsd.port.pre.mk>
 
-.if ${COMPILER_TYPE} == clang && ${COMPILER_VERSION} >= 160 && (${ARCH} == aarch64 || ${ARCH} == armv7 || ${ARCH:Mpowerpc64*})
+.if ${COMPILER_TYPE} == clang && (${ARCH} == aarch64 || ${ARCH} == armv7 || ${ARCH:Mpowerpc64*})
 CXXFLAGS+=	-Wno-error=enum-constexpr-conversion
 .endif
 

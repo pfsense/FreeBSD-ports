@@ -35,7 +35,7 @@ GCC_Include_MAINTAINER=		gerald@FreeBSD.org
 # All GCC versions supported by this framework.
 #
 # When updating this, keep Mk/bsd.default-versions.mk in sync.
-GCCVERSIONS=	9 10 11 12 13 14 15
+GCCVERSIONS=	11 12 13 14 15 16
 
 # No configurable parts below this. ####################################
 #
@@ -85,7 +85,7 @@ IGNORE=	Unknown version of GCC specified (USE_GCC=${USE_GCC})
 # A concrete version has been selected. Set proper ports dependencies,
 # CC, CXX, CPP, and flags.
 V:=			${_USE_GCC:S/.//}
-.  if ${V} == 15
+.  if ${V} == 16
 _GCC_PORT:=		gcc${V}-devel
 .  else
 _GCC_PORT:=		gcc${V}
@@ -95,10 +95,8 @@ CXX:=			g++${V}
 CPP:=			cpp${V}
 _GCC_RUNTIME:=		${LOCALBASE}/lib/gcc${V}
 .  if ${PORTNAME} == gcc
-# We don't want the rpath stuff while building GCC itself
-# so we do not set the FLAGS as done in the else part.
-# When building a GCC, we want the target libraries to be used and not the
-# host GCC libraries.
+# When building GCC itself, we want the target libraries to be used
+# and not the host GCC libraries.
 .  else
 CFLAGS+=		-Wl,-rpath=${_GCC_RUNTIME}
 CXXFLAGS+=		-Wl,-rpath=${_GCC_RUNTIME}

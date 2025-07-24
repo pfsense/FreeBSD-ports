@@ -1,5 +1,5 @@
 PORTNAME=	raylib
-DISTVERSION=	5.0
+DISTVERSION=	5.5
 CATEGORIES=	devel education
 
 MAINTAINER=	freebsd@sysctl.cz
@@ -8,6 +8,9 @@ WWW=		https://www.raylib.com/
 
 LICENSE=	ZLIB
 LICENSE_FILE=	${WRKSRC}/LICENSE
+
+# https://bugs.freebsd.org/279369
+BROKEN_armv7=	fails to build: error: implicit declaration of function 'vld1q_f16' is invalid in C99
 
 LIB_DEPENDS=	libglfw.so:graphics/glfw
 

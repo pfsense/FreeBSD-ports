@@ -1,18 +1,20 @@
 PORTNAME=	rss-bridge
-DISTVERSION=	2024-02-02
+DISTVERSION=	2025-06-03
 PORTEPOCH=	1
 CATEGORIES=	www
+PKGNAMESUFFIX=	${PHP_PKGNAMESUFFIX}
 
 MAINTAINER=	osidorkin@gmail.com
 COMMENT=	RSS feed generator for websites missing it
 WWW=		https://github.com/RSS-Bridge/rss-bridge
 
 LICENSE=	UNLICENSE
+LICENSE_FILE=	${WRKSRC}/UNLICENSE
 
-USES=		php:web
+USES=		php:web,flavors
 USE_GITHUB=	yes
 GH_ACCOUNT=	RSS-Bridge
-USE_PHP=	curl mbstring simplexml zip
+USE_PHP=	curl dom filter mbstring simplexml zip
 
 NO_ARCH=	yes
 NO_BUILD=	yes
@@ -37,7 +39,7 @@ do-install:
 	    -or -name composer.lock -or -name docker-bake.hcl \
 	    -or -name docker-entrypoint.sh \
 	    -or -path ./bin -or -path ./bin/cache-clear \
-	    -or -path ./bin/cache-prune \
+	    -or -path ./bin/cache-prune -or -path ./bin/test \
 	    -or -path ./config -or -path ./config/nginx.conf \
 	    -or -path ./config/php-fpm.conf -or -path ./config/php.ini \
 	    -or -regex ./.devcontainer.* -or -regex ./contrib.* \

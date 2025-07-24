@@ -1,12 +1,12 @@
 PORTNAME=	simple-scan
 PORTVERSION=	46.0
 CATEGORIES=	graphics gnome
-MASTER_SITES=	GNOME/sources/${PORTNAME}/${PORTVERSION:C/^([0-9]+)\..*/\1/}
+MASTER_SITES=	GNOME
 DIST_SUBDIR=	gnome
 
 MAINTAINER=	gnome@FreeBSD.org
 COMMENT=	Simple scanning utility
-WWW=		https://gitlab.gnome.org/GNOME/simple-scan
+WWW=		https://gitlab.gnome.org/GNOME
 
 LICENSE=	GPLv3+
 LICENSE_FILE=	${WRKSRC}/COPYING
@@ -16,7 +16,7 @@ LIB_DEPENDS=	libgusb.so:devel/libgusb \
 		libsane.so:graphics/sane-backends
 
 USES=		gettext gnome meson pkgconfig python:build shebangfix tar:xz vala:build
-USE_GNOME=	cairo gdkpixbuf2 gtk40 libadwaita
+USE_GNOME=	cairo gdkpixbuf gtk40 libadwaita
 SHEBANG_FILES=	data/meson_compile_gschema.py
 GLIB_SCHEMAS=	org.gnome.SimpleScan.gschema.xml
 

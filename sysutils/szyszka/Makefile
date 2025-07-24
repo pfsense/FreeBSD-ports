@@ -1,6 +1,6 @@
 PORTNAME=	szyszka
 DISTVERSION=	3.0.0
-PORTREVISION=	10
+PORTREVISION=	19
 CATEGORIES=	sysutils
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -11,7 +11,7 @@ LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
 USES=		cargo gnome
-USE_GNOME=	glib20 gtk40 gdkpixbuf2
+USE_GNOME=	glib20 gtk40 gdkpixbuf
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	qarmin
@@ -204,8 +204,5 @@ CARGO_CRATES=	aho-corasick-1.0.1 \
 		winnow-0.4.6
 
 PLIST_FILES=	bin/${PORTNAME}
-
-post-install:
-	@${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/${PORTNAME}
 
 .include <bsd.port.mk>

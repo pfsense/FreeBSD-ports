@@ -42,14 +42,18 @@ install:
 	mkdir -p $(DESTDIR)${LIBEXECDIR}/defaults/${scriptdir}
 .endfor
 .for logfile in \
+	audit_log \
 	autorpm \
 	bfd \
 	cisco \
+	citadel \
 	clamav \
 	clam-update \
 	cron \
 	daemon \
 	denyhosts \
+	dirsrv \
+	dnf-rpm \
 	dnssec \
 	dovecot \
 	dpkg \
@@ -58,6 +62,7 @@ install:
 	exim \
 	extreme-networks \
 	fail2ban \
+	freeradius \
 	http \
 	http-error \
 	iptables \
@@ -65,10 +70,12 @@ install:
 	maillog \
 	messages \
 	mysql \
+	mysql-mmm \
 	netopia \
 	netscreen \
 	php \
 	pix \
+	postgresql \
 	pureftp \
 	qmail-pop3d-current \
 	qmail-pop3ds-current \
@@ -79,15 +86,19 @@ install:
 	rt314 \
 	samba \
 	secure \
+	snort \
 	sonicwall \
 	spamassassin \
 	syslog \
 	tac_acc \
+	tivoli-smc \
 	up2date \
+	vdr \
 	vsftpd \
 	windows \
 	xferlog \
-	yum
+	yum \
+	zypp
 	install -m 640 conf/logfiles/${logfile}.conf $(DESTDIR)${ETCDIR}/defaults/logfiles/${logfile}.conf
 .endfor
 .for service in \
@@ -100,6 +111,7 @@ install:
 	barracuda \
 	bfd \
 	cisco \
+	citadel \
 	clam-update \
 	clamav \
 	clamav-milter \
@@ -107,11 +119,16 @@ install:
 	cron \
 	denyhosts \
 	dhcpd \
+	dirsrv \
+	dnf-automatic \
+	dnf-rpm \
 	dnssec \
 	dovecot \
 	dpkg \
+	dropbear \
 	emerge \
 	evtapplication \
+	evtmswindows \
 	evtsecurity \
 	evtsystem \
 	exim \
@@ -119,6 +136,7 @@ install:
 	extreme-networks \
 	fail2ban \
 	fetchmail \
+	freeradius \
 	ftpd-messages \
 	ftpd-xferlog \
 	http \
@@ -130,14 +148,21 @@ install:
 	ipop3d \
 	iptables \
 	kernel \
+	knockd \
+	lvm \
 	mailscanner \
+	mdadm \
+	mod_security2 \
 	modprobe \
 	mountd \
 	mysql \
+	mysql-mmm \
 	named \
 	netopia \
 	netscreen \
+	nut \
 	oidentd \
+	omsa \
 	openvpn \
 	pam \
 	pam_pwdb \
@@ -148,8 +173,10 @@ install:
 	pop3 \
 	portsentry \
 	postfix \
+	postgresql \
 	pound \
 	proftpd-messages \
+	puppet \
 	pureftpd \
 	qmail \
 	qmail-pop3d \
@@ -159,6 +186,7 @@ install:
 	raid \
 	resolver \
 	rsnapshot \
+	rsyslogd \
 	rt314 \
 	samba \
 	saslauthd \
@@ -169,22 +197,29 @@ install:
 	shaperd \
 	slon \
 	smartd \
+	snort \
 	sonicwall \
 	spamassassin \
 	sshd \
 	sshd2 \
+	sssd \
 	stunnel \
 	sudo \
-	syslogd \
 	syslog-ng \
+	syslogd \
+	systemd \
 	tac_acc \
+	tivoli-smc \
 	up2date \
+	vdr \
 	vpopmail \
 	vsftpd \
 	windows \
 	xntpd \
 	yum \
+	zypp \
 	zz-disk_space \
+	zz-lm_sensors \
 	zz-network \
 	zz-runtime \
 	zz-sys \
@@ -204,6 +239,7 @@ install:
 	expandrepeats \
 	hosthash \
 	hostlist \
+	journalctl \
 	multiservice \
 	onlycontains \
 	onlyhost \

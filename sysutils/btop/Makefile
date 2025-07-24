@@ -1,6 +1,6 @@
 PORTNAME=	btop
 DISTVERSIONPREFIX=	v
-DISTVERSION=	1.3.2
+DISTVERSION=	1.4.4
 CATEGORIES=	sysutils
 
 MAINTAINER=	pkubaj@FreeBSD.org
@@ -14,15 +14,7 @@ USES=		gmake
 USE_GITHUB=	yes
 GH_ACCOUNT=	aristocratos
 
+BUILD_DEPENDS=	lowdown:textproc/lowdown
 MAKE_ARGS=	STRIP=true ADDFLAGS="${CXXFLAGS} ${LDFLAGS}" VERBOSE=true
-
-.include <bsd.port.options.mk>
-
-.if ${OSVERSION} < 1302507
-USE_GCC=	yes
-.if ${ARCH} == i386 || ${ARCH} == powerpc
-LDFLAGS+=	-latomic
-.endif
-.endif
 
 .include <bsd.port.mk>

@@ -1,7 +1,7 @@
 PORTNAME=	erlang
 DISTVERSIONPREFIX=	OTP-
 DISTVERSION=	24.3.4.17
-PORTREVISION=	2
+PORTREVISION=	4
 CATEGORIES=	lang parallel java
 PKGNAMESUFFIX=	-runtime24
 DIST_SUBDIR=	erlang
@@ -70,7 +70,7 @@ DTRACE_CFLAGS=			-fno-omit-frame-pointer
 DTRACE_VARS=			STRIP=""
 JAVA_CONFIGURE_WITH=		javac
 JAVA_CONFIGURE_ENV=		ac_cv_prog_JAVAC="${JAVAC}"
-JAVA_VARS=			USE_JAVA=yes
+JAVA_USES=			java
 KQUEUE_CONFIGURE_ENABLE=	kernel-poll
 ODBC_LIB_DEPENDS=		libodbc.so:databases/unixODBC
 ODBC_USES=			localbase:ldflags
@@ -87,7 +87,7 @@ WX_VARS=			USE_GL="gl glu" \
 
 .include <bsd.port.pre.mk>
 
-.if ${COMPILER_TYPE} == clang && ${COMPILER_VERSION} >= 130
+.if ${COMPILER_TYPE} == clang
 # PR 258494
 CONFIGURE_ARGS+=	--disable-pgo
 .endif

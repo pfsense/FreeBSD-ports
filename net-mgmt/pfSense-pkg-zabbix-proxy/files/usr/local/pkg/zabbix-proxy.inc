@@ -3,7 +3,7 @@
  * zabbix-proxy.inc
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2015-2024 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2015-2025 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2013 Danilo G. Baio
  * Copyright (c) 2013 Marcello Coutinho
  * All rights reserved.
@@ -94,8 +94,7 @@ function sync_package_zabbix_proxy() {
 
 	// Check zabbix proxy config
 	if (is_array(config_get_path('installedpackages/%%ZABBIXUNIQNAME%%'))) {
-		config_init_path('installedpackages/%%ZABBIXUNIQNAME%%/config/0');
-		$zbproxy_config = config_get_path('installedpackages/%%ZABBIXUNIQNAME%%/config/0');
+		$zbproxy_config = config_get_path('installedpackages/%%ZABBIXUNIQNAME%%/config/0', []);
 		if ($zbproxy_config['proxyenabled'] == "on") {
 			$ListenIp = $zbproxy_config['listenip'] ?: "0.0.0.0";
 			$ListenPort = $zbproxy_config['listenport'] ?: "10051";
@@ -325,7 +324,6 @@ function zabbix_proxy_certca($type) {
 
 function zabbixproxy_plugin_certificates($pluginparams) {
 	$result = array();
-	config_init_path('installedpackages/zabbixproxylts/config');
 	$zabbixconf = config_get_path('installedpackages/zabbixproxylts/config/0');
 
 	if (($pluginparams['type'] == 'certificates') && !empty($zabbixconf) && ($zabbixconf['agentenabled'] == 'on')) {

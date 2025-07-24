@@ -1,4 +1,4 @@
---- SConstruct.orig	2023-06-07 17:07:38 UTC
+--- SConstruct.orig	2025-05-13 16:37:03 UTC
 +++ SConstruct
 @@ -23,7 +23,6 @@ import SCons.Script
  
@@ -8,7 +8,7 @@
  from site_scons.mongo import build_profiles
  
  # This must be first, even before EnsureSConsVersion, if
-@@ -1655,16 +1654,6 @@ env.AddMethod(lambda env, name, **kwargs: add_option(n
+@@ -1653,16 +1652,6 @@ env.AddMethod(lambda env, name, **kwargs: add_option(n
  del envDict
  env.AddMethod(lambda env, name, **kwargs: add_option(name, **kwargs), 'AddOption')
  
@@ -25,20 +25,16 @@
  if get_option('build-metrics'):
      env['BUILD_METRICS_ARTIFACTS_DIR'] = '$BUILD_ROOT/$VARIANT_DIR'
      env.Tool('build_metrics')
-@@ -1801,9 +1790,9 @@ if has_option('variables-help'):
-     print(env_vars.GenerateHelpText(env))
-     Exit(0)
+@@ -1801,7 +1790,7 @@ if unknown_vars:
  
--unknown_vars = env_vars.UnknownVariables()
--if unknown_vars:
+ unknown_vars = env_vars.UnknownVariables()
+ if unknown_vars:
 -    env.FatalError("Unknown variables specified: {0}", ", ".join(list(unknown_vars.keys())))
-+#unknown_vars = env_vars.UnknownVariables()
-+#if unknown_vars:
-+#    env.FatalError("Unknown variables specified: {0}", ", ".join(list(unknown_vars.keys())))
++    print("Unknown variables specified: {0}", ", ".join(list(unknown_vars.keys())))
  
  install_actions.setup(env, get_option('install-action'))
  
-@@ -3026,7 +3015,7 @@ if env.TargetOSIs('posix'):
+@@ -3013,7 +3002,7 @@ if env.TargetOSIs('posix'):
              # If runtime hardening is requested, then build anything
              # destined for an executable with the necessary flags for PIE.
              env.AppendUnique(
@@ -47,7 +43,7 @@
                  PROGLINKFLAGS=['-pie'],
              )
  
-@@ -3034,7 +3023,6 @@ if env.TargetOSIs('posix'):
+@@ -3021,7 +3010,6 @@ if env.TargetOSIs('posix'):
      env.Append(
          CCFLAGS=[
              "-fasynchronous-unwind-tables",

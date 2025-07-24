@@ -1,10 +1,11 @@
 PORTNAME=			${SAMBA4_BASENAME}419
 PORTVERSION=			${SAMBA4_VERSION}
+PORTREVISION=			10
 CATEGORIES?=			net
 MASTER_SITES=			SAMBA/samba/stable SAMBA/samba/rc
 DISTNAME=			${SAMBA4_DISTNAME}
 
-MAINTAINER=			mikael@FreeBSD.org
+MAINTAINER=			samba@FreeBSD.org
 COMMENT=			Free SMB/CIFS and AD/DC server and client for Unix
 WWW=				https://gitlab.com/samba-freebsd/
 
@@ -43,11 +44,13 @@ EXTRA_PATCHES=			\
 				${PATCHDIR}/0025-From-d9b748869a8f4018ebee302aae8246bf29f60309-Mon-Se.patch:-p1 \
 				${PATCHDIR}/0026-vfs-add-a-compatibility-option-to-the-vfs_streams_xa.patch:-p1 \
 				${PATCHDIR}/0027-Add-VFS-module-vfs_freebsd-that-implements-FreeBSD-s.patch:-p1 \
+				${PATCHDIR}/0028-Fix-rl_completion_func_t.patch:-p1 \
+				${PATCHDIR}/0028-s3-lib-system-add-FreeBSD-proc_fd_pattern.patch:-p1 \
 				${PATCHDIR}/0100-Fix-pathref-handling-for-FreeBSD-13plus.patch
 
 SAMBA4_BASENAME=		samba
 SAMBA4_PORTNAME=		${SAMBA4_BASENAME}4
-SAMBA4_VERSION=			4.19.7
+SAMBA4_VERSION=			4.19.9
 SAMBA4_DISTNAME=		${SAMBA4_BASENAME}-${SAMBA4_VERSION:S|.p|pre|:S|.r|rc|:S|.t|tp|:S|.a|alpha|}
 
 WRKSRC?=			${WRKDIR}/${DISTNAME}
@@ -113,8 +116,8 @@ SUB_LIST=			PKGCONFIGDIR=${PKGCONFIGDIR_REL}
 OPTIONS_SUB=			yes
 
 OPTIONS_DEFINE=			AD_DC ADS CLUSTER CUPS DOCS FAM GPGME \
-				LDAP MANDOC PROFILE PYTHON3 QUOTAS \
-				SPOTLIGHT SYSLOG UTMP
+				LDAP MANPAGES PROFILE PYTHON3 QUOTAS \
+				SYSLOG UTMP
 #OPTIONS_DEFINE+=		DEVELOPER MEMORY_DEBUG
 
 OPTIONS_GROUP=			VFS
@@ -127,7 +130,7 @@ OPTIONS_SINGLE_GSSAPI=		GSSAPI_BUILTIN GSSAPI_MIT
 OPTIONS_SINGLE_ZEROCONF=	ZEROCONF_NONE AVAHI MDNSRESPONDER
 
 # Make those default options
-OPTIONS_DEFAULT=		AD_DC ADS DOCS FAM LDAP \
+OPTIONS_DEFAULT=		AD_DC ADS DOCS FAM LDAP MANPAGES \
 				PROFILE PYTHON3 QUOTAS SYSLOG UTMP \
 				FRUIT GSSAPI_BUILTIN AVAHI
 ##############################################################################
@@ -139,8 +142,6 @@ FAM_DESC=			File Alteration Monitor
 GPGME_DESC=			GpgME support
 LDAP_DESC=			LDAP client
 LIBZFS_DESC=			LibZFS
-SPOTLIGHT_DESC=			Spotlight server-side search support
-MANDOC_DESC=			Build manpages from DOCBOOK templates
 MEMORY_DEBUG_DESC=		Debug memory allocator
 PICKY_DEVELOPER_DESC=		Treat compiler warnings as errors(implies DEVELOPER)
 PROFILE_DESC=			Profiling data
@@ -191,11 +192,11 @@ BUILD_DEPENDS+=			libarchive>=3.1.2:archivers/libarchive
 RUN_DEPENDS+=			libarchive>=3.1.2:archivers/libarchive
 
 ### Bundled libraries
-SAMBA4_BUNDLED_CMOCKA=		yes
-SAMBA4_BUNDLED_TALLOC=		yes
-SAMBA4_BUNDLED_TEVENT=		yes
-SAMBA4_BUNDLED_TDB=		yes
-SAMBA4_BUNDLED_LDB=		yes
+SAMBA4_BUNDLED_CMOCKA?=		no
+SAMBA4_BUNDLED_TALLOC?=		no
+SAMBA4_BUNDLED_TEVENT?=		no
+SAMBA4_BUNDLED_TDB?=		no
+SAMBA4_BUNDLED_LDB?=		no
 # cmocka
 .if defined(SAMBA4_BUNDLED_CMOCKA) && ${SAMBA4_BUNDLED_CMOCKA} == yes
 SAMBA4_BUNDLED_LIBS+=		cmocka
@@ -216,8 +217,8 @@ PLIST_SUB+=			SAMBA4_BUNDLED_TALLOC=""
 SUB_LIST+=			SAMBA4_BUNDLED_TALLOC=""
 .else
 SAMBA4_BUNDLED_LIBS+=		!talloc
-BUILD_DEPENDS+=			talloc>=2.3.3:devel/talloc
-RUN_DEPENDS+=			talloc>=2.3.3:devel/talloc
+BUILD_DEPENDS+=			talloc>=2.4.1:devel/talloc
+RUN_DEPENDS+=			talloc>=2.4.1:devel/talloc
 PLIST_SUB+=			SAMBA4_BUNDLED_TALLOC="@comment "
 SUB_LIST+=			SAMBA4_BUNDLED_TALLOC="@comment "
 .endif
@@ -229,8 +230,8 @@ PLIST_SUB+=			SAMBA4_BUNDLED_TEVENT=""
 SUB_LIST+=			SAMBA4_BUNDLED_TEVENT=""
 .else
 SAMBA4_BUNDLED_LIBS+=		!tevent
-BUILD_DEPENDS+=			tevent>=0.11.0:devel/tevent
-RUN_DEPENDS+=			tevent>=0.11.0:devel/tevent
+BUILD_DEPENDS+=			tevent>=0.15.0:devel/tevent
+RUN_DEPENDS+=			tevent>=0.15.0:devel/tevent
 PLIST_SUB+=			SAMBA4_BUNDLED_TEVENT="@comment "
 SUB_LIST+=			SAMBA4_BUNDLED_TEVENT="@comment "
 .endif
@@ -242,8 +243,8 @@ PLIST_SUB+=			SAMBA4_BUNDLED_TDB=""
 SUB_LIST+=			SAMBA4_BUNDLED_TDB=""
 .else
 SAMBA4_BUNDLED_LIBS+=		!tdb
-BUILD_DEPENDS+=			tdb>=1.4.6:databases/tdb
-RUN_DEPENDS+=			tdb>=1.4.6:databases/tdb
+BUILD_DEPENDS+=			tdb>=1.4.9:databases/tdb
+RUN_DEPENDS+=			tdb>=1.4.9:databases/tdb
 PLIST_SUB+=			SAMBA4_BUNDLED_TDB="@comment "
 SUB_LIST+=			SAMBA4_BUNDLED_TDB="@comment "
 .endif
@@ -256,8 +257,8 @@ SUB_LIST+=			SAMBA4_BUNDLED_LDB=""
 SAMBA4_MODULEDIR=		${SAMBA4_LIBDIR}/modules
 .else
 SAMBA4_BUNDLED_LIBS+=		!ldb
-BUILD_DEPENDS+=			ldb25>=2.5.2:databases/ldb25
-RUN_DEPENDS+=			ldb25>=2.5.2:databases/ldb25
+BUILD_DEPENDS+=			ldb28>=2.8.1:databases/ldb28
+RUN_DEPENDS+=			ldb28>=2.8.1:databases/ldb28
 PLIST_SUB+=			SAMBA4_BUNDLED_LDB="@comment "
 SUB_LIST+=			SAMBA4_BUNDLED_LDB="@comment "
 SAMBA4_MODULEDIR=		${PREFIX}/lib/shared-modules
@@ -299,18 +300,17 @@ CONFIGURE_ARGS+=		\
 				--with-libarchive \
 				--with-acl-support \
 				--with-sendfile-support \
-				--disable-ctdb-tests
+				--disable-ctdb-tests \
+				--disable-spotlight
 #				${ICONV_CONFIGURE_BASE}
 ##############################################################################
 FRUIT_PREVENTS=			ZEROCONF_NONE
 FRUIT_PREVENTS_MSG=		MacOSX support requires Zeroconf(AVAHI or MDNSRESPONDER)
 FRUIT_VARS=			SAMBA4_MODULES+=vfs_fruit
-FRUIT_PLIST_FILES=		share/man/man8/vfs_fruit.8.gz
 
 GLUSTERFS_CONFIGURE_ENABLE=	glusterfs
 GLUSTERFS_LIB_DEPENDS=		libglusterfs.so:net/glusterfs
 GLUSTERFS_VARS=			SAMBA4_MODULES+=vfs_glusterfs
-GLUSTERFS_PLIST_FILES=		share/man/man8/vfs_glusterfs.8.gz
 
 ZEROCONF_NONE_MAKE_ENV=		ZEROCONF=none
 ##############################################################################
@@ -364,10 +364,17 @@ FAM_CONFIGURE_WITH=		fam
 
 GPGME_CONFIGURE_WITH=		gpgme
 GPGME_LIB_DEPENDS=		libgpgme.so:security/gpgme
-GPGME_RUN_DEPENDS=		${PYTHON_PKGNAMEPREFIX}gpgme>=1.14.0:security/py-gpgme@${PY_FLAVOR}
+GPGME_RUN_DEPENDS=		${PYTHON_PKGNAMEPREFIX}gpg>=2.0.0:security/py-gpg@${PY_FLAVOR}
 
+.if exists(/usr/libexec/krb5kdc)
+GSSAPI_BUILTIN_USES=		bison gssapi
+GSSAPI_BUILTIN_BUILD_DEPENDS=	p5-JSON>=4.0:converters/p5-JSON
+GSSAPI_MIT_CONFIGURE_ON=	--with-system-mitkrb5 ${GSSAPIBASEDIR} \
+				--with-system-mitkdc=${GSSAPIBASEDIR}/libexec/krb5kdc
+.else
 GSSAPI_BUILTIN_USES=		bison
 GSSAPI_BUILTIN_BUILD_DEPENDS=	p5-JSON>=4.0:converters/p5-JSON
+.endif
 
 GSSAPI_MIT_CONFIGURE_ON=	--with-system-mitkrb5 ${GSSAPIBASEDIR} \
 				--with-system-mitkdc=${GSSAPIBASEDIR}/sbin/krb5kdc \
@@ -387,21 +394,13 @@ LDAP_VARS=			SAMBA4_MODULES+=idmap_ldap
 LIBZFS_CONFIGURE_WITH=		libzfs
 LIBZFS_VARS=			SAMBA4_MODULES+=vfs_zfs_space
 
-MANDOC_BUILD_DEPENDS=		${LOCALBASE}/share/xsl/docbook/manpages/docbook.xsl:textproc/docbook-xsl \
+MANPAGES_BUILD_DEPENDS=		${LOCALBASE}/share/xsl/docbook/manpages/docbook.xsl:textproc/docbook-xsl \
 				xsltproc:textproc/libxslt
-MANDOC_CONFIGURE_ENV_OFF=	XSLTPROC="true"
+MANPAGES_CONFIGURE_ENV_OFF=	XSLTPROC="false"
 
 PROFILE_CONFIGURE_WITH=		profiling-data
 
 QUOTAS_CONFIGURE_WITH=		quotas
-
-SPOTLIGHT_CONFIGURE_ENABLE=	spotlight
-SPOTLIGHT_BUILD_DEPENDS=	tracker>=1.4.1:sysutils/tracker
-SPOTLIGHT_RUN_DEPENDS=		tracker>=1.4.1:sysutils/tracker
-# ICU
-SPOTLIGHT_LIB_DEPENDS=		libicuuc.so:devel/icu
-SPOTLIGHT_USES=			bison gnome
-SPOTLIGHT_USE=			gnome=glib20
 
 SYSLOG_CONFIGURE_WITH=		syslog
 
@@ -410,10 +409,6 @@ UTMP_CONFIGURE_WITH=		utmp
 ##############################################################################
 .include <bsd.port.options.mk>
 ##############################################################################
-.if ${OPSYS} == FreeBSD && ${OSVERSION} < 1300076
-IGNORE=runs only on FreeBSD 13.1 and above due use of O_EMPTY_PATH
-.endif
-
 .if !${PORT_OPTIONS:MADS} && ${PORT_OPTIONS:MAD_DC}
 IGNORE=To disable ADS option you also need to disable AD_DC option
 .endif
@@ -536,10 +531,22 @@ PLIST_FILES+=			${SAMBA4_LIBDIR}/private/libldb-mdb-int-samba4.so \
 .endif
 
 .if ${PORT_OPTIONS:MGSSAPI_MIT}
-PLIST_FILES+=			${SAMBA4_MODULEDIR}/krb5/winbind_krb5_localauth.so \
-				share/man/man8/winbind_krb5_localauth.8.gz
+PLIST_FILES+=			${SAMBA4_MODULEDIR}/krb5/winbind_krb5_localauth.so
+.	if ${PORT_OPTIONS:MMANPAGES}
+PLIST_FILES+=			share/man/man8/winbind_krb5_localauth.8.gz
+.	endif
 .	if ${PORT_OPTIONS:MAD_DC}
 PLIST_FILES+=			${SAMBA4_LIBDIR}/krb5/plugins/kdb/samba.so
+.	endif
+.endif
+.if ${PORT_OPTIONS:MFRUIT}
+.	if ${PORT_OPTIONS:MMANPAGES}
+PLIST_FILES+=			share/man/man8/vfs_fruit.8.gz
+.	endif
+.endif
+.if ${PORT_OPTIONS:MGLUSTERFS}
+.	if ${PORT_OPTIONS:MMANPAGES}
+PLIST_FILES+=			share/man/man8/vfs_glusterfs.8.gz
 .	endif
 .endif
 # for libexecinfo: (so that __builtin_frame_address() finds the top of the stack)
@@ -600,47 +607,6 @@ pre-configure:
 				${FALSE}
 .endif
 
-pre-build-MANDOC-off:
-				${MKDIR} ${BUILD_WRKSRC}/bin/default/docs-xml/
-				${CP} -rp ${BUILD_WRKSRC}/docs/manpages ${BUILD_WRKSRC}/bin/default/docs-xml/
-.for man in			libcli/nbt/man/nmblookup4.1 \
-				librpc/tools/ndrdump.1 \
-				source4/lib/registry/man/regdiff.1 \
-				source4/lib/registry/man/regpatch.1 \
-				source4/lib/registry/man/regshell.1 \
-				source4/lib/registry/man/regtree.1 \
-				source4/scripting/man/samba-gpupdate.8 \
-				source4/torture/man/gentest.1 \
-				source4/torture/man/locktest.1 \
-				source4/torture/man/masktest.1 \
-				source4/torture/man/smbtorture.1 \
-				source4/utils/man/ntlm_auth4.1 \
-				source4/utils/oLschema2ldif/oLschema2ldif.1 \
-				lib/tdb/man/tdbdump.8 \
-				lib/tdb/man/tdbbackup.8 \
-				lib/tdb/man/tdbtool.8 \
-				lib/talloc/man/talloc.3 \
-				lib/tdb/man/tdbrestore.8 \
-				lib/ldb/man/ldb.3 \
-				lib/ldb/man/ldbadd.1 \
-				lib/ldb/man/ldbdel.1 \
-				lib/ldb/man/ldbedit.1 \
-				lib/ldb/man/ldbmodify.1 \
-				lib/ldb/man/ldbrename.1 \
-				lib/ldb/man/ldbsearch.1 \
-				docs-xml/manpages/vfs_freebsd.8
-					${MKDIR} `dirname ${BUILD_WRKSRC}/bin/default/${man}`
-					${INSTALL_MAN} ${FILESDIR}/man/`basename ${man}` ${BUILD_WRKSRC}/bin/default/${man}
-.endfor
-.if ${PORT_OPTIONS:MCLUSTER}
-				${MKDIR} ${BUILD_WRKSRC}/bin/default/ctdb/
-.	for man in		ctdb_diagnostics.1 ctdb.1 ctdbd_wrapper.1 ctdbd.1 ltdbtool.1 onnode.1 ping_pong.1 \
-				ctdb.conf.5 ctdb.sysconfig.5 ctdb-script.options.5 \
-				ctdb.7 ctdb-statistics.7 ctdb-tunables.7
-					${INSTALL_MAN} ${FILESDIR}/man/${man} ${BUILD_WRKSRC}/bin/default/ctdb/
-.	endfor
-.endif
-
 post-install-rm-junk:
 				${RM} -r ${STAGEDIR}${PYTHON_SITELIBDIR}/samba/third_party
 				${FIND} ${STAGEDIR}${PYTHON_SITELIBDIR} -name __pycache__ \
@@ -648,6 +614,7 @@ post-install-rm-junk:
 				${FIND} ${STAGEDIR} -type f -empty -delete
 
 post-install-fix-manpages:
+.if ${PORT_OPTIONS:MMANPAGES}
 .for f in vfs_aio_linux.8 vfs_btrfs.8 vfs_ceph.8 vfs_gpfs.8
 				${RM} ${STAGEDIR}${PREFIX}/share/man/man8/${f}
 .endfor
@@ -668,9 +635,12 @@ post-install-fix-manpages:
 				${MV} ${STAGEDIR}${PREFIX}/share/man/man8/${f} ${STAGEDIR}${PREFIX}/share/man/man8/samba-${f}
 .	endfor
 .endif
+.endif
 
 post-install: post-install-rm-junk post-install-fix-manpages
+.if ${PORT_OPTIONS:MMANPAGES}
 				${LN} -sf smb.conf.5.gz ${STAGEDIR}${PREFIX}/share/man/man5/smb4.conf.5.gz
+.endif
 # Run post-install script
 .for dir in			${SAMBA4_LOGDIR} ${SAMBA4_RUNDIR} ${SAMBA4_LOCKDIR} ${SAMBA4_MODULEDIR}
 					${INSTALL} -d -m 0755 "${STAGEDIR}${dir}"
@@ -689,7 +659,9 @@ post-install: post-install-rm-junk post-install-fix-manpages
 
 post-install-FRUIT-off:
 				${RM} ${STAGEDIR}${SAMBA4_MODULEDIR}/vfs/fruit.so
+.if ${PORT_OPTIONS:MMANPAGES}
 				${RM} ${STAGEDIR}${PREFIX}/share/man/man8/vfs_fruit.8
+.endif
 
 post-install-DOCS-on:
 				${MKDIR} ${STAGEDIR}${DOCSDIR}

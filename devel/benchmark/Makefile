@@ -1,6 +1,6 @@
 PORTNAME=	benchmark
 DISTVERSIONPREFIX=	v
-DISTVERSION=	1.8.3
+DISTVERSION=	1.9.2
 PORTEPOCH=	1
 CATEGORIES=	devel
 
@@ -11,7 +11,7 @@ WWW=		https://github.com/google/benchmark
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-USES=		cmake:testing compiler:c++11-lang
+USES=		cmake:testing compiler:c++11-lang pathfix
 USE_LDCONFIG=	yes
 
 USE_GITHUB=	yes
@@ -23,6 +23,7 @@ CMAKE_OFF=	BENCHMARK_ENABLE_TESTING
 CMAKE_TESTING_ON=	BENCHMARK_ENABLE_TESTING # BENCHMARK_DOWNLOAD_DEPENDENCIES
 CMAKE_TESTING_ARGS=	-DGOOGLETEST_PATH=${WRKSRC_googletest}
 
+CFLAGS+=	-Wno-error=sign-conversion
 CXXFLAGS+=	${CXXFLAGS_${CHOSEN_COMPILER_TYPE}}
 CXXFLAGS_gcc=	-Wno-stringop-truncation
 PIE_UNSAFE=	yes
@@ -31,6 +32,6 @@ BINARY_ALIAS=	git=false
 
 PLIST_SUB=	VERSION=${DISTVERSION}
 
-# tests fail to compile, see https://github.com/google/benchmark/issues/1593
+# 100% tests passed, 0 tests failed out of 80
 
 .include <bsd.port.mk>

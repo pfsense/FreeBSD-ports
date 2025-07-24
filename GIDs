@@ -276,7 +276,7 @@ keycloak:*:332:
 honeytrap:*:333:
 percona:*:334:
 benthos:*:335:
-# free: 336
+snac:*:336:
 daapd:*:337:
 murmur:*:338:
 mumble-server:*:339:
@@ -286,10 +286,10 @@ openfire:*:342:
 gunicorn:*:343:
 snmpd:*:344:
 _metronome:*:345:
-# free: 346
+ngircd:*:346:
 eturnal:*:347:
-# free: 348
-# free: 349
+davfs2:*:348:
+tempo:*:349:
 _sabnzbd:*:350:
 sonarr:*:351:
 radarr:*:352:
@@ -303,26 +303,26 @@ prowlarr:*:359:
 v2ray:*:360:
 httptunnel:*:361:
 readarr:*:362:
-# free: 363
-# free: 364
-# free: 365
-# free: 366
-# free: 367
-# free: 368
-# free: 369
+victoria-logs:*:363:
+elog:*:364:
+gotify:*:365:
+opengist:*:366:
+velbustcpd:*:367:
+sshesame:*:368:
+neo4j:*:369:
 _wsdd:*:370:
-# free: 371
-# free: 372
+reposilite:*:371:
+beam:*:372:
 # free: 373
 # free: 374
 # free: 375
 # free: 376
-# free: 377
-# free: 378
-# free: 379
-# free: 380
-# free: 381
-# free: 382
+hostd:*:377:
+walletd:*:378:
+renterd:*:379:
+spoofdpi:*:380:
+hydroxide:*:381:
+_tlsrpt:*:382:
 # free: 383
 # free: 384
 # free: 385
@@ -337,7 +337,7 @@ ldap:*:389:
 # free: 394
 # free: 395
 # free: 396
-# free: 397
+rtorrent:*:397:
 tiarra:*:398:
 # free: 399
 # free: 400
@@ -421,8 +421,8 @@ fiche:*:477:
 prometheus:*:478:
 alertmanager:*:479:
 datadog:*:480:
-# free: 481
-# free: 482
+promxy:*:481:
+openbao:*:482:
 # free: 483
 # free: 484
 # free: 485
@@ -440,8 +440,8 @@ datadog:*:480:
 # free: 497
 rustypaste:*:498:
 # free: 499
-# free: 500
-# free: 501
+qw:*:500:
+qwfwd:*:501:
 birdvty:*:502:
 # free: 503
 # free: 504
@@ -470,7 +470,7 @@ dkimproxy:*:525:
 # free: 527
 # free: 528
 # free: 529
-# free: 530
+_bgplgd:*:530:
 # free: 531
 # free: 532
 # free: 533
@@ -481,7 +481,7 @@ valkey:*:537:
 # free: 538
 # free: 539
 # free: 540
-# free: 541
+ipfixcol2:*:541:
 _flowd:*:542:
 ejabberd:*:543:
 # free: 544
@@ -589,14 +589,14 @@ monkeysphere:*:641:
 # free: 645
 # free: 646
 # free: 647
-# free: 648
+_xrdp:*:648:
 # free: 649
 # free: 650
 # free: 651
 # free: 652
 # free: 653
 # free: 654
-# free: 655
+tinc:*:655:
 # free: 656
 # free: 657
 # free: 658
@@ -677,7 +677,7 @@ bopm:*:717:
 # free: 733
 # free: 734
 c-lightning:*:735:
-# free: 736
+zonemaster:*:736:
 # free: 737
 # free: 738
 # free: 739
@@ -692,7 +692,7 @@ c-lightning:*:735:
 # free: 748
 # free: 749
 # free: 750
-# free: 751
+supysonic:*:751:
 # free: 752
 # free: 753
 # free: 754
@@ -726,12 +726,12 @@ monero:*:781:
 zeek:*:782:
 # free: 783
 # free: 784
-# free: 785
+stirlingpdf:*:785:
 # free: 786
 # free: 787
 # free: 788
 # free: 789
-# free: 790
+healthchecks:*:790:
 # free: 791
 # free: 792
 # free: 793
@@ -747,12 +747,12 @@ clickhouse:*:800:
 # free: 803
 # free: 804
 # free: 805
-# free: 806
+act_runner:*:806:
 bosun:*:807:
 clixon:*:808:
 # free: 809
 # free: 810
-# free: 811
+calibreweb:*:811:
 foreman_proxy:*:812:
 hitch:*:813:
 puppet:*:814:
@@ -775,12 +775,12 @@ cirrus:*:828:
 # free: 831
 beehive:*:832:
 # free: 833
-# free: 834
-# free: 835
-# free: 836
-# free: 837
+pocket-id:*:834:
+filebrowser:*:835:
+tinyauth:*:836:
+homebox:*:837:
 # free: 838
-# free: 839
+shiori:*:839:
 netdisco:*:840:
 tcpcryptd:*:841:
 munin:*:842:
@@ -799,15 +799,15 @@ ebusd:*:854:
 opensearch:*:855:
 # free: 856
 # free: 857
-# free: 858
-# free: 859
+umurmur:*:858:
+kanidm:*:859:
 plocate:*:860:
-# free: 861
-# free: 862
-# free: 863
-# free: 864
-# free: 865
-# free: 866
+rekor:*:861:
+timestamp-authority:*:862:
+trillian:*:863:
+mediamtx:*:864:
+z2m:*:865:
+vglusers:*:866:
 sqlpage:*:867:
 jellyfin:*:868:
 keyd:*:869:
@@ -824,7 +824,7 @@ _encrypted-dns:*:879:
 pyspf-milter:*:880:
 ultimaker:*:881:
 midpoint:*:882:
-ipfs-go:*:883:
+kubo-go:*:883:
 telegraf:*:884:
 tcpdump:*:885:
 miniflux:*:886:

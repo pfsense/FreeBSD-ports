@@ -3,7 +3,7 @@
  * openvpn-client-export.inc
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2016-2024 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2016-2025 Rubicon Communications, LLC (Netgate)
  * Copyright (C) 2008 Shrew Soft Inc
  * All rights reserved.
  *
@@ -969,9 +969,7 @@ function openvpn_client_export_find_port_forwards($targetip, $targetport, $targe
 
 function openvpn_client_export_find_hostname($interface) {
 	global $dyndns_split_domain_types;
-	config_init_path('dyndnses/dyndns');
-	config_init_path('dnsupdates/dnsupdate');
-	foreach (array(config_get_path('dyndnses/dyndns'), config_get_path('dnsupdates/dnsupdate')) as $ddnslist) {
+	foreach (array(config_get_path('dyndnses/dyndns', []), config_get_path('dnsupdates/dnsupdate', [])) as $ddnslist) {
 		foreach ($ddnslist as $ddns) {
 			if (($ddns['interface'] == $interface) && isset($ddns['enable']) && !empty($ddns['host']) && !is_numeric($ddns['host']) && is_hostname($ddns['host'])) {
 				return $ddns['host'] . ((in_array($ddns['type'], $dyndns_split_domain_types)) ? '.' . $ddns['domainname'] : '');
@@ -981,7 +979,6 @@ function openvpn_client_export_find_hostname($interface) {
 }
 
 function openvpn_client_export_install_command() {
-	config_init_path('installedpackages/vpn_openvpn_export/config/0');
 	if (config_path_enabled('installedpackages/vpn_openvpn_export/config/0/defaultsettings', 'randomlocalport')) {
 		if (config_get_path('installedpackages/vpn_openvpn_export/config/0/defaultsettings/randomlocalport') == 'yes') {
 			config_set_path('installedpackages/vpn_openvpn_export/config/0/defaultsettings/bindmode', 'lport0');

@@ -1,11 +1,11 @@
 PORTNAME=	photofilmstrip
-PORTVERSION=	3.7.0
-PORTREVISION=	6
+DISTVERSION=	3.7.1
+PORTREVISION=	2
 CATEGORIES=	multimedia python
-MASTER_SITES=	SF/photostoryx/${PORTNAME}/${PORTVERSION}
+MASTER_SITES=	https://github.com/PhotoFilmStrip/PFS/releases/download/v${DISTVERSION}/
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
-MAINTAINER=	bofh@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Creates movies out of your pictures
 WWW=		https://www.photofilmstrip.org/
 

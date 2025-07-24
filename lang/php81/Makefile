@@ -1,5 +1,5 @@
 PORTNAME=	php81
-DISTVERSION=	8.1.29
+DISTVERSION=	8.1.33
 PORTREVISION?=	0
 CATEGORIES?=	lang devel www
 MASTER_SITES=	PHP/distributions
@@ -21,6 +21,7 @@ PHP_VER=	81
 CONFLICTS_INSTALL?=	php[0-9][0-9]${PKGNAMESUFFIX}
 
 .if !defined(PKGNAMESUFFIX)
+
 LIB_DEPENDS=	libargon2.so:security/libargon2 \
 		libpcre2-8.so:devel/pcre2
 
@@ -79,7 +80,7 @@ FPM_CONFIGURE_ON=	--enable-fpm \
 			--with-fpm-group=${WWWGRP} \
 			--with-fpm-user=${WWWOWN}
 FPM_VARS=		PHP_SAPI+=fpm \
-			USE_RC_SUBR+=php-fpm
+			USE_RC_SUBR+=php_fpm
 IPV6_CONFIGURE_OFF=	--disable-ipv6
 LINKTHR_LIBS=		-lpthread
 MYSQLND_CONFIGURE_ON=	--enable-mysqlnd
@@ -180,7 +181,7 @@ COMMENT=	The ${PHP_MODNAME} shared extension for php
 USES+=		php:ext,noflavors
 PHP_MODNAME=	${PKGNAMESUFFIX:S/-//}
 PHP_VER=	81
-IGNORE_WITH_PHP=	82 83
+IGNORE_WITH_PHP=	82 83 84 85
 
 EXTSUBDIR=	${DISTNAME}/ext/${PHP_MODNAME}
 WRKSRC=		${WRKDIR}/${EXTSUBDIR}

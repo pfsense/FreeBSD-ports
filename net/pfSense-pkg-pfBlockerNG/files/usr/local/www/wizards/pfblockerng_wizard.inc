@@ -3,8 +3,8 @@
  * pfblockerng_wizard.inc
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2004-2024 Rubicon Communications, LLC (Netgate)
- * Copyright (c) 2015-2023 BBcan177@gmail.com
+ * Copyright (c) 2004-2025 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2015-2024 BBcan177@gmail.com
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -127,12 +127,10 @@ function step4_submitphpaction() {
 	pfb_clear_contents();
 
 	// Add default pfBlockerNG configuration
-	config_init_path('installedpackages/pfblockerng/config/0');
 	$new_config = config_get_path('installedpackages');
 	$new_config['pfblockerng']['config'][0]['enable_cb']				= 'on';
 	$new_config['pfblockerng']['config'][0]['pfb_keep']				= 'on';
 
-	config_init_path('installedpackages/pfblockerngipsettings/config/0');
 	$new_config['pfblockerngipsettings']['config'][0]['enable_dup']			= 'on';
 	$new_config['pfblockerngipsettings']['config'][0]['suppression']		= 'on';
 	$new_config['pfblockerngipsettings']['config'][0]['inbound_interface']		= config_get_path('pfblockerng_wizard/step2/inbound_interface');
@@ -141,7 +139,6 @@ function step4_submitphpaction() {
 	$new_config['pfblockerngipsettings']['config'][0]['outbound_deny_action']	= 'reject';	
 	$new_config['pfblockerngipsettings']['config'][0]['pass_order']			= 'order_0';
 
-	config_init_path('installedpackages/pfblockerngdnsblsettings/config/0');
 	$new_config['pfblockerngdnsblsettings']['config'][0]['pfb_dnsvip']		= config_get_path('pfblockerng_wizard/step3/pfb_dnsvip');
 	$new_config['pfblockerngdnsblsettings']['config'][0]['pfb_dnsport']		= config_get_path('pfblockerng_wizard/step3/pfb_dnsport');
 	$new_config['pfblockerngdnsblsettings']['config'][0]['pfb_dnsport_ssl']		= config_get_path('pfblockerng_wizard/step3/pfb_dnsport_ssl');

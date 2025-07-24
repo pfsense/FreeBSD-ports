@@ -3,7 +3,7 @@
  * cron_edit.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2015-2024 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2015-2025 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2008 Mark J Crane
  * All rights reserved.
  *
@@ -185,7 +185,7 @@ $section->addInput(new Form_Input(
 	'Day of the Week',
 	'text',
 	$pconfig['wday']
-))->setHelp("The day(s) of the week on which the command will be executed. (0-7, 7=Sun or use names, ranges, or divided, *=all)");
+))->setHelp("The day(s) of the week on which the command will be executed. (0-7 where 7=Sun, ranges, or divided, *=all)");
 
 $section->addInput(new Form_Input(
 	'who',

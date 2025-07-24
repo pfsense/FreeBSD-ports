@@ -1,5 +1,5 @@
 PORTNAME=	cgal
-PORTVERSION=	5.5.1
+PORTVERSION=	5.6.2
 PORTREVISION=	2
 CATEGORIES=	math
 MASTER_SITES=	https://github.com/${PORTNAME:tu}/${PORTNAME}/releases/download/v${PORTVERSION}/

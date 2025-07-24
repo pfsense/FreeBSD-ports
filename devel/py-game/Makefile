@@ -1,5 +1,6 @@
 PORTNAME=	game
-DISTVERSION=	2.5.2
+DISTVERSION=	2.6.1
+PORTREVISION=	2
 CATEGORIES=	devel python
 MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -14,8 +15,7 @@ LICENSE_FILE=	${WRKSRC}/docs/LGPL.txt
 
 BUILD_DEPENDS=	v4l_compat>0:multimedia/v4l_compat
 LIB_DEPENDS=	libfreetype.so:print/freetype2 \
-		libpng.so:graphics/png \
-		libsmpeg.so:multimedia/smpeg
+		libpng.so:graphics/png
 RUN_DEPENDS=	${PYNUMPY} \
 		v4l_compat>0:multimedia/v4l_compat
 
@@ -23,6 +23,8 @@ USES=		compiler:c11 jpeg localbase pkgconfig python sdl xorg
 USE_SDL=	sdl2 ttf2 image2 mixer2
 USE_PYTHON=	autoplist distutils
 USE_XORG=	x11
+
+CFLAGS_i386=	-msse2 # src_c/image.c:319:12: error: always_inline function '_mm_set_epi32' requires target feature 'sse2'
 
 SDLNOX11=	sdl-nox11-[0-9]*
 
@@ -35,7 +37,7 @@ PORTDOCS=	*
 PORTEXAMPLES=	*
 
 post-extract:
-	@${RM} -r ${WRKSRC}/examples/.editorconfig
+	@${RM} ${WRKSRC}/examples/.editorconfig
 
 post-install-EXAMPLES-on:
 	@${MKDIR} ${STAGEDIR}${EXAMPLESDIR}

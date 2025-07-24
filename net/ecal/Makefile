@@ -1,17 +1,20 @@
 PORTNAME=	ecal
 DISTVERSIONPREFIX=	v
-DISTVERSION=	5.13.2
+DISTVERSION=	5.13.3
+PORTREVISION=	7
 CATEGORIES=	net devel
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Enhanced Communication Abstraction Layer
-WWW=		https://eclipse-ecal.github.io/ecal/index.html
+WWW=		https://eclipse-ecal.github.io/ecal/index.html \
+		https://github.com/eclipse-ecal/ecal
 
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/LICENSE.txt
 
 BROKEN_armv7=	link fails: undefined reference due to --no-allow-shlib-undefined: absl::lts_20230125::hash_internal::CityHash32(char const*, unsigned int)
 BROKEN_i386=	link fails: undefined reference due to --no-allow-shlib-undefined: absl::lts_20230125::hash_internal::CityHash32(char const*, unsigned int)
+BROKEN_powerpc=	link fails: undefined reference due to --no-allow-shlib-undefined: absl::lts_20230125::hash_internal::CityHash32(char const*, unsigned int)
 
 BUILD_DEPENDS=	asio>0:net/asio \
 		termcolor>0:devel/termcolor

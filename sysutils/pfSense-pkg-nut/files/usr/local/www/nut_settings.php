@@ -3,7 +3,7 @@
  * nut_settings.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2004-2024 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2004-2025 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2016-2017 Denny Page
  * All rights reserved.
  *
@@ -272,15 +272,19 @@ $nut_types = array(
 
 $usb_drivers = array(
 	'usbhid-ups' => 'usbhid',
+	'apc_modbus' => 'apc_modbus',
 	'bcmxcp_usb' => 'bcmxcp',
 	'blazer_usb' => 'blazer',
-	'nutdrv_atcl_usb' => 'nutdrv_atcl',
-	'nutdrv_qx' => 'nutdrv_qx',
+	'nutdrv_atcl_usb' => 'atcl',
+	'nutdrv_qx' => 'qx',
 	'richcomm_usb' => 'richcomm',
 	'riello_usb' => 'riello',
 	'tripplite_usb' => 'tripplite');
 
 $serial_drivers = array(
+	'adelsystem_cbi' => 'adelsystem_cbi',
+	'al175' => 'al175',
+	'apc_modbus' => 'apc_modbus',
 	'apcsmart' => 'apcsmart',
 	'bcmxcp' => 'bcmxcp',
 	'belkin' => 'belkin',
@@ -293,6 +297,8 @@ $serial_drivers = array(
 	'etapro' => 'etapro',
 	'everups' => 'everups',
 	'gamatronic' => 'gamatronic',
+	'generic_modbus' => 'generic_modbus',
+	'huawei-ups2000' => 'huawei-ups2000',
 	'isbmex' => 'isbmex',
 	'ivtscd' => 'ivtscd',
 	'liebert' => 'liebert',
@@ -302,14 +308,19 @@ $serial_drivers = array(
 	'mge-shut' => 'mge-shut',
 	'mge-utalk' => 'mge-utalk',
 	'microdowell' => 'microdowell',
-	'nutdrv_qx' => 'nutdrv_qx',
+	'microsol-apc' => 'microsol-apc',
+	'nutdrv_siemens-sitop' => 'siemens-sitop',
+	'nutdrv_qx' => 'qx',
 	'oneac' => 'oneac',
 	'optiups' => 'optiups',
+	'phoenixcontact_modbus' => 'phoenixcontact_modbus',
 	'powercom' => 'powercom',
 	'powerpanel' => 'powerpanel',
 	'rhino' => 'rhino',
 	'riello_ser' => 'riello',
 	'safenet' => 'safenet',
+	'sms_ser' => 'sms',
+	'socomec_jbus' => 'socomec_jbus',
 	'solis' => 'solis',
 	'tripplite' => 'tripplite',
 	'tripplitesu' => 'tripplitesu',

@@ -1,5 +1,5 @@
 PORTNAME=	docformatter
-PORTVERSION=	1.7.5
+PORTVERSION=	1.7.7
 CATEGORIES=	devel python
 MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -27,10 +27,6 @@ OPTIONS_DEFINE=	TOMLI
 OPTIONS_DEFAULT=TOMLI
 TOMLI_DESC=	TOML (Tom's Obvious Minimal Language) support
 
-.include <bsd.port.pre.mk>
+TOMLI_RUN_DEPENDS=	${PY_TOMLI}
 
-.if ${PORT_OPTIONS:MTOMLI} && ${PYTHON_REL} < 31100
-RUN_DEPENDS+=	${PYTHON_PKGNAMEPREFIX}tomli>=2.0.0<3:textproc/py-tomli@${PY_FLAVOR}
-.endif
-
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

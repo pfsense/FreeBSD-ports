@@ -9,10 +9,12 @@ WWW=		https://github.com/rhboot/efivar
 
 LICENSE=	LGPL21
 
-NOT_FOR_ARCHS=		powerpc powerpc64 powerpspe
+NOT_FOR_ARCHS=		powerpc powerpc64 powerpcspe
 NOT_FOR_ARCHS_REASON=	specification only supports little-endian processors
 
 LIB_DEPENDS=	libpopt.so:devel/popt
+
+CFLAGS+=	-fpermissive
 
 USES=		gmake localbase pkgconfig
 USE_GCC=	yes

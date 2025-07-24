@@ -1,15 +1,24 @@
---- chrome/browser/ui/task_manager/task_manager_table_model.cc.orig	2024-05-21 18:07:39 UTC
+--- chrome/browser/ui/task_manager/task_manager_table_model.cc.orig	2025-07-02 06:08:04 UTC
 +++ chrome/browser/ui/task_manager/task_manager_table_model.cc
-@@ -454,7 +454,7 @@ std::u16string TaskManagerTableModel::GetText(size_t r
-           ? stringifier_->backgrounded_string()
-           : stringifier_->foregrounded_string();
+@@ -419,7 +419,7 @@ TaskManagerTableModel::~TaskManagerTableModel() {
+   // Note: system_total_time_ is used for both since there is no functional
+   // difference between browser & system (they are essentially the same tab).
+   // Instead, the data is routed to the platform appropriate bucket.
+-#if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX)
++#if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_BSD)
+   task_manager::RecordTabSwitchEvent(CategoryRecord::kBrowser,
+                                      system_total_time_);
+ #elif BUILDFLAG(IS_CHROMEOS)
+@@ -560,7 +560,7 @@ std::u16string TaskManagerTableModel::GetText(size_t r
+                  ? stringifier_->backgrounded_string()
+                  : stringifier_->foregrounded_string();
  
 -#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_MAC)
 +#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_BSD)
      case IDS_TASK_MANAGER_OPEN_FD_COUNT_COLUMN: {
        const int fd_count = observed_task_manager()->GetOpenFdCount(tasks_[row]);
        return fd_count >= 0 ? base::FormatNumber(fd_count)
-@@ -621,7 +621,7 @@ int TaskManagerTableModel::CompareValues(size_t row1,
+@@ -723,7 +723,7 @@ int TaskManagerTableModel::CompareValues(size_t row1,
        return BooleanCompare(is_proc1_bg, is_proc2_bg);
      }
  
@@ -18,7 +27,7 @@
      case IDS_TASK_MANAGER_OPEN_FD_COUNT_COLUMN: {
        const int proc1_fd_count =
            observed_task_manager()->GetOpenFdCount(tasks_[row1]);
-@@ -806,7 +806,7 @@ void TaskManagerTableModel::UpdateRefreshTypes(int col
+@@ -1040,7 +1040,7 @@ void TaskManagerTableModel::UpdateRefreshTypes(int col
        type = REFRESH_TYPE_KEEPALIVE_COUNT;
        break;
  

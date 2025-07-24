@@ -4,7 +4,7 @@ DISTVERSIONPREFIX=	v
 PORTREVISION=	1
 CATEGORIES=	net-p2p
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	danfe@FreeBSD.org
 COMMENT=	Command-line utility for creating BitTorrent metainfo files
 WWW=		https://github.com/Rudde/mktorrent
 

@@ -1,5 +1,5 @@
 PORTNAME=	mediainfo
-PORTVERSION=	24.05
+PORTVERSION=	25.04
 CATEGORIES=	multimedia
 MASTER_SITES=	https://mediaarea.net/download/binary/mediainfo/${PORTVERSION}/ \
 		LOCAL/sunpoet
@@ -19,7 +19,6 @@ LIB_DEPENDS=	libmediainfo.so:multimedia/libmediainfo \
 USES=		compiler:c++11-lang cpe libtool pathfix pkgconfig tar:xz
 
 GNU_CONFIGURE=	yes
-USE_LDCONFIG=	yes
 
 PLIST_FILES=	bin/mediainfo
 WRKSRC=		${WRKDIR}/MediaInfo_CLI_GNU_FromSource/MediaInfo/Project/GNU/CLI

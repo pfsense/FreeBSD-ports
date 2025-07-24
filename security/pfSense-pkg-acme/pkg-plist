@@ -14,6 +14,7 @@ pkg/acme/dnsapi/dns_acmeproxy.sh
 pkg/acme/dnsapi/dns_active24.sh
 pkg/acme/dnsapi/dns_ad.sh
 pkg/acme/dnsapi/dns_ali.sh
+pkg/acme/dnsapi/dns_alviy.sh
 pkg/acme/dnsapi/dns_anx.sh
 pkg/acme/dnsapi/dns_artfiles.sh
 pkg/acme/dnsapi/dns_arvan.sh
@@ -73,6 +74,7 @@ pkg/acme/dnsapi/dns_infoblox.sh
 pkg/acme/dnsapi/dns_infomaniak.sh
 pkg/acme/dnsapi/dns_internetbs.sh
 pkg/acme/dnsapi/dns_inwx.sh
+pkg/acme/dnsapi/dns_ionos_cloud.sh
 pkg/acme/dnsapi/dns_ionos.sh
 pkg/acme/dnsapi/dns_ipv64.sh
 pkg/acme/dnsapi/dns_ispconfig.sh
@@ -111,6 +113,7 @@ pkg/acme/dnsapi/dns_nsone.sh
 pkg/acme/dnsapi/dns_nsupdate.sh
 pkg/acme/dnsapi/dns_nw.sh
 pkg/acme/dnsapi/dns_oci.sh
+pkg/acme/dnsapi/dns_omglol.sh
 pkg/acme/dnsapi/dns_one.sh
 pkg/acme/dnsapi/dns_online.sh
 pkg/acme/dnsapi/dns_openprovider.sh
@@ -132,6 +135,7 @@ pkg/acme/dnsapi/dns_servercow.sh
 pkg/acme/dnsapi/dns_simply.sh
 pkg/acme/dnsapi/dns_tele3.sh
 pkg/acme/dnsapi/dns_tencent.sh
+pkg/acme/dnsapi/dns_timeweb.sh
 pkg/acme/dnsapi/dns_udr.sh
 pkg/acme/dnsapi/dns_ultra.sh
 pkg/acme/dnsapi/dns_unoeuro.sh
@@ -143,6 +147,7 @@ pkg/acme/dnsapi/dns_vultr.sh
 pkg/acme/dnsapi/dns_websupport.sh
 pkg/acme/dnsapi/dns_west_cn.sh
 pkg/acme/dnsapi/dns_world4you.sh
+pkg/acme/dnsapi/dns_yandex360.sh
 pkg/acme/dnsapi/dns_yandex.sh
 pkg/acme/dnsapi/dns_yc.sh
 pkg/acme/dnsapi/dns_zilore.sh

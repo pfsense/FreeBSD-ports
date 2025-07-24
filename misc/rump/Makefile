@@ -22,7 +22,7 @@ USES=		compiler
 
 .include <bsd.port.pre.mk>
 
-.if ${OPSYS} == FreeBSD && ( ${OSVERSION} >= 1400079 || ( ${OSVERSION} >= 1302505 && ${OSVERSION} < 1400000 ))
+.if ${OPSYS} == FreeBSD
 CFLAGS+=	-Wno-error=strict-prototypes -Wno-error=array-parameter
 .endif
 
@@ -33,7 +33,7 @@ PLIST_SUB+=	X8664="@comment "
 .endif
 
 CWARNFLAGS+=	-Wno-address-of-packed-member
-.if ${COMPILER_TYPE} == clang && ${COMPILER_VERSION} >= 130
+.if ${COMPILER_TYPE} == clang
 CWARNFLAGS+=	-Wno-unused-but-set-variable
 .endif
 

@@ -1,6 +1,6 @@
 PORTNAME=	xcowsay
 DISTVERSION=	1.6
-PORTREVISION=	3
+PORTREVISION=	4
 CATEGORIES=	games
 MASTER_SITES=	http://www.nickg.me.uk/files/ \
 		LOCAL/ehaupt
@@ -17,7 +17,7 @@ LIB_DEPENDS=	libfontconfig.so:x11-fonts/fontconfig \
 
 USES=		gettext gmake gnome pkgconfig
 USE_CSTD=	c99
-USE_GNOME=	cairo gdkpixbuf2 gtk30
+USE_GNOME=	cairo gdkpixbuf gtk30
 GNU_CONFIGURE=	yes
 
 OPTIONS_DEFINE=	DBUS

@@ -3,7 +3,7 @@
  * suricata_post_install.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2019-2024 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2019-2025 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2005 Bill Marquette <bill.marquette@gmail.com>.
  * Copyright (c) 2003-2004 Manuel Kasper <mk@neon1.net>.
  * Copyright (c) 2009 Robert Zelaya Sr. Developer
@@ -153,11 +153,13 @@ if (config_get_path('installedpackages/suricata/config/0/forcekeepsettings') == 
 	include '/usr/local/pkg/suricata/suricata_migrate_config.php';
 	update_status(gettext(" done.") . "\n");
 
-	// Update configured rules archives with a fresh download
-	syslog(LOG_NOTICE, gettext("[Suricata] Downloading and updating configured rule types."));
-	include '/usr/local/pkg/suricata/suricata_check_for_rule_updates.php';
-	update_status(gettext("Generating suricata.yaml configuration file from saved settings.") . "\n");
-	$rebuild_rules = true;
+	if (!is_platform_booting()) {
+		// Update configured rules archives with a fresh download
+		syslog(LOG_NOTICE, gettext("[Suricata] Downloading and updating configured rule types."));
+		include '/usr/local/pkg/suricata/suricata_check_for_rule_updates.php';
+		update_status(gettext("Generating suricata.yaml configuration file from saved settings.") . "\n");
+		$rebuild_rules = true;
+	}
 
 	// Create the suricata.yaml file for each enabled interface
 	foreach (config_get_path('installedpackages/suricata/rule', []) as $suricatacfg) {

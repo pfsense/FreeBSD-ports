@@ -1,6 +1,6 @@
 PORTNAME=	chrony
-DISTVERSION=	4.5
-PORTREVISION=	1
+DISTVERSION=	4.7
+PORTREVISION=	0
 CATEGORIES=	net
 MASTER_SITES=	https://chrony-project.org/releases/ \
 		LOCAL/mandree

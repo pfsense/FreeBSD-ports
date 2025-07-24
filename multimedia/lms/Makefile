@@ -1,7 +1,6 @@
 PORTNAME=	lms
 DISTVERSIONPREFIX=	v
-DISTVERSION=	3.54.0
-PORTREVISION=	1
+DISTVERSION=	3.67.0
 CATEGORIES=	multimedia
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -11,20 +10,21 @@ WWW=		https://github.com/epoupon/lms
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-BROKEN_FreeBSD_13=	compilation fails: error: object of type 'const LiteralString' cannot be compared because its 'operator<=>' is implicitly deleted
-
 BUILD_DEPENDS=	googletest>0:devel/googletest
 LIB_DEPENDS=	libavformat.so:multimedia/ffmpeg \
 		libboost_system.so:devel/boost-libs \
 		libconfig++.so:devel/libconfig \
 		libtag.so:audio/taglib \
-		libwthttp.so:www/wt
+		libwthttp.so:www/wt \
+		libxxhash.so:devel/xxhash
 RUN_DEPENDS=	ffmpeg:multimedia/ffmpeg
 
-USES=		cmake cpe libarchive pkgconfig
+USES=		cmake compiler:c++20-lang cpe libarchive pkgconfig
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	epoupon
+
+CMAKE_OFF=	ENABLE_TESTS
 
 USER=		nobody
 GROUP=		nobody
@@ -53,10 +53,8 @@ USES+=		compiler:c++20-lang
 .endif
 
 post-patch:
-	@${REINPLACE_CMD} -e 's|"/etc/lms.conf"|"${PREFIX}/etc/lms.conf"|' \
-		${WRKSRC}/src/lms/main.cpp \
-		${WRKSRC}/src/tools/cover/LmsCover.cpp \
-		${WRKSRC}/src/tools/recommendation/LmsRecommendation.cpp
+	@${REINPLACE_CMD} -e 's|"/etc"|"${PREFIX}/etc"|' \
+		${WRKSRC}/src/libs/core/include/core/SystemPaths.hpp
 	@${REINPLACE_CMD} -e 's|"/usr/|"${PREFIX}/|; s|"/var/lms/"|"/var/db/lms/"|' \
 		${WRKSRC}/conf/lms.conf
 

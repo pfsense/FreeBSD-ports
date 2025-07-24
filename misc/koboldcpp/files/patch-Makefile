@@ -1,0 +1,46 @@
+--- Makefile.orig	2025-04-20 12:57:11 UTC
++++ Makefile
+@@ -45,8 +45,8 @@ endif
+ #
+ 
+ # keep standard at C11 and C++17
+-CFLAGS =
+-CXXFLAGS =
++CFLAGS = $(PRESET_CFLAGS)
++CXXFLAGS = $(PRESET_CXXFLAGS)
+ ifdef KCPP_DEBUG
+ 	CFLAGS = -g -O0
+ 	CXXFLAGS = -g -O0
+@@ -151,10 +151,10 @@ else
+ 	FULLCFLAGS += -mavx2 -msse3 -mssse3 -mfma -mf16c -mavx
+ endif # LLAMA_NOAVX2
+ else
+-	CFLAGS += -march=native -mtune=native
+-	SIMPLECFLAGS += -march=native -mtune=native
+-	SIMPLERCFLAGS += -march=native -mtune=native
+-	FULLCFLAGS += -march=native -mtune=native
++	#CFLAGS += -march=native -mtune=native
++	#SIMPLECFLAGS += -march=native -mtune=native
++	#SIMPLERCFLAGS += -march=native -mtune=native
++	#FULLCFLAGS += -march=native -mtune=native
+ endif # LLAMA_PORTABLE
+ endif # if x86
+ 
+@@ -297,8 +297,8 @@ else
+ 	CXXFLAGS += -mcpu=native
+ endif
+ else
+-	CFLAGS += -mcpu=native
+-	CXXFLAGS += -mcpu=native
++	#CFLAGS += -mcpu=native
++	#CXXFLAGS += -mcpu=native
+ endif
+ endif
+ endif
+@@ -841,4 +841,4 @@ finishedmsg:
+ #phony for printing messages
+ finishedmsg:
+ 	$(NOTIFY_MSG)
+-	$(DONOTHING)
+\ No newline at end of file
++	$(DONOTHING)

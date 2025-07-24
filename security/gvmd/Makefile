@@ -1,5 +1,6 @@
 PORTNAME=	gvmd
-DISTVERSION=	23.5.2
+DISTVERSION=	26.0.0
+PORTREVISION=	2
 DISTVERSIONPREFIX=	v
 CATEGORIES=	security
 
@@ -14,7 +15,7 @@ LIB_DEPENDS=	libgvm_base.so:security/gvm-libs \
 		libgnutls.so:security/gnutls \
 		libgpgme.so:security/gpgme \
 		libical.so:devel/libical
-RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}lxml>0:devel/py-lxml@${PY_FLAVOR} \
+RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}lxml5>0:devel/py-lxml5@${PY_FLAVOR} \
 		${LOCALBASE}/lib/postgresql/libpg-gvm.so:databases/pg-gvm \
 		doxygen>0:devel/doxygen \
 		p5-XML-Twig>=0:textproc/p5-XML-Twig \
@@ -47,7 +48,6 @@ SHEBANG_FILES=	tools/gvm-lsc-rpm-creator \
 
 post-patch:
 	${REINPLACE_CMD} -e 's|%%LOCALBASE%%|${LOCALBASE}|g' ${WRKSRC}/src/manage_sql.c
-	${REINPLACE_CMD} -e 's|+660|660|g' ${WRKSRC}/tools/greenbone-feed-sync.in
 	${REINPLACE_CMD} -e 's|#include <bsd/unistd.h>||g' ${WRKSRC}/src/manage.c \
 		${WRKSRC}/src/gvmd.c ${WRKSRC}/src/manage_sql_secinfo.c
 

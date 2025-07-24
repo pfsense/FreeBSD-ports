@@ -1,5 +1,6 @@
 PORTNAME=	yad
-PORTVERSION=	14.0
+PORTVERSION=	14.1
+PORTREVISION=	1
 DISTVERSIONPREFIX=	v
 CATEGORIES=	x11 gnome
 
@@ -34,9 +35,9 @@ OPTIONS_DEFAULT=	SPELL
 OPTIONS_SUB=	yes
 
 HTML_CONFIGURE_ENABLE=	html
-HTML_LIB_DEPENDS=	libwebkit2gtk-4.0.so:www/webkit2-gtk3 \
+HTML_LIB_DEPENDS=	libwebkit2gtk-4.0.so:www/webkit2-gtk@40 \
 			libsoup-2.4.so:devel/libsoup \
-			libjavascriptcoregtk-4.0.so:www/webkit2-gtk3
+			libjavascriptcoregtk-4.0.so:www/webkit2-gtk@40
 
 ICONBROWSER_CONFIGURE_ENABLE=	icon-browser
 

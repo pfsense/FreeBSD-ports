@@ -1,6 +1,7 @@
 PORTNAME=	caffeine-ng
 DISTVERSIONPREFIX=	v
 DISTVERSION=	4.2.0
+PORTREVISION=	1
 DISTVERSIONSUFFIX=	-0-g5027f55
 CATEGORIES=	x11 python
 MASTER_SITES=	https://codeberg.org/WhyNotHugo/${PORTNAME}/releases/download/${DISTVERSIONPREFIX}${DISTVERSION}/
@@ -27,7 +28,7 @@ LIB_DEPENDS=	libayatana-appindicator3.so:devel/libayatana-appindicator \
 RUN_DEPENDS=	${PY_DEPENDS}
 
 USES=		gettext-tools gnome meson pkgconfig python
-USE_GNOME=	gdkpixbuf2 gtk30 pygobject3
+USE_GNOME=	gdkpixbuf gtk30 pygobject3
 GLIB_SCHEMAS=	net.launchpad.caffeine.gschema.xml
 
 BINARY_ALIAS=	python3=${PYTHON_CMD}

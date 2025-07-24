@@ -1,8 +1,8 @@
 PORTNAME=	libaudiofile
 PORTVERSION=	0.3.6
-PORTREVISION=	5
+PORTREVISION=	6
 CATEGORIES=	audio
-MASTER_SITES=	GNOME/sources/${PORTNAME:S/lib//}/${PORTVERSION:C/^([0-9]+\.[0-9]+).*/\1/}
+MASTER_SITES=	GNOME
 DISTNAME=	audiofile-${PORTVERSION}
 
 MAINTAINER=	gnome@FreeBSD.org
@@ -22,6 +22,7 @@ USE_LDCONFIG=	yes
 
 GNU_CONFIGURE=	yes
 GNU_CONFIGURE_MANPREFIX=${PREFIX}/share
+TEST_TARGET=	check
 
 post-install:
 	@${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/libaudiofile.so.1

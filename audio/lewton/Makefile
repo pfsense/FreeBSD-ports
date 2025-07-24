@@ -1,12 +1,12 @@
 PORTNAME=	lewton
 DISTVERSION=	0.10.2
-PORTREVISION=	29
+PORTREVISION=	38
 CATEGORIES=	audio
 
 PATCH_SITES=	https://github.com/${GH_ACCOUNT}/${GH_PROJECT}/commit/
 PATCHFILES+=	05f96f6e6976.patch:-p1 # https://github.com/RustAudio/lewton/pull/97
 
-MAINTAINER=	jbeich@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Rust vorbis decoder
 WWW=		https://github.com/RustAudio/lewton
 
@@ -35,6 +35,5 @@ do-install:
 		--destdir "${STAGEDIR}" \
 		--prefix "${PREFIX}" \
 		${CARGO_INSTALL_ARGS}
-	@${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/*.so
 
 .include <bsd.port.mk>

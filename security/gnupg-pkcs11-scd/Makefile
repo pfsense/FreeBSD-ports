@@ -1,10 +1,9 @@
 PORTNAME=	gnupg-pkcs11-scd
-DISTVERSION=	0.10.0
-PORTREVISION=	1
+DISTVERSION=	0.11.0
 CATEGORIES=	security
 MASTER_SITES=	https://github.com/alonbl/${PORTNAME}/releases/download/${DISTNAME}/
 
-MAINTAINER=	mat@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	PKCS\#11 enabled gnupg scd
 WWW=		https://github.com/alonbl/gnupg-pkcs11-scd
 

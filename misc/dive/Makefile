@@ -1,7 +1,7 @@
 PORTNAME=	dive
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.12.0
-PORTREVISION=	5
+DISTVERSION=	0.13.0
+PORTREVISION=	3
 CATEGORIES=	misc
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -11,7 +11,7 @@ WWW=		https://github.com/wagoodman/dive
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-USES=		go:modules
+USES=		go:1.24,modules
 
 GO_MODULE=	github.com/wagoodman/dive
 

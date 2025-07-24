@@ -1,5 +1,6 @@
 PORTNAME=	mate-calc
 PORTVERSION=	1.28.0
+PORTREVISION=	1
 CATEGORIES=	math mate
 MASTER_SITES=	MATE
 DIST_SUBDIR=	mate
@@ -18,7 +19,7 @@ LIB_DEPENDS=	libmpc.so:math/mpc \
 PORTSCOUT=	limitw:1,even
 
 USES=		gettext gmake gnome localbase pkgconfig tar:xz
-USE_GNOME=	cairo gdkpixbuf2 gtk30 intlhack libxml2
+USE_GNOME=	cairo gdkpixbuf gtk30 intlhack libxml2
 GNU_CONFIGURE=	yes
 GNU_CONFIGURE_MANPREFIX=${PREFIX}/share
 

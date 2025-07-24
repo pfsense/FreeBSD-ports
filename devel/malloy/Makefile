@@ -1,6 +1,5 @@
 PORTNAME=	malloy
-DISTVERSION=	0.7.0
-PORTREVISION=	1
+DISTVERSION=	0.12.0
 CATEGORIES=	devel
 
 MAINTAINER=	jbo@FreeBSD.org
@@ -10,7 +9,7 @@ WWW=		https://github.com/tectu/malloy
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/license.txt
 
-BUILD_DEPENDS=	boost-libs>1.79.0:devel/boost-libs
+BUILD_DEPENDS=	boost-libs>1.86.0:devel/boost-libs
 LIB_DEPENDS=	libfmt.so:devel/libfmt \
 		libspdlog.so:devel/spdlog
 
@@ -20,9 +19,7 @@ USE_GITHUB=	yes
 GH_ACCOUNT=	tectu
 
 CMAKE_ON=	MALLOY_BUILD_SHARED
-CMAKE_OFF=	MALLOY_BUILD_EXAMPLES \
-		MALLOY_DEPENDENCY_FMT_DOWNLOAD \
-		MALLOY_DEPENDENCY_SPDLOG_DOWNLOAD
+CMAKE_OFF=	MALLOY_BUILD_EXAMPLES
 
 PLIST_SUB=	SOVERSION="${DISTVERSION}"
 

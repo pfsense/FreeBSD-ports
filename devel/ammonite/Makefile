@@ -1,5 +1,5 @@
 PORTNAME=	ammonite
-DISTVERSION=	3.0.0-M2
+DISTVERSION=	3.0.2
 CATEGORIES=	devel java
 MASTER_SITES=	https://github.com/lihaoyi/Ammonite/releases/download/${DISTVERSION}/
 DISTNAME=	3.3-${DISTVERSION}
@@ -13,8 +13,7 @@ WWW=		https://ammonite.io/
 
 LICENSE=	MIT
 
-USE_JAVA=	yes
-JAVA_VERSION=	8+
+USES=		java
 
 NO_ARCH=	yes
 NO_BUILD=	yes

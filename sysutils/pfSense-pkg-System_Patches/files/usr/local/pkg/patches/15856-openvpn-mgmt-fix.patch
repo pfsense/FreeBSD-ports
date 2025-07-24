@@ -1,0 +1,150 @@
+diff --git a/src/etc/inc/openvpn.inc b/src/etc/inc/openvpn.inc
+index 5102d6ef5c..384e17356a 100644
+--- a/src/etc/inc/openvpn.inc
++++ b/src/etc/inc/openvpn.inc
+@@ -2291,14 +2291,22 @@ function openvpn_get_client_status($client, $socket) {
+ 
+ function openvpn_kill_client($port, $remipp, $client_id) {
+ 	global $g;
++	$killed = -1;
+ 
+-	//$tcpsrv = "tcp://127.0.0.1:{$port}";
+-	$tcpsrv = "unix://{$g['openvpn_base']}/{$port}/sock";
++	$port = basename($port);
++	$sock_path = "{$g['openvpn_base']}/{$port}/sock";
++	/* If the socket doesn't exist, or if the remote IP address and port are
++	 * not valid, then do not proceed. */
++	if (!file_exists($sock_path) ||
++	    !is_ipaddrwithport($remipp)) {
++		return $killed;
++	}
++	$socket = "unix://{$sock_path}";
+ 	$errval = null;
+ 	$errstr = null;
+ 
+ 	/* open a tcp connection to the management port of each server */
+-	$fp = @stream_socket_client($tcpsrv, $errval, $errstr, 1);
++	$fp = @stream_socket_client($socket, $errval, $errstr, 1);
+ 	$killed = -1;
+ 	if ($fp) {
+ 		stream_set_timeout($fp, 1);
+diff --git a/src/usr/local/www/status_openvpn.php b/src/usr/local/www/status_openvpn.php
+index 1cc6f617e8..daf2fa1123 100644
+--- a/src/usr/local/www/status_openvpn.php
++++ b/src/usr/local/www/status_openvpn.php
+@@ -37,13 +37,33 @@ require_once("openvpn.inc");
+ require_once("shortcuts.inc");
+ require_once("service-utils.inc");
+ 
++$servers = openvpn_get_active_servers();
++$sk_servers = openvpn_get_active_servers("p2p");
++$clients = openvpn_get_active_clients();
++
+ /* Handle AJAX */
+ if ($_POST['action']) {
+ 	if ($_POST['action'] == "kill") {
+-		$port  = $_POST['port'];
+-		$remipp  = $_POST['remipp'];
+-		$client_id  = $_POST['client_id'];
+-		if (!empty($port) and !empty($remipp)) {
++		$port      = $_POST['port'];
++		$remipp    = $_POST['remipp'];
++		$client_id = $_POST['client_id'];
++		$error     = false;
++
++		/* Validate remote IP address and port. */
++		if (!is_ipaddrwithport($remipp)) {
++			$error = true;
++		}
++		/* Validate submitted server ID */
++		$found_server = false;
++		foreach ($servers as $server) {
++			if ($port == $server['mgmt']) {
++				$found_server = true;
++			} else {
++				continue;
++			}
++		}
++
++		if (!$error && $found_server) {
+ 			$retval = openvpn_kill_client($port, $remipp, $client_id);
+ 			echo htmlentities("|{$port}|{$remipp}|{$retval}|");
+ 		} else {
+@@ -64,24 +84,18 @@ if ($_POST['action']) {
+ 	}
+ }
+ 
+-$servers = openvpn_get_active_servers();
+-$sk_servers = openvpn_get_active_servers("p2p");
+-$clients = openvpn_get_active_clients();
+-
+ include("head.inc"); ?>
+ 
+ <form action="status_openvpn.php" method="get" name="iform">
+ <script type="text/javascript">
+ //<![CDATA[
+ 	function killClient(mport, remipp, client_id) {
+-		var busy = function(index,icon) {
+-			$(icon).bind("onclick","");
+-			$(icon).attr('src',$(icon).attr('src').replace("\.gif", "_d.gif"));
+-			$(icon).css("cursor","wait");
++		if (client_id === '') {
++			$('a[id="i:' + mport + ":" + remipp + '"]').first().children('i').removeClass().addClass('fa-solid fa-cog fa-spin text-danger');
++		} else {
++			$('a[id="i:' + mport + ":" + remipp + '"]').last().children('i').removeClass().addClass('fa-solid fa-cog fa-spin text-danger');
+ 		}
+ 
+-		$('img[name="i:' + mport + ":" + remipp + '"]').each(busy);
+-
+ 		$.ajax(
+ 			"<?=$_SERVER['SCRIPT_NAME'];?>",
+ 			{
+diff --git a/src/usr/local/www/widgets/widgets/openvpn.widget.php b/src/usr/local/www/widgets/widgets/openvpn.widget.php
+index 12f2d399dd..f614ca9a3b 100644
+--- a/src/usr/local/www/widgets/widgets/openvpn.widget.php
++++ b/src/usr/local/www/widgets/widgets/openvpn.widget.php
+@@ -285,10 +285,28 @@ if (!function_exists('printPanel')) {
+ /* Handle AJAX */
+ if ($_POST['action']) {
+ 	if ($_POST['action'] == "kill") {
+-		$port = $_POST['port'];
+-		$remipp = $_POST['remipp'];
+-		$client_id  = $_POST['client_id'];
+-		if (!empty($port) and !empty($remipp)) {
++		$servers = openvpn_get_active_servers();
++
++		$port      = $_POST['port'];
++		$remipp    = $_POST['remipp'];
++		$client_id = $_POST['client_id'];
++		$error     = false;
++
++		/* Validate remote IP address and port. */
++		if (!is_ipaddrwithport($remipp)) {
++			$error = true;
++		}
++		/* Validate submitted server ID */
++		$found_server = false;
++		foreach ($servers as $server) {
++			if ($port == $server['mgmt']) {
++				$found_server = true;
++			} else {
++				continue;
++			}
++		}
++
++		if (!$error && $found_server) {
+ 			$retval = openvpn_kill_client($port, $remipp, $client_id);
+ 			echo htmlentities("|{$port}|{$remipp}|{$retval}|");
+ 		} else {
+@@ -407,6 +425,11 @@ $widgetkey_nodash = str_replace("-", "", $widgetkey);
+ <script type="text/javascript">
+ //<![CDATA[
+ 	function killClient(mport, remipp, client_id) {
++		if (client_id === '') {
++			$('i[name="i:' + mport + ":" + remipp + '"]').first().removeClass().addClass('fa-solid fa-cog fa-spin text-danger');
++		} else {
++			$('i[name="i:' + mport + ":" + remipp + '"]').last().removeClass().addClass('fa-solid fa-cog fa-spin text-danger');
++		}
+ 
+ 		$.ajax(
+ 			"widgets/widgets/openvpn.widget.php",

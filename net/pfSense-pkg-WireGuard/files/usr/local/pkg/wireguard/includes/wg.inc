@@ -3,7 +3,7 @@
  * wg.inc
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2021-2024 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2021-2025 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2021 R. Christian McDonald (https://github.com/rcmcdonald91)
  * Copyright (c) 2020 Ascrod
  * All rights reserved.
@@ -38,11 +38,6 @@ global $wgg;
  * This toggles a given tunnel based on index
  */
 function wg_toggle_tunnel($tunnel_name) {
-	global $wgg;
-
-	// Make sure we have the latest info
-	wg_globals();
-
 	// Assume no changes will be made...
 	$changes = false;
 
@@ -57,9 +52,9 @@ function wg_toggle_tunnel($tunnel_name) {
 		$input_errors		= wg_validate_tunnel_toggle($tunnel);
 
 		if (empty($input_errors)) {
-			$wgg['tunnels'][$tun_idx] = $tunnel;
+			config_set_path("installedpackages/wireguard/tunnels/item/{$tun_idx}", $tunnel);
 
-			$action_txt = $is_enabled ? 'Disabled' : 'Enabled';
+			$action_text = $is_enabled ? 'Disabled' : 'Enabled';
 			
 			// Sync with configuration backend
 			wg_write_config("{$action_text} tunnel {$tunnel['name']}.", true);
@@ -82,11 +77,6 @@ function wg_toggle_tunnel($tunnel_name) {
  * This toggles a given peer based on config array index
  */
 function wg_toggle_peer($peer_idx) {
-	global $wgg;
-
-	// Make sure we have the latest info
-	wg_globals();
-
 	// Assume no changes will be made...
 	$changes = false;
 
@@ -102,7 +92,7 @@ function wg_toggle_peer($peer_idx) {
 
 		// Boilerplate...
 		if (empty($input_errors)) {
-			$wgg['peers'][$peer_idx] = $peer;
+			config_set_path("installedpackages/wireguard/peers/item/{$peer_idx}", $peer);
 
 			$action_text = $is_enabled ? 'Disabled' : 'Enabled';
 
@@ -130,11 +120,6 @@ function wg_toggle_peer($peer_idx) {
  * This deletes a given peer based on config array index
  */
 function wg_delete_peer($peer_idx) {
-	global $wgg;
-
-	// Make sure we have the latest info
-	wg_globals();
-
 	$changes = false;
 
 	$input_errors = array();
@@ -145,7 +130,7 @@ function wg_delete_peer($peer_idx) {
 		// Boilerplate...
 		if (empty($input_errors)) {
 			// Delete the peer
-			unset($wgg['peers'][$peer_idx]);
+			config_del_path("installedpackages/wireguard/peers/item/{$peer_idx}");
 
 			// Sync with configuration backend
 			wg_write_config("Deleted peer {$peer_idx} ({$peer['publickey']}).", true);
@@ -171,11 +156,6 @@ function wg_delete_peer($peer_idx) {
  * This deletes a given tunnel based on name
  */
 function wg_delete_tunnel($tunnel_name) {
-	global $wgg;
-
-	// Make sure we have the latest info
-	wg_globals();
-
 	$changes = false;
 
 	$input_errors = array();
@@ -185,7 +165,7 @@ function wg_delete_tunnel($tunnel_name) {
 
 		if (empty($input_errors)) {
 			// Delete the tunnel
-			unset($wgg['tunnels'][$tun_idx]);
+			config_del_path("installedpackages/wireguard/tunnels/item/{$tun_idx}");
 
 			// Sync with configuration backend
 			wg_write_config("Deleted tunnel {$tunnel['name']}.", true);
@@ -208,8 +188,6 @@ function wg_delete_tunnel($tunnel_name) {
 }
 
 function wg_toggle_wireguard() {
-	global $wgg;
-
 	if (wg_is_service_enabled() && !wg_is_service_running()) {
 		return wg_service_fpm_start();
 	} elseif (!wg_is_service_enabled() && wg_is_service_running()) {
@@ -220,15 +198,11 @@ function wg_toggle_wireguard() {
 }
 
 function wg_tunnel_unassign_peers($tunnel_name) {
-	global $wgg;
-
-	wg_globals();
-
 	// Assume there is no peers to unassign...
 	$changes = false;
 	
 	foreach (wg_tunnel_get_peers_config($tunnel_name) as [$peer_idx, $peer, $is_new]) {
-		$wgg['peers'][$peer_idx]['tun'] = 'unassigned';
+		config_set_path("installedpackages/wireguard/peers/item/{$peer_idx}/tun", 'unassigned');
 
 		// We've got at least one, so we need to resync with the backend...
 		$changes = true;
@@ -339,21 +313,17 @@ function wg_destroy_rogue_peers($tunnel_name, &$cmds = null) {
  * This returns a DateTime object corresponding to the last update time
  */
 function wg_resolve_endpoints() {
-	global $wgg;
-
 	// Get the latest info
 	wg_globals();
 
 	// Do we have any peers?
-	if (isset($wgg['peers']) && is_array($wgg['peers'])) {
-		foreach ((array) $wgg['peers'] as $peer) {
-			// Strip port if empty
-			$peer['port'] = !empty($peer['port']) ? ":{$peer['port']}" : null;
+	foreach (config_get_path('installedpackages/wireguard/peers/item', []) as $peer) {
+		// Strip port if empty
+		$peer['port'] = !empty($peer['port']) ? ":{$peer['port']}" : null;
 
-			$endpoint = "{$peer['endpoint']}{$peer['port']}";
+		$endpoint = "{$peer['endpoint']}{$peer['port']}";
 
-			wg_peer_set_endpoint($peer['tun'], $peer['publickey'], $endpoint);
-		}
+		wg_peer_set_endpoint($peer['tun'], $peer['publickey'], $endpoint);
 	}
 
 	$last_update_time = new DateTime();
@@ -390,21 +360,18 @@ function wg_should_reresolve_endpoints($last_update_time) {
  * Returns package default if something is wrong with the configuration
  */
 function wg_get_endpoint_resolve_interval() {
-	global $config, $wgg;
+	global $wgg;
 
 	// Are we tracking the system value?
-	if (isset($wgg['config']['resolve_interval_track']) 
-	    && ($wgg['config']['resolve_interval_track'] == 'yes')) {
-		if (isset($config['system']['aliasesresolveinterval']) 
-		    && is_numeric($config['system']['aliasesresolveinterval'])) {
-			return $config['system']['aliasesresolveinterval'];
+	if (config_get_path('installedpackages/wireguard/config/0/resolve_interval_track') == 'yes') {
+		if (is_numeric(config_get_path('system/aliasesresolveinterval'))) {
+			return config_get_path('system/aliasesresolveinterval');
 		}
 			
 		// Package default is the same as pfSense default (300 seconds)
 		return $wgg['default_resolve_interval'];
-	} elseif (isset($wgg['config']['resolve_interval'])
-	          && is_numericint($wgg['config']['resolve_interval'])) {
-		return $wgg['config']['resolve_interval'];
+	} elseif (is_numericint(config_get_path('installedpackages/wireguard/config/0/resolve_interval'))) {
+		return config_get_path('installedpackages/wireguard/config/0/resolve_interval');
 	} else {
 		// Something is wrong, so just return the package default...
 		return $wgg['default_resolve_interval'];
@@ -417,15 +384,13 @@ function wg_get_endpoint_resolve_interval() {
 function wg_do_settings_post($post) {
 	global $wgg;
 
-	wg_globals();
-
 	$pconfig = $input_errors = array();
 
 	// Assume no changes will be made...
 	$changes = false;
 
 	// We need to save the "old config" to compare against later...
-	$pconfig = $old_config = $wgg['config'];
+	$pconfig = $old_config = config_get_path('installedpackages/wireguard/config/0');
 
 	$pconfig['enable']			= (!empty($post['enable']) && $post['enable'] == 'yes') ? 'on' : 'off';
 	$pconfig['keep_conf'] 			= empty($post['keep_conf']) ? 'no' : $post['keep_conf'];
@@ -438,7 +403,7 @@ function wg_do_settings_post($post) {
 	$input_errors = wg_validate_settings_post($pconfig);
 
 	if (empty($input_errors)) {
-		$wgg['config'] = $pconfig;
+		config_set_path('installedpackages/wireguard/config/0', $pconfig);
 
 		// Sync with configuration backend
 		wg_write_config('Saved package settings.', true);
@@ -458,8 +423,6 @@ function wg_do_settings_post($post) {
  */
 function wg_do_peer_post($post) {
 	global $wgg;
-
-	wg_globals();
 
 	$pconfig = $input_errors = array();
 
@@ -489,10 +452,10 @@ function wg_do_peer_post($post) {
 	$input_errors = wg_validate_peer_post($pconfig, $peer_idx);
 
 	if (empty($input_errors)) {
-		$wgg['peers'][$peer_idx] = $pconfig;
+		config_set_path("installedpackages/wireguard/peers/item/{$peer_idx}", $pconfig);
 
 		// Sync with configuration backend
-		wg_write_config("Updated peer {$peer_idx} ({$peer['publickey']}).", true);
+		wg_write_config("Updated peer {$peer_idx} ({$pconfig['publickey']}).", true);
 
 		// Resync the package
 		wg_resync();
@@ -519,8 +482,6 @@ function wg_do_peer_post($post) {
 function wg_do_tunnel_post($post) {
 	global $wgg;
 
-	wg_globals();
-
 	$pconfig = $input_errors = array();
 
 	// Assume no changes will be made...
@@ -545,7 +506,7 @@ function wg_do_tunnel_post($post) {
 	$input_errors			= wg_validate_tunnel_post($pconfig, $tun_idx);
 
 	if (empty($input_errors)) {
-		$wgg['tunnels'][$tun_idx] = $pconfig;
+		config_set_path("installedpackages/wireguard/tunnels/item/{$tun_idx}", $pconfig);
 
 		// Sync with configuration backend
 		wg_write_config("Updated tunnel {$pconfig['name']}.", true);
@@ -700,9 +661,6 @@ function wg_tunnel_sync($tunnel_names, $restart_services = false, $resolve_endpo
 function wg_tunnel_sync_by_name($tunnel_name, $json = false) {
 	global $wgg;
 
-	// Get the latest info
-	wg_globals();
-
 	$cmds = $errors = $tunnel = array();
 
 	// We've got a tunnel that we need to build...
@@ -804,13 +762,9 @@ function wg_resync() {
  * Returns an array of enabled tunnels
  */
 function wg_get_enabled_tunnels() {
-	global $wgg;
-
-	wg_globals();
-
 	$ret_tunnels = array();
 
-	foreach ($wgg['tunnels'] as $tunnel) {
+	foreach (config_get_path('installedpackages/wireguard/tunnels/item', []) as $tunnel) {
 		if (isset($tunnel['enabled']) && $tunnel['enabled'] == 'yes') {
 			$ret_tunnels[] = $tunnel;
 		}
@@ -825,8 +779,6 @@ function wg_get_enabled_tunnels() {
 function wg_create_config_files($clean = true) {
 	global $wgg;
 
-	wg_globals();
-
 	// Create configuration path if it is missing
 	if (!file_exists($wgg['conf_path'])) {
 		mkdir($wgg['conf_path'], 0700, true);
@@ -840,10 +792,8 @@ function wg_create_config_files($clean = true) {
 	}
 
 	// Check if there are any configurations to write to disk
-	if (isset($wgg['tunnels']) && is_array($wgg['tunnels'])) {
-		foreach ($wgg['tunnels'] as $tunnel) {
-			wg_make_tunnel_conf_file($tunnel, false);
-		}
+	foreach (config_get_path('installedpackages/wireguard/tunnels/item', []) as $tunnel) {
+		wg_make_tunnel_conf_file($tunnel, false);
 	}
 }
 
@@ -863,11 +813,11 @@ function wg_delete_config_files() {
  * Removes any configuration xml paths as defined by $wgg['xml_conf_tags']
  */
 function wg_remove_config_settings() {
-	global $config, $wgg;
+	global $wgg;
 
 	// Loop through each potential conf path and unset it
 	foreach ($wgg['xml_paths_to_clean'] as $path) {
-		array_unset_value($config, $path);
+		config_del_path($path);
 	}
 
 	// Now write out the new config to disk

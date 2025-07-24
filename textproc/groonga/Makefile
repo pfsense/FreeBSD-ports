@@ -1,5 +1,5 @@
 PORTNAME=	groonga
-DISTVERSION=	13.0.5
+DISTVERSION=	15.0.9
 CATEGORIES=	textproc
 MASTER_SITES=	https://packages.groonga.org/source/groonga/
 
@@ -38,7 +38,6 @@ MECAB_CONFIGURE_OFF=	--without-mecab
 RUBY_RUN_DEPENDS=	rubygem-bundler>=0:sysutils/rubygem-bundler
 RUBY_USES=		ruby
 RUBY_CONFIGURE_ON=	--enable-mruby
-SUGGEST_BROKEN=		"Does not build with libzmq4"
 SUGGEST_LIB_DEPENDS=	libevent.so:devel/libevent \
 			libmsgpackc.so:devel/msgpack-c \
 			libzmq.so:net/libzmq4
@@ -48,11 +47,5 @@ SUGGEST_CONFIGURE_ON=	--enable-zeromq \
 SUGGEST_CONFIGURE_OFF=	--disable-zeromq \
 			--without-libevent \
 			--without-message-pack
-
-post-patch:
-# Avoid conflict with C++20 <version> by adding .txt suffix
-	@${MV} ${WRKSRC}/version ${WRKSRC}/version.txt
-	@${REINPLACE_CMD} -Ei .c++20 '/test|cat/s/[[:<:]]version/&.txt/' \
-		${WRKSRC}/version-gen.sh
 
 .include <bsd.port.mk>

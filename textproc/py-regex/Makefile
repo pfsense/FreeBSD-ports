@@ -1,5 +1,5 @@
 PORTNAME=	regex
-DISTVERSION=	2023.10.3
+DISTVERSION=	2024.11.6
 CATEGORIES=	textproc python
 MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -10,8 +10,11 @@ WWW=		https://github.com/mrabarnett/mrab-regex
 
 LICENSE=	PSFL
 
+BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}setuptools>=0:devel/py-setuptools@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}wheel>0:devel/py-wheel@${PY_FLAVOR}
+
 USES=		python
-USE_PYTHON=	autoplist distutils pytest # 1 test fails, see https://github.com/mrabarnett/mrab-regex/issues/482
+USE_PYTHON=	autoplist pep517 pytest # 1 test fails, see https://github.com/mrabarnett/mrab-regex/issues/482
 
 TEST_ENV=	${MAKE_ENV} PYTHONPATH=${STAGEDIR}${PYTHONPREFIX_SITELIBDIR}
 

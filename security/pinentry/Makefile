@@ -1,11 +1,8 @@
 PORTNAME=	pinentry
-PORTVERSION=	1.3.0
-PORTREVISION?=	0
+PORTVERSION=	1.3.1
+PORTREVISION?=	2
 CATEGORIES=	security
 MASTER_SITES=	GNUPG/pinentry
-
-PATCH_SITES=	https://github.com/gpg/pinentry/commit/
-PATCHFILES+=	844360c9c99d2f11dc4236c0ab6bdb9b56758898.patch:-p1
 
 MAINTAINER=	jhale@FreeBSD.org
 COMMENT?=	Collection of simple PIN or passphrase entry dialogs
@@ -39,7 +36,7 @@ NCURSES_RUN_DEPENDS=	${PINENTRY_NCURSES}:security/pinentry-curses
 EFL_DESC=	EFL frontend
 PINENTRY_EFL=	pinentry-efl
 # Due to a dependency loop that exists between security/pinentry-efl,
-# devel/elf, graphics/poppler, security/gpgme-cpp, security/gpgme,
+# devel/elf, graphics/poppler, security/gpgmepp, security/gpgme,
 # security/gnupg and security/pinentry, the user must install
 # pinentry-efl manually. See pkg-message.dep-loop for more details.
 #EFL_RUN_DEPENDS=	${PINENTRY_EFL}:security/pinentry-efl
@@ -105,7 +102,7 @@ LIBSECRET_USE=		GNOME=glib20
 
 .if ${PINENTRY_GUI} == "gnome"
 OPTIONS_SLAVE=	LIBSECRET
-LIB_DEPENDS+=	libgcr-base-3.so:security/gcr
+LIB_DEPENDS+=	libgcr-base-3.so:security/gcr3
 PLIST_FILES=	bin/pinentry-gnome3
 .else
 CONFIGURE_ARGS+=--disable-pinentry-gnome3
@@ -117,7 +114,8 @@ USE_KDE=	wayland
 USE_QT=		core gui widgets x11extras buildtools:build
 USE_XORG=	x11
 PLIST_FILES=	bin/pinentry-qt5 \
-		share/applications/org.gnupg.pinentry-qt5.desktop
+		share/applications/org.gnupg.pinentry-qt5.desktop \
+		share/pixmaps/pinentry-qt5.png
 CONFIGURE_ARGS+=--enable-pinentry-qt5
 .else
 CONFIGURE_ARGS+=--disable-pinentry-qt5
@@ -129,7 +127,8 @@ USE_CXXSTD=	c++17
 USE_KDE=	guiaddons windowsystem
 USE_QT=		base
 PLIST_FILES=	bin/pinentry-qt \
-		share/applications/org.gnupg.pinentry-qt.desktop
+		share/applications/org.gnupg.pinentry-qt.desktop \
+		share/pixmaps/pinentry.png
 CONFIGURE_ARGS+=--enable-pinentry-qt
 .else
 CONFIGURE_ARGS+=--disable-pinentry-qt
@@ -170,6 +169,10 @@ CONFIGURE_ARGS+=--enable-pinentry-tty
 .else
 CONFIGURE_ARGS+=--disable-pinentry-tty
 .endif
+
+# Rename icon to prevent install conflicts with the Qt6 frontend.
+post-extract:
+	@(cd ${WRKSRC}/qt5/icons && ${MV} pinentry.png pinentry-qt5.png)
 
 post-install:
 	${RM} ${STAGEDIR}${PREFIX}/bin/pinentry \

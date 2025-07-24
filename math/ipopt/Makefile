@@ -1,11 +1,13 @@
 PORTNAME=	Ipopt
 DISTVERSIONPREFIX=	releases/
-DISTVERSION=	3.14.16
+DISTVERSION=	3.14.17
+PORTREVISION=	1
 CATEGORIES=	math
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Software package for large-scale nonlinear optimization
-WWW=		https://projects.coin-or.org/Ipopt
+WWW=		https://coin-or.github.io/Ipopt/ \
+		https://github.com/coin-or/Ipopt
 
 LICENSE=	EPL
 

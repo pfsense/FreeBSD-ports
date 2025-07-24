@@ -1,11 +1,11 @@
---- components/password_manager/core/browser/password_store/login_database_unittest.cc.orig	2024-06-22 08:49:42 UTC
+--- components/password_manager/core/browser/password_store/login_database_unittest.cc.orig	2025-05-31 17:16:41 UTC
 +++ components/password_manager/core/browser/password_store/login_database_unittest.cc
-@@ -2132,7 +2132,7 @@ INSTANTIATE_TEST_SUITE_P(MigrationToVCurrent,
-                          LoginDatabaseMigrationTestBroken,
-                          testing::Values(1, 2, 3, 24));
+@@ -2303,7 +2303,7 @@ INSTANTIATE_TEST_SUITE_P(MigrationToVCurrent,
+                                           testing::Bool()));
  
--#if BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_IOS)
-+#if BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_IOS) || BUILDFLAG(IS_BSD)
+ #if BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_IOS) || \
+-    BUILDFLAG(IS_WIN)
++    BUILDFLAG(IS_WIN) || BUILDFLAG(IS_BSD)
  class LoginDatabaseUndecryptableLoginsTest : public testing::Test {
   protected:
    LoginDatabaseUndecryptableLoginsTest() = default;

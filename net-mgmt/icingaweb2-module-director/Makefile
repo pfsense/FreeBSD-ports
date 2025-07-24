@@ -1,11 +1,10 @@
 PORTNAME=	icingaweb2-module-director
 DISTVERSIONPREFIX=	v
-DISTVERSION=	1.11.1
-PORTREVISION=	1
+DISTVERSION=	1.11.5
 CATEGORIES=	net-mgmt www
 PKGNAMESUFFIX=	${PHP_PKGNAMESUFFIX}
 
-MAINTAINER=	joneum@FreeBSD.org
+MAINTAINER=	flo@FreeBSD.org
 COMMENT=	Configuration frontend for Icinga 2, integrated automation
 WWW=		https://github.com/Icinga/icingaweb2-module-director
 
@@ -16,6 +15,7 @@ RUN_DEPENDS=	icingaweb2${PHP_PKGNAMESUFFIX}>=2.12.1:net-mgmt/icingaweb2@${PHP_FL
 
 USES=		php:web,flavors
 USE_PHP=	pcntl
+IGNORE_WITH_PHP=81
 USE_RC_SUBR=	icinga-director
 
 DIRECTOR_USER?=		icingadirector

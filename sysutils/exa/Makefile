@@ -1,10 +1,10 @@
 PORTNAME=	exa
 DISTVERSIONPREFIX=	v
 DISTVERSION=	0.10.1
-PORTREVISION=	33
+PORTREVISION=	45
 CATEGORIES=	sysutils
 
-MAINTAINER=	mikael@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Modern replacement for ls
 WWW=		https://the.exa.website/
 
@@ -74,6 +74,5 @@ post-install:
 	${INSTALL_DATA} ${WRKSRC}/completions/completions.fish ${STAGEDIR}${PREFIX}/share/fish/completions/exa.fish
 	@${MKDIR} ${STAGEDIR}${PREFIX}/share/zsh/site-functions
 	${INSTALL_DATA} ${WRKSRC}/completions/completions.zsh ${STAGEDIR}${PREFIX}/share/zsh/site-functions/_exa
-	${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/exa
 
 .include <bsd.port.mk>

@@ -1,6 +1,6 @@
 PORTNAME=	bugwarrior
 PORTVERSION=	1.8.0
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	deskutils python
 MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -11,6 +11,8 @@ WWW=		https://github.com/ralphbean/bugwarrior
 
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/LICENSE.txt
+
+BROKEN=		python-3.9 or later is not supported
 
 RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}click>0:devel/py-click@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}python-dateutil>0:devel/py-python-dateutil@${PY_FLAVOR} \
@@ -48,18 +50,8 @@ KEYRING_RUN_DEPENDS=		${PYTHON_PKGNAMEPREFIX}keyring>0:security/py-keyring@${PY_
 PHABRICATOR_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}phabricator>0:devel/py-phabricator@${PY_FLAVOR}
 TRAC_RUN_DEPENDS=		${PYTHON_PKGNAMEPREFIX}offtrac>0:devel/py-offtrac@${PY_FLAVOR}
 
-.include <bsd.port.pre.mk>
-
-.if ${PYTHON_VER} <= 3.8
-RUN_DEPENDS+=	${PYTHON_PKGNAMEPREFIX}typing-extensions>0:devel/py-typing-extensions@${PY_FLAVOR}
-.endif
-
-.if ${PYTHON_REL} > 30900
-BROKEN=		python-3.9 is not supported
-.endif
-
 do-test:
 	${RM} ${WRKSRC}/tests/test_activecollab.py # Needs pandoc
 	@cd ${WRKSRC} && ${PYTHON_CMD} ${PYDISTUTILS_SETUP} test
 
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

@@ -1,20 +1,26 @@
 PORTNAME=	czkawka
-DISTVERSION=	7.0.0
+DISTVERSION=	9.0.0
 PORTREVISION=	3
 CATEGORIES=	sysutils
 
-MAINTAINER=	jbeich@FreeBSD.org
-COMMENT=	Multi functional app to find duplicates, empty folders, similar images etc.
+MAINTAINER=	uzsolt@FreeBSD.org
+COMMENT=	Simple app to remove unnecessary files from your computer
 WWW=		https://github.com/qarmin/czkawka
 
 LICENSE=	CC-BY-4.0 MIT
 LICENSE_COMB=	multi
 LICENSE_FILE_MIT=	${WRKSRC}/${PORTNAME}_core/LICENSE
 
+BROKEN_i386=	the trait bound [u64; 4]: BitViewSized is not satisfied
+
 USES=		cargo gnome
 USE_GITHUB=	yes
-USE_GNOME=	gdkpixbuf2 gtk40
 GH_ACCOUNT=	qarmin
+USE_GNOME=	gdkpixbuf gtk40
+
+# XXX https://github.com/rust-lang/cargo/issues/4101
+CARGO_INSTALL_PATH=	${PLIST_FILES:Mbin/*:T}
+
 PLIST_FILES=	bin/${PORTNAME}_cli \
 		bin/${PORTNAME}_gui \
 		share/applications/com.github.qarmin.czkawka.desktop \
@@ -23,9 +29,6 @@ PLIST_FILES=	bin/${PORTNAME}_cli \
 		share/icons/hicolor/scalable/apps/com.github.qarmin.czkawka.svg \
 		share/metainfo/com.github.qarmin.czkawka.metainfo.xml \
 		${NULL}
-
-# XXX https://github.com/rust-lang/cargo/issues/4101
-CARGO_INSTALL_PATH=	${PLIST_FILES:Mbin/*:T}
 
 post-patch:
 # XXX Skip the new GUI until runtime is tested

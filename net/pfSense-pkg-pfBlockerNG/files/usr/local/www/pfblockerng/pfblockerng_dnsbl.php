@@ -3,8 +3,8 @@
  * pfblockerng_dnsbl.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2016-2024 Rubicon Communications, LLC (Netgate)
- * Copyright (c) 2015-2023 BBcan177@gmail.com
+ * Copyright (c) 2016-2025 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2015-2024 BBcan177@gmail.com
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the \"License\");
@@ -28,8 +28,7 @@ global $pfb;
 pfb_global();
 $disable_move = FALSE;
 
-config_init_path('installedpackages/pfblockerngdnsblsettings/config/0');
-$pfb['dconfig'] = config_get_path('installedpackages/pfblockerngdnsblsettings/config/0');
+$pfb['dconfig'] = config_get_path('installedpackages/pfblockerngdnsblsettings/config/0', []);
 
 // Collect local domain TLD for Python TLD Allow array
 if (strpos(config_get_path('system/domain'), '.') !== FALSE) {
@@ -3292,15 +3291,12 @@ function enable_python_gp() {
 }
 
 function enable_dnsblip() {
-	var dnsblip = $('#action').prop('checked'); 
-	hideInput('aliaslog', !dnsblip);
-	hideInput('dnsbl_ip_text_in', !dnsblip);
-	hideInput('dnsbl_ip_text_out', !dnsblip);
-
 	if ($('#action').val() != 'Disabled') {
+		hideInput('aliaslog', false);
 		$('#advinboundsettings').show();
 		$('#advoutboundsettings').show();
 	} else {
+		hideInput('aliaslog', true);
 		$('#advinboundsettings').hide();
 		$('#advoutboundsettings').hide();
 	}

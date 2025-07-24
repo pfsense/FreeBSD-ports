@@ -3,7 +3,7 @@ PORTNAME=	signon-ui
 # > git rev-list 0.17+15.10.20150810-0ubuntu1.. --count
 DISTVERSION=	0.17-355
 DISTVERSIONSUFFIX=	-g4368bb7
-PORTREVISION=	4
+PORTREVISION=	5
 CATEGORIES=	sysutils kde
 DIST_SUBDIR=	KDE/${GL_ACCOUNT}
 
@@ -22,7 +22,7 @@ LIB_DEPENDS=	libaccounts-qt5.so:net-im/libaccounts-qt@qt5 \
 USES=		compiler:c++11-lang gettext-runtime gl gnome pkgconfig python \
 		qmake qt:5 tar:bz2
 USE_GL=		gl
-USE_GNOME=	gdkpixbuf2 glib20
+USE_GNOME=	gdkpixbuf glib20
 USE_QT=		core dbus declarative gui location network webchannel webengine widgets xml \
 		buildtools:build qmake:build
 # gitlab variables

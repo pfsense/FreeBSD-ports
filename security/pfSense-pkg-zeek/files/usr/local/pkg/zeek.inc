@@ -217,8 +217,7 @@ function zeek_deinstall_command() {
 
 // Zeek NSM: General Settings input validation
 function zeek_validate_general($post, &$input_errors) {
-	config_init_path('installedpackages/zeek/config');
-	$settings = config_get_path('installedpackages/zeek/config/0');
+	$settings = config_get_path('installedpackages/zeek/config/0', []);
 
 	if ($post['enable'] == "on") {
 		if (!zeek_cluster_enabled()) {
@@ -349,8 +348,7 @@ function zeek_settings_resync() {
 		return;
 	}
 
-	config_init_path('installedpackages/zeek/config');
-	$settings = config_get_path('installedpackages/zeek/config/0');
+	$settings = config_get_path('installedpackages/zeek/config/0', []);
 
 	$hostname = ($settings['hostname'] ? $settings['hostname'] : 'localhost');
 	// Read assigned interface
@@ -430,8 +428,7 @@ EOD;
 }
 
 function zeek_zeekctl_resync() {
-	config_init_path('installedpackages/zeekcontrol/config');
-	$settings = config_get_path('installedpackages/zeekcontrol/config/0');
+	$settings = config_get_path('installedpackages/zeekcontrol/config/0', []);
 
 	$email = $settings['admin_email'] ? $settings['admin_email'] : 'admin@localhost';
 	$mailconnection = ($settings['mail_connection_summary'] == "on") ? 1 : 0;
@@ -535,8 +532,7 @@ EOD;
 }
 
 function zeek_cluster_resync() {
-	config_init_path('installedpackages/zeekcluster/config');
-	$settings = config_get_path('installedpackages/zeekcluster/config/0');
+	$settings = config_get_path('installedpackages/zeekcluster/config/0', []);
 
 	$managerhost = ($settings['manager_host'] ? $settings['manager_host'] : 'localhost');
 	$proxyhost = ($settings['proxy_host'] ? $settings['proxy_host'] : 'localhost');
@@ -613,8 +609,7 @@ function zeek_log_resync() {
 	global $zeeklogstate;
 	$zeeklogstate = false;
 
-	config_init_path('installedpackages/zeeklog/config');
-	$settings = config_get_path('installedpackages/zeeklog/config/0');
+	$settings = config_get_path('installedpackages/zeeklog/config/0', []);
 
 	if ($settings['remove_zeek_log'] == "on") {
 		$zeeklogstate = true;
@@ -714,8 +709,6 @@ function zeek_script_resync() {
 
 EOD;
 
-	config_init_path('installedpackages/zeekscript/config');
-
 	if (zeek_enabled()) {
 		foreach (config_get_path('installedpackages/zeekscript/config', []) as $script) {
 			$path = $script['zeekscriptpath'];
@@ -765,32 +758,6 @@ function zeek_sync_on_changes() {
 				$rs = $zeek_sync['row'];
 			} else {
 				log_error("[zeek] XMLRPC sync is enabled but there are no hosts configured as replication targets.");
-				return;
-			}
-		break;
-		case "auto":
-			if (is_array(config_get_path('hasync'))) {
-				$system_carp = config_get_path('hasync');
-				$rs[0]['ipaddress'] = $system_carp['synchronizetoip'];
-				$rs[0]['username'] = $system_carp['username'];
-				$rs[0]['password'] = $system_carp['password'];
-				$rs[0]['syncdestinenable'] = FALSE;
-				// XMLRPC sync is currently only supported over connections using the same protocol and port as this system
-				if (config_get_path('system/webgui/protocol') == "http") {
-					$rs[0]['syncprotocol'] = "http";
-					$rs[0]['syncport'] = config_get_path('system/webgui/port') ?: '80';
-				} else {
-					$rs[0]['syncprotocol'] = "https";
-					$rs[0]['syncport'] = config_get_path('system/webgui/port') ?: '443';
-				}
-				if ($system_carp['synchronizetoip'] == "") {
-					log_error("[zeek] XMLRPC CARP/HA sync is enabled but there are no system backup hosts configured as replication targets.");
-					return;
-				} else {
-					$rs[0]['syncdestinenable'] = TRUE;
-				}
-			} else {
-				log_error("[zeek] XMLRPC CARP/HA sync is enabled but there are no system backup hosts configured as replication targets.");
 				return;
 			}
 		break;
@@ -858,6 +825,62 @@ function zeek_do_xmlrpc_sync($sync_to_ip, $username, $password, $varsyncport, $v
 	$resp = $rpc_client->xmlrpc_method('merge_installedpackages_section', $xml, $synctimeout);
 	/* Tell zeek to reload our settings on the destination sync host. */
 	$resp = $rpc_client->xmlrpc_exec_php($execcmd, $synctimeout);
+}
+
+function zeek_plugin_xmlrpc_send() {
+	if (config_get_path('installedpackages/zeeksync/config/0/synconchanges') != 'auto') {
+		return [];
+	}
+
+	return [
+		'installedpackages/zeeksync/config/0/synconchanges',
+		'installedpackages/zeek',
+		'installedpackages/zeekcontrol',
+		'installedpackages/zeekcluster',
+		'installedpackages/zeekscript'
+	];
+}
+
+function zeek_plugin_xmlrpc_recv($new_sections) {
+	if (array_get_path($new_sections, 'installedpackages/zeeksync/config/0/synconchanges') != 'auto') {
+		return [];
+	}
+
+	$section_paths = [
+		'installedpackages/zeek',
+		'installedpackages/zeekcontrol',
+		'installedpackages/zeekcluster',
+		'installedpackages/zeekscript'
+	];
+
+	$ret = [
+		'xmlrpc_recv_result' => false
+	];
+	foreach ($section_paths as $path) {
+		$old_section = config_get_path($path, []);
+		$new_section = array_get_path($new_sections, $path, []);
+
+		// Don't save empty configuration sections.
+		if (empty($old_section) && empty($new_section)) {
+			continue;
+		}
+		// Ignore unchanged configuration sections.
+		if ($old_section === $new_section) {
+			continue;
+		}
+
+		$ret[$path] = array_merge($old_section, $new_section);
+		$ret['xmlrpc_recv_result'] = true;
+	}
+
+	return $ret;
+}
+
+function zeek_plugin_xmlrpc_recv_done($xmlrpc_recv_result) {
+	if (array_get_path($xmlrpc_recv_result, 'zeek/xmlrpc_recv_result') !== true) {
+		return;
+	}
+	zeek_all_after_XMLRPC_resync();
 }
 
 function zeek_all_after_XMLRPC_resync() {

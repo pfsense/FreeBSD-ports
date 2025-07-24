@@ -1,8 +1,9 @@
 PORTNAME=	esbuild
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.21.2
-PORTREVISION=	1
+DISTVERSION=	0.25.0
+PORTREVISION=	5
 CATEGORIES=	devel www
+# also bump & test ESBUILD_VERSION in net-im/signal-desktop
 
 MAINTAINER=	dch@FreeBSD.org
 COMMENT=	Extremely fast JavaScript bundler and minifier

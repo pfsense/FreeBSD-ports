@@ -1,3 +1,3 @@
-TIMESTAMP = 1752151721
-SHA256 (squid-7.1.tar.gz) = abf5187ffb3ab33e93d61373caeac497d18ebbe04911df9b68b8839cfd2222b0
-SIZE (squid-7.1.tar.gz) = 52700114
+TIMESTAMP = 1753058338
+SHA256 (squid-7.1.tar.xz) = 763b5a78561cedc4e47634fa42b8e6b8d46c87c949a151b4e7ac2396d2f97dea
+SIZE (squid-7.1.tar.xz) = 2466656

@@ -3,11 +3,11 @@
  * suricata_app_parsers.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2006-2024 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2006-2025 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2003-2004 Manuel Kasper
  * Copyright (c) 2005 Bill Marquette
  * Copyright (c) 2009 Robert Zelaya Sr. Developer
- * Copyright (c) 2023 Bill Meeks
+ * Copyright (c) 2024 Bill Meeks
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -33,14 +33,13 @@ if (isset($_POST['id']) && is_numericint($_POST['id']))
 elseif (isset($_GET['id']) && is_numericint($_GET['id']))
 	$id = htmlspecialchars($_GET['id']);
 
-if (is_null($id))
+if (!is_numericint($id))
 	$id = 0;
 
 // Initialize Suricata interface and HTTP libhtp engine arrays if necessary
 config_init_path("installedpackages/suricata/rule/{$id}/libhtp_policy/item");
 
 // Initialize required array variables as necessary
-config_init_path('aliases/alias');
 $a_aliases = config_get_path('aliases/alias', []);
 
 $a_nat = config_get_path("installedpackages/suricata/rule/{$id}", []);

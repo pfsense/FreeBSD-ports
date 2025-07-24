@@ -1,6 +1,6 @@
 PORTNAME=	tfel
 PORTVERSION=	4.0.0
-PORTREVISION=	3
+PORTREVISION=	7
 CATEGORIES=	science
 MASTER_SITES=	SF/${PORTNAME}/
 PKGNAMESUFFIX=	-mfront
@@ -44,7 +44,7 @@ TEST_TARGET=	check
 .include <bsd.port.pre.mk>
 
 post-patch:
-.if ${COMPILER_TYPE} == clang && ${COMPILER_VERSION} >= 160
+.if ${COMPILER_TYPE} == clang
 	@${REINPLACE_CMD} -e 's|std::unary_function|std::__unary_function|' \
 		${WRKSRC}/include/NUMODIS/Math/Utilities.hxx \
 		${WRKSRC}/include/TFEL/Math/General/Abs.hxx

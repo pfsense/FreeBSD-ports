@@ -3,7 +3,7 @@
  * suricata_rules_edit.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2006-2024 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2006-2025 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2003-2004 Manuel Kasper
  * Copyright (c) 2005 Bill Marquette
  * Copyright (c) 2009 Robert Zelaya Sr. Developer
@@ -33,7 +33,7 @@ if (isset($_GET['id']) && is_numericint($_GET['id']))
 	$id = htmlspecialchars($_GET['id']);
 
 // If we were not passed a valid index ID, close the pop-up and exit
-if (is_null($id)) {
+if (!is_numericint($id)) {
 	echo '<html><body>';
 	echo '<script language="javascript" type="text/javascript">';
 	echo 'window.close();</script>';

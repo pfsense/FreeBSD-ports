@@ -1,11 +1,11 @@
---- components/signin/public/base/signin_switches.h.orig	2024-06-17 12:56:06 UTC
+--- components/signin/public/base/signin_switches.h.orig	2025-07-02 06:08:04 UTC
 +++ components/signin/public/base/signin_switches.h
-@@ -115,7 +115,7 @@ bool IsExplicitBrowserSigninUIOnDesktopEnabled();
+@@ -58,7 +58,7 @@ COMPONENT_EXPORT(SIGNIN_SWITCHES)
+ BASE_DECLARE_FEATURE(kFullscreenSignInPromoUseDate);
+ #endif
  
- // Controls the view mode for (history) sync screen.
- #if BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_WIN) || \
--    BUILDFLAG(IS_ANDROID) || BUILDFLAG(IS_IOS)
-+    BUILDFLAG(IS_ANDROID) || BUILDFLAG(IS_IOS) || BUILDFLAG(IS_BSD)
+-#if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX)
++#if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_BSD)
  COMPONENT_EXPORT(SIGNIN_SWITCHES)
- BASE_DECLARE_FEATURE(kMinorModeRestrictionsForHistorySyncOptIn);
- 
+ BASE_DECLARE_FEATURE(kEnableHistorySyncOptin);
+ #endif  // BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX)

@@ -1,5 +1,5 @@
 PORTNAME=	dftd4
-DISTVERSION=	3.6.0
+DISTVERSION=	3.7.0
 CATEGORIES=	science python # chemistry
 MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -22,6 +22,6 @@ USES=		pkgconfig python
 USE_PYTHON=	pep517 autoplist
 
 post-install:
-	@${STRIP_CMD} ${STAGEDIR}${PYTHON_SITELIBDIR}/dftd4/_libdftd4${PYTHON_EXT_SUFFIX}.so
+	@${STRIP_CMD} ${STAGEDIR}${PYTHON_SITELIBDIR}/dftd4/_libdftd4${PYTHON_TAG}.so
 
 .include <bsd.port.mk>

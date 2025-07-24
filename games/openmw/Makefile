@@ -1,7 +1,7 @@
 PORTNAME=	openmw
 DISTVERSIONPREFIX=	openmw-
-DISTVERSION=	0.48.0
-PORTREVISION=	3
+DISTVERSION=	0.49.0
+PORTREVISION=	1
 CATEGORIES=	games
 
 MAINTAINER=	fluffy@FreeBSD.org
@@ -10,9 +10,6 @@ WWW=		https://openmw.org/
 
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/LICENSE
-
-BROKEN_FreeBSD_15_aarch64=	clang crashes, see https://bugs.freebsd.org/bugzilla/show_bug.cgi?id=276702
-BROKEN_FreeBSD_15_amd64=	clang crashes, see https://bugs.freebsd.org/bugzilla/show_bug.cgi?id=276702
 
 LIB_DEPENDS=	libavcodec.so.60:multimedia/ffmpeg \
 		libboost_thread.so:devel/boost-libs \
@@ -25,14 +22,17 @@ LIB_DEPENDS=	libavcodec.so.60:multimedia/ffmpeg \
 		libicui18n.so:devel/icu \
 		libyaml-cpp.so:devel/yaml-cpp
 
-USES=		cmake compiler:c++17-lang desktop-file-utils gl luajit openal \
+USES=		cmake compiler:c++20-lang desktop-file-utils gl luajit openal \
 		pkgconfig qt:5 sdl sqlite xorg
 USE_GITHUB=	yes
 GH_ACCOUNT=	OpenMW
 USE_GL=		gl
-USE_QT=		core gui network opengl printsupport widgets buildtools:build \
-		qmake:build
+USE_QT=		core gui linguisttools network opengl printsupport svg widgets \
+		buildtools:build qmake:build
+#USE_QT=		base imageformats multimedia svg tools:build
 USE_SDL=	sdl2
+USE_CXXSTD=	c++20
+#USE_GCC=	yes
 
 CMAKE_ARGS=	-DDESIRED_QT_VERSION=5 \
 		-DOPENMW_USE_SYSTEM_BULLET=ON \
@@ -41,16 +41,31 @@ CMAKE_ARGS=	-DDESIRED_QT_VERSION=5 \
 		-DMORROWIND_DATA_FILES="${DATADIR}/data" \
 		-DOPENMW_RESOURCE_FILES="${DATADIR}/resources"
 
+# passed from openal to prevent linker errors
+LDFLAGS+=	-Wl,--as-needed
+LDFLAGS_i386=	-Wl,-z,notext
+
 OPTIONS_DEFINE=	DOCS
 
 DOCS_CMAKE_BOOL=	BUILD_DOCS
+DOCS_BINARY_ALIAS=	sphinx-build=sphinx-build-${PYTHON_VER}
 DOCS_BUILD_DEPENDS=	doxygen>0:devel/doxygen \
-			sphinx-build:textproc/py-sphinx@${PY_FLAVOR}
+			${PYTHON_PKGNAMEPREFIX}sphinx>=0,1:textproc/py-sphinx@${PY_FLAVOR}
 DOCS_USES=		python:build
 
 PORTDOCS=	*
 
+.include <bsd.port.pre.mk>
+
+# The following is actually meant for lld 15.0 and later, but the ports
+# framework does not support LINKER_TYPE and LINKER_VERSION yet.
+.if ${COMPILER_TYPE} == "clang"
+# Turn off checking of dynamic relocations, to avoid lld diagnostics about
+# possibly incorrect addend values.
+LDFLAGS_i386+=	-Wl,--no-check-dynamic-relocations
+.endif
+
 post-install:
 	@${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/*
 
-.include <bsd.port.mk>
+.include <bsd.port.post.mk>

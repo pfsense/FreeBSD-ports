@@ -1,6 +1,6 @@
---- src/3rdparty/chromium/content/browser/utility_process_host.cc.orig	2023-12-12 22:08:45 UTC
+--- src/3rdparty/chromium/content/browser/utility_process_host.cc.orig	2025-02-21 12:29:33 UTC
 +++ src/3rdparty/chromium/content/browser/utility_process_host.cc
-@@ -59,7 +59,7 @@
+@@ -62,7 +62,7 @@
  #include "content/browser/v8_snapshot_files.h"
  #endif
  
@@ -9,16 +9,16 @@
  #include "base/files/file_util.h"
  #include "base/files/scoped_file.h"
  #include "base/pickle.h"
-@@ -69,7 +69,7 @@
- #include "media/capture/capture_switches.h"
+@@ -75,7 +75,7 @@
+ #include "services/network/public/mojom/network_service.mojom.h"
  #endif
  
--#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_WIN)
-+#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_WIN) || BUILDFLAG(IS_BSD)
+-#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_WIN) || BUILDFLAG(IS_CHROMEOS_ASH)
++#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_WIN) || BUILDFLAG(IS_CHROMEOS_ASH) || BUILDFLAG(IS_BSD)
  #include "base/task/sequenced_task_runner.h"
  #include "components/viz/host/gpu_client.h"
  #include "media/capture/capture_switches.h"
-@@ -80,7 +80,7 @@ namespace {
+@@ -86,7 +86,7 @@ namespace {
  
  namespace {
  
@@ -27,17 +27,26 @@
  base::ScopedFD PassNetworkContextParentDirs(
      std::vector<base::FilePath> network_context_parent_dirs) {
    base::Pickle pickle;
-@@ -129,7 +129,7 @@ UtilityProcessHost::UtilityProcessHost(std::unique_ptr
+@@ -151,7 +151,7 @@ UtilityProcessHost::UtilityProcessHost(std::unique_ptr
        started_(false),
        name_(u"utility process"),
        file_data_(std::make_unique<ChildProcessLauncherFileData>()),
--#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_WIN)
-+#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_WIN) || BUILDFLAG(IS_BSD)
+-#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_WIN) || BUILDFLAG(IS_CHROMEOS_ASH)
++#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_WIN) || BUILDFLAG(IS_CHROMEOS_ASH) || BUILDFLAG(IS_BSD)
+       allowed_gpu_(false),
        gpu_client_(nullptr, base::OnTaskRunnerDeleter(nullptr)),
  #endif
-       client_(std::move(client)) {
-@@ -421,7 +421,7 @@ bool UtilityProcessHost::StartProcess() {
-     file_data_->files_to_preload.merge(GetV8SnapshotFilesToPreload());
+@@ -210,7 +210,7 @@ void UtilityProcessHost::SetAllowGpuClient() {
+ #endif  // BUILDFLAG(IS_WIN)
+ 
+ void UtilityProcessHost::SetAllowGpuClient() {
+-#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_WIN) || BUILDFLAG(IS_CHROMEOS_ASH)
++#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_WIN) || BUILDFLAG(IS_CHROMEOS_ASH) || BUILDFLAG(IS_BSD)
+   allowed_gpu_ = true;
+ #endif
+ }
+@@ -409,7 +409,7 @@ bool UtilityProcessHost::StartProcess() {
+     file_data_->files_to_preload.merge(GetV8SnapshotFilesToPreload(*cmd_line));
  #endif  // BUILDFLAG(IS_POSIX)
  
 -#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS)
@@ -45,12 +54,19 @@
      // The network service should have access to the parent directories
      // necessary for its usage.
      if (sandbox_type_ == sandbox::mojom::Sandbox::kNetwork) {
-@@ -432,7 +432,7 @@ bool UtilityProcessHost::StartProcess() {
+@@ -420,13 +420,13 @@ bool UtilityProcessHost::StartProcess() {
      }
  #endif  // BUILDFLAG(IS_LINUX)
  
+-#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS_ASH)
++#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS_ASH) || BUILDFLAG(IS_BSD)
+     // Pass `kVideoCaptureUseGpuMemoryBuffer` flag to video capture service only
+     // when the video capture use GPU memory buffer enabled.
+     if (metrics_name_ == video_capture::mojom::VideoCaptureService::Name_) {
+       bool pass_gpu_buffer_flag =
+           switches::IsVideoCaptureUseGpuMemoryBufferEnabled();
 -#if BUILDFLAG(IS_LINUX)
 +#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_BSD)
-     // Pass `kVideoCaptureUseGpuMemoryBuffer` flag to video capture service only
-     // when the video capture use GPU memory buffer enabled and NV12 GPU memory
-     // buffer supported.
+       // Check if NV12 GPU memory buffer supported at the same time.
+       pass_gpu_buffer_flag =
+           pass_gpu_buffer_flag &&

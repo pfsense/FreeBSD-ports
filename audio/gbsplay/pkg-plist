@@ -6,10 +6,14 @@ bin/gbsplay
 share/man/man1/gbsinfo.1.gz
 share/man/man1/gbsplay.1.gz
 share/man/man5/gbsplayrc.5.gz
+share/man/man1/gbs2gb.1.gz
 share/applications/gbsplay.desktop
 share/applications/mimeinfo.cache
 %%PORTDOCS%%%%DOCSDIR%%/README.md
 %%PORTDOCS%%%%DOCSDIR%%/contrib/gbs2ogg.sh
+%%PORTDOCS%%%%DOCSDIR%%/contrib/gbsplay.bashcompletion
+%%PORTDOCS%%%%DOCSDIR%%/contrib/gbsplay.zshcompletion
+%%PORTEXAMPLES%%%%EXAMPLESDIR%%/gbsplayrc_sample
 %%PORTEXAMPLES%%%%EXAMPLESDIR%%/nightmode.gbs
 %%NLS%%share/locale/de/LC_MESSAGES/gbsplay.mo
 %%NLS%%share/locale/en/LC_MESSAGES/gbsplay.mo

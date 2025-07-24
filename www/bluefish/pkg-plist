@@ -1,6 +1,6 @@
 bin/bluefish
 lib/bluefish/about.so
-%%GTK3%%lib/bluefish/charmap.so
+lib/bluefish/charmap.so
 lib/bluefish/entities.so
 lib/bluefish/htmlbar.so
 lib/bluefish/infbrowser.so
@@ -89,15 +89,6 @@ share/applications/bluefish.desktop
 %%DATADIR%%/cssmin.py
 %%DATADIR%%/default_accelmap
 %%DATADIR%%/encodings
-%%DATADIR%%/jsbeautifier/__init__.py
-%%DATADIR%%/jsbeautifier/__version__.py
-%%DATADIR%%/jsbeautifier/unpackers/__init__.py
-%%DATADIR%%/jsbeautifier/unpackers/evalbased.py
-%%DATADIR%%/jsbeautifier/unpackers/javascriptobfuscator.py
-%%DATADIR%%/jsbeautifier/unpackers/myobfuscate.py
-%%DATADIR%%/jsbeautifier/unpackers/packer.py
-%%DATADIR%%/jsbeautifier/unpackers/urlencode.py
-%%DATADIR%%/jsbeautify
 %%DATADIR%%/jsmin.py
 %%DATADIR%%/json_prettyprint.py
 %%DATADIR%%/lorem-ipsum-generator

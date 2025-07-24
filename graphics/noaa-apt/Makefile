@@ -1,7 +1,7 @@
 PORTNAME=	noaa-apt
 DISTVERSIONPREFIX=	v
 DISTVERSION=	1.4.1
-PORTREVISION=	4
+PORTREVISION=	13
 CATEGORIES=	graphics
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -12,7 +12,7 @@ LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
 USES=		cargo gnome pkgconfig ssl
-USE_GNOME=	gdkpixbuf2 gtk30
+USE_GNOME=	gdkpixbuf gtk30
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	martinber
@@ -268,8 +268,5 @@ OPENSSLINC=	/usr/include
 OPENSSLLIB=	/usr/lib
 
 PLIST_FILES=	bin/${PORTNAME}
-
-post-install:
-	@${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/${PORTNAME}
 
 .include <bsd.port.mk>

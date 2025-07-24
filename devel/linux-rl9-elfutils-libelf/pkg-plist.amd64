@@ -1,4 +1,5 @@
-usr/lib/.build-id/93/8ad3a10aca8cb74c39a81a49ba10bdc2097b8f
+usr/lib/libelf-%%LIBVERSION%%.so
+usr/lib/libelf.so.1
 usr/lib64/libelf-%%LIBVERSION%%.so
 usr/lib64/libelf.so.1
 usr/share/licenses/elfutils-libelf/COPYING-GPLV2

@@ -1,11 +1,8 @@
 PORTNAME=	wcm
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.8.0
+DISTVERSION=	0.9.0
 PORTREVISION=	1
 CATEGORIES=	x11 wayland
-
-PATCH_SITES=	https://github.com/${GH_ACCOUNT}/${GH_PROJECT}/commit/
-PATCHFILES+=	aade4224e23e.patch:-p1 # https://github.com/WayfireWM/wcm/pull/69
 
 MAINTAINER=	jbeich@FreeBSD.org
 COMMENT=	Wayfire Config Manager
@@ -26,7 +23,7 @@ CONFLICTS_INSTALL=	wcmcommander # bin/wcm
 
 USES=		compiler:c++17-lang gnome meson pkgconfig
 USE_GITHUB=	yes
-USE_GNOME=	gdkpixbuf2 gtk30 libxml2
+USE_GNOME=	gdkpixbuf gtk30 libxml2
 GH_ACCOUNT=	WayfireWM
 MESON_ARGS=	-Denable_wdisplays=false # use package
 DATADIR=	${PREFIX}/share/wayfire

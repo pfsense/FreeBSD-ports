@@ -1,7 +1,7 @@
 PORTNAME=	spotifyd
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.3.5
-PORTREVISION=	7
+DISTVERSION=	0.4.1
+PORTREVISION=	3
 CATEGORIES=	audio
 
 MAINTAINER=	rodrigo@FreeBSD.org
@@ -9,11 +9,11 @@ COMMENT=	Spotify daemon
 WWW=		https://github.com/Spotifyd/spotifyd
 
 LICENSE=	GPLv3
-LICENSE_FILE=	${WRKSRC}/cargo-crates/ansi_term-0.12.1/LICENCE
+LICENSE_FILE=	${WRKSRC}/LICENSE
 
 LIB_DEPENDS=	libogg.so:audio/libogg
 
-USES=		cargo ssl:build
+USES=		cargo ssl:build llvm
 USE_GITHUB=	yes
 GH_ACCOUNT=	Spotifyd
 USE_RC_SUBR=	spotifyd
@@ -49,7 +49,6 @@ post-patch:
 	@${REINPLACE_CMD} 's,/etc/,${PREFIX}/etc/,g' ${WRKSRC}/src/config.rs
 
 post-install:
-	${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/spotifyd
 	${INSTALL_DATA} ${FILESDIR}/spotifyd.conf ${STAGEDIR}${PREFIX}/etc/spotifyd.conf.sample
 
 post-install-DOCS-on:

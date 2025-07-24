@@ -1,7 +1,7 @@
 PORTNAME=	scala
-DISTVERSION=	3.3.1
+DISTVERSION=	3.3.5
 CATEGORIES=	lang java
-MASTER_SITES=	https://github.com/lampepfl/dotty/releases/download/${DISTVERSION}/
+MASTER_SITES=	https://github.com/scala/scala3/releases/download/${DISTVERSION}/
 DISTNAME=	scala3-${DISTVERSION}
 
 MAINTAINER=	freebsd-ports@jan0sch.de
@@ -12,10 +12,8 @@ LICENSE=	APACHE20
 
 RUN_DEPENDS=	bash:shells/bash
 
-USES=		cpe
+USES=		cpe java
 CPE_VENDOR=	${PORTNAME}-lang
-USE_JAVA=	yes
-JAVA_VERSION=	8+
 
 NO_ARCH=	yes
 NO_BUILD=	yes

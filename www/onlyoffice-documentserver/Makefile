@@ -1,17 +1,15 @@
 PORTNAME=	onlyoffice-documentserver
 DISTVERSIONPREFIX=	v
-DISTVERSION=	8.0.1.31
+DISTVERSION=	9.0.2.16
 CATEGORIES=	www
 MASTER_SITES+=	LOCAL/mikael/v8/:source1 \
-		LOCAL/mikael/onlyoffice/:source2 \
 		https://nodejs.org/dist/v${NODE_VERSION_PKGFETCH}/:source3 \
-		SF/optipng/OptiPNG/optipng-0.7.7/:source4
+		SF/optipng/OptiPNG/optipng-0.7.8/:source4
 DISTFILES+=	v8-8.9.255.25_all.tar.gz:source1 \
 		node-v${NODE_VERSION_PKGFETCH}.tar.gz:source3 \
-		optipng-0.7.7.tar.gz:source4 \
-		${PORTNAME}-${DISTVERSION}-npm-cache.tar.gz:source2
+		optipng-0.7.8.tar.gz:source4
 
-MAINTAINER=	mikael@FreeBSD.org
+MAINTAINER=	fsbruva@yahoo.com
 COMMENT=	Secure office and productivity apps
 WWW=		https://www.onlyoffice.com/
 
@@ -26,21 +24,25 @@ BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}Jinja2>=0:devel/py-Jinja2@${PY_FLAVOR} \
 		gn:devel/gn \
 		java:java/openjdk11 \
 		ninja:devel/ninja \
-		npm:www/npm-node18 \
+		npm:www/npm-node20 \
 		${LOCALBASE}/lib/libcrypto.a:security/openssl
 LIB_DEPENDS=	libboost_regex.so:devel/boost-libs \
+		libetonyek-0.1.so:graphics/libetonyek01 \
 		libcurl.so:ftp/curl \
 		libharfbuzz.so:print/harfbuzz \
 		libiconv.so:converters/libiconv \
-		libicutu.so:devel/icu
+		libicutu.so:devel/icu \
+		libodfgen-0.1.so:textproc/libodfgen01 \
+		librevenge-0.0.so:textproc/librevenge
 RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}supervisor>0:sysutils/py-supervisor@${PY_FLAVOR} \
+		${LOCALBASE}/share/certs/ca-root-nss.crt:security/ca_root_nss \
 		gsed:textproc/gsed \
 		nginx:www/nginx \
 		pwgen:sysutils/pwgen \
 		rabbitmq>0:net/rabbitmq \
 		webfonts>=0:x11-fonts/webfonts
 
-USES=		autoreconf:build dos2unix fakeroot gmake gnome iconv localbase nodejs:18,build pkgconfig \
+USES=		autoreconf:build dos2unix fakeroot gmake gnome iconv localbase nodejs:22,build pkgconfig \
 		python:3.9+,build qt:5 trigger
 USE_QT=		qmake:build
 USE_GITHUB=	yes
@@ -61,7 +63,10 @@ GH_TUPLE=	ONLYOFFICE:core:v${DISTVERSION}:core/core \
 		ONLYOFFICE:document-server-package:v${DISTVERSION}:dsp/document-server-package \
 		jasenhuang:katana-parser:be6df45:jasenhuang_katana/core/Common/3dParty/html/katana-parser \
 		google:gumbo-parser:aa91b27:google_gumbo/core/Common/3dParty/html/gumbo-parser \
-		hunspell:hyphen:73dd296:hunspell_hyphen/core/Common/3dParty/hyphen/hyphen
+		hunspell:hyphen:73dd296:hunspell_hyphen/core/Common/3dParty/hyphen/hyphen \
+		mity:md4c:481fbfb:mity_md4c/core/Common/3dParty/md/md4c \
+		fsbruva:onlyoffice-DS-pkg-cache:v${NODE_VERSION_PKGFETCH}:pkg_cache/ \
+		fsbruva:onlyoffice-DS-npm-cache:v${DISTVERSION}-20250701:npm_cache/
 
 OPTIONS_SINGLE=		DB
 OPTIONS_SINGLE_DB=	MYSQL PGSQL
@@ -71,7 +76,8 @@ MYSQL_USES+=	mysql:client
 PGSQL_USES+=	pgsql
 PGSQL_VARS=	WANT_PGSQL=client
 
-BINARY_ALIAS=	python=${PYTHON_CMD}
+BINARY_ALIAS=	python=${PYTHON_CMD} \
+		strip=true
 USE_LDCONFIG=	yes
 
 WWWDIR=		${PREFIX}/www/onlyoffice
@@ -93,9 +99,9 @@ SUB_LIST=	DS_GROUPNAME=${DS_GROUPNAME} \
 		PREFIX=${PREFIX} \
 		WWWDIR=${WWWDIR}
 
-# node version used with "npm install @yao-pkg/pkg@5.11.1"
+# node version used with "npm install @yao-pkg/pkg@6.5.1"
 # keep in sync with patch-build__tools_scripts_build__server.py and patch-document-server-package_Makefile
-NODE_VERSION_PKGFETCH=	18.18.2
+NODE_VERSION_PKGFETCH=	20.19.1
 
 MAKE_ENV=	BUILD_NUMBER="36" \
 		PKG_CACHE_PATH=${WRKDIR}/.pkg-cache \
@@ -124,7 +130,8 @@ BINARY_ALIAS+=	cpp=${LOCALBASE}/bin/clang-cpp${LLVM_DEFAULT} \
 post-extract:
 	@${MV} ${WRKDIR}/v8 ${WRKSRC}/core/Common/3dParty/v8_89
 
-	@${MKDIR} ${WRKDIR}/.pkg-cache/node
+	@${LN} -s ${WRKSRC_npm_cache} ${WRKDIR}/.npm
+	@${LN} -s ${WRKSRC_pkg_cache} ${WRKDIR}/.pkg-cache
 	@${CP} ${DISTDIR}/node-v${NODE_VERSION_PKGFETCH}.tar.gz ${WRKDIR}/.pkg-cache/node
 
 	@${MKDIR} ${WRKSRC}/sdkjs-plugins/v1
@@ -143,6 +150,7 @@ post-extract:
 post-patch:
 	@${REINPLACE_CMD} 's|%%LOCALBASE%%|${LOCALBASE}|' \
 		${WRKSRC}/build_tools/tools/freebsd/automate.py \
+		${WRKSRC}/core/Apple/IWork.pro \
 		${WRKSRC}/core/Common/3dParty/boost/boost.pri \
 		${WRKSRC}/core/Common/3dParty/icu/icu.pri \
 		${WRKSRC}/core/Common/3dParty/openssl/openssl.pri \
@@ -173,6 +181,7 @@ post-patch:
 	@${REINPLACE_CMD} 's|%%DISTDIR%%|${DISTDIR}|' \
 		${WRKSRC}/web-apps/build/patches/optipng-bin+5.1.0.patch
 	@${REINPLACE_CMD} -e 's|%%LOCALBASE%%|${LOCALBASE}|' -e 's|%%ETCDIR%%|${ETCDIR}|' \
+		${WRKSRC}/document-server-package/common/documentserver/bin/documentserver-flush-cache.sh.m4 \
 		${WRKSRC}/document-server-package/Makefile
 	@${RM} ${WRKSRC}/web-apps/build/patches/optipng-bin+5.1.0.patch.orig
 
@@ -183,8 +192,9 @@ post-patch:
 
 do-build:
 	${INSTALL_SCRIPT} ${FILESDIR}/npm ${BINARY_LINKDIR}/npm
-	@${REINPLACE_CMD} 's|%%LOCALBASE%%|${LOCALBASE}|' ${WRKDIR}/.bin/npm
+	@${REINPLACE_CMD} 's|%%LOCALBASE%%|${LOCALBASE}|g' ${WRKDIR}/.bin/npm
 
+#	@cd ${WRKSRC}/web-apps/build ; ${SETENV} ${MAKE_ENV} npm cache clean --force
 	@cd ${WRKSRC}/web-apps/build ; ${SETENV} ${MAKE_ENV} npm install patch-package
 	@cd ${WRKSRC}/web-apps/build ; ${SETENV} ${MAKE_ENV} npm install optipng-bin@5.1.0
 	@cd ${WRKSRC}/web-apps/build ; node_modules/.bin/patch-package
@@ -197,7 +207,7 @@ do-build:
 
 	@${MKDIR} ${WRKSRC}/yao-pkg
 	@${CP} ${FILESDIR}/package* ${WRKSRC}/yao-pkg
-	@cd ${WRKSRC}/yao-pkg ; ${SETENV} ${MAKE_ENV} npm install @yao-pkg/pkg@5.11.1
+	@cd ${WRKSRC}/yao-pkg ; ${SETENV} ${MAKE_ENV} npm install @yao-pkg/pkg@6.5.1
 
 	@cd ${WRKSRC} && ${PATCH} -N -s -i ${FILESDIR}/extra-patch-pkg-fetch_lib-es5_build.js || ${TRUE}
 	@cd ${WRKSRC} && ${PATCH} -N -s -i ${FILESDIR}/extra-patch-pkg-fetch_patches_node.v${NODE_VERSION_PKGFETCH}.cpp.patch || ${TRUE}
@@ -229,6 +239,7 @@ do-install:
 .for f in ds.conf ds-ssl.conf includes/http-common.conf includes/ds-common.conf includes/ds-docservice.conf includes/ds-letsencrypt.conf includes/ds-mime.types.conf
 	${INSTALL_DATA} ${WRKSRC}/document-server-package/common/documentserver/nginx/${f} ${STAGEDIR}${ETCDIR}/documentserver/nginx/${f}.sample
 .endfor
+	@echo "# Production ds-cache.conf is created automatically by documentserver-flush-cache.sh" > ${STAGEDIR}${ETCDIR}/documentserver/nginx/includes/ds-cache.conf.sample
 	cd ${WRKSRC}/document-server-package/common/documentserver/nginx/includes && ${COPYTREE_SHARE} . ${STAGEDIR}${ETCDIR}/documentserver/nginx/includes "-name *\.conf"
 	cd ${WRKSRC}/document-server-package/common/documentserver/config && ${COPYTREE_SHARE} . ${STAGEDIR}${ETCDIR}/documentserver
 	${INSTALL_DATA} ${FILESDIR}/local.json.sample ${STAGEDIR}${ETCDIR}/documentserver
@@ -244,13 +255,18 @@ do-install:
 		 ${STAGEDIR}${WWWDIR}/Data \
 		 ${STAGEDIR}${WWWDIR}/documentserver/fonts
 
+# Remove bak file
+	${RM} ${STAGEDIR}${WWWDIR}/documentserver/server/Common/config/*.bak
+	${RM} ${STAGEDIR}${WWWDIR}/documentserver/dictionaries/sl_SI/hyph_sl_SI.dic.bak
+
 create-caches-tarball:
 	# do some cleanup first
 	${RM} -r  ${WRKDIR}/.npm/_logs ${WRKDIR}/.npm/_update-notifier-last-checked ${WRKDIR}/.cache/yarn/v6/.tmp ${WRKDIR}/.cache/node-gyp
 #	${FIND} ${WRKDIR}/.cache -type f -perm 755 -exec file {} \; | ${EGREP} "ELF|PE32+|Mach-O" | ${AWK} -F ':' '{print $$1}' | ${XARGS} ${RM}
 	${FIND} ${WRKDIR}/.pkg-cache -type f -perm 755 -exec file {} \; | ${EGREP} "ELF|PE32+|Mach-O" | ${AWK} -F ':' '{print $$1}' | ${XARGS} ${RM}
+	${FIND} ${WRKDIR}/.pkg-cache -type f -perm 644 -exec file {} \; | ${EGREP} -v "${NODE_VERSION_PKGFETCH}" | ${EGREP} "built-v|node-v" | ${EGREP} "tar.gz|sha256sum" | ${AWK} -F ':' '{print $$1}' | ${XARGS} ${RM}
 
 	cd ${WRKDIR} && \
-		${TAR} czf ${PORTNAME}-${DISTVERSION}-npm-cache.tar.gz .npm .pkg-cache
+		${TAR} czf ${PORTNAME}-${DISTVERSION}_`date +%Y%m%d`-npm-cache.tar.gz .npm .pkg-cache
 
 .include <bsd.port.post.mk>

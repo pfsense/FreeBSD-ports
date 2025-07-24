@@ -1,16 +1,25 @@
---- chrome/browser/headless/headless_mode_util.cc.orig	2024-03-22 14:16:19 UTC
+--- chrome/browser/headless/headless_mode_util.cc.orig	2025-04-15 08:30:07 UTC
 +++ chrome/browser/headless/headless_mode_util.cc
-@@ -19,7 +19,7 @@
- #include "chrome/common/chrome_switches.h"
+@@ -10,7 +10,7 @@
+ // New headless mode is available on Linux, Windows and Mac platforms.
+ // More platforms will be added later, so avoid function level clutter
+ // by providing stub implementations at the end of the file.
+-#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC)
++#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_BSD)
+ 
+ #include "base/base_switches.h"
+ #include "base/files/file_path.h"
+@@ -20,7 +20,7 @@
  #include "content/public/common/content_switches.h"
+ #include "ui/base/ui_base_switches.h"
  
 -#if BUILDFLAG(IS_LINUX)
 +#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_BSD)
  #include "ui/gl/gl_switches.h"               // nogncheck
  #include "ui/ozone/public/ozone_switches.h"  // nogncheck
  #endif  // BUILDFLAG(IS_LINUX)
-@@ -87,7 +87,7 @@ class HeadlessModeHandleImpl : public HeadlessModeHand
-       command_line->AppendSwitchPath(switches::kUserDataDir, GetUserDataDir());
+@@ -95,7 +95,7 @@ class HeadlessModeHandleImpl : public HeadlessModeHand
+       }
      }
  
 -#if BUILDFLAG(IS_LINUX)

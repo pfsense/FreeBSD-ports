@@ -1,6 +1,7 @@
 PORTNAME=	osmium-tool
 DISTVERSIONPREFIX=	v
 DISTVERSION=	1.16.0
+PORTREVISION=	4
 CATEGORIES=	astro geography
 
 MAINTAINER=	ianthetechie@gmail.com

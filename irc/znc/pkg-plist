@@ -75,6 +75,7 @@ lib/znc/route_replies.so
 lib/znc/sample.so
 lib/znc/samplewebapi.so
 lib/znc/sasl.so
+lib/znc/saslplainauth.so
 lib/znc/send_raw.so
 lib/znc/shell.so
 lib/znc/simple_away.so
@@ -221,6 +222,7 @@ share/man/man1/znc.1.gz
 %%NLS%%share/locale/bg_BG/LC_MESSAGES/znc-sample.mo
 %%NLS%%share/locale/bg_BG/LC_MESSAGES/znc-samplewebapi.mo
 %%NLS%%share/locale/bg_BG/LC_MESSAGES/znc-sasl.mo
+%%NLS%%share/locale/bg_BG/LC_MESSAGES/znc-saslplainauth.mo
 %%NLS%%share/locale/bg_BG/LC_MESSAGES/znc-savebuff.mo
 %%NLS%%share/locale/bg_BG/LC_MESSAGES/znc-send_raw.mo
 %%NLS%%share/locale/bg_BG/LC_MESSAGES/znc-shell.mo
@@ -279,6 +281,7 @@ share/man/man1/znc.1.gz
 %%NLS%%share/locale/da_DK/LC_MESSAGES/znc-sample.mo
 %%NLS%%share/locale/da_DK/LC_MESSAGES/znc-samplewebapi.mo
 %%NLS%%share/locale/da_DK/LC_MESSAGES/znc-sasl.mo
+%%NLS%%share/locale/da_DK/LC_MESSAGES/znc-saslplainauth.mo
 %%NLS%%share/locale/da_DK/LC_MESSAGES/znc-savebuff.mo
 %%NLS%%share/locale/da_DK/LC_MESSAGES/znc-send_raw.mo
 %%NLS%%share/locale/da_DK/LC_MESSAGES/znc-shell.mo
@@ -337,6 +340,7 @@ share/man/man1/znc.1.gz
 %%NLS%%share/locale/de_DE/LC_MESSAGES/znc-sample.mo
 %%NLS%%share/locale/de_DE/LC_MESSAGES/znc-samplewebapi.mo
 %%NLS%%share/locale/de_DE/LC_MESSAGES/znc-sasl.mo
+%%NLS%%share/locale/de_DE/LC_MESSAGES/znc-saslplainauth.mo
 %%NLS%%share/locale/de_DE/LC_MESSAGES/znc-savebuff.mo
 %%NLS%%share/locale/de_DE/LC_MESSAGES/znc-send_raw.mo
 %%NLS%%share/locale/de_DE/LC_MESSAGES/znc-shell.mo
@@ -395,6 +399,7 @@ share/man/man1/znc.1.gz
 %%NLS%%share/locale/el_GR/LC_MESSAGES/znc-sample.mo
 %%NLS%%share/locale/el_GR/LC_MESSAGES/znc-samplewebapi.mo
 %%NLS%%share/locale/el_GR/LC_MESSAGES/znc-sasl.mo
+%%NLS%%share/locale/el_GR/LC_MESSAGES/znc-saslplainauth.mo
 %%NLS%%share/locale/el_GR/LC_MESSAGES/znc-savebuff.mo
 %%NLS%%share/locale/el_GR/LC_MESSAGES/znc-send_raw.mo
 %%NLS%%share/locale/el_GR/LC_MESSAGES/znc-shell.mo
@@ -423,6 +428,7 @@ share/man/man1/znc.1.gz
 %%NLS%%share/locale/es_ES/LC_MESSAGES/znc-clearbufferonmsg.mo
 %%NLS%%share/locale/es_ES/LC_MESSAGES/znc-clientnotify.mo
 %%NLS%%share/locale/es_ES/LC_MESSAGES/znc-controlpanel.mo
+%%NLS%%share/locale/es_ES/LC_MESSAGES/znc-corecaps.mo
 %%NLS%%share/locale/es_ES/LC_MESSAGES/znc-crypt.mo
 %%NLS%%share/locale/es_ES/LC_MESSAGES/znc-ctcpflood.mo
 %%NLS%%share/locale/es_ES/LC_MESSAGES/znc-cyrusauth.mo
@@ -452,6 +458,7 @@ share/man/man1/znc.1.gz
 %%NLS%%share/locale/es_ES/LC_MESSAGES/znc-sample.mo
 %%NLS%%share/locale/es_ES/LC_MESSAGES/znc-samplewebapi.mo
 %%NLS%%share/locale/es_ES/LC_MESSAGES/znc-sasl.mo
+%%NLS%%share/locale/es_ES/LC_MESSAGES/znc-saslplainauth.mo
 %%NLS%%share/locale/es_ES/LC_MESSAGES/znc-savebuff.mo
 %%NLS%%share/locale/es_ES/LC_MESSAGES/znc-send_raw.mo
 %%NLS%%share/locale/es_ES/LC_MESSAGES/znc-shell.mo
@@ -510,6 +517,7 @@ share/man/man1/znc.1.gz
 %%NLS%%share/locale/fr_FR/LC_MESSAGES/znc-sample.mo
 %%NLS%%share/locale/fr_FR/LC_MESSAGES/znc-samplewebapi.mo
 %%NLS%%share/locale/fr_FR/LC_MESSAGES/znc-sasl.mo
+%%NLS%%share/locale/fr_FR/LC_MESSAGES/znc-saslplainauth.mo
 %%NLS%%share/locale/fr_FR/LC_MESSAGES/znc-savebuff.mo
 %%NLS%%share/locale/fr_FR/LC_MESSAGES/znc-send_raw.mo
 %%NLS%%share/locale/fr_FR/LC_MESSAGES/znc-shell.mo
@@ -568,6 +576,7 @@ share/man/man1/znc.1.gz
 %%NLS%%share/locale/id_ID/LC_MESSAGES/znc-sample.mo
 %%NLS%%share/locale/id_ID/LC_MESSAGES/znc-samplewebapi.mo
 %%NLS%%share/locale/id_ID/LC_MESSAGES/znc-sasl.mo
+%%NLS%%share/locale/id_ID/LC_MESSAGES/znc-saslplainauth.mo
 %%NLS%%share/locale/id_ID/LC_MESSAGES/znc-savebuff.mo
 %%NLS%%share/locale/id_ID/LC_MESSAGES/znc-send_raw.mo
 %%NLS%%share/locale/id_ID/LC_MESSAGES/znc-shell.mo
@@ -626,6 +635,7 @@ share/man/man1/znc.1.gz
 %%NLS%%share/locale/it_IT/LC_MESSAGES/znc-sample.mo
 %%NLS%%share/locale/it_IT/LC_MESSAGES/znc-samplewebapi.mo
 %%NLS%%share/locale/it_IT/LC_MESSAGES/znc-sasl.mo
+%%NLS%%share/locale/it_IT/LC_MESSAGES/znc-saslplainauth.mo
 %%NLS%%share/locale/it_IT/LC_MESSAGES/znc-savebuff.mo
 %%NLS%%share/locale/it_IT/LC_MESSAGES/znc-send_raw.mo
 %%NLS%%share/locale/it_IT/LC_MESSAGES/znc-shell.mo
@@ -684,6 +694,7 @@ share/man/man1/znc.1.gz
 %%NLS%%share/locale/nl_NL/LC_MESSAGES/znc-sample.mo
 %%NLS%%share/locale/nl_NL/LC_MESSAGES/znc-samplewebapi.mo
 %%NLS%%share/locale/nl_NL/LC_MESSAGES/znc-sasl.mo
+%%NLS%%share/locale/nl_NL/LC_MESSAGES/znc-saslplainauth.mo
 %%NLS%%share/locale/nl_NL/LC_MESSAGES/znc-savebuff.mo
 %%NLS%%share/locale/nl_NL/LC_MESSAGES/znc-send_raw.mo
 %%NLS%%share/locale/nl_NL/LC_MESSAGES/znc-shell.mo
@@ -712,6 +723,7 @@ share/man/man1/znc.1.gz
 %%NLS%%share/locale/pl_PL/LC_MESSAGES/znc-clearbufferonmsg.mo
 %%NLS%%share/locale/pl_PL/LC_MESSAGES/znc-clientnotify.mo
 %%NLS%%share/locale/pl_PL/LC_MESSAGES/znc-controlpanel.mo
+%%NLS%%share/locale/pl_PL/LC_MESSAGES/znc-corecaps.mo
 %%NLS%%share/locale/pl_PL/LC_MESSAGES/znc-crypt.mo
 %%NLS%%share/locale/pl_PL/LC_MESSAGES/znc-ctcpflood.mo
 %%NLS%%share/locale/pl_PL/LC_MESSAGES/znc-cyrusauth.mo
@@ -741,6 +753,7 @@ share/man/man1/znc.1.gz
 %%NLS%%share/locale/pl_PL/LC_MESSAGES/znc-sample.mo
 %%NLS%%share/locale/pl_PL/LC_MESSAGES/znc-samplewebapi.mo
 %%NLS%%share/locale/pl_PL/LC_MESSAGES/znc-sasl.mo
+%%NLS%%share/locale/pl_PL/LC_MESSAGES/znc-saslplainauth.mo
 %%NLS%%share/locale/pl_PL/LC_MESSAGES/znc-savebuff.mo
 %%NLS%%share/locale/pl_PL/LC_MESSAGES/znc-send_raw.mo
 %%NLS%%share/locale/pl_PL/LC_MESSAGES/znc-shell.mo
@@ -769,6 +782,7 @@ share/man/man1/znc.1.gz
 %%NLS%%share/locale/pt_BR/LC_MESSAGES/znc-clearbufferonmsg.mo
 %%NLS%%share/locale/pt_BR/LC_MESSAGES/znc-clientnotify.mo
 %%NLS%%share/locale/pt_BR/LC_MESSAGES/znc-controlpanel.mo
+%%NLS%%share/locale/pt_BR/LC_MESSAGES/znc-corecaps.mo
 %%NLS%%share/locale/pt_BR/LC_MESSAGES/znc-crypt.mo
 %%NLS%%share/locale/pt_BR/LC_MESSAGES/znc-ctcpflood.mo
 %%NLS%%share/locale/pt_BR/LC_MESSAGES/znc-cyrusauth.mo
@@ -798,6 +812,7 @@ share/man/man1/znc.1.gz
 %%NLS%%share/locale/pt_BR/LC_MESSAGES/znc-sample.mo
 %%NLS%%share/locale/pt_BR/LC_MESSAGES/znc-samplewebapi.mo
 %%NLS%%share/locale/pt_BR/LC_MESSAGES/znc-sasl.mo
+%%NLS%%share/locale/pt_BR/LC_MESSAGES/znc-saslplainauth.mo
 %%NLS%%share/locale/pt_BR/LC_MESSAGES/znc-savebuff.mo
 %%NLS%%share/locale/pt_BR/LC_MESSAGES/znc-send_raw.mo
 %%NLS%%share/locale/pt_BR/LC_MESSAGES/znc-shell.mo
@@ -826,6 +841,7 @@ share/man/man1/znc.1.gz
 %%NLS%%share/locale/pt_PT/LC_MESSAGES/znc-clearbufferonmsg.mo
 %%NLS%%share/locale/pt_PT/LC_MESSAGES/znc-clientnotify.mo
 %%NLS%%share/locale/pt_PT/LC_MESSAGES/znc-controlpanel.mo
+%%NLS%%share/locale/pt_PT/LC_MESSAGES/znc-corecaps.mo
 %%NLS%%share/locale/pt_PT/LC_MESSAGES/znc-crypt.mo
 %%NLS%%share/locale/pt_PT/LC_MESSAGES/znc-ctcpflood.mo
 %%NLS%%share/locale/pt_PT/LC_MESSAGES/znc-cyrusauth.mo
@@ -855,6 +871,7 @@ share/man/man1/znc.1.gz
 %%NLS%%share/locale/pt_PT/LC_MESSAGES/znc-sample.mo
 %%NLS%%share/locale/pt_PT/LC_MESSAGES/znc-samplewebapi.mo
 %%NLS%%share/locale/pt_PT/LC_MESSAGES/znc-sasl.mo
+%%NLS%%share/locale/pt_PT/LC_MESSAGES/znc-saslplainauth.mo
 %%NLS%%share/locale/pt_PT/LC_MESSAGES/znc-savebuff.mo
 %%NLS%%share/locale/pt_PT/LC_MESSAGES/znc-send_raw.mo
 %%NLS%%share/locale/pt_PT/LC_MESSAGES/znc-shell.mo
@@ -883,6 +900,7 @@ share/man/man1/znc.1.gz
 %%NLS%%share/locale/ro_RO/LC_MESSAGES/znc-clearbufferonmsg.mo
 %%NLS%%share/locale/ro_RO/LC_MESSAGES/znc-clientnotify.mo
 %%NLS%%share/locale/ro_RO/LC_MESSAGES/znc-controlpanel.mo
+%%NLS%%share/locale/ro_RO/LC_MESSAGES/znc-corecaps.mo
 %%NLS%%share/locale/ro_RO/LC_MESSAGES/znc-crypt.mo
 %%NLS%%share/locale/ro_RO/LC_MESSAGES/znc-ctcpflood.mo
 %%NLS%%share/locale/ro_RO/LC_MESSAGES/znc-cyrusauth.mo
@@ -912,6 +930,7 @@ share/man/man1/znc.1.gz
 %%NLS%%share/locale/ro_RO/LC_MESSAGES/znc-sample.mo
 %%NLS%%share/locale/ro_RO/LC_MESSAGES/znc-samplewebapi.mo
 %%NLS%%share/locale/ro_RO/LC_MESSAGES/znc-sasl.mo
+%%NLS%%share/locale/ro_RO/LC_MESSAGES/znc-saslplainauth.mo
 %%NLS%%share/locale/ro_RO/LC_MESSAGES/znc-savebuff.mo
 %%NLS%%share/locale/ro_RO/LC_MESSAGES/znc-send_raw.mo
 %%NLS%%share/locale/ro_RO/LC_MESSAGES/znc-shell.mo
@@ -940,6 +959,7 @@ share/man/man1/znc.1.gz
 %%NLS%%share/locale/ru_RU/LC_MESSAGES/znc-clearbufferonmsg.mo
 %%NLS%%share/locale/ru_RU/LC_MESSAGES/znc-clientnotify.mo
 %%NLS%%share/locale/ru_RU/LC_MESSAGES/znc-controlpanel.mo
+%%NLS%%share/locale/ru_RU/LC_MESSAGES/znc-corecaps.mo
 %%NLS%%share/locale/ru_RU/LC_MESSAGES/znc-crypt.mo
 %%NLS%%share/locale/ru_RU/LC_MESSAGES/znc-ctcpflood.mo
 %%NLS%%share/locale/ru_RU/LC_MESSAGES/znc-cyrusauth.mo
@@ -969,6 +989,7 @@ share/man/man1/znc.1.gz
 %%NLS%%share/locale/ru_RU/LC_MESSAGES/znc-sample.mo
 %%NLS%%share/locale/ru_RU/LC_MESSAGES/znc-samplewebapi.mo
 %%NLS%%share/locale/ru_RU/LC_MESSAGES/znc-sasl.mo
+%%NLS%%share/locale/ru_RU/LC_MESSAGES/znc-saslplainauth.mo
 %%NLS%%share/locale/ru_RU/LC_MESSAGES/znc-savebuff.mo
 %%NLS%%share/locale/ru_RU/LC_MESSAGES/znc-send_raw.mo
 %%NLS%%share/locale/ru_RU/LC_MESSAGES/znc-shell.mo
@@ -997,6 +1018,7 @@ share/man/man1/znc.1.gz
 %%NLS%%share/locale/tr_TR/LC_MESSAGES/znc-clearbufferonmsg.mo
 %%NLS%%share/locale/tr_TR/LC_MESSAGES/znc-clientnotify.mo
 %%NLS%%share/locale/tr_TR/LC_MESSAGES/znc-controlpanel.mo
+%%NLS%%share/locale/tr_TR/LC_MESSAGES/znc-corecaps.mo
 %%NLS%%share/locale/tr_TR/LC_MESSAGES/znc-crypt.mo
 %%NLS%%share/locale/tr_TR/LC_MESSAGES/znc-ctcpflood.mo
 %%NLS%%share/locale/tr_TR/LC_MESSAGES/znc-cyrusauth.mo
@@ -1026,6 +1048,7 @@ share/man/man1/znc.1.gz
 %%NLS%%share/locale/tr_TR/LC_MESSAGES/znc-sample.mo
 %%NLS%%share/locale/tr_TR/LC_MESSAGES/znc-samplewebapi.mo
 %%NLS%%share/locale/tr_TR/LC_MESSAGES/znc-sasl.mo
+%%NLS%%share/locale/tr_TR/LC_MESSAGES/znc-saslplainauth.mo
 %%NLS%%share/locale/tr_TR/LC_MESSAGES/znc-savebuff.mo
 %%NLS%%share/locale/tr_TR/LC_MESSAGES/znc-send_raw.mo
 %%NLS%%share/locale/tr_TR/LC_MESSAGES/znc-shell.mo
@@ -1047,22 +1070,22 @@ share/man/man1/znc.1.gz
 %%NLS%%%%DATADIR%%/translations/pt-PT
 %%NLS%%%%DATADIR%%/translations/ru-RU
 %%NLS%%%%DATADIR%%/translations/tr-TR
-%%OPENSSL%%lib/znc/awaystore.so
-%%OPENSSL%%lib/znc/cert.so
-%%OPENSSL%%lib/znc/certauth.so
-%%OPENSSL%%lib/znc/crypt.so
-%%OPENSSL%%lib/znc/savebuff.so
-%%OPENSSL%%lib/znc/schat.so
+lib/znc/awaystore.so
+lib/znc/cert.so
+lib/znc/certauth.so
+lib/znc/crypt.so
+lib/znc/savebuff.so
+lib/znc/schat.so
 %%PERL%%lib/znc/modperl.so
 %%PERL%%lib/znc/modperl/startup.pl
 %%PERL%%lib/znc/modperl/ZNC.pm
 %%PERL%%lib/znc/modperl/ZNC.so
 %%PERL%%lib/znc/perleval.pm
-%%PYTHON%%lib/znc/pyeval.py
-%%PYTHON%%lib/znc/modpython.so
-%%PYTHON%%lib/znc/modpython/_znc_core.so
-%%PYTHON%%lib/znc/modpython/znc_core.py
-%%PYTHON%%lib/znc/modpython/znc.py
+lib/znc/pyeval.py
+lib/znc/modpython.so
+lib/znc/modpython/_znc_core.so
+lib/znc/modpython/znc_core.py
+lib/znc/modpython/znc.py
 %%TCL%%lib/znc/modtcl.so
 %%TCL%%%%DATADIR%%/modtcl/binds.tcl
 %%TCL%%%%DATADIR%%/modtcl/modtcl.tcl

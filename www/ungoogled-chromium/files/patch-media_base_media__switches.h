@@ -1,17 +1,6 @@
---- media/base/media_switches.h.orig	2024-06-22 08:49:42 UTC
+--- media/base/media_switches.h.orig	2025-05-31 17:16:41 UTC
 +++ media/base/media_switches.h
-@@ -43,6 +43,10 @@ MEDIA_EXPORT extern const char kDisableBackgroundMedia
- 
- MEDIA_EXPORT extern const char kReportVp9AsAnUnsupportedMimeType[];
- 
-+#if BUILDFLAG(IS_BSD)
-+MEDIA_EXPORT extern const char kAudioBackend[];
-+#endif
-+
- #if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_FREEBSD) || \
-     BUILDFLAG(IS_SOLARIS)
- MEDIA_EXPORT extern const char kAlsaInputDevice[];
-@@ -324,13 +328,13 @@ MEDIA_EXPORT BASE_DECLARE_FEATURE(kPlatformHEVCEncoder
+@@ -334,13 +334,25 @@ MEDIA_EXPORT BASE_DECLARE_FEATURE(kMediaRecorderHEVCSu
  MEDIA_EXPORT BASE_DECLARE_FEATURE(kPlaybackSpeedButton);
  MEDIA_EXPORT BASE_DECLARE_FEATURE(kPreloadMediaEngagementData);
  MEDIA_EXPORT BASE_DECLARE_FEATURE(kPreloadMetadataSuspend);
@@ -19,6 +8,18 @@
 +#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_BSD)
  MEDIA_EXPORT BASE_DECLARE_FEATURE(kPulseaudioLoopbackForCast);
  MEDIA_EXPORT BASE_DECLARE_FEATURE(kPulseaudioLoopbackForScreenShare);
++
++enum class AudioBackend {
++  kAuto,
++  kPulseAudio,
++  kSndio,
++  kAlsa
++};
++
++MEDIA_EXPORT BASE_DECLARE_FEATURE(kAudioBackend);
++MEDIA_EXPORT extern const base::FeatureParam<
++    AudioBackend>
++    kAudioBackendParam;
  #endif  // BUILDFLAG(IS_LINUX)
  MEDIA_EXPORT BASE_DECLARE_FEATURE(kRecordMediaEngagementScores);
  MEDIA_EXPORT BASE_DECLARE_FEATURE(kRecordWebAudioEngagement);
@@ -27,26 +28,26 @@
  MEDIA_EXPORT BASE_DECLARE_FEATURE(kReduceHardwareVideoDecoderBuffers);
  #endif  // BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_LINUX)
  MEDIA_EXPORT BASE_DECLARE_FEATURE(kResumeBackgroundVideo);
-@@ -345,7 +349,7 @@ MEDIA_EXPORT BASE_DECLARE_FEATURE(kUnifiedAutoplay);
+@@ -354,7 +366,7 @@ MEDIA_EXPORT BASE_DECLARE_FEATURE(kSuspendMutedAudio);
+ MEDIA_EXPORT BASE_DECLARE_FEATURE(kUnifiedAutoplay);
  MEDIA_EXPORT BASE_DECLARE_FEATURE(kUseAndroidOverlayForSecureOnly);
- MEDIA_EXPORT BASE_DECLARE_FEATURE(kUseDecoderStreamForWebRTC);
  MEDIA_EXPORT BASE_DECLARE_FEATURE(kUseFakeDeviceForMediaStream);
 -#if BUILDFLAG(IS_LINUX)
 +#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_BSD)
- MEDIA_EXPORT BASE_DECLARE_FEATURE(kVaapiVideoDecodeLinux);
- MEDIA_EXPORT BASE_DECLARE_FEATURE(kVaapiVideoDecodeLinuxGL);
- MEDIA_EXPORT BASE_DECLARE_FEATURE(kVaapiVideoEncodeLinux);
-@@ -364,7 +368,7 @@ MEDIA_EXPORT BASE_DECLARE_FEATURE(kVaapiH264TemporalLa
- MEDIA_EXPORT BASE_DECLARE_FEATURE(kVaapiVp8TemporalLayerHWEncoding);
+ MEDIA_EXPORT BASE_DECLARE_FEATURE(kAcceleratedVideoDecodeLinux);
+ MEDIA_EXPORT BASE_DECLARE_FEATURE(kAcceleratedVideoDecodeLinuxGL);
+ MEDIA_EXPORT BASE_DECLARE_FEATURE(kAcceleratedVideoEncodeLinux);
+@@ -370,7 +382,7 @@ MEDIA_EXPORT BASE_DECLARE_FEATURE(kVaapiAV1TemporalLay
  MEDIA_EXPORT BASE_DECLARE_FEATURE(kVaapiVp9SModeHWEncoding);
+ MEDIA_EXPORT BASE_DECLARE_FEATURE(kVSyncMjpegDecoding);
  #endif  // defined(ARCH_CPU_X86_FAMILY) && BUILDFLAG(IS_CHROMEOS)
 -#if BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_LINUX)
 +#if BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_BSD)
- MEDIA_EXPORT BASE_DECLARE_FEATURE(kV4L2FlatVideoDecoder);
- MEDIA_EXPORT BASE_DECLARE_FEATURE(kV4L2FlatStatefulVideoDecoder);
+ MEDIA_EXPORT BASE_DECLARE_FEATURE(kV4L2H264TemporalLayerHWEncoding);
  #endif  // BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_LINUX)
-@@ -506,7 +510,7 @@ MEDIA_EXPORT BASE_DECLARE_FEATURE(kUseOutOfProcessVide
- MEDIA_EXPORT BASE_DECLARE_FEATURE(kUseGTFOOutOfProcessVideoDecoding);
+ MEDIA_EXPORT BASE_DECLARE_FEATURE(kVideoBlitColorAccuracy);
+@@ -490,7 +502,7 @@ MEDIA_EXPORT BASE_DECLARE_FEATURE(kBackgroundListening
+ MEDIA_EXPORT BASE_DECLARE_FEATURE(kUseOutOfProcessVideoDecoding);
  #endif  // BUILDFLAG(ALLOW_OOP_VIDEO_DECODER)
  
 -#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS)

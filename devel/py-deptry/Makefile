@@ -1,6 +1,6 @@
 PORTNAME=	deptry
-PORTVERSION=	0.16.1
-PORTREVISION=	2
+PORTVERSION=	0.23.0
+PORTREVISION=	4
 CATEGORIES=	devel python
 MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -16,18 +16,15 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 
 BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}maturin>=1.5<2.0:devel/py-maturin@${PY_FLAVOR}
 RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}click>=8.0.0<9:devel/py-click@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}packaging>=23.2:devel/py-packaging@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}requirements-parser>=0.11.0<1:devel/py-requirements-parser@${PY_FLAVOR} \
+		${PY_TOMLI}
 
-USES=		cargo python
+USES=		cargo python:3.9+
 USE_PYTHON=	autoplist concurrent pep517
 
 CARGO_BUILD=	no
 CARGO_INSTALL=	no
 WRKSRC=		${WRKDIR}/deptry-${PORTVERSION}
 
-.include <bsd.port.pre.mk>
-
-.if ${PYTHON_REL} < 31100
-RUN_DEPENDS+=	${PYTHON_PKGNAMEPREFIX}tomli>=2.0.1:textproc/py-tomli@${PY_FLAVOR}
-.endif
-
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

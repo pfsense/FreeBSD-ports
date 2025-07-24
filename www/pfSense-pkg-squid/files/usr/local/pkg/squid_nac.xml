@@ -8,7 +8,7 @@
  * squid_nac.xml
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2015-2024 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2015-2025 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2012-2014 Marcello Coutinho
  * All rights reserved.
  *
@@ -251,7 +251,7 @@
 			<fieldname>youtube_restrict</fieldname>
 			<type>select</type>
 			<options>
-				<option><name>None</name><value></value></option> #fixes issue with filter set to off still blocking
+				<option><name>None</name><value></value></option>
 				<option><name>Moderate</name><value>moderate</value></option>
 				<option><name>Strict</name><value>strict</value></option>
 			</options>

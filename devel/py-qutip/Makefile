@@ -1,5 +1,5 @@
 PORTNAME=	qutip
-DISTVERSION=	4.7.3
+DISTVERSION=	5.0.4
 CATEGORIES=	devel
 MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -14,7 +14,7 @@ LICENSE_FILE=	${WRKSRC}/LICENSE.txt
 PY_DEPENDS=	${PYNUMPY} \
 		${PYTHON_PKGNAMEPREFIX}matplotlib>0:math/py-matplotlib@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}packaging>0:devel/py-packaging@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}scipy>=1.0:science/py-scipy@${PY_FLAVOR}
+		${PYTHON_PKGNAMEPREFIX}scipy>=1.9:science/py-scipy@${PY_FLAVOR}
 BUILD_DEPENDS=	${PY_DEPENDS} \
 		${PY_SETUPTOOLS} \
 		${PYTHON_PKGNAMEPREFIX}pip>0:devel/py-pip@${PY_FLAVOR} \
@@ -24,10 +24,12 @@ TEST_DEPENDS=	${PYTHON_PKGNAMEPREFIX}nose>0:devel/py-nose@${PY_FLAVOR}
 # the optional graphics/py-mayavi dependency is omitted because it is python-2.7 -only
 
 USES=		python
-USE_PYTHON=	pep517 cython cython_run autoplist
+USE_PYTHON=	autoplist cython3 cython3_run pep517
 
 post-install:
-	@${STRIP_CMD} ${STAGEDIR}${PYTHON_SITELIBDIR}/qutip/*/*${PYTHON_EXT_SUFFIX}.so
+	@${STRIP_CMD} \
+		${STAGEDIR}${PYTHON_SITELIBDIR}/qutip/*/*${PYTHON_TAG}.so \
+		${STAGEDIR}${PYTHON_SITELIBDIR}/qutip/*/*/*${PYTHON_TAG}.so
 
 do-test: # 3 tests fail, see https://github.com/qutip/qutip/issues/2190
 	@${ECHO} "==> Running tests. Please note that tests require X11 display access."

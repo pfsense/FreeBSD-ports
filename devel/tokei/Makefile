@@ -1,10 +1,10 @@
 PORTNAME=	tokei
 DISTVERSIONPREFIX=	v
 DISTVERSION=	12.1.2
-PORTREVISION=	32
+PORTREVISION=	41
 CATEGORIES=	devel
 
-MAINTAINER=	mikael@FreeBSD.org
+MAINTAINER=	bofh@FreeBSD.org
 COMMENT=	Display statistics about your code
 WWW=		https://github.com/XAMPPRocky/tokei
 
@@ -172,8 +172,5 @@ CARGO_CRATES=	aho-corasick-0.7.15 \
 CARGO_FEATURES=	all
 
 PLIST_FILES=	bin/tokei
-
-post-install:
-	@${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/tokei
 
 .include <bsd.port.mk>

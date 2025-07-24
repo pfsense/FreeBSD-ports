@@ -1,10 +1,11 @@
 PORTNAME=	yourls
-PORTVERSION=	1.9.2
+PORTVERSION=	1.10.1
 CATEGORIES=	www
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Your Own URL Shortener
-WWW=		https://yourls.org/
+WWW=		https://yourls.org/ \
+		https://github.com/YOURLS/YOURLS
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE

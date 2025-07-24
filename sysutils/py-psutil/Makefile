@@ -1,12 +1,13 @@
 PORTNAME=	psutil
-PORTVERSION=	5.9.8
+PORTVERSION=	7.0.0
 CATEGORIES=	sysutils python
 MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Process utilities module for Python
-WWW=		https://github.com/giampaolo/psutil
+WWW=		https://psutil.readthedocs.io/en/latest/ \
+		https://github.com/giampaolo/psutil
 
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE
@@ -18,8 +19,6 @@ USES=		cpe python
 USE_PYTHON=	autoplist concurrent pep517
 
 LDFLAGS+=	-lutil
-
-CONFLICTS_INSTALL=	${PYTHON_PKGNAMEPREFIX}psutil121
 
 CPE_VENDOR=	psutil_project
 

@@ -1,7 +1,7 @@
 PORTNAME=	tdlib-purple
 DISTVERSIONPREFIX=	v
 DISTVERSION=	0.8.1
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	net-im
 
 PATCH_SITES=	https://github.com/ars3niy/tdlib-purple/commit/
@@ -13,6 +13,8 @@ WWW=		https://github.com/ars3niy/tdlib-purple
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/LICENSE
+
+BROKEN=		fails to compile with the latest revision of net-im/tdlib
 
 LIB_DEPENDS=	libfmt.so:devel/libfmt	\
 		libtdapi.so:net-im/tdlib	\

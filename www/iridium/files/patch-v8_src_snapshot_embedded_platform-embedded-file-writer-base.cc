@@ -1,9 +1,9 @@
---- v8/src/snapshot/embedded/platform-embedded-file-writer-base.cc.orig	2023-11-22 14:00:11 UTC
+--- v8/src/snapshot/embedded/platform-embedded-file-writer-base.cc.orig	2025-05-07 06:48:23 UTC
 +++ v8/src/snapshot/embedded/platform-embedded-file-writer-base.cc
-@@ -143,6 +143,8 @@ EmbeddedTargetOs ToEmbeddedTargetOs(const char* s) {
-     return EmbeddedTargetOs::kWin;
-   } else if (string == "starboard") {
+@@ -148,6 +148,8 @@ EmbeddedTargetOs ToEmbeddedTargetOs(const char* s) {
      return EmbeddedTargetOs::kStarboard;
+   } else if (string == "zos") {
+     return EmbeddedTargetOs::kZOS;
 +  } else if (string == "openbsd") {
 +    return EmbeddedTargetOs::kOpenBSD;
    } else {

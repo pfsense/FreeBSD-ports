@@ -1,5 +1,5 @@
 PORTNAME=	facter
-PORTVERSION=	4.7.1
+PORTVERSION=	4.10.0
 CATEGORIES=	sysutils rubygems
 MASTER_SITES=	RG
 
@@ -20,7 +20,7 @@ RUN_DEPENDS+=	rubygem-ruby-augeas>0:textproc/rubygem-ruby-augeas \
 USES=		cpe gem
 CPE_VENDOR=	puppet
 
-CONFLICTS_INSTALL=	facter # bin/facter
+CONFLICTS_INSTALL=	facter rubygem-openfact # bin/facter
 
 NO_ARCH=	yes
 

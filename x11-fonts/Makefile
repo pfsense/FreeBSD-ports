@@ -10,9 +10,11 @@
     SUBDIR += alfont
     SUBDIR += amigafonts
     SUBDIR += andika
+    SUBDIR += andika-compact
     SUBDIR += anomaly-mono
     SUBDIR += anonymous-pro
     SUBDIR += apl385
+    SUBDIR += aporetic
     SUBDIR += artwiz-aleczapka
     SUBDIR += artwiz-aleczapka-de
     SUBDIR += artwiz-aleczapka-se
@@ -29,6 +31,7 @@
     SUBDIR += c64bdf
     SUBDIR += cantarell-fonts
     SUBDIR += cascadia-code
+    SUBDIR += cascadia-next
     SUBDIR += charis
     SUBDIR += charis-compact
     SUBDIR += chomsky
@@ -123,8 +126,10 @@
     SUBDIR += genryu
     SUBDIR += genseki
     SUBDIR += gensen
+    SUBDIR += gentium
     SUBDIR += gentium-basic
-    SUBDIR += gentium-plus
+    SUBDIR += gentium-book
+    SUBDIR += gentium-plus-compact
     SUBDIR += genwan
     SUBDIR += genyo
     SUBDIR += genyog
@@ -143,6 +148,7 @@
     SUBDIR += intel-one-mono
     SUBDIR += intlfonts
     SUBDIR += iosevka
+    SUBDIR += iosevka-comfy
     SUBDIR += isabella
     SUBDIR += jetbrains-mono
     SUBDIR += jf-openhuninn
@@ -199,8 +205,10 @@
     SUBDIR += noto-kufi-arabic
     SUBDIR += noto-music
     SUBDIR += noto-naskh-arabic
+    SUBDIR += noto-naskh-arabic-ui
     SUBDIR += noto-sans
     SUBDIR += noto-sans-arabic
+    SUBDIR += noto-sans-arabic-ui
     SUBDIR += noto-sans-armenian
     SUBDIR += noto-sans-bengali
     SUBDIR += noto-sans-cham
@@ -211,6 +219,7 @@
     SUBDIR += noto-sans-hebrew
     SUBDIR += noto-sans-hk
     SUBDIR += noto-sans-jp
+    SUBDIR += noto-sans-kannada
     SUBDIR += noto-sans-khmer
     SUBDIR += noto-sans-kr
     SUBDIR += noto-sans-lao
@@ -238,6 +247,7 @@
     SUBDIR += noto-serif-hebrew
     SUBDIR += noto-serif-hk
     SUBDIR += noto-serif-jp
+    SUBDIR += noto-serif-kannada
     SUBDIR += noto-serif-khmer
     SUBDIR += noto-serif-kr
     SUBDIR += noto-serif-lao
@@ -273,6 +283,7 @@
     SUBDIR += proggy_fonts
     SUBDIR += proggy_fonts-ttf
     SUBDIR += psftools
+    SUBDIR += py-FindSystemFontsFilename
     SUBDIR += py-QtAwesome
     SUBDIR += py-afdko
     SUBDIR += py-axisregistry
@@ -283,6 +294,7 @@
     SUBDIR += py-compreffor
     SUBDIR += py-cu2qu
     SUBDIR += py-defcon
+    SUBDIR += py-fclist-cffi
     SUBDIR += py-fontMath
     SUBDIR += py-fontfeatures
     SUBDIR += py-fontmake
@@ -327,6 +339,7 @@
     SUBDIR += urwfonts
     SUBDIR += urwfonts-ttf
     SUBDIR += uw-ttyp0
+    SUBDIR += vazirmatn
     SUBDIR += victor-mono-ttf
     SUBDIR += vollkorn-ttf
     SUBDIR += webfonts

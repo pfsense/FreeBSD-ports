@@ -50,7 +50,6 @@ LICENSE_PERMS_TWAIN=	dist-mirror dist-sell pkg-mirror pkg-sell auto-accept
 LICENSE_PERMS_W3C=	dist-mirror dist-sell pkg-mirror pkg-sell auto-accept
 
 ONLY_FOR_ARCHS=	amd64 i386 powerpc64
-BROKEN_powerpc64=	fails to compile: aoo-4.2.0/main/solver/420/unxfbsdppc64.pro/inc/stl/vector:31:11: fatal error: boost/tr1/tr1/vector: No such file or directory
 
 BUILD_DEPENDS=								\
 		p5-Archive-Zip>=0:archivers/p5-Archive-Zip		\
@@ -58,7 +57,6 @@ BUILD_DEPENDS=								\
 		zip:archivers/zip					\
 		ant:devel/apache-ant					\
 		dmake:devel/dmake					\
-		epm:devel/epm						\
 		${LOCALBASE}/bin/gperf:devel/gperf			\
 		imake:devel/imake					\
 		libunwind>=20211201_1:devel/libunwind			\
@@ -113,13 +111,10 @@ BUILD_DEPENDS+=	gcc${GCC_DEFAULT}>0:lang/gcc${GCC_DEFAULT}
 RUN_DEPENDS+=	gcc${GCC_DEFAULT}>0:lang/gcc${GCC_DEFAULT}
 
 USES=		autoreconf bison compiler:c++11-lib cpe desktop-file-utils \
-		gettext-runtime gl gmake gnome iconv jpeg perl5 pkgconfig \
-		python:3.9 shared-mime-info ssl tar:${TARTYPE} xorg
+		gettext-runtime gl gmake gnome iconv java jpeg perl5 pkgconfig \
+		python shared-mime-info ssl tar:${TARTYPE} xorg
 USE_GL=		gl glu
-USE_GNOME=	gdkpixbuf2 gdkpixbuf2xlib gtk20 libxslt glib20
-USE_JAVA=	yes
-JAVA_BUILD=	jdk
-JAVA_RUN=	jdk
+USE_GNOME=	gdkpixbuf gdkpixbuf2xlib gtk20 libxslt glib20
 JAVA_VENDOR=	openjdk
 USE_PERL5=	build
 USE_XORG=	ice sm x11 xau xaw xcomposite xcursor xdamage xext xfixes xi \
@@ -131,9 +126,9 @@ AOOVERSION1=	4
 AOOVERSION2=	2
 AOOVERSION3=	0
 # From solenv/inc/minor.mk SOURCEREVISION LAST_MINOR BUILD
-AOOTAG=		AOO420m4\(Build:9823\)
-GITREVISION=	ed2e9b1ba7
-TIMESTAMP=	1707679630
+AOOTAG=		AOO420m6\(Build:9825\)
+GITREVISION=	518a110c8f
+TIMESTAMP=	1750013453
 #AOORC=rc3
 EXTSRC=		ApacheOpenOffice.ext_sources.${AOOVERSION1}.x.x.20150707.tar.gz
 
@@ -231,13 +226,10 @@ WITH=	SDK
 
 .include <bsd.port.pre.mk>
 
-.if ${OPSYS} == FreeBSD && ( \
-    (${OSVERSION} >= 1400051 && ${OSVERSION} < 1400057))
-BROKEN=	please update FreeBSD base system first to fix an ABI incompatibility
-.endif
-
 .if defined(WITH_DEBUG)
 CONFIGURE_ARGS+=	--enable-symbols
+.else
+CONFIGURE_ARGS+=	--enable-strip-solver
 .endif
 
 .if ${PORT_OPTIONS:MREPORT_BUILDER} || ${PORT_OPTIONS:MWIKI_PUBLISHER}
@@ -251,6 +243,7 @@ CONFIGURE_ARGS+=	--without-commons-logging
 .include <${FILESDIR}/Makefile.localized>
 
 GCC_EXTRA_DISTFILES=	d6eef4b4cacb2183f2bf265a5a03a354-boost_1_55_0.tar.bz2 \
+			e3738abd0d3ce1870dc1fd1f22bba5b1-icu4c-4_2_1-src.tgz \
 			d62650a6f908e85643e557a236ea989c-vigra1.6.0.tar.gz
 
 .if ${CHOSEN_COMPILER_TYPE} == clang
@@ -298,7 +291,6 @@ CONFIGURE_ARGS+=							\
 			--with-system-coinmp				\
 			--with-system-curl				\
 			--with-system-dicts				\
-			--with-epm=${LOCALBASE}/bin/epm			\
 			--with-system-expat				\
 			--disable-fetch-external			\
 			--without-fonts					\

@@ -1,6 +1,6 @@
---- components/feature_engagement/public/feature_configurations.cc.orig	2024-06-17 12:56:06 UTC
+--- components/feature_engagement/public/feature_configurations.cc.orig	2025-07-02 06:08:04 UTC
 +++ components/feature_engagement/public/feature_configurations.cc
-@@ -94,7 +94,7 @@ std::optional<FeatureConfig> CreateNewUserGestureInPro
+@@ -100,7 +100,7 @@ std::optional<FeatureConfig> CreateNewUserGestureInPro
  
  std::optional<FeatureConfig> GetClientSideFeatureConfig(
      const base::Feature* feature) {
@@ -9,21 +9,22 @@
  
    // The IPH bubble for link capturing has a trigger set to ANY so that it
    // always shows up. The per app specific guardrails are independently stored
-@@ -113,7 +113,7 @@ std::optional<FeatureConfig> GetClientSideFeatureConfi
+@@ -119,7 +119,7 @@ std::optional<FeatureConfig> GetClientSideFeatureConfi
  
  #endif  // BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_WIN)
  #if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_APPLE) || BUILDFLAG(IS_LINUX) || \
 -    BUILDFLAG(IS_CHROMEOS)
 +    BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_BSD)
-   if (kIPHPasswordsAccountStorageFeature.name == feature->name) {
-     std::optional<FeatureConfig> config = FeatureConfig();
-     config->valid = true;
-@@ -1498,7 +1498,7 @@ std::optional<FeatureConfig> GetClientSideFeatureConfi
- 
+   if (kIPHPasswordsManagementBubbleAfterSaveFeature.name == feature->name) {
+     FeatureConfig config;
+     config.valid = true;
+@@ -1885,7 +1885,8 @@ std::optional<FeatureConfig> GetClientSideFeatureConfi
  #endif  // BUILDFLAG(IS_ANDROID)
  
--#if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_APPLE) || BUILDFLAG(IS_LINUX) || \
-+#if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_APPLE) || BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_BSD) || \
-     BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_ANDROID) || BUILDFLAG(IS_FUCHSIA)
+ #if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_APPLE) || BUILDFLAG(IS_LINUX) || \
+-    BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_ANDROID) || BUILDFLAG(IS_FUCHSIA)
++    BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_ANDROID) || BUILDFLAG(IS_FUCHSIA) || \
++    BUILDFLAG(IS_BSD)
  
    if (kIPHAutofillCreditCardBenefitFeature.name == feature->name) {
+     // The credit card benefit IPH appears up to three times over 10 years and

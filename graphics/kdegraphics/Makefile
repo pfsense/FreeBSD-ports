@@ -1,27 +1,29 @@
 PORTNAME=	kdegraphics
 DISTVERSION=	${KDE_APPLICATIONS_VERSION}
-PORTREVISION=	1
 CATEGORIES=	graphics kde
 
 MAINTAINER=	kde@FreeBSD.org
-COMMENT=	Graphics utilities for KDE (meta port)
-WWW=		https://www.kde.org
+COMMENT=	Graphics applications for KDE (meta port)
+WWW=		https://apps.kde.org/categories/graphics/
 
-USES=		kde:5 metaport qt:5
+USES=		kde:6 metaport qt:6
 USE_QT=		#
 
-OPTIONS_DEFINE=	GPHOTO \
+OPTIONS_DEFINE=	COLORD \
+		GPHOTO \
 		GWENVIEW \
 		KCOLORCHOOSER \
 		KOLOURPAINT \
 		KRULER \
 		MOBIPOCKET \
 		SKANLITE \
-		SPECTACLE \
 		SVG \
 		THUMBNAILER
 
 OPTIONS_DEFAULT=		${OPTIONS_DEFINE}
+
+COLORD_DESC=			Color profiles manager
+COLORD_RUN_DEPENDS=		colord-kde>=0:graphics/colord-kde
 
 GPHOTO_DESC=			Digital camera manager
 GPHOTO_RUN_DEPENDS=		kamera>=${KDE_APPLICATIONS_VERSION}:graphics/kamera
@@ -39,13 +41,10 @@ KRULER_DESC=			Screen ruler
 KRULER_RUN_DEPENDS=		kruler>=${KDE_APPLICATIONS_VERSION}:deskutils/kruler
 
 SKANLITE_DESC=			Simple scanning application
-SKANLITE_RUN_DEPENDS=		skanlite>=2.1:graphics/skanlite
-
-SPECTACLE_DESC=			Screen capture program
-SPECTACLE_RUN_DEPENDS=		spectacle>=${KDE_APPLICATIONS_VERSION}:graphics/spectacle
+SKANLITE_RUN_DEPENDS=		skanlite>=${KDE_APPLICATIONS_VERSION}:graphics/skanlite
 
 MOBIPOCKET_DESC=		Mobipocket plugins for Strigi indexing and thumbnailers
-MOBIPOCKET_RUN_DEPENDS=		kdegraphics-mobipocket>=${KDE_APPLICATIONS_VERSION}:graphics/kdegraphics-mobipocket
+MOBIPOCKET_RUN_DEPENDS=		kdegraphics-mobipocket-qt6>=${KDE_APPLICATIONS_VERSION}:graphics/kdegraphics-mobipocket@qt6
 
 SVG_DESC=			SVG KPart
 SVG_RUN_DEPENDS=		kdegraphics-svgpart>=${KDE_APPLICATIONS_VERSION}:graphics/kdegraphics-svgpart

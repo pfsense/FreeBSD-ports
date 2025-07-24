@@ -1,6 +1,6 @@
 PORTNAME=	postfix
-DISTVERSION=	3.9.0
-PORTREVISION?=	1
+DISTVERSION=	3.10.3
+PORTREVISION?=	0
 PORTEPOCH=	1
 CATEGORIES=	mail
 MASTER_SITES=	https://postfix-mirror.horus-it.com/postfix-release/ \
@@ -96,7 +96,7 @@ USERS=		postfix
 GROUPS=		mail maildrop postfix
 
 OPTIONS_DEFINE=		BDB BLACKLISTD CDB DOCS EAI INST_BASE LDAP LMDB MONGO \
-			MYSQL NIS PCRE2 PGSQL SASL SQLITE TEST TLS
+			MYSQL NIS PCRE2 PGSQL SASL SQLITE TEST TLS TLSRPT
 OPTIONS_DEFAULT?=	BLACKLISTD EAI PCRE2 TLS
 OPTIONS_RADIO=		RG1
 OPTIONS_RADIO_RG1=	SASLKMIT SASLKRB5
@@ -128,6 +128,7 @@ SASLKMIT_DESC=		If your SASL req. MIT Kerberos5, select this
 SASLKRB5_DESC=		If your SASL req. Kerberos5, select this
 SASL_DESC=		Cyrus SASL support (Dovecot SASL is always built in)
 TEST_DESC=		SMTP/LMTP test server and generator
+TLSRPT_DESC=		Enable sending RFC 8460 TLS reports
 
 BDB_USES=			bdb
 BLACKLISTD_EXTRA_PATCHES=	${FILESDIR}/extra-patch-blacklistd
@@ -143,6 +144,9 @@ PGSQL_USES=			pgsql
 SASLKMIT_LIB_DEPENDS=		libkrb5.so:security/krb5
 SASL_LIB_DEPENDS=		libsasl2.so:security/cyrus-sasl2
 SQLITE_USES=			sqlite
+TLSRPT_LIB_DEPENDS=		libtlsrpt.so:mail/libtlsrpt
+
+ALL_TARGET=		default
 
 .include <bsd.port.options.mk>
 
@@ -200,17 +204,14 @@ READMEDIR=	${DOCSDIR}
 READMEDIR=	no
 .endif
 
-# dynamic direcory location
+# dynamic directory location
 DAEMONDIR=		${PREFIX}/libexec/postfix
 SHLIB_DIRECTORY=	${PREFIX}/lib/postfix
 # new proposed location is ETCDIR (see README_FILES/INSTALL)
 # keep compatiblity with Postfix 2.6 .. 2.11 and use DAEMOMDIR
 META_DIRECTORY=		${DAEMONDIR}
 
-SUB_LIST+=	DAEMONDIR="${DAEMONDIR}" \
-		META_DIRECTORY="${META_DIRECTORY}" \
-		READMEDIR="${READMEDIR}" \
-		REQUIRE="${_REQUIRE}"
+SUB_LIST+=	REQUIRE="${_REQUIRE}"
 SUB_FILES+=	mailer.conf.postfix pkg-install pkg-message
 
 POSTFIX_CCARGS+=	-DDEF_CONFIG_DIR=\\\"${ETCDIR}\\\" \
@@ -276,6 +277,11 @@ POSTFIX_CCARGS+=	-DUSE_TLS -I${OPENSSLINC}
 POSTFIX_AUXLIBS+=	-L${OPENSSLLIB} ${LDFLAGS} -lssl -lcrypto
 .else
 POSTFIX_CCARGS+=	-DNO_TLS
+.endif
+
+.if ${PORT_OPTIONS:MTLSRPT}
+POSTFIX_CCARGS+=	-DUSE_TLSRPT -I${LOCALBASE}/include
+POSTFIX_AUXLIBS+=	-L${LOCALBASE}/lib -Wl,-rpath,${LOCALBASE}/lib -ltlsrpt
 .endif
 
 .if ${PORT_OPTIONS:MBDB}
@@ -396,19 +402,18 @@ post-patch:
 		>> ${WRKSRC}/conf/postfix-files
 
 do-configure:
-	(cd ${WRKSRC} && ${MAKE} -f Makefile.init makefiles \
+	${MAKE} -C ${WRKSRC} -f Makefile.init makefiles \
 	${MAKEFILEFLAGS} CCARGS="${POSTFIX_CCARGS}" \
 	shared=yes shlib_directory=${SHLIB_DIRECTORY} \
 	dynamicmaps=yes \
 	${POSTFIX_DYN_AUXLIBS} \
-	AUXLIBS="${POSTFIX_AUXLIBS}" && \
-	${ECHO_CMD} "all: default" >> Makefile)
+	AUXLIBS="${POSTFIX_AUXLIBS}"
 
 pre-install-INST_BASE-on:
 	${MKDIR} ${STAGEDIR}/etc/rc.d
 
 do-install:
-	@(cd ${WRKSRC} && ${MAKE} non-interactive-package \
+	${MAKE} -C ${WRKSRC} non-interactive-package \
 		install_root=${STAGEDIR} tempdir=${WRKDIR} \
 		shlib_directory=${SHLIB_DIRECTORY} \
 		config_directory=${ETCDIR} \
@@ -420,7 +425,7 @@ do-install:
 		manpage_directory=${PREFIX}/share/man \
 		newaliases_path=${PREFIX}/bin/newaliases \
 		readme_directory=${READMEDIR} \
-		sendmail_path=${PREFIX}/sbin/sendmail )
+		sendmail_path=${PREFIX}/sbin/sendmail
 
 	${INSTALL_SCRIPT} ${WRKSRC}/auxiliary/rmail/rmail ${STAGEDIR}${PREFIX}/bin/rmail
 	${INSTALL_SCRIPT} ${WRKSRC}/auxiliary/qshape/qshape.pl ${STAGEDIR}${PREFIX}/bin/qshape

@@ -1,5 +1,5 @@
 PORTNAME=	train-winrm
-PORTVERSION=	0.2.13
+PORTVERSION=	0.3.1
 CATEGORIES=	net rubygems
 MASTER_SITES=	RG
 
@@ -10,9 +10,10 @@ WWW=		https://github.com/inspec/train-winrm
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-RUN_DEPENDS=	rubygem-winrm>=2.3.6<3.0:sysutils/rubygem-winrm \
-		rubygem-winrm-elevated>=1.2.2<1.3:sysutils/rubygem-winrm-elevated \
-		rubygem-winrm-fs>=1.0<2:sysutils/rubygem-winrm-fs
+RUN_DEPENDS=	rubygem-chef-winrm>=2.4<3:sysutils/rubygem-chef-winrm \
+		rubygem-chef-winrm-elevated>=1.2.5<1.3:sysutils/rubygem-chef-winrm-elevated \
+		rubygem-chef-winrm-fs>=1.4.0<1.5:filesystems/rubygem-chef-winrm-fs \
+		rubygem-syslog>=0.1<1:devel/rubygem-syslog
 
 USES=		gem
 

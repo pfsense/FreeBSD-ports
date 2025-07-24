@@ -3,7 +3,7 @@
  * services_servicewatchdog.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2013-2024 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2013-2025 Rubicon Communications, LLC (Netgate)
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -30,8 +30,6 @@ require("guiconfig.inc");
 require_once("functions.inc");
 require_once("service-utils.inc");
 require_once("servicewatchdog.inc");
-
-config_init_path('installedpackages/servicewatchdog/item');
 
 /* if a custom message has been passed along, lets process it */
 if ($_GET['savemsg']) {
@@ -87,7 +85,7 @@ if (isset($_POST['del'])) {
 	}
 	/* move selected services before this service */
 	if (isset($movebtn) && is_array($_POST['pwservices']) && count($_POST['pwservices'])) {
-		$a_pwservices = config_get_path('installedpackages/servicewatchdog/item');
+		$a_pwservices = config_get_path('installedpackages/servicewatchdog/item', []);
 		$a_pwservices_new = array();
 
 		/* copy all services < $movebtn and not selected */

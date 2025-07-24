@@ -1,11 +1,11 @@
---- pcsx2-qt/AutoUpdaterDialog.cpp.orig	2024-04-11 09:34:32 UTC
+--- pcsx2-qt/AutoUpdaterDialog.cpp.orig	2025-06-11 12:23:15 UTC
 +++ pcsx2-qt/AutoUpdaterDialog.cpp
-@@ -892,7 +892,7 @@ void AutoUpdaterDialog::cleanupAfterUpdate()
+@@ -53,6 +53,8 @@ static constexpr u32 HTTP_POLL_INTERVAL = 10;
+ #define UPDATE_PLATFORM_STR "Linux"
+ #elif defined(__APPLE__)
+ #define UPDATE_PLATFORM_STR "MacOS"
++#elif defined(__FreeBSD__)
++#define UPDATE_PLATFORM_STR "FreeBSD"
+ #endif
  
- #else
- 
--bool AutoUpdaterDialog::processUpdate(const QByteArray& update_data, QProgressDialog& progress)
-+bool AutoUpdaterDialog::processUpdate(const std::vector<u8>& data, QProgressDialog&)
- {
- 	return false;
- }
+ #ifdef MULTI_ISA_SHARED_COMPILATION

@@ -1,6 +1,5 @@
 PORTNAME=	emacs
-DISTVERSION=	30.0.50.20240615
-PORTREVISION=	2
+DISTVERSION=	31.0.50.20250716
 PORTEPOCH=	3
 CATEGORIES=	editors
 PKGNAMESUFFIX=	-devel
@@ -9,9 +8,6 @@ MAINTAINER=	emacs@FreeBSD.org
 COMMENT=	GNU editing macros ${COMMENT_${FLAVOR}}
 WWW=		https://www.gnu.org/software/emacs/
 COMMENT_nox=	(No X flavor)
-
-PATCH_SITES+=  https://github.com/emacs-mirror/emacs/commit/
-PATCHFILES+=   c645e1d8205f0f0663ec4a2d27575b238c646c7c.patch:-p1
 
 LICENSE=	GPLv3+
 LICENSE_FILE=	${WRKSRC}/COPYING
@@ -28,10 +24,9 @@ USES=		autoreconf:build cpe gmake localbase:ldflags makeinfo ncurses \
 CPE_VENDOR=	gnu
 USE_GITHUB=	yes
 GH_ACCOUNT=	emacs-mirror
-GH_TAGNAME=	25452986cb
+GH_TAGNAME=	e450a7802c5
 
 GNU_CONFIGURE=		yes
-GNU_CONFIGURE_MANPREFIX=${PREFIX}/share
 CONFIGURE_ARGS=		--disable-build-details \
 			--localstatedir=/var \
 			--without-gconf \
@@ -80,20 +75,22 @@ INFO=		auth autotype bovine calc ccmode cl dbus dired-x ebrowse ede \
 		modus-themes newsticker nxml-mode octave-mode org pcl-cvs pgg \
 		rcirc reftex remember sasl sc semantic ses sieve smtpmail \
 		speedbar srecode todo-mode tramp transient url use-package \
-		vhdl-mode vip viper vtable widget wisent woman
+		vhdl-mode viper vtable widget wisent woman
 INFO_PATH=	${DATADIR_REL}/info
 PLIST_SUB=	EMACS_VER=${DISTVERSION:R} \
 		GNU_HOST=${CONFIGURE_TARGET}
 
-OPTIONS_DEFINE=			ACL DBUS GNUTLS GSETTINGS HARFBUZZ JSON LCMS2 \
-				M17N MAILUTILS MODULES NATIVECOMP OTF PGTK \
+OPTIONS_DEFINE=			ACL DBUS GNUTLS GSETTINGS HARFBUZZ LCMS2 M17N \
+				MAILUTILS MODULES NATIVECOMP OTF PGTK \
 				SCROLLBARS SOURCES SQLITE3 THREADS TREESITTER \
 				XFT XIM XML XWIDGETS
 OPTIONS_DEFAULT=		ACL CAIRO DBUS GIF GNUTLS GSETTINGS GTK3 \
-				HARFBUZZ JPEG JSON KQUEUE LCMS2 MAILUTILS \
-				MODULES NATIVECOMP OSS PGTK PNG SCROLLBARS \
-				SOURCES SQLITE3 SVG THREADS TIFF TREESITTER \
-				WEBP XML
+				HARFBUZZ JPEG KQUEUE LCMS2 MAILUTILS MODULES \
+				NATIVECOMP OSS PGTK PNG SCROLLBARS SOURCES \
+				SQLITE3 SVG THREADS TIFF TREESITTER WEBP XML
+OPTIONS_EXCLUDE_powerpc=	NATIVECOMP
+OPTIONS_EXCLUDE_powerpc64=	NATIVECOMP
+OPTIONS_EXCLUDE_powerpc64le=	NATIVECOMP
 OPTIONS_GROUP=			GRAPHICS
 OPTIONS_GROUP_GRAPHICS=		CAIRO GIF JPEG MAGICK PNG SVG TIFF WEBP XPM
 OPTIONS_RADIO=			FILENOTIFY SOUND X11TOOLKIT
@@ -106,6 +103,7 @@ OPTIONS_EXCLUDE=		ALSA CAIRO DBUS GFILE GIF GSETTINGS GTK2 GTK3 \
 				PGTK PNG SCROLLBARS SVG TIFF WEBP XAW XAW3D XFT \
 				XIM XPM XWIDGETS
 .endif
+OPTIONS_EXCLUDE_armv7=		NATIVECOMP
 OPTIONS_SUB=			YES
 
 ACL_DESC=		Access control list support
@@ -164,8 +162,6 @@ HARFBUZZ_LIB_DEPENDS=		libharfbuzz.so:print/harfbuzz
 HARFBUZZ_CONFIGURE_WITH=	harfbuzz
 JPEG_USES=			jpeg
 JPEG_CONFIGURE_WITH=		jpeg
-JSON_LIB_DEPENDS=		libjansson.so:devel/jansson
-JSON_CONFIGURE_WITH=		json
 KQUEUE_CONFIGURE_ON=		--with-file-notification=kqueue
 LCMS2_LIB_DEPENDS=		liblcms2.so:graphics/lcms2
 LCMS2_CONFIGURE_WITH=		lcms2
@@ -175,7 +171,7 @@ M17N_LIB_DEPENDS=		libm17n.so:devel/m17n-lib
 M17N_CONFIGURE_WITH=		m17n-flt
 MAGICK_USES=			magick:7
 MAGICK_CONFIGURE_WITH=		imagemagick
-MAILUTILS_LIB_DEPENDS=		libmailutils.so:mail/mailutils
+MAILUTILS_RUN_DEPENDS=		mailutils:mail/mailutils
 MAILUTILS_CONFIGURE_WITH=	mailutils
 MAILUTILS_CONFIGURE_ENV_OFF=	ac_cv_lib_lockfile_maillock=no \
 				ac_cv_prog_liblockfile=no
@@ -191,7 +187,7 @@ PGTK_IMPLIES=			CAIRO GTK3 SCROLLBARS
 PGTK_PREVENTS=			M17N XFT XPM
 PGTK_CATEGORIES=		wayland
 PGTK_CONFIGURE_WITH=		pgtk
-PNG_LIB_DEPENDS=		libpng.so:graphics/png
+PNG_LIB_DEPENDS=		libpng16.so:graphics/png
 PNG_CONFIGURE_WITH=		png
 SCROLLBARS_CONFIGURE_WITH=	toolkit-scroll-bars
 SQLITE3_USES=			sqlite:3
@@ -205,9 +201,9 @@ TIFF_CONFIGURE_WITH=		tiff
 TREESITTER_IMPLIES=		MODULES
 TREESITTER_LIB_DEPENDS=		libtree-sitter.so:devel/tree-sitter
 TREESITTER_CONFIGURE_WITH=	tree-sitter
-WEBP_LIB_DEPENDS=		libwebp.so:graphics/webp
+WEBP_LIB_DEPENDS=		libwebpdemux.so:graphics/webp
 WEBP_CONFIGURE_WITH=		webp
-XAW3D_LIB_DEPENDS=		libXaw3d.so:x11-toolkits/Xaw3d
+XAW3D_LIB_DEPENDS=		libXaw3d.so:x11-toolkits/libXaw3d
 XAW3D_CONFIGURE_ON=		--with-x-toolkit=athena
 XAW_USE=			XORG=xaw
 XAW_CONFIGURE_ON=		--with-x-toolkit=athena \
@@ -225,15 +221,11 @@ XPM_USE=			XORG=xpm
 XPM_CONFIGURE_WITH=		xpm
 XWIDGETS_IMPLIES=		GTK3
 XWIDGETS_LIB_DEPENDS=		libsoup-2.4.so:devel/libsoup \
-				libwebkit2gtk-4.0.so:www/webkit2-gtk3
+				libwebkit2gtk-4.0.so:www/webkit2-gtk@40
 XWIDGETS_USE=			XORG=xcomposite
 XWIDGETS_CONFIGURE_WITH=	xwidgets
 
 .include <bsd.port.options.mk>
-
-.if ${ARCH:Mpowerpc64*}
-USE_GCC=	yes
-.endif
 
 .if ${PORT_OPTIONS:MNATIVECOMP}
 NATIVECOMP_COMMENT_END=

@@ -43,6 +43,7 @@
     SUBDIR += epson-inkjet-printer-escpr
     SUBDIR += epson-inkjet-printer-escpr2
     SUBDIR += epsonepl
+    SUBDIR += extractpdfmark
     SUBDIR += fig2dev
     SUBDIR += flpsed
     SUBDIR += font-amsfonts
@@ -129,7 +130,6 @@
     SUBDIR += p5-XML-ApacheFOP
     SUBDIR += p5-XML-Handler-AxPoint
     SUBDIR += p910nd
-    SUBDIR += panda
     SUBDIR += papersize-default-a4
     SUBDIR += papersize-default-letter
     SUBDIR += paps
@@ -160,7 +160,6 @@
     SUBDIR += plasma6-print-manager
     SUBDIR += pnm2ppa
     SUBDIR += posterazor
-    SUBDIR += print-manager
     SUBDIR += ps2eps
     SUBDIR += pscal
     SUBDIR += psdim
@@ -187,14 +186,13 @@
     SUBDIR += py-pycups
     SUBDIR += py-pydyf
     SUBDIR += py-pypdf
-    SUBDIR += py-pypdf2
-    SUBDIR += py-pypdf3
     SUBDIR += py-python-ly
     SUBDIR += py-relatorio
     SUBDIR += py-reportlab
     SUBDIR += py-rtf
     SUBDIR += py-ttfautohint-py
     SUBDIR += py-ufolib2
+    SUBDIR += py-ufomerge
     SUBDIR += py-uharfbuzz
     SUBDIR += py-vharfbuzz
     SUBDIR += py-weasyprint
@@ -205,6 +203,7 @@
     SUBDIR += rlpr
     SUBDIR += rtf2latex2e
     SUBDIR += rubygem-afm
+    SUBDIR += rubygem-afm0
     SUBDIR += rubygem-color
     SUBDIR += rubygem-color-tools
     SUBDIR += rubygem-color_diff
@@ -218,8 +217,10 @@
     SUBDIR += rubygem-prawn-format
     SUBDIR += rubygem-prawn-graph
     SUBDIR += rubygem-prawn-icon
+    SUBDIR += rubygem-prawn-icon3
     SUBDIR += rubygem-prawn-js
     SUBDIR += rubygem-prawn-layout
+    SUBDIR += rubygem-prawn-rails
     SUBDIR += rubygem-prawn-security
     SUBDIR += rubygem-prawn-svg
     SUBDIR += rubygem-prawn-table

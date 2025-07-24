@@ -4,6 +4,7 @@ PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
 COMMENT=	Python module for libdnet
 
+BUILD_DEPENDS=	${PY_SETUPTOOLS}
 LIB_DEPENDS=	libdnet.so:net/libdnet
 
 USES=		autoreconf libtool localbase:ldflags python
@@ -12,7 +13,7 @@ MASTERDIR=	${.CURDIR}/../libdnet
 INSTALL_WRKSRC=	${WRKSRC}/python
 DESCR=		${.CURDIR}/pkg-descr
 PLIST=		${NONEXISTENT}
-PLIST_FILES=	${PYTHON_SITELIBDIR}/dnet%%PYTHON_EXT_SUFFIX%%.so \
+PLIST_FILES=	${PYTHON_SITELIBDIR}/dnet${PYTHON_TAG}.so \
 		${PYTHON_SITELIBDIR}/dnet-${PORTVERSION}-py${PYTHON_VER}.egg-info/PKG-INFO \
 		${PYTHON_SITELIBDIR}/dnet-${PORTVERSION}-py${PYTHON_VER}.egg-info/SOURCES.txt \
 		${PYTHON_SITELIBDIR}/dnet-${PORTVERSION}-py${PYTHON_VER}.egg-info/dependency_links.txt \
@@ -30,7 +31,7 @@ regression-test: install
 
 .include <bsd.port.options.mk>
 
-.if ${OPSYS} == FreeBSD && ( ${OSVERSION} >= 1400091 || ( ${OSVERSION} >= 1302507 && ${OSVERSION} < 1400000 ))
+.if ${OPSYS} == FreeBSD
 CFLAGS+=	-Wno-error=incompatible-function-pointer-types
 .endif
 

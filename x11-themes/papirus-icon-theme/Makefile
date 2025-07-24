@@ -1,5 +1,5 @@
 PORTNAME=	papirus-icon-theme
-PORTVERSION=	20240501
+PORTVERSION=	20250501
 CATEGORIES=	x11-themes
 
 MAINTAINER=	tagattie@FreeBSD.org
@@ -17,16 +17,16 @@ GH_ACCOUNT=	PapirusDevelopmentTeam
 NO_ARCH=	yes
 NO_BUILD=	yes
 
-PORTDOCS=	AUTHORS README.md
+PORTDOCS=	AUTHORS CHANGELOG.md README.md
 
 OPTIONS_DEFINE=	DOCS
 
 post-install:
-	cd ${STAGEDIR}${PREFIX} && \
+	@cd ${STAGEDIR}${PREFIX} && \
 		${FIND} share/icons -type f -o -type l >> ${TMPPLIST}
 
 post-install-DOCS-on:
-	${MKDIR} ${STAGEDIR}${DOCSDIR}
+	@${MKDIR} ${STAGEDIR}${DOCSDIR}
 	${INSTALL_MAN} ${PORTDOCS:S|^|${WRKSRC}/|} ${STAGEDIR}${DOCSDIR}
 
 .include <bsd.port.mk>

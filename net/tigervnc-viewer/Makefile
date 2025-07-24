@@ -1,5 +1,5 @@
 PKGNAMESUFFIX=	-viewer
-PORTREVISION=	2
+PORTREVISION=	1
 CATEGORIES=	net
 
 COMMENT=	TigerVNC Viewer
@@ -9,10 +9,10 @@ USES+=		gnome iconv jpeg magick:7,build xorg
 USE_XORG+=	ice pixman sm x11 xcursor xext xfixes xft xi xinerama xrender xrandr
 
 LIB_DEPENDS+=	libfontconfig.so:x11-fonts/fontconfig \
-		libpng.so:graphics/png \
 		libfltk.so:x11-toolkits/fltk \
 		libnettle.so:security/nettle \
-		libgmp.so:math/gmp
+	 	libgmp.so:math/gmp \
+		libavcodec.so:multimedia/ffmpeg
 
 OPTIONS_DEFINE=	DOCS GNUTLS NLS
 OPTIONS_DEFAULT=	GNUTLS
@@ -20,10 +20,7 @@ OPTIONS_SUB=	yes
 NLS_CMAKE_BOOL=	ENABLE_NLS
 NLS_USES=	gettext
 GNUTLS_CMAKE_BOOL=	ENABLE_GNUTLS
-GNUTLS_LIB_DEPENDS=	libtasn1.so:security/libtasn1 \
-			libgcrypt.so:security/libgcrypt \
-			libgpg-error.so:security/libgpg-error \
-			libgnutls.so:security/gnutls
+GNUTLS_LIB_DEPENDS=	libgnutls.so:security/gnutls
 
 DESKTOP_ENTRIES=	"TigerVNC viewer" "Connect to VNC server and display remote desktop" \
 				"${PORTNAME}" "vncviewer" "Network;" false
@@ -37,4 +34,5 @@ post-patch:
 		${WRKSRC}/CMakeLists.txt
 
 MASTERDIR=	${.CURDIR}/../tigervnc-server
+
 .include "${MASTERDIR}/Makefile.common.mk"

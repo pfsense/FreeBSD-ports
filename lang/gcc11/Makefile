@@ -1,6 +1,5 @@
 PORTNAME=	gcc
-PORTVERSION=	11.4.0
-PORTREVISION=	1
+PORTVERSION=	11.5.0
 CATEGORIES=	lang
 MASTER_SITES=	GCC
 PKGNAMESUFFIX=	${SUFFIX}
@@ -13,6 +12,8 @@ LICENSE=	GPLv3 GPLv3RLE
 LICENSE_COMB=	multi
 
 ONLY_FOR_ARCHS=	aarch64 amd64 armv6 armv7 i386 powerpc powerpc64 powerpc64le riscv64
+DEPRECATED=	End-of-life upstream since mid 2024, newer versions available
+EXPIRATION_DATE=2025-07-19
 
 LIB_DEPENDS=	libgmp.so:math/gmp \
 		libmpfr.so:math/mpfr \
@@ -106,6 +107,7 @@ INSTALL_TARGET=	install-strip
 BINMODE=	755
 .endif
 CONFIGURE_ARGS+=--disable-nls \
+		--disable-libssp \
 		--enable-gnu-indirect-function \
 		--enable-host-shared \
 		--enable-plugin \
@@ -147,6 +149,10 @@ CONFIGURE_ARGS+=--with-isl=${LOCALBASE}
 .endif
 
 CONFIGURE_ARGS+=--enable-languages=${LANGUAGES}
+
+.if (${ARCH} == amd64 || ${ARCH} == powerpc64) && ${PORT_OPTIONS:MMULTILIB}
+USE_LDCONFIG32=	${TARGLIB32}/gcc${SUFFIX}
+.endif
 
 pre-everything::
 	@${ECHO_MSG} "Making GCC ${PORTVERSION} for ${CONFIGURE_TARGET} [${LANGUAGES}]"

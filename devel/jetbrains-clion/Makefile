@@ -1,12 +1,13 @@
 PORTNAME=	clion
-PORTVERSION=	2024.1.4
+DISTVERSION=	2024.3.5
+PORTREVISION=	1
 CATEGORIES=	devel
 MASTER_SITES=	https://download-cdn.jetbrains.com/cpp/ \
-		https://packages.jetbrains.team/files/p/clion/ports/2024.1.1/freebsd/clang/:clang
+		https://packages.jetbrains.team/files/p/clion/ports/2024.3/freebsd/clang/:clang
 PKGNAMEPREFIX=	jetbrains-
 DISTFILES=	CLion-${PORTVERSION}.tar.gz
-DISTFILES_aarch64=	clang-clion2024.1.1-freebsd-aarch64.tar.gz:clang
-DISTFILES_amd64=	clang-clion2024.1.1-freebsd-x86_64.tar.gz:clang
+DISTFILES_aarch64=	clang-clion2024.3-freebsd-aarch64.tar.gz:clang
+DISTFILES_amd64=	clang-clion2024.3-freebsd-x86_64.tar.gz:clang
 DIST_SUBDIR=	jetbrains
 
 .if make(makesum)
@@ -30,21 +31,23 @@ ONLY_FOR_ARCHS=	aarch64 amd64
 BUILD_DEPENDS=	jna>0:devel/jna
 RUN_DEPENDS=	cmake:devel/cmake-core \
 		intellij-fsnotifier>0:java/intellij-fsnotifier \
-		jetbrains-pty4j>=0.12.25:devel/jetbrains-pty4j \
+		jetbrains-pty4j>=0.13.2:devel/jetbrains-pty4j \
 		jetbrains-restarter>=241.15989.150:devel/jetbrains-restarter \
 		jetbrains-sqlite>=241.15989.150:devel/jetbrains-sqlite \
 		lsof:sysutils/lsof \
 		ninja:devel/ninja
 
-USES=		cpe python:run shebangfix
+USES=		cpe java python:run shebangfix
 
 CPE_VENDOR=	jetbrains
-USE_JAVA=	yes
-JAVA_VERSION=	17+
+JAVA_VERSION=	21+
 
 SHEBANG_FILES=	plugins/python-ce/helpers/typeshed/scripts/generate_proto_stubs.sh
 
 DATADIR=	${PREFIX}/share/jetbrains/${PORTNAME}
+
+EXTRACT_AFTER_ARGS+=	--exclude clion-*/jbr
+
 NO_BUILD=	yes
 SUB_FILES=	${PORTNAME} ${PORTNAME}.desktop pkg-message
 SUB_LIST=	JAVA_HOME=${JAVA_HOME}
@@ -64,6 +67,7 @@ do-install:
 # Linux/Windows/OS X only so remove them
 	@${RM} -r \
 		${WRKSRC}/bin/clang/linux \
+		${WRKSRC}/bin/clion \
 		${WRKSRC}/bin/cmake/linux \
 		${WRKSRC}/bin/fsnotifier \
 		${WRKSRC}/bin/gdb/linux \
@@ -73,18 +77,14 @@ do-install:
 		${WRKSRC}/bin/remote-dev-server.sh \
 		${WRKSRC}/bin/repair \
 		${WRKSRC}/bin/restarter \
-		${WRKSRC}/jbr \
 		${WRKSRC}/lib/async-profiler \
 		${WRKSRC}/lib/jna \
 		${WRKSRC}/lib/native \
 		${WRKSRC}/lib/pty4j \
+		${WRKSRC}/plugins/cidr-completionMlRanking-plugin \
+		${WRKSRC}/plugins/clion-cwm-plugin \
 		${WRKSRC}/plugins/clion-radler \
-		${WRKSRC}/plugins/clouds-docker-gateway \
-		${WRKSRC}/plugins/clouds-docker-impl \
-		${WRKSRC}/plugins/cwm-plugin \
-		${WRKSRC}/plugins/gateway-plugin \
-		${WRKSRC}/plugins/gateway-terminal \
-		${WRKSRC}/plugins/python-ce \
+		${WRKSRC}/plugins/gateway-plugin/lib/remote-dev-workers \
 		${WRKSRC}/plugins/remote-dev-server
 	${MKDIR} ${STAGEDIR}${DATADIR}
 	@(cd ${WRKSRC} && ${COPYTREE_SHARE} . ${STAGEDIR}${DATADIR} \
@@ -109,15 +109,18 @@ do-install:
 # Use sqlite replacement provided by devel/jetbrains-sqlite
 	${MKDIR} ${STAGEDIR}${DATADIR}/lib/native/${_SQLITE_ARCH}
 	${LN} -sf ../../../../sqlite/${ARCH}/libsqliteij.so ${STAGEDIR}${DATADIR}/lib/native/${_SQLITE_ARCH}/libsqliteij.so
+# Disable automatic updates
+	${ECHO} "ide.no.platform.update=FreeBSD Ports" >> ${STAGEDIR}${DATADIR}/bin/idea.properties
 # Install FreeBSD native clang
-	${MKDIR} ${STAGEDIR}${DATADIR}/bin/clang/${_CLANG_ARCH}/
+	${MKDIR} ${STAGEDIR}${DATADIR}/bin/clang/${_CLANG_ARCH}/bin
 	${INSTALL_PROGRAM} \
-			${WRKDIR}/clang-tidy \
-			${WRKDIR}/clangd \
-			${WRKDIR}/clazy-standalone \
-			${WRKDIR}/llvm-symbolizer \
-		${STAGEDIR}${DATADIR}/bin/clang/${_CLANG_ARCH}/
-	${INSTALL_LIB} ${WRKDIR}/libclazyPlugin.so ${STAGEDIR}${DATADIR}/bin/clang/${_CLANG_ARCH}/
-	${CP} -Rp ${WRKDIR}/include ${STAGEDIR}${DATADIR}/bin/clang/${_CLANG_ARCH}/
+			${WRKDIR}/bin/clang-format \
+			${WRKDIR}/bin/clang-tidy \
+			${WRKDIR}/bin/clangd \
+			${WRKDIR}/bin/clazy-standalone \
+			${WRKDIR}/bin/llvm-symbolizer \
+		${STAGEDIR}${DATADIR}/bin/clang/${_CLANG_ARCH}/bin/
+	${MKDIR} ${STAGEDIR}${DATADIR}/bin/clang/${_CLANG_ARCH}/lib
+	${INSTALL_LIB} ${WRKDIR}/lib/libclazyPlugin.so ${STAGEDIR}${DATADIR}/bin/clang/${_CLANG_ARCH}/lib/
 
 .include <bsd.port.mk>

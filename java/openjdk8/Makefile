@@ -1,5 +1,6 @@
 PORTNAME=	openjdk
 PORTVERSION=	${JDK_MAJOR_VERSION}.${JDK_UPDATE_VERSION}.${JDK_BUILD_NUMBER}.${BSD_JDK_VERSION}
+PORTREVISION=	1
 CATEGORIES=	java devel
 MASTER_SITES=	LOCAL/jkim:jtreg
 PKGNAMESUFFIX?=	${JDK_MAJOR_VERSION}
@@ -31,6 +32,7 @@ GH_ACCOUNT=	battleblow
 GH_PROJECT=	jdk8u
 GH_TAGNAME=	jdk${JDK_MAJOR_VERSION}u${JDK_UPDATE_VERSION}-b${JDK_BUILD_NUMBER}.${BSD_JDK_VERSION}
 
+USE_LDCONFIG=	${INSTALLDIR}/lib/${ARCH}
 _MAKE_JOBS=	#
 CPPFLAGS+=	-I${LOCALBASE}/include
 LDFLAGS+=	-L${LOCALBASE}/lib
@@ -45,15 +47,15 @@ JRE_IMAGEDIR=	${JDK_BUILDDIR}/images/j2sdk-image/jre
 .else
 JRE_IMAGEDIR=	${JDK_BUILDDIR}/images/j2re-image
 .endif
-JDK_JVMDIR=	lib/${ARCH:C/armv.*/arm/:S/powerpc64/ppc64/}
-JDK_OSARCH=	bsd-${ARCH:S/amd64/x86_64/:C/armv.*/arm/:S/i386/x86/:S/powerpc64/ppc64/}
+JDK_JVMDIR=	lib/${ARCH:C/armv.*/arm/:S/powerpc/ppc/}
+JDK_OSARCH=	bsd-${ARCH:S/amd64/x86_64/:C/armv.*/arm/:S/i386/x86/:S/powerpc/ppc/}
 INSTALLDIR=	${PREFIX}/${PKGBASE}
 
 NOPRECIOUSMAKEVARS=	yes
 
 JDK_MAJOR_VERSION=	8
-JDK_UPDATE_VERSION=	412
-JDK_BUILD_NUMBER=	08
+JDK_UPDATE_VERSION=	452
+JDK_BUILD_NUMBER=	09
 BSD_JDK_VERSION=	1
 JTREG_VERSION=		4.1
 JTREG_BUILD_NUMBER=	b08
@@ -181,7 +183,7 @@ BOOTSTRAPJDKDIR?=	${LOCALBASE}/bootstrap-openjdk8
 BUILD_DEPENDS+=		${BOOTSTRAPJDKDIR}/bin/javac:java/bootstrap-openjdk8
 .endif
 
-.if ${ARCH} == armv6 || ${ARCH} == armv7 || ${ARCH} == i386
+.if ${ARCH} == armv6 || ${ARCH} == armv7 || ${ARCH} == i386 || ${ARCH} == powerpc
 # XXX We must limit max heap size for 32-bit targets.
 CONFIGURE_ARGS+=	--with-boot-jdk-jvmargs="-Xmx768m"
 MAKE_ENV+=	JAVADOC_CMD_MEM="-Xmx768m"
@@ -202,25 +204,13 @@ LIB_DEPENDS+=	libffi.so:devel/libffi
 .endif
 
 .if ${COMPILER_TYPE} == clang
-MAKE_ENV+=	COMPILER_WARNINGS_FATAL=false USE_CLANG=true
+MAKE_ENV+=	USE_CLANG=true
 CONFIGURE_ENV+=	LIBCXX="-lc++"
-.if ${COMPILER_VERSION} >= 130 && ${ARCH} == aarch64
-# PR258954: see <https://bugs.openjdk.org/browse/JDK-8247766>. Even though the
-# upstream fix has been applied to this version of the JDK, users still report
-# the assertion "guarantee(val < (1U << nbits)) failed: Field too big for insn"
-# occurring, when it is built with recent versions of clang.
-LLVM_VER=	12
-BUILD_DEPENDS+=	clang${LLVM_VER}:devel/llvm${LLVM_VER}
-CC=		${LOCALBASE}/bin/clang${LLVM_VER}
-CXX=		${LOCALBASE}/bin/clang++${LLVM_VER}
-.endif
-.if ${COMPILER_VERSION} >= 160
 # clang 16 defaults to C++17, which no longer allows the 'register' keyword.
 # There is an upstream commit that removes all the individual 'register'
 # keywords, but it has not yet been backported to OpenJDK 8.
 # NOTE: passing this option via --with-extra-cflags does not work.
 CFLAGS+=		-Dregister=
-.endif
 .endif
 
 # GCC is broken with PCH: https://lists.freebsd.org/pipermail/svn-src-all/2015-March/101722.html

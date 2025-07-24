@@ -52,7 +52,7 @@ $portdir = '.';
 # version variables
 my $major = 2;
 my $minor = 22;
-my $micro = 1;
+my $micro = 8;
 
 # default setting - for FreeBSD
 my $portsdir = '/usr/ports';
@@ -171,7 +171,7 @@ my @varlist =  qw(
 	ALLFILES CHECKSUM_ALGORITHMS INSTALLS_ICONS GNU_CONFIGURE
 	CONFIGURE_ARGS MASTER_SITE_SUBDIR LICENSE LICENSE_COMB NO_STAGE
 	DEVELOPER SUB_FILES SHEBANG_LANG MASTER_SITES_SUBDIRS FLAVORS
-	USE_PYTHON LICENSE_PERMS USE_PYQT USE_GITHUB USE_GITLAB
+	USE_PYTHON LICENSE_PERMS USE_PYQT USE_GITHUB USE_GITLAB PREFIX
 );
 
 my %makevar;
@@ -364,6 +364,9 @@ if ($committer) {
 				"git files before committing the port.");
 
 			$File::Find::prune = 1;
+		} elsif (-f && -x) {
+			&perror("WARN", $fullname, -1, "this file is executable and likely ".
+				"does not need to be.");
 		} elsif (-f) {
 			my $fullpath = $makevar{'.CURDIR'}.'/'.$fullname;
 			my $result = `type git >/dev/null 2>&1 && git status --porcelain $fullpath`;
@@ -559,6 +562,7 @@ sub checkplist {
 	my $owner_seen = 0;
 	my $group_seen = 0;
 	my $found_so = 0;
+	my $found_prefix_so = 0;
 
 	# Variables that are allowed to be out-of-sync in the XXXDIR check.
 	# E.g., %%PORTDOCS%%%%RUBY_MODDOCDIR%% will be OK because there is
@@ -774,6 +778,8 @@ sub checkplist {
 			$makevar{USE_LDCONFIG} eq '') {
 			&perror("WARN", $file, $., "installing shared libraries, ".
 				"please define USE_LDCONFIG as appropriate");
+		} elsif ($_ =~ m|^lib/lib[^\/]+\.so[.\d]*$|) {
+			$found_prefix_so++;
 		} elsif ($_ =~ m|lib[^\/]+\.so[.\d]*$|) {
 			$found_so++;
 		}
@@ -908,9 +914,14 @@ sub checkplist {
 		&perror("WARN", $file, -1, "There are only $item_count items in the plist.  Consider using PLIST_FILES instead of pkg-plist when installing less than $numpitems items.");
 	}
 
-	if ($makevar{USE_LDCONFIG} ne '' && !$found_so) {
-		&perror("WARN", $file, -1, "You have defined USE_LDCONFIG, but this ".
-			"port does not install any shared objects.");
+	if ($makevar{USE_LDCONFIG}) {
+		if ($makevar{USE_LDCONFIG} && $makevar{USE_LDCONFIG} ne "$makevar{PREFIX}/lib" && !$found_so) {
+			&perror("WARN", $file, -1, "You have defined USE_LDCONFIG, but this ".
+				"port does not install any shared objects.");
+		} elsif ($makevar{USE_LDCONFIG} eq "$makevar{PREFIX}/lib" && !$found_prefix_so) {
+			&perror("WARN", $file, -1, "You have defined USE_LDCONFIG, but this ".
+				"port does not install any shared objects into \${PREFIX}/lib.");
+		}
 	}
 
 	close(IN);
@@ -2357,10 +2368,10 @@ xargs xmkmf
 	# whole file: USE_KDE check
 	#
 	if ($whole =~ /^USE_KDE[?:]?=\s*(.*)$/m) {
-		if ($makevar{USES} !~ /\bkde:[45]/) {
+		if ($makevar{USES} !~ /\bkde:[56]/) {
 			my $lineno = &linenumber($`);
 			&perror("WARN", $file, $lineno, "USE_KDE is defined without ".
-				"defining USES=kde:[45]");
+				"defining USES=kde:[56]");
 		}
 	}
 
@@ -2378,27 +2389,27 @@ xargs xmkmf
 	if ($whole =~ /^USE_GCC[?:]?=\s*([^\s#]*).*$/m) {
 		my $lineno = &linenumber($`);
 		my $gcc_val = $1;
-		if ($gcc_val eq 'any' || $gcc_val eq 'yes') {
-			# Just accept these two.
+		if ($gcc_val eq 'yes') {
+			# Just accept this one.
 		} elsif ($gcc_val !~ /\+/) {
 			&perror("WARN", $file, $lineno, "Setting a specific version for ".
 				"USE_GCC should only be done as a last resort.  Unless you ".
-				"have confirmed this port does not build with later ".
-				"versions of GCC, please use USE_GCC=$gcc_val+.");
+				"are unable to get this port to build with current ".
+				"versions of GCC, please use USE_GCC=yes.");
 		}
 	}
 
 	#
 	# whole file: USE_JAVA check
 	#
-	if ($whole =~ /^USE_JAVA[?:]?=\s*(.*)$/m) {
+	if ($makevar{USES} =~ /\bjava(:(build|run))?\b/) {
 		$use_java = 1;
 	}
 
 	#
 	# whole file: USE_ANT check
 	#
-	if ($whole =~ /^USE_ANT[?:]?=\s*(.*)$/m) {
+	if ($makevar{USES} =~ /\bjava:ant/) {
 		$use_ant = 1;
 	}
 
@@ -2418,7 +2429,7 @@ xargs xmkmf
 	# whole file: check for USE_ANT and USES=gmake both defined
 	#
 	if ($use_ant && $makevar{USES} =~ /\bgmake\b/) {
-		&perror("WARN", $file, -1, "a port shall not define both USE_ANT ".
+		&perror("WARN", $file, -1, "a port shall not define both USES=java:ant ".
 			"and USES[+]=gmake");
 	}
 
@@ -2603,7 +2614,8 @@ xargs xmkmf
 		if (! -e "$masterdir/Makefile") {
 			&perror("WARN", "", -1, "unable to locate master port in $masterdir");
 		}
-		if ($whole !~ /^MASTERDIR=\s*\$\{\.CURDIR\}(?:\/\.\.){1,2}(?:\/[\w\@.+-]+){1,2}\s*$/m) {
+		if ($whole !~ /^MASTERDIR=\s*\$\{\.CURDIR\}(?:\/\.\.){1,2}(?:\/[\w\@.+-]+){1,2}\s*$/m &&
+			$whole !~ /^MASTERDIR=\s*\$\{\.CURDIR(:H){1,2}\}(?:\/[\w\@.+-]+){1,2}\s*$/m) {
 			&perror("WARN", $file, -1, "slave ports must define MASTERDIR=".
 				'${.CURDIR}/..(/../<category>)/<port>');
 		}
@@ -3121,7 +3133,7 @@ DIST_SUBDIR EXTRACT_ONLY
 	#
 	print "OK: checking second section of $file (PATCH*: optional).\n"
 		if ($verbose);
-	$tmp = $sections[$idx] // '';
+	$tmp = "\n" . $sections[$idx] // '';
 
 	if ($tmp =~ /(PATCH_SITES|PATCH_SITE_SUBDIR|PATCHFILES|PATCH_DIST_STRIP)/) {
 		&checkearlier($file, $tmp, @varnames);
@@ -3315,21 +3327,22 @@ NOT_FOR_ARCHS NOT_FOR_ARCHS_REASON(_\w+)? LEGAL_TEXT
 
 	if ($tmp =~ /$brokenpattern/) {
 		$idx++;
-	}
+		$tmp = "\n" . $tmp;
 
-	foreach my $i (@linestocheck) {
-		$tmp =~ s/$i[?+:]?=[^\n]+\n//g;
-	}
+		foreach my $i (@linestocheck) {
+			$tmp =~ s/$i[?+:]?=[^\n]+\n//g;
+		}
 
-	push(@varnames, @linestocheck);
-	&checkearlier($file, $tmp, @varnames);
+		push(@varnames, @linestocheck);
+		&checkearlier($file, $tmp, @varnames);
+	}
 
 	#
 	# section 7: *_DEPENDS (may not be there)
 	#
 	print "OK: checking seventh section of $file (*_DEPENDS).\n"
 		if ($verbose);
-	$tmp = $sections[$idx] // '';
+	$tmp = "\n" . $sections[$idx] // '';
 
 	# Check for direct assignment of BUILD_DEPENDS to RUN_DEPENDS.
 	if ($tmp =~ /\nRUN_DEPENDS=[ \t]*\$\{BUILD_DEPENDS}/) {
@@ -3372,7 +3385,7 @@ TEST_DEPENDS FETCH_DEPENDS DEPENDS_TARGET
 	#
 	print "OK: check eighth section of $file (FLAVORS: optional).\n"
 		if ($verbose);
-	$tmp = $sections[$idx] // '';
+	$tmp = "\n" . $sections[$idx] // '';
 
 	if ($tmp =~ /(FLAVORS|FLAVOR)/) {
 		&checkearlier($file, $tmp, @varnames);
@@ -3439,7 +3452,7 @@ TEST_DEPENDS FETCH_DEPENDS DEPENDS_TARGET
 	# Makefile 10: check the rest of file
 	#
 	print "OK: checking the rest of the $file.\n" if ($verbose);
-	$tmp = join("\n\n", @sections[$idx .. scalar(@sections)-1]);
+	$tmp = join("\n\n", @sections[$idx+1 .. scalar(@sections)-1]);
 
 	$tmp = "\n" . $tmp;	# to make the begin-of-line check easier
 

@@ -5,13 +5,20 @@ An application shortcut for the desktop will be not created by the port.
 
 To open the main gui type: Mizuma
 
-For quick commandline tasks you can use the following examples:
+The following commandline tasks are currently available:
 
-    To install something use: 		Mizuma Install Steam
-    To launch something use: 		Mizuma Launch Steam
-    To uninstall something use: 	Mizuma Uninstall Steam
+Mizuma Install $APPNAME
+Mizuma Launch $APPNAME
+Mizuma Uninstall $APPNAME
+Mizuma Kill $APPNAME
+Mizuma Winetricks $APPNAME
+Mizuma List Library
+Mizuma List Installed
 
-Enjoy playing!
+For further possibly helpful information take a look at:
+https://codeberg.org/Alexander88207/Mizutamari
+
+Enjoy!
 EOM
 }
 ]

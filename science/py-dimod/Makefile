@@ -1,5 +1,5 @@
 PORTNAME=	dimod
-DISTVERSION=	0.12.15
+DISTVERSION=	0.12.20
 CATEGORIES=	science python
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
@@ -16,7 +16,7 @@ TEST_DEPENDS=	${PYTHON_PKGNAMEPREFIX}parameterized>0:devel/py-parameterized@${PY
 		${PYTHON_PKGNAMEPREFIX}mypy>0:devel/py-mypy@${PY_FLAVOR}
 
 USES=		compiler:c++11-lang python
-USE_PYTHON=	distutils cython autoplist unittest
+USE_PYTHON=	autoplist cython3 distutils unittest
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	dwavesystems
@@ -25,6 +25,8 @@ TEST_ENV=	${MAKE_ENV} PYTHONPATH=${STAGEDIR}${PYTHONPREFIX_SITELIBDIR}
 TEST_WRKSRC=	${WRKSRC}/tests
 
 post-install:
-	@${FIND} ${STAGEDIR}${PYTHON_SITELIBDIR}/${PORTNAME} -name "*${PYTHON_EXT_SUFFIX}.so" | ${XARGS} ${STRIP_CMD}
+	@${FIND} ${STAGEDIR}${PYTHON_SITELIBDIR}/${PORTNAME} -name "*${PYTHON_TAG}.so" | ${XARGS} ${STRIP_CMD}
+
+# tests as of 0.12.20: Ran 2913 tests in 34.742s
 
 .include <bsd.port.mk>

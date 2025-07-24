@@ -1,7 +1,7 @@
 PORTNAME=	coyim
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.3.11
-PORTREVISION=	26
+DISTVERSION=	0.4.1
+PORTREVISION=	2
 CATEGORIES=	net-im
 
 MAINTAINER=	fox@FreeBSD.org
@@ -15,7 +15,7 @@ LIB_DEPENDS=	libfontconfig.so:x11-fonts/fontconfig \
 		libfreetype.so:print/freetype2
 
 USES=		gnome go pkgconfig
-USE_GNOME=	atk cairo gdkpixbuf2 glib20 gtk30 pango
+USE_GNOME=	atk cairo gdkpixbuf glib20 gtk30 pango
 USE_GITHUB=	yes
 GH_SUBDIR=	src/github.com/${GH_ACCOUNT}/${PORTNAME}
 
@@ -37,11 +37,12 @@ GTK_VERSION=	"$$(pkg-config --modversion gtk+-3.0 | ${TR} . _ | cut -d '_' -f 1-
 GTK_BUILD_TAG=	gtk_${GTK_VERSION}
 
 COYIM_ICON=	coyim.png
-COYIM_ICON_SRC=	${WRKSRC}/build/mac-bundle/coy.iconset/icon_32x32@2x.png
-COYIM_DESKTOP=	${WRKSRC}/build/coyim.desktop
+COYIM_ICON_SRC=	${WRKSRC}/build/osx/mac-bundle/coyim.iconset/icon_32x32@2x.png
+COYIM_DESKTOP=	${WRKDIR}/coyim.desktop
 
-pre-build:
-	cd ${WRKSRC} && ${SH} ./gen_version_file.sh ${DISTVERSIONPREFIX}${DISTVERSION}
+post-extract:
+	cd ${WRKSRC} && ${RM} ./windows_amd64_icon.syso
+	cp ${FILESDIR}/coyim.desktop ${WRKDIR}
 
 post-build:
 	@${REINPLACE_CMD} -e '/^#/d' \

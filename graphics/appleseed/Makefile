@@ -1,7 +1,10 @@
 PORTNAME=	appleseed
 DISTVERSION=	2.1.0-beta
-PORTREVISION=	14
+PORTREVISION=	19
 CATEGORIES=	graphics
+
+PATCH_SITES=	http://vault.101011010.xyz/distfiles/ LOCAL/danfe
+PATCHFILES=	OSL-01.13.7.patch:-p1
 
 MAINTAINER=	danfe@FreeBSD.org
 COMMENT=	Modern, physically-based production renderer
@@ -9,6 +12,8 @@ WWW=		https://appleseedhq.net/
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE.txt
+
+BROKEN=		fails to build with Boost>=1.87
 
 LIB_DEPENDS=	libboost_thread.so:devel/boost-libs \
 		liblz4.so:archivers/liblz4 \
@@ -28,9 +33,6 @@ ONLY_FOR_ARCHS_REASON=	not ported to it yet
 
 USES=		cmake compiler:c++11-lang shebangfix
 SHEBANG_FILES=	scripts/*.py
-
-CFLAGS+=	-I${LOCALBASE}/include/Imath
-CFLAGS+=	-I${LOCALBASE}/include/OpenEXR
 
 CMAKE_ARGS=	-DWITH_PYTHON2_BINDINGS:BOOL=OFF \
 		-DWITH_DOXYGEN:BOOL=OFF \
@@ -55,7 +57,7 @@ OPTIONS_DEFAULT=	PYTHON STUDIO
 OPTIONS_SUB=	yes
 
 EMBREE_DESC=	Embree intersection backend support
-EMBREE_LIB_DEPENDS=	libembree3.so:graphics/embree
+EMBREE_LIB_DEPENDS=	libembree3.so:graphics/embree3
 EMBREE_CMAKE_ON=	-DWITH_EMBREE:BOOL=ON
 
 PYTHON_USES=	gl python:build,run
@@ -72,9 +74,9 @@ STUDIO_IMPLIES=	PYTHON
 post-patch:
 	@${RMDIR} ${WRKSRC}/sandbox/docs/api
 	@${RM} ${WRKSRC}/sandbox/share/cmake/Modules/FindOpenImageIO.cmake
-	${REINPLACE_CMD} 's,OpenEXR/Imath,Imath/Imath,' \
-                ${WRKSRC}/sandbox/share/cmake/Modules/FindImath.cmake \
-                ${WRKSRC}/src/appleseed/foundation/meta/tests/test_quaternion.cpp \
+	@${REINPLACE_CMD} -e 's,OpenEXR,Imath, ; /[ {]IMATH_HALF_LIBRARY/d' \
+		${WRKSRC}/cmake/modules/FindImath.cmake
+	@${REINPLACE_CMD} -e 's,OpenEXR/Imath,Imath/Imath,' \
                 ${WRKSRC}/src/appleseed/foundation/meta/tests/test_matrix.cpp \
                 ${WRKSRC}/src/appleseed/foundation/meta/tests/test_quaternion.cpp \
                 ${WRKSRC}/src/appleseed/foundation/meta/tests/test_vector.cpp \
@@ -85,6 +87,8 @@ post-patch:
                 ${WRKSRC}/src/appleseed/foundation/math/matrix.h \
                 ${WRKSRC}/src/appleseed/foundation/math/quaternion.h \
                 ${WRKSRC}/src/appleseed/foundation/image/color.h
+	@${REINPLACE_CMD} -e '/return Product/s,trt\.derived(),trt,' \
+		${WRKSRC}/src/thirdparty/bcd/ext/eigen/Eigen/src/Core/Transpositions.h
 
 .include <bsd.port.mk>
 

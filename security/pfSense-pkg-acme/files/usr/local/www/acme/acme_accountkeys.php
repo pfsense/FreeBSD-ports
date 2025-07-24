@@ -31,8 +31,6 @@ require_once("acme/pkg_acme_tabs.inc");
 
 $changedesc = "Services: Acme: Accountkeys";
 
-config_init_path('installedpackages/acme/accountkeys/item');
-
 if ($_POST) {
 	$pconfig = $_POST;
 
@@ -82,7 +80,7 @@ if ($_POST) {
 			foreach($_POST['rule'] as $selection) {
 				$selected[] = get_accountkey_id($selection);
 			}
-			$a_accountkeys = config_get_path('installedpackages/acme/accountkeys/item');
+			$a_accountkeys = config_get_path('installedpackages/acme/accountkeys/item', []);
 			array_moveitemsbefore($a_accountkeys, $moveto, $selected);
 			config_set_path('installedpackages/acme/accountkeys/item', $a_accountkeys);
 		
@@ -157,6 +155,9 @@ display_top_tabs_active($acme_tab_array['acme'], "accountkeys");
 				<tbody class="user-entries">
 <?php
 		foreach (config_get_path('installedpackages/acme/accountkeys/item', []) as $accountkey) {
+			if (empty($accountkey) || !is_array($accountkey)) {
+				continue;
+			}
 			$accountname = htmlspecialchars($accountkey['name']);
 			?>
 			<tr id="fr<?=$accountname;?>" <?=$display?> onClick="fr_toggle('<?=$accountname;?>')" ondblclick="document.location='acme_accountkeys_edit.php?id=<?=$accountname;?>';">

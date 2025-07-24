@@ -1,6 +1,5 @@
 PORTNAME=	mpich
-DISTVERSION=	4.2.1
-PORTREVISION=	1
+DISTVERSION=	4.3.1
 CATEGORIES=	net parallel
 MASTER_SITES=	https://www.mpich.org/static/downloads/${DISTVERSION}/
 
@@ -16,50 +15,13 @@ LICENSE_PERMS=	dist-mirror dist-sell pkg-mirror pkg-sell auto-accept
 LIB_DEPENDS=	libhwloc.so:devel/hwloc2	\
 		libjson-c.so:devel/json-c	\
 		libfabric.so:net/libfabric	\
-		libslurm.so:sysutils/slurm-wlm	\
 		libepoll-shim.so:devel/libepoll-shim
 
-CONFLICTS=	mpd
-GNU_CONFIGURE=	yes
-INSTALL_TARGET=	install-strip
 USES=		compiler:c11 libtool localbase perl5 pkgconfig python:build
 USE_LDCONFIG=	yes
-TEST_TARGET=	check
 
-BINARY_ALIAS=	python3=${PYTHON_CMD}
-
-OPTIONS_DEFINE=		DOCS FORTRAN L0
-OPTIONS_GROUP=		PM
-OPTIONS_GROUP_PM=	GFORKER HYDRA
-OPTIONS_RADIO=		DEFAULTPM
-OPTIONS_RADIO_DEFAULTPM=DGFORKER DHYDRA
-OPTIONS_DEFAULT=	FORTRAN GFORKER HYDRA DHYDRA
-OPTIONS_SUB=		yes
-
-FORTRAN_USES=			fortran
-FORTRAN_CONFIGURE_ENABLE=	fortran
-FORTRAN_CONFIGURE_ON=		\
-	MPICH_MPICC_LDFLAGS="${MPICH_LDFLAGS}" \
-	MPICH_MPICXX_LDFLAGS="${MPICH_LDFLAGS}" \
-	MPICH_MPIF77_LDFLAGS="${MPICH_LDFLAGS}" \
-	MPICH_MPIFORT_LDFLAGS="${MPICH_LDFLAGS}"
-MPICH_LDFLAGS=	-Wl,-rpath=${LOCALBASE}/lib/gcc${_GCC_VER} \
-		-L${LOCALBASE}/lib/gcc${_GCC_VER} -B${LOCALBASE}/bin
-
-PM_DESC=	Process managers
-GFORKER_DESC=	Simple local process manager
-HYDRA_DESC=	Parallel process manager
-DEFAULTPM_DESC=	Default process manager
-DGFORKER_DESC=	Make gforker the default process manager
-DHYDRA_DESC=	Make hydra the default process manager
-
-HYDRA_LIB_DEPENDS=	libtorque.so:sysutils/torque
-
-L0_DESC=		oneAPI Level Zero support
-L0_LIB_DEPENDS=		libze_loader.so:devel/level-zero
-L0_CONFIGURE_OFF=	--without-ze
-
-CONFIGURE_ARGS=	--enable-fast=""	\
+GNU_CONFIGURE=	yes
+CONFIGURE_ARGS= --enable-fast="" \
 		--with-libfabric=${LOCALBASE} \
 		--with-libfabric-include=${WRKDIR}/include \
 		--with-hwloc=${LOCALBASE} \
@@ -72,10 +34,48 @@ CONFIGURE_ARGS=	--enable-fast=""	\
 		MPICHLIB_FCFLAGS="${FCFLAGS}" FCFLAGS="" \
 		MPICHLIB_LDFLAGS="${LDFLAGS}" LDFLAGS="" \
 		MPICHLIB_LIBS="${LIBS}" \
-		LIBS="-L${LOCALBASE}/lib -lepoll-shim -ljson-c -lm"	\
+		LIBS="-L${LOCALBASE}/lib -lepoll-shim -ljson-c -lm" \
 		BASH_SHELL=${LOCALBASE}/bin/bash
 
+INSTALL_TARGET=	install-strip
+TEST_TARGET=	check
+
+CONFLICTS=	mpd
+
+BINARY_ALIAS=	python3=${PYTHON_CMD}
 PORTDOCS=	*
+
+OPTIONS_DEFINE=		DOCS FORTRAN SLURM L0
+OPTIONS_DEFAULT=	FORTRAN GFORKER HYDRA DHYDRA
+OPTIONS_GROUP=		PM
+OPTIONS_GROUP_PM=	GFORKER HYDRA
+OPTIONS_RADIO=		DEFAULTPM
+OPTIONS_RADIO_DEFAULTPM=DGFORKER DHYDRA
+OPTIONS_SUB=		yes
+
+DEFAULTPM_DESC=	Default process manager
+DGFORKER_DESC=	Make gforker the default process manager
+DHYDRA_DESC=	Make hydra the default process manager
+GFORKER_DESC=	Simple local process manager
+HYDRA_DESC=	Parallel process manager
+L0_DESC=	oneAPI Level Zero support
+PM_DESC=	Process managers
+SLURM_DESC=	Extra Slurm support
+
+MPICH_LDFLAGS=	-Wl,-rpath=${LOCALBASE}/lib/gcc${_GCC_VER} \
+		-L${LOCALBASE}/lib/gcc${_GCC_VER} -B${LOCALBASE}/bin
+FORTRAN_USES=			fortran
+FORTRAN_CONFIGURE_ON=		\
+	MPICH_MPICC_LDFLAGS="${MPICH_LDFLAGS}" \
+	MPICH_MPICXX_LDFLAGS="${MPICH_LDFLAGS}" \
+	MPICH_MPIF77_LDFLAGS="${MPICH_LDFLAGS}" \
+	MPICH_MPIFORT_LDFLAGS="${MPICH_LDFLAGS}"
+FORTRAN_CONFIGURE_ENABLE=	fortran
+L0_LIB_DEPENDS=			libze_loader.so:devel/level-zero
+L0_CONFIGURE_WITH=		ze
+SLURM_IMPLIES=			HYDRA
+SLURM_LIB_DEPENDS=		libslurm.so:sysutils/slurm-wlm
+SLURM_CONFIGURE_WITH=		slurm
 
 .include <bsd.port.pre.mk>
 
@@ -84,9 +84,10 @@ PORTDOCS=	*
 IGNORE=	is currently not working with the L0 option. Unset L0
 .endif
 
-.if ${COMPILER_TYPE} == clang && ${COMPILER_VERSION} == 170
+.if ${COMPILER_TYPE} == clang && (${COMPILER_VERSION} == 170 || ${COMPILER_VERSION} >= 181 && ${ARCH} == "i386")
 # linker error when compiling with llvm 17.0.6 on CURRENT - PR 276035
-# To be removed with llvm-18
+# To be removed when all RELEASE and CURRENT no longer need it
+# Error remains for i386 and llvm-181 on CURRENT
 CONFIGURE_ENV+=	ac_cv_sizeof___float128=0
 .endif
 
@@ -124,5 +125,8 @@ post-patch:
 # configure args).
 # PR: 265684
 	${MKDIR} ${WRKDIR}/include && ${LN} -s ${LOCALBASE}/include/rdma ${WRKDIR}/include/
+
+post-install:
+	${MV} ${STAGEDIR}${PREFIX}/etc/mpixxx_opts.conf ${STAGEDIR}${PREFIX}/etc/mpixxx_opts.conf.sample
 
 .include <bsd.port.post.mk>

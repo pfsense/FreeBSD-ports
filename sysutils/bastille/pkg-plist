@@ -13,12 +13,16 @@ etc/rc.d/bastille
 %%DATADIR%%/create.sh
 %%DATADIR%%/destroy.sh
 %%DATADIR%%/edit.sh
+%%DATADIR%%/etcupdate.sh
 %%DATADIR%%/export.sh
 %%DATADIR%%/htop.sh
 %%DATADIR%%/import.sh
+%%DATADIR%%/jcp.sh
 %%DATADIR%%/limits.sh
 %%DATADIR%%/list.sh
+%%DATADIR%%/migrate.sh
 %%DATADIR%%/mount.sh
+%%DATADIR%%/network.sh
 %%DATADIR%%/pkg.sh
 %%DATADIR%%/rcp.sh
 %%DATADIR%%/rdr.sh
@@ -37,6 +41,7 @@ etc/rc.d/bastille
 %%DATADIR%%/templates/default/linux/Bastillefile
 %%DATADIR%%/templates/default/thick/Bastillefile
 %%DATADIR%%/templates/default/thin/Bastillefile
+%%DATADIR%%/templates/default/vlan/Bastillefile
 %%DATADIR%%/templates/default/vnet/Bastillefile
 %%DATADIR%%/top.sh
 %%DATADIR%%/umount.sh

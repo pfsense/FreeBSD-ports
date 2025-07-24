@@ -1,6 +1,5 @@
 PORTNAME=	makemkv
-DISTVERSION=	1.17.6
-PORTREVISION=	1
+DISTVERSION=	1.17.7
 CATEGORIES=	multimedia
 MASTER_SITES=	http://www.makemkv.com/download/:makemkv \
 		http://www.makemkv.com/download/old/:makemkv \
@@ -28,7 +27,7 @@ LICENSE_DISTFILES_LGPL21+ =	${DISTFL_FFMPEG}
 LICENSE_DISTFILES_MAKEMKV=	${DISTFL_MAKEMKV}
 
 ONLY_FOR_ARCHS=	aarch64 amd64 i386
-USES=		gmake linux pkgconfig
+USES=		gmake linux:c7 pkgconfig
 USE_CSTD=	c11
 USE_CXXSTD=	c++11
 USE_LINUX=	base expat \
@@ -50,7 +49,7 @@ SUB_LIST=	LINUXBASE=${LINUXBASE}
 PLIST_SUB=	LINUXBASE=${LINUXBASE}
 
 FDKAACVERSION=	2.0.3
-FFMPEGVERSION=	6.1.1
+FFMPEGVERSION=	6.1.2
 
 DISTFL_MAKEMKV=	makemkv-oss-${DISTVERSION}.tar.gz \
 		makemkv-bin-${DISTVERSION}.tar.gz

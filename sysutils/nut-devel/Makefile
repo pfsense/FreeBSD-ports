@@ -18,8 +18,8 @@ CONFLICTS=	nut-[0-9]*
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	networkupstools
-GH_TAGNAME=	d683bc1da 
-NUT_COMMIT_DATE=	2024.06.25
+GH_TAGNAME=	8916ac8d1
+NUT_COMMIT_DATE=	2025.06.25
 
 MAKE_JOBS_UNSAFE=	yes
 GNU_CONFIGURE=	yes
@@ -74,6 +74,7 @@ CONFIGURE_ARGS=	--sysconfdir=${PREFIX}/etc/nut \
 		--program-transform-name="" \
 		--localstatedir=${STATEDIR} \
 		--datadir=${PREFIX}/etc/nut \
+		--mandir=${PREFIX}/share/man/nut \
 		--with-devd-dir=${PREFIX}/etc/devd \
 		--with-drvpath=${PREFIX}/libexec/nut \
 		--with-statepath=${STATEDIR} \
@@ -86,7 +87,8 @@ CONFIGURE_ARGS=	--sysconfdir=${PREFIX}/etc/nut \
 		--without-python2 \
 		--with-python3=${PYTHON_CMD} \
 		--without-nut_monitor \
-		--with-ltdl --with-nut-scanner
+		--with-ltdl --with-nut-scanner \
+		--without-augeas-lenses-dir
 
 GNU_CONFIGURE_MANPREFIX=${PREFIX}/share
 

@@ -1,11 +1,14 @@
 PORTNAME?=	nginx
-PORTVERSION=	1.27.0
+PORTVERSION=	1.29.0
 PORTREVISION=	4
 CATEGORIES=	www
 MASTER_SITES=	https://nginx.org/download/ \
 		LOCAL/osa
 PKGNAMESUFFIX?=	-devel
 DISTFILES=	${DISTNAME}${EXTRACT_SUFX}
+
+PATCH_SITES=	https://github.com/nginx/nginx/commit/
+PATCHFILES=	0bb7489cb2fcc60ce24fae2d5581c7441bfa0931.patch:-p1
 
 MAINTAINER?=	osa@FreeBSD.org
 COMMENT?=	Robust and small WWW server
@@ -16,9 +19,9 @@ LICENSE_FILE?=	${WRKSRC}/LICENSE
 
 CONFLICTS_INSTALL=	nginx
 
-PORTSCOUT=	limit:^1\.2[7-8]\.[0-9]*
+PORTSCOUT=	limit:^1\.2[8-9]\.[0-9]*
 
-USES=		cpe
+USES=		cpe compiler:env
 
 CPE_VENDOR=	f5
 CPE_PRODUCT=	nginx
@@ -48,6 +51,7 @@ SUB_LIST+=	WWWOWN=${WWWOWN} \
 HAS_CONFIGURE=	yes
 CONFIGURE_ARGS+=--prefix=${ETCDIR} \
 		--with-cc-opt="-I ${LOCALBASE}/include" \
+		--with-ld-opt="-L ${LOCALBASE}/lib" \
 		--conf-path=${ETCDIR}/nginx.conf \
 		--sbin-path=${PREFIX}/sbin/nginx \
 		--pid-path=${NGINX_RUNDIR}/nginx.pid \
@@ -71,14 +75,14 @@ OPTIONS_GROUP_HTTPGRP=	GOOGLE_PERFTOOLS HTTP HTTP_ADDITION HTTP_AUTH_REQ \
 	HTTP_GZIP_STATIC HTTP_IMAGE_FILTER HTTP_MP4 HTTP_PERL \
 	HTTP_RANDOM_INDEX HTTP_REALIP HTTP_SECURE_LINK HTTP_SLICE HTTP_SSL \
 	HTTP_STATUS HTTP_SUB HTTP_XSLT HTTPV2 HTTPV3 HTTPV3_BORING HTTPV3_LSSL \
-	HTTPV3_QTLS
+	HTTPV3_OSSL35
 
 OPTIONS_GROUP_MAILGRP=	MAIL MAIL_IMAP MAIL_POP3 MAIL_SMTP MAIL_SSL
 
 OPTIONS_GROUP_STREAMGRP=	STREAM STREAM_REALIP STREAM_SSL \
 	STREAM_SSL_PREREAD
 
-OPTIONS_DEFINE=		DEBUG DEBUGLOG DSO FILE_AIO IPV6 NJS NJS_XML OTEL THREADS WWW
+OPTIONS_DEFINE=		DEBUG DEBUGLOG DSO FILE_AIO IPV6 NJS OTEL THREADS WWW
 OPTIONS_DEFAULT?=	DSO FILE_AIO HTTP HTTP_ADDITION HTTP_AUTH_REQ HTTP_CACHE \
 		HTTP_DAV HTTP_FLV HTTP_GUNZIP_FILTER HTTP_GZIP_STATIC HTTP_MP4 \
 		HTTP_RANDOM_INDEX HTTP_REALIP HTTP_SECURE_LINK HTTP_SLICE HTTP_SSL \
@@ -172,15 +176,15 @@ HTTPV3_CONFIGURE_ON=		--with-http_v3_module
 HTTPV3_BORING_BUILD_DEPENDS=	${LOCALBASE}/bin/bssl:security/boringssl
 HTTPV3_BORING_RUN_DEPENDS=	${LOCALBASE}/bin/bssl:security/boringssl
 HTTPV3_BORING_IMPLIES=		HTTPV3
-HTTPV3_BORING_PREVENTS=		HTTPV3_LSSL HTTPV3_QTLS
+HTTPV3_BORING_PREVENTS=		HTTPV3_LSSL HTTPV3_OSSL35
 HTTPV3_LSSL_BUILD_DEPENDS=	${LOCALBASE}/include/tls.h:security/libressl-devel
-HTTPV3_LSSL_BUILD_DEPENDS=	${LOCALBASE}/include/tls.h:security/libressl-devel
+HTTPV3_LSSL_RUN_DEPENDS=	${LOCALBASE}/include/tls.h:security/libressl-devel
 HTTPV3_LSSL_IMPLIES=		HTTPV3
-HTTPV3_LSSL_PREVENTS=		HTTPV3_BORING HTTPV3_QTLS
-HTTPV3_QTLS_BUILD_DEPENDS=	${LOCALBASE}/include/openssl/quic.h:security/openssl-quictls
-HTTPV3_QTLS_RUN_DEPENDS=	${LOCALBASE}/include/openssl/quic.h:security/openssl-quictls
-HTTPV3_QTLS_IMPLIES=		HTTPV3
-HTTPV3_QTLS_PREVENTS=		HTTPV3_BORING HTTPV3_LSSL
+HTTPV3_LSSL_PREVENTS=		HTTPV3_BORING HTTPV3_OSSL35
+HTTPV3_OSSL35_BUILD_DEPENDS=	${LOCALBASE}/include/openssl/quic.h:security/openssl35
+HTTPV3_OSSL35_RUN_DEPENDS=	${LOCALBASE}/include/openssl/quic.h:security/openssl35
+HTTPV3_OSSL35_IMPLIES=		HTTPV3
+HTTPV3_OSSL35_PREVENTS=		HTTPV3_BORING HTTPV3_LSSL
 MAIL_VARS=			DSO_BASEMODS+=mail
 MAIL_IMAP_CONFIGURE_OFF=	--without-mail_imap_module
 MAIL_POP3_CONFIGURE_OFF=	--without-mail_pop3_module
@@ -235,6 +239,10 @@ IGNORE=		required at least GSSAPI_HEIMDAL or \
 		'make config' again
 .endif
 
+.if ${COMPILER_TYPE} == clang && ${COMPILER_VERSION} >= 191
+CFLAGS+=	-Wno-error=cast-function-type-mismatch
+.endif
+
 .if ${PORT_OPTIONS:MPASSENGER} && empty(PORT_OPTIONS:MDEBUG)
 CONFIGURE_ENV+=	OPTIMIZE="yes"
 CFLAGS+=	-DNDEBUG
@@ -244,16 +252,15 @@ CFLAGS+=	-DNDEBUG
 CONFIGURE_ENV+=	EXTRA_PRE_CXXFLAGS="-std=c++14"
 .endif
 
-.if empty(PORT_OPTIONS:MMODSECURITY3)
-CONFIGURE_ARGS+=	--with-ld-opt="-L ${LOCALBASE}/lib"
-.else
+.if (PORT_OPTIONS:MMODSECURITY3)
 CONFIGURE_ARGS+=	--with-ld-opt="-L ${LOCALBASE}/lib -lpcre"
 LIB_DEPENDS+=		libpcre.so:devel/pcre
 .endif
 
-.if ${PORT_OPTIONS:MNJS} && empty(PORT_OPTIONS:MNJS_XML)
-CONFIGURE_ENV+=		NJS_LIBXSLT=NO
-NJS_CONFIGURE_ARGS=	--no-libxml2
+.if ${PORT_OPTIONS:MNJS}
+NJS_CONFIGURE_ARGS=	--cc-opt="${CFLAGS} -I${LOCALBASE}/include/quickjs" \
+			--ld-opt="-L${LOCALBASE}/lib" \
+			--with-quickjs
 .endif
 
 pre-everything::
@@ -269,9 +276,6 @@ pre-everything::
 post-extract-NAXSI-on:
 	@${RMDIR} ${WRKSRC_naxsi}/naxsi_src/libinjection
 	@${LN} -s ${WRKSRC_libinjection} ${WRKSRC_naxsi}/naxsi_src/libinjection
-
-pre-patch-HTTPV3-on:
-	@${MV} ${WRKSRC}/README ${WRKSRC}/README.1st
 
 post-patch:
 	@${REINPLACE_CMD} 's!%%HTTP_PORT%%!${HTTP_PORT}!; \
@@ -305,9 +309,13 @@ post-patch-HTTP_TARANTOOL-on:
 post-patch-ICONV-on:
 	@${REINPLACE_CMD} 's!%%PREFIX%%!${LOCALBASE}!g' ${WRKSRC_iconv}/config
 
+post-patch-NJS_QJS-on:
+	@${REINPLACE_CMD} 's!%%LOCALBASE%%!${LOCALBASE}!g' ${WRKSRC_njs}/auto/quickjs \
+		${WRKSRC_njs}/nginx/config
+
 post-patch-PASSENGER-on:
 	@${REINPLACE_CMD} \
-		'168,170s!true!false!' \
+		'176,178s!true!false!' \
 		${WRKSRC_PASSENGER}/build/basics.rb
 	@${REINPLACE_CMD} \
 		's!-I/usr/include/libev!!; \

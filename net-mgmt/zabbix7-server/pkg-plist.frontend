@@ -86,6 +86,8 @@
 %%WWWDIR%%/app/controllers/CControllerHostGroupList.php
 %%WWWDIR%%/app/controllers/CControllerHostGroupUpdate.php
 %%WWWDIR%%/app/controllers/CControllerHostList.php
+%%WWWDIR%%/app/controllers/CControllerHostDisable.php
+%%WWWDIR%%/app/controllers/CControllerHostEnable.php
 %%WWWDIR%%/app/controllers/CControllerHostMacrosList.php
 %%WWWDIR%%/app/controllers/CControllerHostMassDelete.php
 %%WWWDIR%%/app/controllers/CControllerHostUpdate.php
@@ -749,6 +751,7 @@
 %%WWWDIR%%/include/classes/api/clients/CApiClient.php
 %%WWWDIR%%/include/classes/api/clients/CLocalApiClient.php
 %%WWWDIR%%/include/classes/api/helpers/CApiHostHelper.php
+%%WWWDIR%%/include/classes/api/helpers/CApiPskHelper.php
 %%WWWDIR%%/include/classes/api/helpers/CApiTagHelper.php
 %%WWWDIR%%/include/classes/api/item_types/CItemType.php
 %%WWWDIR%%/include/classes/api/item_types/CItemTypeBrowser.php
@@ -800,6 +803,7 @@
 %%WWWDIR%%/include/classes/api/services/CHistory.php
 %%WWWDIR%%/include/classes/api/services/CHost.php
 %%WWWDIR%%/include/classes/api/services/CHostBase.php
+%%WWWDIR%%/include/classes/api/services/CHostDashboard.php
 %%WWWDIR%%/include/classes/api/services/CHostGeneral.php
 %%WWWDIR%%/include/classes/api/services/CHostGroup.php
 %%WWWDIR%%/include/classes/api/services/CHostInterface.php
@@ -1017,6 +1021,7 @@
 %%WWWDIR%%/include/classes/html/CTextAreaFlexible.php
 %%WWWDIR%%/include/classes/html/CTextBox.php
 %%WWWDIR%%/include/classes/html/CVar.php
+%%WWWDIR%%/include/classes/html/CVertical.php
 %%WWWDIR%%/include/classes/html/CVisibilityBox.php
 %%WWWDIR%%/include/classes/html/CWarning.php
 %%WWWDIR%%/include/classes/html/interfaces/CButtonInterface.php
@@ -1052,7 +1057,6 @@
 %%WWWDIR%%/include/classes/html/widgets/fields/CWidgetFieldColorView.php
 %%WWWDIR%%/include/classes/html/widgets/fields/CWidgetFieldColumnsListView.php
 %%WWWDIR%%/include/classes/html/widgets/fields/CWidgetFieldDatePickerView.php
-%%WWWDIR%%/include/classes/html/widgets/fields/CWidgetFieldHostPatternSelectView.php
 %%WWWDIR%%/include/classes/html/widgets/fields/CWidgetFieldIntegerBoxView.php
 %%WWWDIR%%/include/classes/html/widgets/fields/CWidgetFieldLatLngView.php
 %%WWWDIR%%/include/classes/html/widgets/fields/CWidgetFieldMultiSelectActionView.php
@@ -1070,6 +1074,7 @@
 %%WWWDIR%%/include/classes/html/widgets/fields/CWidgetFieldMultiSelectUserView.php
 %%WWWDIR%%/include/classes/html/widgets/fields/CWidgetFieldMultiSelectView.php
 %%WWWDIR%%/include/classes/html/widgets/fields/CWidgetFieldNumericBoxView.php
+%%WWWDIR%%/include/classes/html/widgets/fields/CWidgetFieldPatternSelectHostView.php
 %%WWWDIR%%/include/classes/html/widgets/fields/CWidgetFieldPatternSelectItemView.php
 %%WWWDIR%%/include/classes/html/widgets/fields/CWidgetFieldPatternSelectView.php
 %%WWWDIR%%/include/classes/html/widgets/fields/CWidgetFieldRadioButtonListView.php
@@ -1269,7 +1274,6 @@
 %%WWWDIR%%/include/classes/widgets/fields/CWidgetFieldColor.php
 %%WWWDIR%%/include/classes/widgets/fields/CWidgetFieldColumnsList.php
 %%WWWDIR%%/include/classes/widgets/fields/CWidgetFieldDatePicker.php
-%%WWWDIR%%/include/classes/widgets/fields/CWidgetFieldHostPatternSelect.php
 %%WWWDIR%%/include/classes/widgets/fields/CWidgetFieldIntegerBox.php
 %%WWWDIR%%/include/classes/widgets/fields/CWidgetFieldLatLng.php
 %%WWWDIR%%/include/classes/widgets/fields/CWidgetFieldMultiSelect.php
@@ -1289,6 +1293,7 @@
 %%WWWDIR%%/include/classes/widgets/fields/CWidgetFieldNavTree.php
 %%WWWDIR%%/include/classes/widgets/fields/CWidgetFieldNumericBox.php
 %%WWWDIR%%/include/classes/widgets/fields/CWidgetFieldPatternSelect.php
+%%WWWDIR%%/include/classes/widgets/fields/CWidgetFieldPatternSelectHost.php
 %%WWWDIR%%/include/classes/widgets/fields/CWidgetFieldPatternSelectItem.php
 %%WWWDIR%%/include/classes/widgets/fields/CWidgetFieldRadioButtonList.php
 %%WWWDIR%%/include/classes/widgets/fields/CWidgetFieldRangeControl.php
@@ -1435,6 +1440,7 @@
 %%WWWDIR%%/js/common.js
 %%WWWDIR%%/js/component.z-bar-gauge.js
 %%WWWDIR%%/js/component.z-select.js
+%%WWWDIR%%/js/component.z-vertical.js
 %%WWWDIR%%/js/defines.js
 %%WWWDIR%%/js/flickerfreescreen.js
 %%WWWDIR%%/js/functions.js
@@ -1475,6 +1481,8 @@
 %%WWWDIR%%/local/README
 %%WWWDIR%%/locale/README
 %%WWWDIR%%/locale/add_new_language.sh
+%%WWWDIR%%/locale/ar/LC_MESSAGES/frontend.mo
+%%WWWDIR%%/locale/ar/LC_MESSAGES/frontend.po
 %%WWWDIR%%/locale/bg/LC_MESSAGES/frontend.mo
 %%WWWDIR%%/locale/bg/LC_MESSAGES/frontend.po
 %%WWWDIR%%/locale/ca/LC_MESSAGES/frontend.mo
@@ -1539,11 +1547,15 @@
 %%WWWDIR%%/locale/sk/LC_MESSAGES/frontend.po
 %%WWWDIR%%/locale/sv_SE/LC_MESSAGES/frontend.mo
 %%WWWDIR%%/locale/sv_SE/LC_MESSAGES/frontend.po
+%%WWWDIR%%/locale/th/LC_MESSAGES/frontend.mo
+%%WWWDIR%%/locale/th/LC_MESSAGES/frontend.po
 %%WWWDIR%%/locale/tr/LC_MESSAGES/frontend.mo
 %%WWWDIR%%/locale/tr/LC_MESSAGES/frontend.po
 %%WWWDIR%%/locale/uk/LC_MESSAGES/frontend.mo
 %%WWWDIR%%/locale/uk/LC_MESSAGES/frontend.po
 %%WWWDIR%%/locale/update_po.sh
+%%WWWDIR%%/locale/uz/LC_MESSAGES/frontend.mo
+%%WWWDIR%%/locale/uz/LC_MESSAGES/frontend.po
 %%WWWDIR%%/locale/vi/LC_MESSAGES/frontend.mo
 %%WWWDIR%%/locale/vi/LC_MESSAGES/frontend.po
 %%WWWDIR%%/locale/zh_CN/LC_MESSAGES/frontend.mo

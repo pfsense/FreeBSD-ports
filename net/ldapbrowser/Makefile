@@ -1,6 +1,6 @@
 PORTNAME=	ldapbrowser
 PORTVERSION=	2.8.2
-PORTREVISION=	4
+PORTREVISION=	5
 CATEGORIES=	net java
 MASTER_SITES=	http://www.klop.ws/distfiles/ \
 		http://freebsd.nsu.ru/distfiles/ \
@@ -19,7 +19,11 @@ LICENSE_NAME=	ldapbrowser
 LICENSE_TEXT=	No reply from author regarding redistribution licensing
 LICENSE_PERMS=	auto-accept
 
-USE_JAVA=	yes
+DEPRECATED=	old software, no source, no website, no clear license, no package, any users? please let me know
+EXPIRATION_DATE=	2025-08-28
+
+USES=		java
+
 NO_BUILD=	yes
 WRKSRC=		${WRKDIR}/${PORTNAME}
 REINPLACE_ARGS=	-i ''

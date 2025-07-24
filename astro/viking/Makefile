@@ -1,6 +1,6 @@
 PORTNAME=	viking
 PORTVERSION=	1.10
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	astro
 MASTER_SITES=	SF/${PORTNAME}/
 
@@ -27,7 +27,7 @@ RUN_DEPENDS=	gpsbabel:astro/gpsbabel
 USES=		compiler:c++11-lib desktop-file-utils gettext gmake gnome \
 		iconv localbase perl5 pkgconfig tar:bzip2 xorg
 USE_XORG=	x11
-USE_GNOME=	cairo gdkpixbuf2 gtk30 intlhack
+USE_GNOME=	cairo gdkpixbuf gtk30 intlhack
 USE_PERL5=	run
 GNU_CONFIGURE=	yes
 GNU_CONFIGURE_MANPREFIX=${PREFIX}/share
@@ -35,7 +35,7 @@ GNU_CONFIGURE_MANPREFIX=${PREFIX}/share
 PORTDOCS=	AUTHORS ChangeLog NEWS README.md
 
 OPTIONS_DEFINE=		DOCS GEOCACHES NLS GEOTAG GPSD MAPNIK MBTILES
-OPTIONS_DEFAULT=	GEOTAG GPSD JOSM MAPNIK MBTILES
+OPTIONS_DEFAULT=	GEOTAG GPSD JOSM MBTILES # MAPNIK compatibility is broken with mapnik-4.0.0
 
 OPTIONS_MULTI=		EDITOR
 OPTIONS_MULTI_EDITOR=	JOSM MERKAATOR
@@ -66,6 +66,7 @@ MAPNIK_LIB_DEPENDS=	libmapnik.so:graphics/mapnik
 MAPNIK_CONFIGURE_ENV=	ac_cv_lib_icuuc_main=no # indirect
 MAPNIK_CONFIGURE_ENABLE=	mapnik
 MAPNIK_CPPFLAGS=	-I${LOCALBASE}/include/mapnik
+MAPNIK_BROKEN=		fails to build with mapnik-4.0.0, see https://sourceforge.net/p/viking/bugs/170/
 
 MBTILES_USES=		sqlite
 MBTILES_CONFIGURE_ENABLE=	mbtiles

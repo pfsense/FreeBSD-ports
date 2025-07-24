@@ -1,0 +1,13 @@
+TIMESTAMP = 1750640761
+SHA256 (rocky/s/spirv-tools-2024.4-1.el9.aarch64.rpm) = 6c8b89184b3d7bec22310a0a5e02831f44be953b08cc8f29472a019041a14f63
+SIZE (rocky/s/spirv-tools-2024.4-1.el9.aarch64.rpm) = 250982
+SHA256 (rocky/s/spirv-tools-2024.4-1.el9.x86_64.rpm) = 63ff7101f08c9f75adb5bda52a2031cde3514890088cf090180fbad870bef375
+SIZE (rocky/s/spirv-tools-2024.4-1.el9.x86_64.rpm) = 263225
+SHA256 (rocky/s/spirv-tools-libs-2024.4-1.el9.aarch64.rpm) = 98a932aadff5ede426aeb151055212f92ff210b72fd0f954fc299d920967f8bc
+SIZE (rocky/s/spirv-tools-libs-2024.4-1.el9.aarch64.rpm) = 1466491
+SHA256 (rocky/s/spirv-tools-libs-2024.4-1.el9.i686.rpm) = e8e2752b6e34765465047230182c7bcd35394c11e89a7fb7591e7ef73ced9a7c
+SIZE (rocky/s/spirv-tools-libs-2024.4-1.el9.i686.rpm) = 1668765
+SHA256 (rocky/s/spirv-tools-libs-2024.4-1.el9.x86_64.rpm) = f99098e9f2b7bbfdc24087810f8b1df1ad66eadd7a818a512bc676bc213c80d6
+SIZE (rocky/s/spirv-tools-libs-2024.4-1.el9.x86_64.rpm) = 1497815
+SHA256 (rocky/s/spirv-tools-2024.4-1.el9.src.rpm) = 4962b4a95fe67c9a8121db897dda1980f9ce8a936235cfb16d6b81267a548e91
+SIZE (rocky/s/spirv-tools-2024.4-1.el9.src.rpm) = 3205568

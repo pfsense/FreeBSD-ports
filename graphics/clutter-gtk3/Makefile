@@ -1,6 +1,6 @@
 PORTNAME=	clutter-gtk
 PORTVERSION=	1.8.4
-PORTREVISION=	3
+PORTREVISION=	4
 CATEGORIES=	graphics
 MASTER_SITES=	GNOME
 PKGNAMESUFFIX=	3
@@ -17,7 +17,7 @@ LIB_DEPENDS=	libcogl.so:graphics/cogl \
 		libjson-glib-1.0.so:devel/json-glib
 
 USES=		gettext gl gnome localbase meson pkgconfig tar:xz xorg
-USE_GNOME=	cairo gdkpixbuf2 gtk30 introspection:build
+USE_GNOME=	cairo gdkpixbuf gtk30 introspection:build
 USE_XORG=	x11 xcomposite xdamage xext xfixes xi xrandr
 USE_GL=		egl
 USE_LDCONFIG=	yes

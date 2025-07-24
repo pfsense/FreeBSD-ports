@@ -3,6 +3,7 @@
     SUBDIR += R-cran-maptools
     SUBDIR += accrete
     SUBDIR += astrometry
+    SUBDIR += astroterm
     SUBDIR += calcmysky
     SUBDIR += celestia
     SUBDIR += celestia-gtk
@@ -13,6 +14,7 @@
     SUBDIR += geographiclib
     SUBDIR += gkrellmoon2
     SUBDIR += gnuastro
+    SUBDIR += google-earth-pro
     SUBDIR += gpsbabel
     SUBDIR += gpsbabel14
     SUBDIR += gpscorrelate
@@ -85,8 +87,10 @@
     SUBDIR += py-astroML
     SUBDIR += py-astropy
     SUBDIR += py-astropy-helpers
+    SUBDIR += py-astropy-iers-data
     SUBDIR += py-ephem
     SUBDIR += py-extension-helpers
+    SUBDIR += py-fitsio
     SUBDIR += py-horoscopegenerator
     SUBDIR += py-indiweb
     SUBDIR += py-jplephem

@@ -1,6 +1,6 @@
 PORTNAME=	libsmpp34
 PORTVERSION=	1.10
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	devel
 MASTER_SITES=	http://chaosophia.net/downloads/osmocom/${PORTNAME}/
 
@@ -11,9 +11,8 @@ WWW=		https://c-open-smpp-34.sourceforge.net/
 LICENSE=	LGPL21
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-LIB_DEPENDS=	libxml2.so:textproc/libxml2
-
-USES=		autoreconf libtool pathfix
+USES=		autoreconf gnome libtool pathfix
+USE_GNOME=	libxml2
 
 GNU_CONFIGURE=	yes
 INSTALL_TARGET=	install-strip

@@ -1,5 +1,5 @@
 PORTNAME=	R
-DISTVERSION=	4.4.1
+DISTVERSION=	4.5.1
 CATEGORIES=	math lang
 MASTER_SITES=	CRAN/src/base/R-${PORTVERSION:C|\..*||}
 
@@ -14,7 +14,8 @@ ONLY_FOR_ARCHS=	aarch64 amd64 armv6 armv7 i386 powerpc powerpc64 powerpc64le
 BUILD_DEPENDS=	texi2any:print/texinfo
 LIB_DEPENDS=	libcurl.so:ftp/curl \
 		libdeflate.so:archivers/libdeflate \
-		libpcre2-8.so:devel/pcre2
+		libpcre2-8.so:devel/pcre2 \
+		libzstd.so:archivers/zstd
 # R packages may require GNU make or cmake to build
 RUN_DEPENDS=	cmake:devel/cmake-core \
 		gmake:devel/gmake
@@ -25,14 +26,13 @@ RUN_DEPENDS=	cmake:devel/cmake-core \
 # - Create ports for each of the recommended packages
 # - Create a meta-port for the recommended packages
 
-USES=		compiler:c++11-lang cpe fortran gmake iconv libtool localbase \
+USES=		compiler:c++23-lang cpe fortran gmake iconv libtool localbase \
 		pathfix perl5 readline
 CPE_VENDOR=	r-project
 USE_LDCONFIG=	${PREFIX}/lib/R/lib
 USE_PERL5=	build
 
 GNU_CONFIGURE=	yes
-GNU_CONFIGURE_MANPREFIX=${PREFIX}/share
 CONFIGURE_ARGS=	--disable-java \
 		--enable-R-shlib \
 		--with-readline \
@@ -94,7 +94,7 @@ OPENBLAS_USES=			blaslapack:openblas
 OPENBLAS_CONFIGURE_ON=		--disable-BLAS-shlib
 OPENMP_CONFIGURE_ENABLE=	openmp
 PNG_IMPLIES=			X11
-PNG_LIB_DEPENDS=		libpng.so:graphics/png
+PNG_LIB_DEPENDS=		libpng16.so:graphics/png
 PNG_CONFIGURE_WITH=		libpng
 RBLAS_CONFIGURE_ON=		--enable-BLAS-shlib \
 				--without-blas \
@@ -106,7 +106,7 @@ RBLAS_EXTRA_PATCHES=		${PATCHDIR}/extra-patch-src_extra_blas_Makefile.in \
 RPROF_CONFIGURE_ENABLE=		R-profiling
 TCLTK_IMPLIES=			X11
 TCLTK_USES=			tcl tk
-TCLTK_CONFIGURE_WITH=		tcltk tcl_config=${TCL_LIBDIR}/tclConfig.sh \
+TCLTK_CONFIGURE_WITH=		tcl_config=${TCL_LIBDIR}/tclConfig.sh tcltk \
 				tk_config=${TK_LIBDIR}/tkConfig.sh
 TEXDOCS_USES=			tex
 TEXDOCS_USE=			TEX=dvipsk:build,kpathsea:build,pdftex:build
@@ -122,12 +122,6 @@ X11_USE=			XORG=ice,sm,x11,xext,xmu,xscrnsaver,xt
 X11_CONFIGURE_WITH=		x
 
 _MAJORVER=	${DISTVERSION:R:R}
-
-.include <bsd.port.options.mk>
-
-.if ${ARCH} == powerpc
-LLD_UNSAFE=	yes
-.endif
 
 post-patch:
 	@${REINPLACE_CMD} \

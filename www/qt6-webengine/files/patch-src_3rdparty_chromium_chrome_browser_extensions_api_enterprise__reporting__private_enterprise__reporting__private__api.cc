@@ -1,15 +1,15 @@
---- src/3rdparty/chromium/chrome/browser/extensions/api/enterprise_reporting_private/enterprise_reporting_private_api.cc.orig	2023-04-28 17:01:32 UTC
+--- src/3rdparty/chromium/chrome/browser/extensions/api/enterprise_reporting_private/enterprise_reporting_private_api.cc.orig	2024-10-22 08:31:56 UTC
 +++ src/3rdparty/chromium/chrome/browser/extensions/api/enterprise_reporting_private/enterprise_reporting_private_api.cc
-@@ -32,7 +32,7 @@
+@@ -41,7 +41,7 @@
  #include "components/reporting/util/statusor.h"
  #endif
  
 -#if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX)
 +#if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_BSD)
+ #include <optional>
+ 
  #include "base/strings/string_util.h"
- #include "chrome/browser/enterprise/signals/signals_aggregator_factory.h"
- #include "chrome/browser/extensions/api/enterprise_reporting_private/conversion_utils.h"
-@@ -149,7 +149,7 @@ api::enterprise_reporting_private::ContextInfo ToConte
+@@ -158,7 +158,7 @@ api::enterprise_reporting_private::ContextInfo ToConte
    return info;
  }
  
@@ -18,7 +18,7 @@
  
  device_signals::SignalsAggregationRequest CreateAggregationRequest(
      device_signals::SignalName signal_name) {
-@@ -210,7 +210,7 @@ EnterpriseReportingPrivateGetDeviceIdFunction::
+@@ -220,7 +220,7 @@ EnterpriseReportingPrivateGetDeviceIdFunction::
  
  // getPersistentSecret
  
@@ -27,7 +27,7 @@
  
  EnterpriseReportingPrivateGetPersistentSecretFunction::
      EnterpriseReportingPrivateGetPersistentSecretFunction() = default;
-@@ -637,7 +637,7 @@ void EnterpriseReportingPrivateEnqueueRecordFunction::
+@@ -646,7 +646,7 @@ void EnterpriseReportingPrivateEnqueueRecordFunction::
  }
  #endif
  

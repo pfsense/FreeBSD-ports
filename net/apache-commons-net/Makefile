@@ -1,5 +1,5 @@
 PORTNAME=	commons-net
-PORTVERSION=	3.11.0
+PORTVERSION=	3.11.1
 CATEGORIES=	net java
 MASTER_SITES=	APACHE_COMMONS_BINARIES
 PKGNAMEPREFIX=	apache-
@@ -12,7 +12,8 @@ WWW=		https://commons.apache.org/proper/commons-net/
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/LICENSE.txt
 
-USE_JAVA=	yes
+USES=		java
+
 NO_BUILD=	yes
 NO_ARCH=	yes
 

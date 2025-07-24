@@ -1,0 +1,21 @@
+commit d09924fcd062ca4d0a510448e28a23062f191bc5
+Author: Marcos Mendoza <mmendoza@netgate.com>
+Date:   Fri Nov 29 15:22:20 2024 -0600
+
+    Ignore queue status interface. Fix #15885
+    
+    Return the previous condition; $altqstats['interface'] is not required.
+
+diff --git a/src/usr/local/www/status_queues.php b/src/usr/local/www/status_queues.php
+index 1c399c84fe..970ca16b64 100644
+--- a/src/usr/local/www/status_queues.php
++++ b/src/usr/local/www/status_queues.php
+@@ -288,7 +288,7 @@ function processInterfaceQueues($altqstats, $parent_name) {
+ 	$interface_friendlyname = convert_real_interface_to_friendly_interface_name($altqstats['interface']);
+ 	$parent_name = $parent_name . " queuerow" . $altqstats['name'] . $interface_friendlyname;
+ 	$prev_if = $altqstats['interface'];
+-	if (empty($interface_friendlyname) || !is_array($altqstats['interfacestats'])) {
++	if (!is_array($altqstats['interfacestats'])) {
+ 		print("<tr><td>");
+ 		print("No Queue data available");
+ 		print("</td></tr>");

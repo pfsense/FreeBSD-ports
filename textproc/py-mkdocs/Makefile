@@ -1,5 +1,5 @@
 PORTNAME=	mkdocs
-DISTVERSION=	1.6.0
+DISTVERSION=	1.6.1
 CATEGORIES=	textproc python
 MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -25,7 +25,7 @@ RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}click>=7.0:devel/py-click@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}platformdirs>=2.2.0:devel/py-platformdirs@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}pyyaml_env_tag>=0.1:devel/py-pyyaml_env_tag@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}watchdog>=2.0:devel/py-watchdog@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}yaml>=5.1:devel/py-yaml@${PY_FLAVOR}
+		${PYTHON_PKGNAMEPREFIX}pyyaml>=5.1:devel/py-pyyaml@${PY_FLAVOR}
 
 USES=		cpe python
 USE_PYTHON=	autoplist concurrent pep517
@@ -42,6 +42,10 @@ I18N_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}Babel>=2.9.0:devel/py-babel@${PY_FLAVOR
 
 .if ${PYTHON_REL} < 31000
 RUN_DEPENDS+=	${PYTHON_PKGNAMEPREFIX}importlib-metadata>=4.4:devel/py-importlib-metadata@${PY_FLAVOR}
+.endif
+
+.if ${PYTHON_REL} >= 31200
+BUILD_DEPENDS+=	${PY_SETUPTOOLS}
 .endif
 
 .include <bsd.port.post.mk>

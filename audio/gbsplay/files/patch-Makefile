@@ -1,6 +1,6 @@
---- Makefile.orig	2024-01-25 22:32:28 UTC
+--- Makefile.orig	2025-06-13 21:28:26 UTC
 +++ Makefile
-@@ -69,7 +69,7 @@ contribdir  := $(docdir)/contrib
+@@ -70,7 +70,7 @@ contribdir  := $(docdir)/contrib
  man3dir     := $(mandir)/man3
  man5dir     := $(mandir)/man5
  contribdir  := $(docdir)/contrib
@@ -9,17 +9,12 @@
  
  DISTDIR := gbsplay-$(VERSION)
  
-@@ -86,10 +86,10 @@ export Q VERBOSE CC HOSTCC BUILDCC GBSCFLAGS GBSLDFLAG
+@@ -87,7 +87,7 @@ export Q VERBOSE CC HOSTCC BUILDCC GBSCFLAGS GBSLDFLAG
  
  export Q VERBOSE CC HOSTCC BUILDCC GBSCFLAGS GBSLDFLAGS
  
--docs               := README.md HISTORY COPYRIGHT
+-docs               := README.md HISTORY COPYRIGHT LICENCE
 +docs               := README.md
- docs-dist          := INSTALL.md CODINGSTYLE gbsformat.txt
--contribs           := contrib/gbs2ogg.sh contrib/gbsplay.bashcompletion
--examples           := examples/nightmode.gbs examples/gbsplayrc_sample
-+contribs           := contrib/gbs2ogg.sh
-+examples           := examples/nightmode.gbs
- 
- mans               := man/gbsplay.1    man/gbsinfo.1    man/gbsplayrc.5
- mans_src           := man/gbsplay.in.1 man/gbsinfo.in.1 man/gbsplayrc.in.5
+ docs-dist          := INSTALL.md CODINGSTYLE gbsformat.txt PACKAGING.md
+ contribs           := contrib/gbs2ogg.sh contrib/gbsplay.bashcompletion contrib/gbsplay.zshcompletion
+ examples           := examples/nightmode.gbs examples/gbsplayrc_sample

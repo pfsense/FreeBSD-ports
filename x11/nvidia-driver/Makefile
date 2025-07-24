@@ -20,13 +20,24 @@ MASTER_SITES=	NVIDIA/XFree86/FreeBSD-${ARCH_SUFX}/${DISTVERSION}
 DISTNAME=	NVIDIA-FreeBSD-${ARCH_SUFX}-${DISTVERSION}
 DISTFILES=	${DISTNAME}${EXTRACT_SUFX}
 
-MAINTAINER?=	danfe@FreeBSD.org
+MAINTAINER?=	x11@FreeBSD.org
 COMMENT?=	NVidia graphics card binary drivers for hardware OpenGL rendering
 WWW=		https://www.nvidia.com/object/unix.html
 
 LICENSE_FILE=	${WRKSRC}/doc/license.txt
 .include "${.CURDIR}/../nvidia-driver/Makefile.version"
 .include "${.CURDIR}/../nvidia-driver/Makefile.common"
+
+# the package provides lib32 versions of the libraries, which then depends
+# themselves in non existing lib32 libraries, so we don't want the package
+# to end up depending on non existing libraries
+NO_SHLIB_REQUIRES_GLOB=*:32
+
+# Choose proper distinfo file using PKGNAMESUFFIX for slave ports.
+# Kept for switching to centralized distinfo with suffixes.
+.ifdef PKGNAMESUFFIX
+DISTINFO_FILE=	${.CURDIR}/distinfo
+.endif
 
 # Pull GNU sed(1) for "binary" patching of obj/libglvnd/libEGL.so.1 and
 # obj/libEGL_nvidia.so.0 (see below)
@@ -71,13 +82,19 @@ SUB_PATCHES=	extra-patch-src-Makefile \
 SUB_PATCHES+=	extra-patch-src-nvidia_dev.c \
 		extra-patch-src-nvidia_pci.c
 .endif
-.if ${NVVERSION} < 530.03002
+.if ${NVVERSION} < 470.25602 || ${NVVERSION} >= 480.00000 && ${NVVERSION} < 530.03002
 SUB_PATCHES+=	extra-patch-src-nvidia_subr.c
+.endif
+
+# Temporarily disable GSP firmware as it is known to cause
+# issues with suspend/resume
+.if ${NVVERSION} >= 565.00000
+SUB_PATCHES+=	extra-gsp-patch-src-common-inc-nv_firmware_registry.h
 .endif
 
 DOCSDIR=	${PREFIX}/share/doc/NVIDIA_GLX-1.0
 MODULESDIR=	lib/xorg/modules
-EXTENSIONSDIR?=	${MODULESDIR}/extensions/.nvidia
+EXTENSIONSDIR=	${MODULESDIR}/extensions/.nvidia
 PORTDOCS=	*
 
 .if ${NVVERSION} >= 331.013
@@ -136,18 +153,13 @@ PLIST_SUB+=	EXTENSIONSDIR=${EXTENSIONSDIR}
 .else
 PLIST_SUB+=	EXTENSIONSDIR="@comment "
 .endif
-.if defined(LIBGLDIR)
-PLIST_SUB+=	LIBGLDIR=${LIBGLDIR} LIBGLMAP="@comment "
-.else
-PLIST_SUB+=	LIBGLDIR="@comment " LIBGLMAP=""
-.endif
 
 # Not part of the pkg-plist because DISTVERSION is not on PLIST_SUB
 .if ${NVVERSION} >= 515.04304
 PLIST_FILES+=	lib/libnvidia-wayland-client.so.${DISTVERSION}
 .endif
 
-CONFLICTS_INSTALL+=	nvidia-driver nvidia-driver-*
+CONFLICTS_INSTALL+=	nvidia-driver*
 .if ${PORTNAME} != nvidia-secondary-driver
 CONFLICTS_INSTALL+=	nvidia-secondary-driver
 .endif
@@ -267,7 +279,7 @@ post-patch: .SILENT
 		${WRKSRC}/src/${NVSRC}/nvidia_pci.c
 .endif
 # Catch up with pmap_unmapdev() and kmem_*() changes in 14-CURRENT
-.if ${OSVERSION} >= 1400070 && ${NVVERSION} < 530.03002
+.if ${OSVERSION} >= 1400070 && (${NVVERSION} < 470.25602  || ${NVVERSION} >= 480.00000 && ${NVVERSION} < 530.03002)
 	${REINPLACE_CMD} -e '/pmap_unmapdev/s,(vm_offset_t),,' \
 		${WRKSRC}/src/${NVSRC}/nvidia_os.c
 	${REINPLACE_CMD} -e '/vm_offset_t virtual_address/s,vm_offset_t ,char *,' \
@@ -308,6 +320,15 @@ post-patch: .SILENT
 # Conditionally install documentation (but you generally want it)
 .if ! ${PORT_OPTIONS:MDOCS}
 	${REINPLACE_CMD} -E 's/(x11).*/\1/ ; /doc/d' ${WRKSRC}/Makefile
+.endif
+# DMAP_MIN_ADDRESS and DMAP_MAX_ADDRESS is deleted from src at commit
+# 4dd828c80828637452a8a4e07a64e294c82e5d8b on main branch.
+# Note that there are about 10 days of broken window, as the commit
+# does not have corresponding version bump.
+.if ${OSVERSION} >= 1500051
+	${REINPLACE_CMD} -e 's/DMAP_MIN_ADDRESS/kva_layout.dmap_low/' \
+		-e 's/DMAP_MAX_ADDRESS/kva_layout.dmap_high/' \
+		${WRKSRC}/src/nvidia/nvidia_subr.c
 .endif
 
 pre-install:
@@ -372,6 +393,10 @@ post-install: .SILENT
 .if ${NVVERSION} < 545.000
 	${REINPLACE_CMD} -e '/libnvidia-gpucomp\.so/d' ${TMPPLIST}
 .endif
+.if ${NVVERSION} < 560.02803
+	${REINPLACE_CMD} -e '/nvidia_gsp_ga10x_fw\.ko/d' ${TMPPLIST}
+	${REINPLACE_CMD} -e '/nvidia_gsp_tu10x_fw\.ko/d' ${TMPPLIST}
+.endif
 
 .if ${NVVERSION} < 410.057
 # Rename some libraries and install a libmap file to resolve conflict with
@@ -395,31 +420,9 @@ post-install: .SILENT
 		${STAGEDIR}${PREFIX}/lib/libGLESv2-NVIDIA.so.2
 	${RM} ${STAGEDIR}${PREFIX}/lib/libGLESv2.so
 .  endif
-# Configuration of Nvidia as secondary GPU requires preserving libglvnd or mesa
-# libraries as default implementation; a libmap must not override in this case.
-.  if !defined(LIBGLDIR)
 	@${MKDIR} ${STAGEDIR}${PREFIX}/etc/libmap.d/
 	${INSTALL_DATA} ${WRKDIR}/nvidia.conf \
 		${STAGEDIR}${PREFIX}/etc/libmap.d/
-.  else
-# libgl proxies require a library path containing unrenamed lib*GL*.so
-	${MKDIR} ${STAGEDIR}${PREFIX}/${LIBGLDIR}
-	${RLN} ${STAGEDIR}${PREFIX}/lib/libGL-NVIDIA.so.1 \
-		${STAGEDIR}${PREFIX}/${LIBGLDIR}/libGL.so.1
-	${RLN} ${STAGEDIR}${PREFIX}/lib/libEGL-NVIDIA.so.1 \
-		${STAGEDIR}${PREFIX}/${LIBGLDIR}/libEGL.so.1
-	${RLN} ${STAGEDIR}${PREFIX}/lib/libGLESv2-NVIDIA.so.2 \
-		${STAGEDIR}${PREFIX}/${LIBGLDIR}/libGLESv2.so.2
-.  endif
-# Configuration of Nvidia as secondary GPU requires preserving xorg-server's
-# libglx.so and moving Nvidia's glx to where it can be found by a secondary
-# Xorg instance.
-# Not needed since 410.057: Nvidia driver finds libglxserver_nvidia.so instead.
-.  if ${EXTENSIONSDIR} != ${MODULESDIR}/extensions/.nvidia
-	${MKDIR} ${STAGEDIR}${PREFIX}/${EXTENSIONSDIR}
-	${MV} ${STAGEDIR}${PREFIX}/${MODULESDIR}/extensions/.nvidia/* \
-		${STAGEDIR}${PREFIX}/${EXTENSIONSDIR}/
-.  endif
 .else
 	${REINPLACE_CMD} -E '/-NVIDIA/d ; \
 		/lib(Open)?E?GLX?(ESv[12](_CM)?|dispatch)?\.so/d' \

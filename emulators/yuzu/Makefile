@@ -1,6 +1,6 @@
 PORTNAME=	yuzu
 PORTVERSION=	s20240301
-PORTREVISION=	2
+PORTREVISION=	8
 CATEGORIES=	emulators wayland
 .if make(makesum)
 MASTER_SITES=	https://api.yuzu-emu.org/gamedb/?dummy=/:gamedb
@@ -31,7 +31,6 @@ DEPRECATED=	Project discontinued
 BUILD_DEPENDS=	boost-libs>0:devel/boost-libs \
 		nlohmann-json>0:devel/nlohmann-json \
 		simpleini>0:devel/simpleini \
-		xbyak>0:devel/xbyak \
 		glslangValidator:graphics/glslang \
 		vulkan-headers>0:graphics/vulkan-headers \
 		vulkan-utility-libraries>0:graphics/vulkan-utility-libraries
@@ -62,11 +61,12 @@ GH_TUPLE=	yuzu-mirror:mbedtls:v2.16.9-115-g8c88150ca:mbedtls/externals/mbedtls \
 		arun11299:cpp-jwt:v1.4-18-g10ef573:cpp_jwt/externals/cpp-jwt \
 		arsenm:sanitizers-cmake:aab6948:sanitizers_cmake/externals/cubeb/cmake/sanitizers-cmake \
 		eggert:tz:2022g-11-g16ce126a:tz/externals/nx_tzdb/tzdb_to_nx/externals/tz/tz \
+		herumi:xbyak:v6.68:xbyak/externals/xbyak \
 		kinetiknz:cubeb:cubeb-0.2-1452-g48689ae:cubeb/externals/cubeb \
 		lat9nq:tzdb_to_nx:221202-15-g9792969:tzdb_to_nx/externals/nx_tzdb/tzdb_to_nx \
 		yhirose:cpp-httplib:v0.14.1:cpp_httplib/externals/cpp-httplib
 
-USES=		cmake:testing elfctl localbase:ldflags pkgconfig sdl ssl
+USES=		cmake:testing localbase:ldflags pkgconfig sdl ssl
 USE_SDL=	sdl2
 WRKSRC=		${WRKDIR}/${PORTNAME}
 CMAKE_ON=	Boost_USE_STATIC_LIBS
@@ -79,7 +79,6 @@ CMAKE_OFF+=	${ARCH:Maarch64:C/.+/YUZU_USE_PRECOMPILED_HEADERS DYNARMIC_USE_PRECO
 CMAKE_OFF+=	${CMAKE_TESTING_ON}
 CMAKE_TESTING_ON=	YUZU_TESTS
 LDFLAGS+=	-Wl,--as-needed # Qt5Network
-ELF_FEATURES=	${PLIST_FILES:Mbin/*:S/^/+wxneeded:/}
 PLIST_FILES=	bin/${PORTNAME}-cmd \
 		bin/${PORTNAME}-room
 
@@ -137,7 +136,7 @@ WEBENGINE_CMAKE_BOOL=	YUZU_USE_QT_WEB_ENGINE
 WEBENGINE_IMPLIES=	GUI
 
 post-extract:
-	@${CP} ${DISTFILES:M*\:gamedb:C/\:.*//:S,^,${_DISTDIR},} \
+	@${CP} ${DISTFILES:M*\:gamedb:C/\:.*//:S,^,${DISTDIR}/,} \
 		${WRKSRC}/dist/compatibility_list/
 
 post-patch:
@@ -160,21 +159,9 @@ post-patch-VAAPI-off:
 	@${REINPLACE_CMD} -i .nova '/pkg_check.*libva/d' \
 		${WRKSRC}/CMakeLists.txt
 
-# XXX Drop after FreeBSD 13.2 EOL around 2024-07-01 (don't forget distinfo)
-.if !exists(/usr/include/c++/v1/__ranges/as_rvalue_view.h) || make(makesum) || make(fetch)
-# XXX Move into separate port and standardize via USES
-GH_TUPLE+=	llvm:llvm-project:llvmorg-16.0.1:libcxx
-CXXFLAGS+=	-nostdinc++ -isystem${WRKDIR}/libcxx_prefix/include/c++/v1
-# Don't link against new libc++ to avoid ABI mismatch in Qt
-#LDFLAGS+=	-nostdlib++ -L${WRKDIR}/libcxx_prefix/lib -l:libc++.a -lcxxrt
-
-pre-configure:	bundled-libcxx
-bundled-libcxx:
-	@${SETENV} ${CONFIGURE_ENV} ${CMAKE_BIN} ${CMAKE_ARGS:M*Ninja*} \
-		-DLIBCXX_INCLUDE_BENCHMARKS:BOOL=OFF \
-		-DCMAKE_INSTALL_PREFIX:PATH=${WRKDIR}/libcxx_prefix \
-		-B ${WRKDIR}/libcxx_build -S ${WRKSRC_libcxx}/libcxx
-	@${DO_MAKE_BUILD:NDESTDIR*} install -C ${WRKDIR}/libcxx_build
+post-install:
+.if exists(/usr/bin/elfctl)
+	${ELFCTL} -e +wxneeded ${STAGEDIR}${PREFIX}/bin/*
 .endif
 
 .include <bsd.port.mk>

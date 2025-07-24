@@ -1,7 +1,7 @@
 PORTNAME=	naev
-PORTVERSION=	0.10.6
+PORTVERSION=	0.12.4
+PORTREVISION=	2
 DISTVERSIONSUFFIX=	-source
-PORTREVISION=	14
 CATEGORIES=	games
 MASTER_SITES=	https://github.com/naev/naev/releases/download/v${PORTVERSION}/
 
@@ -13,16 +13,19 @@ LICENSE=	GPLv2 GPLv3 CC-BY-3.0 CC-BY-SA-3.0 PD
 LICENSE_COMB=	multi
 
 BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}mutagen>0:audio/py-mutagen@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}yaml>0:devel/py-yaml@${PY_FLAVOR}
+		${PYTHON_PKGNAMEPREFIX}pyyaml>=0:devel/py-pyyaml@${PY_FLAVOR}
 LIB_DEPENDS=	libamd.so:math/suitesparse-amd \
 		libbacktrace.so:devel/libbacktrace \
 		libblas.so:math/blas \
 		libcholmod.so:math/suitesparse-cholmod \
+		libcmark.so:textproc/cmark \
 		libcolamd.so:math/suitesparse-colamd \
 		libcxsparse.so:math/suitesparse-cxsparse \
 		libenet.so:net/enet \
 		libfreetype.so:print/freetype2 \
 		libglpk.so:math/glpk \
+		libmetis.so:math/metis \
+		libnfd.so:devel/nativefiledialog-extended \
 		libopenblas.so:math/openblas \
 		libpcre2-8.so:devel/pcre2 \
 		libphysfs.so:devel/physfs \
@@ -30,12 +33,13 @@ LIB_DEPENDS=	libamd.so:math/suitesparse-amd \
 		libunibreak.so:textproc/libunibreak \
 		libvorbisfile.so:audio/libvorbis \
 		libwebp.so:graphics/webp \
+		libyaml.so:textproc/libyaml \
  		libzip.so:archivers/libzip
 RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}mutagen>0:audio/py-mutagen@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}yaml>0:devel/py-yaml@${PY_FLAVOR}
+		${PYTHON_PKGNAMEPREFIX}pyyaml>=0:devel/py-pyyaml@${PY_FLAVOR}
 
-USES=		desktop-file-utils gettext gl gnome localbase:ldflags \
-		luajit:luajit-openresty meson openal pkgconfig python sdl \
+USES=		cmake:indirect desktop-file-utils gettext gl gnome localbase:ldflags \
+		luajit meson openal pkgconfig python sdl \
 		shebangfix tar:xz
 USE_GL=		gl glu
 USE_GNOME=	intltool libxml2

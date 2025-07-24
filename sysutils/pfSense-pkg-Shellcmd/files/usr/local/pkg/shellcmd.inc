@@ -3,7 +3,7 @@
  * shellcmd.inc
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2015-2024 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2015-2025 Rubicon Communications, LLC (Netgate)
  * Copyright (C) 2008 Mark J Crane
  * All rights reserved.
  *
@@ -141,7 +141,7 @@ function shellcmd_sync_package() {
 
 
 function shellcmd_import_config() {
-	$shellcmd_config = config_get_path('installedpackages/shellcmdsettings/config');
+	$shellcmd_config = config_get_path('installedpackages/shellcmdsettings/config', []);
 
 	$i = 0;
 

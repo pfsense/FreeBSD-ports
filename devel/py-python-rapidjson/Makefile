@@ -1,8 +1,9 @@
 PORTNAME=	python-rapidjson
-DISTVERSION=	1.16
+DISTVERSION=	1.21
 CATEGORIES=	devel python
 MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
+DISTNAME=	${PORTNAME:S/-/_/}-${DISTVERSION}
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Python wrapper around rapidjson
@@ -21,6 +22,8 @@ TEST_ENV=	${MAKE_ENV} PYTHONPATH=${STAGEDIR}${PYTHONPREFIX_SITELIBDIR}
 TEST_WRKSRC=	${WRKSRC}/tests
 
 post-install:
-	@${STRIP_CMD} ${STAGEDIR}${PYTHON_SITELIBDIR}/rapidjson${PYTHON_EXT_SUFFIX}.so
+	@${STRIP_CMD} ${STAGEDIR}${PYTHON_SITELIBDIR}/rapidjson${PYTHON_TAG}.so
+
+# tests as of 1.21: 929 passed, 17 skipped, 2 xfailed in 18.02s
 
 .include <bsd.port.mk>

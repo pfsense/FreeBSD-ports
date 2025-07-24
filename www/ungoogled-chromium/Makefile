@@ -1,16 +1,18 @@
 PORTNAME=	ungoogled-chromium
-PORTVERSION=	126.0.6478.126
-PORTREVISION=	1
-UGVERSION=	${DISTVERSION}-1
+PORTVERSION=	137.0.7151.103
+PORTREVISION=	2
 PULSEMV=	16
 PULSEV=		${PULSEMV}.1
+UGVERSION=	${DISTVERSION}-1
 CATEGORIES=	www wayland
-MASTER_SITES=	https://commondatastorage.googleapis.com/chromium-browser-official/ \
-		https://nerd.hu/distfiles/:external \
+MASTER_SITES=	https://commondatastorage.googleapis.com/chromium-browser-official/:goo \
 		https://freedesktop.org/software/pulseaudio/releases/:pulseaudio
-DISTFILES=	chromium-${DISTVERSION}${EXTRACT_SUFX} \
-		ungoogled-chromium-${UGVERSION}.tar.gz:external \
+DISTFILES=	chromium-${DISTVERSION}${EXTRACT_SUFX}:goo \
 		pulseaudio-${PULSEV}.tar.gz:pulseaudio
+
+USE_GITHUB=	yes
+GH_ACCOUNT=	ungoogled-software
+GH_TAGNAME=	${UGVERSION}
 
 MAINTAINER=	chromium@FreeBSD.org
 COMMENT=	Google web browser based on WebKit sans integration with Google
@@ -19,7 +21,7 @@ WWW=		https://github.com/ungoogled-software/ungoogled-chromium
 LICENSE=	BSD3CLAUSE LGPL21 MPL11
 LICENSE_COMB=	multi
 
-ONLY_FOR_ARCHS=	aarch64 amd64 i386
+ONLY_FOR_ARCHS=	aarch64 amd64
 
 PATCH_DEPENDS=	gpatch:devel/patch \
 		${PYTHON_VERSION}:lang/python${PYTHON_SUFFIX}
@@ -27,6 +29,7 @@ PATCH_DEPENDS=	gpatch:devel/patch \
 BUILD_DEPENDS=	bash:shells/bash \
 		${PYTHON_PKGNAMEPREFIX}Jinja2>0:devel/py-Jinja2@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}ply>0:devel/py-ply@${PY_FLAVOR} \
+		bindgen:devel/rust-bindgen-cli \
 		gperf:devel/gperf \
 		flock:sysutils/flock \
 		node:www/node \
@@ -43,10 +46,8 @@ BUILD_DEPENDS=	bash:shells/bash \
 LIB_DEPENDS=	libatk-bridge-2.0.so:accessibility/at-spi2-core \
 		libatspi.so:accessibility/at-spi2-core \
 		libspeechd.so:accessibility/speech-dispatcher \
-		libasound.so:audio/alsa-lib \
 		libFLAC.so:audio/flac \
 		libopus.so:audio/opus \
-		libsndio.so:audio/sndio \
 		libspeex.so:audio/speex \
 		libdbus-1.so:devel/dbus \
 		libdbus-glib-1.so:devel/dbus-glib \
@@ -87,19 +88,18 @@ USES=		bison compiler:c++17-lang cpe desktop-file-utils gl gmake gnome \
 CPE_VENDOR=	google
 CPE_PRODUCT=	chrome
 USE_GL=		gbm gl
-USE_GNOME=	atk dconf gdkpixbuf2 glib20 gtk30 libxml2 libxslt
+USE_GNOME=	atk dconf gdkpixbuf glib20 gtk30 libxml2 libxslt
 USE_LDCONFIG=	${DATADIR}
 USE_PERL5=	build
 USE_XORG=	x11 xcb xcomposite xcursor xext xdamage xfixes xi \
 		xorgproto xrandr xrender xscrnsaver xtst
 USE_QT=		buildtools:build
-SHEBANG_FILES=	chrome/tools/build/linux/chrome-wrapper buildtools/linux64/clang-format
+SHEBANG_FILES=	chrome/tools/build/linux/chrome-wrapper
 
 MAKE_ARGS=	-C out/${BUILDTYPE}
 ALL_TARGET=	chrome
 
-BINARY_ALIAS=	python3=${PYTHON_CMD} \
-		moc=${PREFIX}/bin/moc-qt5
+BINARY_ALIAS=	python3=${PYTHON_CMD}
 
 # TODO bz@ : install libwidevinecdm.so (see third_party/widevine/cdm/BUILD.gn)
 #
@@ -111,6 +111,7 @@ GN_ARGS+=	enable_widevine=true \
 		fatal_linker_warnings=false \
 		icu_use_data_file=false \
 		is_clang=true \
+		moc_qt5_path="${QT_TOOLDIR}/moc" \
 		optimize_webui=true \
 		toolkit_views=true \
 		use_allocator_shim=false \
@@ -120,13 +121,14 @@ GN_ARGS+=	enable_widevine=true \
 		use_lld=true \
 		use_partition_alloc=true \
 		use_partition_alloc_as_malloc=false \
+		use_qt5=true \
 		use_sysroot=false \
 		use_system_freetype=false \
 		use_system_harfbuzz=true \
 		use_system_libffi=true \
 		use_system_libjpeg=true \
 		use_udev=false \
-		extra_cxxflags="${CXXFLAGS} -I${WRKDIR}/pulseaudio-${PULSEV}/src -DPA_MAJOR=${PULSEMV}" \
+		extra_cxxflags="${CXXFLAGS} -I${LOCALBASE}/include/libepoll-shim ${PINCLUDES}" \
 		extra_ldflags="${LDFLAGS}" \
 		ffmpeg_branding="${FFMPEG_BRAND}"
 
@@ -136,7 +138,6 @@ GN_ARGS+=	build_with_tflite_lib=false \
 		clang_use_chrome_plugins=false \
 		disable_fieldtrial_testing_config=true \
 		enable_backup_ref_ptr_support=false \
-		enable_log_error_not_reached=true \
 		enable_hangout_services_extension=false \
 		enable_mdns=false \
 		enable_nacl=false \
@@ -153,11 +154,6 @@ GN_ARGS+=	build_with_tflite_lib=false \
 		use_official_google_api_keys=false \
 		use_unofficial_version_number=false
 
-# Audio backends
-GN_ARGS+=	use_alsa=true \
-		use_pulseaudio=true \
-		use_sndio=true
-
 # TODO: investigate building with these options:
 # use_system_minigbm
 GN_BOOTSTRAP_FLAGS=	--no-clean --no-rebuild --skip-generate-buildfiles
@@ -166,8 +162,10 @@ SUB_FILES=	ungoogled-chromium.desktop ungoogled-chromium
 SUB_LIST+=	COMMENT="${COMMENT}"
 
 OPTIONS_DEFINE=		CODECS CUPS DEBUG DRIVER KERBEROS LTO PIPEWIRE TEST WIDEVINE
-OPTIONS_DEFAULT=	CODECS CUPS DRIVER KERBEROS PIPEWIRE
+OPTIONS_DEFAULT=	CODECS CUPS DRIVER KERBEROS PIPEWIRE SNDIO ALSA PULSEAUDIO
 OPTIONS_EXCLUDE_aarch64=LTO
+OPTIONS_GROUP=		AUDIO
+OPTIONS_GROUP_AUDIO=	ALSA PULSEAUDIO SNDIO
 OPTIONS_RADIO=		KERBEROS
 OPTIONS_RADIO_KERBEROS=	HEIMDAL HEIMDAL_BASE MIT
 OPTIONS_SUB=		yes
@@ -176,6 +174,12 @@ DRIVER_DESC=		Install chromedriver
 HEIMDAL_BASE_DESC=	Heimdal Kerberos (base)
 HEIMDAL_DESC=		Heimdal Kerberos (security/heimdal)
 MIT_DESC=		MIT Kerberos (security/krb5)
+
+ALSA_LIB_DEPENDS=	libasound.so:audio/alsa-lib
+ALSA_RUN_DEPENDS=	${LOCALBASE}/lib/alsa-lib/libasound_module_pcm_oss.so:audio/alsa-plugins \
+			alsa-lib>=1.1.1_1:audio/alsa-lib
+ALSA_VARS=		GN_ARGS+=use_alsa=true
+ALSA_VARS_OFF=		GN_ARGS+=use_alsa=false
 
 CODECS_VARS=		GN_ARGS+=proprietary_codecs=true \
 			FFMPEG_BRAND="Chrome"
@@ -192,13 +196,15 @@ DEBUG_VARS=		BUILDTYPE=Debug \
 			GN_ARGS+=is_component_build=false \
 			GN_ARGS+=symbol_level=1 \
 			GN_BOOTSTRAP_FLAGS+=--debug \
-			WANTSPACE="21 GB"
+			WANTSPACE="60 GB" \
+			WANTMEM="8 GB"
 DEBUG_VARS_OFF=		BUILDTYPE=Release \
 			GN_ARGS+=blink_symbol_level=0 \
 			GN_ARGS+=is_debug=false \
 			GN_ARGS+=is_official_build=true \
 			GN_ARGS+=symbol_level=0 \
-			WANTSPACE="14 GB"
+			WANTSPACE="35 GB" \
+			WANTMEM="8 GB"
 
 DRIVER_MAKE_ARGS=	chromedriver
 
@@ -208,7 +214,8 @@ KERBEROS_VARS_OFF=	GN_ARGS+=use_kerberos=false
 
 LTO_VARS=		GN_ARGS+=use_thin_lto=true \
 			GN_ARGS+=thin_lto_enable_optimizations=true \
-			WANTSPACE="14 GB"
+			WANTSPACE="40 GB" \
+			WANTMEM="16 GB"
 LTO_VARS_OFF=		GN_ARGS+=use_thin_lto=false
 
 MIT_LIB_DEPENDS=	libkrb.so.3:security/krb5
@@ -220,12 +227,19 @@ PIPEWIRE_VARS=		GN_ARGS+=rtc_use_pipewire=true \
 PIPEWIRE_VARS_OFF=	GN_ARGS+=rtc_use_pipewire=false \
 			GN_ARGS+=rtc_link_pipewire=false
 
+PULSEAUDIO_VARS=	GN_ARGS+=use_pulseaudio=true \
+			PINCLUDES="-I${WRKDIR}/pulseaudio-${PULSEV}/src -DPA_MAJOR=${PULSEMV}"
+PULSEAUDIO_VARS_OFF=	GN_ARGS+=use_pulseaudio=false
+
+SNDIO_LIB_DEPENDS=	libsndio.so:audio/sndio
+SNDIO_VARS=		GN_ARGS+=use_sndio=true
+SNDIO_VARS_OFF=		GN_ARGS+=use_sndio=false
+
 WIDEVINE_DESC=		Depend on foreign-cdm to enable playback of DRM content
 WIDEVINE_RUN_DEPENDS=	foreign-cdm>0:www/foreign-cdm
 
 .include "Makefile.tests"
-TEST_DISTFILES=		chromium-${DISTVERSION}-testdata${EXTRACT_SUFX} \
-			test_fonts-336e775eec536b2d785cc80eff6ac39051931286.tar.gz:external
+TEST_DISTFILES=		chromium-${DISTVERSION}-testdata${EXTRACT_SUFX}
 TEST_ALL_TARGET=	${TEST_TARGETS}
 
 .include <bsd.port.options.mk>
@@ -235,8 +249,7 @@ TEST_ALL_TARGET=	${TEST_TARGETS}
 IGNORE=		you have selected HEIMDAL_BASE but do not have Heimdal installed in base
 .endif
 
-.if ${COMPILER_VERSION} < 180
-LLVM_DEFAULT=		18
+LLVM_DEFAULT=		19
 BUILD_DEPENDS+=		clang${LLVM_DEFAULT}:devel/llvm${LLVM_DEFAULT}
 BINARY_ALIAS+=		cpp=${LOCALBASE}/bin/clang-cpp${LLVM_DEFAULT} \
 			cc=${LOCALBASE}/bin/clang${LLVM_DEFAULT} \
@@ -244,10 +257,6 @@ BINARY_ALIAS+=		cpp=${LOCALBASE}/bin/clang-cpp${LLVM_DEFAULT} \
 			ar=${LOCALBASE}/bin/llvm-ar${LLVM_DEFAULT} \
 			nm=${LOCALBASE}/bin/llvm-nm${LLVM_DEFAULT} \
 			ld=${LOCALBASE}/bin/ld.lld${LLVM_DEFAULT}
-.else
-BINARY_ALIAS+=		ar=/usr/bin/llvm-ar \
-			nm=/usr/bin/llvm-nm
-.endif
 
 # - swiftshader/lib/{libEGL.so,libGLESv2.so} is x86 only
 # - map ffmpeg target to ${ARCH}
@@ -286,13 +295,11 @@ GN_ARGS+=	enable_rust=true \
 
 pre-everything::
 	@${ECHO_MSG}
-	@${ECHO_MSG} "To build Ungoogled Chromium, you should have around 2GB of memory"
-	@${ECHO_MSG} "and around ${WANTSPACE} of free disk space."
+	@${ECHO_MSG} "To build ${PORTNAME}, you should have at least:"
+	@${ECHO_MSG} "- ${WANTMEM} of memory"
+	@${ECHO_MSG} "- ${WANTSPACE} of free disk space"
+	@${ECHO_MSG} "- 1.5 million free inodes"
 	@${ECHO_MSG}
-
-post-extract-TEST-on:
-	@${MKDIR} ${WRKSRC}/third_party/test_fonts/test_fonts
-	@${MV} ${WRKDIR}/test_fonts ${WRKSRC}/third_party/test_fonts/
 
 pre-patch:
 	cd ${WRKDIR}/ungoogled-chromium-${UGVERSION} && ${PYTHON_CMD} \
@@ -310,7 +317,7 @@ pre-configure:
 	#./build/linux/unbundle/remove_bundled_libraries.py [list of preserved]
 	cd ${WRKSRC} && ${SETENV} ${CONFIGURE_ENV} ${PYTHON_CMD} \
 		./build/linux/unbundle/replace_gn_files.py --system-libraries \
-		dav1d flac fontconfig freetype harfbuzz-ng icu libdrm libevent libpng \
+		dav1d flac fontconfig harfbuzz-ng libdrm libpng \
 		libusb libwebp libxml libxslt openh264 opus || ${FALSE}
 	# Chromium uses an unreleased version of FFmpeg, so configure it
 	cd ${WRKSRC}/media/ffmpeg && \
@@ -322,6 +329,9 @@ pre-configure:
 	-${CP} -pR ${FFMPEG_BDIR}/${_e} ${FFMPEG_CDIR}
 .endfor
 	touch ${WRKDIR}/pulseaudio-${PULSEV}/src/pulse/version.h
+	@${REINPLACE_CMD} -e 's|$${LOCALBASE}|${LOCALBASE}|;s|$${MODCLANG_VERSION}|${LLVM_DEFAULT}|' \
+		${WRKSRC}/build/rust/rust_bindgen.gni \
+		${WRKSRC}/build/rust/rust_bindgen_generator.gni
 
 do-configure:
 	# GN generator bootstrapping and generating ninja files

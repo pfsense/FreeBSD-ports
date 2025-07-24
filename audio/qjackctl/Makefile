@@ -1,11 +1,12 @@
 PORTNAME=	qjackctl
 DISTVERSIONPREFIX=	v
-DISTVERSION=	1.0.0
+DISTVERSION=	1.0.4
 CATEGORIES=	audio
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Qt interface for JACK Audio Connection Kit
-WWW=		https://qjackctl.sourceforge.io/
+WWW=		https://qjackctl.sourceforge.io/ \
+		https://github.com/rncbc/qjackctl
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/LICENSE

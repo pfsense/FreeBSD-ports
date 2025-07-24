@@ -23,6 +23,16 @@
 #	In most cases, this is the only required variable for ports that
 #	use Go modules.
 #
+# GO_MOD_DIST
+#       The location to download the go.mod file if GO_MODULE is used.
+#       The default is empty, so it is loaded from GO_PROXY.
+#       Set it to "gitlab" and make sure GL_PROJECT is defined to download
+#       the "go.mod" from gitlab.
+#       Set it to "github" and make sure GH_PROJECT is defined to download
+#       the "go.mod" from github.
+#       You can also set it completely manually a URI without go.mod in it,
+#       is attached automatically to the URI.
+#
 # GO_PKGNAME
 #	The name of the package when building in GOPATH mode.  This
 #	is the directory that will be created in ${GOPATH}/src.  If not set
@@ -60,7 +70,7 @@ _INCLUDE_USES_GO_MK=	yes
 
 # When adding a version, please keep the comment in
 # Mk/bsd.default-versions.mk in sync.
-GO_VALID_VERSIONS=	1.20 1.21 1.22 1.23-devel
+GO_VALID_VERSIONS=	1.20 1.21 1.22 1.23 1.24 1.25-devel
 
 # Check arguments sanity
 .  if !empty(go_ARGS:N[1-9].[0-9][0-9]:N*-devel:Nmodules:Nno_targets:Nrun)
@@ -143,14 +153,40 @@ GO_MODNAME=	${GO_MODULE:C/^([^@]*)(@([^@]*)?)/\1/}
 GO_MODVERSION=	${GO_MODULE:C/^([^@]*)(@([^@]*)?)/\2/:M@*:S/^@//:S/^$/${DISTVERSIONFULL}/}
 GO_MODFILE=	${GO_MODVERSION}.mod
 GO_DISTFILE=	${GO_MODVERSION}.zip
+# If GO_MOD_DIST is gitlab, download the go.mod from gitlab by the defined GL_ACCOUNT and GL_PROJECT/PORTNAME
+.        if defined(GO_MOD_DIST) && "${GO_MOD_DIST}" == "gitlab"
+MASTER_SITES+=	https://gitlab.com/${GL_ACCOUNT}/${GL_PROJECT}/-/raw/${GO_MODVERSION}/${WRKSRC_SUBDIR:?${WRKSRC_SUBDIR}/:}
+DISTFILES+=	go.mod
+# If GO_MOD_DIST is github, download the go.mod from github by the defined GH_ACCOUNT and GH_PROJECT/PORTNAME
+.        elif defined(GO_MOD_DIST) && "${GO_MOD_DIST}" == "github"
+MASTER_SITES+=	https://raw.githubusercontent.com/${GH_ACCOUNT}/${GH_PROJECT}/${GO_MODVERSION}/${WRKSRC_SUBDIR:?${WRKSRC_SUBDIR}/:}
+DISTFILES+=	go.mod
+# Manually defined GO_MOD_DIST
+.        elifdef(GO_MOD_DIST)
+MASTER_SITES+=	${GO_MOD_DIST}
+DISTFILES+=	go.mod
+# Fallback to default GO_PROXY
+.        else
+
+# `GOPROXY` presents sources via the proxy service and in the downloaded
+# `WRKSRC` differently as of v2.x versions of projects. Support this different
+# directory/REST API scheme: https://go.dev/ref/mod#major-version-suffixes .
+# GO_MODVERSION_MAJOR=	${GO_MODVERSION:C/^v//g:C/\..+//g}
+# .if ${GO_MODVERSION_MAJOR} > 1
+# WRKSRC=		${WRKDIR}/${GO_MODNAME}/v${GO_MODVERSION_MAJOR}@${GO_MODVERSION}
+# MASTER_SITES+=	${GO_GOPROXY}/${GO_MODNAME:C/([A-Z])/!\1/g:tl}/v${GO_MODVERSION_MAJOR}/@v/
+# .else
+# WRKSRC=		${WRKDIR}/${GO_MODNAME}@${GO_MODVERSION}
 MASTER_SITES+=	${GO_GOPROXY}/${GO_MODNAME:C/([A-Z])/!\1/g:tl}/@v/
+# .endif
 DISTFILES+=	${GO_MODFILE} ${GO_DISTFILE}
 WRKSRC=		${WRKDIR}/${GO_MODNAME}@${GO_MODVERSION}
+.        endif
+
 .      endif
 EXTRACT_ONLY?=	${DISTFILES:N*.mod\:*:N*.mod:C/:.*//}
 DIST_SUBDIR=	go/${PKGORIGIN:S,/,_,g}/${DISTNAME}
-FETCH_DEPENDS+=	${GO_CMD}:${GO_PORT} \
-		ca_root_nss>0:security/ca_root_nss
+FETCH_DEPENDS+=	${GO_CMD}:${GO_PORT}
 USES+=		zip
 .    else
 GO_ENV+=	GO_NO_VENDOR_CHECKS=1

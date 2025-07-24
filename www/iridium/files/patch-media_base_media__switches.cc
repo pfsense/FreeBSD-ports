@@ -1,6 +1,6 @@
---- media/base/media_switches.cc.orig	2024-06-25 12:08:48 UTC
+--- media/base/media_switches.cc.orig	2025-06-19 07:37:57 UTC
 +++ media/base/media_switches.cc
-@@ -21,7 +21,7 @@
+@@ -19,7 +19,7 @@
  #include "ui/gl/gl_features.h"
  #include "ui/gl/gl_utils.h"
  
@@ -9,19 +9,8 @@
  #include "base/cpu.h"
  #endif
  
-@@ -60,6 +60,10 @@ const char kDisableBackgroundMediaSuspend[] =
- const char kReportVp9AsAnUnsupportedMimeType[] =
-     "report-vp9-as-an-unsupported-mime-type";
- 
-+#if BUILDFLAG(IS_BSD)
-+const char kAudioBackend[] = "audio-backend";
-+#endif
-+
- #if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_FREEBSD) || \
-     BUILDFLAG(IS_SOLARIS)
- // The Alsa device to use when opening an audio input stream.
-@@ -368,8 +372,8 @@ BASE_FEATURE(kMacLoopbackAudioForScreenShare,
-              "MacLoopbackAudioForScreenShare",
+@@ -366,8 +366,8 @@ BASE_FEATURE(kUseSCContentSharingPicker,
+              "UseSCContentSharingPicker",
               base::FEATURE_DISABLED_BY_DEFAULT);
  #endif  // BUILDFLAG(IS_MAC)
 -
@@ -31,7 +20,36 @@
  // Enables system audio mirroring using pulseaudio.
  BASE_FEATURE(kPulseaudioLoopbackForCast,
               "PulseaudioLoopbackForCast",
-@@ -688,7 +692,7 @@ BASE_FEATURE(kFallbackAfterDecodeError,
+@@ -377,6 +377,28 @@ BASE_FEATURE(kPulseaudioLoopbackForCast,
+ BASE_FEATURE(kPulseaudioLoopbackForScreenShare,
+              "PulseaudioLoopbackForScreenShare",
+              base::FEATURE_DISABLED_BY_DEFAULT);
++
++BASE_FEATURE(kAudioBackend,
++             "AudioBackend",
++             base::FEATURE_ENABLED_BY_DEFAULT);
++
++constexpr base::FeatureParam<AudioBackend>::Option
++    kAudioBackendOptions[] = {
++        {AudioBackend::kAuto,
++         "auto"},
++        {AudioBackend::kPulseAudio, "pulseaudio"},
++        {AudioBackend::kSndio, "sndio"},
++        {AudioBackend::kAlsa, "alsa"}};
++
++const base::FeatureParam<AudioBackend>
++    kAudioBackendParam{
++        &kAudioBackend, "audio-backend",
++#if BUILDFLAG(IS_OPENBSD)
++        AudioBackend::kSndio,
++#elif BUILDFLAG(IS_FREEBSD)
++        AudioBackend::kAuto,
++#endif
++        &kAudioBackendOptions};
+ #endif  // BUILDFLAG(IS_LINUX)
+ 
+ // When enabled, MediaCapabilities will check with GPU Video Accelerator
+@@ -658,7 +680,7 @@ BASE_FEATURE(kFileDialogsBlockPictureInPicture,
  // Show toolbar button that opens dialog for controlling media sessions.
  BASE_FEATURE(kGlobalMediaControls,
               "GlobalMediaControls",
@@ -40,7 +58,7 @@
               base::FEATURE_ENABLED_BY_DEFAULT
  #else
               base::FEATURE_DISABLED_BY_DEFAULT
-@@ -716,7 +720,7 @@ BASE_FEATURE(kGlobalMediaControlsUpdatedUI,
+@@ -681,7 +703,7 @@ BASE_FEATURE(kGlobalMediaControlsUpdatedUI,
  // If enabled, users can request Media Remoting without fullscreen-in-tab.
  BASE_FEATURE(kMediaRemotingWithoutFullscreen,
               "MediaRemotingWithoutFullscreen",
@@ -49,53 +67,35 @@
               base::FEATURE_ENABLED_BY_DEFAULT
  #else
               base::FEATURE_DISABLED_BY_DEFAULT
-@@ -728,7 +732,7 @@ BASE_FEATURE(kMediaRemotingWithoutFullscreen,
+@@ -693,7 +715,7 @@ BASE_FEATURE(kMediaRemotingWithoutFullscreen,
  BASE_FEATURE(kGlobalMediaControlsPictureInPicture,
               "GlobalMediaControlsPictureInPicture",
  #if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX) || \
--    BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_CHROMEOS_LACROS)
-+    BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_CHROMEOS_LACROS) || BUILDFLAG(IS_BSD)
+-    BUILDFLAG(IS_CHROMEOS)
++    BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_BSD)
               base::FEATURE_ENABLED_BY_DEFAULT
  #else
               base::FEATURE_DISABLED_BY_DEFAULT
-@@ -757,7 +761,7 @@ BASE_FEATURE(kUnifiedAutoplay,
+@@ -722,7 +744,7 @@ BASE_FEATURE(kUnifiedAutoplay,
               "UnifiedAutoplay",
               base::FEATURE_ENABLED_BY_DEFAULT);
  
 -#if BUILDFLAG(IS_LINUX)
 +#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_BSD)
- // Enable vaapi video decoding on linux. This is already enabled by default on
- // chromeos, but needs an experiment on linux.
- BASE_FEATURE(kVaapiVideoDecodeLinux,
-@@ -848,7 +852,7 @@ BASE_FEATURE(kVaapiVp9SModeHWEncoding,
-              "VaapiVp9SModeHWEncoding",
-              base::FEATURE_ENABLED_BY_DEFAULT);
+ // Enable vaapi/v4l2 video decoding on linux. This is already enabled by default
+ // on chromeos, but needs an experiment on linux.
+ BASE_FEATURE(kAcceleratedVideoDecodeLinux,
+@@ -795,7 +817,7 @@ BASE_FEATURE(kVSyncMjpegDecoding,
+              "VSyncMjpegDecoding",
+              base::FEATURE_DISABLED_BY_DEFAULT);
  #endif  // defined(ARCH_CPU_X86_FAMILY) && BUILDFLAG(IS_CHROMEOS)
 -#if BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_LINUX)
 +#if BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_BSD)
- // Enables the new V4L2 flat video decoder clients instead of V4L2VideoDecoder.
- // Owners: frkoenig@chromium.org, mcasas@chromium.org
- // Expiry: When flat decoders are supported on all platforms and the legacy
-@@ -978,7 +982,7 @@ BASE_FEATURE(kLiveCaptionUseWaitK,
- // Live Caption can be used in multiple languages, as opposed to just English.
- BASE_FEATURE(kLiveCaptionMultiLanguage,
-              "LiveCaptionMultiLanguage",
--#if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX)
-+#if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_BSD)
-              base::FEATURE_ENABLED_BY_DEFAULT
- #else
-              base::FEATURE_DISABLED_BY_DEFAULT
-@@ -1008,7 +1012,7 @@ BASE_FEATURE(kLiveCaptionWebAudio,
- // Live Translate translates captions generated by Live Caption.
- BASE_FEATURE(kLiveTranslate,
-              "LiveTranslate",
--#if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX)
-+#if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_BSD)
-              base::FEATURE_ENABLED_BY_DEFAULT
- #else
-              base::FEATURE_DISABLED_BY_DEFAULT
-@@ -1472,7 +1476,7 @@ BASE_FEATURE(kUseGTFOOutOfProcessVideoDecoding,
-              base::FEATURE_DISABLED_BY_DEFAULT);
+ // Enable H264 temporal layer encoding with V4L2 HW encoder on ChromeOS.
+ BASE_FEATURE(kV4L2H264TemporalLayerHWEncoding,
+              "V4L2H264TemporalLayerHWEncoding",
+@@ -1340,7 +1362,7 @@ BASE_FEATURE(kUseOutOfProcessVideoDecoding,
+ );
  #endif  // BUILDFLAG(ALLOW_OOP_VIDEO_DECODER)
  
 -#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS)
@@ -103,7 +103,7 @@
  // Spawn utility processes to perform hardware encode acceleration instead of
  // using the GPU process.
  BASE_FEATURE(kUseOutOfProcessVideoEncoding,
-@@ -1552,7 +1556,7 @@ BASE_FEATURE(kRecordWebAudioEngagement,
+@@ -1422,7 +1444,7 @@ BASE_FEATURE(kRecordWebAudioEngagement,
               "RecordWebAudioEngagement",
               base::FEATURE_ENABLED_BY_DEFAULT);
  

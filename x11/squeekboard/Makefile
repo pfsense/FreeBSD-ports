@@ -1,7 +1,7 @@
 PORTNAME=	squeekboard
 DISTVERSIONPREFIX=	v
-DISTVERSION=	1.39.0
-PORTREVISION=	2
+DISTVERSION=	1.43.1
+PORTREVISION=	7
 CATEGORIES=	x11 wayland
 
 PATCH_SITES=	${GL_SITE}/${GL_ACCOUNT}/${GL_PROJECT}/-/commit/
@@ -24,7 +24,7 @@ RUN_DEPENDS=	gsettings-desktop-schemas>0:devel/gsettings-desktop-schemas
 
 USES=		cargo compiler:c11 gettext-tools gnome meson pkgconfig python:build shebangfix
 USE_GITLAB=	yes
-USE_GNOME=	cairo gdkpixbuf2 gnomedesktop3 gtk30
+USE_GNOME=	cairo gdkpixbuf gnomedesktop3 gtk30
 GL_SITE=	https://gitlab.gnome.org
 GL_ACCOUNT=	World/Phosh
 SHEBANG_FILES=	tools/entry.py
@@ -33,11 +33,13 @@ CARGO_BUILD=	no
 CARGO_INSTALL=	no
 CARGO_TEST=	no
 MESON_ARGS=	-Dstrict=false
+GLIB_SCHEMAS=	sm.puri.Squeekboard.gschema.xml
 PLIST_FILES=	bin/${PORTNAME} \
 		bin/${PORTNAME}-entry \
 		bin/${PORTNAME}-test-layout \
 		share/applications/sm.puri.Squeekboard.desktop \
 		share/locale/be/LC_MESSAGES/${PORTNAME}.mo \
+		share/locale/bg/LC_MESSAGES/${PORTNAME}.mo \
 		share/locale/ca/LC_MESSAGES/${PORTNAME}.mo \
 		share/locale/cs/LC_MESSAGES/${PORTNAME}.mo \
 		share/locale/de/LC_MESSAGES/${PORTNAME}.mo \
@@ -76,5 +78,8 @@ post-patch:
 # Make each cargo subcommand very verbose
 	@${REINPLACE_CMD} -e '/^cargo/s/"$$@"/--verbose --verbose &/' \
 		${WRKSRC}/cargo.sh
+# https://bugs.freebsd.org/bugzilla/show_bug.cgi?id=254091
+	@${REINPLACE_CMD} -e "/sed/s/'-i',/& '',/" \
+		${WRKSRC}/meson.build
 
 .include <bsd.port.mk>

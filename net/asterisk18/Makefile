@@ -1,5 +1,5 @@
 PORTNAME=	asterisk
-PORTVERSION=	18.21.0
+PORTVERSION=	18.26.2
 PORTREVISION=	2
 CATEGORIES=	net
 MASTER_SITES=	https://downloads.asterisk.org/pub/telephony/%SUBDIR%/:DEFAULT,g729
@@ -11,14 +11,14 @@ DISTFILES=	${DISTNAME}${EXTRACT_SUFX}
 DIST_SUBDIR=	${PORTNAME}
 EXTRACT_ONLY:=	${DISTNAME}${EXTRACT_SUFX}
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	cmt@FreeBSD.org
 COMMENT=	Open Source PBX and telephony toolkit
 WWW=		https://www.asterisk.org
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-LIB_DEPENDS=	libuuid.so:misc/e2fsprogs-libuuid \
+LIB_DEPENDS=	libuuid.so:misc/libuuid \
 		libjansson.so:devel/jansson
 
 USES=		bison compiler:c11 cpe gmake gnome iconv libedit localbase \
@@ -56,7 +56,6 @@ LDFLAGS+=	-L.
 
 CONFLICTS=		ossp-uuid
 CONFLICTS_BUILD=	linuxthreads
-CONFLICTS_INSTALL=	asterisk13 asterisk16
 
 USERS=	${ASTERISK_USER}
 GROUPS=	${ASTERISK_GROUP} dahdi
@@ -69,7 +68,7 @@ OPTIONS_DEFINE_amd64=		DAHDI GEOLOCATION
 OPTIONS_DEFINE_i386=		DAHDI GEOLOCATION
 OPTIONS_DEFINE_powerpc=		DAHDI
 OPTIONS_DEFINE_powerpc64=	DAHDI
-OPTIONS_DEFINE_powerpc64le=	DAHDI
+OPTIONS_DEFINE_powerpc64le=	DAHDI GEOLOCATION
 OPTIONS_DEFAULT=		CURL FREETDS GSM LUA MACRO MP3PLAYER NEWT ODBC OPUS MYSQL PGSQL \
 				PJSIP PORTAUDIO RADIUS SNMP SPANDSP SPEEX SRTP URIPARSER \
 				VORBIS XMLDOC
@@ -210,16 +209,16 @@ XMLDOC_CONFIGURE_ENABLE=	xmldoc
 XMPP_LIB_DEPENDS=	libiksemel.so:textproc/iksemel
 XMPP_CONFIGURE_WITH=	iksemel
 
-ASTERISK_CORE_G729_SOUNDS=	asterisk-core-sounds-en-g729-1.5.tar.gz
+ASTERISK_CORE_G729_SOUNDS=	asterisk-core-sounds-en-g729-1.6.1.tar.gz
 ASTERISK_MOH_G729_SOUNDS=	asterisk-moh-opsound-g729-2.03.tar.gz
 ASTERISK_USER?=		asterisk
 ASTERISK_GROUP?=	asterisk
 
-PJSIP_VERSION=	2.13.1
+PJSIP_VERSION=	2.14.1
 
 .include <bsd.port.options.mk>
 
-.if ${OPSYS} == FreeBSD && ( ${OSVERSION} >= 1400079 || ( ${OSVERSION} >= 1302505 && ${OSVERSION} < 1400000 ))
+.if ${OPSYS} == FreeBSD
 USES+=		llvm:max=14
 .endif
 
@@ -254,6 +253,8 @@ LLD_EMULATION=	elf_i386
 LLD_EMULATION=	elf_x86_64
 .elif ${ARCH} == aarch64
 LLD_EMULATION=	aarch64elf
+.elif ${ARCH} == powerpc64le
+LLD_EMULATION=	elf64lppc
 .endif
 .endif
 

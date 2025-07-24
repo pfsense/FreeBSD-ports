@@ -1,6 +1,6 @@
 PORTNAME=	florence
 PORTVERSION=	0.6.3
-PORTREVISION=	6
+PORTREVISION=	7
 CATEGORIES=	x11
 MASTER_SITES=	SF/florence/florence/${PORTVERSION}/
 
@@ -37,7 +37,7 @@ NLS_USES=	gettext
 
 .include <bsd.port.options.mk>
 
-.if ${OPSYS} == FreeBSD && ( ${OSVERSION} >= 1400091 || ( ${OSVERSION} >= 1302507 && ${OSVERSION} < 1400000 ))
+.if ${OPSYS} == FreeBSD
 CFLAGS+=	-Wno-error=incompatible-function-pointer-types
 .endif
 

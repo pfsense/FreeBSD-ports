@@ -1,8 +1,8 @@
 PORTNAME=	kafka
-DISTVERSION=	3.7.0
+DISTVERSION=	3.9.1
 CATEGORIES=	net java
-MASTER_SITES=	APACHE/${PORTNAME}/${PORTVERSION}/
-DISTNAME=	${PORTNAME}_2.13-${PORTVERSION}
+MASTER_SITES=	APACHE/${PORTNAME}/${DISTVERSION}/
+DISTNAME=	${PORTNAME}_2.13-${DISTVERSION}
 
 MAINTAINER=	timp87@gmail.com
 COMMENT=	Distributed streaming platform
@@ -13,12 +13,9 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 
 RUN_DEPENDS=	bash:shells/bash
 
-USES=		cpe shebangfix tar:tgz
+USES=		cpe java shebangfix tar:tgz
 CPE_VENDOR=	apache
-
-USE_JAVA=	yes
 JAVA_VERSION=	17+
-JAVA_RUN=	jre
 
 USE_RC_SUBR=	kafka kafka_connect
 
@@ -84,7 +81,7 @@ PLIST_SUB=	KAFKA_DBDIR=${KAFKA_DBDIR} \
 		KAFKA_GROUP=${KAFKA_GROUP} \
 		KAFKA_LOGDIR=${KAFKA_LOGDIR} \
 		KAFKA_USER=${KAFKA_USER} \
-		PORTVERSION=${PORTVERSION}
+		PORTVERSION=${DISTVERSION}
 
 OPTIONS_DEFINE=	DOCS
 
@@ -122,6 +119,6 @@ do-install:
 
 do-install-DOCS-on:
 	${MKDIR} ${STAGEDIR}${DOCSDIR}
-	${EXTRACT_CMD} -xf ${WRKSRC}/site-docs/${PORTNAME}_2.13-${PORTVERSION}-site-docs.tgz -C ${STAGEDIR}${DOCSDIR}
+	${EXTRACT_CMD} -xf ${WRKSRC}/site-docs/${PORTNAME}_2.13-${DISTVERSION}-site-docs.tgz -C ${STAGEDIR}${DOCSDIR}
 
 .include <bsd.port.mk>

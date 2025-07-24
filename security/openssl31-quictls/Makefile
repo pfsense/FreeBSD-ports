@@ -1,7 +1,7 @@
 PORTNAME=	openssl
 DISTVERSIONPREFIX=	${PORTNAME}-
-DISTVERSION=	3.1.5
-PORTREVISION=	5
+PORTVERSION=	3.1.7
+PORTREVISION=	1
 DISTVERSIONSUFFIX=	-quic1
 CATEGORIES=	security devel
 PKGNAMESUFFIX=	31-quictls
@@ -10,10 +10,13 @@ MAINTAINER=	brnrd@FreeBSD.org
 COMMENT=	QUIC capable fork of OpenSSL
 WWW=		https://www.github.com/quictls/openssl
 
+DEPRECATED=		End-of-Life, please switch to security/quictls or OpenSSL 3.5
+EXPIRATION_DATE=	2025-03-14
+
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/LICENSE.txt
 
-CONFLICTS_INSTALL=	boringssl libressl libressl-devel openssl openssl111 openssl3* openssl-quictls
+CONFLICTS_INSTALL=	boringssl libressl libressl-devel openssl openssl111 openssl3* openssl-quictls openssl33-quictls
 
 BROKEN_i386=	ld: error: undefined symbol: __atomic_is_lock_free
 
@@ -45,13 +48,11 @@ OPTIONS_GROUP_MODULES=	FIPS LEGACY
 OPTIONS_DEFINE_i386=	I386
 OPTIONS_GROUP_PROTOCOLS=NEXTPROTONEG SCTP SSL3 TLS1 TLS1_1 TLS1_2
 
-OPTIONS_DEFINE=	ASYNC CRYPTODEV CT KTLS MAN3 RFC3779 SHARED ZLIB
+OPTIONS_DEFINE=	ASYNC CT KTLS MAN3 RFC3779 SHARED ZLIB
 
 OPTIONS_DEFAULT=ASM ASYNC CT DES EC FIPS GOST KTLS MAN3 MD4 NEXTPROTONEG \
 		RC2 RC4 RMD160 SCTP SHARED SSE2 THREADS TLS1 TLS1_1 TLS1_2
 
-OPTIONS_EXCLUDE=${${OSVERSION} < 1300042:?KTLS:} \
-		${${OSVERSION} > 1300000:?CRYPTODEV:}
 OPTIONS_EXCLUDE_i386=	FIPS
 
 OPTIONS_GROUP_OPTIMIZE_amd64=	EC
@@ -68,7 +69,6 @@ ARIA_DESC=	ARIA (South Korean standard)
 ASM_DESC=	Assembler code
 ASYNC_DESC=	Asynchronous mode
 CIPHERS_DESC=	Block Cipher Support
-CRYPTODEV_DESC=	/dev/crypto support
 CT_DESC=	Certificate Transparency Support
 DES_DESC=	(Triple) Data Encryption Standard
 EC_DESC=	Optimize NIST elliptic curves
@@ -77,7 +77,7 @@ GOST_DESC=	GOST (Russian standard)
 HASHES_DESC=	Hash Function Support
 I386_DESC=	i386 (instead of i486+)
 IDEA_DESC=	International Data Encryption Algorithm
-KTLS_DESC=	Use in-kernel TLS (FreeBSD >13)
+KTLS_DESC=	Use in-kernel TLS
 LEGACY_DESC=	Older algorithms
 MAN3_DESC=	Install API manpages (section 3, 7)
 MD2_DESC=	MD2 (obsolete) (requires LEGACY)
@@ -139,7 +139,7 @@ ZLIB_CONFIGURE_ON=	zlib-dynamic
 
 SHLIBS=			lib/engines-${OPENSSL_SHLIBVER}/loader_attic.so
 
-PORTSCOUT=		limit=^3\.1\.
+PORTSCOUT=		limit:^${DISTVERSION:R:S/./\./g}\.
 
 .include <bsd.port.options.mk>
 

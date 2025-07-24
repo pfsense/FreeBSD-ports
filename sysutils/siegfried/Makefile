@@ -1,6 +1,7 @@
 PORTNAME=	siegfried
 DISTVERSIONPREFIX=	v
-DISTVERSION=	1.11.1
+DISTVERSION=	1.11.2
+PORTREVISION=	5
 CATEGORIES=	sysutils
 
 MAINTAINER=	eduardo@FreeBSD.org
@@ -18,7 +19,7 @@ PLIST_FILES=	bin/sf
 
 do-test:
 	@cd ${WRKSRC} && \
-		${SETENV} ${MAKE_ENV} ${GO_ENV} ${GO_CMD} test ${GO_BUILDFLAGS} \
+		${SETENVI} ${WRK_ENV} ${MAKE_ENV} ${GO_ENV} ${GO_CMD} test ${GO_BUILDFLAGS} \
 		./cmd/sf
 
 .include <bsd.port.mk>

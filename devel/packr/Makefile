@@ -1,10 +1,10 @@
 PORTNAME=	packr
 DISTVERSIONPREFIX=	v
 DISTVERSION=	2.8.3
-PORTREVISION=	20
+PORTREVISION=	27
 CATEGORIES=	devel
 
-MAINTAINER=	dmgk@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Simple and easy way to embed static files into Go binaries
 WWW=		https://github.com/gobuffalo/packr
 

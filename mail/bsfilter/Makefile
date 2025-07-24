@@ -1,31 +1,29 @@
 PORTNAME=	bsfilter
-PORTVERSION=	1.0.19
-PORTREVISION=	3
+DISTVERSIONPREFIX=	v
+DISTVERSION=	1.0.20
 CATEGORIES=	mail ruby
-MASTER_SITES=	OSDN/bsfilter
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	nyan@FreeBSD.org
 COMMENT=	Bayesian spam filter written in Ruby
-WWW=		https://en.sourceforge.jp/projects/bsfilter/
+WWW=		https://github.com/nbkenichi/bsfilter
 
 LICENSE=	GPLv2
 
-RUN_DEPENDS=	rubygem-gdbm>=2.0.0,2:databases/rubygem-gdbm
+RUN_DEPENDS=	rubygem-gdbm>=2.0.0,2:databases/rubygem-gdbm \
+		rubygem-sdbm>=1.0.0:databases/rubygem-sdbm
+
+USES=		ruby shebangfix
+SHEBANG_FILES=	src/bsfilter.rb
+
+USE_GITHUB=	yes
+GH_ACCOUNT=	nbkenichi
 
 NO_BUILD=	yes
-USES=		ruby shebangfix tar:tgz
-SHEBANG_FILES=	bsfilter/bsfilter
 
 OPTIONS_DEFINE=	EXAMPLES
 
-.include <bsd.port.pre.mk>
-
-.if ${RUBY_VER:M3*} != ""
-RUN_DEPENDS+=	rubygem-sdbm>=1.0.0:databases/rubygem-sdbm
-.endif
-
 do-install:
-	${INSTALL_SCRIPT} ${WRKSRC}/bsfilter/${PORTNAME} ${STAGEDIR}${PREFIX}/bin/${PORTNAME}
+	${INSTALL_SCRIPT} ${WRKSRC}/src/bsfilter.rb ${STAGEDIR}${PREFIX}/bin/${PORTNAME}
 	@${MKDIR} ${STAGEDIR}${EXAMPLESDIR}
 .for FILE in bsfilter.conf.sample dot-qmail.sample
 	${INSTALL_DATA} ${FILESDIR}/${FILE} ${STAGEDIR}${EXAMPLESDIR}
@@ -34,4 +32,4 @@ do-install:
 	cd ${WRKSRC} && ${COPYTREE_SHARE} ${DIR} ${STAGEDIR}${EXAMPLESDIR}
 .endfor
 
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

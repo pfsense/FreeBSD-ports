@@ -1,13 +1,14 @@
-PORTNAME=	GPyOpt
+PORTNAME=	GPyOpt # the upstream repository was archived but this packages seems to be ok and is useful
 DISTVERSION=	1.2.6
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	science python
 MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Bayesian optimization toolbox based on GPy
-WWW=		https://sheffieldml.github.io/GPyOpt/
+WWW=		https://sheffieldml.github.io/GPyOpt/ \
+		https://github.com/SheffieldML/GPyOpt
 
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE.txt

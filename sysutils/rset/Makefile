@@ -1,5 +1,5 @@
 PORTNAME=	rset
-PORTVERSION=	3.0
+PORTVERSION=	3.2
 CATEGORIES=	sysutils
 MASTER_SITES=	https://scriptedconfiguration.org/code/
 
@@ -12,7 +12,6 @@ LICENSE=	ISCL
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
 HAS_CONFIGURE=	yes
-MAKE_ARGS=	MANPREFIX=${PREFIX}/share/man
 TEST_TARGET=	TEST
 
 post-install:

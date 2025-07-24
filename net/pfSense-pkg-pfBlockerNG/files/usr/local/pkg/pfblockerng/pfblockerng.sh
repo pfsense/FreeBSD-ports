@@ -41,6 +41,9 @@ etmatch="$(echo ${9} | sed 's/,/, /g')"
 # File Locations
 aliasarchive="/usr/local/etc/aliastables.tar.bz2"
 pathgeoipdat="/usr/local/share/GeoIP/GeoLite2-Country.mmdb"
+pathasndat="/usr/local/share/GeoIP/asn.mmdb"
+pathasncsv="/usr/local/share/GeoIP/asn.csv"
+pathasntable="/usr/local/www/pfblockerng/pfblockerng_asn.txt"
 pfbsuppression=/var/db/pfblockerng/pfbsuppression.txt
 pfbdnsblsuppression=/var/db/pfblockerng/pfbdnsblsuppression.txt
 pfbalexa=/var/db/pfblockerng/pfbalexawhitelist.txt
@@ -48,6 +51,7 @@ masterfile=/var/db/pfblockerng/masterfile
 mastercat=/var/db/pfblockerng/mastercat
 geoiplog=/var/log/pfblockerng/geoip.log
 errorlog=/var/log/pfblockerng/error.log
+extraslog=/var/log/pfblockerng/extras.log
 dnsbl_file=/var/unbound/pfb_dnsbl
 
 # Folder Locations
@@ -725,16 +729,11 @@ whoisconvert() {
 
 	vtype="${max}"
 	custom_list="$(echo ${dedup} | tr ',' ' ')"
-	multiple="$(echo ${dedup} | tr -cd , | wc -c | tr -d ' ')"
 
 	if [ "${vtype}" == '_v4' ]; then
 		_type=A
-		_bgp_type=4
-		_ip_type='\.'
 	else
 		_type=AAAA
-		_bgp_type=6
-		_ip_type=':'
 	fi
 
 	# Backup previous orig file
@@ -755,51 +754,48 @@ whoisconvert() {
 			"${pathhost}" -t ${_type} ${host} | sed 's/^.* //' >> "${pfborig}${alias}.orig"
 			echo "... completed"
 		else
-			asn="$(echo ${host} | tr -d 'AaSs')"
-			printf "  Downloading ASN: ${asn}"
+			# Download IPinfo asn databases on first use.
+			if [ ! -f "${pathasncsv}" ]; then
+				printf "Downloading [ IPinfo databases ] [ ${now} ]"
+				/usr/local/bin/php /usr/local/www/pfblockerng/pfblockerng.php asn_shell
+				printf "... completed"
+			fi
 
-			ua="pfSense/pfBlockerNG cURL download agent-"
-			guid="$(/usr/sbin/gnid)"
-			ua_final="${ua}${guid}"
+			# Exit if asn.csv is not found
+			if [ ! -f "${pathasncsv}" ]; then
+				log="Database ASN [ asn.csv ] not found. Register for IPinfo Token."
+				echo "${log}" | tee -a "${errorlog}"
+			else
+				asn="$(echo ${host} | tr -d 'AaSs')"
+				printf "  Collecting ASN: AS${asn}"
+				grep ",AS${asn}," "${pathasncsv}" | cut -d ',' -f1-2 | tr ',' '-' > "${pfborig}${alias}.wk"
 
-			bgp_url="https://api.bgpview.io/asn/${asn}/prefixes"
-			unavailable=''
-			for i in 1 2 3 4 5; do
-				printf "."
-				"${pathcurl}" -A "${ua_final}" -sS1 "${bgp_url}" > "${asntemp}"
-
-				if [ -e "${asntemp}" ] && [ -s "${asntemp}" ]; then
-					printf "."
-					unavailable="$(grep 'Service Temporarily Unavailable\|Server Error' ${asntemp})"
-					if [ -z "${unavailable}" ]; then
-						found=true
-						echo ". completed"
-						echo "### AS${asn}: ${host} ###" >> "${pfborig}${alias}.orig"
-						cat "${asntemp}" | "${pathjq}" -r ".data.ipv${_bgp_type}_prefixes[].prefix" >> "${pfborig}${alias}.orig"
-						break
-					else
-						sleep_val="$((i * 2))"
-						sleep "${sleep_val}"
-					fi
+				# Collect only IPv4 or IPv6
+				if [ "${vtype}" == '_v4' ]; then
+					grep -v ':' "${pfborig}${alias}.wk" > "${pfborig}${alias}.orig"
+				else
+					grep -v '\.' "${pfborig}${alias}.wk" > "${pfborig}${alias}.orig"
 				fi
-			done
+			fi
 
-			if [ ! -z "${unavailable}" ]; then
-				echo ". Failed to download ASN"
+			if [ -s "${pfborig}${alias}.orig" ]; then
+				found=true
+			else
+				printf "... Failed to collect ASN"
 				touch "${pfborig}${alias}.fail"
+				found=false
 			fi
-
-			if [ "${multiple}" -gt 0 ]; then
-				sleep 1
-			fi
+			rm -f "${pfborig}${alias}.wk"
 		fi
 	done
 
 	# Restore previous orig file
 	if [ "${found}" == false ]; then
 		if [ -e "${pfborig}${alias}.bk" ]; then
+			echo "... Restoring previous data"
 			mv "${pfborig}${alias}.bk" "${pfborig}${alias}.orig"
 		else
+			echo "... Creating empty file"
 			echo > "${pfborig}${alias}.orig"
 		fi
 	else
@@ -812,36 +808,45 @@ whoisconvert() {
 
 # Function to convert IP to ASN
 iptoasn() {
-	host="${alias}"
 
-	ua="pfSense/pfBlockerNG cURL download agent-"
-	guid="$(/usr/sbin/gnid)"
-	ua_final="${ua}${guid}"
-
-	bgp_url="https://api.bgpview.io/ip/${host}"
-
-	unavailable=''
-	found=false
-	for i in 1 2 3 4 5; do
-		"${pathcurl}" -A "${ua_final}" -sS1 "${bgp_url}" > "${asntemp}"
-
-		if [ -e "${asntemp}" ] && [ -s "${asntemp}" ]; then
-			unavailable="$(grep 'Service Temporarily Unavailable\|Server Error' ${asntemp})"
-			if [ -z "${unavailable}" ]; then
-				found=true
-				break
-			else
-				sleep_val="$((i * 2))"
-				sleep "${sleep_val}"
-			fi
-		fi
-	done
-
-	if [ "${found}" == false ]; then
+	if [ ! -x "${pathgeoip}" ]; then
+		log="Application [ mmdblookup ] Not found, cannot proceed. [ ${now} ]"
+		echo "${log}" | tee -a "${errorlog}"
 		echo ""
+		return
+	fi
+
+        # Download IPinfo asn databases on first use.
+        if [ ! -f "${pathasndat}" ]; then
+                echo "Downloading [ IPinfo databases ] [ ${now} ]" >> "${extraslog}" 
+                /usr/local/bin/php /usr/local/www/pfblockerng/pfblockerng.php asn
+        fi
+
+	# Exit if asn.mmdb is not found
+	if [ ! -f "${pathasndat}" ]; then
+		log="Database ASN [ asn.mmdb ] not found. Register for IPinfo Token."
+		echo "${log}" | tee -a "${errorlog}"
+		echo ""
+		return
+	fi 
+	
+	ip="${alias}"
+	asn="$(${pathgeoip} -f ${pathasndat} -i ${ip} 2>&1 | tr -d '"{}','' | grep -v '^[[:space:]]*$' | cut -d '<' -f1 | tr -s ' ' | tr '\n' '|' | sed -e 's/: |/: /'g -e 's/asn:/ ASN:/g')"
+
+	if [ ! -s "${asn}" ]; then
+		echo "${asn}"
 	else
-		asn_final="$(cat ${asntemp} | ${pathjq} -r '.data.prefixes[0] | {ASN: .asn.asn, Name: .name, Desc: .description, Prefix: .prefix} | tostring' | tr ',' '|' | tr -d '"{}')"
-		echo "${asn_final}"
+		echo ""
+	fi
+}
+
+
+# Function to convert IPinfo ASN.csv to pfblockerng_asn.txt ASN Lookup Table
+asn_table() {
+
+	if [ -f "${pathasncsv}" ]; then
+		tail +2 "${pathasncsv}" | cut -d ',' -f3-4 | cut -c 3- | sort -nu | tr -d '"' | sed -e 's/,/ [ /g' -e 's/$/ ]/g' -e 's/^/AS/' > "${pathasntable}"
+		echo "ASN Lookup Table has been updated [ ${now} ]" >> "${extraslog}"
 	fi
 }
 
@@ -1273,7 +1278,7 @@ closingprocess() {
 	# Execute when 'de-duplication' is enabled
 	if [ "${alias}" == 'on' ]; then
 		echo '==============================================================='; echo
-		if [ "${s1} == ${s2}" ]; then
+		if [ "${s1}" == "${s2}" ]; then
 			echo 'Database Sanity check [  PASSED  ]'
 		else
 			echo 'Database Sanity check [  FAILED  ] ** These two counts should match! **'
@@ -1332,6 +1337,9 @@ case "${1}" in
 		;;
 	iptoasn)
 		iptoasn
+		;;
+	asn_table)
+		asn_table
 		;;
 	suppress)
 		suppress

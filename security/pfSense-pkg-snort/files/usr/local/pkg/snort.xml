@@ -8,7 +8,7 @@
  * snort.xml
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2015-2024 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2015-2025 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2009-2010 Robert Zelaya
  * Copyright (c) 2013-2016 Bill Meeks
  * All rights reserved.
@@ -83,6 +83,14 @@
 	</tabs>
 	<fields>
 	</fields>
+	<plugins>
+		<item>
+			<type>plugin_xmlrpc_send</type>
+		</item>
+		<item>
+			<type>plugin_xmlrpc_recv</type>
+		</item>
+	</plugins>
 	<custom_php_resync_config_command>
 		<![CDATA[
 		sync_snort_package_config();

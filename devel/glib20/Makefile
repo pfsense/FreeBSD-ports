@@ -1,5 +1,6 @@
 PORTNAME=	glib
-DISTVERSION=	2.80.3
+DISTVERSION=	2.84.1
+PORTREVISION=	3
 PORTEPOCH=	2
 CATEGORIES=	devel
 MASTER_SITES=	GNOME
@@ -13,25 +14,38 @@ LICENSE=	LGPL20
 
 BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}packaging>0:devel/py-packaging@${PY_FLAVOR}
 LIB_DEPENDS=	libffi.so:devel/libffi \
+		libinotify.so:devel/libinotify \
 		libpcre2-8.so:devel/pcre2
 RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}packaging>0:devel/py-packaging@${PY_FLAVOR}
+TEST_DEPENDS=	dbus-uuidgen:devel/dbus \
+		update-desktop-database:devel/desktop-file-utils \
+		update-mime-database:misc/shared-mime-info
+
+FLAVORS=	default bootstrap
+FLAVOR?=	${FLAVORS:[1]}
+FLAVORS_SUB=	yes
+
+default_EXTRACT_DEPENDS=	${LOCALBASE}/gobject-introspection-bootstrap/bin/g-ir-scanner:devel/gobject-introspection@bootstrap
+default_USES=		trigger
+
+bootstrap_PKGNAMESUFFIX=	-bootstrap
 
 # iconv:wchar_t - our iconv in base doesn't support utf-8 -> wchar_t (boooo)
 # (wchar_t is used by glibmm, rawtherapee triggered this)
 USES=		compiler:c11 cpe gettext gnome iconv:wchar_t localbase:ldflags \
-		meson perl5 pkgconfig python tar:xz trigger
-TRIGGERS=	gio-modules glib-schemas
+		meson perl5 pkgconfig python tar:xz ${${FLAVOR}_USES}
 USE_LDCONFIG=	yes
 USE_PERL5=	build
-USE_PYTHON=	py3kplist
+TRIGGERS=	gio-modules glib-schemas
 MESON_ARGS=	-Db_lundef=false \
 		-Ddefault_library=both \
 		-Dinstalled_tests=false \
-		-Dintrospection=disabled \
+		-Dlibelf=disabled \
 		-Dlibmount=disabled \
-		-Dlocalstatedir=/var \
 		-Druntime_dir=/var/run \
 		-Dselinux=disabled \
+		-Dsysprof=disabled \
+		-Dsystemtap=disabled \
 		-Dxattr=false
 BINARY_ALIAS=	python3=${PYTHON_CMD}
 PORTSCOUT=	limitw:1,even
@@ -39,29 +53,48 @@ CPE_VENDOR=	gnome
 
 CONFLICTS_INSTALL=	p5-Giovanni
 
-_LIBVERSION=	0.8000.3
+_LIBVERSION=	0.${DISTVERSION:R:E}00.${DISTVERSION:E}
 PLIST_SUB=	LIBVERSION=${_LIBVERSION}
 
-OPTIONS_DEFINE=		DEBUG GTKDOC FAM_ALTBACKEND MANPAGES NLS TEST
+OPTIONS_DEFINE=		DOCS FAM_ALTBACKEND MANPAGES NLS TEST
 OPTIONS_DEFAULT=	MANPAGES
 OPTIONS_SUB=		yes
 
-GTKDOC_BUILD_DEPENDS=	gtk-doc>0:textproc/gtk-doc
-GTKDOC_IMPLIES=		TEST
-GTKDOC_MESON_TRUE=	documentation
+DOCS_BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}gi-docgen>0:textproc/py-gi-docgen@${PY_FLAVOR}
+DOCS_IMPLIES=		MANPAGES TEST
+DOCS_MESON_TRUE=	documentation
 
 FAM_ALTBACKEND_DESC=	Alternate file monitor backend
 
 MANPAGES_BUILD_DEPENDS=	rst2man:textproc/py-docutils
 MANPAGES_MESON_ENABLED=	man-pages
 
-TEST_BUILD_DEPENDS=	dbus-daemon:devel/dbus
 TEST_MESON_TRUE=	tests
 
-.include <bsd.port.pre.mk>
-
 # doesn't build yet
-MESON_ARGS+=	-Ddtrace=false
+MESON_ARGS+=	-Ddtrace=disabled
+
+.if ${FLAVOR:U} == bootstrap
+MESON_ARGS+=	-Dintrospection=disabled -Ddocumentation=false -Dman-pages=disabled
+OPTIONS_DEFINE=
+PREFIX=		${LOCALBASE}/glib-bootstrap
+PLIST_SUB+=	PORTDOCS='@comment ' NLS='@comment ' MANPAGES='@comment '
+.else
+BINARY_ALIAS+=	g-ir-scanner=${LOCALBASE}/gobject-introspection-bootstrap/bin/g-ir-scanner
+MESON_ARGS+=	-Dintrospection=enabled
+.endif
+
+.if exists(/usr/include/sys/inotify.h)
+MESON_ARGS+=	-Dfile_monitor_backend='inotify'
+.else
+MESON_ARGS+=	-Dfile_monitor_backend='libinotify-kqueue'
+.endif
+
+.if ${FLAVOR:U} == default
+post-extract:
+	${CP} -r ${LOCALBASE}/gobject-introspection-bootstrap/libdata/pkgconfig ${PKGCONFIG_LINKDIR}
+	${CP} ${LOCALBASE}/glib-bootstrap/libdata/pkgconfig/* ${PKGCONFIG_LINKDIR}
+.endif
 
 pre-configure-FAM_ALTBACKEND-on:
 	@${REINPLACE_CMD} -e 's|kqueue-helper.c|kqueue_fnm.c|g ; \
@@ -71,20 +104,6 @@ pre-configure-FAM_ALTBACKEND-on:
 	@${CP} -f ${FILESDIR}/gkqueuefilemonitor.c ${WRKSRC}/gio/kqueue/gkqueuefilemonitor.c
 	@${CP} ${FILESDIR}/kqueue_fnm.c ${WRKSRC}/gio/kqueue/kqueue_fnm.c
 	@${CP} ${FILESDIR}/kqueue_fnm.h ${WRKSRC}/gio/kqueue/kqueue_fnm.h
-
-# The generation of GIO documentation depends on a types-document
-# generated as part of the dbus-object-manager example. With an
-# embarrassingly parallel build, failures like this can happen:
-#
-# Building documentation for gdbus-object-manager-example
-# ERROR: Error in gtkdoc helper script:
-# FileNotFoundError: [Errno 2] No such file or directory: '_build/docs/reference/gio/gdbus-object-manager-example/gdbus-object-manager-example.types'
-#
-# Meson does not seem to provide a way to express that dependency.
-#
-# Hack it into the generated ninja build instead.
-post-configure-GTKDOC-on:
-	@${REINPLACE_CMD} -e '\+^build docs/reference/gio/gdbus-object-manager-example/gdbus-object-manager-example-decl.txt:+s+$$+ || gio/tests/gdbus-object-manager-example/libgdbus-example-objectmanager.so+' ${BUILD_WRKSRC}/build.ninja
 
 post-patch:
 	${REINPLACE_CMD} -e 's|@PYTHON@|${PYTHON_CMD}|g' \
@@ -101,6 +120,11 @@ post-patch:
 		${WRKSRC}/glib/tests/utils.c
 
 CODEGENDIR=	${PREFIX}/share/glib-2.0/codegen
+
+post-install-DOCS-on:
+# this doc file gets created conditionally, so instead of adding another
+# PLIST_SUB item just create an empty file if it is missing
+	${TOUCH} ${STAGEDIR}${DOCSDIR}-2.0/const.VA_COPY_AS_ARRAY.html
 
 post-install:
 	${MKDIR} ${STAGEDIR}${PREFIX}/share/GConf/gsettings
@@ -122,4 +146,7 @@ post-install:
 .endfor
 	${RM} -r ${STAGEDIR}${PREFIX}/libexec/installed-tests
 
-.include <bsd.port.post.mk>
+pre-test:
+	${LOCALBASE}/bin/dbus-uuidgen > /var/lib/dbus/machine-id
+
+.include <bsd.port.mk>

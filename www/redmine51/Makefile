@@ -1,5 +1,5 @@
 PORTNAME=	redmine
-PORTVERSION=	5.1.3
+PORTVERSION=	5.1.8
 PORTREVISION=	1
 CATEGORIES=	www
 MASTER_SITES=	https://www.redmine.org/releases/
@@ -48,7 +48,7 @@ RUN_DEPENDS=	rubygem-actionpack-xml_parser-rails61>=0:textproc/rubygem-actionpac
 RUN_DEPENDS+=	rubygem-redcarpet>=3.6.0:textproc/rubygem-redcarpet \
 		rubygem-html-pipeline>=2.13.2:textproc/rubygem-html-pipeline \
 		rubygem-commonmarker0>=0.23.8:textproc/rubygem-commonmarker0 \
-		rubygem-sanitize>=6.0:textproc/rubygem-sanitize \
+		rubygem-sanitize>=6.0<8:textproc/rubygem-sanitize \
 		rubygem-deckar01-task_list>=2.3.2:www/rubygem-deckar01-task_list
 
 USES=		cpe ruby
@@ -74,12 +74,16 @@ MYSQL_RUN_DEPENDS=	rubygem-mysql2>=0.5.0:databases/rubygem-mysql2 \
 			rubygem-with_advisory_lock61>0:devel/rubygem-with_advisory_lock61
 POSTGRESQL_RUN_DEPENDS=	rubygem-pg>=1.2.2:databases/rubygem-pg
 MARKDOWN_RUN_DEPENDS=	rubygem-redcarpet>=3.5.1:textproc/rubygem-redcarpet
-RMAGIC_RUN_DEPENDS=	rubygem-mini_magick>=4.11.0:graphics/rubygem-mini_magick
+RMAGIC_RUN_DEPENDS=	rubygem-mini_magick4>=4.11.0:graphics/rubygem-mini_magick4
 THIN_RUN_DEPENDS=	rubygem-thin>=1.6.2:www/rubygem-thin
 THIN_SUB_LIST=		WWWOWN=${WWWOWN} WWWGRP=${WWWGRP}
 THIN_VARS=		USE_RC_SUBR=redmine
 
-.include <bsd.port.options.mk>
+.include <bsd.port.pre.mk>
+
+.if ${RUBY_VER} >= 3.3
+BROKEN=		ruby 3.3 and later is not supported
+.endif
 
 post-extract:
 	@${RM} -r ${WRKSRC}/.hgignore ${WRKSRC}/.gitignore ${WRKSRC}/.github \
@@ -122,4 +126,4 @@ post-install:
 	${RM} ${STAGEDIR}${WWWDIR}/package.json \
 		${STAGEDIR}${WWWDIR}/yarn.lock
 
-.include <bsd.port.mk>
+.include <bsd.port.post.mk>

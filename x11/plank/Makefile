@@ -1,12 +1,10 @@
 PORTNAME=	plank
-PORTVERSION=	0.11.89
-PORTREVISION=	5
+DISTVERSION=	0.11.128
 CATEGORIES=	x11
-MASTER_SITES=	https://launchpad.net/${PORTNAME}/1.0/${PORTVERSION}/+download/
 
 MAINTAINER=	daniel@shafer.cc
 COMMENT=	Elegant, simple, and clean dock
-WWW=		https://launchpad.net/plank/
+WWW=		https://github.com/zquestz/plank-reloaded
 
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/COPYING
@@ -14,36 +12,34 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 LIB_DEPENDS=	libbamf3.so:sysutils/bamf \
 		libgee-0.8.so:devel/libgee \
 		libgnome-menu-3.so:x11/gnome-menus
+RUN_DEPENDS=	upower>0:sysutils/upower
 
-USES=		gmake gnome libtool localbase pathfix pkgconfig tar:xz vala:build xorg
-USE_GNOME=	glib20 gtk30 gdkpixbuf2 cairo intlhack libxml2 libwnck3 dconf
+USES=		desktop-file-utils gettext-tools gnome localbase meson \
+		pkgconfig vala:build xorg
+USE_GNOME=	glib20 gtk30 gdkpixbuf cairo libxml2 libwnck3
 USE_XORG=	x11 xfixes xi
 
 CFLAGS+=	-Wno-return-type
-GNU_CONFIGURE=	yes
-GNU_CONFIGURE_MANPREFIX=${PREFIX}/share
 GLIB_SCHEMAS=	net.launchpad.plank.gschema.xml
+
+USE_GITHUB=	yes
+GH_ACCOUNT=	zquestz
+GH_PROJECT=	plank-reloaded
 
 OPTIONS_SUB=	yes
 
-OPTIONS_DEFINE=	NLS DBUSMENU
+OPTIONS_DEFINE=	DBUSMENU
 DBUSMENU_DESC=	DBusMenu protocol
 
-CONFIGURE_ARGS=	--disable-benchmark \
-	--disable-headless-tests \
-	--disable-apport
+MESON_ARGS=	-Dproduction-release=true \
+		-Denable-apport=false \
+		-Denable-barriers=yes
 
-NLS_USES=		gettext
-NLS_USES_OFF=		gettext-tools
-NLS_CONFIGURE_ENABLE=	nls
-
-DBUSMENU_LIB_DEPENDS=			libdbusmenu-gtk3.so:devel/libdbusmenu
-DBUSMENU_CONFIGURE_ENABLE=		dbusmenu
-
-INSTALL_TARGET=	install-strip
+DBUSMENU_LIB_DEPENDS=	libdbusmenu-gtk3.so:devel/libdbusmenu
+DBUSMENU_MESON_YES=	enable-dbusmenu
 
 post-patch:
-	${REINPLACE_CMD} -e 's|CPUMonitor||' \
-		${WRKSRC}/docklets/Makefile.in
+	@${REINPLACE_CMD} -e 's|%%PREFIX%%|${LOCALBASE}|g' \
+		${WRKSRC}/lib/Factories/ItemFactory.vala
 
 .include <bsd.port.mk>

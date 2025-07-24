@@ -3,11 +3,11 @@
  * suricata_alerts.widget.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2016-2024 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2016-2025 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2003-2004 Manuel Kasper
  * Copyright (c) 2005 Bill Marquette
  * Copyright (c) 2009 Robert Zelaya Sr. Developer
- * Copyright (c) 2024 Bill Meeks
+ * Copyright (c) 2025 Bill Meeks
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -111,8 +111,8 @@ function suricata_widget_get_alerts() {
 
 		// make sure alert file exists, then grab the most recent {$suri_nentries} from it
 		// and write them to a temp file.
-		if (file_exists("{$g['varlog_path']}/suricata/suricata_{$if_real}{$suricata_uuid}/alerts.log")) {
-			exec("/usr/bin/tail -{$suri_nentries} -r {$g['varlog_path']}/suricata/suricata_{$if_real}{$suricata_uuid}/alerts.log > {$g['tmp_path']}/surialerts_{$suricata_uuid}");
+		if (file_exists(SURICATALOGDIR . "suricata_{$if_real}{$suricata_uuid}/alerts.log")) {
+			exec("/usr/bin/tail -{$suri_nentries} -r " . SURICATALOGDIR . "suricata_{$if_real}{$suricata_uuid}/alerts.log > {$g['tmp_path']}/surialerts_{$suricata_uuid}");
 
 			if (file_exists("{$g['tmp_path']}/surialerts_{$suricata_uuid}")) {
 
@@ -307,7 +307,7 @@ function suricata_widget_get_alerts() {
 
 <script type="text/javascript">
 //<![CDATA[
-	var suricataupdateDelay = 5000; // update every 5 seconds
+	var suricataupdateDelay = 15000; // update every 15 seconds
 	var suri_nentries = <?php echo $suri_nentries; ?>; // default is 5
 //]]>
 </script>

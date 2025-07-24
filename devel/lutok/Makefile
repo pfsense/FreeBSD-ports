@@ -1,40 +1,29 @@
 PORTNAME=	lutok
-DISTVERSIONPREFIX=	${PORTNAME}-
-DISTVERSION=	0.4
-PORTREVISION=	9
+DISTVERSION=	0.6.1
 CATEGORIES=	devel
+MASTER_SITES=	https://github.com/freebsd/${PORTNAME}/releases/download/${DISTNAME}/
 
 MAINTAINER=	bofh@FreeBSD.org
 COMMENT=	Lightweight C++ API for Lua
-WWW=		https://github.com/jmmv/lutok/
+WWW=		https://github.com/freebsd/lutok/
 
 LICENSE=	BSD3CLAUSE
 
-BUILD_DEPENDS=	atf>=0.21:devel/atf
-RUN_DEPENDS=	atf>=0.21:devel/atf
-
 USES=		autoreconf libtool lua pathfix pkgconfig
-USE_CXXSTD=	gnu++11
-USE_GITHUB=	yes
-GH_ACCOUNT=	freebsd
+USE_CXXSTD=	gnu++14
 USE_LDCONFIG=	yes
 
 GNU_CONFIGURE=	yes
-#TEST_CONFIGURE_WITH=	atf
-# Force the use of the lua version we have chosen via USE_LUA.  If we allow
-# lutok's configure script search for one using pkgconfig files, it might pick
-# a different version.
 CONFIGURE_ARGS+=	LUA_CFLAGS="-I${LUA_INCDIR}"
 CONFIGURE_ARGS+=	LUA_LIBS="-L${LUA_LIBDIR} -llua-${LUA_VER} -lm"
 
 MAKE_FLAGS+=	examplesdir=${EXAMPLESDIR}
-#		pkgconfigdir=${PREFIX}/libdata/pkgconfig
-
 INSTALL_TARGET=	install-strip
 
-PORTDOCS=	AUTHORS COPYING NEWS README html/*
+PORTDOCS=	AUTHORS COPYING NEWS README.md html/*
 
-OPTIONS_DEFINE=	DOCS EXAMPLES
+OPTIONS_DEFAULT= DOCS EXAMPLES TEST
+OPTIONS_DEFINE=	DOCS EXAMPLES TEST
 OPTIONS_SUB=		yes
 
 DOCS_BUILD_DEPENDS=	doxygen>0:devel/doxygen
@@ -42,6 +31,9 @@ DOCS_CONFIGURE_ON=	--docdir=${DOCSDIR} --htmldir=${DOCSDIR}/html
 DOCS_CONFIGURE_OFF=	--without-doxygen
 DOCS_MAKE_ARGS_OFF=	doc_DATA=
 EXAMPLES_MAKE_ARGS_OFF=	dist_examples_DATA=
+TEST_CONFIGURE_ENABLE=	atf
+TEST_BUILD_DEPENDS=	atf>=0.21:devel/atf
+TEST_RUN_DEPENDS=	atf>=0.21:devel/atf
 
 pre-install-DOCS-off:
 	@${RM} -r ${WRKSRC}/api-docs

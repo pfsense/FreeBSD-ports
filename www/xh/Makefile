@@ -1,7 +1,7 @@
 PORTNAME=	xh
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.22.0
-PORTREVISION=	1
+DISTVERSION=	0.24.0
+PORTREVISION=	3
 CATEGORIES=	www
 
 MAINTAINER=	lcook@FreeBSD.org
@@ -14,8 +14,11 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 LIB_DEPENDS=	libonig.so:devel/oniguruma
 
 USES=		cargo ssl
+
 USE_GITHUB=	yes
 GH_ACCOUNT=	ducaale
+
+CARGO_FEATURES=	--no-default-features native-tls
 
 PLIST_FILES=	bin/${PORTNAME}
 PORTDOCS=	CHANGELOG.md README.md
@@ -29,9 +32,6 @@ COMPLETIONS_PLIST_FILES=	share/bash-completion/completions/${PORTNAME} \
 				share/fish/vendor_completions.d/${PORTNAME}.fish \
 				share/zsh/site-functions/_${PORTNAME}
 MANPAGES_PLIST_FILES=		share/man/man1/${PORTNAME}.1.gz
-
-post-install:
-	${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/${PORTNAME}
 
 post-install-COMPLETIONS-on:
 	@${MV} ${WRKSRC}/completions/_${PORTNAME} ${WRKSRC}/completions/${PORTNAME}.zsh

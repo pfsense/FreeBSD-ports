@@ -9,5 +9,6 @@ COMMENT=	Qt sensors module
 USES=		compiler:c++11-lang perl5 qmake:norecursive qt-dist:5,sensors
 USE_PERL5=	build
 USE_QT=		core declarative buildtools:build
+USE_LDCONFIG=	${PREFIX}/${QT_LIBDIR_REL}
 
 .include <bsd.port.mk>

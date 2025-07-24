@@ -1,5 +1,5 @@
 PORTNAME=	puppetdb
-PORTVERSION=	8.6.0
+PORTVERSION=	8.8.1
 CATEGORIES=	databases java
 MASTER_SITES=	https://downloads.puppetlabs.com/puppetdb/
 PKGNAMESUFFIX=	8
@@ -14,8 +14,8 @@ RUN_DEPENDS=	bash:shells/bash
 
 USE_RC_SUBR=	puppetdb
 
-CONFLICTS_INSTALL=	puppetdb[0-9] # etc/puppetdb/bootstrap.cfg.sample
-USES=		cpe shebangfix
+CONFLICTS_INSTALL=	openvoxdb[0-9] puppetdb[0-9] # etc/puppetdb/bootstrap.cfg.sample
+USES=		cpe java shebangfix
 CPE_VENDOR=	puppet
 SHEBANG_FILES=	ext/bin/puppetdb \
 		ext/cli/anonymize \
@@ -27,7 +27,6 @@ SHEBANG_FILES=	ext/bin/puppetdb \
 		ext/cli/reload \
 		ext/cli/upgrade \
 		ext/ezbake-functions.sh
-USE_JAVA=	yes
 JAVA_VERSION=	11+
 NO_ARCH=	yes
 NO_BUILD=	yes
@@ -44,6 +43,9 @@ post-patch:
 	@${REINPLACE_CMD} -e "s|%%PREFIX%%|${PREFIX}|" ${WRKSRC}/${file}
 .endfor
 	@${REINPLACE_CMD} -e "s|%%DATADIR%%|${DATADIR}|" ${WRKSRC}/ext/bin/puppetdb
+	@${REINPLACE_CMD} -e 's|/puppetlabs/puppetdb/|/puppetdb/|' \
+		-e 's|\(install -m 0644 ext/config/.*\)"|\1.sample"|' \
+		${WRKSRC}/Makefile
 
 do-install:
 	@cd ${WRKSRC} && ${SETENV} DESTDIR=${STAGEDIR} make install-puppetdb

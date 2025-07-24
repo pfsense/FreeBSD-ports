@@ -3,7 +3,7 @@
  * pfblockerng.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2015-2024 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2015-2025 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2015-2024 BBcan177@gmail.com
  * All rights reserved.
  *
@@ -76,6 +76,8 @@ if (isset($argv[1])) {
 
 // Extras - MaxMind/TOP1M Download URLs/filenames/settings
 $pfb['extras']			= array();
+
+// MaxMind GeoIP Databases
 $pfb['extras'][0]		= array();
 $pfb['extras'][0]['url']	= 'https://download.maxmind.com/geoip/databases/GeoLite2-Country/download?suffix=tar.gz';
 $pfb['extras'][0]['file_dwn']	= 'GeoLite2-Country.tar.gz';
@@ -90,6 +92,7 @@ $pfb['extras'][1]['file']	= '';
 $pfb['extras'][1]['folder']	= "{$pfb['geoipshare']}";
 $pfb['extras'][1]['type']	= 'geoip';
 
+// TOP1M database
 $pfb['extras'][2]			= array();
 if ($pfb['dnsbl_alexatype'] == 'alexa') {
 	$pfb['extras'][2]['url']	= 'https://s3.amazonaws.com/alexa-static/top-1m.csv.zip';
@@ -104,6 +107,23 @@ $pfb['extras'][2]['file']	= 'top-1m.csv';
 $pfb['extras'][2]['folder']	= "{$pfb['dbdir']}";
 $pfb['extras'][2]['type']	= 'top1m';
 
+// IPinfo ASN databases
+$pfb['extras'][3]		= array();
+$pfb['extras'][3]['url']	= 'https://ipinfo.io/data/free/asn.mmdb?token=';
+$pfb['extras'][3]['file_dwn']	= 'asn.mmdb';
+$pfb['extras'][3]['file']	= 'asn.mmdb';
+$pfb['extras'][3]['folder']	= "{$pfb['geoipshare']}"; 
+$pfb['extras'][3]['type']	= 'asn';
+
+$pfb['extras'][4]               = array();
+$pfb['extras'][4]['url']        = 'https://ipinfo.io/data/free/asn.csv.gz?token=';
+$pfb['extras'][4]['file_dwn']   = 'asn.csv.gz';
+$pfb['extras'][4]['file']       = 'asn.csv';
+$pfb['extras'][4]['folder']     = "{$pfb['geoipshare']}"; 
+$pfb['extras'][4]['type']       = 'asn';
+
+// Next Available Extras Key value for Blacklist Category Downloads
+$next_key = $next_key_start = 5;
 
 if ($argv[1] == 'bl' || $argv[1] == 'bls') {
 
@@ -115,35 +135,34 @@ if ($argv[1] == 'bl' || $argv[1] == 'bls') {
 	    !empty($pfb['blconfig']['blacklist_selected']) &&
 	    isset($pfb['blconfig']['item'])) {
 
-		$key = 3;
 		$selected = array_flip(explode(',', $argv[2])) ?: array();
 		foreach ($pfb['blconfig']['item'] as $item) {
 			if (isset($selected[$item['xml']])) {
-				$pfb['extras'][$key]			= array();
-				$pfb['extras'][$key]['url']		= $item['feed'];
-				$pfb['extras'][$key]['name']		= $item['title'];
-				$pfb['extras'][$key]['file_dwn']	= pathinfo($item['feed'], PATHINFO_BASENAME);
-				$pfb['extras'][$key]['file']		= pathinfo($item['feed'], PATHINFO_BASENAME);
-				$pfb['extras'][$key]['folder']		= "{$pfb['dbdir']}";
-				$pfb['extras'][$key]['type']		= 'blacklist';
+				$pfb['extras'][$next_key]		= array();
+				$pfb['extras'][$next_key]['url']	= $item['feed'];
+				$pfb['extras'][$next_key]['name']	= $item['title'];
+				$pfb['extras'][$next_key]['file_dwn']	= pathinfo($item['feed'], PATHINFO_BASENAME);
+				$pfb['extras'][$next_key]['file']	= pathinfo($item['feed'], PATHINFO_BASENAME);
+				$pfb['extras'][$next_key]['folder']	= "{$pfb['dbdir']}";
+				$pfb['extras'][$next_key]['type']	= 'blacklist';
 
 				if (isset($item['username']) && isset($item['password'])) {
-					$pfb['extras'][$key]['username'] = $item['username'];
-					$pfb['extras'][$key]['password'] = $item['password'];
+					$pfb['extras'][$next_key]['username'] = $item['username'];
+					$pfb['extras'][$next_key]['password'] = $item['password'];
 				}
 
 				// Patch UT1 filename
 				if ($item['feed'] == 'ftp://ftp.ut-capitole.fr/pub/reseau/cache/squidguard_contrib/blacklists.tar.gz') {
-					$pfb['extras'][$key]['file_dwn'] = $pfb['extras'][$key]['file'] = 'ut1.tar.gz';
+					$pfb['extras'][$next_key]['file_dwn'] = $pfb['extras'][$next_key]['file'] = 'ut1.tar.gz';
 				}
-				$key++;
+				$next_key++;
 			}
 		}
 	}
 }
 
 // Call include file and collect updated Global settings
-if (in_array($argv[1], array('update', 'updateip', 'updatednsbl', 'dc', 'dcc', 'bu', 'uc', 'gc', 'al', 'bl', 'bls', 'cron', 'ugc'))) {
+if (in_array($argv[1], array('update', 'updateip', 'updatednsbl', 'dc', 'dcc', 'bu', 'uc', 'gc', 'al', 'asn', 'asn_shell', 'bl', 'bls', 'cron', 'ugc'))) {
 	pfb_global();
 
 	$pfb['extras_update'] = FALSE;  // Flag when Extras (MaxMind/TOP1M) are updateded via cron job
@@ -161,7 +180,7 @@ if (in_array($argv[1], array('update', 'updateip', 'updatednsbl', 'dc', 'dcc', '
 		case 'update':		// Sync 'Force update'
 			sync_package_pfblockerng('cron');
 			break;
-		case 'dc':		// Update Extras - MaxMind/TOP1M database files
+		case 'dc':		// Update Extras - MaxMind/TOP1M/ASN database files
 		case 'dcc':
 
 			// 'dcc' called via Cron job
@@ -170,44 +189,78 @@ if (in_array($argv[1], array('update', 'updateip', 'updatednsbl', 'dc', 'dcc', '
 				$logtype = 3;
 				$pfb['extras_update'] = TRUE;
 
+				// Remove MaxMind updates if Key or Account not defined
+				if (empty($pfb['maxmind_key']) || empty($pfb['maxmind_account'])) {
+					unset($pfb['extras'][0], $pfb['extras'][1]);
+				}
+
 				// Skip TOP1M update, if disabled
 				if ($pfb['dnsbl_alexa'] != 'on') {
-					unset($pfb['extras'][2]);
+					unset($pfb['extras'][2]); // Remove TOP1M
+				}
+
+				// Skip ASN update, if disabled or Token not defined
+				if (empty($pfb['asn_token'])) {
+					unset($pfb['extras'][3], $pfb['extras'][4]);
 				}
 			}
 			else {
 				$logtype = 4;
-				unset($pfb['extras'][2]);
+				unset($pfb['extras'][2], $pfb['extras'][3], $pfb['extras'][4]); // Remove TOP1M and ASN
 			}
 
-			// If 'General Tab' skip MaxMind download setting if checked, only download binary updates for Reputation/Alerts page.
-			if (!empty($pfb['cc'])) {
-				unset($pfb['extras'][1]);
+			// If 'IP Tab' skip MaxMind download setting if checked, only download binary updates for Reputation/Alerts page.
+			if (!empty($pfb['cc']) && isset($pfb['extras'][1])) {
+				unset($pfb['extras'][1]); // Remove MaxMind GeoIP CSV
 			}
 
-			// Proceed with conversion of MaxMind files on download success
+			// Download Database updates
 			if (pfblockerng_download_extras(600, $logtype)) {
-				if (empty($pfb['cc'])) {
+
+				// Proceed with conversion of MaxMind files on download success
+				if (empty($pfb['cc']) || !empty($pfb['maxmind_key']) || !empty($pfb['maxmind_account'])) {
 					pfblockerng_uc_countries();
 					pfblockerng_get_countries();
 				}
 			}
 			break;
 		case 'bu':		// Update MaxMind binary database files only.
-			unset($pfb['extras'][1], $pfb['extras'][2]);
+			// Remove MaxMind updates if Key or Account not defined
+			if (empty($pfb['maxmind_key']) || empty($pfb['maxmind_account'])) {
+				pfb_logger("\nTerminating MaxMind download due to invalid Account or Key", 2);
+				return;
+			}
+
+			unset($pfb['extras'][1], $pfb['extras'][2], $pfb['extras'][3], $pfb['extras'][4]); // Remove MaxMind GeoIP CSV, TOP1M and ASN 
 			pfblockerng_download_extras(600, 3);
 			break;
 		case 'al':		// Update TOP1M database only.
-			unset($pfb['extras'][0], $pfb['extras'][1]);
+			unset($pfb['extras'][0], $pfb['extras'][1], $pfb['extras'][3], $pfb['extras'][4]); // Remove MaxMind GeoIP mmdb, CSV and ASN
+			pfblockerng_download_extras(600, 3);
+			break;
+		case 'asn':		// Update ASN database only
+		case 'asn_shell':
+			// Skip ASN update, if disabled or Token not defined
+			if (empty($pfb['asn_token'])) {
+				$asn_log = "\n  ASN Token not defined. Terminating Download. ";
+				if ($argv[1] == 'asn') {
+					pfb_logger($asn_log, 2);
+				} else {
+					pfb_logger($asn_log, 1);
+				}
+				return;
+			}
+			
+			unset($pfb['extras'][0], $pfb['extras'][1], $pfb['extras'][2]);
 			pfblockerng_download_extras(600, 3);
 			break;
 		case 'bl':		// Update DNSBL Category database(s) only.
 		case 'bls':
-			unset($pfb['extras'][0], $pfb['extras'][1], $pfb['extras'][2]);
-
-			if (empty($pfb['extras'][3])) {
+			// Exit if no Blacklist Extra found
+			if (empty($pfb['extras'][$next_key_start])) {
 				break;
 			}
+			unset($pfb['extras'][0], $pfb['extras'][1], $pfb['extras'][2], $pfb['extras'][3], $pfb['extras'][4]); // Remove MaxMind GeoIP mmdb, CSV, TOP1M and ASN
 
 			// 'bls' called via 'Force Update|Reload'
 			if ($argv[1] == 'bls') {
@@ -247,7 +300,7 @@ if (in_array($argv[1], array('update', 'updateip', 'updatednsbl', 'dc', 'dcc', '
 
 
 // Determine if source list file has an updated timestamp
-function pfb_update_check($header, $list_url, $pfbfolder, $pfborig, $pflex, $format, $vtype) {
+function pfb_update_check($header, $list_url, $pfbfolder, $pfborig, $pflex, $format, $vtype, $srcint=FALSE) {
 	global $pfb;
 
 	$log = "[ {$header} ] [ NOW ]\n";
@@ -371,6 +424,12 @@ function pfb_update_check($header, $list_url, $pfbfolder, $pfborig, $pflex, $for
 					curl_setopt($ch, CURLOPT_SSL_CIPHER_LIST, 'TLSv1.2, TLSv1, SSLv3');
 				}
 
+				// If source interface is specified (not 'default') set CURLOPT_INTERFACE
+				if ($srcint) {
+					curl_setopt($ch, CURLOPT_INTERFACE, $srcint);
+					pfb_logger("\nList: {$header} will be downloaded via interface: {$srcint}\n", 1);
+				}
+
 				// Try up to 3 times to download the file before giving up
 				for ($retries = 1; $retries <= 3; $retries++) {
 					$remote_stamp_raw = -1;
@@ -400,7 +459,7 @@ function pfb_update_check($header, $list_url, $pfbfolder, $pfborig, $pflex, $for
 		if ($remote_stamp_raw == -1) {
 
 			// Download Feed to compare md5's. If update required, downloaded md5 file will be used instead of downloading twice
-			if (pfb_download("{$list_download}", "{$pfborig}/{$header}.md5", $pflex, $header, '', 1, '', 300, 'md5', '', '')) {
+			if (pfb_download("{$list_download}", "{$pfborig}/{$header}.md5", $pflex, $header, '', 1, '', 300, 'md5', '', '', $srcint)) {
 
 				// Collect md5 checksums
 				$remote_md5	= @md5_file("{$pfborig}/{$header}.md5.raw");
@@ -481,16 +540,13 @@ function pfblockerng_download_extras($timeout=600, $type='') {
 			continue;
 		}
 
+		// Add Token/Credentials
 		if ($feed['type'] == 'geoip') {
-			if (empty($pfb['maxmind_key']) || empty($pfb['maxmind_account'])) {
-				$mmsg = 'MaxMind now requires an Account ID and License Key! Review the IP tab: MaxMind settings for more information. Download failed!';
-				pfb_logger($mmsg, $logtype);
-				file_notice('pfBlockerNG MaxMind', $mmsg, 'pfBlockerNG', '/pfblockerng/pfblockerng_ip.php', 2);
-				$pfb_error = TRUE;
-				continue;
-			}
 			$feed['username'] = $pfb['maxmind_account'];
 			$feed['password'] = $pfb['maxmind_key'];
+		}
+		elseif ($feed['type'] == 'asn') { 
+			$feed['url'] = "{$feed['url']}{$pfb['asn_token']}";
 		}
 		else {
 			$feed['username'] = $feed['username'] ?: '';
@@ -534,7 +590,6 @@ function pfblockerng_download_extras($timeout=600, $type='') {
 	}
 }
 
-
 // Function to update Lists/Feeds as per Cron
 function pfblockerng_sync_cron() {
 	global $pfb, $pfbarr;
@@ -563,6 +618,9 @@ function pfblockerng_sync_cron() {
 							continue;
 						}
 
+						// Determine cURL source interface (sets CURLOPT_INTERFACE; applies to entire alias)
+						$srcint = $list['srcint'] ?: FALSE;
+
 						// Determine folder location for alias (return array $pfbarr)
 						pfb_determine_list_detail($list['action'], '', '', '');
 						$pfbfolder	= $pfbarr['folder'];
@@ -575,7 +633,7 @@ function pfblockerng_sync_cron() {
 
 						// Attempt download, when a previous 'fail' file marker is found.
 						if (file_exists("{$pfbfolder}/{$header}.fail")) {
-							pfb_update_check($header, $row['url'], $pfbfolder, $pfborig, $pflex, $row['format'], $vtype);
+							pfb_update_check($header, $row['url'], $pfbfolder, $pfborig, $pflex, $row['format'], $vtype, $srcint);
 							continue;
 						}
 
@@ -588,18 +646,18 @@ function pfblockerng_sync_cron() {
 						switch ($list['cron']) {
 							case 'EveryDay':
 								if ($hour == $pfb['24hour']) {
-									pfb_update_check($header, $row['url'], $pfbfolder, $pfborig, $pflex, $row['format'], $vtype);
+									pfb_update_check($header, $row['url'], $pfbfolder, $pfborig, $pflex, $row['format'], $vtype, $srcint);
 								}
 								break;
 							case 'Weekly':
 								if ($hour == $pfb['24hour'] && $dow == $list['dow']) {
-									pfb_update_check($header, $row['url'], $pfbfolder, $pfborig, $pflex, $row['format'], $vtype);
+									pfb_update_check($header, $row['url'], $pfbfolder, $pfborig, $pflex, $row['format'], $vtype, $srcint);
 								}
 								break;
 							default:
 								$pfb_sch = pfb_cron_base_hour($list['cron']);
 								if (in_array($hour, $pfb_sch)) {
-									pfb_update_check($header, $row['url'], $pfbfolder, $pfborig, $pflex, $row['format'], $vtype);
+									pfb_update_check($header, $row['url'], $pfbfolder, $pfborig, $pflex, $row['format'], $vtype, $srcint);
 								}
 								break;
 						}
@@ -1004,7 +1062,9 @@ function pfblockerng_uc_countries() {
 	}
 
 	// Add Continents to GeoIP ISOs for IPv4/6 Source Field lookup
-	@file_put_contents("{$pfb['geoip_isos']}", 'Africa,Antarctica,Asia,Europe,North_America,Oceania,South_America,Proxy_and_Satellite', FILE_APPEND | LOCK_EX);
+	$add_continents = 'Africa [Continent],Antarctica [Continent],Asia [Continent],Europe [Continent],North_America [Continent],Oceania [Continent]';
+	$add_continents .= ',South_America [Continent],Proxy_and_Satellite [GeoIP]';
+	@file_put_contents("{$pfb['geoip_isos']}", "{$add_continents}", FILE_APPEND | LOCK_EX);
 
 	ksort($pfb_geoip['country'], SORT_NATURAL);
 
@@ -1430,7 +1490,7 @@ $php_data = <<<EOF
  * pfblockerng_{$continent_en}.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2016-2024 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2016-2025 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2015-2024 BBcan177@gmail.com
  * All rights reserved.
  *
@@ -1456,10 +1516,10 @@ pfb_global();
 
 \$continent			= "{$continent}";	// Continent name (Locale specific)
 \$continent_en			= "{$continent_en}";	// Continent name (English)
-\$options_countries4		= array(${'options4'});
-\$options_countries6		= array(${'options6'});
-\$options_countries4_cnt	= "${'ftotal4'}";
-\$options_countries6_cnt	= "${'ftotal6'}";
+\$options_countries4		= array({$options4});
+\$options_countries6		= array({$options6});
+\$options_countries4_cnt	= "{$ftotal4}";
+\$options_countries6_cnt	= "{$ftotal6}";
 
 EOF;
 $php_data .= <<<'EOF'
@@ -1497,8 +1557,7 @@ $options_agateway_in		= $options_agateway_out		= pfb_get_gateways();
 $continent_display		= str_replace('_', ' ', "{$continent}");				// Continent name displayed on page
 $conf_type			= 'pfblockerng' . strtolower(str_replace('_', '', $continent_en));	// XML config location
 
-config_init_path("installedpackages/{$conf_type}/config/0");
-$pfb['geoipconfig'] = config_get_path("installedpackages/{$conf_type}/config/0");
+$pfb['geoipconfig'] = config_get_path("installedpackages/{$conf_type}/config/0", []);
 
 $active[$continent_display]	= TRUE;
 
@@ -1657,7 +1716,7 @@ if ($_POST) {
 			$pfb['geoipconfig']['autoproto_out']		= $_POST['autoproto_out']				?: '';
 			$pfb['geoipconfig']['agateway_out']		= $_POST['agateway_out']				?: '';
 
-			config_set_path('installedpackages/{$conf_type}/config/0', $pfb['geoipconfig']);
+			config_set_path("installedpackages/{$conf_type}/config/0", $pfb['geoipconfig']);
 			write_config("[pfBlockerNG] save GeoIP [ {$continent_display} ] settings");
 			header("Location: /pfblockerng/pfblockerng_{$continent_en}.php");
 			exit;
@@ -2030,7 +2089,7 @@ function pfb_build_reputation_tab($et_options='') {
  * pfblockerng_reputation.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2016-2024 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2016-2025 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2015-2024 BBcan177@gmail.com
  * All rights reserved.
  *
@@ -2054,8 +2113,7 @@ require_once('/usr/local/pkg/pfblockerng/pfblockerng.inc');
 global $pfb;
 pfb_global();
 
-config_init_path('installedpackages/pfblockerngreputation/config/0');
-$pfb['repconfig'] = config_get_path('installedpackages/pfblockerngreputation/config/0');
+$pfb['repconfig'] = config_get_path('installedpackages/pfblockerngreputation/config/0', []);
 
 $pconfig = array();
 $pconfig['enable_rep']		= $pfb['repconfig']['enable_rep'];

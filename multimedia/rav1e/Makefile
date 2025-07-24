@@ -1,10 +1,10 @@
 PORTNAME=	rav1e
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.7.1
-PORTREVISION?=	4
+DISTVERSION=	0.8.1
+PORTREVISION?=	1
 CATEGORIES=	multimedia
 
-MAINTAINER=	jbeich@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Fast and safe AV1 encoder
 WWW=		https://github.com/xiph/rav1e
 
@@ -24,10 +24,5 @@ post-patch:
 	@${REINPLACE_CMD} -e 's/\<.*GIT_VERSION\.unwrap.*/"${DISTVERSIONFULL}"/' \
 		-e $$'/GIT_VERSION/,/UNKNOWN/c\\\n\t"${DISTVERSIONFULL}",\n' \
 		${WRKSRC}/src/bin/common.rs ${WRKSRC}/src/lib.rs
-
-.if !target(post-install)
-post-install:
-	@${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/${PORTNAME}
-.endif
 
 .include <bsd.port.mk>

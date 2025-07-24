@@ -1,7 +1,8 @@
 PORTNAME=	passenger
-PORTVERSION=	6.0.22
+PORTVERSION=	6.0.27
 CATEGORIES=	www rubygems
-MASTER_SITES=	RG
+MASTER_SITES=	RG \
+		https://github.com/phusion/passenger/releases/download/release-${PORTVERSION}/
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Modules for running Ruby on Rails and Rack applications
@@ -11,15 +12,16 @@ WWW=		https://www.phusionpassenger.com/ \
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-BUILD_DEPENDS=	rubygem-rack>=0:www/rubygem-rack \
-		rubygem-rake>=0.8.1:devel/rubygem-rake \
+BUILD_DEPENDS=	rubygem-rack>=1.6.13,3:www/rubygem-rack \
+		rubygem-rake>=12.3.3:devel/rubygem-rake \
 		utf8cpp>=4.0.3:devel/utf8cpp
 LIB_DEPENDS=	libapr-1.so:devel/apr1 \
 		libcurl.so:ftp/curl \
 		libuv.so:devel/libuv
 RUN_DEPENDS=	rubygem-etc>=0:devel/rubygem-etc \
-		rubygem-rack>=0:www/rubygem-rack \
-		rubygem-rake>=0.8.1:devel/rubygem-rake
+		rubygem-rack>=1.6.13,3:www/rubygem-rack \
+		rubygem-rackup>=1.0.1:www/rubygem-rackup \
+		rubygem-rake>=12.3.3:devel/rubygem-rake
 
 USES=		compiler:c++11-lang cpe gem libtool python:env ssl
 
@@ -40,7 +42,6 @@ CPE_VENDOR=	phusion
 
 FLAVORS=	apache nginx
 FLAVOR?=	${FLAVORS:[1]}
-
 apache_PKGNAMESUFFIX=	-apache
 nginx_PKGNAMESUFFIX=	-nginx
 
@@ -59,7 +60,6 @@ SYMLINK_SUB_LIST_OFF=	PASSENGER_INSTALL_DIR="${PREFIX}/${GEM_LIB_DIR}"
 
 post-patch:
 # Clean up bundled libraries
-	@${REINPLACE_CMD} 's|"src/cxx_supportlib/vendor-copy/[lu][^"]*".freeze, ||g' ${WRKSRC}/passenger.gemspec
 	@${RM} -r ${WRKSRC}/src/cxx_supportlib/vendor-copy/libuv/
 	@${RM} -r ${WRKSRC}/src/cxx_supportlib/vendor-copy/utf8*
 

@@ -3,7 +3,7 @@
  * vpn_wg_tunnels.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2021-2024 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2021-2025 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2021 R. Christian McDonald (https://github.com/rcmcdonald91)
  * All rights reserved.
  *
@@ -68,12 +68,10 @@ if ($_POST) {
 		 * https://redmine.pfsense.org/issues/12731
 		 */
 		$tun_found = false;
-		if (is_array($wgg['tunnels']) && count($wgg['tunnels']) > 0) {
-			foreach ($wgg['tunnels'] as $tunnel) {
-				if ($tunnel['name'] == $tun_name) {
-					$tun_found = true;
-					break;
-				}
+		foreach (config_get_path('installedpackages/wireguard/tunnels/item', []) as $tunnel) {
+			if ($tunnel['name'] == $tun_name) {
+				$tun_found = true;
+				break;
 			}
 		}
 
@@ -162,8 +160,8 @@ display_top_tabs($tab_array);
 				</thead>
 				<tbody>
 <?php
-if (is_array($wgg['tunnels']) && count($wgg['tunnels']) > 0):
-		foreach ($wgg['tunnels'] as $tunnel):
+if (count(config_get_path('installedpackages/wireguard/tunnels/item', [])) > 0):
+		foreach (config_get_path('installedpackages/wireguard/tunnels/item', []) as $tunnel):
 			$peers = wg_tunnel_get_peers_config($tunnel['name']);
 ?>
 					<tr class="<?="treegrid-{$tunnel['name']}"?> <?=wg_tunnel_status_class($tunnel)?>">

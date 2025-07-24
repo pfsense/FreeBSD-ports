@@ -1,6 +1,6 @@
 PORTNAME=	mailio
-DISTVERSION=	0.23.0-59
-DISTVERSIONSUFFIX=	-g5dab3ca
+DISTVERSION=	0.25.1
+PORTREVISION=	1
 CATEGORIES=	mail devel
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -25,5 +25,9 @@ CMAKE_TESTING_TARGET=	all
 
 post-test:
 	@cd ${WRKSRC}/test && ${BUILD_WRKSRC}/test/test_message
+
+# tests as of 0.25.1:
+# Running 139 test cases...
+# *** No errors detected
 
 .include <bsd.port.mk>

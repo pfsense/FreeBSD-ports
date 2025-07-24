@@ -1,10 +1,10 @@
 PORTNAME=	asfml
 DISTVERSIONPREFIX=	v
 DISTVERSION=	2.5.5
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	devel games graphics multimedia
 
-MAINTAINER=	agh@riseup.net
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Ada bindings to the Simple and Fast Multimedia Library (SFML)
 WWW=		https://mgrojo.github.io/ASFML/
 
@@ -78,7 +78,7 @@ do-install:
 	${MKDIR} ${STAGEDIR}${PREFIX}/lib/${PORTNAME}
 	${INSTALL_DATA} ${WRKSRC}/lib/*.ali \
 		${STAGEDIR}${PREFIX}/lib/${PORTNAME}
-	${INSTALL_LIB} ${WRKSRC}/lib/*.a \
+	${INSTALL_DATA} ${WRKSRC}/lib/*.a \
 		${STAGEDIR}${PREFIX}/lib/
 
 do-install-DOCS-on:

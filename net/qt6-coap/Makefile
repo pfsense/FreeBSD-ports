@@ -11,5 +11,6 @@ USES=		cmake compiler:c++17-lang qt-dist:6
 USE_GITHUB=	yes
 GH_TUPLE=	qt:qtcoap:${DISTVERSIONFULL}
 USE_QT=		base
+USE_LDCONFIG=	${PREFIX}/${QT_LIBDIR_REL}
 
 .include <bsd.port.mk>

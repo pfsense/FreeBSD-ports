@@ -3,7 +3,7 @@
  * haproxy_pools.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2009-2024 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2009-2025 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2013 PiBa-NL
  * Copyright (c) 2008 Remco Hoef <remcoverhoef@pfsense.com>
  * All rights reserved.
@@ -29,7 +29,7 @@ require_once("haproxy/pkg_haproxy_tabs.inc");
 
 haproxy_config_init();
 
-$a_backends = config_get_path('installedpackages/haproxy/ha_backends/item');
+$a_backends = config_get_path('installedpackages/haproxy/ha_backends/item', []);
 
 if ($_POST['apply']) {
 	$result = haproxy_check_and_run($savemsg, true);

@@ -1,6 +1,6 @@
 PORTNAME=	lash
 PORTVERSION=	0.5.4
-PORTREVISION=	19
+PORTREVISION=	21
 CATEGORIES=	audio
 MASTER_SITES=	SAVANNAH
 
@@ -15,10 +15,10 @@ LIB_DEPENDS=	libjack.so:audio/jack \
 		libdssialsacompat.so:audio/libdssialsacompat \
 		libfreetype.so:print/freetype2 \
 		libfontconfig.so:x11-fonts/fontconfig \
-		libuuid.so:misc/e2fsprogs-libuuid
+		libuuid.so:misc/libuuid
 
 USES=		gmake gnome libtool pathfix pkgconfig
-USE_GNOME=	gtk20 libxml2 gdkpixbuf2 cairo
+USE_GNOME=	gtk20 libxml2 gdkpixbuf cairo
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--disable-alsa-midi
 USE_LDCONFIG=	yes

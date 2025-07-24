@@ -1,6 +1,6 @@
 PORTNAME=	catch2 # 2.x series is under devel/catch, the project is called catch2
 DISTVERSIONPREFIX=	v
-DISTVERSION=	3.6.0
+DISTVERSION=	3.8.1
 CATEGORIES=	devel
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -18,12 +18,15 @@ GH_PROJECT=	Catch2
 CMAKE_ARGS=	-DCMAKE_INSTALL_DOCDIR=${DOCSDIR} \
 		-DPython3_EXECUTABLE=${PYTHON_CMD}
 CMAKE_ON=	BUILD_SHARED_LIBS
-CMAKE_TESTING_ON=	CATCH_DEVELOPMENT_BUILD BUILD_TESTING CATCH_BUILD_TESTING # 1 test fails, see https://github.com/catchorg/Catch2/issues/2606
+CMAKE_OFF=	CATCH_ENABLE_WERROR # otherwise tests fail to compile
+CMAKE_TESTING_ON=	CATCH_DEVELOPMENT_BUILD BUILD_TESTING CATCH_BUILD_TESTING
 
 PORTDOCS=	*
 
 OPTIONS_DEFINE=	DOCS
 
 CONFLICTS=	catch
+
+# tests as of 3.8.1: 1 tests failed out of 70, see https://github.com/catchorg/Catch2/issues/2606
 
 .include <bsd.port.mk>

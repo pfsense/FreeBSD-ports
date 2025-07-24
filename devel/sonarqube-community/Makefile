@@ -1,6 +1,6 @@
 PORTNAME=	sonarqube
-DISTVERSION=	10.5.1.90531
-PORTREVISION=	7
+DISTVERSION=	24.12.0.100206
+PORTREVISION=	2
 CATEGORIES=	devel security www java
 MASTER_SITES=	https://binaries.sonarsource.com/Distribution/sonarqube/:m_core \
 		https://binaries.sonarsource.com/Distribution/sonar-csharp-plugin/:m_csharp \
@@ -30,9 +30,8 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 RUN_DEPENDS=	bash:shells/bash #\
 #		jna>0:devel/jna
 
-USES=		cpe shebangfix zip nodejs:lts,run
+USES=		cpe java shebangfix zip nodejs:lts,run
 CPE_VENDOR=	sonarsource
-USE_JAVA=	yes
 
 SHEBANG_FILES=	elasticsearch/bin/elasticsearch-cli \
 		elasticsearch/bin/elasticsearch-env
@@ -52,11 +51,13 @@ DBBASE_DIR=	/var/db/${PORTNAME}
 DATA_DIR=	${DBBASE_DIR}/data
 TEMP_DIR=	${DBBASE_DIR}/temp
 
-SONARCSHARP_VER=	9.27.0.93347
-SONARJAVA_VER=		8.0.1.36337
-SONARJAVASCRIPT_VER=	10.14.0.26080
-SONARPHP_VER=		3.36.0.11810
-SONARPYTHON_VER=	4.19.0.15616
+# If you want to update plugins, simply update the version number below,
+# and run "make makesum".
+SONARCSHARP_VER=	10.4.0.108396
+SONARJAVA_VER=		8.8.0.37665
+SONARJAVASCRIPT_VER=	10.19.0.29100
+SONARPHP_VER=		3.41.0.12692
+SONARPYTHON_VER=	4.25.0.19056
 SONARVBNET_VER=		${SONARCSHARP_VER}
 
 USERS=		sonarqube
@@ -122,7 +123,7 @@ do-install:
 	${MKDIR} ${STAGEDIR}${PREFIX}/${APP_DIR}/elasticsearch/plugins
 	${MKDIR} ${STAGEDIR}${LOG_DIR} ${STAGEDIR}${PID_DIR} \
 		${STAGEDIR}${DATA_DIR} ${STAGEDIR}${TEMP_DIR}
-.for dir in conf elasticsearch extensions lib web
+.for dir in conf elasticsearch extensions jres lib web
 	cd ${WRKSRC}; ${COPYTREE_SHARE} ${dir} ${STAGEDIR}${PREFIX}/${APP_DIR} "! -name *\.orig"
 .endfor
 #	 ${LN} -s ${JAVASHAREDIR}/classes/jna.jar \
@@ -135,7 +136,7 @@ gen-plist:
 	${ECHO} '@dir(sonarqube,sonarqube,755) %%TEMP_DIR%%' >>${PLIST}.new
 	${ECHO} '@dir %%APP_DIR%%/elasticsearch/plugins' >>${PLIST}.new
 #	${ECHO} '@dir(sonarqube,sonarqube,755) %%APP_DIR%%/extensions' >>${PLIST}.new
-.for dir in conf elasticsearch lib web
+.for dir in conf elasticsearch jres lib web
 	${FIND} ${STAGEDIR}${PREFIX}/${APP_DIR}/${dir} -type f -o -type l |  \
 	    ${SED} -e "s:${STAGEDIR}${PREFIX}/::g ; \
 		s:${JAR_VERSION}:%%JAR_VERSION%%:g ; \

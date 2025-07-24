@@ -1,5 +1,3 @@
-bin/UserFeedbackConsole
-bin/userfeedbackctl
 include/KF6/KUserFeedback/kuserfeedback_version.h
 include/KF6/KUserFeedbackCore/KUserFeedback/AbstractDataSource
 include/KF6/KUserFeedbackCore/KUserFeedback/ApplicationVersionSource
@@ -59,7 +57,7 @@ lib/libKF6UserFeedbackWidgets.so.%%KDE_FRAMEWORKS_VERSION%%
 %%QT_QMLDIR%%/org/kde/userfeedback/kde-qmlmodule.version
 %%QT_QMLDIR%%/org/kde/userfeedback/libKF6UserFeedbackQml.so
 %%QT_QMLDIR%%/org/kde/userfeedback/qmldir
-share/applications/org.kde.kuserfeedback-console.desktop
+share/KDE/UserFeedbackConsole/user-feedback-manual.qch
 share/locale/ar/LC_MESSAGES/userfeedbackconsole6_qt.qm
 share/locale/ar/LC_MESSAGES/userfeedbackprovider6_qt.qm
 share/locale/ast/LC_MESSAGES/userfeedbackconsole6_qt.qm
@@ -96,6 +94,8 @@ share/locale/gl/LC_MESSAGES/userfeedbackconsole6_qt.qm
 share/locale/gl/LC_MESSAGES/userfeedbackprovider6_qt.qm
 share/locale/he/LC_MESSAGES/userfeedbackconsole6_qt.qm
 share/locale/he/LC_MESSAGES/userfeedbackprovider6_qt.qm
+share/locale/hi/LC_MESSAGES/userfeedbackconsole6_qt.qm
+share/locale/hi/LC_MESSAGES/userfeedbackprovider6_qt.qm
 share/locale/hu/LC_MESSAGES/userfeedbackconsole6_qt.qm
 share/locale/hu/LC_MESSAGES/userfeedbackprovider6_qt.qm
 share/locale/ia/LC_MESSAGES/userfeedbackconsole6_qt.qm
@@ -123,9 +123,12 @@ share/locale/pt/LC_MESSAGES/userfeedbackconsole6_qt.qm
 share/locale/pt/LC_MESSAGES/userfeedbackprovider6_qt.qm
 share/locale/pt_BR/LC_MESSAGES/userfeedbackconsole6_qt.qm
 share/locale/pt_BR/LC_MESSAGES/userfeedbackprovider6_qt.qm
+share/locale/ro/LC_MESSAGES/userfeedbackconsole6_qt.qm
 share/locale/ro/LC_MESSAGES/userfeedbackprovider6_qt.qm
 share/locale/ru/LC_MESSAGES/userfeedbackconsole6_qt.qm
 share/locale/ru/LC_MESSAGES/userfeedbackprovider6_qt.qm
+share/locale/sa/LC_MESSAGES/userfeedbackconsole6_qt.qm
+share/locale/sa/LC_MESSAGES/userfeedbackprovider6_qt.qm
 share/locale/sk/LC_MESSAGES/userfeedbackconsole6_qt.qm
 share/locale/sk/LC_MESSAGES/userfeedbackprovider6_qt.qm
 share/locale/sl/LC_MESSAGES/userfeedbackconsole6_qt.qm
@@ -140,5 +143,4 @@ share/locale/zh_CN/LC_MESSAGES/userfeedbackconsole6_qt.qm
 share/locale/zh_CN/LC_MESSAGES/userfeedbackprovider6_qt.qm
 share/locale/zh_TW/LC_MESSAGES/userfeedbackconsole6_qt.qm
 share/locale/zh_TW/LC_MESSAGES/userfeedbackprovider6_qt.qm
-share/metainfo/org.kde.kuserfeedback-console.appdata.xml
 share/qlogging-categories6/org_kde_UserFeedback.categories

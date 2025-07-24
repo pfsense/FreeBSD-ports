@@ -2,7 +2,7 @@
  * pfsense.c
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2004-2024 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2004-2025 Rubicon Communications, LLC (Netgate)
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -54,6 +54,14 @@
  * IS ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+#include <stdint.h>
+#include <sys/socket.h>
+#include <sys/types.h>
+#include <net/if.h>
+#include <netinet/in.h>
+
+#include <netinet6/in6_var.h>
+#include <sys/socket.h>
 #ifdef HAVE_CONFIG_H
 # include "config.h"
 #endif
@@ -523,9 +531,6 @@ PHP_FUNCTION(pfSense_kill_states)
 		goto cleanup1;
 	}
 
-	/* Also match on the pre-NAT address. Redmine #11556 */
-	k.nat = true;
-
 	for (resp[0] = res[0]; resp[0]; resp[0] = resp[0]->ai_next) {
 		if (resp[0]->ai_addr == NULL)
 			continue;
@@ -587,12 +592,21 @@ PHP_FUNCTION(pfSense_kill_states)
 					php_printf("Unknown address family %d", k.af);
 					continue;
 				}
-
+				k.nat = false;
+				if (pfctl_kill_states(dev, &k, &kcount))
+					php_printf("Could not kill states\n");
+				k.nat = true;
 				if (pfctl_kill_states(dev, &k, &kcount))
 					php_printf("Could not kill states\n");
 			}
 			freeaddrinfo(res[1]);
 		} else {
+			k.nat = false;
+			if (pfctl_kill_states(dev, &k, &kcount)) {
+				php_printf("Could not kill states\n");
+				break;
+			}
+			k.nat = true;
 			if (pfctl_kill_states(dev, &k, &kcount)) {
 				php_printf("Could not kill states\n");
 				break;
@@ -1585,9 +1599,6 @@ fill_interface_params(zval *val, struct ifaddrs *mb)
 			break;
 		case IFT_TUNNEL:
 		case IFT_GIF:
-#if (__FreeBSD_version < 1100000)
-		case IFT_FAITH:
-#endif
 		case IFT_ENC:
 		case IFT_PFLOG:
 		case IFT_PFSYNC:
@@ -1705,6 +1716,60 @@ fill_interface_params(zval *val, struct ifaddrs *mb)
 	}
 }
 
+static void
+fill_interface_tunnel(zval *val, char *ifname, u_short af) {
+	zval tunnel;
+	char src[NI_MAXHOST];
+	char dst[NI_MAXHOST];
+	u_long srccmd;
+	u_long dstcmd;
+	char *zval_key;
+	int sockfd;
+
+	switch (af) {
+	case AF_INET:
+		srccmd = SIOCGIFPSRCADDR;
+		dstcmd = SIOCGIFPDSTADDR;
+		sockfd = PFSENSE_G(inets);
+		zval_key = "tunnel";
+		break;
+	case AF_INET6:
+		srccmd = SIOCGIFPSRCADDR_IN6;
+		dstcmd = SIOCGIFPDSTADDR_IN6;
+		sockfd = PFSENSE_G(inets6);
+		zval_key = "tunnel6";
+		break;
+	default:
+		return;
+	}
+
+	struct ifreq ifr;
+	const struct sockaddr *sa = (const struct sockaddr *)&ifr.ifr_addr;
+
+	strlcpy(ifr.ifr_name, ifname, IFNAMSIZ);
+	if (ioctl(sockfd, srccmd, (caddr_t)&ifr) < 0)
+		return;
+	if (sa->sa_family != af)
+		return;
+	if(getnameinfo(sa, sa->sa_len, src, sizeof(src), 0, 0,
+	    NI_NUMERICHOST) != 0)
+		return;
+
+	if (ioctl(sockfd, dstcmd, (caddr_t)&ifr) < 0)
+		return;
+	if (sa->sa_family != af)
+		return;
+	if(getnameinfo(sa, sa->sa_len, dst, sizeof(dst), 0, 0,
+	    NI_NUMERICHOST) != 0)
+		return;
+
+	array_init(&tunnel);
+	add_assoc_string(&tunnel, "srcaddr", src);
+	add_assoc_string(&tunnel, "dstaddr", dst);
+
+	add_assoc_zval(val, zval_key, &tunnel);
+}
+
 /**
  * Alternate hybrid of pfSense_getall_interface_addresses and
  * pfSense_get_interface_addresses. Return iface information and array of v4 and
@@ -1746,7 +1811,9 @@ PHP_FUNCTION(pfSense_get_ifaddrs)
 	array_init(&addrs6);
 
 	fill_interface_params(return_value, mb);
-	
+	fill_interface_tunnel(return_value, ifname, AF_INET);
+	fill_interface_tunnel(return_value, ifname, AF_INET6);
+
 	/* loop until iface name changes or we exhaust the list */
 	for (; mb != NULL; mb = mb->ifa_next) {
 		zval addr;
@@ -1800,7 +1867,7 @@ PHP_FUNCTION(pfSense_get_ifaddrs)
 					inet_ntop(AF_INET,
 					    (void *)&tmp->sin_addr, outputbuf,
 					    sizeof(outputbuf));
-					add_assoc_string(&addr, "tunnel",
+					add_assoc_string(&addr, "dstaddr",
 					    outputbuf);
 				}
 			}
@@ -1812,8 +1879,7 @@ PHP_FUNCTION(pfSense_get_ifaddrs)
 			bzero(outputbuf, sizeof outputbuf);
 			tmp6 = (struct sockaddr_in6 *)mb->ifa_addr;
 			if (IN6_IS_ADDR_LINKLOCAL(&tmp6->sin6_addr)) {
-				zval_ptr_dtor(&addr);
-				break;
+				add_assoc_long(&addr, "linklocal", 1);
 			}
 			inet_ntop(AF_INET6, (void *)&tmp6->sin6_addr, outputbuf,
 			    sizeof(outputbuf));
@@ -1826,8 +1892,22 @@ PHP_FUNCTION(pfSense_get_ifaddrs)
 			if (ioctl(PFSENSE_G(inets6),
 			    SIOCGIFAFLAG_IN6, &ifr6) == 0) {
 				llflag = ifr6.ifr_ifru.ifru_flags6;
+				if ((llflag & IN6_IFF_ANYCAST) != 0)
+					add_assoc_long(&addr, "anycast", 1);
 				if ((llflag & IN6_IFF_TENTATIVE) != 0)
 					add_assoc_long(&addr, "tentative", 1);
+				if ((llflag & IN6_IFF_DUPLICATED) != 0)
+					add_assoc_long(&addr, "duplicated", 1);
+				if ((llflag & IN6_IFF_DETACHED) != 0)
+					add_assoc_long(&addr, "detached", 1);
+				if ((llflag & IN6_IFF_DEPRECATED) != 0)
+					add_assoc_long(&addr, "deprecated", 1);
+				if ((llflag & IN6_IFF_AUTOCONF) != 0)
+					add_assoc_long(&addr, "autoconf", 1);
+				if ((llflag & IN6_IFF_TEMPORARY) != 0)
+					add_assoc_long(&addr, "temporary", 1);
+				if ((llflag & IN6_IFF_PREFER_SOURCE) != 0)
+					add_assoc_long(&addr, "prefer_source", 1);
 			}
 
 			tmp6 = (struct sockaddr_in6 *)mb->ifa_netmask;
@@ -1842,7 +1922,7 @@ PHP_FUNCTION(pfSense_get_ifaddrs)
 					inet_ntop(AF_INET6,
 					    (void *)&tmp6->sin6_addr, outputbuf,
 					    sizeof(outputbuf));
-					add_assoc_string(&addr, "tunnel",
+					add_assoc_string(&addr, "dstaddr",
 					    outputbuf);
 				}
 			}
@@ -1940,7 +2020,7 @@ PHP_FUNCTION(pfSense_get_interface_addresses)
 					inet_ntop(AF_INET,
 					    (void *)&tmp->sin_addr, outputbuf,
 					    sizeof(outputbuf));
-					add_assoc_string(return_value, "tunnel",
+					add_assoc_string(return_value, "dstaddr",
 					    outputbuf);
 				}
 			}
@@ -1983,7 +2063,7 @@ PHP_FUNCTION(pfSense_get_interface_addresses)
 					    (void *)&tmp6->sin6_addr, outputbuf,
 					    sizeof(outputbuf));
 					add_assoc_string(return_value,
-					    "tunnel6", outputbuf);
+					    "dstaddr6", outputbuf);
 				}
 			}
 			break;
@@ -2709,10 +2789,10 @@ pfSense_append_state(struct pfctl_state *s, void *arg) {
 	struct protoent *p;
 	struct pfSense_state_arg *a = (struct pfSense_state_arg *)arg;
 	int found, min, sec;
-	sa_family_t af;
 	uint8_t proto;
 	uint32_t expire, creation;
 	uint64_t bytes[2], id, packets[2];
+	bool afto;
 	zval array;
 	zval *val, *val2;
 	zend_long lkey, lkey2;
@@ -2755,7 +2835,6 @@ pfSense_append_state(struct pfctl_state *s, void *arg) {
 			return (0);
 	}
 
-	af = s->key[PF_SK_WIRE].af;
 	proto = s->key[PF_SK_WIRE].proto;
 	if (s->direction == PF_OUT) {
 		src = &s->src;
@@ -2774,10 +2853,13 @@ pfSense_append_state(struct pfctl_state *s, void *arg) {
 	}
 
 	found = 0;
+	afto = sk->af != nk->af;
 
 	array_init(&array);
 
-	add_assoc_string(&array, "if", s->orig_ifname);
+	add_assoc_string(&array, "if", s->ifname);
+	add_assoc_string(&array, "origif", s->orig_ifname);
+	add_assoc_string(&array, "rt_ifname", s->rt_ifname);
 	if ((p = getprotobynumber(proto)) != NULL) {
 		add_assoc_string(&array, "proto", p->p_name);
 		if (a->filter != NULL && strstr(p->p_name, a->filter))
@@ -2785,38 +2867,40 @@ pfSense_append_state(struct pfctl_state *s, void *arg) {
 	} else
 		add_assoc_long(&array, "proto", (long)proto);
 	add_assoc_string(&array, "direction",
-	    ((s->direction == PF_OUT) ? "out" : "in"));
+	    ((s->direction == PF_OUT || (afto && s->direction == PF_IN)) ? "out" : "in"));
 
 	memset(buf, 0, sizeof(buf));
-	pf_print_host(&nk->addr[1], nk->port[1], af, buf, sizeof(buf));
-	add_assoc_string(&array, ((s->direction == PF_OUT) ? "src" : "dst"), buf);
+	pf_print_host(&nk->addr[1], nk->port[1], nk->af, buf, sizeof(buf));
+	add_assoc_string(&array, ((s->direction == PF_OUT || (afto && s->direction == PF_IN)) ? "src" : "dst"), buf);
 	if (a->filter != NULL && !found && strstr(buf, a->filter))
 		found = 1;
 
-	if (PF_ANEQ(&nk->addr[1], &sk->addr[1], af) ||
+	if (afto || PF_ANEQ(&nk->addr[1], &sk->addr[1], nk->af) ||
 	    nk->port[1] != sk->port[1]) {
+		int idx = afto ? 0 : 1;
 		memset(buf, 0, sizeof(buf));
-		pf_print_host(&sk->addr[1], sk->port[1], af, buf,
+		pf_print_host(&sk->addr[idx], sk->port[idx], sk->af, buf,
 		    sizeof(buf));
 		add_assoc_string(&array,
-		    ((s->direction == PF_OUT) ? "src-orig" : "dst-orig"), buf);
+		    ((s->direction == PF_OUT || (afto && s->direction == PF_IN)) ? "src-orig" : "dst-orig"), buf);
 		if (a->filter != NULL && !found && strstr(buf, a->filter))
 			found = 1;
 	}
 
 	memset(buf, 0, sizeof(buf));
-	pf_print_host(&nk->addr[0], nk->port[0], af, buf, sizeof(buf));
-	add_assoc_string(&array, ((s->direction == PF_OUT) ? "dst" : "src"), buf);
+	pf_print_host(&nk->addr[0], nk->port[0], nk->af, buf, sizeof(buf));
+	add_assoc_string(&array, ((s->direction == PF_OUT || (afto && s->direction == PF_IN)) ? "dst" : "src"), buf);
 	if (a->filter != NULL && !found && strstr(buf, a->filter))
 		found = 1;
 
-	if (PF_ANEQ(&nk->addr[0], &sk->addr[0], af) ||
+	if (afto || PF_ANEQ(&nk->addr[0], &sk->addr[0], nk->af) ||
 	    nk->port[0] != sk->port[0]) {
+		int idx = afto ? 1 : 0;
 		memset(buf, 0, sizeof(buf));
-		pf_print_host(&sk->addr[0], sk->port[0], af, buf,
+		pf_print_host(&sk->addr[idx], sk->port[idx], sk->af, buf,
 		    sizeof(buf));
 		add_assoc_string(&array,
-		    ((s->direction == PF_OUT) ? "dst-orig" : "src-orig"), buf);
+		    ((s->direction == PF_OUT || (afto && s->direction == PF_IN)) ? "dst-orig" : "src-orig"), buf);
 		if (a->filter != NULL && !found && strstr(buf, a->filter))
 			found = 1;
 	}

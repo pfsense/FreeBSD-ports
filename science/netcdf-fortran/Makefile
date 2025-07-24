@@ -1,5 +1,5 @@
 PORTNAME=	netcdf-fortran
-PORTVERSION=	4.6.1
+PORTVERSION=	4.6.2
 CATEGORIES=	science
 MASTER_SITES=	https://downloads.unidata.ucar.edu/netcdf-fortran/${PORTVERSION}/ \
 		LOCAL/sunpoet
@@ -12,7 +12,7 @@ WWW=		https://www.unidata.ucar.edu/software/netcdf/ \
 LICENSE=	UCAR_UNIDATA
 LICENSE_FILE=	${WRKSRC}/COPYRIGHT
 LICENSE_NAME=	University Corporation for Atmospheric Research/Unidata
-LICENSE_PERMS=	dist-mirror dist-sell pkg-mirror pkg-sell auto-accept
+LICENSE_PERMS=	auto-accept dist-mirror dist-sell pkg-mirror pkg-sell
 
 BUILD_DEPENDS=	netcdf>=4.9.0:science/netcdf
 LIB_DEPENDS=	libnetcdf.so:science/netcdf

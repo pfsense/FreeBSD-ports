@@ -1,6 +1,6 @@
 PORTNAME=	lxappearance-obconf
 PORTVERSION=	0.2.3
-PORTREVISION=	5
+PORTREVISION=	8
 CATEGORIES=	x11-wm
 MASTER_SITES=	SF/lxde/LXAppearance%20Obconf/
 
@@ -20,7 +20,7 @@ RUN_DEPENDS=	${BUILD_DEPENDS}
 
 USES=	gettext-tools gmake gnome libtool pkgconfig tar:xz xorg
 GNU_CONFIGURE=	yes
-USE_GNOME=	glib20 gtk20 intltool intlhack atk cairo pango gdkpixbuf2 \
+USE_GNOME=	glib20 gtk20 intltool intlhack atk cairo pango gdkpixbuf \
 	librsvg2 libxml2
 USE_XORG=	ice sm x11 xft
 INSTALL_TARGET=	install-strip

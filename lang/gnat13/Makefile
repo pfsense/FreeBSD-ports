@@ -56,6 +56,8 @@ PLIST_SUB=	ASSET_FILE=${_ASSET_FILE} \
 		CONFTRGT=${CONFIGURE_TARGET} \
 		VER=${DISTVERSION}
 
+PIE_UNSAFE=	yes
+
 OPTIONS_DEFINE=			ASSETS NLS
 .if exists(/usr/lib32/libc.so)
 OPTIONS_DEFINE_amd64+=	MULTILIB
@@ -127,6 +129,7 @@ PLIST_SUB+=	32BITS=""
 .  endif
 .endif
 .if ${ARCH} == aarch64
+EXTRACT_CMD=    ${SETENV} LC_ALL=en_US.UTF-8 /usr/bin/bsdtar
 PLIST_SUB+=	ARM="" \
 		NOARM="@comment "
 .else

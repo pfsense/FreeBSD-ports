@@ -1,14 +1,14 @@
 PORTNAME=	pharo
-DISTVERSION=	10.0.9
-DISTVERSIONSUFFIX=	de76067
-PORTREVISION=	1
+DISTVERSION=	10.2.0
+DISTVERSIONSUFFIX=	f4c5e2a
+PORTREVISION=	2
 CATEGORIES=	lang
 MASTER_SITES=	http://files.pharo.org/vm/pharo-spur64-headless/Linux-x86_64/source/
 DISTNAME=	PharoVM-${DISTVERSION}-${DISTVERSIONSUFFIX}-Linux-x86_64-c-src
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Smalltalk-inspired language and environment
-WWW=		http://www.pharo.org/
+WWW=		https://www.pharo.org/
 
 LICENSE=	MIT
 
@@ -18,7 +18,7 @@ LIB_DEPENDS=	libffi.so:devel/libffi \
 		libfreetype.so:print/freetype2 \
 		libpixman-1.so:x11/pixman \
 		libpng.so:graphics/png \
-		libuuid.so:misc/e2fsprogs-libuuid
+		libuuid.so:misc/libuuid
 
 USES=		cmake ssl
 CMAKE_ARGS=	-DFLAVOUR=CoInterpreter \

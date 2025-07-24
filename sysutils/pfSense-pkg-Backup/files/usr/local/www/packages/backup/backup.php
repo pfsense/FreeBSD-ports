@@ -3,7 +3,7 @@
  * backup.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2015-2024 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2015-2025 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2008 Mark J Crane
  * All rights reserved.
  *
@@ -24,8 +24,6 @@ require_once("/usr/local/pkg/backup.inc");
 
 global $backup_dir, $backup_filename, $backup_path;
 
-config_init_path('installedpackages/backup/config');
-
 $backup_dir = "/root/backup";
 $backup_filename = "pfsense.bak.tgz";
 $backup_path = "{$backup_dir}/{$backup_filename}";
@@ -45,7 +43,7 @@ if ($_GET['a'] == "download") {
 	if ($_GET['t'] == "backup") {
 		/* assume no... */
 		$has_backup = false;
-		if (count(config_get_path('installedpackages/backup/config')) > 0) {
+		if (count(config_get_path('installedpackages/backup/config', [])) > 0) {
 			/* Do NOT remove the trailing space after / from $backup_cmd below!!! */
 			$backup_cmd = "/usr/bin/tar --exclude {$backup_path} --create --verbose --gzip --file {$backup_path} --directory / ";
 			foreach (config_get_path('installedpackages/backup/config', []) as $ent) {

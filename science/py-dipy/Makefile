@@ -1,5 +1,5 @@
 PORTNAME=	dipy
-DISTVERSION=	1.9.0
+DISTVERSION=	1.10.0
 CATEGORIES=	science python
 MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -30,7 +30,7 @@ TEST_DEPENDS+=	${PYTHON_PKGNAMEPREFIX}fury>0:graphics/py-fury@${PY_FLAVOR} \
 TEST_DEPENDS+=	${PYTHON_PKGNAMEPREFIX}cvxpy>0:math/py-cvxpy@${PY_FLAVOR} # "doc" extra dependencies, see dipy/info.py
 
 USES=		python shebangfix
-USE_PYTHON=	pep517 concurrent cython pytest # autoplist is broken: it produces incorrect entries and unnecessary files are also placed under doc/
+USE_PYTHON=	concurrent cython3 pep517 pytest # autoplist is broken: it produces incorrect entries and unnecessary files are also placed under doc/
 
 SHEBANG_GLOB=	*.sh *.py
 

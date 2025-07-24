@@ -1,6 +1,6 @@
 PORTNAME=	gpscorrelate
 PORTVERSION=	1.6.1
-PORTREVISION=	11
+PORTREVISION=	12
 CATEGORIES=	astro geography
 
 MAINTAINER=	ports@FreeBSD.org
@@ -22,7 +22,7 @@ USES=		compiler:c++11-lang gettext-runtime gmake gnome pkgconfig
 USE_GITHUB=	yes
 GH_ACCOUNT=	freefoote
 
-USE_GNOME=	cairo gdkpixbuf2 glib20 gtk20 libxml2 pango
+USE_GNOME=	cairo gdkpixbuf glib20 gtk20 libxml2 pango
 
 PLIST_FILES=	bin/gpscorrelate bin/gpscorrelate-gui \
 		share/man/man1/gpscorrelate.1.gz share/man/man1/gpscorrelate-gui.1.gz

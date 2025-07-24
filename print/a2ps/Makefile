@@ -1,6 +1,6 @@
 PORTNAME=	a2ps
-PORTVERSION=	4.15.5
-PORTREVISION=	5
+PORTVERSION=	4.15.7
+PORTREVISION=	0
 CATEGORIES=	print
 MASTER_SITES=	GNU LOCAL/hrs/a2ps/:i18n
 
@@ -47,10 +47,6 @@ EMACS_CONFIGURE_OFF=	--without-emacs --without-lispdir
 .if ! ${PORT_OPTIONS:MEMACS}
 CONFIGURE_ENV+=	EMACS=no
 .endif
-
-post-patch:
-	${REINPLACE_CMD} -e 's|^DESTDIR|#DESTDIR|' \
-		`${FIND} ${WRKSRC} -name "Makefile.in"`
 
 .if ${PORT_OPTIONS:MI18N} || make(makesum) || defined(FETCH_ALL)
 #DISTFILES+=	${I18N_PACKAGE}${EXTRACT_SUFX}:i18n

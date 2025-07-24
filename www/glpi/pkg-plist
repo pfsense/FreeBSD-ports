@@ -1189,7 +1189,22 @@
 %%WWWDIR%%/install/migrations/update_10.0.12_to_10.0.13/configs.php
 %%WWWDIR%%/install/migrations/update_10.0.12_to_10.0.13/location.php
 %%WWWDIR%%/install/migrations/update_10.0.14_to_10.0.15.php
+%%WWWDIR%%/install/migrations/update_10.0.14_to_10.0.15/items_disks.php
 %%WWWDIR%%/install/migrations/update_10.0.14_to_10.0.15/user.php
+%%WWWDIR%%/install/migrations/update_10.0.15_to_10.0.16.php
+%%WWWDIR%%/install/migrations/update_10.0.15_to_10.0.16/config.php
+%%WWWDIR%%/install/migrations/update_10.0.15_to_10.0.16/configs.php
+%%WWWDIR%%/install/migrations/update_10.0.15_to_10.0.16/entities.php
+%%WWWDIR%%/install/migrations/update_10.0.15_to_10.0.16/items_disks.php
+%%WWWDIR%%/install/migrations/update_10.0.15_to_10.0.16/queuednotifications.php
+%%WWWDIR%%/install/migrations/update_10.0.16_to_10.0.17.php
+%%WWWDIR%%/install/migrations/update_10.0.16_to_10.0.17/entities.php
+%%WWWDIR%%/install/migrations/update_10.0.16_to_10.0.17/logs.php
+%%WWWDIR%%/install/migrations/update_10.0.16_to_10.0.17/rule_tickets.php
+%%WWWDIR%%/install/migrations/update_10.0.16_to_10.0.17/tree_dropdowns.php
+%%WWWDIR%%/install/migrations/update_10.0.16_to_10.0.17/users.php
+%%WWWDIR%%/install/migrations/update_10.0.17_to_10.0.18.php
+%%WWWDIR%%/install/migrations/update_10.0.17_to_10.0.18/configs.php
 %%WWWDIR%%/install/migrations/update_10.0.1_to_10.0.2.php
 %%WWWDIR%%/install/migrations/update_10.0.1_to_10.0.2/agent.php
 %%WWWDIR%%/install/migrations/update_10.0.1_to_10.0.2/configs.php
@@ -1206,7 +1221,6 @@
 %%WWWDIR%%/install/migrations/update_10.0.3_to_10.0.4/inventory.php
 %%WWWDIR%%/install/migrations/update_10.0.3_to_10.0.4/ticket.php
 %%WWWDIR%%/install/migrations/update_10.0.4_to_10.0.5.php
-%%WWWDIR%%/install/migrations/update_10.0.4_to_10.0.5/items_disks.php
 %%WWWDIR%%/install/migrations/update_10.0.5_to_10.0.6.php
 %%WWWDIR%%/install/migrations/update_10.0.5_to_10.0.6/appliance.php
 %%WWWDIR%%/install/migrations/update_10.0.5_to_10.0.6/blacklist.php
@@ -1365,6 +1379,9 @@
 %%WWWDIR%%/install/mysql/glpi-10.0.12-empty.sql
 %%WWWDIR%%/install/mysql/glpi-10.0.13-empty.sql
 %%WWWDIR%%/install/mysql/glpi-10.0.14-empty.sql
+%%WWWDIR%%/install/mysql/glpi-10.0.15-empty.sql
+%%WWWDIR%%/install/mysql/glpi-10.0.16-empty.sql
+%%WWWDIR%%/install/mysql/glpi-10.0.17-empty.sql
 %%WWWDIR%%/install/mysql/glpi-10.0.2-empty.sql
 %%WWWDIR%%/install/mysql/glpi-10.0.3-empty.sql
 %%WWWDIR%%/install/mysql/glpi-10.0.4-empty.sql
@@ -1954,6 +1971,8 @@
 %%WWWDIR%%/public/lib/flatpickr/l10n/bn.min.js
 %%WWWDIR%%/public/lib/flatpickr/l10n/bs.js
 %%WWWDIR%%/public/lib/flatpickr/l10n/bs.min.js
+%%WWWDIR%%/public/lib/flatpickr/l10n/ca.js
+%%WWWDIR%%/public/lib/flatpickr/l10n/ca.min.js
 %%WWWDIR%%/public/lib/flatpickr/l10n/cat.js
 %%WWWDIR%%/public/lib/flatpickr/l10n/cat.min.js
 %%WWWDIR%%/public/lib/flatpickr/l10n/ckb.js
@@ -3492,6 +3511,7 @@
 %%WWWDIR%%/src/Ticket_User.php
 %%WWWDIR%%/src/Timer.php
 %%WWWDIR%%/src/Toolbox.php
+%%WWWDIR%%/src/Toolbox/ArrayNormalizer.php
 %%WWWDIR%%/src/Toolbox/DataExport.php
 %%WWWDIR%%/src/Toolbox/DatabaseSchema.php
 %%WWWDIR%%/src/Toolbox/Filesystem.php
@@ -3546,6 +3566,7 @@
 %%WWWDIR%%/templates/components/form/single-action.html.twig
 %%WWWDIR%%/templates/components/form/snmpcredential.html.twig
 %%WWWDIR%%/templates/components/form/support_hours.html.twig
+%%WWWDIR%%/templates/components/group/info_card.html.twig
 %%WWWDIR%%/templates/components/infocom.html.twig
 %%WWWDIR%%/templates/components/itilobject/actors/assign_to_me.html.twig
 %%WWWDIR%%/templates/components/itilobject/actors/field.html.twig
@@ -3759,6 +3780,7 @@
 %%WWWDIR%%/vendor/glpi-project/inventory_format/inventory.schema.json
 %%WWWDIR%%/vendor/glpi-project/inventory_format/lib/php/Converter.php
 %%WWWDIR%%/vendor/glpi-project/inventory_format/lib/php/FilesToJSON.php
+%%WWWDIR%%/vendor/glpi-project/inventory_format/lib/php/Schema.php
 %%WWWDIR%%/vendor/glpi-project/inventory_format/original-netdiscovery.md
 %%WWWDIR%%/vendor/glpi-project/inventory_format/original-netinventory.md
 %%WWWDIR%%/vendor/glpi-project/inventory_format/original.md
@@ -6140,6 +6162,7 @@
 %%WWWDIR%%/vendor/symfony/service-contracts/ServiceSubscriberInterface.php
 %%WWWDIR%%/vendor/symfony/service-contracts/ServiceSubscriberTrait.php
 %%WWWDIR%%/vendor/symfony/service-contracts/Test/ServiceLocatorTest.php
+%%WWWDIR%%/vendor/symfony/service-contracts/Test/ServiceLocatorTestCase.php
 %%WWWDIR%%/vendor/symfony/service-contracts/composer.json
 %%WWWDIR%%/vendor/symfony/string/AbstractString.php
 %%WWWDIR%%/vendor/symfony/string/AbstractUnicodeString.php
@@ -6422,9 +6445,12 @@
 %%WWWDIR%%/vendor/twig/twig/LICENSE
 %%WWWDIR%%/vendor/twig/twig/README.rst
 %%WWWDIR%%/vendor/twig/twig/composer.json
+%%WWWDIR%%/vendor/twig/twig/src/Attribute/YieldReady.php
 %%WWWDIR%%/vendor/twig/twig/src/Cache/CacheInterface.php
+%%WWWDIR%%/vendor/twig/twig/src/Cache/ChainCache.php
 %%WWWDIR%%/vendor/twig/twig/src/Cache/FilesystemCache.php
 %%WWWDIR%%/vendor/twig/twig/src/Cache/NullCache.php
+%%WWWDIR%%/vendor/twig/twig/src/Cache/ReadOnlyFilesystemCache.php
 %%WWWDIR%%/vendor/twig/twig/src/Compiler.php
 %%WWWDIR%%/vendor/twig/twig/src/Environment.php
 %%WWWDIR%%/vendor/twig/twig/src/Error/Error.php
@@ -6444,6 +6470,7 @@
 %%WWWDIR%%/vendor/twig/twig/src/Extension/SandboxExtension.php
 %%WWWDIR%%/vendor/twig/twig/src/Extension/StagingExtension.php
 %%WWWDIR%%/vendor/twig/twig/src/Extension/StringLoaderExtension.php
+%%WWWDIR%%/vendor/twig/twig/src/Extension/YieldNotReadyExtension.php
 %%WWWDIR%%/vendor/twig/twig/src/ExtensionSet.php
 %%WWWDIR%%/vendor/twig/twig/src/FileExtensionEscapingStrategy.php
 %%WWWDIR%%/vendor/twig/twig/src/Lexer.php
@@ -6456,6 +6483,7 @@
 %%WWWDIR%%/vendor/twig/twig/src/Node/BlockNode.php
 %%WWWDIR%%/vendor/twig/twig/src/Node/BlockReferenceNode.php
 %%WWWDIR%%/vendor/twig/twig/src/Node/BodyNode.php
+%%WWWDIR%%/vendor/twig/twig/src/Node/CaptureNode.php
 %%WWWDIR%%/vendor/twig/twig/src/Node/CheckSecurityCallNode.php
 %%WWWDIR%%/vendor/twig/twig/src/Node/CheckSecurityNode.php
 %%WWWDIR%%/vendor/twig/twig/src/Node/CheckToStringNode.php
@@ -6500,6 +6528,7 @@
 %%WWWDIR%%/vendor/twig/twig/src/Node/Expression/ConditionalExpression.php
 %%WWWDIR%%/vendor/twig/twig/src/Node/Expression/ConstantExpression.php
 %%WWWDIR%%/vendor/twig/twig/src/Node/Expression/Filter/DefaultFilter.php
+%%WWWDIR%%/vendor/twig/twig/src/Node/Expression/Filter/RawFilter.php
 %%WWWDIR%%/vendor/twig/twig/src/Node/Expression/FilterExpression.php
 %%WWWDIR%%/vendor/twig/twig/src/Node/Expression/FunctionExpression.php
 %%WWWDIR%%/vendor/twig/twig/src/Node/Expression/GetAttrExpression.php
@@ -6530,6 +6559,7 @@
 %%WWWDIR%%/vendor/twig/twig/src/Node/IncludeNode.php
 %%WWWDIR%%/vendor/twig/twig/src/Node/MacroNode.php
 %%WWWDIR%%/vendor/twig/twig/src/Node/ModuleNode.php
+%%WWWDIR%%/vendor/twig/twig/src/Node/NameDeprecation.php
 %%WWWDIR%%/vendor/twig/twig/src/Node/Node.php
 %%WWWDIR%%/vendor/twig/twig/src/Node/NodeCaptureInterface.php
 %%WWWDIR%%/vendor/twig/twig/src/Node/NodeOutputInterface.php
@@ -6546,6 +6576,7 @@
 %%WWWDIR%%/vendor/twig/twig/src/NodeVisitor/OptimizerNodeVisitor.php
 %%WWWDIR%%/vendor/twig/twig/src/NodeVisitor/SafeAnalysisNodeVisitor.php
 %%WWWDIR%%/vendor/twig/twig/src/NodeVisitor/SandboxNodeVisitor.php
+%%WWWDIR%%/vendor/twig/twig/src/NodeVisitor/YieldNotReadyNodeVisitor.php
 %%WWWDIR%%/vendor/twig/twig/src/Parser.php
 %%WWWDIR%%/vendor/twig/twig/src/Profiler/Dumper/BaseDumper.php
 %%WWWDIR%%/vendor/twig/twig/src/Profiler/Dumper/BlackfireDumper.php
@@ -6555,6 +6586,11 @@
 %%WWWDIR%%/vendor/twig/twig/src/Profiler/Node/LeaveProfileNode.php
 %%WWWDIR%%/vendor/twig/twig/src/Profiler/NodeVisitor/ProfilerNodeVisitor.php
 %%WWWDIR%%/vendor/twig/twig/src/Profiler/Profile.php
+%%WWWDIR%%/vendor/twig/twig/src/Resources/core.php
+%%WWWDIR%%/vendor/twig/twig/src/Resources/debug.php
+%%WWWDIR%%/vendor/twig/twig/src/Resources/escaper.php
+%%WWWDIR%%/vendor/twig/twig/src/Resources/string_loader.php
+%%WWWDIR%%/vendor/twig/twig/src/Runtime/EscaperRuntime.php
 %%WWWDIR%%/vendor/twig/twig/src/RuntimeLoader/ContainerRuntimeLoader.php
 %%WWWDIR%%/vendor/twig/twig/src/RuntimeLoader/FactoryRuntimeLoader.php
 %%WWWDIR%%/vendor/twig/twig/src/RuntimeLoader/RuntimeLoaderInterface.php
@@ -6566,6 +6602,7 @@
 %%WWWDIR%%/vendor/twig/twig/src/Sandbox/SecurityNotAllowedTagError.php
 %%WWWDIR%%/vendor/twig/twig/src/Sandbox/SecurityPolicy.php
 %%WWWDIR%%/vendor/twig/twig/src/Sandbox/SecurityPolicyInterface.php
+%%WWWDIR%%/vendor/twig/twig/src/Sandbox/SourcePolicyInterface.php
 %%WWWDIR%%/vendor/twig/twig/src/Source.php
 %%WWWDIR%%/vendor/twig/twig/src/Template.php
 %%WWWDIR%%/vendor/twig/twig/src/TemplateWrapper.php
@@ -6597,6 +6634,7 @@
 %%WWWDIR%%/vendor/twig/twig/src/TwigFunction.php
 %%WWWDIR%%/vendor/twig/twig/src/TwigTest.php
 %%WWWDIR%%/vendor/twig/twig/src/Util/DeprecationCollector.php
+%%WWWDIR%%/vendor/twig/twig/src/Util/ReflectionCallable.php
 %%WWWDIR%%/vendor/twig/twig/src/Util/TemplateDirIterator.php
 %%WWWDIR%%/vendor/wapmorgan/unified-archive/CHANGELOG.md
 %%WWWDIR%%/vendor/wapmorgan/unified-archive/LICENSE
@@ -6667,7 +6705,7 @@
 %%WWWDIR%%/vendor/webmozart/assert/src/Assert.php
 %%WWWDIR%%/vendor/webmozart/assert/src/InvalidArgumentException.php
 %%WWWDIR%%/vendor/webmozart/assert/src/Mixin.php
-%%WWWDIR%%/version/10.0.15
+%%WWWDIR%%/version/10.0.18
 @dir %%WWWDIR%%/ajax
 @dir %%WWWDIR%%/bin
 @dir %%WWWDIR%%/config
@@ -6745,6 +6783,9 @@
 @dir %%WWWDIR%%/install/migrations/update_10.0.11_to_10.0.12
 @dir %%WWWDIR%%/install/migrations/update_10.0.12_to_10.0.13
 @dir %%WWWDIR%%/install/migrations/update_10.0.14_to_10.0.15
+@dir %%WWWDIR%%/install/migrations/update_10.0.15_to_10.0.16
+@dir %%WWWDIR%%/install/migrations/update_10.0.16_to_10.0.17
+@dir %%WWWDIR%%/install/migrations/update_10.0.17_to_10.0.18
 @dir %%WWWDIR%%/install/migrations/update_10.0.1_to_10.0.2
 @dir %%WWWDIR%%/install/migrations/update_10.0.2_to_10.0.3
 @dir %%WWWDIR%%/install/migrations/update_10.0.3_to_10.0.4
@@ -6906,6 +6947,7 @@
 @dir %%WWWDIR%%/templates/components/debug
 @dir %%WWWDIR%%/templates/components/dropdown
 @dir %%WWWDIR%%/templates/components/form
+@dir %%WWWDIR%%/templates/components/group
 @dir %%WWWDIR%%/templates/components/itilobject
 @dir %%WWWDIR%%/templates/components/itilobject/actors
 @dir %%WWWDIR%%/templates/components/itilobject/fields
@@ -7403,6 +7445,7 @@
 @dir %%WWWDIR%%/vendor/twig/string-extra
 @dir %%WWWDIR%%/vendor/twig/twig
 @dir %%WWWDIR%%/vendor/twig/twig/src
+@dir %%WWWDIR%%/vendor/twig/twig/src/Attribute
 @dir %%WWWDIR%%/vendor/twig/twig/src/Cache
 @dir %%WWWDIR%%/vendor/twig/twig/src/Error
 @dir %%WWWDIR%%/vendor/twig/twig/src/Extension
@@ -7418,6 +7461,8 @@
 @dir %%WWWDIR%%/vendor/twig/twig/src/Profiler/Dumper
 @dir %%WWWDIR%%/vendor/twig/twig/src/Profiler/Node
 @dir %%WWWDIR%%/vendor/twig/twig/src/Profiler/NodeVisitor
+@dir %%WWWDIR%%/vendor/twig/twig/src/Resources
+@dir %%WWWDIR%%/vendor/twig/twig/src/Runtime
 @dir %%WWWDIR%%/vendor/twig/twig/src/RuntimeLoader
 @dir %%WWWDIR%%/vendor/twig/twig/src/Sandbox
 @dir %%WWWDIR%%/vendor/twig/twig/src/Test

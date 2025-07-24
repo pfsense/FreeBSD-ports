@@ -1,6 +1,6 @@
 PORTNAME=	sdformat
 DISTVERSION=	8.0.0
-PORTREVISION=	6
+PORTREVISION=	7
 CATEGORIES=	misc
 MASTER_SITES=	https://bitbucket.org/${BB_ACCOUNT}/${BB_PROJECT}/get/${BB_COMMIT}.tar.gz?dummy=/
 
@@ -9,6 +9,8 @@ COMMENT=	Simulation Description Format (SDF) parser and description files
 WWW=		https://bitbucket.org/osrf/sdformat/src/default/
 
 LICENSE=	APACHE20
+
+BROKEN=		tools/xmlschema.rb:268:in `<main>': undefined method `exists?' for File:Class (NoMethodError)
 
 BUILD_DEPENDS=	ignition-cmake==2:devel/ignition-cmake \
 		ignition-tools>0:devel/ignition-tools \
@@ -21,7 +23,6 @@ RUN_DEPENDS=	ignition-tools>0:devel/ignition-tools
 
 USES=		cmake compiler:c++17-lang pkgconfig ruby:build
 USE_LDCONFIG=	yes
-BROKEN_RUBY32=	yes
 
 CMAKE_OFF=	BUILD_TESTING
 

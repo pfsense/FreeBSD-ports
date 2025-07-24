@@ -1,6 +1,6 @@
 PORTNAME=	gdl
 PORTVERSION=	3.40.0
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	x11-toolkits gnome
 MASTER_SITES=	GNOME
 DIST_SUBDIR=	gnome
@@ -14,7 +14,7 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 
 PORTSCOUT=	limitw:1,even
 
-USE_GNOME=	cairo gdkpixbuf2 gtk30 intltool introspection:build libxml2
+USE_GNOME=	cairo gdkpixbuf gtk30 intltool introspection:build libxml2
 USES=		gettext gmake gnome libtool localbase pathfix pkgconfig tar:xz
 GNU_CONFIGURE=	yes
 USE_LDCONFIG=	yes

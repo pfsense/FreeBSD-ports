@@ -1,5 +1,5 @@
 PORTNAME=	ocp
-PORTVERSION=	0.2.109
+PORTVERSION=	3.0.1
 PORTREVISION=	1
 PORTEPOCH=	1
 CATEGORIES=	audio
@@ -95,7 +95,7 @@ TIMIDITY_CFG=	${LOCALBASE}/share/timidity/timidity.cfg
 
 .include <bsd.port.pre.mk>
 
-.if ${COMPILER_TYPE} == clang && ${COMPILER_VERSION} >= 160
+.if ${COMPILER_TYPE} == clang
 CFLAGS+=	-Wno-error=incompatible-function-pointer-types
 .endif
 

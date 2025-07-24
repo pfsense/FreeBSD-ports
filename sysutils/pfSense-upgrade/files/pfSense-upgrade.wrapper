@@ -3,7 +3,7 @@
 # pfSense-upgrade.wrapper
 #
 # part of pfSense (https://www.pfsense.org)
-# Copyright (c) 2015-2024 Rubicon Communications, LLC (Netgate)
+# Copyright (c) 2015-2025 Rubicon Communications, LLC (Netgate)
 # All rights reserved.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -20,6 +20,7 @@
 
 pfsense_upgrade=$(realpath -q $(dirname $0)/../libexec/$(basename $0))
 lockfile="/tmp/$(basename $0).lock"
+lockf_timeout="5"
 
 if [ ! -f ${pfsense_upgrade} ]; then
 	echo "ERROR: Unable to find ${pfsense_upgrade}"
@@ -28,6 +29,36 @@ fi
 
 if [ "$(id -u)" -ne "0" ]; then
 	echo "ERROR: It must run as root"
+	exit 1
+fi
+
+unset boot_stage
+while getopts 46b:cCdfi:hp:l:nr:RT:uUy opt; do
+	case "${opt}" in
+	"b")
+		boot_stage="${OPTARG}"
+		;;
+	"T")
+		lockf_timeout="$(printf "%d" "${OPTARG}" 2> /dev/null)"
+		;;
+	"?")
+		"${pfsense_upgrade}" -h
+		exit 1
+		;;
+	*)
+		;;
+	esac
+done
+
+# Force a bigger timeout on the stage 3 upgrade.
+# See #17901 and #15638.
+[ -n "${boot_stage}" ] && [ "${boot_stage}" = "3" ] && \
+    lockf_timeout="300"
+
+if [ -z "${lockf_timeout}" ] || \
+    [ "${lockf_timeout}" -lt 2 ] || \
+    [ "${lockf_timeout}" -gt 600 ]; then
+	echo "ERROR: Invalid timeout value (must be in 2~600 range): ${lockf_timeout}"
 	exit 1
 fi
 
@@ -45,7 +76,7 @@ EX_UPGRADE=99
 
 while true; do
 	unset run_again
-	/usr/bin/lockf -s -t 5 ${lockfile} ${pfsense_upgrade} "$@"
+	/usr/bin/lockf -s -t "${lockf_timeout}" ${lockfile} ${pfsense_upgrade} "$@"
 	rc=$?
 
 	unset error

@@ -5,7 +5,7 @@ PORTREVISION=	1
 CATEGORIES=	net-mgmt www
 PKGNAMESUFFIX=	${PHP_PKGNAMESUFFIX}
 
-MAINTAINER=	joneum@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Automated import of your VMs and Physical Host from VMware Sphere
 WWW=		https://github.com/Icinga/icingaweb2-module-vsphere
 
@@ -14,6 +14,7 @@ RUN_DEPENDS=	icingaweb2${PHP_PKGNAMESUFFIX}>=2.11.4:net-mgmt/icingaweb2@${PHP_FL
 
 USES=		php:web,flavors
 USE_PHP=	posix soap
+IGNORE_WITH_PHP=81
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	icinga

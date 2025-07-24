@@ -1,6 +1,4 @@
-DISTVERSIONPREFIX=	# empty
-DISTVERSION=	s20240223
-DISTVERSIONSUFFIX=	-0-g1dd15b6
+DISTVERSION=	1.8.2
 PORTREVISION=	0
 PKGNAMESUFFIX=	-plugin
 
@@ -13,6 +11,7 @@ DISTINFO_FILE=	${.CURDIR}/distinfo
 
 GH_ACCOUNT=	mstoeckl
 GH_PROJECT=	${PORTNAME}${PKGNAMESUFFIX}
+MESON_ARGS=	-Dlogind=disabled
 
 pre-patch:
 # Compat to apply patch-pam_swaylock "as is"
@@ -23,12 +22,9 @@ slave-post-patch:
 # Compat to apply patch-pam_swaylock "as is"
 	-@${MV} ${WRKSRC}/pam/${PORTNAME}.orig ${WRKSRC}/pam/${PKGBASE}.orig
 	@${MV} ${WRKSRC}/pam/${PORTNAME} ${WRKSRC}/pam/${PKGBASE}
-# Avoid subdirs to match regular swaylock
-	@${REINPLACE_CMD} "s,\(rename: \['\)[^/]*/,\1," \
-		${WRKSRC}/completions/meson.build
-# https://bugs.freebsd.org/bugzilla/show_bug.cgi?id=275328
-	@${REINPLACE_CMD} -e 's/_POSIX_C_SOURCE 200809L/_XOPEN_SOURCE 700/' \
-		${WRKSRC}/main.c
+# Skip building stub swaylock-sleep-watcher
+	@${REINPLACE_CMD} -e '/^logind/s/,/, disabler: true,/' \
+		${WRKSRC}/meson.build
 
 post-install:
 	@${REINPLACE_CMD} '/licenses/!s/${PORTNAME}/${PKGBASE}/' ${TMPPLIST}

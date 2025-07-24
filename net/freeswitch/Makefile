@@ -1,6 +1,6 @@
 PORTNAME=	freeswitch
-PORTVERSION=	1.10.11
-PORTREVISION=	1
+DISTVERSION=	1.10.12
+PORTREVISION=	2
 CATEGORIES=	net
 MASTER_SITES=	https://files.freeswitch.org/releases/freeswitch/ \
 		https://files.freeswitch.org/releases/sounds/:sounds
@@ -32,8 +32,9 @@ LIB_DEPENDS=	libsqlite3.so:databases/sqlite3 \
 		libodbc.so:databases/unixODBC \
 		libpng.so:graphics/png \
 		libjbig.so:graphics/jbigkit \
+		libshout.so:audio/libshout \
 		libtiff.so:graphics/tiff \
-		libuuid.so:misc/e2fsprogs-libuuid \
+		libuuid.so:misc/libuuid \
 		libmariadb.so:databases/mariadb-connector-c \
 		libspandsp.so:comms/spandsp \
 		libsofia-sip-ua.so:net/sofia-sip
@@ -124,9 +125,8 @@ ALL_MODULES_LIB_DEPENDS=	libavformat.so:multimedia/ffmpeg \
 				libvlc.so:multimedia/vlc \
 				libyaml.so:textproc/libyaml
 ALL_MODULES_RUN_DEPENDS=	${LOCALBASE}/include/ladspa.h:audio/ladspa
-ALL_MODULES_USE=		XORG=x11 OPENLDAP=yes JAVA=yes
-ALL_MODULES_VARS=		USE_JAVA=yes
-ALL_MODULES_USES=		python:2.7 xorg # required by mod_unimrcp
+ALL_MODULES_USE=		XORG=x11 OPENLDAP=yes
+ALL_MODULES_USES=		java python:2.7 xorg # required by mod_unimrcp
 ALL_MODULES_CFLAGS=		-I${LOCALBASE}/include/openh323/ \
 				-I${JAVA_HOME}/include/ \
 				-I${JAVA_HOME}/include/freebsd
@@ -191,6 +191,8 @@ post-patch:
 		${REINPLACE_CMD} -Ee 's|^(applications/mod_signalwire)|#\1|' \
 			${WRKSRC}/modules.conf
 		${REINPLACE_CMD} -Ee 's|^(endpoints/mod_verto)|#\1|' \
+			${WRKSRC}/modules.conf
+		${REINPLACE_CMD} -Ee 's|^#(formats/mod_shout)|\1|' \
 			${WRKSRC}/modules.conf
 
 post-patch-PGSQL-off:

@@ -1,12 +1,11 @@
 PORTNAME=	eclib
-PORTVERSION=	20230424
-PORTREVISION=	3
+PORTVERSION=	20250627
 DISTVERSIONPREFIX=	v
 CATEGORIES=	math
 
 MAINTAINER=	thierry@FreeBSD.org
 COMMENT=	C++ library for arithmetic on elliptic curves
-WWW=		https://homepages.warwick.ac.uk/staff/J.E.Cremona/mwrank/
+WWW=		https://johncremona.github.io/mwrank/index.html
 
 LICENSE=	GPLv2
 
@@ -18,14 +17,14 @@ LIB_DEPENDS=	libntl.so:math/ntl		\
 USE_GITHUB=	yes
 GH_ACCOUNT=	JohnCremona
 
-USES=		autoreconf compiler:c++11-lang libtool localbase
+USES=		autoreconf compiler:c++17-lang libtool localbase
 
 OPTIONS_DEFINE=	DOCS
 
-CXXFLAGS+=	-std=c++11
 LIBS+=		"-lm"
 GNU_CONFIGURE=	yes
 GNU_CONFIGURE_MANPREFIX=${PREFIX}/share
+USE_CXXSTD=	c++17
 CONFIGURE_ARGS=	--with-flint=${LOCALBASE} --with-boost=${LOCALBASE}
 INSTALL_TARGET=	install-strip
 USE_LDCONFIG=	yes

@@ -1,6 +1,6 @@
 PORTNAME=	with-editor
 DISTVERSIONPREFIX=	v
-DISTVERSION=	3.3.4
+DISTVERSION=	3.4.4
 DISTVERSIONSUFFIX=
 CATEGORIES=	editors elisp
 PKGNAMESUFFIX=	-devel${EMACS_PKGNAMESUFFIX}
@@ -12,8 +12,11 @@ WWW=		https://github.com/magit/with-editor
 LICENSE=	GPLv3+
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-BUILD_DEPENDS=	compat.el${EMACS_PKGNAMESUFFIX}>=29.1.4.5:misc/compat.el@${EMACS_FLAVOR}
-RUN_DEPENDS=	compat.el${EMACS_PKGNAMESUFFIX}>=29.1.4.5:misc/compat.el@${EMACS_FLAVOR}
+DEPRECATED=	Use editors/with-editor instead
+EXPIRATION_DATE=	2025-08-31
+
+BUILD_DEPENDS=	compat.el${EMACS_PKGNAMESUFFIX}>=30.1.0.0:misc/compat.el@${EMACS_FLAVOR}
+RUN_DEPENDS=	compat.el${EMACS_PKGNAMESUFFIX}>=30.1.0.0:misc/compat.el@${EMACS_FLAVOR}
 
 USES=		emacs gmake makeinfo
 USE_GITHUB=	yes

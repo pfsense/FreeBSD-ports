@@ -1,6 +1,7 @@
 PORTNAME=	kalc
 DISTVERSIONPREFIX=	v
-DISTVERSION=	1.2.1
+DISTVERSION=	1.5.0
+PORTREVISION=	2
 CATEGORIES=	math
 PKGNAMESUFFIX=	-calculator
 
@@ -20,74 +21,79 @@ USES=		cargo
 USE_GITHUB=	yes
 GH_ACCOUNT=	bgkillas
 
-CARGO_CRATES=	autocfg-1.3.0 \
+CARGO_CRATES=	autocfg-1.4.0 \
 		az-1.2.1 \
-		bitflags-2.5.0 \
-		byteorder-1.5.0 \
+		bitflags-2.9.0 \
 		cfg-if-1.0.0 \
-		crossterm-0.27.0 \
+		convert_case-0.7.1 \
+		crossbeam-deque-0.8.6 \
+		crossbeam-epoch-0.9.18 \
+		crossbeam-utils-0.8.21 \
+		crossterm-0.29.0 \
 		crossterm_winapi-0.9.1 \
-		dirs-5.0.1 \
-		dirs-sys-0.4.1 \
-		errno-0.3.9 \
-		fastrand-2.1.0 \
-		getrandom-0.2.15 \
-		gmp-mpfr-sys-1.6.4 \
-		gnuplot-0.0.43 \
-		libc-0.2.155 \
-		libm-0.2.8 \
+		derive_more-2.0.1 \
+		derive_more-impl-2.0.1 \
+		dirs-6.0.0 \
+		dirs-sys-0.5.0 \
+		document-features-0.2.11 \
+		either-1.15.0 \
+		errno-0.3.11 \
+		fastrand-2.3.0 \
+		getrandom-0.2.16 \
+		gmp-mpfr-sys-1.6.5 \
+		itoa-1.0.15 \
+		kalc-lib-1.5.0 \
+		libc-0.2.172 \
+		libm-0.2.13 \
 		libredox-0.1.3 \
-		linux-raw-sys-0.4.14 \
+		linux-raw-sys-0.9.4 \
+		litrs-0.4.1 \
 		lock_api-0.4.12 \
-		log-0.4.21 \
-		mio-0.8.11 \
+		log-0.4.27 \
+		memchr-2.7.4 \
+		mio-1.0.3 \
 		option-ext-0.2.0 \
 		parking_lot-0.12.3 \
 		parking_lot_core-0.9.10 \
-		proc-macro2-1.0.86 \
-		quote-1.0.36 \
-		redox_syscall-0.5.2 \
-		redox_users-0.4.5 \
-		rug-1.24.1 \
-		rustix-0.38.34 \
+		proc-macro2-1.0.95 \
+		quote-1.0.40 \
+		rayon-1.10.0 \
+		rayon-core-1.12.1 \
+		redox_syscall-0.5.11 \
+		redox_users-0.5.0 \
+		rug-1.27.0 \
+		rustix-1.0.5 \
+		ryu-1.0.20 \
 		scopeguard-1.2.0 \
+		serde-1.0.219 \
+		serde_derive-1.0.219 \
+		serde_json-1.0.140 \
 		signal-hook-0.3.17 \
-		signal-hook-mio-0.2.3 \
-		signal-hook-registry-1.4.2 \
-		smallvec-1.13.2 \
-		syn-2.0.67 \
-		tempfile-3.10.1 \
+		signal-hook-mio-0.2.4 \
+		signal-hook-registry-1.4.5 \
+		smallvec-1.15.0 \
+		syn-2.0.100 \
 		term_size-0.3.2 \
-		thiserror-1.0.61 \
-		thiserror-impl-1.0.61 \
-		unicode-ident-1.0.12 \
+		thiserror-2.0.12 \
+		thiserror-impl-2.0.12 \
+		unicode-ident-1.0.18 \
+		unicode-segmentation-1.12.0 \
 		wasi-0.11.0+wasi-snapshot-preview1 \
 		winapi-0.3.9 \
 		winapi-i686-pc-windows-gnu-0.4.0 \
 		winapi-x86_64-pc-windows-gnu-0.4.0 \
-		windows-sys-0.48.0 \
 		windows-sys-0.52.0 \
-		windows-targets-0.48.5 \
-		windows-targets-0.52.5 \
-		windows_aarch64_gnullvm-0.48.5 \
-		windows_aarch64_gnullvm-0.52.5 \
-		windows_aarch64_msvc-0.48.5 \
-		windows_aarch64_msvc-0.52.5 \
-		windows_i686_gnu-0.48.5 \
-		windows_i686_gnu-0.52.5 \
-		windows_i686_gnullvm-0.52.5 \
-		windows_i686_msvc-0.48.5 \
-		windows_i686_msvc-0.52.5 \
-		windows_x86_64_gnu-0.48.5 \
-		windows_x86_64_gnu-0.52.5 \
-		windows_x86_64_gnullvm-0.48.5 \
-		windows_x86_64_gnullvm-0.52.5 \
-		windows_x86_64_msvc-0.48.5 \
-		windows_x86_64_msvc-0.52.5
+		windows-sys-0.59.0 \
+		windows-targets-0.52.6 \
+		windows_aarch64_gnullvm-0.52.6 \
+		windows_aarch64_msvc-0.52.6 \
+		windows_i686_gnu-0.52.6 \
+		windows_i686_gnullvm-0.52.6 \
+		windows_i686_msvc-0.52.6 \
+		windows_x86_64_gnu-0.52.6 \
+		windows_x86_64_gnullvm-0.52.6 \
+		windows_x86_64_msvc-0.52.6
 
 PLIST_FILES=	bin/${PORTNAME}
-
-post-install:
-	@${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/${PORTNAME}
 
 .include <bsd.port.mk>

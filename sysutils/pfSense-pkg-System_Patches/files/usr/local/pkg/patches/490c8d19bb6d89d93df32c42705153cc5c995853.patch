@@ -1,0 +1,46 @@
+commit 490c8d19bb6d89d93df32c42705153cc5c995853
+Author: Marcos Mendoza <mmendoza@netgate.com>
+Date:   Wed Nov 27 11:53:50 2024 -0600
+
+    Limit RDNSS addresses to 3. Fix #15876
+
+diff --git a/src/etc/inc/services.inc b/src/etc/inc/services.inc
+index 34ce45212a..0869b96fab 100644
+--- a/src/etc/inc/services.inc
++++ b/src/etc/inc/services.inc
+@@ -282,6 +282,10 @@ function services_radvd_configure($blacklist = array()) {
+ 			}
+ 			$raadvdnsslifetime = $ramaxrtradvinterval * 3;
+ 			if (count($dnslist) > 0) {
++				// radvd supports up to 3 entries
++				reset($dnslist);
++				$dnslist = array_slice($dnslist, 0, 3);
++
+ 				$dnsstring = implode(" ", $dnslist);
+ 				if ($dnsstring <> "") {
+ 					/*
+@@ -413,6 +417,10 @@ function services_radvd_configure($blacklist = array()) {
+ 				}
+ 			}
+ 			if (count($dnslist) > 0) {
++				// radvd supports up to 3 entries
++				reset($dnslist);
++				$dnslist = array_slice($dnslist, 0, 3);
++
+ 				$dnsstring = implode(" ", $dnslist);
+ 				if (!empty($dnsstring)) {
+ 					$radvdconf .= "\tRDNSS {$dnsstring} { };\n";
+diff --git a/src/usr/local/www/services_radvd.php b/src/usr/local/www/services_radvd.php
+index 9290bc2d0f..1d56132a9f 100644
+--- a/src/usr/local/www/services_radvd.php
++++ b/src/usr/local/www/services_radvd.php
+@@ -487,7 +487,8 @@ if (is_numeric($pool) || ($act === 'newpool')) {
+ 	}
+ }
+ 
+-for ($idx = 1; $idx <= 4; $idx++) {
++// radvd supports up to 3 entries
++for ($idx = 1; $idx <= 3; $idx++) {
+ 	$last = $section->addInput(new Form_IpAddress(
+ 		'radns' . $idx,
+ 		gettext('DNS Server') . ' '. $idx,

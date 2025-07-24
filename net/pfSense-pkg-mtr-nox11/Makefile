@@ -13,7 +13,7 @@ COMMENT=	pfSense package mtr-nox11
 
 LICENSE=	APACHE20
 
-RUN_DEPENDS=	${LOCALBASE}/sbin/mtr:net/mtr-nox11
+RUN_DEPENDS=	${LOCALBASE}/sbin/mtr:net/mtr@nox11
 
 NO_BUILD=	yes
 NO_MTREE=	yes

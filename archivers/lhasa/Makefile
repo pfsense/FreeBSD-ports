@@ -1,9 +1,7 @@
 PORTNAME=	lhasa
-PORTVERSION=	0.3.1
-PORTREVISION=	1
+DISTVERSION=	0.4.0
 CATEGORIES=	archivers
-MASTER_SITES=	https://soulsphere.org/projects/lhasa/ \
-		http://suyai.innolan.net/
+MASTER_SITES=	https://github.com/fragglet/${PORTNAME}/releases/download/v${DISTVERSION}/
 
 MAINTAINER=	cs@innolan.dk
 COMMENT=	Command line tool and library for parsing LHA archives
@@ -12,22 +10,23 @@ WWW=		https://fragglet.github.io/lhasa/
 LICENSE=	ISCL
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-USES=		autoreconf cpe pathfix libtool
-GNU_CONFIGURE=	yes
-GNU_CONFIGURE_MANPREFIX=${PREFIX}/share
+TEST_DEPENDS=	bash>0:shells/bash
+
+USES=		autoreconf cpe libtool pathfix
+CPE_VENDOR=	lhasa_project
 USE_LDCONFIG=	yes
+
+GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--program-suffix=sa
 INSTALL_TARGET=	install-strip
-CPE_VENDOR=	lhasa_project
+TEST_TARGET=	check
 
-PORTDOCS=	ChangeLog README AUTHORS TODO NEWS
+PORTDOCS=	AUTHORS ChangeLog NEWS README TODO
 
 OPTIONS_DEFINE=	DOCS
 
 post-install-DOCS-on:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}
-.for f in ${PORTDOCS}
-	${INSTALL_DATA} ${WRKSRC}/${f} ${STAGEDIR}${DOCSDIR}/
-.endfor
+	cd ${WRKSRC} && ${INSTALL_DATA} ${PORTDOCS} ${STAGEDIR}${DOCSDIR}/
 
 .include <bsd.port.mk>

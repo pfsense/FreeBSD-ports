@@ -1,5 +1,5 @@
 PORTNAME=	test-unit
-PORTVERSION=	3.6.2
+PORTVERSION=	3.7.0
 CATEGORIES=	devel rubygems
 MASTER_SITES=	RG
 
@@ -19,5 +19,7 @@ RUN_DEPENDS=	rubygem-power_assert>=0:devel/rubygem-power_assert
 USES=		gem
 
 NO_ARCH=	yes
+
+PLIST_FILES=	bin/test-unit
 
 .include <bsd.port.mk>

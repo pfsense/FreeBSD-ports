@@ -3,7 +3,7 @@
  * system_patches.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2012-2024 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2012-2025 Rubicon Communications, LLC (Netgate)
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -34,7 +34,6 @@ require_once("patches.inc");
 require_once("pkg-utils.inc");
 require_once('classes/Form.class.php');
 
-config_init_path('installedpackages/patches/item');
 $savemsgtype = 'success';
 
 list($thisversion, $thisversiontype) = explode('-', $g['product_version'], 2);
@@ -53,7 +52,7 @@ if (in_array($_POST['all'], ['apply', 'revert']) &&
     in_array($_POST['type'], ['custom', 'recommended'])) {
 	$typestr = "";
 	if ($_POST['type'] == 'custom') {
-		$patchlist = config_get_path('installedpackages/patches/item');
+		$patchlist = config_get_path('installedpackages/patches/item', []);
 		$typestr = gettext('custom');
 	} elseif ($_POST['type'] == 'recommended') {
 		$patchlist = $recommended_patches;
@@ -94,7 +93,7 @@ if (in_array($_POST['all'], ['apply', 'revert']) &&
 	$savemsg .= '<br/><br/>' . gettext('Changes may not fully activate until the next reboot or restart of patched functions.');
 }
 
-if ((($_POST['type'] == 'custom') && (config_get_path("installedpackages/patches/item/{$_POST['id']}"))) ||
+if ((($_POST['type'] == 'custom') && is_numericint($_POST['id']) && (config_get_path("installedpackages/patches/item/{$_POST['id']}"))) ||
     (($_POST['type'] == 'recommended') && !empty(get_recommended_patch($_POST['id'])))) {
 	$savemsg = "";
 
@@ -227,7 +226,7 @@ if (isset($_POST['del'])) {
 
 	/* move selected patches before this patch */
 	if (isset($movebtn) && is_array($_POST['patch']) && count($_POST['patch'])) {
-		$a_patches = config_get_path('installedpackages/patches/item');
+		$a_patches = config_get_path('installedpackages/patches/item', []);
 		$a_patches_new = array();
 
 		/* copy all patches < $movebtn and not selected */

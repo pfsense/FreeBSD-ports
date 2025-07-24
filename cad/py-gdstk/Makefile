@@ -1,7 +1,8 @@
 PORTNAME=	gdstk
-DISTVERSION=	0.9.52
+DISTVERSIONPREFIX=	v
+DISTVERSION=	0.9.60
 CATEGORIES=	cad
-MASTER_SITES=	PYPI
+#MASTER_SITES=	PYPI # some test files are missing
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -20,9 +21,15 @@ BUILD_DEPENDS=	cmake:devel/cmake-core \
 LIB_DEPENDS=	libqhull_r.so:math/qhull
 RUN_DEPENDS=	${PYNUMPY}
 
-USES=		compiler:c++11-lang python
-USE_PYTHON=	pep517 autoplist pytest # tests fail to run, see https://github.com/heitzmann/gdstk/issues/244
+USES=		compiler:c++17-lang python
+USE_PYTHON=	pep517 autoplist pytest
+
+USE_GITHUB=	yes
+GH_ACCOUNT=	heitzmann
 
 TEST_ENV=	${MAKE_ENV} PYTHONPATH=${STAGEDIR}${PYTHONPREFIX_SITELIBDIR}
+TEST_WRKSRC=	${WRKSRC}/tests
+
+# tests as of 0.9.60: 87 passed in 2.37s
 
 .include <bsd.port.mk>

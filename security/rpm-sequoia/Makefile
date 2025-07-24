@@ -1,12 +1,13 @@
 PORTNAME=	rpm-sequoia
 DISTVERSIONPREFIX=	v
-DISTVERSION=	1.5.0
-PORTREVISION=	6
+DISTVERSION=	1.8.0
+PORTREVISION=	3
 CATEGORIES=	security archivers
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	OpenPGP backend for rpm using Sequoia PGP
-WWW=		https://sequoia-pgp.org/
+WWW=		https://sequoia-pgp.org/ \
+		https://github.com/rpm-software-management/rpm-sequoia
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/LICENSE.txt
@@ -21,229 +22,263 @@ USE_GITHUB=	yes
 GH_ACCOUNT=	rpm-software-management
 
 CARGO_CRATES=	aead-0.5.2 \
-		aes-0.8.3 \
-		aho-corasick-1.0.4 \
+		aes-0.8.4 \
+		aes-gcm-0.10.3 \
+		aho-corasick-1.1.3 \
 		android-tzdata-0.1.1 \
 		android_system_properties-0.1.5 \
-		anstyle-1.0.2 \
-		anyhow-1.0.75 \
+		anstyle-1.0.10 \
+		anyhow-1.0.97 \
+		argon2-0.5.3 \
 		ascii-canvas-3.0.0 \
-		assert_cmd-2.0.12 \
-		autocfg-1.1.0 \
+		assert_cmd-2.0.16 \
+		autocfg-1.4.0 \
 		base16ct-0.2.0 \
-		base64-0.21.3 \
+		base64-0.22.1 \
 		base64ct-1.6.0 \
-		bindgen-0.63.0 \
+		bindgen-0.70.1 \
 		bit-set-0.5.3 \
 		bit-vec-0.6.3 \
-		bitflags-1.3.2 \
-		bitflags-2.4.0 \
-		block-buffer-0.9.0 \
+		bitflags-2.9.0 \
+		blake2-0.10.6 \
 		block-buffer-0.10.4 \
 		block-padding-0.3.3 \
 		blowfish-0.9.1 \
-		botan-0.10.6 \
-		botan-sys-0.10.5 \
-		bstr-1.6.0 \
-		buffered-reader-1.2.0 \
-		bumpalo-3.13.0 \
-		byteorder-1.4.3 \
+		botan-0.11.1 \
+		botan-sys-0.11.1 \
+		bstr-1.11.3 \
+		buffered-reader-1.4.0 \
+		bumpalo-3.17.0 \
+		byteorder-1.5.0 \
+		camellia-0.1.0 \
 		cast5-0.11.1 \
-		cc-1.0.83 \
-		cdylib-link-lines-0.1.4 \
+		cc-1.2.17 \
+		cdylib-link-lines-0.1.5 \
 		cexpr-0.6.0 \
 		cfb-mode-0.8.2 \
 		cfg-if-1.0.0 \
-		chrono-0.4.26 \
+		chrono-0.4.40 \
 		cipher-0.4.4 \
-		clang-sys-1.6.1 \
+		clang-sys-1.8.1 \
 		cmac-0.7.2 \
-		const-oid-0.9.5 \
-		core-foundation-sys-0.8.4 \
-		cpufeatures-0.2.9 \
-		crunchy-0.2.2 \
-		crypto-bigint-0.5.2 \
+		const-oid-0.9.6 \
+		core-foundation-sys-0.8.7 \
+		cpufeatures-0.2.17 \
+		crunchy-0.2.3 \
+		crypto-bigint-0.5.5 \
 		crypto-common-0.1.6 \
 		ctr-0.9.2 \
-		curve25519-dalek-3.2.0 \
-		curve25519-dalek-ng-4.1.1 \
+		curve25519-dalek-4.1.3 \
+		curve25519-dalek-derive-0.1.1 \
 		dbl-0.3.2 \
-		der-0.7.8 \
+		der-0.7.9 \
 		des-0.8.1 \
-		diff-0.1.13 \
 		difflib-0.4.0 \
-		digest-0.9.0 \
 		digest-0.10.7 \
 		dirs-next-2.0.0 \
 		dirs-sys-next-0.1.2 \
+		displaydoc-0.2.5 \
 		doc-comment-0.3.3 \
-		dyn-clone-1.0.13 \
+		dsa-0.6.3 \
+		dyn-clone-1.0.19 \
 		eax-0.5.0 \
 		ecb-0.1.2 \
-		ecdsa-0.16.8 \
-		ed25519-1.5.3 \
-		ed25519-dalek-1.0.1 \
-		either-1.9.0 \
-		elliptic-curve-0.13.5 \
-		ena-0.14.2 \
-		equivalent-1.0.1 \
-		errno-0.3.3 \
-		errno-dragonfly-0.1.2 \
-		fastrand-2.0.0 \
-		ff-0.13.0 \
+		ecdsa-0.16.9 \
+		ed25519-2.2.3 \
+		ed25519-dalek-2.1.1 \
+		either-1.15.0 \
+		elliptic-curve-0.13.8 \
+		ena-0.14.3 \
+		equivalent-1.0.2 \
+		errno-0.3.10 \
+		fastrand-2.3.0 \
+		ff-0.13.1 \
+		fiat-crypto-0.2.9 \
 		fixedbitset-0.4.2 \
 		foreign-types-0.3.2 \
 		foreign-types-shared-0.1.1 \
 		generic-array-0.14.7 \
-		getrandom-0.1.16 \
-		getrandom-0.2.10 \
-		glob-0.3.1 \
+		getrandom-0.2.15 \
+		getrandom-0.3.2 \
+		ghash-0.5.1 \
+		glob-0.3.2 \
 		group-0.13.0 \
-		hashbrown-0.14.0 \
-		hermit-abi-0.3.2 \
-		hkdf-0.12.3 \
+		hashbrown-0.15.2 \
+		hkdf-0.12.4 \
 		hmac-0.12.1 \
-		iana-time-zone-0.1.57 \
+		iana-time-zone-0.1.63 \
 		iana-time-zone-haiku-0.1.2 \
+		icu_collections-1.5.0 \
+		icu_locid-1.5.0 \
+		icu_locid_transform-1.5.0 \
+		icu_locid_transform_data-1.5.1 \
+		icu_normalizer-1.5.0 \
+		icu_normalizer_data-1.5.1 \
+		icu_properties-1.5.1 \
+		icu_properties_data-1.5.1 \
+		icu_provider-1.5.0 \
+		icu_provider_macros-1.5.0 \
 		idea-0.5.1 \
-		idna-0.3.0 \
-		indexmap-2.0.0 \
-		inout-0.1.3 \
-		is-terminal-0.4.9 \
-		itertools-0.10.5 \
-		js-sys-0.3.64 \
-		lalrpop-0.19.12 \
-		lalrpop-util-0.19.12 \
-		lazy_static-1.4.0 \
-		lazycell-1.3.0 \
-		libc-0.2.147 \
-		libloading-0.7.4 \
-		libm-0.2.7 \
-		linux-raw-sys-0.4.5 \
-		lock_api-0.4.10 \
-		log-0.4.20 \
-		md-5-0.10.5 \
-		memchr-2.6.0 \
-		memsec-0.6.3 \
+		idna-1.0.3 \
+		idna_adapter-1.2.0 \
+		indexmap-2.8.0 \
+		inout-0.1.4 \
+		itertools-0.11.0 \
+		itertools-0.13.0 \
+		js-sys-0.3.77 \
+		keccak-0.1.5 \
+		lalrpop-0.20.2 \
+		lalrpop-util-0.20.2 \
+		lazy_static-1.5.0 \
+		libc-0.2.171 \
+		libloading-0.8.6 \
+		libm-0.2.11 \
+		libredox-0.1.3 \
+		linux-raw-sys-0.9.3 \
+		litemap-0.7.4 \
+		lock_api-0.4.12 \
+		log-0.4.27 \
+		md-5-0.10.6 \
+		memchr-2.7.4 \
+		memsec-0.7.0 \
 		minimal-lexical-0.2.1 \
-		nettle-7.3.0 \
-		nettle-sys-2.2.0 \
-		new_debug_unreachable-1.0.4 \
+		nettle-7.4.0 \
+		nettle-sys-2.3.1 \
+		new_debug_unreachable-1.0.6 \
 		nom-7.1.3 \
 		num-bigint-dig-0.8.4 \
-		num-integer-0.1.45 \
-		num-iter-0.1.43 \
-		num-traits-0.2.16 \
-		once_cell-1.18.0 \
-		opaque-debug-0.3.0 \
-		openssl-0.10.57 \
+		num-integer-0.1.46 \
+		num-iter-0.1.45 \
+		num-traits-0.2.19 \
+		ocb3-0.1.0 \
+		once_cell-1.21.3 \
+		opaque-debug-0.3.1 \
+		openssl-0.10.71 \
 		openssl-macros-0.1.1 \
-		openssl-sys-0.9.92 \
+		openssl-sys-0.9.106 \
 		p256-0.13.2 \
-		parking_lot-0.12.1 \
-		parking_lot_core-0.9.8 \
-		peeking_take_while-0.1.2 \
+		p384-0.13.1 \
+		p521-0.13.3 \
+		parking_lot-0.12.3 \
+		parking_lot_core-0.9.10 \
+		password-hash-0.5.0 \
 		pem-rfc7468-0.7.0 \
-		petgraph-0.6.4 \
-		phf_shared-0.10.0 \
+		petgraph-0.6.5 \
+		phf_shared-0.11.3 \
 		pkcs1-0.7.5 \
 		pkcs8-0.10.2 \
-		pkg-config-0.3.27 \
-		ppv-lite86-0.2.17 \
+		pkg-config-0.3.32 \
+		polyval-0.6.2 \
+		ppv-lite86-0.2.21 \
 		precomputed-hash-0.1.1 \
-		predicates-3.0.3 \
-		predicates-core-1.0.6 \
-		predicates-tree-1.0.9 \
-		primeorder-0.13.2 \
-		proc-macro2-1.0.66 \
-		quote-1.0.33 \
-		rand-0.7.3 \
+		predicates-3.1.3 \
+		predicates-core-1.0.9 \
+		predicates-tree-1.0.12 \
+		primeorder-0.13.6 \
+		proc-macro2-1.0.94 \
+		quote-1.0.40 \
+		r-efi-5.2.0 \
 		rand-0.8.5 \
-		rand_chacha-0.2.2 \
 		rand_chacha-0.3.1 \
-		rand_core-0.5.1 \
 		rand_core-0.6.4 \
-		rand_hc-0.2.0 \
-		redox_syscall-0.2.16 \
-		redox_syscall-0.3.5 \
-		redox_users-0.4.3 \
-		regex-1.9.4 \
-		regex-automata-0.3.7 \
-		regex-syntax-0.6.29 \
-		regex-syntax-0.7.5 \
+		redox_syscall-0.5.10 \
+		redox_users-0.4.6 \
+		regex-1.11.1 \
+		regex-automata-0.4.9 \
+		regex-syntax-0.8.5 \
 		rfc6979-0.4.0 \
 		ripemd-0.1.3 \
-		rsa-0.9.2 \
+		rsa-0.9.8 \
 		rustc-hash-1.1.0 \
-		rustix-0.38.10 \
-		rustversion-1.0.14 \
+		rustc_version-0.4.1 \
+		rustix-1.0.3 \
+		rustversion-1.0.20 \
+		same-file-1.0.6 \
 		scopeguard-1.2.0 \
 		sec1-0.7.3 \
-		sequoia-openpgp-1.16.0 \
-		sequoia-policy-config-0.6.0 \
-		serde-1.0.188 \
-		serde_derive-1.0.188 \
-		sha-1-0.10.1 \
-		sha1collisiondetection-0.2.7 \
-		sha2-0.9.9 \
-		sha2-0.10.7 \
-		shlex-1.1.0 \
-		signature-1.6.4 \
-		signature-2.1.0 \
-		siphasher-0.3.11 \
-		smallvec-1.11.0 \
-		spin-0.5.2 \
-		spki-0.7.2 \
-		string_cache-0.8.7 \
-		subtle-2.5.0 \
-		subtle-ng-2.5.0 \
-		syn-1.0.109 \
-		syn-2.0.29 \
-		tempfile-3.8.0 \
+		semver-1.0.26 \
+		sequoia-openpgp-2.0.0 \
+		sequoia-policy-config-0.8.0 \
+		serde-1.0.219 \
+		serde_derive-1.0.219 \
+		sha1collisiondetection-0.3.4 \
+		sha2-0.10.8 \
+		sha3-0.10.8 \
+		shlex-1.3.0 \
+		signature-2.2.0 \
+		siphasher-1.0.1 \
+		smallvec-1.14.0 \
+		spin-0.9.8 \
+		spki-0.7.3 \
+		stable_deref_trait-1.2.0 \
+		string_cache-0.8.9 \
+		subtle-2.6.1 \
+		syn-2.0.100 \
+		synstructure-0.13.1 \
+		tempfile-3.19.1 \
 		term-0.7.0 \
-		termtree-0.4.1 \
-		thiserror-1.0.47 \
-		thiserror-impl-1.0.47 \
-		time-0.1.45 \
+		termtree-0.5.1 \
+		thiserror-1.0.69 \
+		thiserror-2.0.12 \
+		thiserror-impl-1.0.69 \
+		thiserror-impl-2.0.12 \
 		tiny-keccak-2.0.2 \
-		tinyvec-1.6.0 \
-		tinyvec_macros-0.1.1 \
+		tinystr-0.7.6 \
 		toml-0.5.11 \
 		twofish-0.7.1 \
-		typenum-1.16.0 \
-		unicode-bidi-0.3.13 \
-		unicode-ident-1.0.11 \
-		unicode-normalization-0.1.22 \
-		unicode-xid-0.2.4 \
+		typenum-1.18.0 \
+		unicode-ident-1.0.18 \
+		unicode-xid-0.2.6 \
+		universal-hash-0.5.1 \
+		utf16_iter-1.0.5 \
+		utf8_iter-1.0.4 \
 		vcpkg-0.2.15 \
-		version_check-0.9.4 \
-		wait-timeout-0.2.0 \
-		wasi-0.9.0+wasi-snapshot-preview1 \
-		wasi-0.10.0+wasi-snapshot-preview1 \
+		version_check-0.9.5 \
+		wait-timeout-0.2.1 \
+		walkdir-2.5.0 \
 		wasi-0.11.0+wasi-snapshot-preview1 \
-		wasm-bindgen-0.2.87 \
-		wasm-bindgen-backend-0.2.87 \
-		wasm-bindgen-macro-0.2.87 \
-		wasm-bindgen-macro-support-0.2.87 \
-		wasm-bindgen-shared-0.2.87 \
-		win-crypto-ng-0.5.0 \
+		wasi-0.14.2+wasi-0.2.4 \
+		wasm-bindgen-0.2.100 \
+		wasm-bindgen-backend-0.2.100 \
+		wasm-bindgen-macro-0.2.100 \
+		wasm-bindgen-macro-support-0.2.100 \
+		wasm-bindgen-shared-0.2.100 \
+		win-crypto-ng-0.5.1 \
 		winapi-0.3.9 \
 		winapi-i686-pc-windows-gnu-0.4.0 \
+		winapi-util-0.1.9 \
 		winapi-x86_64-pc-windows-gnu-0.4.0 \
-		windows-0.48.0 \
-		windows-sys-0.48.0 \
-		windows-targets-0.48.5 \
-		windows_aarch64_gnullvm-0.48.5 \
-		windows_aarch64_msvc-0.48.5 \
-		windows_i686_gnu-0.48.5 \
-		windows_i686_msvc-0.48.5 \
-		windows_x86_64_gnu-0.48.5 \
-		windows_x86_64_gnullvm-0.48.5 \
-		windows_x86_64_msvc-0.48.5 \
-		x25519-dalek-ng-1.1.1 \
-		xxhash-rust-0.8.6 \
-		zeroize-1.6.0 \
-		zeroize_derive-1.4.2
+		windows-core-0.61.0 \
+		windows-implement-0.60.0 \
+		windows-interface-0.59.1 \
+		windows-link-0.1.1 \
+		windows-result-0.3.2 \
+		windows-strings-0.4.0 \
+		windows-sys-0.59.0 \
+		windows-targets-0.52.6 \
+		windows_aarch64_gnullvm-0.52.6 \
+		windows_aarch64_msvc-0.52.6 \
+		windows_i686_gnu-0.52.6 \
+		windows_i686_gnullvm-0.52.6 \
+		windows_i686_msvc-0.52.6 \
+		windows_x86_64_gnu-0.52.6 \
+		windows_x86_64_gnullvm-0.52.6 \
+		windows_x86_64_msvc-0.52.6 \
+		wit-bindgen-rt-0.39.0 \
+		write16-1.0.0 \
+		writeable-0.5.5 \
+		x25519-dalek-2.0.1 \
+		xxhash-rust-0.8.15 \
+		yoke-0.7.5 \
+		yoke-derive-0.7.5 \
+		zerocopy-0.8.24 \
+		zerocopy-derive-0.8.24 \
+		zerofrom-0.1.5 \
+		zerofrom-derive-0.1.6 \
+		zeroize-1.8.1 \
+		zeroize_derive-1.4.2 \
+		zerovec-0.10.4 \
+		zerovec-derive-0.10.3
 
 OPENSSLINC=	/usr/include
 OPENSSLLIB=	/usr/lib
@@ -254,7 +289,7 @@ PLIST_FILES=	lib/librpm_sequoia.so \
 do-install:
 	# .so lib
 	${MKDIR} ${STAGEDIR}${PREFIX}/lib
-	${INSTALL_LIB} ${WRKDIR}/target/*-unknown-freebsd/release/librpm_sequoia.so ${STAGEDIR}${PREFIX}/lib
+	${INSTALL_LIB} ${WRKDIR}/target/release/librpm_sequoia.so ${STAGEDIR}${PREFIX}/lib
 	# .pc file
 	${MKDIR} ${STAGEDIR}${PREFIX}/libdata/pkgconfig
 	${INSTALL_DATA} ${WRKDIR}/target/release/rpm-sequoia.pc ${STAGEDIR}${PREFIX}/libdata/pkgconfig/rpm-sequoia.pc

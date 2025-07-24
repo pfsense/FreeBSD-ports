@@ -1,15 +1,15 @@
---- chrome/browser/themes/theme_service.cc.orig	2024-06-17 12:56:06 UTC
+--- chrome/browser/themes/theme_service.cc.orig	2025-07-02 06:08:04 UTC
 +++ chrome/browser/themes/theme_service.cc
-@@ -73,7 +73,7 @@
+@@ -72,7 +72,7 @@
  #include "extensions/browser/extension_registry_observer.h"
  #endif
  
 -#if BUILDFLAG(IS_LINUX)
 +#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_BSD)
  #include "ui/linux/linux_ui.h"
- #include "ui/ozone/public/ozone_platform.h"
+ #include "ui/ozone/public/ozone_platform.h"  // nogncheck
  #endif
-@@ -329,7 +329,7 @@ CustomThemeSupplier* ThemeService::GetThemeSupplier() 
+@@ -331,7 +331,7 @@ CustomThemeSupplier* ThemeService::GetThemeSupplier() 
  }
  
  bool ThemeService::ShouldUseCustomFrame() const {

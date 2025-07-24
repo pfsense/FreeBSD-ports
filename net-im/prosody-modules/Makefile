@@ -1,9 +1,8 @@
 PORTNAME=	prosody-modules
-DISTVERSION=	20240330
-PORTREVISION=	1
+DISTVERSION=	20250402
 CATEGORIES=	net-im
 MASTER_SITES=	https://hg.prosody.im/${PORTNAME}/archive/
-DISTNAME=	70fa3f8de249
+DISTNAME=	f315edc39f3d
 DIST_SUBDIR=	${PORTNAME}
 
 MAINTAINER=	rozhuk.im@gmail.com
@@ -25,10 +24,9 @@ INSTALLPATH=	${PREFIX}/lib/${PORTNAME}
 OPTIONS_DEFINE=	DOCS
 
 do-install:
-	${MKDIR} ${STAGEDIR}${INSTALLPATH} ${STAGEDIR}${INSTALLPATH}/scripts ${STAGEDIR}${DOCSDIR}
-	cd ${WRKSRC} && ${INSTALL_DATA} mod_*/*.lua ${STAGEDIR}${INSTALLPATH}
-	cd ${WRKSRC} && ${INSTALL_DATA} mod_firewall/scripts/*.pfw ${STAGEDIR}${INSTALLPATH}/scripts
-	cd ${WRKSRC} && ${INSTALL_DATA} README ${STAGEDIR}${DOCSDIR}
+	@${MKDIR} ${STAGEDIR}${INSTALLPATH} ${STAGEDIR}${DOCSDIR}
+	@cd ${WRKSRC} && ${COPYTREE_SHARE} 'mod_*' ${STAGEDIR}${INSTALLPATH}/
+	@cd ${WRKSRC} && ${INSTALL_DATA} README ${STAGEDIR}${DOCSDIR}
 
 add-plist-post:
 	# Regenerate .PLIST.pymodtemp to get all installed files from

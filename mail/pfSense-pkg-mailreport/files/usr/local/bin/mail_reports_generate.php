@@ -4,7 +4,7 @@
  * mail_reports_generate.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2011-2024 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2011-2025 Rubicon Communications, LLC (Netgate)
  * Copyright (C) 2007-2011 Seth Mos <seth.mos@dds.nl>
  * All rights reserved.
  *
@@ -29,8 +29,6 @@ $id = $_REQUEST['id'];
 if (!isset($id) && isset($argv[1])) {
 	$id = $argv[1];
 }
-
-config_init_path('mailreports/schedule');
 
 // If there is no report ID or the report doesn't exist, bail.
 if (!isset($id) ||

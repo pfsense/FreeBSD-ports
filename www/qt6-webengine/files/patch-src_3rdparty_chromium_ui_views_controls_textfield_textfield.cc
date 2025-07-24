@@ -1,15 +1,15 @@
---- src/3rdparty/chromium/ui/views/controls/textfield/textfield.cc.orig	2023-10-11 18:22:24 UTC
+--- src/3rdparty/chromium/ui/views/controls/textfield/textfield.cc.orig	2024-10-22 08:31:56 UTC
 +++ src/3rdparty/chromium/ui/views/controls/textfield/textfield.cc
-@@ -79,7 +79,7 @@
+@@ -85,7 +85,7 @@
  #include "base/win/win_util.h"
  #endif
  
 -#if BUILDFLAG(IS_LINUX)
 +#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_BSD)
  #include "ui/base/ime/linux/text_edit_command_auralinux.h"
+ #include "ui/base/ime/text_input_flags.h"
  #include "ui/linux/linux_ui.h"
- #endif
-@@ -173,7 +173,7 @@ bool IsControlKeyModifier(int flags) {
+@@ -183,7 +183,7 @@ bool IsControlKeyModifier(int flags) {
  // Control-modified key combination, but we cannot extend it to other platforms
  // as Control has different meanings and behaviors.
  // https://crrev.com/2580483002/#msg46
@@ -18,7 +18,7 @@
    return flags & ui::EF_CONTROL_DOWN;
  #else
    return false;
-@@ -742,7 +742,7 @@ bool Textfield::OnKeyPressed(const ui::KeyEvent& event
+@@ -761,7 +761,7 @@ bool Textfield::OnKeyPressed(const ui::KeyEvent& event
    if (!textfield)
      return handled;
  
@@ -27,7 +27,7 @@
    auto* linux_ui = ui::LinuxUi::instance();
    std::vector<ui::TextEditCommandAuraLinux> commands;
    if (!handled && linux_ui &&
-@@ -924,7 +924,7 @@ void Textfield::AboutToRequestFocusFromTabTraversal(bo
+@@ -944,7 +944,7 @@ void Textfield::AboutToRequestFocusFromTabTraversal(bo
  }
  
  bool Textfield::SkipDefaultKeyEventProcessing(const ui::KeyEvent& event) {
@@ -36,16 +36,16 @@
    // Skip any accelerator handling that conflicts with custom keybindings.
    auto* linux_ui = ui::LinuxUi::instance();
    std::vector<ui::TextEditCommandAuraLinux> commands;
-@@ -1929,7 +1929,7 @@ bool Textfield::ShouldDoLearning() {
+@@ -1994,7 +1994,7 @@ bool Textfield::ShouldDoLearning() {
    return false;
  }
  
 -#if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS)
 +#if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_BSD)
- // TODO(https://crbug.com/952355): Implement this method to support Korean IME
+ // TODO(crbug.com/41452689): Implement this method to support Korean IME
  // reconversion feature on native text fields (e.g. find bar).
  bool Textfield::SetCompositionFromExistingText(
-@@ -2442,14 +2442,14 @@ ui::TextEditCommand Textfield::GetCommandForKeyEvent(
+@@ -2500,14 +2500,14 @@ ui::TextEditCommand Textfield::GetCommandForKeyEvent(
  #endif
          return ui::TextEditCommand::DELETE_BACKWARD;
        }

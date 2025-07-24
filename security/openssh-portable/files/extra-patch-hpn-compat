@@ -16,12 +16,12 @@ r294563 was incomplete; re-add the client-side options as well.
 
 ------------------------------------------------------------------------
 
---- readconf.c.orig	2023-12-19 17:09:41.366788000 -0800
-+++ readconf.c	2023-12-19 17:10:24.155247000 -0800
-@@ -329,6 +329,12 @@
- 	{ "enableescapecommandline", oEnableEscapeCommandline },
+--- readconf.c.orig	2025-04-09 00:02:43.000000000 -0700
++++ readconf.c	2025-04-10 21:55:30.974643000 -0700
+@@ -332,6 +332,12 @@ static struct {
  	{ "obscurekeystroketiming", oObscureKeystrokeTiming },
  	{ "channeltimeout", oChannelTimeout },
+ 	{ "versionaddendum", oVersionAddendum },
 +	{ "hpndisabled", oDeprecated },
 +	{ "hpnbuffersize", oDeprecated },
 +	{ "tcprcvbufpoll", oDeprecated },
@@ -31,12 +31,12 @@ r294563 was incomplete; re-add the client-side options as well.
  
  	{ NULL, oBadOption }
  };
---- servconf.c.orig	2023-12-19 17:11:52.320491000 -0800
-+++ servconf.c	2023-12-19 17:12:43.950318000 -0800
-@@ -693,6 +693,10 @@
- 	{ "requiredrsasize", sRequiredRSASize, SSHCFG_ALL },
- 	{ "channeltimeout", sChannelTimeout, SSHCFG_ALL },
+--- servconf.c.orig	2024-09-19 15:20:48.000000000 -0700
++++ servconf.c	2024-10-07 20:18:18.259726000 -0700
+@@ -746,6 +746,10 @@ static struct {
  	{ "unusedconnectiontimeout", sUnusedConnectionTimeout, SSHCFG_ALL },
+ 	{ "sshdsessionpath", sSshdSessionPath, SSHCFG_GLOBAL },
+ 	{ "refuseconnection", sRefuseConnection, SSHCFG_ALL },
 +	{ "noneenabled", sUnsupported, SSHCFG_ALL },
 +	{ "hpndisabled", sDeprecated, SSHCFG_ALL },
 +	{ "hpnbuffersize", sDeprecated, SSHCFG_ALL },

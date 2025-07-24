@@ -1,9 +1,9 @@
 PORTNAME=	eog
-DISTVERSION=	43.1
-PORTREVISION=	3
+DISTVERSION=	47.0
+PORTREVISION=	1
 CATEGORIES=	graphics gnome
-MASTER_SITES=	GNOME/sources/${PORTNAME}/${PORTVERSION:C/^([0-9]+)\..*/\1/}
-DIST_SUBDIR=	gnome3
+MASTER_SITES=	GNOME
+DIST_SUBDIR=	gnome
 
 MAINTAINER=	gnome@FreeBSD.org
 COMMENT=	Eye Of Gnome image viewer
@@ -17,7 +17,7 @@ BUILD_DEPENDS=	gsettings-desktop-schemas>=0:devel/gsettings-desktop-schemas \
 LIB_DEPENDS=	libexif.so:graphics/libexif \
 		libhandy-1.so:x11-toolkits/libhandy \
 		liblcms2.so:graphics/lcms2 \
-		libpeas-gtk-1.0.so:devel/libpeas
+		libpeas-gtk-1.0.so:devel/libpeas1
 RUN_DEPENDS=	gsettings-desktop-schemas>=0:devel/gsettings-desktop-schemas
 
 PORTSCOUT=	limitw:1,even

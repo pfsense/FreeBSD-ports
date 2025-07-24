@@ -1,10 +1,11 @@
 PORTNAME=	xdg-desktop-portal-lxqt
-PORTVERSION=	1.0.2
-CATEGORIES=	deskutils wayland
+PORTVERSION=	1.2.0
+PORTREVISION=	1
+CATEGORIES=	deskutils
 
 MAINTAINER=	lxqt@FreeBSD.org
 COMMENT=	Portal frontend service for LXQT
-WWW=		https://github.com/flatpak/xdg-desktop-portal
+WWW=		https://github.com/lxqt/xdg-desktop-portal-lxqt
 
 LICENSE=	LGPL21
 

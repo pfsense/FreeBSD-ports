@@ -3,7 +3,7 @@
  * suricata_geoipupdate.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2006-2024 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2006-2025 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2005 Bill Marquette <bill.marquette@gmail.com>.
  * Copyright (c) 2003-2004 Manuel Kasper <mk@neon1.net>.
  * Copyright (c) 2009 Robert Zelaya Sr. Developer
@@ -78,16 +78,7 @@ function suricata_download_geoip_file($url, $tmpfile, $user, $pwd, &$result = NU
 	}
 
 	// Use the system proxy server setttings if configured
-	if (!empty(config_get_path('system/proxyurl'))) {
-		curl_setopt($ch, CURLOPT_PROXY, config_get_path('system/proxyurl'));
-		if (!empty(config_get_path('system/proxyport'))) {
-			curl_setopt($ch, CURLOPT_PROXYPORT, config_get_path('system/proxyport'));
-		}
-		if (config_get_path('system/proxyuser') && config_get_path('system/proxypass')) {
-			@curl_setopt($ch, CURLOPT_PROXYAUTH, CURLAUTH_ANY | CURLAUTH_ANYSAFE);
-			curl_setopt($ch, CURLOPT_PROXYUSERPWD, config_get_path('system/proxyuser') . ":" . config_get_path('system/proxypass'));
-		}
-	}
+	set_curlproxy($ch);
 
 	// Set the MaxMind Account ID and Password fields
 	curl_setopt($ch, CURLOPT_USERPWD, "{$user}:{$pwd}");

@@ -1,6 +1,7 @@
 PORTNAME=	libint
 DISTVERSIONPREFIX=	v
-DISTVERSION=	2.9.0
+DISTVERSION=	2.11.0
+PORTREVISION=	1
 CATEGORIES=	science
 PKGNAMESUFFIX=	2
 
@@ -26,6 +27,7 @@ CONFIGURE_ARGS=	--enable-shared \
 		--with-cc-optflags="${CFLAGS}" --with-cxx-optflags="${CXXFLAGS}"
 
 ALL_TARGET=	default
+TEST_TARGET=	check # tests fail to compile, see https://github.com/evaleev/libint/issues/362
 
 PLIST_SUB=	VER=${DISTVERSION}
 

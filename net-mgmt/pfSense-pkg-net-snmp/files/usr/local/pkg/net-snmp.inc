@@ -4,7 +4,7 @@
  * net-snmp.inc
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2017-2024 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2017-2025 Rubicon Communications, LLC (Netgate)
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -40,7 +40,6 @@ $snmpd_certkey_dir = "/usr/local/share/snmp/tls/private";
 function netsnmp_install_command() {
 	/* Make some default settings/entries/users, if necessary */
 	if (!is_array(config_get_path('installedpackages/netsnmpusers/config'))) {
-		config_init_path('installedpackages/netsnmpusers/config');
 		/* A temp pseudo-random password for this default account. */
 		$temp_password = bin2hex(openssl_random_pseudo_bytes(16));
 		config_set_path('installedpackages/netsnmpusers/config/', array (
@@ -57,7 +56,6 @@ function netsnmp_install_command() {
 		));
 	}
 
-	config_init_path('installedpackages/netsnmptrapgen/config/0');
 	if (empty(config_get_path('installedpackages/netsnmptrapgen/config/0/iquerysecname'))) {
 		config_set_path('installedpackages/netsnmptrapgen/config/0/iquerysecname', 'manager');
 	}
@@ -94,7 +92,6 @@ function netsnmp_get_certs() {
 
 /* Get a list of SNMPv3 User names */
 function netsnmp_get_usernames() {
-	config_init_path('installedpackages/netsnmpusers');
 	$users = config_get_path('installedpackages/netsnmpusers/config');
 	$usernames = array();
 
@@ -137,7 +134,6 @@ function netsnmp_resync() {
 	global $g, $snmpd_config_file, $snmpd_users_file, $snmpd_cert_dir, $snmpd_certkey_dir;
 
 	/* Global Settings tab */
-	config_init_path('installedpackages/netsnmp/config/0');
 
 	/* If the service isn't enabled, nothing to do. Stop the service and return. */
 	if (config_get_path('installedpackages/netsnmp/config/0/enable_snmpd') != "on") {
@@ -151,7 +147,6 @@ function netsnmp_resync() {
 
 	/* The binding / agent addresses control where and how snmpd listens for incoming connections. */
 	$agentaddresses = array();
-	config_init_path('installedpackages/netsnmp/config/0/row');
 	foreach (config_get_path('installedpackages/netsnmp/config/0/row', []) as $agent) {
 		$aa = "";
 		/* At a minimum, a port must be supplied. UDP is assumed in that case */
@@ -185,7 +180,7 @@ function netsnmp_resync() {
 		$snmpd_config .= "agentaddress " . implode(',', $agentaddresses) . "\n";
 	}
 
-	$nsettings = config_get_path('installedpackages/netsnmp/config/0');
+	$nsettings = config_get_path('installedpackages/netsnmp/config/0', []);
 
 	/* If a manual string engine ID type is set, use the specified string, otherwise use the type directly. */
 	if (($nsettings['engineidtype'] != 'string') && !empty($nsettings['engineidtype'])) {
@@ -253,8 +248,7 @@ function netsnmp_resync() {
 	}
 
 	/* Host Information tab */
-	config_init_path('installedpackages/netsnmphostinfo/config/0');
-	$nhisettings = config_get_path('installedpackages/netsnmphostinfo/config/0');
+	$nhisettings = config_get_path('installedpackages/netsnmphostinfo/config/0', []);
 
 	if (!empty($nhisettings['syslocation'])) {
 		$snmpd_config .= "sysLocation {$nhisettings['syslocation']}\n";
@@ -309,7 +303,6 @@ function netsnmp_resync() {
 
 	/* Extended commands (formerly exec) and extendfix */
 	/* TODO: Check if the parameters need quoting */
-	config_init_path('installedpackages/netsnmphostinfo/config/0/row');
 	foreach (config_get_path('installedpackages/netsnmphostinfo/config/0/row', []) as $extend) {
 		$extend_parameters = "{$extend['ext_miboid']} " .
 					"{$extend['ext_name']} " .
@@ -322,7 +315,6 @@ function netsnmp_resync() {
 	}
 
 	/* SNMPv3 Users */
-	config_init_path('installedpackages/netsnmpusers/config');
 
 	$snmpd_users_config = "";
 	foreach (config_get_path('installedpackages/netsnmpusers/config', []) as $user) {
@@ -405,7 +397,6 @@ function netsnmp_resync() {
 	}
 
 	/* SNMPv1 & SNMPv2c Communities */
-	config_init_path('installedpackages/netsnmpcommunities/config');
 	foreach (config_get_path('installedpackages/netsnmpcommunities/config', []) as $community) {
 		/* Build the parameters first, add the type later as it could result in repetition. */
 		$community_line = $community['community'];
@@ -429,8 +420,7 @@ function netsnmp_resync() {
 	}
 
 	/* Trap Generation */
-	config_init_path('installedpackages/netsnmptrapgen/config/0');
-	$ntgsettings = config_get_path('installedpackages/netsnmptrapgen/config/0');
+	$ntgsettings = config_get_path('installedpackages/netsnmptrapgen/config/0', []);
 
 	if (!empty($ntgsettings['trapcommunity'])) {
 		$snmpd_config .= "trapcommunity {$ntgsettings['trapcommunity']}\n";
@@ -524,7 +514,6 @@ function netsnmp_resync() {
 	}
 
 	/* 'monitor' entries define conditions to trigger traps. The control is a rowhelper, so loop through its entries. */
-	config_init_path('installedpackages/netsnmptrapgen/config/0/row');
 	foreach (config_get_path('installedpackages/netsnmptrapgen/config/0/row', []) as $monitor) {
 		if (empty($monitor['monitor_name'])) {
 			continue;
@@ -588,7 +577,6 @@ EOF;
 /* Write snmptrapd config file and (re)start the daemon */
 function netsnmp_resync_snmptrapd() {
 	global $snmptrapd_config_file;
-	config_init_path('installedpackages/netsnmptrapd/config/0');
 
 	/* If snmptrapd is not enabled, then stop the service and do not write the config */
 	if (config_get_path('installedpackages/netsnmptrapd/config/0/enable_snmptrapd') != "on") {
@@ -602,7 +590,6 @@ function netsnmp_resync_snmptrapd() {
 
 	/* The protocol and interface binding for snmptrapd works the same as snmpd */
 	$agentaddresses = array();
-	config_init_path('installedpackages/netsnmptrapd/config/0/row');
 	foreach (config_get_path('installedpackages/netsnmptrapd/config/0/row', []) as $agent) {
 		$aa = "";
 		/* At a minimum, a port must be supplied. UDP is assumed in that case */
@@ -628,7 +615,7 @@ function netsnmp_resync_snmptrapd() {
 		$snmptrapd_config .= "snmpTrapdAddr " . implode(',', $agentaddresses) . "\n";
 	}
 
-	$nsettings = config_get_path('installedpackages/netsnmptrapd/config/0');
+	$nsettings = config_get_path('installedpackages/netsnmptrapd/config/0', []);
 	if (!empty($nsettings['donotretainnotificationlogs'])) {
 		$snmptrapd_config .= "doNotRetainNotificationLogs {$nsettings['donotretainnotificationlogs']}\n";
 	}
@@ -646,7 +633,6 @@ function netsnmp_resync_snmptrapd() {
 	}
 
 	/* Community-based Authentication for receiving traps */
-	config_init_path('installedpackages/netsnmptrapdcommunities/config');
 	foreach (config_get_path('installedpackages/netsnmptrapdcommunities/config', []) as $community) {
 		/* If no type is specified, assume all types. */
 		if (empty($community['type'])) {
@@ -669,7 +655,6 @@ function netsnmp_resync_snmptrapd() {
 	}
 
 	/* User-based Authentication for receiving traps */
-	config_init_path('installedpackages/netsnmptrapdusers/config');
 	foreach (config_get_path('installedpackages/netsnmptrapdusers/config', []) as $user) {
 		/* If no type is specified, assume all types. */
 		if (empty($user['type'])) {
@@ -693,10 +678,9 @@ function netsnmp_resync_snmptrapd() {
 	}
 
 	/* Trap Format tab */
-	config_init_path('installedpackages/netsnmptrapdformats/config/0');
-	$nfsettings = config_get_path('installedpackages/netsnmptrapdformats/config/0');
+	$nfsettings = config_get_path('installedpackages/netsnmptrapdformats/config/0', []);
 
-	$nsettings = config_get_path('installedpackages/netsnmptrapd/config/0');
+	$nsettings = config_get_path('installedpackages/netsnmptrapd/config/0', []);
 	if (!empty($nsettings['format1'])) {
 		$snmptrapd_config .= "format1 {$nsettings['format1']}\n";
 	}
@@ -707,7 +691,6 @@ function netsnmp_resync_snmptrapd() {
 
 	/* These formats are in a rowhelper to make the page less cluttered,
 	   but there should only be one of each "destination" defined. */
-	config_init_path('installedpackages/netsnmptrapd/config/0/row');
 	foreach (config_get_path('installedpackages/netsnmptrapd/config/0/row', []) as $format) {
 		if (empty($format['destination'])) {
 			continue;
@@ -718,7 +701,6 @@ function netsnmp_resync_snmptrapd() {
 
 	/* Trap Handles tab */
 	/* Nothing fancy. Executes programs when a trap arrives, not much validation we can do. */
-	config_init_path('installedpackages/netsnmptrapdtraphandles/config');
 	foreach (config_get_path('installedpackages/netsnmptrapdtraphandles/config', []) as $traphandle) {
 		$snmptrapd_config .= "traphandle {$traphandle['destination']} " .
 					"{$traphandle['program']} " .
@@ -726,7 +708,6 @@ function netsnmp_resync_snmptrapd() {
 	}
 
 	/* Forwarding of traps to other hosts */
-	config_init_path('installedpackages/netsnmptrapdforwards/config');
 	foreach (config_get_path('installedpackages/netsnmptrapdforwards/config', []) as $forward) {
 		/* The forwarding addresses control where and how snmptrapd will deliver traps to another daemon. */
 		$agentaddresses = array();
@@ -1293,13 +1274,11 @@ function netsnmp_validate_netsnmptrapdforwards($post, &$input_errors) {
 
 function netsnmp_plugin_certificates($pluginparams) {
 	$result = array();
-	config_init_path('installedpackages/netsnmp/config');
 	$conf = config_get_path('installedpackages/netsnmp/config/0');
 
 	if (($pluginparams['type'] == 'certificates') && !empty($conf) &&
 	    ($conf['enable_snmpd'] == 'on')) {
-		config_init_path('installedpackages/netsnmp/config/0/row');
-		$rowconf = config_get_path('installedpackages/netsnmp/config/0/row');
+		$rowconf = config_get_path('installedpackages/netsnmp/config/0/row', []);
 		foreach ($rowconf as $rconf) {
 			if (strstr($rconf['transport'], 'tls')) {
 				$tls = true;
@@ -1327,7 +1306,6 @@ function netsnmp_plugin_certificates($pluginparams) {
 				$item['usedby'] = 'DTLS Server Certificate';
 				$result['certificatelist'][$cert][] = $item;
 			}
-			config_init_path('installedpackages/netsnmpusers/config');
 			$usersconf = config_get_path('installedpackages/netsnmpusers/config/0');
 			foreach ($usersconf as $user) {
 				if (!empty($user['user_cert'])) {

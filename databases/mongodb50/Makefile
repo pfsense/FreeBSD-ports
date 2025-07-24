@@ -1,6 +1,7 @@
 PORTNAME=	mongodb
 DISTVERSIONPREFIX=	r
-DISTVERSION=	5.0.27
+DISTVERSION=	5.0.31
+PORTREVISION=	1
 CATEGORIES=	databases net
 PKGNAMESUFFIX=	${DISTVERSION:R:S/.//}
 
@@ -14,12 +15,15 @@ LICENSE_NAME_SSPLv1=	Server Side Public License Version 1
 LICENSE_FILE_SSPLv1=	${WRKSRC}/LICENSE-Community.txt
 LICENSE_PERMS_SSPLv1=	dist-mirror dist-sell pkg-mirror pkg-sell auto-accept
 
+DEPRECATED=	EOL from October 2024, see https://www.mongodb.com/legal/support-policy/lifecycles, please use databases/mongodb60
+EXPIRATION_DATE=	2025-07-30
 ONLY_FOR_ARCHS=	aarch64 amd64 powerpc64le
 ONLY_FOR_ARCHS_REASON=	only ported to amd64, aarch64, and powerpc64le on FreeBSD; upstream supports arm64, ppc64le, s390x, and x86-64
 
-BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}cheetah3>0:devel/py-cheetah3@${PY_FLAVOR} \
+BUILD_DEPENDS=	${PY_SETUPTOOLS} \
+		${PYTHON_PKGNAMEPREFIX}cheetah3>0:devel/py-cheetah3@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}psutil>0:sysutils/py-psutil@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}yaml>=3.11:devel/py-yaml@${PY_FLAVOR}
+		${PYTHON_PKGNAMEPREFIX}pyyaml>=3.11:devel/py-pyyaml@${PY_FLAVOR}
 LIB_DEPENDS=	libcurl.so:ftp/curl \
 		libpcre.so:devel/pcre \
 		libsnappy.so:archivers/snappy \
@@ -28,7 +32,7 @@ LIB_DEPENDS=	libcurl.so:ftp/curl \
 		libyaml-cpp.so:devel/yaml-cpp \
 		libzstd.so:archivers/zstd
 
-USES=		compiler:c++17-lang cpe python:build scons shebangfix
+USES=		compiler:c++17-lang cpe llvm:max=18,build python:build scons shebangfix
 USE_RC_SUBR=	mongod
 
 USE_GITHUB=	yes
@@ -64,7 +68,8 @@ MAKE_ARGS=	--cxx-std=17 \
 		MONGO_VERSION=${DISTVERSION} \
 		VERBOSE=on
 
-CFLAGS+=	-DBOOST_NO_CXX98_FUNCTION_BASE
+CFLAGS+=	-DBOOST_NO_CXX98_FUNCTION_BASE \
+		-Wno-deprecated-builtins
 
 CONFLICTS_INSTALL=	mongodb[0-9][0-9] # etc/mongodb.conf.sample
 
@@ -116,5 +121,8 @@ do-install:
 	${MV} ${STAGEDIR}${PREFIX}/${doc} ${STAGEDIR}${DOCSDIR}/
 .endfor
 	${RM} ${STAGEDIR}${PREFIX}/bin/resmoke.py
+
+do-test:
+	${SH} ${FILESDIR}/make.test.sh "${STAGEDIR}${PREFIX}/bin"
 
 .include <bsd.port.post.mk>

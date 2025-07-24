@@ -1,6 +1,6 @@
 PORTNAME=	qof
 PORTVERSION=	0.8.8
-PORTREVISION=	3
+PORTREVISION=	4
 CATEGORIES=	databases
 MASTER_SITES=	DEBIAN_POOL
 DISTNAME=	qof_${PORTVERSION}.orig
@@ -11,6 +11,8 @@ WWW=		https://alioth.debian.org/projects/qof/
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
+
+DEPRECATED=	Host is no longer resolvable using multiple different resolver
 
 CONFLICTS_INSTALL=	gnotime-2.[0-3]* gnotime-2.4.0* gnotime-2.4.1 gnotime-2.4.1_[12]*
 

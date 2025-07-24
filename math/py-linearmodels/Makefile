@@ -1,5 +1,6 @@
 PORTNAME=	linearmodels
-DISTVERSION=	6.0
+DISTVERSION=	6.1
+PORTREVISION=	1
 CATEGORIES=	math python # statistics
 MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -33,11 +34,11 @@ TEST_DEPENDS=	${PYTHON_PKGNAMEPREFIX}black>0:devel/py-black@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}xarray>=0.13:devel/py-xarray@${PY_FLAVOR}
 
 USES=		python shebangfix
-USE_PYTHON=	distutils cython autoplist pytest # 14 tests fail, see https://github.com/bashtage/linearmodels/issues/550
+USE_PYTHON=	autoplist cython3 distutils pytest # 14 tests fail, see https://github.com/bashtage/linearmodels/issues/550
 
 TEST_ENV=	${MAKE_ENV} PYTHONPATH=${STAGEDIR}${PYTHONPREFIX_SITELIBDIR}
 
 post-install:
-	@${STRIP_CMD} ${STAGEDIR}${PYTHON_SITELIBDIR}/linearmodels/panel/_utility${PYTHON_EXT_SUFFIX}.so
+	@${STRIP_CMD} ${STAGEDIR}${PYTHON_SITELIBDIR}/linearmodels/panel/_utility${PYTHON_TAG}.so
 
 .include <bsd.port.mk>

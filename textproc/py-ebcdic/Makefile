@@ -1,10 +1,11 @@
 PORTNAME=	ebcdic
 PORTVERSION=	1.1.1
+PORTREVISION=	1
 DISTVERSIONPREFIX=	v
 CATEGORIES=	textproc python
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
-MAINTAINER=	DtxdF@disroot.org
+MAINTAINER=	dtxdf@FreeBSD.org
 COMMENT=	Additional EBCDIC codecs
 WWW=		https://github.com/roskakori/CodecMapper
 

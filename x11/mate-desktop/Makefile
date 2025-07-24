@@ -1,6 +1,5 @@
 PORTNAME=	mate-desktop
-PORTVERSION=	1.28.1
-PORTREVISION=	1
+PORTVERSION=	1.28.2
 CATEGORIES=	x11 mate
 MASTER_SITES=	MATE
 DIST_SUBDIR=	mate
@@ -24,7 +23,7 @@ PORTSCOUT=	limitw:1,even
 USES=		gettext gmake gnome libtool localbase pathfix \
 		pkgconfig python shebangfix tar:xz xorg
 USE_XORG=	x11 xrandr
-USE_GNOME=	cairo dconf gdkpixbuf2 gnomeprefix gtk30 \
+USE_GNOME=	cairo dconf gdkpixbuf gnomeprefix gtk30 \
 		intltool introspection:build
 USE_LDCONFIG=	yes
 GNU_CONFIGURE=	yes

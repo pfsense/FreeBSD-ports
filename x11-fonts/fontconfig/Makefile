@@ -1,6 +1,6 @@
 PORTNAME=	fontconfig
 DISTVERSION=	2.15.0
-PORTREVISION=	2
+PORTREVISION=	3
 PORTEPOCH=	1
 CATEGORIES=	x11-fonts
 MASTER_SITES=	https://www.freedesktop.org/software/${PORTNAME}/release/
@@ -27,12 +27,14 @@ SHEBANG_FILES=	conf.d/link_confs.py \
 
 TEST_TARGET=	test
 
+SUB_FILES=	pkg-message
+SUB_LIST=	LOCALBASE=${LOCALBASE}
+
 # To avoid circular dependency rebuild of docs (including manpages) needs to be
 # disabled as they depend on textproc/docbook-utils which requires fontconfig
 MESON_ARGS=	-Ddefault_library=both -Ddoc=disabled -Dcache-build=disabled \
 		-Ddefault-fonts-dirs=${PREFIX}/share/fonts \
 		-Dadditional-fonts-dirs=${LOCALBASE}/lib/X11/fonts \
-		-Dlocalstatedir=/var \
 		-Dcache-dir=/var/db/fontconfig \
 		-Dtemplate-dir=${LOCALBASE}/etc/fonts/conf.avail \
 		-Dxml-dir=${LOCALBASE}/etc/fonts

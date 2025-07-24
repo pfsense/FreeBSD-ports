@@ -20,7 +20,9 @@ bin/specular-color
 bin/uberz
 include/backend/AcquiredImage.h
 include/backend/BufferDescriptor.h
+include/backend/BufferObjectStreamDescriptor.h
 include/backend/CallbackHandler.h
+include/backend/DescriptorSetOffsetArray.h
 include/backend/DriverApiForward.h
 include/backend/DriverEnums.h
 include/backend/Handle.h
@@ -39,9 +41,14 @@ include/backend/platforms/PlatformEGL.h
 include/backend/platforms/PlatformEGLAndroid.h
 include/backend/platforms/PlatformEGLHeadless.h
 include/backend/platforms/PlatformGLX.h
+include/backend/platforms/PlatformMetal-ObjC.h
+include/backend/platforms/PlatformMetal.h
+include/backend/platforms/PlatformOSMesa.h
 include/backend/platforms/PlatformWGL.h
 include/backend/platforms/PlatformWebGL.h
 include/backend/platforms/VulkanPlatform.h
+include/backend/platforms/VulkanPlatformAndroid.h
+include/backend/platforms/WebGPUPlatform.h
 include/camutils/Bookmark.h
 include/camutils/Manipulator.h
 include/camutils/compiler.h
@@ -150,6 +157,7 @@ include/utils/EntityManager.h
 include/utils/FixedCapacityVector.h
 include/utils/Invocable.h
 include/utils/Log.h
+include/utils/Logger.h
 include/utils/Mutex.h
 include/utils/NameComponentManager.h
 include/utils/Panic.h
@@ -158,6 +166,7 @@ include/utils/PrivateImplementation-impl.h
 include/utils/PrivateImplementation.h
 include/utils/SingleInstanceComponentManager.h
 include/utils/Slice.h
+include/utils/StaticString.h
 include/utils/StructureOfArrays.h
 include/utils/Systrace.h
 include/utils/algorithm.h
@@ -175,6 +184,7 @@ include/viewer/AutomationSpec.h
 include/viewer/RemoteServer.h
 include/viewer/Settings.h
 include/viewer/ViewerGui.h
+lib/libabseil.a
 lib/libbackend.a
 lib/libbasis_transcoder.a
 lib/libbluegl.a
@@ -198,6 +208,7 @@ lib/libktxreader.a
 lib/libmatdbg.a
 lib/libmeshoptimizer.a
 lib/libmikktspace.a
+lib/libperfetto.a
 lib/libshaders.a
 lib/libsmol-v.a
 lib/libstb.a

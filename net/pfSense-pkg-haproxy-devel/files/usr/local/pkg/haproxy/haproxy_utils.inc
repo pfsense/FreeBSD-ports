@@ -3,7 +3,7 @@
  * haproxy_utils.inc
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2016-2024 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2016-2025 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2013-2015 PiBa-NL
  * All rights reserved.
  *
@@ -41,7 +41,7 @@ class haproxy_utils {
 			$hostnameprefix = $parts[0];
 			if ($hostnameprefix == "unix") {
 				// is there any way to further validate this.?.
-				return true; 
+				return true;
 			}
 			$hostnamename = $parts[1];
 			if (!in_array($hostnameprefix, array("ipv4","ipv6","upd","udp4","udp6","unix"))) {

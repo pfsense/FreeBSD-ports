@@ -8,7 +8,7 @@
 -#PAPERLESS_DATA_DIR=../data
 +PAPERLESS_CONSUMPTION_DIR=/var/db/paperless/consume/input
 +PAPERLESS_DATA_DIR=/var/db/paperless/data
- #PAPERLESS_TRASH_DIR=
+ #PAPERLESS_EMPTY_TRASH_DIR=
 -#PAPERLESS_MEDIA_ROOT=../media
 -#PAPERLESS_STATICDIR=../static
 +PAPERLESS_MEDIA_ROOT=/var/db/paperless/media
@@ -55,6 +55,6 @@
  #PAPERLESS_CONVERT_BINARY=/usr/bin/convert
  #PAPERLESS_GS_BINARY=/usr/bin/gs
 +
-+# NLTK settings - see `man 7 paperless`
++# NLTK settings - see `man 7 paperless-ngx`
 +PAPERLESS_NLTK_DIR=/var/db/paperless/nltkdata
 +PAPERLESS_ENABLE_NLTK=yes

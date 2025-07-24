@@ -1,6 +1,7 @@
 PORTNAME=	opensearch
-DISTVERSION?=	2.14.0
+DISTVERSION?=	3.1.0
 DISTVERSIONSUFFIX=	-linux-x64
+PORTREVISION?=	0
 CATEGORIES=	textproc java devel
 MASTER_SITES=	https://artifacts.opensearch.org/releases/bundle/${PORTNAME}/${DISTVERSION}/
 PKGNAMESUFFIX?=	#
@@ -15,11 +16,8 @@ BUILD_DEPENDS=	jna>0:devel/jna
 RUN_DEPENDS=	bash>0:shells/bash \
 		jna>0:devel/jna
 
-CONFLICTS?=	opensearch13 opensearch210
-
-USES=		cpe shebangfix
-USE_JAVA=	yes
-JAVA_VERSION=	17+
+USES=		cpe java shebangfix
+JAVA_VERSION=	21+
 USE_RC_SUBR=	${PORTNAME}
 
 SHEBANG_FILES=	bin/opensearch bin/opensearch-cli \
@@ -31,8 +29,10 @@ SHEBANG_FILES=	bin/opensearch bin/opensearch-cli \
 		plugins/opensearch-security/tools/install_demo_configuration.sh \
 		plugins/opensearch-security/tools/securityadmin.sh
 
+CONFLICTS?=	opensearch13 opensearch210 opensearch213 opensearch216
+
 NO_BUILD=	yes
-WRKSRC=		${WRKDIR}/${PORTNAME}-${PORTVERSION}
+WRKSRC=		${WRKDIR}/${PORTNAME}-${DISTVERSION}
 
 OPTIONS_DEFINE=	PLUGINS
 OPTIONS_DEFAULT=PLUGINS
@@ -41,11 +41,11 @@ OPTIONS_DEFAULT=PLUGINS
 
 CONFIG_FILES=	opensearch.yml jvm.options log4j2.properties
 
-PLUGINS_CONFIG_FILES?= \
+PLUGINS_CONFIG_FILES?=	\
 		opensearch-notifications-core/notifications-core.yml \
 		opensearch-notifications/notifications.yml \
 		opensearch-observability/observability.yml
-.if ${PKGNAMESUFFIX} == "210"
+.if ${PKGNAMESUFFIX} == "210" || ${PKGNAMESUFFIX} == "213" || ${PKGNAMESUFFIX} == "216"
 PLUGINS_CONFIG_FILES+=	\
 		opensearch-performance-analyzer/agent-stats-metadata \
 		opensearch-performance-analyzer/log4j2.xml \
@@ -55,9 +55,10 @@ PLUGINS_CONFIG_FILES+=	\
 		opensearch-performance-analyzer/rca.conf \
 		opensearch-performance-analyzer/rca_idle_cluster_manager.conf \
 		opensearch-performance-analyzer/rca_cluster_manager.conf \
-		opensearch-performance-analyzer/supervisord.conf
+		opensearch-performance-analyzer/supervisord.conf \
+		opensearch-security/whitelist.yml
 .endif
-PLUGINS_CONFIG_FILES+= \
+PLUGINS_CONFIG_FILES+=	\
 		opensearch-reports-scheduler/reports-scheduler.yml \
 		opensearch-security/action_groups.yml \
 		opensearch-security/allowlist.yml \
@@ -67,13 +68,12 @@ PLUGINS_CONFIG_FILES+= \
 		opensearch-security/nodes_dn.yml \
 		opensearch-security/roles.yml \
 		opensearch-security/roles_mapping.yml \
-		opensearch-security/tenants.yml \
-		opensearch-security/whitelist.yml
+		opensearch-security/tenants.yml
 
 # Upstream provide some *.example files.  These are also copied as sample filse
 # but we do not register them as @sample to avoid installing filse that needs
 # to be tuned a site specific way.
-PLUGINS_SAMPLE_CONFIG_FILES= \
+PLUGINS_SAMPLE_CONFIG_FILES=	\
 		opensearch-security/opensearch.yml
 
 BINS=		opensearch opensearch-cli opensearch-env \
@@ -104,7 +104,7 @@ do-install:
 .endfor
 	${MKDIR} ${STAGEDIR}${PREFIX}/lib/opensearch/extensions
 	${MKDIR} ${STAGEDIR}${PREFIX}/lib/opensearch/lib
-	(cd ${WRKSRC}/ && ${COPYTREE_SHARE} "lib modules" ${STAGEDIR}${PREFIX}/lib/opensearch/)
+	(cd ${WRKSRC}/ && ${COPYTREE_SHARE} "agent lib modules" ${STAGEDIR}${PREFIX}/lib/opensearch/)
 	${MKDIR} ${STAGEDIR}${PREFIX}/libexec/opensearch
 	${INSTALL} -lrs ${STAGEDIR}${ETCDIR} ${STAGEDIR}${PREFIX}/lib/opensearch/config
 	${LN} -s ${JAVASHAREDIR}/classes/jna.jar ${STAGEDIR}${PREFIX}/lib/opensearch/lib/jna.jar
@@ -115,7 +115,7 @@ do-install-PLUGINS-on:
 		 ${STAGEDIR}${ETCDIR}/opensearch-observability \
 		 ${STAGEDIR}${ETCDIR}/opensearch-reports-scheduler \
 		 ${STAGEDIR}${ETCDIR}/opensearch-security
-.if ${PKGNAMESUFFIX} == "210"
+.if ${PKGNAMESUFFIX} == "210" || ${PKGNAMESUFFIX} == "213" || ${PKGNAMESUFFIX} == "216"
 	${MKDIR} ${STAGEDIR}${ETCDIR}/opensearch-performance-analyzer
 .endif
 
@@ -143,7 +143,7 @@ post-install:
 	${ECHO} "@dir(opensearch,opensearch,0750) ${ETCDIR}/opensearch-notifications-core" >> ${TMPPLIST}
 	${ECHO} "@dir(opensearch,opensearch,0750) ${ETCDIR}/opensearch-notifications" >> ${TMPPLIST}
 	${ECHO} "@dir(opensearch,opensearch,0750) ${ETCDIR}/opensearch-observability" >> ${TMPPLIST}
-.if ${PKGNAMESUFFIX} == "210"
+.if ${PKGNAMESUFFIX} == "210" || ${PKGNAMESUFFIX} == "213" || ${PKGNAMESUFFIX} == "216"
 	${ECHO} "@dir(opensearch,opensearch,0750) ${ETCDIR}/opensearch-performance-analyzer" >> ${TMPPLIST}
 .endif
 	${ECHO} "@dir(opensearch,opensearch,0750) ${ETCDIR}/opensearch-reports-scheduler" >> ${TMPPLIST}

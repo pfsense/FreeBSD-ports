@@ -9,11 +9,14 @@
     SUBDIR += feedbackd
     SUBDIR += gammastep
     SUBDIR += gammy
+    SUBDIR += hyprsunset
     SUBDIR += kdeaccessibility
     SUBDIR += kmag
     SUBDIR += kmousetool
     SUBDIR += kmouth
     SUBDIR += libqaccessibilityclient
+    SUBDIR += libspeechprovider
+    SUBDIR += libspiel
     SUBDIR += linux-c7-at-spi2-atk
     SUBDIR += linux-c7-at-spi2-core
     SUBDIR += linux-c7-atk

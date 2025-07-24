@@ -3,7 +3,7 @@
  * vpn_wg_peers_edit.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2021-2024 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2021-2025 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2021 R. Christian McDonald (https://github.com/rcmcdonald91)
  * All rights reserved.
  *
@@ -41,6 +41,7 @@ global $wgg;
 wg_globals();
 
 $pconfig = [];
+$is_new = true;
 
 if (isset($_REQUEST['tun'])) {
 	$tun_name = $_REQUEST['tun'];
@@ -86,9 +87,10 @@ if ($_POST) {
 	}
 }
 
-if (isset($peer_idx) && is_array($wgg['peers'][$peer_idx])) {
+if (is_numericint($peer_idx) && is_array(config_get_path("installedpackages/wireguard/peers/item/{$peer_idx}"))) {
 	// Looks like we are editing an existing peer
-	$pconfig = &$wgg['peers'][$peer_idx];
+	$pconfig = config_get_path("installedpackages/wireguard/peers/item/{$peer_idx}");
+	$is_new = false;
 } else {
 	// Default to enabled
 	$pconfig['enabled'] = 'yes';
@@ -243,10 +245,13 @@ $section->addInput(new Form_StaticText(
 if (!is_array($pconfig['allowedips'])
     || !is_array($pconfig['allowedips']['row'])
     || empty($pconfig['allowedips']['row'])) {
-		wg_init_config_arr($pconfig, array('allowedips', 'row', 0));
+		array_init_path($pconfig, 'allowedips/row/0');
 	
 		// Hack to ensure empty lists default to /128 mask
 		$pconfig['allowedips']['row'][0]['mask'] = '128';
+		if (!$is_new) {
+			config_set_path("installedpackages/wireguard/peers/item/{$peer_idx}/allowedips/row/0/mask", $pconfig['allowedips']['row'][0]['mask']);
+		}
 }
 
 $last = count($pconfig['allowedips']['row']) - 1;

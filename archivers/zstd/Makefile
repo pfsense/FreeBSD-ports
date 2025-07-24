@@ -1,5 +1,5 @@
 PORTNAME=	zstd
-PORTVERSION=	1.5.6
+PORTVERSION=	1.5.7
 CATEGORIES=	archivers
 MASTER_SITES=	https://github.com/facebook/zstd/releases/download/v${PORTVERSION}/
 
@@ -15,7 +15,7 @@ LICENSE_FILE_GPLv2=	${WRKSRC}/COPYING
 
 LIB_DEPENDS=	liblz4.so:archivers/liblz4
 
-USES=		gmake localbase:ldflags tar:zst
+USES=		cpe gmake localbase:ldflags tar:zst
 
 ALL_TARGET=	default
 BINARY_ALIAS=	gmd5sum=md5sum
@@ -24,10 +24,12 @@ MAKE_ENV=	INSTALL_DATA="${INSTALL_DATA}" \
 		INSTALL_MAN="${INSTALL_MAN}" \
 		INSTALL_PROGRAM="${INSTALL_PROGRAM}" \
 		INSTALL_SCRIPT="${INSTALL_SCRIPT}" \
-		MANDIR=${PREFIX}/share/man \
 		V=1
-TEST_TARGET=	shortest
+TEST_TARGET=	check
 USE_LDCONFIG=	yes
+
+CPE_VENDOR=	facebook
+CPE_PRODUCT=	zstandard
 
 PLIST_SUB=	BUILD_TYPE=${BUILD_TYPE:tl} PORTVERSION=${PORTVERSION}
 SUB_FILES=	zstdConfigVersion.cmake zstdTargets-BUILD_TYPE.cmake

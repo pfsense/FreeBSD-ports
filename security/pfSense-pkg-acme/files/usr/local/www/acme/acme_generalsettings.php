@@ -31,7 +31,6 @@ require_once("acme/pkg_acme_tabs.inc");
 
 $simplefields = array('enable', 'writecerts');
 
-config_init_path('installedpackages/acme');
 if ($_POST) {
 	unset($input_errors);
 	$pconfig = $_POST;

@@ -1,12 +1,11 @@
 PORTNAME=	mohawk
-DISTVERSION=	2.0.21
-PORTREVISION=	1
+DISTVERSION=	2.1.0
 CATEGORIES=	www
 MASTER_SITES=	https://fossil.bsdsx.fr/mohawk/tarball/?r=${DISTVERSION}&name=/
 
 MAINTAINER=	dsx+mohawk@bsdsx.fr
 COMMENT=	Simple and lightweight HTTP daemon
-WWW=		http://fossil.etoilebsd.net/mohawk
+WWW=		https://fossil.bsdsx.fr/mohawk
 
 LICENSE=	BSD2CLAUSE
 

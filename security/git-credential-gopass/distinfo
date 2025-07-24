@@ -1,7 +1,7 @@
-TIMESTAMP = 1712520088
-SHA256 (go/security_git-credential-gopass/gopasspw-git-credential-gopass-v1.15.13_GH0/v1.15.13.mod) = d6af32fa2852fbf94e9683f9882d5d7604981ff439367eb58e844473fac5ff19
-SIZE (go/security_git-credential-gopass/gopasspw-git-credential-gopass-v1.15.13_GH0/v1.15.13.mod) = 1855
-SHA256 (go/security_git-credential-gopass/gopasspw-git-credential-gopass-v1.15.13_GH0/v1.15.13.zip) = d1c9c73d7df806a2b95e0be63f2172e18684c81665afdfd42208879110449444
-SIZE (go/security_git-credential-gopass/gopasspw-git-credential-gopass-v1.15.13_GH0/v1.15.13.zip) = 25063
-SHA256 (go/security_git-credential-gopass/gopasspw-git-credential-gopass-v1.15.13_GH0/gopasspw-git-credential-gopass-v1.15.13_GH0.tar.gz) = 4261fe2630ce8e9882dc0d163c3f406132b695c7fdd8cb6c7e2080e06b93afab
-SIZE (go/security_git-credential-gopass/gopasspw-git-credential-gopass-v1.15.13_GH0/gopasspw-git-credential-gopass-v1.15.13_GH0.tar.gz) = 19323
+TIMESTAMP = 1745937202
+SHA256 (go/security_git-credential-gopass/gopasspw-git-credential-gopass-v1.15.16_GH0/v1.15.16.mod) = 2b2e1352f04313f39466768a39c06ef832ded089be17f222358a3a855e3f5a5c
+SIZE (go/security_git-credential-gopass/gopasspw-git-credential-gopass-v1.15.16_GH0/v1.15.16.mod) = 1653
+SHA256 (go/security_git-credential-gopass/gopasspw-git-credential-gopass-v1.15.16_GH0/v1.15.16.zip) = f284b6dc6738e67ca5ee5811ab0728175b1a27c58a67cc4cc208820a190a0887
+SIZE (go/security_git-credential-gopass/gopasspw-git-credential-gopass-v1.15.16_GH0/v1.15.16.zip) = 23141
+SHA256 (go/security_git-credential-gopass/gopasspw-git-credential-gopass-v1.15.16_GH0/gopasspw-git-credential-gopass-v1.15.16_GH0.tar.gz) = 2c17e73471983097df6a0ded43d9c2b2563e49b6b531a8ee9eec3bd84352e59c
+SIZE (go/security_git-credential-gopass/gopasspw-git-credential-gopass-v1.15.16_GH0/gopasspw-git-credential-gopass-v1.15.16_GH0.tar.gz) = 18413

@@ -1,9 +1,9 @@
 PORTNAME=	automuteus
 DISTVERSION=	8.3.6
-PORTREVISION=	1
+PORTREVISION=	8
 CATEGORIES=	games
 
-MAINTAINER=	nc@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Discord Bot to automute Among Us players at round transitions
 WWW=		https://automute.us/
 

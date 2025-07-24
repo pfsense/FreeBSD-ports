@@ -1,17 +1,17 @@
 PORTNAME=	f3d
 DISTVERSIONPREFIX=	v
-DISTVERSION=	2.4.0
-PORTREVISION=	2
+DISTVERSION=	3.2.0
 CATEGORIES=	graphics
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Fast and minimalist 3D viewer
-WWW=		https://f3d.app/
+WWW=		https://f3d.app/ \
+		https://github.com/f3d-app/f3d
 
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE.md
 
-LIB_DEPENDS=	libavcodec.so:multimedia/ffmpeg4 \
+LIB_DEPENDS=	libavcodec.so:multimedia/ffmpeg \
 		libfontconfig.so:x11-fonts/fontconfig \
 		libfreeimage.so:graphics/freeimage \
 		libfreetype.so:print/freetype2 \
@@ -30,6 +30,7 @@ USE_LDCONFIG=	yes
 USE_GITHUB=	yes
 GH_ACCOUNT=	f3d-app
 
+CMAKE_ON=	F3D_LINUX_INSTALL_DEFAULT_CONFIGURATION_FILE_IN_PREFIX
 CMAKE_OFF=	F3D_STRICT_BUILD # disable -Werror
 CMAKE_OFF+=	F3D_LINUX_APPLICATION_LINK_FILESYSTEM
 
@@ -38,8 +39,8 @@ LDFLAGS+=	-linotify
 # dependency descroptions are in https://f3d.app/doc/dev/BUILD.html
 OPTIONS_GROUP=			MODULES PLUGINS
 OPTIONS_GROUP_MODULES=		EXTERNAL_RENDERING RAYTRACING
-OPTIONS_GROUP_PLUGINS=		ALEMBIC ASSIMP DRACO EXODUS OCCT
-OPTIONS_DEFAULT=		ALEMBIC ASSIMP DRACO EXODUS OCCT
+OPTIONS_GROUP_PLUGINS=		ALEMBIC ASSIMP DRACO HDF OCCT VDB
+OPTIONS_DEFAULT=		ALEMBIC ASSIMP DRACO HDF OCCT # VDB
 OPTIONS_SUB=			yes
 
 MODULES_DESC=			Build modules:
@@ -57,18 +58,22 @@ DRACO_DESC=			Draco plugin
 DRACO_CMAKE_BOOL=		F3D_PLUGIN_BUILD_DRACO
 DRACO_LIB_DEPENDS=		libdraco.so:archivers/draco
 
-EXODUS_DESC=			ExodusII plugin
-EXODUS_CMAKE_BOOL=		F3D_PLUGIN_BUILD_EXODUS
-
 EXTERNAL_RENDERING_DESC=	External rendering module
 EXTERNAL_RENDERING_CMAKE_BOOL=	F3D_MODULE_EXTERNAL_RENDERING
 EXTERNAL_RENDERING_BROKEN=	Requires VTK::RenderingExternal enabled in VTK
+
+HDF_DESC=			Support for VTKHDF (.vtkhdf), ExodusII (.ex2), and NetCDF (.nc) file formats
+HDF_CMAKE_BOOL=			F3D_PLUGIN_BUILD_HDF
 
 OCCT_DESC=			OpenCASCADE plugin (for STEP and IGES files)
 OCCT_USES=			localbase:ldflags
 OCCT_CMAKE_BOOL=		F3D_PLUGIN_BUILD_OCCT
 OCCT_LIB_DEPENDS=		libTKBRep.so:cad/opencascade
 OCCT_CMAKE_ON=			-DOpenCASCADE_DIR=${LOCALBASE}/lib/cmake
+
+VDB_DESC=			VDB plugin
+VDB_CMAKE_BOOL=			F3D_PLUGIN_BUILD_VDB
+VDB_BROKEN=			depends on the VTK module IOOpenVD that can't be enabled because OpenVDB doesn't install required cmake files, see https://github.com/AcademySoftwareFoundation/openvdb/issues/2058
 
 RAYTRACING_DESC=		Raytracing module
 RAYTRACING_CMAKE_BOOL=		F3D_MODULE_RAYTRACING

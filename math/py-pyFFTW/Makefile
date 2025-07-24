@@ -1,12 +1,15 @@
 PORTNAME=	pyFFTW
-DISTVERSION=	0.13.1
+DISTVERSION=	0.15.0
+PORTREVISION=	1
 CATEGORIES=	math python
 MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
+DISTNAME=	${PORTNAME:tl}-${PORTVERSION}
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Pythonic wrapper around FFTW, the FFT library
-WWW=		https://hgomersall.github.io/pyFFTW/
+WWW=		https://hgomersall.github.io/pyFFTW/ \
+		https://github.com/pyFFTW/pyFFTW
 
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE.txt
@@ -20,9 +23,12 @@ LIB_DEPENDS=	libfftw3.so:math/fftw3 \
 RUN_DEPENDS=	${PY_DEPENDS}
 
 USES=		python localbase:ldflags
-USE_PYTHON=	distutils cython autoplist
+USE_PYTHON=	autoplist cython3 distutils pytest # tests fail with "attempted relative import with no known parent package", see https://github.com/pyFFTW/pyFFTW/issues/405
+
+TEST_ENV=	${MAKE_ENV} PYTHONPATH=${STAGEDIR}${PYTHONPREFIX_SITELIBDIR}
+TEST_WRKSRC=	${WRKSRC}/tests
 
 post-install:
-	@${STRIP_CMD} ${STAGEDIR}${PYTHON_SITELIBDIR}/pyfftw/pyfftw${PYTHON_EXT_SUFFIX}.so
+	@${STRIP_CMD} ${STAGEDIR}${PYTHON_SITELIBDIR}/pyfftw/pyfftw${PYTHON_TAG}.so
 
 .include <bsd.port.mk>

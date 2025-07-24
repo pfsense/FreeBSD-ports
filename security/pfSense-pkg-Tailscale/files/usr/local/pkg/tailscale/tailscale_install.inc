@@ -3,7 +3,7 @@
  * tailscale_install.inc
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2022-2024 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2022-2025 Rubicon Communications, LLC (Netgate)
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -48,8 +48,6 @@ function tailscale_ifgroup_install()
 
 	$tailscale_entry = tailscale_ifgroup_entry();
 
-	config_init_path('ifgroups/ifgroupentry');
-
 	foreach (config_get_path('ifgroups/ifgroupentry', []) as $entry)
 		if ($has_ifgroup = ($entry['ifname'] === $tailscale_entry['ifname']))
 			break;
@@ -57,7 +55,7 @@ function tailscale_ifgroup_install()
 	if ($has_ifgroup)
 		return;
 
-	$ifgroups_config = config_get_path('ifgroups/ifgroupentry');
+	$ifgroups_config = config_get_path('ifgroups/ifgroupentry', []);
 	array_unshift($ifgroups_config, $tailscale_entry);
 	config_set_path('ifgroups/ifgroupentry', $ifgroups_config);
 
@@ -72,8 +70,6 @@ function tailscale_ifgroup_deinstall()
 	$had_ifgroup = false;
 
 	$tailscale_entry = tailscale_ifgroup_entry();
-
-	config_init_path('ifgroups/ifgroupentry');
 
 	foreach (config_get_path('ifgroups/ifgroupentry', []) as $idx => $entry)
 		if ($entry['ifname'] === $tailscale_entry['ifname']) {

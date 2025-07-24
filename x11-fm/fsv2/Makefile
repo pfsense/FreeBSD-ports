@@ -11,6 +11,8 @@ WWW=		http://fedorchenko.net/fsv2.php
 LICENSE=	LGPL3
 LICENSE_FILE=	${WRKSRC}/COPYING
 
+BROKEN=		does not configure: No fonts installed on the system
+
 LIB_DEPENDS=	libgtkgl-2.0.so:x11-toolkits/gtkglarea2 \
 		libfontconfig.so:x11-fonts/fontconfig \
 		libfreetype.so:print/freetype2 \
@@ -20,7 +22,7 @@ USES=		compiler:c++11-lang tar:bzip2 libtool gettext-runtime gl gnome \
 		pkgconfig
 USE_GL=		gl glu
 USE_GNOME=	gtkmm24 atkmm glibmm pangomm cairomm libsigc++20 gtk20 atk \
-		cairo gdkpixbuf2
+		cairo gdkpixbuf
 USE_LDCONFIG=	yes
 
 GNU_CONFIGURE=	yes
@@ -36,7 +38,7 @@ NLS_CONFIGURE_ENABLE=	nls
 .include <bsd.port.pre.mk>
 
 post-patch:
-.if ${COMPILER_TYPE} == clang && ${COMPILER_VERSION} >= 160
+.if ${COMPILER_TYPE} == clang
 	@${REINPLACE_CMD} -e 's|auto_ptr|unique_ptr|' \
 		${WRKSRC}/uilib/ColorCellRenderer.cpp
 .endif

@@ -3,7 +3,7 @@
  * wg_validate.inc
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2021-2024 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2021-2025 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2021 R. Christian McDonald (https://github.com/rcmcdonald91)
  * All rights reserved.
  *
@@ -135,7 +135,7 @@ function wg_validate_tunnel_post($pconfig, $idx_from_post) {
 				$input_errors[] = "Address {$tmp_subnet} is not a valid CIDR address.";
 			}
 
-			$conflicts = where_is_ipaddr_configured($address['address'], $skip, true, true, $address['mask']);
+			$conflicts = where_is_ipaddr_configured($address['address'], '', true, true, $address['mask']);
 
 			if (!empty($conflicts)) {
 				foreach ($conflicts as $conflict) {

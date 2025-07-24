@@ -1,6 +1,5 @@
 PORTNAME=	rack
-PORTVERSION=	2.2.9
-PORTREVISION=	1
+PORTVERSION=	2.2.17
 PORTEPOCH=	3
 CATEGORIES=	www rubygems
 MASTER_SITES=	RG
@@ -21,8 +20,8 @@ CPE_VENDOR=	rack_project
 
 PORTSCOUT=	limit:^2\.2\.
 
-# Avoid CONFLICTS_INSTALL with www/rubygem-rackup
 post-install:
+# Avoid CONFLICTS_INSTALL with www/rubygem-rackup
 	${RM} ${STAGEDIR}${PREFIX}/bin/rackup
 
 .include <bsd.port.mk>

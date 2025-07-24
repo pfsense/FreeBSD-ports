@@ -1,5 +1,5 @@
 PORTNAME=	qemu
-DISTVERSION=	8.3.0.20240229
+DISTVERSION=	10.0.20250630
 CATEGORIES=	emulators
 PKGNAMESUFFIX=	-devel
 DIST_SUBDIR=	qemu/${PORTVERSION}
@@ -10,7 +10,7 @@ WWW=		https://www.qemu.org/
 
 LICENSE=	GPLv2
 
-ONLY_FOR_ARCHS=	amd64 i386 powerpc powerpc64 powerpc64 powerpc64le
+ONLY_FOR_ARCHS=	amd64 powerpc powerpc64 powerpc64 powerpc64le
 
 BUILD_DEPENDS=	sphinx-build:textproc/py-sphinx \
 		${PYTHON_PKGNAMEPREFIX}sphinx_rtd_theme>0:textproc/py-sphinx_rtd_theme@${PY_FLAVOR} \
@@ -23,11 +23,11 @@ USES=		bison compiler:c11 cpe gmake gnome iconv:wchar_t localbase:ldflags \
 		ninja perl5 pkgconfig python:build shebangfix tar:xz xorg
 USE_GITLAB=	yes
 GL_ACCOUNT=	qemu-project
-GL_TAGNAME=	ff202817dc2b0b3b42992fa7f1ce503f081068fe
+GL_TAGNAME=	0d0fc3f4658937fb81fcc16a89738e83bd8d4795
 GL_TUPLE=	qemu-project:keycodemapdb:f5772a62ec52591ff6870b7e8ef32482371f22c6:keycodemapdb/subprojects/keycodemapdb \
 		qemu-project:dtc:b6910bec11614980a21e46fbccc35934b671bd81:dtc/subprojects/dtc \
 		qemu-project:libvfio-user:0b28d205572c80b568a1003db2c8f37ca333e4d7:libvfio/subprojects/libvfio-user \
-		qemu-project:meson:aee941559c4b88a062e88186819a820c69c200ae:meson/meson \
+		qemu-project:meson:68d29ef7f62df5481aa4de8eaf421f25243f4cb2:meson/meson \
 		qemu-project:berkeley-softfloat-3:b64af41c3276f97f0e181920400ee056b9c88037:berkeleysoftfloat3/subprojects/berkeley-softfloat-3 \
 		qemu-project:berkeley-testfloat-3:e7af9751d9f9fd3b47911f51a5cfd08af256a9ab:berkeleytestfloat3/subprojects/berkeley-testfloat-3
 USE_GNOME=	cairo glib20
@@ -48,9 +48,13 @@ CONFIGURE_ARGS=	--localstatedir=/var --mandir=share/man --extra-ldflags=-L\"/usr
 CFLAGS:=	${CFLAGS:C/-fno-tree-vrp//}
 WITHOUT_CPU_CFLAGS=yes	#to avoid problems with register allocation
 
+BINARY_ALIAS=	python3=${PYTHON_VERSION}
+
 PORTDOCS=	.buildinfo _static/* about/* dbus-dbusindex.html devel/* \
-			docs genindex.html index.html interop/* objects.inv \
-			search.html searchindex.js specs/* system/* tools/* user/*
+		docs genindex.html glossary.html index.html interop/* \
+		objects.inv qapi-qga-index.html qapi-qmp-index.html \
+		qapi-qsd-index.html search.html searchindex.js specs/* system/* \
+		tools/* user/*
 
 OPTIONS_DEFINE=	SAMBA X11 GTK3 OPENGL GNUTLS SASL JPEG PNG CURL VDE \
 		CDROM_DMA USBREDIR X86_TARGETS STATIC_LINK DOCS CAPSTONE
@@ -86,7 +90,7 @@ GNUTLS_LIB_DEPENDS=	libgnutls.so:security/gnutls
 GNUTLS_CONFIGURE_OFF=	--disable-gnutls
 GTK3_LIB_DEPENDS=	libxkbcommon.so:x11/libxkbcommon
 GTK3_USES=	gettext gl
-GTK3_USE=	GNOME=gdkpixbuf2,vte3 XORG=x11,xext
+GTK3_USE=	GNOME=gdkpixbuf,vte3 XORG=x11,xext
 GTK3_CONFIGURE_OFF=	--disable-gtk --disable-vte
 JPEG_USES=		jpeg
 JPEG_CONFIGURE_OFF=	--disable-vnc-jpeg
@@ -109,7 +113,7 @@ USBREDIR_RUN_DEPENDS=	usbredir>=0.6:net/usbredir
 USBREDIR_CONFIGURE_OFF=	--disable-usb-redir
 VDE_CONFIGURE_OFF=	--disable-vde
 X11_USES=	sdl
-X11_USE=	SDL=sdl2 XORG=x11,xext GNOME=gdkpixbuf2
+X11_USE=	SDL=sdl2 XORG=x11,xext GNOME=gdkpixbuf
 X11_CONFIGURE_ENABLE=	sdl
 
 .include <bsd.port.options.mk>

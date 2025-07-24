@@ -3,7 +3,7 @@
  * snort_interfaces_edit.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2011-2024 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2011-2025 Rubicon Communications, LLC (Netgate)
  * Copyright (C) 2008-2009 Robert Zelaya
  * Copyright (c) 2022 Bill Meeks
  * All rights reserved.

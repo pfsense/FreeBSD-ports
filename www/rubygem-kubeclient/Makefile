@@ -1,5 +1,6 @@
 PORTNAME=	kubeclient
 PORTVERSION=	4.11.0
+PORTREVISION=	2
 CATEGORIES=	www rubygems
 MASTER_SITES=	RG
 
@@ -12,8 +13,8 @@ LICENSE_FILE=	${WRKSRC}/LICENSE.txt
 
 RUN_DEPENDS=	rubygem-http4>=3.0<6.0:www/rubygem-http4 \
 		rubygem-jsonpath>=1.0<2:devel/rubygem-jsonpath \
-		rubygem-recursive-open-struct>=1.1.1<2.0:devel/rubygem-recursive-open-struct \
-		rubygem-rest-client>=2.0<3:www/rubygem-rest-client
+		rubygem-recursive-open-struct1>=1.1.1<2.0:devel/rubygem-recursive-open-struct1 \
+		rubygem-rest-client-gitlab>=2.0<3:www/rubygem-rest-client-gitlab
 
 USES=		cpe gem
 

@@ -39,7 +39,7 @@ JIT_CONFIGURE_ENABLE=	jit
 
 # The following is actually meant for lld 15.0 and later, but the ports
 # framework does not support LINKER_TYPE and LINKER_VERSION yet.
-.if ${COMPILER_TYPE} == "clang" && ${COMPILER_VERSION} >= 150
+.if ${COMPILER_TYPE} == "clang"
 # Turn off checking of dynamic relocations, to avoid lld diagnostics about
 # possibly incorrect addend values.
 LDFLAGS_i386+=  -Wl,--no-check-dynamic-relocations
@@ -56,5 +56,10 @@ post-patch:
 		${WRKSRC}/src/support/socket.cpp
 	@${REINPLACE_CMD} -e 's|return NULL|return 0|' \
 		${WRKSRC}/src/memory.cpp
+.if ${OPSYS} == FreeBSD && ( ${OSVERSION} >= 1500019 || ( ${OSVERSION} >= 1401500 && ${OSVERSION} < 1500000 ))
+	# These versions moved ftime() from libcompat to libutil
+	@${REINPLACE_CMD} -e 's|-lcompat|-lutil|' \
+		${WRKSRC}/configure
+.endif
 
 .include <bsd.port.post.mk>

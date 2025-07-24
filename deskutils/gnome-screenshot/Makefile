@@ -2,7 +2,7 @@ PORTNAME=	gnome-screenshot
 PORTVERSION=	41.0
 PORTREVISION=	3
 CATEGORIES=	deskutils gnome
-MASTER_SITES=	GNOME/sources/${PORTNAME}/${PORTVERSION:C/^([0-9]+)\..*/\1/}
+MASTER_SITES=	GNOME
 DIST_SUBDIR=	gnome
 
 PATCH_SITES=	https://gitlab.gnome.org/GNOME/${PORTNAME}/-/commit/
@@ -25,7 +25,7 @@ PORTSCOUT=	limitw:1,even
 
 USES=		compiler:c11 gettext gnome meson pkgconfig python:build \
 		shebangfix tar:xz xorg
-USE_GNOME=	cairo gdkpixbuf2 gtk30
+USE_GNOME=	cairo gdkpixbuf gtk30
 USE_XORG=	x11 xext
 SHEBANG_FILES=	build-aux/postinstall.py
 

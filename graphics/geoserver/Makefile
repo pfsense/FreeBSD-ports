@@ -1,10 +1,10 @@
 PORTNAME=	geoserver
-PORTVERSION=	2.25.1
+DISTVERSION=	2.27.1
 CATEGORIES=	graphics geography java
 MASTER_SITES=	SF/${PORTNAME}/GeoServer/${PORTVERSION}
 DISTNAME=	${PORTNAME}-${PORTVERSION}-bin
 
-MAINTAINER=	bofh@FreeBSD.org
+MAINTAINER=	jbo@FreeBSD.org
 COMMENT=	Open Source GIS server
 WWW=		https://geoserver.org/
 
@@ -12,8 +12,8 @@ LICENSE=	APACHE20 BSD2CLAUSE EPL GPLv2 GPLv3 MIT
 LICENSE_COMB=	multi
 LICENSE_FILE=	${WRKSRC}/license/NOTICE.txt
 
-USES=		cpe zip
-USE_JAVA=	17+
+USES=		cpe java zip
+JAVA_VERSION=	17+
 USE_RC_SUBR=	${PORTNAME}
 
 NO_ARCH=	yes
@@ -27,22 +27,23 @@ NO_WRKSUBDIR=	yes
 GEOSERVERDIR=	${PREFIX}/${PORTNAME}
 GEODIRS=	data_dir etc lib logs modules resources webapps
 
-PLIST_SUB=	BATIK=1.17 \
+PLIST_SUB=	BATIK=1.18 \
 		ECLIPSE=2.15.0 \
 		G="${GEOSERVERDIR:S,^${PREFIX}/,,}" \
-		GT=31.1 \
-		GWC=1.25.1 \
-		IMAGEIO=1.4.10 \
-		JETTY=9.4.52.v20230823 \
-		JNA=5.14.0 \
-		JT=1.1.25 \
+		GT=33.1 \
+		GWC=1.27.1 \
+		IMAGEIO=1.4.15 \
+		JACKSON=2.18.2 \
+		JETTY=9.4.57.v20241219 \
+		JNA=5.16.0 \
+		JT=1.1.31 \
 		JT1=1.6.0 \
 		MVER=${PORTVERSION} \
-		SI=2.1 \
-		SPRING=5.3.34 \
-		SPRINGS=5.7.12 \
+		SI=2.2 \
+		SPRING=5.3.39 \
+		SPRINGS=5.8.16 \
 		VER3=1.1.3 \
-		WICKET=7.18.0
+		WICKET=9.20.0
 
 post-patch:
 	@${REINPLACE_CMD} -e 's|$$GEOSERVER_HOME|${GEOSERVERDIR}|g' \

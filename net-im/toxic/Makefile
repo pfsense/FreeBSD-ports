@@ -1,5 +1,5 @@
 PORTNAME=	toxic
-PORTVERSION=	0.15.1
+PORTVERSION=	0.16.1
 DISTVERSIONPREFIX=	v
 PORTREVISION=	1
 CATEGORIES=	net-im
@@ -23,6 +23,7 @@ RUN_DEPENDS=	${LOCALBASE}/lib/libtoxcore.a:net-im/tox
 
 USES=		compiler:c11 desktop-file-utils gettext-runtime gmake ncurses	\
 		openal:al,alut pkgconfig
+MAKE_ARGS=	ENABLE_RELEASE=1
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	JFreegman
@@ -34,7 +35,7 @@ GAMES_DESC=	Includes a games module
 GAMES_MAKE_ARGS_OFF=	DISABLE_GAMES=1
 
 X11_USES=	gnome xorg
-X11_USE=	GNOME=gdkpixbuf2,glib20 XORG=x11
+X11_USE=	GNOME=gdkpixbuf,glib20 XORG=x11
 X11_MAKE_ARGS_OFF=	DISABLE_X11=1 DISABLE_DESKTOP_NOTIFY=1
 X11_LIB_DEPENDS=libnotify.so:devel/libnotify
 

@@ -1,15 +1,11 @@
---- pyproject.toml.orig	2024-04-01 17:37:16 UTC
+--- pyproject.toml.orig	2022-11-09 12:37:21 UTC
 +++ pyproject.toml
-@@ -2,10 +2,8 @@ requires = [
+@@ -2,7 +2,7 @@ requires = [
  requires = [
-     "setuptools",
-     "scikit-build",
--    "cython>=3",
--    "cmake",
--    "ninja",
--    "numpy>=2.0.0rc1",
-+    "cython",
+     "scikit-build-core",
+     "cython>=3",
+-    "numpy>=2.0.0",
 +    "numpy",
  ]
- build-backend = "setuptools.build_meta"
+ build-backend = "scikit_build_core.build"
  

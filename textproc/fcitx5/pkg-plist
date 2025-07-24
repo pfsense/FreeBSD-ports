@@ -21,6 +21,7 @@ include/Fcitx5/Core/fcitx/addoninstance.h
 include/Fcitx5/Core/fcitx/addoninstance_details.h
 include/Fcitx5/Core/fcitx/addonloader.h
 include/Fcitx5/Core/fcitx/addonmanager.h
+include/Fcitx5/Core/fcitx/candidateaction.h
 include/Fcitx5/Core/fcitx/candidatelist.h
 include/Fcitx5/Core/fcitx/event.h
 include/Fcitx5/Core/fcitx/fcitxcore_export.h
@@ -69,6 +70,7 @@ include/Fcitx5/Utils/fcitx-utils/dbus/variant.h
 include/Fcitx5/Utils/fcitx-utils/element.h
 include/Fcitx5/Utils/fcitx-utils/event.h
 include/Fcitx5/Utils/fcitx-utils/eventdispatcher.h
+include/Fcitx5/Utils/fcitx-utils/eventloopinterface.h
 include/Fcitx5/Utils/fcitx-utils/fcitxutils_export.h
 include/Fcitx5/Utils/fcitx-utils/flags.h
 include/Fcitx5/Utils/fcitx-utils/fs.h

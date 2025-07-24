@@ -1,6 +1,6 @@
---- components/password_manager/core/browser/password_manager_switches.h.orig	2024-06-17 12:56:06 UTC
+--- components/password_manager/core/browser/password_manager_switches.h.orig	2025-02-19 07:43:18 UTC
 +++ components/password_manager/core/browser/password_manager_switches.h
-@@ -10,7 +10,7 @@
+@@ -9,7 +9,7 @@
  
  namespace password_manager {
  
@@ -8,4 +8,4 @@
 +#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_BSD)
  extern const char kPasswordStore[];
  extern const char kEnableEncryptionSelection[];
- #endif
+ #endif  // BUILDFLAG(IS_LINUX)

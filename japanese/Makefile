@@ -13,11 +13,11 @@
     SUBDIR += ajaxzip2-data
     SUBDIR += alias-fonts
     SUBDIR += another-htmllint
-    SUBDIR += anthy
+    SUBDIR += anthy-unicode
+    SUBDIR += aobook
     SUBDIR += bible_names-fpw
     SUBDIR += boiled-mozc
     SUBDIR += bookview
-    SUBDIR += bugzilla44
     SUBDIR += bugzilla50
     SUBDIR += canna-lib
     SUBDIR += canna-server
@@ -47,10 +47,6 @@
     SUBDIR += edyvalue
     SUBDIR += eijiro-fpw
     SUBDIR += epwutil
-    SUBDIR += esecanna
-    SUBDIR += esecanna-module-vje25
-    SUBDIR += esecanna-module-vje30
-    SUBDIR += esecanna-module-wnn6
     SUBDIR += eterm
     SUBDIR += fcitx-anthy
     SUBDIR += fcitx-mozc
@@ -62,6 +58,8 @@
     SUBDIR += font-aozoramincho
     SUBDIR += font-ayu18
     SUBDIR += font-ayu20
+    SUBDIR += font-bizin-gothic
+    SUBDIR += font-bizud-gothic
     SUBDIR += font-bizud-mincho
     SUBDIR += font-cica
     SUBDIR += font-elisa10
@@ -116,6 +114,7 @@
     SUBDIR += font-std
     SUBDIR += font-takao
     SUBDIR += font-udev-gothic
+    SUBDIR += font-udev-gothic-hs
     SUBDIR += font-udev-gothic-nf
     SUBDIR += font-ume
     SUBDIR += font-vlgothic
@@ -142,7 +141,7 @@
     SUBDIR += jls
     SUBDIR += jvim3
     SUBDIR += kakasi
-    SUBDIR += kasumi
+    SUBDIR += kasumi-unicode
     SUBDIR += kbanner
     SUBDIR += kcc
     SUBDIR += kcode
@@ -171,6 +170,7 @@
     SUBDIR += mecab-ipadic-eucjp
     SUBDIR += mecab-ipadic-sjis
     SUBDIR += mecab-ipadic-utf8
+    SUBDIR += mecab-jawiki
     SUBDIR += mh
     SUBDIR += migemo
     SUBDIR += migemo.el
@@ -178,8 +178,8 @@
     SUBDIR += mozc-el
     SUBDIR += mozc-server
     SUBDIR += mozc-tool
+    SUBDIR += multiskkserv
     SUBDIR += mypaedia-fpw-package
-    SUBDIR += namazu
     SUBDIR += namazu2
     SUBDIR += navi2ch
     SUBDIR += ne
@@ -190,7 +190,7 @@
     SUBDIR += ng-devel
     SUBDIR += ngraph-fonts
     SUBDIR += nkf
-    SUBDIR += onew
+    SUBDIR += open_jtalk
     SUBDIR += p5-2chproxy
     SUBDIR += p5-Date-Japanese-Era
     SUBDIR += p5-Date-Japanese-Holiday
@@ -222,11 +222,16 @@
     SUBDIR += pejv-fpw
     SUBDIR += plain2
     SUBDIR += plan
-    SUBDIR += prn
+    SUBDIR += prn-ps
+    SUBDIR += py-SudachiPy
+    SUBDIR += py-fugashi
+    SUBDIR += py-ipadic
     SUBDIR += py-jaconv
+    SUBDIR += py-unidic
     SUBDIR += qkc
     SUBDIR += qolibri
     SUBDIR += quit
+    SUBDIR += radish-play
     SUBDIR += roget-fpw
     SUBDIR += rogue_s
     SUBDIR += ruby-romkan
@@ -250,6 +255,7 @@
     SUBDIR += sj3-lib
     SUBDIR += sj3-server
     SUBDIR += skk
+    SUBDIR += skk-jawiki
     SUBDIR += skk-jisyo
     SUBDIR += skk-jisyo-cdb
     SUBDIR += skk-tools
@@ -262,6 +268,7 @@
     SUBDIR += sourcehanserif-otf
     SUBDIR += spoqahansans-ttf
     SUBDIR += srd-fpw-package
+    SUBDIR += sudachi
     SUBDIR += suicavalue
     SUBDIR += tdiary
     SUBDIR += tegaki-zinnia-japanese
@@ -271,7 +278,7 @@
     SUBDIR += timidity++-slang
     SUBDIR += today
     SUBDIR += tomoe
-    SUBDIR += uim-anthy
+    SUBDIR += uim-anthy-unicode
     SUBDIR += uim-mozc
     SUBDIR += uim-tomoe-gtk
     SUBDIR += vera-fpw

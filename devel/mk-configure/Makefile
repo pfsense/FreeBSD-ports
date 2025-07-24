@@ -1,41 +1,27 @@
 PORTNAME=	mk-configure
-PORTVERSION=	0.38.2
-PORTREVISION=	1
+PORTVERSION=	0.40.0
 CATEGORIES=	devel
-MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/${PORTNAME}-${PORTVERSION}
+MASTER_SITES=	SF/mk-configure/mk-configure/mk-configure-${PORTVERSION}
 
-MAINTAINER=	trociny@FreeBSD.org
+MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Lightweight, easy to use replacement for GNU autotools
-WWW=		https://sourceforge.net/projects/mk-configure/
+WWW=		https://sourceforge.net/projects/mk-configure/ \
+		https://github.com/cheusov/mk-configure
 
 LICENSE=	BSD2CLAUSE
+LICENSE_FILE=	${WRKSRC}/doc/LICENSE
 
-BUILD_DEPENDS=	${BMAKE}:devel/bmake
-RUN_DEPENDS:=	${BUILD_DEPENDS} \
-		bmkdep:devel/bmkdep
-
+INSTALL_TARGET=	installdirs install install-doc
+MAKE_ARGS=	MANDIR=${PREFIX}/share/man
 MAKE_JOBS_UNSAFE=	yes
 NO_ARCH=	yes
-
-BMAKE?=		${LOCALBASE}/bin/bmake
-MAKE_ARGS=	MANDIR=${PREFIX}/share/man
-INSTALL_TARGET=	installdirs install install-doc
 
 PORTDATA=	*
 PORTEXAMPLES=	*
 
 OPTIONS_DEFINE=	DOCS EXAMPLES
 
-post-patch:
-	@${ECHO_CMD} "MKDEP ?= bmkdep" >> ${WRKSRC}/mk/sys.mk
-
-do-build:
-	${SETENV} ${MAKE_ENV} ${BMAKE} -C ${BUILD_WRKSRC} ${MAKE_FLAGS} \
-		${MAKEFILE} ${_MAKE_JOBS} ${MAKE_ARGS} ${ALL_TARGET}
-
-do-install:
-	${SETENV} ${MAKE_ENV} ${BMAKE} -C ${INSTALL_WRKSRC} ${MAKE_FLAGS} \
-		${MAKEFILE} ${_MAKE_JOBS} ${MAKE_ARGS} ${INSTALL_TARGET}
+post-install-EXAMPLES-on:
 	cd ${WRKSRC}/examples/ && ${COPYTREE_SHARE} . ${STAGEDIR}${EXAMPLESDIR}
 
 do-test:

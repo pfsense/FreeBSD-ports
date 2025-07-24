@@ -1,6 +1,6 @@
 PORTNAME=	foxtrotgps
 PORTVERSION=	1.2.2
-PORTREVISION=	6
+PORTREVISION=	7
 CATEGORIES=	astro geography
 MASTER_SITES=	http://www.foxtrotgps.org/releases/
 
@@ -39,7 +39,7 @@ INFO=		foxtrotgps
 
 .include <bsd.port.pre.mk>
 
-.if ${OPSYS} == FreeBSD && ( ${OSVERSION} >= 1400079 || ( ${OSVERSION} >= 1302505 && ${OSVERSION} < 1400000 ))
+.if ${OPSYS} == FreeBSD
 CFLAGS+=	-Wno-error=int-conversion
 .endif
 

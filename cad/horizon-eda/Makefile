@@ -1,12 +1,13 @@
 PORTNAME=	horizon-eda
 DISTVERSIONPREFIX=	v
-DISTVERSION=	2.6.0
-PORTREVISION=	1
+DISTVERSION=	2.7.0
+PORTREVISION=	2
 CATEGORIES=	cad
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	EDA package for printed circuit board design
-WWW=		https://horizon-eda.org/
+WWW=		https://horizon-eda.org/ \
+		https://github.com/horizon-eda/horizon
 
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/LICENSE
@@ -23,11 +24,11 @@ LIB_DEPENDS=	libcurl.so:ftp/curl \
 		libpodofo09.so:graphics/podofo09 \
 		libspnav.so:misc/libspnav \
 		libTKDESTEP.so:cad/opencascade \
-		libuuid.so:misc/e2fsprogs-libuuid \
+		libuuid.so:misc/libuuid \
 		libzmq.so:net/libzmq4
 
 USES=		desktop-file-utils gnome libarchive localbase meson pkgconfig python:build sqlite
-USE_GNOME=	atkmm gdkpixbuf2 gtkmm30 librsvg2
+USE_GNOME=	atkmm gdkpixbuf gtkmm30 librsvg2
 
 USE_GITHUB=	yes
 GH_PROJECT=	horizon

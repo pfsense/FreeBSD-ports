@@ -1,6 +1,6 @@
 PORTNAME=	upp
 DISTVERSION=	15260
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	devel x11-toolkits
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/2020.2/
 DISTNAME=	${PORTNAME}-posix-${PORTVERSION}
@@ -39,7 +39,7 @@ IDE_LIB_DEPENDS=	libfreetype.so:print/freetype2 \
 		libpng.so:graphics/png
 IDE_PLIST_FILES=	bin/theide ${PREFIX}/share/man/man1/theide.1.gz
 IDE_USES=	gnome xorg
-IDE_USE=	XORG=x11 GNOME=cairo,gdkpixbuf2,gtk30
+IDE_USE=	XORG=x11 GNOME=cairo,gdkpixbuf,gtk30
 UDC_DESC=	Install spelling dictionaries (*.udc files)
 UDC_VARS=	PORTDATA+=*.udc
 UMK_DESC=	Build/install UMK (U++ MaKe command line utility)

@@ -1,5 +1,5 @@
 PORTNAME=	level-zero
-PORTVERSION=	1.17.6
+PORTVERSION=	1.22.4
 DISTVERSIONPREFIX=	v
 CATEGORIES=	devel
 
@@ -16,7 +16,11 @@ LIB_DEPENDS=	libfmt.so:devel/libfmt \
 
 USES=		cmake compiler:c++14-lang localbase:ldflags pathfix
 
-CXXFLAGS+=	-DSPDLOG_FMT_EXTERNAL
+CMAKE_OFF=	BUILD_INSTALLER \
+		BUILD_L0_LOADER_TESTS \
+		BUILD_STATIC \
+		USE_ASAN
+CMAKE_ON=	SYSTEM_SPDLOG
 LDFLAGS+=	-lfmt
 USE_LDCONFIG=	yes
 
@@ -27,5 +31,7 @@ GH_ACCOUNT=	oneapi-src
 
 post-patch:
 	@${ECHO_CMD} ${PORTVERSION:E} > ${WRKSRC}/VERSION_PATCH
+# Clean up bundled libraries
+	@${RM} -r ${WRKSRC}/third_party/spdlog_headers
 
 .include <bsd.port.mk>

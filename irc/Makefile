@@ -1,6 +1,7 @@
     COMMENT = Internet Relay Chat utilities
 
     SUBDIR += anope
+    SUBDIR += anope-devel
     SUBDIR += atheme-services
     SUBDIR += bip
     SUBDIR += bitchx
@@ -9,10 +10,8 @@
     SUBDIR += bitlbee-facebook
     SUBDIR += bitlbee-mastodon
     SUBDIR += bitlbee-steam
-    SUBDIR += bnc
     SUBDIR += catgirl
     SUBDIR += cgiirc
-    SUBDIR += ctrlproxy
     SUBDIR += dancer
     SUBDIR += dircproxy
     SUBDIR += dxirc
@@ -20,8 +19,8 @@
     SUBDIR += epic4
     SUBDIR += epic5
     SUBDIR += ergo
-    SUBDIR += ezbounce
     SUBDIR += gruftistats
+    SUBDIR += halloy
     SUBDIR += hexchat
     SUBDIR += hexchat-fish
     SUBDIR += icbirc
@@ -32,7 +31,6 @@
     SUBDIR += ircII
     SUBDIR += ircd-hybrid
     SUBDIR += ircd-ratbox
-    SUBDIR += ircd-ratbox-devel
     SUBDIR += ircproxy
     SUBDIR += iroffer-dinoex
     SUBDIR += irssi

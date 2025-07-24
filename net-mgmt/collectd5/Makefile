@@ -1,6 +1,6 @@
 PORTNAME=	collectd
 PORTVERSION=	5.12.0
-PORTREVISION=	13
+PORTREVISION=	22
 CATEGORIES=	net-mgmt
 MASTER_SITES=	https://storage.googleapis.com/collectd-tarballs/
 PKGNAMESUFFIX=	5
@@ -124,7 +124,7 @@ CURL_JSON_CONFIGURE_ENABLE=	curl_json
 CURL_XML_IMPLIES=		CURL XML
 CURL_XML_CONFIGURE_ENABLE=	ascent bind curl_xml
 
-JAVA_USE=		java
+JAVA_USES=		java
 JAVA_CONFIGURE_ENABLE=	java
 JAVA_CONFIGURE_WITH=	java=${LOCALBASE}
 
@@ -175,7 +175,7 @@ MYSQL_CONFIGURE_WITH=	libmysql=${LOCALBASE}
 
 NOTIFYDESKTOP_LIB_DEPENDS=	libnotify.so:devel/libnotify
 NOTIFYDESKTOP_CONFIGURE_ENABLE=	notify_desktop
-NOTIFYDESKTOP_USE=		GNOME=gdkpixbuf2
+NOTIFYDESKTOP_USE=		GNOME=gdkpixbuf
 NOTIFYDESKTOP_USES=		gettext-runtime gnome
 
 NOTIFYEMAIL_LIB_DEPENDS=	libesmtp.so:mail/libesmtp

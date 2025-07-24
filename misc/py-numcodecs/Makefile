@@ -1,5 +1,6 @@
 PORTNAME=	numcodecs
-DISTVERSION=	0.12.1
+DISTVERSION=	0.13.0
+PORTREVISION=	1
 CATEGORIES=	misc python
 MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -11,7 +12,8 @@ WWW=		https://numcodecs.readthedocs.io/en/stable/
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE.txt
 
-BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}py-cpuinfo>0:sysutils/py-py-cpuinfo@${PY_FLAVOR}
+BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}py-cpuinfo>0:sysutils/py-py-cpuinfo@${PY_FLAVOR} \
+		${PYNUMPY}
 RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}entrypoints>0:devel/py-entrypoints@${PY_FLAVOR} \
 		${PYNUMPY}
 RUN_DEPENDS+=	${PYTHON_PKGNAMEPREFIX}msgpack>0:devel/py-msgpack@${PY_FLAVOR} \
@@ -38,6 +40,6 @@ MAKE_ENV+=	DISABLE_NUMCODECS_SSE2=yes DISABLE_NUMCODECS_AVX2=yes
 .endif
 
 post-install:
-	@${STRIP_CMD} ${STAGEDIR}${PYTHON_SITELIBDIR}/numcodecs/*${PYTHON_EXT_SUFFIX}.so
+	@${STRIP_CMD} ${STAGEDIR}${PYTHON_SITELIBDIR}/numcodecs/*${PYTHON_TAG}.so
 
 .include <bsd.port.mk>

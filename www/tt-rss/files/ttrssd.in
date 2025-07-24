@@ -1,16 +1,12 @@
 #! /bin/sh
 
 # PROVIDE: ttrssd
-# REQUIRE: LOGIN mysql postgresql
+# REQUIRE: LOGIN
 # KEYWORD: shutdown
 
 # Add the following lines to /etc/rc.conf to enable `ttrssd':
 #
 # ttrssd_enable="YES"
-#
-# ttrssd_local_db (bool):   Set to "YES" by default.
-#                           Set it to "NO" if the database is on another
-#                           server.
 
 . /etc/rc.subr
 
@@ -22,86 +18,22 @@ rcvar=ttrssd_enable
 # read settings, set default values
 load_rc_config "${name}"
 : ${ttrssd_enable="NO"}
-: ${ttrssd_local_db:="YES"}
 
-initdb_php="%%WWWDIR%%/update.php"
-dbcheck_php="%%WWWDIR%%/ttrss_db_check.php"
+long_name="Tiny Tiny RSS updating feeds daemon."
 required_files="%%WWWDIR%%/config.php"
 pidfile="/var/run/${name}.pid"
-ppidfile="/var/run/${name}_parent.pid"
+cpidfile="/var/run/${name}_child.pid"
 phpcli="%%LOCALBASE%%/bin/php"
-command_interpreter=$phpcli
-long_name="Tiny Tiny RSS updating feeds daemon."
+
+initdb_php="%%WWWDIR%%/update.php"
 phpupd="%%WWWDIR%%/update_daemon2.php"
 ttrssd_log="/var/log/${name}.log"
-ttrssd_user="%%WWWOWN%%"
 
-start_precmd=${name}_prestart
-start_cmd=${name}_start
-stop_cmd=${name}_stop
-
-MYSQL_CHECK_CMD="%%LOCALBASE%%/bin/mysqladmin -u mysqld ping"
-MYSQL_CHECK_MSG="${name}: mysqladmin command failed; mysql not ready?"
-PGSQL_CHECK_CMD="%%LOCALBASE%%/bin/pg_isready"
-PGSQL_CHECK_MSG="${name}: postgresql status failed; postgresql not ready?"
-
-ttrssd_start() {
-	if ! [ -x $phpcli ]; then
-		echo "$phpcli not found"
-		exit 1
-	fi
-
-	if [ -f $pidfile ]; then
-		echo "$name already running?"
-		exit 2
-	fi
-
-	echo "Starting $long_name"
-	daemon -H -P "$ppidfile" -p "$pidfile" \
-		  -u "$ttrssd_user" -o "$ttrssd_log" \
-		sh -c "${initdb_php} --update-schema=force-yes; $phpupd"
-}
-
-ttrssd_stop() {
-	if ! [ -f $pidfile ]; then
-		echo "$name not running?"
-		exit 1
-	fi
-
-	echo "Stopping $long_name"
-	pkill -CHLD -F "$pidfile"
-	pkill -F "$pidfile"
-	pwait "$(cat $ppidfile)"
-}
-
-ttrssd_prestart() {
-	if checkyesno ttrssd_local_db; then
-		# Wait for the local database to be started
-
-		database="$("$phpcli" -f "$dbcheck_php")"
-
-		case  "$database" in
-		    "mysql")
-			CHECK_CMD="$MYSQL_CHECK_CMD"
-			CHECK_MSG="$MYSQL_CHECK_MSG"
-			;;
-		    "pgsql")
-			CHECK_CMD="$PGSQL_CHECK_CMD"
-			CHECK_MSG="$PGSQL_CHECK_MSG"
-			;;
-		    *)
-			err 1 "Unknown database configured: $database"
-			;;
-		esac
-
-		for n in $(seq 1 10); do
-			if $CHECK_CMD > /dev/null 2>&1; then
-			    return
-			fi
-			sleep 1
-		done
-		err 1 $CHECK_MSG
-	fi
-}
+command="/usr/sbin/daemon"
+command_args="-rR 10 -H -u %%WWWOWN%% \
+		-P $pidfile -p $cpidfile \
+		-o $ttrssd_log sh -c \
+		'$initdb_php --update-schema=force-yes; \
+			$phpupd;'"
 
 run_rc_command "$1"

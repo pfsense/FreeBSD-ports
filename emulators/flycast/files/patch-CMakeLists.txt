@@ -1,0 +1,12 @@
+--- CMakeLists.txt.orig	2025-05-07 13:21:40 UTC
++++ CMakeLists.txt
+@@ -1421,8 +1421,7 @@ if(USE_VULKAN)
+ 		target_compile_definitions(${PROJECT_NAME} PUBLIC VK_USE_PLATFORM_METAL_EXT)
+ 	endif()
+ 
+-	add_subdirectory(core/deps/Vulkan-Headers)
+-	target_link_libraries(${PROJECT_NAME} PRIVATE Vulkan::Headers)
++	find_package(VulkanHeaders)
+ 
+ 	add_subdirectory(core/deps/VulkanMemoryAllocator)
+ 	target_compile_options(VulkanMemoryAllocator INTERFACE $<$<AND:$<COMPILE_LANGUAGE:CXX>,$<CXX_COMPILER_ID:AppleClang,Clang>>:-Wno-nullability-completeness>)

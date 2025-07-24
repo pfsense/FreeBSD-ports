@@ -1,5 +1,5 @@
-TIMESTAMP = 1707122182
-SHA256 (go/sysutils_restic/restic-v0.16.4/v0.16.4.mod) = 1cbadb63f8c3e1b8d5d850dd569e68b0de45e74c06e293a0baa8140eaaefc372
-SIZE (go/sysutils_restic/restic-v0.16.4/v0.16.4.mod) = 3514
-SHA256 (go/sysutils_restic/restic-v0.16.4/v0.16.4.zip) = d87155460c87b4f14338bde24220e572e95f5ae9f8b0c4bd90a610f15b6198e0
-SIZE (go/sysutils_restic/restic-v0.16.4/v0.16.4.zip) = 24448953
+TIMESTAMP = 1743196737
+SHA256 (go/sysutils_restic/restic-v0.18.0/v0.18.0.mod) = 6a31abd1d2207b3e522a9ef9083d60c3f8fc97d8d6246425de19d9f6062fcd92
+SIZE (go/sysutils_restic/restic-v0.18.0/v0.18.0.mod) = 4632
+SHA256 (go/sysutils_restic/restic-v0.18.0/v0.18.0.zip) = 779460cf9be6dbeffffbdfc8795b7cf7899137ceb6ea9e0d93098543ca4d1a4d
+SIZE (go/sysutils_restic/restic-v0.18.0/v0.18.0.zip) = 24646151

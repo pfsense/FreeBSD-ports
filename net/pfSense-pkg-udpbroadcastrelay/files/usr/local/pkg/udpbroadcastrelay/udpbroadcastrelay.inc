@@ -3,7 +3,7 @@
  * udpbroadcastrelay.inc
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2023-2024 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2023-2025 Rubicon Communications, LLC (Netgate)
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -198,6 +198,12 @@ function udpbr_get_command(array $config): string {
  */
 function udpbr_resync(): void {
 	global $udpbr_global;
+	$config = udpbr_get_config();
+
+	// Don't take any action if the service is disabled
+	if (empty($config) || !isset($config['enable'])) {
+		return;
+	}
 
 	udpbr_log(gettext('Reloading service.'), LOG_INFO);
 
@@ -210,10 +216,10 @@ function udpbr_resync(): void {
 
 	// Bail if the system is booting - package services will be started after
 	if (is_platform_booting()) {
+		udpbr_log(gettext('Ignoring service start - the system is still booting.'), LOG_INFO);
 		return;
 	}
 
-	$config = udpbr_get_config();
 	$input_errors = udpbr_parse_config($config);
 
 	// Bail if there's a configuration issue
@@ -223,7 +229,8 @@ function udpbr_resync(): void {
 	}
 
 	// Don't take further action if no instance would be started
-	if (empty($config) || !isset($config['enable']) || empty($config['item'])) {
+	if (empty($config['item'])) {
+		udpbr_log(gettext('Ignoring service start - no configured instances to start.'), LOG_INFO);
 		return;
 	}
 
@@ -263,6 +270,7 @@ function udpbr_resync(): void {
 
 	// Don't take further action if no instance would be started
 	if (empty($run_commands)) {
+		udpbr_log(gettext('Ignoring service start - no valid instances to start.'), LOG_INFO);
 		return;
 	}
 
@@ -313,7 +321,7 @@ function udpbr_resync(): void {
 function udpbr_get_interfaces(bool $valid_only = true, bool $append_port = true): array {
 	$interfaces = [];
 	$interface_ports = array_flip(get_interface_arr());
-	foreach (config_get_path('interfaces') as $interface_name => $interface) {
+	foreach (config_get_path('interfaces', []) as $interface_name => $interface) {
 		if ($valid_only && (!isset($interface['enable']) ||
 		    !isset($interface['if']) || !isset($interface_ports[$interface['if']]))) {
 			/* Skip invalid interfaces. Valid interfaces must be assigned,

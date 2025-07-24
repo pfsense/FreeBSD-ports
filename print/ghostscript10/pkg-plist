@@ -38,7 +38,6 @@ share/man/man1/gsdj500.1.gz
 share/man/man1/gslj.1.gz
 share/man/man1/gslp.1.gz
 share/man/man1/gsnd.1.gz
-share/man/man1/pdf2dsc.1.gz
 share/man/man1/pdf2ps.1.gz
 share/man/man1/pf2afm.1.gz
 share/man/man1/pfbtopfa.1.gz
@@ -340,3 +339,4 @@ share/color/icc/ghostscript/srgb.icc
 %%DATADIR%%/lib/viewps2a.ps
 %%DATADIR%%/lib/winmaps.ps
 %%DATADIR%%/lib/zeroline.ps
+%%DATADIR%%/lib/zugferd.ps

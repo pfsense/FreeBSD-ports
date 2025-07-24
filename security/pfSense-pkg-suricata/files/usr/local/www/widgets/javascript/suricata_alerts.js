@@ -2,7 +2,7 @@
  * suricata_alerts.js
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2016-2024 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2016-2025 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2023 Bill Meeks
  * All rights reserved.
  *
@@ -95,5 +95,8 @@ function suricata_alerts_toggle_pause() {
 		suricataisPaused = true;
 	}
 }
-/* start local AJAX engine */
-suricatatimer = setInterval('fetch_new_surialerts()', suricataupdateDelay);
+
+if (typeof suricataupdateDelay !== 'undefined') {
+	/* start local AJAX engine */
+	suricatatimer = setInterval('fetch_new_surialerts()', suricataupdateDelay);
+}

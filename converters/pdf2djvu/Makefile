@@ -1,6 +1,6 @@
 PORTNAME=	pdf2djvu
 DISTVERSION=	0.9.19
-PORTREVISION=	3
+PORTREVISION=	5
 CATEGORIES=	converters
 MASTER_SITES=	https://github.com/jwilk/${PORTNAME}/releases/download/${PORTVERSION}/
 
@@ -15,9 +15,9 @@ BUILD_DEPENDS=	${LOCALBASE}/include/pstreams/pstream.h:devel/pstreams
 LIB_DEPENDS=	libdjvulibre.so:graphics/djvulibre \
 		libpoppler.so:graphics/poppler
 
-USES=		autoreconf:build compiler:c++17-lang gettext-tools \
+USES=		autoreconf:build compiler:c++20-lang gettext-tools \
 		gmake iconv localbase pkgconfig tar:xz
-USE_CXXSTD=	c++17
+USE_CXXSTD=	c++20
 
 GNU_CONFIGURE=	yes
 GNU_CONFIGURE_MANPREFIX=${PREFIX}/share

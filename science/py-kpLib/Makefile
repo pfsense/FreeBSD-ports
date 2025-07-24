@@ -1,6 +1,6 @@
 PORTNAME=	kpLib
 DISTVERSION=	1.1.1
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	science python
 MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -25,6 +25,6 @@ USE_LDCONFIG=	yes
 USE_PYTHON=	distutils concurrent autoplist
 
 post-install:
-	@${STRIP_CMD} ${STAGEDIR}${PYTHON_SITELIBDIR}/kpLib/lib${PYTHON_EXT_SUFFIX}.so
+	@${STRIP_CMD} ${STAGEDIR}${PYTHON_SITELIBDIR}/kpLib/lib${PYTHON_TAG}.so
 
 .include <bsd.port.mk>

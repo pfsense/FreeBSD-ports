@@ -1,8 +1,8 @@
 PORTNAME=	exult
-DISTVERSION?=	1.8
-PORTREVISION?=	6
+DISTVERSION=	1.12.0
 PORTEPOCH=	1
 CATEGORIES=	games
+MASTER_SITES=	SF/exult/exult-all-versions/${DISTVERSION:R}/
 
 MAINTAINER=	eduardo@FreeBSD.org
 COMMENT=	Engine for Ultima VII (BG, FOV, SI, SS)
@@ -11,13 +11,14 @@ WWW=		http://exult.info
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
+BUILD_DEPENDS=	autoconf-archive>=0:devel/autoconf-archive
 LIB_DEPENDS=	libogg.so:audio/libogg \
 		libpng16.so:graphics/png \
 		libvorbis.so:audio/libvorbis
 
 USES=		autoreconf compiler:c++17-lang gmake libtool localbase \
 		pkgconfig sdl xorg
-USE_GNOME=	cairo gdkpixbuf2
+USE_GNOME=	cairo gdkpixbuf
 USE_SDL=	sdl2
 USE_XORG=	x11 xext
 
@@ -26,15 +27,8 @@ CONFIGURE_ARGS=	--disable-static \
 		--enable-shared \
 		--with-icondir=${PREFIX}/share/pixmaps
 
-CONFLICTS_INSTALL=	exult-devel
-SUB_FILES=		pkg-message
-PLIST?=			${.CURDIR}/pkg-plist
-
-.if !defined(MASTERDIR)
-MASTER_SITES=	http://prdownloads.sourceforge.net/exult/
-.else
-USE_GITHUB=	yes
-.endif
+SUB_FILES=	pkg-message
+PORTDOCS=	*
 
 OPTIONS_DEFINE=		ALSA DEBUG DOCS FLUIDSYNTH GIMP STUDIO
 OPTIONS_DEFAULT=	STUDIO
@@ -66,7 +60,9 @@ GIMP_USE=		GNOME=gtk20,pango
 
 GIMP_CONFIGURE_ENABLE=	gimp-plugin
 
-STUDIO_LIB_DEPENDS?=		libharfbuzz.so:print/harfbuzz
+STUDIO_LIB_DEPENDS=	libfreetype.so:print/freetype2 \
+			libharfbuzz.so:print/harfbuzz \
+			libicuuc.so:devel/icu
 STUDIO_USES=			gnome
 STUDIO_USE=			GNOME=gtk30
 STUDIO_CONFIGURE_ENABLE=	exult-studio exult-studio-support
@@ -76,13 +72,5 @@ post-install-DOCS-on:
 .for i in FAQ NEWS README
 	${INSTALL_DATA} ${WRKSRC}/${i} ${STAGEDIR}${DOCSDIR}
 .endfor
-
-.include <bsd.port.options.mk>
-
-# Silence cast warnings from GTK callbacks in clang >=16
-# https://github.com/exult/exult/issues/416
-.if !defined(PKGNAMESUFFIX) && ( ${OPSYS} == FreeBSD && ( ${OSVERSION} >= 1400091 || ( ${OSVERSION} >= 1302507 && ${OSVERSION} < 1400000 )))
-CFLAGS+=	-Wno-cast-function-type-strict
-.endif
 
 .include <bsd.port.mk>

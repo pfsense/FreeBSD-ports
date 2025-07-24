@@ -1,10 +1,11 @@
 PORTNAME=	slurm
 DISTVERSION=	23.11.7
+PORTREVISION=	4
 CATEGORIES=	sysutils
 MASTER_SITES=	https://download.schedmd.com/slurm/
 PKGNAMESUFFIX=	-wlm
 
-MAINTAINER=	eduardo@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Simple Linux Utility for Resource Management
 WWW=		https://slurm.schedmd.com/
 
@@ -62,7 +63,7 @@ DOCS_BUILD_DEPENDS=	man2html:textproc/man2html
 CURL_LIB_DEPENDS=	libcurl.so:ftp/curl
 CURL_CONFIGURE_WITH=	libcurl
 
-GUI_USE=		GNOME=cairo,gdkpixbuf2,glib20,gtk20,pango
+GUI_USE=		GNOME=cairo,gdkpixbuf,glib20,gtk20,pango
 GUI_LIB_DEPENDS=	libfontconfig.so:x11-fonts/fontconfig \
 			libfreetype.so:print/freetype2 \
 			libharfbuzz.so:print/harfbuzz

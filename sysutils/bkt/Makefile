@@ -1,6 +1,6 @@
 PORTNAME=	bkt
-DISTVERSION=	0.8.0
-PORTREVISION=	4
+DISTVERSION=	0.8.2
+PORTREVISION=	7
 CATEGORIES=	sysutils
 
 MAINTAINER=	ehaupt@FreeBSD.org
@@ -23,11 +23,8 @@ MANPAGES_BUILD_DEPENDS=	help2man:misc/help2man
 
 post-build-MANPAGES-on:
 	help2man -s 1 -Nn "${COMMENT}" \
-		${CARGO_TARGET_DIR}/${CARGO_BUILD_TARGET}/*/${PORTNAME} \
+		${CARGO_TARGET_DIR}/*/${PORTNAME} \
 		-o ${WRKSRC}/${PORTNAME}.1
-
-post-install:
-	${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/bkt
 
 post-install-MANPAGES-on:
 	${INSTALL_MAN} ${WRKSRC}/${PORTNAME}.1 \

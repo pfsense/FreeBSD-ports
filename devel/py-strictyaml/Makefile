@@ -1,11 +1,11 @@
 PORTNAME=	strictyaml
 DISTVERSION=	1.7.3
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	devel python
 MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
-MAINTAINER=	DtxdF@disroot.org
+MAINTAINER=	dtxdf@FreeBSD.org
 COMMENT=	Strict, typed YAML parser
 WWW=		https://hitchdev.com/${PORTNAME}
 

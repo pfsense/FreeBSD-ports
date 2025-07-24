@@ -10,6 +10,9 @@ WWW=		https://github.com/shellinabox/shellinabox
 
 LICENSE=	GPLv2
 
+DEPRECATED=	Abandonware and outdated, last release in 2016. Use sysutils/ttyd instead
+EXPIRATION_DATE=	2025-12-31 # Expiration date has been extended because sysutils/ttyd doesn't work on some systems.
+
 USES=	autoreconf cpe libtool ssl
 CPE_VENDOR=	${PORTNAME}_project
 

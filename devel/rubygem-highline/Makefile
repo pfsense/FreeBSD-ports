@@ -1,5 +1,5 @@
 PORTNAME=	highline
-PORTVERSION=	3.0.1
+PORTVERSION=	3.1.2
 CATEGORIES=	devel rubygems
 MASTER_SITES=	RG
 
@@ -11,8 +11,12 @@ LICENSE=	GPLv2 RUBY
 LICENSE_COMB=	dual
 LICENSE_FILE_GPLv2=	${WRKSRC}/COPYING
 
-USES=		gem
+RUN_DEPENDS=	rubygem-reline>=0:devel/rubygem-reline
+
+USES=		gem shebangfix
 
 NO_ARCH=	yes
+
+SHEBANG_FILES=	bin/test
 
 .include <bsd.port.mk>

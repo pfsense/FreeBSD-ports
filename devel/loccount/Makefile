@@ -1,6 +1,6 @@
 PORTNAME=	loccount
 DISTVERSION=	2.16
-PORTREVISION=	4
+PORTREVISION=	11
 CATEGORIES=	devel
 MASTER_SITES=	http://www.catb.org/~esr/loccount/
 

@@ -1,25 +1,26 @@
 PORTNAME=	gnutls
-DISTVERSION=	3.8.5
-PORTREVISION=	3
+DISTVERSION=	3.8.10
 CATEGORIES=	security net
-MASTER_SITES=	GNUPG/${PORTNAME}/v${DISTVERSION:R}
-
-PATCH_SITES=	https://gitlab.com/gnutls/gnutls/-/commit/
-PATCHFILES=	2d73d945c4b1dfcf8d2328c4d23187d62ffaab2d.patch:-p1
+MASTER_SITES=	GNUPG/${PORTNAME}/v${DISTVERSION:C/(\.[^.]*).*/\1/} \
+		https://gitlab.com/gnutls/gnutls/-/raw/${DISTVERSION}/tests/:test
+DISTFILES=	${DISTNAME}${EXTRACT_SUFX} ktls_utils.h:test
+EXTRACT_ONLY=	${DISTNAME}${EXTRACT_SUFX}
 
 MAINTAINER=	tijl@FreeBSD.org
 COMMENT=	GNU Transport Layer Security library
 WWW=		https://gnutls.org/
 
-LICENSE=	GPLv3 LGPL21
+LICENSE=	GPLv3+ LGPL21+
 LICENSE_COMB=	multi
-LICENSE_FILE_GPLv3=	${WRKSRC}/doc/COPYING
-LICENSE_FILE_LGPL21=	${WRKSRC}/doc/COPYING.LESSER
+LICENSE_FILE_GPLv3+ =	${WRKSRC}/COPYING
+LICENSE_FILE_LGPL21+ =	${WRKSRC}/COPYING.LESSERv2
 
-LIB_DEPENDS=	libgmp.so:math/gmp \
+LIB_DEPENDS=	libbrotlienc.so:archivers/brotli \
+		libgmp.so:math/gmp \
 		libnettle.so:security/nettle \
 		libtasn1.so:security/libtasn1 \
-		libunistring.so:devel/libunistring
+		libunistring.so:devel/libunistring \
+		libzstd.so:archivers/zstd
 
 USES=		compiler:c11 cpe gmake iconv libtool localbase makeinfo \
 		pkgconfig tar:xz
@@ -32,17 +33,19 @@ CONFIGURE_ARGS=	--disable-rpath \
 		--enable-openssl-compatibility \
 		--with-default-trust-store-dir=/etc/ssl/certs \
 		--with-system-priority-file=${PREFIX}/etc/gnutls/config \
-		--without-brotli \
+		--with-brotli \
 		--without-included-libtasn1 \
 		--without-tpm \
 		--without-tpm2 \
-		--without-zstd
+		--with-zstd
 
 MAKE_ENV=	MAKEINFOFLAGS=--no-split
 INSTALL_TARGET=	install-strip
 TEST_TARGET=	check
 
 LDFLAGS+=	-Wl,--undefined-version
+
+WRKSRC=		${WRKDIR}/${PORTNAME}-${DISTVERSION:C/(\.[^.]*\.[^.]*).*/\1/}
 
 INFO=		gnutls
 
@@ -75,6 +78,7 @@ P11KIT_CONFIGURE_WITH=	p11-kit
 SRP_CONFIGURE_ENABLE=	srp-authentication
 
 post-patch:
+	@${CP} -p ${DISTDIR}/ktls_utils.h ${WRKSRC}/tests/
 	@${RM} ${WRKSRC}/doc/*.info*
 	@${REINPLACE_CMD} 's,/usr/share,${PREFIX}/share,' \
 		${WRKSRC}/doc/manpages/*.[13]
@@ -86,13 +90,13 @@ post-patch:
 		${WRKSRC}/doc/invoke-gnutls-serv.texi \
 		${WRKSRC}/doc/invoke-p11tool.texi \
 		${WRKSRC}/doc/invoke-srptool.texi \
+		${WRKSRC}/doc/srptool-examples.texi \
 		${WRKSRC}/doc/manpages/certtool.1 \
 		${WRKSRC}/doc/manpages/gnutls_priority_init2.3 \
 		${WRKSRC}/doc/manpages/gnutls-cli.1 \
 		${WRKSRC}/doc/manpages/gnutls-serv.1 \
 		${WRKSRC}/doc/manpages/p11tool.1 \
 		${WRKSRC}/doc/manpages/srptool.1 \
-		${WRKSRC}/doc/srptool-examples.texi \
 		${WRKSRC}/lib/includes/gnutls/pkcs11.h \
 		${WRKSRC}/lib/pkcs11.c \
 		${WRKSRC}/src/p11tool-options.c \

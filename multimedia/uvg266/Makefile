@@ -1,12 +1,9 @@
 PORTNAME=	uvg266
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.8.0
+DISTVERSION=	0.8.1
 CATEGORIES=	multimedia
 
-PATCH_SITES=	https://github.com/${GH_ACCOUNT}/${GH_PROJECT}/commit/
-PATCHFILES+=	e5e32d67f43b.patch:-p1
-
-MAINTAINER=	jbeich@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	VVC encoder based on Kvazaar
 WWW=		https://ultravideo.fi/#encoder_x
 

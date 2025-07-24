@@ -9,6 +9,7 @@ DISTNAME=	llvm-project-${DISTVERSION}.src
 DISTFILES=	llvm-project-${DISTVERSION}.src${EXTRACT_SUFX}
 
 PATCH_SITES=	https://github.com/llvm/llvm-project/commit/
+PATCHFILES+=	llvmorg-18-init-1760-g68744ffbdd7d.patch:-p1 # https://reviews.llvm.org/D157589
 PATCHFILES+=	llvmorg-18-init-15199-gb9935bb02a50.patch:-p1 # https://github.com/llvm/llvm-project/pull/75748
 PATCHFILES+=	llvmorg-18-init-15680-g966d564e43e6.patch:-p1 # https://github.com/llvm/llvm-project/pull/76185
 
@@ -16,13 +17,8 @@ MAINTAINER=	brooks@FreeBSD.org
 COMMENT=	LLVM and Clang
 WWW=		https://llvm.org/
 
-LICENSE_DIR=	${WRKSRC}/llvm
+LICENSE_FILE_BSD3CLAUSE=${LICENSE_DIR}/utils/unittest/googletest/LICENSE.TXT
 .include "${.CURDIR}/../llvm-devel/Makefile.LICENSE"
-LICENSE+=	LLVM2
-LICENSE_FILE_LLVM2=	${LICENSE_DIR}/LICENSE.TXT
-LICENSE_NAME_LLVM2=	Apache License 2.0 with LLVM Exceptions
-LICENSE_PERMS_LLVM2=	dist-mirror dist-sell pkg-mirror pkg-sell auto-accept
-LICENSE:=	${LICENSE:NARM}
 
 LIB_DEPENDS=	libzstd.so:archivers/zstd
 
@@ -152,7 +148,6 @@ COMPILER_RT_PLIST_FILES=${_COMPILER_RT_LIBS:S|^|${_CRTLIBDIR}/|} \
 			${_COMPILER_RT_IGNORELISTS:S|^|${_CRTBLDIR}/|}
 DOCS_BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}sphinx-markdown-tables>=0:textproc/py-sphinx-markdown-tables@${PY_FLAVOR} \
 			${PYTHON_PKGNAMEPREFIX}recommonmark>=0.0.20180530:textproc/py-recommonmark@${PY_FLAVOR}
-DOCS_CONFLICTS_BUILD=	cmark
 DOCS_PORTDOCS=		llvm
 DOCS_CMAKE_ON= \
 	-DLLVM_ENABLE_SPHINX=ON \
@@ -653,6 +648,7 @@ post-install-CLANG-on:
 
 post-install-EXTRAS-on:
 	${RMDIR} ${STAGEDIR}${LLVM_PREFIX}/include/clang-tidy/misc/ConfusableTable
+
 post-install-FLANG-on:
 	${RMDIR} ${STAGEDIR}${LLVM_PREFIX}/include/flang/Optimizer/CodeGen/CMakeFiles
 	${RMDIR} ${STAGEDIR}${LLVM_PREFIX}/include/flang/Optimizer/Dialect/CMakeFiles
@@ -719,7 +715,7 @@ build-plist:
 	    ${GREP} -v '[/-]lit$$' | ${GREP} -v 'FileCheck$$' | \
 	    ${GREP} -v man/man1 | ${SED} -e 's|${STAGEDIR}${PREFIX}/||' \
 	    -e 's|${PYTHON_SITELIBDIR:C|${PREFIX}/||}|%%PYTHON_SITELIBDIR%%|' \
-	    -e 's|${PYTHON_EXT_SUFFIX:C/\./\\./g}${PYTHON_ABIVER}|%%PYTHON_EXT_SUFFIX%%%%PYTHON_ABIVER%%|' \
+	    -e 's|${PYTHON_TAG:C/\./\\./g}${PYTHON_ABIVER}|%%PYTHON_TAG%%%%PYTHON_ABIVER%%|' \
 	    -e 's|${LLVM_RELEASE}|%%LLVM_RELEASE%%|' \
 	    -e 's|release.cmake|%%CMAKE_BUILD_TYPE%%.cmake|' \
 	    -e 's|${LLVM_RELEASE:C/\./\\./g}|%%LLVM_RELEASE%%|' \

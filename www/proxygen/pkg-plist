@@ -48,6 +48,7 @@ include/proxygen/httpserver/samples/push/PushRequestHandler.h
 include/proxygen/httpserver/samples/push/PushStats.h
 include/proxygen/httpserver/samples/static/StaticHandler.h
 include/proxygen/httpserver/samples/websocket/WebSocketHandler.h
+include/proxygen/lib/dns/AsyncDNSStatsCollector.h
 include/proxygen/lib/dns/CAresResolver.h
 include/proxygen/lib/dns/CachingDNSResolver.h
 include/proxygen/lib/dns/DNSModule.h
@@ -78,8 +79,9 @@ include/proxygen/lib/http/ProxygenErrorEnum.h
 include/proxygen/lib/http/RFC2616.h
 include/proxygen/lib/http/StatusTypeEnum.h
 include/proxygen/lib/http/SynchronizedLruQuicPskCache.h
+include/proxygen/lib/http/Types.h
 include/proxygen/lib/http/Window.h
-include/proxygen/lib/http/codec/CodecDictionaries.h
+include/proxygen/lib/http/codec/CapsuleCodec.h
 include/proxygen/lib/http/codec/CodecProtocol.h
 include/proxygen/lib/http/codec/CodecUtil.h
 include/proxygen/lib/http/codec/ControlMessageRateLimitFilter.h
@@ -153,6 +155,8 @@ include/proxygen/lib/http/codec/compress/experimental/simulator/HPACKScheme.h
 include/proxygen/lib/http/codec/compress/experimental/simulator/QMINScheme.h
 include/proxygen/lib/http/codec/compress/experimental/simulator/QPACKScheme.h
 include/proxygen/lib/http/codec/compress/experimental/simulator/SimStreamingCallback.h
+include/proxygen/lib/http/codec/webtransport/WebTransportCapsuleCodec.h
+include/proxygen/lib/http/codec/webtransport/WebTransportFramer.h
 include/proxygen/lib/http/connpool/Endpoint.h
 include/proxygen/lib/http/connpool/ServerIdleSessionController.h
 include/proxygen/lib/http/connpool/SessionHolder.h
@@ -196,16 +200,17 @@ include/proxygen/lib/http/session/ServerPushLifecycle.h
 include/proxygen/lib/http/session/SimpleController.h
 include/proxygen/lib/http/session/TTLBAStats.h
 include/proxygen/lib/http/session/TransactionByteEvents.h
+include/proxygen/lib/http/session/WebTransportFilter.h
 include/proxygen/lib/http/sink/FlowControlInfo.h
+include/proxygen/lib/http/sink/HTTPConnectSink.h
 include/proxygen/lib/http/sink/HTTPSink.h
 include/proxygen/lib/http/sink/HTTPTransactionSink.h
+include/proxygen/lib/http/sink/HTTPTunnelSink.h
 include/proxygen/lib/http/stats/ConnectionStats.h
 include/proxygen/lib/http/stats/HTTPCodecStats.h
 include/proxygen/lib/http/stats/HTTPCodecStatsFilter.h
 include/proxygen/lib/http/stats/HeaderCodecStats.h
 include/proxygen/lib/http/stats/ResponseCodeStatsMinute.h
-include/proxygen/lib/http/stats/SPDYStats.h
-include/proxygen/lib/http/stats/SPDYStatsFilter.h
 include/proxygen/lib/http/stats/TLResponseCodeStats.h
 include/proxygen/lib/http/stats/ThreadLocalHTTPSessionStats.h
 include/proxygen/lib/http/structuredheaders/StructuredHeadersBuffer.h
@@ -213,7 +218,9 @@ include/proxygen/lib/http/structuredheaders/StructuredHeadersConstants.h
 include/proxygen/lib/http/structuredheaders/StructuredHeadersDecoder.h
 include/proxygen/lib/http/structuredheaders/StructuredHeadersEncoder.h
 include/proxygen/lib/http/structuredheaders/StructuredHeadersUtilities.h
+include/proxygen/lib/http/webtransport/HTTPWebTransport.h
 include/proxygen/lib/http/webtransport/WebTransport.h
+include/proxygen/lib/http/webtransport/test/FakeSharedWebTransport.h
 include/proxygen/lib/pools/generators/FileServerListGenerator.h
 include/proxygen/lib/pools/generators/MemberGroupConfig.h
 include/proxygen/lib/pools/generators/ServerListGenerator.h
@@ -278,6 +285,8 @@ include/proxygen/lib/utils/ZlibStreamCompressor.h
 include/proxygen/lib/utils/ZlibStreamDecompressor.h
 include/proxygen/lib/utils/ZstdStreamCompressor.h
 include/proxygen/lib/utils/ZstdStreamDecompressor.h
+include/proxygen/lib/http/webtransport/QuicWebTransport.h
+include/proxygen/lib/http/webtransport/WebTransportImpl.h
 lib/cmake/proxygen/proxygen-config.cmake
 lib/cmake/proxygen/proxygen-targets-%%CMAKE_BUILD_TYPE%%.cmake
 lib/cmake/proxygen/proxygen-targets.cmake
@@ -288,3 +297,4 @@ lib/libproxygendeviousbaton.so
 lib/libproxygenhqloggerhelper.so
 lib/libproxygenhqserver.so
 lib/libproxygenhttpserver.so
+lib/libquicwebtransport.so

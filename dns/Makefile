@@ -2,12 +2,12 @@
 
     SUBDIR += acme-dns
     SUBDIR += adns
-    SUBDIR += adsuck
     SUBDIR += amass
     SUBDIR += axfr2acl
     SUBDIR += bind-tools
     SUBDIR += bind9-devel
     SUBDIR += bind918
+    SUBDIR += bind920
     SUBDIR += bindgraph
     SUBDIR += blocky
     SUBDIR += c-ares
@@ -18,7 +18,6 @@
     SUBDIR += denominator
     SUBDIR += dhisd
     SUBDIR += dlint
-    SUBDIR += dnrd
     SUBDIR += dns-ui
     SUBDIR += dns2blackhole
     SUBDIR += dns2tcp
@@ -43,10 +42,12 @@
     SUBDIR += dnsproxy
     SUBDIR += dnsrecon
     SUBDIR += dnsreflector
+    SUBDIR += dnssec-rr
     SUBDIR += dnstable
     SUBDIR += dnstable-convert
     SUBDIR += dnstop
     SUBDIR += dnstracer
+    SUBDIR += dnstracer-rs
     SUBDIR += dnsutl
     SUBDIR += dnsviz
     SUBDIR += dnswalk
@@ -59,7 +60,6 @@
     SUBDIR += dq
     SUBDIR += drool
     SUBDIR += dsc
-    SUBDIR += dsp
     SUBDIR += dynip
     SUBDIR += encrypted-dns-server
     SUBDIR += fastresolve
@@ -84,7 +84,6 @@
     SUBDIR += knock
     SUBDIR += knot-resolver
     SUBDIR += knot3
-    SUBDIR += knot3-lib
     SUBDIR += ldapdns
     SUBDIR += ldns
     SUBDIR += letsdns
@@ -96,8 +95,6 @@
     SUBDIR += libpsl
     SUBDIR += linux-c7-libasyncns
     SUBDIR += linux-rl9-libasyncns
-    SUBDIR += linux-rl9-libidn2
-    SUBDIR += linux-rl9-libpsl
     SUBDIR += lua-resty-dns
     SUBDIR += luaunbound
     SUBDIR += mDNSResponder_nss
@@ -126,7 +123,6 @@
     SUBDIR += p5-DNS-Zone
     SUBDIR += p5-DNS-ZoneParse
     SUBDIR += p5-DNS-nsdiff
-    SUBDIR += p5-DSC
     SUBDIR += p5-Data-Validate-Domain
     SUBDIR += p5-IO-Async-Resolver-DNS
     SUBDIR += p5-Mozilla-PublicSuffix
@@ -165,12 +161,16 @@
     SUBDIR += p5-POE-Filter-DNS-TCP
     SUBDIR += p5-Tie-DNS
     SUBDIR += p5-URBL-Prepare
+    SUBDIR += p5-Zonemaster-Backend
+    SUBDIR += p5-Zonemaster-CLI
+    SUBDIR += p5-Zonemaster-Engine
     SUBDIR += p5-Zonemaster-LDNS
     SUBDIR += packetq
     SUBDIR += pdnsd
     SUBDIR += pear-File_DNS
     SUBDIR += pear-Horde_Idna
     SUBDIR += pear-Net_DNS2
+    SUBDIR += pear-Net_DNS21
     SUBDIR += powerdns
     SUBDIR += powerdns-recursor
     SUBDIR += prometheus-dnssec-exporter
@@ -185,8 +185,8 @@
     SUBDIR += py-dnspython1
     SUBDIR += py-easyzone
     SUBDIR += py-idna
-    SUBDIR += py-idna_ssl
     SUBDIR += py-ldns
+    SUBDIR += py-libknot
     SUBDIR += py-localzone
     SUBDIR += py-ns1-python
     SUBDIR += py-publicsuffix
@@ -211,6 +211,7 @@
     SUBDIR += rubygem-dnsruby
     SUBDIR += rubygem-gitlab-net-dns
     SUBDIR += rubygem-google-apis-dns_v1
+    SUBDIR += rubygem-google-apis-dns_v1-gitlab
     SUBDIR += rubygem-google-cloud-dns
     SUBDIR += rubygem-idn-ruby
     SUBDIR += rubygem-net-dns
@@ -219,12 +220,15 @@
     SUBDIR += rubygem-resolv
     SUBDIR += rubygem-resolv-replace
     SUBDIR += rubygem-simpleidn
+    SUBDIR += rubygem-simpleidn02
     SUBDIR += rubygem-validates_hostname
+    SUBDIR += rubygem-validates_hostname-gitlab
     SUBDIR += rubygem-zonefile
     SUBDIR += samba-nsupdate
     SUBDIR += scavenge
     SUBDIR += sleuth
     SUBDIR += subfinder
+    SUBDIR += tldx
     SUBDIR += totd
     SUBDIR += udns
     SUBDIR += unbound
@@ -240,6 +244,7 @@
     SUBDIR += yandex-ddns
     SUBDIR += zdns
     SUBDIR += zkt
+    SUBDIR += zns
     SUBDIR += zonenotify
 
 .include <bsd.port.subdir.mk>

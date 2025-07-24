@@ -1,11 +1,11 @@
---- gst-libs/gst/allocators/meson.build.orig	2022-09-06 20:56:00 UTC
+--- gst-libs/gst/allocators/meson.build.orig	2025-03-11 20:14:44 UTC
 +++ gst-libs/gst/allocators/meson.build
 @@ -1,3 +1,4 @@
 +if get_option('allocators').enabled()
  gst_allocators_headers = files([
    'allocators.h',
    'allocators-prelude.h',
-@@ -58,3 +59,4 @@ allocators_dep = declare_dependency(link_with: gstallo
+@@ -94,3 +95,4 @@ meson.override_dependency('gstreamer-allocators-1.0', 
    sources : allocators_gen_sources)
  
  meson.override_dependency('gstreamer-allocators-1.0', allocators_dep)

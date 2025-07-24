@@ -1,5 +1,6 @@
 PORTNAME=	vcmi
-PORTVERSION=	1.5.3
+PORTVERSION=	1.6.8
+PORTREVISION=	1
 CATEGORIES=	games
 
 MAINTAINER=	danfe@FreeBSD.org
@@ -38,6 +39,9 @@ QT_USES=	qt:5
 QT_USE=		QT=buildtools:build,linguisttools:build,qmake:build \
 		QT=core,gui,network,widgets
 QT_CMAKE_OFF=	-DENABLE_LAUNCHER:BOOL=OFF -DENABLE_EDITOR:BOOL=OFF
+
+post-patch:
+	@${REINPLACE_CMD} -e '/QT NAMES/s, Qt6,,' ${WRKSRC}/CMakeLists.txt
 
 post-install-DOCS-on:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}

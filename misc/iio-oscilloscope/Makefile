@@ -1,7 +1,8 @@
 PORTNAME=	iio-oscilloscope
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.17
-DISTVERSIONSUFFIX=	-master
+DISTVERSION=	0.18
+PORTREVISION=	1
+DISTVERSIONSUFFIX=	-main
 CATEGORIES=	misc
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -22,7 +23,7 @@ LIB_DEPENDS=	libad9361.so:misc/libad9361-iio \
 		libmatio.so:math/matio
 
 USES=		cmake compiler:c11 gnome localbase:ldflags pkgconfig
-USE_GNOME=	atk cairo gdkpixbuf2 gtk30 libxml2 pango
+USE_GNOME=	atk cairo gdkpixbuf gtk30 libxml2 pango
 USE_LDCONFIG=	yes
 
 USE_GITHUB=	yes

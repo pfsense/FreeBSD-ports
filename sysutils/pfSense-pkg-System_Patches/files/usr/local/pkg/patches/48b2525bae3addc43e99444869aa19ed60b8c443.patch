@@ -1,0 +1,22 @@
+commit 48b2525bae3addc43e99444869aa19ed60b8c443
+Author: jim-p <jimp@netgate.com>
+Date:   Mon Jan 13 10:45:23 2025 -0500
+
+    Fix PHP error in Firewall log settings. Fixes #15988
+
+diff --git a/src/usr/local/www/status_logs_common.inc b/src/usr/local/www/status_logs_common.inc
+index 10f9d89e99..108c0e12f2 100644
+--- a/src/usr/local/www/status_logs_common.inc
++++ b/src/usr/local/www/status_logs_common.inc
+@@ -726,9 +726,8 @@ function manage_log_code() {
+ 		}
+ 
+ 		if (!$input_errors) {
+-
+-			if (($rotatecount != $syslog_config[$specific_log]['rotatecount']) ||
+-			    ($logfilesize != $syslog_config[$specific_log]['logfilesize'])) {
++			if (($rotatecount != array_get_path($syslog_config, "{$specific_log}/rotatecount")) ||
++			    ($logfilesize != array_get_path($syslog_config, "{$specific_log}/logfilesize"))) {
+ 				$logging_changed = true;
+ 			}
+ 

@@ -1,11 +1,11 @@
 PORTNAME=	gnumail
-PORTVERSION=	1.4.0
+DISTVERSION=	1.4.0
 PORTREVISION=	1
 CATEGORIES=	mail gnustep
 MASTER_SITES=	SAVANNAH/gnustep-nonfsf/
 DISTNAME=	GNUMail-${PORTVERSION}
 
-MAINTAINER=	bofh@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	GNUstep mail client
 WWW=		https://www.nongnu.org/gnustep-nonfsf/gnumail/
 
@@ -21,7 +21,7 @@ USE_LDCONFIG=	${GNUSTEP_SYSTEM_LIBRARIES}
 
 .include <bsd.port.pre.mk>
 
-.if ${OPSYS} == FreeBSD && ( ${OSVERSION} >= 1400079 || ( ${OSVERSION} >= 1302505 && ${OSVERSION} < 1400000 ))
+.if ${OPSYS} == FreeBSD
 CFLAGS+=	-Wno-error=int-conversion
 .endif
 

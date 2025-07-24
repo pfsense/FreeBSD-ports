@@ -1,10 +1,10 @@
 PORTNAME=	badwolf
 DISTVERSION=	1.3.0
-PORTREVISION=	2
+PORTREVISION=	4
 CATEGORIES=	www
 MASTER_SITES=	https://hacktivis.me/releases/
 
-MAINTAINER=	DtxdF@disroot.org
+MAINTAINER=	dtxdf@FreeBSD.org
 COMMENT=	Minimalist and privacy-oriented WebKitGTK browser
 WWW=		https://hacktivis.me/projects/badwolf
 
@@ -12,10 +12,10 @@ LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/COPYING
 
 LIB_DEPENDS+=	libharfbuzz.so:print/harfbuzz \
-		libwebkit2gtk-4.0.so:www/webkit2-gtk3
+		libwebkit2gtk-4.0.so:www/webkit2-gtk@40
 
 USES=		desktop-file-utils gnome ninja pkgconfig
-USE_GNOME=	atk cairo gdkpixbuf2 gtk30 libxml2 pango
+USE_GNOME=	atk cairo gdkpixbuf gtk30 libxml2 pango
 HAS_CONFIGURE=	yes
 CONFIGURE_ENV=	WITH_WEBKITGTK=4.0
 

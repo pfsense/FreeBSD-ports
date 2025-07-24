@@ -1,7 +1,7 @@
 PORTNAME=	asio
-DISTVERSION=	1.28.0
+DISTVERSION=	1.34.2
 CATEGORIES=	net devel
-MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/${PORTVERSION}%20(Stable)/
+MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/${DISTVERSION}%20(Stable)/
 
 MAINTAINER=	acm@FreeBSD.org
 COMMENT=	Cross-platform C++ library for network and low-level I/O programming
@@ -13,6 +13,8 @@ LICENSE_FILE=	${WRKSRC}/LICENSE_1_0.txt
 USES=		tar:bz2
 
 GNU_CONFIGURE=	yes
+
+CONFIGURE_ARGS=	--with-noarch-pkgconfigdir=${PREFIX}/libdata/pkgconfig
 
 NO_BUILD=	yes
 NO_ARCH=	yes

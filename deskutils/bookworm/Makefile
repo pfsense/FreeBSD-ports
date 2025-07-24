@@ -1,6 +1,6 @@
 PORTNAME=	bookworm
 DISTVERSION=	1.1.2
-PORTREVISION=	21
+PORTREVISION=	25
 CATEGORIES=	deskutils
 
 MAINTAINER=	miguel@gocobachi.dev
@@ -17,8 +17,7 @@ LIB_DEPENDS=	libappstream-glib.so:devel/appstream-glib \
 		libgranite.so:x11-toolkits/granite \
 		libpoppler-glib.so:graphics/poppler-glib \
 		libsoup-2.4.so:devel/libsoup \
-		libwebkit2gtk-4.0.so:www/webkit2-gtk3 \
-		libxml2.so:textproc/libxml2
+		libwebkit2gtk-4.0.so:www/webkit2-gtk@40
 RUN_DEPENDS=	bash:shells/bash \
 		pdftohtml:graphics/poppler-utils \
 		unar:archivers/unarchiver \
@@ -28,7 +27,7 @@ USES=		desktop-file-utils gettext gnome meson pkgconfig \
 		python shebangfix sqlite vala:build
 USE_GITHUB=	yes
 GH_ACCOUNT=	babluboy
-USE_GNOME=	gdkpixbuf2 glib20 gtk30 libxml2 pango
+USE_GNOME=	gdkpixbuf glib20 gtk30 libxml2 pango
 
 GLIB_SCHEMAS=	com.github.babluboy.bookworm.gschema.xml
 SHEBANG_FILES=	data/scripts/com.github.babluboy.bookworm.search.sh \

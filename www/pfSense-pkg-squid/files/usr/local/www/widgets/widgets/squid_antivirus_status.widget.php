@@ -3,7 +3,7 @@
  * squid_antivirus_status.widget.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2015-2024 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2015-2025 Rubicon Communications, LLC (Netgate)
  * Copyright (C) 2010 Serg Dvoriancev <dv_serg@mail.ru>
  * All rights reserved.
  *
@@ -190,7 +190,7 @@ events.push(function(){
 	squidavObject.url = "/widgets/widgets/squid_antivirus_status.widget.php";
 	squidavObject.callback = squidav_callback;
 	squidavObject.parms = postdata;
-	squidavObject.freq = 1;
+	squidavObject.freq = 30;
 
 	// Register the AJAX object
 	register_ajax(squidavObject);

@@ -13,7 +13,7 @@ WWW=		https://www.softether.org
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-#IGNORE=		no beta version available right now, use security/softether instead
+IGNORE=		no beta version available right now, use security/softether instead
 
 USES=		dos2unix gmake iconv:wchar_t localbase:ldflags ncurses \
 		readline ssl
@@ -43,7 +43,7 @@ ALL_TARGET=	build
 
 .include <bsd.port.options.mk>
 
-.if ${OPSYS} == FreeBSD && ( ${OSVERSION} >= 1400091 || ( ${OSVERSION} >= 1302507 && ${OSVERSION} < 1400000 ))
+.if ${OPSYS} == FreeBSD
 CFLAGS+=	-Wno-error=incompatible-function-pointer-types
 .endif
 

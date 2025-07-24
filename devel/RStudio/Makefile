@@ -4,7 +4,7 @@
 PORTNAME=	RStudio
 DISTVERSIONPREFIX=	v
 DISTVERSION=	2022.12.0+353
-PORTREVISION=	6
+PORTREVISION=	10
 CATEGORIES=	devel math java
 MASTER_SITES=	https://s3.amazonaws.com/rstudio-buildtools/dictionaries/:dictionaries \
 		https://s3.amazonaws.com/rstudio-buildtools/:buildtools
@@ -15,11 +15,13 @@ DISTFILES=	core-dictionaries.zip:dictionaries \
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Integrated development environment (IDE) for R
-WWW=		https://rstudio.com/
+WWW=		https://www.rstudio.com/ \
+		https://github.com/rstudio/rstudio
 
 LICENSE=	AGPLv3
 LICENSE_FILE=	${WRKSRC}/COPYING
 
+BROKEN=		fails to build with Boost>=1.87, see https://github.com/rstudio/rstudio/issues/15862
 BROKEN_i386=	[ERROR] Line 101: Failed to resolve 'org.rstudio.studio.client.workbench.views.vcs.common.diff.LineActionButtonRenderer.GrayResources' via deferred binding
 
 BUILD_DEPENDS=	ant:devel/apache-ant \
@@ -31,18 +33,15 @@ LIB_DEPENDS=	libR.so:math/R \
 		libboost_thread.so:devel/boost-libs \
 		libinotify.so:devel/libinotify \
 		libsoci_core.so:databases/soci \
-		libuuid.so:misc/e2fsprogs-libuuid \
+		libuuid.so:misc/libuuid \
 		libyaml-cpp.so:devel/yaml-cpp
 
 FLAVORS=	desktop server
 FLAVOR?=	${FLAVORS:[1]}
 server_PKGNAMESUFFIX=	-server
 
-USES=		cmake fortran localbase:ldflags pgsql pkgconfig sqlite ssl
-USE_JAVA=	yes
+USES=		cmake fortran java:build localbase:ldflags pgsql pkgconfig sqlite ssl
 JAVA_VERSION=	11 # Java 8 fails on aarch64: Internal Error (assembler_aarch64.hpp:237), pid=1644, tid=0x00000000000c62b6 guarantee(val < (1U << nbits)) failed: Field too big for insn
-JAVA_BUILD=	yes
-
 USE_GITHUB=	yes
 GH_PROJECT=	${PORTNAME:tl}
 GH_TUPLE=	rstudio:r2d3:v0.2.0:r2d3/dependencies/common/r2d3 \

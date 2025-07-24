@@ -1,10 +1,10 @@
 PORTNAME=	ctop
 DISTVERSIONPREFIX=	v
 DISTVERSION=	0.7.7
-PORTREVISION=	19
+PORTREVISION=	26
 CATEGORIES=	sysutils
 
-MAINTAINER=	dmgk@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Top-like interface for Docker container metrics
 WWW=		https://ctop.sh
 

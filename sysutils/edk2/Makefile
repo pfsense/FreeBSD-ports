@@ -1,13 +1,13 @@
 PORTNAME=	edk2
 PORTVERSION=	g202308
-PORTREVISION=	4
+PORTREVISION=	5
 CATEGORIES=	sysutils
 
 PATCH_SITES=	https://github.com/${GH_ACCOUNT}/${GH_PROJECT}/commit/
 
 MAINTAINER=	uboot@FreeBSD.org
 COMMENT=	EDK2 Firmware for ${FLAVOR}
-WWW=	https://github.com/${GH_ACCOUNT}/${GH_PROJECT}/ReadMe.rst
+WWW=	https://github.com/${GH_ACCOUNT}/${GH_PROJECT}/
 
 LICENSE=	BSD3CLAUSE
 
@@ -42,7 +42,7 @@ GH_TUPLE=	tianocore:edk2-platforms:${PLATFORM_TAG}:platforms \
 .include <bsd.port.pre.mk>
 
 # Heavily dependent on bsd.port.pre.mk definitions for lang/gcc* details:
-BINARY_ALIAS=	make=${LOCALBASE}/bin/gmake \
+BINARY_ALIAS=	make=${GMAKE} \
 		dtc=${LOCALBASE}/bin/dtc \
 		ar=${AR} \
 		gcc=${LOCALBASE}/bin/${CC} \
@@ -124,6 +124,7 @@ PLAT_RESULT_VARS=	BhyveX64/${PLAT_TARGET}_GCC5/FV/BHYVE_VARS.fd
 PLAT_FILENAME=	BHYVE_UEFI.fd
 PLAT_FILENAME_CODE=	BHYVE_UEFI_CODE.fd
 PLAT_FILENAME_VARS=	BHYVE_UEFI_VARS.fd
+PATCHFILES=	ffce430d2b65d508a1604dc986ba16db3583943d.patch:-p1
 .endif
 
 .if ${FLAVOR} == qemu_x64

@@ -5,7 +5,7 @@ PORTREVISION=	4
 CATEGORIES=	net-mgmt www
 PKGNAMESUFFIX=	${PHP_PKGNAMESUFFIX}
 
-MAINTAINER=	joneum@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Display hosts on OpenStreetMap
 WWW=		https://github.com/nbuchwitz/icingaweb2-module-map
 
@@ -15,6 +15,7 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 RUN_DEPENDS=	icingaweb2${PHP_PKGNAMESUFFIX}>=2.12.1:net-mgmt/icingaweb2@${PHP_FLAVOR}
 
 USES=		php:web,flavors
+IGNORE_WITH_PHP=81
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	nbuchwitz

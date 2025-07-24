@@ -1,5 +1,5 @@
-TIMESTAMP = 1714942421
-SHA256 (go/dns_coredns/coredns-v1.11.3/v1.11.3.mod) = e2346bf5489e12ac68a1759f87419b88f8f18b96a66d8f719ec269c3ad5d8232
-SIZE (go/dns_coredns/coredns-v1.11.3/v1.11.3.mod) = 6691
-SHA256 (go/dns_coredns/coredns-v1.11.3/v1.11.3.zip) = a6c3383d9bc7425e2155ddf27f632f5556bef7a6b4e6e7db5667273d491a5638
-SIZE (go/dns_coredns/coredns-v1.11.3/v1.11.3.zip) = 1034058
+TIMESTAMP = 1749710603
+SHA256 (go/dns_coredns/coredns-v1.12.2/v1.12.2.mod) = c88c4c14c9b44901e709f466b4b1875798c48e329a82824832b5851df045578f
+SIZE (go/dns_coredns/coredns-v1.12.2/v1.12.2.mod) = 9862
+SHA256 (go/dns_coredns/coredns-v1.12.2/v1.12.2.zip) = 0e8a5d5ecf3eca1215c12c3cf361b0ea028897e5574b466d4528cd5a970339d9
+SIZE (go/dns_coredns/coredns-v1.12.2/v1.12.2.zip) = 1099518

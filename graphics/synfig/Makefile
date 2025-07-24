@@ -1,6 +1,7 @@
 PORTNAME=	synfig
 DISTVERSIONPREFIX=	v
 DISTVERSION=	1.4.5
+PORTREVISION=	7
 CATEGORIES=	graphics devel multimedia
 
 MAINTAINER=	portmaster@BSDforge.com
@@ -25,9 +26,9 @@ LIB_DEPENDS=	libImath.so:math/Imath \
 		libpng.so:graphics/png \
 		libtiff.so:graphics/tiff
 
-USES=		autoreconf compiler:c++11-lang gmake gnome iconv jpeg \
+USES=		autoreconf compiler:c++14-lang gmake gnome iconv jpeg \
 		libtool localbase magick:7 mlt:7 pathfix pkgconfig
-USE_CXXSTD=	c++11
+USE_CXXSTD=	c++14
 USE_GITHUB=	yes
 USE_GNOME=	cairo glibmm intltool libxml++26 pango
 USE_LDCONFIG=	yes

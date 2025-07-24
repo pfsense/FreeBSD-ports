@@ -1,7 +1,5 @@
 PORTNAME=	libdispatch
-DISTVERSIONPREFIX=	swift-
-DISTVERSION=	5.5
-DISTVERSIONSUFFIX=	-RELEASE
+DISTVERSION=	6.1
 PORTEPOCH=	1
 CATEGORIES=	devel
 
@@ -10,21 +8,19 @@ COMMENT=	Grand Central Dispatch API support library
 
 LICENSE=	APACHE20
 
-USES=		cmake
+USES=		cmake:testing compiler:c++17-lang
 USE_LDCONFIG=	yes
 USE_CXXSTD=	c++17
 
 USE_GITHUB=	yes
-GH_ACCOUNT=	apple
+GH_ACCOUNT=	swiftlang
 GH_PROJECT=	swift-corelibs-libdispatch
+GH_TAGNAME=	swift-${DISTVERSION}-RELEASE
 
 .include <bsd.port.options.mk>
 
-.if ${OSVERSION} > 1400000
-USES+=	llvm:build
-#LD?=	${_LLVM_MK_PREFIX}/bin/ld
-.else
-USES+=	compiler:c++17-lang
+.if ${OPSYS} == FreeBSD && (${ARCH} == armv7 || ${ARCH} == i386 || ${ARCH} == powerpc)
+CFLAGS+=	-Wno-incompatible-function-pointer-types
 .endif
 
 .include <bsd.port.mk>

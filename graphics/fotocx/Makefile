@@ -1,5 +1,5 @@
 PORTNAME=	fotocx
-PORTVERSION=	24.40
+PORTVERSION=	25.0
 CATEGORIES=	graphics
 MASTER_SITES=	https://kornelix.net/downloads/downloads/
 DISTNAME=	${PORTNAME}-${PORTVERSION}-source
@@ -19,7 +19,7 @@ RUN_DEPENDS=	xdg-open:devel/xdg-utils \
 		ufraw-batch:graphics/ufraw
 
 USES=		desktop-file-utils gmake gnome jpeg pkgconfig
-USE_GNOME=	cairo glib20 gdkpixbuf2 gtk30
+USE_GNOME=	cairo glib20 gdkpixbuf gtk30
 ALL_TARGET=	${PORTNAME}
 CXXFLAGS+=	-Wno-register -Wno-writable-strings
 

@@ -3,7 +3,7 @@
  * vpn_openvpn_export.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2011-2024 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2011-2025 Rubicon Communications, LLC (Netgate)
  * Copyright (C) 2008 Shrew Soft Inc
  * All rights reserved.
  *
@@ -35,17 +35,9 @@ global $dyndns_split_domain_types, $p12_encryption_levels;
 
 $pgtitle = array("OpenVPN", "Client Export Utility");
 
-config_init_path('openvpn/openvpn-server');
-
-$a_server = config_get_path('openvpn/openvpn-server');
-
-config_init_path('system/user');
-
-$a_user = config_get_path('system/user');
-
-config_init_path('cert');
-
-$a_cert = config_get_path('cert');
+$a_server = config_get_path('openvpn/openvpn-server', []);
+$a_user = config_get_path('system/user', []);
+$a_cert = config_get_path('cert', []);
 
 $ras_server = array();
 foreach ($a_server as $server) {
@@ -58,7 +50,6 @@ foreach ($a_server as $server) {
 	if (stripos($server['mode'], "server") === false) {
 		continue;
 	}
-	config_init_path('cert');
 	$ecdsagood = array();
 	foreach (config_get_path('cert', []) as $cert) {
 		if (!empty($cert['prv']) &&
@@ -142,13 +133,11 @@ $simplefields = array('server','useaddr','useaddr_hostname','verifyservercn','bl
 	'useproxy','useproxytype','proxyaddr','proxyport', 'silent','useproxypass','proxyuser');
 	//'pass','proxypass','advancedoptions'
 
-config_init_path('installedpackages/vpn_openvpn_export/serverconfig/item');
 $cfg_path = 'installedpackages/vpn_openvpn_export/defaultsettings';
-config_init_path('installedpackages/vpn_openvpn_export/defaultsettings');
 
 if (isset($_POST['save'])) {
 	$vpnid = $_POST['server'];
-	$index = count(config_get_path('installedpackages/vpn_openvpn_export/serverconfig/item'));
+	$index = count(config_get_path('installedpackages/vpn_openvpn_export/serverconfig/item', []));
 	foreach(config_get_path('installedpackages/vpn_openvpn_export/serverconfig/item', []) as $key => $cfg) {
 		if ($cfg['server'] == $vpnid) {
 			$index = $key;
@@ -156,7 +145,6 @@ if (isset($_POST['save'])) {
 		}
 	}
 	$cfg_path = "installedpackages/vpn_openvpn_export/serverconfig/item/{$index}";
-	config_init_path($cfg_path);
 	if ($_POST['pass'] <> DMYPWD) {
 		if ($_POST['pass'] <> $_POST['pass_confirm']) {
 			$input_errors[] = "Different certificate passwords entered.";
@@ -447,7 +435,7 @@ $tab_array[] = array(gettext("Wizards"), false, "wizard.php?xml=openvpn_wizard.x
 add_package_tabs("OpenVPN", $tab_array);
 display_top_tabs($tab_array);
 
-$cfg = config_get_path($cfg_path);
+$cfg = config_get_path($cfg_path, []);
 
 $form = new Form("Save as default");
 
@@ -774,7 +762,7 @@ servers[<?=$sindex?>][3][<?=$c?>][1] = '<?=str_replace("'", "\\'", $cert['certna
 endforeach;
 ?>
 
-serverdefaults = <?=json_encode(config_get_path('installedpackages/vpn_openvpn_export/serverconfig/item'))?>;
+serverdefaults = <?=json_encode(config_get_path('installedpackages/vpn_openvpn_export/serverconfig/item', []))?>;
 
 function make_form_variable(varname, varvalue) {
 	var exportinput = document.createElement("input");

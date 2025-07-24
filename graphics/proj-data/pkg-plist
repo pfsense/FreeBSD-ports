@@ -91,6 +91,11 @@
 %%DATADIR%%/de_lgl_bw_README.txt
 %%DATADIR%%/de_lgvl_saarland_README.txt
 %%DATADIR%%/de_lgvl_saarland_SeTa2016.tif
+%%DATADIR%%/de_tlbg_thueringen_NTv2gridTH.tif
+%%DATADIR%%/de_tlbg_thueringen_README.txt
+%%DATADIR%%/dk_kds_README.txt
+%%DATADIR%%/dk_kds_dvr90_evrf2019.tif
+%%DATADIR%%/dk_kds_dvr90_evrf2019_mean_tide.tif
 %%DATADIR%%/dk_sdfe_DK_bornholm.pol
 %%DATADIR%%/dk_sdfe_DK_bridges.pol
 %%DATADIR%%/dk_sdfe_DK_general.pol
@@ -110,7 +115,9 @@
 %%DATADIR%%/dk_sdfi_dvr90_2002.tif
 %%DATADIR%%/dk_sdfi_dvr90_2013.tif
 %%DATADIR%%/dk_sdfi_dvr90_2023.tif
+%%DATADIR%%/dk_sdfi_gllat_2023.tif
 %%DATADIR%%/dk_sdfi_gllmsl_2022.tif
+%%DATADIR%%/dk_sdfi_glmsl_2023.tif
 %%DATADIR%%/dk_sdfi_gs_2022.tif
 %%DATADIR%%/dk_sdfi_gsb_2022.tif
 %%DATADIR%%/dk_sdfi_kk_2022.tif
@@ -128,6 +135,9 @@
 %%DATADIR%%/eur_nkg_nkgrf03vel_realigned.tif
 %%DATADIR%%/eur_nkg_nkgrf17vel.tif
 %%DATADIR%%/fi_nls_README.txt
+%%DATADIR%%/fi_nls_fin2000.tif
+%%DATADIR%%/fi_nls_fin2005n00.tif
+%%DATADIR%%/fi_nls_fin2023n2000.tif
 %%DATADIR%%/fi_nls_n43_n60.json
 %%DATADIR%%/fi_nls_n60_n2000.json
 %%DATADIR%%/fi_nls_ykj_etrs35fin.json
@@ -147,6 +157,7 @@
 %%DATADIR%%/fr_ign_RAR07_bl.tif
 %%DATADIR%%/fr_ign_RASPM2018.tif
 %%DATADIR%%/fr_ign_README.txt
+%%DATADIR%%/fr_ign_RGM04versRGM23.tif
 %%DATADIR%%/fr_ign_gg10_sbv2.tif
 %%DATADIR%%/fr_ign_gg10_smv2.tif
 %%DATADIR%%/fr_ign_ggg00_lsv2.tif
@@ -181,6 +192,9 @@
 %%DATADIR%%/fr_ign_ggspm06v1.tif
 %%DATADIR%%/fr_ign_gr3df97a.tif
 %%DATADIR%%/fr_ign_ntf_r93.tif
+%%DATADIR%%/hu_bme_README.txt
+%%DATADIR%%/hu_bme_geoid2014.tif
+%%DATADIR%%/hu_bme_hd72corr.tif
 %%DATADIR%%/is_lmi_ISN2004_ISN2016.tif
 %%DATADIR%%/is_lmi_ISN93_ISN2016.tif
 %%DATADIR%%/is_lmi_ISN_vel_beta.tif
@@ -190,6 +204,10 @@
 %%DATADIR%%/is_lmi_README.txt
 %%DATADIR%%/jp_gsi_README.txt
 %%DATADIR%%/jp_gsi_gsigeo2011.tif
+%%DATADIR%%/jp_gsi_jpgeo2024.tif
+%%DATADIR%%/lv_lgia_README.txt
+%%DATADIR%%/lv_lgia_lks92to2020.tif
+%%DATADIR%%/lv_lgia_lv14.tif
 %%DATADIR%%/mx_inegi_README.txt
 %%DATADIR%%/mx_inegi_ggm10.tif
 %%DATADIR%%/nc_dittt_RANC15.tif
@@ -200,7 +218,9 @@
 %%DATADIR%%/nc_dittt_gr3dnc03a.tif
 %%DATADIR%%/nc_dittt_gr3dncI08.tif
 %%DATADIR%%/nl_nsgi_README.txt
+%%DATADIR%%/nl_nsgi_bongeo2004.tif
 %%DATADIR%%/nl_nsgi_nlgeo2018.tif
+%%DATADIR%%/nl_nsgi_nllat2018.tif
 %%DATADIR%%/nl_nsgi_rdcorr2018.tif
 %%DATADIR%%/nl_nsgi_rdtrans2018.tif
 %%DATADIR%%/no_kv_CD_above_Ell_ETRS89_v2021a.tif

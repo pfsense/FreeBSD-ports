@@ -1,6 +1,6 @@
 PORTNAME=	apache-openoffice
 PORTVERSION=	${AOOVERSION}
-PORTREVISION=	1
+PORTREVISION=	6
 CATEGORIES=	editors java
 MASTER_SITES=	https://dlcdn.apache.org/openoffice/${PORTVERSION}/source/ \
 		https://archive.apache.org/dist/openoffice/${PORTVERSION}/source/ \
@@ -56,7 +56,6 @@ BUILD_DEPENDS=								\
 		zip:archivers/zip					\
 		ant:devel/apache-ant					\
 		dmake:devel/dmake					\
-		epm:devel/epm						\
 		${LOCALBASE}/bin/gperf:devel/gperf			\
 		imake:devel/imake					\
 		libunwind>=20211201_1:devel/libunwind			\
@@ -111,13 +110,10 @@ BUILD_DEPENDS+=	gcc${GCC_DEFAULT}>0:lang/gcc${GCC_DEFAULT}
 RUN_DEPENDS+=	gcc${GCC_DEFAULT}>0:lang/gcc${GCC_DEFAULT}
 
 USES=		autoreconf bison compiler:c++11-lib cpe desktop-file-utils \
-		gettext-runtime gl gmake gnome iconv jpeg perl5 pkgconfig \
+		gettext-runtime gl gmake gnome iconv java jpeg perl5 pkgconfig \
 		shared-mime-info ssl tar:bzip2 xorg
 USE_GL=		gl glu
-USE_GNOME=	gdkpixbuf2 gdkpixbuf2xlib gtk20 libxslt glib20
-USE_JAVA=	yes
-JAVA_BUILD=	jdk
-JAVA_RUN=	jdk
+USE_GNOME=	gdkpixbuf gdkpixbuf2xlib gtk20 libxslt glib20
 JAVA_VENDOR=	openjdk
 USE_PERL5=	build
 USE_XORG=	ice sm x11 xau xaw xcomposite xcursor xdamage xext xfixes xi \
@@ -200,13 +196,10 @@ WITH=	SDK
 
 .include <bsd.port.pre.mk>
 
-.if ${OPSYS} == FreeBSD && ( \
-    (${OSVERSION} >= 1400051 && ${OSVERSION} < 1400057))
-BROKEN=	please update FreeBSD base system first to fix an ABI incompatibility
-.endif
-
 .if defined(WITH_DEBUG)
 CONFIGURE_ARGS+=	--enable-symbols
+.else
+CONFIGURE_ARGS+=	--enable-strip-solver
 .endif
 
 .include <${FILESDIR}/Makefile.localized>
@@ -264,7 +257,6 @@ CONFIGURE_ARGS+=							\
 			--with-system-coinmp				\
 			--with-system-curl				\
 			--with-system-dicts				\
-			--with-epm=${LOCALBASE}/bin/epm			\
 			--with-system-expat				\
 			--disable-fetch-external			\
 			--without-fonts					\

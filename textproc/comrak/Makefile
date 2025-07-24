@@ -1,12 +1,12 @@
 PORTNAME=	comrak
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.24.1
-PORTREVISION=	1
+DISTVERSION=	0.40.0
 CATEGORIES=	textproc
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	CommonMark + GFM compatible Markdown parser and renderer
-WWW=		https://docs.rs/comrak/latest/comrak/
+WWW=		https://docs.rs/comrak/latest/comrak/ \
+		https://github.com/kivikakk/comrak
 
 LICENSE=	BSD2CLAUSE
 LICENSE_FILE=	${WRKSRC}/COPYING
@@ -27,19 +27,19 @@ CARGO_CRATES=	adler-1.0.2 \
 		bit-set-0.5.3 \
 		bit-vec-0.6.3 \
 		bitflags-1.3.2 \
+		bon-3.0.0 \
+		bon-macros-3.0.0 \
+		caseless-0.2.1 \
 		cc-1.0.78 \
 		cfg-if-1.0.0 \
 		clap-4.0.32 \
 		clap_derive-4.0.21 \
 		clap_lex-0.3.0 \
 		crc32fast-1.3.2 \
-		darling-0.20.8 \
-		darling_core-0.20.8 \
-		darling_macro-0.20.8 \
+		darling-0.20.10 \
+		darling_core-0.20.10 \
+		darling_macro-0.20.10 \
 		derive_arbitrary-1.3.2 \
-		derive_builder-0.20.0 \
-		derive_builder_core-0.20.0 \
-		derive_builder_macro-0.20.0 \
 		deunicode-0.4.5 \
 		deunicode-1.4.4 \
 		emojis-0.6.2 \
@@ -50,6 +50,7 @@ CARGO_CRATES=	adler-1.0.2 \
 		fnv-1.0.7 \
 		hashbrown-0.12.3 \
 		heck-0.4.1 \
+		heck-0.5.0 \
 		hermit-abi-0.3.9 \
 		ident_case-1.0.1 \
 		indexmap-1.9.2 \
@@ -75,15 +76,17 @@ CARGO_CRATES=	adler-1.0.2 \
 		phf_shared-0.11.1 \
 		pkg-config-0.3.26 \
 		plist-1.3.1 \
+		prettyplease-0.2.25 \
 		proc-macro-crate-1.2.1 \
 		proc-macro-error-1.0.4 \
 		proc-macro-error-attr-1.0.4 \
-		proc-macro2-1.0.81 \
+		proc-macro2-1.0.89 \
 		quote-1.0.36 \
 		regex-1.5.5 \
 		regex-syntax-0.6.28 \
 		rustix-0.36.17 \
 		rustix-0.37.27 \
+		rustversion-1.0.17 \
 		ryu-1.0.12 \
 		safemem-0.3.3 \
 		same-file-1.0.6 \
@@ -95,8 +98,11 @@ CARGO_CRATES=	adler-1.0.2 \
 		siphasher-0.3.10 \
 		slug-0.1.4 \
 		strsim-0.10.0 \
+		strsim-0.11.1 \
+		strum-0.26.3 \
+		strum_macros-0.26.4 \
 		syn-1.0.107 \
-		syn-2.0.60 \
+		syn-2.0.87 \
 		syntect-5.0.0 \
 		termcolor-1.4.1 \
 		terminal_size-0.2.6 \
@@ -105,12 +111,15 @@ CARGO_CRATES=	adler-1.0.2 \
 		time-0.3.17 \
 		time-core-0.1.0 \
 		time-macros-0.2.6 \
+		tinyvec-1.8.0 \
+		tinyvec_macros-0.1.1 \
 		toml-0.5.10 \
 		toml-0.7.3 \
 		toml_datetime-0.6.1 \
 		toml_edit-0.19.6 \
 		typed-arena-2.0.2 \
 		unicode-ident-1.0.6 \
+		unicode-normalization-0.1.23 \
 		unicode_categories-0.1.1 \
 		version_check-0.9.4 \
 		walkdir-2.3.2 \
@@ -151,8 +160,5 @@ CARGO_CRATES=	adler-1.0.2 \
 		yaml-rust-0.4.5
 
 PLIST_FILES=	bin/${PORTNAME}
-
-post-install:
-	@${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/${PORTNAME}
 
 .include <bsd.port.mk>

@@ -1,6 +1,7 @@
 PORTNAME=	opencascade
 DISTVERSIONPREFIX=	V
-DISTVERSION=	7_8_1
+DISTVERSION=	7_9_1
+PORTREVISION=	1
 CATEGORIES=	cad science
 DIST_SUBDIR=	${PORTNAME}-${DISTVERSION}
 
@@ -25,8 +26,7 @@ LIB_DEPENDS=	libfontconfig.so:x11-fonts/fontconfig	\
 		libvtksys-${VTK_VER}.so:math/vtk${VTK_VER:R}
 RUN_DEPENDS=	bash:shells/bash
 
-# Check ${WRKSRC}/dox/overview/overview.md
-# and ${WRKSRC}/dox/dev_guides/building
+# Check ${WRKSRC}/dox/build/build_occt/building_occt.md
 USES=		alias:10 cmake compiler:c++14-lang eigen:3 gettext-runtime	\
 		gl gnome localbase python qt:5 shebangfix tk xorg
 USE_XORG=	ice sm x11 xau xcb xdmcp xext xft xi xmu xrender xscrnsaver xt
@@ -41,9 +41,7 @@ GH_PROJECT=	OCCT
 SHEBANG_FILES=	adm/templates/*.sh	\
 		adm/templates/*.sh.in	\
 		adm/templates/*.sh.main	\
-		adm/genconf.tcl		\
-		adm/start.tcl		\
-		gendoc
+		adm/*.tcl
 ENVSH=		adm/templates/env.sh
 
 OPTIONS_DEFINE=	DOCS DOXYGEN FFMPEG VIS
@@ -72,20 +70,20 @@ CMAKE_ARGS+=	-DINSTALL_DIR=${OCCROOT}				\
 		-DCAN_USE_RAPIDJSON:BOOL=ON -DUSE_RAPIDJSON:BOOL=ON	\
 		-DCAN_USE_DRACO:BOOL=ON -DUSE_DRACO:BOOL=ON		\
 		-DCAN_USE_TBB:BOOL=ON -DUSE_TBB:BOOL=ON			\
-		-D3RDPARTY_QT_DIR:PATH=${QT_LIBDIR}			\
+		-DUSE_QT_FROM_3RDPARTY_DIR:BOOL=ON			\
+		-D3RDPARTY_QT_DIR:PATH=${LOCALBASE}/lib/cmake/Qt5	\
 		-D3RDPARTY_DRACO_DIR:PATH=${LOCALBASE}			\
 		-D3RDPARTY_DRACO_LIBRARY=libdraco.so			\
 		-D3RDPARTY_DRACO_LIBRARY_DIR:PATH=${LOCALBASE}/lib	\
 		-D3RDPARTY_DRACO_INCLUDE_DIR:PATH=${LOCALBASE}/include/draco	\
 		-D3RDPARTY_VTK_INCLUDE_DIR:PATH=${LOCALBASE}/include/vtk-${VTK_VER}
 CONFIGURE_ENV+=	DESTDIR=${STAGEDIR}
+USE_LDCONFIG=	yes
 
 .if defined(MAINTAINER_MODE)
 CMAKE_ARGS+=	-DCMAKE_MESSAGE_CONTEXT_SHOW:BOOL=ON	\
 		-DCMAKE_MESSAGE_LOG_LEVEL:STRING=DEBUG
 .endif
-
-USE_LDCONFIG=	yes
 
 CONFLICTS_INSTALL=	opencascade740 # OpenCAS/bin/DRAWEXE
 
@@ -158,27 +156,40 @@ pre-everything::
 	@${ECHO_MSG} "2.6 Gb of free disk space in build area!"
 	@${ECHO_MSG}
 
-pre-patch:
-	${REINPLACE_CMD} 's|<malloc.h>|<stdlib.h>|' \
-		${WRKSRC}/src/BRepMesh/delabella.cpp\
-		${WRKSRC}/src/OSD/OSD_MemInfo.cxx
-
 pre-configure:
-	${REINPLACE_CMD} -e 's|tclsh|${TCLSH}|' ${WRKSRC}/gendoc
-	${REINPLACE_CMD} -e 's|/usr/bin/|${LOCALBASE}/bin/|' ${WRKSRC}/adm/genconfdeps.tcl
+	${REINPLACE_CMD} 's|<malloc.h>|<stdlib.h>|'	\
+		${WRKSRC}/src/BRepMesh/delabella.cpp	\
+		${WRKSRC}/src/OSD/OSD_MemInfo.cxx
+	${REINPLACE_CMD} -e 's|tclsh|${TCLSH}|' ${WRKSRC}/adm/gendoc
+	${REINPLACE_CMD} -e 's|/usr/bin/|${LOCALBASE}/bin/|'	\
+		${WRKSRC}/adm/vcpkg/ports/ffmpeg/portfile.cmake
 	${GREP} -rl x86_64 ${WRKSRC} | ${XARGS} ${REINPLACE_CMD}	\
 		-e 's|x86_64|amd64|'
 .for es in ${ENVSH}
 	${REINPLACE_CMD} -e 's|lin|bsd|' ${WRKSRC}/${es}
 .endfor
 
+post-configure:
+	${REINPLACE_CMD} -e '/Standard_Version.hxx/s|${BUILD_WRKSRC}/||'	\
+		${BUILD_WRKSRC}/cmake_install.cmake
+
 post-stage:
 	${MKDIR} ${STAGEDIR}${PREFIX}/lib/cmake/OpenCASCADE
 	${MV} ${STAGEDIR}${PREFIX}/lib/cmake/*.cmake	\
 		${STAGEDIR}${PREFIX}/lib/cmake/OpenCASCADE
+.if defined(WITH_DEBUG)
+	${FIND} ${STAGEDIR}${PREFIX}/lib/cmake/OpenCASCADE -name "*.cmake" |	\
+		${XARGS} ${SED} -i '' -e 's/$${OCCT_INSTALL_BIN_LETTER}/d/'
+.else
+	${FIND} ${STAGEDIR}${PREFIX}/lib/cmake/OpenCASCADE -name "*.cmake" |	\
+		${XARGS} ${SED} -i '' -e 's/$${OCCT_INSTALL_BIN_LETTER}//'
+.endif
+	${REINPLACE_CMD} -e '/Standard_Version.hxx/s|${STAGEDIR}${PREFIX}/||'	\
+		-e '/^@dir/d' ${WRKDIR}/.PLIST.mktmp
 
 post-install:
-	${MV} ${STAGEDIR}${OCCROOT}/bin/DRAWEXE-${PORTVERSION} ${STAGEDIR}${PREFIX}/bin/DRAWEXE
+	${MV} ${STAGEDIR}${OCCROOT}/bin/DRAWEXE-${PORTVERSION}	\
+		${STAGEDIR}${PREFIX}/bin/DRAWEXE
 	${RLN} ${STAGEDIR}${PREFIX}/bin/DRAWEXE ${STAGEDIR}${OCCROOT}/bin
 
 post-install-DOXYGEN-on:

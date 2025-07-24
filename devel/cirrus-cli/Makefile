@@ -1,6 +1,6 @@
 PORTNAME=	cirrus-cli
-DISTVERSION=	0.120.1
 DISTVERSIONPREFIX=	v
+DISTVERSION=	0.140.4
 CATEGORIES=	devel
 
 MAINTAINER=	bofh@FreeBSD.org
@@ -10,13 +10,13 @@ WWW=		https://github.com/cirruslabs/cirrus-cli
 LICENSE=	AGPLv3
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-USES=		go:1.22,modules
+USES=		go:modules
 
 USE_RC_SUBR=	${PORTNAME}
 
 GO_MODULE=	github.com/cirruslabs/cirrus-cli
 GO_TARGET=	./cmd/cirrus
-GO_BUILDFLAGS=	-ldflags="-X github.com/cirruslabs/cirrus-cli/internal/version.Version=${PORTVERSION}"
+GO_BUILDFLAGS=	-ldflags="-X github.com/cirruslabs/cirrus-cli/internal/version.Version=${DISTVERSION}"
 
 SUB_FILES=	pkg-message
 

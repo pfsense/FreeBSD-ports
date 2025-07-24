@@ -1,10 +1,10 @@
 PORTNAME=	nwg-bar
 DISTVERSIONPREFIX=	v
 DISTVERSION=	0.1.6
-PORTREVISION=	5
+PORTREVISION=	12
 CATEGORIES=	x11 wayland
 
-MAINTAINER=	jbeich@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	GTK3-based button bar for sway and other wlroots-based compositors
 WWW=		https://github.com/nwg-piotr/nwg-bar
 
@@ -16,7 +16,7 @@ LIB_DEPENDS=	libfontconfig.so:x11-fonts/fontconfig \
 
 USES=		gnome go:modules pkgconfig
 USE_GITHUB=	yes
-USE_GNOME=	cairo gdkpixbuf2 gtk30
+USE_GNOME=	cairo gdkpixbuf gtk30
 GH_ACCOUNT=	nwg-piotr
 GH_TUPLE=	allan-simon:go-singleinstance:d0997106ab37:allan_simon_go_singleinstance/vendor/github.com/allan-simon/go-singleinstance \
 		dlasky:gotk3-layershell:b0c42cd8474f:dlasky_gotk3_layershell/vendor/github.com/dlasky/gotk3-layershell \

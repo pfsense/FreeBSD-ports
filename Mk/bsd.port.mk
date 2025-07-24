@@ -42,7 +42,7 @@ FreeBSD_MAINTAINER=	portmgr@FreeBSD.org
 # OSREL			- The release version of the operating system as a text
 #				  string (e.g., "12.4").
 # OSVERSION		- The operating system version as a comparable integer;
-#				  the value of __FreeBSD_version (e.g., 1302000).
+#				  the value of __FreeBSD_version (e.g., 1501000).
 #
 # This is the beginning of the list of all variables that need to be
 # defined in a port, listed in order that they should be included
@@ -357,18 +357,6 @@ FreeBSD_MAINTAINER=	portmgr@FreeBSD.org
 ##
 # LDFLAGS_${ARCH} Append the ldflags to LDFLAGS only on the specified architecture
 ##
-# USE_OPENLDAP	- If set, this port uses the OpenLDAP libraries.
-#				  Implies: WANT_OPENLDAP_VER?=24
-# WANT_OPENLDAP_VER
-#				- Legal values are: 24
-#				  If set to an unknown value, the port is marked BROKEN.
-##
-# USE_JAVA		- If set, this port relies on the Java language.
-#				  Implies inclusion of bsd.java.mk.  (Also see
-#				  that file for more information on USE_JAVA_*).
-# USE_OCAML		- If set, this port relies on the OCaml language.
-#				  Implies inclusion of bsd.ocaml.mk.  (Also see
-#				  that file for more information on USE_OCAML*).
 ##
 # USE_GECKO		- If set, this port uses the Gecko/Mozilla product.
 #				  See bsd.gecko.mk for more details.
@@ -384,9 +372,6 @@ FreeBSD_MAINTAINER=	portmgr@FreeBSD.org
 #				  program).
 #				  Implies NO_LICENSES_INSTALL=yes, NO_MTREE=yes, and causes
 #				  Linux ldconfig to be used when USE_LDCONFIG is defined.
-##
-# USE_TEX			- A list of the TeX dependencies the port has.
-#
 ##
 # USE_RC_SUBR	- If set, the ports startup/shutdown script uses the common
 #				  routines found in /etc/rc.subr.
@@ -1015,13 +1000,14 @@ LC_ALL=		C
 # These need to be absolute since we don't know how deep in the ports
 # tree we are and thus can't go relative.  They can, of course, be overridden
 # by individual Makefiles or local system make configuration.
-_LIST_OF_WITH_FEATURES=	bind_now debug debuginfo lto pie relro sanitize ssp testing
+_LIST_OF_WITH_FEATURES=	bind_now debug debuginfo fortify lto pie relro \
+			sanitize ssp stack_autoinit testing zeroregs
 _DEFAULT_WITH_FEATURES=	ssp
 PORTSDIR?=		/usr/ports
 LOCALBASE?=		/usr/local
 LINUXBASE?=		/compat/linux
 DISTDIR?=		${PORTSDIR}/distfiles
-_DISTDIR?=		${DISTDIR}/${DIST_SUBDIR}
+_DISTDIR?=		${DISTDIR}${DIST_SUBDIR:D/${DIST_SUBDIR}}
 INDEXDIR?=		${PORTSDIR}
 SRC_BASE?=		/usr/src
 USESDIR?=		${PORTSDIR}/Mk/Uses
@@ -1179,7 +1165,7 @@ OSVERSION!=	${AWK} '/^\#define[[:blank:]]__FreeBSD_version/ {print $$3}' < ${SRC
 .    endif
 _EXPORTED_VARS+=	OSVERSION
 
-.    if ${OPSYS} == FreeBSD && (${OSVERSION} < 1302000 )
+.    if ${OPSYS} == FreeBSD && (${OSVERSION} < 1305000 || (${OSVERSION} >= 1400000 && ${OSVERSION} < 1402000))
 _UNSUPPORTED_SYSTEM_MESSAGE=	Ports Collection support for your ${OPSYS} version has ended, and no ports\
 								are guaranteed to build on this system. Please upgrade to a supported release.
 .      if defined(ALLOW_UNSUPPORTED_SYSTEM)
@@ -1217,15 +1203,7 @@ _OSVERSION_MAJOR=	${OSVERSION:C/([0-9]?[0-9])([0-9][0-9])[0-9]{3}/\1/}
 .      if !defined(_PKG_VERSION)
 _PKG_VERSION!=	${PKG_BIN} -v
 .      endif
-# XXX hack for smooth transition towards pkg 1.17
-_PKG_BEFORE_PKGEXT!= ${PKG_BIN} version -t ${_PKG_VERSION:C/-.*//g} 1.17.0
-.      if ${_PKG_BEFORE_PKGEXT} == "<"
-_PKG_TRANSITIONING_TO_NEW_EXT=	yes
-_EXPORTED_VARS+=	_PKG_TRANSITIONING_TO_NEW_EXT
-WARNING+=	"It is strongly recommended to upgrade to a newer version of pkg first"
-.      endif
-# XXX End of hack
-_PKG_STATUS!=	${PKG_BIN} version -t ${_PKG_VERSION:C/-.*//g} ${MINIMAL_PKG_VERSION}
+_PKG_STATUS!=	${PKG_VERSION} -t ${_PKG_VERSION:C/-.*//g} ${MINIMAL_PKG_VERSION}
 .      if ${_PKG_STATUS} == "<"
 IGNORE=		pkg(8) must be version ${MINIMAL_PKG_VERSION} or greater, but you have ${_PKG_VERSION}. You must upgrade the ${PKG_ORIGIN} port first
 .      endif
@@ -1386,7 +1364,7 @@ PORTEPOCH?=		0
 _SUF2=	,${PORTEPOCH}
 .    endif
 
-PKGVERSION=	${PORTVERSION:C/[-_,]/./g}${_SUF1}${_SUF2}
+PKGVERSION=	${PORTVERSION:C/[-_,]/./g}${_OS_SUFX}${_SUF1}${_SUF2}
 PKGNAME=	${PKGNAMEPREFIX}${PORTNAME}${PKGNAMESUFFIX}-${PKGVERSION}
 DISTVERSIONFULL=	${DISTVERSIONPREFIX}${DISTVERSION:C/:(.)/\1/g}${DISTVERSIONSUFFIX}
 DISTNAME?=	${PORTNAME}-${DISTVERSIONFULL}
@@ -1413,14 +1391,6 @@ PKGCOMPATDIR?=		${LOCALBASE}/lib/compat/pkg
 .    for odir in ${OVERLAYS}
 .sinclude "${odir}/Mk/bsd.overlay.mk"
 .    endfor
-
-.    if defined(USE_JAVA)
-.include "${PORTSDIR}/Mk/bsd.java.mk"
-.    endif
-
-.    if defined(USE_OCAML)
-.include "${PORTSDIR}/Mk/bsd.ocaml.mk"
-.    endif
 
 .    if defined(USE_APACHE_BUILD)
 USES+=	apache:build,${USE_APACHE_BUILD:C/2([0-9])/2.\1/g}
@@ -1615,8 +1585,12 @@ PKG_NOTES+=	flavor
 PKG_NOTE_flavor=	${FLAVOR}
 .    endif
 
+# GIT_CEILING_DIRECTORIES prevents ports that try to find their version
+# using git from finding the ports tree's git repository.
 WRK_ENV+=		HOME=${WRKDIR} \
+				MACHINE_ARCH=${MACHINE_ARCH} \
 				PWD="$${PWD}" \
+				GIT_CEILING_DIRECTORIES=${WRKDIR} \
 				__MAKE_CONF=${NONEXISTENT}
 .    for e in OSVERSION PATH TERM TMPDIR \
 				UNAME_b UNAME_i UNAME_K UNAME_m UNAME_n \
@@ -1871,15 +1845,7 @@ PKG_DEPENDS+=	${LOCALBASE}/sbin/pkg:${PKG_ORIGIN}
 .    if defined(LLD_UNSAFE) && ${/usr/bin/ld:L:tA} == /usr/bin/ld.lld
 LDFLAGS+=	-fuse-ld=bfd
 BINARY_ALIAS+=	ld=${LD}
-.      if !defined(USE_BINUTILS)
-.        if exists(/usr/bin/ld.bfd)
-LD=	/usr/bin/ld.bfd
-CONFIGURE_ENV+=	LD=${LD}
-MAKE_ENV+=	LD=${LD}
-.        else
 USE_BINUTILS=	yes
-.        endif
-.      endif
 .    endif
 
 .    if defined(USE_BINUTILS) && !defined(DISABLE_BINUTILS)
@@ -1909,12 +1875,42 @@ USE_LDCONFIG=	${PREFIX}/lib
 IGNORE=			has USE_LDCONFIG32 set to yes, which is not correct
 .    endif
 
+_ALL_LIB_DIRS=	${LIB_DIRS} ${USE_LDCONFIG}
+PKG_ENV+=	SHLIB_PROVIDE_PATHS_NATIVE="${_ALL_LIB_DIRS:O:u:ts,}"
+.    if defined(HAVE_COMPAT_IA32_KERN)
+_ALL_LIB_DIRS_32= /usr/lib32 ${LOCALBASE}/lib32 ${USE_LDCONFIG32}
+PKG_ENV+=	SHLIB_PROVIDE_PATHS_COMPAT_32="${_ALL_LIB_DIRS_32:O:u:ts,}"
+.    endif
+.    if ${LINUX_DEFAULT} == c7 || ${LINUX_DEFAULT} == rl9
+.      if ${ARCH} == i386
+PKG_ENV+=	SHLIB_PROVIDE_PATHS_COMPAT_LINUX="${LINUXBASE}/usr/lib"
+.      else
+PKG_ENV+=	SHLIB_PROVIDE_PATHS_COMPAT_LINUX="${LINUXBASE}/usr/lib64"
+PKG_ENV+=	SHLIB_PROVIDE_PATHS_COMPAT_LINUX_32="${LINUXBASE}/usr/lib"
+.      endif
+.    else
+.      warning "Unknown Linux distribution ${LINUX_DEFAULT}, SHLIB_PROVIDE_PATHS_COMPAT_LINUX will not be set!"
+.    endif
+
 .    if defined(USE_LDCONFIG) || defined(USE_LDCONFIG32)
 .      if defined(USE_LINUX_PREFIX)
 PLIST_FILES+=	"@ldconfig-linux ${LINUXBASE}"
 .      else
 PLIST_FILES+=	"@ldconfig"
 .      endif
+.    endif
+
+.    if defined(NO_SHLIB_REQUIRES_GLOB)
+PKG_ENV+=	SHLIB_REQUIRE_IGNORE_GLOB="${NO_SHLIB_REQUIRES_GLOB:ts,}"
+.    endif
+.    if defined(NO_SHLIB_REQUIRES_REGEX)
+PKG_ENV+=	SHLIB_REQUIRE_IGNORE_REGEX="${NO_SHLIB_REQUIRES_REGEX:ts,}"
+.    endif
+.    if defined(NO_SHLIB_PROVIDES_GLOB)
+PKG_ENV+=	SHLIB_PROVIDE_IGNORE_GLOB="${NO_SHLIB_PROVIDES_GLOB:ts,}"
+.    endif
+.    if defined(NO_SHLIB_PROVIDES_REGEX)
+PKG_ENV+=	SHLIB_PROVIDE_IGNORE_REGEX="${NO_SHLIB_PROVIDES_REGEX:ts,}"
 .    endif
 
 PKG_IGNORE_DEPENDS?=		'this_port_does_not_exist'
@@ -1944,14 +1940,6 @@ PKGPOSTDEINSTALL?=	${PKGDIR}/pkg-post-deinstall
 .    for odir in ${OVERLAYS}
 .sinclude "${odir}/Mk/bsd.overlay.mk"
 .    endfor
-
-.    if defined(USE_JAVA)
-.include "${PORTSDIR}/Mk/bsd.java.mk"
-.    endif
-
-.    if defined(USE_OCAML)
-.include "${PORTSDIR}/Mk/bsd.ocaml.mk"
-.    endif
 
 .    if defined(USE_WX) || defined(USE_WX_NOT)
 .include "${PORTSDIR}/Mk/bsd.wx.mk"
@@ -2057,6 +2045,7 @@ CFLAGS+=       -fno-strict-aliasing
 .    for lang in C CXX
 .      if defined(USE_${lang}STD)
 ${lang}FLAGS:=	${${lang}FLAGS:N-std=*} -std=${USE_${lang}STD}
+MAKE_ENV+=	${lang}STD=${USE_${lang}STD}
 .      endif
 
 ${lang}FLAGS+=	${${lang}FLAGS_${ARCH}}
@@ -2211,20 +2200,11 @@ TMPPLIST?=	${WRKDIR}/.PLIST.mktmp
 _PLIST?=	${WRKDIR}/.PLIST
 
 # backward compatibility for users
-.    if defined(_PKG_TRANSITIONING_TO_NEW_EXT)
-.      if defined(PKG_NOCOMPRESS)
-PKG_SUFX?=	.tar
-.      else
-PKG_SUFX?=	.txz
-.      endif
-PKG_COMPRESSION_FORMAT?=	${PKG_SUFX:S/.//}
-.    else
-.      if defined(PKG_SUFX)
+.    if defined(PKG_SUFX)
 PKG_COMPRESSION_FORMAT?=	${PKG_SUFX:S/.//}
 WARNING+= "PKG_SUFX is defined, it should be replaced with PKG_COMPRESSION_FORMAT"
-.      endif
-PKG_SUFX=	.pkg
 .    endif
+PKG_SUFX=	.pkg
 .    if defined(PKG_NOCOMPRESS)
 PKG_COMPRESSION_FORMAT?=	tar
 .    else
@@ -2589,7 +2569,8 @@ check-categories:
 VALID_CATEGORIES+= accessibility afterstep arabic archivers astro audio \
 	benchmarks biology budgie cad chinese comms converters \
 	databases deskutils devel dns docs \
-	editors education elisp emulators enlightenment finance french ftp \
+	editors education elisp emulators enlightenment \
+	filesystems finance french ftp \
 	games geography german gnome gnustep graphics \
 	hamradio haskell hebrew hungarian irc japanese java \
 	kde ${_KDE_CATEGORIES_SUPPORTED} kld korean \
@@ -3112,8 +3093,8 @@ _DO_FETCH_ENV= \
 			dp_DISTINFO_FILE='${DISTINFO_FILE}' \
 			dp_DIST_SUBDIR='${DIST_SUBDIR}' \
 			dp_ECHO_MSG='${ECHO_MSG}' \
-			dp_FETCH_AFTER_ARGS='${FETCH_AFTER_ARGS}' \
-			dp_FETCH_BEFORE_ARGS='${FETCH_BEFORE_ARGS}' \
+			dp_FETCH_AFTER_ARGS=${FETCH_AFTER_ARGS:Q} \
+			dp_FETCH_BEFORE_ARGS=${FETCH_BEFORE_ARGS:Q} \
 			dp_FETCH_CMD='${FETCH_CMD}' \
 			dp_FETCH_ENV=${FETCH_ENV:Q} \
 			dp_FORCE_FETCH_ALL='${FORCE_FETCH_ALL}' \
@@ -3458,18 +3439,6 @@ _EXTRA_PACKAGE_TARGET_DEP+=	${PKGLATESTFILE}
 ${PKGLATESTFILE}: ${PKGFILE} ${PKGLATESTREPOSITORY}
 	${INSTALL} -l rs ${PKGFILE} ${PKGLATESTFILE}
 
-.        if !defined(_PKG_TRANSITIONING_TO_NEW_EXT) && ${PKG_COMPRESSION_FORMAT} == txz
-_EXTRA_PACKAGE_TARGET_DEP+=	${PKGOLDLATESTFILE} ${PKGOLDSIGFILE}
-
-${PKGOLDLATESTFILE}: ${PKGFILE} ${PKGLATESTREPOSITORY}
-	${INSTALL} -l rs ${PKGFILE} ${PKGOLDLATESTFILE}
-
-# Temporary workaround to be deleted once every supported version of FreeBSD
-# have a bootstrap which handles the pkg extension.
-
-${PKGOLDSIGFILE}: ${PKGLATESTREPOSITORY}
-	${INSTALL} -l rs pkg.pkg.sig ${PKGOLDSIGFILE}
-.        endif
 .      endif
 
 .    endif
@@ -4411,6 +4380,7 @@ create-manifest.${sp}:
 			dp_PREFIX='${PREFIX}'                                 \
 			dp_USERS='${USERS:u:S/$/,/}'                          \
 			dp_WWW='${WWW}'                                       \
+			dp_VITAL='${VITAL${_SP.${sp}}}'                       \
 			${PKG_NOTES_ENV.${sp}}                                \
 			${SH} ${SCRIPTSDIR}/create-manifest.sh
 .    endfor
@@ -5407,6 +5377,12 @@ show-dev-errors:
 .      endif
 .    endif #DEVELOPER
 
+.    if defined(HAS_SYMBOL_VERSION)
+stage-sanity: check_has_symbol_version
+check_has_symbol_version:
+		${SH} ${SCRIPTSDIR}/check_have_symbols.sh ${STAGEDIR} ${HAS_SYMBOL_VERSION}
+.    endif # HAS_SYMBOL_VERSION
+
 ${_PORTS_DIRECTORIES}:
 	@${MKDIR} ${.TARGET}
 
@@ -5476,8 +5452,8 @@ _STAGE_SEQ=		050:stage-message 100:stage-dir 150:run-depends \
 				860:install-rc-script 870:install-ldconfig-file \
 				880:install-license 890:install-desktop-entries \
 				900:add-plist-info 910:add-plist-docs 920:add-plist-examples \
-				930:add-plist-data 940:add-plist-post ${POST_PLIST:C/^/990:/} \
-				${_OPTIONS_install} ${_USES_install} \
+				930:add-plist-data 940:add-plist-post 994:stage-sanity \
+				${_OPTIONS_install} ${_USES_install} ${POST_PLIST:C/^/990:/} \
 				${_OPTIONS_stage} ${_USES_stage} ${_FEATURES_stage}
 .    if defined(DEVELOPER)
 _STAGE_SEQ+=	995:stage-qa

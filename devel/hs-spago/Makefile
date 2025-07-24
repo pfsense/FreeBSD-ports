@@ -1,5 +1,6 @@
 PORTNAME=	spago
-DISTVERSION=	0.20.9
+DISTVERSION=	0.21.0
+PORTREVISION=	1
 CATEGORIES=	devel
 MASTER_SITES=	https://github.com/purescript/purescript-docs-search/releases/download/v0.0.11/docs-search-app.js?dummy=/:dsa11 \
 		https://github.com/purescript/purescript-docs-search/releases/download/v0.0.11/purescript-docs-search?dummy=/:pds11 \
@@ -13,9 +14,10 @@ EXTRACT_ONLY=	${DISTNAME}${EXTRACT_SUFX}
 
 MAINTAINER=	haskell@FreeBSD.org
 COMMENT=	PureScript package manager and build tool
-WWW=		https://github.com/spacchetti/spago
+WWW=		https://github.com/spacchetti/spago/
 
 LICENSE=	BSD3CLAUSE
+LICENSE_FILE=	${WRKSRC}/LICENSE
 
 BUILD_DEPENDS=	ghc-9.2.8:lang/ghc92
 RUN_DEPENDS=	ca_root_nss>0:security/ca_root_nss
@@ -51,7 +53,7 @@ USE_CABAL=	Diff-0.4.1 \
 		base-orphans-0.8.6 \
 		base16-bytestring-1.0.2.0 \
 		base64-bytestring-1.2.1.0 \
-		basement-0.0.14 \
+		basement-0.0.16 \
 		basic-prelude-0.7.0 \
 		bifunctors-5.5.12 \
 		blaze-builder-0.4.2.2_1 \
@@ -110,6 +112,8 @@ USE_CABAL=	Diff-0.4.1 \
 		kan-extensions-5.2.4 \
 		keys-3.12.3_2 \
 		lens-family-core-2.1.0 \
+		libyaml-0.1.4 \
+		libyaml-clib-0.2.5 \
 		lifted-base-0.2.3.12 \
 		managed-1.0.9_1 \
 		megaparsec-9.2.1 \
@@ -199,6 +203,7 @@ USE_CABAL=	Diff-0.4.1 \
 		x509-store-1.6.9 \
 		x509-system-1.6.7 \
 		x509-validation-1.6.12 \
+		yaml-0.11.11.2_2 \
 		zlib-0.6.3.0
 
 post-extract:

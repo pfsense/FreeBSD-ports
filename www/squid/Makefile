@@ -1,18 +1,8 @@
 PORTNAME=	squid
 DISTVERSION=	7.1
 CATEGORIES=	www
-MASTER_SITES=	http://www2.pl.squid-cache.org/Versions/v7/ \
-		http://www1.il.squid-cache.org/Versions/v7/ \
-		http://www2.gr.squid-cache.org/Versions/v7/ \
-		http://ca2.squid-cache.org/Versions/v7/ \
-		http://www.squid-cache.org/Versions/v7/
-
-PATCH_SITES=	http://www2.pl.squid-cache.org/%SUBDIR%/ \
-		http://www1.il.squid-cache.org/%SUBDIR%/ \
-		http://www2.gr.squid-cache.org/%SUBDIR%/ \
-		http://ca2.squid-cache.org/%SUBDIR%/ \
-		http://www.squid-cache.org/%SUBDIR%/
-PATCH_SITE_SUBDIR=	Versions/v6/changesets
+MASTER_SITES=	https://github.com/squid-cache/squid/releases/download/SQUID_7_1/
+DISTFILES=	squid-7.1.tar.xz
 
 MAINTAINER=	timp87@gmail.com
 COMMENT=	HTTP Caching Proxy
@@ -21,7 +11,7 @@ WWW=		http://www.squid-cache.org/
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-USES=		compiler:c++11-lib cpe gmake localbase:ldflags perl5 shebangfix tar:tgz
+USES=		compiler:c++11-lib cpe gmake localbase:ldflags perl5 shebangfix tar:xz
 
 CONFLICTS=	squid-devel
 CPE_VENDOR=	squid-cache
@@ -177,17 +167,6 @@ VIA_DB_DESC=		Forward/Via database
 WCCPV2_DESC=		Web Cache Coordination Protocol v2
 WCCP_DESC=		Web Cache Coordination Protocol
 
-change_files=	ChangeLog \
-		errors/Makefile.am \
-		errors/Makefile.in \
-		src/auth/basic/SMB_LM/README.html \
-		src/Makefile.am \
-		src/Makefile.in \
-		src/cf_gen.cc \
-		src/squid.8.in \
-		test-suite/Makefile.in \
-		tools/Makefile.am \
-		tools/Makefile.in
 
 .if !defined(SQUID_CONFIGURE_ARGS) \
 	|| ${SQUID_CONFIGURE_ARGS:M*--disable-unlinkd*} == ""
@@ -221,7 +200,7 @@ CONFIGURE_ARGS=	--with-default-user=squid \
 
 # Authentication methods and modules:
 
-BASIC_AUTH+=	DB NCSA PAM POP3 RADIUS SMB_LM fake getpwnam
+BASIC_AUTH+=	DB NCSA PAM POP3 RADIUS fake getpwnam
 DIGEST_AUTH+=	file
 EXTERNAL_ACL+=	file_userip unix_group delayer
 
@@ -250,7 +229,6 @@ DISKIO_MODULES+=	AIO Blocking IpcIo Mmapped
 CONFIGURE_ARGS+=	--enable-auth-basic="${BASIC_AUTH}" \
 			--enable-auth-digest="${DIGEST_AUTH}" \
 			--enable-auth-negotiate="${NEGOTIATE_AUTH}" \
-			--enable-auth-ntlm="fake SMB_LM" \
 			--enable-log-daemon-helpers="file DB" \
 			--enable-external-acl-helpers="${EXTERNAL_ACL}" \
 			--enable-url-rewrite-helpers="fake LFS" \
@@ -269,19 +247,6 @@ WITH_DEBUG?=		yes
 # Finally, add additional user specified configuration options:
 CONFIGURE_ARGS+=	${SQUID_CONFIGURE_ARGS}
 
-post-patch:
-	@(cd ${WRKSRC} && ${REINPLACE_CMD} \
-		-e 's|\.conf\.default|.conf.sample|' \
-		-e 's|)\.default|).sample|' \
-		${change_files})
-	@(cd ${WRKSRC} && ${MV} src/mime.conf.default src/mime.conf.sample)
-
-post-patch-IPV6-off:
-	@${REINPLACE_CMD} -E -e's| ::1$$||' -e's| ::1?/128||g' \
-		-e'/acl localnet src f[ce][08]0::/d' \
-		-e's| 2001:DB8::[^[:space:]]+$$||' \
-		-e'/tcp_outgoing_address 2001:db8::/d' \
-		${WRKSRC}/src/cf.data.pre
 
 post-install:
 	@${MKDIR} ${STAGEDIR}${EXAMPLESDIR}

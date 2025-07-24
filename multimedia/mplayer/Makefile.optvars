@@ -53,7 +53,7 @@ GSM_LIB_DEPENDS=	libgsm.so:audio/gsm
 GSM_CONFIGURE_OFF=	--disable-libgsm
 
 GUI_CONFIGURE_ENABLE=	gui
-GUI_USE=		GNOME=cairo,gdkpixbuf2,gtk20
+GUI_USE=		GNOME=cairo,gdkpixbuf,gtk20
 GUI_USES=		gnome
 GUI_DESKTOP_ENTRIES=	"MPlayer" "High performance media player" "mplayer" "gmplayer" "" false
 GUI_IMPLIES=		ASS JPEG X11
@@ -115,7 +115,7 @@ SKINS_RUN_DEPENDS=	mplayer-skins>=0:multimedia/mplayer-skins
 SKINS_IMPLIES=		GUI
 
 SMB_USES=		samba:lib
-SMB_CONFIGURE_ON=	--extra-ldflags="-L${SAMBALIBS}"
+SMB_CONFIGURE_ON=	--extra-ldflags="-L${SAMBA_LIBDIR}"
 SMB_CONFIGURE_OFF=	--disable-smb
 
 SPEEX_LIB_DEPENDS=	libspeex.so:audio/speex
@@ -171,6 +171,3 @@ XVIDEO_USE=		XORG=xv
 XVIDEO_CONFIGURE_OFF=	--disable-xv
 XVIDEO_IMPLIES=		X11
 
-XVMC_USE=		XORG=xvmc
-XVMC_CONFIGURE_ON=	--enable-xvmc --with-xvmclib=XvMCW
-XVMC_IMPLIES=		X11

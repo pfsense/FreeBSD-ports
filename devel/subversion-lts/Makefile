@@ -1,4 +1,4 @@
-PORTREVISION=	3
+PORTREVISION=	1
 PKGNAMESUFFIX=	-lts
 
 MAINTAINER=	michaelo@apache.org
@@ -18,7 +18,6 @@ OPTIONS_DEFINE=	\
 		NLS		\
 		SASL		\
 		SERF		\
-		STATIC		\
 		SVNSERVE_WRAPPER\
 		TEST		\
 		TOOLS
@@ -27,7 +26,6 @@ OPTIONS_DEFAULT=GPG_AGENT SERF TOOLS
 
 GPG_AGENT_DESC=		Enable GPG agent password store
 SERF_DESC=		WebDAV/Delta-V (HTTP/HTTPS) repo access module
-STATIC_DESC=		No shared libs (disables SVN integration)
 SVNSERVE_WRAPPER_DESC=	Enable svnserve wrapper (umask setter)
 TEST_DESC=		Run subversion test suite
 TOOLS_DESC=		Install several tools
@@ -67,18 +65,6 @@ SVNSERVE_EXT=
 TEST_DEPENDS=	${PYTHON_PKGNAMEPREFIX}sqlite3>0:databases/py-sqlite3@${PY_FLAVOR}
 .endif
 
-.if ${PORT_OPTIONS:MSTATIC}
-.  if ${PORT_OPTIONS:MNLS}
-USES+=			gettext-tools
-.  endif
-.  if ${PORT_OPTIONS:MBDB}
-BDB_BUILD_DEPENDS=	yes
-.  endif
-OLD_LIB_DEPENDS:=	${LIB_DEPENDS:S!^!${LOCALBASE}/lib/!:C!(\.so|\.[0-9]+)?:!.a:!}
-BUILD_DEPENDS+=		${OLD_LIB_DEPENDS}
-LIB_DEPENDS=
-.endif
-
 .if make(repository)
 WITH_REPOSITORY_CREATION=	yes
 .endif
@@ -116,29 +102,20 @@ pre-everything::
 .endif
 
 	@${ECHO_MSG} ""
-.if ${PORT_OPTIONS:MSTATIC}
-	@${ECHO_MSG} "Static binaries will be built."
-.endif # STATIC
 	@${ECHO_MSG} "Many useful scripts will be installed into ${DATADIR}"
 
 pre-configure:
 .if ${PORT_OPTIONS:MBDB}
 	@BDB_VERSION=`${APR_APU_DIR}/${APU_CONFIG} --db-version`; \
-	if [ "$${BDB_VERSION}" != "4" -a "$${BDB_VERSION}" != "5" -a "$${BDB_VERSION}" != "6"  -a "$${BDB_VERSION}" != "18" ] ; then \
+	if [ "$${BDB_VERSION}" != "5" -a "$${BDB_VERSION}" != "185" ] ; then \
 		${ECHO_MSG} "" ; \
-		${ECHO_MSG} 'You should build `'"devel/apr1' with Berkeley DB (4, 5, 6 or 18) support to use subversion with it." ; \
+		${ECHO_MSG} 'You should build `'"devel/apr1' with Berkeley DB (5, or 18) support to use subversion with it." ; \
 		${ECHO_MSG} 'Please rebuild `'"devel/apr1' with option "'`'"BDB' and try again." ; \
 		${ECHO_MSG} "" ; \
 		${ECHO_MSG} "Or you can disable Berkeley DB support. Only 'fs' repository backend will be available." ; \
 		${ECHO_MSG} "" ; \
 		${FALSE} ; \
 	fi
-.endif
-.if ${PORT_OPTIONS:MSTATIC}
-LIBS_SQLITE3!=	pkgconf --libs --static sqlite3
-LIBS+=		${LIBS_SQLITE3}
-# for work with ICU
-LIBS+=		-lc++ -lm
 .endif
 
 post-configure:
@@ -161,13 +138,11 @@ post-install:	${MKREPOS_TARGET}
 	for F in ${BINS_TO_STRIP} ; do \
 	 ${STRIP_CMD} "${STAGEDIR}${PREFIX}/bin/$${F}" ; \
 	done
+	@${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/*.so
 	@${MKDIR} ${STAGEDIR}${DATADIR}
 	(cd ${WRKSRC}/tools.examples && ${TAR} --exclude '*.in' -cf - * | ${TAR} -C ${STAGEDIR}${DATADIR} -xof - )
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}
 	${INSTALL_DATA} ${PORTDOCS:S|^|${WRKSRC}/|} ${STAGEDIR}${DOCSDIR}
-
-post-install-STATIC-off:
-	-@${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/*.so
 
 post-install-SVNSERVE_WRAPPER-on:
 	@${INSTALL_SCRIPT} ${FILESDIR}/svnserve.wrapper ${STAGEDIR}${PREFIX}/bin/svnserve.sample

@@ -5,6 +5,8 @@ CATEGORIES=	sysutils kde kde-plasma
 MAINTAINER=	kde@FreeBSD.org
 COMMENT=	Control center to configure your Plasma Desktop
 
+RUN_DEPENDS=	accountsservice>0:sysutils/accountsservice
+
 USES=		cmake gettext gl kde:6 qt:6 tar:xz xorg
 USE_GL=		gl opengl
 USE_KDE=	activities auth colorscheme completion config configwidgets \

@@ -1,5 +1,5 @@
 PORTNAME=	rbtrace
-PORTVERSION=	0.4.14
+PORTVERSION=	0.5.2
 CATEGORIES=	devel rubygems
 MASTER_SITES=	RG
 
@@ -16,12 +16,11 @@ RUN_DEPENDS=	rubygem-ffi>=1.0.6:devel/rubygem-ffi \
 
 USES=		gem
 
+CONFIGURE_ARGS=	--with-cflags=-Wno-incompatible-function-pointer-types
+
+PIE_UNSAFE=	yes
+
+
 PLIST_FILES=	bin/rbtrace
-
-.include <bsd.port.options.mk>
-
-.if ${OPSYS} == FreeBSD && ( ${OSVERSION} >= 1400091 || ( ${OSVERSION} >= 1302507 && ${OSVERSION} < 1400000 ))
-CONFIGURE_ARGS+=	--with-cflags="-Wno-error=incompatible-function-pointer-types"
-.endif
 
 .include <bsd.port.mk>

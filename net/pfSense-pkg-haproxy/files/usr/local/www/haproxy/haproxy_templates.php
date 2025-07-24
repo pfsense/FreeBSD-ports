@@ -3,7 +3,7 @@
  * haproxy_templates.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2016-2024 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2016-2025 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2014 PiBa-NL
  * All rights reserved.
  *
@@ -23,7 +23,7 @@
 require_once("authgui.inc");
 require_once("config.inc");
 
-$pconfig = config_get_path('installedpackages/haproxy');
+$pconfig = config_get_path('installedpackages/haproxy', []);
 require_once("guiconfig.inc");
 require_once("certs.inc");
 $shortcut_section = "haproxy";
@@ -33,7 +33,7 @@ require_once("haproxy/pkg_haproxy_tabs.inc");
 
 haproxy_config_init();
 
-$a_frontend = config_get_path('installedpackages/haproxy/ha_backends/item');
+$a_frontend = config_get_path('installedpackages/haproxy/ha_backends/item', []);
 
 function haproxy_add_stats_example() {
 	global $d_haproxyconfdirty_path;

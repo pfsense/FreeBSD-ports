@@ -3,6 +3,7 @@
     SUBDIR += 2bsd-vi
     SUBDIR += abiword
     SUBDIR += abiword-docs
+    SUBDIR += ad
     SUBDIR += aee
     SUBDIR += aewan
     SUBDIR += amp
@@ -40,6 +41,7 @@
     SUBDIR += emacs
     SUBDIR += emacs-devel
     SUBDIR += encryptpad
+    SUBDIR += enter-tex
     SUBDIR += featherpad
     SUBDIR += fileobj
     SUBDIR += flim
@@ -50,7 +52,6 @@
     SUBDIR += ghex
     SUBDIR += ghostwriter
     SUBDIR += gmanedit
-    SUBDIR += gnome-latex
     SUBDIR += gnome-text-editor
     SUBDIR += gobby
     SUBDIR += gomate
@@ -64,7 +65,6 @@
     SUBDIR += hnb
     SUBDIR += hte
     SUBDIR += imhex
-    SUBDIR += imhex-current
     SUBDIR += jed
     SUBDIR += jedit
     SUBDIR += joe
@@ -74,7 +74,6 @@
     SUBDIR += kakoune
     SUBDIR += kakoune-lsp
     SUBDIR += kate
-    SUBDIR += kate-devel
     SUBDIR += kibi
     SUBDIR += kile
     SUBDIR += komodo-edit
@@ -82,6 +81,7 @@
     SUBDIR += lapce
     SUBDIR += lazarus
     SUBDIR += lazarus-devel
+    SUBDIR += lazarus-gtk3-devel
     SUBDIR += lazarus-qt5
     SUBDIR += lazarus-qt5-devel
     SUBDIR += lazarus-qt6
@@ -129,6 +129,7 @@
     SUBDIR += libreoffice-hi
     SUBDIR += libreoffice-hr
     SUBDIR += libreoffice-hsb
+    SUBDIR += libreoffice-hy
     SUBDIR += libreoffice-i18n
     SUBDIR += libreoffice-id
     SUBDIR += libreoffice-is
@@ -204,6 +205,7 @@
     SUBDIR += mg
     SUBDIR += mickey
     SUBDIR += micro
+    SUBDIR += microsoft-edit
     SUBDIR += mined
     SUBDIR += mle
     SUBDIR += mousepad
@@ -247,6 +249,7 @@
     SUBDIR += rubygem-neovim
     SUBDIR += sam
     SUBDIR += scite
+    SUBDIR += sciteco
     SUBDIR += se
     SUBDIR += semi
     SUBDIR += setzer
@@ -256,7 +259,6 @@
     SUBDIR += sly-asdf
     SUBDIR += sly-named-readtables
     SUBDIR += sly-quicklisp
-    SUBDIR += ssed
     SUBDIR += sted
     SUBDIR += tamago
     SUBDIR += tea

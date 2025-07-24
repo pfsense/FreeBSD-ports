@@ -9,7 +9,7 @@ WWW=		http://omniorb.sourceforge.net/
 
 LICENSE=	GPLv2
 
-NOT_FOR_ARCHS=	armv7 i386
+NOT_FOR_ARCHS=	armv7 i386 powerpc
 NOT_FOR_ARCHS_REASON=	use of overloaded operator '[]' is ambiguous (with operand types
 
 LIB_DEPENDS=	libzstd.so:archivers/zstd
@@ -46,7 +46,7 @@ STATIC_CONFIGURE_OFF=	--disable-static
 
 ABI_VER=		4
 ABI_MAJOR_VER=		3
-ABI_MINOR_VER=		2
+ABI_MINOR_VER=		3
 
 post-patch:
 	@${REINPLACE_CMD} -e 's#-O2#${CFLAGS}#g' ${WRKSRC}/mk/beforeauto.mk.in

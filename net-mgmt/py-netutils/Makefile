@@ -1,5 +1,5 @@
 PORTNAME=	netutils
-DISTVERSION=	1.8.1
+DISTVERSION=	1.14.1
 CATEGORIES=	net-mgmt python
 MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -18,6 +18,10 @@ USE_PYTHON=	autoplist pep517
 
 NO_ARCH=	yes
 
+# There are another two options, "napalm" + "legacycrypt", in "pyproject.toml"
+# and are deliberately not added for the time being.  The first one  would lead
+# to a circular dependency and the second one is required for Python 3.13+ (not
+# in ports tree, yet) which no longer has the deprecated "crypt" module.
 OPTIONS_DEFINE=		JSONSCHEMA
 OPTIONS_DEFAULT=	JSONSCHEMA
 

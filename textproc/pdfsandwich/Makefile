@@ -1,6 +1,6 @@
 PORTNAME=	pdfsandwich
 DISTVERSION=	0.1.7
-PORTREVISION=	42
+PORTREVISION=	44
 CATEGORIES=	textproc
 MASTER_SITES=	SF/${PORTNAME}/pdfsandwich%20${DISTVERSION}/
 
@@ -21,5 +21,11 @@ GNU_CONFIGURE=	yes
 
 PLIST_FILES=	bin/pdfsandwich \
 		man/man1/pdfsandwich.1.gz
+
+.include <bsd.port.options.mk>
+
+.if ${ARCH} == powerpc
+USE_BINUTILS=	yes
+.endif
 
 .include <bsd.port.mk>

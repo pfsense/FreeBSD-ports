@@ -1,5 +1,5 @@
 PORTNAME=	cloudpathlib
-PORTVERSION=	0.18.1
+PORTVERSION=	0.21.1
 CATEGORIES=	devel python
 MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -14,7 +14,7 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 
 BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}flit-core>=3.2<4.0:devel/py-flit-core@${PY_FLAVOR}
 
-USES=		python
+USES=		python:3.9+
 USE_PYTHON=	autoplist concurrent pep517
 
 NO_ARCH=	yes
@@ -24,7 +24,7 @@ GS_DESC=	Google Cloud Storage support
 S3_DESC=	Amazon S3 support
 
 GS_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}google-cloud-storage>=0:www/py-google-cloud-storage@${PY_FLAVOR}
-S3_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}boto3>=0:www/py-boto3@${PY_FLAVOR}
+S3_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}boto3>=1.34.0:www/py-boto3@${PY_FLAVOR}
 
 .include <bsd.port.pre.mk>
 

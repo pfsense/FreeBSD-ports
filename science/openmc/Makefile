@@ -5,10 +5,14 @@ CATEGORIES=	science
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Monte Carlo neutron and photon transport simulation code
-WWW=		https://openmc.org/
+WWW=		https://openmc.org/ \
+		https://docs.openmc.org/en/stable/ \
+		https://github.com/openmc-dev/openmc
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
+
+BROKEN_FreeBSD_15=	compilation fails with clang-19, see https://github.com/openmc-dev/openmc/issues/3183
 
 BUILD_DEPENDS=	xtensor>0:math/xtensor
 LIB_DEPENDS=	libfmt.so:devel/libfmt \
@@ -29,7 +33,7 @@ CMAKE_TESTING_ON=	OPENMC_BUILD_TESTS # tests are broken, see https://github.com/
 BINARY_ALIAS=	git=false
 
 OPTIONS_DEFINE=		LIBMESH MPI OPENMP
-OPTIONS_DEFAULT=	MPI OPENMP
+OPTIONS_DEFAULT=	MPI
 
 LIBMESH_DESC=		Support for libMesh unstructured mesh tallies
 LIBMESH_CMAKE_BOOL=	OPENMC_USE_LIBMESH
@@ -40,6 +44,10 @@ MPI_BUILD_DEPENDS=	mpich>0:net/mpich
 MPI_RUN_DEPENDS=	mpich>0:net/mpich
 
 OPENMP_CMAKE_BOOL=	OPENMC_USE_OPENMP
+
+.if exists(/usr/include/omp.h)
+OPTIONS_DEFAULT+=	OPENMP
+.endif
 
 post-install:
 	${RM} -r ${STAGEDIR}${DOCSDIR}

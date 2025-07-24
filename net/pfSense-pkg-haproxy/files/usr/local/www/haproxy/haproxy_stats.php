@@ -3,7 +3,7 @@
  * haproxy_stats.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2016-2024 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2016-2025 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2013 PiBa-NL
  * All rights reserved.
  *
@@ -24,7 +24,7 @@ require_once("authgui.inc");
 require_once("config.inc");
 require_once("haproxy/haproxy_socketinfo.inc");
 
-$pconfig = config_get_path('installedpackages/haproxy');
+$pconfig = config_get_path('installedpackages/haproxy', []);
 if (isset($_GET['haproxystats']) || isset($_GET['scope']) || (isset($_POST) && isset($_POST['action']))){
 	if (!(isset($pconfig['enable']) && $pconfig['localstatsport'] && is_numeric($pconfig['localstatsport']))){
 		print 'In the "Settings" configure a internal stats port and enable haproxy for this to be functional. Also make sure the service is running.';
@@ -89,8 +89,7 @@ require_once("certs.inc");
 require_once("haproxy/haproxy.inc");
 require_once("haproxy/haproxy_utils.inc");
 require_once("haproxy/pkg_haproxy_tabs.inc");
-config_init_path('installedpackages/haproxy/ha_backends/item');
-$a_frontend = config_get_path('installedpackages/haproxy/ha_backends/item');
+$a_frontend = config_get_path('installedpackages/haproxy/ha_backends/item', []);
 
 if ($_POST) {
 	if ($_POST['apply']) {

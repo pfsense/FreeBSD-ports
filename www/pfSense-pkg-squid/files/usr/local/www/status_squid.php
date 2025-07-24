@@ -3,7 +3,7 @@
  * squid_monitor.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2015-2024 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2015-2025 Rubicon Communications, LLC (Netgate)
  * Copyright (C) 2012-2014 Marcello Coutinho
  * Copyright (C) 2012-2014 Carlos Cesario <carloscesario@gmail.com>
  * All rights reserved.
@@ -52,7 +52,6 @@ display_top_tabs($tab_array);
 
 function squid_status() {
 	if (is_service_running('squid')) {
-		config_init_path('installedpackages/squidcache/config');
 		$proxy_ifaces = explode(",", config_get_path('installedpackages/squid/config/0/active_interface', ''));
 		foreach ($proxy_ifaces as $iface) {
 			if (get_interface_ip($iface)) {

@@ -1,7 +1,7 @@
 PORTNAME=	oregano
 DISTVERSIONPREFIX=	v
 DISTVERSION=	0.84.43
-PORTREVISION=	6
+PORTREVISION=	7
 CATEGORIES=	cad
 MASTER_SITES=	https://waf.io/:new_waf # for Python-3.11 compatibility
 DISTFILES=	waf-2.1.1:new_waf
@@ -21,13 +21,13 @@ USES=		compiler:c11 desktop-file-utils gettext gnome pkgconfig \
 		shared-mime-info waf
 USE_GITHUB=	yes
 GH_ACCOUNT=	drahnr
-USE_GNOME=	atk cairo gdkpixbuf2 glib20 gtk30 gtksourceview3 intltool libxml2 pango
+USE_GNOME=	atk cairo gdkpixbuf glib20 gtk30 gtksourceview3 intltool libxml2 pango
 
 GLIB_SCHEMAS=	io.ahoi.oregano.gschema.xml
 
 .include <bsd.port.options.mk>
 
-.if ${OPSYS} == FreeBSD && ( ${OSVERSION} >= 1400091 || ( ${OSVERSION} >= 1302507 && ${OSVERSION} < 1400000 ))
+.if ${OPSYS} == FreeBSD
 CFLAGS+=	-Wno-error=incompatible-function-pointer-types
 .endif
 

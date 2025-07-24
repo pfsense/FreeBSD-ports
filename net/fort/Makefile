@@ -1,6 +1,8 @@
 PORTNAME=	fort
-DISTVERSION=	1.6.2
+DISTVERSION=	1.6.6
+PORTREVISION=	1
 CATEGORIES=	net
+MASTER_SITES=	https://github.com/NICMx/FORT-validator/releases/download/${DISTVERSION}/
 
 MAINTAINER=	toni@devboks.com
 COMMENT=	FORT Validator is an open source RPKI validator
@@ -9,31 +11,29 @@ WWW=		https://fortproject.net/en/validator
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-LIB_DEPENDS=	libcurl.so:ftp/curl libjansson.so:devel/jansson \
-		libxml2.so:textproc/libxml2
+LIB_DEPENDS=	libcurl.so:ftp/curl \
+		libjansson.so:devel/jansson
 RUN_DEPENDS=	${LOCALBASE}/bin/rsync:net/rsync
 
-USES=		autoreconf compiler:c11 pkgconfig ssl
-USE_GITHUB=	yes
+USES=		gnome localbase:ldflags pkgconfig ssl
+USE_GNOME=	libxml2
 USE_RC_SUBR=	fort
 
-GH_ACCOUNT=	NICMx
-GH_PROJECT=	FORT-validator
-
 GNU_CONFIGURE=	yes
-GNU_CONFIGURE_MANPREFIX=${PREFIX}/share
 
 SUB_FILES=	pkg-message
 
 post-patch:
+	@${REINPLACE_CMD} -e "s|-O2 -g||" \
+		${PATCH_WRKSRC}/src/Makefile.in
 	@${REINPLACE_CMD} -e "s|/tmp/fort|${ETCDIR}|" \
-		${WRKSRC}/examples/config.json
+		${PATCH_WRKSRC}/examples/config.json
 	@${REINPLACE_CMD} -e "s|/usr/local/ssl|/etc/ssl|" \
-		${WRKSRC}/examples/config.json
+		${PATCH_WRKSRC}/examples/config.json
 	@${REINPLACE_CMD} -e "s|rsync\",|${LOCALBASE}/bin/rsync\",|" \
-		${WRKSRC}/examples/config.json
+		${PATCH_WRKSRC}/examples/config.json
 	@${REINPLACE_CMD} -e "/\"daemon\": false,/d" \
-		${WRKSRC}/examples/config.json
+		${PATCH_WRKSRC}/examples/config.json
 post-install:
 	@${MKDIR} ${STAGEDIR}${ETCDIR}/repository ${STAGEDIR}${ETCDIR}/tal
 	${INSTALL_DATA} ${WRKSRC}/examples/config.json \

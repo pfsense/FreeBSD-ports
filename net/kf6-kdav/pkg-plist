@@ -73,6 +73,7 @@ share/locale/ja/LC_MESSAGES/libkdav6.mo
 share/locale/ka/LC_MESSAGES/libkdav6.mo
 share/locale/ko/LC_MESSAGES/libkdav6.mo
 share/locale/lt/LC_MESSAGES/libkdav6.mo
+share/locale/lv/LC_MESSAGES/libkdav6.mo
 share/locale/nb/LC_MESSAGES/libkdav6.mo
 share/locale/nl/LC_MESSAGES/libkdav6.mo
 share/locale/nn/LC_MESSAGES/libkdav6.mo
@@ -81,6 +82,7 @@ share/locale/pt/LC_MESSAGES/libkdav6.mo
 share/locale/pt_BR/LC_MESSAGES/libkdav6.mo
 share/locale/ro/LC_MESSAGES/libkdav6.mo
 share/locale/ru/LC_MESSAGES/libkdav6.mo
+share/locale/sa/LC_MESSAGES/libkdav6.mo
 share/locale/sk/LC_MESSAGES/libkdav6.mo
 share/locale/sl/LC_MESSAGES/libkdav6.mo
 share/locale/sr/LC_MESSAGES/libkdav6.mo

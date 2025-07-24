@@ -3,7 +3,7 @@
  * haproxy_upgrade_config.inc
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2016-2024 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2016-2025 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2013 PiBa-NL
  * All rights reserved.
  *
@@ -32,8 +32,6 @@ function haproxy_upgrade_config() {
 
 	$static_output .= "HAProxy, from version $configversion\n";
 	update_output_window($static_output);
-	
-	config_init_path('installedpackages/haproxy');
 
 	$writeconfigupdate = false;
 	if ($configversion < "00.13") {
@@ -44,16 +42,13 @@ function haproxy_upgrade_config() {
 
 		/* We have an old config */
 			config_set_path('installedpackages/haproxy/ha_pools/item', []);
-			$a_global = config_get_path('installedpackages/haproxy');
+			$a_global = config_get_path('installedpackages/haproxy', []);
 
-			config_init_path('installedpackages/haproxy/ha_backends/item');
-			$a_backends = config_get_path('installedpackages/haproxy/ha_backends/item');
+			$a_backends = config_get_path('installedpackages/haproxy/ha_backends/item', []);
 
-			config_init_path('installedpackages/haproxy/ha_servers/item');
-			$a_oldservers = config_get_path('installedpackages/haproxy/ha_servers/item');
+			$a_oldservers = config_get_path('installedpackages/haproxy/ha_servers/item', []);
 
-			config_init_path('installedpackages/haproxy/ha_pools/item');
-			$a_pools = config_get_path('installedpackages/haproxy/ha_pools/item');
+			$a_pools = config_get_path('installedpackages/haproxy/ha_pools/item', []);
 
 			foreach ($a_backends as $id => $be) {
 				$a_backends[$id]['status'] = 'active';
@@ -98,7 +93,7 @@ function haproxy_upgrade_config() {
 		if (is_array(config_get_path('installedpackages/haproxy/ha_backends/item/0/pool'))) {
 			$static_output .= "HAProxy, Do XML upgrade, change to backend_serverpool from pool array\n";
 			update_output_window($static_output);
-			$frontends_config = config_get_path('installedpackages/haproxy/ha_backends/item');
+			$frontends_config = config_get_path('installedpackages/haproxy/ha_backends/item', []);
 			foreach($frontends_config as &$frontend)
 			{
 				$backend_serverpool = $frontend['pool'][0];
@@ -112,7 +107,7 @@ function haproxy_upgrade_config() {
 		if (is_array(config_get_path('installedpackages/haproxy/ha_backends/item/0/pool'))) {
 			$static_output .= "HAProxy, Do XML upgrade, change to backend_serverpool from pool\n";
 			update_output_window($static_output);
-			$frontends_config = config_get_path('installedpackages/haproxy/ha_backends/item');
+			$frontends_config = config_get_path('installedpackages/haproxy/ha_backends/item', []);
 			foreach($frontends_config as &$frontend)
 			{
 				$backend_serverpool = $frontend['pool'];
@@ -126,7 +121,7 @@ function haproxy_upgrade_config() {
 		if(is_array(config_get_path('installedpackages/haproxy/ha_backends/item'))) {
 			$static_output .= "HAProxy, Do XML upgrade, update frontend options\n";
 			update_output_window($static_output);
-			$frontends_config = config_get_path('installedpackages/haproxy/ha_backends/item');
+			$frontends_config = config_get_path('installedpackages/haproxy/ha_backends/item', []);
 			foreach ($frontends_config as &$bind) {
 				if($bind['httpclose'] && $bind['httpclose'] == "yes" ) {
 					$bind['httpclose'] = "httpclose";
@@ -282,9 +277,6 @@ function haproxy_upgrade_config() {
 		$configversion = "00.32";
 	}
 	if ($configversion < "00.57") {
-		config_init_path('installedpackages/haproxy/ha_backends/item');
-		config_init_path('installedpackages/haproxy/ha_pools/item');
-
 		// - assign unique ID's to all backends and servers for saving/loading server-state file
 		//
 		// - the backend nolonger automaticaly 'guesses' the desired backend ssl/check-ssl flags..
@@ -332,7 +324,7 @@ function haproxy_upgrade_config() {
 				$newbackends[] = $newbackend;
 				
 				// rename backend references where required.
-				$a_frontends = config_get_path('installedpackages/haproxy/ha_backends/item');
+				$a_frontends = config_get_path('installedpackages/haproxy/ha_backends/item', []);
 				foreach ($a_frontends as &$frontend) {
 					if ($frontend['type'] == 'http') {
 						continue;
@@ -379,7 +371,7 @@ function haproxy_upgrade_config() {
 		if (is_array(config_get_path('installedpackages/haproxy/ha_backends/item'))) {
 			$static_output .= "HAProxy, Do XML upgrade, update description fields\n";
 			update_output_window($static_output);
-			$frontends_config = config_get_path('installedpackages/haproxy/ha_backends/item');
+			$frontends_config = config_get_path('installedpackages/haproxy/ha_backends/item', []);
 			foreach ($frontends_config as &$item) {
 				if (isset($item['desc'])) {
 					$item['descr'] = $item['desc'];

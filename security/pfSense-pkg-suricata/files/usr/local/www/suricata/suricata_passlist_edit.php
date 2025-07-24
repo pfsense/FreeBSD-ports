@@ -3,7 +3,7 @@
  * suricata_passlist_edit.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2006-2024 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2006-2025 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2003-2004 Manuel Kasper
  * Copyright (c) 2005 Bill Marquette
  * Copyright (c) 2009 Robert Zelaya Sr. Developer
@@ -39,7 +39,7 @@ elseif (isset($_GET['id']) && is_numericint($_GET['id']))
 	$id = htmlspecialchars($_GET['id']);
 
 /* Should never be called without identifying list index, so bail */
-if (is_null($id)) {
+if (!is_numericint($id)) {
 	header("Location: /suricata/suricata_interfaces_passlist.php");
 	exit;
 }

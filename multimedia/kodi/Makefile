@@ -1,5 +1,5 @@
 PORTNAME=	kodi
-DISTVERSION=	21.0
+DISTVERSION=	21.2
 PORTREVISION=	2
 CATEGORIES=	multimedia java
 MASTER_SITES=	http://mirrors.kodi.tv/build-deps/sources/
@@ -8,6 +8,9 @@ DISTFILES=	apache-groovy-binary-${GROOVY_VERSION}.zip \
 		commons-text-${COMMONS_TEXT_VERSION}-bin.tar.gz
 DIST_SUBDIR=	${PORTNAME}
 # do not forget to fix devel/kodi-platform when updating kodi
+
+PATCH_SITES=	https://github.com/xbmc/xbmc/commit/
+PATCHFILES=	269053ebbfd3cc4a3156a511f54ab7f08a09a730.patch:-p1
 
 MAINTAINER=	yzrh@noema.org
 COMMENT=	Award winning media center application
@@ -46,11 +49,11 @@ LIB_DEPENDS=	libass.so:multimedia/libass \
 		libtinyxml.so:textproc/tinyxml \
 		libtinyxml2.so:textproc/tinyxml2 \
 		libudfread.so:multimedia/libudfread \
-		libuuid.so:misc/e2fsprogs-libuuid
+		libuuid.so:misc/libuuid
 RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}sqlite3>0:databases/py-sqlite3@${PY_FLAVOR}
 
 USES=		autoreconf:build cmake:noninja compiler:c++17-lang cpe \
-		desktop-file-utils gettext gmake gnome iconv jpeg libtool \
+		desktop-file-utils gettext gmake gnome iconv java:build jpeg libtool \
 		pkgconfig python sqlite ssl
 
 KODI_CODENAME=		Omega
@@ -78,8 +81,6 @@ KODI_ARCH_powerpc64le=	powerpc64le
 PLIST_SUB=	ARCH=${KODI_ARCH_${ARCH}}
 
 USE_LDCONFIG=	yes
-USE_JAVA=	yes
-JAVA_BUILD=	jre
 USE_GNOME=	libxml2
 CMAKE_ARGS=	-DGIT_VERSION="${DISTVERSION}-${KODI_CODENAME}" \
 		-DLIBDVDCSS_URL="${DISTDIR}/${PORTNAME}/xbmc-libdvdcss-${LIBDVDCSS_VERSION}_GH0.tar.gz" \

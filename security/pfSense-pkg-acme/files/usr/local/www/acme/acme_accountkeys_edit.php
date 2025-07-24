@@ -44,8 +44,6 @@ if ($_POST['action'] == "registerkey") {
 	exit;
 }
 
-config_init_path('installedpackages/acme/accountkeys/item');
-
 $id = $_REQUEST['id'];
 
 if (isset($_GET['dup'])) {
@@ -135,8 +133,17 @@ if ($_POST) {
 		// name changed:
 		$oldvalue = $accountkey['name'];
 		$newvalue = $_POST['name'];
-		
-		config_init_path('installedpackages/acme/accountkeys/item');
+		$configured_certificates = config_get_path('installedpackages/acme/certificates/item', []);
+		$certificates_changed = false;
+		foreach ($configured_certificates as &$configured_certificate) {
+			if ($configured_certificate['acmeaccount'] == $oldvalue) {
+				$configured_certificate['acmeaccount'] = $newvalue;
+				$certificates_changed = true;
+			}
+		}
+		if ($certificates_changed) {
+			config_set_path('installedpackages/acme/certificates/item', $configured_certificates);
+		}
 	}
 
 	if($accountkey['name'] != "") {

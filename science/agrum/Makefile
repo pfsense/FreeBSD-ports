@@ -1,10 +1,11 @@
 PORTNAME=	agrum
-DISTVERSION=	1.14.0
+DISTVERSION=	2.1.1
 CATEGORIES=	science math
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Graphical modeler for Bayesian networks, influence diagrams, etc
-WWW=		https://agrum.gitlab.io/
+WWW=		https://agrum.gitlab.io \
+		https://gitlab.com/agrumery/aGrUM
 
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/LICENSE
@@ -19,7 +20,7 @@ LLD_UNSAFE=	yes
 USE_GITLAB=	yes
 GL_ACCOUNT=	agrumery
 GL_PROJECT=	aGrUM
-GL_TAGNAME=	0fbb07b5031cd3c28a2ca64246fe3d9af0a1ced0
+GL_TAGNAME=	d15a377b0f745a6afd15139d780b23056305a851
 
 SHEBANG_FILES=	act
 

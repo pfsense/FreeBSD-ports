@@ -3,7 +3,7 @@ defscrollback 5000
 termcapinfo xterm ti@:te@
 termcapinfo xterm-color ti@:te@
 hardstatus alwayslastline
-hardstatus string '%{gk}[%{G}%H%{g}][%= %{wk}%?%-Lw%?%{=b kR}(%{W}%n*%f %t%?(%u)%?%{=b kR})%{= kw}%?%+Lw%?%?%= %{g}]%{=b C}[%m/%d/%y %C %A]%{W}'
+hardstatus string '%{2;0}[%{+b10;0}%H%{-}][%= %{7;0}%?%-Lw%?%{+9;0}(%{+15;0}%n%f %t%?(%u)%?%{-})%{-} ^H%?%+Lw%?%= %{-}]%{+b14;0}[%m/%d/%y %c]%{-}%{-}'
 vbell off
 shell -$SHELL
 logtstamp on

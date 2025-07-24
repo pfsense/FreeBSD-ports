@@ -1,5 +1,5 @@
 PORTNAME=	gnucash
-PORTVERSION=	5.6
+PORTVERSION=	5.12
 CATEGORIES=	finance gnome
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}%20%28stable%29/${PORTVERSION}
 
@@ -17,18 +17,17 @@ LIB_DEPENDS=	libboost_date_time.so:devel/boost-libs \
 		libicudata.so:devel/icu \
 		libsecret-1.so:security/libsecret \
 		libsoup-2.4.so:devel/libsoup \
-		libwebkit2gtk-4.0.so:www/webkit2-gtk3
+		libwebkit2gtk-4.0.so:www/webkit2-gtk@40
 RUN_DEPENDS=	p5-Finance-Quote>=0:finance/p5-Finance-Quote \
 		p5-JSON-Parse>=0:devel/p5-JSON-Parse \
 		p5-libwww>=0:www/p5-libwww \
 		p5-LWP-Protocol-https>=0:www/p5-LWP-Protocol-https
 
-USES=		cmake:insource compiler:c++11-lib cpe desktop-file-utils \
-		gettext-tools gnome guile:2.2,3.0,conflicts localbase \
+USES=		cmake:insource compiler:c++17-lang cpe desktop-file-utils \
+		gettext-tools gnome guile:2.2,3.0,alias,conflicts localbase \
 		perl5 pkgconfig shebangfix tar:bzip2 xorg
 USE_XORG=	x11
-USE_CXXSTD=	c++11
-USE_GNOME=	cairo gdkpixbuf2 gtk30 intltool libxml2 libxslt
+USE_GNOME=	cairo gdkpixbuf gtk30 intltool libxml2 libxslt
 USE_LDCONFIG=	yes
 
 CMAKE_ARGS=	-DCOMPILE_GSCHEMAS=OFF \

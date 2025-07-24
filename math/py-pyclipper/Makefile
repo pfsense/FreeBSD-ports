@@ -1,5 +1,6 @@
 PORTNAME=	pyclipper
 PORTVERSION=	1.3.0p5
+PORTREVISION=	1
 CATEGORIES=	math python
 MASTER_SITES=	PYPI/source/p/pyclipper
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -20,6 +21,6 @@ USE_PYTHON=	distutils cython autoplist pytest
 TEST_ENV=	${MAKE_ENV} PYTHONPATH=${STAGEDIR}${PYTHONPREFIX_SITELIBDIR}
 
 post-install:
-	@${STRIP_CMD} ${STAGEDIR}${PYTHON_SITELIBDIR}/pyclipper/_pyclipper${PYTHON_EXT_SUFFIX}.so
+	@${STRIP_CMD} ${STAGEDIR}${PYTHON_SITELIBDIR}/pyclipper/_pyclipper${PYTHON_TAG}.so
 
 .include <bsd.port.mk>

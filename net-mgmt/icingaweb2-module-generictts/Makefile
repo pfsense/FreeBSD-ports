@@ -5,7 +5,7 @@ PORTREVISION=	1
 CATEGORIES=	net-mgmt www
 PKGNAMESUFFIX=	${PHP_PKGNAMESUFFIX}
 
-MAINTAINER=	joneum@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Generic ticket system integration into Icinga web 2
 WWW=		https://github.com/Icinga/icingaweb2-module-generictts
 
@@ -15,6 +15,7 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 RUN_DEPENDS=	icingaweb2${PHP_PKGNAMESUFFIX}>=2.11.4:net-mgmt/icingaweb2@${PHP_FLAVOR}
 
 USES=		php:web,flavors
+IGNORE_WITH_PHP=81
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	icinga

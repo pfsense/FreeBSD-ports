@@ -1,10 +1,9 @@
 PORTNAME=	devedeng
-DISTVERSION=	4.17.0
-PORTREVISION=	1
+DISTVERSION=	4.21.0
 CATEGORIES=	sysutils multimedia python
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
-MAINTAINER=	fuz@fuz.su
+MAINTAINER=	fuz@FreeBSD.org
 COMMENT=	Gtk3 DVD disc authoring program
 WWW=		https://rastersoft.com/programas/devede.html
 
@@ -13,7 +12,6 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 
 LIB_DEPENDS=	libcanberra.so:audio/libcanberra
 RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}urllib3>0:net/py-urllib3@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}gobject3>0:devel/py-gobject3@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}cairo>0:graphics/py-cairo@${PY_FLAVOR} \
 		ffmpeg>1.2.6:multimedia/ffmpeg \
 		dvdauthor:multimedia/dvdauthor \
@@ -23,12 +21,10 @@ RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}urllib3>0:net/py-urllib3@${PY_FLAVOR} \
 USES=		python gettext-tools gnome
 USE_GITLAB=	yes
 GL_ACCOUNT=	rastersoft
-GL_TAGNAME=	b003c2bfe61a1001ea708501f8d36239782975ce
-USE_GNOME=	gtk30
-USE_PYTHON=	distutils autoplist
+USE_GNOME=	gtk30 pygobject3:run
+USE_PYTHON=	concurrent distutils autoplist
 
 NO_ARCH=	yes
-PLIST_FILES=	bin/devede_ng
 
 OPTIONS_DEFAULT=	BRASERO MPV
 OPTIONS_MULTI=	PLAYER BURNER
@@ -52,8 +48,5 @@ XFBURN_RUN_DEPENDS=	xfburn:sysutils/xfburn
 
 pre-configure:
 	${REINPLACE_CMD} -e 's,/usr,${PREFIX},' ${WRKSRC}/setup.py
-
-post-install:
-	${LN} -s devede_ng.py ${STAGEDIR}${PREFIX}/bin/devede_ng
 
 .include <bsd.port.mk>

@@ -1,6 +1,6 @@
 PORTNAME=	remmina
-DISTVERSION=	1.4.35
-PORTREVISION=	3
+DISTVERSION=	1.4.40
+PORTREVISION=	1
 CATEGORIES=	net gnome
 
 MAINTAINER=	fernape@FreeBSD.org
@@ -10,7 +10,7 @@ WWW=		https://www.remmina.org/
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-LIB_DEPENDS=	libappindicator3.so:devel/libappindicator \
+LIB_DEPENDS=	libayatana-appindicator3.so:devel/libayatana-appindicator \
 		libcurl.so:ftp/curl \
 		libjson-glib-1.0.so:devel/json-glib \
 		libsodium.so:security/libsodium \
@@ -28,14 +28,12 @@ GL_ACCOUNT=	Remmina
 GL_PROJECT=	Remmina
 GL_TAGNAME=	2a455eadd6462457d08c2d066c5c245e0dee3bf9
 
-USE_GNOME=	cairo gdkpixbuf2 glib20 gtk30 pango
+USE_GNOME=	cairo gdkpixbuf glib20 gtk30 pango
 
 USE_XORG=	ice sm x11 xext
 
 SHEBANG_FILES=	data/desktop/remmina-file-wrapper.in
 bash_CMD=	${SH}
-
-CMAKE_OFF=	WITH_APPINDICATOR
 
 CONFLICTS_INSTALL=	remmina-plugin*
 
@@ -117,10 +115,9 @@ TERM_CMAKE_BOOL=	WITH_VTE
 VNC_LIB_DEPENDS=	libvncserver.so:net/libvncserver
 VNC_CMAKE_BOOL=		WITH_LIBVNCSERVER
 
-WWW_LIB_DEPENDS=	libsoup-2.4.so:devel/libsoup \
-			libwebkit2gtk-4.0.so:www/webkit2-gtk3
+WWW_LIB_DEPENDS=	libsoup-3.0.so:devel/libsoup3 \
+			libwebkit2gtk-4.1.so:www/webkit2-gtk@41
 WWW_CMAKE_BOOL=		WITH_WEBKIT2GTK
-WWW_CMAKE_ON=		-DLIBSOUP_LIBRARY=${LOCALBASE}/lib/libsoup-2.4.so
 
 ZSH_RUN_DEPENDS=	zsh:shells/zsh
 ZSH_VARS=		SH_BIN=${PREFIX}/bin/zsh

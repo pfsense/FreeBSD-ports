@@ -8,7 +8,7 @@
  * squidguard.xml
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2015-2024 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2015-2025 Rubicon Communications, LLC (Netgate)
  * Copyright (C) 2006-2013 Sergey Dvoriancev <dv_serg@mail.ru>
  * All rights reserved.
  *
@@ -246,6 +246,17 @@
 			<size>100</size>
 		</field>
 	</fields>
+	<plugins>
+		<item>
+			<type>plugin_xmlrpc_send</type>
+		</item>
+		<item>
+			<type>plugin_xmlrpc_recv</type>
+		</item>
+		<item>
+			<type>plugin_xmlrpc_recv_done</type>
+		</item>
+	</plugins>
 	<custom_add_php_command/>
 	<custom_php_validation_command>
 		squidguard_validate($_POST, $input_errors);

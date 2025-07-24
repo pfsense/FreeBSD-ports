@@ -1,6 +1,6 @@
 PORTNAME=	virtual_oss
 DISTVERSIONPREFIX=	v
-DISTVERSION=	1.3.1
+DISTVERSION=	1.3.2
 PORTREVISION=	1
 CATEGORIES=	audio
 
@@ -21,7 +21,7 @@ GH_ACCOUNT=	freebsd
 SUB_LIST+=	LIBSAMPLERATE="${LOCALBASE}/lib/libsamplerate.so:"
 
 OPTIONS_DEFINE=	BLUETOOTH BT_SPEAKER COMMAND DEBUG EQUALIZER HTTPD SNDIO
-OPTIONS_DEFAULT=BLUETOOTH COMMAND EQUALIZER
+OPTIONS_DEFAULT=BLUETOOTH BT_SPEAKER COMMAND EQUALIZER
 
 .if exists(/usr/include/sys/sndstat.h)
 MAKE_ARGS+=	HAVE_SNDSTAT="YES"
@@ -61,9 +61,5 @@ PLIST_FILES=	sbin/virtual_oss \
 		share/man/man8/virtual_oss.8.gz
 
 MAKE_ARGS+=	PTHREAD_LIBS="-lpthread"
-
-post-patch:
-	${REINPLACE_CMD} -e 's|$${PREFIX}/man/man|$${PREFIX}/share/man/man|' \
-		${WRKSRC}/Makefile
 
 .include <bsd.port.mk>

@@ -3,7 +3,7 @@
  * vpn_wg_tunnels_edit.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2021-2024 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2021-2025 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2021 R. Christian McDonald (https://github.com/rcmcdonald91)
  * All rights reserved.
  *
@@ -142,8 +142,8 @@ if ($_POST) {
 $s = fn($x) => $x;
 
 // Looks like we are editing an existing tunnel
-if (isset($tun_idx) && is_array($wgg['tunnels'][$tun_idx])) {
-	$pconfig = &$wgg['tunnels'][$tun_idx];
+if (is_numericint($tun_idx) && is_array(config_get_path("installedpackages/wireguard/tunnels/item/{$tun_idx}"))) {
+	$pconfig = config_get_path("installedpackages/wireguard/tunnels/item/{$tun_idx}");
 
 	// Supress warning and allow peers to be added via the 'Add Peer' link
 	$is_new = false;
@@ -156,6 +156,9 @@ if (isset($tun_idx) && is_array($wgg['tunnels'][$tun_idx])) {
 
 // Save the MTU settings prior to re(saving)
 $pconfig['mtu'] = get_interface_mtu($pconfig['name']);
+if (!$is_new) {
+	config_set_path("installedpackages/wireguard/tunnels/item/{$tun_idx}/mtu", $pconfig['mtu']);
+}
 
 $shortcut_section = "wireguard";
 
@@ -293,10 +296,13 @@ if (!is_wg_tunnel_assigned($pconfig['name'])) {
 	if (!is_array($pconfig['addresses'])
 	    || !is_array($pconfig['addresses']['row'])
 	    || empty($pconfig['addresses']['row'])) {
-			wg_init_config_arr($pconfig, array('addresses', 'row', 0));
+			array_init_path($pconfig, 'addresses/row/0');
 
 			// Hack to ensure empty lists default to /128 mask
 			$pconfig['addresses']['row'][0]['mask'] = '128';
+			if (!$is_new) {
+				config_set_path("installedpackages/wireguard/tunnels/item/{$tun_idx}/addresses/row/0/mask", $pconfig['addresses']['row'][0]['mask']);
+			}
 		}
 
 	$last = count($pconfig['addresses']['row']) - 1;

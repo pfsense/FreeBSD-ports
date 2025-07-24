@@ -1,0 +1,19 @@
+commit cab4d222d76f9edf95bf51dba64fae52d862a60a
+Author: Marcos Mendoza <mmendoza@netgate.com>
+Date:   Thu Dec 12 15:28:32 2024 -0600
+
+    Config access regession when disabling CP MAC filtering. Fix #15926
+
+diff --git a/src/etc/inc/captiveportal.inc b/src/etc/inc/captiveportal.inc
+index e475fb5074..a914489dee 100644
+--- a/src/etc/inc/captiveportal.inc
++++ b/src/etc/inc/captiveportal.inc
+@@ -2835,7 +2835,7 @@ function captiveportal_ether_configure_entry($hostent, $anchor, $user_auth = fal
+ 		$host = $hostent['ip'] . '_32';
+ 		$l3from = "l3 from {$hostent['ip']}";
+ 		$l3to = "l3 to {$hostent['ip']}";
+-		if (!config_path_enabled("captiveportal/{$cpzone}/nomacfilter")) {
++		if (!config_path_enabled("captiveportal/{$cpzone}", 'nomacfilter')) {
+ 			if (!empty($hostent['mac'])) {
+ 				$macfrom = "from {$hostent['mac']}";
+ 				$macto = "to {$hostent['mac']}";

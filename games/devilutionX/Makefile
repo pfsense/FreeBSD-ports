@@ -1,6 +1,5 @@
 PORTNAME=	devilutionX
-DISTVERSION=	1.5.2
-PORTREVISION=	1
+DISTVERSION=	1.5.4
 CATEGORIES=	games
 MASTER_SITES=	https://github.com/diasurgical/devilutionx-assets/releases/download/${DATA_VERSION}/:data
 DISTFILES=	devilutionx.mpq?tag=${DATA_VERSION}:data
@@ -8,7 +7,7 @@ EXTRACT_ONLY=	${DISTFILES:N*\:data:C/:.*//}
 
 MAINTAINER=	amdmi3@FreeBSD.org
 COMMENT=	Diablo I engine for modern operating systems
-WWW=		https://github.com/diasurgical/devilutionX
+WWW=		https://github.com/diasurgical/DevilutionX
 
 LICENSE=	CC-BY-NC-SA-4.0 OFL11 SUL
 LICENSE_COMB=	multi
@@ -23,6 +22,7 @@ USES=		cmake compiler:c++11-lang dos2unix gettext-tools pkgconfig sdl
 DOS2UNIX_GLOB=	*.cpp *.h CMakeLists.txt Dependencies.cmake
 USE_GITHUB=	yes
 GH_ACCOUNT=	diasurgical
+GH_PROJECT=	DevilutionX
 GH_TUPLE=	diasurgical:libsmackerdec:91e732bb6953489077430572f43fc802bf2c75b2:libsmackerdec/_deps/libsmackerdec-src \
 		diasurgical:libmpq:b78d66c6fee6a501cc9b95d8556a129c68841b05:libmpq/_deps/libmpq-src
 USE_SDL=	sdl2 image2
@@ -49,7 +49,7 @@ NETWORK_CMAKE_BOOL_OFF=	NONET
 TCP_DESC=		TCP multiplayer option
 TCP_CMAKE_BOOL_OFF=	DISABLE_TCP
 TCP_IMPLIES=		NETWORK
-TCP_GH_TUPLE=		diasurgical:asio:cfbe961e2d6e2978d5e081231e4f798df46437c:asio/_deps/asio-src
+TCP_GH_TUPLE=		diasurgical:asio:4bcf552fcea3e1ae555dde2ab33bc9fa6770da4d:asio/_deps/asio-src
 
 ZEROTIER_DESC=		ZeroTier multiplayer option (broken)
 ZEROTIER_BROKEN=	does not build: fatal error: 'sys/appleapiopts.h' file not found

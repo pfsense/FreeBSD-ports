@@ -1,9 +1,9 @@
 PORTNAME=	initool
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.17.0
+DISTVERSION=	1.0.0
 CATEGORIES=	sysutils
 
-MAINTAINER=	DtxdF@disroot.org
+MAINTAINER=	dtxdf@FreeBSD.org
 COMMENT=	Manipulate INI files from the command line
 WWW=		https://github.com/dbohdan/initool
 

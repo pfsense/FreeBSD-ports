@@ -1,6 +1,6 @@
 PORTNAME=	llvm
 DISTVERSION=	17.0.6
-PORTREVISION=	7
+PORTREVISION=	8
 CATEGORIES=	devel lang
 MASTER_SITES=	https://github.com/llvm/llvm-project/releases/download/llvmorg-${DISTVERSION:S/rc/-rc/}/ \
 		https://${PRE_}releases.llvm.org/${LLVM_RELEASE}${RCDIR}/
@@ -9,6 +9,7 @@ DISTNAME=	llvm-project-${DISTVERSION}.src
 DISTFILES=	llvm-project-${DISTVERSION}.src${EXTRACT_SUFX}
 
 PATCH_SITES=	https://github.com/llvm/llvm-project/commit/
+PATCHFILES+=	llvmorg-18-init-1760-g68744ffbdd7d.patch:-p1 # https://reviews.llvm.org/D157589
 PATCHFILES+=	llvmorg-18-init-15199-gb9935bb02a50.patch:-p1 # https://github.com/llvm/llvm-project/pull/75748
 PATCHFILES+=	llvmorg-18-init-15680-g966d564e43e6.patch:-p1 # https://github.com/llvm/llvm-project/pull/76185
 
@@ -16,14 +17,7 @@ MAINTAINER=	brooks@FreeBSD.org
 COMMENT=	LLVM and Clang
 WWW=		https://llvm.org/
 
-LICENSE_DIR=	${WRKSRC}/llvm
 .include "${.CURDIR}/../llvm-devel/Makefile.LICENSE"
-LICENSE+=	LLVM2
-LICENSE_FILE_BSD3CLAUSE=	${WRKSRC}/third-party/unittest/googletest/LICENSE.TXT
-LICENSE_FILE_LLVM2=	${LICENSE_DIR}/LICENSE.TXT
-LICENSE_NAME_LLVM2=	Apache License 2.0 with LLVM Exceptions
-LICENSE_PERMS_LLVM2=	dist-mirror dist-sell pkg-mirror pkg-sell auto-accept
-LICENSE:=	${LICENSE:NARM}
 
 LIB_DEPENDS=	libzstd.so:archivers/zstd
 
@@ -156,7 +150,6 @@ COMPILER_RT_PLIST_FILES=${_COMPILER_RT_LIBS}
 DOCS_BUILD_DEPENDS= \
 	${PYTHON_PKGNAMEPREFIX}sphinx-markdown-tables>=0:textproc/py-sphinx-markdown-tables@${PY_FLAVOR} \
 	${PYTHON_PKGNAMEPREFIX}recommonmark>=0.0.20180530:textproc/py-recommonmark@${PY_FLAVOR}
-DOCS_CONFLICTS_BUILD=	cmark
 DOCS_PORTDOCS=		llvm
 DOCS_CMAKE_ON= \
 	-DLLVM_ENABLE_SPHINX=ON \
@@ -277,7 +270,7 @@ CONFIGURE_TARGET:=${ARCH:C/amd64/x86_64/:C/arm64/aarch64/}-portbld-${OPSYS:tl}${
 LLVM_ENABLE_PROJECTS+=	clang
 COMMANDS+=	${CLANG_COMMANDS}
 MAN1SRCS+=	${CLANG_MAN1SRCS}
-CLANG_PATTERN=	(amdgpu-arch|c-index-test|clang|diagtool|hmaptool|intercept-|libear|libscanbuild|nvptx-arch|analyze-|scan-|Reporter.py|ScanView.py|scanview.css|sorttable.js|startfile.py|-analyzer|AnalyzerPlugin.so)
+CLANG_PATTERN=	(amdgpu-arch|c-index-test|clang|diagtool|hmaptool|intercept-|libear|libscanbuild|nvptx-arch|analyze-|scan-|Reporter.py|ScanView.py|scanview.css|sorttable.js|startfile.py|c..-analyzer|AnalyzerPlugin.so)
 USES+=		gnome
 .endif
 
@@ -374,11 +367,14 @@ NATIVE_BACKENDS+=	WebAssembly
 STANDARD_BACKENDS=	${_FREEBSD_BACKENDS} AMDGPU AVR BPF Hexagon Lanai \
 			LoongArch MSP430 NVPTX SystemZ VE WebAssembly XCore
 _BE_LIBS_COMMON=	CodeGen Desc Info
-_BE_INCS_AArch64=	arm_bf16.h arm_sme_draft_spec_subject_to_change.h
+_BE_INCS_AArch64=	arm_sme_draft_spec_subject_to_change.h
 _BE_LIBS_AArch64=	AsmParser Disassembler Utils
 _BE_LIBS_BACKWARDS_AArch64=Exegesis
 _BE_LIBS_AMDGPU=	AsmParser Disassembler TargetMCA Utils
-_BE_INCS_ARM=		arm_cde.h arm_fp16.h arm_mve.h arm_neon.h arm_sve.h
+# XXX: some of these are for both ARM and AArch64, but we don't provide
+# a mechanism to build AArch64 without ARM so we avoid duplication by
+# listing them here.
+_BE_INCS_ARM=		arm_bf16.h arm_cde.h arm_fp16.h arm_mve.h arm_neon.h arm_sve.h
 _BE_LIBS_ARM=		AsmParser Disassembler Utils
 _BE_LIBS_AVR=		AsmParser Disassembler
 _BE_LIBS_BPF=		AsmParser Disassembler
@@ -604,7 +600,7 @@ build-plist:
 	    ${GREP} -v '[/-]lit$$' | ${GREP} -v 'FileCheck$$' | \
 	    ${GREP} -v man/man1 | ${SED} -e 's|${STAGEDIR}${PREFIX}/||' \
 	    -e 's|${PYTHON_SITELIBDIR:C|${PREFIX}/||}|%%PYTHON_SITELIBDIR%%|' \
-	    -e 's|${PYTHON_EXT_SUFFIX:C/\./\\./g}${PYTHON_ABIVER}|%%PYTHON_EXT_SUFFIX%%%%PYTHON_ABIVER%%|' \
+	    -e 's|${PYTHON_TAG:C/\./\\./g}${PYTHON_ABIVER}|%%PYTHON_TAG%%%%PYTHON_ABIVER%%|' \
 	    -e 's|${LLVM_RELEASE}|%%LLVM_RELEASE%%|' \
 	    -e 's|release.cmake|%%CMAKE_BUILD_TYPE%%.cmake|' \
 	    -e 's|${LLVM_RELEASE:C/\./\\./g}|%%LLVM_RELEASE%%|' \

@@ -1,7 +1,6 @@
 PORTNAME=	simgear
-PORTVERSION=	2020.3.19
+PORTVERSION=	2024.1.1
 CATEGORIES=	devel games
-MASTER_SITES=	SF/flightgear/release-${PORTVERSION:R}
 
 MAINTAINER=	martymac@FreeBSD.org
 COMMENT=	Toolkit for 3D games and simulations
@@ -18,8 +17,13 @@ LIB_DEPENDS=	libboost_thread.so:devel/boost-libs \
 		libexpat.so:textproc/expat2 \
 		libcurl.so:ftp/curl
 
-USES=		alias cmake compiler:c++11-lib cpe gl jpeg openal:al,alut \
+USES=		alias cmake compiler:c++17-lang cpe gl jpeg openal:al,alut \
 		tar:bzip2 xorg
+
+USE_GITLAB=	yes
+GL_ACCOUNT=	flightgear
+GL_TAGNAME=	v${PORTVERSION}
+
 USE_XORG=	ice sm x11 xext xi xmu xt
 USE_GL=		gl glu glut
 

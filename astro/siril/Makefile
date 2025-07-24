@@ -1,16 +1,17 @@
 PORTNAME=	siril
-DISTVERSION=	1.2.3
+DISTVERSION=	1.2.6
 CATEGORIES=	astro graphics
 MASTER_SITES=	https://free-astro.org/download/
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Astronomical image processing software
-WWW=		https://siril.org/
+WWW=		https://siril.org/ \
+		https://gitlab.com/free-astro/siril
 
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/LICENSE.md
 
-BROKEN_i386=	undefined reference to `__atomic_load' and `__atomic_compare_exchange' #`
+BROKEN_i386=	undefined reference to '__atomic_load' and '__atomic_compare_exchange'
 .if !exists(/usr/include/omp.h)
 BROKEN=		requires OpenMP support that is missing on this architecture
 .endif
@@ -37,7 +38,7 @@ LIB_DEPENDS+=	libopencv_photo.so:graphics/opencv # for some reason, configure fa
 
 USES=		cmake:indirect compiler:c++11-lang desktop-file-utils gettext \
 		gnome meson pkgconfig jpeg shared-mime-info tar:bz2
-USE_GNOME=	atk cairo gdkpixbuf2 gtk30 intltool pango
+USE_GNOME=	atk cairo gdkpixbuf gtk30 intltool pango
 
 BINARY_ALIAS=	git=false
 

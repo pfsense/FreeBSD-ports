@@ -1,5 +1,6 @@
 PORTNAME=	mutt
-DISTVERSION=	2.2.13
+DISTVERSION=	2.2.14
+PORTREVISION=	1
 CATEGORIES+=	mail
 MASTER_SITES=	ftp://ftp.mutt.org/pub/mutt/ \
 		https://bitbucket.org/mutt/mutt/downloads/
@@ -19,17 +20,16 @@ USE_PERL5=	build
 
 SHEBANG_FILES=	contrib/smime_keys_test.pl doc/gen-map-doc smime_keys.pl
 
-GNU_CONFIGURE=			yes
-GNU_CONFIGURE_MANPREFIX=	${PREFIX}/share
-CONFIGURE_ARGS=			--disable-fcntl \
-				--enable-compressed \
-				--enable-external-dotlock \
-				--enable-imap \
-				--enable-pop \
-				--enable-sidebar \
-				--sysconfdir=${PREFIX}/etc \
-				--with-docdir=${DOCSDIR} \
-				--with-ssl=${OPENSSLBASE}
+GNU_CONFIGURE=	yes
+CONFIGURE_ARGS=	--disable-fcntl \
+		--enable-compressed \
+		--enable-external-dotlock \
+		--enable-imap \
+		--enable-pop \
+		--enable-sidebar \
+		--sysconfdir=${PREFIX}/etc \
+		--with-docdir=${DOCSDIR} \
+		--with-ssl=${OPENSSLBASE}
 
 .if defined(MUTT_CONFIGURE_ARGS)
 CONFIGURE_ARGS+=	${MUTT_CONFIGURE_ARGS}
@@ -164,12 +164,7 @@ SMTP_CONFIGURE_ENABLE=	smtp
 
 URLVIEW_RUN_DEPENDS=	urlview:textproc/urlview
 
-.include <bsd.port.options.mk>
-
-post-install:
-	${INSTALL_MAN} ${FILESDIR}/mailcap.5 ${STAGEDIR}${PREFIX}/share/man/man5
-
-pre-configure::
+pre-configure:
 # Stop make from setgid mutt_dotlock
 	@${REINPLACE_CMD} \
 		-e '/if test.*mutt_dotlock.*DOTLOCK_GROUP/s/if/if ${FALSE} \&\&/' \
@@ -181,10 +176,13 @@ pre-configure::
 	@${REINPLACE_CMD} -e 's,$$(docdir)/samples,${EXAMPLESDIR},g' \
 		${WRKSRC}/contrib/Makefile.in
 
+post-install:
+	${INSTALL_MAN} ${FILESDIR}/mailcap.5 ${STAGEDIR}${PREFIX}/share/man/man5
+
 # Undo some dist. installed files
-post-stage::
+post-stage:
 	@${MV} ${STAGEDIR}/${LOCALBASE}/etc/Muttrc.dist \
-	    	${STAGEDIR}/${LOCALBASE}/etc/Muttrc.sample
+		${STAGEDIR}/${LOCALBASE}/etc/Muttrc.sample
 	@${RM} ${STAGEDIR}/${LOCALBASE}/etc/mime.types*
 
 .include <bsd.port.mk>

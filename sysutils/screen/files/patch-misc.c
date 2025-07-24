@@ -1,20 +1,28 @@
---- misc.c.orig	2022-01-28 14:06:02 UTC
-+++ misc.c
-@@ -28,8 +28,10 @@
+--- misc.c.orig	2024-03-26 16:41:57.000000000 -0700
++++ misc.c	2024-04-03 11:32:35.844473000 -0700
+@@ -32,8 +32,10 @@
  
  #include <poll.h>
  #include <sys/types.h>
 +#include <sys/user.h>
- #include <sys/stat.h>	/* mkdir() declaration */
+ #include <sys/stat.h>		/* mkdir() declaration */
  #include <signal.h>
 +#include <libutil.h>
+ #include <stdint.h>
+ #include <string.h>
+ #include <stdbool.h>
+@@ -225,6 +227,7 @@
+ 	char *p;
  
- #include "config.h"
- #include "screen.h"
-@@ -796,3 +798,17 @@
+ 	if (str == NULL) {
++
+ 		*buf = 0;
+ 		return 0;
+ 	}
+@@ -238,3 +241,17 @@
+ 	*p = 0;
+ 	return p - buf;
  }
- 
- #endif
 +
 +time_t
 +SessionCreationTime(fifo)

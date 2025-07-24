@@ -1,12 +1,11 @@
 PORTNAME=	simutrans
-DISTVERSION=	124-0
+DISTVERSION=	124.3.1
 CATEGORIES=	games
-MASTER_SITES=	SF/simutrans/simutrans/${DISTVERSION}
-DISTNAME=	simutrans-src-${DISTVERSION}
 
 MAINTAINER=	amdmi3@FreeBSD.org
 COMMENT=	Transportation simulator
-WWW=		https://www.simutrans.com/
+WWW=		https://www.simutrans.com/ \
+		https://github.com/aburch/simutrans/
 
 LICENSE=	ART10 MIT
 LICENSE_COMB=	multi
@@ -17,14 +16,15 @@ LIB_DEPENDS=	libpng.so:graphics/png \
 		libfreetype.so:print/freetype2 \
 		libzstd.so:archivers/zstd
 
-USES=		cmake compiler:c++14-lang pkgconfig sdl zip
+USES=		cmake compiler:c++14-lang pkgconfig sdl
+USE_GITHUB=	yes
 USE_SDL=	sdl2
 CMAKE_ON=	CMAKE_DISABLE_FIND_PACKAGE_CCache \
 		CMAKE_DISABLE_FIND_PACKAGE_Git \
 		CMAKE_DISABLE_FIND_PACKAGE_Subversion
 CMAKE_ARGS=	-DSIMUTRANS_USE_REVISION=1
 
-WRKSRC=		${WRKDIR}/simutrans-Nightly
+PORTSCOUT=	skipv:Nightly
 
 PORTDATA=	*
 PORTDOCS=	change_request.txt \

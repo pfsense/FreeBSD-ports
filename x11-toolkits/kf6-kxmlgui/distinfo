@@ -1,3 +1,3 @@
-TIMESTAMP = 1718038145
-SHA256 (KDE/frameworks/6.3.0/kxmlgui-6.3.0.tar.xz) = 2273fdb2eb32f8cc9150c4cbcc4f7d9eb2f1268fcba7e21add27105c04e7995e
-SIZE (KDE/frameworks/6.3.0/kxmlgui-6.3.0.tar.xz) = 2926128
+TIMESTAMP = 1752529533
+SHA256 (KDE/frameworks/6.16/kxmlgui-6.16.0.tar.xz) = 26fe5375d95029c5a828d5b47fc4b20e8684bc3be88df1bc94082821ce32a74e
+SIZE (KDE/frameworks/6.16/kxmlgui-6.16.0.tar.xz) = 2895648

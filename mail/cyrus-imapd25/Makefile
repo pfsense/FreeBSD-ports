@@ -1,6 +1,6 @@
 PORTNAME=	cyrus-imapd
 PORTVERSION=	2.5.17
-PORTREVISION=	6
+PORTREVISION=	7
 CATEGORIES=	mail
 MASTER_SITES=	https://github.com/cyrusimap/cyrus-imapd/releases/download/${PORTNAME}-${PORTVERSION}/
 PKGNAMESUFFIX=	25
@@ -92,8 +92,12 @@ OPTIONS_RADIO_GSSAPI+=		GSSAPI_BASE
 OPTIONS_DEFAULT+=		GSSAPI_BASE
 .endif
 GSSAPI_BASE_USES=		gssapi
-GSSAPI_BASE_CONFIGURE_ON=	--enable-gssapi="${GSSAPIBASEDIR}" \
-				--with-gss_impl=heimdal
+GSSAPI_BASE_CONFIGURE_ON=	--enable-gssapi="${GSSAPIBASEDIR}"
+.if exists(/usr/libexec/krb5kdc)
+GSSAPI_BASE_CONFIGURE_ON+=	--with-gss_impl=mit
+.else
+GSSAPI_BASE_CONFIGURE_ON+=	--with-gss_impl=heimdal
+.endif
 GSSAPI_HEIMDAL_USES=		gssapi:heimdal,flags
 GSSAPI_HEIMDAL_CONFIGURE_ON=	--enable-gssapi="${GSSAPIBASEDIR}" \
 				--with-gss_impl=heimdal
@@ -158,7 +162,7 @@ CYRUS_MAN8+=	fetchnews nntpd
 
 .include <bsd.port.pre.mk>
 
-.if ${OPSYS} == FreeBSD && ( ${OSVERSION} >= 1400091 || ( ${OSVERSION} >= 1302507 && ${OSVERSION} < 1400000 ))
+.if ${OPSYS} == FreeBSD
 CFLAGS+=	-Wno-error=incompatible-function-pointer-types
 .endif
 

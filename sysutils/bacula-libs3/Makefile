@@ -1,5 +1,6 @@
 PORTNAME=	bacula11-libs3
 PORTVERSION=	20200523
+PORTREVISION=	2
 CATEGORIES=	sysutils
 MASTER_SITES=	https://www.bacula.org/downloads/
 DISTNAME=	libs3-${DISTVERSIONPREFIX}${DISTVERSION}${DISTVERSIONSUFFIX}
@@ -19,12 +20,7 @@ USE_GNOME+=	libxml2
 MAKEFILE=	GNUmakefile
 MAKE_ARGS=	MYDESTDIR=${STAGEDIR}/${PREFIX} \
 		MYINSTALL=install
-.include <bsd.port.options.mk>
-
-.if (${OPSYS} == FreeBSD && ${OSVERSION} >= 1400092 && ${SSL_DEFAULT} == base) || \
-	${SSL_DEFAULT:Mopenssl3*}
-CFLAGS+=	-DOPENSSL_API_COMPAT=0x10100000L
-.endif
+CFLAGS+=	-DOPENSSL_API_COMPAT=0x10100000L # openssl3 compat
 
 post-install:
 	${STRIP_CMD} ${STAGEDIR}/${PREFIX}/bin/s3

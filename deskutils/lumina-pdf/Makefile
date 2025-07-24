@@ -1,11 +1,11 @@
 PORTNAME=	lumina-pdf
 DISTVERSION=	1.6.2
-PORTREVISION=	15
+PORTREVISION=	19
 CATEGORIES=	deskutils
 
 MAINTAINER=	jwb@FreeBSD.org
 COMMENT=	PDF viewer from the Lumina Desktop
-WWW=		https://lumina-desktop.org
+WWW=		https://github.com/lumina-desktop/lumina
 
 LICENSE=	BSD3CLAUSE
 

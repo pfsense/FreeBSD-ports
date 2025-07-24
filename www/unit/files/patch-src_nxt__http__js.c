@@ -1,74 +1,139 @@
---- src/nxt_http_js.c.orig	2024-06-26 22:04:35 UTC
+--- src/nxt_http_js.c.orig	2025-02-27 22:02:21 UTC
 +++ src/nxt_http_js.c
-@@ -120,7 +120,7 @@ nxt_http_js_ext_uri(njs_vm_t *vm, njs_object_prop_t *p
+@@ -9,27 +9,31 @@ static njs_int_t nxt_http_js_ext_uri(njs_vm_t *vm, njs
+
+
+ static njs_int_t nxt_http_js_ext_uri(njs_vm_t *vm, njs_object_prop_t *prop,
+-    njs_value_t *value, njs_value_t *setval, njs_value_t *retval);
++    uint32_t atom_id, njs_value_t *value, njs_value_t *setval,
++    njs_value_t *retval);
+ static njs_int_t nxt_http_js_ext_host(njs_vm_t *vm, njs_object_prop_t *prop,
+-    njs_value_t *value, njs_value_t *setval, njs_value_t *retval);
+-static njs_int_t nxt_http_js_ext_remote_addr(njs_vm_t *vm,
+-    njs_object_prop_t *prop, njs_value_t *value, njs_value_t *setval,
++    uint32_t atom_id, njs_value_t *value, njs_value_t *setval,
+     njs_value_t *retval);
++static njs_int_t nxt_http_js_ext_remote_addr(njs_vm_t *vm,
++    njs_object_prop_t *prop, uint32_t atom_id, njs_value_t *value,
++    njs_value_t *setval, njs_value_t *retval);
+ static njs_int_t nxt_http_js_ext_get_args(njs_vm_t *vm,
+-    njs_object_prop_t *prop, njs_value_t *value, njs_value_t *setval,
+-    njs_value_t *retval);
++    njs_object_prop_t *prop, uint32_t atom_id, njs_value_t *value,
++    njs_value_t *setval, njs_value_t *retval);
+ static njs_int_t nxt_http_js_ext_get_header(njs_vm_t *vm,
+-    njs_object_prop_t *prop, njs_value_t *value, njs_value_t *setval,
+-    njs_value_t *retval);
++    njs_object_prop_t *prop, uint32_t atom_id, njs_value_t *value,
++    njs_value_t *setval, njs_value_t *retval);
+ static njs_int_t nxt_http_js_ext_keys_header(njs_vm_t *vm,
+     njs_value_t *value, njs_value_t *keys);
+ static njs_int_t nxt_http_js_ext_get_cookie(njs_vm_t *vm,
+-    njs_object_prop_t *prop, njs_value_t *value, njs_value_t *setval,
++    njs_object_prop_t *prop, uint32_t atom_id, njs_value_t *value,
++    njs_value_t *setval,
+     njs_value_t *retval);
+ static njs_int_t nxt_http_js_ext_keys_cookie(njs_vm_t *vm, njs_value_t *value,
+     njs_value_t *keys);
+ static njs_int_t nxt_http_js_ext_get_var(njs_vm_t *vm, njs_object_prop_t *prop,
+-    njs_value_t *value, njs_value_t *setval, njs_value_t *retval);
++    uint32_t atom_id, njs_value_t *value, njs_value_t *setval,
++    njs_value_t *retval);
+
+
+ static njs_external_t  nxt_http_js_proto[] = {
+@@ -109,7 +113,7 @@ static njs_int_t
+
+
+ static njs_int_t
+-nxt_http_js_ext_uri(njs_vm_t *vm, njs_object_prop_t *prop,
++nxt_http_js_ext_uri(njs_vm_t *vm, njs_object_prop_t *prop, uint32_t atom_id,
+     njs_value_t *value, njs_value_t *setval, njs_value_t *retval)
+ {
+     nxt_http_request_t  *r;
+@@ -126,7 +130,7 @@ static njs_int_t
+
+
+ static njs_int_t
+-nxt_http_js_ext_host(njs_vm_t *vm, njs_object_prop_t *prop,
++nxt_http_js_ext_host(njs_vm_t *vm, njs_object_prop_t *prop, uint32_t atom_id,
+     njs_value_t *value, njs_value_t *setval, njs_value_t *retval)
+ {
+     nxt_http_request_t  *r;
+@@ -144,7 +148,8 @@ nxt_http_js_ext_remote_addr(njs_vm_t *vm, njs_object_p
+
+ static njs_int_t
+ nxt_http_js_ext_remote_addr(njs_vm_t *vm, njs_object_prop_t *prop,
+-    njs_value_t *value, njs_value_t *setval, njs_value_t *retval)
++    uint32_t atom_id, njs_value_t *value, njs_value_t *setval,
++    njs_value_t *retval)
+ {
+     nxt_http_request_t  *r;
+
+@@ -162,7 +167,8 @@ nxt_http_js_ext_get_args(njs_vm_t *vm, njs_object_prop
+
+ static njs_int_t
+ nxt_http_js_ext_get_args(njs_vm_t *vm, njs_object_prop_t *prop,
+-    njs_value_t *value, njs_value_t *setval, njs_value_t *retval)
++    uint32_t atom_id, njs_value_t *value, njs_value_t *setval,
++    njs_value_t *retval)
+ {
+     u_char              *start;
+     njs_int_t           ret;
+@@ -193,7 +199,8 @@ nxt_http_js_ext_get_header(njs_vm_t *vm, njs_object_pr
+
+ static njs_int_t
+ nxt_http_js_ext_get_header(njs_vm_t *vm, njs_object_prop_t *prop,
+-    njs_value_t *value, njs_value_t *setval, njs_value_t *retval)
++    uint32_t atom_id, njs_value_t *value, njs_value_t *setval,
++    njs_value_t *retval)
+ {
+     njs_int_t           rc;
+     njs_str_t           key;
+@@ -206,7 +213,7 @@ nxt_http_js_ext_get_header(njs_vm_t *vm, njs_object_pr
          return NJS_DECLINED;
      }
- 
--    return njs_vm_value_string_set(vm, retval, r->path->start, r->path->length);
-+    return njs_vm_value_string_create(vm, retval, r->path->start, r->path->length);
- }
- 
- 
-@@ -136,7 +136,7 @@ nxt_http_js_ext_host(njs_vm_t *vm, njs_object_prop_t *
+
+-    rc = njs_vm_prop_name(vm, prop, &key);
++    rc = njs_vm_prop_name(vm, atom_id, &key);
+     if (rc != NJS_OK) {
+         njs_value_undefined_set(retval);
+         return NJS_DECLINED;
+@@ -266,7 +273,8 @@ nxt_http_js_ext_get_cookie(njs_vm_t *vm, njs_object_pr
+
+ static njs_int_t
+ nxt_http_js_ext_get_cookie(njs_vm_t *vm, njs_object_prop_t *prop,
+-    njs_value_t *value, njs_value_t *setval, njs_value_t *retval)
++    uint32_t atom_id, njs_value_t *value, njs_value_t *setval,
++    njs_value_t *retval)
+ {
+     njs_int_t              rc;
+     njs_str_t              key;
+@@ -280,7 +288,7 @@ nxt_http_js_ext_get_cookie(njs_vm_t *vm, njs_object_pr
          return NJS_DECLINED;
      }
- 
--    return njs_vm_value_string_set(vm, retval, r->host.start, r->host.length);
-+    return njs_vm_value_string_create(vm, retval, r->host.start, r->host.length);
- }
- 
- 
-@@ -152,7 +152,7 @@ nxt_http_js_ext_remote_addr(njs_vm_t *vm, njs_object_p
+
+-    rc = njs_vm_prop_name(vm, prop, &key);
++    rc = njs_vm_prop_name(vm, atom_id, &key);
+     if (rc != NJS_OK) {
+         njs_value_undefined_set(retval);
+         return NJS_DECLINED;
+@@ -355,7 +363,8 @@ nxt_http_js_ext_get_var(njs_vm_t *vm, njs_object_prop_
+
+ static njs_int_t
+ nxt_http_js_ext_get_var(njs_vm_t *vm, njs_object_prop_t *prop,
+-    njs_value_t *value, njs_value_t *setval, njs_value_t *retval)
++    uint32_t atom_id, njs_value_t *value, njs_value_t *setval,
++    njs_value_t *retval)
+ {
+     njs_int_t           rc;
+     njs_str_t           key;
+@@ -369,7 +378,7 @@ nxt_http_js_ext_get_var(njs_vm_t *vm, njs_object_prop_
          return NJS_DECLINED;
      }
- 
--    return njs_vm_value_string_set(vm, retval,
-+    return njs_vm_value_string_create(vm, retval,
-                                    nxt_sockaddr_address(r->remote),
-                                    r->remote->address_length);
- }
-@@ -214,7 +214,7 @@ nxt_http_js_ext_get_header(njs_vm_t *vm, njs_object_pr
-         if (key.length == f->name_length
-             && memcmp(key.start, f->name, f->name_length) == 0)
-         {
--            return njs_vm_value_string_set(vm, retval, f->value,
-+            return njs_vm_value_string_create(vm, retval, f->value,
-                                            f->value_length);
-         }
- 
-@@ -250,7 +250,7 @@ nxt_http_js_ext_keys_header(njs_vm_t *vm, njs_value_t 
-             return NJS_ERROR;
-         }
- 
--        rc = njs_vm_value_string_set(vm, value, f->name, f->name_length);
-+        rc = njs_vm_value_string_create(vm, value, f->name, f->name_length);
-         if (rc != NJS_OK) {
-             return NJS_ERROR;
-         }
-@@ -296,7 +296,7 @@ nxt_http_js_ext_get_cookie(njs_vm_t *vm, njs_object_pr
-         if (key.length == nv->name_length
-             && memcmp(key.start, nv->name, nv->name_length) == 0)
-         {
--            return njs_vm_value_string_set(vm, retval, nv->value,
-+            return njs_vm_value_string_create(vm, retval, nv->value,
-                                            nv->value_length);
-         }
-     }
-@@ -340,7 +340,7 @@ nxt_http_js_ext_keys_cookie(njs_vm_t *vm, njs_value_t 
-             return NJS_ERROR;
-         }
- 
--        rc = njs_vm_value_string_set(vm, value, nv->name, nv->name_length);
-+        rc = njs_vm_value_string_create(vm, value, nv->name, nv->name_length);
-         if (rc != NJS_OK) {
-             return NJS_ERROR;
-         }
-@@ -380,7 +380,7 @@ nxt_http_js_ext_get_var(njs_vm_t *vm, njs_object_prop_
-     vv = nxt_var_get(&r->task, rtcf->tstr_state, &r->tstr_cache.var, &name, r);
- 
-     if (vv != NULL) {
--        return njs_vm_value_string_set(vm, retval, vv->start, vv->length);
-+        return njs_vm_value_string_create(vm, retval, vv->start, vv->length);
-     }
- 
-     njs_value_undefined_set(retval);
+
+-    rc = njs_vm_prop_name(vm, prop, &key);
++    rc = njs_vm_prop_name(vm, atom_id, &key);
+     if (rc != NJS_OK) {
+         njs_value_undefined_set(retval);
+         return NJS_DECLINED;

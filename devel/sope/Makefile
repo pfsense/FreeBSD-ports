@@ -1,8 +1,9 @@
 PORTNAME=		sope
-PORTVERSION=		5.10.0
+PORTVERSION=		5.12.3
 CATEGORIES=		devel gnustep
 MASTER_SITES=		https://packages.sogo.nu/sources/
 DISTNAME=		SOPE-${PORTVERSION}
+PKGNAMESUFFIX=		-${FLAVOR}
 
 MAINTAINER=		acm@FreeBSD.org
 COMMENT=		Extensive set of GNUstep web application frameworks
@@ -10,10 +11,11 @@ WWW=			https://sogo.nu/
 
 LICENSE=		LGPL20
 
-LIB_DEPENDS=		libxml2.so:textproc/libxml2 \
-			libmemcached.so:databases/libmemcached
+FLAVORS=		mysql pgsql
+FLAVOR?=		${FLAVORS:[1]}
 
-USES=			gmake iconv gnustep
+USES=			gmake gnome iconv gnustep
+USE_GNOME=		libxml2
 USE_GNUSTEP=		base build
 USE_LDCONFIG=		${GNUSTEP_LOCAL_LIBRARIES}
 
@@ -22,30 +24,42 @@ CONFIGURE_ENV+=		CC="${CC}"
 
 LLD_UNSAFE=		yes # PR 230608
 
-CONFLICTS=		sope2
+mysql_CONFLICTS_INSTALL=	sope2 ${PORTNAME}-pgsql
+pgsql_CONFLICTS_INSTALL=	sope2 ${PORTNAME}-mysql
 
 SUB_LIST+=		GNUSTEP_LOCAL_TOOLS=${GNUSTEP_LOCAL_TOOLS} \
 			GNUSTEP_MAKEFILES=${GNUSTEP_MAKEFILES}
 
 WRKSRC=			${WRKDIR}/SOPE
 
-OPTIONS_DEFINE=		LDAP MYSQL PGSQL MEMCACHED
-OPTIONS_DEFAULT=	LDAP PGSQL MEMCACHED
+OPTIONS_DEFINE=		LDAP
+OPTIONS_DEFAULT=	LDAP
+
+OPTIONS_SINGLE=		DATABASE
+OPTIONS_SINGLE_DATABASE=MYSQL PGSQL
+DATABASE_DESC=		Database support
+
 OPTIONS_SUB=		yes
 
 LDAP_DESC=		Build with LDAP support
-MEMCACHED_DESC=		Install memcached
 MYSQL_DESC=		Build with MySQL support
 PGSQL_DESC=		Build with PostgreSQL support
 
 LDAP_USES=		ldap
-MEMCACHED_RUN_DEPENDS=	${LOCALBASE}/bin/memcached:databases/memcached
 MYSQL_USES=		mysql
 PGSQL_USES=		pgsql
 
+.if ${FLAVOR:U} == pgsql
+OPTIONS_DEFAULT+=	PGSQL
+.endif
+
+.if ${FLAVOR:U} == mysql
+OPTIONS_DEFAULT+=	MYSQL
+.endif
+
 .include <bsd.port.options.mk>
 
-.if ${OPSYS} == FreeBSD && ( ${OSVERSION} >= 1400091 || ( ${OSVERSION} >= 1302507 && ${OSVERSION} < 1400000 ))
+.if ${OPSYS} == FreeBSD
 CPPFLAGS+=	-Wno-error=incompatible-function-pointer-types
 .endif
 

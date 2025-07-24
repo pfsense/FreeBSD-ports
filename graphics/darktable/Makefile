@@ -1,6 +1,6 @@
 PORTNAME=	darktable
-PORTVERSION=	4.6.0
-PORTREVISION=	2
+PORTVERSION=	5.2.0
+PORTREVISION=	0
 CATEGORIES=	graphics
 MASTER_SITES=	https://github.com/darktable-org/${PORTNAME}/releases/download/release-${PORTVERSION:C/\.rc/rc/}/
 
@@ -43,9 +43,8 @@ LIB_DEPENDS=	libavif.so:graphics/libavif \
 		libwebp.so:graphics/webp
 
 USES=		cmake compiler:c++11-lib desktop-file-utils gl gnome jpeg \
-		llvm:15,build lua:54 perl5 pkgconfig sdl shebangfix sqlite \
+		llvm:build lua perl5 pkgconfig sdl shebangfix sqlite \
 		tar:xz xorg
-USE_GCC=	12
 USE_GL=		gl
 USE_GNOME=	cairo gtk30 intltool librsvg2 libxml2
 USE_LDCONFIG=	${PREFIX}/lib/${PORTNAME}
@@ -60,9 +59,9 @@ CMAKE_BOOL+=	BUILD_CMSTEST USE_AVIF USE_CAMERA_SUPPORT USE_HEIF \
 		USE_ISOBMFF USE_KWALLET USE_LUA USE_MAP USE_OPENEXR \
 		USE_OPENJPEG USE_WEBP RAWSPEED_ENABLE_LTO
 
-CFLAGS+=	-fopenmp -I${LOCALBASE}/include/Imath
-CXXFLAGS+=	-stdlib=libc++
-LDFLAGS+=	-L${LOCALBASE}/lib
+# darktable wraps pthread lock/release functions, causing false
+# compiler warnings from -Wthread-safety-analysis. Kill this warning.
+CFLAGS+=	-fopenmp -Wno-thread-safety-analysis
 
 WRKSRC=		${WRKDIR}/${PORTNAME}-${PORTVERSION:C/\.rc/~rc/}
 

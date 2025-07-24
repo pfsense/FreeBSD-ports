@@ -3,7 +3,7 @@
  * wg_api.inc
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2021-2024 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2021-2025 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2021 R. Christian McDonald (https://github.com/rcmcdonald91)
  * Copyright (c) 2021 Vajonam
  * All rights reserved.
@@ -120,7 +120,7 @@ function wg_get_running_config($extras = false, $json = false) {
 function wg_peer_get_array_idx($public_key, $tunnel_name) {
 	global $wgg;
 
-	foreach ((array) $wgg['peers'] as $peer_idx => $peer){
+	foreach (config_get_path('installedpackages/wireguard/peers/item', []) as $peer_idx => $peer){
 		if ($public_key == $peer['publickey'] && $tunnel_name == $peer['tun']) {
 			return $peer_idx;
 		}
@@ -243,10 +243,20 @@ function wg_interface_update_addresses($if_name, &$cmds = null) {
 		// Assigned tunnel interfaces are handled by pfSense and should be ignored here
 		if (!is_wg_tunnel_assigned($tunnel['name'])) {
 			// Get an array of the current addresses assigned to the tunnel interface
-			$current = pfSense_getall_interface_addresses($tunnel['name']);
+			$current = [];
+			$interface_addresses = pfSense_get_ifaddrs($tunnel['name']);
+			foreach (array_get_path($interface_addresses, 'addrs', []) as $addrs) {
+				$current[] = "{$addrs['addr']}/{$addrs['subnetbits']}";
+			}
+			foreach (array_get_path($interface_addresses, 'addrs6', []) as $addrs) {
+				$current[] = Net_IPv6::uncompress($addrs['addr']) . "/{$addrs['subnetbits']}";
+			}
 
 			// Get an array of the addresses to be assigned to the interface
 			$desired = array_map(function($x) {
+				if (is_ipaddrv6($x['address'])) {
+					$x['address'] = Net_IPv6::uncompress($x['address']);
+				}
 				return "{$x['address']}/{$x['mask']}"; 
 			}, $tunnel['addresses']['row']);
 
@@ -473,7 +483,7 @@ function wg_get_running_ifs() {
 function wg_get_configured_ifs() {
 	global $wgg;
 
-	return array_map(fn($x) => $x['name'], (array) $wgg['tunnels']);
+	return array_map(fn($x) => $x['name'], config_get_path('installedpackages/wireguard/tunnels/item', []));
 }
 
 function wg_ifconfig_if_group_addremove($if_name, $group, $remove = false, &$cmds = null) {
@@ -511,9 +521,9 @@ function wg_interface_update_groups($if_name, &$cmds = null) {
 
 		$res &= wg_ifconfig_if_group_addremove($if_name, 'wg', false, $cmds);
 
-		if (isset($wgg['config']['interface_group'])
-		    && (($wgg['config']['interface_group'] == 'none') || (($wgg['config']['interface_group'] == 'unassigned')
-		    && is_wg_tunnel_assigned($if_name)))) {
+		if ((config_get_path('installedpackages/wireguard/config/0/interface_group') == 'none') ||
+		    ((config_get_path('installedpackages/wireguard/config/0/interface_group') == 'unassigned') &&
+		    is_wg_tunnel_assigned($if_name))) {
 			// We don't want to add the tunnel to the WireGuard group...
 			return $res;
 		}
@@ -690,7 +700,7 @@ function next_wg_port() {
 		// Check to see if the port is already in use
 		$found = false;
 
-		foreach ((array) $wgg['tunnels'] as $tunnel) {
+		foreach (config_get_path('installedpackages/wireguard/tunnels/item', []) as $tunnel) {
 			if ($tunnel['listenport'] == $idx) {
 				$found = true;
 				break;
@@ -711,7 +721,7 @@ function next_wg_port() {
 function wg_tunnel_get_array_idx($tunnel_name) {
 	global $wgg;
 
-	foreach ((array) $wgg['tunnels'] as $tun_idx => $tunnel) {
+	foreach (config_get_path('installedpackages/wireguard/tunnels/item', []) as $tun_idx => $tunnel) {
 		if ($tunnel['name'] == $tunnel_name) {
 			return $tun_idx;
 		}
@@ -809,9 +819,7 @@ function wg_is_valid_tunnel($tunnel_name, $running_state = false) {
 
 // Checks if the service is or should be enabled
 function wg_is_service_enabled() {
-	global $wgg;
-
-	$enable = $wgg['config']['enable'];
+	$enable = config_get_path('installedpackages/wireguard/config/0/enable');
 
 	$is_enabled = (isset($enable) && (($enable === 'on') || $enable === 'yes'));
 
@@ -826,7 +834,7 @@ function is_wg_enabled() {
 
 	wg_globals();
 
-	foreach ((array) $wgg['tunnels'] as ['enabled' => $enabled]) {
+	foreach (config_get_path('installedpackages/wireguard/tunnels/item', []) as ['enabled' => $enabled]) {
 		if (isset($enabled) && $enabled == 'yes') {
 			// We found one, no need to keep checking
 			return true;
@@ -842,7 +850,7 @@ function is_wg_enabled() {
 function wg_is_wg_assigned($disabled = true) {
 	global $wgg;
 
-	foreach ((array) $wgg['tunnels'] as ['name' => $name]) {
+	foreach (config_get_path('installedpackages/wireguard/tunnels/item', []) as ['name' => $name]) {
 		if (is_wg_tunnel_assigned($name, $disabled)) {
 			// We found one, no need to keep checking
 			return true;
@@ -853,37 +861,31 @@ function wg_is_wg_assigned($disabled = true) {
 }
 
 function wg_peer_get_config_by_name($tunnel_name, $public_key) {
-	global $wgg;
-
 	$peer_idx = wg_peer_get_array_idx($public_key, $tunnel_name);
 
 	return wg_peer_get_config($peer_idx, false);
 }
 
 function wg_tunnel_get_config_by_name($tunnel_name) {
-	global $wgg;
-
 	$tun_idx = wg_tunnel_get_array_idx($tunnel_name);
 
 	return wg_tunnel_get_config($tun_idx, false);
 }
 
 function wg_tunnel_get_config($tun_idx, $return_empty = false) {
-	global $wgg;
-
 	wg_globals();
 
 	$tunnel = array();
 
-	$valid = (isset($wgg['tunnels'][$tun_idx]) && is_array($wgg['tunnels'][$tun_idx]));
+	$valid = (is_numericint($tun_idx) && is_array(config_get_path("installedpackages/wireguard/tunnels/item/{$tun_idx}")));
 
 	$is_new = !$valid;
 
-	$tun_idx = !$valid ? count($wgg['tunnels']) : $tun_idx;
+	$tun_idx = !$valid ? count(config_get_path('installedpackages/wireguard/tunnels/item', [])) : $tun_idx;
 
-	$tunnel = $wgg['tunnels'][$tun_idx];
+	$tunnel = $valid ? config_get_path("installedpackages/wireguard/tunnels/item/{$tun_idx}") : [];
 
-	wg_init_config_arr($tunnel, array('addresses', 'row'));
+	array_init_path($tunnel, 'addresses/row');
 
 	return ($valid || $return_empty) ? array($tun_idx, $tunnel, $is_new) : false;
 }
@@ -924,15 +926,15 @@ function wg_peer_get_config($peer_idx, $return_empty = false) {
 
 	$peer = array();
 
-	$valid = (isset($wgg['peers'][$peer_idx]) && is_array($wgg['peers'][$peer_idx]));
+	$valid = (is_numericint($peer_idx) && is_array(config_get_path("installedpackages/wireguard/peers/item/{$peer_idx}")));
 
 	$is_new = !$valid;
 
-	$peer_idx = !$valid ? count($wgg['peers']) + 1 : $peer_idx;
+	$peer_idx = !$valid ? count(config_get_path('installedpackages/wireguard/peers/item', [])) + 1 : $peer_idx;
 
-	$peer = $wgg['peers'][$peer_idx];
+	$peer = $valid ? config_get_path("installedpackages/wireguard/peers/item/{$peer_idx}") : [];
 
-	wg_init_config_arr($peer, array('allowedips', 'row'));
+	array_init_path($peer, 'allowedips/row');
 
 	return ($valid || $return_empty) ? array($peer_idx, $peer, $is_new) : false;
 }
@@ -941,14 +943,12 @@ function wg_peer_get_config($peer_idx, $return_empty = false) {
  * This returns an array of peer configs for a given tunnel
  */
 function wg_tunnel_get_peers_config($tunnel_name) {
-	global $wgg;
-
 	wg_globals();
 
 	$ret_peers = array();
 
 	// Look through array of peers for matching tunnel name
-	foreach ((array) $wgg['peers'] as $peer_idx => $peer) {
+	foreach (config_get_path('installedpackages/wireguard/peers/item', []) as $peer_idx => $peer) {
 		if ($peer['tun'] == $tunnel_name) {
 			$ret_peers[] = wg_peer_get_config($peer_idx, false);
 		}
@@ -999,8 +999,6 @@ function wg_tunnel_get_peers_config_keys($tunnel_name) {
  * Return WireGuard tunnel networks for a given address family
  */
 function wg_get_tunnel_networks($family = 'both') {
-	global $wgg;
-
 	$wg_tunnel_networks = array();
 
 	// Bail out early if WireGuard is not enabled...
@@ -1008,7 +1006,7 @@ function wg_get_tunnel_networks($family = 'both') {
 		return $wg_tunnel_networks;
 	}
 
-	foreach ((array) $wgg['tunnels'] as $tunnel) {
+	foreach (config_get_path('installedpackages/wireguard/tunnels/item', []) as $tunnel) {
 		if (!is_array($tunnel['addresses'])
 		    || !is_array($tunnel['addresses']['row']))
 				continue;

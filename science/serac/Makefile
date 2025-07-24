@@ -1,6 +1,6 @@
 PORTNAME=	serac
 PORTVERSION=	g20220823
-PORTREVISION=	5
+PORTREVISION=	6
 CATEGORIES=	science
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -9,6 +9,8 @@ WWW=		https://github.com/LLNL/serac
 
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE
+
+BROKEN=		fails to build with axom-0.10.1, see https://github.com/LLNL/serac/issues/1313
 
 LIB_DEPENDS=	libaxom.so:science/axom \
 		libconduit.so:science/conduit \

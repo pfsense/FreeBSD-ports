@@ -1,7 +1,7 @@
 PORTNAME=	notekit
 PORTVERSION=	0.2.0
 DISTVERSIONPREFIX=	v
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	deskutils
 
 MAINTAINER=	danfe@FreeBSD.org
@@ -15,7 +15,7 @@ LIB_DEPENDS=	libfontconfig.so:x11-fonts/fontconfig \
 		libjsoncpp.so:devel/jsoncpp
 
 USES=		cmake compiler:c++17-lang gnome pkgconfig
-USE_GNOME=	gdkpixbuf2 gtkmm30 gtksourceviewmm3
+USE_GNOME=	gdkpixbuf gtkmm30 gtksourceviewmm3
 USE_GITHUB=	yes
 GH_ACCOUNT=	blackhole89
 

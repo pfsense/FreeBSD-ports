@@ -4,7 +4,7 @@
  *
  * part of pfSense (https://www.pfsense.org)
  * Copyright (c) 2021 R. Christian McDonald (https://github.com/rcmcdonald91)
- * Copyright (c) 2022-2024 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2022-2025 Rubicon Communications, LLC (Netgate)
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the 'License');
@@ -68,7 +68,7 @@ $wgg = array(
 					'tunnels' => "{$g['tmp_path']}/.wireguard_tunnel.apply"),
 	'pkg_name'		=> 'pfSense-pkg-WireGuard',
 	'conf_path'		=> '/usr/local/etc/wireguard',
-	'xml_path'		=> array('installedpackages', 'wireguard'),
+	'xml_path'		=> 'installedpackages/wireguard',
 	'if_prefix'		=> 'tun_wg',
 	'ifgroupentry'		=> array(
 					'ifname' => 'WireGuard', 
@@ -114,7 +114,7 @@ $wgg = array(
 	'default_port'				=> 51820,
 	'default_resolve_interval'		=> 300,
 	'default_widget_activity_threshold'	=> 120,
-	'default_widget_refresh_interval'	=> 1,
+	'default_widget_refresh_interval'	=> 20,
 	'max_port'				=> 65535,
 	'max_tunnels'				=> 32768
 );
@@ -125,7 +125,7 @@ $wgg['wg_classes']		= "{$wgg['wg_pkg_root']}/classes";
 $wgg['wg_includes']		= "{$wgg['wg_pkg_root']}/includes";
 
 $wgg['conf_paths_to_clean']	= array($wgg['conf_path'], '/etc/wireguard', '/etc/wg');
-$wgg['xml_paths_to_clean']	= array($wgg['xml_path'], array('wireguard'));
+$wgg['xml_paths_to_clean']	= [$wgg['xml_path'], 'wireguard'];
 
 $wgg['depends_names']		= array(
 					$wgg['pkg_name'],
@@ -183,25 +183,6 @@ function array_unset_value(&$array, $parents) {
 }
 
 /*
- * This is a generalized implementation of init_config_arr
- */
-function wg_init_config_arr(&$a_config, $keys) {
-	$c = &$a_config;
-
-	if (!is_array($keys)) {
-		return null;
-	}
-
-	foreach ($keys as $k) {
-		if (!is_array($c[$k])) {
-			$c[$k] = array();
-		}
-
-		$c = &$c[$k];
-	}
-}
-
-/*
  * A wrapper for write_config() with the ability to easily toggle ACB on or off
  * 
  * Ephemeral changes to the config should not hammer the ACB system. Only changes
@@ -222,22 +203,10 @@ function wg_write_config($desc = 'unknown', $do_acb = false, $backup = true, $wr
  * This populates the $wgg with the latest information from config.xml
  */
 function wg_globals() {
-	global $config, $wgg;
+	global $wgg;
 
 	// Reload config.xml to get any recent changes
-	$config = parse_config(true);
-
-	// An array of configuration paths we need
-	$conf_paths 	= array(
-				'config' => array_merge($wgg['xml_path'], array('config', 0)),
-				'tunnels' => array_merge($wgg['xml_path'], array('tunnels', 'item')),
-				'peers' => array_merge($wgg['xml_path'], array('peers', 'item')));
-
-	// Need to initialize these config paths as arrays and then assign by reference to $wgg
-	foreach ($conf_paths as $key => $path) {
-		wg_init_config_arr($config, $path);
-		$wgg[$key] = &array_get_value($config, $path);
-	}
+	config_read_file(false, true);
 }
 
 // Call this often to read the latest configuration information

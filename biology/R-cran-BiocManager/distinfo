@@ -1,3 +1,3 @@
-TIMESTAMP = 1715459288
-SHA256 (BiocManager_1.30.23.tar.gz) = f7b45dbc49c97b2e6ec4b96ec1d472c6f1a5ad9bc0f933eea4c3ebc90dd8f34c
-SIZE (BiocManager_1.30.23.tar.gz) = 589753
+TIMESTAMP = 1750881870
+SHA256 (BiocManager_1.30.26.tar.gz) = db9a67556f8f46f41a86dc2abb2c19d354cdf537d4a1b48132896946eb45a23e
+SIZE (BiocManager_1.30.26.tar.gz) = 594489

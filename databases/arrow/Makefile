@@ -1,6 +1,5 @@
 PORTNAME=	arrow
-DISTVERSION=	15.0.2
-PORTREVISION=	1
+DISTVERSION=	20.0.0
 CATEGORIES=	databases
 MASTER_SITES=	APACHE/${PORTNAME}/${PORTNAME}-${DISTVERSION} \
 		https://github.com/apache/orc/archive/rel/:orc
@@ -10,24 +9,31 @@ EXTRACT_ONLY=	apache-${PORTNAME}-${DISTVERSION}${EXTRACT_SUFX}
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Columnar in-memory analytics layer for big data
-WWW=		https://arrow.apache.org/
+WWW=		https://arrow.apache.org \
+		https://github.com/apache/arrow
 
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/../LICENSE.txt
 
 LIB_DEPENDS=	libboost_system.so:devel/boost-libs
 
-USES=		cmake compiler:c++17-lang localbase pkgconfig python:build
+USES=		cmake compiler:c++17-lang localbase pkgconfig python:build,test
 USE_LDCONFIG=	yes
 
 USE_GITHUB=	nodefault
 GH_ACCOUNT=	apache
+#GH_TUPLE=	apache:arrow-testing:d2a1371:arrow_testing/testing \
+		apache:parquet-testing:c7cf137:parquet_testing/cpp/submodules/parquet-testing
 
 WRKSRC_SUBDIR=	cpp
+
+PLIST_SUB+=	LIBVERSION=2000
 
 CMAKE_ARGS=	-DCMAKE_CXX_STANDARD=17 -DARROW_SIMD_LEVEL=NONE -DARROW_RUNTIME_SIMD_LEVEL=NONE \
 		-DPython3_EXECUTABLE=${PYTHON_CMD}
 CMAKE_OFF=	ARROW_BUILD_STATIC ARROW_WITH_BACKTRACE ARROW_BUILD_TESTS ARROW_BUILD_BENCHMARKS
+
+BINARY_ALIAS=	python=${PYTHON_CMD} # only for tests
 
 OPTIONS_GROUP=			COMPRESSION COMPONENTS # components are listed in cpp/cmake_modules/DefineOptions.cmake
 OPTIONS_GROUP_COMPRESSION=	BROTLI BZ2 LZ4 SNAPPY ZLIB ZSTD
@@ -91,7 +97,6 @@ FLIGHT_LIB_DEPENDS=		libgflags.so:devel/gflags \
 				libgrpc.so:devel/grpc \
 				libre2.so:devel/re2
 FLIGHT_IMPLIES=			IPC COMPUTE # see https://github.com/apache/arrow/issues/40766
-FLIGHT_BROKEN=			configure breaks: Could not find a package configuration file provided by "re2"
 
 GANDIVA_DESC=			Gandiva libraries
 GANDIVA_USES=			llvm:17,lib ssl
@@ -179,13 +184,6 @@ TESTING_DESC=			Arrow testing libraries
 TESTING_CMAKE_BOOL=		ARROW_TESTING
 TESTING_LIB_DEPENDS=		libgtest.so:devel/googletest
 
-# workaround for https://bugs.freebsd.org/bugzilla/show_bug.cgi?id=277953
-OPSYS!=		uname -s # HACK: OPSYS is defined in bsd.port.options.mk which has to be later
-OSVERSION!=	awk '/^\#define[[:blank:]]__FreeBSD_version/ {print $$3}' < ${CROSS_SYSROOT}/usr/include/sys/param.h # HACK: same as above
-.if ${OPSYS} == FreeBSD && ${OSVERSION} < 1303000
-TESTING_BROKEN=	configure fails because GTest built with C++ level <17 isn't compatible with C++17 used in arrow
-.endif
-
 # form OPTIONS_DEFAULT
 .for opt in ${OPTIONS_GROUP_COMPONENTS}
 .  if "${${opt}_BROKEN}" == ""
@@ -226,10 +224,12 @@ post-install:
 		-e 's|"true"|"ON"|; s|"false"|"OFF"|' \
 		${STAGEDIR}${PREFIX}/lib/cmake/Arrow/ArrowOptions.cmake
 
-do-test: # tests fail to compile: https://issues.apache.org/jira/browse/ARROW-12625
+do-test:
 	@cd ${BUILD_WRKSRC} && \
 		${SETENV} ${CONFIGURE_ENV} ${CMAKE_BIN} ${CMAKE_ARGS} -DARROW_BUILD_TESTS:BOOL=ON ${CMAKE_SOURCE_PATH} && \
 		${SETENV} ${MAKE_ENV} ${MAKE_CMD} ${MAKE_ARGS} ${ALL_TARGET} && \
 		${SETENV} ${MAKE_ENV} ${MAKE_CMD} ${MAKE_ARGS} test
+
+# tests as of : 89% tests passed, 10 tests failed out of 90, see https://github.com/apache/arrow/issues/45604
 
 .include <bsd.port.mk>

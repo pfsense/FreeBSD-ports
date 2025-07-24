@@ -1,5 +1,5 @@
 PORTNAME=	google-cloud-resource_manager
-PORTVERSION=	0.38.0
+PORTVERSION=	0.39.0
 CATEGORIES=	net rubygems
 MASTER_SITES=	RG
 

@@ -1,8 +1,11 @@
 PORTNAME=	gerbera
 DISTVERSIONPREFIX=	v
-DISTVERSION=	2.1.0
+DISTVERSION=	2.5.0
 PORTREVISION=	1
 CATEGORIES=	net multimedia
+
+PATCH_SITES=	https://github.com/gerbera/gerbera/commit/
+PATCHFILES=	2ff1b35372854b5856f244fe1277abb987c7418c.patch:-p1
 
 MAINTAINER=	diizzy@FreeBSD.org
 COMMENT=	Media server compatible with DLNA and UPnP
@@ -59,9 +62,9 @@ DUKTAPE_CMAKE_BOOL=	WITH_JS
 EXIV2_LIB_DEPENDS=	libexiv2.so:graphics/exiv2
 EXIV2_CMAKE_BOOL=	WITH_EXIV2
 
-FFMPEGTHUMBNAILER_IMPLIES=	FFMPEG
 FFMPEGTHUMBNAILER_LIB_DEPENDS=	libffmpegthumbnailer.so:multimedia/ffmpegthumbnailer
 FFMPEGTHUMBNAILER_CMAKE_BOOL=	WITH_FFMPEGTHUMBNAILER
+FFMPEGTHUMBNAILER_IMPLIES=	FFMPEG
 
 FFMPEG_LIB_DEPENDS=	libavformat.so:multimedia/ffmpeg \
 			libavutil.so:multimedia/ffmpeg
@@ -72,16 +75,17 @@ LIBNPUPNP_CMAKE_BOOL=	WITH_NPUPNP
 
 LIBUPNP_LIB_DEPENDS=	libupnp.so:devel/upnp
 
-MATROSKA_LIB_DEPENDS=	libmatroska.so:multimedia/libmatroska
+MATROSKA_LIB_DEPENDS=	libebml.so:textproc/libebml \
+			libmatroska.so:multimedia/libmatroska
 MATROSKA_CMAKE_BOOL=	WITH_MATROSKA
 
 TAGLIB_LIB_DEPENDS=	libtag.so:audio/taglib
 TAGLIB_CMAKE_BOOL=	WITH_TAGLIB
 
-TEST_IMPLIES=		CURL DUKTAPE
 TEST_BUILD_DEPENDS=	googletest>=0:devel/googletest
 TEST_CMAKE_BOOL=	WITH_TESTS
 TEST_TEST_TARGET=	test
+TEST_IMPLIES=		CURL DUKTAPE
 
 post-install:
 	${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/gerbera

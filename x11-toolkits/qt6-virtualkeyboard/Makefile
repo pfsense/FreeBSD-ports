@@ -13,5 +13,6 @@ LIB_DEPENDS=	libhunspell-1.7.so:textproc/hunspell \
 USES=		cmake compiler:c++17-lang gl pkgconfig qt-dist:6
 USE_GL=		opengl
 USE_QT=		base declarative svg
+USE_LDCONFIG=	${PREFIX}/${QT_LIBDIR_REL}
 
 .include <bsd.port.mk>

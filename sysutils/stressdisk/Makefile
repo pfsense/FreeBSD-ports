@@ -1,7 +1,7 @@
 PORTNAME=	stressdisk
 DISTVERSIONPREFIX=	v
 DISTVERSION=	1.0.13
-PORTREVISION=	8
+PORTREVISION=	15
 CATEGORIES=	sysutils
 
 MAINTAINER=	eduardo@FreeBSD.org
@@ -10,6 +10,8 @@ WWW=		https://github.com/ncw/stressdisk
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/COPYING
+
+BROKEN_FreeBSD_15=	error: SHT_STRTAB string table section [index 3] is non-null terminated, https://bugs.freebsd.org/bugzilla/show_bug.cgi?id=270962
 
 USES=		go:modules
 GO_MODULE=	github.com/ncw/stressdisk

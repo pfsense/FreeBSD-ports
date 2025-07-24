@@ -8,6 +8,7 @@ share/icons/hicolor/scalable/apps/lxqt-archiver.svg
 %%DATADIR%%/translations/lxqt-archiver_ca.qm
 %%DATADIR%%/translations/lxqt-archiver_cs.qm
 %%DATADIR%%/translations/lxqt-archiver_cy.qm
+%%DATADIR%%/translations/lxqt-archiver_da.qm
 %%DATADIR%%/translations/lxqt-archiver_de.qm
 %%DATADIR%%/translations/lxqt-archiver_el.qm
 %%DATADIR%%/translations/lxqt-archiver_en_GB.qm
@@ -15,6 +16,7 @@ share/icons/hicolor/scalable/apps/lxqt-archiver.svg
 %%DATADIR%%/translations/lxqt-archiver_et.qm
 %%DATADIR%%/translations/lxqt-archiver_fi.qm
 %%DATADIR%%/translations/lxqt-archiver_fr.qm
+%%DATADIR%%/translations/lxqt-archiver_fur.qm
 %%DATADIR%%/translations/lxqt-archiver_gl.qm
 %%DATADIR%%/translations/lxqt-archiver_he.qm
 %%DATADIR%%/translations/lxqt-archiver_hr.qm
@@ -22,6 +24,8 @@ share/icons/hicolor/scalable/apps/lxqt-archiver.svg
 %%DATADIR%%/translations/lxqt-archiver_id.qm
 %%DATADIR%%/translations/lxqt-archiver_it.qm
 %%DATADIR%%/translations/lxqt-archiver_ja.qm
+%%DATADIR%%/translations/lxqt-archiver_ka.qm
+%%DATADIR%%/translations/lxqt-archiver_kab.qm
 %%DATADIR%%/translations/lxqt-archiver_ko.qm
 %%DATADIR%%/translations/lxqt-archiver_lg.qm
 %%DATADIR%%/translations/lxqt-archiver_lt.qm

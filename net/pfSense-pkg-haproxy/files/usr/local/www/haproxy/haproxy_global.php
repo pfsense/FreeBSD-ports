@@ -3,7 +3,7 @@
  * haproxy_global.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2009-2024 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2009-2025 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2013 PiBa-NL
  * Copyright (C) 2008 Remco Hoef <remcoverhoef@pfsense.com>
  * All rights reserved.
@@ -112,9 +112,9 @@ if ($_POST) {
 			$input_errors[] = "The local stats sticktable refresh time should be numeric or empty.";
 
 		if (!$input_errors) {
-			$haproxycfg = config_get_path('installedpackages/haproxy');
-			$haproxycfg['email_mailers']['item'] = $a_mailers;
-			$haproxycfg['dns_resolvers']['item'] = $a_resolvers;
+			$haproxycfg = config_get_path('installedpackages/haproxy', []);
+			array_set_path($haproxycfg, 'email_mailers/item', $a_mailers);
+			array_set_path($haproxycfg, 'dns_resolvers/item', $a_resolvers);
 			$haproxycfg['enable'] = $_POST['enable'] ? true : false;
 			$haproxycfg['terminate_on_reload'] = $_POST['terminate_on_reload'] ? true : false;
 			$haproxycfg['maxconn'] = $_POST['maxconn'] ? $_POST['maxconn'] : false;

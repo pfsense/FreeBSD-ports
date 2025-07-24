@@ -1,12 +1,14 @@
 PORTNAME=	primme
-DISTVERSION=	3.2.2
+DISTVERSION=	3.2.3
+PORTREVISION=	1
 CATEGORIES=	math python
 MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	PRIMME wrapper for Python
-WWW=		https://www.cs.wm.edu/~andreas/software/
+WWW=		https://www.cs.wm.edu/~andreas/software/ \
+		https://github.com/primme/primme
 
 LICENSE=	BSD3CLAUSE
 
@@ -23,13 +25,13 @@ RUN_DEPENDS=	${PYNUMPY} \
 TEST_DEPENDS=	${PYTHON_PKGNAMEPREFIX}nose>=0:devel/py-nose@${PY_FLAVOR}
 
 USES=		fortran gmake localbase:ldflags python shebangfix
-USE_PYTHON=	pep517 cython autoplist
+USE_PYTHON=	autoplist cython3 pep517
 
 TEST_TARGET=	test
 
 BINARY_ALIAS=	python2=${PYTHON_CMD}
 
 post-install:
-	${STRIP_CMD} ${STAGEDIR}${PYTHON_SITELIBDIR}/primme${PYTHON_EXT_SUFFIX}.so
+	${STRIP_CMD} ${STAGEDIR}${PYTHON_SITELIBDIR}/primme${PYTHON_TAG}.so
 
 .include <bsd.port.mk>

@@ -1,5 +1,5 @@
 PORTNAME=	libnotify
-DISTVERSION=	0.8.3
+DISTVERSION=	0.8.6
 CATEGORIES=	devel gnome
 MASTER_SITES=	GNOME
 
@@ -10,8 +10,8 @@ WWW=		https://gitlab.gnome.org/GNOME/libnotify
 LICENSE=	LGPL21
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-USES=		gmake gnome libtool meson pkgconfig tar:xz
-USE_GNOME=	gdkpixbuf2 glib20 introspection:build
+USES=		gnome meson pkgconfig tar:xz
+USE_GNOME=	gdkpixbuf glib20 introspection:build
 USE_LDCONFIG=	yes
 
 MESON_ARGS=	-Ddocbook_docs=disabled \
@@ -22,7 +22,8 @@ OPTIONS_DEFINE=		MANPAGES
 OPTIONS_DEFAULT=	MANPAGES
 OPTIONS_SUB=		yes
 
-MANPAGES_BUILD_DEPENDS=	docbook-xsl-ns>=0:textproc/docbook-xsl-ns
+MANPAGES_BUILD_DEPENDS=	docbook-xsl>0:textproc/docbook-xsl \
+			docbook-xsl-ns>0:textproc/docbook-xsl-ns
 MANPAGES_USE=		GNOME=libxslt:build
 MANPAGES_MESON_TRUE=	man
 

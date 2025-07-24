@@ -1,9 +1,10 @@
 PORTNAME=	maturin
-DISTVERSIONPREFIX=	v
-DISTVERSION=	1.6.0
-PORTREVISION=	1
+DISTVERSION=	1.9.1
 CATEGORIES=	devel python
+MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
+# Workaround to use both the PyPI tarball and the cargo crates.
+DISTFILES=	${DISTNAME}${EXTRACT_SUFX}
 
 MAINTAINER=	kai@FreeBSD.org
 COMMENT=	Build and publish crates with pyo3, rust-cpython and cffi bindings
@@ -16,11 +17,12 @@ LICENSE_FILE_MIT=	${WRKSRC}/license-mit
 
 BUILD_DEPENDS=	${PY_SETUPTOOLS} \
 		${PYTHON_PKGNAMEPREFIX}setuptools-rust>=1.4.0:devel/py-setuptools-rust@${PY_FLAVOR} \
+		${PY_TOMLI} \
 		${PYTHON_PKGNAMEPREFIX}wheel>=0.36.2:devel/py-wheel@${PY_FLAVOR}
+LIB_DEPENDS=	libzstd.so:archivers/zstd
+RUN_DEPENDS=	${PY_TOMLI}
 
 USES=		cargo python
-USE_GITHUB=	yes
-GH_ACCOUNT=	PyO3
 USE_PYTHON=	autoplist concurrent pep517
 
 CARGO_BUILD=	no
@@ -40,18 +42,7 @@ CARGO_BUILD_ARGS=	--no-default-features \
 			--features=upload,log,human-panic
 .endif
 
-.include <bsd.port.pre.mk>
-
-.if ${PYTHON_REL} < 31100
-BUILD_DEPENDS+=	${PYTHON_PKGNAMEPREFIX}tomli>=1.1.0:textproc/py-tomli@${PY_FLAVOR}
-RUN_DEPENDS+=	${PYTHON_PKGNAMEPREFIX}tomli>=1.1.0:textproc/py-tomli@${PY_FLAVOR}
-.endif
-
 post-patch:
-	@${RM} ${WRKSRC}/pyproject.toml
 	${REINPLACE_CMD} 's|%%PYTHON_VER%%|${PYTHON_VER}|' ${WRKSRC}/maturin/__init__.py
 
-post-install:
-	${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/maturin
-
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

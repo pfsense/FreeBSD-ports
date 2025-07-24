@@ -3,7 +3,7 @@
 # pfSense-repo-setup
 #
 # part of pfSense (https://www.pfsense.org)
-# Copyright (c) 2015-2024 Rubicon Communications, LLC (Netgate)
+# Copyright (c) 2015-2025 Rubicon Communications, LLC (Netgate)
 # All rights reserved.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -91,6 +91,19 @@ get_repo_name() {
 	/bin/cat "${repo_name}"
 }
 
+get_repoc_feat() {
+	local _err _feat
+
+	_feat="$("/usr/local/sbin/${PRODUCT}-repoc-static" -f 2>&1)"
+	_err="${?}"
+	if [ "${_err}" -ne 0 ] || [ -z "${_feat}" ]; then
+		echo -n ""
+		return "${_err}"
+	fi
+	echo -n "${_feat}"
+	return 0
+}
+
 validate_repo_conf() {
 	local default_file=$(ls -1 ${PLUS_CERT_BASE}/*.default 2>/dev/null | tail -n 1)
 	local default="${PLUS_CERT_BASE}/${PRODUCT}-repo-stable.conf"
@@ -135,42 +148,70 @@ validate_repo_conf() {
 }
 
 abi_setup() {
-	local _arch="$(uname -p)"
-	local _freebsd_version="$(uname -r)"
-	local _repo_conf_file="$(readlink ${PFSENSE_REPO_CONF})"
+	local _arch _cur_abi _cur_altabi _freebsd_version _new_pkg _pkg_ver _repo_conf_file
+	unset _arch _cur_abi _cur_altabi _freebsd_version _new_pkg _pkg_ver _repo_conf_file
 
-	CUR_ABI="FreeBSD:${_freebsd_version%%.*}:${_arch}"
-	CUR_ALTABI="freebsd:${_freebsd_version%%.*}"
+	_arch="$(uname -p)"
+	_freebsd_version="$(uname -r)"
+	_repo_conf_file="$(readlink ${PFSENSE_REPO_CONF})"
 
-	if [ "${_arch}" = "armv6" ]; then
-		CUR_ALTABI="${CUR_ALTABI}:${_arch}:32:el:eabi:hardfp"
-	elif [ "${_arch}" = "armv7" ]; then
-		CUR_ALTABI="${CUR_ALTABI}:${_arch}:32:el:eabi:softfp"
-	elif [ "${_arch}" = "aarch64" ]; then
-		CUR_ALTABI="${CUR_ALTABI}:${_arch}:64"
-	elif [ "${_arch}" = "i386" ]; then
-		CUR_ALTABI="${CUR_ALTABI}:x86:32"
-	else
-		CUR_ALTABI="${CUR_ALTABI}:x86:64"
-	fi
+	_cur_abi="FreeBSD:${_freebsd_version%%.*}:${_arch}"
+	_cur_altabi="freebsd:${_freebsd_version%%.*}"
+
+	case "${_arch}" in
+	"aarch64")
+		_cur_altabi="${_cur_altabi}:${_arch}:64"
+		;;
+	"amd64")
+		_cur_altabi="${_cur_altabi}:x86:64"
+		;;
+	"armv6")
+		_cur_altabi="${_cur_altabi}:${_arch}:32:el:eabi:hardfp"
+		;;
+	"armv7")
+		_cur_altabi="${_cur_altabi}:${_arch}:32:el:eabi:softfp"
+		;;
+	*)
+		return 1
+		;;
+	esac
 
 	if [ -f ${_repo_conf_file%%.conf}.abi ]; then
-		ABI=$(cat ${_repo_conf_file%%.conf}.abi)
+		ABI="$(cat "${_repo_conf_file%%.conf}.abi")"
 	else
-		ABI=${CUR_ABI}
+		ABI="${_cur_abi}"
 	fi
 
 	if [ -f ${_repo_conf_file%%.conf}.altabi ]; then
-		ALTABI=$(cat ${_repo_conf_file%%.conf}.altabi)
+		ALTABI="$(cat "${_repo_conf_file%%.conf}.altabi")"
 	else
-		ALTABI=${CUR_ALTABI}
+		ALTABI="${_cur_altabi}"
 	fi
 
-	# Make sure pkg.conf is set properly so GUI can work
-	cat << EOF > "${PKG_CONF}"
+	OSVERSION="$(echo "${ABI}" | cut -f2 -d:)00000"
+
+	/bin/rm -f "${PKG_CONF}" 2> /dev/null
+	/usr/bin/touch "${PKG_CONF}" 2> /dev/null
+
+	#
+	# Make sure pkg.conf is set properly so GUI can work.
+	# Do not set the ALTABI for the new pkg (>= 2.0.6).
+        # Use ABI and OSVERSION instead.
+	#
+	_pkg_ver="$(_pkg query %v pkg)"
+	_new_pkg="$(_pkg version -t 2.0.6 "${_pkg_ver}")"
+	if [ -n "${_new_pkg}" ] && [ "${_new_pkg}" = ">" ]; then
+		cat << EOF > "${PKG_CONF}"
 ABI=${ABI}
 ALTABI=${ALTABI}
 EOF
+	else
+		cat << EOF > "${PKG_CONF}"
+ABI=${ABI}
+OSVERSION=${OSVERSION}
+EOF
+	fi
+
 	if [ -n "${dbdir}" ] && [ -n "${reposdir}" ]; then
 			cat << EOF >> ${PKG_CONF}""
 PKG_DBDIR=${dbdir}
@@ -207,12 +248,12 @@ EOF
 	err=0
 
 	local _pkg_abi=$(_pkg query %q pkg)
-	if [ "${CUR_ABI}" != "${_pkg_abi}" ] && [ "${_pkg_abi}" != "${ABI}" ]; then
+	if [ "${_cur_abi}" != "${_pkg_abi}" ] && [ "${_pkg_abi}" != "${ABI}" ]; then
 		# Upgrade pkg
 		err=11
 	fi
 
-	if [ "${CUR_ABI}" != "${ABI}" ] && [ "${CUR_ABI}" != "${ALTABI}" ]; then
+	if [ "${_cur_abi}" != "${ABI}" ] && [ "${_cur_abi}" != "${ALTABI}" ]; then
 		# Set NEW_MAJOR
 		if [ "${err}" -eq 11 ]; then
 			err=13
@@ -226,18 +267,15 @@ EOF
 
 
 pfSense_repo_setup() {
-	local _feat _fstyle _repoc_args
+	local _fstyle _repoc_args
 
 	cp "${PFSENSE_REPO_CONF}" "/tmp/${PRODUCT}.conf.copy"
 
 	if [ -z "${NOUPDATE}" ]; then
 		_repoc_args=""
-		_feat="$("/usr/local/sbin/${PRODUCT}-repoc-static" -f 2>&1)"
-		if [ "${?}" -eq 0 ] && [ -n "${_feat}" ]; then
-			_fstyle="$(echo -n "${_feat}" | /usr/bin/grep -c "repodir-new-fstyle")"
-			[ "${_fstyle}" = "1" ] && \
-			    _repoc_args="${_repoc_args} -N"
-		fi
+		_fstyle="$(get_repoc_feat | /usr/bin/grep -c "repodir-new-fstyle")"
+		[ "${?}" -eq 0 ] && [ "${_fstyle}" = "1" ] && \
+		    _repoc_args="${_repoc_args} -N"
 		# Fetch the repository settings.
 		if ! "/usr/local/sbin/${PRODUCT}-repoc-static" $_repoc_args; then
 			echo "failed to update the repository settings!!!"

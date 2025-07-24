@@ -1,11 +1,12 @@
 PORTNAME=	octosql
 DISTVERSIONPREFIX=	v
 DISTVERSION=	0.13.0
+PORTREVISION=	7
 CATEGORIES=	databases
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	OctoSQL is a query tool for databases, file formats, etc
-WWW=		https://github.com/cube2222/octosql/
+WWW=		https://github.com/cube2222/octosql
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE

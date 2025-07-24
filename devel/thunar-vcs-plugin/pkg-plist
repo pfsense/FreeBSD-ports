@@ -1,6 +1,8 @@
 lib/thunarx-3/thunar-vcs-plugin.so
 %%GIT%%libexec/tvp-git-helper
 %%SUBVERSION%%libexec/tvp-svn-helper
+share/icons/hicolor/16x16/apps/git.png
+share/icons/hicolor/16x16/apps/subversion.png
 share/icons/hicolor/24x24/apps/git.png
 share/icons/hicolor/24x24/apps/subversion.png
 share/icons/hicolor/48x48/apps/git.png
@@ -23,7 +25,11 @@ share/icons/hicolor/48x48/apps/subversion.png
 %%NLS%%share/locale/he/LC_MESSAGES/thunar-vcs-plugin.mo
 %%NLS%%share/locale/hr/LC_MESSAGES/thunar-vcs-plugin.mo
 %%NLS%%share/locale/hu/LC_MESSAGES/thunar-vcs-plugin.mo
+%%NLS%%share/locale/hy_AM/LC_MESSAGES/thunar-vcs-plugin.mo
+%%NLS%%share/locale/hye/LC_MESSAGES/thunar-vcs-plugin.mo
+%%NLS%%share/locale/hye_RU/LC_MESSAGES/thunar-vcs-plugin.mo
 %%NLS%%share/locale/id/LC_MESSAGES/thunar-vcs-plugin.mo
+%%NLS%%share/locale/ie/LC_MESSAGES/thunar-vcs-plugin.mo
 %%NLS%%share/locale/is/LC_MESSAGES/thunar-vcs-plugin.mo
 %%NLS%%share/locale/it/LC_MESSAGES/thunar-vcs-plugin.mo
 %%NLS%%share/locale/ko/LC_MESSAGES/thunar-vcs-plugin.mo
@@ -36,9 +42,12 @@ share/icons/hicolor/48x48/apps/subversion.png
 %%NLS%%share/locale/pl/LC_MESSAGES/thunar-vcs-plugin.mo
 %%NLS%%share/locale/pt/LC_MESSAGES/thunar-vcs-plugin.mo
 %%NLS%%share/locale/pt_BR/LC_MESSAGES/thunar-vcs-plugin.mo
+%%NLS%%share/locale/ro/LC_MESSAGES/thunar-vcs-plugin.mo
 %%NLS%%share/locale/ru/LC_MESSAGES/thunar-vcs-plugin.mo
 %%NLS%%share/locale/sk/LC_MESSAGES/thunar-vcs-plugin.mo
 %%NLS%%share/locale/sl/LC_MESSAGES/thunar-vcs-plugin.mo
+%%NLS%%share/locale/sq/LC_MESSAGES/thunar-vcs-plugin.mo
+%%NLS%%share/locale/sr/LC_MESSAGES/thunar-vcs-plugin.mo
 %%NLS%%share/locale/sv/LC_MESSAGES/thunar-vcs-plugin.mo
 %%NLS%%share/locale/th/LC_MESSAGES/thunar-vcs-plugin.mo
 %%NLS%%share/locale/tr/LC_MESSAGES/thunar-vcs-plugin.mo

@@ -1,6 +1,5 @@
 PORTNAME=	links
-PORTVERSION=	2.29
-PORTREVISION=	5
+PORTVERSION=	2.30
 PORTEPOCH=	1
 CATEGORIES=	www
 MASTER_SITES=	http://links.twibright.com/download/
@@ -18,7 +17,6 @@ USES=		cpe localbase:ldflags ssl tar:bz2
 CPE_VENDOR=	twibright
 
 GNU_CONFIGURE=	yes
-GNU_CONFIGURE_MANPREFIX=	${PREFIX}/share
 CONFIGURE_ARGS=	--with-ssl --without-pmshell --without-atheos \
 		--without-gpm --without-fb --without-windows
 CONFLICTS_INSTALL=	links1
@@ -45,7 +43,7 @@ SVGALIB_LIB_DEPENDS=	libvga.so:graphics/svgalib
 SVGALIB_CONFIGURE_WITH=	svgalib
 
 SVG_USES=		gnome
-SVG_USE=		gnome=librsvg2,glib20,gdkpixbuf2,cairo
+SVG_USE=		gnome=librsvg2,glib20,gdkpixbuf,cairo
 SVG_CONFIGURE_WITH=	librsvg
 
 THREADS_CFLAGS=	-DHAVE_PTHREADS

@@ -1,15 +1,15 @@
 PORTNAME=	libcec
-PORTVERSION=	6.0.2
+PORTVERSION=	7.1.1
 DISTVERSIONPREFIX=	libcec-
-PORTREVISION=	1
 CATEGORIES=	multimedia
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Library to control Pulse-Eight's HDMI-CEC adapter
-WWW=		http://libcec.pulse-eight.com/
+WWW=		https://libcec.pulse-eight.com/ \
+		https://github.com/Pulse-Eight/libcec
 
 LICENSE=	GPLv2
-LICENSE_FILE=	${WRKSRC}/COPYING
+LICENSE_FILE=	${WRKSRC}/LICENSE.md
 
 LIB_DEPENDS=	libp8-platform.so:devel/p8-platform
 
@@ -29,21 +29,14 @@ SHEBANG_FILES=	src/pyCecClient/pyCecClient.py
 
 OPTIONS_DEFINE=	PYTHON X11
 OPTIONS_DEFAULT=PYTHON X11
-OPTIONS_DEFINE_armv6=	RPI
-OPTIONS_DEFAULT_armv6=	RPI
 OPTIONS_EXCLUDE_armv6=	X11
-OPTIONS_DEFINE_armv7=	RPI
-OPTIONS_DEFAULT_armv7=	RPI
 OPTIONS_EXCLUDE_armv7=	X11
 OPTIONS_SUB=	yes
 PYTHON_DESC=	Build python wrapper
-RPI_DESC=	Build libcec support for Raspberry Pi
 
 PYTHON_BUILD_DEPENDS=	swig:devel/swig
 PYTHON_CMAKE_BOOL_OFF=	SKIP_PYTHON_WRAPPER
 PYTHON_USES=		python:build
-RPI_CMAKE_ON=		-DRPI_INCLUDE_DIR=${LOCALBASE}/share/vc/include -DRPI_LIB_DIR=${LOCALBASE}/share/vc/lib
-RPI_LIB_DEPENDS=	libbcm_host.so:misc/raspberrypi-userland
 X11_USE_OFF=		XORG=x11,xorgproto,xrandr
 X11_USES_OFF=		xorg
 

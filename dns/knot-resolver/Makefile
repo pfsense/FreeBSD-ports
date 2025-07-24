@@ -1,5 +1,5 @@
 PORTNAME=	knot-resolver
-DISTVERSION=	5.7.2
+DISTVERSION=	5.7.5
 PORTREVISION=	1
 CATEGORIES=	dns
 MASTER_SITES=	https://secure.nic.cz/files/knot-resolver/ \
@@ -17,16 +17,16 @@ BUILD_DEPENDS=	bash:shells/bash \
 		flake8:devel/py-flake8@${PY_FLAVOR} \
 		lua51-cqueues>=20200726_1:devel/lua-cqueues@lua51 \
 		luacheck:devel/lua-luacheck
-LIB_DEPENDS=	libdnssec.so:dns/knot3-lib \
+LIB_DEPENDS=	libdnssec.so:dns/knot3 \
 		libgnutls.so:security/gnutls \
-		libknot.so:dns/knot3-lib \
+		libknot.so:dns/knot3 \
 		liblmdb.so:databases/lmdb \
 		libnghttp2.so:www/libnghttp2 \
 		libuv.so:devel/libuv \
-		libzscanner.so:dns/knot3-lib
+		libzscanner.so:dns/knot3
 RUN_DEPENDS=	lua51-cqueues>=20200726_1:devel/lua-cqueues@lua51
 
-USES=		compiler:c11 libedit libtool luajit meson ncurses ninja \
+USES=		compiler:c11 libedit luajit meson ncurses ninja \
 		pkgconfig python:build shebangfix tar:xz
 USE_CXXSTD=	c++11
 USE_RC_SUBR=	krescachegc kresd
@@ -42,7 +42,6 @@ SHEBANG_FILES=	scripts/bench.sh \
 		scripts/make-archive.sh \
 		scripts/make-doc.sh \
 		scripts/make-obs.sh \
-		scripts/run-pylint.sh \
 		scripts/run-scanbuild-with-args.sh \
 		scripts/test-config.sh \
 		scripts/test-integration-prepare.sh \

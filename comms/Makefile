@@ -18,7 +18,6 @@
     SUBDIR += bpl+
     SUBDIR += chirp
     SUBDIR += chu
-    SUBDIR += concordance
     SUBDIR += conserver-com
     SUBDIR += cqrlog
     SUBDIR += cubicsdr
@@ -48,6 +47,7 @@
     SUBDIR += flwrap
     SUBDIR += freedv
     SUBDIR += gammu
+    SUBDIR += gensio
     SUBDIR += gkermit
     SUBDIR += gnocky
     SUBDIR += gnokii
@@ -70,11 +70,12 @@
     SUBDIR += java-simple-serial-connector
     SUBDIR += kermit
     SUBDIR += klog
-    SUBDIR += libconcord
     SUBDIR += libdc
     SUBDIR += libfap
     SUBDIR += libfec
+    SUBDIR += libfobos
     SUBDIR += libimobiledevice
+    SUBDIR += libimobiledevice-glue
     SUBDIR += libirman
     SUBDIR += libmodbus
     SUBDIR += librs232
@@ -83,8 +84,13 @@
     SUBDIR += libticables2
     SUBDIR += libticalcs2
     SUBDIR += libusbmuxd
+    SUBDIR += libusbsio
     SUBDIR += limesuite
     SUBDIR += linrad
+    SUBDIR += linux-rl9-qt5-qtconnectivity
+    SUBDIR += linux-rl9-qt5-qtsensors
+    SUBDIR += linux-rl9-qt5-qtserialbus
+    SUBDIR += linux-rl9-qt5-qtserialport
     SUBDIR += liquid-dsp
     SUBDIR += lirc
     SUBDIR += locator
@@ -126,6 +132,7 @@
     SUBDIR += picocom
     SUBDIR += pr
     SUBDIR += predict
+    SUBDIR += py-ModbusTCP
     SUBDIR += py-adafruit-ampy
     SUBDIR += py-elelabs-zigbee-ezsp-utility
     SUBDIR += py-esptool
@@ -134,9 +141,16 @@
     SUBDIR += py-hidapi
     SUBDIR += py-libimobiledevice
     SUBDIR += py-libscrc
+    SUBDIR += py-libusbsio
+    SUBDIR += py-nkdfu
+    SUBDIR += py-pylink-square
     SUBDIR += py-pymodbus
+    SUBDIR += py-pyocd
+    SUBDIR += py-pyocd-pemicro
     SUBDIR += py-pyserial
     SUBDIR += py-pyserial-asyncio
+    SUBDIR += py-sdm_modbus
+    SUBDIR += py-spsdk
     SUBDIR += py-streamdeck
     SUBDIR += py-xmodem
     SUBDIR += pyla
@@ -158,6 +172,7 @@
     SUBDIR += remserial
     SUBDIR += rtl-433
     SUBDIR += rtl-sdr
+    SUBDIR += rtlbt-firmware
     SUBDIR += rubygem-callsign
     SUBDIR += rubygem-ruby-termios
     SUBDIR += rubygem-serialport
@@ -218,5 +233,6 @@
     SUBDIR += xnecview
     SUBDIR += yagiuda
     SUBDIR += yfklog
+    SUBDIR += zigbee2mqtt
 
 .include <bsd.port.subdir.mk>

@@ -1,5 +1,6 @@
 PORTNAME=	xdg
 PORTVERSION=	7.1.3
+PORTREVISION=	1
 CATEGORIES=	devel rubygems
 MASTER_SITES=	RG
 PKGNAMESUFFIX=	7
@@ -13,8 +14,6 @@ LICENSE=	HIPPOCRATIC
 LICENSE_NAME=	Hippocratic License 2.1.0
 LICENSE_FILE=	${WRKSRC}/LICENSE.adoc
 LICENSE_PERMS=	auto-accept dist-mirror pkg-mirror
-
-BROKEN_RUBY31=	yes
 
 USES=		gem
 

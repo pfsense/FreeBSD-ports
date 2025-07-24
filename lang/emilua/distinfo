@@ -1,5 +1,3 @@
-TIMESTAMP = 1714459280
-SHA256 (breese-trial.protocol-79149f6_GH0.tar.gz) = ea82ba7736a2c6ae94e72587a454d3380517ed764df89e2297e6fac2acdeac03
-SIZE (breese-trial.protocol-79149f6_GH0.tar.gz) = 255698
-SHA256 (emilua-v0.7.2.tar.bz2) = a554ee1023e5929b9ee1f66a012633a37248356b6760f915f7821953a91fe836
-SIZE (emilua-v0.7.2.tar.bz2) = 341470
+TIMESTAMP = 1745359454
+SHA256 (emilua-v0.11.5.tar.bz2) = c32e7396d56fd0949fd78f21b492603a8ec2f1d0f93b438da60976c0a2e0afae
+SIZE (emilua-v0.11.5.tar.bz2) = 408007

@@ -3,7 +3,7 @@
  * services_servicewatchdog_add.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2013-2024 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2013-2025 Rubicon Communications, LLC (Netgate)
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -29,8 +29,6 @@
 require("guiconfig.inc");
 require_once("service-utils.inc");
 require_once("servicewatchdog.inc");
-
-config_init_path('installedpackages/servicewatchdog/item');
 
 unset($input_errors);
 

@@ -1,4 +1,4 @@
-%%DATADIR%%/bin/BouncyCastle.Crypto.dll
+%%DATADIR%%/bin/BouncyCastle.Cryptography.dll
 %%DATADIR%%/bin/Dapper.dll
 %%DATADIR%%/bin/Diacritical.dll
 %%DATADIR%%/bin/DryIoc.Microsoft.DependencyInjection.dll
@@ -26,6 +26,7 @@
 %%DATADIR%%/bin/FluentMigrator.dll
 %%DATADIR%%/bin/FluentValidation.dll
 %%DATADIR%%/bin/ICSharpCode.SharpZipLib.dll
+%%DATADIR%%/bin/IPAddressRange.dll
 %%DATADIR%%/bin/Ical.Net.dll
 %%DATADIR%%/bin/ImpromptuInterface.dll
 %%DATADIR%%/bin/LICENSE.md
@@ -106,6 +107,7 @@
 %%DATADIR%%/bin/Localization/Core/uk.json
 %%DATADIR%%/bin/Localization/Core/vi.json
 %%DATADIR%%/bin/Localization/Core/zh_CN.json
+%%DATADIR%%/bin/Localization/Core/zh_Hans.json
 %%DATADIR%%/bin/Localization/Core/zh_TW.json
 %%DATADIR%%/bin/MailKit.dll
 %%DATADIR%%/bin/Microsoft.AspNetCore.Antiforgery.dll
@@ -256,6 +258,7 @@
 %%DATADIR%%/bin/Mono.Posix.NETStandard.dll
 %%DATADIR%%/bin/MonoTorrent.dll
 %%DATADIR%%/bin/NLog.Extensions.Logging.dll
+%%DATADIR%%/bin/NLog.Layouts.ClefJsonLayout.dll
 %%DATADIR%%/bin/NLog.Targets.Syslog.dll
 %%DATADIR%%/bin/NLog.dll
 %%DATADIR%%/bin/Newtonsoft.Json.dll
@@ -270,6 +273,7 @@
 %%DATADIR%%/bin/ServiceUninstall
 %%DATADIR%%/bin/SixLabors.ImageSharp.dll
 %%DATADIR%%/bin/SpotifyAPI.Web.dll
+%%DATADIR%%/bin/Swashbuckle.AspNetCore.Annotations.dll
 %%DATADIR%%/bin/Swashbuckle.AspNetCore.Swagger.dll
 %%DATADIR%%/bin/Swashbuckle.AspNetCore.SwaggerGen.dll
 %%DATADIR%%/bin/System.AppContext.dll
@@ -445,13 +449,13 @@
 %%DATADIR%%/bin/System.Xml.dll
 %%DATADIR%%/bin/System.dll
 %%DATADIR%%/bin/TagLibSharp.dll
-%%DATADIR%%/bin/UI/291-ddb44e40c7fa331ba82a.js
-%%DATADIR%%/bin/UI/291-ddb44e40c7fa331ba82a.js.map
-%%DATADIR%%/bin/UI/727-2ec777b5746eadb2c87a.js
-%%DATADIR%%/bin/UI/727-2ec777b5746eadb2c87a.js.LICENSE.txt
-%%DATADIR%%/bin/UI/727-2ec777b5746eadb2c87a.js.map
-%%DATADIR%%/bin/UI/Content/291-e764f473ed54d7f1a19d.css
-%%DATADIR%%/bin/UI/Content/291-e764f473ed54d7f1a19d.css.map
+%%DATADIR%%/bin/UI/638-05e66c57185b323959bc.js
+%%DATADIR%%/bin/UI/638-05e66c57185b323959bc.js.LICENSE.txt
+%%DATADIR%%/bin/UI/638-05e66c57185b323959bc.js.map
+%%DATADIR%%/bin/UI/907-3c05b588aa33a5fcf794.js
+%%DATADIR%%/bin/UI/907-3c05b588aa33a5fcf794.js.map
+%%DATADIR%%/bin/UI/Content/907-7469dd3705fa6b7244ff.css
+%%DATADIR%%/bin/UI/Content/907-7469dd3705fa6b7244ff.css.map
 %%DATADIR%%/bin/UI/Content/Fonts/Roboto-Light.ttf
 %%DATADIR%%/bin/UI/Content/Fonts/Roboto-Light.woff
 %%DATADIR%%/bin/UI/Content/Fonts/Roboto-Light.woff2
@@ -466,7 +470,6 @@
 %%DATADIR%%/bin/UI/Content/Images/Icons/android-chrome-192x192.png
 %%DATADIR%%/bin/UI/Content/Images/Icons/android-chrome-512x512.png
 %%DATADIR%%/bin/UI/Content/Images/Icons/apple-touch-icon.png
-%%DATADIR%%/bin/UI/Content/Images/Icons/browserconfig.xml
 %%DATADIR%%/bin/UI/Content/Images/Icons/favicon-16x16.png
 %%DATADIR%%/bin/UI/Content/Images/Icons/favicon-32x32.png
 %%DATADIR%%/bin/UI/Content/Images/Icons/favicon-debug-16x16.png
@@ -478,7 +481,6 @@
 %%DATADIR%%/bin/UI/Content/Images/Icons/logo-radarr.png
 %%DATADIR%%/bin/UI/Content/Images/Icons/logo-readarr.png
 %%DATADIR%%/bin/UI/Content/Images/Icons/logo-sonarr.png
-%%DATADIR%%/bin/UI/Content/Images/Icons/manifest.json
 %%DATADIR%%/bin/UI/Content/Images/Icons/mstile-144x144.png
 %%DATADIR%%/bin/UI/Content/Images/Icons/mstile-150x150.png
 %%DATADIR%%/bin/UI/Content/Images/Icons/mstile-310x150.png
@@ -489,11 +491,13 @@
 %%DATADIR%%/bin/UI/Content/Images/logo.svg
 %%DATADIR%%/bin/UI/Content/Images/poster-dark-square.png
 %%DATADIR%%/bin/UI/Content/Images/poster-dark.png
+%%DATADIR%%/bin/UI/Content/browserconfig.xml
+%%DATADIR%%/bin/UI/Content/manifest.json
 %%DATADIR%%/bin/UI/Content/robots.txt
 %%DATADIR%%/bin/UI/Content/styles.css
 %%DATADIR%%/bin/UI/Content/styles.css.map
-%%DATADIR%%/bin/UI/index-c2ecb3a01fe1f869047b.js
-%%DATADIR%%/bin/UI/index-c2ecb3a01fe1f869047b.js.map
+%%DATADIR%%/bin/UI/index-5b111585b4db672e813f.js
+%%DATADIR%%/bin/UI/index-5b111585b4db672e813f.js.map
 %%DATADIR%%/bin/UI/index.html
 %%DATADIR%%/bin/UI/login.html
 %%DATADIR%%/bin/UI/oauth.html

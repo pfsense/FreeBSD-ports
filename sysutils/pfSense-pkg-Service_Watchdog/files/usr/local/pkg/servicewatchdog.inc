@@ -3,7 +3,7 @@
  * servicewatchdog.inc
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2013-2024 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2013-2025 Rubicon Communications, LLC (Netgate)
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -56,7 +56,6 @@ function servicewatchdog_service_matches($svc1, $svc2) {
 }
 
 function servicewatchdog_is_service_watched($svc) {
-	config_init_path('installedpackages/servicewatchdog/item');
 	$blacklisted_services = array("cron");
 
 	if (empty($svc['name']) || in_array($svc['name'], $blacklisted_services)) {
@@ -72,9 +71,7 @@ function servicewatchdog_is_service_watched($svc) {
 }
 
 function servicewatchdog_cron_job($force_remove = false) {
-	config_init_path('installedpackages/servicewatchdog/item');
-
-	if (($force_remove == false) && (count(config_get_path('installedpackages/servicewatchdog/item')) > 0)) {
+	if (($force_remove == false) && (count(config_get_path('installedpackages/servicewatchdog/item', [])) > 0)) {
 		// Add the cron job if it doesn't exist.
 		install_cron_job("/usr/local/pkg/servicewatchdog_cron.php", true, "*/1");
 	} else {
@@ -84,8 +81,6 @@ function servicewatchdog_cron_job($force_remove = false) {
 }
 
 function servicewatchdog_check_services() {
-	config_init_path('installedpackages/servicewatchdog/item');
-
 	foreach (config_get_path('installedpackages/servicewatchdog/item', []) as $svc) {
 		// apinger became dpinger in pfSense 2.3
 		if ($svc['name'] == 'apinger') {

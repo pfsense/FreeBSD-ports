@@ -38,7 +38,8 @@
 -#include <iprt/mem.h>
 +#include <geom/geom.h>
 +#include <geom/geom_vfs.h>
- 
+-
++#include <vm/uma.h>
 +#include "vboxvfs.h"
 +
  #define VFSMP2SFGLOBINFO(mp) ((struct sf_glob_info *)mp->mnt_data)
@@ -130,7 +131,7 @@
 + */
 +int
 +vboxfs_alloc_node(struct mount *mp, struct vboxfs_mnt *vsfmp, const char *fullpath,
-+    enum vtype type, uid_t uid, gid_t gid, mode_t mode, struct vboxfs_node *parent,
++    enum_vtype_t type, uid_t uid, gid_t gid, mode_t mode, struct vboxfs_node *parent,
 +    struct vboxfs_node **node)
  {
 -    struct vboxvfs_mount_info args;

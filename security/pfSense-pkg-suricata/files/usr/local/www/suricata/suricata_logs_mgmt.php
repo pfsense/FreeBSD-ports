@@ -3,7 +3,7 @@
  * suricata_logs_mgmt.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2006-2024 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2006-2025 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2003-2004 Manuel Kasper
  * Copyright (c) 2005 Bill Marquette
  * Copyright (c) 2009 Robert Zelaya Sr. Developer
@@ -33,7 +33,7 @@ $suricatadir = SURICATADIR;
 $pconfig = array();
 
 // Grab saved settings from configuration
-$pconfig['enable_log_mgmt'] = config_get_path('installedpackages/suricata/config/0/enable_log_mgmt') == 'off' ? 'off' : 'on';
+$pconfig['enable_log_mgmt'] = config_get_path('installedpackages/suricata/config/0/enable_log_mgmt') == 'on' ? 'on' : 'off';
 $pconfig['clearlogs'] = config_get_path('installedpackages/suricata/config/0/clearlogs') == 'on' ? 'on' : 'off';
 $pconfig['suricataloglimit'] = config_get_path('installedpackages/suricata/config/0/suricataloglimit') == 'on' ? 'on' : 'off';
 $pconfig['suricataloglimitsize'] = htmlentities(config_get_path('installedpackages/suricata/config/0/suricataloglimitsize'));

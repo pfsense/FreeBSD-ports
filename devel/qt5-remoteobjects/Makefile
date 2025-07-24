@@ -11,6 +11,7 @@ USE_GL=		gl
 USE_PERL5=	build
 USE_QT=		core declarative network \
 		buildtools:build
+USE_LDCONFIG=	${PREFIX}/${QT_LIBDIR_REL}
 
 QT_BINARIES=	yes
 

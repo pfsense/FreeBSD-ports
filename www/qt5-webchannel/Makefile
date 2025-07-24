@@ -10,6 +10,7 @@ USES=		compiler:c++11-lang perl5 qmake:norecursive qt-dist:5,webchannel
 USE_PERL5=	build
 USE_QT=		core declarative \
 		buildtools:build declarative-test:build testlib:build
+USE_LDCONFIG=	${PREFIX}/${QT_LIBDIR_REL}
 
 # The default EXTRACT_AFTER_ARGS value excludes examples/ from the extracted
 # tarball, which we need during the build.

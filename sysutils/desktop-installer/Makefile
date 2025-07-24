@@ -1,21 +1,18 @@
 PORTNAME=	desktop-installer
-DISTVERSION=	0.8.3-9
-PORTREVISION=	1
-DISTVERSIONSUFFIX=	-g9820283
+DISTVERSION=	1.1.1
 CATEGORIES=	sysutils
 
 MAINTAINER=	jwb@FreeBSD.org
 COMMENT=	Quickly configure a FreeBSD desktop system
-WWW=		https://acadix.biz/desktop-installer.php
+WWW=		https://github.com/outpaddling/desktop-installer
 
 LICENSE=	BSD2CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-RUN_DEPENDS=	auto-admin>=0.8.0.25:sysutils/auto-admin
+RUN_DEPENDS=	auto-admin>=0.8.1:sysutils/auto-admin
 
-USES=		desktop-file-utils tar:xz
+USES=		desktop-file-utils
 USE_GITHUB=	yes
-
 GH_ACCOUNT=	outpaddling
 
 NO_BUILD=	yes

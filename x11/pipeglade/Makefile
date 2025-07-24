@@ -1,6 +1,6 @@
 PORTNAME=	pipeglade
 PORTVERSION=	4.7.0
-PORTREVISION=	5
+PORTREVISION=	6
 CATEGORIES=	x11 devel
 
 MAINTAINER=	trebbu@googlemail.com
@@ -13,7 +13,7 @@ USE_GITHUB=	yes
 GH_ACCOUNT=	trebb
 
 USES=		gettext-runtime gnome pkgconfig
-USE_GNOME=	cairo gdkpixbuf2 glib20 gtk30 libxml2
+USE_GNOME=	cairo gdkpixbuf glib20 gtk30 libxml2
 
 OPTIONS_DEFINE=	EXAMPLES
 OPTIONS_SUB=	yes

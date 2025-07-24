@@ -3,7 +3,7 @@
  * frr.inc
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2017-2024 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2017-2025 Rubicon Communications, LLC (Netgate)
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -387,7 +387,7 @@ function frr_generate_config_rcfile() {
 		}
 	}
 	/* BGP RPKI */
-	if (config_get_path("installedpackages/{$config_key}/config/0/enablerpki")) {
+	if (config_get_path("installedpackages/frrbgp/config/0/enablerpki") == "on") {
 		$frr_daemon_modules['bgpd'] .= ' -M rpki';
 	}
 

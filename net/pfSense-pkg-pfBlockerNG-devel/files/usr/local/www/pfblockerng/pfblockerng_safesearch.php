@@ -3,8 +3,8 @@
  * pfblockerng_safesearch.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2020-2024 Rubicon Communications, LLC (Netgate)
- * Copyright (c) 2015-2023 BBcan177@gmail.com
+ * Copyright (c) 2020-2025 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2015-2024 BBcan177@gmail.com
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -27,8 +27,7 @@ require_once('/usr/local/pkg/pfblockerng/pfblockerng.inc');
 global $g, $pfb;
 pfb_global();
 
-config_init_path('installedpackages/pfblockerngsafesearch');
-$pfb['bconfig']	= config_get_path('installedpackages/pfblockerngsafesearch');
+$pfb['bconfig']	= config_get_path('installedpackages/pfblockerngsafesearch', []);
 
 $pconfig = array();
 $pconfig['safesearch_enable']		= $pfb['bconfig']['safesearch_enable']			?: 'Disable';

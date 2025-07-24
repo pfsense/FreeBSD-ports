@@ -1,5 +1,5 @@
 PORTNAME=	Alien-cmake3
-PORTVERSION=	0.08
+PORTVERSION=	0.09
 CATEGORIES=	devel perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
@@ -15,7 +15,7 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 BUILD_DEPENDS=	${RUN_DEPENDS}
 RUN_DEPENDS=	cmake:devel/cmake-core \
 		p5-Alien-Build>=1.19:devel/p5-Alien-Build
-TEST_DEPENDS=	p5-Test2-Suite>=0.000121:devel/p5-Test2-Suite
+TEST_DEPENDS=	p5-Test-Simple>=1.302200:devel/p5-Test-Simple
 
 USES=		perl5
 USE_PERL5=	configure

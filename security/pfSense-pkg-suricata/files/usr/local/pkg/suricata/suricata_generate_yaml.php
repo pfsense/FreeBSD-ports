@@ -3,11 +3,11 @@
  * suricata_generate_yaml.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2006-2024 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2006-2025 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2005 Bill Marquette <bill.marquette@gmail.com>.
  * Copyright (c) 2003-2004 Manuel Kasper <mk@neon1.net>.
  * Copyright (c) 2009 Robert Zelaya Sr. Developer
- * Copyright (c) 2024 Bill Meeks
+ * Copyright (c) 2025 Bill Meeks
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -76,7 +76,7 @@ $suricata_servers = array (
 	"dnp3_client" => "\$HOME_NET", "modbus_server" => "\$HOME_NET", "modbus_client" => "\$HOME_NET",
 	"enip_server" => "\$HOME_NET", "enip_client" => "\$HOME_NET", "ftp_servers" => "\$HOME_NET", "ssh_servers" => "\$HOME_NET", 
 	"aim_servers" => "64.12.24.0/23, 64.12.28.0/23, 64.12.161.0/24, 64.12.163.0/24, 64.12.200.0/24, 205.188.3.0/24, 205.188.5.0/24, 205.188.7.0/24, 205.188.9.0/24, 205.188.153.0/24, 205.188.179.0/24, 205.188.248.0/24", 
-	"sip_servers" => "\$HOME_NET"
+	"sip_servers" => "\$HOME_NET", "custom_servers" => ''
 );
 $addr_vars = "";
 foreach ($suricata_servers as $alias => $avalue) {
@@ -84,9 +84,10 @@ foreach ($suricata_servers as $alias => $avalue) {
 		$avalue = trim(filter_expand_alias($suricatacfg["def_{$alias}"]));
 		$avalue = preg_replace('/\s+/', ', ', trim($avalue));
 	}
-	$addr_vars .= "    " . strtoupper($alias) . ": \"{$avalue}\"\n";
+	if (!empty($avalue)) {
+		$addr_vars .= "    " . strtoupper($alias) . ": \"{$avalue}\"\n";
+	}
 }
-$addr_vars = trim($addr_vars);
 if(config_get_path('system/ssh/port'))
         $ssh_port = config_get_path('system/ssh/port');
 else
@@ -99,7 +100,8 @@ $suricata_ports = array(
 	"shellcode_ports" => "!80", 
 	"DNP3_PORTS" => "20000", 
 	"file_data_ports" => "\$HTTP_PORTS, 110, 143", 
-	"sip_ports" => "5060, 5061, 5600"
+	"sip_ports" => "5060, 5061, 5600",
+	"custom_ports" => ''
 );
 $port_vars = "";
 foreach ($suricata_ports as $alias => $avalue) {
@@ -107,8 +109,28 @@ foreach ($suricata_ports as $alias => $avalue) {
 		$avalue = trim(filter_expand_alias($suricatacfg["def_{$alias}"]));
 		$avalue = preg_replace('/\s+/', ', ', trim($avalue));
 	}
-	$port_vars .= "    " . strtoupper($alias) . ": \"{$avalue}\"\n";
+	if (!empty($avalue)) {
+		$port_vars .= "    " . strtoupper($alias) . ": \"{$avalue}\"\n";
+	}
 }
+
+// Process custom variables
+foreach (array_get_path($suricatacfg, 'custom_vars/item', []) as $item) {
+	if (empty($item['type']) || empty($item['name']) || empty($item['value'])) {
+		continue;
+	}
+	$rule_string = ('    ' . strtoupper($item['name']) . ': "' .
+		preg_replace('/\s+/', ', ', trim(trim(filter_expand_alias($item['value'])))) .
+		"\"\n"
+	);
+	if ($item['type'] == 'server') {
+		$addr_vars .= $rule_string;
+	} else {
+		$port_vars .= $rule_string;
+	}
+}
+
+$addr_vars = trim($addr_vars);
 $port_vars = trim($port_vars);
 
 // Define a Suppress List (Threshold) if one is configured
@@ -1364,6 +1386,14 @@ pcap:
 EOD;
 }
 
-$suricata_config_pass_thru = base64_decode($suricatacfg['configpassthru']);
+// Create UNIX control socket for Suricata binary
+$unix_socket_name = "{$g['varrun_path']}/suricata-ctrl-socket-{$suricata_uuid}";
+
+// Populate optional user configuration if present
+if (!empty($suricatacfg['configpassthru']))
+	$suricata_config_pass_thru = base64_decode($suricatacfg['configpassthru']);
+else
+	$suricata_config_pass_thru = "";
+
 return true;
 ?>

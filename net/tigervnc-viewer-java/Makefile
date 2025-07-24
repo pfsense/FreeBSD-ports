@@ -1,14 +1,11 @@
 PKGNAMESUFFIX=	-viewer-java
-PORTREVISION=	1
 CATEGORIES=	net java
 
 COMMENT=	TigerVNC Viewer
 WWW=		https://tigervnc.org/
 
-USES+=		jpeg xorg
+USES+=		java jpeg xorg
 USE_XORG+=	pixman
-USE_JAVA=	yes
-JAVA_VERSION=	8+
 
 NO_ARCH=	yes
 

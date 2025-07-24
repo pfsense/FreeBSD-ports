@@ -1,5 +1,5 @@
 PORTNAME=	ipxe
-DISTVERSION=	g20240403
+DISTVERSION=	g20250401
 PORTEPOCH=	1
 CATEGORIES=	net
 
@@ -19,7 +19,7 @@ USES=		gmake perl5 shebangfix
 USE_BINUTILS=	yes
 USE_GCC=	yes:build
 USE_GITHUB=	yes
-GH_TAGNAME=	59f27d69358efc91
+GH_TAGNAME=	7e64e9b6703e6dd3
 USE_PERL5=	build
 MAKE_ARGS=	AR=${AR} \
 		ARCH=${ARCH:S/amd64/i386/} \
@@ -68,7 +68,7 @@ OPTIONS_DEFAULT=	EFI ISO
 EFI_DESC=	Create EFI images
 ISO_DESC=	Create bootable CD image
 
-EFI_BUILD_DEPENDS=	mformat:emulators/mtools
+EFI_BUILD_DEPENDS=	mformat:filesystems/mtools
 _EFI_ARCHS=		${ARCH:Mamd64:S/amd64/x86_64/} i386
 _EFI_TARGETS=		ipxe snp snponly
 .for _arch in ${_EFI_ARCHS}

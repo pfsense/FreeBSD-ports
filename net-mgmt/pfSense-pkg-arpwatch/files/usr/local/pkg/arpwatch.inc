@@ -27,7 +27,7 @@ function arpwatch_install_command() {
 	// sendmail proxy
 	arpwatch_install_sendmail_proxy();
 
-	$arpwatch_config = config_get_path('installedpackages/arpwatch/config/0');
+	$arpwatch_config = config_get_path('installedpackages/arpwatch/config/0', []);
 	$active_interfaces = $arpwatch_config['active_interfaces'];
 	$notifications_recipient = $arpwatch_config['notifications_recipient'];
 	$enable_zeropad = ($arpwatch_config['zeropad'] == 'on') ? '-Z' : '-C';
@@ -85,7 +85,6 @@ function arpwatch_install_command() {
 }
 
 function arpwatch_deinstall_command() {
-	config_init_path('installedpackages/arpwatch/config/0');
 	if (config_get_path('installedpackages/arpwatch/config/0/clear_database') == 'on') {
 		arpwatch_clear_database();
 	}
@@ -140,7 +139,7 @@ function arpwatch_clear_database() {
 }
 
 function arpwatch_parse_database() {
-	$arpwatch_config = config_get_path('installedpackages/arpwatch/config/0');
+	$arpwatch_config = config_get_path('installedpackages/arpwatch/config/0', []);
 	$active_interfaces = $arpwatch_config['active_interfaces'];
 
 	$database = array();
@@ -230,7 +229,6 @@ if ((false !== $message) && ((false === strpos($message, ': Cron ')) ||
     (config_get_path('installedpackages/arpwatch/config/0/disable_cron') != 'on'))) {
 	$subject = array();
 	preg_match('/^Subject: (.*)$/m', $message, $subject);
-	config_init_path('installedpackages/arpwatch/config/0/row');
 	foreach (config_get_path('installedpackages/arpwatch/config/0/row', []) as $sup) {
 		if (!empty($sup['mac']) && strpos($message, strtolower($sup['mac'])) &&
 		    (($sup['notification_type'] == 'all') || ($sup['notification_type'] == $subject[1]))) {

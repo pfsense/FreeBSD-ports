@@ -1,5 +1,5 @@
 PORTNAME=	qemu
-DISTVERSION=	9.0.1
+DISTVERSION=	10.0.2
 CATEGORIES=	emulators
 MASTER_SITES=	https://download.qemu.org/
 DIST_SUBDIR=	qemu/${PORTVERSION}
@@ -11,16 +11,18 @@ WWW=		https://www.qemu.org/
 LICENSE=	GPLv2
 
 .if ${FLAVOR:U} != tools && ${FLAVOR:U} != guestagent
-ONLY_FOR_ARCHS=	aarch64 amd64 i386 powerpc64 powerpc64le
+ONLY_FOR_ARCHS=	aarch64 amd64 powerpc64 powerpc64le
 # We need to check if it build with other ARCHS
 .endif
 
 BUILD_DEPENDS=	bash:shells/bash
+.if ${FLAVOR:U} != guestagent
+LIB_DEPENDS+=	libzstd.so:archivers/zstd
+.endif
 .if ${FLAVOR:U} != tools && ${FLAVOR:U} != guestagent
 LIB_DEPENDS+=	libfdt.so:sysutils/dtc \
 		libinotify.so:devel/libinotify \
-		libslirp.so:net/libslirp \
-		libzstd.so:archivers/zstd
+		libslirp.so:net/libslirp
 .endif
 .if (${FLAVOR:U} != nox11 && ${FLAVOR:U} != tools && ${FLAVOR:U} != guestagent)
 LIB_DEPENDS+=	libepoxy.so:graphics/libepoxy
@@ -114,15 +116,18 @@ CONFIGURE_ARGS+=	--disable-attr \
 			--disable-vnc
 .endif
 .if ${FLAVOR:U} == tools
-CONFIGURE_ARGS+=	--enable-tools
+CONFIGURE_ARGS+=	--enable-tools --enable-zstd
 .endif
 
 CFLAGS:=	${CFLAGS:C/-fno-tree-vrp//}
 WITHOUT_CPU_CFLAGS=	yes #to avoid problems with register allocation
 
+BINARY_ALIAS=	python3=${PYTHON_VERSION}
+
 PORTDOCS=	.buildinfo _static/* about/* dbus-dbusindex.html devel/* docs \
-		genindex.html index.html interop/* objects.inv search.html \
-		searchindex.js specs/* system/* tools/* user/*
+		genindex.html glossary.html index.html interop/* objects.inv \
+		qapi-qga-index.html qapi-qmp-index.html qapi-qsd-index.html \
+		search.html searchindex.js specs/* system/* tools/* user/*
 
 OPTIONS_DEFINE=			CAPSTONE CDROM_DMA CURL DEBUG DOCS GNUTLS GTK3 \
 				ISCSI JPEG OPENGL PNG SAMBA SASL STATIC_LINK \
@@ -170,7 +175,7 @@ GNUTLS_LIB_DEPENDS=		libgnutls.so:security/gnutls
 GNUTLS_CONFIGURE_OFF=		--disable-gnutls
 GTK3_LIB_DEPENDS=		libxkbcommon.so:x11/libxkbcommon
 GTK3_USES=			gettext gl
-GTK3_USE=			GNOME=gdkpixbuf2,gtk30,vte3 \
+GTK3_USE=			GNOME=gdkpixbuf,gtk30,vte3 \
 				XORG=x11,xext
 GTK3_CONFIGURE_OFF=		--disable-gtk \
 				--disable-vte
@@ -200,19 +205,28 @@ USBREDIR_CONFIGURE_OFF=		--disable-usb-redir
 VDE_LIB_DEPENDS=		libvdeplug.so:net/vde2
 VDE_CONFIGURE_OFF=		--disable-vde
 X11_USES=			sdl
-X11_USE=			GNOME=gdkpixbuf2 \
+X11_USE=			GNOME=gdkpixbuf \
 				SDL=sdl2 \
 				XORG=x11,xext
 X11_CONFIGURE_ENABLE=		sdl
 .if (empty(FLAVOR) || ${FLAVOR:U} == default || ${FLAVOR:U} == nox11) && \
 	(${FLAVOR:U} != tools || ${PKGNAMESUFFIX} != "-guest-agent")
-X86_TARGETS_LIB_DEPENDS_OFF=	libdw.so:devel/elfutils
+X86_TARGETS_LIB_DEPENDS_OFF=	libdw.so:devel/elfutils \
+	liblzo2.so:archivers/lzo2
 X86_TARGETS_USES_OFF=		xorg
 X86_TARGETS_USE_OFF=		XORG=pixman,x11
 X86_TARGETS_CONFIGURE_ON=	--target-list='i386-softmmu i386-bsd-user x86_64-softmmu x86_64-bsd-user'
 .endif
 
 .include <bsd.port.options.mk>
+
+.if ${FLAVOR:U} == tools || ${FLAVOR:U} == guestagent
+.if ${ARCH} == "i386" || ${ARCH} == "powerpc" || ${ARCH:Marmv?}
+PLIST_SUB+=	NO_I386="@comment "
+.else
+PLIST_SUB+=	NO_I386=""
+.endif
+.endif
 
 .if (empty(FLAVOR) || ${FLAVOR:U} == default || ${FLAVOR:U} == nox11) && \
 	(${FLAVOR:U} != tools || ${PKGNAMESUFFIX} != "-guest-agent")
@@ -235,6 +249,11 @@ PLIST_SUB+=	BSDUSER=""
 .endif
 
 PLIST_SUB+=	LINUXBOOT_DMA=""
+.endif
+
+post-patch:
+.if ${FLAVOR:U} == tools
+	@${REINPLACE_CMD} -e '/keymaps/d' ${WRKSRC}/pc-bios/meson.build
 .endif
 
 post-patch-CDROM_DMA-off:

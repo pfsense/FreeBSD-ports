@@ -1,5 +1,5 @@
 PORTNAME=	php83
-DISTVERSION=	8.3.8
+DISTVERSION=	8.3.23
 PORTREVISION?=	0
 CATEGORIES?=	lang devel www
 MASTER_SITES=	PHP/distributions
@@ -76,7 +76,7 @@ FPM_CONFIGURE_ON=	--enable-fpm \
 			--with-fpm-group=${WWWGRP} \
 			--with-fpm-user=${WWWOWN}
 FPM_VARS=		PHP_SAPI+=fpm \
-			USE_RC_SUBR+=php-fpm
+			USE_RC_SUBR+=php_fpm
 IPV6_CONFIGURE_OFF=	--disable-ipv6
 LINKTHR_LIBS=		-lpthread
 NOASLR_USES=	elfctl
@@ -168,19 +168,19 @@ post-install:
 		${WRKDIR}/php.conf ${STAGEDIR}/${PREFIX}/etc
 
 post-install-CGI-on:
-	${STRIP_CMD} ${STAGEDIR}/${PREFIX}/bin/php-cgi
+	${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/php-cgi
 
 post-install-CLI-on:
-	${STRIP_CMD} ${STAGEDIR}/${PREFIX}/bin/php
+	${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/php
 
 post-install-EMBED-on:
-	${STRIP_CMD} ${STAGEDIR}/${PREFIX}/lib/libphp.so
+	${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/libphp.so
 
 post-install-FPM-on:
-	${STRIP_CMD} ${STAGEDIR}/${PREFIX}/sbin/php-fpm
+	${STRIP_CMD} ${STAGEDIR}${PREFIX}/sbin/php-fpm
 
 post-install-PHPDBG-on:
-	${STRIP_CMD} ${STAGEDIR}/${PREFIX}/bin/phpdbg
+	${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/phpdbg
 
 .else
 do-install:
@@ -195,7 +195,7 @@ COMMENT=	The ${PHP_MODNAME} shared extension for php
 USES+=		php:ext,noflavors
 PHP_MODNAME=	${PKGNAMESUFFIX:S/-//}
 PHP_VER=	83
-IGNORE_WITH_PHP=	81 82
+IGNORE_WITH_PHP=	81 82 84 85
 
 EXTSUBDIR=	${DISTNAME}/ext/${PHP_MODNAME}
 WRKSRC=		${WRKDIR}/${EXTSUBDIR}
@@ -272,7 +272,7 @@ USE_GNOME=	libxml2
 .endif
 
 .if ${PHP_MODNAME} == "enchant"
-LIB_DEPENDS+=   libenchant-2.so:textproc/enchant2
+LIB_DEPENDS+=	libenchant-2.so:textproc/enchant2
 CONFIGURE_ARGS+=--with-enchant=${LOCALBASE}
 USES+=		pkgconfig
 .endif
@@ -404,7 +404,7 @@ CONFIGURE_ARGS+= --with-unixODBC=${LOCALBASE}
 .if ${PHP_MODNAME} == "opcache"
 # This is needed by Zend extensions, keep before everything.
 PHP_MOD_PRIO=		10
-CONFIGURE_ARGS+=        --enable-opcache
+CONFIGURE_ARGS+=	--enable-opcache
 .endif
 
 .if ${PHP_MODNAME} == "pcntl"

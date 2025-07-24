@@ -1,75 +1,86 @@
 PORTNAME=	syncthingtray
 DISTVERSIONPREFIX=	v
-DISTVERSION=	1.5.4
+DISTVERSION=	1.7.10
 CATEGORIES=	deskutils
 
 MAINTAINER=	dsh@bamus.cz
 COMMENT=	Qt ${FLAVOR:S/qt//}-based Syncthing tray application
-WWW=		https://github.com/Martchus/syncthingtray
+WWW=		https://martchus.github.io/syncthingtray/
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKDIR}/syncthingtray/LICENSE
 
-BUILD_DEPENDS=	${LOCALBASE}/share/ECM/cmake/ECMConfig.cmake:devel/kf5-extra-cmake-modules \
-		doxygen:devel/doxygen \
-		p5-YAML-LibYAML>0:textproc/p5-YAML-LibYAML
-LIB_DEPENDS=	libboost_iostreams.so:devel/boost-libs \
-		libboost_regex.so:devel/boost-libs
+BUILD_DEPENDS=	p5-YAML-LibYAML>0:textproc/p5-YAML-LibYAML
+LIB_DEPENDS=	libboost_iostreams.so:devel/boost-libs
 
-FLAVORS=	qt5 qt6
+FLAVORS=	qt6 qt5
 FLAVOR?=	${FLAVORS:[1]}
 FLAVORS_SUB=	yes
 
-qt5_CONFLICTS_INSTALL=	${PORTNAME}-qt6
 qt6_PKGNAMESUFFIX=	-qt6
-qt6_CONFLICTS_INSTALL=	${PORTNAME}
 
 USES=		cmake:insource iconv perl5 xorg
 
+USE_GITHUB=	nodefault
+GH_ACCOUNT=	Martchus
+GH_TUPLE:=	${GH_ACCOUNT}:${PORTNAME}:${DISTVERSIONPREFIX}${DISTVERSION}:${PORTNAME}/../${PORTNAME} \
+		${GH_ACCOUNT}:cpp-utilities:v5.29.0:cpputilities/../c++utilities \
+		${GH_ACCOUNT}:qtutilities:v6.17.0:qtutilities/../qtutilities \
+		${GH_ACCOUNT}:qtforkawesome:v0.3.1:qtforkawesome/../qtforkawesome \
+		ForkAwesome:Fork-Awesome:4fef70f:ForkAwesome/../forkawesome \
+		${GH_ACCOUNT}:subdirs:53b30dd:subdirs/../subdirs
+
+USE_PERL5=	build
+USE_QT=		declarative svg
+USE_XORG=	x11
+
 CMAKE_ARGS=	-DFORK_AWESOME_FONT_FILE=${WRKDIR}/forkawesome/fonts/forkawesome-webfont.ttf \
 		-DFORK_AWESOME_ICON_DEFINITIONS=${WRKDIR}/forkawesome/src/icons/icons.yml
+CMAKE_ON=	NO_DOXYGEN
 CMAKE_OFF=	SYSTEMD_SUPPORT USE_STANDARD_FILESYSTEM
 CMAKE_SOURCE_PATH=	${WRKDIR}/subdirs/syncthingtray
 
-USE_GITHUB=	nodefault
-GH_TUPLE=	Martchus:${PORTNAME}:${DISTVERSIONPREFIX}${DISTVERSION}:syncthingtray/../syncthingtray \
-		Martchus:cpp-utilities:v5.24.9:cpputilities/../c++utilities \
-		Martchus:qtutilities:v6.14.1:qtutilities/../qtutilities \
-		Martchus:qtforkawesome:v0.2.0:qtforkawesome/../qtforkawesome \
-		ForkAwesome:Fork-Awesome:4fef70f:ForkAwesome/../forkawesome \
-		Martchus:subdirs:3fe2b06:subdirs/../subdirs
-
-USE_QT=		declarative svg doc:build
-USE_XORG=	x11
 .if ${FLAVOR} == qt5
-USES+=		kde:5 qt:5
-USE_KDE=	plasma-framework:build
+USES+=		qt:5
 USE_QT+=	concurrent core dbus gui location network qdbus \
 		quickcontrols2:build widgets x11extras:build buildtools:build \
 		linguist:build qmake:build testlib:build
-WEBENGINE_USE=	QT=printsupport,webchannel,webengine
 .else
 CMAKE_ARGS+=	-DQT_PACKAGE_PREFIX:STRING=Qt6 -DKF_PACKAGE_PREFIX:STRING=KF6
-USES+=		gl kde:6 qt:6
+USES+=		gl qt:6
 USE_GL=		opengl
-USE_KDE=	libplasma:build
-USE_QT+=	base positioning
-WEBENGINE_USE=	QT=webchannel,webengine
+USE_QT+=	base positioning tools:build
 .endif
 
-OPTIONS_DEFINE=		WEBENGINE
-OPTIONS_DEFAULT=	WEBENGINE
-
-WEBENGINE_DESC=		Built-in web view (webengine dependency)
-WEBENGINE_CMAKE_ON=	-DWEBVIEW_PROVIDER:STRING=webengine
-WEBENGINE_CMAKE_OFF=	-DWEBVIEW_PROVIDER:STRING=none
-
-USE_PERL5=	build
+CONFLICTS_INSTALL=	${PORTNAME} ${PORTNAME}-*
 
 BUILD_WRKSRC=		${WRKDIR}
 CONFIGURE_WRKSRC=	${WRKDIR}
 INSTALL_WRKSRC=		${WRKDIR}
 PATCH_WRKSRC=		${WRKDIR}
+
+OPTIONS_DEFINE=		PLASMA WEBENGINE
+OPTIONS_DEFAULT=	PLASMA WEBENGINE
+OPTIONS_SUB=	yes
+
+PLASMA_DESC=	Plasma integration (KF dependency)
+WEBENGINE_DESC=		Built-in web view (webengine dependency)
+
+PLASMA_USE=	KDE=ecm:build
+PLASMA_CMAKE_BOOL_OFF=	NO_FILE_ITEM_ACTION_PLUGIN NO_PLASMOID
+
+WEBENGINE_CMAKE_ON=	-DWEBVIEW_PROVIDER:STRING=webengine
+WEBENGINE_CMAKE_OFF=	-DWEBVIEW_PROVIDER:STRING=none
+
+.if ${FLAVOR} == qt5
+PLASMA_USES=	kde:5
+PLASMA_USE+=	KDE=plasma-framework:build
+WEBENGINE_USE=	QT=printsupport,webchannel,webengine
+.else
+PLASMA_USES=	kde:6
+PLASMA_USE+=	KDE=libplasma:build
+WEBENGINE_USE=	QT=webchannel,webengine
+.endif
 
 post-install:
 	${RM} -r \

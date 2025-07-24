@@ -1,7 +1,10 @@
 PORTNAME=	cantata
 DISTVERSIONPREFIX=	v
-DISTVERSION=	3.2.0
+DISTVERSION=	3.3.0
 CATEGORIES=	audio kde
+
+PATCH_SITES=	https://github.com/nullobsi/cantata/commit/
+PATCHFILES+=	d44b60601896c740b24abc323ef6121bf1c45dbb.patch:-p1 # Fix build with Qt >= 6.9.0
 
 MAINTAINER=	kde@FreeBSD.org
 COMMENT=	Graphical client for MPD using Qt
@@ -64,7 +67,7 @@ MTP_LIB_DEPENDS=	libmtp.so:multimedia/libmtp
 MTP_CMAKE_BOOL=		ENABLE_MTP
 
 MUSICBRAINZ_IMPLIES=	CDPARANOIA
-MUSICBRAINZ_LIB_DEPENDS=libmusicbrainz5.so:audio/libmusicbrainz5
+MUSICBRAINZ_LIB_DEPENDS=libmusicbrainz5cc.so:audio/libmusicbrainz5
 MUSICBRAINZ_CMAKE_BOOL=	ENABLE_MUSICBRAINZ
 
 NLS_USE=		QT=tools:build

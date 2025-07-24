@@ -1,5 +1,5 @@
 PORTNAME=	lighttpd
-PORTVERSION=	1.4.76
+PORTVERSION=	1.4.79
 CATEGORIES=	www
 MASTER_SITES=	https://download.lighttpd.net/lighttpd/releases-1.4.x/
 
@@ -64,7 +64,7 @@ LUA_CMAKE_ON=		-DWITH_LUA_VERSION:STRING="lua-${LUA_VER}"
 MAXMINDDB_CMAKE_BOOL=	WITH_MAXMINDDB
 MAXMINDDB_LIB_DEPENDS=	libmaxminddb.so:net/libmaxminddb
 MBEDTLS_CMAKE_BOOL=	WITH_MBEDTLS
-MBEDTLS_LIB_DEPENDS=	libmbedtls.so:security/mbedtls
+MBEDTLS_LIB_DEPENDS=	libmbedtls.so:security/mbedtls2
 NETTLE_CMAKE_BOOL=	WITH_NETTLE
 NETTLE_LIB_DEPENDS=	libnettle.so:security/nettle
 NSS_CMAKE_BOOL=		WITH_NSS
@@ -82,7 +82,7 @@ WOLFSSL_LIB_DEPENDS=	libwolfssl.so:security/wolfssl
 ZSTD_CMAKE_BOOL=	WITH_ZSTD
 ZSTD_LIB_DEPENDS=	libzstd.so:archivers/zstd
 
-LIGHTTPD_CONF_FILES=	lighttpd.conf modules.conf
+LIGHTTPD_CONF_FILES=	lighttpd.conf modules.conf lighttpd.annotated.conf
 
 LIGHTTPD_CONF_D_FILES=	access_log.conf \
 			auth.conf \
@@ -114,6 +114,9 @@ PLIST_SUB=	WWWOWN="${WWWOWN}" WWWGRP="${WWWGRP}" CACHEDIR="${CACHEDIR}" \
 SUB_LIST=	REQUIRE="${REQUIRE}"
 
 post-patch:
+	@${REINPLACE_CMD} -E \
+		-e "s|/etc/lighttpd|${ETCDIR}|g" \
+		${WRKSRC}/doc/config/lighttpd.conf
 	@${REINPLACE_CMD} -E -e \
 		's|^(server.document-root.*=).*|\1 "${PREFIX}/www" + "/data"|' \
 		-e "s|/etc/lighttpd|${ETCDIR}|g" \
@@ -126,7 +129,7 @@ post-patch:
 		-e "s|^(var.home_dir.*=).*|\1 \"${HOMEDIR}\"|" \
 		-e "s|^(var.state_dir.*=).*|\1 \"${RUNDIR}\"|" \
 		-e "s|^(var.cache_dir.*=).*|\1 \"${CACHEDIR}\"|" \
-		${WRKSRC}/doc/config/lighttpd.conf
+		${WRKSRC}/doc/config/lighttpd.annotated.conf
 	@${REINPLACE_CMD} -e "s|/usr/bin/python|${LOCALBASE}/bin/python|" \
 		${WRKSRC}/doc/config/conf.d/cgi.conf
 

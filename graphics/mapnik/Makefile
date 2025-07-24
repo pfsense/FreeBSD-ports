@@ -1,6 +1,7 @@
 PORTNAME=	mapnik
 DISTVERSIONPREFIX=	v
-DISTVERSION=	4.0.0
+DISTVERSION=	4.1.0
+PORTREVISION=	1
 CATEGORIES=	graphics geography
 
 MAINTAINER=	hummeltech@sherpaguru.com
@@ -26,10 +27,11 @@ GH_PROJECT=	mapnik
 GH_TUPLE=	mapbox:geometry.hpp:c83a2ab:geometry_hpp/deps/mapbox/geometry \
 		mapbox:polylabel:51f09d0:polylabel/deps/mapbox/polylabel \
 		mapbox:variant:a2a4858:variant/deps/mapbox/variant \
+		mapnik:mapnik-vector-tile:5a0cfbb:mapnik_vector_tile/deps/mapbox/mapnik-vector-tile \
 		catchorg:Catch2:v2.13.10:catch2/test/catch2 \
-		mapnik:test-data:fd9ab43:test_data/test/data
+		mapnik:test-data:41c4cee:test_data/test/data
 
-USES=		compiler:c++17-lang cmake:testing gnome pkgconfig
+USES=		compiler:c++20-lang cmake:testing gnome pkgconfig
 USE_GNOME=	libxml2
 USE_LDCONFIG=	yes
 
@@ -109,6 +111,16 @@ OGRINDEX_CMAKE_BOOL= 		BUILD_UTILITY_OGRINDEX
 PGSQL2SQLITE_CMAKE_BOOL= 	BUILD_UTILITY_PGSQL2SQLITE
 SHAPEINDEX_CMAKE_BOOL= 		BUILD_UTILITY_SHAPEINDEX
 SVG2PNG_CMAKE_BOOL= 		BUILD_UTILITY_SVG2PNG
+
+# MB/PMTiles input plugin (added in 4.1.0) will not compile on i386 without a patch
+.include <bsd.port.options.mk>
+
+.if ${ARCH} == i386
+CMAKE_OFF=	USE_PLUGIN_INPUT_TILES
+PLIST_SUB+=	NOTI386="@comment "
+.else
+PLIST_SUB+=	NOTI386=""
+.endif
 
 pre-configure-SQLITE3-on:
 	@if ! ${LOCALBASE}/bin/sqlite3 :memory: 'create virtual table foo using rtree(pkid, xmin, xmax, ymin, ymax)' > /dev/null 2>&1; then \

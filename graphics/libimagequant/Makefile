@@ -1,9 +1,9 @@
 PORTNAME=	libimagequant
-PORTVERSION=	4.3.1
-PORTREVISION=	2
+PORTVERSION=	4.3.4
+PORTREVISION=	4
 CATEGORIES=	graphics
 
-MAINTAINER=	jbeich@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Image Quantization Library
 WWW=		https://pngquant.org/lib/
 
@@ -38,6 +38,5 @@ do-install:
 		--destdir "${STAGEDIR}" \
 		--prefix "${PREFIX}" \
 		${CARGO_INSTALL_ARGS}
-	@${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/*.so
 
 .include <bsd.port.mk>

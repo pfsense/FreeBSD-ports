@@ -1,6 +1,6 @@
 PORTNAME=	libgda
 DISTVERSION?=	5.2.10
-PORTREVISION=	4
+PORTREVISION=	5
 CATEGORIES=	databases gnome
 MASTER_SITES=	GNOME
 PKGNAMESUFFIX?=	5
@@ -34,7 +34,9 @@ INSTALL_TARGET=	install-strip
 CONFIGURE_ARGS=	--without-oracle \
 		--disable-crypto \
 		--disable-default-binary \
-		--enable-introspection
+		--enable-introspection \
+		--without-bdb \
+		--without-mdb
 
 .include <bsd.port.options.mk>
 
@@ -52,13 +54,6 @@ CONFIGURE_ARGS+=--with-ui
 USE_GNOME+=	cairo gtk30
 .else
 CONFIGURE_ARGS+=--without-ui
-.endif
-
-.if ${LIBGDA5_SLAVE}==bdb
-USES+=			bdb:5
-CONFIGURE_ARGS+=	--with-bdb=${LOCALBASE}
-.else
-CONFIGURE_ARGS+=	--without-bdb
 .endif
 
 .if ${LIBGDA5_SLAVE}==ldap
@@ -83,23 +78,15 @@ CONFIGURE_ARGS+=	--with-postgres=${LOCALBASE}
 CONFIGURE_ARGS+=	--without-postgres
 .endif
 
-# MDB (MS Access)
-.if ${LIBGDA5_SLAVE}==mdb
-LIB_DEPENDS+=		libmdbsql.so:databases/mdbtools
-CONFIGURE_ARGS+=	--with-mdb=${LOCALBASE}
-.else
-CONFIGURE_ARGS+=	--without-mdb
-.endif
-
 .if ${LIBGDA5_SLAVE}==jdbc
-USE_JAVA=		yes
-JAVA_VENDOR=		bsdjava openjdk
+USES+=			java
+JAVA_VENDOR=		openjdk
 CFLAGS+=		-I${JAVA_HOME}/include -I${JAVA_HOME}/include/freebsd
 .else
 CONFIGURE_ARGS+=	--without-java
 .endif
 
-.if ${OPSYS} == FreeBSD && ( ${OSVERSION} >= 1400091 || ( ${OSVERSION} >= 1302507 && ${OSVERSION} < 1400000 ))
+.if ${OPSYS} == FreeBSD
 CFLAGS+=	-Wno-error=incompatible-function-pointer-types
 .endif
 
@@ -115,7 +102,7 @@ post-patch:
 		${WRKSRC}/providers/bdb/gda-bdb-provider.c \
 		${WRKSRC}/providers/bdb/gda-bdb-test.c
 .if ${LIBGDA5_SLAVE} == jdbc
-	@${REINPLACE_CMD} -e 's|lib/amd64|lib/${ARCH:S/powerpc64/ppc64/}|g' \
+	@${REINPLACE_CMD} -e 's|lib/amd64|lib/${ARCH:S/powerpc/ppc/}|g' \
 		${WRKSRC}/getsp.java
 .endif
 .if ${LIBGDA5_SLAVE}!="no"

@@ -1,11 +1,13 @@
 PORTNAME=	rspec-core
-PORTVERSION=	3.13.0
+PORTVERSION=	3.13.5
 CATEGORIES=	devel rubygems
 MASTER_SITES=	RG
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	RSpec Core provides the structure for writing executable examples
-WWW=		https://github.com/rspec/rspec-core
+WWW=		https://rspec.info/ \
+		https://github.com/rspec/rspec/tree/main/rspec-core \
+		https://github.com/rspec/rspec
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE.md

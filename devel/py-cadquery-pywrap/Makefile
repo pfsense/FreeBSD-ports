@@ -1,7 +1,7 @@
 PORTNAME=	cadquery-pywrap
 DISTVERSIONPREFIX=	occt
 DISTVERSION=	7.5
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	devel python
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
@@ -32,5 +32,7 @@ GH_ACCOUNT=	CadQuery
 GH_PROJECT=	pywrap
 GH_TAGNAME=	e8c7bc9
 USE_PYTHON=	autoplist concurrent distutils
+
+NO_ARCH=	yes
 
 .include <bsd.port.mk>

@@ -1,12 +1,12 @@
 PORTNAME=	e-antic
-DISTVERSION=	2.0.2
-PORTREVISION=	2
+DISTVERSION=	2.1.0
+PORTREVISION=	1
 #MASTER_SITES=	https://www.labri.fr/perso/vdelecro/e-antic/
 CATEGORIES=	math
 
 MAINTAINER=	thierry@FreeBSD.org
 COMMENT=	Real Embedded Algebraic Number Theory In C
-WWW=		https://github.com/flatsurf/e-antic
+WWW=		https://flatsurf.github.io/e-antic/
 
 LICENSE=	GPLv3 LGPL3
 LICENSE_COMB=	dual
@@ -17,7 +17,6 @@ LIB_DEPENDS=	libarb.so:math/arb		\
 		libmpfr.so:math/mpfr		\
 		libantic.so:math/antic		\
 		libflint.so:math/flint2		\
-		libbenchmark.so:devel/benchmark	\
 		libboost_thread.so:devel/boost-libs
 
 USES=		autoreconf compiler:c++11-lang gmake libtool localbase	\
@@ -40,6 +39,7 @@ LIBS+=		"-lm"
 GNU_CONFIGURE=	yes
 # pytest requires cppyy, doc requires standardese
 CONFIGURE_ARGS=	--without-byexample	\
+		--without-benchmark	\
 		--without-pytest	\
 		--without-doc
 USE_LDCONFIG=	yes

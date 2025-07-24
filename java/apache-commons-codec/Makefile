@@ -1,5 +1,5 @@
 PORTNAME=	commons-codec
-PORTVERSION=	1.16.0
+PORTVERSION=	1.18.0
 CATEGORIES=	java converters
 MASTER_SITES=	APACHE_COMMONS_BINARIES
 PKGNAMEPREFIX=	apache-
@@ -11,10 +11,10 @@ WWW=		https://commons.apache.org/codec/
 
 LICENSE=	APACHE20
 
+USES=		java
+
 OPTIONS_DEFINE=	DOCS
 
-USE_JAVA=	yes
-JAVA_VERSION=	8+
 NO_BUILD=	yes
 NO_ARCH=	yes
 

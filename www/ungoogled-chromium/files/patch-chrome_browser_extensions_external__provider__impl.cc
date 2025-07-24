@@ -1,15 +1,15 @@
---- chrome/browser/extensions/external_provider_impl.cc.orig	2024-06-22 08:49:42 UTC
+--- chrome/browser/extensions/external_provider_impl.cc.orig	2025-05-31 17:16:41 UTC
 +++ chrome/browser/extensions/external_provider_impl.cc
-@@ -831,7 +831,7 @@ void ExternalProviderImpl::CreateExternalProviders(
+@@ -828,7 +828,7 @@ void ExternalProviderImpl::CreateExternalProviders(
+ 
+ #endif  // BUILDFLAG(IS_CHROMEOS)
    if (!profile->GetPrefs()->GetBoolean(pref_names::kBlockExternalExtensions)) {
- // TODO(crbug.com/40118868): Revisit the macro expression once build flag switch
- // of lacros-chrome is complete.
--#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS_LACROS)
-+#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS_LACROS) || BUILDFLAG(IS_BSD)
+-#if BUILDFLAG(IS_LINUX)
++#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_BSD)
      provider_list->push_back(std::make_unique<ExternalProviderImpl>(
          service,
          base::MakeRefCounted<ExternalPrefLoader>(
-@@ -859,7 +859,7 @@ void ExternalProviderImpl::CreateExternalProviders(
+@@ -856,7 +856,7 @@ void ExternalProviderImpl::CreateExternalProviders(
          bundled_extension_creation_flags));
  
      // Define a per-user source of external extensions.

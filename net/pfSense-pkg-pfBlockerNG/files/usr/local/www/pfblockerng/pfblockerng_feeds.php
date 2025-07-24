@@ -3,8 +3,8 @@
  * pfblockerng_feeds.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2016-2024 Rubicon Communications, LLC (Netgate)
- * Copyright (c) 2015-2023 BBcan177@gmail.com
+ * Copyright (c) 2016-2025 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2015-2024 BBcan177@gmail.com
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -27,8 +27,7 @@ require_once('/usr/local/pkg/pfblockerng/pfblockerng.inc');
 global $pfb;
 pfb_global();
 
-config_init_path('installedpackages/pfblockerngglobal');
-$fconfig	= config_get_path('installedpackages/pfblockerngglobal');
+$fconfig	= config_get_path('installedpackages/pfblockerngglobal', []);
 
 // Load/convert Feeds (w/alternative aliasname(s), if user-configured)
 $feed_info	= convert_feeds_json();
@@ -677,7 +676,7 @@ print ($section);
 
 								// Print info about Feed if available
 								if (isset($feed['info']) && !empty($feed['info'])) {
-									print ("&emsp;<i class=\"fa-solid fa-info-circle icon-primary\" title=\"{$feed['info']}\"></i>");
+									print ("&emsp;<i class=\"fa-solid fa-info-circle\" title=\"{$feed['info']}\"></i>");
 								}
 
 								// Print Feed offline status

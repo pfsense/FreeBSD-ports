@@ -1,7 +1,13 @@
 PORTNAME=	kea
-DISTVERSION=	2.6.0
+DISTVERSION=	2.6.3
+PORTREVISION=	1
 CATEGORIES=	net
 MASTER_SITES=	ISC/kea/${DISTVERSION}
+
+PATCHFILES+=	netgate.diff:-p1
+MASTER_SITE_BACKUP=
+FETCH_DEPENDS=	curl:ftp/curl
+PLIST_FILES+=	lib/kea/hooks/libdhcp_lease_options.a lib/kea/hooks/libdhcp_lease_options.so
 
 MAINTAINER=	apevnev@me.com
 COMMENT=	Alternative DHCP implementation by ISC
@@ -21,17 +27,16 @@ CPE_VERSION=	${DISTVERSION:C/-.*//}
 CPE_UPDATE=	${DISTVERSION:C/.*-//:tl}
 .endif
 
-USE_LDCONFIG=			yes
-USE_RC_SUBR=			${PORTNAME}
-GNU_CONFIGURE=			yes
-GNU_CONFIGURE_MANPREFIX=	${PREFIX}/share
-CONFIGURE_ARGS=			--with-boost-include=${LOCALBASE}/include \
-				--with-boost-lib-dir=${LOCALBASE}/lib \
-				--with-log4cplus=${LOCALBASE} \
-				--with-openssl=${OPENSSLBASE} \
-				--without-werror
-INSTALL_TARGET=			install-strip
-TEST_TARGET=			check
+USE_LDCONFIG=	yes
+USE_RC_SUBR=	${PORTNAME}
+GNU_CONFIGURE=	yes
+CONFIGURE_ARGS=	--with-boost-include=${LOCALBASE}/include \
+		--with-boost-lib-dir=${LOCALBASE}/lib \
+		--with-log4cplus=${LOCALBASE} \
+		--with-openssl=${OPENSSLBASE} \
+		--without-werror
+INSTALL_TARGET=	install-strip
+TEST_TARGET=	check
 
 PORTDOCS=	AUTHORS CONTRIBUTING.md COPYING ChangeLog README SECURITY.md \
 		code_of_conduct.md examples platforms.rst
@@ -56,5 +61,10 @@ PGSQL_VARS=		WANT_PGSQL=client
 
 SHELL_USES=		python
 SHELL_CONFIGURE_ON=	--enable-shell
+
+.if !exists(${DISTDIR}/${DIST_SUBDIR}/netgate.diff)
+pre-fetch:
+	curl -vv --header 'PRIVATE-TOKEN: ${GITLAB_TOKEN}' -o "${DISTDIR}/${DIST_SUBDIR}/netgate.diff" "https://gitlab.netgate.com/api/v4/projects/8/repository/files/net%2Fkea%2Ffiles%2Fnetgate.diff/raw?ref=plus-devel"
+.endif
 
 .include <bsd.port.mk>

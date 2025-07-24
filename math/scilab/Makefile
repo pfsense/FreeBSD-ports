@@ -1,8 +1,8 @@
 PORTNAME=	scilab
-PORTVERSION=	6.1.1
-PORTREVISION=	18
+DISTVERSION=	6.1.1
+PORTREVISION=	23
 CATEGORIES=	math cad java
-MASTER_SITES=	https://www.scilab.org/download/${PORTVERSION}/
+MASTER_SITES=	https://www.scilab.org/download/${DISTVERSION}/
 DISTFILES=	${DISTNAME}-src${EXTRACT_SUFX}
 
 MAINTAINER=	ports@FreeBSD.org
@@ -14,8 +14,7 @@ LICENSE_COMB=	dual
 LICENSE_FILE_GPLv2=	${WRKSRC}/COPYING
 LICENSE_FILE_BSD3CLAUSE=	${WRKSRC}/COPYING-BSD
 
-LIB_DEPENDS=	libxml2.so:textproc/libxml2 \
-		libpcre.so:devel/pcre \
+LIB_DEPENDS=	libpcre.so:devel/pcre \
 		libcurl.so:ftp/curl \
 		libhdf5.so:science/hdf5 \
 		libarpack.so:math/arpack-ng \
@@ -28,6 +27,7 @@ RUN_DEPENDS=	xdg-open:devel/xdg-utils
 USES=		compiler:c++17-lang cpe desktop-file-utils eigen:3,build \
 		fortran gettext gmake gnome iconv:wchar_t libtool \
 		localbase ncurses pathfix pkgconfig shared-mime-info
+USE_GNOME=	libxml2
 USE_LOCALE=	en_US.UTF-8
 
 GNU_CONFIGURE=	yes
@@ -41,7 +41,7 @@ LDFLAGS+=	${ICONV_LIB}
 CONFIGURE_ENV=	BLAS_LIBS="${BLASLIB}" LAPACK_LIBS="${LAPACKLIB}"
 INSTALL_TARGET=	install-strip
 
-PLIST_SUB=	SHLIB_VER=${PORTVERSION}
+PLIST_SUB=	SHLIB_VER=${DISTVERSION}
 
 OPTIONS_DEFINE=	GUI OCAML TK
 OPTIONS_RADIO=	BLAS
@@ -58,6 +58,7 @@ OPENBLAS_USES=	blaslapack:openblas
 GUI_DESC=	Java-based Graphical User Interface
 OCAML_DESC=	Scicos - dynamical system simulator (requires GUI)
 
+_JAVADIR=	${LOCALBASE}/share/java
 # Java dependencies:
 _GUI_DEPENDS+=	${JAVALIBDIR}/flexdock.jar:devel/flexdock \
 		${JAVALIBDIR}/jogl2.jar:graphics/jogamp-jogl \
@@ -70,9 +71,9 @@ _GUI_DEPENDS+=	${JAVALIBDIR}/flexdock.jar:devel/flexdock \
 		${JAVALIBDIR}/ecj-4.4.2.jar:java/eclipse-ecj \
 		${JAVALIBDIR}/lucene-core-5.5.5.jar:textproc/lucene5
 # Documentation, graphic export:
-_GUI_DEPENDS+=	${LOCALBASE}/share/java/fop/build/fop.jar:textproc/fop \
+_GUI_DEPENDS+=	${_JAVADIR}/fop/build/fop.jar:textproc/fop \
 		${JAVALIBDIR}/jlatexmath-fop.jar:math/jlatexmath \
-		${LOCALBASE}/share/java/batik/lib/batik-all.jar:graphics/batik \
+		${_JAVADIR}/batik/lib/batik-all.jar:graphics/batik \
 		${JAVALIBDIR}/avalon-framework.jar:devel/avalon-framework \
 		${JAVALIBDIR}/commons-io.jar:devel/apache-commons-io \
 		${JAVALIBDIR}/xmlgraphics-commons.jar:graphics/xmlgraphics-commons
@@ -83,8 +84,8 @@ _GUI_DEPENDS+=	${JAVALIBDIR}/commons-beanutils.jar:java/apache-commons-beanutils
 		${LOCALBASE}/bin/splint:devel/splint
 # Documentation building:
 _GUI_DEPENDS+=	${LOCALBASE}/share/xsl/docbook/javahelp/javahelp.xsl:textproc/docbook-xsl \
-		${JAVALIBDIR}/saxon-he-10.6.jar:textproc/saxon-he \
-		${JAVALIBDIR}/xml-apis-ext.jar:textproc/xml-commons \
+		saxon-he>=12.8:textproc/saxon-he \
+		${_JAVADIR}/xml-commons/xml-apis-ext.jar:textproc/xml-commons \
 		xsltproc:textproc/libxslt
 # Other gui deps:
 _GUI_DEPENDS+=	${JAVALIBDIR}/looks.jar:devel/jgoodies-looks \
@@ -96,8 +97,8 @@ GUI_BUILD_DEPENDS=	${_GUI_DEPENDS} \
 GUI_RUN_DEPENDS=	${_GUI_DEPENDS}
 
 GUI_ALL_TARGET=	all doc
-GUI_USES=	gl
-GUI_USE=	GL=gl JAVA=yes
+GUI_USES=	gl java
+GUI_USE=	GL=gl
 GUI_EXTRA_PATCHES=	${PATCHDIR}/extra-patch-bin-JAVA_HOME
 GUI_CONFIGURE_ON=	--with-jdk=${JAVA_HOME} \
 			--with-docbook=${LOCALBASE}/share/xsl/docbook \
@@ -132,11 +133,8 @@ CONFIGURE_ARGS+=	--enable-debug
 
 .include <bsd.port.pre.mk>
 
-.if ${COMPILER_TYPE} == clang && ${COMPILER_VERSION} >= 150
+.if ${COMPILER_TYPE} == clang
 CFLAGS+=	-Wno-error=int-conversion
-.endif
-
-.if ${COMPILER_TYPE} == clang && ${COMPILER_VERSION} >= 160
 CFLAGS+=	-Wno-error=incompatible-function-pointer-types
 .endif
 
@@ -148,7 +146,8 @@ FFLAGS+=	-fallow-argument-mismatch
 post-patch:
 	@${REINPLACE_CMD} 's,/usr/local,${LOCALBASE},' ${WRKSRC}/etc/librarypath.xml
 	@${REINPLACE_CMD} -e 's, gfortran, ${FC},' ${WRKSRC}/modules/dynamic_link/src/scripts/configure
-.if ${COMPILER_TYPE} == clang && ${COMPILER_VERSION} >= 160
+	@${REINPLACE_CMD} -e 's,valgrind,X_X_NONEXIST_X_X,' ${WRKSRC}/configure
+.if ${COMPILER_TYPE} == clang
 	@${REINPLACE_CMD} -e 's|std::filesystem|std::__fs::filesystem|g' \
 		${WRKSRC}/modules/fileio/src/cpp/fullpath.cpp \
 		${WRKSRC}/modules/fileio/sci_gateway/cpp/sci_get_absolute_file_path.cpp
@@ -165,16 +164,21 @@ post-patch-GUI-on:
 	@${REINPLACE_CMD} -e 's|/usr/lib/java|${JAVALIBDIR}|g' ${WRKSRC}/configure
 	@${REINPLACE_CMD} -e 's|/usr/lib64/jni|${LOCALBASE}/lib/|g' ${WRKSRC}/configure
 	@${REINPLACE_CMD} 's,\(DEFAULT_JAR_DIR="\),\1 \
-		${LOCALBASE}/share/java/classes \
-		${LOCALBASE}/share/java/fop/build \
-		${LOCALBASE}/share/java/batik/lib \
-		${LOCALBASE}/share/java/jeuclid/repo ,' ${WRKSRC}/configure
+		${JAVALIBDIR} \
+		${_JAVADIR} \
+		${_JAVADIR}/batik/lib \
+		${_JAVADIR}/fop/build \
+		${_JAVADIR}/jeuclid/repo \
+		${_JAVADIR}/xml-commons \
+		,' ${WRKSRC}/configure
 # Prefer non-versioned files to avoid excessive rebuilds. This also fixes detection of fop.
 	@${REINPLACE_CMD} 's|batik-all\*\.jar|batik-all.jar|g; \
 			s|commons-io\*\.jar|commons-io.jar|g; \
 			s|commons-logging\*\.jar|commons-logging.jar|g; \
 			s|fop\*\.jar|fop.jar|g; \
 			s|jlatexmath\*\.jar|jlatexmath.jar|g; \
+			s|jrosetta-API.jar|jrosetta-api.jar|g; \
+			s|saxon9he.jar|saxon-he-*.jar|g; \
 			s|xmlgraphics-commons\*\.jar|xmlgraphics-commons.jar|g' \
 			${WRKSRC}/configure
 # Part of the jogamp-jogl-2.3 patch:

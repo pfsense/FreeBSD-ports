@@ -1,6 +1,6 @@
 PORTNAME=	rox-filer
 PORTVERSION=	2.11
-PORTREVISION=	13
+PORTREVISION=	14
 CATEGORIES=	x11-fm gnome
 MASTER_SITES=	SF/rox/rox/${PORTVERSION}
 
@@ -19,7 +19,7 @@ PLIST_SUB+=	LOCALBASE=${LOCALBASE}
 USES=		gettext-runtime:build gmake gnome pkgconfig shared-mime-info \
 		tar:bzip2 xorg
 USE_XORG=	ice sm x11 xaw xorgproto
-USE_GNOME=	atk cairo gdkpixbuf2 glib20 gtk20 libxml2 pango
+USE_GNOME=	atk cairo gdkpixbuf glib20 gtk20 libxml2 pango
 
 GNU_CONFIGURE=		yes
 CONFIGURE_ENV=		APP_DIR=${WRKSRC}/ROX-Filer

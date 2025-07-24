@@ -1,10 +1,10 @@
 PORTNAME=	hexyl
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.14.0
+DISTVERSION=	0.16.0
 PORTREVISION=	5
 CATEGORIES=	sysutils
 
-MAINTAINER=	mikael@FreeBSD.org
+MAINTAINER=	bofh@FreeBSD.org
 COMMENT=	Command-line hex viewer
 WWW=		https://github.com/sharkdp/hexyl
 
@@ -18,8 +18,5 @@ USE_GITHUB=	yes
 GH_ACCOUNT=	sharkdp
 
 PLIST_FILES=	bin/hexyl
-
-post-install:
-	${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/hexyl
 
 .include <bsd.port.mk>

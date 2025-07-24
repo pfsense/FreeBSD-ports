@@ -1,6 +1,6 @@
---- gpu/vulkan/vulkan_device_queue.cc.orig	2024-06-22 08:49:42 UTC
+--- gpu/vulkan/vulkan_device_queue.cc.orig	2025-05-31 17:16:41 UTC
 +++ gpu/vulkan/vulkan_device_queue.cc
-@@ -125,7 +125,7 @@ bool VulkanDeviceQueue::Initialize(
+@@ -145,7 +145,7 @@ bool VulkanDeviceQueue::Initialize(
  
        // In dual-CPU cases, we cannot detect the active GPU correctly on Linux,
        // so don't select GPU device based on the |gpu_info|.
@@ -9,7 +9,7 @@
      // If gpu_info is provided, the device should match it.
      if (gpu_info && (device_properties.vendorID != gpu_info->gpu.vendor_id ||
                       device_properties.deviceID != gpu_info->gpu.device_id)) {
-@@ -268,7 +268,7 @@ bool VulkanDeviceQueue::Initialize(
+@@ -292,7 +292,7 @@ bool VulkanDeviceQueue::Initialize(
    // Android, Fuchsia, Linux, and CrOS (VaapiVideoDecoder) need YCbCr sampler
    // support.
  #if BUILDFLAG(IS_ANDROID) || BUILDFLAG(IS_FUCHSIA) || BUILDFLAG(IS_LINUX) || \
