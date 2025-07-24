@@ -1229,7 +1229,7 @@ function squid_resync_general() {
 				$crt_pk = SQUID_CONFBASE . "/serverkey.pem";
 				$crt_capath = SQUID_LOCALBASE . "/share/certs/";
 				$crt_cafile = SQUID_LOCALBASE . "/share/certs/ca-root-nss.crt";
-				$sslproxy_options = "NO_SSLv3,NO_TLSv1,NO_TLSv1_1";
+				$sslproxy_options = "NO_SSLv3, NO_TLSv1, NO_TLSv1_1";
 				/* XXX: Bug #4453, Bug #6592, Feature #6593, Bug #6563
 				 * http://wiki.squid-cache.org/ConfigExamples/Intercept/SslBumpExplicit#Modern_DH.2FEDH_ciphers_usage
 				 */
