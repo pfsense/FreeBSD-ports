@@ -124,7 +124,16 @@ function andwatch_sync_config() {
 	}
 
 	// Set a cron job to update the MAC registration database
-	install_cron_job(ANDWATCH_UPDATE_MA_CMD, true, rand(0,59), rand(0,23), '1,15', '*', '*', 'root', true);
+ 	$cron_already_installed = false;
+ 	foreach (config_get_path('cron/item', []) as $item) {
+ 		if ($item['command'] == ANDWATCH_UPDATE_MA_CMD) {
+ 			$cron_already_installed = true;
+ 			break;
+ 		}
+ 	}
+ 	if ($cron_already_installed == false) {
+ 		install_cron_job(ANDWATCH_UPDATE_MA_CMD, true, rand(0,59), rand(0,23), '1,15', '*', '*', 'root', true);
+ 	}
 
 	// Write the rc file
 	andwatch_write_rcfile();
