@@ -761,32 +761,6 @@ function zeek_sync_on_changes() {
 				return;
 			}
 		break;
-		case "auto":
-			if (is_array(config_get_path('hasync'))) {
-				$system_carp = config_get_path('hasync');
-				$rs[0]['ipaddress'] = $system_carp['synchronizetoip'];
-				$rs[0]['username'] = $system_carp['username'];
-				$rs[0]['password'] = $system_carp['password'];
-				$rs[0]['syncdestinenable'] = FALSE;
-				// XMLRPC sync is currently only supported over connections using the same protocol and port as this system
-				if (config_get_path('system/webgui/protocol') == "http") {
-					$rs[0]['syncprotocol'] = "http";
-					$rs[0]['syncport'] = config_get_path('system/webgui/port') ?: '80';
-				} else {
-					$rs[0]['syncprotocol'] = "https";
-					$rs[0]['syncport'] = config_get_path('system/webgui/port') ?: '443';
-				}
-				if ($system_carp['synchronizetoip'] == "") {
-					log_error("[zeek] XMLRPC CARP/HA sync is enabled but there are no system backup hosts configured as replication targets.");
-					return;
-				} else {
-					$rs[0]['syncdestinenable'] = TRUE;
-				}
-			} else {
-				log_error("[zeek] XMLRPC CARP/HA sync is enabled but there are no system backup hosts configured as replication targets.");
-				return;
-			}
-		break;
 		default:
 			return;
 		break;
@@ -851,6 +825,62 @@ function zeek_do_xmlrpc_sync($sync_to_ip, $username, $password, $varsyncport, $v
 	$resp = $rpc_client->xmlrpc_method('merge_installedpackages_section', $xml, $synctimeout);
 	/* Tell zeek to reload our settings on the destination sync host. */
 	$resp = $rpc_client->xmlrpc_exec_php($execcmd, $synctimeout);
+}
+
+function zeek_plugin_xmlrpc_send() {
+	if (config_get_path('installedpackages/zeeksync/config/0/synconchanges') != 'auto') {
+		return [];
+	}
+
+	return [
+		'installedpackages/zeeksync/config/0/synconchanges',
+		'installedpackages/zeek',
+		'installedpackages/zeekcontrol',
+		'installedpackages/zeekcluster',
+		'installedpackages/zeekscript'
+	];
+}
+
+function zeek_plugin_xmlrpc_recv($new_sections) {
+	if (array_get_path($new_sections, 'installedpackages/zeeksync/config/0/synconchanges') != 'auto') {
+		return [];
+	}
+
+	$section_paths = [
+		'installedpackages/zeek',
+		'installedpackages/zeekcontrol',
+		'installedpackages/zeekcluster',
+		'installedpackages/zeekscript'
+	];
+
+	$ret = [
+		'xmlrpc_recv_result' => false
+	];
+	foreach ($section_paths as $path) {
+		$old_section = config_get_path($path, []);
+		$new_section = array_get_path($new_sections, $path, []);
+
+		// Don't save empty configuration sections.
+		if (empty($old_section) && empty($new_section)) {
+			continue;
+		}
+		// Ignore unchanged configuration sections.
+		if ($old_section === $new_section) {
+			continue;
+		}
+
+		$ret[$path] = array_merge($old_section, $new_section);
+		$ret['xmlrpc_recv_result'] = true;
+	}
+
+	return $ret;
+}
+
+function zeek_plugin_xmlrpc_recv_done($xmlrpc_recv_result) {
+	if (array_get_path($xmlrpc_recv_result, 'zeek/xmlrpc_recv_result') !== true) {
+		return;
+	}
+	zeek_all_after_XMLRPC_resync();
 }
 
 function zeek_all_after_XMLRPC_resync() {

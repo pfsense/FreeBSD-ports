@@ -27,8 +27,8 @@ EXTRACT_AFTER_ARGS=	--exclude ${GH_PROJECT_DEFAULT}-${GH_TAGNAME_EXTRACT}/mswin3
 			--no-same-owner --no-same-permissions
 
 USE_GITHUB=	yes
-GH_TAGNAME=	036714cde
-NMAP_COMMIT_DATE=	20240327
+GH_TAGNAME=	20e25e960
+NMAP_COMMIT_DATE=	20250520
 
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=--without-localdirs \
@@ -62,6 +62,10 @@ DOCS=	CHANGELOG HACKING
 STRIP_FILES+=	nmap nping
 
 .include <bsd.port.options.mk>
+
+.if defined(SSL_DEFAULT) && ${SSL_DEFAULT} == libressl
+BROKEN=	error: OpenSSL-1.1.1 is the minimum supported version. LibreSSLis not supported
+.endif
 
 .if exists(/usr/lib/libibverbs.a)
 # Link with libibverbs is needed by static libpcap

@@ -1,11 +1,11 @@
 PORTNAME=	flowgger
 DISTVERSION=	0.3.1
-PORTREVISION=	13
+PORTREVISION=	18
 CATEGORIES=	sysutils
 MASTER_SITES=	CRATESIO
 DISTFILES=	${CARGO_DIST_SUBDIR}/${DISTNAME}${CARGO_CRATE_EXT}
 
-MAINTAINER=	mikael@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Fast data collector
 WWW=		https://github.com/awslabs/flowgger
 

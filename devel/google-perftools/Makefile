@@ -1,6 +1,6 @@
 PORTNAME=	google-perftools
 DISTVERSIONPREFIX=	gperftools-
-DISTVERSION=	2.16
+DISTVERSION=	2.16.90
 CATEGORIES=	devel
 MASTER_SITES=	https://github.com/gperftools/gperftools/releases/download/gperftools-${PORTVERSION}/
 DISTNAME=	gperftools-${PORTVERSION}
@@ -16,7 +16,7 @@ BROKEN_aarch64=	link fails: ld: error: undefined symbol: brk, see https://bugs.f
 BROKEN_armv7=	error: use of undeclared identifier '_URC_NO_REASON', see https://github.com/gperftools/gperftools/issues/1360
 BROKEN_riscv64=	error: Cannot calculate stack trace: will need to write for your environment, see https://github.com/gperftools/gperftools/issues/1359
 
-USES=		compiler:c11 gmake libtool localbase:ldflags perl5
+USES=		compiler:c11 gmake libtool localbase:ldflags perl5 # tests also require c++17 compiler
 USE_LDCONFIG=	yes
 USE_PERL5=	test
 
@@ -90,7 +90,6 @@ post-build:
 	@${ECHO}
 
 post-install:
-	${MV} ${STAGEDIR}${PREFIX}/bin/pprof ${STAGEDIR}${PREFIX}/bin/perftools-pprof
 	@${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/lib*.so.*
 
 .include <bsd.port.post.mk>

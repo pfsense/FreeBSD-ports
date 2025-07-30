@@ -300,7 +300,7 @@ if (in_array($argv[1], array('update', 'updateip', 'updatednsbl', 'dc', 'dcc', '
 
 
 // Determine if source list file has an updated timestamp
-function pfb_update_check($header, $list_url, $pfbfolder, $pfborig, $pflex, $format, $vtype) {
+function pfb_update_check($header, $list_url, $pfbfolder, $pfborig, $pflex, $format, $vtype, $srcint=FALSE) {
 	global $pfb;
 
 	$log = "[ {$header} ] [ NOW ]\n";
@@ -424,6 +424,12 @@ function pfb_update_check($header, $list_url, $pfbfolder, $pfborig, $pflex, $for
 					curl_setopt($ch, CURLOPT_SSL_CIPHER_LIST, 'TLSv1.2, TLSv1, SSLv3');
 				}
 
+				// If source interface is specified (not 'default') set CURLOPT_INTERFACE
+				if ($srcint) {
+					curl_setopt($ch, CURLOPT_INTERFACE, $srcint);
+					pfb_logger("\nList: {$header} will be downloaded via interface: {$srcint}\n", 1);
+				}
+
 				// Try up to 3 times to download the file before giving up
 				for ($retries = 1; $retries <= 3; $retries++) {
 					$remote_stamp_raw = -1;
@@ -453,7 +459,7 @@ function pfb_update_check($header, $list_url, $pfbfolder, $pfborig, $pflex, $for
 		if ($remote_stamp_raw == -1) {
 
 			// Download Feed to compare md5's. If update required, downloaded md5 file will be used instead of downloading twice
-			if (pfb_download("{$list_download}", "{$pfborig}/{$header}.md5", $pflex, $header, '', 1, '', 300, 'md5', '', '')) {
+			if (pfb_download("{$list_download}", "{$pfborig}/{$header}.md5", $pflex, $header, '', 1, '', 300, 'md5', '', '', $srcint)) {
 
 				// Collect md5 checksums
 				$remote_md5	= @md5_file("{$pfborig}/{$header}.md5.raw");
@@ -612,6 +618,9 @@ function pfblockerng_sync_cron() {
 							continue;
 						}
 
+						// Determine cURL source interface (sets CURLOPT_INTERFACE; applies to entire alias)
+						$srcint = $list['srcint'] ?: FALSE;
+
 						// Determine folder location for alias (return array $pfbarr)
 						pfb_determine_list_detail($list['action'], '', '', '');
 						$pfbfolder	= $pfbarr['folder'];
@@ -624,7 +633,7 @@ function pfblockerng_sync_cron() {
 
 						// Attempt download, when a previous 'fail' file marker is found.
 						if (file_exists("{$pfbfolder}/{$header}.fail")) {
-							pfb_update_check($header, $row['url'], $pfbfolder, $pfborig, $pflex, $row['format'], $vtype);
+							pfb_update_check($header, $row['url'], $pfbfolder, $pfborig, $pflex, $row['format'], $vtype, $srcint);
 							continue;
 						}
 
@@ -637,18 +646,18 @@ function pfblockerng_sync_cron() {
 						switch ($list['cron']) {
 							case 'EveryDay':
 								if ($hour == $pfb['24hour']) {
-									pfb_update_check($header, $row['url'], $pfbfolder, $pfborig, $pflex, $row['format'], $vtype);
+									pfb_update_check($header, $row['url'], $pfbfolder, $pfborig, $pflex, $row['format'], $vtype, $srcint);
 								}
 								break;
 							case 'Weekly':
 								if ($hour == $pfb['24hour'] && $dow == $list['dow']) {
-									pfb_update_check($header, $row['url'], $pfbfolder, $pfborig, $pflex, $row['format'], $vtype);
+									pfb_update_check($header, $row['url'], $pfbfolder, $pfborig, $pflex, $row['format'], $vtype, $srcint);
 								}
 								break;
 							default:
 								$pfb_sch = pfb_cron_base_hour($list['cron']);
 								if (in_array($hour, $pfb_sch)) {
-									pfb_update_check($header, $row['url'], $pfbfolder, $pfborig, $pflex, $row['format'], $vtype);
+									pfb_update_check($header, $row['url'], $pfbfolder, $pfborig, $pflex, $row['format'], $vtype, $srcint);
 								}
 								break;
 						}
@@ -1053,7 +1062,9 @@ function pfblockerng_uc_countries() {
 	}
 
 	// Add Continents to GeoIP ISOs for IPv4/6 Source Field lookup
-	@file_put_contents("{$pfb['geoip_isos']}", 'Africa,Antarctica,Asia,Europe,North_America,Oceania,South_America,Proxy_and_Satellite', FILE_APPEND | LOCK_EX);
+	$add_continents = 'Africa [Continent],Antarctica [Continent],Asia [Continent],Europe [Continent],North_America [Continent],Oceania [Continent]';
+	$add_continents .= ',South_America [Continent],Proxy_and_Satellite [GeoIP]';
+	@file_put_contents("{$pfb['geoip_isos']}", "{$add_continents}", FILE_APPEND | LOCK_EX);
 
 	ksort($pfb_geoip['country'], SORT_NATURAL);
 
@@ -1505,10 +1516,10 @@ pfb_global();
 
 \$continent			= "{$continent}";	// Continent name (Locale specific)
 \$continent_en			= "{$continent_en}";	// Continent name (English)
-\$options_countries4		= array(${'options4'});
-\$options_countries6		= array(${'options6'});
-\$options_countries4_cnt	= "${'ftotal4'}";
-\$options_countries6_cnt	= "${'ftotal6'}";
+\$options_countries4		= array({$options4});
+\$options_countries6		= array({$options6});
+\$options_countries4_cnt	= "{$ftotal4}";
+\$options_countries6_cnt	= "{$ftotal6}";
 
 EOF;
 $php_data .= <<<'EOF'

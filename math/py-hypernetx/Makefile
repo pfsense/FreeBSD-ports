@@ -1,5 +1,5 @@
 PORTNAME=	hypernetx
-DISTVERSION=	2.3.9
+DISTVERSION=	2.3.10
 CATEGORIES=	math python
 MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -18,5 +18,7 @@ RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}decorator>=4.3.0:devel/py-decorator@${PY_FLA
 
 USES=		cpe python shebangfix
 USE_PYTHON=	autoplist concurrent pep517 pytest
+
+NO_ARCH=	yes
 
 .include <bsd.port.mk>

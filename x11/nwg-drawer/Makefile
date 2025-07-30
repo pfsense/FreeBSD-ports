@@ -1,8 +1,10 @@
 PORTNAME=	nwg-drawer
-DISTVERSION=	0.6.0
+DISTVERSIONPREFIX=	v
+DISTVERSION=	0.6.3
+PORTREVISION=	5
 CATEGORIES=	x11 wayland
 
-MAINTAINER=	jbeich@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Application drawer for sway and other wlroots compositors
 WWW=		https://github.com/nwg-piotr/nwg-drawer
 
@@ -16,7 +18,7 @@ RUN_DEPENDS=	xdg-open:devel/xdg-utils
 
 USES=		gnome go:modules pkgconfig
 USE_GITHUB=	yes
-USE_GNOME=	cairo gdkpixbuf2 gtk30
+USE_GNOME=	cairo gdkpixbuf gtk30
 GH_ACCOUNT=	nwg-piotr
 GH_TUPLE=	KarpelesLab:weak:v0.1.1:karpeleslab_weak/vendor/github.com/KarpelesLab/weak \
 		allan-simon:go-singleinstance:d0997106ab37:allan_simon_go_singleinstance/vendor/github.com/allan-simon/go-singleinstance \
@@ -25,8 +27,8 @@ GH_TUPLE=	KarpelesLab:weak:v0.1.1:karpeleslab_weak/vendor/github.com/KarpelesLab
 		expr-lang:expr:v1.16.9:expr_lang_expr/vendor/github.com/expr-lang/expr \
 		fsnotify:fsnotify:v1.8.0:fsnotify_fsnotify/vendor/github.com/fsnotify/fsnotify \
 		go4org:unsafe-assume-no-moving-gc:b99613f794b6:go4org_unsafe_assume_no_moving_gc/vendor/go4.org/unsafe/assume-no-moving-gc \
-		golang:sync:v0.9.0:golang_sync/vendor/golang.org/x/sync \
-		golang:sys:v0.27.0:golang_sys/vendor/golang.org/x/sys \
+		golang:sync:v0.10.0:golang_sync/vendor/golang.org/x/sync \
+		golang:sys:v0.29.0:golang_sys/vendor/golang.org/x/sys \
 		joshuarubin:go-sway:v1.2.0:joshuarubin_go_sway/vendor/github.com/joshuarubin/go-sway \
 		joshuarubin:lifecycle:v1.1.4:joshuarubin_lifecycle/vendor/github.com/joshuarubin/lifecycle \
 		sirupsen:logrus:v1.9.3:sirupsen_logrus/vendor/github.com/sirupsen/logrus \

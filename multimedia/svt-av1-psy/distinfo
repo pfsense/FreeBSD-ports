@@ -1,3 +1,5 @@
-TIMESTAMP = 1730270684
-SHA256 (gianni-rosato-svt-av1-psy-v2.3.0_GH0.tar.gz) = 273c88e1abda260ade6c3f240da2abbea359a0b81d7a30d42e8d4914c8ecf9ed
-SIZE (gianni-rosato-svt-av1-psy-v2.3.0_GH0.tar.gz) = 7213062
+TIMESTAMP = 1745083088
+SHA256 (psy-ex-svt-av1-psy-v3.0.2_GH0.tar.gz) = b45d6f7253e94f5c1ef8c22fe2bb3c2c55178fbab43a41a3ae913dd5e0e118c2
+SIZE (psy-ex-svt-av1-psy-v3.0.2_GH0.tar.gz) = 7294413
+SHA256 (1480c1-cpuinfo-e649baa_GH0.tar.gz) = 32ab977a4344944beaa18058e6223fdc2740b2849c7c8b46d4361dbfb4550f11
+SIZE (1480c1-cpuinfo-e649baa_GH0.tar.gz) = 3542464

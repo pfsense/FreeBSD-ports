@@ -1,5 +1,5 @@
 PORTNAME=	fpc-devel
-PORTVERSION=	3.3.1.20241005
+PORTVERSION=	3.3.1.20250409
 CATEGORIES=	lang
 PKGNAMESUFFIX=	-source
 DIST_SUBDIR=	freepascal
@@ -8,14 +8,14 @@ MAINTAINER=	acm@FreeBSD.org
 COMMENT=	Free Pascal compiler with Turbo and Delphi compatibility (source)
 WWW=		https://www.freepascal.org/
 
-ONLY_FOR_ARCHS=	i386 amd64 aarch64
+ONLY_FOR_ARCHS=	aarch64 amd64 i386
 NO_BUILD=	yes
 
 USE_GITLAB=	yes
 GL_SITE=	https://gitlab.com/freepascal.org
 GL_ACCOUNT=	fpc
 GL_PROJECT=	source
-GL_TAGNAME=	7b0cd590a60f1d3c5d836fd4d829cb1cf86c2527
+GL_TAGNAME=	4cae231a521302a6356875b1d2268323067a321d
 
 PLIST=		${WRKDIR}/pkg-plist
 PATCHDIR=	${PORTSDIR}/lang/fpc-devel/files

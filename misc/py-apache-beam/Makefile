@@ -1,6 +1,6 @@
 PORTNAME=	apache-beam
 DISTVERSION=	2.43.0
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	misc
 MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -56,6 +56,6 @@ USE_PYTHON=	autoplist concurrent cryptography_test cython distutils pytest # 5 t
 
 post-install:
 	# strip binaries
-	@${FIND} ${STAGEDIR}${PREFIX} -name "*${PYTHON_EXT_SUFFIX}.so" | ${XARGS} ${STRIP_CMD}
+	@${FIND} ${STAGEDIR}${PREFIX} -name "*${PYTHON_TAG}.so" | ${XARGS} ${STRIP_CMD}
 
 .include <bsd.port.mk>

@@ -1,6 +1,6 @@
---- electron/script/spec-runner.js.orig	2024-10-09 13:53:06 UTC
+--- electron/script/spec-runner.js.orig	2025-02-26 12:22:11 UTC
 +++ electron/script/spec-runner.js
-@@ -165,7 +165,7 @@ async function runTestUsingElectron (specDir, testName
+@@ -200,7 +200,7 @@ async function runTestUsingElectron (specDir, testName
      exe = path.resolve(BASE, utils.getElectronExec());
    }
    const runnerArgs = [`electron/${specDir}`, ...unknownArgs.slice(2)];

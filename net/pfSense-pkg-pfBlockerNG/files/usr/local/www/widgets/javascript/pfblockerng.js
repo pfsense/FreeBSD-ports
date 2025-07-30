@@ -3,7 +3,7 @@
  *
  * part of pfSense (https://www.pfsense.org)
  * Copyright (c) 2016-2025 Rubicon Communications, LLC (Netgate)
- * Copyright (c) 2015-2023 BBcan177@gmail.com
+ * Copyright (c) 2015-2024 BBcan177@gmail.com
  * All rights reserved.
  *
  * Javascript and Integration modifications by J. Nieuwenhuizen and J. Van Breedam
@@ -26,7 +26,7 @@ var pfBlockerNGWidgetTimer;
 
 /* update timers (10000 ms = 10 seconds, 60000 ms = 1 minute, 300000 ms = 5 mins) */
 var pfBlockerNGupdateFailedDelay	= 300000;
-var pfBlockerNGupdateWidgetDelay	= 10000;
+var pfBlockerNGupdateWidgetDelay	= 15000;
 
 function pfBlockerNG_fetch_new_failed_callback(callback_data) {
 	if (callback_data.length > 0) {
@@ -143,7 +143,7 @@ events.push(function() {
 
 					// Reset pfBNG refresh intervals
 					var pfBlockerNGupdateFailedDelay	= 300000;
-					var pfBlockerNGupdateWidgetDelay	= 10000;
+					var pfBlockerNGupdateWidgetDelay	= 15000;
 	
 					clearInterval(pfBlockerNGFailedTimer);
 					clearInterval(pfBlockerNGWidgetTimer);

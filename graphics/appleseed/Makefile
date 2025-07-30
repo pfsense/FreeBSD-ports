@@ -1,6 +1,6 @@
 PORTNAME=	appleseed
 DISTVERSION=	2.1.0-beta
-PORTREVISION=	18
+PORTREVISION=	19
 CATEGORIES=	graphics
 
 PATCH_SITES=	http://vault.101011010.xyz/distfiles/ LOCAL/danfe
@@ -12,6 +12,8 @@ WWW=		https://appleseedhq.net/
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE.txt
+
+BROKEN=		fails to build with Boost>=1.87
 
 LIB_DEPENDS=	libboost_thread.so:devel/boost-libs \
 		liblz4.so:archivers/liblz4 \
@@ -55,7 +57,7 @@ OPTIONS_DEFAULT=	PYTHON STUDIO
 OPTIONS_SUB=	yes
 
 EMBREE_DESC=	Embree intersection backend support
-EMBREE_LIB_DEPENDS=	libembree3.so:graphics/embree
+EMBREE_LIB_DEPENDS=	libembree3.so:graphics/embree3
 EMBREE_CMAKE_ON=	-DWITH_EMBREE:BOOL=ON
 
 PYTHON_USES=	gl python:build,run
@@ -85,6 +87,8 @@ post-patch:
                 ${WRKSRC}/src/appleseed/foundation/math/matrix.h \
                 ${WRKSRC}/src/appleseed/foundation/math/quaternion.h \
                 ${WRKSRC}/src/appleseed/foundation/image/color.h
+	@${REINPLACE_CMD} -e '/return Product/s,trt\.derived(),trt,' \
+		${WRKSRC}/src/thirdparty/bcd/ext/eigen/Eigen/src/Core/Transpositions.h
 
 .include <bsd.port.mk>
 

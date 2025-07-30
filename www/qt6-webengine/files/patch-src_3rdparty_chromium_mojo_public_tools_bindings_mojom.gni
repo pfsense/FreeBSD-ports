@@ -1,6 +1,6 @@
---- src/3rdparty/chromium/mojo/public/tools/bindings/mojom.gni.orig	2023-09-13 12:11:42 UTC
+--- src/3rdparty/chromium/mojo/public/tools/bindings/mojom.gni.orig	2024-09-30 07:45:04 UTC
 +++ src/3rdparty/chromium/mojo/public/tools/bindings/mojom.gni
-@@ -743,6 +743,16 @@ template("mojom") {
+@@ -776,6 +776,16 @@ template("mojom") {
        enabled_features += [ "is_apple" ]
      }
  
@@ -16,4 +16,4 @@
 +
      action(parser_target_name) {
        allow_remote = true
-       custom_processor = "mojom_parser"
+ 

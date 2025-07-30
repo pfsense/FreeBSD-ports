@@ -1,5 +1,5 @@
 PORTNAME=	shotcut
-DISTVERSION=	24.11.17
+DISTVERSION=	25.05.11
 CATEGORIES=	multimedia
 MASTER_SITES=	https://github.com/mltframework/${PORTNAME}/releases/download/v${DISTVERSION}/
 PKGNAMESUFFIX=	-qt6
@@ -15,9 +15,7 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 BUILD_DEPENDS=	${LOCALBASE}/include/vulkan/vulkan.h:graphics/vulkan-headers
 LIB_DEPENDS=	libfftw3.so:math/fftw3
 RUN_DEPENDS=	ffmpeg:multimedia/ffmpeg \
-		${LOCALBASE}/lib/libjack.so:audio/jack \
-		${LOCALBASE}/lib/mlt-7/libmltglaxnimate-qt6.so:multimedia/mlt7-glaxnimate@qt6 \
-		${LOCALBASE}/lib/mlt-7/libmltqt6.so:multimedia/mlt7-qt@qt6
+		${LOCALBASE}/lib/libjack.so:audio/jack
 
 USES=		cmake compiler:c++17-lang cpe desktop-file-utils gl mlt:7 \
 		pkgconfig qt:6 sdl shared-mime-info tar:txz xorg
@@ -32,7 +30,8 @@ CXXFLAGS+=	-DSHOTCUT_NOUPGRADE
 
 CONFLICTS=	shotcut
 
-SUB_FILES=	${PORTNAME}.sh
+EXTRACT_AFTER_ARGS=	--include src/${PORTNAME} \
+			--no-same-owner --no-same-permissions
 
 WRKSRC=		${WRKDIR}/src
 WRKSRC_SUBDIR=	${PORTNAME}
@@ -43,9 +42,5 @@ OPTIONS_DEFAULT=FREI0R LADSPA
 FREI0R_RUN_DEPENDS=	frei0r-plugins>=0:graphics/frei0r-plugins
 
 LADSPA_RUN_DEPENDS=	swhplugins>=0:audio/swhplugins
-
-post-install:
-	${MV} ${STAGEDIR}${PREFIX}/bin/${PORTNAME} ${STAGEDIR}${PREFIX}/bin/${PORTNAME}-real
-	${INSTALL_SCRIPT} ${WRKDIR}/${PORTNAME}.sh ${STAGEDIR}${PREFIX}/bin/${PORTNAME}
 
 .include <bsd.port.mk>

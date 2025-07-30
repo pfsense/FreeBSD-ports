@@ -1,5 +1,6 @@
 PORTNAME=	httpx
-PORTVERSION=	0.27.2
+PORTVERSION=	0.28.1
+PORTREVISION=	1
 CATEGORIES=	www python
 MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -17,8 +18,7 @@ BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}hatch-fancy-pypi-readme>=0:devel/py-hatch-
 RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}anyio>=0:devel/py-anyio@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}certifi>=0:security/py-certifi@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}httpcore>=1<2:www/py-httpcore@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}idna>=0:dns/py-idna@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}sniffio>=0:devel/py-sniffio@${PY_FLAVOR}
+		${PYTHON_PKGNAMEPREFIX}idna>=0:dns/py-idna@${PY_FLAVOR}
 
 USES=		cpe python
 USE_PYTHON=	autoplist concurrent pep517
@@ -33,7 +33,7 @@ OPTIONS_DEFAULT=HTTP2 SOCKS
 BROTLI_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}brotli>=0:archivers/py-brotli@${PY_FLAVOR}
 CLI_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}click>=8<9:devel/py-click@${PY_FLAVOR} \
 			${PYTHON_PKGNAMEPREFIX}pygments>=2<3:textproc/py-pygments@${PY_FLAVOR} \
-			${PYTHON_PKGNAMEPREFIX}rich>=10<14:textproc/py-rich@${PY_FLAVOR}
+			${PYTHON_PKGNAMEPREFIX}rich>=10<15:textproc/py-rich@${PY_FLAVOR}
 HTTP2_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}h2>=3<5:www/py-h2@${PY_FLAVOR}
 SOCKS_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}socksio>=1<2:net/py-socksio@${PY_FLAVOR}
 ZSTD_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}zstandard>=0.18.0:archivers/py-zstandard@${PY_FLAVOR}

@@ -1,5 +1,5 @@
 PORTNAME=	lazarus
-DISTVERSION=	4.99.20241005
+DISTVERSION=	4.99.20250409
 PKGNAMESUFFIX?=  -gtk2-devel
 PORTREVISION?=	0
 CATEGORIES=	editors devel
@@ -16,12 +16,12 @@ RUN_DEPENDS?=	${LOCALBASE}/bin/as:devel/binutils \
 		gmake:devel/gmake \
 		${LOCALBASE}/share/fpc${FPC_DEVELSUFFIX}-source-${FPC_DEFAULT}/Makefile.fpc:lang/fpc${FPC_DEVELSUFFIX}-source
 
-ONLY_FOR_ARCHS=	i386 amd64 aarch64
+ONLY_FOR_ARCHS=	aarch64 amd64 i386
 
 USE_GITLAB=	yes
 GL_ACCOUNT=	freepascal.org/lazarus
 GL_PROJECT=	${PORTNAME}
-GL_COMMIT=	56a41ab2d81831212ad12b9d3ac0e7e7765859f0
+GL_COMMIT=	90027a9d870594cdcef8909480eabb5e581669f0
 
 USES=		desktop-file-utils fpc:run gettext gmake iconv shared-mime-info xorg
 USE_XORG=	x11
@@ -55,7 +55,12 @@ RUN_DEPENDS+=	${LOCALBASE}/bin/gdb:devel/gdb
 
 .if ${PKGNAMESUFFIX} == "-gtk2-devel"
 USES+=		gnome
-USE_GNOME=	cairo gtk20 gdkpixbuf2
+USE_GNOME=	cairo gtk20 gdkpixbuf
+.endif
+
+.if ${PKGNAMESUFFIX} == "-gtk3-devel"
+USES+=		gnome
+USE_GNOME=	cairo glib20 gtk30 pango
 .endif
 
 post-extract:

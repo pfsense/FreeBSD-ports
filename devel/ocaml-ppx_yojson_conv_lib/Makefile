@@ -18,7 +18,6 @@ RUN_DEPENDS=	${SA_DIR}/yojson/META:textproc/ocaml-yojson
 USES=		ocaml:dune
 USE_GITHUB=	yes
 GH_ACCOUNT=	janestreet
-USE_OCAML=	yes
 
 DOCSDIR=	${OCAML_DOCSDIR}/${PORTNAME}
 PORTDOCS=	LICENSE.md
@@ -26,6 +25,12 @@ PORTDOCS=	LICENSE.md
 OPTIONS_DEFINE=	DOCS
 
 SA_DIR=		${LOCALBASE}/${OCAML_SITELIBDIR}
+
+.include <bsd.port.options.mk>
+
+.if ${ARCH} == powerpc
+USE_BINUTILS=	yes
+.endif
 
 post-patch:
 	@${REINPLACE_CMD} \

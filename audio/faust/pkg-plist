@@ -34,6 +34,7 @@ bin/faust2firefox
 bin/faust2gen
 bin/faust2graph
 bin/faust2graphviewer
+bin/faust2hothouse
 bin/faust2ios
 bin/faust2jack
 bin/faust2jackconsole
@@ -45,6 +46,7 @@ bin/faust2juce
 bin/faust2ladspa
 bin/faust2linuxunity
 bin/faust2lv2
+bin/faust2magtk
 bin/faust2mathdoc
 bin/faust2mathviewer
 bin/faust2max6
@@ -117,6 +119,7 @@ include/faust/audio/esp32-dsp.h
 include/faust/audio/fpe.h
 include/faust/audio/jack-dsp.h
 include/faust/audio/juce-dsp.h
+include/faust/audio/miniaudio-dsp.h
 include/faust/audio/netjack-dsp.h
 include/faust/audio/oboe-dsp.h
 include/faust/audio/ofaudio-dsp.h
@@ -167,6 +170,7 @@ include/faust/dsp/poly-wasm-dsp.h
 include/faust/dsp/proxy-dsp.h
 include/faust/dsp/proxy-osc-dsp.h
 include/faust/dsp/rnbo-dsp.h
+include/faust/dsp/signal-dsp.h
 include/faust/dsp/sound-player.h
 include/faust/dsp/timed-dsp.h
 include/faust/dsp/timed-dsp.h.orig
@@ -181,7 +185,6 @@ include/faust/gui/CInterface.h
 include/faust/gui/ControlSequenceUI.h
 include/faust/gui/ControlUI.h
 include/faust/gui/DaisyControlUI.h
-include/faust/gui/DaisyPatchInitControlUI.h
 include/faust/gui/DecoratorUI.h
 include/faust/gui/Esp32ControlUI.h
 include/faust/gui/Esp32Reader.h
@@ -190,6 +193,7 @@ include/faust/gui/FUI.h
 include/faust/gui/GTKUI.h
 include/faust/gui/GUI.h
 include/faust/gui/HTTPDControler.h
+include/faust/gui/HothouseControlUI.h
 include/faust/gui/JSONControl.h
 include/faust/gui/JSONUI.h
 include/faust/gui/JSONUIDecoder.h
@@ -204,6 +208,7 @@ include/faust/gui/MapUI.h
 include/faust/gui/MemoryReader.h
 include/faust/gui/MetaDataUI.h
 include/faust/gui/MidiUI.h
+include/faust/gui/MiniaudioReader.h
 include/faust/gui/OCVUI.h
 include/faust/gui/OSCControler.h
 include/faust/gui/OSCIO.h
@@ -250,6 +255,7 @@ include/faust/midi/juce-midi.h
 include/faust/midi/midi.h
 include/faust/midi/rt-midi.h
 include/faust/midi/teensy-midi.h
+include/faust/miniaudio.h
 include/faust/misc.h
 include/faust/osc/FaustFactory.h
 include/faust/osc/FaustNode.h
@@ -271,7 +277,7 @@ lib/ios-libsndfile.a
 lib/libOSCFaust.a
 lib/libfaust.so
 lib/libfaust.so.2
-lib/libfaust.so.2.75.7
+lib/libfaust.so.2.79.3
 %%HIGHLIGHT%%share/apps/katepart/syntax/faust.xml
 %%DATADIR%%/AU/AUPublic/AUBase/AUBase.cpp
 %%DATADIR%%/AU/AUPublic/AUBase/AUBase.h
@@ -431,6 +437,7 @@ lib/libfaust.so.2.75.7
 %%DATADIR%%/daisy/Makefile
 %%DATADIR%%/daisy/README.md
 %%DATADIR%%/daisy/ex_faust.cpp
+%%DATADIR%%/daisy/faust_sdram_converter.py
 %%DATADIR%%/delays.lib
 %%DATADIR%%/demos.lib
 %%DATADIR%%/dplug.d
@@ -485,6 +492,9 @@ lib/libfaust.so.2.75.7
 %%DATADIR%%/filters.lib
 %%DATADIR%%/gen-json.cpp
 %%DATADIR%%/hoa.lib
+%%DATADIR%%/hothouse/Makefile
+%%DATADIR%%/hothouse/README.md
+%%DATADIR%%/hothouse/ex_faust.cpp
 %%DATADIR%%/iOS/Default-568h@2x.png
 %%DATADIR%%/iOS/Default-Landscape@2x~ipad.png
 %%DATADIR%%/iOS/Default-Landscape~ipad.png
@@ -676,9 +686,11 @@ lib/libfaust.so.2.75.7
 %%DATADIR%%/julia/portaudio-gtk.jl
 %%DATADIR%%/ladspa.cpp
 %%DATADIR%%/latexheader.tex
+%%DATADIR%%/linearalgebra.lib
 %%DATADIR%%/lv2.cpp
 %%DATADIR%%/lv2qtgui.h
 %%DATADIR%%/lv2ui.cpp
+%%DATADIR%%/ma-gtk.cpp
 %%DATADIR%%/math.lib
 %%DATADIR%%/mathdoctexts-de.txt
 %%DATADIR%%/mathdoctexts-default.txt
@@ -692,6 +704,10 @@ lib/libfaust.so.2.75.7
 %%DATADIR%%/max-msp/faustgen-wrapper.maxpat
 %%DATADIR%%/max-msp/max-msp.cpp
 %%DATADIR%%/max-msp/max-msp64.cpp
+%%DATADIR%%/max-msp/mc-faustgen-wrapper-poly.maxpat
+%%DATADIR%%/max-msp/mc-faustgen-wrapper.maxpat
+%%DATADIR%%/max-msp/mc-wrapper-poly.maxpat
+%%DATADIR%%/max-msp/mc-wrapper.maxpat
 %%DATADIR%%/max-msp/py2max/.gitignore
 %%DATADIR%%/max-msp/py2max/CHANGELOG.md
 %%DATADIR%%/max-msp/py2max/LICENSE

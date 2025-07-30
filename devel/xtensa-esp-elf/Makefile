@@ -1,6 +1,6 @@
 PORTNAME=	xtensa-esp-elf
 DISTVERSION=	13.2.0_20240530
-PORTREVISION=	4
+PORTREVISION=	9
 CATEGORIES=	devel
 MASTER_SITES=	https://github.com/espressif/crosstool-NG/releases/download/esp-${DISTVERSION}/:source1 \
 		GNU/gmp:source2 \
@@ -30,10 +30,10 @@ WWW=		https://docs.espressif.com/projects/esp-idf/en/v5.3.1/esp32/get-started/
 LICENSE=	GPLv2 LGPL21
 LICENSE_COMB=	multi
 
-BUILD_DEPENDS=	${LOCALBASE}/bin/grep:textproc/gnugrep \
-		${LOCALBASE}/include/libintl.h:devel/gettext-runtime \
+BUILD_DEPENDS=	${LOCALBASE}/include/libintl.h:devel/gettext-runtime \
 		bash:shells/bash \
 		gawk:lang/gawk \
+		ggrep:textproc/gnugrep \
 		gpatch:devel/patch \
 		gsed:textproc/gsed \
 		help2man:misc/help2man \
@@ -55,9 +55,10 @@ GH_TAGNAME=	esp-2.41.0_${ESPDATE}:github1 \
 		esp-4.3.0_${ESPDATE}:github3 \
 		${TAG_WRAPPERS}:github4
 BINARY_ALIAS=	g++=${CXX} gcc=${CC} python=${PYTHON_VERSION}
-BUILD_ENV=	CT_ALLOW_BUILD_AS_ROOT_SURE=1 \
+BUILD_ENV=	${WRK_ENV} \
+		CT_ALLOW_BUILD_AS_ROOT_SURE=1 \
 		CT_FORBID_DOWNLOAD=y \
-		GREP=${LOCALBASE}/bin/grep \
+		GREP=ggrep \
 		LD_RUN_PATH=${PREFIX}/lib/${CC} \
 		LDFLAGS=-I${PREFIX}/lib \
 		${MAKE_ENV:MPATH=*}
@@ -117,12 +118,12 @@ post-extract:
 do-configure:
 	cd ${BUILD_WRKSRC} && ./bootstrap
 	cd ${BUILD_WRKSRC} && \
-	    ${SETENV} ${BUILD_ENV} LIBS=-lintl \
+	    ${SETENVI} ${BUILD_ENV} LIBS=-lintl \
 	    ./configure --prefix=${WRKDIR}/ct-ng --exec-prefix=${WRKDIR}/ct-ng
 	cd ${BUILD_WRKSRC} && \
-	    ${SETENV} -uMAKELEVEL -uMAKEFLAGS -u.MAKE.LEVEL.ENV ${BUILD_ENV} \
+	    ${SETENVI} -uMAKELEVEL -uMAKEFLAGS -u.MAKE.LEVEL.ENV ${BUILD_ENV} \
 	    ${MAKE_CMD} install && \
-	    ${SETENV} ${BUILD_ENV} ./ct-ng xtensa-esp-elf
+	    ${SETENVI} ${BUILD_ENV} ./ct-ng xtensa-esp-elf
 
 	# xtensa-toolchian-wrapper
 	${MKDIR} ${WRKDIR}/.cargo
@@ -139,7 +140,7 @@ do-configure:
 	    ${CARGO_UPDATE_ARGS}
 
 do-build:
-	cd ${BUILD_WRKSRC} && ${SETENV} ${BUILD_ENV} ./ct-ng build
+	cd ${BUILD_WRKSRC} && ${SETENVI} ${BUILD_ENV} ./ct-ng build
 	cd ${BUILD_WRKSRC}/builds/${PORTNAME} && \
 	    ${CHMOD} +w . lib && \
 	    ${RM} build.log.bz2 lib/charset.alias && \

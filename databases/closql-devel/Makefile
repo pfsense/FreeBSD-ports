@@ -1,6 +1,6 @@
 PORTNAME=	closql
 DISTVERSIONPREFIX=	v
-DISTVERSION=	2.1.0
+DISTVERSION=	2.2.2
 DISTVERSIONSUFFIX=
 CATEGORIES=	databases elisp
 PKGNAMESUFFIX=	-devel${EMACS_PKGNAMESUFFIX}
@@ -12,16 +12,20 @@ WWW=		https://github.com/magit/closql
 LICENSE=	GPLv3+
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
+DEPRECATED=	Use databases/closql instead
+EXPIRATION_DATE=	2025-08-31
+
 BUILD_DEPENDS=	compat.el${EMACS_PKGNAMESUFFIX}>=30.0.0.0:misc/compat.el@${EMACS_FLAVOR} \
-		emacsql-devel${EMACS_PKGNAMESUFFIX}>=4.1.0:databases/emacsql-devel@${EMACS_FLAVOR}
+		emacsql-devel${EMACS_PKGNAMESUFFIX}>=4.3.1:databases/emacsql-devel@${EMACS_FLAVOR}
 RUN_DEPENDS=	compat.el${EMACS_PKGNAMESUFFIX}>=30.0.0.0:misc/compat.el@${EMACS_FLAVOR} \
-		emacsql-devel${EMACS_PKGNAMESUFFIX}>=4.1.0:databases/emacsql-devel@${EMACS_FLAVOR}
+		emacsql-devel${EMACS_PKGNAMESUFFIX}>=4.3.1:databases/emacsql-devel@${EMACS_FLAVOR}
 
 USES=		emacs gmake
 USE_GITHUB=	yes
 GH_ACCOUNT=	magit
 
 MAKE_ENV+=	LOAD_PATH="${LOAD_PATH}"
+MAKE_JOBS_UNSAFE=	Opening input file: No such file or directory, /wrkdirs/usr/ports/databases/closql-devel/work-full/closql-2.2.0/.#closql-autoloads.el
 
 CONFLICTS_INSTALL=	closql closql-emacs_* # share/doc/closql/README.md
 

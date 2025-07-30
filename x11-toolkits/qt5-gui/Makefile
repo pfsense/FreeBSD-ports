@@ -36,6 +36,7 @@ USE_GL=			egl gl
 USE_GNOME=		glib20
 USE_PERL5=		extract
 USE_QT=			core dbus network buildtools:build qmake:build
+USE_LDCONFIG=		${PREFIX}/${QT_LIBDIR_REL}
 QT_BINARIES=		yes
 QT_CONFIG=		accessibility accessibility-atspi-bridge dbus \
 			fontconfig glib opengl png system-freetype system-jpeg \

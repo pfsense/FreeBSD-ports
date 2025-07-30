@@ -11,6 +11,7 @@ USE_GL=		gl
 USE_PERL5=	build
 USE_QT=		core declarative gui location network webchannel \
 		buildtools:build
+USE_LDCONFIG=	${PREFIX}/${QT_LIBDIR_REL}
 
 .include <bsd.port.pre.mk>
 

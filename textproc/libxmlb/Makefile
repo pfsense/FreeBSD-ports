@@ -1,5 +1,5 @@
 PORTNAME=	libxmlb
-DISTVERSION=	0.3.14
+DISTVERSION=	0.3.22
 PORTREVISION=	1
 CATEGORIES=	textproc
 MASTER_SITES=	https://github.com/hughsie/${PORTNAME}/releases/download/${DISTVERSION}/
@@ -16,8 +16,10 @@ LIB_DEPENDS=	libstemmer.so:textproc/snowballstemmer \
 
 USES=		gnome meson pkgconfig localbase:ldflags tar:xz
 USE_GNOME=	glib20 introspection:build
+USE_LDCONFIG=	yes
 
-MESON_ARGS=	-Dstemmer=true
+MESON_ARGS=	-Dstemmer=true \
+		-Dtests=false
 
 OPTIONS_DEFINE=	DOCS
 

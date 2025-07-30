@@ -7,6 +7,7 @@ etc/periodic/security/460.pkg-checksum
 etc/periodic/weekly/400.status-pkg
 @sample etc/pkg.conf.sample
 include/pkg.h
+include/pkg/vec.h
 include/pkg/audit.h
 lib/libpkg.a
 lib/libpkg.so
@@ -41,6 +42,7 @@ share/man/man8/pkg-query.8.gz
 share/man/man8/pkg-register.8.gz
 share/man/man8/pkg-remove.8.gz
 share/man/man8/pkg-repo.8.gz
+share/man/man8/pkg-repositories.8.gz
 share/man/man8/pkg-rquery.8.gz
 share/man/man8/pkg-search.8.gz
 share/man/man8/pkg-set.8.gz

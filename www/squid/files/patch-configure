@@ -1,18 +1,15 @@
---- configure.orig	2024-03-04 05:50:28 UTC
+--- configure.orig	2025-02-01 11:08:28 UTC
 +++ configure
-@@ -43985,7 +43985,10 @@ _ACEOF
+@@ -43956,7 +43956,7 @@ BUILD_HELPER="NIS"
+ ##
  
- else $as_nop
- 
--  BUILD_HELPER=""
-+# XXX: On FreeBSD we have to do this to make NIS work
-+# until https://bugs.freebsd.org/bugzilla/show_bug.cgi?id=188247
-+# is resolved.
-+  BUILD_HELPER="NIS"
- 
- fi
- 
-@@ -50834,6 +50837,7 @@ fi
+ BUILD_HELPER="NIS"
+-       for ac_header in sys/types.h rpc/rpc.h rpcsvc/ypclnt.h rpcsvc/yp_prot.h crypt.h
++       for ac_header in sys/types.h rpc/rpc.h rpcsvc/ypclnt.h rpcsvc/yp_prot.h rpcsvc/crypt.h
+ do :
+   as_ac_Header=`printf "%s\n" "ac_cv_header_$ac_header" | $as_tr_sh`
+ ac_fn_cxx_check_header_compile "$LINENO" "$ac_header" "$as_ac_Header" "
+@@ -50825,6 +50825,7 @@ ac_fn_cxx_check_type "$LINENO" "cpu_set_t" "ac_cv_type
  
  ac_fn_cxx_check_type "$LINENO" "cpu_set_t" "ac_cv_type_cpu_set_t" "
  #if HAVE_SCHED_H
@@ -20,7 +17,7 @@
  #include <sched.h>
  #endif
  
-@@ -54020,6 +54024,7 @@ else $as_nop
+@@ -53793,6 +53794,7 @@ else $as_nop
  #       include <sys/ioccom.h>
  #       include <netinet/in.h>
  #undef minor_t

@@ -1,7 +1,7 @@
 PORTNAME=	precice
 DISTVERSIONPREFIX=	v
 DISTVERSION=	3.1.2
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	science # physics
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -10,6 +10,8 @@ WWW=		https://precice.org/
 
 LICENSE=	LGPL3
 LICENSE_FILE=	${WRKSRC}/LICENSE
+
+BROKEN=		fails to build with Boost>=1.87
 
 BUILD_DEPENDS=	${PYNUMPY}
 LIB_DEPENDS=	libboost_system.so:devel/boost-libs \

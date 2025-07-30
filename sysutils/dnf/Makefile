@@ -1,5 +1,5 @@
 PORTNAME=	dnf
-DISTVERSION=	4.17.0
+DISTVERSION=	4.22.0
 CATEGORIES=	sysutils
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -12,7 +12,7 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 RUN_DEPENDS=	libcomps>0:misc/libcomps \
 		libdnf>0:sysutils/libdnf \
 		rpm4>0:archivers/rpm4 \
-		${PYTHON_PKGNAMEPREFIX}gpgme>0:security/py-gpgme@${PY_FLAVOR}
+		${PYTHON_PKGNAMEPREFIX}gpg>=2.0.0:security/py-gpg@${PY_FLAVOR}
 
 USES=		cmake gettext-tools python
 

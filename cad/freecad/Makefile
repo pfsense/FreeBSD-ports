@@ -1,6 +1,6 @@
 PORTNAME=	FreeCAD
-DISTVERSION=	1.0.0
-PORTREVISION=	1
+DISTVERSION=	1.0.1
+PORTREVISION=	3
 CATEGORIES=	cad
 
 MAINTAINER=	cmt@FreeBSD.org
@@ -40,7 +40,8 @@ LIB_DEPENDS=	libexpat.so:textproc/expat2 \
 		libavformat.so.58:multimedia/ffmpeg4 \
 		libmed.so:french/med \
 		libshiboken6.abi3.so:devel/shiboken6@${PY_FLAVOR} \
-		libhdf5.so:science/hdf5
+		libhdf5.so:science/hdf5 \
+		libspnav.so:misc/libspnav
 
 RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}pivy>0:graphics/py-pivy@${PY_FLAVOR} \
 		${PYTHON_SITELIBDIR}/matplotlib/__init__.py:math/py-matplotlib@${PY_FLAVOR}
@@ -59,8 +60,6 @@ USE_QT=		base declarative location svg tools webchannel
 USE_LDCONFIG=	yes
 
 CPE_VENDOR=	freecad_project
-
-VTK_VER=	9.2
 
 DOS2UNIX_GLOB=	*.txt *.h *.cpp *.py *.qss *.csv *.pov *.stp *.ui *.wrl *.WRL
 SHEBANG_FILES=	src/Tools/freecad-thumbnailer
@@ -102,6 +101,8 @@ CMAKE_ARGS+=	-DOCC_INCLUDE_DIR="${LOCALBASE}/include/OpenCASCADE" \
 
 CMAKE_INSTALL_PREFIX=	${PREFIX}/${PORTNAME}
 
+CXXFLAGS+=	-DGetCellLinks=GetLinks # fix for vtk-9.5.0: equivalent of this patch: https://github.com/FreeCAD/FreeCAD/issues/21731#issuecomment-2934487147
+
 OPTIONS_DEFINE=	COLLADA
 
 COLLADA_DESC=		Install pycollada for Collada files import
@@ -131,4 +132,5 @@ post-install:
 	${INSTALL_SCRIPT} ${WRKSRC}/src/Tools/freecad-thumbnailer \
 		${STAGEDIR}${PREFIX}/bin/freecad-thumbnailer
 
+.include <../../math/vtk9/Makefile.version>
 .include <bsd.port.mk>

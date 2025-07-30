@@ -27,7 +27,6 @@ require_once("notices.inc");
 require_once("filter.inc");
 require_once("haproxy_utils.inc");
 require_once("haproxy_socketinfo.inc");
-require_once("haproxy_xmlrpcsyncclient.inc");
 
 $d_haproxyconfdirty_path = $g['varrun_path'] . "/haproxy.conf.dirty";
 #region Global haproxy array item definitions..
@@ -1372,9 +1371,6 @@ function haproxy_check_and_run(&$messages, $reload) {
 		rmdir_recursive($testpath);
 		$ok = haproxy_check_run(1) == 0;
 		$messages = $haproxy_run_message;
-		if ($ok && config_path_enabled('installedpackages/haproxy', 'enablesync')) {
-			mwexec_bg("/usr/local/pkg/haproxy/haproxy_sync.sh");
-		}
 	}
 	return $ok;
 }
@@ -2332,17 +2328,8 @@ function load_ipfw_rules() {
 		$transparent_interfaces[$interface] = 1;
 	}
 
-	if (haproxy_utils::$pf_version < 2.4) {
-		$rulenum = 64000; // why that high? captiveportal.inc also does it...
-		// pfSense 2.2 FreeBSD 10
-		mwexec("/sbin/ipfw zone $ipfw_zone_haproxy create", true);
-		foreach($transparent_interfaces as $transparent_if => $value) {
-			mwexec("/sbin/ipfw zone $ipfw_zone_haproxy madd $transparent_if", true);
-		}
-	} else {
-		// pfSense 2.4, captive portal rules start at 1000
-		$rulenum = 10;
-	}
+	// pfSense 2.4, captive portal rules start at 1000
+	$rulenum = 10;
 
 	foreach($transparent_backends as $transparent_be) {
 		if (is_ipaddrv4($transparent_be["address"])) {
@@ -2357,11 +2344,7 @@ function load_ipfw_rules() {
 
 
 	file_put_contents("{$g['tmp_path']}/ipfw_{$ipfw_zone_haproxy}.haproxy.rules", $rules);
-	if (haproxy_utils::$pf_version < 2.4) {
-		mwexec("/sbin/ipfw -x $ipfw_zone_haproxy -q {$g['tmp_path']}/ipfw_{$ipfw_zone_haproxy}.haproxy.rules", true);
-	} else {
-		mwexec("/sbin/ipfw -q {$g['tmp_path']}/ipfw_{$ipfw_zone_haproxy}.haproxy.rules", true);
-	}
+	mwexec("/sbin/ipfw -q {$g['tmp_path']}/ipfw_{$ipfw_zone_haproxy}.haproxy.rules", true);
 }
 
 function delete_ipfw_rules() {
@@ -2619,48 +2602,64 @@ function killprocesses($processname, $pidfile, $signal = "KILL") {
 	exec("kill -$signal `pgrep -x $processname | grep -w -f $pidfile`");
 }
 
-function haproxy_sync_xmlrpc_settings() {
-	if (!is_array(config_get_path('installedpackages/haproxysyncpkg'))) {
-		return false;
+function haproxy_plugin_xmlrpc_send() {
+	if (!config_path_enabled('installedpackages/haproxy', 'enablesync')) {
+		return [];
 	}
-	// preserve 'old' sync settings, that should not be overwritten by xmlrpc-sync.
-	$old_config = config_get_path('installedpackages/haproxy', []);
-	$enable = config_path_enabled('installedpackages/haproxy', 'enablesync');
-	config_set_path('installedpackages/haproxy', config_get_path('installedpackages/haproxysyncpkg'));
-	config_del_path('installedpackages/haproxysyncpkg');
 
-	// restore 'old' settings.
-	config_set_path('installedpackages/haproxy/enablesync', $enable ? true : false);
-	config_set_path('installedpackages/haproxy/log-send-hostname', $old_config['log-send-hostname']);
-
-	write_config("haproxy, xmlrpc config synced"); // Write new 'merged' configuration
+	return [
+		'installedpackages/haproxy'
+	];
 }
 
-function haproxy_do_xmlrpc_sync() {
-	$syncinfo = array();
-	$syncinfo['sync_logname'] = "HAProxy";
-	$syncinfo['data'] = haproxy_xmlrpc_sync_prepare_config();
-	$syncinfo['sync_include'] = "/usr/local/pkg/haproxy/haproxy.inc";
-	$syncinfo['sync_done_execute'] = "haproxy_xmlrpc_sync_configure";
-	xmlrpc_sync_execute($syncinfo);
-}
-
-function haproxy_xmlrpc_sync_prepare_config() {
-	/* xml will hold the sections to sync */
-	$xml = array();
-	$xml['haproxysyncpkg'] = config_get_path('installedpackages/haproxy');
-	return $xml;
-}
-
-function haproxy_xmlrpc_sync_configure() {
-	// this function is called by xmlrpc after config has been synced.
-	haproxy_sync_xmlrpc_settings();
-	haproxy_configure(); // Configure HAProxy config files to use the new configuration.
-
-	// sync 2nd and further nodes in the chain if applicable.
-	if (config_path_enabled('installedpackages/haproxy', 'enablesync')) {
-		haproxy_do_xmlrpc_sync();
+function haproxy_plugin_xmlrpc_recv($new_sections) {
+	if (!array_path_enabled($new_sections, 'installedpackages/haproxy', 'enablesync')) {
+		return [];
 	}
+
+	$section_paths = [
+		'installedpackages/haproxy'
+	];
+
+	$ret = [
+		'xmlrpc_recv_result' => false
+	];
+	foreach ($section_paths as $path) {
+		$old_section = config_get_path($path, []);
+		$new_section = array_get_path($new_sections, $path, []);
+
+		// Don't save empty configuration sections.
+		if (empty($old_section) && empty($new_section)) {
+			continue;
+		}
+		// Ignore unchanged configuration sections and sync-related package settings.
+		if ($path == 'installedpackages/haproxy') {
+			$old_section_temp = $old_section;
+			$new_section_temp = $new_section;
+			unset($old_section_temp['enablesync'], $old_section_temp['log-send-hostname']);
+			unset($new_section_temp['enablesync'], $new_section_temp['log-send-hostname']);
+			if ($old_section_temp === $new_section_temp) {
+				continue;
+			} else {
+				// Retain existing sync-related package settings.
+				unset($new_section['enablesync'], $new_section['log-send-hostname']);
+			}
+		} elseif ($old_section === $new_section) {
+			continue;
+		}
+
+		$ret[$path] = array_merge($old_section, $new_section);
+		$ret['xmlrpc_recv_result'] = true;
+	}
+
+	return $ret;
+}
+
+function haproxy_plugin_xmlrpc_recv_done($xmlrpc_recv_result) {
+	if (array_get_path($xmlrpc_recv_result, 'haproxy/xmlrpc_recv_result') !== true) {
+		return;
+	}
+	haproxy_configure();
 }
 
 function get_frontend_id($name) {

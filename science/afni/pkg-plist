@@ -94,6 +94,7 @@ bin/3dFFT
 bin/3dFWHMx
 bin/3dFriedman
 bin/3dGC.R
+bin/3dGLMM
 bin/3dGLMM.R
 bin/3dGenFeatureDist
 bin/3dGenPriors
@@ -500,6 +501,7 @@ bin/adjunct_apqc_tsnr_general
 bin/adjunct_atlas_points_to_labeltable
 bin/adjunct_aw_tableize_roi_info.py
 bin/adjunct_calc_mont_dims.py
+bin/adjunct_cbar_out
 bin/adjunct_combine_str.py
 bin/adjunct_deob_around_origin
 bin/adjunct_is_label.py
@@ -525,6 +527,7 @@ bin/afni_seeds_per_space.txt
 bin/afni_skeleton.py
 bin/afni_system_check.py
 bin/afni_vcheck
+bin/afni_vlines_run_text.txt
 bin/afnisumafatcat_logo_128sq.png
 bin/afnisumafatcat_logo_905sq.png
 bin/afnisumagui_logo_128sq.jpg
@@ -546,7 +549,9 @@ bin/build_afni.py
 bin/byteorder
 bin/cat_matvec
 bin/ccalc
+bin/chauffeur_map_rois
 bin/cifti_tool
+bin/colorbar_tool.py
 bin/column_cat
 bin/compute_ROI_stats.tcsh
 bin/convert_cdiflist_to_grads.py
@@ -598,6 +603,7 @@ bin/gen_ss_review_table.py
 bin/get_afni_model_PRF
 bin/get_afni_model_PRF_6
 bin/get_afni_model_PRF_6_BAD
+bin/get_afni_model_PRF_DN
 bin/gifti_tool
 bin/gtkyd_check.py
 bin/help_format
@@ -667,6 +673,7 @@ bin/slow_surf_clustsim.py
 bin/smooth.R
 bin/sswarper2
 bin/stimband
+bin/stouffer
 bin/strblast
 bin/suma
 bin/suma_change_spec
@@ -751,6 +758,7 @@ lib/afni/model_constant.so
 lib/afni/model_conv_PRF.so
 lib/afni/model_conv_PRF_6.so
 lib/afni/model_conv_PRF_6_BAD.so
+lib/afni/model_conv_PRF_DN.so
 lib/afni/model_conv_PRF_DOG.so
 lib/afni/model_conv_cosine4.so
 lib/afni/model_conv_diffgamma.so
@@ -854,6 +862,7 @@ lib/afni/plug_zeropad.so
 %%PYTHON_SITELIBDIR%%/afnipy/lib_apqc_tcsh.py
 %%PYTHON_SITELIBDIR%%/afnipy/lib_b0_corr.py
 %%PYTHON_SITELIBDIR%%/afnipy/lib_cbar_pbar.py
+%%PYTHON_SITELIBDIR%%/afnipy/lib_cbar_tool.py
 %%PYTHON_SITELIBDIR%%/afnipy/lib_cdiflist.py
 %%PYTHON_SITELIBDIR%%/afnipy/lib_csv.py
 %%PYTHON_SITELIBDIR%%/afnipy/lib_decay_timing.py
@@ -1288,6 +1297,7 @@ lib/afni/plug_zeropad.so
 %%DATADIR%%/funstuff/face_psfb_serious.jpg
 %%DATADIR%%/funstuff/face_psfbx.jpg
 %%DATADIR%%/funstuff/face_pshukla.jpg
+%%DATADIR%%/funstuff/face_pt_cw_ohbm.jpg
 %%DATADIR%%/funstuff/face_pumpkin.jpg
 %%DATADIR%%/funstuff/face_qiulin.jpg
 %%DATADIR%%/funstuff/face_qutian.jpg

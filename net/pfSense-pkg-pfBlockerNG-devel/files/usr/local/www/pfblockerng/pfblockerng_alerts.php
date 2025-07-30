@@ -2045,12 +2045,13 @@ function dnsbl_whitelist_type($fields, $clists, $isExclusion, $isTLD, $qdomain) 
 
 	$ex_dom = $s_txt = '';
 	if ($isExclusion) {
+		$wt_line = rtrim(array_get_path($clists, "tldexclusion/data/{$fields[7]}", ''), "\x00..\x1F");
 		$s_txt  = "Note:&emsp;The following Domain is in the TLD Exclusion customlist:\n\n"
 			. "TLD Exclusion:&emsp;[ {$wt_line} ]\n\n"
 			. "&#8226; TLD Exclusions require a Force Reload when a Domain is initially added.\n"
 			. "&#8226; To remove this Domain from the TLD Exclusion customlist, Click 'OK'";
 
-		$ex_dom = '&nbsp;<i class="fa-regular fa-trash-can no-confirm icon-pointer icon-primary" id="DNSBLWT|'
+		$ex_dom = '&nbsp;<i class="fa-regular fa-trash-can no-confirm icon-pointer" id="DNSBLWT|'
 			. 'delete_exclusion|' . $fields[7] . '" title="' . $s_txt . '"></i>';
 	}
 
@@ -2101,7 +2102,7 @@ function dnsbl_whitelist_type($fields, $clists, $isExclusion, $isTLD, $qdomain) 
 		if ($fields[6] != 'Unknown') {
 		
 			// Default - Domain not in Whitelist
-			$supp_dom = '<i class="fa-solid fa-plus icon-pointer icon-primary" id="DNSBLWT|' . 'add|'
+			$supp_dom = '<i class="fa-solid fa-plus icon-pointer" id="DNSBLWT|' . 'add|'
 					. $fields[7] . '|' . $fields[8] . '" title="' . $s_txt . '"></i>';
 		}
 
@@ -2123,7 +2124,7 @@ function dnsbl_whitelist_type($fields, $clists, $isExclusion, $isTLD, $qdomain) 
 					. "To remove this Domain [ {$fields[2]} ] from the DNSBL Whitelist"
 					. ", Click 'OK'";
 			}
-			$supp_dom = '<i class="fa-solid fa-trash-can no-confirm icon-pointer icon-primary" id="DNSBLWT|'
+			$supp_dom = '<i class="fa-solid fa-trash-can no-confirm icon-pointer" id="DNSBLWT|'
 					. 'delete_domain|' . $fields[2] . '" title="' . $s_txt . '"></i>';
 		}
 
@@ -2156,7 +2157,7 @@ function dnsbl_whitelist_type($fields, $clists, $isExclusion, $isTLD, $qdomain) 
 							. "To remove this Domain [ {$d_query} ]"
 							. "from the DNSBL Whitelist, Click 'OK'";
 					}
-					$supp_dom = '<i class="fa-solid fa-trash-can no-confirm icon-pointer icon-primary"'
+					$supp_dom = '<i class="fa-solid fa-trash-can no-confirm icon-pointer"'
 							. ' id="DNSBLWT|' . "delete_domainwildcard|" . $d_query
 							. '" title="' . $s_txt . '"></i>';
 					break;
@@ -2166,7 +2167,7 @@ function dnsbl_whitelist_type($fields, $clists, $isExclusion, $isTLD, $qdomain) 
 
 		// Root Domain blocking all Sub-Domains and is not in whitelist and not in TLD Exclusion
 		if ($isTLD && !$isWhitelist_found && !$isExclusion) {
-			$supp_dom = '<i class="fa-solid fa-plus-circle icon-pointer icon-primary" id="DNSBLWT|' . 'add|'
+			$supp_dom = '<i class="fa-solid fa-plus-circle icon-pointer" id="DNSBLWT|' . 'add|'
 				. $fields[7] . '|' . $fields[8] . '|' . $fields[5] . '" title="' . $s_txt . '"></i>';
 		}
 	}
@@ -2178,7 +2179,7 @@ function dnsbl_whitelist_type($fields, $clists, $isExclusion, $isTLD, $qdomain) 
 			. "Evaluated Domain:&emsp;&nbsp;[ {$fields[7]} ]\n\n"
 			. "Add [ {$fields[2]} ] to the TLD Whitelist?";
 
-		$supp_dom = '<i class="fa-regular fa-hand icon-pointer icon-primary" id="DNSBLWT|' . 'tld|'
+		$supp_dom = '<i class="fa-regular fa-hand icon-pointer" id="DNSBLWT|' . 'tld|'
 			. $fields[2] . '|' . $fields[7] . '" title="' . $s_txt . '"></i>';
 	}
 
@@ -2455,25 +2456,25 @@ function convert_dnsbl_log($mode, $fields) {
 						. "This Domain can be temporarily Relocked into DNSBL\n"
 						. "by selecting the Unlock Icon!";
 
-					$unlock_dom = '<i class="fa-solid fa-unlock icon-primary text-warning" id="DNSBL_RELCK|'
+					$unlock_dom = '<i class="fa-solid fa-unlock text-warning" id="DNSBL_RELCK|'
 							. $qdomain . '|' . $unlock_type . '" title="' . $s_txt . '"></i>';
 				}
 				else {
-					$unlock_dom = '<i class="fa-solid fa-lock icon-primary text-danger" id="DNSBL_ULCK|'
+					$unlock_dom = '<i class="fa-solid fa-lock text-danger" id="DNSBL_ULCK|'
 							. $qdomain . '|' . $unlock_type
 							. '" title="Unlock Domain: [ ' . $qdomain . '] from DNSBL?' . $tnote . '" ></i>';
 				}
 			} else {
 				if ($isWhitelist_found) {
 					$s_txt = "\n\nNote:&emsp;The following Domain exists in the DNSBL Whitelist:\n\n"
-						. "Whitelisted:&emsp;[ {$w_line} ]\n\n"
+						. "Whitelisted:&emsp;[ {$wt_line} ]\n\n"
 						. "Unlock this Domain by selecting the Unlock Icon!";
 
-					$unlock_dom = '<i class="fa-solid fa-lock icon-primary text-warning" id="DNSBL_REULCK|'
+					$unlock_dom = '<i class="fa-solid fa-lock text-warning" id="DNSBL_REULCK|'
 						. $qdomain . '|' . $unlock_type . '" title="' . $s_txt . '"></i>';
 				}
 				else {
-					$unlock_dom = '<i class="fa-solid fa-unlock icon-primary text-primary" id="DNSBL_LCK|'
+					$unlock_dom = '<i class="fa-solid fa-unlock text-primary" id="DNSBL_LCK|'
 						. $qdomain . '|' . $unlock_type . '" title="Re-Lock Domain: ['
 						. $qdomain . ' ] back into DNSBL?' . $tnote . '" ></i>';
 				}
@@ -2490,7 +2491,7 @@ function convert_dnsbl_log($mode, $fields) {
 	// Threat Lookup Icon
 	$alert_dom = '';
 	if ($fields[6] != 'Unknown') {
-		$alert_dom = '<a class="fa-solid fa-info icon-pointer icon-primary" title="Click for Threat Domain Lookup." target="_blank" ' .
+		$alert_dom = '<a class="fa-solid fa-info icon-pointer" title="Click for Threat Domain Lookup." target="_blank" ' .
 				'href="/pfblockerng/pfblockerng_threats.php?domain=' . $qdomain . '"></a>';
 	}
 
@@ -2601,7 +2602,7 @@ function convert_dns_reply_log($mode, $fields) {
 		list($supp_dom, $ex_dom, $isWhitelist_found) = dnsbl_whitelist_type($dns_fields, $clists, $isExclusion, FALSE, $fields[6]);
 
 		// Threat Lookup Icon
-		$icons = '<a class="fa-solid fa-info icon-pointer icon-primary" title="Click for Threat Domain Lookup." target="_blank" ' .
+		$icons = '<a class="fa-solid fa-info icon-pointer" title="Click for Threat Domain Lookup." target="_blank" ' .
 				'href="/pfblockerng/pfblockerng_threats.php?domain=' . $fields[6] . '"></a>';
 
 		if (!empty($supp_dom)) {
@@ -2610,7 +2611,7 @@ function convert_dns_reply_log($mode, $fields) {
 
 		// Default - Add to Blacklist
 		else {
-			$icons .= '&nbsp;<i class="fa-solid fa-plus icon-pointer icon-primary" id="DNSBLWT|' . 'dnsbl_add|'
+			$icons .= '&nbsp;<i class="fa-solid fa-plus icon-pointer" id="DNSBLWT|' . 'dnsbl_add|'
 				. $fields[6] . '|' . implode('|', $clists['dnsbl']['options']) . '" title="'
 				. "Add Domain [ {$fields[6]} ] to DNSBL" . '"></i>';
 		}
@@ -2894,7 +2895,7 @@ function convert_ip_log($mode, $fields, $p_query_port, $rtype) {
 		$eval_ip = $eval_new;
 	}
 
-	$alert_ip = '<a class="fa-solid fa-info icon-pointer icon-primary" target="_blank" href="/pfblockerng/pfblockerng_threats.php?host=' .
+	$alert_ip = '<a class="fa-solid fa-info icon-pointer" target="_blank" href="/pfblockerng/pfblockerng_threats.php?host=' .
 			$host . '" title="Click for Threat source IP Lookup for [ ' . $host . ' ]"></a>';
 
 	// Suppression Icon
@@ -2966,7 +2967,7 @@ function convert_ip_log($mode, $fields, $p_query_port, $rtype) {
 						. "&emsp;A Force Update is required to add the associated Firewall Permit Rule!\n\n"
 						. "Click 'OK' to continue";
 
-				$supp_ip = '<i class="fa-solid fa-plus icon-pointer icon-primary" id="PFBIPSUP|' . 'add|' . $host
+				$supp_ip = '<i class="fa-solid fa-plus icon-pointer" id="PFBIPSUP|' . 'add|' . $host
 						. '|' . $table . $permit_option
 						. '" title="' . $supp_ip_txt . '"></i>';
 			}
@@ -2990,11 +2991,11 @@ function convert_ip_log($mode, $fields, $p_query_port, $rtype) {
 			. "&emsp;&emsp;&#8226; Review Threat Source ( i ) Icons for further IP details.";
 
 		if (!isset($ip_unlock[$eval_ip])) {
-			$unlock_ip = '<i class="fa-solid fa-lock icon-primary text-danger" id="IPULCK|' . $eval_ip . '|'  . $table
+			$unlock_ip = '<i class="fa-solid fa-lock text-danger" id="IPULCK|' . $eval_ip . '|'  . $table
 					. '" title="Unlock IP: [ ' . $eval_ip . ' ] from Aliastable [ ' . $table . ' ]?'
 					. $tnote . '" ></i>';
 		} else {
-			$unlock_ip = '<i class="fa-solid fa-unlock icon-primary text-primary" id="IPLCK|' . $eval_ip . '|' . $table
+			$unlock_ip = '<i class="fa-solid fa-unlock text-primary" id="IPLCK|' . $eval_ip . '|' . $table
 					. '" title="Re-Lock IP: [ ' . $eval_ip . ' ] back into Aliastable [ ' . $table . ' ]?'
 					. $tnote . '" ></i>';
 		}
@@ -3971,18 +3972,18 @@ if (!$alert_summary):
 	<?php
 			foreach ($data[0] as $entry => $type) {
 				if ($key == 0) {
-					$unlock = '<i class="fa-solid fa-unlock icon-primary text-primary" id="IPLCK|' . htmlspecialchars($entry) . '|' . $type
+					$unlock = '<i class="fa-solid fa-unlock text-primary" id="IPLCK|' . htmlspecialchars($entry) . '|' . $type
 							. '" title="Re-Lock ' . htmlspecialchars($data[1]) . ': [ ' . htmlspecialchars($entry) . ' ] back into Aliastable [ '
 							. htmlspecialchars($type) . ' ]? "></i>';
 
-					$alert = '<a class="fa-solid fa-info icon-pointer icon-primary" target="_blank"'
+					$alert = '<a class="fa-solid fa-info icon-pointer" target="_blank"'
 							. ' href="/pfblockerng/pfblockerng_threats.php?host='
 							. htmlspecialchars($entry) . '" title="Click for Threat source IP Lookup for [ ' . htmlspecialchars($entry) . ' ]"></a>';
 				} else {
-					$unlock = '<i class="fa-solid fa-unlock icon-primary text-primary" id="DNSBL_LCK|' . htmlspecialchars($entry) . '|' . htmlspecialchars($type)
+					$unlock = '<i class="fa-solid fa-unlock text-primary" id="DNSBL_LCK|' . htmlspecialchars($entry) . '|' . htmlspecialchars($type)
 							. '" title="Re-Lock ' . htmlspecialchars($data[1]) . ': [ ' . htmlspecialchars($entry) . ' ] back into DNSBL? "></i>';
 
-					$alert = '<a class="fa-solid fa-info icon-pointer icon-primary" target="_blank"'
+					$alert = '<a class="fa-solid fa-info icon-pointer" target="_blank"'
 							. ' href="/pfblockerng/pfblockerng_threats.php?domain='
 							. htmlspecialchars($entry) . '" title="Click for Threat source Domain Lookup for [ ' . htmlspecialchars($entry) . ' ]"></a>';
 				}
@@ -4109,7 +4110,7 @@ if (!$alert_summary):
 	<div class="panel-heading">
 		<h2 class="panel-title">
 			<? if ($alertrefresh == 'on'): ?>
-			<i class="fa-solid fa-pause-circle icon-primary" id="PauseRefresh" " title="Pause Alerts Refresh"></i>&nbsp;
+			<i class="fa-solid fa-pause-circle" id="PauseRefresh" " title="Pause Alerts Refresh"></i>&nbsp;
 			<? endif; ?>
 			<?=gettext($logtype)?><small>-&nbsp;<?=gettext('Last')?>&nbsp;<?=$pfbentries?>&nbsp;<?=gettext('Alert Entries')?></small>
 		</h2>
@@ -4521,7 +4522,7 @@ foreach ($stats as $stat_type => $stype):
 	<div class="panel-heading">
 		<h2 class="panel-title">
 			<? if ($alertrefresh == 'on'): ?>
-			<i class="fa-solid fa-pause-circle icon-primary" id="PauseRefresh" " title="Pause Alerts Refresh"></i>&nbsp;
+			<i class="fa-solid fa-pause-circle" id="PauseRefresh" " title="Pause Alerts Refresh"></i>&nbsp;
 			<? endif; ?>
 
 			<?=$stype[0]?>
@@ -4663,7 +4664,7 @@ foreach ($stats as $stat_type => $stype):
 									$data = $subdata[0];
 								}
 
-								$alert_event = '<a class="fa-solid fa-info icon-pointer icon-primary"'
+								$alert_event = '<a class="fa-solid fa-info icon-pointer"'
 										. ' title="Click for Threat Lookup." target="_blank"'
 										. ' href="/pfblockerng/pfblockerng_threats.php?' . $stype[4] . '=' . $data . '"></a>';
 							}

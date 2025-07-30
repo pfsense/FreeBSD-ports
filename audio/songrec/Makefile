@@ -1,6 +1,6 @@
 PORTNAME=	songrec
 DISTVERSION=	0.4.3
-PORTREVISION=	3
+PORTREVISION=	9
 CATEGORIES=	audio
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -10,14 +10,12 @@ WWW=		https://github.com/marin-m/SongRec
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-BROKEN_powerpc64le=	rust compiler crashes, see https://github.com/rust-lang/rust/issues/120583
-
 LIB_DEPENDS=	libasound.so:audio/alsa-lib \
 		libdbus-1.so:devel/dbus \
 		libpulse.so:audio/pulseaudio
 
 USES=		cargo gettext-runtime gnome ssl
-USE_GNOME=	gdkpixbuf2 glib20 gtk30
+USE_GNOME=	gdkpixbuf glib20 gtk30
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	marin-m

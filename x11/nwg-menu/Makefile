@@ -1,9 +1,10 @@
 PORTNAME=	nwg-menu
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.1.6
+DISTVERSION=	0.1.7
+PORTREVISION=	5
 CATEGORIES=	x11 wayland
 
-MAINTAINER=	jbeich@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	MenuStart plugin to nwg-panel, also capable of working standalone
 WWW=		https://github.com/nwg-piotr/nwg-menu
 
@@ -15,12 +16,12 @@ LIB_DEPENDS=	libfontconfig.so:x11-fonts/fontconfig \
 
 USES=		gnome go:modules pkgconfig
 USE_GITHUB=	yes
-USE_GNOME=	cairo gdkpixbuf2 gtk30
+USE_GNOME=	cairo gdkpixbuf gtk30
 GH_ACCOUNT=	nwg-piotr
 GH_TUPLE=	allan-simon:go-singleinstance:d0997106ab37:allan_simon_go_singleinstance/vendor/github.com/allan-simon/go-singleinstance \
 		dlasky:gotk3-layershell:5c5115f0d774:dlasky_gotk3_layershell/vendor/github.com/dlasky/gotk3-layershell \
-		golang:sync:v0.8.0:golang_sync/vendor/golang.org/x/sync \
-		golang:sys:v0.25.0:golang_sys/vendor/golang.org/x/sys \
+		golang:sync:v0.10.0:golang_sync/vendor/golang.org/x/sync \
+		golang:sys:v0.29.0:golang_sys/vendor/golang.org/x/sys \
 		gotk3:gotk3:ff349ae13f56:gotk3_gotk3/vendor/github.com/gotk3/gotk3 \
 		joshuarubin:go-sway:v1.2.0:joshuarubin_go_sway/vendor/github.com/joshuarubin/go-sway \
 		joshuarubin:lifecycle:v1.1.4:joshuarubin_lifecycle/vendor/github.com/joshuarubin/lifecycle \

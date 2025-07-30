@@ -1,6 +1,7 @@
 PORTNAME=	redis_exporter
 DISTVERSIONPREFIX=	v
-DISTVERSION=	1.67.0
+DISTVERSION=	1.74.0
+PORTREVISION=	1
 CATEGORIES=	databases
 
 MAINTAINER=	arcade@b1t.name
@@ -10,7 +11,7 @@ WWW=		https://github.com/oliver006/redis_exporter
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-USES=		go:modules,1.23
+USES=		go:modules
 
 USE_RC_SUBR=	redis_exporter
 

@@ -24,6 +24,7 @@
 
 static pcap_t *tap = NULL;
 static char *filterlog_pcap_file = NULL;
+static bool filter_reasons[16];
 static char errbuf[PCAP_ERRBUF_SIZE];
 static struct sbuf sbuf;
 static u_char *sbuf_buf;
@@ -45,6 +46,8 @@ static const struct tok pf_reasons[] = {
 	{ 12,	"state-limit" },
 	{ 13,	"src-limit" },
 	{ 14,	"synproxy" },
+	{ 15,	"map-failed" },
+	{ 16,	"translate" },
 	{ 0,	NULL }
 };
 
@@ -111,6 +114,11 @@ decode_packet(u_char *user __unused, const struct pcap_pkthdr *pkthdr, const u_c
 	}
 	hdrlen = BPF_WORDALIGN(hdr->length);
 
+	if (filter_reasons[hdr->reason]) {
+		sbuf_clear(&sbuf);
+		return;
+	}
+
 	if (caplen < hdrlen) {
 		sbuf_printf(&sbuf, "[|pflog]");
 		goto printsbuf;
@@ -161,6 +169,48 @@ printsbuf:
 	return;
 }
 
+static bool
+parse_filter_reasons(const char *str)
+{
+	char *s, *token;
+
+	if ((s = strdup(str)) == NULL)
+		return (false);
+
+	while ((token = strsep(&s, ",")) != NULL) {
+		unsigned long first, last;
+		char *p, *lastp;
+
+		if ((lastp = strchr(token, '-')) != NULL)
+			*lastp++ = '\0';
+
+		first = last = strtoul(token, &p, 10);
+		if (*p != '\0')
+			goto err;
+		if (first < 0 || first >= nitems(filter_reasons))
+			goto err;
+
+		if (lastp) {
+			last = strtoul(lastp, &p, 10);
+			if (*p != '\0')
+				goto err;
+			if (last < 0 || last >= nitems(filter_reasons) ||
+			    last < first)
+				goto err;
+		}
+
+		for (unsigned long reason = first; reason <= last; reason++)
+		  filter_reasons[reason] = true;
+	}
+
+	free(s);
+	return (true);
+
+err:
+	free(s);
+	return (false);
+}
+
 int
 main(int argc, char **argv)
 {
@@ -171,7 +221,7 @@ main(int argc, char **argv)
 	interface = filterlog_pcap_file = NULL;
 	tzset();
 
-	while ((ch = getopt(argc, argv, "i:p:P:")) != -1) {
+	while ((ch = getopt(argc, argv, "i:p:P:r:")) != -1) {
 		switch (ch) {
 		case 'i':
 			interface = optarg;
@@ -181,6 +231,12 @@ main(int argc, char **argv)
 			break;
 		case 'P':
 			filterlog_pcap_file = optarg;
+			break;
+		case 'r':
+			if (! parse_filter_reasons(optarg)) {
+				printf("Invalid filter specification\n");
+				return (-1);
+			}
 			break;
 		default:
 			printf("Unknown option specified\n");

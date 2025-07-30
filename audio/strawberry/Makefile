@@ -1,5 +1,5 @@
 PORTNAME=	strawberry
-DISTVERSION=	1.2.3
+DISTVERSION=	1.2.11
 CATEGORIES=	audio
 MASTER_SITES=	https://github.com/strawberrymusicplayer/${PORTNAME}/releases/download/${DISTVERSION}/
 
@@ -10,9 +10,13 @@ WWW=		https://www.strawberrymusicplayer.org/
 LICENSE=	GPLv3+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-BUILD_DEPENDS=	boost-libs>0:devel/boost-libs
+BUILD_DEPENDS=	boost-libs>0:devel/boost-libs \
+		rapidjson>0:devel/rapidjson \
+		sparsehash>0:devel/sparsehash
 LIB_DEPENDS=	libicui18n.so:devel/icu \
-		libtag.so:audio/taglib
+		libkdsingleapplication-qt6.so:devel/kdsingleapplication \
+		libtag.so:audio/taglib \
+		libxkbcommon.so:x11/libxkbcommon
 TEST_DEPENDS=	googletest>=0:devel/googletest
 
 USES=		cmake:testing compiler:c++17-lang desktop-file-utils \
@@ -51,7 +55,7 @@ EBUR128_CMAKE_BOOL=	ENABLE_EBUR128
 IPOD_LIB_DEPENDS=	libgpod.so:audio/libgpod \
 			libimobiledevice-1.0.so:comms/libimobiledevice \
 			libplist-2.0.so:devel/libplist
-IPOD_USE=		GNOME=gdkpixbuf2
+IPOD_USE=		GNOME=gdkpixbuf
 IPOD_CMAKE_BOOL=	ENABLE_GPOD
 
 MOODBAR_LIB_DEPENDS=	libfftw3.so:math/fftw3

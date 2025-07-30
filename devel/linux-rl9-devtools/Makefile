@@ -1,17 +1,16 @@
 PORTNAME=	devtools
 PORTVERSION=	${LINUX_DIST_VER}
-PORTREVISION=	1
 CATEGORIES=	devel
 
 MAINTAINER=	emulation@FreeBSD.org
-COMMENT=	Linux compilers and base libraries (CentOS ${LINUX_DIST_VER})
+COMMENT=	Linux compilers and base libraries (Rocky Linux ${LINUX_DIST_VER})
 WWW=		https://gcc.gnu.org/
 
 # LICENSE=	Various GNU
 
 USES=		linux:rl9
 USE_LDCONFIG=	yes
-USE_LINUX=	libgfortran libsigsegv
+USE_LINUX=	elfutils-libs
 USE_LINUX_RPM=	yes
 WANT_LINUX32=	yes
 
@@ -19,10 +18,10 @@ ONLY_FOR_ARCHS=	aarch64 amd64
 
 QA_ENV+=		USESLIBTOOL=no
 
-BUVERSION=	2.35.2-54.el9
-GCCVERSION=	11.5.0-2.el9
-GLIBCVERSION=	2.34-125.el9_5.1
-KERNELVERSION=	5.14.0-503.16.1.el9_5
+BUVERSION=	2.35.2-63.el9
+GCCVERSION=	11.5.0-5.el9_5
+GLIBCVERSION=	2.34-168.el9_6.19
+KERNELVERSION=	5.14.0-570.22.1.el9_6
 MPFRVERSION=	4.1.0-7.el9
 LIBMPCVERSION=	1.2.1-4.el9
 
@@ -31,11 +30,11 @@ BIN_DISTNAMES=	binutils-${BUVERSION} \
 		cpp-${GCCVERSION} \
 		gcc-${GCCVERSION} \
 		gcc-c++-${GCCVERSION} \
-		gcc-gfortran-${GCCVERSION} \
-		mpfr-${MPFRVERSION}
+		gcc-gfortran-${GCCVERSION}
 LIB_DISTNAMES=	binutils-devel-${BUVERSION} \
 		glibc-devel-${GLIBCVERSION} \
 		libatomic-${GCCVERSION} \
+		libgfortran-${GCCVERSION} \
 		libgomp-${GCCVERSION} \
 		libmpc-${LIBMPCVERSION} \
 		libstdc++-devel-${GCCVERSION}
@@ -47,7 +46,6 @@ SRC_DISTFILES=	binutils-${BUVERSION}${SRC_SUFX}:SOURCE \
 		glibc-${GLIBCVERSION}${SRC_SUFX}:SOURCE \
 		kernel-${KERNELVERSION}${SRC_SUFX}:SOURCE \
 		libmpc-${LIBMPCVERSION}${SRC_SUFX}:SOURCE \
-		mpfr-${MPFRVERSION}${SRC_SUFX}:SOURCE \
 		gcc-${GCCVERSION}${SRC_SUFX}:SOURCE
 
 CONFLICTS=	linux-c7-${PORTNAME} \

@@ -1,19 +1,6 @@
---- koch.nim.orig	2024-10-02 01:48:48 UTC
+--- koch.nim.orig	2025-05-07 14:07:39 UTC
 +++ koch.nim
-@@ -11,9 +11,9 @@ const
- 
- const
-   # examples of possible values for repos: Head, ea82b54
--  NimbleStableCommit = "4fb6f8e6c33963f6f510fe82d09ad2a61b5e4265" # 0.16.1
--  AtlasStableCommit = "5faec3e9a33afe99a7d22377dd1b45a5391f5504"
--  ChecksumsStableCommit = "bd9bf4eaea124bf8d01e08f92ac1b14c6879d8d3"
-+  NimbleStableCommit = "f8bd7b5fa6ea7a583b411b5959b06e6b5eb23667" # master
-+  AtlasStableCommit = "7b780811a168f3f32bff4822369dda46a7f87f9a"
-+  ChecksumsStableCommit = "b4c73320253f78e3a265aec6d9e8feb83f97c77b"
-   SatStableCommit = "faf1617f44d7632ee9601ebc13887644925dcc01"
- 
-   # examples of possible values for fusion: #head, #ea82b54, 1.2.3
-@@ -150,32 +150,32 @@ proc csource(args: string) =
+@@ -150,38 +150,38 @@ proc csource(args: string) =
             "--main:compiler/nim.nim compiler/installer.ini $1") %
         [args, VersionAsString, compileNimInst])
  
@@ -30,31 +17,29 @@
 -  let commit = if latest: "HEAD" else: NimbleStableCommit
 -  cloneDependency(distDir, "https://github.com/nim-lang/nimble.git",
 -                  commit = commit, allowBundled = true)
--  cloneDependency(distDir / "nimble" / distDir, "https://github.com/nim-lang/checksums.git",
--                commit = ChecksumsStableCommit, allowBundled = true) # or copy it from dist?
--  cloneDependency(distDir / "nimble" / distDir, "https://github.com/nim-lang/sat.git",
--                commit = SatStableCommit, allowBundled = true)
--  # installer.ini expects it under $nim/bin
+-  updateSubmodules(distDir / "nimble", allowBundled = true)
 -  nimCompile("dist/nimble/src/nimble.nim",
--             options = "-d:release -d:nimNimbleBootstrap --noNimblePath " & args)
+-             options = "-d:release --noNimblePath " & args)
+-  const zippyTests = "dist/nimble/vendor/zippy/tests"
+-  if dirExists(zippyTests):
+-    removeDir(zippyTests)
 +#proc bundleNimbleExe(latest: bool, args: string) =
 +#  let commit = if latest: "HEAD" else: NimbleStableCommit
 +#  cloneDependency(distDir, "https://github.com/nim-lang/nimble.git",
 +#                  commit = commit, allowBundled = true)
-+#  cloneDependency(distDir / "nimble" / distDir, "https://github.com/nim-lang/checksums.git",
-+#                commit = ChecksumsStableCommit, allowBundled = true) # or copy it from dist?
-+#  cloneDependency(distDir / "nimble" / distDir, "https://github.com/nim-lang/sat.git",
-+#                commit = SatStableCommit, allowBundled = true)
-+#  # installer.ini expects it under $nim/bin
++#  updateSubmodules(distDir / "nimble", allowBundled = true)
 +#  nimCompile("dist/nimble/src/nimble.nim",
-+#             options = "-d:release -d:nimNimbleBootstrap --noNimblePath " & args)
++#             options = "-d:release --noNimblePath " & args)
++#  const zippyTests = "dist/nimble/vendor/zippy/tests"
++#  if dirExists(zippyTests):
++#    removeDir(zippyTests)
  
 -proc bundleAtlasExe(latest: bool, args: string) =
 -  let commit = if latest: "HEAD" else: AtlasStableCommit
 -  cloneDependency(distDir, "https://github.com/nim-lang/atlas.git",
 -                  commit = commit, allowBundled = true)
 -  cloneDependency(distDir / "atlas" / distDir, "https://github.com/nim-lang/sat.git",
--                commit = SatStableCommit, allowBundled = true)
+-                  commit = SatStableCommit, allowBundled = true)
 -  # installer.ini expects it under $nim/bin
 -  nimCompile("dist/atlas/src/atlas.nim",
 -             options = "-d:release --noNimblePath -d:nimAtlasBootstrap " & args)
@@ -63,23 +48,26 @@
 +#  cloneDependency(distDir, "https://github.com/nim-lang/atlas.git",
 +#                  commit = commit, allowBundled = true)
 +#  cloneDependency(distDir / "atlas" / distDir, "https://github.com/nim-lang/sat.git",
-+#                commit = SatStableCommit, allowBundled = true)
++#                  commit = SatStableCommit, allowBundled = true)
 +#  # installer.ini expects it under $nim/bin
 +#  nimCompile("dist/atlas/src/atlas.nim",
 +#             options = "-d:release --noNimblePath -d:nimAtlasBootstrap " & args)
- 
- proc bundleNimsuggest(args: string) =
-   nimCompileFold("Compile nimsuggest", "nimsuggest/nimsuggest.nim",
-@@ -206,14 +206,14 @@ proc bundleWinTools(args: string) =
-     nimCompile(r"tools\downloader.nim",
-                options = r"--cc:vcc --app:gui -d:ssl --noNimblePath --path:..\ui " & args)
  
 -proc bundleChecksums(latest: bool) =
 -  let commit = if latest: "HEAD" else: ChecksumsStableCommit
 -  cloneDependency(distDir, "https://github.com/nim-lang/checksums.git", commit, allowBundled = true)
 +#proc bundleChecksums(latest: bool) =
 +#  let commit = if latest: "HEAD" else: ChecksumsStableCommit
-+#  cloneDependency(distDir, "https://github.com/nim-lang/checksums.git", commit, allowBundled = true)
++#  cloneDependency(distDir, "https://github.com/nim-lang/checksums.git", commit, allowBundled #= true)
+ 
+ proc bundleNimsuggest(args: string) =
+-  bundleChecksums(false)
++  #bundleChecksums(false)
+   nimCompileFold("Compile nimsuggest", "nimsuggest/nimsuggest.nim",
+                  options = "-d:danger " & args)
+ 
+@@ -211,9 +211,9 @@ proc zip(latest: bool; args: string) =
+                options = r"--cc:vcc --app:gui -d:ssl --noNimblePath --path:..\ui " & args)
  
  proc zip(latest: bool; args: string) =
 -  bundleChecksums(latest)

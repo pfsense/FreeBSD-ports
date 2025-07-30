@@ -1,5 +1,6 @@
 PORTNAME=	ldb
 PORTVERSION=	2.8.2
+PORTREVISION=	1
 CATEGORIES=	databases
 MASTER_SITES=	SAMBA
 PKGNAMESUFFIX?=	${PORTVERSION:C/([[:digit:]]+)[.]([[:digit:]]+).*/\1\2/}
@@ -47,8 +48,6 @@ BINARY_ALIAS=	python3=${PYTHON_CMD}
 PLIST_FILES=	${_LDB_BINS} \
 		${_LDB_LIBS_64} \
 		${_LDB_LIBS} \
-		${_LDB_MAN1} \
-		${_LDB_MAN3} \
 		${PKGCONFIGDIR}/ldb.pc \
 		include/ldb.h \
 		include/ldb_errors.h \
@@ -59,22 +58,21 @@ PLIST_FILES=	${_LDB_BINS} \
 PLIST_SUB+=	PKGCONFIGDIR=${PKGCONFIGDIR:S;${PREFIX}/;;}
 
 OPTIONS_DEFINE=		MANPAGES PYTHON3
-OPTIONS_DEFAULT=	PYTHON3
-MANPAGES_DESC=		Build and install manpages (requires textproc/docbook-xsl)
+OPTIONS_DEFAULT=	MANPAGES PYTHON3
 
 MANPAGES_BUILD_DEPENDS=		${LOCALBASE}/share/xsl/docbook/manpages/docbook.xsl:textproc/docbook-xsl \
 				xsltproc:textproc/libxslt
-MANPAGES_CONFIGURE_ENV_OFF=	XSLTPROC="true"
+MANPAGES_CONFIGURE_ENV_OFF=	XSLTPROC="false"
 
 PYTHON3_USES=		gettext-runtime python
 PYTHON3_USES_OFF=	python:build,test
 PYTHON3_CONFIGURE_OFF=	--disable-python
-PYTHON3_PLIST_FILES=	${PKGCONFIGDIR}/pyldb-util${PYTHON_EXT_SUFFIX}.pc \
+PYTHON3_PLIST_FILES=	${PKGCONFIGDIR}/pyldb-util${PYTHON_TAG}.pc \
 			${PYTHON_SITELIBDIR}/_ldb_text.py \
-			${PYTHON_SITELIBDIR}/ldb${PYTHON_EXT_SUFFIX}.so \
+			${PYTHON_SITELIBDIR}/ldb${PYTHON_TAG}.so \
 			include/pyldb.h \
-			lib/libpyldb-util${PYTHON_EXT_SUFFIX}.so \
-			lib/libpyldb-util${PYTHON_EXT_SUFFIX}.so.2
+			lib/libpyldb-util${PYTHON_TAG}.so \
+			lib/libpyldb-util${PYTHON_TAG}.so.2
 
 # No fancy color error messages
 _CFLAGS_clang=	-fno-color-diagnostics
@@ -111,6 +109,11 @@ CONFIGURE_ARGS+=	--enable-debug \
 _LDB_LIBS_64=	lib/ldb/libldb-mdb-int.so lib/shared-modules/ldb/mdb.so
 .endif
 
+.if ${PORT_OPTIONS:MMANPAGES}
+PLIST_FILES+=	${_LDB_MAN1} \
+		${_LDB_MAN3}
+.endif
+
 .if defined(NO_PYTHON)
 WARNING+=	"${PKGNAME} does not support NO_PYTHON anymore; use option PYTHON3 instead"
 .endif
@@ -128,19 +131,13 @@ pre-configure:
 				${FALSE}; \
 			fi
 
-pre-build-MANPAGES-off:
-			${MKDIR} ${BUILD_WRKSRC}/bin/default/man
-.for man in ${_LDB_MAN1} ${_LDB_MAN3}
-			${INSTALL_MAN} ${FILESDIR}/man/`basename ${man} .gz` ${BUILD_WRKSRC}/bin/default/man
-.endfor
-
 post-install:
 .for lib in ${_LDB_BINS} ${_LDB_LIBS} ${_LDB_LIBS_64}
 		${STRIP_CMD} ${STAGEDIR}${PREFIX}/${lib}
 .endfor
 
 post-install-PYTHON3-on:
-	${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/libpyldb-util${PYTHON_EXT_SUFFIX}.so
-	${STRIP_CMD} ${STAGEDIR}${PYTHONPREFIX_SITELIBDIR}/ldb${PYTHON_EXT_SUFFIX}.so
+	${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/libpyldb-util${PYTHON_TAG}.so
+	${STRIP_CMD} ${STAGEDIR}${PYTHONPREFIX_SITELIBDIR}/ldb${PYTHON_TAG}.so
 
 .include <bsd.port.mk>

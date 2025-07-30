@@ -51,10 +51,8 @@ include/pika/config/defines.hpp
 include/pika/config/emulate_deleted.hpp
 include/pika/config/export_definitions.hpp
 include/pika/config/forceinline.hpp
-include/pika/config/forward.hpp
 include/pika/config/manual_profiling.hpp
 include/pika/config/modules_enabled.hpp
-include/pika/config/move.hpp
 include/pika/config/static_call_operator.hpp
 include/pika/config/threads_stack.hpp
 include/pika/config/version.hpp
@@ -77,6 +75,7 @@ include/pika/coroutines/detail/coroutine_stackful_self.hpp
 include/pika/coroutines/detail/coroutine_stackless_self.hpp
 include/pika/coroutines/detail/get_stack_pointer.hpp
 include/pika/coroutines/detail/posix_utility.hpp
+include/pika/coroutines/detail/sigaltstack_sigsegv_handler.hpp
 include/pika/coroutines/detail/swap_context.hpp
 include/pika/coroutines/detail/tss.hpp
 include/pika/coroutines/stackless_coroutine.hpp
@@ -131,6 +130,7 @@ include/pika/execution/algorithms/transfer_when_all.hpp
 include/pika/execution/algorithms/unpack.hpp
 include/pika/execution/algorithms/when_all.hpp
 include/pika/execution/algorithms/when_all_vector.hpp
+include/pika/execution/async_rw_mutex.hpp
 include/pika/execution/config/defines.hpp
 include/pika/execution/scheduler_queries.hpp
 include/pika/execution_base/agent_base.hpp
@@ -202,9 +202,6 @@ include/pika/iterator_support/traits/is_iterator.hpp
 include/pika/iterator_support/traits/is_range.hpp
 include/pika/iterator_support/traits/is_sentinel_for.hpp
 include/pika/iterator_support/transform_iterator.hpp
-include/pika/iterator_support/zip_iterator.hpp
-include/pika/itt_notify/config/defines.hpp
-include/pika/itt_notify/thread_name.hpp
 include/pika/latch.hpp
 include/pika/lock_registration/config/defines.hpp
 include/pika/lock_registration/detail/register_locks.hpp
@@ -231,7 +228,6 @@ include/pika/modules/hashing.hpp
 include/pika/modules/ini.hpp
 include/pika/modules/init_runtime.hpp
 include/pika/modules/iterator_support.hpp
-include/pika/modules/itt_notify.hpp
 include/pika/modules/lock_registration.hpp
 include/pika/modules/memory.hpp
 include/pika/modules/preprocessor.hpp
@@ -296,7 +292,6 @@ include/pika/runtime/config_entry.hpp
 include/pika/runtime/custom_exception_info.hpp
 include/pika/runtime/debugging.hpp
 include/pika/runtime/get_os_thread_count.hpp
-include/pika/runtime/get_thread_name.hpp
 include/pika/runtime/get_worker_thread_num.hpp
 include/pika/runtime/report_error.hpp
 include/pika/runtime/runtime.hpp
@@ -336,7 +331,6 @@ include/pika/string_util/from_string.hpp
 include/pika/string_util/split.hpp
 include/pika/string_util/to_string.hpp
 include/pika/string_util/trim.hpp
-include/pika/synchronization/async_rw_mutex.hpp
 include/pika/synchronization/barrier.hpp
 include/pika/synchronization/condition_variable.hpp
 include/pika/synchronization/config/defines.hpp
@@ -365,8 +359,8 @@ include/pika/thread_pools/scheduling_loop.hpp
 include/pika/thread_support/assert_owns_lock.hpp
 include/pika/thread_support/atomic_count.hpp
 include/pika/thread_support/config/defines.hpp
-include/pika/thread_support/set_thread_name.hpp
 include/pika/thread_support/spinlock.hpp
+include/pika/thread_support/thread_name.hpp
 include/pika/thread_support/unlock_guard.hpp
 include/pika/threading/config/defines.hpp
 include/pika/threading/jthread.hpp
@@ -441,7 +435,6 @@ include/pika/util/manage_config.hpp
 include/pika/version.hpp
 include/pika/version/config/defines.hpp
 lib/cmake/pika/FindAPEX.cmake
-lib/cmake/pika/FindAmplifier.cmake
 lib/cmake/pika/FindHwloc.cmake
 lib/cmake/pika/FindJemalloc.cmake
 lib/cmake/pika/FindQThreads.cmake
@@ -531,9 +524,11 @@ lib/cmake/pika/tests/cxx23_static_call_operator.cu
 lib/cmake/pika/tests/cxx23_static_call_operator.hip
 lib/cmake/pika/tests/cxx_lambda_capture_decltype.cpp
 lib/cmake/pika/tests/mm_prefetch.cpp
+lib/cmake/pika/tests/pthread_setname_np.cpp
 lib/cmake/pika/tests/stdexec_continues_on.cpp
+lib/cmake/pika/tests/stdexec_env.cpp
 lib/cmake/pika/tests/stdexec_sender_receiver_concepts.cpp
 lib/cmake/pika/tests/unistd_h.cpp
 lib/libpika.so
 lib/libpika.so.0
-lib/libpika.so.0.30.0
+lib/libpika.so.0.34.0

@@ -1,8 +1,10 @@
 PORTNAME=	maturin
-DISTVERSIONPREFIX=	v
-DISTVERSION=	1.7.8
+DISTVERSION=	1.9.1
 CATEGORIES=	devel python
+MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
+# Workaround to use both the PyPI tarball and the cargo crates.
+DISTFILES=	${DISTNAME}${EXTRACT_SUFX}
 
 MAINTAINER=	kai@FreeBSD.org
 COMMENT=	Build and publish crates with pyo3, rust-cpython and cffi bindings
@@ -17,11 +19,10 @@ BUILD_DEPENDS=	${PY_SETUPTOOLS} \
 		${PYTHON_PKGNAMEPREFIX}setuptools-rust>=1.4.0:devel/py-setuptools-rust@${PY_FLAVOR} \
 		${PY_TOMLI} \
 		${PYTHON_PKGNAMEPREFIX}wheel>=0.36.2:devel/py-wheel@${PY_FLAVOR}
+LIB_DEPENDS=	libzstd.so:archivers/zstd
 RUN_DEPENDS=	${PY_TOMLI}
 
 USES=		cargo python
-USE_GITHUB=	yes
-GH_ACCOUNT=	PyO3
 USE_PYTHON=	autoplist concurrent pep517
 
 CARGO_BUILD=	no

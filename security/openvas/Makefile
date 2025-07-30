@@ -1,5 +1,6 @@
 PORTNAME=	openvas
-DISTVERSION=	23.9.0
+DISTVERSION=	23.20.1
+PORTREVISION=	1
 DISTVERSIONPREFIX=	v
 CATEGORIES=	security
 
@@ -28,7 +29,7 @@ RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}impacket>=0:net/py-impacket@${PY_FLAVOR} \
 		rsync:net/rsync \
 		nmap:security/nmap
 
-USES=		bison cmake gnome pkgconfig python ssl
+USES=		bison cmake gnome gssapi:mit pkgconfig python ssl
 USE_GITHUB=	yes
 GH_ACCOUNT=	greenbone
 GH_PROJECT=	${PORTNAME}-scanner
@@ -42,7 +43,7 @@ GROUPS=		${USERS}
 .include <bsd.port.pre.mk>
 
 .if ${OPSYS} == FreeBSD
-CFLAGS+=	-Wno-error=strict-prototypes -Wno-error=unused-but-set-variable -Wno-error=invalid-utf8
+CFLAGS+=	-Wno-error=strict-prototypes -Wno-error=unused-but-set-variable -Wno-error=invalid-utf8 -Wno-implicit-function-declaration
 .endif
 
 # The struct this error is about is only ever accessed using bcopy() and memset(),
@@ -53,7 +54,7 @@ CFLAGS_armv7=	-Wno-error=unaligned-access
 
 post-patch:
 	@${REINPLACE_CMD} -e 's|#include <bsd/unistd.h>||g' ${WRKSRC}/src/nasl_plugins.c
-	@${REINPLACE_CMD} -e 's|#include <bsd/unistd.h>|#include <unistd.h>|g' ${WRKSRC}//src/pluginload.c
+	@${REINPLACE_CMD} -e 's|#include <bsd/unistd.h>|#include <unistd.h>|g' ${WRKSRC}/src/pluginload.c
 	@${REINPLACE_CMD} -e 's|vendor_version_get ()|vendor_version_get (void)|g' ${WRKSRC}/misc/vendorversion.c
 
 post-install:

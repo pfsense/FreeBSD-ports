@@ -136,7 +136,6 @@ etc/bash_completion.d/icingacli
 %%WWWDIR%%/application/views/scripts/group/form.phtml
 %%WWWDIR%%/application/views/scripts/group/list.phtml
 %%WWWDIR%%/application/views/scripts/group/show.phtml
-%%WWWDIR%%/application/views/scripts/iframe/index.phtml
 %%WWWDIR%%/application/views/scripts/index/welcome.phtml
 %%WWWDIR%%/application/views/scripts/inline.phtml
 %%WWWDIR%%/application/views/scripts/joystickPagination.phtml
@@ -1033,7 +1032,12 @@ etc/bash_completion.d/icingacli
 %%WWWDIR%%/modules/translation/library/Translation/Cli/TranslationCommand.php
 %%WWWDIR%%/modules/translation/library/Translation/Util/GettextTranslationHelper.php
 %%WWWDIR%%/modules/translation/module.info
-%%WWWDIR%%/phpstan-baseline.neon
+%%WWWDIR%%/phpstan-baseline-7x.neon
+%%WWWDIR%%/phpstan-baseline-8.0.neon
+%%WWWDIR%%/phpstan-baseline-8.1+.neon
+%%WWWDIR%%/phpstan-baseline-8x.neon
+%%WWWDIR%%/phpstan-baseline-by-php-version.php
+%%WWWDIR%%/phpstan-baseline-standard.neon
 %%WWWDIR%%/phpstan.neon
 %%WWWDIR%%/public/css/icinga/about.less
 %%WWWDIR%%/public/css/icinga/animation.less

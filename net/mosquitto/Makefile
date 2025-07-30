@@ -1,5 +1,6 @@
 PORTNAME=	mosquitto
-DISTVERSION=	2.0.18
+DISTVERSION=	2.0.21
+PORTREVISION=	1
 CATEGORIES=	net
 MASTER_SITES=	https://mosquitto.org/files/source/
 
@@ -11,7 +12,7 @@ LICENSE=	EPL
 
 BUILD_DEPENDS=	xsltproc:textproc/libxslt \
 		docbook-xsl>0:textproc/docbook-xsl
-LIB_DEPENDS=	libuuid.so:misc/e2fsprogs-libuuid \
+LIB_DEPENDS=	libuuid.so:misc/libuuid \
 		libcjson.so:devel/libcjson
 RUN_DEPENDS=	${LOCALBASE}/share/certs/ca-root-nss.crt:security/ca_root_nss
 
@@ -25,15 +26,14 @@ USERS=		nobody
 
 PLIST_SUB=	DISTVERSION=${DISTVERSION}
 
-OPTIONS_DEFINE=	CARES WEBSOCKETS
-OPTIONS_DEFAULT=CARES WEBSOCKETS
+OPTIONS_DEFINE=	CARES WEBSOCKET
+OPTIONS_DEFAULT=CARES WEBSOCKET
 
 CARES_LIB_DEPENDS=	libcares.so:dns/c-ares
 CARES_CMAKE_ON=		-DWITH_SRV:BOOL=ON
 
-WEBSOCKETS_DESC=	Websockets support via libwebsockets
-WEBSOCKETS_LIB_DEPENDS=	libwebsockets.so:net/libwebsockets
-WEBSOCKETS_CMAKE_ON=	-DWITH_WEBSOCKETS:BOOL=ON
+WEBSOCKET_LIB_DEPENDS=	libwebsockets.so:net/libwebsockets
+WEBSOCKET_CMAKE_ON=	-DWITH_WEBSOCKETS:BOOL=ON
 
 post-patch:
 	@${REINPLACE_CMD} -e '/ldconfig/d' ${WRKSRC}/src/CMakeLists.txt \

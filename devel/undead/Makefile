@@ -1,7 +1,7 @@
 PORTNAME=	undead
 DISTVERSIONPREFIX=v
 DISTVERSION=	1.1.8
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	devel
 
 MAINTAINER=	romain@FreeBSD.org
@@ -26,7 +26,8 @@ SUB_FILES=	undead.pc
 SUB_LIST=	DISTVERSION=${DISTVERSION}
 
 do-build:
-	@cd ${WRKSRC} && DC=${DC} ${DUB_CMD}
+	@cd ${WRKSRC} && \
+		${SETENV} DUB_HOME=${WRKDIR}/dub_home DC=${DC} ${DUB_CMD}
 
 do-install:
 	@${MKDIR} ${STAGEDIR}${D_INCLUDE_DIR}

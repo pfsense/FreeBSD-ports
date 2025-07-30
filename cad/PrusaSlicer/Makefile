@@ -1,6 +1,6 @@
 PORTNAME=	PrusaSlicer
 DISTVERSIONPREFIX=version_
-DISTVERSION=	2.8.1
+DISTVERSION=	2.9.2
 PORTREVISION=	3
 CATEGORIES=	cad
 DIST_SUBDIR=	PrusaSlicer
@@ -15,7 +15,8 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 BUILD_DEPENDS=	cereal>=1.3.0.10:devel/cereal \
 		cgal>=5.0.2:math/cgal \
 		opencascade>=7.7.0:cad/opencascade \
-		libbgcode>=0.2.0_1:cad/libbgcode
+		libbgcode>=0.2.0_1:cad/libbgcode \
+		hidapi>=0.14.0:comms/hidapi
 
 LIB_DEPENDS+=	libbgcode_convert.so:cad/libbgcode \
 		libbgcode_binarize.so:cad/libbgcode \
@@ -41,9 +42,10 @@ LIB_DEPENDS+=	libbgcode_convert.so:cad/libbgcode \
 		libavcodec.so:multimedia/ffmpeg4 \
 		libharfbuzz.so:print/harfbuzz \
 		libwayland-egl.so:graphics/wayland \
-		libwebkit2gtk-4.0.so:www/webkit2-gtk3 \
-		libsoup-2.4.so:devel/libsoup \
-		libjavascriptcoregtk-4.0.so:www/webkit2-gtk3
+		libwebkit2gtk-4.1.so:www/webkit2-gtk@41 \
+		libsoup-3.0.so:devel/libsoup3 \
+		libjavascriptcoregtk-4.1.so:www/webkit2-gtk@41 \
+		libz3.so:math/z3
 
 USES=		cmake cpe desktop-file-utils eigen:3 gettext gl gnome iconv \
 		jpeg pkgconfig xorg ssl tcl tk
@@ -51,7 +53,7 @@ CPE_VENDOR=	prusa3d
 USE_GITHUB=	yes
 GH_ACCOUNT=	prusa3d
 USE_GL=		gl glu glew
-USE_GNOME=	gtk30 pango atk cairo gdkpixbuf2 glib20
+USE_GNOME=	gtk30 pango atk cairo gdkpixbuf glib20
 USE_WX=		3.2
 USE_XORG=	x11
 
@@ -62,5 +64,7 @@ CMAKE_ARGS+=	-DwxWidgets_CONFIG_EXECUTABLE="${WX_CONFIG}" \
 		-DSLIC3R_BUILD_TESTS=OFF
 
 PORTDATA=	*
-
+post-patch:
+	${MKDIR} ${WRKSRC}/bundled_deps/hidapi/libusb
+	${CP} ${FILESDIR}/hid.c ${WRKSRC}/bundled_deps/hidapi/libusb/hid.c
 .include <bsd.port.mk>

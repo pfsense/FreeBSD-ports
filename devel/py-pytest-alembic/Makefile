@@ -1,5 +1,5 @@
 PORTNAME=	pytest-alembic
-PORTVERSION=	0.11.1
+PORTVERSION=	0.12.1
 CATEGORIES=	devel python
 MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -15,15 +15,16 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 
 BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}poetry-core>=1.0.8:devel/py-poetry-core@${PY_FLAVOR}
 RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}alembic>=0:databases/py-alembic@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}pytest>=6.0,1:devel/py-pytest@${PY_FLAVOR}
+		${PYTHON_PKGNAMEPREFIX}pytest>=7.0,1:devel/py-pytest@${PY_FLAVOR}
 
 USES=		python
 USE_PYTHON=	autoplist concurrent pep517
 
 NO_ARCH=	yes
 
+OPTIONS_RADIO=	SQL
 OPTIONS_RADIO_SQL=	ALCHEMY14 ALCHEMY20
-OPTIONS_DEFAULT=ALCHEMY14
+OPTIONS_DEFAULT=ALCHEMY20
 ALCHEMY14_DESC=	Support SQL databases via databases/py-sqlalchemy14
 ALCHEMY20_DESC=	Support SQL databases via databases/py-sqlalchemy20
 

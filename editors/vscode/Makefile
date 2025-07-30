@@ -1,5 +1,5 @@
 PORTNAME=	vscode
-DISTVERSION=	1.96.0
+DISTVERSION=	1.102.1
 CATEGORIES=	editors
 MASTER_SITES=	https://github.com/tagattie/FreeBSD-VSCode/releases/download/${DISTVERSION}/:node_modules
 DISTFILES=	vscode-node-modules-${DISTVERSION}${EXTRACT_SUFX}:node_modules \
@@ -33,7 +33,6 @@ LIB_DEPENDS=	libatk-bridge-2.0.so:accessibility/at-spi2-core \
 		libepoll-shim.so:devel/libepoll-shim \
 		libevent.so:devel/libevent \
 		libffi.so:devel/libffi \
-		libinotify.so:devel/libinotify \
 		libnotify.so:devel/libnotify \
 		libpci.so:devel/libpci \
 		libnspr4.so:devel/nspr \
@@ -51,7 +50,6 @@ LIB_DEPENDS=	libatk-bridge-2.0.so:accessibility/at-spi2-core \
 		libcups.so:print/cups \
 		libfreetype.so:print/freetype2 \
 		libharfbuzz.so:print/harfbuzz \
-		libkrb5.so.3:security/krb5 \
 		libsecret-1.so:security/libsecret \
 		libnss3.so:security/nss \
 		libexpat.so:textproc/expat2 \
@@ -63,21 +61,21 @@ RUN_DEPENDS=	xdg-open:devel/xdg-utils \
 TEST_DEPENDS=	electron${ELECTRON_VER_MAJOR}:devel/electron${ELECTRON_VER_MAJOR} \
 		bash:shells/bash
 
-USES=		desktop-file-utils gl gmake gnome iconv:wchar_t jpeg \
-		localbase:ldflags nodejs:20,build pkgconfig python:build \
+USES=		desktop-file-utils gl gmake gnome gssapi:mit iconv:wchar_t \
+		jpeg localbase:ldflags nodejs:22,build pkgconfig python:build \
 		shebangfix xorg
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	microsoft
 
-SOURCE_COMMIT_HASH=	138f619c86f1199955d53b4166bef66ef252935c
+SOURCE_COMMIT_HASH=	7adae6a56e34cb64d08899664b814cf620465925
 
 BINARY_ALIAS=	python=${PYTHON_CMD}
 
 USE_XORG=	x11 xcb xcomposite xcursor xdamage xext xfixes xi xkbfile \
 		xrandr xrender xscrnsaver xtst
 USE_GL=		gbm gl glesv2
-USE_GNOME=	atk cairo pango gdkpixbuf2 gtk30 libxml2 libxslt
+USE_GNOME=	atk cairo pango gdkpixbuf gtk30 libxml2 libxslt
 
 SHEBANG_REGEX=	./(extensions|node_modules|resources|scripts|src)/.*\.sh$$
 PATHFIX_FILES=	src/vs/workbench/contrib/debug/node/terminals.ts
@@ -95,10 +93,11 @@ MAKE_ENV+=	PLAYWRIGHT_BROWSERS_PATH=${WRKDIR}/pw-browsers \
 # Don't create __pycache__ directory when executing node-gyp
 # This is a workaround to avoid filesystem violations during poudriere build
 MAKE_ENV+=	PYTHONDONTWRITEBYTECODE=1
+TEST_ENV=	${MAKE_ENV:C/TMPDIR=.*//}
 
-NODEJS_DIR=	${.CURDIR:H:H}/www/node20
+NODEJS_DIR=	${.CURDIR:H:H}/www/node22
 .include "${NODEJS_DIR}/Makefile.version"
-ELECTRON_DIR=	${.CURDIR:H:H}/devel/electron32
+ELECTRON_DIR=	${.CURDIR:H:H}/devel/electron35
 .include "${ELECTRON_DIR}/Makefile.version"
 
 ELECTRON_DOWNLOAD_URL=	https://github.com/electron/electron/releases/download/v${ELECTRON_VER}
@@ -200,6 +199,8 @@ pre-build:
 # copy rg binary file to @vscode/ripgrep node module directory
 	@${MKDIR} ${WRKSRC}/node_modules/@vscode/ripgrep/bin
 	@${CP} ${LOCALBASE}/bin/rg ${WRKSRC}/node_modules/@vscode/ripgrep/bin
+	@${MKDIR} ${WRKSRC}/build/node_modules/@vscode/ripgrep/bin
+	@${CP} ${LOCALBASE}/bin/rg ${WRKSRC}/build/node_modules/@vscode/ripgrep/bin
 	@${MKDIR} ${WRKSRC}/remote/node_modules/@vscode/ripgrep/bin
 	@${CP} ${LOCALBASE}/bin/rg ${WRKSRC}/remote/node_modules/@vscode/ripgrep/bin
 
@@ -208,17 +209,6 @@ do-build:
 	@${MKDIR} ${WRKDIR}/.cache/electron/${ELECTRON_DOWNLOAD_URL_HASH}
 	@cd ${LOCALBASE}/share/electron${ELECTRON_VER_MAJOR} && \
 		zip -q -r ${WRKDIR}/.cache/electron/${ELECTRON_DOWNLOAD_URL_HASH}/electron-v${ELECTRON_VER}-linux-${ELECTRON_ARCH}.zip .
-	@cd ${WRKDIR}/.cache/electron/${ELECTRON_DOWNLOAD_URL_HASH} && \
-		${SHA256} -r *-v${ELECTRON_VER}-linux-*.zip | \
-		${SED} -e 's/ / */' > SHASUMS256.txt
-# add newline character at the end of the file if not already
-	@${AWK} '1' ${WRKSRC}/build/checksums/electron.txt > \
-		${WRKSRC}/build/checksums/electron.txt.new
-	@${MV} -f ${WRKSRC}/build/checksums/electron.txt.new \
-		${WRKSRC}/build/checksums/electron.txt
-	@cd ${WRKDIR}/.cache/electron/${ELECTRON_DOWNLOAD_URL_HASH} && \
-		${SHA256} -r *-v${ELECTRON_VER}-linux-*.zip | \
-		${SED} -e 's/ / */' >> ${WRKSRC}/build/checksums/electron.txt
 # remove backup files so that they are not included in the package
 	@${FIND} ${WRKSRC} -type f \( -name '*.orig' -o -name '*~' \) -delete
 # build and package vscode
@@ -273,9 +263,9 @@ pre-test:
 do-test:
 # Note: Xvfb or something similar is necessary for headless testing
 # unit tests
-	cd ${WRKSRC} && ${SETENV} ${TEST_ENV} ./scripts/test.sh || ${TRUE}
+	cd ${WRKSRC} && ${SETENV} ${TEST_ENV} ./scripts/test.sh --build || ${TRUE}
 # UI smoke tests
-	cd ${WRKSRC} && ${SETENV} ${TEST_ENV} yarn smoketest
+	cd ${WRKSRC} && ${SETENV} ${TEST_ENV} npm run smoketest
 
 build-remote-extension-host: configure pre-build
 # setup download cache for node

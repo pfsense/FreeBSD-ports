@@ -1,6 +1,6 @@
 PORTNAME=	fsearch
 PORTVERSION=	0.2.3
-PORTREVISION=	3
+PORTREVISION=	4
 CATEGORIES=	sysutils
 
 MAINTAINER=	danfe@FreeBSD.org
@@ -17,7 +17,7 @@ USE_GITHUB=	yes
 GH_ACCOUNT=	cboxdoerfer
 
 USES=		meson gettext-tools gnome pkgconfig
-USE_GNOME=	cairo gdkpixbuf2 gtk30
+USE_GNOME=	cairo gdkpixbuf gtk30
 
 post-patch:
 	@${PRINTF} '\n%s\n%s;\n' int \

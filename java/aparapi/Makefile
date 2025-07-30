@@ -1,6 +1,6 @@
 PORTNAME=	aparapi
 PORTVERSION=	1.0.0
-PORTREVISION=	1
+PORTREVISION=	2
 DISTVERSIONSUFFIX=	-SNAPSHOT
 CATEGORIES=	java lang
 
@@ -15,15 +15,12 @@ BUILD_DEPENDS=	opencl>=0:devel/opencl
 LIB_DEPENDS=	libOpenCL.so:devel/ocl-icd
 RUN_DEPENDS=	opencl>=0:devel/opencl
 
-ONLY_FOR_ARCHS=	amd64 powerpc64 powerpc64le
-
+USES=		dos2unix java:ant,run
 USE_GITHUB=	yes
 
-USE_JAVA=	yes
-USE_ANT=	yes
-ALL_TARGET=	dist
+ONLY_FOR_ARCHS=	amd64 powerpc64 powerpc64le
 
-USES=		dos2unix
+ALL_TARGET=	dist
 
 do-install:
 		(cd ${WRKSRC}/dist_freebsd && ${INSTALL_DATA} aparapi.jar ${STAGEDIR}${JAVAJARDIR})

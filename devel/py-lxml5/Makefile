@@ -1,7 +1,9 @@
 PORTNAME=	lxml
-PORTVERSION=	5.3.0
+PORTVERSION=	5.4.0
+PORTREVISION=	2
 CATEGORIES=	devel python
-MASTER_SITES=	PYPI
+MASTER_SITES=	PYPI \
+		https://github.com/lxml/lxml/releases/download/lxml-${PORTVERSION}/
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 PKGNAMESUFFIX=	5
 
@@ -13,13 +15,12 @@ WWW=		https://lxml.de/ \
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE.txt
 
-BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}cython3>=3.0.11:lang/cython3@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}setuptools>=0:devel/py-setuptools@${PY_FLAVOR} \
+BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}setuptools>=0:devel/py-setuptools@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}wheel>=0:devel/py-wheel@${PY_FLAVOR}
 
 USES=		cpe gnome python
 USE_GNOME=	libxml2 libxslt
-USE_PYTHON=	autoplist concurrent pep517
+USE_PYTHON=	autoplist concurrent cython3 pep517
 
 CONFLICTS_INSTALL=	${PYTHON_PKGNAMEPREFIX}lxml ${PYTHON_PKGNAMEPREFIX}lxml5
 

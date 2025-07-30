@@ -1,6 +1,6 @@
 PORTNAME=	devtools
 PORTVERSION=	${LINUX_DIST_VER}
-PORTREVISION=	3
+PORTREVISION=	5
 CATEGORIES=	devel
 
 MAINTAINER=	emulation@FreeBSD.org
@@ -11,13 +11,12 @@ WWW=		https://gcc.gnu.org/
 
 USES=		linux:c7
 USE_LDCONFIG=	yes
-USE_LINUX=	libgfortran
+NO_SHLIB_REQUIRES_GLOB=	libquadmath.so.0:Linux*
 USE_LINUX_RPM=	yes
 
 BUVERSION=	2.27-44.base.el7
 BIN_DISTNAMES=	binutils-${BUVERSION} \
 		glibc-headers-2.17-326.el7_9.3 \
-		mpfr-3.1.1-4.el7 \
 		cpp-4.8.5-44.el7 \
 		gcc-4.8.5-44.el7 \
 		gcc-c++-4.8.5-44.el7 \
@@ -26,6 +25,7 @@ BIN_DISTNAMES=	binutils-${BUVERSION} \
 LIB_DISTNAMES=	binutils-devel-${BUVERSION} \
 		glibc-devel-2.17-326.el7_9.3 \
 		glibc-static-2.17-326.el7_9.3 \
+		libgfortran-4.8.5-44.el7 \
 		libgomp-4.8.5-44.el7 \
 		libmpc-1.0.1-3.el7
 DISTFILES_aarch64=${LIB_DISTNAMES:S/$/${EXTRACT_SUFX_aarch64}:aarch64/} \
@@ -44,7 +44,6 @@ SRC_DISTFILES=	binutils-${BUVERSION}${SRC_SUFX}:SOURCE \
 		kernel-3.10.0-1160.119.1.el7${SRC_SUFX}:amd64 \
 		kernel-4.18.0-348.20.1.el7${SRC_SUFX}:SOURCE \
 		libmpc-1.0.1-3.el7${SRC_SUFX}:SOURCE \
-		mpfr-3.1.1-4.el7${SRC_SUFX}:SOURCE \
 		gcc-4.8.5-44.el7${SRC_SUFX}:SOURCE
 
 CONFLICTS=	linux-c6-${PORTNAME}

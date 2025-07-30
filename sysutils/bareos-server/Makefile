@@ -1,6 +1,6 @@
 PORTNAME=	bareos
 DISTVERSIONPREFIX=	Release/
-DISTVERSION=	23.1.0
+DISTVERSION=	24.0.0
 PORTREVISION?=	0
 CATEGORIES?=	sysutils
 PKGNAMEPREFIX?=	#
@@ -13,8 +13,13 @@ WWW=		https://www.bareos.org/
 LICENSE=	AGPLv3 LGPL3
 LICENSE_COMB=	multi
 
-CONFLICTS?=	bareos20-server bareos21-server bareos22-server
+CONFLICTS?=	bareos20-server bareos21-server bareos22-server bareos23-server
 
+BUILD_DEPENDS+=	utf8cpp>0:devel/utf8cpp \
+		microsoft-gsl>0:devel/microsoft-gsl \
+		xxhash>0:devel/xxhash \
+		tl-expected>0:devel/tl-expected \
+		cli11>0:devel/cli11
 LIB_DEPENDS+=	liblzo2.so:archivers/lzo2 \
 		libjansson.so:devel/jansson \
 		libfmt.so:devel/libfmt
@@ -154,7 +159,8 @@ GFAPI_LIB_DEPENDS=	libglusterfs.so:net/glusterfs
 # Client only or full server version
 .if defined(WITH_CLIENT_ONLY)
 CONFFILES=	fd
-CMAKE_ARGS+=	-Dclient-only=ON
+CMAKE_ARGS+=	-Dclient-only=ON \
+		-DENABLE_WEBUI=OFF
 
 PKGDEINSTALL=	${FILESDIR}/pkg-deinstall.client
 PKGINSTALL=	${FILESDIR}/pkg-install.client
@@ -163,7 +169,8 @@ PKGINSTALL=	${FILESDIR}/pkg-install.client
 CONFFILES=		sd dir
 CMAKE_ARGS+=	-Dbuild-dird=ON \
 		-Dbuild-stored=ON \
-		-Dbuild_client_only=OFF
+		-Dbuild_client_only=OFF \
+		-DENABLE_WEBUI=OFF
 # Server default database
 
 MTX_RUN_DEPENDS=	${LOCALBASE}/sbin/mtx:misc/mtx
@@ -185,16 +192,13 @@ MP1+=	bsmtp.1 bregex.1 bwild.1 bareos-tray-monitor.1
 MAKE_ENV+=	MAN8="${MP8}" MAN1="${MP1}"
 
 post-patch:
-	@${REINPLACE_CMD}  '136,141d' ${WRKSRC}/CMakeLists.txt
 .if ${PKGNAMESUFFIX} == "-server"
-	@${REINPLACE_CMD}  '50d' ${WRKSRC}/core/src/plugins/CMakeLists.txt
+	@${REINPLACE_CMD}  '51d' ${WRKSRC}/core/src/plugins/CMakeLists.txt
 .endif
 .if ${PKGNAMESUFFIX} == "-client"
 	@${REINPLACE_CMD} -e 's|-Werror -Wall|-Wall|g' ${PATCH_WRKSRC}/core/CMakeLists.txt
+	@${REINPLACE_CMD} -e 's|enable_testing()||g' ${WRKSRC}/CMakeLists.txt
 .endif
-
-post-patch-PYTHON-off:
-	@${REINPLACE_CMD} 's/set(python ON)/set(python OFF)/' ${WRKSRC}/cmake/BareosSetVariableDefaults.cmake
 
 post-extract:
 .if defined(WITH_CLIENT_ONLY)

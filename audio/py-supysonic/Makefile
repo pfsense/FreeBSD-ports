@@ -1,10 +1,11 @@
 PORTNAME=	supysonic
-DISTVERSION=	0.7.8
+DISTVERSION=	0.7.9
+PORTREVISION=	1
 CATEGORIES=	audio python
 MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
-MAINTAINER=	DtxdF@disroot.org
+MAINTAINER=	dtxdf@FreeBSD.org
 COMMENT=	Python implementation of the Subsonic server API
 WWW=		https://supysonic.readthedocs.io/
 

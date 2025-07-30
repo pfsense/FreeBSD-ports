@@ -1,8 +1,8 @@
---- src/LV2/xputty/header/xasprintf.h.orig	2020-06-10 01:09:00 UTC
+--- src/LV2/xputty/header/xasprintf.h.orig	2022-05-02 18:38:03 UTC
 +++ src/LV2/xputty/header/xasprintf.h
-@@ -11,6 +11,8 @@
- #ifndef XASPRINTF_H_
- #define XASPRINTF_H_
+@@ -15,6 +15,8 @@
+ #include <stdlib.h>
+ #include <stdarg.h>
  
 +#include <cstdarg>
 +

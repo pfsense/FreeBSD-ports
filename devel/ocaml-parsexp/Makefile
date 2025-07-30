@@ -18,7 +18,6 @@ RUN_DEPENDS=	${SA_DIR}/sexplib0/META:devel/ocaml-sexplib0
 USES=		ocaml:dune
 USE_GITHUB=	yes
 GH_ACCOUNT=	janestreet
-USE_OCAML=	yes
 
 OPTIONS_DEFINE=	DOCS
 
@@ -28,6 +27,12 @@ PORTDOCS=	CHANGES.md LICENSE.md README.org
 OPTIONS_DEFINE=	DOCS
 
 SA_DIR=		${LOCALBASE}/${OCAML_SITELIBDIR}
+
+.include <bsd.port.options.mk>
+
+.if ${ARCH} == powerpc
+USE_BINUTILS=	yes
+.endif
 
 post-install:
 	@${STRIP_CMD} \

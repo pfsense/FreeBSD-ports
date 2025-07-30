@@ -22,6 +22,7 @@ bin/SABnzbd.py
 %%PYTHON_SITELIBDIR%%/sabnzbd/interface.py
 %%PYTHON_SITELIBDIR%%/sabnzbd/internetspeed.py
 %%PYTHON_SITELIBDIR%%/sabnzbd/lang.py
+%%PYTHON_SITELIBDIR%%/sabnzbd/macosmenu.py
 %%PYTHON_SITELIBDIR%%/sabnzbd/misc.py
 %%PYTHON_SITELIBDIR%%/sabnzbd/newsunpack.py
 %%PYTHON_SITELIBDIR%%/sabnzbd/newswrapper.py
@@ -29,7 +30,6 @@ bin/SABnzbd.py
 %%PYTHON_SITELIBDIR%%/sabnzbd/nzbparser.py
 %%PYTHON_SITELIBDIR%%/sabnzbd/nzbqueue.py
 %%PYTHON_SITELIBDIR%%/sabnzbd/nzbstuff.py
-%%PYTHON_SITELIBDIR%%/sabnzbd/osxmenu.py
 %%PYTHON_SITELIBDIR%%/sabnzbd/panic.py
 %%PYTHON_SITELIBDIR%%/sabnzbd/par2file.py
 %%PYTHON_SITELIBDIR%%/sabnzbd/postproc.py
@@ -75,6 +75,7 @@ bin/SABnzbd.py
 %%NLS%%%%DATADIR%%/email/badfetch-ru.tmpl
 %%NLS%%%%DATADIR%%/email/badfetch-sr.tmpl
 %%NLS%%%%DATADIR%%/email/badfetch-sv.tmpl
+%%NLS%%%%DATADIR%%/email/badfetch-tr.tmpl
 %%NLS%%%%DATADIR%%/email/badfetch-zh_CN.tmpl
 %%NLS%%%%DATADIR%%/email/email-cs.tmpl
 %%NLS%%%%DATADIR%%/email/email-da.tmpl
@@ -93,6 +94,7 @@ bin/SABnzbd.py
 %%NLS%%%%DATADIR%%/email/email-ru.tmpl
 %%NLS%%%%DATADIR%%/email/email-sr.tmpl
 %%NLS%%%%DATADIR%%/email/email-sv.tmpl
+%%NLS%%%%DATADIR%%/email/email-tr.tmpl
 %%NLS%%%%DATADIR%%/email/email-zh_CN.tmpl
 %%NLS%%%%DATADIR%%/email/rss-cs.tmpl
 %%NLS%%%%DATADIR%%/email/rss-da.tmpl
@@ -111,6 +113,7 @@ bin/SABnzbd.py
 %%NLS%%%%DATADIR%%/email/rss-ru.tmpl
 %%NLS%%%%DATADIR%%/email/rss-sr.tmpl
 %%NLS%%%%DATADIR%%/email/rss-sv.tmpl
+%%NLS%%%%DATADIR%%/email/rss-tr.tmpl
 %%NLS%%%%DATADIR%%/email/rss-zh_CN.tmpl
 %%DATADIR%%/icons/logo-arrow.svg
 %%DATADIR%%/icons/logo-arrow_gray.svg
@@ -120,9 +123,9 @@ bin/SABnzbd.py
 %%DATADIR%%/icons/sabnzbd16_32.ico
 %%DATADIR%%/icons/sabnzbd16_32green.ico
 %%DATADIR%%/icons/sabnzbd16_32paused.ico
-%%DATADIR%%/icons/sabnzbd_osx_clicked.tiff
-%%DATADIR%%/icons/sabnzbd_osx_idle.tiff
-%%DATADIR%%/icons/sabnzbd_osx_pause.tiff
+%%DATADIR%%/icons/sabnzbd_macos_clicked.tiff
+%%DATADIR%%/icons/sabnzbd_macos_idle.tiff
+%%DATADIR%%/icons/sabnzbd_macos_pause.tiff
 %%DATADIR%%/interfaces/Config/README.txt
 %%DATADIR%%/interfaces/Config/templates/_inc_footer_uc.tmpl
 %%DATADIR%%/interfaces/Config/templates/_inc_header_uc.tmpl
@@ -240,4 +243,5 @@ bin/SABnzbd.py
 %%NLS%%%%DATADIR%%/locale/ru/LC_MESSAGES/SABnzbd.mo
 %%NLS%%%%DATADIR%%/locale/sr/LC_MESSAGES/SABnzbd.mo
 %%NLS%%%%DATADIR%%/locale/sv/LC_MESSAGES/SABnzbd.mo
+%%NLS%%%%DATADIR%%/locale/tr/LC_MESSAGES/SABnzbd.mo
 %%NLS%%%%DATADIR%%/locale/zh_CN/LC_MESSAGES/SABnzbd.mo

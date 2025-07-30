@@ -1,6 +1,7 @@
 PORTNAME=	electron
 DISTVERSIONPREFIX=	v
 DISTVERSION=	${ELECTRON_VER}
+PORTREVISION=	6
 PULSEMV=	16
 PULSEV=		${PULSEMV}.1
 CATEGORIES=	devel
@@ -23,6 +24,9 @@ WWW=		https://electronjs.org/
 LICENSE=	BSD3CLAUSE LGPL21 MPL11 MIT
 LICENSE_COMB=	multi
 LICENSE_FILE=	${WRKSRC}/electron/LICENSE
+
+DEPRECATED=	EOLed upstream, switch to newer version
+EXPIRATION_DATE=	2025-05-31
 
 ONLY_FOR_ARCHS=	aarch64 amd64 i386
 
@@ -84,7 +88,7 @@ GH_TUPLE=	nodejs:node:v${NODE_VER}:node \
 		Mantle:Mantle:${MANTLE_VER}:mantle \
 		EngFlow:reclient-configs:${ENGFLOW_RECLIENT_CONFIGS_VER}:reclient_configs
 USE_GL=		gbm gl glesv2
-USE_GNOME=	atk cairo gdkpixbuf2 gtk30 libxml2 libxslt pango
+USE_GNOME=	atk cairo gdkpixbuf gtk30 libxml2 libxslt pango
 USE_XORG=	x11 xcb xcomposite xcursor xdamage xext xfixes xi xrandr \
 		xrender xscrnsaver xtst
 
@@ -243,7 +247,7 @@ YARN_TIMESTAMP=	61171200
 IGNORE=		you have selected HEIMDAL_BASE but do not have Heimdal installed in base
 .endif
 
-LLVM_DEFAULT=		18
+LLVM_DEFAULT=		20
 BUILD_DEPENDS+=		clang${LLVM_DEFAULT}:devel/llvm${LLVM_DEFAULT}
 BINARY_ALIAS+=		cpp=${LOCALBASE}/bin/clang-cpp${LLVM_DEFAULT} \
 			cc=${LOCALBASE}/bin/clang${LLVM_DEFAULT} \

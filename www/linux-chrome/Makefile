@@ -1,11 +1,12 @@
 PORTNAME=	chrome
 PORTVERSION=	${CHROME_VER}
+PORTREVISION=	2
 CATEGORIES=	www linux
 MASTER_SITES=	https://dl.google.com/linux/chrome/rpm/stable/x86_64/
 DISTNAME=	google-${PORTNAME}-stable-${CHROME_VER}-${CHROME_BUILD}.x86_64
 PKGNAMEPREFIX=	linux-
 
-MAINTAINER=	chromium@FreeBSD.org
+MAINTAINER=	emulation@FreeBSD.org
 COMMENT=	Google web browser based on WebKit
 WWW=		https://www.chromium.org/Home
 
@@ -16,7 +17,7 @@ RUN_DEPENDS=	linux-rl9-wget>0:ftp/linux-rl9-wget \
 USES=		cpe desktop-file-utils gnome linux:rl9 shared-mime-info shebangfix
 USE_LINUX=	alsalib alsa-plugins-oss alsa-plugins-pulseaudio at-spi2-atk \
 		ca-certificates cairo cups-libs curl dbuslibs dri expat \
-		ffmpeg-libs gnupg gstreamer1-libav gtk3 libxkbcommon libunistring \
+		ffmpeg-libs gnupg gstreamer1-libav gtk3 libxkbcommon \
 		nspr nss p11-kit pango sqlite3 wget xorglibs
 ONLY_FOR_ARCHS=	amd64
 
@@ -32,7 +33,7 @@ SRC_SUFX?=		.src${EXTRACT_SUFX}
 
 REINPLACE_ARGS=	-i ""
 
-CHROME_VER?=	131.0.6778.139
+CHROME_VER?=	133.0.6943.126
 CHROME_BUILD?=	1
 
 DATADIR=	${PREFIX}/share/${PORTNAME}

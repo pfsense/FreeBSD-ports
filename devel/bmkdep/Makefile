@@ -3,11 +3,14 @@ PORTVERSION=	20140112
 PORTREVISION=	1
 CATEGORIES=	devel
 
-MAINTAINER=	trociny@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Construct Makefile dependency list
 WWW=		https://netbsd.org
 
 LICENSE=	BSD2CLAUSE
+
+DEPRECATED=	Outdated and redundant
+EXPIRATION_DATE=2025-06-30
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	trociny

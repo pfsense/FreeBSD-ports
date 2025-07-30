@@ -1,5 +1,5 @@
 PORTNAME=	libtickit
-PORTVERSION=	0.4.4
+PORTVERSION=	0.4.5
 CATEGORIES=	devel
 MASTER_SITES=	https://launchpad.net/libtickit/trunk/v${PORTVERSION:R}/+download/
 
@@ -17,7 +17,6 @@ LIB_DEPENDS=	libtermkey.so:devel/libtermkey \
 
 USES=		compiler:c11 gmake libtool:build ncurses pathfix pkgconfig
 
-MAKE_ARGS=	MANDIR=${PREFIX}/share/man
 PATHFIX_MAKEFILEIN=	Makefile
 USE_LDCONFIG=	yes
 

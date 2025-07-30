@@ -1,7 +1,7 @@
 PORTNAME=	mmcv
 #DISTVERSIONPREFIX=	v
 DISTVERSION=	2.2.0
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	misc # machine-learning
 MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -29,6 +29,6 @@ USES=		compiler:c++17-lang localbase python
 USE_PYTHON=	distutils cython autoplist # pytest: many test dependencies are missing
 
 post-install:
-	@${STRIP_CMD} ${STAGEDIR}${PYTHON_SITELIBDIR}/mmcv/_ext${PYTHON_EXT_SUFFIX}.so
+	@${STRIP_CMD} ${STAGEDIR}${PYTHON_SITELIBDIR}/mmcv/_ext${PYTHON_TAG}.so
 
 .include <bsd.port.mk>

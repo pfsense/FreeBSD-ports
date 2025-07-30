@@ -1,6 +1,7 @@
 PORTNAME=	mongodb
 DISTVERSIONPREFIX=	r
-DISTVERSION=	5.0.30
+DISTVERSION=	5.0.31
+PORTREVISION=	1
 CATEGORIES=	databases net
 PKGNAMESUFFIX=	${DISTVERSION:R:S/.//}
 
@@ -15,7 +16,7 @@ LICENSE_FILE_SSPLv1=	${WRKSRC}/LICENSE-Community.txt
 LICENSE_PERMS_SSPLv1=	dist-mirror dist-sell pkg-mirror pkg-sell auto-accept
 
 DEPRECATED=	EOL from October 2024, see https://www.mongodb.com/legal/support-policy/lifecycles, please use databases/mongodb60
-EXPIRATION_DATE=	2025-04-30
+EXPIRATION_DATE=	2025-07-30
 ONLY_FOR_ARCHS=	aarch64 amd64 powerpc64le
 ONLY_FOR_ARCHS_REASON=	only ported to amd64, aarch64, and powerpc64le on FreeBSD; upstream supports arm64, ppc64le, s390x, and x86-64
 
@@ -31,7 +32,7 @@ LIB_DEPENDS=	libcurl.so:ftp/curl \
 		libyaml-cpp.so:devel/yaml-cpp \
 		libzstd.so:archivers/zstd
 
-USES=		compiler:c++17-lang cpe python:build scons shebangfix
+USES=		compiler:c++17-lang cpe llvm:max=18,build python:build scons shebangfix
 USE_RC_SUBR=	mongod
 
 USE_GITHUB=	yes
@@ -67,7 +68,8 @@ MAKE_ARGS=	--cxx-std=17 \
 		MONGO_VERSION=${DISTVERSION} \
 		VERBOSE=on
 
-CFLAGS+=	-DBOOST_NO_CXX98_FUNCTION_BASE
+CFLAGS+=	-DBOOST_NO_CXX98_FUNCTION_BASE \
+		-Wno-deprecated-builtins
 
 CONFLICTS_INSTALL=	mongodb[0-9][0-9] # etc/mongodb.conf.sample
 
@@ -88,12 +90,6 @@ SASL_MAKE_ARGS=		--use-sasl-client
 
 SSL_USES=	ssl
 SSL_MAKE_ARGS=	--ssl
-
-.include <bsd.port.options.mk>
-
-.if ${OPSYS} == FreeBSD && (${OSREL:R} >= 15 && ${OSVERSION} >= 1500026)
-USES+=		llvm:max=18,build
-.endif
 
 .include <bsd.port.pre.mk>
 

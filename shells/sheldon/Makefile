@@ -1,6 +1,5 @@
 PORTNAME=	sheldon
-DISTVERSION=	0.8.0
-PORTREVISION=	3
+DISTVERSION=	0.8.4
 CATEGORIES=	shells
 
 MAINTAINER=	tagattie@FreeBSD.org
@@ -19,6 +18,8 @@ USES=		cargo localbase:ldflags ssl
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	rossmacarthur
+
+CARGO_ENV=	OPENSSL_NO_VENDOR=1
 
 PLIST_FILES=	bin/${PORTNAME} \
 		etc/bash_completion.d/${PORTNAME} \

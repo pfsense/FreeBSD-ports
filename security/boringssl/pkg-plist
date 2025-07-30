@@ -20,6 +20,7 @@ include/openssl/cast.h
 include/openssl/chacha.h
 include/openssl/cipher.h
 include/openssl/cmac.h
+include/openssl/cms.h
 include/openssl/conf.h
 include/openssl/cpu.h
 include/openssl/crypto.h
@@ -65,6 +66,7 @@ include/openssl/pkcs12.h
 include/openssl/pkcs7.h
 include/openssl/pkcs8.h
 include/openssl/pki/certificate.h
+include/openssl/pki/ocsp.h
 include/openssl/pki/signature_verify_cache.h
 include/openssl/pki/verify.h
 include/openssl/pki/verify_error.h
@@ -95,6 +97,7 @@ include/openssl/x509.h
 include/openssl/x509_vfy.h
 include/openssl/x509v3.h
 include/openssl/x509v3_errors.h
+include/openssl/xwing.h
 lib/cmake/OpenSSL/OpenSSLConfig.cmake
 lib/cmake/OpenSSL/OpenSSLTargets-%%CMAKE_BUILD_TYPE%%.cmake
 lib/cmake/OpenSSL/OpenSSLTargets.cmake

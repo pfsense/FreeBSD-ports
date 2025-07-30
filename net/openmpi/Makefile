@@ -1,7 +1,7 @@
 PORTNAME=	openmpi
-DISTVERSION=	5.0.6
+DISTVERSION=	5.0.8
 CATEGORIES=	net parallel
-MASTER_SITES=	https://download.open-mpi.org/release/open-mpi/v${PORTVERSION:R}/
+MASTER_SITES=	https://download.open-mpi.org/release/open-mpi/v${DISTVERSION:R}/
 
 MAINTAINER=	laurent.chardon@gmail.com
 COMMENT=	High Performance Message Passing Library
@@ -29,17 +29,19 @@ MPIBASE?=	mpi
 MPIDIR?=	${MPIBASE}/${PKGBASE}
 
 GNU_CONFIGURE=	yes
-GNU_CONFIGURE_PREFIX=	${PREFIX}/${MPIDIR}
 GNU_CONFIGURE_MANPREFIX=${PREFIX}/${MPIDIR}/share
+GNU_CONFIGURE_PREFIX=	${PREFIX}/${MPIDIR}
 CONFIGURE_ARGS+=	--program-prefix= \
 			--with-hwloc=external \
 			--without-ofi \
 			--enable-mpi-fortran=usempif08 \
 			--with-libevent=external \
+			--with-pmix=internal \
 			--enable-mca-no-build=verbs,btl_openib,oob_ud \
 			--with-wrapper-ldflags=-Wl,-rpath=-Wl,-rpath=${LOCALBASE}/lib/gcc${_GCC_VER}
 TEST_TARGET=		check
 CFLAGS+=		${CFLAGS_F2018}
+PIE_UNSAFE=		yes
 CONFLICTS_INSTALL=	openmpi4-4*
 
 DOCSDIR=	${PREFIX}/${MPIDIR}/share/doc
@@ -47,8 +49,6 @@ MANDIRS=	${PREFIX}/${MPIDIR}/share/man
 BINARY_ALIAS=	python3=${PYTHON_CMD}
 PLIST_SUB+=	MPIDIR=${MPIDIR}
 PORTDOCS=	*
-
-PIE_UNSAFE=	yes
 
 OPTIONS_DEFINE=			AVX DEBUG DOCS IPV6 ROMIO SLURM
 OPTIONS_DEFAULT=		ROMIO
@@ -86,8 +86,12 @@ SLURM_CONFIGURE_WITH=	slurm
 
 .include <bsd.port.pre.mk>
 
-.if ${FORTRAN_DEFAULT} == gfortran && ${GCC_DEFAULT} >= 10
+.if ${FORTRAN_DEFAULT} == gfortran
 FCFLAGS+=	-fallow-argument-mismatch
+# gfortran doesn't find libgfortran.spec on riscv64
+.if ${ARCH} == "riscv64"
+FCFLAGS+=	-B${LOCALBASE}/lib/gcc${GCC_DEFAULT}
+.endif
 .endif
 
 # Both clang and gcc support half precision on these platforms
@@ -96,6 +100,12 @@ FCFLAGS+=	-fallow-argument-mismatch
 PLIST_SUB+=	SHORTFLOAT=""
 .else
 PLIST_SUB+=	SHORTFLOAT="@comment "
+.endif
+
+# clang does not support 16 byte atomic operations without -mcx16 on amd64
+# See https://github.com/open-mpi/ompi/issues/13134
+.if ${ARCH} == amd64 && ${COMPILER_TYPE} == clang
+CFLAGS+=	-mcx16
 .endif
 
 LIBDIR2FIX=	oshmem/tools/wrappers opal/tools/wrappers \

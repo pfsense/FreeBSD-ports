@@ -1,7 +1,7 @@
 PORTNAME=	parthenon
 DISTVERSIONPREFIX=	v
 DISTVERSION=	24.08
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	science
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -10,6 +10,9 @@ WWW=		https://parthenon-hpc-lab.github.io/parthenon/develop/index.html
 
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE
+
+BROKEN_armv7=	compilation fails, see https://github.com/parthenon-hpc-lab/parthenon/issues/1226
+BROKEN_i386=	compilation fails, see https://github.com/parthenon-hpc-lab/parthenon/issues/1226
 
 RUN_DEPENDS=	bash:shells/bash
 LIB_DEPENDS=	libkokkoscore.so:devel/kokkos

@@ -1,5 +1,5 @@
 PORTNAME=	libdatadog
-PORTVERSION=	12.0.0
+PORTVERSION=	16.0.3
 DISTVERSIONPREFIX=	v
 PORTREVISION=	3
 CATEGORIES=	devel
@@ -11,17 +11,23 @@ WWW=		https://github.com/DataDog/libdatadog
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
+BROKEN_i386=	error: could not compile `datadog-sidecar` (lib) due to 2 previous errors
+
+BUILD_DEPENDS=	bindgen:devel/rust-bindgen-cli \
+		protoc:devel/protobuf
+
 USES=		cargo llvm
 
 CARGO_FEATURES=	cbindgen,crashtracker-ffi,cbindgen,datadog-profiling-ffi/ddtelemetry-ffi
 MAKE_ENV=	LIBCLANG_PATH=${LLVM_PREFIX}/lib
 
+NATIVE_STATIC_LIBS=	-lpthread -lrt -lexecinfo -lutil -lc -lm
+
 USE_GITHUB=	yes
 GH_ACCOUNT=	DataDog
 
-NATIVE_STATIC_LIBS=	-lpthread -lrt -lexecinfo -lutil -lc -lm
-
 post-patch:
+	@${REINPLACE_CMD} -e 's|%%LOCALBASE%%|${LOCALBASE}|' ${WRKSRC}/library-config/src/lib.rs
 .for file in datadog_profiling datadog_profiling-static datadog_profiling_with_rpath
 	@${SED} -e 's|@Datadog_VERSION@|${PORTVERSION}|; s|@Datadog_LIBRARIES@|${NATIVE_STATIC_LIBS}|' ${WRKSRC}/profiling-ffi/${file}.pc.in > ${WRKSRC}/${file}.pc
 .endfor
@@ -29,7 +35,7 @@ post-patch:
 	@${SED} -e 's|@Datadog_LIBRARIES@|${NATIVE_STATIC_LIBS}|' ${WRKSRC}/cmake/${file}.cmake.in > ${WRKSRC}/${file}.cmake
 .endfor
 # Fix sys-info-0.9.1 on 32-bit architectures, see also https://github.com/FillZpp/sys-info-rs/issues/80
-	@${SED} -i '' -e '/get_cpu/ s|unsigned long|uint64_t|; /get_proc_total/ s|unsigned long|uint64_t|' ${WRKSRC}/cargo-crates/sys-info-0.9.1/c/*.[ch]
+	@${REINPLACE_CMD} -e '/get_cpu/ s|unsigned long|uint64_t|; /get_proc_total/ s|unsigned long|uint64_t|' ${WRKSRC}/cargo-crates/sys-info-0.9.1/c/*.[ch]
 
 post-build:
 	@${CARGO_TARGET_DIR}/release/dedup_headers \

@@ -1,7 +1,9 @@
 PORTNAME=	labplot
-DISTVERSION=	2.11.1
+DISTVERSION=	2.11.80
+PORTREVISION=	2
 CATEGORIES=	math kde
 MASTER_SITES=	KDE/stable/${PORTNAME}/
+DIST_SUBDIR=	KDE/invent.kde.org
 
 MAINTAINER=	kde@FreeBSD.org
 COMMENT=	Data plotting and function analysis tool by KDE
@@ -10,38 +12,31 @@ WWW=		https://labplot.kde.org/
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/LICENSES/GPL-2.0-or-later.txt
 
-LIB_DEPENDS=	libKUserFeedbackCore.so:deskutils/kuserfeedback \
-		libQXlsxQt5.so:devel/qxlsx@qt5 \
+LIB_DEPENDS=	libQXlsxQt6.so:devel/qxlsx@qt6 \
 		libgsl.so:math/gsl \
 		liblz4.so:archivers/liblz4 \
 		libmarkdown.so:textproc/discount \
 		libpoppler.so:graphics/poppler \
-		libpoppler-qt5.so:graphics/poppler-qt5
+		libpoppler-qt6.so:graphics/poppler-qt6 \
+		libzstd.so:archivers/zstd
 
 USES=		bison cmake compiler:c++17-lang desktop-file-utils eigen:3 \
-		kde:5 pkgconfig qt:5 shared-mime-info tar:xz xorg
-USE_KDE=	archive attica auth bookmarks codecs completion config \
-		configwidgets coreaddons crash i18n iconthemes itemviews \
-		jobwidgets kio newstuff parts purpose service solid \
-		sonnet syntaxhighlighting textwidgets widgetsaddons \
-		windowsystem xmlgui \
+		kde:6 pkgconfig qt:6 shared-mime-info xorg gettext
+USE_KDE=	archive completion config configwidgets coreaddons crash \
+		i18n iconthemes kio newstuff parts purpose service \
+		syntaxhighlighting textwidgets userfeedback widgetsaddons \
+		xmlgui \
 		doctools:build ecm:build
-USE_QT=		concurrent core dbus gui network printsupport serialport \
-		sql svg widgets xml \
-		buildtools:build qmake:build testlib:build
+USE_QT=		base mqtt serialport svg
 USE_XORG=	x11 xcb
 
-# Dark magic to make CMake oblivious to the presence of Qt6 components, which
-# will exist even when building in a clean environment due to the dependency
-# chain. Labplot 2.11+ is now Qt6/KF6-ready and eagerly wants to use them by
-# default, but we're not quite there yet.
-CMAKE_ARGS=	-DCMAKE_IGNORE_PATH:PATH="${LOCALBASE}/lib/cmake/Qt6"
+KDE_INVENT=	110f258e44a45354c5219e497409a22185fa2933 education labplot
 
-DATADIR=	${PREFIX}/share/labplot2
+PLIST_SUB=	SHLIB_VER=${PORTVERSION}
 
 OPTIONS_DEFINE=		CANTOR FITS FFTW3 HDF5 LIBCERF MATLAB NETCDF ORCUS \
 			ORIGINLAB READSTAT
-OPTIONS_DEFAULT=	${OPTIONS_DEFINE}
+OPTIONS_DEFAULT:=	${OPTIONS_DEFINE}
 
 CANTOR_DESC=		KDE Cantor support
 CANTOR_LIB_DEPENDS=	libcantorlibs.so:math/cantor \
@@ -85,5 +80,10 @@ READSTAT_DESC=		SAS, SPSS, Stata data support
 READSTAT_LIB_DEPENDS=	libreadstat.so:math/readstat
 READSTAT_USES=		iconv
 READSTAT_CMAKE_BOOL=	ENABLE_READSTAT
+
+post-patch:
+# workaround for undefined version, to be fixed upstream
+	${REINPLACE_CMD} 's,QXLSX_VERSION_STRING,"1.5.0",' \
+		${WRKSRC}/src/frontend/AboutDialog.cpp
 
 .include <bsd.port.mk>

@@ -16,7 +16,6 @@ BUILD_DEPENDS=	cppo:devel/ocaml-cppo
 USES=		ocaml:dune
 USE_GITHUB=	yes
 GH_ACCOUNT=	ocaml-community
-USE_OCAML=	yes
 
 DOCSDIR=	${OCAML_DOCSDIR}/${PORTNAME}
 
@@ -25,6 +24,12 @@ PORTDOCS=	CHANGES.md LICENSE.md README.md odoc-pages/index.mld
 OPTIONS_DEFINE=	DOCS
 
 DUNE_INSTALL_TARGETS=	${OCAML_PACKAGES}
+
+.include <bsd.port.options.mk>
+
+.if ${ARCH} == powerpc
+USE_BINUTILS=	yes
+.endif
 
 post-install:
 	@${STRIP_CMD} \

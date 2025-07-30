@@ -1,6 +1,6 @@
---- printing/printing_features.cc.orig	2024-08-01 05:47:53 UTC
+--- printing/printing_features.cc.orig	2025-05-07 06:48:23 UTC
 +++ printing/printing_features.cc
-@@ -21,12 +21,12 @@ BASE_FEATURE(kAddPrinterViaPrintscanmgr,
+@@ -26,12 +26,12 @@ BASE_FEATURE(kApiPrintingMarginsAndScale,
               base::FEATURE_DISABLED_BY_DEFAULT);
  #endif  // BUILDFLAG(IS_CHROMEOS)
  
@@ -15,3 +15,12 @@
               base::FEATURE_DISABLED_BY_DEFAULT
  #else
               base::FEATURE_ENABLED_BY_DEFAULT
+@@ -81,7 +81,7 @@ BASE_FEATURE(kUseXpsForPrintingFromPdf,
+ // out-of-process.
+ BASE_FEATURE(kEnableOopPrintDrivers,
+              "EnableOopPrintDrivers",
+-#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_MAC)
++#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_BSD)
+              base::FEATURE_ENABLED_BY_DEFAULT
+ #else
+              base::FEATURE_DISABLED_BY_DEFAULT

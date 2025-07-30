@@ -1,20 +1,22 @@
 PORTNAME=	czkawka
-DISTVERSION=	8.0.0
-PORTREVISION=	2
+DISTVERSION=	9.0.0
+PORTREVISION=	3
 CATEGORIES=	sysutils
 
 MAINTAINER=	uzsolt@FreeBSD.org
-COMMENT=	Smple app to remove unnecessary files from your computer
+COMMENT=	Simple app to remove unnecessary files from your computer
 WWW=		https://github.com/qarmin/czkawka
 
 LICENSE=	CC-BY-4.0 MIT
 LICENSE_COMB=	multi
 LICENSE_FILE_MIT=	${WRKSRC}/${PORTNAME}_core/LICENSE
 
+BROKEN_i386=	the trait bound [u64; 4]: BitViewSized is not satisfied
+
 USES=		cargo gnome
 USE_GITHUB=	yes
 GH_ACCOUNT=	qarmin
-USE_GNOME=	gdkpixbuf2 gtk40
+USE_GNOME=	gdkpixbuf gtk40
 
 # XXX https://github.com/rust-lang/cargo/issues/4101
 CARGO_INSTALL_PATH=	${PLIST_FILES:Mbin/*:T}

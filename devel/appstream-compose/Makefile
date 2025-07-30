@@ -1,4 +1,4 @@
-PORTREVISION=	1
+PORTREVISION=	0
 PKGNAMESUFFIX=	Compose
 
 COMMENT?=	AppStream Compose application and library
@@ -10,7 +10,7 @@ LIB_DEPENDS=	libappstream.so:devel/appstream \
 RUN_DEPENDS=	optipng:graphics/optipng \
 		ffprobe:multimedia/ffmpeg
 
-USE_GNOME=	cairo gdkpixbuf2 librsvg2 pango
+USE_GNOME=	cairo gdkpixbuf librsvg2 pango
 
 MESON_ARGS=	-Dcompose=true
 

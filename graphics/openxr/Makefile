@@ -1,6 +1,7 @@
 PORTNAME=	openxr
 DISTVERSIONPREFIX=	release-
-DISTVERSION=	1.1.43
+DISTVERSION=	1.1.49
+PORTREVISION=	1
 CATEGORIES=	graphics
 
 MAINTAINER=	vvd@FreeBSD.org
@@ -16,11 +17,12 @@ BUILD_DEPENDS=	glslangValidator:graphics/glslang \
 		${LOCALBASE}/lib/libjsoncpp.a:devel/jsoncpp
 RUN_DEPENDS=	vulkan-loader>0:graphics/vulkan-loader
 
-USES=		cmake compiler:c++14-lang gl python:build
+USES=		cmake compiler:c++14-lang gl pathfix python:build
 USE_GITHUB=	yes
 GH_ACCOUNT=	KhronosGroup
 GH_PROJECT=	OpenXR-SDK
 USE_GL=		opengl
+USE_LDCONFIG=	yes
 
 CMAKE_ON=	BUILD_ALL_EXTENSIONS BUILD_WITH_SYSTEM_JSONCPP
 

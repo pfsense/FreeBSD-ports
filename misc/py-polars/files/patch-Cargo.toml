@@ -1,34 +1,15 @@
---- Cargo.toml.orig	2024-10-01 17:57:04 UTC
+--- Cargo.toml.orig	2025-07-21 02:27:07 UTC
 +++ Cargo.toml
-@@ -8,22 +8,13 @@ crate-type = ["cdylib"]
- crate-type = ["cdylib"]
+@@ -17,12 +17,7 @@ mimalloc = { version = "0.1", default-features = false
+ [target.'cfg(all(any(not(target_family = "unix"), target_os = "emscripten", allocator = "mimalloc"), not(allocator = "default")))'.dependencies]
+ mimalloc = { version = "0.1", default-features = false }
  
- [dependencies]
-+mimalloc = { version = "0.1", default-features = false }
- libc = { workspace = true }
- # Explicit dependency is needed to add bigidx in CI during release
- polars = { workspace = true }
- polars-python = { workspace = true, features = ["pymethods", "iejoin"] }
- pyo3 = { workspace = true, features = ["abi3-py39", "chrono", "extension-module", "multiple-pymethods"] }
- 
--[target.'cfg(all(any(not(target_family = "unix"), allocator = "mimalloc"), not(allocator = "default")))'.dependencies]
--mimalloc = { version = "0.1", default-features = false }
--
 -# Feature background_threads is unsupported on MacOS (https://github.com/jemalloc/jemalloc/issues/843).
--[target.'cfg(all(target_family = "unix", not(target_os = "macos"), not(allocator = "mimalloc"), not(allocator = "default")))'.dependencies]
--jemallocator = { version = "0.5", features = ["disable_initial_exec_tls", "background_threads"] }
+-[target.'cfg(all(target_family = "unix", not(target_os = "macos"), not(target_os = "emscripten"), not(allocator = "mimalloc"), not(allocator = "default")))'.dependencies]
+-tikv-jemallocator = { version = "0.6.0", features = ["disable_initial_exec_tls", "background_threads"] }
 -
--[target.'cfg(all(target_family = "unix", target_os = "macos", not(allocator = "mimalloc"), not(allocator = "default")))'.dependencies]
--jemallocator = { version = "0.5", features = ["disable_initial_exec_tls"] }
--
- [features]
- # Features used in this crate
- ffi_plugin = ["polars-python/ffi_plugin"]
-@@ -107,3 +98,7 @@ default = ["all", "nightly"]
- ]
+ [target.'cfg(all(target_family = "unix", target_os = "macos", not(allocator = "mimalloc"), not(allocator = "default")))'.dependencies]
+-tikv-jemallocator = { version = "0.6.0", features = ["disable_initial_exec_tls"] }
+ either = { workspace = true }
  
- default = ["all", "nightly"]
-+
-+[profile.release]
-+opt-level = 2
-+debug = false
+ [features]

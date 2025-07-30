@@ -1,13 +1,13 @@
---- chrome/browser/extensions/BUILD.gn.orig	2024-11-14 07:57:23 UTC
+--- chrome/browser/extensions/BUILD.gn.orig	2025-07-02 06:08:04 UTC
 +++ chrome/browser/extensions/BUILD.gn
-@@ -1439,6 +1439,10 @@ source_set("extensions") {
-     deps += [ "//chrome/services/printing/public/mojom" ]
-   }
+@@ -1479,6 +1479,10 @@ source_set("extensions") {
+       deps += [ "//chrome/services/printing/public/mojom" ]
+     }
  
-+  if (is_bsd) {
-+    sources -= [ "api/image_writer_private/removable_storage_provider_linux.cc" ]
-+  }
++    if (is_bsd) {
++      sources -= [ "api/image_writer_private/removable_storage_provider_linux.cc" ]
++    }
 +
-   if (enable_pdf) {
-     deps += [
-       "//chrome/browser/pdf",
+     if (enable_pdf) {
+       deps += [
+         "//chrome/browser/pdf",

@@ -1,6 +1,6 @@
 PORTNAME=	dkimpy-milter
 PORTVERSION=	1.2.3
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	mail python
 MASTER_SITES=	PYPI
 PKGNAMEPREFIX=  ${PYTHON_PKGNAMEPREFIX}
@@ -15,12 +15,12 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 BUILD_DEPENDS=	${PY_SETUPTOOLS}
 
 RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}dkimpy>=1.1.0:mail/py-dkimpy@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}milter>=1.0.5:mail/py-milter@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}pymilter>=1.0.5:mail/py-pymilter@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}authres>=1.1.0:mail/py-authres@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}pynacl>=0:security/py-pynacl@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}dnspython>=1.16.0:dns/py-dnspython@${PY_FLAVOR}
 
-USES=		python:3.9+	# Some dependencies don't support 3.8
+USES=		python
 USE_PYTHON=	autoplist concurrent distutils
 USE_RC_SUBR=	dkimpy-milter
 SUB_LIST+=	PYTHON_CMD=${PYTHON_CMD}

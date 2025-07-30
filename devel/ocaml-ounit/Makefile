@@ -12,7 +12,6 @@ LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE.txt
 
 USES=		ocaml:dune tar:tbz
-USE_OCAML=	yes
 OCAML_PACKAGES=	ounit2
 DUNE_INSTALL_TARGETS=	${OCAML_PACKAGES}
 
@@ -21,6 +20,12 @@ PORTDOCS=	${OCAML_PACKAGES:@p@\
 		$p/CHANGES.md $p/LICENSE.txt $p/README.md $p/odoc-pages/index.mld@}
 
 OPTIONS_DEFINE=	DOCS
+
+.include <bsd.port.options.mk>
+
+.if ${ARCH} == powerpc
+USE_BINUTILS=	yes
+.endif
 
 post-patch:
 	@${REINPLACE_CMD} \

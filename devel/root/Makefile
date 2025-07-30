@@ -1,5 +1,6 @@
 PORTNAME=	root
-DISTVERSION=	6.32.08
+DISTVERSION=	6.36.00
+PORTREVISION=	1
 CATEGORIES=	devel science math parallel python
 MASTER_SITES=	https://root.cern/download/
 DISTFILES=	${PORTNAME}_v${DISTVERSION}.source${EXTRACT_SUFX}
@@ -10,6 +11,8 @@ WWW=		https://root.cern/
 
 LICENSE=	LGPL21
 LICENSE_FILE=	${WRKSRC}/LGPL2_1.txt
+
+BROKEN_i386=	std::uint64_t to std::size_t narrowing conversion issue introduced in version 6.34.02
 
 BUILD_AND_RUN_DEPENDS=	bash:shells/bash \
 		nlohmann-json>=3:devel/nlohmann-json
@@ -40,48 +43,48 @@ SHEBANG_FILES=	main/python/rootbrowse.py \
 		etc/proof/utils/pps \
 		etc/proof/utils/proofctl.sh \
 		etc/proof/utils/proofinstall.sh \
-		etc/pdg_table_update.py
+		etc/pdg_table_update.py \
+		etc/runfirefox.sh
 # add a port-specific shebang to be replaced
 python_OLD_CMD+=	"/usr/bin/env @python@"
 
 # Flags and environment variables for building
-CMAKE_ON=	builtin_clang builtin_cling builtin_llvm builtin_openui5 gnuinstall \
-		rpath shared soversion
-CMAKE_OFF=	arrow builtin_afterimage builtin_cfitsio builtin_cppzmq builtin_davix \
-		builtin_fftw3 builtin_freetype builtin_ftgl builtin_gl2ps builtin_glew \
-		builtin_gsl builtin_gtest builtin_lz4 builtin_lzma builtin_nlohmannjson \
-		builtin_openssl builtin_pcre builtin_tbb builtin_unuran builtin_vc builtin_vdt \
-		builtin_veccore builtin_xrootd builtin_xxhash builtin_zeromq builtin_zlib \
-		builtin_zstd cefweb clad cocoa cuda cudnn daos dcache fcgi fftw3 gviz libcxx \
-		llvm13_broken_tests macos_native memory_termination minuit2_mpi minuit2_omp \
-		mpi odbc proof pythia8 qt5web qt6web r roofit_multiprocess runtime_cxxmodules \
-		shadowpw test_distrdf_dask test_distrdf_pyspark tmva-gpu tmva-rmva tmva-sofie \
-		unfold unuran uring vc veccore vecgeom win_broken_tests winrtdebug
+CMAKE_ON=	builtin_clang builtin_cling builtin_llvm builtin_openui5 \
+		fail-on-missing geom gnuinstall rpath shared soversion
+CMAKE_OFF=	arrow builtin_cfitsio builtin_cppzmq builtin_davix builtin_fftw3 \
+		builtin_freetype builtin_ftgl builtin_gif builtin_gl2ps builtin_glew \
+		builtin_gsl builtin_jpeg builtin_lz4 builtin_lzma builtin_nlohmannjson \
+		builtin_openssl builtin_pcre builtin_png builtin_tbb builtin_unuran \
+		builtin_vc builtin_vdt builtin_veccore builtin_xrootd builtin_xxhash \
+		builtin_zeromq builtin_zlib builtin_zstd cefweb clad cocoa cuda cudnn daos \
+		dcache fcgi fftw3 geombuilder gviz html libcxx llvm13_broken_tests macos_native \
+		memory_termination minuit2_mpi minuit2_omp mpi odbc proof pythia8 r \
+		roofit_multiprocess runtime_cxxmodules shadowpw test_distrdf_pyspark \
+		tmva-gpu tmva-rmva tmva-sofie unfold unuran uring use_gsl_cblas vc vecgeom \
+		win_broken_tests winrtdebug
 
-# Port build options; DOCS also on by default
 # See https://root.cern/install/build_from_source/#all-build-options
 OPTIONS_DEFINE=	DOCS ASIMAGE DATAFRAME DAVIX FITS FORTRAN GDML HTTP IMT MATHMORE \
-		MYSQL OPENGL PGSQL PYROOT ROOFIT ROOT7 SPECTRUM SQLITE SSL TMLP TMVAML VDT \
-		WEBGUI X11 XML XROOTD
-OPTIONS_DEFAULT=	ASIMAGE DATAFRAME DAVIX FITS GDML HTTP IMT MATHMORE OPENGL \
+		MYSQL OPENGL PGSQL PYROOT QT6WEB ROOFIT ROOT7 SPECTRUM SQLITE SSL TMLP TMVAML \
+		VDT WEBGUI X11 XML XROOTD
+OPTIONS_DEFAULT=	ASIMAGE CLAD DATAFRAME DAVIX FITS GDML HTTP IMT MATHMORE OPENGL \
 		PYROOT ROOFIT ROOT7 SPECTRUM SSL TMLP TMVAML VDT WEBGUI X11 XML XROOTD
 OPTIONS_SUB=	yes
 
-ASIMAGE_CMAKE_BOOL=	asimage
+ASIMAGE_CMAKE_BOOL=	asimage asimage_tiff
 ASIMAGE_DESC=		Enable support for image processing via libAfterImage
 ASIMAGE_IMPLIES=	X11
-ASIMAGE_LIB_DEPENDS=	libAfterImage.so:graphics/libafterimage \
-		libgif.so:graphics/giflib \
+ASIMAGE_LIB_DEPENDS=	libgif.so:graphics/giflib \
 		libpng16.so:graphics/png \
 		libtiff.so:graphics/tiff
-ASIMAGE_USES=	gettext-runtime gnome jpeg
-ASIMAGE_USE=	gnome=cairo,gdkpixbuf2,glib20,librsvg2
+ASIMAGE_USES=	jpeg
 
 # TODO: clad can only be included in ROOT's configure stage
 # with network access, however, a port of clad is available -- patch
 #CLAD_CMAKE_BOOL=	clad
-#CLAD_DESC=		Build clad, the cling automatic differentiation plugin (requires network)
+#CLAD_DESC=		Build clad, the cling automatic differentiation plugin
 #CLAD_LIB_DEPENDS=	libclad.so:math/clad
+#CLAD_CMAKE_ON=	-DCLAD_SOURCE_DIR=
 
 DATAFRAME_CMAKE_BOOL=	dataframe
 DATAFRAME_DESC=			Enable ROOT RDataFrame
@@ -122,7 +125,7 @@ MYSQL_USES=		mysql ssl
 
 OPENGL_CMAKE_BOOL=	opengl
 OPENGL_DESC=		Enable support for OpenGL
-OPENGL_IMPLIES=	X11
+OPENGL_IMPLIES=	X11 ASIMAGE
 OPENGL_LIB_DEPENDS=	libftgl.so:graphics/ftgl \
 		libgl2ps.so:print/gl2ps
 OPENGL_USES=	gl
@@ -132,11 +135,18 @@ PGSQL_CMAKE_BOOL=	pgsql
 PGSQL_DESC=		Enable support for PostgreSQL
 PGSQL_USES=		pgsql:13+
 
-PYROOT_CMAKE_BOOL=	pyroot tmva-pymva
+# TODO: 'tpython' is new since 6.34; look into its implications
+PYROOT_CMAKE_BOOL=	pyroot tpython tmva-pymva
 PYROOT_DESC=		Enable bindings between Python and C++ with PyROOT
 PYROOT_BUILD_DEPENDS=	${PYNUMPY}
 PYROOT_USES=		python:3.9+,build,run
 PYROOT_USES_OFF=	python:3.9+,build
+
+QT6WEB_CMAKE_BOOL=	qt6web
+QT6WEB_DESC=		Enable support for Qt6 web-based display
+QT6WEB_IMPLIES=	WEBGUI OPENGL
+QT6WEB_USES=	qt:6
+QT6WEB_USE=	qt=base,declarative,positioning,webchannel,webengine
 
 ROOFIT_CMAKE_BOOL=	roofit
 ROOFIT_DESC=		Build the advanced fitting package RooFit, and RooStats for statistical tests
@@ -157,11 +167,11 @@ SSL_USES=		ssl
 
 TMLP_CMAKE_BOOL=	mlp
 TMLP_DESC=		Enable support for TMultilayerPerceptron classes' federation
-TMLP_IMPLIES=	TMVAML
+TMLP_IMPLIES=	TMVAML MATHMORE
 
 TMVAML_CMAKE_BOOL=	tmva tmva-cpu
 TMVAML_DESC=		Build TMVA multi variate analysis library, including TMVA with CPU support for deep learning
-TMVAML_IMPLIES=	IMT
+TMVAML_IMPLIES=	IMT MATHMORE
 TMVAML_LIB_DEPENDS=	libopenblas.so:math/openblas
 
 VDT_CMAKE_BOOL=	vdt
@@ -190,7 +200,7 @@ XROOTD_LIB_DEPENDS=	libXrdCl.so:databases/xrootd
 
 .include <bsd.port.options.mk>
 
-ROOT_CLANG_VER=	16
+ROOT_CLANG_VER=	18
 
 PLIST_SUB+=	PYVER="${PYTHON_VER:S/./_/}" \
 		ROOT_CLANG_VER="${ROOT_CLANG_VER}" \
@@ -204,8 +214,10 @@ PLIST_SUB+=	ONLY_INSTALLED_ON_AARCH64=""
 PLIST_SUB+=	ONLY_INSTALLED_ON_AARCH64="@comment "
 .endif
 
-# Files in lib/root/__pycache__ have links into WRKDIR and should not be staged
+# Files in ${PREFIX}lib/root/__pycache__ have links into WRKDIR and should not be staged
+# Files in wrkdirs are generated during build of libAfterImage and should not be staged
 post-install:
 	${RM} -r ${STAGEDIR}${PREFIX}/lib/root/__pycache__
+	${RM} -r ${STAGEDIR}/wrkdirs
 
 .include <bsd.port.mk>

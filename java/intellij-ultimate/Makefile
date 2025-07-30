@@ -1,5 +1,5 @@
 PORTNAME=	intellij-ultimate
-DISTVERSION=	2024.2.4
+DISTVERSION=	2025.1.2
 CATEGORIES=	java devel
 MASTER_SITES=	https://download-cdn.jetbrains.com/idea/
 DISTNAME=	ideaIU-${DISTVERSION}
@@ -20,7 +20,7 @@ RUN_DEPENDS=	intellij-fsnotifier>0:java/intellij-fsnotifier \
 		jetbrains-sqlite>=241.15989.150:devel/jetbrains-sqlite \
 		lsof:sysutils/lsof
 
-USE_JAVA=	yes
+USES=		java
 JAVA_VERSION=	17+
 
 CONFLICTS=	idea intellij
@@ -29,7 +29,7 @@ NO_BUILD=	yes
 SUB_FILES=	idea idea.desktop pkg-message
 
 BUILD_TYPE=	IU
-BUILD_VERSION=	242.23726.103
+BUILD_VERSION=	251.26094.121
 BUILD_MARKER=	${BUILD_TYPE}-${BUILD_VERSION}
 PLIST_SUB=	BUILD_MARKER=${BUILD_MARKER}
 WRKSRC=		${WRKDIR}/idea-${BUILD_MARKER}
@@ -39,10 +39,8 @@ post-patch:
 	@${RM} -r \
 		${WRKSRC}/bin/fsnotifier \
 		${WRKSRC}/bin/idea \
-		${WRKSRC}/bin/libdbm.so \
 		${WRKSRC}/bin/remote-dev-server \
 		${WRKSRC}/bin/remote-dev-server.sh \
-		${WRKSRC}/bin/repair \
 		${WRKSRC}/bin/restarter \
 		${WRKSRC}/help/plugin-resources \
 		${WRKSRC}/jbr/ \
@@ -60,7 +58,8 @@ post-patch:
 		${WRKSRC}/plugins/maven/lib/maven4-server-lib \
 		${WRKSRC}/plugins/remote-dev-server/ \
 		${WRKSRC}/plugins/webp/lib/libwebp/
-	@${SED} -i '' 's/%%ARCH%%/${ARCH}/' ${WRKSRC}/product-info.json
+	@${SED} -i '' 's,/amd64,,' ${WRKSRC}/bin/idea.sh ${WRKSRC}/product-info.json
+	@${SED} -i '' 's/amd64/${ARCH}/' ${WRKSRC}/product-info.json
 
 .include <bsd.port.pre.mk>
 

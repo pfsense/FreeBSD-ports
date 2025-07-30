@@ -1,5 +1,6 @@
 PORTNAME=	Module-Signature
-PORTVERSION=	0.89
+PORTVERSION=	0.93
+PORTREVISION=	1
 CATEGORIES=	security perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
@@ -10,8 +11,6 @@ WWW=		https://metacpan.org/release/Module-Signature
 
 LICENSE=	CC0-1.0
 
-BUILD_DEPENDS=	${RUN_DEPENDS}
-RUN_DEPENDS=	p5-PAR-Dist>=0:devel/p5-PAR-Dist
 TEST_DEPENDS=	p5-IPC-Run>=0:devel/p5-IPC-Run
 
 USES=		perl5
@@ -23,11 +22,12 @@ NO_ARCH=	yes
 OPTIONS_MULTI=	GPG
 OPTIONS_MULTI_GPG=	GPG1 GPG2
 OPTIONS_DEFAULT=GPG2
-
 GPG1_DESC=	Use GnuPG version 1
 GPG2_DESC=	Use GnuPG version 2
 
-GPG1_RUN_DEPENDS=	gpgv:security/gnupg1
-GPG2_RUN_DEPENDS=	gpgv2:security/gnupg
+GPG1_BUILD_DEPENDS=	gpg:security/gnupg1
+GPG1_RUN_DEPENDS=	gpg:security/gnupg1
+GPG2_BUILD_DEPENDS=	gpg2:security/gnupg
+GPG2_RUN_DEPENDS=	gpg2:security/gnupg
 
 .include <bsd.port.mk>

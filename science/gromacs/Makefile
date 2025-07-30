@@ -1,12 +1,15 @@
 PORTNAME=	gromacs
-DISTVERSION=	2024.4
+DISTVERSION=	2025.0
+PORTREVISION=	1
 CATEGORIES=	science
 MASTER_SITES=	https://ftp.gromacs.org/pub/gromacs/
 DISTFILES=	${DISTNAME}${EXTRACT_SUFX} # only for googletest
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Compute molecular dynamics
-WWW=		https://www.gromacs.org/
+WWW=		https://www.gromacs.org \
+		https://gitlab.com/gromacs/gromacs \
+		https://github.com/gromacs/gromacs
 
 LICENSE=	LGPL21
 LICENSE_FILE=	${WRKSRC}/COPYING
@@ -14,10 +17,12 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 BROKEN_i386=	undefined reference to `__atomic_load' and `__atomic_compare_exchange' #`
 
 BUILD_DEPENDS=	boost-libs>=1.44:devel/boost-libs
+LIB_DEPENDS=	liblmfit.so:math/lmfit \
+		libmuparser.so:math/muparser
+		# TODO tng
 
-USES=		cmake compiler:c++17-lang gnome pathfix perl5 pkgconfig \
+USES=		cmake compiler:c++17-lang pathfix perl5 pkgconfig \
 		python:build shebangfix
-USE_GNOME=	libxml2
 USE_LDCONFIG=	yes
 
 USE_GITHUB=	nodefault
@@ -28,7 +33,10 @@ bash_CMD=	${SH}
 CMAKE_OFF=	GMX_USE_RDTSCP \
 		USE_PYTHON_SCRIPTS
 CMAKE_ARGS=	-DPython_EXECUTABLE=${PYTHON_CMD} \
-		-DPython3_EXECUTABLE=${PYTHON_CMD}
+		-DPython3_EXECUTABLE=${PYTHON_CMD} \
+		-DGMX_USE_MUPARSER=EXTERNAL \
+		-DGMX_USE_PLUMED=ON \
+		-DGMX_USE_LMFIT=EXTERNAL
 
 TEST_TARGET=	check
 

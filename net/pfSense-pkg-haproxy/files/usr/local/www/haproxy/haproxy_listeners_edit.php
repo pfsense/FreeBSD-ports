@@ -425,27 +425,30 @@ if ($_POST) {
 		}
 	}
 	if (!$input_errors) {
-		$backend = array();
-		if(isset($id) && config_get_path("installedpackages/haproxy/ha_backends/item/{$id}")) {
-			$backend = config_get_path("installedpackages/haproxy/ha_backends/item/{$id}");
-		}
-
-		if($backend['name'] != "") {
+		$backends_config = config_get_path('installedpackages/haproxy/ha_backends', []);
+		if (isset($id)) {
+			array_init_path($backends_config, "item/{$id}");
+			$backend = &$backends_config['item'][$id];
 			$changedesc .= " modified '{$backend['name']}' pool:";
+		} else {
+			$backends_config['item'][] = [];
+			$backend = &$backends_config['item'][array_key_last($backends_config['item'])];
+			$backend['name'] = $_POST['name'];
 		}
 
 		// update references to this primary frontend
 		if ($backend['name'] != $_POST['name']) {
-			foreach(config_get_path('installedpackages/haproxy/ha_backends/item', []) as $fidx => $frontend) {
-				if ($frontend['primary_frontend'] == $backend['name']) {
-					config_set_path("installedpackages/haproxy/ha_backends/item/{$fidx}/primary_frontend", $_POST['name']);
+			foreach($backends_config['item'] as &$frontend_config) {
+				if (array_get_path($frontend_config, 'primary_frontend') != $backend['name']) {
+					continue;
 				}
+				$frontend_config['primary_frontend'] = $_POST['name'];
 			}
 		}
 
 		foreach($simplefields as $stat) {
 			update_if_changed($stat, $backend[$stat], $_POST[$stat]);
-			if (empty($backend[$stat])) {
+			if (isset($backend[$stat]) && ($backend[$stat] != 0) && empty($backend[$stat])) {
 				unset($backend[$stat]);
 			}
 		}
@@ -459,11 +462,7 @@ if ($_POST) {
 		array_set_path($backend,'a_actionitems/item', $a_actionitems);
 		array_set_path($backend,'a_errorfiles/item', $a_errorfiles);
 
-		if (isset($id) && config_get_path("installedpackages/haproxy/ha_backends/item/{$id}")) {
-			config_set_path("installedpackages/haproxy/ha_backends/item/{$id}", $backend);
-		} else {
-			config_set_path('installedpackages/haproxy/ha_backends/item/', $backend);
-		}
+		config_set_path('installedpackages/haproxy/ha_backends', $backends_config);
 
 		if ($changecount > 0) {
 			touch($d_haproxyconfdirty_path);

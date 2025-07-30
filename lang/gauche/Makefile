@@ -1,5 +1,6 @@
 PORTNAME=	gauche
 PORTVERSION=	0.9.15
+PORTREVISION=	2
 CATEGORIES=	lang scheme
 MASTER_SITES=	https://github.com/shirok/Gauche/releases/download/release${PORTVERSION:S/./_/g}/
 DISTNAME=	Gauche-${PORTVERSION}
@@ -40,7 +41,7 @@ GDBM_LIB_DEPENDS=	libgdbm.so:databases/gdbm
 GDBM_CONFIGURE_ON=	--with-dbm=gdbm,ndbm
 GDBM_CONFIGURE_OFF=	--with-dbm=ndbm
 
-TLS_LIB_DEPENDS=	libmbedtls.so:security/mbedtls
+TLS_LIB_DEPENDS=	libmbedtls.so:security/mbedtls3
 TLS_RUN_DEPENDS=	${LOCALBASE}/share/certs/ca-root-nss.crt:security/ca_root_nss
 TLS_CONFIGURE_ON=	--with-ca-bundle=${LOCALBASE}/share/certs/ca-root-nss.crt
 TLS_CONFIGURE_OFF=	--with-tls=no

@@ -3,6 +3,16 @@ bin/auto-ask
 bin/auto-backup-file
 bin/auto-check-ports-branch
 bin/auto-clean-pkgsrc
+bin/auto-dreckly-clean
+bin/auto-dreckly-delete-all
+bin/auto-dreckly-dir
+bin/auto-dreckly-make
+bin/auto-dreckly-non-removable
+bin/auto-dreckly-prefix
+bin/auto-dreckly-remote-x11
+bin/auto-dreckly-setup
+bin/auto-dreckly-update
+bin/auto-dreckly-wip-checkout
 bin/auto-fastest-mirror
 bin/auto-fetch-install-media
 bin/auto-get-ip
@@ -20,10 +30,11 @@ bin/auto-os-release
 bin/auto-os-variant
 bin/auto-ostype
 bin/auto-package-installed
+bin/auto-physmem
 bin/auto-pkg-branch
-bin/auto-pkg-latest
 bin/auto-pkgsrc-branch
 bin/auto-pkgsrc-checkout
+bin/auto-pkgsrc-clean
 bin/auto-pkgsrc-delete-all
 bin/auto-pkgsrc-dir
 bin/auto-pkgsrc-make
@@ -31,6 +42,7 @@ bin/auto-pkgsrc-non-removable
 bin/auto-pkgsrc-prefix
 bin/auto-pkgsrc-remote-x11
 bin/auto-pkgsrc-setup
+bin/auto-pkgsrc-update
 bin/auto-pkgsrc-wip-checkout
 bin/auto-ports-branch
 bin/auto-print-make-variable
@@ -39,7 +51,9 @@ bin/auto-replace-file
 bin/auto-software-manager
 bin/auto-ssh-authorize
 bin/auto-ssh-reverse-authorize
+bin/auto-update-manager
 bin/auto-update-pkgsrc
+bin/auto-using-dreckly
 bin/auto-using-pkgsrc
 bin/auto-wacom-map-display
 sbin/auto-add-fdesc-mount
@@ -57,6 +71,7 @@ sbin/auto-automount-setup
 sbin/auto-binary-pkgsrc-setup
 sbin/auto-change-group-gid
 sbin/auto-change-group-ownership
+sbin/auto-change-login-class
 sbin/auto-change-nfsd-count
 sbin/auto-change-ownership
 sbin/auto-change-primary-group
@@ -64,7 +79,6 @@ sbin/auto-change-uid
 sbin/auto-clean-disk
 sbin/auto-clean-ports
 sbin/auto-clean-tmp
-sbin/auto-cuda-install
 sbin/auto-cups-setup
 sbin/auto-denyhosts-remove-ip
 sbin/auto-denyhosts-setup
@@ -121,6 +135,7 @@ sbin/auto-nfs-restart
 sbin/auto-nfs-server-setup
 sbin/auto-passwd-user-expiration
 sbin/auto-password-status
+sbin/auto-pkg-latest
 sbin/auto-ports-checkout
 sbin/auto-ports-setup
 sbin/auto-ports-wip-checkout
@@ -172,6 +187,9 @@ sbin/auto-xdm-toggle
 %%DATADIR%%/rc.local_early
 share/man/man8/auto-add-swap.8.gz
 share/man/man8/auto-admin.8.gz
+share/man/man8/auto-change-login-class.8.gz
 share/man/man8/auto-image2dev.8.gz
+share/man/man8/auto-physmem.8.gz
 share/man/man8/auto-pkgsrc-non-removable.8.gz
 share/man/man8/auto-update-system.8.gz
+share/man/man8/auto-user-admin.8.gz

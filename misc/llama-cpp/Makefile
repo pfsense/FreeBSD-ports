@@ -1,10 +1,7 @@
 PORTNAME=	llama-cpp
 DISTVERSIONPREFIX=	b
-DISTVERSION=	4337
+DISTVERSION=	5943
 CATEGORIES=	misc # machine-learning
-
-PATCH_SITES=	https://github.com/${GH_ACCOUNT}/${GH_PROJECT}/commit/
-PATCHFILES=	121f915a09c1117d34aff6e8faf6d252aaf11027.patch:-p1 # Add missing pthread includes: https://github.com/ggerganov/llama.cpp/pull/9258
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Facebook's LLaMA model in C/C++ # '
@@ -27,12 +24,23 @@ GH_TUPLE=	nomic-ai:kompute:4565194:kompute/kompute
 SHEBANG_GLOB=	*.py
 
 CMAKE_ON=	BUILD_SHARED_LIBS
-CMAKE_OFF=	LLAMA_BUILD_TESTS
+CMAKE_OFF=	GGML_NATIVE \
+		FREEBSD_ALLOW_ADVANCED_CPU_FEATURES \
+		LLAMA_BUILD_TESTS
 CMAKE_TESTING_ON=	LLAMA_BUILD_TESTS
 
-OPTIONS_DEFINE=		EXAMPLES VULKAN
-OPTIONS_DEFAULT=	VULKAN
+# user for llama-server, only used when EXAMPLES=ON
+USER=		nobody
+SUB_LIST=	USER=${USER}
+
+OPTIONS_DEFINE=		CURL EXAMPLES VULKAN
+OPTIONS_DEFAULT=	CURL VULKAN
 OPTIONS_SUB=		yes
+
+CURL_DESCR=		Use libcurl to download model from an URL
+CURL_CMAKE_BOOL=	LLAMA_CURL
+CURL_USES=		localbase
+CURL_LIB_DEPENDS=	libcurl.so:ftp/curl
 
 EXAMPLES_CMAKE_BOOL=	LLAMA_BUILD_EXAMPLES
 
@@ -42,8 +50,32 @@ VULKAN_BUILD_DEPENDS=	glslc:graphics/shaderc \
 			vulkan-headers>0:graphics/vulkan-headers
 VULKAN_LIB_DEPENDS=	libvulkan.so:graphics/vulkan-loader
 
-BINARY_ALIAS=	git=false
+BINARY_ALIAS=	git=false \
+		python=${PYTHON_CMD} # for tests
 
-# 2 tests fail: https://github.com/ggerganov/llama.cpp/issues/8906
+post-patch: # set version in the code
+	@${REINPLACE_CMD} \
+		-e "s|set(BUILD_NUMBER 0)|set(BUILD_NUMBER ${DISTVERSION})|" \
+		${WRKSRC}/cmake/build-info.cmake
+
+do-test-ci: # build of tests fails, see https://github.com/ggerganov/llama.cpp/issues/10955
+	@cd ${WRKSRC} && \
+		${SETENV} ${MAKE_ENV} bash ci/run.sh ./tmp/results ./tmp/mnt
+
+.include <bsd.port.options.mk>
+
+.if ${PORT_OPTIONS:MEXAMPLES}
+USE_RC_SUBR=	llama-server
+.endif
+
+# tests as of 4458: 97% tests passed, 1 tests failed out of 31, see https://github.com/ggerganov/llama.cpp/issues/11036
+
+# tests as of 4649:
+# 88% tests passed, 4 tests failed out of 32
+# The following tests FAILED:
+#         18 - test-chat (Subprocess aborted)                    main   # see https://github.com/ggerganov/llama.cpp/issues/11705
+#         24 - test-gguf (SEGFAULT)                              main
+#         25 - test-backend-ops (SEGFAULT)                       main
+#         32 - test-eval-callback (SEGFAULT)                     curl eval-callback
 
 .include <bsd.port.mk>

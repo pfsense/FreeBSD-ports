@@ -1559,33 +1559,6 @@ function squidguard_sync_on_changes() {
 				return;
 			}
 			break;
-		case "auto":
-			if (is_array(config_get_path('hasync'))) {
-				$system_carp = config_get_path('hasync');
-				$rs[0]['varsyncipaddress'] = $system_carp['synchronizetoip'];
-				$rs[0]['varsyncusername'] = $system_carp['username'];
-				$rs[0]['varsyncpassword'] = $system_carp['password'];
-				$rs[0]['varsyncdestinenable'] = FALSE;
-
-				// XMLRPC sync is currently only supported over connections using the same protocol and port as this system
-				if (config_get_path('system/webgui/protocol') == 'http') {
-					$rs[0]['varsyncprotocol'] = 'http';
-					$rs[0]['varsyncport'] = config_get_path('system/webgui/port', '80');
-				} else {
-					$rs[0]['varsyncprotocol'] = 'https';
-					$rs[0]['varsyncport'] = config_get_path('system/webgui/port', '443');
-				}
-				if ($system_carp['synchronizetoip'] == "") {
-					log_error("[Squidguard] XMLRPC CARP/HA sync is enabled but there are no system backup hosts configured as replication targets.");
-					return;
-				} else {
-					$rs[0]['varsyncdestinenable'] = TRUE;
-				}
-			} else {
-				log_error("[Squidguard] XMLRPC CARP/HA sync is enabled but there are no system backup hosts configured as replication targets.");
-				return;
-			}
-			break;
 		default:
 			return;
 			break;
@@ -1654,82 +1627,77 @@ function squidguard_do_xmlrpc_sync($sync_to_ip, $varsyncport, $varsyncprotocol, 
 	$execcmd  = "require_once('/usr/local/pkg/squidguard.inc');\n";
 	$execcmd .= "squidguard_all_after_XMLRPC_resync();";
 
-	if (pf_version() >= "2.4") {
-		// xmlrpc cannot encode NULL objects/arrays..
-		foreach($xml as $xmlkey => $xmlvalue) {
-			if (gettype($xmlvalue) == "NULL") {
-				$xml[$xmlkey] = array();
-			}
-		}
-		$synctimeout = intval($synctimeout);
-		$rpc_client = new pfsense_xmlrpc_client();
-		$rpc_client->setConnectionData($sync_to_ip, $varsyncport, $username, $password, $varsyncprotocol);
-		$resp = $rpc_client->xmlrpc_method('merge_installedpackages_section', $xml, $synctimeout);
-		$resp = $rpc_client->xmlrpc_exec_php($execcmd, $synctimeout);
-	} else {
-		// pfSense before 2.4
-		require_once('xmlrpc.inc');
-
-		// Take care of IPv6 literal address
-		if (is_ipaddrv6($sync_to_ip)) {
-			$sync_to_ip = "[{$sync_to_ip}]";
-		}
-
-		$url = "{$varsyncprotocol}://{$sync_to_ip}";
-		$port = $varsyncport;
-		/* Assemble XMLRPC payload. */
-		$params = array(XML_RPC_encode($password), XML_RPC_encode($xml));
-
-		/* Set a few variables needed for sync code */
-		log_error("[SquidGuard] Beginning XMLRPC sync with {$url}:{$port}.");
-		$method = 'pfsense.merge_installedpackages_section_xmlrpc';
-		$msg = new XML_RPC_Message($method, $params);
-		$cli = new XML_RPC_Client('/xmlrpc.php', $url, $port);
-		$cli->setCredentials($username, $password);
-		if (g_get('debug')) {
-			$cli->setDebug(1);
-		}
-		/* Send our XMLRPC message and timeout after $varsynctimeout seconds */
-		$resp = $cli->send($msg, $varsynctimeout);
-		if (!$resp) {
-			$error = "A communications error occurred while attempting XMLRPC sync with {$url}:{$port}.";
-			log_error("[SquidGuard] {$error}");
-			file_notice("sync_settings", $error, "squidguard Settings Sync", "");
-		} elseif ($resp->faultCode()) {
-			$cli->setDebug(1);
-			$resp = $cli->send($msg, $varsynctimeout);
-			$error = "An error code was received while attempting XMLRPC sync with {$url}:{$port} - Code " . $resp->faultCode() . ": " . $resp->faultString();
-			log_error("[SquidGuard] {$error}");
-			file_notice("sync_settings", $error, "squidguard Settings Sync", "");
-		} else {
-			log_error("[SquidGuard] XMLRPC sync successfully completed with {$url}:{$port}.");
-		}
-
-		/* Tell Squidguard to reload our settings on the destionation sync host. */
-		$method = 'pfsense.exec_php';
-
-		/* Assemble XMLRPC payload. */
-		$params = array(XML_RPC_encode($password), XML_RPC_encode($execcmd));
-
-		log_error("[SquidGuard] XMLRPC is reloading data on {$url}:{$port}.");
-		$msg = new XML_RPC_Message($method, $params);
-		$cli = new XML_RPC_Client('/xmlrpc.php', $url, $port);
-		$cli->setCredentials($username, $password);
-		$resp = $cli->send($msg, $varsynctimeout);
-		if (!$resp) {
-			$error = "A communications error occurred while attempting XMLRPC sync with {$url}:{$port} (exec_php).";
-			log_error("[SquidGuard] {$error}");
-			file_notice("sync_settings", $error, "squidguard Settings Sync", "");
-		} elseif ($resp->faultCode()) {
-			$cli->setDebug(1);
-			$resp = $cli->send($msg, $varsynctimeout);
-			$error = "An error code was received while attempting XMLRPC sync with {$url}:{$port} - Code " . $resp->faultCode() . ": " . $resp->faultString();
-			log_error("[SquidGuard] {$error}");
-			file_notice("sync_settings", $error, "squidguard Settings Sync", "");
-		} else {
-			log_error("[SquidGuard] XMLRPC has reloaded data successfully on {$url}:{$port} (exec_php).");
+	// xmlrpc cannot encode NULL objects/arrays..
+	foreach($xml as $xmlkey => $xmlvalue) {
+		if (gettype($xmlvalue) == "NULL") {
+			$xml[$xmlkey] = array();
 		}
 	}
+	$synctimeout = intval($varsynctimeout);
+	$rpc_client = new pfsense_xmlrpc_client();
+	$rpc_client->setConnectionData($sync_to_ip, $varsyncport, $username, $password, $varsyncprotocol);
+	$resp = $rpc_client->xmlrpc_method('merge_installedpackages_section', $xml, $synctimeout);
+	$resp = $rpc_client->xmlrpc_exec_php($execcmd, $synctimeout);
+}
+
+function squidguard_plugin_xmlrpc_send() {
+	if (config_get_path('installedpackages/squidguardsync/config/0/varsyncenablexmlrpc') != 'auto') {
+		return [];
+	}
+
+	return [
+		'installedpackages/squidguardsync/config/0/varsyncenablexmlrpc',
+		'installedpackages/squidguardgeneral',
+		'installedpackages/squidguardacl',
+		'installedpackages/squidguarddefault',
+		'installedpackages/squidguarddest',
+		'installedpackages/squidguardrewrite',
+		'installedpackages/squidguardtime'
+	];
+}
+
+function squidguard_plugin_xmlrpc_recv($new_sections) {
+	if (array_get_path($new_sections, 'installedpackages/squidguardsync/config/0/varsyncenablexmlrpc') != 'auto') {
+		return [];
+	}
+
+	$section_paths = [
+		'installedpackages/squidguardgeneral',
+		'installedpackages/squidguardacl',
+		'installedpackages/squidguarddefault',
+		'installedpackages/squidguarddest',
+		'installedpackages/squidguardrewrite',
+		'installedpackages/squidguardtime'
+	];
+
+	$ret = [
+		'xmlrpc_recv_result' => false
+	];
+	foreach ($section_paths as $path) {
+		$old_section = config_get_path($path, []);
+		$new_section = array_get_path($new_sections, $path, []);
+
+		// Don't save empty configuration sections.
+		if (empty($old_section) && empty($new_section)) {
+			continue;
+		}
+		// Ignore unchanged configuration sections.
+		if ($old_section === $new_section) {
+			continue;
+		}
+
+		$ret[$path] = array_merge($old_section, $new_section);
+		$ret['xmlrpc_recv_result'] = true;
+	}
+
+	return $ret;
+}
+
+function squidguard_plugin_xmlrpc_recv_done($xmlrpc_recv_result) {
+	if (array_get_path($xmlrpc_recv_result, 'squidguard/xmlrpc_recv_result') !== true) {
+		return;
+	}
+	squidguard_all_after_XMLRPC_resync();
 }
 
 // This function restarts all other needed functions after XMLRPC sync so that the content of .XML + .INC will be written in the files

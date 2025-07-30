@@ -1,10 +1,9 @@
 PORTNAME=	zola
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.19.2
-PORTREVISION=	3
+DISTVERSION=	0.21.0
 CATEGORIES=	www
 
-MAINTAINER=	mikael@FreeBSD.org
+MAINTAINER=	bofh@FreeBSD.org
 COMMENT=	Fast static site generator
 WWW=		https://www.getzola.org/
 

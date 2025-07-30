@@ -1,6 +1,8 @@
 PORTNAME=	audiowmark
-PORTVERSION=	0.6.2
+DISTVERSION=	0.6.5
+PORTREVISION=	1
 CATEGORIES=	audio
+MASTER_SITES=	https://github.com/swesterfeld/${PORTNAME}/releases/download/${DISTVERSION}/
 
 MAINTAINER=	ehaupt@FreeBSD.org
 COMMENT=	Audio and video watermarking tool
@@ -9,8 +11,7 @@ WWW=		https://github.com/swesterfeld/audiowmark
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-BUILD_DEPENDS=	${LOCALBASE}/include/fftw3.h:math/fftw3 \
-		autoconf-archive>=0:devel/autoconf-archive
+BUILD_DEPENDS=	${LOCALBASE}/include/fftw3.h:math/fftw3
 LIB_DEPENDS=	libfftw3f.so:math/fftw3-float \
 		libgcrypt.so:security/libgcrypt \
 		libgpg-error.so:security/libgpg-error \
@@ -18,11 +19,8 @@ LIB_DEPENDS=	libfftw3f.so:math/fftw3-float \
 		libsndfile.so:audio/libsndfile \
 		libzita-resampler.so:audio/zita-resampler
 
-USES=		autoreconf gettext-tools libtool localbase:ldflags pkgconfig \
-		shebangfix
-USE_GITHUB=	yes
-GH_ACCOUNT=	swesterfeld
-
+USES=		compiler:c++14-lang gettext-tools libtool localbase:ldflags \
+		pkgconfig shebangfix tar:zst
 SHEBANG_FILES=	src/videowmark
 
 GNU_CONFIGURE=	yes

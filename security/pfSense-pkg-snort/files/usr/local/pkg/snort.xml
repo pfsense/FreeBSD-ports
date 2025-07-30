@@ -83,6 +83,14 @@
 	</tabs>
 	<fields>
 	</fields>
+	<plugins>
+		<item>
+			<type>plugin_xmlrpc_send</type>
+		</item>
+		<item>
+			<type>plugin_xmlrpc_recv</type>
+		</item>
+	</plugins>
 	<custom_php_resync_config_command>
 		<![CDATA[
 		sync_snort_package_config();

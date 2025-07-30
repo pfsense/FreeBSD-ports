@@ -1,9 +1,9 @@
 PORTNAME=	wine
-DISTVERSION=	9.0
-PORTREVISION=	6
+DISTVERSION=	10.0
+PORTREVISION=	2
 PORTEPOCH=	1
 CATEGORIES=	emulators
-MASTER_SITES=	https://dl.winehq.org/wine/source/9.0/
+MASTER_SITES=	https://dl.winehq.org/wine/source/10.0/
 
 MAINTAINER=	gerald@FreeBSD.org
 COMMENT=	Microsoft Windows compatibility environment
@@ -35,6 +35,7 @@ CONFIGURE_ARGS+=--verbose \
 		--without-capi \
 		--without-coreaudio \
 		--without-dbus \
+		--without-ffmpeg \
 		--without-gettext --without-gettextpo \
 		--without-gphoto \
 		--without-gssapi \
@@ -52,8 +53,7 @@ CONFIGURE_ARGS+=--verbose \
 		--with-sdl \
 		--without-udev \
 		--without-unwind \
-		--without-usb \
-		--without-wayland
+		--without-usb
 CONFIGURE_ENV=	CPPBIN="${CPP}" FLEX="${LOCALBASE}/bin/flex"
 WINELIBDIR=	${PREFIX}/lib
 .if !defined(USE_LDCONFIG32)
@@ -71,18 +71,18 @@ PIE_UNSAFE=	yes
 
 PORTDATA=	wine.inf
 
-OPTIONS_DEFINE=	CUPS DOCS DOSBOX GNUTLS V4L WINEMAKER X11 GECKO MONO
+OPTIONS_DEFINE=	CUPS DOCS DOSBOX GNUTLS V4L WAYLAND X11 GECKO MONO
 OPTIONS_DEFAULT=ALSA GNUTLS X11
 OPTIONS_RADIO=	AUDIO
 OPTIONS_RADIO_AUDIO=	ALSA OSS
 OPTIONS_SUB=	yes
 
 DOSBOX_DESC=	Use DOSBox to run MS-DOS programs
-WINEMAKER_DESC=	Fully support winemaker (requires Perl)
 GECKO_DESC=	Bundle Gecko MSI package for Wine
 MONO_DESC=	Bundle Mono MSI package for Wine
+WAYLAND_DESC=	Wayland Support
 
-PORTSCOUT=	limit:^8\.0
+PORTSCOUT=	limit:^9\.0
 
 ALSA_CONFIGURE_WITH=	alsa
 ALSA_USES=		gnome gstreamer
@@ -110,7 +110,10 @@ V4L_CONFIGURE_WITH=	v4l2
 V4L_BUILD_DEPENDS=	${LOCALBASE}/include/linux/videodev2.h:multimedia/v4l_compat
 V4L_LIB_DEPENDS=	libv4l2.so:multimedia/libv4l
 
-WINEMAKER_RUN_DEPENDS=	p5-XML-LibXML>0:textproc/p5-XML-LibXML
+WAYLAND_CONFIGURE_WITH=	wayland
+WAYLAND_BUILD_DEPENDS=	${LOCALBASE}/include/linux/input.h:devel/evdev-proto
+WAYLAND_LIB_DEPENDS=	libwayland-client.so:graphics/wayland \
+			libxkbcommon.so:x11/libxkbcommon
 
 X11_CONFIGURE_WITH=	x fontconfig freetype opengl xinerama xinput2 xrandr xrender
 X11_USES=		gl xorg
@@ -146,16 +149,28 @@ PLIST_SUB+=		WINE32="@comment " WINE64="" WINEARCH="x86_64"
 # FreeBSD yet.
 post-patch:
 	${REINPLACE_CMD} '/Exec/s|wine|wine64|g' ${WRKSRC}/loader/wine.desktop
+	${MV} ${WRKSRC}/loader/*.man.in ${WRKSRC}/tools/wine/
 
 .else
 EXTRA_PATCHES+=	files/extra-patch-tools-winebuild-res32
 PLIST_SUB+=		WINE32="" WINE64="@comment " WINEARCH="i386"
+
+post-patch:
+	${MV} ${WRKSRC}/loader/*.man.in ${WRKSRC}/tools/wine/
 .endif
 
 pre-build:
 	cd ${WRKSRC} && ${SETENVI} ${WRK_ENV} ${MAKE_CMD} depend
 
 post-install:
+	${MKDIR} ${STAGEDIR}${PREFIX}/share/man/man1
+	${INSTALL_MAN} ${WRKSRC}/tools/wine/wine.man	${STAGEDIR}${PREFIX}/share/man/man1/wine.1
+	${GZIP_CMD}					${STAGEDIR}${PREFIX}/share/man/man1/wine.1
+.for m in de.UTF-8 fr.UTF-8 pl.UTF-8
+	${MKDIR} ${STAGEDIR}${PREFIX}/share/man/${m}/man1
+	${INSTALL_MAN} ${WRKSRC}/tools/wine/wine.${m}.man	${STAGEDIR}${PREFIX}/share/man/${m}/man1/wine.1
+	${GZIP_CMD}						${STAGEDIR}${PREFIX}/share/man/${m}/man1/wine.1
+.endfor
 .if ${ARCH} == i386
 	${MV} ${STAGEDIR}${PREFIX}/bin/wineserver	${STAGEDIR}${PREFIX}/bin/wineserver32
 	${MV} ${STAGEDIR}${PREFIX}/bin/wine		${STAGEDIR}${PREFIX}/bin/wine.bin

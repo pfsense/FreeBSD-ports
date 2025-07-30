@@ -1,7 +1,7 @@
 PORTNAME=	signal-sqlcipher-extension
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.2.0
-PORTREVISION=	1
+DISTVERSION=	0.2.1
+PORTREVISION=	2
 CATEGORIES=	devel
 
 MAINTAINER=	mikael@FreeBSD.org
@@ -16,9 +16,11 @@ USE_GITHUB=	yes
 GH_ACCOUNT=	signalapp
 GH_PROJECT=	Signal-Sqlcipher-Extension
 
-PLIST_FILES=	lib/libsignal_sqlcipher_extension.a
+PLIST_FILES=	lib/libsignal_sqlcipher_extension.a \
+		include/signal-tokenizer.h
 
 do-install:
 	${INSTALL_DATA} ${CARGO_TARGET_DIR}/*/libsignal_sqlcipher_extension.a ${STAGEDIR}${LOCALBASE}/lib/
+	${INSTALL_DATA} ${WRKSRC}/target/signal-tokenizer.h ${STAGEDIR}${LOCALBASE}/include/
 
 .include <bsd.port.mk>

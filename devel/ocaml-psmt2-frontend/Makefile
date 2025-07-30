@@ -16,7 +16,6 @@ USES=		ocaml:dune
 USE_GITHUB=	yes
 GH_ACCOUNT=	ACoquereau
 
-USE_OCAML=		yes
 OCAML_PACKAGES=		${PORTNAME} ${PORTNAME}_bin
 DUNE_INSTALL_TARGETS=	${OCAML_PACKAGES}
 
@@ -24,6 +23,12 @@ DOCSDIR=	${OCAML_DOCSDIR}
 PORTDOCS=	${OCAML_PACKAGES:@p@$p/CHANGES.md $p/LICENSE $p/LICENSE.md $p/README.md $p/odoc-pages/index.mld@}
 
 OPTIONS_DEFINE=	DOCS
+
+.include <bsd.port.options.mk>
+
+.if ${ARCH} == powerpc
+USE_BINUTILS=	yes
+.endif
 
 post-install:
 	@${STRIP_CMD} ${STAGEDIR}${PREFIX}/${OCAML_SITELIBDIR}/psmt2-frontend/psmt2Frontend.cmxs

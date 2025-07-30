@@ -1,6 +1,7 @@
 PORTNAME=	bout++
 DISTVERSIONPREFIX=	v
 DISTVERSION=	5.1.1
+PORTREVISION=	2
 CATEGORIES=	science math # physics
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -14,7 +15,7 @@ BUILD_DEPENDS=	gmake:devel/gmake
 LIB_DEPENDS=	libfftw3.so:math/fftw3 \
 		libfmt.so:devel/libfmt \
 		libopenblas.so:math/openblas \
-		libuuid.so:misc/e2fsprogs-libuuid
+		libuuid.so:misc/libuuid
 RUN_DEPENDS=	bash:shells/bash \
 		${PYTHON_PKGNAMEPREFIX}matplotlib>=3.2.1:math/py-matplotlib@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}natsort>=8.1.0:devel/py-natsort@${PY_FLAVOR} \
@@ -47,7 +48,9 @@ SHEBANG_FILES=	bin/bout-add-mod-path \
 CMAKE_ON=	BUILD_SHARED_LIBS \
 		BOUT_USE_SYSTEM_FMT
 CMAKE_OFF=	BOUT_TESTS
-CMAKE_TESTING_ON=	BOUT_TESTS # 6 tests fail, see https://github.com/boutproject/BOUT-dev/issues/2980
+CMAKE_TESTING_ON=	BOUT_TESTS
+
+TESTING_UNSAFE=	6 tests fail, see https://github.com/boutproject/BOUT-dev/issues/2980
 
 CXXFLAGS+=	-I${WRKSRC}/include
 LDFLAGS+=	-lexecinfo

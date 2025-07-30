@@ -1,5 +1,5 @@
 PORTNAME=	youtube-transcript-api
-DISTVERSION=	0.6.3
+DISTVERSION=	1.1.1
 CATEGORIES=	www python
 MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -18,5 +18,7 @@ RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}defusedxml>=0.7.1:devel/py-defusedxml@${PY_F
 
 USES=		python
 USE_PYTHON=	autoplist pep517
+
+NO_ARCH=	yes
 
 .include <bsd.port.mk>

@@ -1,5 +1,5 @@
 PORTNAME=	apache-arrow
-DISTVERSION=	18.0.0
+DISTVERSION=	20.0.0
 CATEGORIES=	databases python
 MASTER_SITES=	APACHE/arrow/arrow-${DISTVERSION}
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -21,7 +21,7 @@ RUN_DEPENDS=	${PYNUMPY}
 LIB_DEPENDS=	libarrow.so:databases/arrow # assumes that arrow is built with PYTHON=ON (python support is built)
 
 USES=		compiler:c++11-lang pkgconfig python shebangfix
-USE_PYTHON=	distutils cython # autoplist is broken, see https://issues.apache.org/jira/browse/ARROW-16820
+USE_PYTHON=	distutils cython3 # autoplist is broken, see https://issues.apache.org/jira/browse/ARROW-16820
 
 WRKSRC_SUBDIR=	python
 

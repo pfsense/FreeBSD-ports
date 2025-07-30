@@ -1,41 +1,44 @@
 PORTNAME=	apitrace
-DISTVERSION=	9.0
-PORTREVISION=	2
+DISTVERSION=	13.0
 CATEGORIES=	devel
 
-PATCH_SITES=	https://github.com/a17r/${GH_PROJECT}/commit/
-# use system brotli: https://github.com/apitrace/apitrace/pull/610
-PATCHFILES=	cd3486343001d6a47.patch:-p1 \
-		b0f5a220c41af013d.patch:-p1
-# detect RTLD_DEEPBIND: https://github.com/apitrace/apitrace/pull/571
-PATCHFILES+=	2d31d49eac9bcc010.patch:-p1
-
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	freebsd@sysctl.cz
 COMMENT=	Tools for tracing OpenGL and other graphics APIs
 WWW=		https://apitrace.github.io
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-LIB_DEPENDS=	libbrotlidec.so:archivers/brotli \
-		libpng.so:graphics/png
+BUILD_DEPENDS=	brotli>0:archivers/brotli \
+		googletest>0:devel/googletest \
+		libbacktrace>0:devel/libbacktrace \
+		png>0:graphics/png \
+		vulkan-headers>0:graphics/vulkan-headers \
+		snappy>0:archivers/snappy
 
-USES=		cmake compiler:c++11-lang pkgconfig python shebangfix xorg
-USE_GITHUB=	yes
+LIB_DEPENDS=	libbrotlidec.so:archivers/brotli \
+		libbacktrace.so:devel/libbacktrace \
+		libpng.so:graphics/png \
+		libsnappy.so:archivers/snappy
+
+USES=		cmake compiler:c++17-lang desktop-file-utils localbase:ldflags pkgconfig python qt:6 shebangfix xorg
 USE_XORG=	x11
+
+USE_GITHUB=	yes
+GH_TUPLE=	microsoft:DirectXMath:e95d848:DirectXMath/thirdparty/directxmath
 
 SHEBANG_FILES=	scripts/*.py
 
-OPTIONS_DEFINE=		DOCS QT5 WAFFLE
-OPTIONS_DEFAULT=	QT5 WAFFLE
+OPTIONS_DEFINE=		DOCS WAFFLE
+OPTIONS_DEFAULT=	WAFFLE
 OPTIONS_SUB=		yes
 
-WAFFLE_DESC=	Use Waffle library to allow retrace on Wayland, headless etc.
+USE_QT=			base
+USE_GL=			gl opengl
+CMAKE_ON=		ENABLE_QT6
 
-QT5_USES=	qt:5
-QT5_USE=	QT=core,gui,network,widgets,buildtools:build,qmake:build
-QT5_CMAKE_BOOL=	ENABLE_GUI
-
+WAFFLE_DESC=		Use Waffle library to allow retrace on Wayland, headless etc.
+WAFFLE_BUILD_DEPENDS=	wayland-protocols>=0:graphics/wayland-protocols
 WAFFLE_LIB_DEPENDS=	libwaffle-1.so:graphics/waffle
 WAFFLE_CMAKE_BOOL=	ENABLE_WAFFLE
 
@@ -44,8 +47,6 @@ post-patch:
 
 post-install:
 	${RM} ${STAGEDIR}${DOCSDIR}/LICENSE.txt
-
-post-install-QT5-on:
 	${INSTALL_DATA} ${FILESDIR}/qapitrace.desktop ${STAGEDIR}${PREFIX}/share/applications
 
 .include <bsd.port.mk>

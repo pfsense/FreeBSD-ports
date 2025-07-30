@@ -11,8 +11,7 @@ LICENSE=	LGPL20 LGPL21
 LICENSE_COMB=	dual
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-USES=		gmake
-USE_OCAML=	yes
+USES=		gmake ocaml
 USE_GITHUB=	yes
 GH_ACCOUNT=	xavierleroy
 GH_TAGNAME=	${PORTNAME}${DISTVERSION:S/.//}
@@ -23,6 +22,12 @@ DOCSDIR=	${OCAML_DOCSDIR}/${PORTNAME}
 
 OPTIONS_DEFINE=		DOCS
 DOCS_BUILD_DEPENDS=	hevea>=0:textproc/hevea
+
+.include <bsd.port.options.mk>
+
+.if ${ARCH} == powerpc
+USE_BINUTILS=	yes
+.endif
 
 post-patch:
 	@${LN} -sf ${WRKSRC}/config/Makefile.unix ${WRKSRC}/config/Makefile

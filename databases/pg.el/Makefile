@@ -1,6 +1,6 @@
 PORTNAME=	pg.el
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.44
+DISTVERSION=	0.55
 CATEGORIES=	databases elisp
 PKGNAMESUFFIX=	${EMACS_PKGNAMESUFFIX}
 
@@ -9,9 +9,6 @@ COMMENT=	PostgreSQL Elisp interface
 WWW=		https://github.com/emarsden/pg-el
 
 LICENSE=	GPLv2+
-
-BUILD_DEPENDS=	peg.el${EMACS_PKGNAMESUFFIX}>1.0:devel/peg.el@${EMACS_FLAVOR}
-RUN_DEPENDS=	peg.el${EMACS_PKGNAMESUFFIX}>1.0:devel/peg.el@${EMACS_FLAVOR}
 
 USES=		emacs
 

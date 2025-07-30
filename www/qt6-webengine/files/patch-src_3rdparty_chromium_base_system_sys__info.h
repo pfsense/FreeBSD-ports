@@ -1,6 +1,6 @@
---- src/3rdparty/chromium/base/system/sys_info.h.orig	2023-10-11 18:22:24 UTC
+--- src/3rdparty/chromium/base/system/sys_info.h.orig	2024-05-21 18:07:39 UTC
 +++ src/3rdparty/chromium/base/system/sys_info.h
-@@ -266,6 +266,8 @@ class BASE_EXPORT SysInfo {
+@@ -325,6 +325,8 @@ class BASE_EXPORT SysInfo {
    static void ResetCpuSecurityMitigationsEnabledForTesting();
  #endif
  
@@ -9,7 +9,7 @@
   private:
    friend class test::ScopedAmountOfPhysicalMemoryOverride;
    FRIEND_TEST_ALL_PREFIXES(SysInfoTest, AmountOfAvailablePhysicalMemory);
-@@ -278,7 +280,7 @@ class BASE_EXPORT SysInfo {
+@@ -337,7 +339,7 @@ class BASE_EXPORT SysInfo {
    static HardwareInfo GetHardwareInfoSync();
  
  #if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_ANDROID) || \

@@ -664,6 +664,15 @@
 		<item>
 			<type>plugin_certificates</type>
 		</item>
+		<item>
+			<type>plugin_xmlrpc_send</type>
+		</item>
+		<item>
+			<type>plugin_xmlrpc_recv</type>
+		</item>
+		<item>
+			<type>plugin_xmlrpc_recv_done</type>
+		</item>
 	</plugins>
 	<custom_delete_php_command>
 		freeradius_users_resync();

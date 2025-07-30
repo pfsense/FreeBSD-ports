@@ -1,5 +1,6 @@
 PORTNAME=	bsh
 DISTVERSION=	2.1.1
+PORTREVISION=	1
 CATEGORIES=	lang java
 
 MAINTAINER=	ports@FreeBSD.org
@@ -8,12 +9,11 @@ WWW=		http://www.beanshell.org/
 
 LICENSE=	APACHE20
 
+USES=		java:ant,run
+JAVA_VERSION=	8
 USE_GITHUB=	yes
 GH_ACCOUNT=	beanshell
 GH_PROJECT=	beanshell
-
-USE_JAVA=	8
-USE_ANT=	yes
 
 CONFLICTS_INSTALL=	schilyutils # bin/bsh
 

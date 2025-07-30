@@ -1,5 +1,6 @@
 PORTNAME=	sqlcipher3
 DISTVERSION=	0.5.4
+PORTREVISION=	1
 CATEGORIES=	databases python
 #MASTER_SITES=	PYPI # no tests
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -20,6 +21,6 @@ USE_GITHUB=	yes
 GH_ACCOUNT=	coleifer
 
 post-install:
-	@${STRIP_CMD} ${STAGEDIR}${PYTHON_SITELIBDIR}/sqlcipher3/_sqlite3${PYTHON_EXT_SUFFIX}.so
+	@${STRIP_CMD} ${STAGEDIR}${PYTHON_SITELIBDIR}/sqlcipher3/_sqlite3${PYTHON_TAG}.so
 
 .include <bsd.port.mk>

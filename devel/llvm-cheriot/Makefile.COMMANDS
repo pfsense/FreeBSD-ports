@@ -1,11 +1,135 @@
-.include "${.CURDIR}/../llvm-cheri/Makefile.COMMANDS"
+LLVM_COMMANDS=	\
+		amdgpu-arch \
+		bugpoint \
+		dsymutil \
+		llc \
+		lli \
+		llvm-addr2line \
+		llvm-ar \
+		llvm-as \
+		llvm-bcanalyzer \
+		llvm-bitcode-strip \
+		llvm-cat \
+		llvm-cfi-verify \
+		llvm-cgdata \
+		llvm-config \
+		llvm-cov \
+		llvm-ctxprof-util \
+		llvm-cvtres \
+		llvm-cxxdump \
+		llvm-cxxfilt \
+		llvm-cxxmap \
+		llvm-debuginfo-analyzer \
+		llvm-debuginfod \
+		llvm-debuginfod-find \
+		llvm-diff \
+		llvm-dis \
+		llvm-dlltool \
+		llvm-dwarfdump \
+		llvm-dwarfutil \
+		llvm-dwp \
+		llvm-exegesis \
+		llvm-extract \
+		llvm-gsymutil \
+		llvm-ifs \
+		llvm-install-name-tool \
+		llvm-jitlink \
+		llvm-libtool-darwin \
+		llvm-link \
+		llvm-lipo \
+		llvm-mc \
+		llvm-mca \
+		llvm-ml \
+		llvm-modextract \
+		llvm-mt \
+		llvm-nm \
+		llvm-objcopy \
+		llvm-objdump \
+		llvm-opt-report \
+		llvm-otool \
+		llvm-pdbutil \
+		llvm-profdata \
+		llvm-profgen \
+		llvm-ranlib \
+		llvm-rc \
+		llvm-readelf \
+		llvm-readobj \
+		llvm-readtapi \
+		llvm-reduce \
+		llvm-remarkutil \
+		llvm-rtdyld \
+		llvm-sim \
+		llvm-size \
+		llvm-split \
+		llvm-stress \
+		llvm-strings \
+		llvm-strip \
+		llvm-symbolizer \
+		llvm-tblgen \
+		llvm-tli-checker \
+		llvm-undname \
+		llvm-windres \
+		llvm-xray \
+		nvptx-arch \
+		opt \
+		reduce-chunk-list \
+		sancov
 
-# Work around version skew with llvm-cheri
-# llvm 14 additions
-LLVM_COMMANDS:=	${LLVM_COMMANDS:Nllvm-debuginfod-find:Nllvm-tli-checker}
-CLANG_COMMANDS:=${CLANG_COMMANDS:Nclang-linker-wrapper:Nclang-nvlink-wrapper:Nclang-repl}
-# llvm 14 removals
-LLD_COMMANDS+=	ld64.lld.darwinnew ld64.lld.darwinold
-# llvm 15 additions
-LLVM_COMMANDS:=	${LLVM_COMMANDS:Nllvm-debuginfod:Nllvm-dwarfutil:Nllvm-remark-size-diff}
-CLANG_COMMANDS:=${CLANG_COMMANDS:Nclang-offload-packager}
+CLANG_COMMANDS=	\
+		analyze-build \
+		c-index-test \
+		clang \
+		clang++ \
+		clang-check \
+		clang-cpp \
+		clang-extdef-mapping \
+		clang-format \
+		clang-installapi \
+		clang-linker-wrapper \
+		clang-nvlink-wrapper \
+		clang-offload-bundler \
+		clang-offload-packager \
+		clang-repl \
+		clang-scan-deps \
+		clang-sycl-linker \
+		clang-tblgen \
+		diagtool \
+		hmaptool \
+		intercept-build \
+		scan-build \
+		scan-build-py \
+		scan-view
+
+EXTRAS_COMMANDS= \
+		clangd \
+		clang-apply-replacements \
+		clang-change-namespace \
+		clang-doc \
+		clang-include-fixer \
+		clang-move \
+		clang-query \
+		clang-reorder-fields \
+		clang-tidy \
+		find-all-symbols \
+		modularize \
+		pp-trace \
+		run-clang-tidy
+
+LIT_COMMANDS=	\
+		FileCheck \
+		lit \
+		llvm-lit
+
+LLD_COMMANDS=	\
+		ld.lld \
+		ld64.lld \
+		lld \
+		lld-link \
+		wasm-ld
+
+LLDB_COMMANDS=	\
+		lldb \
+		lldb-argdumper \
+		lldb-instr \
+		lldb-server \
+		lldb-vscode

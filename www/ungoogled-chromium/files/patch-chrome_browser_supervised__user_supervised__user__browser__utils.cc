@@ -1,4 +1,4 @@
---- chrome/browser/supervised_user/supervised_user_browser_utils.cc.orig	2024-11-16 12:20:41 UTC
+--- chrome/browser/supervised_user/supervised_user_browser_utils.cc.orig	2025-05-31 17:16:41 UTC
 +++ chrome/browser/supervised_user/supervised_user_browser_utils.cc
 @@ -40,7 +40,7 @@
  #include "chrome/browser/ash/profiles/profile_helper.h"

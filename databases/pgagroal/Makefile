@@ -1,7 +1,7 @@
 PORTNAME=	pgagroal
-PORTVERSION=	1.4.2
+DISTVERSION=	1.6.0
 CATEGORIES=	databases
-MASTER_SITES=	https://github.com/agroal/${PORTNAME}/releases/download/${PORTVERSION}/
+MASTER_SITES=	https://github.com/agroal/${PORTNAME}/releases/download/${DISTVERSION}/
 
 MAINTAINER=	bofh@FreeBSD.org
 COMMENT=	High-performance protocol-native connection pool for PostgreSQL
@@ -9,8 +9,11 @@ WWW=		https://agroal.github.io/pgagroal/
 
 LICENSE=	BSD3CLAUSE
 
+BROKEN_armv7=	wants long to be a 64 bit type
+
 BUILD_DEPENDS=	rst2man:textproc/py-docutils
-LIB_DEPENDS=	libev.so:devel/libev
+LIB_DEPENDS=	libcjson.so:devel/libcjson \
+		libev.so:devel/libev
 
 USES=		cmake pathfix ssl
 USE_LDCONFIG=	yes
@@ -24,7 +27,8 @@ GROUPS=		pgagroal
 PLIST_SUB+=	PGAGROAL_GROUP="${GROUPS}" \
 		PGAGROAL_LOGDIR="${PGAGROAL_LOGDIR}" \
 		PGAGROAL_RUNDIR="${PGAGROAL_RUNDIR}" \
-		PGAGROAL_USER="${USERS}"
+		PGAGROAL_USER="${USERS}"  \
+		PORTVERSION="${DISTVERSION}"
 
 PGAGROAL_GROUP?=	pgagroal
 PGAGROAL_USER?=		pgagroal
@@ -37,11 +41,6 @@ post-patch:
 		${WRKSRC}/doc/etc/pgagroal.conf.sample
 	@${MV} ${WRKSRC}/doc/etc/pgagroal_hba.conf \
 		${WRKSRC}/doc/etc/pgagroal_hba.conf.sample
-	@${REINPLACE_CMD} 's|etc/pgagroal.conf|etc/pgagroal.conf.sample|g; \
-		s|etc/pgagroal_hba.conf|etc/pgagroal_hba.conf.sample|g' \
-		${WRKSRC}/doc/CMakeLists.txt
-	@${REINPLACE_CMD} 's|pgagraol.%d.pid|pgagroal.pid|g' \
-		${WRKSRC}/src/libpgagroal/configuration.c
 
 post-install:
 	@${MKDIR} ${STAGEDIR}${PGAGROAL_RUNDIR} \

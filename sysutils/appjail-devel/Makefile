@@ -1,10 +1,10 @@
 PORTNAME=	appjail
-DISTVERSION=	3.5.0.20241212
+DISTVERSION=	4.1.0.20250707
 PORTEPOCH=	1
 CATEGORIES=	sysutils
 PKGNAMESUFFIX=	-devel
 
-MAINTAINER=	acm@FreeBSD.org
+MAINTAINER=	dtxdf@FreeBSD.org
 COMMENT=	Simple and easy-to-use tool for creating portable jails (devel)
 WWW=		https://github.com/DtxdF/AppJail
 
@@ -16,7 +16,7 @@ CONFLICTS=	appjail
 USE_GITHUB=	yes
 GH_ACCOUNT=	DtxdF
 GH_PROJECT=	AppJail
-GH_TAGNAME=	4b5095673b23159c4a789a4916a23ac9ed5ea439
+GH_TAGNAME=	4f27673ecffdc7122c0d79241e0c0ec5eae363d8
 
 MAKE_ARGS=	APPJAIL_VERSION=${DISTVERSION}+${GH_TAGNAME}
 ALL_TARGET=	utils-strip
@@ -37,12 +37,12 @@ GIT_RUN_DEPENDS=		git>0:devel/git
 OCI_RUN_DEPENDS=		buildah>0:sysutils/buildah \
 				jq>0:textproc/jq
 
-do-install-DOCS-on:
-	@${MKDIR} ${STAGEDIR}/${DOCSDIR}
-	${INSTALL_DATA} ${WRKSRC}/README.md ${STAGEDIR}/${DOCSDIR}
-
 post-install:
 	${MKDIR} ${STAGEDIR}/${ETCDIR}
 	${INSTALL_DATA} ${WRKSRC}/share/examples/appjail/appjail.conf ${STAGEDIR}/${ETCDIR}/appjail.conf.sample
+
+post-install-DOCS-on:
+	@${MKDIR} ${STAGEDIR}/${DOCSDIR}
+	${INSTALL_DATA} ${WRKSRC}/README.md ${STAGEDIR}/${DOCSDIR}
 
 .include <bsd.port.mk>

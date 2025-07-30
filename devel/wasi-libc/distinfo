@@ -1,5 +1,5 @@
-TIMESTAMP = 1732667648
-SHA256 (WebAssembly-wasi-libc-wasi-sdk-24-13-gc47daaf_GH0.tar.gz) = 52901413c8661c07627d3489e17fe7f70ab890750d7bd6ec11660472a112e2da
-SIZE (WebAssembly-wasi-libc-wasi-sdk-24-13-gc47daaf_GH0.tar.gz) = 1433925
+TIMESTAMP = 1743009354
+SHA256 (WebAssembly-wasi-libc-wasi-sdk-25-14-ge9524a0_GH0.tar.gz) = 2a547e2177cea793ceda2fbbbdf6c102155c70e717f63ab9d832a85d4d1753ef
+SIZE (WebAssembly-wasi-libc-wasi-sdk-25-14-ge9524a0_GH0.tar.gz) = 1444692
 SHA256 (WebAssembly-WASI-59cbe14_GH0.tar.gz) = 4e36c4add2421b44ccdded83d442d9aadf02ffa8b534d94016fad2bb7b781cc6
 SIZE (WebAssembly-WASI-59cbe14_GH0.tar.gz) = 162059

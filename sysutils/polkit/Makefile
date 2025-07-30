@@ -1,5 +1,6 @@
 PORTNAME=	polkit
 DISTVERSION=	125
+PORTREVISION=	1
 CATEGORIES=	sysutils gnome
 
 MAINTAINER=	desktop@FreeBSD.org
@@ -47,7 +48,7 @@ SPIDERMONKEY_DESC=	SpiderMonkey JavaScript backend
 DUKTAPE_LIB_DEPENDS=	libduktape.so:lang/duktape-lib
 DUKTAPE_MESON_ON=	-Djs_engine='duktape'
 
-SPIDERMONKEY_LIB_DEPENDS=	libmozjs-102.so:lang/spidermonkey102
+SPIDERMONKEY_LIB_DEPENDS=	libmozjs-115.so:lang/spidermonkey115
 SPIDERMONKEY_MESON_ON=		-Djs_engine='mozjs'
 
 MANPAGES_BUILD_DEPENDS=	docbook-sgml>0:textproc/docbook-sgml \

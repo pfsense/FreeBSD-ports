@@ -1,8 +1,8 @@
---- base/threading/platform_thread_posix.cc.orig	2024-06-25 12:08:48 UTC
+--- base/threading/platform_thread_posix.cc.orig	2025-05-07 06:48:23 UTC
 +++ base/threading/platform_thread_posix.cc
-@@ -77,11 +77,11 @@ void* ThreadFunc(void* params) {
-     if (!thread_params->joinable)
+@@ -79,11 +79,11 @@ void* ThreadFunc(void* params) {
        base::DisallowSingleton();
+     }
  
 -#if PA_BUILDFLAG(USE_PARTITION_ALLOC_AS_MALLOC)
 +#if PA_BUILDFLAG(USE_PARTITION_ALLOC_AS_MALLOC) && !BUILDFLAG(IS_BSD)
@@ -14,16 +14,16 @@
  #if BUILDFLAG(IS_APPLE)
      PlatformThread::SetCurrentThreadRealtimePeriodValue(
          delegate->GetRealtimePeriod());
-@@ -265,6 +265,8 @@ PlatformThreadId PlatformThreadBase::CurrentId() {
-   return reinterpret_cast<int32_t>(pthread_self());
+@@ -272,6 +272,8 @@ PlatformThreadId PlatformThreadBase::CurrentId() {
+   return PlatformThreadId(reinterpret_cast<int32_t>(pthread_self()));
  #elif BUILDFLAG(IS_POSIX) && BUILDFLAG(IS_AIX)
-   return pthread_self();
+   return PlatformThreadId(pthread_self());
 +#elif BUILDFLAG(IS_BSD)
-+  return reinterpret_cast<uint64_t>(pthread_self());
++  return PlatformThreadId(reinterpret_cast<uint64_t>(pthread_self()));
  #elif BUILDFLAG(IS_POSIX) && !BUILDFLAG(IS_AIX)
-   return reinterpret_cast<int64_t>(pthread_self());
+   return PlatformThreadId(reinterpret_cast<int64_t>(pthread_self()));
  #endif
-@@ -355,7 +357,7 @@ void PlatformThreadBase::Detach(PlatformThreadHandle t
+@@ -365,7 +367,7 @@ void PlatformThreadBase::Detach(PlatformThreadHandle t
  
  // static
  bool PlatformThreadBase::CanChangeThreadType(ThreadType from, ThreadType to) {
@@ -32,7 +32,7 @@
    return false;
  #else
    if (from >= to) {
-@@ -376,6 +378,9 @@ void SetCurrentThreadTypeImpl(ThreadType thread_type,
+@@ -386,6 +388,9 @@ void SetCurrentThreadTypeImpl(ThreadType thread_type,
                                MessagePumpType pump_type_hint) {
  #if BUILDFLAG(IS_NACL)
    NOTIMPLEMENTED();
@@ -40,9 +40,9 @@
 +#elif BUILDFLAG(IS_BSD)
 +   NOTIMPLEMENTED();
  #else
-   if (internal::SetCurrentThreadTypeForPlatform(thread_type, pump_type_hint))
+   if (internal::SetCurrentThreadTypeForPlatform(thread_type, pump_type_hint)) {
      return;
-@@ -398,7 +403,7 @@ void SetCurrentThreadTypeImpl(ThreadType thread_type,
+@@ -409,7 +414,7 @@ void SetCurrentThreadTypeImpl(ThreadType thread_type,
  
  // static
  ThreadPriorityForTest PlatformThreadBase::GetCurrentThreadPriorityForTest() {

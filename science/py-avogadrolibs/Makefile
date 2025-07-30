@@ -1,5 +1,5 @@
 PORTNAME=	avogadrolibs
-DISTVERSION=	1.99.0
+DISTVERSION=	1.100.0
 CATEGORIES=	science
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
@@ -26,7 +26,7 @@ CMAKE_ARGS=	-DINSTALL_LIBRARY_DIR:STRING=${PYTHON_SITELIBDIR}
 PLIST_FILES=	${PYTHON_SITELIBDIR}/avogadro/__init__.py \
 		${PYTHON_SITELIBDIR}/avogadro/cjson.py \
 		${PYTHON_SITELIBDIR}/avogadro/connect.py \
-		${PYTHON_SITELIBDIR}/avogadro/core${PYTHON_EXT_SUFFIX}.so \
-		${PYTHON_SITELIBDIR}/avogadro/io${PYTHON_EXT_SUFFIX}.so
+		${PYTHON_SITELIBDIR}/avogadro/core${PYTHON_TAG}.so \
+		${PYTHON_SITELIBDIR}/avogadro/io${PYTHON_TAG}.so
 
 .include <bsd.port.mk>

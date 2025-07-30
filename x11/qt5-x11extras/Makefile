@@ -10,5 +10,6 @@ USES=		compiler:c++11-lang perl5 qmake qt-dist:5,x11extras perl5
 USE_PERL5=	extract
 USE_QT=		core gui \
 		buildtools:build # syncqt
+USE_LDCONFIG=	${PREFIX}/${QT_LIBDIR_REL}
 
 .include <bsd.port.mk>

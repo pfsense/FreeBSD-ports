@@ -1,6 +1,6 @@
 PORTNAME=	afterstep
 PORTVERSION=	2.2.12
-PORTREVISION=	11
+PORTREVISION=	12
 CATEGORIES=	x11-wm afterstep
 MASTER_SITES=	AFTERSTEP/stable
 DISTNAME=	AfterStep-${PORTVERSION}
@@ -19,7 +19,7 @@ RUN_DEPENDS=	xli:graphics/xli
 
 USES=		gmake gnome jpeg pkgconfig shebangfix tar:bzip2 xorg
 USE_CSTD=	gnu89
-USE_GNOME=	atk cairo gdkpixbuf2 glib20 gtk20 librsvg2 pango
+USE_GNOME=	atk cairo gdkpixbuf glib20 gtk20 librsvg2 pango
 USE_XORG+=	ice sm x11 xcomposite xcursor xdamage xext xfixes xi xinerama \
 		xrandr xrender
 GNU_CONFIGURE=	yes

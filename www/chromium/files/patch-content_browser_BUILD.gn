@@ -1,6 +1,6 @@
---- content/browser/BUILD.gn.orig	2024-11-14 07:57:23 UTC
+--- content/browser/BUILD.gn.orig	2025-07-02 06:08:04 UTC
 +++ content/browser/BUILD.gn
-@@ -2434,6 +2434,14 @@ source_set("browser") {
+@@ -2580,6 +2580,14 @@ source_set("browser") {
      ]
    }
  
@@ -13,12 +13,12 @@
 +  }
 +
    if (is_linux || is_chromeos) {
-     sources += [
-       "child_process_launcher_helper_linux.cc",
-@@ -2477,6 +2485,15 @@ source_set("browser") {
+     sources -=
+         [ "file_system_access/file_path_watcher/file_path_watcher_stub.cc" ]
+@@ -2628,6 +2636,15 @@ source_set("browser") {
    if (allow_oop_video_decoder) {
-     sources += [ "media/stable_video_decoder_factory.cc" ]
-     deps += [ "//media/mojo/mojom/stable:stable_video_decoder" ]
+     sources += [ "media/oop_video_decoder_factory.cc" ]
+     deps += [ "//media/mojo/mojom" ]
 +  }
 +
 +  if (is_bsd) {

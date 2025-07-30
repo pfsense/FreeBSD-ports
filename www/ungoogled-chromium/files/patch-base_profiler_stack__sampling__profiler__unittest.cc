@@ -1,6 +1,6 @@
---- base/profiler/stack_sampling_profiler_unittest.cc.orig	2024-08-26 14:40:28 UTC
+--- base/profiler/stack_sampling_profiler_unittest.cc.orig	2025-04-15 08:30:07 UTC
 +++ base/profiler/stack_sampling_profiler_unittest.cc
-@@ -45,7 +45,7 @@
+@@ -47,7 +47,7 @@
  
  #include <intrin.h>
  #include <malloc.h>

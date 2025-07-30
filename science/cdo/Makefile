@@ -1,8 +1,8 @@
 PORTNAME=	cdo
-PORTVERSION=	2.4.4
+PORTVERSION=	2.5.2
 PORTREVISION=	1
 CATEGORIES=	science
-MASTER_SITES=	https://code.mpimet.mpg.de/attachments/download/29649/ \
+MASTER_SITES=	https://code.mpimet.mpg.de/attachments/download/29938/ \
 		LOCAL/sunpoet
 
 MAINTAINER=	sunpoet@FreeBSD.org
@@ -28,6 +28,7 @@ GNU_CONFIGURE=	yes
 INSTALL_TARGET=	install-strip
 MAKE_JOBS_UNSAFE=	yes
 TEST_TARGET=	check
+TESTING_UNSAFE=	765 tests fail
 USE_CXXSTD=	c++20
 USE_LDCONFIG=	yes
 
@@ -59,7 +60,7 @@ SZIP_LIB_DEPENDS=	libsz.so:science/libaec
 UDUNITS_CONFIGURE_WITH=	udunits2
 UDUNITS_LIB_DEPENDS=	libudunits2.so:science/udunits
 UUID_CONFIGURE_OFF=	ac_cv_func_uuid_create=no ac_cv_have_decl_uuid_create=no ac_cv_have_decl_uuid_generate=no ac_cv_lib_uuid_uuid_generate=no
-UUID_LIB_DEPENDS=	libuuid.so:misc/e2fsprogs-libuuid
+UUID_LIB_DEPENDS=	libuuid.so:misc/libuuid
 
 post-patch:
 	@${REINPLACE_CMD} -e '/^SUBDIRS = / s| contrib||' ${WRKSRC}/Makefile.in

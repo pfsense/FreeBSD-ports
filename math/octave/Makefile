@@ -47,7 +47,7 @@ LIB_DEPENDS=	libamd.so:math/suitesparse-amd \
 		libsundials_arkode.so:math/sundials \
 		libumfpack.so:math/suitesparse-umfpack
 
-USES=		charsetfix compiler:c++14-lang desktop-file-utils fortran gl \
+USES=		charsetfix compiler:c++17-lang desktop-file-utils fortran gl \
 		gmake iconv libtool localbase:ldflags ncurses octave:env perl5 \
 		pkgconfig readline tar:xz xorg
 USE_LDCONFIG=	${PREFIX}/lib/${PORTNAME}/${PORTVERSION}
@@ -103,7 +103,7 @@ QT6_LIB_DEPENDS=	libqscintilla2_qt6.so:devel/qscintilla2@qt6
 
 DOCS_USES=	tex
 DOCS_USE=	TEX=dvipsk:build,formats:build
-JAVA_USE=	JAVA=yes
+JAVA_USES=	java
 JAVA_CFLAGS=	-I${JAVA_HOME}/include/${OPSYS:tl}
 QT6_USES=	qt:6
 OPENBLAS_USES=	blaslapack:openblas

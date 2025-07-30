@@ -1,5 +1,6 @@
 PORTNAME=	pqiv
 PORTVERSION=	2.13.2
+PORTREVISION=	3
 CATEGORIES=	graphics
 
 MAINTAINER=	danilo@FreeBSD.org
@@ -32,7 +33,7 @@ WAND_DESC=		ImageMagick image processing support
 OPTIONS_DEFAULT=	GTK3 LIBARCHIVE LIBAV PIXBUF POPPLER WEBP
 
 USE_XORG=	x11
-USE_GNOME=	cairo gdkpixbuf2
+USE_GNOME=	cairo gdkpixbuf
 HAS_CONFIGURE=	yes
 
 LIBARCHIVE_CONFIGURE_WITH=	archive archive_cbx

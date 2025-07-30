@@ -1,4 +1,4 @@
---- components/supervised_user/core/browser/supervised_user_preferences.cc.orig	2024-11-04 08:56:03 UTC
+--- components/supervised_user/core/browser/supervised_user_preferences.cc.orig	2025-05-07 06:48:23 UTC
 +++ components/supervised_user/core/browser/supervised_user_preferences.cc
 @@ -147,7 +147,7 @@ void RegisterProfilePrefs(PrefRegistrySimple* registry
    registry->RegisterBooleanPref(prefs::kChildAccountStatusKnown, false);

@@ -1,5 +1,5 @@
---- src/external/cpython/Makefile.pre.in.orig	2024-10-20 14:05:43.000000000 -0700
-+++ src/external/cpython/Makefile.pre.in	2024-10-20 18:54:46.292821000 -0700
+--- src/external/cpython/Makefile.pre.in	2025-04-08 07:15:29.000000000 -0700
++++ src/external/cpython/Makefile.pre.in	2025-05-09 18:15:10.761567000 -0700
 @@ -71,14 +71,14 @@
  INSTALL_DATA=	@INSTALL_DATA@
  # Shared libraries must be installed with executable mode on some systems;
@@ -66,7 +66,7 @@
  			$$ensurepip --root=$(DESTDIR)/ ; \
  	fi
  
-@@ -2144,38 +2144,10 @@
+@@ -2144,37 +2144,9 @@
  		$(INSTALL_DATA) $(srcdir)/Modules/xxmodule.c \
  			$(DESTDIR)$(LIBDEST)/distutils/tests ; \
  	fi
@@ -80,8 +80,7 @@
 -		-j0 -d $(LIBDEST) -f \
 -		-x 'bad_coding|badsyntax|site-packages|lib2to3/tests/data' \
 -		$(DESTDIR)$(LIBDEST)
-+		$(PYTHON_FOR_BUILD) -B -m lib2to3.pgen2.driver $(DESTDIR)$(LIBDEST)/lib2to3/Grammar.txt
- 	-PYTHONPATH=$(DESTDIR)$(LIBDEST) $(RUNSHARED) \
+-	-PYTHONPATH=$(DESTDIR)$(LIBDEST) $(RUNSHARED) \
 -		$(PYTHON_FOR_BUILD) -Wi -OO $(DESTDIR)$(LIBDEST)/compileall.py \
 -		-j0 -d $(LIBDEST) -f \
 -		-x 'bad_coding|badsyntax|site-packages|lib2to3/tests/data' \
@@ -102,11 +101,20 @@
 -		$(PYTHON_FOR_BUILD) -m lib2to3.pgen2.driver $(DESTDIR)$(LIBDEST)/lib2to3/Grammar.txt
 -	-PYTHONPATH=$(DESTDIR)$(LIBDEST) $(RUNSHARED) \
 -		$(PYTHON_FOR_BUILD) -m lib2to3.pgen2.driver $(DESTDIR)$(LIBDEST)/lib2to3/PatternGrammar.txt
--
++		$(PYTHON_FOR_BUILD) -B -m lib2to3.pgen2.driver $(DESTDIR)$(LIBDEST)/lib2to3/Grammar.txt
 +		$(PYTHON_FOR_BUILD) -B -m lib2to3.pgen2.driver $(DESTDIR)$(LIBDEST)/lib2to3/PatternGrammar.txt
+ 
  # bpo-21536: Misc/python-config.sh is generated in the build directory
  # from $(srcdir)Misc/python-config.sh.in.
- python-config: $(srcdir)/Misc/python-config.in Misc/python-config.sh
+@@ -2235,7 +2207,7 @@
+ LIBPL=		@LIBPL@
+ 
+ # pkgconfig directory
+-LIBPC=		$(LIBDIR)/pkgconfig
++LIBPC=		$(prefix)/libdata/pkgconfig
+ 
+ libainstall: all python-config
+ 	@for i in $(LIBDIR) $(LIBPL) $(LIBPC) $(BINDIR); \
 @@ -2292,7 +2264,7 @@
  # Install the dynamically loadable modules
  # This goes into $(exec_prefix)

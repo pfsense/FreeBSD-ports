@@ -1,7 +1,7 @@
 PORTNAME=	ringrtc
 DISTVERSIONPREFIX=	v
-DISTVERSION=	2.48.7
-PORTREVISION=	2
+DISTVERSION=	2.53.0
+PORTREVISION=	1
 CATEGORIES=	multimedia
 MASTER_SITES=	LOCAL/mikael/ringrtc/:base \
 		LOCAL/mikael/ringrtc/:boringssl \
@@ -10,7 +10,6 @@ MASTER_SITES=	LOCAL/mikael/ringrtc/:base \
 		LOCAL/mikael/ringrtc/:catapult \
 		LOCAL/mikael/ringrtc/:icu \
 		LOCAL/mikael/ringrtc/:nasm \
-		LOCAL/mikael/ringrtc/:libcubeb \
 		LOCAL/mikael/ringrtc/:libjpeg_turbo \
 		LOCAL/mikael/ringrtc/:libsrtp \
 		LOCAL/mikael/ringrtc/:libvpx \
@@ -18,6 +17,7 @@ MASTER_SITES=	LOCAL/mikael/ringrtc/:base \
 		LOCAL/mikael/ringrtc/:opus \
 		LOCAL/mikael/ringrtc/:perfetto \
 		LOCAL/mikael/ringrtc/:protobufjs \
+		LOCAL/mikael/ringrtc/:re2 \
 		LOCAL/mikael/ringrtc/:testing \
 		LOCAL/mikael/ringrtc/:third_party \
 		LOCAL/mikael/ringrtc/:tools
@@ -28,7 +28,6 @@ DISTFILES=	base-${BASE_REV}.tar.gz:base \
 		catapult-${CATAPULT_REV}.tar.gz:catapult \
 		icu-${ICU_REV}.tar.gz:icu \
 		nasm-${NASM_REV}.tar.gz:nasm \
-		libcubeb-${LIBCUBEB_VER}.tar.gz:libcubeb \
 		libjpeg_turbo-${LIBJPEG_TURBO_REV}.tar.gz:libjpeg_turbo \
 		libsrtp-${LIBSRTP_REV}.tar.gz:libsrtp \
 		libvpx-${LIBVPX_REV}.tar.gz:libvpx \
@@ -36,6 +35,7 @@ DISTFILES=	base-${BASE_REV}.tar.gz:base \
 		opus-${OPUS_REV}.tar.gz:opus \
 		perfetto-${PERFETTO_REV}.tar.gz:perfetto \
 		protobuf_javascript-${PROTOBUFJS_REV}.tar.gz:protobufjs \
+		re2-${RE2_REV}.tar.gz:re2 \
 		testing-${TESTING_REV}.tar.gz:testing \
 		third_party-${THIRD_PARTY_REV}.tar.gz:third_party \
 		tools-${TOOLS_REV}.tar.gz:tools
@@ -65,31 +65,32 @@ GH_TUPLE=	signalapp:ringrtc:${DISTVERSIONPREFIX}${DISTVERSION} \
 		signalapp:webrtc:${WEBRTC_REV}:webrtc
 
 # sh net-im/signal-desktop/get_deps.sh
-WEBRTC_REV=	6723a
+WEBRTC_REV=	7103d
 
 # modify webrtc_fetch.sh, then sh webrtc_fetch.sh
-BASE_REV=		7f2a56694b330c2cb2954eee78469ffc69952448
-BORINGSSL_REV=		e724ef02089bf2bb494203231fc5cb62acc2fad6
-BUILD_REV=		8e0612cd2c4e4d7c15a456384760815bdbd64ef1
-BUILDTOOLS_REV=		e4f992c0660e6cee637c7b97aabf04d0a58d5555
-CATAPULT_REV=		296226a4a0067c8cffeb8831fb87526a8035f3cc
-ICU_REV=		9408c6fd4a39e6fef0e1c4077602e1c83b15f3fb
-LIBCUBEB_VER=		0.17.1
-LIBJPEG_TURBO_REV=	927aabfcd26897abb9776ecf2a6c38ea5bb52ab6
-LIBSRTP_REV=		000edd791434c8738455f10e0dd6b268a4852c0b
-LIBVPX_REV=		fbf63dff1f528d44f24bd662abb89fd01a4a1c25
-LIBYUV_REV=		874f391dbf13dcc84e13a494daed57539ffe2935
-NASM_REV=		f477acb1049f5e043904b87b825c5915084a9a29
+BASE_REV=		1d80e43078965dbe6ded5521fbffb128f59124a6
+BORINGSSL_REV=		a9993612faac4866bc33ca8ff37bfd0659af1c48
+BUILD_REV=		52d62707eaec02b88722a99e335315d166ceda77
+BUILDTOOLS_REV=		6f359296daa889aa726f3d05046b9f37be241169
+CATAPULT_REV=		5bda0fdab9d93ec9963e2cd858c7b49ad7fec7d4
+ICU_REV=		c9fb4b3a6fb54aa8c20a03bbcaa0a4a985ffd34b
+LIBCUBEB_VER=		0.27.0
+LIBJPEG_TURBO_REV=	e14cbfaa85529d47f9f55b0f104a579c1061f9ad
+LIBSRTP_REV=		a52756acb1c5e133089c798736dd171567df11f5
+LIBVPX_REV=		027bbee30a0103b99d86327b48d29567fed11688
+LIBYUV_REV=		ccdf870348764e4b77fa3b56accb2a896a901bad
+NASM_REV=		767a169c8811b090df222a458b25dfa137fc637e
 OPUS_REV=		0e30966b198ad28943799eaf5b3b08100b6f70c3
-PERFETTO_REV=		97a5d7ed4d7ddb3844a5cbd184e241b99fe6ebcc
-PROTOBUFJS_REV=		e34549db516f8712f678fcd4bc411613b5cc5295
-TESTING_REV=		3f4138fcb15362469527d9310e21600dfdfab691
-THIRD_PARTY_REV=	27c9b4efc25d7ae5479b884a7d818058c6066d92
-TOOLS_REV=		453f7ad001cd0d341ecb437eb164fd6c4b5cc08d
+PERFETTO_REV=		40b529923598b739b2892a536a7692eedbed5685
+PROTOBUFJS_REV=		eb785a9363664a402b6336dfe96aad27fb33ffa8
+RE2_REV=		c84a140c93352cdabbfb547c531be34515b12228
+TESTING_REV=		f46b86c7f1fc7a7f52e61c11dbd0573a48cf7a6a
+THIRD_PARTY_REV=	10064104c1f11074312018c3a9c4b66f25584bdd
+TOOLS_REV=		3460fbcdee33353d37800dad5caa6bba327ad8c8
 
 BINARY_ALIAS=	vpython3=${PYTHON_CMD}
 
-# Keep in sync with https://github.com/signalapp/ringrtc/blob/v${DISTVERSION}/bin/build-electron#L101
+# Keep in sync with https://github.com/signalapp/ringrtc/blob/v2.53.0/bin/build-desktop#L130
 # Run "gn args out/release --list" for all variables.
 # Some parts don't have use_system_* flag, and can be turned on/off by using
 # replace_gn_files.py script, some parts just turned on/off for target host
@@ -101,7 +102,8 @@ GN_ARGS+=	rtc_build_examples=false \
 		rtc_use_x11=false \
 		rtc_enable_sctp=false \
 		rtc_libvpx_build_vp9=true \
-		rtc_include_ilbc=false \
+		rtc_disable_metrics=true \
+		rtc_disable_trace_events=true \
 		clang_use_chrome_plugins=false \
 		fatal_linker_warnings=false \
 		is_clang=true \
@@ -116,10 +118,6 @@ GN_ARGS+=	rtc_build_examples=false \
 		use_udev=false \
 		extra_cxxflags="${CXXFLAGS}" \
 		extra_ldflags="${LDFLAGS}"
-NPM_RINGRTC_DIR=	npm-@signalapp-ringrtc-2.36.0-67d1b48bd4c1ea31c155ea14a0bd28f04e46eff5-integrity
-NPM_SIGNAL_DIR=	npm-@signalapp-libsignal-client-0.39.1-15b41f15c516ae3eecf8a098a9c9c7aac00444d7-integrity
-NPM_SQLITE3_DIR=	npm-@signalapp-better-sqlite3-8.6.0-0413f4d0626b99838cd64ad09c88720aa2bec6ed-integrity
-SQLCIPHER=	sqlcipher-4.5.5-fts5-fix--3.0.7--0.2.1-ef53ea45ed92b928ecfd33c552d8d405263e86e63dec38e1ec63e1b0193b630b
 
 MAKE_ARGS=	-C out/${BUILDTYPE}
 
@@ -130,9 +128,15 @@ CARGO_INSTALL=		no
 
 USE_LDCONFIG=	yes
 
-MAKE_ENV=	OUTPUT_DIR=${WEBRTCDIR}/out
+MAKE_ENV+=	OUTPUT_DIR=${WEBRTCDIR}/out
 
 PLIST_FILES=	lib/libringrtc.so
+
+RUSTC_VERSION!= rustc -V 2>/dev/null || true
+MAKE_ENV+=	RUSTC_BOOTSTRAP=1
+GN_ARGS+=	enable_rust=true \
+		rust_sysroot_absolute="${LOCALBASE}" \
+		rustc_version="${RUSTC_VERSION}"
 
 post-extract:
 	${MKDIR} ${WRKDIR}/${PORTNAME}-${DISTVERSION}/src/webrtc
@@ -153,14 +157,14 @@ post-extract:
 	${MV} ${WRKDIR}/opus ${WEBRTCDIR}/ringrtc/opus/src
 	${MV} ${WRKDIR}/perfetto ${WEBRTCDIR}/third_party
 	${MV} ${WRKDIR}/protobuf_javascript ${WEBRTCDIR}/third_party/protobuf-javascript/src
+	${MV} ${WRKDIR}/re2 ${WEBRTCDIR}/third_party/re2/src
 	${MV} ${WRKDIR}/tools ${WEBRTCDIR}
 
 post-patch:
 	${REINPLACE_CMD} "s|LOCALBASE|${LOCALBASE}|" \
 		${WEBRTCDIR}/build/toolchain/gcc_toolchain.gni \
 		${WEBRTCDIR}/buildtools/third_party/libc++/BUILD.gn
-	${REINPLACE_CMD} "s|WRKDIR|${WRKDIR}|" \
-		${WRKSRC}/cargo-crates/cubeb-sys-0.17.0/build.rs
+	${RM} -r ${CARGO_VENDOR_DIR}/cubeb-sys-${LIBCUBEB_VER}/libcubeb/src/cubeb-pulse-rs
 
 	${ECHO_CMD} "# Generated from 'DEPS'" > ${WEBRTCDIR}/build/config/gclient_args.gni
 	${ECHO_CMD} 1591703586 > ${WEBRTCDIR}/build/util/LASTCHANGE.committime
@@ -174,10 +178,8 @@ pre-build:
 	cd ${WEBRTCDIR} \
 		&& ${MAKE_ENV} CC=ccache CXX=ccache ninja -C out/release
 
-# it's not intended to be used outside of signal-desktop, put that in
-# /usr/local/share/ringrtc instead?
 do-install:
-	${INSTALL_LIB} ${CARGO_TARGET_DIR}/${CARGO_BUILD_TARGET}/release/libringrtc.so \
+	${INSTALL_LIB} ${CARGO_TARGET_DIR}/release/libringrtc.so \
 		${STAGEDIR}${PREFIX}/lib/
 
 .include <bsd.port.mk>

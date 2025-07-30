@@ -1,5 +1,5 @@
 PORTNAME=	fcitx5-chinese-addons
-DISTVERSION=	5.1.7
+DISTVERSION=	5.1.8
 PORTREVISION=	1
 CATEGORIES=	chinese textproc
 MASTER_SITES=	https://download.fcitx-im.org/fcitx5/${PORTNAME}/ \

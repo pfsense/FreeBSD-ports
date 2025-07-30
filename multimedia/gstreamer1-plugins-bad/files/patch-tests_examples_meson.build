@@ -1,11 +1,12 @@
---- tests/examples/meson.build.orig	2024-09-19 10:01:21 UTC
+--- tests/examples/meson.build.orig	2025-03-11 20:14:44 UTC
 +++ tests/examples/meson.build
-@@ -1,26 +1,72 @@
+@@ -1,27 +1,75 @@
 -subdir('audiomixmatrix')
 -subdir('avsamplesink')
 -subdir('camerabin2')
 -subdir('codecparsers')
 -subdir('codecs')
+-subdir('cuda')
 -subdir('d3d11')
 -subdir('d3d12')
 -subdir('directfb')
@@ -30,7 +31,7 @@
 +if get_option('applemedia').enabled()
 +  subdir('avsamplesink')
 +endif
-+if get_option('camerabin2').enabled()
++if get_option('camerabin2').enabled() and use_wayland
 +  subdir('camerabin2', if_found: gtk_dep)
 +endif
 +if get_option('codecparsers').enabled()
@@ -38,6 +39,9 @@
 +endif
 +if get_option('codecs').enabled()
 +  subdir('codecs')
++endif
++if get_option('cuda').enabled()
++  subdir('cuda')
 +endif
 +if get_option('d3d11').enabled()
 +  subdir('d3d11')
@@ -63,7 +67,7 @@
 +if get_option('msdk').enabled()
 +  subdir('msdk')
 +endif
-+if get_option('mxf').enabled()
++if get_option('mxf').enabled() and use_wayland
 +  subdir('mxf', if_found: gtk_dep)
 +endif
 +if get_option('nvcodec').enabled()

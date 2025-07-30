@@ -1,5 +1,5 @@
 PORTNAME=	syslog-ng
-DISTVERSION=	4.8.1
+DISTVERSION=	4.8.2
 PORTREVISION=	3
 CATEGORIES=	sysutils
 # official master site:
@@ -16,7 +16,7 @@ LICENSE_COMB=	multi
 LICENSE_FILE=	${WRKSRC}/COPYING
 
 LIB_DEPENDS=	libpcre2-8.so:devel/pcre2 \
-		libuuid.so:misc/e2fsprogs-libuuid \
+		libuuid.so:misc/libuuid \
 		libivykis.so:devel/ivykis
 
 USES=		autoreconf:build compiler:c11 cpe gettext-runtime gmake gnome \
@@ -118,7 +118,7 @@ JSON_PLIST_FILES=		lib/syslog-ng/libjson-plugin.so \
 				share/syslog-ng/include/scl/cim/template.conf
 
 JAVA_CONFIGURE_ENABLE=		java
-JAVA_USE=			JAVA=yes
+JAVA_USES=			java
 JAVA_PLIST_FILES=		lib/syslog-ng/libmod-java.so \
 				lib/syslog-ng/java-modules/syslog-ng-core.jar
 
@@ -157,20 +157,20 @@ PYTHON_CONFIGURE_OFF=		--disable-python
 PYTHON_PLIST_FILES=		lib/syslog-ng/libmod-python.so \
 		etc/python/README.md \
 		lib/syslog-ng/python/requirements.txt \
-		lib/syslog-ng/python/syslogng/__pycache__/confgen%%PYTHON_EXT_SUFFIX%%.pyc \
+		lib/syslog-ng/python/syslogng/__pycache__/confgen%%PYTHON_TAG%%.pyc \
 		lib/syslog-ng/python/syslogng/confgen.py \
 		lib/syslog-ng/python/syslogng-1.0-py%%PYTHON_VER%%.egg-info/PKG-INFO \
 		lib/syslog-ng/python/syslogng-1.0-py%%PYTHON_VER%%.egg-info/SOURCES.txt \
 		lib/syslog-ng/python/syslogng-1.0-py%%PYTHON_VER%%.egg-info/dependency_links.txt \
 		lib/syslog-ng/python/syslogng-1.0-py%%PYTHON_VER%%.egg-info/top_level.txt \
-		lib/syslog-ng/python/syslogng/__pycache__/dest%%PYTHON_EXT_SUFFIX%%.pyc \
-		lib/syslog-ng/python/syslogng/__pycache__/logger%%PYTHON_EXT_SUFFIX%%.pyc \
-		lib/syslog-ng/python/syslogng/__pycache__/message%%PYTHON_EXT_SUFFIX%%.pyc \
-		lib/syslog-ng/python/syslogng/__pycache__/parser%%PYTHON_EXT_SUFFIX%%.pyc \
-		lib/syslog-ng/python/syslogng/__pycache__/persist%%PYTHON_EXT_SUFFIX%%.pyc \
-		lib/syslog-ng/python/syslogng/__pycache__/source%%PYTHON_EXT_SUFFIX%%.pyc \
-		lib/syslog-ng/python/syslogng/__pycache__/template%%PYTHON_EXT_SUFFIX%%.pyc \
-                lib/syslog-ng/python/syslogng/__pycache__/reloc%%PYTHON_EXT_SUFFIX%%.pyc \
+		lib/syslog-ng/python/syslogng/__pycache__/dest%%PYTHON_TAG%%.pyc \
+		lib/syslog-ng/python/syslogng/__pycache__/logger%%PYTHON_TAG%%.pyc \
+		lib/syslog-ng/python/syslogng/__pycache__/message%%PYTHON_TAG%%.pyc \
+		lib/syslog-ng/python/syslogng/__pycache__/parser%%PYTHON_TAG%%.pyc \
+		lib/syslog-ng/python/syslogng/__pycache__/persist%%PYTHON_TAG%%.pyc \
+		lib/syslog-ng/python/syslogng/__pycache__/source%%PYTHON_TAG%%.pyc \
+		lib/syslog-ng/python/syslogng/__pycache__/template%%PYTHON_TAG%%.pyc \
+                lib/syslog-ng/python/syslogng/__pycache__/reloc%%PYTHON_TAG%%.pyc \
 		lib/syslog-ng/python/syslogng/dest.py \
 		lib/syslog-ng/python/syslogng/logger.py \
 		lib/syslog-ng/python/syslogng/message.py \
@@ -225,22 +225,24 @@ PYTHON_MOD_CONFIGURE_ON=	--enable-python-modules
 PYTHON_MOD_CONFIGURE_OFF=	--disable-python-modules
 PYTHON_MOD_PLIST_FILES=		lib/syslog-ng/python/syslogng-1.0-py%%PYTHON_VER%%.egg-info/requires.txt \
 		lib/syslog-ng/python/syslogng/modules/kubernetes/__init__.py \
-		lib/syslog-ng/python/syslogng/modules/kubernetes/__pycache__/__init__%%PYTHON_EXT_SUFFIX%%.pyc \
+		lib/syslog-ng/python/syslogng/modules/kubernetes/__pycache__/__init__%%PYTHON_TAG%%.pyc \
 		lib/syslog-ng/python/syslogng/modules/kubernetes/scl/kubernetes.conf \
 		lib/syslog-ng/python/syslogng/modules/example/__init__.py \
-		lib/syslog-ng/python/syslogng/modules/example/__pycache__/__init__%%PYTHON_EXT_SUFFIX%%.pyc \
+		lib/syslog-ng/python/syslogng/modules/example/__pycache__/__init__%%PYTHON_TAG%%.pyc \
 		lib/syslog-ng/python/syslogng/modules/example/scl/example.conf \
 		lib/syslog-ng/python/syslogng/modules/hypr/__init__.py \
-		lib/syslog-ng/python/syslogng/modules/hypr/__pycache__/__init__%%PYTHON_EXT_SUFFIX%%.pyc \
+		lib/syslog-ng/python/syslogng/modules/hypr/__pycache__/__init__%%PYTHON_TAG%%.pyc \
 		lib/syslog-ng/python/syslogng/modules/hypr/scl/hypr.conf \
                 lib/syslog-ng/python/syslogng/modules/s3/__init__.py \
-                lib/syslog-ng/python/syslogng/modules/s3/__pycache__/__init__%%PYTHON_EXT_SUFFIX%%.pyc \
-                lib/syslog-ng/python/syslogng/modules/s3/__pycache__/compressable_file_buffer%%PYTHON_EXT_SUFFIX%%.pyc \
-                lib/syslog-ng/python/syslogng/modules/s3/__pycache__/s3_destination%%PYTHON_EXT_SUFFIX%%.pyc \
-                lib/syslog-ng/python/syslogng/modules/s3/__pycache__/s3_object%%PYTHON_EXT_SUFFIX%%.pyc \
+                lib/syslog-ng/python/syslogng/modules/s3/__pycache__/__init__%%PYTHON_TAG%%.pyc \
+                lib/syslog-ng/python/syslogng/modules/s3/__pycache__/compressable_file_buffer%%PYTHON_TAG%%.pyc \
+                lib/syslog-ng/python/syslogng/modules/s3/__pycache__/s3_destination%%PYTHON_TAG%%.pyc \
+                lib/syslog-ng/python/syslogng/modules/s3/__pycache__/s3_object_buffer%%PYTHON_TAG%%.pyc \
+                lib/syslog-ng/python/syslogng/modules/s3/__pycache__/s3_session_handler%%PYTHON_TAG%%.pyc \
+                lib/syslog-ng/python/syslogng/modules/s3/s3_object_buffer.py \
+                lib/syslog-ng/python/syslogng/modules/s3/s3_session_handler.py \
                 lib/syslog-ng/python/syslogng/modules/s3/compressable_file_buffer.py \
                 lib/syslog-ng/python/syslogng/modules/s3/s3_destination.py \
-                lib/syslog-ng/python/syslogng/modules/s3/s3_object.py \
                 lib/syslog-ng/python/syslogng/modules/s3/scl/s3.conf
 
 
@@ -271,7 +273,7 @@ GRPC_PLIST_FILES=		lib/libgrpc-protos.so \
  				lib/syslog-ng/libbigquery.so \
 				lib/syslog-ng/libcloud_auth.so
 
-MQTT_CONFIGURE_ON=		--enable-mqtt --with-libpaho-mqtt=${PREFIX} 
+MQTT_CONFIGURE_ON=		--enable-mqtt --with-libpaho-mqtt=${PREFIX}
 MQTT_CONFIGURE_OFF=		--disable-mqtt
 MQTT_LIB_DEPENDS=		libpaho-mqtt3cs.so:net/libpaho-mqtt3
 MQTT_PLIST_FILES=		lib/syslog-ng/libmqtt.so

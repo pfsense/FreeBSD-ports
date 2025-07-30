@@ -1,6 +1,5 @@
 PORTNAME=	vtk
-DISTVERSION=	9.2.6
-PORTREVISION=	6
+DISTVERSION=	9.5.0
 CATEGORIES=	math graphics
 MASTER_SITES=	https://vtk.org/files/release/${VTK_SHORT_VER}/
 PKGNAMESUFFIX=	9
@@ -8,7 +7,9 @@ DISTNAME=	${PORTNAME:tu}-${DISTVERSION}
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Visualization toolkit
-WWW=		https://vtk.org/
+WWW=		https://vtk.org \
+		https://gitlab.kitware.com/vtk/vtk \
+		https://github.com/Kitware/VTK
 
 LICENSE=	BSD3CLAUSE
 
@@ -98,7 +99,7 @@ OSMESA_CMAKE_ON=	-DVTK_OPENGL_HAS_OSMESA:BOOL=ON \
 			-DVTK_USE_X:BOOL=OFF
 OSMESA_LIB_DEPENDS=	libOSMesa.so:graphics/libosmesa
 
-JAVA_VARS=		USE_JAVA=yes
+JAVA_USES=		java
 JAVA_CMAKE_BOOL=	VTK_WRAP_JAVA
 JAVA_CMAKE_ON=		-DJAVA_INCLUDE_PATH:PATH=${JAVA_HOME}/include \
 			-DJAVA_AWT_LIBRARY:PATH=${JAVA_HOME}/jre/lib/${ARCH}/libjawt.so \

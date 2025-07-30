@@ -1,6 +1,7 @@
 PORTNAME=	jsonnet
 DISTVERSIONPREFIX=	v
 DISTVERSION=	0.20.0
+PORTREVISION=	1
 CATEGORIES=	devel python
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
@@ -24,7 +25,7 @@ GH_ACCOUNT=	google
 USE_PYTHON=	distutils autoplist
 
 post-install:
-	${STRIP_CMD} ${STAGEDIR}${PYTHON_SITELIBDIR}/_jsonnet${PYTHON_EXT_SUFFIX}.so
+	${STRIP_CMD} ${STAGEDIR}${PYTHON_SITELIBDIR}/_jsonnet${PYTHON_TAG}.so
 
 do-test:
 	@cd ${WRKSRC} && ${PYTHON_CMD} -m pytest -v -rs

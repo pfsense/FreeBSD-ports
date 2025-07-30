@@ -1,10 +1,11 @@
 PORTNAME=	xattr
-PORTVERSION=	1.1.0
+PORTVERSION=	1.2.0
+PORTREVISION=	0
 CATEGORIES=	devel python
 MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
-MAINTAINER=	timur@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Python wrapper for extended filesystem attributes
 WWW=		https://github.com/xattr/xattr
 

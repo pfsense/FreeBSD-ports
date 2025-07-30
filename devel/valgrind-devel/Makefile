@@ -1,12 +1,11 @@
 PORTNAME=	valgrind
-PORTVERSION=	3.25.0.g20241104
+PORTVERSION=	3.25.0.g20250530
 DISTVERSIONPREFIX=	freebsd-
-PORTREVISION=	1
 PORTEPOCH=	1
 CATEGORIES=	devel
-MASTER_SITES=	https://snapshots.sourceware.org/valgrind/trunk/2024-11-04_12-31_1730723461/
+MASTER_SITES=	https://snapshots.sourceware.org/valgrind/trunk/2025-05-30_07-09_1748588941/
 PKGNAMESUFFIX=	-devel
-DISTNAME=	${PORTNAME}-3.25.0.GIT
+DISTNAME=	${PORTNAME}-3.26.0.GIT
 
 MAINTAINER=	pjfloyd@wanadoo.fr
 COMMENT=	Memory debugging and profiling tool
@@ -24,7 +23,6 @@ SHEBANG_FILES=	callgrind/callgrind_annotate.in callgrind/callgrind_control.in \
 		cachegrind/cg_merge.in cachegrind/cg_diff.in \
 		cachegrind/cg_annotate.in
 GNU_CONFIGURE=	yes
-GNU_CONFIGURE_MANPREFIX=${PREFIX}/share
 CONFIGURE_ENV+=	ac_cv_path_PERL=${PERL}
 
 PIE_UNSAFE=	yes

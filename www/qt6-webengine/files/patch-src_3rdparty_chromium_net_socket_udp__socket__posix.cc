@@ -1,6 +1,16 @@
---- src/3rdparty/chromium/net/socket/udp_socket_posix.cc.orig	2023-07-16 15:47:57 UTC
+--- src/3rdparty/chromium/net/socket/udp_socket_posix.cc.orig	2024-09-30 07:45:04 UTC
 +++ src/3rdparty/chromium/net/socket/udp_socket_posix.cc
-@@ -591,7 +591,7 @@ int UDPSocketPosix::SetDoNotFragment() {
+@@ -522,12 +522,17 @@ int UDPSocketPosix::SetRecvTos() {
+ #endif  // BUILDFLAG(IS_APPLE)
+   }
+ 
++#ifdef IP_RECVTOS
+   int rv = setsockopt(socket_, IPPROTO_IP, IP_RECVTOS, &ecn, sizeof(ecn));
++#else
++  int rv = -1;
++  errno = EOPNOTSUPP;
++#endif
+   return rv == 0 ? OK : MapSystemError(errno);
  }
  
  void UDPSocketPosix::SetMsgConfirm(bool confirm) {
@@ -9,7 +19,7 @@
    if (confirm) {
      sendto_flags_ |= MSG_CONFIRM;
    } else {
-@@ -612,7 +612,7 @@ int UDPSocketPosix::SetBroadcast(bool broadcast) {
+@@ -548,7 +553,7 @@ int UDPSocketPosix::SetBroadcast(bool broadcast) {
    DCHECK_CALLED_ON_VALID_THREAD(thread_checker_);
    int value = broadcast ? 1 : 0;
    int rv;
@@ -18,7 +28,7 @@
    // SO_REUSEPORT on OSX permits multiple processes to each receive
    // UDP multicast or broadcast datagrams destined for the bound
    // port.
-@@ -925,7 +925,7 @@ int UDPSocketPosix::DoBind(const IPEndPoint& address) 
+@@ -886,7 +891,7 @@ int UDPSocketPosix::DoBind(const IPEndPoint& address) 
  #if BUILDFLAG(IS_CHROMEOS_ASH)
    if (last_error == EINVAL)
      return ERR_ADDRESS_IN_USE;

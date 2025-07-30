@@ -1,5 +1,6 @@
 PORTNAME=	unflac
 DISTVERSION=	1.3
+PORTREVISION=	5
 CATEGORIES=	audio
 
 MAINTAINER=	bsd@abinet.ru

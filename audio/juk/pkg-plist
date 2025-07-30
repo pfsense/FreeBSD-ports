@@ -11,10 +11,9 @@ share/icons/hicolor/64x64/apps/juk.png
 %%DATADIR%%/pics/playing.png
 %%DATADIR%%/pics/theme.svg
 share/kio/servicemenus/jukservicemenu.desktop
-share/knotifications5/juk.notifyrc
-share/kxmlgui5/juk/jukui-rtl.rc
-share/kxmlgui5/juk/jukui.rc
+share/knotifications6/juk.notifyrc
 share/locale/ar/LC_MESSAGES/juk.mo
+share/locale/ast/LC_MESSAGES/juk.mo
 share/locale/be/LC_MESSAGES/juk.mo
 share/locale/bg/LC_MESSAGES/juk.mo
 share/locale/bn/LC_MESSAGES/juk.mo
@@ -69,6 +68,7 @@ share/locale/pt/LC_MESSAGES/juk.mo
 share/locale/pt_BR/LC_MESSAGES/juk.mo
 share/locale/ro/LC_MESSAGES/juk.mo
 share/locale/ru/LC_MESSAGES/juk.mo
+share/locale/sa/LC_MESSAGES/juk.mo
 share/locale/se/LC_MESSAGES/juk.mo
 share/locale/sk/LC_MESSAGES/juk.mo
 share/locale/sl/LC_MESSAGES/juk.mo

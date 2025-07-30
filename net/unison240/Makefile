@@ -30,9 +30,8 @@ x11_LIB_DEPENDS=	libfontconfig.so:x11-fonts/fontconfig \
 			libfreetype.so:print/freetype2
 
 PLIST_SUB=	PORTVERSION=${PORTVERSION}
-USES=		gmake
-USE_OCAML=	yes
-NO_OCAML_RUNDEPENDS=yes
+USES=		gmake ocaml:build
+
 MAKE_ARGS=	CFLAGS=""
 ALL_TARGET=	unison all
 TEST_TARGET=	selftest
@@ -51,9 +50,15 @@ PLIST_SUB+=		X11="@comment "
 .else
 MAKE_ARGS+=		UISTYLE=gtk2
 SUB_FILES=		${PORTNAME}.desktop
-USE_GNOME+=		atk cairo gdkpixbuf2 glib20 gtk20 pango
+USE_GNOME+=		atk cairo gdkpixbuf glib20 gtk20 pango
 USES+=			gettext-runtime gnome
 PLIST_SUB+=		X11=""
+.endif
+
+.include <bsd.port.options.mk>
+
+.if ${ARCH} == powerpc
+USE_BINUTILS=	yes
 .endif
 
 pre-patch:

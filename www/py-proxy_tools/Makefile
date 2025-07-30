@@ -1,10 +1,11 @@
 PORTNAME=	proxy_tools
 DISTVERSION=	0.1.0
+PORTREVISION=	1
 CATEGORIES=	www python
 MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
-MAINTAINER=	DtxdF@disroot.org
+MAINTAINER=	dtxdf@FreeBSD.org
 COMMENT=	Simple proxy implementation for Python
 WWW=		https://github.com/jtushman/proxy_tools
 

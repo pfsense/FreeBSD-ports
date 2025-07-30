@@ -4,19 +4,17 @@ CATEGORIES=	java devel
 MASTER_SITES=	APACHE/netbeans/netbeans/${PORTVERSION}/
 DISTNAME=	netbeans-${DISTVERSION}-bin
 
-MAINTAINER=	kwm@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Modular, standards-based integrated development environment
 WWW=		https://netbeans.apache.org/
 
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-USES=		cpe shebangfix zip
-
+USES=		cpe java shebangfix zip
 CPE_VENDOR=	apache
-
-USE_JAVA=	yes
 JAVA_VERSION=	11 17
+
 NO_BUILD=	yes
 
 SHEBANG_FILES=	extide/ant/bin/antRun.pl \

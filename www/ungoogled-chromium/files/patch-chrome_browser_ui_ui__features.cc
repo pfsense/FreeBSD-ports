@@ -1,17 +1,17 @@
---- chrome/browser/ui/ui_features.cc.orig	2024-11-16 12:20:41 UTC
+--- chrome/browser/ui/ui_features.cc.orig	2025-05-31 17:16:41 UTC
 +++ chrome/browser/ui/ui_features.cc
-@@ -104,7 +104,7 @@ BASE_FEATURE(kAccessCodeCastUI,
+@@ -35,7 +35,7 @@ BASE_FEATURE(kCloseOmniboxPopupOnInactiveAreaClick,
+              "CloseOmniboxPopupOnInactiveAreaClick",
               base::FEATURE_ENABLED_BY_DEFAULT);
- #endif
  
 -#if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX)
 +#if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_BSD)
  // Enables the feature to remove the last confirmation dialog when relaunching
  // to update Chrome.
  BASE_FEATURE(kFewerUpdateConfirmations,
-@@ -446,7 +446,7 @@ BASE_FEATURE(kStopLoadingAnimationForHiddenWindow,
-              "StopLoadingAnimationForHiddenWindow",
-              base::FEATURE_ENABLED_BY_DEFAULT);
+@@ -339,7 +339,7 @@ BASE_FEATURE(kViewsJSAppModalDialog,
+              base::FEATURE_DISABLED_BY_DEFAULT);
+ #endif
  
 -#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS)
 +#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_BSD)

@@ -1,11 +1,12 @@
 PORTNAME=	xstatic-jquery-file-upload
 DISTVERSION=	10.31.0.1
+PORTREVISION=	1
 CATEGORIES=	devel python
 MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 DISTNAME=	XStatic-jQuery-File-Upload-${DISTVERSION}
 
-MAINTAINER=	bofh@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	jQuery-File-Upload (XStatic packaging standard)
 WWW=		https://github.com/blueimp/jQuery-File-Upload
 

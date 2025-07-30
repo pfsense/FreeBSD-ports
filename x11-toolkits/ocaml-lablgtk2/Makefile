@@ -1,6 +1,6 @@
 PORTNAME=	lablgtk2
 PORTVERSION=	2.18.13
-PORTREVISION=	3
+PORTREVISION=	4
 CATEGORIES=	x11-toolkits
 PKGNAMEPREFIX=	ocaml-
 
@@ -11,13 +11,8 @@ WWW=		https://garrigue.github.io/lablgtk/
 LICENSE=	LGPL21
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-USES=		gmake gnome pkgconfig
-USE_GNOME=	cairo gdkpixbuf2 gtk20
-USE_OCAML=	yes
-USE_OCAML_FINDLIB=	yes
-USE_OCAML_CAMLP4=	yes
-USE_OCAML_LDCONFIG=	yes
-USE_OCAML_WASH=		yes
+USES=		gmake gnome ocaml:camlp4,findlib,ldconfig,wash pkgconfig
+USE_GNOME=	cairo gdkpixbuf gtk20
 
 HAS_CONFIGURE=	yes
 ALL_TARGET=	all opt
@@ -68,6 +63,12 @@ GTKSPELL_CONFIGURE_WITH=gtkspell
 LIBRSVG2_CONFIGURE_WITH=rsvg
 LIBRSVG2_USE=		GNOME=librsvg2
 LIBRSVG2_VARS=		EXAMPLES_SUBDIRS+=rsvg
+
+.include <bsd.port.options.mk>
+
+.if ${ARCH} == powerpc
+USE_BINUTILS=	yes
+.endif
 
 post-install-DOCS-on:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}

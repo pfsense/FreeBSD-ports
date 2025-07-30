@@ -8,7 +8,8 @@ DIST_SUBDIR=	${PORTNAME}
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Computer algebra system for polynomial computations
-WWW=		https://www.singular.uni-kl.de/
+WWW=		https://www.singular.uni-kl.de/ \
+		https://github.com/Singular/Singular
 
 LICENSE=	GPLv3RLE
 LICENSE_FILE=	${WRKSRC}/COPYING
@@ -25,7 +26,7 @@ USE_PERL5=	build
 USE_GITHUB=	yes
 GH_ACCOUNT=	Singular
 GH_PROJECT=	Singular
-GH_TAGNAME=	Release-4-4-0p7
+GH_TAGNAME=	Release-4-4-1
 
 SHEBANG_FILES=	Singular/surfex \
 		libpolys/libpolys-config.in \

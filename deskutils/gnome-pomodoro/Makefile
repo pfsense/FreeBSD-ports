@@ -1,6 +1,5 @@
 PORTNAME=	gnome-pomodoro
-PORTVERSION=	0.22.1
-PORTREVISION=	1
+PORTVERSION=	0.27.0
 PORTEPOCH=	1
 CATEGORIES=	deskutils gnome
 
@@ -14,10 +13,10 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 BUILD_DEPENDS=	appstream-util:devel/appstream-glib
 LIB_DEPENDS=	libcanberra.so:audio/libcanberra \
 		libgom-1.0.so:databases/gom \
-		libpeas-1.0.so:devel/libpeas
+		libpeas-1.0.so:devel/libpeas1
 
-USES=		gettext-tools gmake gnome gstreamer libtool meson pkgconfig \
-		sqlite vala:build
+USES=		desktop-file-utils gettext-tools gmake gnome gstreamer libtool \
+		meson pkgconfig sqlite vala:build
 
 USE_GITHUB=	yes
 
@@ -33,7 +32,7 @@ PORTDOCS=	NEWS README.md
 OPTIONS_DEFINE=	DOCS
 
 post-install-DOCS-on:
-	${MKDIR} ${STAGEDIR}${DOCSDIR}
+	@${MKDIR} ${STAGEDIR}${DOCSDIR}
 	${INSTALL_MAN} ${PORTDOCS:S|^|${WRKSRC}/|} ${STAGEDIR}${DOCSDIR}
 
 .include <bsd.port.mk>

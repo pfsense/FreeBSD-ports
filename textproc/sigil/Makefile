@@ -1,10 +1,7 @@
 PORTNAME=	sigil
-DISTVERSION=	2.3.1
+DISTVERSION=	2.5.2
+PORTREVISION=	1
 CATEGORIES=	textproc
-
-PATCH_SITES=	https://github.com/${GH_ACCOUNT}/${GH_PROJECT}/commit/
-PATCHFILES+=	9b2773e08ba68f3d35c9f58696d8d1b78dd42e26.patch:-p1 # Fix build with Qt 6.8.x
-PATCHFILES+=	08ed327cf220eca9c814ea2a65adace24a4cf3d9.patch:-p1 # Fix build with Qt 6.8.x
 
 MAINTAINER=	jonc@chen.org.nz
 COMMENT=	WYSIWYG ePub editor
@@ -14,21 +11,18 @@ LICENSE=	GPLv3+
 LICENSE_FILE=	${WRKSRC}/COPYING.txt
 
 LIB_DEPENDS=	libpcre2-16.so:devel/pcre2 \
-		libhunspell-1.7.so:textproc/hunspell \
-		libGLX.so:graphics/libglvnd
+		libhunspell-1.7.so:textproc/hunspell
 RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}dulwich>=0.15.0:devel/py-dulwich@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}lxml>0:devel/py-lxml@${PY_FLAVOR}
+		${PYTHON_PKGNAMEPREFIX}lxml5>0:devel/py-lxml5@${PY_FLAVOR}
 
-USES=		cmake cpe desktop-file-utils \
+USES=		cmake cpe desktop-file-utils gl localbase:ldflags \
 		minizip pkgconfig python qt:6 shebangfix
 CPE_VENDOR=	${PORTNAME}-ebook
-
 USE_GITHUB=	yes
 GH_ACCOUNT=	Sigil-Ebook
 GH_PROJECT=	Sigil
-
+USE_GL=		opengl
 USE_LDCONFIG=	${PREFIX}/lib/sigil
-
 USE_QT=		base declarative positioning svg webchannel webengine \
 		tools:build imageformats:run
 
@@ -36,11 +30,6 @@ SHEBANG_FILES=	src/Resource_Files/plugin_launchers/python/*.py \
 		src/Resource_Files/python3lib/*.py
 
 CMAKE_ARGS=	-DUSE_SYSTEM_LIBS:BOOL=1
-
-# Upstream uses pkg-config output to pass libhunspell-1.7.so and
-# libpcre16.so to the linker. pkg-config output does not include full
-# paths, so add a workaround to keep the port linking for now.
-LDFLAGS+=	-L${LOCALBASE}/lib
 
 post-install:
 	@${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/sigil/*.so

@@ -1,0 +1,2288 @@
+diff -rub --new-file old/src/etc/inc/acb.inc new/src/etc/inc/acb.inc
+--- old/src/etc/inc/acb.inc	2025-01-24 13:41:54.897324247 -0500
++++ new/src/etc/inc/acb.inc	2025-01-27 10:58:06.363105561 -0500
+@@ -5,7 +5,7 @@
+  * part of pfSense (https://www.pfsense.org)
+  * Copyright (c) 2008-2013 BSD Perimeter
+  * Copyright (c) 2013-2016 Electric Sheep Fencing
+- * Copyright (c) 2014-2023 Rubicon Communications, LLC (Netgate)
++ * Copyright (c) 2014-2025 Rubicon Communications, LLC (Netgate)
+  * All rights reserved.
+  *
+  * Licensed under the Apache License, Version 2.0 (the "License");
+@@ -21,235 +21,271 @@
+  * limitations under the License.
+  */
+ 
++require_once("config.inc");
+ require_once("filter.inc");
+ require_once("notices.inc");
+ 
+-// If there is no ssh key in the system to identify this firewall, generate a pair now
+-function get_device_key() {
+-	if (!file_exists("/etc/ssh/ssh_host_ed25519_key.pub")) {
+-		// Remove any possible matching key so we don't get an overwrite prompt
+-		if (file_exists('/etc/ssh/ssh_host_ed25519_key')) {
+-			unlink('/etc/ssh/ssh_host_ed25519_key');
+-		}
+-
+-		// Generate a new key pair
+-		exec("/usr/bin/nice -n20 /usr/bin/ssh-keygen -t ed25519 -b 4096 -N '' -f /etc/ssh/ssh_host_ed25519_key");
+-		sleep(2);
+-
+-		$cnt = 0;
+-		while(!file_exists("/etc/ssh/ssh_host_ed25519_key.pub")) {
+-			sleep(2);
+-			if (++$cnt > 10) {
+-				return "";
+-			}
+-		}
+-	}
++global $acb_base_url;
++$acb_base_url = "https://acb.netgate.com";
+ 
+-	$pkey =  file_get_contents("/etc/ssh/ssh_host_ed25519_key.pub");
++global $acb_last_backup_file;
++$acb_last_backup_file = "/cf/conf/lastACBentry.txt";
+ 
+-	// Check that the key looks reasonable
+-	if (substr($pkey, 0, 3) != "ssh") {
+-		return "";
+-	}
++global $acb_force_file;
++$acb_force_file = "/tmp/forceacb";
+ 
+-	return hash("sha256", $pkey);
++/* Set up time zones for conversion. See #5250 */
++global $acb_server_tz;
++$acb_server_tz = new DateTimeZone('America/Chicago');
++
++/* Backup reason strings for which ACB will not create remote backup entries */
++global $acb_ignore_reasons;
++$acb_ignore_reasons = [
++	'snort',
++	'pfblocker',
++	'minicron',
++	'merged in config',
++	'intermediate config write during package',
++	'acbupload.php',
++	'execacb.php'
++];
++
++/* Check a string to determine if it is a valid device key */
++function is_valid_acb_device_key($dk) {
++	$dk = trim($dk);
++	if (!is_null($dk) &&
++	    !empty($dk) &&
++	    (strlen($dk) == 64) &&
++	    ctype_xdigit($dk)) {
++		return true;
++	}
++	return false;
+ }
+ 
+-$origkey = get_device_key();
+-
+-if (isset($_REQUEST['userkey']) && !empty($_REQUEST['userkey'])) {
+-	$userkey = htmlentities($_REQUEST['userkey']);
+-} else {
+-	$userkey = get_device_key();
++/* Check a string to determine if it is a valid revision identifier */
++function is_valid_acb_revision($revision) {
++	/* The revision must be a valid date string */
++	/* Ensure this returns boolean true/false not a timestamp when true */
++	return (strtotime($revision) !== false);
+ }
+ 
+-$uniqueID = system_get_uniqueid();
+-
+-/* Check whether ACB is enabled */
+-function acb_enabled() {
+-	global $config;
+-	$acb_enabled = false;
+-
+-	if (is_array($config['system']['acb'])) {
+-		if ($config['system']['acb']['enable'] == "yes") {
+-			$acb_enabled = true;
++/* Check if a reason string should be ignored by ACB. */
++function is_acb_ignored_reason($reason) {
++	global $acb_ignore_reasons;
++	foreach ($acb_ignore_reasons as $term) {
++		if (stripos($reason, $term) !== false) {
++			return true;
+ 		}
+ 	}
+-
+-	return $acb_enabled;
++	return false;
+ }
+ 
+-// Ensures patches match
+-function acb_custom_php_validation_command($post, &$input_errors) {
+-	global $_POST, $savemsg, $config;
++/* Generate a new random device key */
++function acb_generate_device_key() {
++	$keyoutput = "";
++	$keystatus = "";
++	exec("/bin/dd status=none if=/dev/random bs=4096 count=1 | /usr/bin/openssl sha256 | /usr/bin/cut -f2 -d' '", $keyoutput, $keystatus);
++	if (($keystatus == 0) &&
++	    is_array($keyoutput)) {
++		$keyoutput = trim($keyoutput[0]);
+ 
+-	// Do nothing when ACB is disabled in configuration
+-	// This also makes it possible to delete the credentials from config.xml
+-	if (!acb_enabled()) {
+-		// We do not need to store this value.
+-		unset($_POST['testconnection']);
+-		return;
++		if (is_valid_acb_device_key($keyoutput)) {
++			return $keyoutput;
+ 	}
+-
+-	if (!$post['crypto_password'] or !$post['crypto_password2']) {
+-		$input_errors[] = "The encryption password is required.";
+-	}
+-
+-	if ($post['crypto_password'] <> $post['crypto_password2']) {
+-		$input_errors[] = "Sorry, the entered encryption passwords do not match.";
+ 	}
++	return null;
++}
+ 
+-	if ($post['testconnection']) {
+-		$status = test_connection($post);
+-		if ($status) {
+-			$savemsg = "Connection to the ACB server was tested with no errors.";
++/* Locate a legacy ACB key for a device, which is derived from the SSH key */
++function get_acb_legacy_device_key() {
++	if (file_exists('/etc/ssh/ssh_host_ed25519_key.pub')) {
++		$pkey =  file_get_contents("/etc/ssh/ssh_host_ed25519_key.pub");
++		// Check that the SSH key looks reasonable
++		if (substr($pkey, 0, 3) == "ssh") {
++			return hash("sha256", $pkey);
+ 		}
+ 	}
+-
+-	// We do not need to store this value.
+-	unset($_POST['testconnection']);
++	return null;
+ }
+ 
+-function acb_custom_php_resync_config_command() {
+-	// Do nothing when ACB is disabled in configuration
+-	if (!acb_enabled()) {
+-		return;
++/* Locate and return the ACB device key for this installation. If there is no
++ * viable key, generate and store a new key. */
++function get_acb_device_key() {
++	$config_device_key = config_get_path('system/acb/device_key');
++
++	/* If there is no device key in the configuration, check for a legacy key */
++	if (!is_valid_acb_device_key($config_device_key) &&
++	    acb_enabled() &&
++	    file_exists('/etc/ssh/ssh_host_ed25519_key.pub')) {
++		$config_device_key = get_acb_legacy_device_key();
++	}
++
++	/* Still no key, so generate a new random key */
++	if (!is_valid_acb_device_key($config_device_key)) {
++		$config_device_key = acb_generate_device_key();
++		/* Only store the key if it's valid */
++		if (is_valid_acb_device_key($config_device_key)) {
++			config_set_path('system/acb/device_key', $config_device_key);
++			write_config(gettext('Generated new randomized AutoConfigBackup device key'));
+ 	}
+-
+-	unlink_if_exists("/cf/conf/lastpfSbackup.txt");
+-
+-	if (!function_exists("filter_configure")) {
+-		require_once("filter.inc");
+ 	}
+ 
+-	filter_configure();
+-
+-	if ($savemsg) {
+-		$savemsg .= "<br/>";
++	/* Still no valid key, something went wrong */
++	if (!is_valid_acb_device_key($config_device_key)) {
++		log_error(gettext('Unable to locate or generate a valid AutoConfigBackup device key'));
++		return null;
++	} else {
++		return $config_device_key;
+ 	}
+-
+-	$savemsg .= "A configuration backup has been queued.";
+ }
+ 
+-function test_connection($post) {
+-	global $savemsg, $config, $g;
++/* Check whether ACB is enabled */
++function acb_enabled() {
++	return (config_get_path('system/acb/enable', '') == "yes");
++}
+ 
+-	// Do nothing when booting or when not enabled
+-	if (platform_booting() || !acb_enabled()) {
+-		return;
++/* Check if this device can resolve the ACB hostname via DNS. */
++function acb_check_dns() {
++	global $acb_base_url;
++	if (!check_dnsavailable(parse_url($acb_base_url, PHP_URL_HOST))) {
++		acb_error_log(sprintf(gettext('Unable to resolve %s'),
++			parse_url($acb_base_url, PHP_URL_HOST)));
++		return false;
++	} else {
++		return true;
+ 	}
++}
+ 
+-	// Separator used during client / server communications
+-	$oper_sep = "\|\|";
+-
+-	// Encryption password
+-	$decrypt_password = $post['crypto_password'];
+-
+-	// Defined username. Username must be sent lowercase. See Redmine #7127 and Netgate Redmine #163
+-	$username = strtolower($post['username']);
+-
+-	// Defined password
+-	$password = $post['password'];
+-
+-	// Set hostname
+-	$hostname = $config['system']['hostname'] . "." . $config['system']['domain'];
++/* Change the time zone to reflect local time of ACB revisions.
++ * See Redmine #5250 */
++function acb_time_shift($revision, $format = DATE_RFC2822) {
++	global $acbtz;
++	$budate = new DateTime($revision, $acbtz);
++	$mytz = new DateTimeZone(date_default_timezone_get());
++	$budate->setTimezone($mytz);
++	return htmlspecialchars($budate->format($format));
++}
+ 
+-	// URL to restore.php
+-	$get_url = "https://acb.netgate.com/getbkp";
++/*
++ * Query the ACB server via cURL and return the data
++ *
++ * Parameters:
++ *   endpoint:
++ *      Relative URL endpoint on the ACB service, not including the base
++ *      hostname.
++ *   postfields:
++ *      Array containing post fields and their values to submit.
++ *   multipart:
++ *      True when submitting multi-part form data (e.g. save/upload)
++ *
++ * Returns:
++ *   data:
++ *     Content returned from the server
++ *   httpcode:
++ *     HTTP code returned by the server
++ */
++function acb_query_service($endpoint, $post_fields, $multipart = false) {
++	global $acb_base_url;
++	$url = "{$acb_base_url}/{$endpoint}";
++
++	/* Bail if passed invalid data */
++	if (empty($endpoint) ||
++	    empty($post_fields) ||
++	    !is_array($post_fields)) {
++		return [null, null, 1];
++	}
++
++	/* Add UID */
++	$post_fields['uid'] = system_get_uniqueid();
++
++	/* Store this now as it may be lost in the next step. */
++	$post_fields_count = count($post_fields);
++	if (!$multipart) {
++		$post_fields = http_build_query($post_fields);
++	}
+ 
+-	// Populate available backups
+ 	$curl_session = curl_init();
+-	curl_setopt($curl_session, CURLOPT_URL, $get_url);
+-	curl_setopt($curl_session, CURLOPT_SSL_VERIFYPEER, 1);
+-	curl_setopt($curl_session, CURLOPT_POST, 1);
++	curl_setopt($curl_session, CURLOPT_URL, $url);
++	curl_setopt($curl_session, CURLOPT_POST, $post_fields_count);
++	curl_setopt($curl_session, CURLOPT_POSTFIELDS, $post_fields);
+ 	curl_setopt($curl_session, CURLOPT_RETURNTRANSFER, 1);
++	curl_setopt($curl_session, CURLOPT_SSL_VERIFYPEER, 1);
+ 	curl_setopt($curl_session, CURLOPT_CONNECTTIMEOUT, 55);
+ 	curl_setopt($curl_session, CURLOPT_TIMEOUT, 30);
+ 	curl_setopt($curl_session, CURLOPT_USERAGENT, g_get('product_label') . '/' . rtrim(file_get_contents("/etc/version")));
+ 	// Proxy
+ 	set_curlproxy($curl_session);
+ 
+-	curl_setopt($curl_session, CURLOPT_POSTFIELDS, "action=showbackups&hostname={$hostname}");
+ 	$data = curl_exec($curl_session);
++	$httpcode = curl_getinfo($curl_session, CURLINFO_RESPONSE_CODE);
++	$errno = curl_errno($curl_session);
+ 
+-	if (curl_errno($curl_session)) {
+-		return("An error occurred " . curl_error($curl_session));
++	if ($errno) {
++		$fd = fopen("/tmp/acb_debug.txt", "w");
++		fwrite($fd, $url . "\n\n");
++		fwrite($fd, var_export($post_fields, true));
++		fwrite($fd, $data);
++		fwrite($fd, curl_error($curl_session));
++		fclose($fd);
+ 	} else {
+ 		curl_close($curl_session);
+ 	}
+-
+-	return;
++	return [$data, $httpcode, $errno];
+ }
+ 
+-function upload_config($manual = false) {
+-	global $config, $g, $input_errors, $userkey, $uniqueID;
+-
+-	if (empty($userkey)) {
+-		$userkey = get_device_key();
+-	}
++/* Check if a backup is necessary (has config changed since last upload) */
++function is_acb_upload_needed() {
++	global $acb_last_backup_file;
+ 
+-	if (empty($uniqueID)) {
+-		$uniqueID = system_get_uniqueid();
++	if (file_exists($acb_last_backup_file)) {
++		$last_backup_date = trim(file_get_contents($acb_last_backup_file));
++	} else {
++		$last_backup_date = "";
+ 	}
+ 
+-	// Do nothing when booting or when not enabled
+-	if (platform_booting() || !acb_enabled()) {
+-		return;
+-	}
++	return ($last_backup_date <> config_get_path('revision/time'));
++}
+ 
+-	/*
+-	 * pfSense upload config to acb.netgate.com script
+-	 * This file plugs into config.inc (/usr/local/pkg/parse_config)
+-	 * and runs every time the running firewall filter changes.
+-	 *
++/* Stage a config backup for uploading which will be picked up later by the
++ * acbupload.php cron job which performs the actual upload process.
+ 	 */
++function acb_backup_stage_upload($manual = false) {
++	global $acb_base_url;
+ 
+-	if (file_exists("/tmp/acb_nooverwrite")) {
+-		unlink("/tmp/acb_nooverwrite");
+-		$nooverwrite = "true";
+-	} else {
+-		$nooverwrite = "false";
+-	}
+-
+-	// Define some needed variables
+-	if (file_exists("/cf/conf/lastpfSbackup.txt")) {
+-		$last_backup_date = str_replace("\n", "", file_get_contents("/cf/conf/lastpfSbackup.txt"));
+-	} else {
+-		$last_backup_date = "";
++	/* Do nothing when booting or when not enabled */
++	if (is_platform_booting() ||
++	    !acb_enabled()) {
++		return;
+ 	}
+ 
+-	$last_config_change = config_get_path('revision/time');
+-	$hostname = $config['system']['hostname'] . "." . $config['system']['domain'];
++	/* Define required variables */
++	$userkey = get_acb_device_key();
++	$hostname = config_get_path('system/hostname') . "." . config_get_path('system/domain');
+ 	$reason	= config_get_path('revision/description');
+-
+-	if ($manual && array_key_exists('numman', $config['system']['acb'])) {
+-		$manmax = config_get_path('system/acb/numman');
+-	} else {
+-		$manmax = "0";
+-	}
+-
++	$manmax = config_get_path('system/acb/numman', '0');
+ 	$encryptpw = config_get_path('system/acb/encryption_password');
+ 
+-	// Define upload_url, must be present after other variable definitions due to username, password
+-	$upload_url = "https://acb.netgate.com/save";
++	if (is_acb_ignored_reason($reason)) {
++		log_error(sprintf(gettext('Skipping staging AutoConfigBackup entry for ignored reason: %s.'), $reason));
++		return;
++	}
+ 
+ 	if (!$encryptpw) {
+ 		if (!file_exists("/cf/conf/autoconfigback.notice")) {
+-			$notice_text = "The encryption password is not set for Automatic Configuration Backup.";
+-			$notice_text .= " Please correct this in Services -> AutoConfigBackup -> Settings.";
++			$notice_text = gettext('The Automatic Configuration Backup Encryption Password is not set. ' .
++				'Configure the Encryption Password at Services > AutoConfigBackup > Settings.');
+ 			log_error($notice_text);
+ 			file_notice("AutoConfigBackup", $notice_text, $notice_text, "");
+ 			touch("/cf/conf/autoconfigback.notice");
+ 		}
+ 	} else {
+-		/* If configuration has changed, upload to pfS */
+-		if ($last_backup_date <> $last_config_change) {
+-
+-			$notice_text = "Beginning configuration backup to " . $upload_url;
++		/* If the configuration has changed, upload to ACB service */
++		if (is_acb_upload_needed()) {
++			$notice_text = sprintf(gettext('Staging AutoConfigBackup encrypted configuration backup for deferred upload to %s'), $acb_base_url);
+ 			log_error($notice_text);
+ 			update_filter_reload_status($notice_text);
+ 
+-			// Encrypt config.xml
++			/* Encrypt config.xml contents */
+ 			$data = file_get_contents("/cf/conf/config.xml");
+ 			$raw_config_sha256_hash = trim(shell_exec("/sbin/sha256 /cf/conf/config.xml | /usr/bin/awk '{ print $4 }'"));
+ 			$data = encrypt_data($data, $encryptpw);
+@@ -257,112 +293,224 @@
+ 			tagfile_reformat($data, $data, "config.xml");
+ 			file_put_contents($tmpname, $data);
+ 
++			/* Define backup metadata */
+ 			$post_fields = array(
+-				'reason' => htmlspecialchars($reason),
+-				'uid' => $uniqueID,
++				'reason' => substr(htmlspecialchars($reason), 0, 1024),
+ 				'file' => curl_file_create($tmpname, 'image/jpg', 'config.jpg'),
+ 				'userkey' => htmlspecialchars($userkey),
+ 				'sha256_hash' => $raw_config_sha256_hash,
+ 				'version' => g_get('product_version'),
+-				'hint' => $config['system']['acb']['hint'],
+-				'manmax' => $manmax
++				'hint' => substr(config_get_path('system/acb/hint'), 0, 255),
++				'manmax' => (int)$manmax
+ 			);
+ 
+ 			unlink_if_exists($tmpname);
+ 
+-			if (!is_dir(g_get('acbbackuppath'))) {
+-				mkdir(g_get('acbbackuppath'));
+-			}
++			/* Location to stage backup file pairs */
++			$acbuploadpath = g_get('acbbackuppath');
+ 
+-			file_put_contents(g_get('acbbackuppath') . $post_fields['sha256_hash'] . ".form", json_encode($post_fields));
+-			file_put_contents(g_get('acbbackuppath') . $post_fields['sha256_hash'] . ".data", $data);
++			if (!is_dir($acbuploadpath)) {
++				mkdir($acbuploadpath);
++			}
+ 
+-			/*
+-			This functionality is now provided by a cron job /usr/local/sbin/acbupload.php run once per minute when ACB is enabled.
+-			Commented block can be removed after testing.
++			file_put_contents($acbuploadpath . $post_fields['sha256_hash'] . ".form", json_encode($post_fields));
++			file_put_contents($acbuploadpath . $post_fields['sha256_hash'] . ".data", $data);
++		} else {
++			/* Debugging */
++			//log_error(gettext('No AutoConfigBackup action required.'));
++		}
++	}
++}
+ 
+-			// Check configuration into the ESF repo
+-			$curl_session = curl_init();
++/* Upload all backup entries staged by acb_backup_stage_upload(). */
++function acb_backup_upload($basename) {
++	global $acb_base_url, $acb_last_backup_file;
++
++	/* Location of staged backup file pairs */
++	$acbuploadpath = g_get('acbbackuppath');
++
++	/* If the ACB service cannot be resolved, remove staged backup files
++	 * and exit.
++	 * The check function logs an error, no need to log an error manually.
++	 */
++	if (!acb_check_dns()) {
++		unlink_if_exists($acbuploadpath . $basename . ".data");
++		unlink_if_exists($acbuploadpath . $basename . ".form");
++		return;
++	}
+ 
+-			curl_setopt($curl_session, CURLOPT_URL, "https://acb.netgate.com/save");
+-			curl_setopt($curl_session, CURLOPT_POST, count($post_fields));
+-			curl_setopt($curl_session, CURLOPT_POSTFIELDS, $post_fields);
+-			curl_setopt($curl_session, CURLOPT_RETURNTRANSFER, 1);
+-			curl_setopt($curl_session, CURLOPT_SSL_VERIFYPEER, 1);
+-			curl_setopt($curl_session, CURLOPT_CONNECTTIMEOUT, 55);
+-			curl_setopt($curl_session, CURLOPT_TIMEOUT, 30);
+-			curl_setopt($curl_session, CURLOPT_USERAGENT, $g['product_label'] . '/' . rtrim(file_get_contents("/etc/version")));
+-			// Proxy
+-			set_curlproxy($curl_session);
++	/* Read the staged form file containing backup metadata */
++	$formdata = file_get_contents($acbuploadpath . $basename . ".form");
++	$post_fields = json_decode($formdata, true);
++
++	/* Check backup reason in metadata against ignore list */
++	if (is_acb_ignored_reason($post_fields['reason'])) {
++		log_error(sprintf(gettext('Skipping staged AutoConfigBackup entry for ignored reason: %s.'), $post_fields['reason']));
++		/* Delete the staged backup files */
++		unlink_if_exists($acbuploadpath . $basename . ".data");
++		unlink_if_exists($acbuploadpath . $basename . ".form");
++		return;
++	}
+ 
+-			$data = curl_exec($curl_session);
++	/* Add the encrytped backup data */
++	$post_fields['file'] = curl_file_create($acbuploadpath . $basename . ".data", 'image/jpg', 'config.jpg');
+ 
+-			unlink_if_exists($tmpname);
++	/* Upload encrypted backup entry and its metadata to the ACB service */
++	[$data, $httpcode, $errno] = acb_query_service("save", $post_fields, true);
+ 
+-			if (curl_errno($curl_session)) {
+-				$fd = fopen("/tmp/backupdebug.txt", "w");
+-				fwrite($fd, $upload_url . "" . $fields_string . "\n\n");
+-				fwrite($fd, $data);
+-				fwrite($fd, curl_error($curl_session));
+-				fclose($fd);
++	/* Delete the staged backup files no matter the outcome */
++	unlink_if_exists($acbuploadpath . $basename . ".data");
++	unlink_if_exists($acbuploadpath . $basename . ".form");
++
++	if (strpos(strval($httpcode), '20') === false) {
++		if (empty($data) && $errno) {
++			$data = $errno;
+ 			} else {
+-				curl_close($curl_session);
++			$data = "Unknown error";
+ 			}
+-
+-			if (strpos($data, "500") != false) {
+-				$notice_text = sprintf(gettext(
+-				    "An error occurred while uploading your %s configuration to "), $g['product_label']) .
+-				    $upload_url . " (" . htmlspecialchars($data) . ")";
+-				log_error($notice_text . " - " . $data);
+-				file_notice("AutoConfigBackup", $notice_text);
+-				update_filter_reload_status($notice_text);
+-				$input_errors["acb_upload"] = $notice_text;
++		acb_error_log($data);
+ 			} else {
+-				// Update last pfS backup time
+-				$fd = fopen("/cf/conf/lastpfSbackup.txt", "w");
+-				fwrite($fd, $config['revision']['time']);
++		/* Update last ACB backup time */
++		$fd = fopen($acb_last_backup_file, "w");
++		fwrite($fd, config_get_path('revision/time'));
+ 				fclose($fd);
+-				$notice_text = "End of configuration backup to " . $upload_url . " (success).";
++		$notice_text = sprintf(gettext('Completed AutoConfigBackup encrypted configuration backup upload to %s (success)'), $acb_base_url);
+ 				log_error($notice_text);
+ 				update_filter_reload_status($notice_text);
+ 			}
+-*/
++}
++
++/* Get a specific backup entry from the ACB service */
++function acb_backup_get($userkey, $revision) {
++	$post_fields = [
++		'userkey'  => $userkey,
++		'revision' => $revision,
++		'version'  => g_get('product_version'),
++	];
++	return acb_query_service("getbkp", $post_fields);
++}
++
++/* Get metadata for a specific backup entry from the list as this
++ * metadata is not included when using the getbkp endpoint.
++ */
++function acb_backup_get_metadata($userkey, $revision) {
++	/* Reverse the list since the ACB server getbkp returns last match,
++	 * otherwise if two entries have the same revision the metadata will
++	 * not match. */
++	$backups = array_reverse(acb_backup_list($userkey));
++	foreach ($backups as $b) {
++		if ($b['time'] == $revision) {
++			return $b;
++		}
++	}
++	return [];
++}
++
++/* Decrypt the configuration data from an ACB service backup entry. */
++function acb_backup_decrypt($data, $password) {
++	$errors = [];
++
++	$data_split = explode('++++', $data);
++	$sha256 = trim($data_split[0]);
++	$encrypted = $data_split[1];
++
++	if (!tagfile_deformat($encrypted, $encrypted, "config.xml")) {
++		$errors[] = gettext('The fetched backup entry does not appear to contain an encrypted configuration.');
++	}
++	$decrypted = decrypt_data($encrypted, $password);
++	if (!strstr($decrypted, "pfsense") ||
++	    (strlen($decrypted) < 50)) {
++		$errors[] = gettext('Could not decrypt the fetched configuration backup entry. Check the encryption key and try again.');
+ 		} else {
+-			// Debugging
+-			//log_error("No https://acb.netgate.com backup required.");
++		$pos = stripos($decrypted, "</pfsense>");
++		$decrypted = substr($decrypted, 0, $pos);
++		$decrypted .= "</pfsense>\n";
++	}
++
++	return [$decrypted, $encrypted, $sha256, $errors];
++}
++
++/* Fetch a list of backups stored for a given device key on the ACB service */
++function acb_backup_list($userkey) {
++	/* Separator used during client / server communications */
++	$oper_sep = "\|\|";
++
++	$backups = [];
++
++	$post_fields = [
++		'userkey'  => $userkey,
++		'version'  => g_get('product_version')
++	];
++	/* Fetch backup data for this device key from the ACB service */
++	[$data, $httpcode, $errno] = acb_query_service("list", $post_fields);
++
++	/* Loop through fetched data and create a backup list */
++	foreach (explode("\n", $data) as $ds) {
++		$ds_split = [];
++		preg_match("/^(.*?){$oper_sep}(.*){$oper_sep}(.*)/", $ds, $ds_split);
++
++		$tmp_array = [
++			'username'  => $ds_split[1],
++			'reason'    => $ds_split[2],
++			'time'      => $ds_split[3],
++			'localtime' => acb_time_shift($ds_split[3])
++		];
++
++		if ($ds_split[3] && $ds_split[1]) {
++			$backups[] = $tmp_array;
+ 		}
+ 	}
++
++	return $backups;
+ }
+ 
+-// Save the updated ACB configuration
+-// Create a crontab entry for scheduled backups
+-// if frequency == "cron", a new crontab entry is created, otherwise any existing
+-// ACB entry is removed
+-function setup_ACB($enable, $hint, $frequency, $minute, $hours, $month, $day, $dow, $numman, $reverse, $pwd) {
+-	global $config;
++/* Delete a specific backup entry from the ACB service */
++function acb_backup_delete($userkey, $revision) {
++	global $acb_base_url;
++
++	$savemsg = "";
++
++	$post_fields = [
++		'userkey'  => $userkey,
++		'revision' => $revision,
++		'version'  => g_get('product_version'),
++	];
++	[$data, $httpcode, $errno] = acb_query_service("rmbkp", $post_fields);
+ 
+-	init_config_arr(array('system', 'acb'));
++	if ($errno) {
++		$savemsg = sprintf(gettext('An error occurred while trying to remove the backup revision from %s'), $acb_base_url);
++	} else {
++		$savemsg = sprintf(gettext('Backup revision %s has been removed.'), acb_time_shift($revision));
++	}
++	return $savemsg;
++}
+ 
+-	// Randomize the minutes if not specified
++/* Save the ACB configuration.
++ * Creates or removes ACB crontab entry for scheduled backups when necessary.
++ */
++function setup_ACB($enable, $hint, $frequency, $minute, $hours, $month, $day, $dow, $numman, $reverse, $pwd) {
++	/* Randomize the minutes if not specified */
+ 	if (!isset($minute) || strlen($minute) == 0 || $minute == "0") {
+ 		$minute = rand(1, 59);
+ 	}
+ 
+-	$config['system']['acb']['enable'] = $enable;
+-	$config['system']['acb']['hint'] = $hint;
+-	$config['system']['acb']['frequency'] = $frequency;
+-	$config['system']['acb']['minute'] = $minute;
+-	$config['system']['acb']['hour'] = $hours;
+-	$config['system']['acb']['month'] = $month;
+-	$config['system']['acb']['day'] = $day;
+-	$config['system']['acb']['dow'] = $dow;
+-	$config['system']['acb']['numman'] = $numman;
+-	$config['system']['acb']['reverse'] = $reverse;
++	config_set_path('system/acb/enable', $enable);
++	config_set_path('system/acb/hint', $hint);
++	config_set_path('system/acb/frequency', $frequency);
++	config_set_path('system/acb/minute', $minute);
++	config_set_path('system/acb/hour', $hours);
++	config_set_path('system/acb/month', $month);
++	config_set_path('system/acb/day', $day);
++	config_set_path('system/acb/dow', $dow);
++	config_set_path('system/acb/numman', $numman);
++	config_set_path('system/acb/reverse', $reverse);
+ 	if (strlen($pwd) >= 8) {
+-		$config['system']['acb']['encryption_password'] = $pwd;
++		config_set_path('system/acb/encryption_password', $pwd);
+ 	}
+ 
+-	install_cron_job("/usr/bin/nice -n20 /usr/local/bin/php /usr/local/sbin/execacb.php", $frequency == "cron",
++	/* Install or remove cron job for scheduled periodic backups. */
++	install_cron_job("/usr/bin/nice -n20 /usr/local/bin/php /usr/local/sbin/execacb.php",
++		($frequency == "cron"),
+ 	   $minute,
+ 	   is_numeric($hours) ? $hours : "*",
+ 	   is_numeric($day) ? $day : "*",
+@@ -370,10 +518,40 @@
+ 	   is_numeric($dow) ? $dow : "*"
+ 	);
+ 
+-	// Install cron job 
+-	install_cron_job("/usr/bin/nice -n20 /usr/local/bin/php /usr/local/sbin/acbupload.php", $enable == "yes", "*");
++	/* Install or remove cron job for uploading staged backups */
++	install_cron_job("/usr/bin/nice -n20 /usr/local/bin/php /usr/local/sbin/acbupload.php",
++		($enable == "yes"),
++		"*");
+ 
+ 	write_config("AutoConfigBackup settings updated");
+ 
+-	return($config['system']['acb']);
++	return config_get_path('system/acb');
++}
++
++/* Log ACB errors when necessary. */
++function acb_error_log($data) {
++	global $acb_base_url;
++	$notice_text = sprintf(
++		gettext("An error occurred while uploading the encrypted %s configuration backup to %s (%s)"),
++		g_get('product_label'),
++		$acb_base_url,
++		htmlspecialchars($data));
++	log_error($notice_text . " - " . $data);
++	file_notice("AutoConfigBackup", $notice_text);
++	update_filter_reload_status($notice_text);
++}
++
++/* Generate a self-contained HTML download link for a device key string. */
++function acb_key_download_link($name, $key) {
++	$hostname = config_get_path('system/hostname') . "." . config_get_path('system/domain');
++	$dltext = gettext('Download This Key');
++	$keystring = base64_encode($key . "\n");
++
++	return <<<EOL
++<a download="acb_{$hostname}_{$name}_key.txt"
++   title="{$dltext}"
++   href="data:text/plain;base64,{$keystring}">
++   <i class="fa fa-download"></i></a>
++EOL;
++
+ }
+diff -rub --new-file old/src/etc/inc/config.lib.inc new/src/etc/inc/config.lib.inc
+--- old/src/etc/inc/config.lib.inc	2025-01-24 13:42:01.719398730 -0500
++++ new/src/etc/inc/config.lib.inc	2025-01-24 13:49:11.668097998 -0500
+@@ -722,16 +722,19 @@
+ 		run_plugins("/usr/local/pkg/write_config/");
+ 	}
+ 
+-	// Try the core AutoConfigBackup system
+-	if (is_array($config['system']['acb']) && $config['system']['acb']['enable'] == "yes" &&
+-	    (!isset($config['system']['acb']['frequency']) || $config['system']['acb']['frequency'] == "every") || file_exists("/tmp/forceacb")) {
+-	    if ($doacb) {
++	/* Trigger AutoConfigBackup if necessary. */
+ 			require_once("acb.inc");
+-			upload_config($manual_acb);
++	global $acb_force_file;
++	$acb_config = config_get_path('system/acb', []);
++	if (acb_enabled() &&
++	    (!isset($acb_config['frequency']) ||
++	    ($acb_config['frequency'] == "every")) ||
++	    file_exists($acb_force_file)) {
++		if ($doacb) {
++			acb_backup_stage_upload($manual_acb);
+ 		}
+-
+-		if (file_exists("/tmp/forceacb")) {
+-			unlink("/tmp/forceacb");
++		if (file_exists($acb_force_file)) {
++			unlink($acb_force_file);
+ 		}
+ 	}
+ 
+diff -rub --new-file old/src/etc/inc/priv.defs.inc new/src/etc/inc/priv.defs.inc
+--- old/src/etc/inc/priv.defs.inc	2025-01-24 13:50:02.375652713 -0500
++++ new/src/etc/inc/priv.defs.inc	2025-01-24 13:50:59.153273921 -0500
+@@ -538,6 +538,12 @@
+ $priv_list['page-services-acb-backup']['match'] = array();
+ $priv_list['page-services-acb-backup']['match'][] = "services_acb_backup.php*";
+ 
++$priv_list['page-services-acb-changekey'] = array();
++$priv_list['page-services-acb-changekey']['name'] = gettext("WebCfg - Services: Auto Config Backup: Change Device Key");
++$priv_list['page-services-acb-changekey']['descr'] = gettext("Change the auto config backup device key.");
++$priv_list['page-services-acb-changekey']['match'] = array();
++$priv_list['page-services-acb-changekey']['match'][] = "services_acb_changekey.php*";
++
+ $priv_list['page-services-acb-settings'] = array();
+ $priv_list['page-services-acb-settings']['name'] = gettext("WebCfg - Services: Auto Config Backup: Settings");
+ $priv_list['page-services-acb-settings']['descr'] = gettext("Configure the auto config backup system.");
+diff -rub --new-file old/src/usr/local/sbin/acbupload.php new/src/usr/local/sbin/acbupload.php
+--- old/src/usr/local/sbin/acbupload.php	2025-01-24 13:42:01.874400422 -0500
++++ new/src/usr/local/sbin/acbupload.php	2025-01-24 13:52:47.719461962 -0500
+@@ -1,11 +1,11 @@
+ <?php
+ /*
+- * autoconfigbackup.inc
++ * acbupload.php
+  *
+  * part of pfSense (https://www.pfsense.org)
+  * Copyright (c) 2008-2013 BSD Perimeter
+  * Copyright (c) 2013-2016 Electric Sheep Fencing
+- * Copyright (c) 2014-2023 Rubicon Communications, LLC (Netgate)
++ * Copyright (c) 2014-2025 Rubicon Communications, LLC (Netgate)
+  * All rights reserved.
+  *
+  * Licensed under the Apache License, Version 2.0 (the "License");
+@@ -21,21 +21,33 @@
+  * limitations under the License.
+  */
+ 
+- /*
+-  * This file is called by CRON every few minutes to upload ACB backups to the server.
+-  * This allows the GUI to remain responsive. Backup files are deleted after upload.
++/*
++ * This file is called by cron every minute to upload staged ACB entries.
++ * This allows the GUI to remain responsive.
++ * ACB deletes backup files after upload no matter the result.
+   */
+  
+ require_once("filter.inc");
+ require_once("notices.inc");
++require_once("acb.inc");
++
++/*
++ * Do not attempt to upload while the system is still booting since the
++ * WAN is likely still down. The next scheduled job should pick up the
++ * file(s) to be uploaded.
++ */
++if (is_platform_booting()) {
++	return;
++}
+ 
+ $lockfile = "/tmp/acb.lock";
+-// Check for 
++/* Check for stale lock */
+ if (file_exists($lockfile)) {
+-    if (time()-filemtime($lockfile) > (60 * 60)) {
+-        // The lock file is more than an hour old. Something probably went wrong
++	if (time() - filemtime($lockfile) > (60 * 60)) {
++		/* The lock file is more than an hour old.
++		 * Something probably went wrong. */
+         unlink_if_exists($lockfile);
+-        log_error("Stale ACB lock file removed");
++		log_error(gettext('Stale AutoConfigBackup lock file removed'));
+     } else {
+        exit();
+     }
+@@ -43,113 +55,26 @@
+ 
+ touch($lockfile);
+ 
+-// Location of backup file pairs
+-$acbuploadpath = g_get('acbbackuppath');
+-// systems we do not allow
+-$badreasons = array("snort", "pfblocker", "minicron", "merged in config");
+-// List any ACB file pairs that have been created
+-$files = glob($acbuploadpath . '*.form');
++/* List file pairs ACB has staged for upload */
++$files = glob(g_get('acbbackuppath') . '*.form');
+ 
+ if (count($files) > 0) {
+-    // Sort them, oldest first
++	/* Sort staged backups, oldest first */
+     usort($files, function($a, $b) {
+         return filemtime($a) - filemtime($b);
+     });
+ 
+-    // Upload them to the server
++	/* Upload staged backups to the ACB service */
++	$notice_text = sprintf(gettext('Starting upload of staged AutoConfigBackup encrypted configuration backups to %s'), $acb_base_url);
++	log_error($notice_text);
++	update_filter_reload_status($notice_text);
+     foreach ($files as $file) {
+         $basename = basename($file, ".form");
+-        upload($basename);
++		acb_backup_upload($basename);
++		/* Sleep for one second between uploads to help ensure the
++		 * ACB service gives each backup entry a unique timestamp. */
++		sleep(1);
+     }
+ }
+ 
+ unlink_if_exists($lockfile);
+-
+-function upload($basename) {
+-    global $acbuploadpath, $badreasons;
+-
+-    $upload_url = "https://acb.netgate.com/save";
+-
+-    if (!is_url_hostname_resolvable($upload_url)) {
+-	$data = " Unable to resolve " . parse_url($upload_url, PHP_URL_HOST) . " ";
+-	acb_error_log($upload_url, $data);
+-	unlink_if_exists($acbuploadpath . $basename . ".data");
+-	unlink_if_exists($acbuploadpath . $basename . ".form");
+-	return;
+-    }
+-
+-    // Retrieve the data to send
+-    // Retrieve the form data
+-    $formdata = file_get_contents($acbuploadpath . $basename . ".form");
+-    $post_fields = json_decode($formdata, true);
+-    // Add the backup data file
+-    $post_fields['file'] = curl_file_create($acbuploadpath . $basename . ".data", 'image/jpg', 'config.jpg');
+-
+-    // Ensure there are no backups from systems we do not allow
+-    foreach ($badreasons as $term) {
+-        if (strpos(strtolower($post_fields['reason']), $term) !== false) {
+-            log_error("Skipping ACB backup for " . strtolower($post_fields['reason']) . '.');
+-            unlink_if_exists($acbuploadpath . $basename . ".data");
+-            unlink_if_exists($acbuploadpath . $basename . ".form");
+-            return;
+-        }
+-    }
+-
+-    // Check configuration into the ESF repo (Copied from /etc/inc/acb.inc)
+-    $curl_session = curl_init();
+-
+-    curl_setopt($curl_session, CURLOPT_URL, $upload_url);
+-    curl_setopt($curl_session, CURLOPT_POST, count($post_fields));
+-    curl_setopt($curl_session, CURLOPT_POSTFIELDS, $post_fields);
+-    curl_setopt($curl_session, CURLOPT_RETURNTRANSFER, 1);
+-    curl_setopt($curl_session, CURLOPT_SSL_VERIFYPEER, 1);
+-    curl_setopt($curl_session, CURLOPT_CONNECTTIMEOUT, 55);
+-    curl_setopt($curl_session, CURLOPT_TIMEOUT, 30);
+-    curl_setopt($curl_session, CURLOPT_USERAGENT, g_get('product_label') . '/' . rtrim(file_get_contents("/etc/version")));
+-    // Proxy
+-    set_curlproxy($curl_session);
+-
+-    $data = curl_exec($curl_session);
+-    $httpcode = curl_getinfo($curl_session, CURLINFO_RESPONSE_CODE);
+-
+-    if (curl_errno($curl_session)) {
+-        $fd = fopen("/tmp/backupdebug.txt", "w");
+-        $acb_curl_error = curl_error($curl_session);
+-        fwrite($fd, $upload_url . "" . $fields_string . "\n\n");
+-        fwrite($fd, $data);
+-        fwrite($fd, $acb_curl_error);
+-        fclose($fd);
+-    } else {
+-        curl_close($curl_session);
+-    }
+-
+-    // Delete the backup files, whether it worked or not
+-    unlink_if_exists($acbuploadpath . $basename . ".data");
+-    unlink_if_exists($acbuploadpath . $basename . ".form");
+-
+-    if (strpos(strval($httpcode), '20') === false) {
+-	if (empty($data) && $acb_curl_error) {
+-		$data = $acb_curl_error;
+-	} else {
+-		$data = "Unknown error";
+-	}
+-	acb_error_log($upload_url, $data);
+-    } else {
+-        // Update last pfS backup time
+-        $fd = fopen("/cf/conf/lastpfSbackup.txt", "w");
+-        fwrite($fd, $config['revision']['time']);
+-        fclose($fd);
+-        $notice_text = "End of configuration backup to " . $upload_url . " (success).";
+-        log_error($notice_text);
+-        update_filter_reload_status($notice_text);
+-    }
+-}
+-
+-function acb_error_log($upload_url, $data) {
+-        $notice_text = sprintf(gettext(
+-            "An error occurred while uploading the encrypted %s configuration to "), g_get('product_label')) .
+-            $upload_url . " (" . htmlspecialchars($data) . ")";
+-        log_error($notice_text . " - " . $data);
+-        file_notice("AutoConfigBackup", $notice_text);
+-        update_filter_reload_status($notice_text);
+-}
+diff -rub --new-file old/src/usr/local/sbin/execacb.php new/src/usr/local/sbin/execacb.php
+--- old/src/usr/local/sbin/execacb.php	2025-01-24 13:42:02.033402158 -0500
++++ new/src/usr/local/sbin/execacb.php	2025-01-24 13:52:47.719461962 -0500
+@@ -5,7 +5,7 @@
+  * part of pfSense (https://www.pfsense.org)
+  * Copyright (c) 2004-2013 BSD Perimeter
+  * Copyright (c) 2013-2016 Electric Sheep Fencing
+- * Copyright (c) 2014-2023 Rubicon Communications, LLC (Netgate)
++ * Copyright (c) 2014-2025 Rubicon Communications, LLC (Netgate)
+  * Copyright (c) 2009 Erik Kristensen
+  * All rights reserved.
+  *
+@@ -26,15 +26,18 @@
+  * limitations under the License.
+  */
+ 
+- // Called from cron, this script makes a remote backup of the current configuration
+- // via the ACB system
++/*
++ * This script is called by cron to perform a periodic scheduled backup of the
++ * current configuration using the AutoConfigBackup service.
++ */
+ 
+- require_once("config.inc");
+- require_once("acb.inc");
++require_once("acb.inc");
+ 
+- if ($config['system']['acb']['enable'] == "yes") {
+- 	write_config("Scheduled backup");
+- 	upload_config();
++if (acb_enabled()) {
++	if (is_acb_upload_needed()) {
++		write_config(gettext('Scheduled Backup via AutoConfigBackup'));
++		acb_backup_stage_upload();
++	} else {
++		log_error(gettext('Skipping AutoConfigBackup scheduled backup (no changes since previous backup)'));
+  }
+-
+- ?>
++}
+diff -rub --new-file old/src/usr/local/www/services_acb_backup.php new/src/usr/local/www/services_acb_backup.php
+--- old/src/usr/local/www/services_acb_backup.php	2025-01-24 13:42:02.362405750 -0500
++++ new/src/usr/local/www/services_acb_backup.php	2025-01-29 13:15:21.775471367 -0500
+@@ -1,11 +1,11 @@
+ <?php
+ /*
+- * autoconfigbackup_backup.php
++ * services_acb_backup.php
+  *
+  * part of pfSense (https://www.pfsense.org)
+  * Copyright (c) 2008-2013 BSD Perimeter
+  * Copyright (c) 2013-2016 Electric Sheep Fencing
+- * Copyright (c) 2014-2023 Rubicon Communications, LLC (Netgate)
++ * Copyright (c) 2014-2025 Rubicon Communications, LLC (Netgate)
+  * All rights reserved.
+  *
+  * Licensed under the Apache License, Version 2.0 (the "License");
+@@ -32,29 +32,38 @@
+ require_once("guiconfig.inc");
+ require_once("acb.inc");
+ 
+-if ($_POST) {
+-	global $config;
++$input_errors = [];
+ 
+-	if ($_REQUEST['nooverwrite']) {
+-		touch("/tmp/acb_nooverwrite");
++if ($_POST) {
++	/* Check backup reason string length. Service limit is 1024 but some of
++	 *  that is consumed by the backup creator string and auth database. */
++	if (!empty($_POST['reason'])) {
++		if (strlen($_POST['reason']) > 900) {
++			$input_errors[] = gettext("Reason text must be less than 900 characters in length.");
++		}
++		if (is_acb_ignored_reason($_POST['reason'])) {
++			$input_errors[] = gettext("Reason text contains keywords ignored by AutoConfigBackup and will not be uploaded.");
++		}
+ 	}
+ 
+-	touch("/tmp/forceacb");
+ 
+-	if ($_REQUEST['reason']) {
+-		if (write_config($_REQUEST['reason'] . "-MaNuAlBaCkUp")) {
+-			$savemsg = "Backup queued successfully.";
++	if (empty($input_errors)) {
++		global $acb_force_file, $acb_last_backup_file;
++		touch($acb_force_file);
++		if ($_POST['reason']) {
++			if (write_config($_POST['reason'] . "-MaNuAlBaCkUp")) {
++				$savemsg = gettext('Backup queued successfully.');
+ 		}
+-	} elseif (write_config("Backup invoked via Auto Config Backup." . "-MaNuAlBaCkUp")) {
+-			$savemsg = "Backup queued successfully.";
++		} elseif (write_config(gettext('Backup invoked via Auto Config Backup.') . '-MaNuAlBaCkUp')) {
++			$savemsg = gettext('Backup queued successfully.');
+ 	} else {
+-		$savemsg = "Backup not completed - write_config() failed.";
++			$savemsg = gettext('Backup not completed -- write_config() failed.');
+ 	}
+ 
++		global $config;
+ 	$config = parse_config(true);
+-	unlink_if_exists("/cf/conf/lastpfSbackup.txt");
+-
+-	$donotshowheader = true;
++		unlink_if_exists($acb_last_backup_file);
++	}
+ }
+ 
+ $pgtitle = array("Services", "Auto Configuration Backup", "Backup Now");
+@@ -69,33 +78,47 @@
+ $tab_array = array();
+ $tab_array[] = array("Settings", false, "/services_acb_settings.php");
+ $tab_array[] = array("Restore", false, "/services_acb.php");
+-$tab_array[] = array("Backup now", true, "/services_acb_backup.php");
++$tab_array[] = array("Backup Now", true, "/services_acb_backup.php");
+ display_top_tabs($tab_array);
+ 
+-$form = new Form("Backup", config_get_path('system/acb/enable') === "yes");
++$form = new Form("Backup", acb_enabled());
+ 
+-$section = new Form_Section('Backup Details');
++if (acb_enabled()) {
++	$section = new Form_Section('Backup Details');
+ 
+-$section->addInput(new Form_Input(
++	$section->addInput(new Form_Input(
+ 	'reason',
+ 	'Revision Reason',
+ 	'text',
+-	$_REQUEST['reason']
+-))->setWidth(7)->setHelp("Enter the reason for the backup");
++		$_POST['reason']
++	))->setWidth(7)->setHelp('Enter the reason for the backup. ' .
++		'Must be 900 characters in length or less.');
++
++	$form->add($section);
+ 
+-$form->add($section);
++	$section = new Form_Section('Device Key');
+ 
+-$section2 = new Form_Section('Device key');
++	$userkey = get_acb_device_key();
+ 
+-$section2->addInput(new Form_Input(
++	$section->addInput(new Form_Input(
+ 	'devkey',
+-	'Device key',
++		'Device Key',
+ 	'text',
+ 	$userkey
+-))->setWidth(7)->setReadonly()->setHelp("ID used to identify this firewall (derived from the SSH public key.) " .
+-	"Keep a record of this key in case you should ever need to recover this backup on another firewall.");
+-
+-$form->add($section2);
++	))->setWidth(7)->setReadonly()->setHelp('Unique key which identifies backups associated with this device.%1$s%1$s' .
++		'%2$sKeep a secure copy of this value!%3$s %4$s%1$s' .
++		'If this key is lost, all backups for this device will be lost!',
++		'<br/>', '<strong>', '</strong>', acb_key_download_link('device', $userkey));
++
++	$form->add($section);
++} else {
++	$section = new Form_Section('AutoConfigBackup Disabled');
++	$section->addInput(new Form_StaticText(
++		null,
++		'The AutoConfigBackup service is currently disabled, manual backups are not possible.'
++	))->setHelp('Enable AutoConfigBackup on the %sSettings tab%s.', '<a href="services_acb_settings.php">', '</a>');
++	$form->add($section);
++}
+ 
+ print($form);
+ ?>
+@@ -105,8 +128,8 @@
+ events.push(function() {
+ 	$(form).submit(function(e) {
+ 		e.preventDefault();
+-		encpwd = '<?=config_get_path("system/acb/encryption_password")?>';
+-		if ( encpwd.length === 0) {
++		encpwdl = '<?=strlen(config_get_path("system/acb/encryption_password", ''))?>';
++		if ( encpwdl === 0) {
+ 			alert('<?=gettext("No encryption password has been set")?>');
+ 		} else if ($('#devkey').val().length === 0 ) {
+ 			alert('<?=gettext("No device key has been specified")?>');
+@@ -121,4 +144,3 @@
+ </script>
+ 
+ <?php include("foot.inc"); ?>
+-
+diff -rub --new-file old/src/usr/local/www/services_acb_changekey.php new/src/usr/local/www/services_acb_changekey.php
+--- old/src/usr/local/www/services_acb_changekey.php	1969-12-31 19:00:00.000000000 -0500
++++ new/src/usr/local/www/services_acb_changekey.php	2025-01-24 14:09:37.599580070 -0500
+@@ -0,0 +1,193 @@
++<?php
++/*
++ * services_acb_changekey.php
++ *
++ * part of pfSense (https://www.pfsense.org)
++ * Copyright (c) 2004-2013 BSD Perimeter
++ * Copyright (c) 2013-2016 Electric Sheep Fencing
++ * Copyright (c) 2014-2025 Rubicon Communications, LLC (Netgate)
++ * All rights reserved.
++ *
++ * originally based on m0n0wall (http://m0n0.ch/wall)
++ * Copyright (c) 2003-2004 Manuel Kasper <mk@neon1.net>.
++ * All rights reserved.
++ *
++ * Licensed under the Apache License, Version 2.0 (the "License");
++ * you may not use this file except in compliance with the License.
++ * You may obtain a copy of the License at
++ *
++ * http://www.apache.org/licenses/LICENSE-2.0
++ *
++ * Unless required by applicable law or agreed to in writing, software
++ * distributed under the License is distributed on an "AS IS" BASIS,
++ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
++ * See the License for the specific language governing permissions and
++ * limitations under the License.
++ */
++
++##|+PRIV
++##|*IDENT=page-services-acb-changekey
++##|*NAME=Services: Auto Config Backup: Change Device Key
++##|*DESCR=Change the auto config backup device key.
++##|*MATCH=services_acb_changekey.php*
++##|-PRIV
++
++require_once("guiconfig.inc");
++require_once("functions.inc");
++require_once("pfsense-utils.inc");
++require_once("services.inc");
++require_once("acb.inc");
++
++$pconfig = config_get_path('system/acb', []);
++
++if ($_POST['generatekey']) {
++	print json_encode(['newdevicekey' => acb_generate_device_key()]);
++	exit;
++}
++
++$userkey = get_acb_device_key();
++
++if (isset($_POST['updatekey'])) {
++	unset($input_errors);
++
++	/* Add validation */
++	if (!is_valid_acb_device_key($_POST['devkey'])) {
++		$input_errors[] = gettext("Invalid Device Key value.");
++	}
++
++	if (!$input_errors) {
++		/* Update key */
++		config_set_path('system/acb/device_key', $_POST['devkey']);
++		write_config(sprintf(gettext('Changed the AutoConfigBackup device key from %s to %s'),
++			$userkey,
++			$_POST['devkey']));
++		Header("Location: /services_acb_settings.php");
++		exit;
++	}
++}
++
++$pgtitle = array(gettext("Services"), gettext("Auto Configuration Backup"), gettext("Change Device Key"));
++include("head.inc");
++
++if ($input_errors) {
++	print_input_errors($input_errors);
++}
++
++$tab_array = array();
++$tab_array[] = array("Settings", false, "/services_acb_settings.php");
++$tab_array[] = array("Restore", false, "/services_acb.php");
++$tab_array[] = array("Backup Now", false, "/services_acb_backup.php");
++$tab_array[] = array("Change Device Key", true, "/services_acb_changekey.php");
++display_top_tabs($tab_array);
++
++$savebutton = new Form_Button(
++	'updatekey',
++	'Update Key',
++	null,
++	'fa fa-save icon-embed-btn'
++);
++$savebutton->addClass('btn-danger')->setAttribute('disabled', true);
++
++$form = new Form($savebutton);
++$section = new Form_Section('Change Device Key');
++
++$legacy_key = get_acb_legacy_device_key();
++
++if (!is_valid_acb_device_key($legacy_key) ||
++    ($legacy_key != $userkey)) {
++	$device_key_backups = acb_backup_list($userkey);
++	$section->addInput(new Form_Input(
++		'currentkey',
++		'Current Device Key',
++		'text',
++		$userkey
++	))->setWidth(7)->setReadonly()->setHelp('Unique key which identifies backups associated with this device.%1$s%1$s' .
++		'%2$sKeep a secure copy of this value!%3$s %4$s%1$s' .
++		'If this key is lost, all backups for this device key will be lost!%1$s%1$s' .
++		'Hosted backups for this device key: %5$d',
++		'<br/>', '<strong>', '</strong>', acb_key_download_link('device', $userkey), count($device_key_backups));
++}
++
++if (is_valid_acb_device_key($legacy_key)) {
++	$legacy_key_backups = acb_backup_list($legacy_key);
++	$section->addInput(new Form_Input(
++		'legacykey',
++		'Legacy Device Key',
++		'text',
++		$legacy_key
++	))->setWidth(7)->setReadonly()->setHelp('Unique key which identifies backups associated with this device.%1$s%1$s' .
++		'This is a legacy style key derived from the SSH public key.%1$s%1$s' .
++		'%2$sKeep a secure copy of this value!%3$s %4$s%1$s' .
++		'If this key is lost, all backups for this legacy device key will be lost!%1$s%1$s' .
++		'Hosted backups for this legacy key: %5$d',
++		'<br/>', '<strong>', '</strong>', acb_key_download_link('legacy', $userkey), count($legacy_key_backups));
++}
++
++$group = new Form_Group("New Device Key");
++
++$group->add(new Form_Input(
++	'devkey',
++	'Device Key',
++	'text',
++	""
++))->setWidth(7)->setHelp('New device key, replaces the Current Device Key.%1$s%1$s' .
++	'Use the %2$sGenerate New Key%3$s button to create a new randomized key in the proper format, or ' .
++	'paste a properly formatted key into the field. Keys must be 64 character hexadecimal strings (0-9, a-f).%1$s%1$s' .
++	'%2$sTreat this key as a secret!%3$s%1$sAnyone who has this key can manipulate the backups for this key.%1$s%1$s' .
++	'%2$sChanging the Device Key removes the existing device key!%3$s%1$sUse the download icon above to save a copy ' .
++	'of the old key before continuing!',
++	'<br/>', '<strong>', '</strong>');
++
++$group->add(new Form_Button(
++	'generatekey',
++	'Generate New Key',
++	null,
++	'fa fa-refresh'
++))->addClass('btn-info btn-xs');
++
++$section->add($group);
++
++$section->addInput(new Form_Checkbox(
++	'confirmation',
++	'Warning',
++	'Check this box to acknowledge that the Device Key will change, disconnecting from previous backups',
++	false
++))->setHelp('Checking this box enables the Update Key button. ' .
++	'Save a copy of the old Device Key before continuing.%1$s%1$s' .
++	'Old backups are not automatically removed from the server and must be removed manually.',
++	'<br/>');
++
++$form->add($section);
++
++print $form;
++
++?>
++</div>
++
++<script type="text/javascript">
++//<![CDATA[
++events.push(function() {
++	$('#generatekey').click(function(event) {
++		event.preventDefault();
++		$.ajax({
++			type: 'post',
++			url: 'services_acb_changekey.php',
++			data: {
++				generatekey: true,
++			},
++			dataType: 'json',
++			success: function(data) {
++				$('#devkey').val(data.newdevicekey.replace(/\\n/g, '\n'));
++			}
++		});
++	});
++	$('#confirmation').click(function() {
++		$('#updatekey').prop("disabled", !$('#confirmation').prop('checked'));
++	});
++});
++//]]>
++</script>
++
++<?php
++include("foot.inc");
++?>
+diff -rub --new-file old/src/usr/local/www/services_acb.php new/src/usr/local/www/services_acb.php
+--- old/src/usr/local/www/services_acb.php	2025-01-24 13:42:02.198403960 -0500
++++ new/src/usr/local/www/services_acb.php	2025-01-24 14:36:00.102033387 -0500
+@@ -5,7 +5,7 @@
+  * part of pfSense (https://www.pfsense.org)
+  * Copyright (c) 2008-2013 BSD Perimeter
+  * Copyright (c) 2013-2016 Electric Sheep Fencing
+- * Copyright (c) 2014-2023 Rubicon Communications, LLC (Netgate)
++ * Copyright (c) 2014-2025 Rubicon Communications, LLC (Netgate)
+  * All rights reserved.
+  *
+  * Licensed under the Apache License, Version 2.0 (the "License");
+@@ -28,141 +28,84 @@
+ ##|*MATCH=services_acb.php*
+ ##|-PRIV
+ 
+-require("guiconfig.inc");
+-require("acb.inc");
++require_once("guiconfig.inc");
++require_once("pfsense-utils.inc");
++require_once("acb.inc");
+ 
+-// Separator used during client / server communications
+-$oper_sep = "\|\|";
+-$exp_sep = '||';
+-
+-// Encryption password
+ $decrypt_password = config_get_path('system/acb/encryption_password');
+ 
+-// Defined username. Username must be sent lowercase. See Redmine #7127 and Netgate Redmine #163
+-$username = strtolower(config_get_path('system/acb/gold_username'));
+-$password = config_get_path('system/acb/gold_password');
+-
+-// Set hostname
+-if ($_REQUEST['hostname']) {
+-	$hostname = $_REQUEST['hostname'];
+-} else {
+-	$hostname = config_get_path('system/hostname') . "." . config_get_path('system/domain');
+-}
+-
+-// Hostname of local machine
+-$myhostname = config_get_path('system/hostname') . "." . config_get_path('system/domain');
+-
++/* Check if the ACB configuration contains an encryption password.
++ * If it does not, then redirect user to the settings page.
++ */
+ if (!$decrypt_password) {
+ 	Header("Location: /services_acb_settings.php");
+ 	exit;
+ }
+ 
+-if ($_REQUEST['savemsg']) {
+-	$savemsg = htmlentities($_REQUEST['savemsg']);
++$input_errors = [];
++
++$origkey = get_acb_device_key();
++$userkey = $origkey;
++
++if (isset($_POST['userkey'])) {
++	if (is_valid_acb_device_key($_POST['userkey'])) {
++		$userkey = htmlentities($_POST['userkey']);
++	} else {
++		$input_errors[] = gettext("Invalid Device Key value");
++		unset($_POST['userkey']);
++	}
++}
++
++if ($_POST['savemsg']) {
++	$savemsg = htmlentities($_POST['savemsg']);
+ }
+ 
+-if ($_REQUEST['download']) {
++if ($_POST['view'] &&
++    is_valid_acb_revision($_POST['view'])) {
+ 	$pgtitle = array("Services", "Auto Configuration Backup", "Revision Information");
+ } else {
+ 	$pgtitle = array("Services", "Auto Configuration Backup", "Restore");
++	unset($_POST['view']);
+ }
+ 
+-/* Set up time zones for conversion. See #5250 */
+-$acbtz = new DateTimeZone('America/Chicago');
+-$mytz = new DateTimeZone(date_default_timezone_get());
+-
+ include("head.inc");
+ 
++if (($_POST['rmver'] != "") &&
++    is_valid_acb_revision($_POST['rmver'])) {
++	$savemsg = acb_backup_delete($userkey, $_POST['rmver']);
++} else {
++	unset($_POST['rmver']);
++}
+ 
+-if ($_REQUEST['rmver'] != "") {
+-	$curl_session = curl_init();
+-	curl_setopt($curl_session, CURLOPT_URL, "https://acb.netgate.com/rmbkp");
+-	curl_setopt($curl_session, CURLOPT_POSTFIELDS, "userkey=" . $userkey .
+-		"&revision=" . urlencode($_REQUEST['rmver']) .
+-		"&version=" . g_get('product_version') .
+-		"&uid=" . urlencode($uniqueID));
+-	curl_setopt($curl_session, CURLOPT_POST, 3);
+-	curl_setopt($curl_session, CURLOPT_SSL_VERIFYPEER, 1);
+-	curl_setopt($curl_session, CURLOPT_RETURNTRANSFER, 1);
+-	curl_setopt($curl_session, CURLOPT_USERAGENT, g_get('product_label') . '/' . rtrim(file_get_contents("/etc/version")));
+-	// Proxy
+-	set_curlproxy($curl_session);
+-
+-	$data = curl_exec($curl_session);
+-	if (curl_errno($curl_session)) {
+-		$fd = fopen("/tmp/acb_deletedebug.txt", "w");
+-		fwrite($fd, "https://acb.netgate.com/rmbkp" . "" . "action=delete&hostname=" . urlencode($hostname) . "&revision=" . urlencode($_REQUEST['rmver']) . "\n\n");
+-		fwrite($fd, $data);
+-		fwrite($fd, curl_error($curl_session));
+-		fclose($fd);
+-		$savemsg = "An error occurred while trying to remove the item from acb.netgate.com.";
++if (($_POST['newver'] != "") &&
++    is_valid_acb_revision($_POST['newver'])) {
++	[$encrypted_backup, $httpcode, $errno] = acb_backup_get($userkey, $_POST['newver']);
++	if ($errno) {
++		$input_errors[] = sprintf(gettext('Unable to get backup revision from AutoConfigBackup service: %s'), htmlspecialchars($_POST['newver']));
+ 	} else {
+-		curl_close($curl_session);
+-		$budate = new DateTime($_REQUEST['rmver'], $acbtz);
+-		$budate->setTimezone($mytz);
+-		$savemsg = "Backup revision " . htmlspecialchars($budate->format(DATE_RFC2822)) . " has been removed.";
++		[$decrypted_config, $encrypted_config, $sha256, $decrypt_errors] = acb_backup_decrypt($encrypted_backup, $decrypt_password);
+ 	}
+-}
+ 
+-if ($_REQUEST['newver'] != "") {
+-	// Phone home and obtain backups
+-	$curl_session = curl_init();
+-
+-	curl_setopt($curl_session, CURLOPT_URL, "https://acb.netgate.com/getbkp");
+-	curl_setopt($curl_session, CURLOPT_POSTFIELDS, "userkey=" . $userkey .
+-		"&revision=" . urlencode($_REQUEST['newver']) .
+-		"&version=" . g_get('product_version') .
+-		"&uid=" . urlencode($uniqueID));
+-	curl_setopt($curl_session, CURLOPT_POST, 3);
+-	curl_setopt($curl_session, CURLOPT_SSL_VERIFYPEER, 1);
+-	curl_setopt($curl_session, CURLOPT_RETURNTRANSFER, 1);
+-	curl_setopt($curl_session, CURLOPT_USERAGENT, g_get('product_label') . '/' . rtrim(file_get_contents("/etc/version")));
+-	// Proxy
+-	set_curlproxy($curl_session);
+-	$data = curl_exec($curl_session);
+-	$data_split = explode('++++', $data);
+-	$sha256 = trim($data_split[0]);
+-	$data = $data_split[1];
+-
+-	if (!tagfile_deformat($data, $data, "config.xml")) {
+-		$input_errors[] = "The downloaded file does not appear to contain an encrypted pfSense configuration.";
+-	}
+-
+-	$out = decrypt_data($data, $decrypt_password);
+-	if (!strstr($out, "pfsense") ||
+-	    (strlen($out) < 50)) {
+-		$out = "Could not decrypt. Different encryption key?";
+-		$input_errors[] = "Could not decrypt config.xml. Check the encryption key and try again: {$out}";
++	if (!empty($decrypt_errors)) {
++		$input_errors = array_merge($input_errors, $decrypt_errors);
+ 	} else {
+-		$pos = stripos($out, "</pfsense>");
+-		$data = substr($out, 0, $pos);
+-		$data = $data . "</pfsense>\n";
+-
+-		$fd = fopen("/tmp/config_restore.xml", "w");
+-		fwrite($fd, $data);
+-		fclose($fd);
+-
+-		$ondisksha256 = trim(shell_exec("/sbin/sha256 /tmp/config_restore.xml | /usr/bin/awk '{ print $4 }'"));
+-		// We might not have a sha256 on file for older backups
+-		if ($sha256 != "0" && $sha256 != "") {
++		$config_restore_path = '/tmp/config_restore.xml';
++		file_put_contents($config_restore_path, $decrypted_config);
++
++		$ondisksha256 = hash_file('sha256', $config_restore_path);
++		/* ACB may not have a sha256 hash on file for older backup entries */
++		if (($sha256 != "0") &&
++		    ($sha256 != "")) {
+ 			if ($ondisksha256 != $sha256) {
+-				$input_errors[] = "SHA256 values do not match, cannot restore. $ondisksha256 != $sha256";
++				$input_errors[] = "SHA256 values do not match, cannot restore. ({$ondisksha256} != {$sha256})";
+ 			}
+ 		}
+-		if (curl_errno($curl_session)) {
+-			/* If an error occurred, log the error in /tmp/ */
+-			$fd = fopen("/tmp/acb_restoredebug.txt", "w");
+-			fwrite($fd, "https://acb.netgate.com/getbkp" . "" . "action=restore&hostname={$hostname}&revision=" . urlencode($_REQUEST['newver']) . "\n\n");
+-			fwrite($fd, $data);
+-			fwrite($fd, curl_error($curl_session));
+-			fclose($fd);
+-		} else {
+-			curl_close($curl_session);
+-		}
+ 
+-		if (!$input_errors && $data) {
++		if (!$input_errors && $decrypted_config) {
+ 			if (config_restore("/tmp/config_restore.xml") == 0) {
+-				$savemsg = "Successfully reverted the pfSense configuration to revision " . urldecode($_REQUEST['newver']) . ".";
++				$savemsg = sprintf(gettext('Successfully reverted the %s configuration to revision %s.'),
++					g_get('product_label'),
++					$_POST['newver']);
+ 				$savemsg .= <<<EOF
+ 			<br />
+ 		<form action="diag_reboot.php" method="post">
+@@ -172,112 +115,50 @@
+ 		</form>
+ EOF;
+ 			} else {
+-				$savemsg = "Unable to revert to the selected configuration.";
++				$errormsg = gettext('Unable to revert to the selected configuration backup revision.');
+ 			}
+ 		} else {
+-			log_error("There was an error when restoring the AutoConfigBackup item");
++			log_error(gettext('There was an error while restoring the AutoConfigBackup entry'));
+ 		}
+-		unlink_if_exists("/tmp/config_restore.xml");
++		unlink_if_exists($config_restore_path);
+ 	}
++} else {
++	unset($_POST['newver']);
+ }
+ 
+-if ($_REQUEST['download']) {
+-	// Phone home and obtain backups
+-	$curl_session = curl_init();
+-
+-	curl_setopt($curl_session, CURLOPT_URL, "https://acb.netgate.com/getbkp");
+-	curl_setopt($curl_session, CURLOPT_POSTFIELDS, "userkey=" . $userkey . "&revision=" . urlencode($_REQUEST['download']));
+-	curl_setopt($curl_session, CURLOPT_POST, 3);
+-	curl_setopt($curl_session, CURLOPT_SSL_VERIFYPEER, 1);
+-	curl_setopt($curl_session, CURLOPT_RETURNTRANSFER, 1);
+-
+-	curl_setopt($curl_session, CURLOPT_USERAGENT, g_get('product_label') . '/' . rtrim(file_get_contents("/etc/version")));
+-	// Proxy
+-	set_curlproxy($curl_session);
+-	$data = curl_exec($curl_session);
+-
+-	if (curl_errno($curl_session)) {
+-		$fd = fopen("/tmp/acb_backupdebug.txt", "w");
+-		fwrite($fd, "https://acb.netgate.com/getbkp" . "" . "action=sgetbackup" . "\n\n");
+-		fwrite($fd, $data);
+-		fwrite($fd, curl_error($curl_session));
+-		fclose($fd);
++if ($_POST['view'] &&
++    is_valid_acb_revision($_POST['view'])) {
++	[$encrypted_backup, $httpcode, $errno] = acb_backup_get($userkey, $_POST['view']);
++	if ($errno) {
++		$input_errors[] = sprintf(gettext('Unable to get backup revision from AutoConfigBackup service: %s'), htmlspecialchars($_POST['view']));
+ 	} else {
+-		curl_close($curl_session);
++		[$decrypted_config, $encrypted_config, $sha256sum, $decrypt_errors] = acb_backup_decrypt($encrypted_backup, $decrypt_password);
+ 	}
+ 
+-	if (!tagfile_deformat($data, $data1, "config.xml")) {
+-		$input_errors[] = "The downloaded file does not appear to contain an encrypted pfSense configuration.";
++	if (!empty($decrypt_errors)) {
++		$input_errors = array_merge($input_errors, $decrypt_errors);
+ 	} else {
+-		$ds = explode('++++', $data);
+-		$revision = $_REQUEST['download'];
+-		$sha256sum = $ds[0];
++		$revision = $_POST['view'];
+ 		if ($sha256sum == "0") {
+ 			$sha256sum = "None on file.";
+ 		}
+-		$data = $ds[1];
+ 		$configtype = "Encrypted";
+-		if (!tagfile_deformat($data, $data, "config.xml")) {
+-			$input_errors[] = "The downloaded file does not appear to contain an encrypted pfSense configuration.";
+-		}
+-		$data = decrypt_data($data, $decrypt_password);
+-		if (!strstr($data, "pfsense")) {
+-			$data = "Could not decrypt. Different encryption key?";
+-			$input_errors[] = "Could not decrypt config.xml. Check the encryption key and try again.";
+ 		}
++	if ($_POST['download'] == 'true') {
++		$hostname = config_get_path('system/hostname') . "." . config_get_path('system/domain');
++		$revision = acb_time_shift($_POST['view'], "YmdHis");
++		send_user_download('data', $decrypted_config, "config-backup-acb-{$hostname}-{$revision}.xml", "text/xml");
+ 	}
++} else {
++	unset($_POST['view']);
+ }
+ 
+-// $confvers must be populated viewing info but there were errors
+-$confvers = array();
+-if ((!($_REQUEST['download']) || $input_errors) && check_dnsavailable()) {
+-	// Populate available backups
+-	$curl_session = curl_init();
+-
+-	curl_setopt($curl_session, CURLOPT_URL, "https://acb.netgate.com/list");
+-	curl_setopt($curl_session, CURLOPT_POSTFIELDS, "userkey=" . $userkey .
+-		"&uid=eb6a4e6f76c10734b636" .
+-		"&version=" . g_get('product_version') .
+-		"&uid=" . urlencode($uniqueID));
+-	curl_setopt($curl_session, CURLOPT_SSL_VERIFYPEER, 1);
+-	curl_setopt($curl_session, CURLOPT_POST, 1);
+-	curl_setopt($curl_session, CURLOPT_RETURNTRANSFER, 1);
+-
+-	curl_setopt($curl_session, CURLOPT_USERAGENT, g_get('product_label') . '/' . rtrim(file_get_contents("/etc/version")));
+-	// Proxy
+-	set_curlproxy($curl_session);
+-
+-	$data = curl_exec($curl_session);
+-
+-	if (curl_errno($curl_session)) {
+-		$fd = fopen("/tmp/acb_backupdebug.txt", "w");
+-		fwrite($fd, "https://acb.netgate.com/list" . "" . "action=showbackups" . "\n\n");
+-		fwrite($fd, $data);
+-		fwrite($fd, curl_error($curl_session));
+-		fclose($fd);
+-	} else {
+-		curl_close($curl_session);
+-	}
+-
+-	// Loop through and create new confvers
+-	$data_split = explode("\n", $data);
+-
+-	foreach ($data_split as $ds) {
+-		$ds_split = explode($exp_sep, $ds);
+-		$tmp_array = array();
+-		$tmp_array['username'] = $ds_split[0];
+-		$tmp_array['reason'] = $ds_split[1];
+-		$tmp_array['time'] = $ds_split[2];
+-
+-		/* Convert the time from server time to local. See #5250 */
+-		$budate = new DateTime($tmp_array['time'], $acbtz);
+-		$budate->setTimezone($mytz);
+-		$tmp_array['localtime'] = $budate->format(DATE_RFC2822);
++/* $confvers must be an array. */
++$confvers = [];
+ 
+-		if ($ds_split[2] && $ds_split[0]) {
+-			$confvers[] = $tmp_array;
+-		}
+-	}
++if ((!($_POST['view']) || $input_errors) &&
++    acb_check_dns()) {
++	$confvers = acb_backup_list($userkey);
+ }
+ 
+ if ($input_errors) {
+@@ -286,54 +167,61 @@
+ if ($savemsg) {
+ 	print_info_box($savemsg, 'success');
+ }
++if ($errormsg) {
++	print_info_box($errormsg, 'danger');
++}
+ 
+ $tab_array = array();
+ $tab_array[0] = array("Settings", false, "/services_acb_settings.php");
+-if ($_REQUEST['download']) {
+-	$active = false;
+-} else {
+-	$active = true;
++$tab_array[1] = array("Restore", !($_POST['view']), "/services_acb.php");
++if ($_POST['view']) {
++	$tab_array[] = array("Revision", true, "/services_acb.php?view=" . htmlspecialchars($_POST['view']));
+ }
+-
+-$tab_array[1] = array("Restore", $active, "/services_acb.php");
+-
+-if ($_REQUEST['download']) {
+-	$tab_array[] = array("Revision", true, "/services_acb.php?download=" . htmlspecialchars($_REQUEST['download']));
+-}
+-
+-$tab_array[] = array("Backup now", false, "/services_acb_backup.php");
++$tab_array[] = array("Backup Now", false, "/services_acb_backup.php");
+ 
+ display_top_tabs($tab_array);
+ ?>
+ 
+ <div id="loading">
+-	<i class="fa fa-spinner fa-spin"></i> Loading, please wait...
++	<i class="fa spinner fa-spin"></i> Loading, please wait...
+ </div>
+ 
+ 
+-<?php if ($_REQUEST['download'] && (!$input_errors)):
++<?php if ($_POST['view'] && (!$input_errors)):
+ 
+ $form = new Form(false);
+ 
+ $section = new Form_Section('Backup Details');
+ 
+ $section->addInput(new Form_Input(
+-	'download',
+-	'Revision date/time',
++	'view',
++	'Service Date/Time',
+ 	'text',
+-	$_REQUEST['download']
+-))->setWidth(7)->setReadOnly();
++	$_POST['view']
++))->setWidth(7)->setReadOnly()->setHelp('Date and time of this revision on the AutoConfigBackup service (UTC).');
++
++$local_revision_time = acb_time_shift($_POST['view'], $format = DATE_RFC2822);
++
++$section->addInput(new Form_Input(
++	'view',
++	'Local Date/Time',
++	'text',
++	$local_revision_time
++))->setWidth(7)->setReadOnly()->setHelp('Local date and time of this revision.');
++
++$metadata = acb_backup_get_metadata($userkey, $_POST['view']);
++$reason = (array_key_exists('reason', $metadata)) ? $metadata['reason'] : gettext("No Revision Description");
+ 
+ $section->addInput(new Form_Input(
+ 	'reason',
+ 	'Revision Reason',
+ 	'text',
+-	$_REQUEST['reason']
++	$reason
+ ))->setWidth(7)->setReadOnly();
+ 
+ $section->addInput(new Form_Input(
+ 	'shasum',
+-	'SHA256 summary',
++	'SHA256 Summary',
+ 	'text',
+ 	$sha256sum
+ ))->setWidth(7)->setReadOnly();
+@@ -341,13 +229,13 @@
+ $section->addInput(new Form_Textarea(
+ 	'config_xml',
+ 	'Encrypted config.xml',
+-	$ds[1]
++	$encrypted_config
+ ))->setWidth(7)->setAttribute("rows", "40")->setAttribute("wrap", "off");
+ 
+ $section->addInput(new Form_Textarea(
+ 	'dec_config_xml',
+ 	'Decrypted config.xml',
+-	$data
++	$decrypted_config
+ ))->setWidth(7)->setAttribute("rows", "40")->setAttribute("wrap", "off");
+ 
+ $form->add($section);
+@@ -355,48 +243,86 @@
+ print($form);
+ 
+ ?>
+-<a class="btn btn-primary" title="<?=gettext('Restore this revision')?>" href="services_acb.php?newver=<?= urlencode($_REQUEST['download']) ?>" onclick="return confirm('<?=gettext("Are you sure you want to restore {$cv['localtime']}?")?>')"><i class="fa fa-undo"></i> Install this revision</a>
++<a class="btn btn-warning do-confirm"
++	title="<?=sprintf(gettext('Restore backup revision %s'), $_POST['view'])?>"
++	href="services_acb.php?userkey=<?=$userkey?>&newver=<?=$_POST['view']?>"
++	usepost><i class="fa fa-undo"></i> Restore this revision</a>
++
++<a class="btn btn-primary"
++	title="<?=gettext('Download this revision')?>"
++	href="services_acb.php?userkey=<?=$userkey?>&view=<?=$_POST['view']?>&download=true"
++	usepost><i class="fa fa-cloud-download"></i> Download this revision</a>
+ 
+ <?php else:
+ 
+-$section2 = new Form_Section('Device key');
+-$group = new Form_Group("Device key");
++$section2 = new Form_Section('Device Key');
++$group = new Form_Group("Device Key");
+ 
++$legacy_key = get_acb_legacy_device_key();
++$legacy_string = "";
++if (is_valid_acb_device_key($legacy_key) &&
++    ($legacy_key != $userkey)) {
++	$legacy_string = sprintf(gettext('%1$s%1$sBackups may also exist under the legacy key for this device: %2$s'), "<br/>", $legacy_key);
++	$check_button_key = $legacy_key;
++} elseif ($userkey != $origkey) {
++	$legacy_string = sprintf(gettext('%1$s%1$sBackups may also exist under the configured key for this device: %2$s'), "<br/>", $origkey);
++	$check_button_key = $origkey;
++}
++
++if ($userkey == $legacy_key) {
++	$key_type = "legacy";
++} elseif($userkey != $origkey) {
++	$key_type = "alternate";
++} else {
++	$key_type = "device";
++}
++
++if (!empty($legacy_string)) {
++	/* Add a check button */
++	$legacy_string .= ' <a class="btn-sm btn-primary" ' .
++				'title="' . gettext('Check this key') . '" ' .
++				'href="services_acb.php?userkey=' . $check_button_key . '" ' .
++				'usepost><i class="fa fa-search"></i> ' .
++				gettext('Check') . '</a><br/><br/>';
++}
+ $group->add(new Form_Input(
+ 	'devkey',
+-	'Device key',
++	'Device Key',
+ 	'text',
+ 	$userkey
+-))->setWidth(7)->setHelp("ID used to identify this firewall (derived from the SSH public key.) " .
+-	"See help below for more details. %sPlease make a safe copy of this ID value.%s If it is lost, your backups will" .
+-	" be lost too!", "<strong>", "</strong>");
++))->setWidth(7)->setHelp('Unique key which identifies backups associated with this device. ' .
++	'See help below for more details.%1$s%1$s' .
++	'%2$sKeep a secure copy of this value!%3$s %4$s%1$s' .
++	'If this key is lost, all backups for this device will be lost!%5$s',
++	'<br/>', '<strong>', '</strong>', acb_key_download_link($key_type, $userkey), $legacy_string);
+ 
+ $group->add(new Form_Button(
+ 	'upduserkey',
+-	'Submit',
++	'Search',
+ 	null,
+-	'fa-save'
++	'fa fa-search'
+ ))->addClass('btn-success btn-xs');
+ 
+ $group->add(new Form_Button(
+ 	'restore',
+ 	'Reset',
+ 	null,
+-	'fa-refresh'
++	'fa fa-undo'
+ ))->addClass('btn-info btn-xs');
+ 
+ $section2->add($group);
+ print($section2);
+ 
+ print('<div class="infoblock">');
+-print_info_box(gettext("The Device key listed above is derived from the SSH public key of the firewall. When a configuration is saved, it is identified by this value." .
+-	" If you are restoring the configuration of another firewall, paste the Device key from that firewall into the Device ID field above and click \"Submit\"." .
+-	" This will temporarily override the ID for this session."), 'info', false);
++print_info_box(gettext('AutoConfigBackup uses the Device Key to associate ' .
++	'uploaded configuration backups with a specific installation. ' .
++	'To view or restore configuration backups from a different installation, ' .
++	'paste its device key into the Device Key field above and click "Search". '), 'info', false);
+ print('</div>');
+ 
+ ?>
+ <div class="panel panel-default">
+-	<div class="panel-heading"><h2 class="panel-title"><?=gettext("Automatic Configuration Backups")?></h2></div>
++	<div class="panel-heading"><h2 class="panel-title"><?=gettext('Automatic Configuration Backups')?></h2></div>
+ 	<div class="panel-body">
+ 		<div class="table-responsive">
+ 		</div>
+@@ -404,9 +330,9 @@
+ 			<table class="table table-striped table-hover table-condensed sortable-theme-bootstrap" id="backups" data-sortable>
+ 				<thead>
+ 					<tr>
+-						<th data-sortable-type="date" width="30%"><?=gettext("Date")?></th>
+-						<th width="60%"><?=gettext("Configuration Change")?></th>
+-						<th width="10%"><?=gettext("Actions")?></th>
++						<th data-sortable-type="date" width="25%"><?=gettext('Local Date/Time')?></th>
++						<th width="65%"><?=gettext('Configuration Change')?></th>
++						<th width="10%"><?=gettext('Actions')?></th>
+ 					</tr>
+ 				</thead>
+ 				<tbody>
+@@ -416,20 +342,34 @@
+ 				if (config_get_path('system/acb/reverse') == "yes"){
+ 					$confvers = array_reverse($confvers);
+ 				}
++				$staged_backup_count = count(glob(g_get('acbbackuppath') . '*.form'));
+ 
+ 				foreach ($confvers as $cv):
+ 			?>
+ 					<tr>
+-						<td><?= $cv['localtime']; ?></td>
+-						<td><?= $cv['reason']; ?></td>
++						<td title="<?= sprintf(gettext("Service Date/Time: %s"), $cv['time']) ?>">
++							<?= $cv['localtime']; ?>
++						</td>
+ 						<td>
+-							<a class="fa fa-undo"		title="<?=gettext('Restore this revision')?>"	href="services_acb.php?hostname=<?=urlencode($hostname)?>&userkey=<?=urlencode($userkey)?>&newver=<?=urlencode($cv['time'])?>"	onclick="return confirm('<?=gettext("Are you sure you want to restore {$cv['localtime']}?")?>')"></a>
+-							<a class="fa fa-download"	title="<?=gettext('Show info')?>"	href="services_acb.php?download=<?=urlencode($cv['time'])?>&hostname=<?=urlencode($hostname)?>&userkey=<?=urlencode($userkey)?>&reason=<?=urlencode($cv['reason'])?>"></a>
+-<?php
+-		if ($userkey == $origkey) {
+-?>
+-							<a class="fa fa-trash"		title="<?=gettext('Delete config')?>"	href="services_acb.php?hostname=<?=urlencode($hostname)?>&rmver=<?=urlencode($cv['time'])?>"></a>
+-<?php 	} ?>
++							<?= htmlspecialchars($cv['reason'], double_encode: false); ?>
++						</td>
++						<td>
++							<a class="fa fa-undo text-warning do-confirm"
++								title="<?=sprintf(gettext('Restore backup revision %s'), $cv['time'])?>"
++								href="services_acb.php?userkey=<?=$userkey?>&newver=<?=$cv['time']?>"
++								usepost></a>
++							<a class="fa fa-file-text"
++								title="<?=gettext('View this revision')?>"
++								href="services_acb.php?userkey=<?=$userkey?>&view=<?=$cv['time']?>"
++								usepost></a>
++							<a class="fa fa-cloud-download"
++								title="<?=gettext('Download this revision')?>"
++								href="services_acb.php?userkey=<?=$userkey?>&view=<?=$cv['time']?>&download=true"
++								usepost></a>
++							<a class="fa fa-trash text-danger"
++								title="<?=gettext('Delete this revision')?>"
++								href="services_acb.php?userkey=<?=$userkey?>&rmver=<?=$cv['time']?>"
++								usepost></a>
+ 						</td>
+ 					</tr>
+ 				<?php	$counter++;
+@@ -438,20 +378,23 @@
+ 				</tbody>
+ 			</table>
+ 			<table class="table table-striped table-hover table-condensed" id="backups" data-sortable>
+-			<?php if ($counter == 0): ?>
+ 				<tr>
+-					<td colspan="3" align="center" class="text-danger"><strong>
+-						<?=gettext("No backups could be located for this device.")?>
++				<td colspan="3" align="center">
++			<?php if ($counter == 0): ?>
++					<span class="text-danger">
++						<strong>
++						<?=gettext('The AutoConfigBackup service could not find any backups for this device key.')?>
+ 						</strong>
+-					</td>
+-				</tr>
++					</span>
+ 			<?php else: ?>
+-				<tr>
+-					<td colspan="3" align="center">
+-						<br /><?=gettext("Current count of hosted backups")?> : <?= $counter ?>
++					<?=sprintf(gettext('Hosted backup count: %d'), $counter) ?>
++			<?php endif; ?>
++			<?php if ($staged_backup_count > 0): ?>
++					<br />
++					<?=sprintf(gettext('Staged backups waiting to upload: %d'), $staged_backup_count) ?>
++			<?php endif; ?>
+ 					</td>
+ 				</tr>
+-			<?php endif; ?>
+ 			</table>
+ 		</div>
+ 	</div>
+@@ -467,15 +410,14 @@
+ events.push(function(){
+ 	$('#loading').hide();
+ 
+-	// On clicking Submit", reload the page but with a POST parameter "userkey" set
+-	$('#upduserkey').click(function() {
++	// Submit a form to change the device key
++	function changedevkey() {
+ 		var $form = $('<form>');
+ 		var newuserkey = $('#devkey').val();
+-
+ 		$form
+ 			.attr("method", "POST")
+ 			.attr("action", '/services_acb.php')
+-			// The CSRF magic is required because we will be viewing the results of the POST
++			// CSRF magic value is required to submit form content securely.
+ 			.append(
+ 				$("<input>")
+ 					.attr("type", "hidden")
+@@ -490,10 +432,15 @@
+ 			)
+ 			.appendTo('body')
+ 			.submit();
++	}
++
++	$('#upduserkey').click(function() {
++		changedevkey();
+ 	});
+ 
+ 	$('#restore').click(function() {
+ 		$('#devkey').val("<?=$origkey?>");
++		changedevkey();
+ 	});
+ });
+ //]]>
+diff -rub --new-file old/src/usr/local/www/services_acb_settings.php new/src/usr/local/www/services_acb_settings.php
+--- old/src/usr/local/www/services_acb_settings.php	2025-01-24 13:42:02.673409145 -0500
++++ new/src/usr/local/www/services_acb_settings.php	2025-01-24 14:12:52.817744872 -0500
+@@ -1,11 +1,11 @@
+ <?php
+ /*
+- * autoconfigbackup_settings.php
++ * services_acb_settings.php
+  *
+  * part of pfSense (https://www.pfsense.org)
+  * Copyright (c) 2004-2013 BSD Perimeter
+  * Copyright (c) 2013-2016 Electric Sheep Fencing
+- * Copyright (c) 2014-2023 Rubicon Communications, LLC (Netgate)
++ * Copyright (c) 2014-2025 Rubicon Communications, LLC (Netgate)
+  * All rights reserved.
+  *
+  * originally based on m0n0wall (http://m0n0.ch/wall)
+@@ -44,48 +44,67 @@
+ 	unset($input_errors);
+ 	$pconfig = $_POST;
+ 
+-	/* input validation */
++	/* Input Validation */
+ 	$reqdfields = explode(" ", "encryption_password");
+ 	$reqdfieldsn = array(gettext("Encryption password"));
+-
+ 	do_input_validation($_POST, $reqdfields, $reqdfieldsn, $input_errors);
+ 
+-	if (strlen($_POST['encryption_password']) < 8) {
+-		$input_errors[] = gettext("The encryption password must contain at least 8 characters");
++	/* Check Enable */
++	if (!empty($_POST['enable']) &&
++	    ($_POST['enable'] != 'yes')) {
++		$input_errors[] = gettext("Invalid Enable value.");
+ 	}
+ 
++	/* Check Encryption Password */
++	if (strlen($_POST['encryption_password']) < 8) {
++		$input_errors[] = gettext("Encryption Password must contain at least 8 characters");
++	}
+ 	$update_ep = false;
+-
+-	// Validate form contents
+ 	if ($_POST['encryption_password'] != "********") {
+ 		if ($_POST['encryption_password'] != $_POST['encryption_password_confirm']) {
+-			$input_errors[] = gettext("Encryption password and confirmation do not match");
++			$input_errors[] = gettext("Encryption Password and confirmation value do not match");
+ 		} else {
+ 			$update_ep = true;
+ 		}
+ 	}
+ 
++	/* Check Backup Frequency */
+ 	if (!in_array($_POST['frequency'], ['cron', 'every'])) {
+-		$input_errors[] = gettext("Invalid frequency value.");
++		$input_errors[] = gettext("Invalid frequency value");
+ 	}
+ 
+ 	if ($_POST['frequency'] === 'cron') {
+ 		if (!preg_match('/^[0-9\*\/\-\,]+$/', $_POST['minute'] . $_POST['hour'] . $_POST['day'] . $_POST['month'] . $_POST['dow']))  {
+-			$input_errors[] = gettext("Schedule values may only contain 0-9 - , / *");
++			$input_errors[] = gettext("Schedule values may only contain the following characters: 0-9 - , / *");
+ 		}
+ 	}
+ 
+-	if ((int)$_POST['numman'] > (int)"50" ) {
+-		$input_errors[] = gettext("You may not retain more than 50 manual backups.");
++	/* Check Hint/Identifier */
++	if (!empty($_POST['hint']) &&
++	    (strlen($_POST['hint']) > 255)) {
++		$input_errors[] = gettext("Hint/Identifier must be less than 255 characters in length.");
+ 	}
+ 
+-	$pwd = "";
++	/* Check Manual backup limit */
++	if (!empty($_POST['numman']) &&
++	    !is_numericint($_POST['numman'])) {
++		$input_errors[] = gettext("Manual Backup Limit must be blank or an integer.");
++	}
++	if ((int)$_POST['numman'] < 0) {
++		$input_errors[] = gettext("Manual Backup Limit cannot be negative.");
++	}
++	if ((int)$_POST['numman'] > 50) {
++		$input_errors[] = gettext("Manual Backup Limit cannot be larger than 50.");
++	}
+ 
+-	if (!$input_errors) {
+-		if($update_ep) {
+-			$pwd = $pconfig['encryption_password'];
++	/* Check Descending Date Order */
++	if (!empty($_POST['reverse']) &&
++	    ($_POST['reverse'] != 'yes')) {
++		$input_errors[] = gettext("Invalid Descending Date Order value.");
+ 		}
+ 
++	/* Store updated ACB configuration */
++	if (!$input_errors) {
+ 		$pconfig = setup_ACB(
+ 			$pconfig['enable'],
+ 			$pconfig['hint'],
+@@ -97,7 +116,7 @@
+ 			$pconfig['dow'],
+ 			$pconfig['numman'],
+ 			$pconfig['reverse'],
+-			$pwd
++			($update_ep ? $pconfig['encryption_password'] : "")
+ 		);
+ 	}
+ }
+@@ -112,7 +131,7 @@
+ $tab_array = array();
+ $tab_array[] = array("Settings", true, "/services_acb_settings.php");
+ $tab_array[] = array("Restore", false, "/services_acb.php");
+-$tab_array[] = array("Backup now", false, "/services_acb_backup.php");
++$tab_array[] = array("Backup Now", false, "/services_acb_backup.php");
+ display_top_tabs($tab_array);
+ 
+ $form = new Form;
+@@ -185,37 +204,75 @@
+ ))->setHelp("Day of week (0-6)");
+ 
+ $group->addClass("cronsched");
+-$group->setHelp(sprintf('Use * ("every"), divisor or exact value.  Minutes are randomly chosen by default. See %s for more information.',
++$group->setHelp(sprintf('Use * ("every"), divisor, or exact value.  Minutes are randomly chosen by default. See %s for more information.',
+ 	'<a href="https://www.freebsd.org/cgi/man.cgi?crontab(5)" target="_blank">Cron format</a>'));
+ $section->add($group);
+ 
++$group = new Form_Group("Device Key");
++
++$userkey = get_acb_device_key();
++$legacy_key = get_acb_legacy_device_key();
++$legacy_string = "";
++if (is_valid_acb_device_key($legacy_key) &&
++    ($legacy_key == $userkey)) {
++	$legacy_string = sprintf(gettext('%1$s%1$sThis is a legacy style key derived from the SSH public key.%1$s' .
++				'The best practice is to change this key to a randomized key using the ' .
++				'%2$sChange Key%3$s button.'),
++				'<br/>', '<strong>', '</strong>');
++}
++
++$group->add(new Form_Input(
++	'devkey',
++	'Device Key',
++	'text',
++	$userkey
++))->setWidth(7)->setReadonly()->setHelp('Unique key which identifies backups associated with this device.%1$s%1$s' .
++	'%2$sKeep a secure copy of this value!%3$s %4$s%1$s' .
++	'If this key is lost, all backups for this device will be lost!%5$s',
++	'<br/>', '<strong>', '</strong>', acb_key_download_link('device', $userkey), $legacy_string);
++
++$group->add(new Form_Button(
++	'changekey',
++	'Change Key',
++	null,
++	'fa fa-key'
++))->addClass('btn-info btn-xs');
++
++$section->add($group);
++
+ $section->addPassword(new Form_Input(
+ 	'encryption_password',
+ 	'*Encryption Password',
+ 	'password',
+ 	$pconfig['encryption_password']
+-))->setHelp("The best practice for security is to use a long and complex password.");
++))->setHelp('AutoConfigBackup uses this string to encrypt the contents of the backup before upload. ' .
++	'The best practice for security is to use a long and complex string.%1$s%1$s' .
++	'%2$sKeep a secure copy of this value!%3$s%1$s' .
++	'If this password is lost, any backups encrypted with this string will be unreadable!',
++	'<br/>', '<strong>', '</strong>');
+ 
+ $section->addInput(new Form_Input(
+ 	'hint',
+ 	'Hint/Identifier',
+ 	'text',
+ 	$pconfig['hint']
+-))->setHelp("You may optionally provide an identifier which will be stored in plain text along with each encrypted backup. " .
+-			"This may allow the Netgate support team to locate your key should you lose it.");
++))->setHelp("Optional identifier which AutoConfigBackup will store in plain text along with each encrypted backup. " .
++	"This may allow Netgate TAC to recover a device key should it become lost.");
+ 
+ $section->addInput(new Form_Input(
+ 	'numman',
+-	'Manual backups to keep',
++	'Manual Backup Limit',
+ 	'number',
+-	$pconfig['numman']
+-))->setHelp("It may be useful to specify how many manual backups are retained on the server so that automatic backups do not overwrite them." .
+-			"A maximum of 50 retained manual backups (of the 100 total backups) is permitted.");
++	$pconfig['numman'],
++	['min'=>'0', 'max'=>'50']
++))->setHelp("Number of manual backup entries AutoConfigBackup will retain on the server, " .
++	"which will not be overwritten by automatic backups. " .
++	"The maximum value is 50 retained manual backups out of the 100 total entries.");
+ 
+ $section->addInput(new Form_Checkbox(
+ 	'reverse',
+-	'Descending Order by Date',
+-	'List backups in descending order',
++	'Descending Date Order',
++	'List backups in descending order by revision date/time',
+ 	($pconfig['reverse'] == "yes")
+ ))->setHelp("List backups in descending order (newest first) when viewing the restore section.");
+ 
+@@ -228,13 +285,19 @@
+ 
+ <script type="text/javascript">
+ //<![CDATA[
+-	events.push(function() {
++events.push(function() {
+ 		$('input:radio[name=frequency]').click(function() {
+ 			hideClass("cronsched", ($(this).val() != 'cron'));
+ 		});
+ 
+ 		hideClass("cronsched", ("<?=htmlspecialchars($pconfig['frequency'])?>" != 'cron'));
++
++	$('#changekey').click(function(event) {
++		event.preventDefault();
++		$(location).prop('href', "/services_acb_changekey.php");
+ 	});
++
++});
+ //]]>
+ </script>
+ 

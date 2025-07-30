@@ -1,0 +1,4 @@
+mDNS Bridge is a daemon for sharing Multicast DNS (mDNS) information across
+multiple network interfaces. This allows local DNS Service Discovery (DNS-SD)
+across multiple network segments, which is commonly used for sharing network
+print services, audio/video streaming, home automation, etc.

@@ -15,14 +15,10 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 
 BUILD_DEPENDS=	makeinfo:print/texinfo
 
-USES=		autoreconf:build gmake libtool xorg
-USE_ANT=	yes
+USES=		autoreconf:build gmake java:ant libtool xorg
 USE_GITHUB=	yes
 GH_ACCOUNT=	java-native-access
 GH_TAGNAME=	0a33062e1971962ca6b283c397ed1de5cc053d33
-USE_JAVA=	yes
-JAVA_VERSION=	8+
-JAVA_BUILD=	yes # prevent JAVA_RUN via bsd.java.mk
 USE_XORG=	x11 xt
 MAKE_ARGS=	-DCC="${CC}" \
 		-DLD="${LD}"
@@ -36,7 +32,7 @@ PORTDOCS=	javadoc platform-${PORTVERSION}-javadoc.jar
 
 OPTIONS_DEFINE=	DOCS
 
-ANT_ARCH=	${ARCH:S/amd64/x86-64/:S/armv6/arm/:S/armv7/arm/:S/i386/x86/:S/powerpc64/ppc64/}
+ANT_ARCH=	${ARCH:S/amd64/x86-64/:S/armv6/arm/:S/armv7/arm/:S/i386/x86/:S/powerpc/ppc/}
 
 post-patch:
 	@${REINPLACE_CMD} -e 's|%%LOCALBASE%%|${LOCALBASE}|' \

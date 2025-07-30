@@ -1,5 +1,5 @@
 PORTNAME=	miktex
-DISTVERSION=	24.4
+DISTVERSION=	25.4
 PORTREVISION=	1
 CATEGORIES=	print
 MASTER_SITES=	https://miktex.org/download/ctan/systems/win32/miktex/source/ \
@@ -23,6 +23,11 @@ LICENSE=	MULTIPLE
 LICENSE_NAME=	Multiple
 LICENSE_TEXT=	This is a collection of many independent packages and does not have a single license
 LICENSE_PERMS=	dist-mirror no-dist-sell pkg-mirror no-pkg-sell auto-accept
+
+NOT_FOR_ARCHS=	aarch64 armv7
+NOT_FOR_ARCHS_REASON=	Programs/TeXAndFriends/Knuth/web/tangle.p:1: parse error before `û'
+
+WRKSRC=	${WRKDIR}/${PORTNAME}.${DISTVERSION}
 
 LIB_DEPENDS=	libapr-1.so:devel/apr1 \
 		libboost_locale.so:devel/boost-libs \
@@ -95,5 +100,6 @@ post-patch:
 
 post-install:
 	${RM} ${STAGEDIR}${PREFIX}/share/miktex-texmf/miktex/config/*.log
+	${MV} ${STAGEDIR}${PREFIX}/bin/mpc ${STAGEDIR}${PREFIX}/bin/mpc-miktex
 
 .include <bsd.port.mk>

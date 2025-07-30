@@ -1,7 +1,7 @@
---- remoting/host/client_session.cc.orig	2024-11-04 08:56:03 UTC
+--- remoting/host/client_session.cc.orig	2025-05-07 06:48:23 UTC
 +++ remoting/host/client_session.cc
-@@ -161,7 +161,7 @@ void ClientSession::NotifyClientResolution(
-   if (desktop_environment_options_.enable_curtaining()) {
+@@ -188,7 +188,7 @@ void ClientSession::NotifyClientResolution(
+   if (effective_policies_.curtain_required.value_or(false)) {
      dpi_vector.set(resolution.x_dpi(), resolution.y_dpi());
    }
 -#elif BUILDFLAG(IS_LINUX)

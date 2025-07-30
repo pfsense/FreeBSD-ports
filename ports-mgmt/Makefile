@@ -11,7 +11,6 @@
     SUBDIR += fastest_pkg
     SUBDIR += freebsd-bugzilla-cli
     SUBDIR += genpatch
-    SUBDIR += genplist
     SUBDIR += hs-cabal2tuple
     SUBDIR += hs-panopticum
     SUBDIR += jailaudit
@@ -74,8 +73,8 @@
     SUBDIR += poudriere-dsh2dsh
     SUBDIR += psearch
     SUBDIR += py-FreeBSD-ports
+    SUBDIR += py-nvchecker
     SUBDIR += py-pnu-portstreelint
-    SUBDIR += py-pytoport
     SUBDIR += py-skog
     SUBDIR += rc-subr-jail
     SUBDIR += reprise

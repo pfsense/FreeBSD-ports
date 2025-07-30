@@ -1,8 +1,8 @@
 PORTNAME=	recursor
-DISTVERSION=	5.1.3
-PORTREVISION=	3
+DISTVERSION=	5.2.2
+PORTREVISION=	4
 CATEGORIES=	dns
-MASTER_SITES=	http://downloads.powerdns.com/releases/
+MASTER_SITES=	https://downloads.powerdns.com/releases/
 PKGNAMEPREFIX=	powerdns-
 DISTNAME=	pdns-${PORTNAME}-${DISTVERSION}
 DISTFILES=	${DISTNAME}${EXTRACT_SUFX}
@@ -14,8 +14,6 @@ WWW=		https://www.PowerDNS.com/recursor.html
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-BROKEN_armv6=	fails to compile: use of overloaded operator << is ambiguous
-BROKEN_armv7=	fails to compile: use of overloaded operator << is ambiguous
 NOT_FOR_ARCHS=	i386
 NOT_FOR_ARCHS_REASON=	archs with 32-bits time_t are no longer supported by upstream
 
@@ -32,8 +30,8 @@ USE_RC_SUBR=	pdns_recursor
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--sysconfdir=${PREFIX}/etc/pdns \
 		--with-libsodium=no \
-		--with-service-user=pdns \
 		--with-service-group=pdns_recursor \
+		--with-service-user=pdns \
 		--without-net-snmp \
 		--without-systemd
 

@@ -1,10 +1,10 @@
 PORTNAME=	passhole
-DISTVERSION=	1.10.0
+DISTVERSION=	1.10.1
 CATEGORIES=	security python
 MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
-MAINTAINER=	DtxdF@disroot.org
+MAINTAINER=	dtxdf@FreeBSD.org
 COMMENT=	Secure hole for your passwords (KeePass CLI)
 WWW=		https://pypi.org/project/passhole \
 		https://github.com/Evidlo/passhole

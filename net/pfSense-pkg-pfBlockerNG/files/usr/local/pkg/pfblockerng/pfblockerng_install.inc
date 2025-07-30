@@ -4,7 +4,7 @@
  *
  * part of pfSense (https://www.pfsense.org)
  * Copyright (c) 2015-2025 Rubicon Communications, LLC (Netgate)
- * Copyright (c) 2015-2023 BBcan177@gmail.com
+ * Copyright (c) 2015-2024 BBcan177@gmail.com
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -431,11 +431,13 @@ if (file_exists('/var/db/pfblockerng/dnsbl.sqlite') && !file_exists($pfb['dnsbl_
 }
 unlink_if_exists('/var/db/pfblockerng/dnsbl.sqlite');
 
-// Update unbound python files
-if ($pfb['dnsbl_mode'] == 'dnsbl_python') {
-	@copy("/usr/local/pkg/pfblockerng/pfb_unbound.py", $g['unbound_chroot_path']);
-	@copy("/usr/local/pkg/pfblockerng/pfb_unbound_include.inc", $g['unbound_chroot_path']);
-	@copy("/usr/local/pkg/pfblockerng/pfb_py_hsts.txt", $g['unbound_chroot_path']);
+/* Update unbound python files.
+ * The target directory may not exist yet e.g. after an upgrade with
+ * RAM Disks enabled; defer the file copy to pfb_unbound_dnsbl(). */
+if (($pfb['dnsbl_mode'] == 'dnsbl_python') && is_dir(g_get('unbound_chroot_path'))) {
+	@copy("/usr/local/pkg/pfblockerng/pfb_unbound.py", "{$g['unbound_chroot_path']}/pfb_unbound.py");
+	@copy("/usr/local/pkg/pfblockerng/pfb_unbound_include.inc", "{$g['unbound_chroot_path']}/pfb_unbound_include.inc");
+	@copy("/usr/local/pkg/pfblockerng/pfb_py_hsts.txt", "{$g['unbound_chroot_path']}/pfb_py_hsts.txt");
 }
 
 if ($ufound) {

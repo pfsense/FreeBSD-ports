@@ -1,6 +1,6 @@
 PORTNAME=	dsymbol
 PORTVERSION=	0.14.1
-PORTREVISION=	3
+PORTREVISION=	4
 DISTVERSIONPREFIX=	v
 CATEGORIES=	devel
 
@@ -32,7 +32,8 @@ post-patch:
 		${WRKSRC}/src/dsymbol/modulecache.d
 
 do-build:
-	@cd ${WRKSRC} && DC=${DC} ${DUB_CMD}
+	@cd ${WRKSRC} && \
+		${SETENV} DUB_HOME=${WRKDIR}/dub_home DC=${DC} ${DUB_CMD}
 
 do-install:
 	@${MKDIR} ${STAGEDIR}${D_INCLUDE_DIR}

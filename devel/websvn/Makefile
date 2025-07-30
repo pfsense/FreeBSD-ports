@@ -1,9 +1,9 @@
 PORTNAME=	websvn
-PORTVERSION=	2.8.4
+PORTVERSION=	2.8.5
 CATEGORIES=	devel www
 PKGNAMESUFFIX=	${PHP_PKGNAMESUFFIX}
 
-MAINTAINER=	michael.osipov@siemens.com
+MAINTAINER=	michael.osipov@innomotics.com
 COMMENT=	Online Subversion repository browser
 WWW=		https://websvnphp.github.io/
 

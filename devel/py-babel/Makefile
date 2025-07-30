@@ -1,5 +1,6 @@
 PORTNAME=	Babel
-DISTVERSION=	2.16.0
+DISTVERSION=	2.17.0
+PORTREVISION=	1
 CATEGORIES=	devel python
 MASTER_SITES=	PYPI
 DISTNAME=	babel-${DISTVERSION}
@@ -23,16 +24,10 @@ PORTDOCS=	docs/*
 
 OPTIONS_DEFINE=	DOCS
 
-.include <bsd.port.pre.mk>
-
-.if ${PYTHON_REL} < 30900
-RUN_DEPENDS+=	${PYTHON_PKGNAMEPREFIX}pytz>=2015.7:devel/py-pytz@${PY_FLAVOR}
-.endif
-
 do-install-DOCS-on:
 	${MKDIR} ${STAGEDIR}${DOCSDIR}
 .for docfile in ${PORTDOCS}
 	${CP} -r ${WRKSRC}/${docfile} ${STAGEDIR}${DOCSDIR}
 .endfor
 
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

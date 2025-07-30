@@ -295,7 +295,7 @@ _metronome:*:345:345::0:0:Metronome Daemon:/nonexistent:/usr/sbin/nologin
 ngircd:*:346:346::0:0:ngIRCd Daemon:/var/empty:/usr/sbin/nologin
 eturnal:*:347:347::0:0:eturnal User:/var/spool/eturnal:/bin/sh
 davfs2:*:348:348::0:0:Davfs2 Daemon:/nonexistent:/usr/sbin/nologin
-# free: 349
+tempo:*:349:349::0:0:Tempo Daemon:/nonexistent:/usr/sbin/nologin
 _sabnzbd:*:350:350::0:0:sabnzb Daemon:/nonexistent:/usr/sbin/nologin
 sonarr:*:351:351::0:0:Sonarr PVR:/nonexistent:/usr/sbin/nologin
 radarr:*:352:352::0:0:Radarr Daemon:/nonexistent:/usr/sbin/nologin
@@ -312,23 +312,23 @@ readarr:*:362:362::0:0:Readarr Daemon:/nonexistent:/usr/sbin/nologin
 victoria-logs:*:363:363::0:0:VictoriaLogs Daemon:/nonexistent:/usr/sbin/nologin
 elog:*:364:364::0:0:Elog server:/nonexistent:/usr/sbin/nologin
 gotify:*:365:365::0:0:Gotify User:/var/db/gotify:/usr/sbin/nologin
-# free: 366
-# free: 367
-# free: 368
-# free: 369
+opengist:*:366:366::0:0:OpenGist User:/var/db/opengist:/usr/sbin/nologin
+velbustcpd:*:367:367::0:0:Velbustcp Deamon:/nonexistent:/usr/sbin/nologin
+sshesame:*:368:368::0:0:Sshesame Daemon:/nonexistent:/usr/sbin/nologin
+neo4j:*:369:369::0:0:neo4j Database Daemon:/nonexistent:/usr/sbin/nologin
 _wsdd:*:370:370::0:0:Web Service Discovery Daemon:/nonexistent:/usr/sbin/nologin
-# free: 371
-# free: 372
+reposilite:*:371:371::0:0:Reposilite user:/nonexistent:/usr/sbin/nologin
+beam:*:372:372::0:0:Erlang BEAM VM user:/nonexistent:/usr/sbin/nologin
 # free: 373
 # free: 374
 # free: 375
 # free: 376
-# free: 377
-# free: 378
-# free: 379
+hostd:*:377:377::0:0:hostd Daemon:/nonexistent:/usr/sbin/nologin
+walletd:*:378:378::0:0:walletd Daemon:/nonexistent:/usr/sbin/nologin
+renterd:*:379:379::0:0:renterd Daemon:/nonexistent:/usr/sbin/nologin
 spoofdpi:*:380:380::0:0:SpoofDPI Daemon:/nonexistent:/usr/sbin/nologin
 hydroxide:*:381:381::0:0:Hydroxide Daemon:/var/db/hydroxide:/usr/sbin/nologin
-# free: 382
+_tlsrpt:*:382:382::0:0:TLSRPT Daemon:/nonexistent:/usr/sbin/nologin
 # free: 383
 # free: 384
 # free: 385
@@ -343,7 +343,7 @@ ldap:*:389:389::0:0:OpenLDAP Server:/nonexistent:/usr/sbin/nologin
 # free: 394
 # free: 395
 # free: 396
-# free: 397
+rtorrent:*:397:397::0:0:rtorrent Daemon User:/nonexistent:/usr/sbin/nologin
 tiarra:*:398:398::0:0:Tiarra IRC Proxy:/nonexistent:/usr/sbin/nologin
 # free: 399
 # free: 400
@@ -446,8 +446,8 @@ openbao:*:482:482:daemon:0:0:OpenBao Daemon:/nonexistent:/usr/sbin/nologin
 # free: 497
 rustypaste:*:498:498::0:0:Minimal file upload/pastebin service:/nonexistent:/usr/sbin/nologin
 # free: 499
-# free: 500
-# free: 501
+qw:*:500:500::0:0:QuakeWorld Server:/nonexistent:/usr/sbin/nologin
+qwfwd:*:501:501::0:0:QuakeWorld Proxy:/nonexistent:/usr/sbin/nologin
 # free: 502
 # free: 503
 # free: 504
@@ -476,7 +476,7 @@ dkimproxy:*:525:525::0:0:DKIM Proxy Owner:/nonexistent:/usr/sbin/nologin
 # free: 527
 # free: 528
 # free: 529
-# free: 530
+_bgplgd:*:530:530::0:0:OpenBGP Looking Glass Daemon user:/nonexistent:/usr/sbin/nologin
 # free: 531
 # free: 532
 # free: 533
@@ -602,7 +602,7 @@ _xrdp:*:648:648::0:0:xrdp daemon:/nonexistent:/usr/sbin/nologin
 # free: 652
 # free: 653
 # free: 654
-# free: 655
+tinc:*:655:655::0:0:tinc daemon:/nonexistent:/usr/sbin/nologin
 # free: 656
 # free: 657
 # free: 658
@@ -683,7 +683,7 @@ _dnscrypt-wrapper:*:718:65534::0:0:dnscrypt-wrapper user:/var/empty:/usr/sbin/no
 # free: 733
 # free: 734
 c-lightning:*:735:735::0:0:c-lightning Daemon:/var/db/c-lightning:/usr/sbin/nologin
-# free: 736
+zonemaster:*:736:736::0:0:Zonemaster Daemon:/nonexistent:/usr/sbin/nologin
 # free: 737
 # free: 738
 # free: 739
@@ -732,12 +732,12 @@ monero:*:781:781::0:0:Monero Daemon:/var/db/monero:/usr/sbin/nologin
 zeek:*:782:782::0:0:Zeek Network Security Monitor:/nonexistent:/usr/sbin/nologin
 # free: 783
 # free: 784
-# free: 785
+stirlingpdf:*:785:785::0:0:Stirling PDF Daemon:/usr/local/stirlingpdf:/usr/sbin/nologin
 # free: 786
 # free: 787
 # free: 788
 # free: 789
-# free: 790
+healthchecks:*:790:790::0:0:Open-source cron and background task monitoring service:/var/db/healthchecks:/usr/sbin/nologin
 # free: 791
 # free: 792
 # free: 793
@@ -753,7 +753,7 @@ clickhouse:*:800:800::0:0:ClickHouse Daemon:/var/db/clickhouse:/usr/sbin/nologin
 # free: 803
 # free: 804
 # free: 805
-# free: 806
+act_runner:*:806:806::0:0:Act Runner User:/var/db/act_runner:/usr/sbin/nologin
 bosun:*:807:807::0:0:Bosun Daemon:/nonexistent:/usr/sbin/nologin
 clixon:*:808:808::0:0:Clixon Daemon:/nonexistent:/usr/sbin/nologin
 # free: 809
@@ -781,12 +781,12 @@ cirrus:*:828:828::0:0:Cirrus CI:/usr/local/cirrus:/bin/sh
 # free: 831
 beehive:*:832:832::0:0:beehive user:/nonexistent:/usr/sbin/nologin
 # free: 833
-# free: 834
-# free: 835
-# free: 836
-# free: 837
+pocket-id:*:834:834::0:0:OIDC provider that allows users to authenticate with their passkeys:/var/db/pocket-id:/usr/sbin/nologin
+filebrowser:*:835:835::0:0:Web File Browser:/var/db/filebrowser:/usr/sbin/nologin
+tinyauth:*:836:836::0:0:Simplest way to protect your apps with a login screen:/nonexistent:/usr/sbin/nologin
+homebox:*:837:837::0:0:Inventory and organization system built for the Home User:/var/db/homebox:/usr/sbin/nologin
 # free: 838
-# free: 839
+shiori:*:839:839::0:0:Simple bookmark manager built with Go:/var/db/shiori:/usr/sbin/nologin
 netdisco:*:840:840::0:0:netdisco daemon:/usr/local/etc/netdisco:/bin/sh
 tcpcryptd:*:841:841::0:0:tcpcrypt daemon:/nonexistent:/usr/sbin/nologin
 munin:*:842:842::0:0:Munin:/var/munin:/usr/sbin/nologin
@@ -805,13 +805,13 @@ ebusd:*:854:854::0:0:eBUS Daemon user:/nonexistent:/usr/sbin/nologin
 opensearch:*:855:855::0:0:opensearch user:/nonexistent:/usr/sbin/nologin
 # free: 856
 # free: 857
-# free: 858
-# free: 859
+umurmur:*:858:858::0:0:uMurmur:/nonexistent:/usr/sbin/nologin
+kanidm:*:859:859::0:0:Kanidm user:/nonexistent:/usr/sbin/nologin
 # free: 860
-# free: 861
-# free: 862
-# free: 863
-# free: 864
+rekor:*:861:861::0:0:rekor user:/nonexistent:/usr/sbin/nologin
+timestamp-authority:*:862:862::0:0:Timestamp Authority:/nonexistent:/usr/sbin/nologin
+trillian:*:863:863::0:0:trillian user:/nonexistent:/usr/sbin/nologin
+mediamtx:*:864:864::0:0:mediamtx:/nonexistent:/usr/sbin/nologin
 z2m:*:865:865::0:0:zigbee2mqtt:/usr/local/z2m:/usr/sbin/nologin
 # free: 866
 sqlpage:*:867:867::0:0:SQLPage:/nonexistent:/usr/sbin/nologin

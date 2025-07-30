@@ -1,6 +1,6 @@
 PORTNAME=	lxpanel
 PORTVERSION=	0.9.3
-PORTREVISION=	4
+PORTREVISION=	5
 CATEGORIES=	x11
 MASTER_SITES=	SF/lxde/LXPanel%20%28desktop%20panel%29/LXPanel%20${PORTVERSION:R}.x/
 
@@ -21,7 +21,7 @@ LIB_DEPENDS=	libmenu-cache.so:x11/menu-cache \
 RUN_DEPENDS=	${LOCALBASE}/etc/xdg/menus/lxde-applications.menu:x11/lxmenu-data
 
 USES=		gmake gnome libtool localbase pathfix pkgconfig tar:xz xorg
-USE_GNOME=	glib20 gtk20 cairo gdkpixbuf2 gdkpixbuf2xlib intltool
+USE_GNOME=	glib20 gtk20 cairo gdkpixbuf gdkpixbuf2xlib intltool
 USE_XORG=	x11
 GNU_CONFIGURE=	yes
 GNU_CONFIGURE_MANPREFIX=	${PREFIX}/share

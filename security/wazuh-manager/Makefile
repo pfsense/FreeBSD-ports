@@ -1,9 +1,9 @@
 PORTNAME=	wazuh
 DISTVERSIONPREFIX=	v
-DISTVERSION=	4.9.2
-PORTREVISION=	1
+DISTVERSION=	4.12.0
+PORTREVISION=	3
 CATEGORIES=	security
-MASTER_SITES=	https://packages.wazuh.com/deps/30/libraries/sources/:wazuh_sources \
+MASTER_SITES=	https://packages.wazuh.com/deps/40/libraries/sources/:wazuh_sources \
 		LOCAL/acm/${PORTNAME}/:wazuh_cache
 PKGNAMESUFFIX=	-manager
 DISTFILES=	${EXTERNAL_DISTFILES} \
@@ -21,15 +21,16 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 
 ONLY_FOR_ARCHS=	aarch64 amd64
 
-BUILD_DEPENDS=	cmake:devel/cmake-core \
-		autoconf>=2.71:devel/autoconf \
-		bash>0:shells/bash
-LIB_DEPENDS+=	libcurl.so:ftp/curl \
+BUILD_DEPENDS=	autoconf>=2.71:devel/autoconf \
+		bash>0:shells/bash \
+		cmake:devel/cmake-core
+LIB_DEPENDS+=	libarrow.so:databases/arrow \
+		libcurl.so:ftp/curl \
+		libepoll-shim.so:devel/libepoll-shim \
+		libffi.so:devel/libffi \
 		libgdbm.so:databases/gdbm \
 		libnghttp2.so:www/libnghttp2 \
-		libffi.so:devel/libffi \
-		libarrow.so:databases/arrow \
-		libepoll-shim.so:devel/libepoll-shim
+		libopenblas.so:math/openblas
 RUN_DEPENDS=	bash>0:shells/bash
 
 USES=		cpe gmake perl5 python:3.11 readline shebangfix sqlite:3 uidfix
@@ -50,7 +51,7 @@ EXTERNAL_DISTFILES=	audit-userspace.tar.gz:wazuh_sources \
 			bzip2.tar.gz:wazuh_sources \
 			cJSON.tar.gz:wazuh_sources \
 			cpp-httplib.tar.gz:wazuh_sources \
-			cpython.tar.gz:wazuh_cache \
+			cpython-3.11.13.tar.gz:wazuh_cache \
 			curl.tar.gz:wazuh_sources \
 			flatbuffers.tar.gz:wazuh_sources \
 			googletest.tar.gz:wazuh_sources \
@@ -65,7 +66,7 @@ EXTERNAL_DISTFILES=	audit-userspace.tar.gz:wazuh_sources \
 			lua.tar.gz:wazuh_sources \
 			lzma.tar.gz:wazuh_sources \
 			msgpack.tar.gz:wazuh_sources \
-			nlohmann.tar.gz:wazuh_sources \
+			nlohmann.tar.gz:wazuh_cache \
 			openssl.tar.gz:wazuh_sources \
 			popt.tar.gz:wazuh_sources \
 			procps.tar.gz:wazuh_sources \
@@ -140,16 +141,16 @@ WAZUHMOD770=	/etc/decoders /etc/lists /etc/lists/amazon /etc/rootcheck \
 WAZUHPREFIX=	/var/ossec
 
 WZPYTHONWHEELS=	cffi-1.15.1-cp311-cp311-${FBSD_VERSION_BASE}_${ARCH_BASE}.whl \
-		cryptography-42.0.4-cp311-cp311-${FBSD_VERSION_BASE}_${ARCH_BASE}.whl \
+		cryptography-44.0.1-cp37-abi3-${FBSD_VERSION_BASE}_${ARCH_BASE}.whl \
 		greenlet-2.0.2-cp311-cp311-${FBSD_VERSION_BASE}_${ARCH_BASE}.whl \
-		grpcio-1.66.2-cp311-cp311-${FBSD_VERSION_BASE}_${ARCH_BASE}.whl \
+		grpcio-1.69.0-cp311-cp311-${FBSD_VERSION_BASE}_${ARCH_BASE}.whl \
 		lazy_object_proxy-1.10.0-cp311-cp311-${FBSD_VERSION_BASE}_${ARCH_BASE}.whl \
 		MarkupSafe-2.1.2-cp311-cp311-${FBSD_VERSION_BASE}_${ARCH_BASE}.whl \
 		multidict-5.2.0-cp311-cp311-${FBSD_VERSION_BASE}_${ARCH_BASE}.whl \
 		numpy-1.26.4-cp311-cp311-${FBSD_VERSION_BASE}_${ARCH_BASE}.whl \
 		psutil-5.9.0-cp311-cp311-${FBSD_VERSION_BASE}_${ARCH_BASE}.whl \
-		pyarrow-18.0.0-cp311-cp311-${FBSD_VERSION_BASE}_${ARCH_BASE}.whl \
-		PyYAML-6.0.1-cp311-cp311-${FBSD_VERSION_BASE}_${ARCH_BASE}.whl \
+		pyarrow-19.0.1-cp311-cp311-${FBSD_VERSION_BASE}_${ARCH_BASE}.whl \
+		pyyaml-6.0.1-cp311-cp311-${FBSD_VERSION_BASE}_${ARCH_BASE}.whl \
 		rpds_py-0.15.2-cp311-cp311-${FBSD_VERSION_BASE}_${ARCH_BASE}.whl \
 		uvloop-0.17.0-cp311-cp311-${FBSD_VERSION_BASE}_${ARCH_BASE}.whl
 
@@ -163,18 +164,22 @@ FBSD_RELEASE=	freebsd_${UNAME_r:S/./_/g:S/-/_/g}
 IGNORE=		FreeBSD ${OSVERSION} ${ARCH} is not supported
 .endif
 
+.if ${ARCH} == "aarch64"
+FBSD14_PATCH_LEVEL=     #
+.endif
+
 .if ${ARCH} != "aarch64"
-FBSD13_PATCH_LEVEL=	_p1
-FBSD14_PATCH_LEVEL=	_p5
+FBSD13_PATCH_LEVEL=	#
+FBSD14_PATCH_LEVEL=	#
 .endif
 
 .if ${OSVERSION} >= 1300139 && ${OSVERSION} < 1400000
-FBSD_VERSION_BASE=freebsd_13_4_release${FBSD13_PATCH_LEVEL}
+FBSD_VERSION_BASE=freebsd_13_5_release${FBSD13_PATCH_LEVEL}
 FBSD_MAJOR_VERSION=13
 WAZUH_CACHENAME=${PORTNAME}-cache-fbsd13-${ARCH}-${DISTVERSION}
 DISTFILES+=	${WAZUH_CACHENAME}${EXTRACT_SUFX}:wazuh_cache
 .elif ${OSVERSION} >= 1400000 && ${OSVERSION} < 1500000
-FBSD_VERSION_BASE=freebsd_14_1_release${FBSD14_PATCH_LEVEL}
+FBSD_VERSION_BASE=freebsd_14_3_release${FBSD14_PATCH_LEVEL}
 FBSD_MAJOR_VERSION=14
 WAZUH_CACHENAME=${PORTNAME}-cache-fbsd14-${ARCH}-${DISTVERSION}
 DISTFILES+=	${WAZUH_CACHENAME}${EXTRACT_SUFX}:wazuh_cache
@@ -366,13 +371,15 @@ do-install:
 	${INSTALL_LIB} ${WRKSRC}/src/build/wazuh_modules/vulnerability_scanner/libvulnerability_scanner.so ${STAGEDIR}${WAZUHPREFIX}/lib
 	${INSTALL_LIB} ${WRKSRC}/src/data_provider/build/lib/libsysinfo.so ${STAGEDIR}${WAZUHPREFIX}/lib
 	${INSTALL_LIB} ${WRKSRC}/src/external/jemalloc/lib/libjemalloc.so.2 ${STAGEDIR}${WAZUHPREFIX}/lib
-	${INSTALL_LIB} ${WRKSRC}/src/external/rocksdb/build/librocksdb.so.8.3.2 ${STAGEDIR}${WAZUHPREFIX}/lib
+	${INSTALL_LIB} ${WRKSRC}/src/external/rocksdb/build/librocksdb.so.8.3.2 ${STAGEDIR}${WAZUHPREFIX}/lib/librocksdb.so.8
 	${INSTALL_LIB} ${WRKSRC}/src/shared_modules/dbsync/build/lib/libdbsync.so ${STAGEDIR}${WAZUHPREFIX}/lib
 	${INSTALL_LIB} ${WRKSRC}/src/shared_modules/rsync/build/lib/librsync.so ${STAGEDIR}${WAZUHPREFIX}/lib
 	${INSTALL_LIB} ${WRKSRC}/src/syscheckd/build/lib/libfimdb.so ${STAGEDIR}${WAZUHPREFIX}/lib
 	${INSTALL_LIB} ${WRKSRC}/src/wazuh_modules/syscollector/build/lib/libsyscollector.so ${STAGEDIR}${WAZUHPREFIX}/lib
 
 	${INSTALL_DATA} ${WRKSRC}/src/wazuh_modules/vulnerability_scanner/indexer/template/index-template.json ${STAGEDIR}${WAZUHPREFIX}/templates/vd_states_template.json
+
+	${INSTALL_DATA} ${WRKSRC}/VERSION.json ${STAGEDIR}${WAZUHPREFIX}
 
 	cd ${WRKSRC}/src/ && ${SETENV} ${MAKE_ENV} STAGEDIR=${STAGEDIR} \
 		${MAKE_CMD} install_python ${MAKE_ARGS}

@@ -1,8 +1,8 @@
---- components/eye_dropper/eye_dropper_view.cc.orig	2024-09-30 07:45:04 UTC
+--- components/eye_dropper/eye_dropper_view.cc.orig	2025-05-28 14:55:43 UTC
 +++ components/eye_dropper/eye_dropper_view.cc
-@@ -203,7 +203,7 @@ EyeDropperView::EyeDropperView(gfx::NativeView parent,
+@@ -206,7 +206,7 @@ EyeDropperView::EyeDropperView(gfx::NativeView parent,
    // EyeDropper/WidgetDelegate.
-   set_owned_by_client();
+   set_owned_by_client(OwnedByClientPassKey());
    SetPreferredSize(GetSize());
 -#if BUILDFLAG(IS_LINUX)
 +#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_BSD)

@@ -1,5 +1,6 @@
 PORTNAME=	orc
 DISTVERSION=	2.0.3
+PORTREVISION=	3
 CATEGORIES=	devel
 MASTER_SITES=	https://dlcdn.apache.org/orc/orc-2.0.3/:orc \
 		https://archive.apache.org/dist/orc/orc-format-1.0.0/:orc_format
@@ -30,7 +31,7 @@ CMAKE_ARGS+=	-DBUILD_JAVA=OFF \
 		-DGTEST_HOME=${LOCALBASE} \
 		-DPROTOBUF_HOME=${LOCALBASE} \
 		-DZSTD_HOME=${LOCALBASE}
-CFLAGS+=	-fPIC
+CFLAGS+=	-fPIC -Wno-error=unused-parameter
 CPPFLAGS+=	-fPIC
 
 post-patch:

@@ -289,7 +289,7 @@ _metronome:*:345:
 ngircd:*:346:
 eturnal:*:347:
 davfs2:*:348:
-# free: 349
+tempo:*:349:
 _sabnzbd:*:350:
 sonarr:*:351:
 radarr:*:352:
@@ -306,23 +306,23 @@ readarr:*:362:
 victoria-logs:*:363:
 elog:*:364:
 gotify:*:365:
-# free: 366
-# free: 367
-# free: 368
-# free: 369
+opengist:*:366:
+velbustcpd:*:367:
+sshesame:*:368:
+neo4j:*:369:
 _wsdd:*:370:
-# free: 371
-# free: 372
+reposilite:*:371:
+beam:*:372:
 # free: 373
 # free: 374
 # free: 375
 # free: 376
-# free: 377
-# free: 378
-# free: 379
+hostd:*:377:
+walletd:*:378:
+renterd:*:379:
 spoofdpi:*:380:
 hydroxide:*:381:
-# free: 382
+_tlsrpt:*:382:
 # free: 383
 # free: 384
 # free: 385
@@ -337,7 +337,7 @@ ldap:*:389:
 # free: 394
 # free: 395
 # free: 396
-# free: 397
+rtorrent:*:397:
 tiarra:*:398:
 # free: 399
 # free: 400
@@ -440,8 +440,8 @@ openbao:*:482:
 # free: 497
 rustypaste:*:498:
 # free: 499
-# free: 500
-# free: 501
+qw:*:500:
+qwfwd:*:501:
 birdvty:*:502:
 # free: 503
 # free: 504
@@ -470,7 +470,7 @@ dkimproxy:*:525:
 # free: 527
 # free: 528
 # free: 529
-# free: 530
+_bgplgd:*:530:
 # free: 531
 # free: 532
 # free: 533
@@ -596,7 +596,7 @@ _xrdp:*:648:
 # free: 652
 # free: 653
 # free: 654
-# free: 655
+tinc:*:655:
 # free: 656
 # free: 657
 # free: 658
@@ -677,7 +677,7 @@ bopm:*:717:
 # free: 733
 # free: 734
 c-lightning:*:735:
-# free: 736
+zonemaster:*:736:
 # free: 737
 # free: 738
 # free: 739
@@ -726,12 +726,12 @@ monero:*:781:
 zeek:*:782:
 # free: 783
 # free: 784
-# free: 785
+stirlingpdf:*:785:
 # free: 786
 # free: 787
 # free: 788
 # free: 789
-# free: 790
+healthchecks:*:790:
 # free: 791
 # free: 792
 # free: 793
@@ -747,7 +747,7 @@ clickhouse:*:800:
 # free: 803
 # free: 804
 # free: 805
-# free: 806
+act_runner:*:806:
 bosun:*:807:
 clixon:*:808:
 # free: 809
@@ -775,12 +775,12 @@ cirrus:*:828:
 # free: 831
 beehive:*:832:
 # free: 833
-# free: 834
-# free: 835
-# free: 836
-# free: 837
+pocket-id:*:834:
+filebrowser:*:835:
+tinyauth:*:836:
+homebox:*:837:
 # free: 838
-# free: 839
+shiori:*:839:
 netdisco:*:840:
 tcpcryptd:*:841:
 munin:*:842:
@@ -799,13 +799,13 @@ ebusd:*:854:
 opensearch:*:855:
 # free: 856
 # free: 857
-# free: 858
-# free: 859
+umurmur:*:858:
+kanidm:*:859:
 plocate:*:860:
-# free: 861
-# free: 862
-# free: 863
-# free: 864
+rekor:*:861:
+timestamp-authority:*:862:
+trillian:*:863:
+mediamtx:*:864:
 z2m:*:865:
 vglusers:*:866:
 sqlpage:*:867:

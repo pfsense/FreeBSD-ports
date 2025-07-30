@@ -1,5 +1,5 @@
 PORTNAME=	aws-lc
-PORTVERSION=	1.39.0
+PORTVERSION=	1.55.0
 DISTVERSIONPREFIX=	v
 CATEGORIES=	security
 
@@ -30,5 +30,7 @@ USE_GITHUB=	yes
 GH_ACCOUNT=	aws
 
 CONFLICTS_INSTALL=	boringssl libressl* openssl*
+
+PORTSCOUT=	limit:^[0-9]*\.
 
 .include <bsd.port.mk>

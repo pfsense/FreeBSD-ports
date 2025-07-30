@@ -1,9 +1,9 @@
 PORTNAME=	showdown
 DISTVERSION=	0.6
-PORTREVISION=	4
+PORTREVISION=	5
 CATEGORIES=	deskutils
 
-MAINTAINER=	dmgk@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Simple markdown viewer, written in Vala and GTK 3
 WWW=		https://github.com/craigbarnes/showdown
 
@@ -11,11 +11,11 @@ LICENSE=	GPLv3
 
 BUILD_DEPENDS=	${LOCALBASE}/lib/libmarkdown.a:textproc/discount
 LIB_DEPENDS=	libsoup-2.4.so:devel/libsoup \
-		libwebkit2gtk-4.0.so:www/webkit2-gtk3
+		libwebkit2gtk-4.0.so:www/webkit2-gtk@40
 
 USES=		compiler:c++11-lang desktop-file-utils gmake gnome \
 		pkgconfig vala:build xorg
-USE_GNOME=	atk cairo gdkpixbuf2 glib20 gtk30 pango
+USE_GNOME=	atk cairo gdkpixbuf glib20 gtk30 pango
 USE_XORG=	x11
 USE_GITHUB=	yes
 GH_ACCOUNT=	craigbarnes

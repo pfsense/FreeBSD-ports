@@ -1,8 +1,8 @@
 PORTNAME=	openssl
-PORTVERSION=	3.2.3
-PORTREVISION=	1
+PORTVERSION=	3.2.5
 CATEGORIES=	security devel
 PKGNAMESUFFIX=	32
+MASTER_SITES=	https://github.com/openssl/openssl/releases/download/${DISTNAME}/
 
 MAINTAINER=	brnrd@FreeBSD.org
 COMMENT=	TLSv1.3 capable SSL and crypto library
@@ -11,7 +11,9 @@ WWW=		https://www.openssl.org/
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/LICENSE.txt
 
-CONFLICTS_INSTALL=	boringssl libressl libressl-devel openssl openssl111 openssl3[134] openssl*-quictls
+EXPIRATION_DATE=	2025-11-23
+
+CONFLICTS_INSTALL=	boringssl libressl libressl-devel openssl openssl111 openssl3[1345] openssl*-quictls
 
 HAS_CONFIGURE=	yes
 CONFIGURE_SCRIPT=	config
@@ -21,8 +23,6 @@ CONFIGURE_ARGS=	--openssldir=${OPENSSLDIR} \
 
 USES=		cpe perl5
 USE_PERL5=	build
-USE_GITHUB=	yes
-GH_TAGNAME=	${PORTNAME}-${PORTVERSION}
 TEST_TARGET=	test
 
 LDFLAGS_i386=	-Wl,-znotext
@@ -41,14 +41,12 @@ OPTIONS_GROUP_MODULES=	FIPS LEGACY
 OPTIONS_DEFINE_i386=	I386
 OPTIONS_GROUP_PROTOCOLS=NEXTPROTONEG QUIC SCTP SSL3 TLS1 TLS1_1 TLS1_2
 
-OPTIONS_DEFINE=	ASYNC CRYPTODEV CT KTLS MAN3 RFC3779 SHARED
+OPTIONS_DEFINE=	ASYNC CT KTLS MAN3 RFC3779 SHARED
 
 OPTIONS_DEFAULT=ASM ASYNC CT DES EC FIPS GOST MAN3 MD4 NEXTPROTONEG \
 		QUIC RFC3779 RC2 RC4 RMD160 SCTP SHARED SSE2 \
 		THREADPOOL THREADS TLS1 TLS1_1 TLS1_2
 #OPTIONS_DEFAULT+=	KTLS pending updated KTLS patch
-
-OPTIONS_EXCLUDE=CRYPTODEV
 
 OPTIONS_GROUP_OPTIMIZE_amd64=	EC
 
@@ -65,7 +63,6 @@ ASM_DESC=	Assembler code
 ASYNC_DESC=	Asynchronous mode
 CIPHERS_DESC=	Block Cipher Support
 COMPRESSION_DESC=	Compression Support
-CRYPTODEV_DESC=	/dev/crypto support
 CT_DESC=	Certificate Transparency Support
 DES_DESC=	(Triple) Data Encryption Standard
 EC_DESC=	Optimize NIST elliptic curves

@@ -1,31 +1,32 @@
 PORTNAME=	xfce4-xkb-plugin
-PORTVERSION=	0.8.3
-PORTREVISION=	3
+PORTVERSION=	0.9.0
 CATEGORIES=	deskutils xfce
 MASTER_SITES=	XFCE/panel-plugins
 
 MAINTAINER=	xfce@FreeBSD.org
 COMMENT=	Keyboard layout switching plugin for the Xfce panel
-WWW=		https://goodies.xfce.org/projects/panel-plugins/xfce4-xkb-plugin
+WWW=		https://docs.xfce.org/panel-plugins/xfce4-xkb-plugin
 
 LICENSE=	GPLv2
 
-LIB_DEPENDS=	libxklavier.so:x11/libxklavier \
-		libharfbuzz.so:print/harfbuzz
+LIB_DEPENDS=	libxklavier.so:x11/libxklavier
 
-USES=		compiler:c11 gettext-tools gmake gnome libtool pkgconfig \
-		tar:bzip2 xfce xorg
-USE_GNOME=	cairo gtk30 intltool librsvg2 libwnck3
+USES=		compiler:c11 gettext-tools gnome meson pkgconfig tar:xz xfce \
+		xorg
+USE_GNOME=	gtk30 librsvg2 libwnck3
 USE_XFCE=	garcon libmenu panel xfconf
 USE_XORG=	x11
 
-GNU_CONFIGURE=	yes
-INSTALL_TARGET=	install-strip
-
-OPTIONS_DEFINE=		NLS
+OPTIONS_DEFINE=		NLS NOTIFY
+OPTIONS_DEFAULT=	NOTIFY
 OPTIONS_SUB=		yes
 
-NLS_CONFIGURE_ENABLE=	nls
-NLS_USES=		gettext-runtime
+NLS_USES=	gettext-runtime
+
+NOTIFY_LIB_DEPENDS=	libnotify.so:devel/libnotify
+NOTIFY_MESON_ENABLED=	libnotify
+
+post-patch-NLS-off:
+	@${REINPLACE_CMD} -e "/^subdir('po')/d" ${WRKSRC}/meson.build
 
 .include <bsd.port.mk>

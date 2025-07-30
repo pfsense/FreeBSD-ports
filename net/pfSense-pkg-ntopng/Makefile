@@ -1,8 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	pfSense-pkg-ntopng
-PORTVERSION=	5.6.0
-PORTREVISION=	1
+PORTVERSION=	6.2.0
 CATEGORIES=	net
 MASTER_SITES=	# empty
 DISTFILES=	# empty

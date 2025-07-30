@@ -12,6 +12,7 @@
 %%QT_INCDIR%%/QtBodymovin/%%FULLVER%%/QtBodymovin/private/bmimagelayer_p.h
 %%QT_INCDIR%%/QtBodymovin/%%FULLVER%%/QtBodymovin/private/bmlayer_p.h
 %%QT_INCDIR%%/QtBodymovin/%%FULLVER%%/QtBodymovin/private/bmpathtrimmer_p.h
+%%QT_INCDIR%%/QtBodymovin/%%FULLVER%%/QtBodymovin/private/bmpolystar_p.h
 %%QT_INCDIR%%/QtBodymovin/%%FULLVER%%/QtBodymovin/private/bmproperty_p.h
 %%QT_INCDIR%%/QtBodymovin/%%FULLVER%%/QtBodymovin/private/bmrect_p.h
 %%QT_INCDIR%%/QtBodymovin/%%FULLVER%%/QtBodymovin/private/bmrepeater_p.h
@@ -37,6 +38,7 @@ lib/cmake/Qt6BodymovinPrivate/Qt6BodymovinPrivateConfigVersionImpl.cmake
 lib/cmake/Qt6BodymovinPrivate/Qt6BodymovinPrivateDependencies.cmake
 lib/cmake/Qt6BodymovinPrivate/Qt6BodymovinPrivateTargets-%%CMAKE_BUILD_TYPE%%.cmake
 lib/cmake/Qt6BodymovinPrivate/Qt6BodymovinPrivateTargets.cmake
+lib/cmake/Qt6BodymovinPrivate/Qt6BodymovinPrivateVersionlessAliasTargets.cmake
 lib/cmake/Qt6BodymovinPrivate/Qt6BodymovinPrivateVersionlessTargets.cmake
 lib/cmake/Qt6BuildInternals/StandaloneTests/QtLottieTestsConfig.cmake
 lib/cmake/Qt6Qml/QmlPlugins/Qt6lottieqtpluginAdditionalTargetInfo.cmake
@@ -54,4 +56,5 @@ lib/cmake/Qt6Qml/QmlPlugins/Qt6lottieqtpluginTargets.cmake
 %%QT_QMLDIR%%/Qt/labs/lottieqt/liblottieqtplugin.so
 %%QT_QMLDIR%%/Qt/labs/lottieqt/plugins.qmltypes
 %%QT_QMLDIR%%/Qt/labs/lottieqt/qmldir
+%%QT_SBOMDIR%%/qtlottie-%%FULLVER%%.spdx
 %%QT_DATADIR%%/modules/BodymovinPrivate.json

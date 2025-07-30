@@ -1,9 +1,9 @@
 PORTNAME=	netCDF4
-PORTVERSION=	1.6.5
-DISTVERSIONPREFIX=	v
-DISTVERSIONSUFFIX=	rel
+DISTVERSION=	1.7.2
 CATEGORIES=	science python
+MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
+DISTNAME=	${PORTNAME:tl}-${DISTVERSION}
 
 MAINTAINER=	bofh@FreeBSD.org
 COMMENT=	Python Interface to the NetCDF Library (versions 3 and 4)
@@ -18,9 +18,6 @@ RUN_DEPENDS=	${PYNUMPY} \
 		${PYTHON_PKGNAMEPREFIX}cftime>=0:devel/py-cftime@${PY_FLAVOR}
 
 USES=		python
-USE_GITHUB=	yes
-GH_ACCOUNT=	Unidata
-GH_PROJECT=	netcdf4-python
 USE_PYTHON=	autoplist concurrent cython cython_run distutils
 
 DOCSDIR=	${PREFIX}/share/doc/py-${PORTNAME}

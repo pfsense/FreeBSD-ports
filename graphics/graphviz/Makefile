@@ -1,6 +1,6 @@
 PORTNAME=	graphviz
 PORTVERSION=	12.2.1
-PORTREVISION=	0
+PORTREVISION=	2
 CATEGORIES=	graphics tk
 MASTER_SITES=	https://gitlab.com/api/v4/projects/4207231/packages/generic/graphviz-releases/${PORTVERSION}/
 
@@ -90,7 +90,7 @@ PANGOCAIRO_USE=	GNOME=pango,cairo XORG=xrender,x11,xau,xdmcp
 GDK_USES=	gnome xorg
 GDK_USE=	GNOME=gtk30
 SMYRNA_USES=	gnome gl xorg
-SMYRNA_USE=	GNOME=libglade2,pangox-compat,gdkpixbuf2,gtk20 \
+SMYRNA_USE=	GNOME=libglade2,pangox-compat,gdkpixbuf,gtk20 \
 		GL=glut,glu,gl
 GVEDIT_USES=	qt:6
 GVEDIT_USE=	QT=tools:build,base

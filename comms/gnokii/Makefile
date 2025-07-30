@@ -1,6 +1,6 @@
 PORTNAME=	gnokii
 PORTVERSION=	0.6.31
-PORTREVISION=	15
+PORTREVISION=	16
 PORTEPOCH=	1
 CATEGORIES=	comms
 MASTER_SITES=	http://www.gnokii.org/download/gnokii/ \
@@ -75,7 +75,7 @@ X11_LIB_DEPENDS=	libfontconfig.so:x11-fonts/fontconfig \
 			libharfbuzz.so:print/harfbuzz
 X11_USES=		xorg
 X11_USE=		XORG=x11 XORG=xpm \
-			GNOME=cairo GNOME=gdkpixbuf2 GNOME=gtk20
+			GNOME=cairo GNOME=gdkpixbuf GNOME=gtk20
 X11_PLIST_SUB=		X11=''
 X11_PLIST_SUB_OFF=	X11='@comment '
 

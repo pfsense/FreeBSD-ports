@@ -1,5 +1,6 @@
 PORTNAME=	trafficserver
 DISTVERSION=	9.2.5
+PORTREVISION=	1
 CATEGORIES=	www
 MASTER_SITES=	APACHE/${PORTNAME}
 
@@ -14,13 +15,13 @@ ONLY_FOR_ARCHS=	amd64 powerpc64 powerpc64le
 LIB_DEPENDS=	libcurl.so:ftp/curl \
 		libhwloc.so:devel/hwloc2 \
 		libpcre.so:devel/pcre \
-		libxml2.so:textproc/libxml2 \
 		libbrotlienc.so:archivers/brotli
 
-USES=		compiler:c++17-lang cpe gmake libtool localbase luajit \
-		ncurses pathfix perl5 pkgconfig sqlite ssl tar:bzip2
+USES=		compiler:c++17-lang cpe gmake gnome libtool localbase \
+		luajit ncurses pathfix perl5 pkgconfig sqlite ssl tar:bzip2
 CPE_VENDOR=	apache
 CPE_PRODUCT=	traffic_server
+USE_GNOME=	libxml2
 USE_LDCONFIG=	yes
 USE_PERL5=	build run
 USE_RC_SUBR=	${PORTNAME}

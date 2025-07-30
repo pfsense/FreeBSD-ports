@@ -1,2 +1,4 @@
-Mizutamari is a launcher that aims to help you run a list
-of applications in Wine with a few simple clicks on FreeBSD.
+Mizutamari is A Wine front-end. Written in Bash with a GUI provided by YAD.
+
+A predefined library is used to manage the Windows applications.
+Providing/applying the required fixes and workarounds.

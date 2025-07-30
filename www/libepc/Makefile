@@ -1,17 +1,17 @@
 PORTNAME=	libepc
 PORTVERSION=	0.4.6
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	www
 MASTER_SITES=	GNOME
 
-MAINTAINER=	kwm@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	The Easy Publish and Consume library
 WWW=		https://live.gnome.org/libepc/
 
 LICENSE=	LGPL21
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-LIB_DEPENDS=	libuuid.so:misc/e2fsprogs-libuuid \
+LIB_DEPENDS=	libuuid.so:misc/libuuid \
 		libfribidi.so:converters/fribidi \
 		libsoup-2.4.so:devel/libsoup \
 		libgnutls.so:security/gnutls \
@@ -20,7 +20,7 @@ LIB_DEPENDS=	libuuid.so:misc/e2fsprogs-libuuid \
 
 USES=		compiler gettext gmake gnome libtool pathfix pkgconfig \
 		tar:xz
-USE_GNOME=	gnomeprefix cairo gdkpixbuf2 gtk30 intltool
+USE_GNOME=	gnomeprefix cairo gdkpixbuf gtk30 intltool
 USE_LDCONFIG=	yes
 GNU_CONFIGURE=	yes
 INSTALL_TARGET=	install-strip

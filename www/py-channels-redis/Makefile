@@ -1,5 +1,6 @@
 PORTNAME=	channels-redis
-PORTVERSION=	4.2.0
+PORTVERSION=	4.2.1
+PORTREVISION=	1
 CATEGORIES=	www python
 MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -19,5 +20,7 @@ RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}redis>=5.0.1:databases/py-redis@${PY_FLAVOR}
 
 USES=		python
 USE_PYTHON=	autoplist distutils
+
+NO_ARCH=	yes
 
 .include <bsd.port.mk>

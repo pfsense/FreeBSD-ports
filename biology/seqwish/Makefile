@@ -12,6 +12,7 @@ WWW=		https://github.com/ekg/seqwish
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
+BROKEN_FreeBSD_13=	compilation fails: undefined symbol: __sync_val_compare_and_swap_16 ... referenced by transclosure.cpp
 BROKEN_FreeBSD_15=	compilation fails with clang-19, see https://github.com/ekg/seqwish/issues/126
 BROKEN_i386=	compilation fails: error: use of undeclared identifier '_pdep_u64'
 
@@ -22,7 +23,11 @@ CMAKE_ARGS=	-DEXTRA_FLAGS="" # disable -march=native
 PLIST_FILES=	bin/${PORTNAME}
 
 OPTIONS_DEFINE=		OPENMP
+.if exists(/usr/include/omp.h)
 OPTIONS_DEFAULT=	OPENMP
+.else
+OPENMP_BROKEN=	OpenMP isn't available on this architecture
+.endif
 
 OPENMP_CMAKE_BOOL=	USE_OPENMP
 OPENMP_CXXFLAGS=	-fopenmp

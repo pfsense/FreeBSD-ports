@@ -1,3 +1,361 @@
+  <vuln vid="a380f43e-19e5-11f0-9568-b42e991fc52e">
+    <topic>Perl -- heap buffer overflow when transliterating non-ASCII bytes</topic>
+    <affects>
+      <package>
+	<name>perl5.36</name>
+	<range><lt>5.36.3</lt></range>
+      </package>
+      <package>
+	<name>perl5.38</name>
+	<range><lt>5.38.4</lt></range>
+      </package>
+      <package>
+	<name>perl5.40</name>
+	<range><lt>5.40.2</lt></range>
+      </package>
+      <package>
+	<name>perl5-devel</name>
+	<range><lt>5.41.10</lt></range>
+      </package>
+    </affects>
+    <description>
+	<body xmlns="http://www.w3.org/1999/xhtml">
+	<p>9b29abf9-4ab0-4765-b253-1875cd9b441e reports:</p>
+	<blockquote cite="https://github.com/Perl/perl5/commit/87f42aa0e0096e9a346c9672aa3a0bd3bef8c1dd.patch">
+	<p>A heap buffer overflow vulnerability was discovered in Perl.
+	When there are non-ASCII bytes in the left-hand-side of the `tr`
+	operator, `S_do_trans_invmap` can overflow the destination pointer
+	`d`.
+	$ perl -e &apos;$_ = &quot;\x{FF}&quot; x 1000000; tr/\xFF/\x{100}/;&apos;
+	Segmentation fault (core dumped)
+	It is believed that this vulnerability can enable Denial of
+	Service and possibly Code Execution attacks on platforms that
+	lack sufficient defenses.</p>
+	</blockquote>
+	</body>
+    </description>
+    <references>
+      <cvename>CVE-2024-56406</cvename>
+      <url>https://nvd.nist.gov/vuln/detail/CVE-2024-56406</url>
+    </references>
+    <dates>
+      <discovery>2025-04-13</discovery>
+      <entry>2025-04-15</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="0230343c-1908-11f0-accc-b42e991fc52e">
+    <topic>gogs -- Multiple vulnerabilities</topic>
+    <affects>
+      <package>
+	<name>gogs</name>
+	<range><lt>0.13.0</lt></range>
+      </package>
+    </affects>
+    <description>
+	<body xmlns="http://www.w3.org/1999/xhtml">
+	<p>cve@mitre.org reports:</p>
+	<blockquote cite="https://fysac.github.io/posts/2024/11/unpatched-remote-code-execution-in-gogs/">
+	<p>CVE-2024-44625: Directory Traversal via the editFilePost
+	function of internal/route/repo/editor.go.</p>
+	<p>CVE-2024-39933: Gogs allows argument injection during the
+	tagging of a new release.</p>
+	<p>CVE-2024-39932: Gogs allows argument injection during the
+	previewing of changes.</p>
+	<p>CVE-2024-39931: Gogs allows deletion of internal files.</p>
+	<p>CVE-2024-39930: The built-in SSH server of Gogs allows
+	argument injection in internal/ssh/ssh.go, leading to remote
+	code execution. Authenticated attackers can exploit this by
+	opening an SSH connection and sending a malicious
+	--split-string env request if the built-in SSH server is
+	activated.</p>
+	</blockquote>
+	</body>
+    </description>
+    <references>
+      <cvename>CVE-2024-44625</cvename>
+      <url>https://nvd.nist.gov/vuln/detail/CVE-2024-44625</url>
+      <cvename>CVE-2024-39933</cvename>
+      <url>https://nvd.nist.gov/vuln/detail/CVE-2024-39933</url>
+      <cvename>CVE-2024-39932</cvename>
+      <url>https://nvd.nist.gov/vuln/detail/CVE-2024-39932</url>
+      <cvename>CVE-2024-39931</cvename>
+      <url>https://nvd.nist.gov/vuln/detail/CVE-2024-39931</url>
+      <cvename>CVE-2024-39930</cvename>
+      <url>https://nvd.nist.gov/vuln/detail/CVE-2024-39930</url>
+    </references>
+    <dates>
+      <discovery>2024-11-15</discovery>
+      <entry>2025-04-14</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="ba6361be-1887-11f0-a8ce-b42e991fc52e">
+    <topic>Mozilla -- null pointer dereference</topic>
+    <affects>
+      <package>
+	<name>firefox</name>
+	<range><lt>133.0,2</lt></range>
+      </package>
+      <package>
+	<name>thunderbird</name>
+	<range><lt>133.0</lt></range>
+      </package>
+    </affects>
+    <description>
+	<body xmlns="http://www.w3.org/1999/xhtml">
+	<p>security@mozilla.org reports:</p>
+	<blockquote cite="https://bugzilla.mozilla.org/show_bug.cgi?id=1923767">
+	  <p>A null pointer dereference may have inadvertently
+	  occurred in `pk12util`, and specifically in the
+	  `SEC_ASN1DecodeItem_Util` function, when handling malformed
+	  or improperly formatted input files.</p>
+	</blockquote>
+	</body>
+    </description>
+    <references>
+      <cvename>CVE-2024-11706</cvename>
+      <url>https://nvd.nist.gov/vuln/detail/CVE-2024-11706</url>
+    </references>
+    <dates>
+      <discovery>2024-11-26</discovery>
+      <entry>2025-04-13</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="b65b1217-1887-11f0-a8ce-b42e991fc52e">
+    <topic>mozilla -- double free error</topic>
+    <affects>
+      <package>
+	<name>firefox</name>
+	<range><lt>133.0,2</lt></range>
+      </package>
+      <package>
+	<name>firefox-esr</name>
+	<range><lt>128.7.0</lt></range>
+      </package>
+      <package>
+	<name>thunderbird</name>
+	<range><lt>133.0</lt></range>
+      </package>
+    </affects>
+    <description>
+	<body xmlns="http://www.w3.org/1999/xhtml">
+	<p>security@mozilla.org reports:</p>
+	<blockquote cite="https://bugzilla.mozilla.org/show_bug.cgi?id=1899402">
+	  <p>A double-free issue could have occurred in
+	  `sec_pkcs7_decoder_start_decrypt()` when handling an error
+	  path. Under specific conditions, the same symmetric key
+	  could have been freed twice, potentially leading to memory
+	  corruption.</p>
+	</blockquote>
+	</body>
+    </description>
+    <references>
+      <cvename>CVE-2024-11704</cvename>
+      <url>https://nvd.nist.gov/vuln/detail/CVE-2024-11704</url>
+    </references>
+    <dates>
+      <discovery>2024-11-26</discovery>
+      <entry>2025-04-13</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="ed0a052a-c5e6-11ef-a457-b42e991fc52e">
+    <topic>Apache Tomcat -- RCE due to TOCTOU issue in JSP compilation</topic>
+    <affects>
+      <package>
+	<name>tomcat110</name>
+	<range>
+	  <gt>11.0.0</gt>
+	  <lt>11.0.1</lt>
+	</range>
+      </package>
+      <package>
+	<name>tomcat101</name>
+	<range>
+	  <gt>10.1.0</gt>
+	  <lt>10.1.33</lt>
+	</range>
+      </package>
+      <package>
+	<name>tomcat9</name>
+	<range>
+	  <gt>9.0.0</gt>
+	  <lt>9.0.97</lt>
+	</range>
+      </package>
+    </affects>
+    <description>
+	<body xmlns="http://www.w3.org/1999/xhtml">
+	<p>security@apache.org reports:</p>
+	<blockquote cite="https://lists.apache.org/thread/b2b9qrgjrz1kvo4ym8y2wkfdvwoq6qbp">
+	  <p>Time-of-check Time-of-use (TOCTOU) Race Condition
+	The mitigation for CVE-2024-50379 was incomplete.
+	Users running Tomcat on a case insensitive file system with the
+	default servlet write enabled (readonly initialisation parameter
+	set to the non-default value of false) may need additional configuration
+	to fully mitigate CVE-2024-50379 depending on which version of Java
+	they are using with Tomcat: - running on Java 8 or Java 11: the
+	system propertysun.io.useCanonCaches must be explicitly set to false
+	(it defaults to true) - running on Java 17: thesystem property
+	sun.io.useCanonCaches, if set, must be set to false(it defaults to
+	false) - running on Java 21 onwards: no further configuration is
+	required(the system property and the problematic cache have been
+	removed)
+	Tomcat 11.0.3, 10.1.35 and 9.0.99 onwards will include checks
+	thatsun.io.useCanonCaches is set appropriately before allowing the
+	default servlet to be write enabled on a case insensitive file
+	system.  Tomcat will also setsun.io.useCanonCaches to false by
+	default where it can.</p>
+	</blockquote>
+	</body>
+    </description>
+    <references>
+      <cvename>CVE-2024-56337</cvename>
+      <url>https://nvd.nist.gov/vuln/detail/CVE-2024-56337</url>
+    </references>
+    <dates>
+      <discovery>2024-12-20</discovery>
+      <entry>2024-12-29</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="94b2d58a-c1e9-11ef-aa3f-dcfe074bd614">
+    <topic>kanboard -- Insufficient session invalidation</topic>
+    <affects>
+      <package>
+	<name>kanboard</name>
+	<range><lt>1.2.43</lt></range>
+      </package>
+    </affects>
+    <description>
+	<body xmlns="http://www.w3.org/1999/xhtml">
+	<p>security-advisories@github.com reports:</p>
+	<blockquote cite="https://github.com/kanboard/kanboard/blob/main/app/Core/Session/SessionHandler.php#L40">
+	  <p>Kanboard is project management software that focuses on the Kanban
+	methodology.  In affected versions sessions are still usable even
+	though their lifetime has exceeded.  Kanboard implements a cutom
+	session handler (`app/Core/Session/SessionHandler.php`), to store
+	the session data in a database.  Therefore, when a `session_id` is
+	given, kanboard queries the data from the `sessions` sql table.  At
+	this point, it does not correctly verify, if a given `session_id`
+	has already exceeded its lifetime (`expires_at`).  Thus, a session
+	which&apos;s lifetime is already `&gt; time()`, is still queried
+	from the database and hence a valid login.  The implemented
+	**SessionHandlerInterface::gc** function, that does remove invalid
+	sessions, is called only **with a certain probability** (_Cleans
+	up expired sessions.  Called by `session_start()`, based on
+	`session.gc_divisor`, `session.gc_probability` and `session.gc_maxlifetime`
+	settings_) accordingly to the php documentation.  In the official
+	Kanboard docker image these values default to: session.gc_probability=1,
+	session.gc_divisor=1000. Thus, an expired session is only terminated
+	with probability 1/1000. There are no known workarounds for
+	this vulnerability.</p>
+	</blockquote>
+	</body>
+    </description>
+    <references>
+      <cvename>CVE-2024-55603</cvename>
+      <url>https://nvd.nist.gov/vuln/detail/CVE-2024-55603</url>
+    </references>
+    <dates>
+      <discovery>2024-12-19</discovery>
+      <entry>2024-12-24</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="0a8dbc7f-bedc-11ef-b5a1-000ec6d40964">
+    <topic>Vaultwarden -- Admin organization permissions</topic>
+    <affects>
+      <package>
+	<name>vaultwarden</name>
+	<range><lt>1.32.7</lt></range>
+      </package>
+    </affects>
+    <description>
+	<body xmlns="http://www.w3.org/1999/xhtml">
+	<p>The Vaultwarden project reports:</p>
+	<blockquote cite="https://github.com/dani-garcia/vaultwarden/pull/5291">
+	  <p>Admins from any organization were able to modify or delete groups in any other organization if they know the group's uuid.</p>
+	</blockquote>
+	</body>
+    </description>
+    <references>
+      <url>https://github.com/dani-garcia/vaultwarden/pull/5291</url>
+    </references>
+    <dates>
+      <discovery>2024-12-20</discovery>
+      <entry>2024-12-20</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="e18c5c8d-be01-11ef-8c1c-a8a1599412c6">
+    <topic>chromium -- multiple security fixes</topic>
+    <affects>
+      <package>
+       <name>chromium</name>
+       <range><lt>131.0.6778.204</lt></range>
+      </package>
+      <package>
+       <name>ungoogled-chromium</name>
+       <range><lt>131.0.6778.204</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+       <p>Chrome Releases reports:</p>
+       <blockquote cite="https://chromereleases.googleblog.com/2024/12/stable-channel-update-for-desktop_18.html">
+	 <p>This update includes 3 security fixes:</p>
+	 <ul>
+	    <li>[382291459] High CVE-2024-12692: Type Confusion in V8. Reported by Seunghyun Lee (@0x10n) on 2024-12-05</li>
+	    <li>[382190919] High CVE-2024-12693: Out of bounds memory access in V8. Reported by 303f06e3 on 2024-12-04</li>
+	    <li>[368222741] High CVE-2024-12694: Use after free in Compositing. Reported by Anonymous on 2024-09-19</li>
+	    <li>[383647255] High CVE-2024-12695: Out of bounds write in V8. Reported by 303f06e3 on 2024-12-12</li>
+	 </ul>
+       </blockquote>
+      </body>
+    </description>
+    <references>
+      <cvename>CVE-2024-12692</cvename>
+      <cvename>CVE-2024-12693</cvename>
+      <cvename>CVE-2024-12694</cvename>
+      <cvename>CVE-2024-12695</cvename>
+      <url>https://chromereleases.googleblog.com/2024/12/stable-channel-update-for-desktop_18.html</url>
+    </references>
+    <dates>
+      <discovery>2024-12-18</discovery>
+      <entry>2024-12-19</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="dc087dad-bd71-11ef-b5a1-000ec6d40964">
+    <topic>liboqs -- Correctness error in HQC decapsulation</topic>
+    <affects>
+      <package>
+	<name>liboqs</name>
+	<range><lt>0.12.0</lt></range>
+      </package>
+    </affects>
+    <description>
+	<body xmlns="http://www.w3.org/1999/xhtml">
+	<p>The Open Quantum Safe project reports:</p>
+	<blockquote cite="https://github.com/open-quantum-safe/liboqs/security/advisories/GHSA-gpf4-vrrw-r8v7">
+	  <p>A correctness error has been identified in the reference implementation of the HQC key encapsulation mechanism. Due to an indexing error, part of the secret key is incorrectly treated as non-secret data. This results in an incorrect shared secret value being returned when the decapsulation function is called with a malformed ciphertext.</p>
+	  <p>No concrete attack exploiting the error has been identified at this point. However, the error involves mishandling of the secret key, and in principle this presents a security vulnerability.</p>
+	</blockquote>
+	</body>
+    </description>
+    <references>
+      <cvename>CVE-2024-54137</cvename>
+      <url>https://github.com/open-quantum-safe/liboqs/security/advisories/GHSA-gpf4-vrrw-r8v7</url>
+    </references>
+    <dates>
+      <discovery>2024-11-29</discovery>
+      <entry>2024-12-18</entry>
+    </dates>
+  </vuln>
+
   <vuln vid="38e6f778-bca3-11ef-8926-9b4f2d14eb53">
     <topic>gitea -- Fix misuse of PublicKeyCallback</topic>
     <affects>
@@ -3310,15 +3668,15 @@
     <affects>
       <package>
 	<name>sqlite3</name>
-	<range><lt>3.43.2,1</lt></range>
+	<range><ge>3.43.0</ge><lt>3.43.2,1</lt></range>
       </package>
       <package>
 	<name>linux-rl9-sqlite</name>
-	<range><lt>3.43.2</lt></range>
+	<range><ge>3.43.0</ge><lt>3.43.2</lt></range>
       </package>
       <package>
 	<name>linux-c7-sqlite</name>
-	<range><lt>3.43.2</lt></range>
+	<range><ge>3.43.0</ge><lt>3.43.2</lt></range>
       </package>
     </affects>
     <description>

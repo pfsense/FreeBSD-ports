@@ -23,71 +23,9 @@ error[E0432]: unresolved imports `nix::sys::epoll`, `nix::sys::eventfd`
    |                |      help: a similar name exists in the module: `event`
    |                no `epoll` in `sys`
 
---- Cargo.lock.orig	2024-11-23 09:54:48 UTC
+--- Cargo.lock.orig	2025-07-02 22:31:56 UTC
 +++ Cargo.lock
-@@ -1073,7 +1073,7 @@ dependencies = [
-  "bitflags 1.3.2",
-  "block",
-  "cocoa-foundation",
-- "core-foundation 0.9.4",
-+ "core-foundation",
-  "core-graphics 0.23.2",
-  "foreign-types 0.5.0",
-  "libc",
-@@ -1088,7 +1088,7 @@ dependencies = [
- dependencies = [
-  "bitflags 1.3.2",
-  "block",
-- "core-foundation 0.9.4",
-+ "core-foundation",
-  "core-graphics-types",
-  "libc",
-  "objc",
-@@ -1223,16 +1223,6 @@ dependencies = [
- ]
- 
- [[package]]
--name = "core-foundation"
--version = "0.10.0"
--source = "registry+https://github.com/rust-lang/crates.io-index"
--checksum = "b55271e5c8c478ad3f38ad24ef34923091e0548492a266d19b3c0b4d82574c63"
--dependencies = [
-- "core-foundation-sys",
-- "libc",
--]
--
--[[package]]
- name = "core-foundation-sys"
- version = "0.8.7"
- source = "registry+https://github.com/rust-lang/crates.io-index"
-@@ -1245,7 +1235,7 @@ dependencies = [
- checksum = "2581bbab3b8ffc6fcbd550bf46c355135d16e9ff2a6ea032ad6b9bf1d7efe4fb"
- dependencies = [
-  "bitflags 1.3.2",
-- "core-foundation 0.9.4",
-+ "core-foundation",
-  "core-graphics-types",
-  "foreign-types 0.3.2",
-  "libc",
-@@ -1258,7 +1248,7 @@ dependencies = [
- checksum = "c07782be35f9e1140080c6b96f0d44b739e2278479f64e02fdab4e32dfd8b081"
- dependencies = [
-  "bitflags 1.3.2",
-- "core-foundation 0.9.4",
-+ "core-foundation",
-  "core-graphics-types",
-  "foreign-types 0.5.0",
-  "libc",
-@@ -1271,7 +1261,7 @@ dependencies = [
- checksum = "45390e6114f68f718cc7a830514a96f903cccd70d02a8f6d9f643ac4ba45afaf"
- dependencies = [
-  "bitflags 1.3.2",
-- "core-foundation 0.9.4",
-+ "core-foundation",
-  "libc",
- ]
- 
-@@ -2610,9 +2600,9 @@ name = "gilrs"
+@@ -2628,9 +2628,9 @@ dependencies = [
  
  [[package]]
  name = "gilrs"
@@ -99,19 +37,19 @@ error[E0432]: unresolved imports `nix::sys::epoll`, `nix::sys::eventfd`
  dependencies = [
   "fnv",
   "gilrs-core",
-@@ -2624,24 +2614,23 @@ name = "gilrs-core"
+@@ -2642,24 +2642,23 @@ dependencies = [
  
  [[package]]
  name = "gilrs-core"
--version = "0.6.0"
+-version = "0.6.4"
 +version = "0.5.7"
  source = "registry+https://github.com/rust-lang/crates.io-index"
--checksum = "495af945e45efd6386227613cd9fb7bd7c43d3c095040e30c5304c489e6abed5"
+-checksum = "a6d95ae10ce5aa99543a28cf74e41c11f3b9e3c14f0452bbde46024753cd683e"
 +checksum = "5ccc99e9b8d63ffcaa334c4babfa31f46e156618a11f63efb6e8e6bcb37b830d"
  dependencies = [
 - "core-foundation 0.10.0",
 - "inotify 0.11.0",
-+ "core-foundation",
++ "core-foundation 0.9.4",
   "io-kit-sys",
   "js-sys",
   "libc",
@@ -124,30 +62,12 @@ error[E0432]: unresolved imports `nix::sys::epoll`, `nix::sys::eventfd`
   "vec_map",
   "wasm-bindgen",
   "web-sys",
-- "windows 0.58.0",
+- "windows 0.61.1",
 + "windows 0.48.0",
  ]
  
  [[package]]
-@@ -3356,17 +3345,6 @@ dependencies = [
- ]
- 
- [[package]]
--name = "inotify"
--version = "0.11.0"
--source = "registry+https://github.com/rust-lang/crates.io-index"
--checksum = "f37dccff2791ab604f9babef0ba14fbe0be30bd368dc541e2b08d07c8aa908f3"
--dependencies = [
-- "bitflags 2.6.0",
-- "inotify-sys",
-- "libc",
--]
--
--[[package]]
- name = "inotify-sys"
- version = "0.1.5"
- source = "registry+https://github.com/rust-lang/crates.io-index"
-@@ -3431,9 +3409,9 @@ name = "io-kit-sys"
+@@ -3546,9 +3545,9 @@ dependencies = [
  
  [[package]]
  name = "io-kit-sys"
@@ -159,19 +79,12 @@ error[E0432]: unresolved imports `nix::sys::epoll`, `nix::sys::eventfd`
  dependencies = [
   "core-foundation-sys",
   "mach2",
-@@ -4145,7 +4123,7 @@ dependencies = [
-  "ascii",
-  "block",
-  "cocoa",
-- "core-foundation 0.9.4",
-+ "core-foundation",
-  "dirs-next",
-  "objc",
-  "objc-foundation",
-@@ -4247,6 +4225,17 @@ name = "nix"
+@@ -4381,6 +4380,17 @@ dependencies = [
+  "memoffset 0.6.5",
+ ]
  
- [[package]]
- name = "nix"
++[[package]]
++name = "nix"
 +version = "0.26.4"
 +source = "registry+https://github.com/rust-lang/crates.io-index"
 +checksum = "598beaf3cc6fdd9a5dfb1630c2800c7acd31df7aaf0f565796fba2b53ca1af1b"
@@ -181,47 +94,81 @@ error[E0432]: unresolved imports `nix::sys::epoll`, `nix::sys::eventfd`
 + "libc",
 +]
 +
-+[[package]]
-+name = "nix"
+ [[package]]
+ name = "nix"
  version = "0.29.0"
- source = "registry+https://github.com/rust-lang/crates.io-index"
- checksum = "71e2746dc3a24dd78b3cfcb7be93368c6de9963d30f43a6a73998a9cf4b17b46"
-@@ -5833,7 +5822,7 @@ dependencies = [
- source = "registry+https://github.com/rust-lang/crates.io-index"
- checksum = "afbb878bdfdf63a336a5e63561b1835e7a8c91524f51621db870169eac84b490"
- dependencies = [
-- "core-foundation 0.9.4",
-+ "core-foundation",
-  "core-foundation-sys",
-  "jni 0.19.0",
-  "log",
-@@ -6008,7 +5997,7 @@ dependencies = [
- checksum = "897b2245f0b511c87893af39b033e5ca9cce68824c4d7e7630b5a1d339658d02"
- dependencies = [
-  "bitflags 2.6.0",
-- "core-foundation 0.9.4",
-+ "core-foundation",
-  "core-foundation-sys",
-  "libc",
-  "num-bigint 0.4.6",
-@@ -7189,7 +7178,7 @@ dependencies = [
+@@ -7578,7 +7588,7 @@ version = "1.6.3"
  source = "registry+https://github.com/rust-lang/crates.io-index"
  checksum = "97fee6b57c6a41524a810daee9286c02d7752c4253064d0b05472833a438f675"
  dependencies = [
 - "cfg-if 1.0.0",
 + "cfg-if 0.1.10",
-  "rand",
+  "rand 0.8.5",
   "static_assertions",
  ]
-@@ -9239,7 +9228,7 @@ dependencies = [
-  "android-activity",
-  "bitflags 1.3.2",
-  "cfg_aliases 0.1.1",
-- "core-foundation 0.9.4",
-+ "core-foundation",
-  "core-graphics 0.22.3",
-  "dispatch",
-  "instant",
+@@ -9363,28 +9373,6 @@ dependencies = [
+  "windows-targets 0.52.6",
+ ]
+ 
+-[[package]]
+-name = "windows"
+-version = "0.61.1"
+-source = "registry+https://github.com/rust-lang/crates.io-index"
+-checksum = "c5ee8f3d025738cb02bad7868bbb5f8a6327501e870bf51f1b455b0a2454a419"
+-dependencies = [
+- "windows-collections",
+- "windows-core 0.61.0",
+- "windows-future",
+- "windows-link",
+- "windows-numerics",
+-]
+-
+-[[package]]
+-name = "windows-collections"
+-version = "0.2.0"
+-source = "registry+https://github.com/rust-lang/crates.io-index"
+-checksum = "3beeceb5e5cfd9eb1d76b381630e82c4241ccd0d27f1a39ed41b2760b255c5e8"
+-dependencies = [
+- "windows-core 0.61.0",
+-]
+-
+ [[package]]
+ name = "windows-core"
+ version = "0.51.1"
+@@ -9430,16 +9418,6 @@ dependencies = [
+  "windows-strings 0.4.0",
+ ]
+ 
+-[[package]]
+-name = "windows-future"
+-version = "0.2.0"
+-source = "registry+https://github.com/rust-lang/crates.io-index"
+-checksum = "7a1d6bbefcb7b60acd19828e1bc965da6fcf18a7e39490c5f8be71e54a19ba32"
+-dependencies = [
+- "windows-core 0.61.0",
+- "windows-link",
+-]
+-
+ [[package]]
+ name = "windows-implement"
+ version = "0.58.0"
+@@ -9490,16 +9468,6 @@ version = "0.1.1"
+ source = "registry+https://github.com/rust-lang/crates.io-index"
+ checksum = "76840935b766e1b0a05c0066835fb9ec80071d4c09a16f6bd5f7e655e3c14c38"
+ 
+-[[package]]
+-name = "windows-numerics"
+-version = "0.2.0"
+-source = "registry+https://github.com/rust-lang/crates.io-index"
+-checksum = "9150af68066c4c5c07ddc0ce30421554771e528bde427614c61038bc2c92c2b1"
+-dependencies = [
+- "windows-core 0.61.0",
+- "windows-link",
+-]
+-
+ [[package]]
+ name = "windows-result"
+ version = "0.1.2"
 --- cargo-crates/gilrs-0.10.2/examples/ev.rs.orig	1970-01-01 00:00:00 UTC
 +++ cargo-crates/gilrs-0.10.2/examples/ev.rs
 @@ -9,6 +9,8 @@ use std::process;

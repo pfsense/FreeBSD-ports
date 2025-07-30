@@ -1,5 +1,5 @@
 PORTNAME=	spidermonkey
-DISTVERSION=	128.5.0
+DISTVERSION=	128.12.0
 PORTREVISION=	1
 CATEGORIES=	lang
 MASTER_SITES=	MOZILLA/firefox/releases/${DISTVERSION}esr/source \
@@ -14,8 +14,8 @@ WWW=		https://spidermonkey.dev/
 LICENSE=	MPL20
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-BUILD_DEPENDS=	${RUST_DEFAULT}>=1.81:lang/${RUST_DEFAULT} \
-		autoconf2.13:devel/autoconf2.13 \
+BUILD_DEPENDS=	gm4:devel/m4 \
+		${RUST_DEFAULT}>=1.81:lang/${RUST_DEFAULT} \
 		rust-cbindgen>=0.26.0:devel/rust-cbindgen
 LIB_DEPENDS=	libicudata.so:devel/icu \
 		libnspr4.so:devel/nspr
@@ -66,6 +66,7 @@ USE_GCC=	yes
 
 post-patch:
 	@${REINPLACE_CMD} -e 's|%%LOCALBASE%%|${LOCALBASE}|g' ${WRKSRC}/js/moz.configure
+	@${REINPLACE_CMD} -e 's|icu-i18n|icu-uc icu-i18n|g' ${WRKSRC}/js/moz.configure
 
 post-install:
 	${RM} ${STAGEDIR}${PREFIX}/lib/libjs_static.ajs

@@ -13,6 +13,7 @@ include/librssguard/exceptions/ioexception.h
 include/librssguard/exceptions/networkexception.h
 include/librssguard/exceptions/processexception.h
 include/librssguard/exceptions/scriptexception.h
+include/librssguard/gui/dialogs/filedialog.h
 include/librssguard/gui/dialogs/formabout.h
 include/librssguard/gui/dialogs/formmain.h
 include/librssguard/gui/dialogs/formupdate.h
@@ -61,6 +62,7 @@ include/librssguard/services/abstract/gui/formaddeditlabel.h
 include/librssguard/services/abstract/gui/formaddeditprobe.h
 include/librssguard/services/abstract/gui/formcategorydetails.h
 include/librssguard/services/abstract/gui/formfeeddetails.h
+include/librssguard/services/abstract/gui/httpheadersdetails.h
 include/librssguard/services/abstract/gui/multifeededitcheckbox.h
 include/librssguard/services/abstract/importantnode.h
 include/librssguard/services/abstract/label.h

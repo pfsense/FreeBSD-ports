@@ -1,8 +1,8 @@
 PORTNAME=	squirrel-sql
-PORTVERSION=	4.7.1
+DISTVERSION=	4.8.0
 CATEGORIES=	databases java
-MASTER_SITES=	SF/${PORTNAME}/1-stable/${PORTVERSION}-plainzip
-DISTNAME=	squirrelsql-${PORTVERSION}-optional
+MASTER_SITES=	SF/${PORTNAME}/1-stable/${DISTVERSION}-plainzip
+DISTNAME=	squirrelsql-${DISTVERSION}-optional
 
 MAINTAINER=	jonc@chen.org.nz
 COMMENT=	Universal SQL Client
@@ -10,8 +10,8 @@ WWW=		http://www.squirrelsql.org/
 
 LICENSE=	GPLv2
 
-USES=		zip
-USE_JAVA=	11+
+USES=		java zip
+JAVA_VERSION=	11+
 
 DATADIR=	${PREFIX}/share/java/${PKGBASE}
 

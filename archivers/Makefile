@@ -2,6 +2,7 @@
 
     SUBDIR += 7-zip
     SUBDIR += 9e
+    SUBDIR += R-cran-brotli
     SUBDIR += R-cran-zip
     SUBDIR += advancecomp
     SUBDIR += amigadepacker
@@ -10,7 +11,6 @@
     SUBDIR += arc
     SUBDIR += arj
     SUBDIR += ark
-    SUBDIR += ark-devel
     SUBDIR += arqiver
     SUBDIR += atool
     SUBDIR += bicom
@@ -61,7 +61,6 @@
     SUBDIR += libarchive
     SUBDIR += libarchive-qt
     SUBDIR += libcabinet
-    SUBDIR += libcomprex
     SUBDIR += libdeflate
     SUBDIR += libdynamite
     SUBDIR += liblz4
@@ -73,7 +72,6 @@
     SUBDIR += libzip
     SUBDIR += libzippp
     SUBDIR += linux-c7-lz4
-    SUBDIR += linux-rl9-brotli
     SUBDIR += linux-rl9-lz4
     SUBDIR += lizard
     SUBDIR += lrzip
@@ -177,8 +175,13 @@
     SUBDIR += php84-phar
     SUBDIR += php84-zip
     SUBDIR += php84-zlib
+    SUBDIR += php85-bz2
+    SUBDIR += php85-phar
+    SUBDIR += php85-zip
+    SUBDIR += php85-zlib
     SUBDIR += pigz
     SUBDIR += pixz
+    SUBDIR += plakar
     SUBDIR += plzip
     SUBDIR += ppmd
     SUBDIR += ppunpack
@@ -196,6 +199,7 @@
     SUBDIR += py-comicapi
     SUBDIR += py-compressed-rtf
     SUBDIR += py-cramjam
+    SUBDIR += py-extractcode
     SUBDIR += py-inflate64
     SUBDIR += py-laszip
     SUBDIR += py-libarchive-c
@@ -228,6 +232,7 @@
     SUBDIR += qpress
     SUBDIR += quazip
     SUBDIR += rar
+    SUBDIR += rar-i386
     SUBDIR += rpm2cpio
     SUBDIR += rpm4
     SUBDIR += rubygem-archive-zip
@@ -237,13 +242,12 @@
     SUBDIR += rubygem-libarchive
     SUBDIR += rubygem-minitar
     SUBDIR += rubygem-minitar-cli
-    SUBDIR += rubygem-minitar-cli0
     SUBDIR += rubygem-minitar0
     SUBDIR += rubygem-ruby-xz
     SUBDIR += rubygem-rubyzip
+    SUBDIR += rubygem-rubyzip-gitlab
     SUBDIR += rubygem-rubyzip13
     SUBDIR += rubygem-rubyzip2
-    SUBDIR += rubygem-rubyzip20
     SUBDIR += rubygem-snappy
     SUBDIR += rvm
     SUBDIR += rzip
@@ -291,6 +295,7 @@
     SUBDIR += xdms
     SUBDIR += xmill
     SUBDIR += zchunk
+    SUBDIR += zim-tools
     SUBDIR += zip
     SUBDIR += zipmix
     SUBDIR += zipper

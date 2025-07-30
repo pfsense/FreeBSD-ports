@@ -1,5 +1,6 @@
 PORTNAME?=	mariadb
-PORTVERSION=	11.4.4
+PORTVERSION=	11.4.7
+PORTREVISION?=	1
 CATEGORIES=	databases
 MASTER_SITES=	https://mirror.nodesdirect.com/${SITESDIR}/ \
 		https://mirror.one.com/${SITESDIR}/ \
@@ -109,6 +110,7 @@ CMAKE_ARGS+=	-DCMAKE_PREFIX_PATH=${PREFIX} \
 		-DINSTALL_UNIX_ADDRDIR="${MARIADB_RUNDIR}/${MARIADB_SOCK}" \
 		-DWITH_PCRE=system \
 		-DPCRE_LIBRARY_DIRS=${PREFIX}/lib \
+		-DPCRE_FOUND=true \
 		-DWITH_LIBFMT=system \
 		-DLIBFMT_INCLUDE_DIR=${PREFIX}/include \
 		-DHAVE_SYSTEM_LIBFMT=yes \
@@ -178,7 +180,7 @@ ${ENGINE}_CMAKE_ON=	-DPLUGIN_${ENGINE}=DYNAMIC
 .endfor
 AWS_KEY_MGMT_CMAKE_ON=	-DPLUGIN_AWS_KEY_MANAGEMENT=ON
 INNOBASE_VARS_OFF=	disabled_plugins+=INNOBASE
-#COLUMNSTORE_BROKEN=	ColumnStore engine build failure "fatal error: 'sys/prctl.h' file not found"
+COLUMNSTORE_BROKEN=	ColumnStore engine build failure "fatal error: 'sys/prctl.h' file not found"
 CONNECT_EXTRA_LIB_DEPENDS=	libodbc.so:databases/unixODBC
 CONNECT_EXTRA_USE=		gnome=libxml2
 CONNECT_EXTRA_USES=		gnome
@@ -192,6 +194,7 @@ LZO_LIB_DEPENDS=	liblzo2.so:archivers/lzo2
 MSGPACK_LIB_DEPENDS=	libmsgpackc.so:devel/msgpack-c
 OQGRAPH_LIB_DEPENDS=	libboost_system.so:devel/boost-libs \
 			libJudy.so:devel/judy
+ROCKSDB_BROKEN=		RocksDB engine build failyure "jemalloc_helper.h:65:61: error: use of undeclared identifier 'nothrow'"	
 ROCKSDB_USES=		python
 ROCKSDB_CMAKE_ON=	-DPYTHON_SHEBANG=${PYTHON_CMD} -DWITH_ROCKSDB_zstd=ON
 S3_LIB_DEPENDS=		libcurl.so:ftp/curl

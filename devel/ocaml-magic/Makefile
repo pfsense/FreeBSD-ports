@@ -13,13 +13,10 @@ WWW=		https://sourceforge.net/projects/ocaml-magic/
 LICENSE=	LGPL21
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-USE_OCAML=		yes
-USE_OCAML_FINDLIB=	yes
-USE_OCAML_LDCONFIG=	yes
+USES=		gmake ocaml:findlib,ldconfig
 
 MAKE_JOBS_UNSAFE=	yes
 
-USES=		gmake
 GNU_CONFIGURE=	yes
 
 ALL_TARGET=	doc examples
@@ -27,6 +24,12 @@ DOCSDIR=	${OCAML_DOCSDIR}/${PORTNAME}
 EXAMPLESDIR=	${OCAML_EXAMPLESDIR}/${PORTNAME}
 
 OPTIONS_DEFINE=	DOCS EXAMPLES
+
+.include <bsd.port.options.mk>
+
+.if ${ARCH} == powerpc
+USE_BINUTILS=	yes
+.endif
 
 post-install:
 	@${STRIP_CMD} ${STAGEDIR}${PREFIX}/${OCAML_SITELIBDIR}/magic/dllmagic_stubs.so

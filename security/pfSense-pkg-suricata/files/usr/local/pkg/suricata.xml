@@ -44,6 +44,14 @@
 	</service>
 	<!-- configpath gets expanded out automatically and config items will be stored in that location -->
 	<configpath>['installedpackages']['suricata']</configpath>
+	<plugins>
+		<item>
+			<type>plugin_xmlrpc_send</type>
+		</item>
+		<item>
+			<type>plugin_xmlrpc_recv</type>
+		</item>
+	</plugins>
 	<custom_php_install_command>
 		<![CDATA[
 		include_once("/usr/local/pkg/suricata/suricata_post_install.php");

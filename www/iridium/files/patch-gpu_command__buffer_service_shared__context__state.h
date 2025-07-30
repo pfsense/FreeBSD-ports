@@ -1,6 +1,6 @@
---- gpu/command_buffer/service/shared_context_state.h.orig	2024-11-04 08:56:03 UTC
+--- gpu/command_buffer/service/shared_context_state.h.orig	2025-06-19 07:37:57 UTC
 +++ gpu/command_buffer/service/shared_context_state.h
-@@ -222,7 +222,7 @@ class GPU_GLES2_EXPORT SharedContextState
+@@ -238,7 +238,7 @@ class GPU_GLES2_EXPORT SharedContextState
      return &memory_type_tracker_;
    }
  #if BUILDFLAG(ENABLE_VULKAN) && \
@@ -9,7 +9,7 @@
    ExternalSemaphorePool* external_semaphore_pool() {
      return external_semaphore_pool_.get();
    }
-@@ -429,7 +429,7 @@ class GPU_GLES2_EXPORT SharedContextState
+@@ -455,7 +455,7 @@ class GPU_GLES2_EXPORT SharedContextState
    bool disable_check_reset_status_throttling_for_test_ = false;
  
  #if BUILDFLAG(ENABLE_VULKAN) && \

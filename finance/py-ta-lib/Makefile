@@ -1,6 +1,7 @@
 PORTNAME=	ta-lib # provides Python namespace 'talib'
 DISTVERSIONPREFIX=	TA_Lib-
 DISTVERSION=	0.4.32
+PORTREVISION=	1
 CATEGORIES=	finance python
 #MASTER_SITES=	PYPI # tests fail whe PYPI is used, see https://github.com/TA-Lib/ta-lib-python/issues/663
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -31,6 +32,6 @@ TEST_ENV=	${MAKE_ENV} PYTHONPATH=${STAGEDIR}${PYTHONPREFIX_SITELIBDIR}
 TEST_WRKSRC=	${WRKSRC}/tests
 
 post-install:
-	@${STRIP_CMD} ${STAGEDIR}${PYTHON_SITELIBDIR}/talib/_ta_lib${PYTHON_EXT_SUFFIX}.so
+	@${STRIP_CMD} ${STAGEDIR}${PYTHON_SITELIBDIR}/talib/_ta_lib${PYTHON_TAG}.so
 
 .include <bsd.port.mk>

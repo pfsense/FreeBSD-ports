@@ -1,11 +1,13 @@
 PORTNAME=	cantera
 DISTVERSIONPREFIX=	v
-DISTVERSION=	3.0.1
+DISTVERSION=	3.1.0
+PORTREVISION=	1
 CATEGORIES=	science # chemistry physics
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Chemical kinetics, thermodynamics, and transport tool suite
-WWW=		https://cantera.org/
+WWW=		https://cantera.org \
+		https://github.com/Cantera/cantera
 
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/License.txt
@@ -25,6 +27,9 @@ USE_LDCONFIG=	yes
 USE_GITHUB=	yes
 GH_ACCOUNT=	Cantera
 GH_TUPLE=	LLNL:sundials:887af43:sundials/ext/sundials # bundled sundials is only needed for the Octave option
+GH_TUPLE+=	cantera:cantera-example-data:1a5d27e:example_data/data/example_data
+
+NO_CCACHE=	yes # ccache breaks scons build for some reason
 
 MAKE_ARGS=	system_eigen='y' \
 		system_sundials='n' \
@@ -40,7 +45,7 @@ MAKE_ARGS=	system_eigen='y' \
 MAKE_ENV=	INSTALL_MANPAGES=y
 
 ALL_TARGET=	build
-TEST_TARGET=	test # some tests fail, see https://github.com/Cantera/cantera/issues/1095
+TEST_TARGET=	test # Multiple failures in the testsuite, see https://github.com/Cantera/cantera/issues/1829
 
 OPTIONS_DEFINE=		OCTAVE PYTHON
 OPTIONS_DEFAULT=	PYTHON # OCTAVE is off by default because Octave interface is not a frequently requested feature
@@ -59,7 +64,8 @@ PYTHON_USES_OFF=	python:env
 PYTHON_USE=		PYTHON=cython
 PYTHON_MAKE_ARGS=	python_cmd=${PYTHON_CMD} python_package=full
 PYTHON_MAKE_ARGS_OFF=	python_package="none"
-PYTHON_BUILD_DEPENDS=	${PYNUMPY} \
+PYTHON_BUILD_DEPENDS=	${PY_SETUPTOOLS} \
+			${PYNUMPY} \
 			${PYTHON_PKGNAMEPREFIX}wheel>0:devel/py-wheel@${PY_FLAVOR} \
 			${PYTHON_PKGNAMEPREFIX}pip>0:devel/py-pip@${PY_FLAVOR}
 PYTHON_RUN_DEPENDS=	${PYNUMPY} \

@@ -11,20 +11,17 @@ LICENSE=	GPLv2+
 BUILD_DEPENDS=	kdev-pg-qt:devel/kdevelop-pg-qt
 LIB_DEPENDS=	libKDevPlatformInterfaces.so:devel/kdevelop
 
-USES=		cmake compiler:c++11-lib kde:5 python qt:5 tar:xz xorg
-USE_KDE=	attica auth codecs completion config configwidgets coreaddons \
-		ecm:build i18n itemmodels jobwidgets kio newstuff parts service \
-		solid sonnet syntaxhighlighting texteditor textwidgets \
-		threadweaver widgetsaddons windowsystem xmlgui
-USE_QT=		concurrent core dbus gui network widgets xml \
-		buildtools:build qmake:build
+USES=		cmake compiler:c++17-lang gettext-tools gl kde:6 python qt:6 \
+		tar:xz xorg
+USE_GL=		gl opengl # GLX
+USE_KDE=	colorscheme completion config configwidgets coreaddons i18n \
+		kio parts service syntaxhighlighting texteditor threadweaver \
+		widgetsaddons xmlgui \
+		ecm:build
+USE_QT=		5compat base
 USE_XORG=	x11
 
 # Versioning values, to reduce plist churn (match with devel/kdevelop)
-PLATFORM_VER=	511
-PLIST_SUB+=	PLATFORM_VER=${PLATFORM_VER}
-
-# Does not build with jobs.
-MAKE_JOBS_UNSAFE=	yes
+.include "${.CURDIR}/../kdevelop/kdevelop.mk"
 
 .include <bsd.port.mk>

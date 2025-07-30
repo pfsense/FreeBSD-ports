@@ -1,6 +1,5 @@
 PORTNAME=	xfce4-generic-slider
-PORTVERSION=	1.0.0
-PORTREVISION=	2
+PORTVERSION=	1.1.0
 PORTEPOCH=	1
 CATEGORIES=	deskutils xfce
 MASTER_SITES=	XFCE/panel-plugins
@@ -8,24 +7,21 @@ DIST_SUBDIR=	xfce4
 
 MAINTAINER=	xfce@FreeBSD.org
 COMMENT=	Slider plugin to adjust and/or monitor any numeric variable
-WWW=		https://gitlab.xfce.org/panel-plugins/xfce4-generic-slider
+WWW=		https://docs.xfce.org/panel-plugins/xfce4-generic-slider/start
 
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-LIB_DEPENDS=	libharfbuzz.so:print/harfbuzz
-
-USES=		compiler:c11 gettext gmake gnome libtool pkgconfig tar:bzip2 xfce
-USE_GNOME=	cairo gdkpixbuf2 gtk30 intltool
+USES=		compiler:c11 gettext gnome meson pkgconfig tar:xz xfce
+USE_GNOME=	gtk30
 USE_XFCE=	libmenu panel
 
-GNU_CONFIGURE=	yes
-INSTALL_TARGET=	install-strip
+OPTIONS_DEFINE=	NLS
+OPTIONS_SUB=	yes
 
-OPTIONS_DEFINE=		NLS
-OPTIONS_SUB=		yes
+NLS_USES=	gettext-runtime
 
-NLS_CONFIGURE_ENABLE=	nls
-NLS_USES=		gettext-runtime
+post-patch-NLS-off:
+	@${REINPLACE_CMD} -e "/^subdir('po')/d" ${WRKSRC}/meson.build
 
 .include <bsd.port.mk>

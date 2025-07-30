@@ -1,4 +1,4 @@
---- third_party/dawn/src/dawn/native/vulkan/BackendVk.cpp.orig	2024-02-23 21:04:38 UTC
+--- third_party/dawn/src/dawn/native/vulkan/BackendVk.cpp.orig	2025-05-28 14:55:43 UTC
 +++ third_party/dawn/src/dawn/native/vulkan/BackendVk.cpp
 @@ -56,7 +56,7 @@ constexpr char kSwiftshaderLibName[] = "libvk_swiftsha
  #endif

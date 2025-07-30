@@ -1,5 +1,6 @@
 PORTNAME=	polyphone
-DISTVERSION=	2.4.1
+DISTVERSION=	2.5.1
+PORTREVISION=	1
 CATEGORIES=	audio
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -14,6 +15,7 @@ LIB_DEPENDS=	libFLAC.so:audio/flac \
 		libogg.so:audio/libogg \
 		libportaudio.so:audio/portaudio \
 		librtmidi.so:audio/rtmidi \
+		libsndfile.so:audio/libsndfile \
 		libstk.so:audio/stk \
 		libvorbisfile.so:audio/libvorbis
 

@@ -15,14 +15,12 @@ BUILD_DEPENDS=	${ANT_CMD}:devel/apache-ant
 LIB_DEPENDS=	libsigar.so:devel/sigar
 TEST_DEPENDS=	${JAVALIBDIR}/junit.jar:java/junit
 
+USES=		java perl5
 USE_GITHUB=	yes
 GH_ACCOUNT=	polo-language # amishHammer
 GH_TAGNAME=	6719d4d
-
-USES=		perl5
 USE_PERL5=	build
-USE_JAVA=	yes
-JAVA_RUN=	yes
+
 NO_CCACHE=	yes
 
 BUILD_WRKSRC=	${WRKSRC}/bindings/java
@@ -34,7 +32,7 @@ INVOKE_ANT=	${SETENV} PATH=${PATH}:${WRKSRC}/bin JAVA_HOME=${JAVA_HOME} \
 .include <bsd.port.pre.mk>
 
 .if ${OPSYS} == FreeBSD
-LIBNAME=	libsigar-${ARCH:S,armv6,arm,:S,armv7,arm,:S,i386,x86,:S,powerpc64,ppc64,}-${OPSYS:tl}-1
+LIBNAME=	libsigar-${ARCH:S,armv6,arm,:S,armv7,arm,:S,i386,x86,:S,powerpc,ppc,}-${OPSYS:tl}-1
 .else
 IGNORE=		${OPSYS} platform is not supported
 .endif

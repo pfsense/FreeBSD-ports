@@ -1,11 +1,12 @@
 PORTNAME=	freetube
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.22.1-beta
+DISTVERSION=	0.23.5-beta
+PORTREVISION=	0
 CATEGORIES=	www
 MASTER_SITES=	https://github.com/FreeTubeApp/FreeTube/releases/download/${DISTVERSIONFULL}/ \
 		LOCAL/nivit/${PKGNAMEPREFIX}${PORTNAME}/:icons
 PKGNAMEPREFIX=	linux-
-DISTFILES=	freetube-${PORTVERSION:R}-linux-portable-x64.zip \
+DISTFILES=	freetube-${PORTVERSION:R}-linux-x64-portable.zip \
 		${PKGNAMEPREFIX}${PORTNAME}-icons-0.1.3.zip:icons
 
 MAINTAINER=	nivit@FreeBSD.org
@@ -21,8 +22,7 @@ RUN_DEPENDS=	pulseaudio:audio/pulseaudio
 
 USES=		linux:rl9 zip
 USE_LINUX=	alsa-plugins-oss alsa-plugins-pulseaudio alsalib at-spi2-atk \
-		atk cups-libs dbuslibs devtools gtk3 jpeg libdrm libsigsegv nss \
-		opus
+		atk cups-libs dbuslibs devtools gtk3 imageformats-libs libdrm nss opus
 
 DATADIR=	${PREFIX}/share/${PKGBASE}
 

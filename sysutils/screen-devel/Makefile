@@ -1,5 +1,6 @@
 PORTNAME=	screen
-DISTVERSION=	5.0.0.${SCREEN_COMMIT_DATE}
+DISTVERSION=	5.0.1.${SCREEN_COMMIT_DATE}
+PORTREVISION=	1
 CATEGORIES=	sysutils
 PKGNAMESUFFIX=	-devel
 MASTER_SITES=	#
@@ -10,8 +11,8 @@ WWW=		https://www.gnu.org/software/screen/
 
 CONFLICTS=	screen-[0-9]*
 
-GIT_TAGNAME=	9d8b0ff
-SCREEN_COMMIT_DATE=	20240828
+GIT_TAGNAME=	6790fb8
+SCREEN_COMMIT_DATE=	20250515
 
 WRKSRC=		${WRKDIR}/${PORTNAME}-${GIT_TAGNAME}/src
 
@@ -44,6 +45,7 @@ NCURSES_PORT_USES=	ncurses:port
 OPTIONS_SUB=
 
 USES=		autoreconf:build gmake cpe
+CONFIGURE_ARGS=	--with-system_screenrc=${ETCDIR}/screenrc
 MAKE_ARGS+=	WITH_MAN=1
 
 CPE_VENDOR=	gnu

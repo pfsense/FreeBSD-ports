@@ -1,5 +1,5 @@
-TIMESTAMP = 1690448247
-SHA256 (go/textproc_termshot/termshot-v0.2.7/v0.2.7.mod) = bd31bb0861fbad4832e5424ddcdc6f315dec36ed46f64f24e4d84c51e0a8d0ee
-SIZE (go/textproc_termshot/termshot-v0.2.7/v0.2.7.mod) = 1316
-SHA256 (go/textproc_termshot/termshot-v0.2.7/v0.2.7.zip) = 261cd86d795b590626668adcf6890faceac4190815de7b5427c4c1f2d6fb6463
-SIZE (go/textproc_termshot/termshot-v0.2.7/v0.2.7.zip) = 683829
+TIMESTAMP = 1742046406
+SHA256 (go/textproc_termshot/termshot-v0.4.1/v0.4.1.mod) = e2615865c0f4335e084b08be6229780d4a3bd15e90df04fcf6b2473f5a6aa313
+SIZE (go/textproc_termshot/termshot-v0.4.1/v0.4.1.mod) = 1408
+SHA256 (go/textproc_termshot/termshot-v0.4.1/v0.4.1.zip) = d7beed540c61e0fdc0bcc876873092480c555c515b05b339a6276209e604f770
+SIZE (go/textproc_termshot/termshot-v0.4.1/v0.4.1.zip) = 154432

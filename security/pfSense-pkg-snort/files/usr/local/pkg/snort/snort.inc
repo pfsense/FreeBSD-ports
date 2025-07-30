@@ -3943,13 +3943,6 @@ function snort_do_xmlrpc_sync($syncdownloadrules, $sync_to_ip, $port, $protocol,
 		return;
 	}
 
-	/*****************************************************/
-	/* Send over the <snortglobal> portion of config.xml */
-	/* $xml will hold the section to sync.               */
-	/*****************************************************/
-	$xml = array();
-	$xml['snortglobal'] = config_get_path('installedpackages/snortglobal');
-	
 	$downloadrulescmd = "";
 	if ($syncdownloadrules == "yes") {
 		$downloadrulescmd = "syslog(LOG_NOTICE, gettext(\"[snort] XMLRPC pkg sync: Update of downloaded rule sets requested...\"));\n";
@@ -4006,186 +3999,99 @@ EOD;
 	/* previously sent PHP file in the background.   */
 	/*************************************************/
 	$execcmd2 = "exec(\"/usr/local/bin/php-cgi -f '/tmp/snort_sync_cmds.php' > /dev/null 2>&1 &\");";
+
+	$synctimeout = intval($synctimeout);
+	$rpc_client = new pfsense_xmlrpc_client();
+	$rpc_client->setConnectionData($sync_to_ip, $port, $username, $password, $protocol);
 	
-	if (pf_version() >= "2.4") {
+	/*************************************************/
+	/* Send over any auto-SID management files       */
+	/*************************************************/
+	$sid_files = glob(SNORT_SID_MODS_PATH . '*');
+	foreach ($sid_files as $file) {
+		$content = base64_encode(file_get_contents($file));
+		$payload = "@file_put_contents('{$file}', base64_decode('{$content}'));";
+		$resp = $rpc_client->xmlrpc_exec_php($payload, $synctimeout);
+	}
+	/*************************************************/
+	/* Send over any IPREP IP List files             */
+	/*************************************************/
+	$iprep_files = glob(SNORT_IPREP_PATH . '*');
+	foreach ($iprep_files as $file) {
+		$content = base64_encode(file_get_contents($file));
+		$payload = "@file_put_contents('{$file}', base64_decode('{$content}'));";
+		$resp = $rpc_client->xmlrpc_exec_php($payload, $synctimeout);
+	}
+
+	/*************************************************/
+	/* Sync the configuration in manual sync mode.   */
+	/* For HA the configuration itself is instead    */
+	/* synced via the XMLRPC plugins - the function  */
+	/* snort_do_xmlrpc_sync() is called after.       */
+	/*************************************************/
+	if (config_get_path('installedpackages/snortsync/config/0/varsynconchanges') != 'auto') {
+		/*****************************************************/
+		/* Send over the <snortglobal> portion of config.xml */
+		/* $xml will hold the section to sync.               */
+		/*****************************************************/
+		$xml = array();
+		$xml['snortglobal'] = config_get_path('installedpackages/snortglobal');
+
 		// xmlrpc cannot encode NULL objects/arrays..
 		foreach($xml as $xmlkey => $xmlvalue) {
 			if (gettype($xmlvalue) == "NULL") {
 				$xml[$xmlkey] = array();
 			}
 		}
-		$synctimeout = intval($synctimeout);
-		$rpc_client = new pfsense_xmlrpc_client();
-		$rpc_client->setConnectionData($sync_to_ip, $port, $username, $password, $protocol);
-		
-		/*************************************************/
-		/* Send over any auto-SID management files       */
-		/*************************************************/
-		$sid_files = glob(SNORT_SID_MODS_PATH . '*');
-		foreach ($sid_files as $file) {
-			$content = base64_encode(file_get_contents($file));
-			$payload = "@file_put_contents('{$file}', base64_decode('{$content}'));";
-			$resp = $rpc_client->xmlrpc_exec_php($payload, $synctimeout);
-		}
-		/*************************************************/
-		/* Send over any IPREP IP List files             */
-		/*************************************************/
-		$iprep_files = glob(SNORT_IPREP_PATH . '*');
-		foreach ($iprep_files as $file) {
-			$content = base64_encode(file_get_contents($file));
-			$payload = "@file_put_contents('{$file}', base64_decode('{$content}'));";
-			$resp = $rpc_client->xmlrpc_exec_php($payload, $synctimeout);
-		}
-		
+
 		$resp = $rpc_client->xmlrpc_method('merge_installedpackages_section', $xml, $synctimeout);
-		$resp = $rpc_client->xmlrpc_exec_php($execcmd, $synctimeout);
-		$resp = $rpc_client->xmlrpc_exec_php($execcmd2, $synctimeout);
-	} else {
-		// pfSense before 2.4
-		require_once('xmlrpc.inc');
-	
-		// Take care of IPv6 literal address
-		if (is_ipaddrv6($sync_to_ip)) {
-			$sync_to_ip = "[{$sync_to_ip}]";
-		}
-
-		$url = "{$protocol}://{$sync_to_ip}";
-
-		/*************************************************/
-		/* Send over any auto-SID management files       */
-		/*************************************************/
-		$sid_files = glob(SNORT_SID_MODS_PATH . '*');
-		foreach ($sid_files as $file) {
-			$content = base64_encode(file_get_contents($file));
-			$payload = "@file_put_contents('{$file}', base64_decode('{$content}'));";
-
-			/* assemble xmlrpc payload */
-			$method = 'pfsense.exec_php';
-			$params = array( XML_RPC_encode($password), XML_RPC_encode($payload) );
-
-			syslog(LOG_NOTICE, "[snort] XMLRPC sync sending auto-SID conf files to {$url}:{$port}.");
-			$msg = new XML_RPC_Message($method, $params);
-			$cli = new XML_RPC_Client('/xmlrpc.php', $url, $port);
-			$cli->setCredentials($username, $password);
-			$resp = $cli->send($msg, $synctimeout);
-			$error = "";
-			if (!$resp) {
-				$error = "A communications error occurred while attempting Snort XMLRPC sync with {$url}:{$port}.  Failed to transfer file: " . basename($file);
-				syslog(LOG_ERR, $error);
-				file_notice("sync_settings", $error, "Snort Settings Sync", "");
-			} elseif ($resp->faultCode()) {
-				$error = "An error code was received while attempting Snort XMLRPC sync with {$url}:{$port}. Failed to transfer file: " . basename($file) . " - Code " . $resp->faultCode() . ": " . $resp->faultString();
-				syslog(LOG_ERR, $error);
-				file_notice("sync_settings", $error, "Snort Settings Sync", "");
-			}
-		}
-
-		if (!empty($sid_files) && $error == "") {
-			syslog(LOG_NOTICE, "[snort] XMLRPC sync auto-SID conf files success with {$url}:{$port} (pfsense.exec_php).");
-		}
-
-		/*************************************************/
-		/* Send over any IPREP IP List files             */
-		/*************************************************/
-		$iprep_files = glob(SNORT_IPREP_PATH . '*');
-		foreach ($iprep_files as $file) {
-			$content = base64_encode(file_get_contents($file));
-			$payload = "@file_put_contents('{$file}', base64_decode('{$content}'));";
-
-			/* assemble xmlrpc payload */
-			$method = 'pfsense.exec_php';
-			$params = array( XML_RPC_encode($password), XML_RPC_encode($payload) );
-
-			syslog(LOG_NOTICE, "[snort] Snort XMLRPC sync sending IPREP files to {$url}:{$port}.");
-			$msg = new XML_RPC_Message($method, $params);
-			$cli = new XML_RPC_Client('/xmlrpc.php', $url, $port);
-			$cli->setCredentials($username, $password);
-			$resp = $cli->send($msg, $synctimeout);
-			$error = "";
-			if (!$resp) {
-				$error = "A communications error occurred while attempting Snort XMLRPC sync with {$url}:{$port}.  Failed to transfer file: " . basename($file);
-				syslog(LOG_ERR, $error);
-				file_notice("sync_settings", $error, "Snort Settings Sync", "");
-			} elseif ($resp->faultCode()) {
-				$error = "An error code was received while attempting Snort XMLRPC sync with {$url}:{$port}. Failed to transfer file: " . basename($file) . " - Code " . $resp->faultCode() . ": " . $resp->faultString();
-				syslog(LOG_ERR, $error);
-				file_notice("sync_settings", $error, "Snort Settings Sync", "");
-			}
-		}
-
-		if (!empty($iprep_files) && $error == "") {
-			syslog(LOG_ERR, "[snort] XMLRPC sync IPREP files success with {$url}:{$port} (pfsense.exec_php).");
-		}
-
-		/* assemble xmlrpc payload */
-		$params = array(
-			XML_RPC_encode($password),
-			XML_RPC_encode($xml)
-		);
-
-		syslog(LOG_NOTICE, "[snort] Beginning package configuration XMLRPC sync to {$url}:{$port}.");
-		$method = 'pfsense.merge_installedpackages_section_xmlrpc';
-		$msg = new XML_RPC_Message($method, $params);
-		$cli = new XML_RPC_Client('/xmlrpc.php', $url, $port);
-		$cli->setCredentials($username, $password);
-
-		/* send our XMLRPC message and timeout after defined sync timeout value*/
-		$resp = $cli->send($msg, $synctimeout);
-		if (!$resp) {
-			$error = "A communications error occurred while attempting Snort XMLRPC sync with {$url}:{$port}.";
-			syslog(LOG_ERR, $error);
-			file_notice("sync_settings", $error, "Snort Settings Sync", "");
-		} elseif ($resp->faultCode()) {
-			$error = "An error code was received while attempting Snort XMLRPC sync with {$url}:{$port} - Code " . $resp->faultCode() . ": " . $resp->faultString();
-			syslog(LOG_ERR, $error);
-			file_notice("sync_settings", $error, "Snort Settings Sync", "");
-		} else {
-			syslog(LOG_NOTICE, "[snort] Package configuration XMLRPC sync successfully completed with {$url}:{$port}.");
-		}
-
-		/* assemble xmlrpc payload */
-		$method = 'pfsense.exec_php';
-		$params = array(
-			XML_RPC_encode($password),
-			XML_RPC_encode($execcmd)
-		);
-
-		syslog(LOG_NOTICE, "[snort] XMLRPC sync sending reload configuration cmd set as a file to {$url}:{$port}.");
-		$msg = new XML_RPC_Message($method, $params);
-		$cli = new XML_RPC_Client('/xmlrpc.php', $url, $port);
-		$cli->setCredentials($username, $password);
-		$resp = $cli->send($msg, $synctimeout);
-		if (!$resp) {
-			$error = "A communications error occurred while attempting Snort XMLRPC sync with {$url}:{$port} (pfsense.exec_php).";
-			syslog(LOG_ERR, $error);
-			file_notice("sync_settings", $error, "Snort Settings Sync", "");
-		} elseif ($resp->faultCode()) {
-			$error = "An error code was received while attempting Snort XMLRPC sync with {$url}:{$port} - Code " . $resp->faultCode() . ": " . $resp->faultString();
-			syslog(LOG_ERR, $error);
-			file_notice("sync_settings", $error, "Snort Settings Sync", "");
-		} else {
-			syslog(LOG_NOTICE, "[snort] XMLRPC sync reload configuration success with {$url}:{$port} (pfsense.exec_php).");
-		}
-
-		$params2 = array(
-			XML_RPC_encode($password),
-			XML_RPC_encode($execcmd2)
-		);
-		syslog(LOG_NOTICE, "[snort] XMLRPC sync sending {$url}:{$port} cmd to execute configuration reload.");
-		$msg2 = new XML_RPC_Message($method, $params2);
-		$resp = $cli->send($msg2, $synctimeout);
-		if (!$resp) {
-			$error = "A communications error occurred while attempting Snort XMLRPC sync with {$url}:{$port} (pfsense.exec_php).";
-			syslog(LOG_ERR, $error);
-			file_notice("sync_settings", $error, "Snort Settings Sync", "");
-		} elseif ($resp->faultCode()) {
-			$error = "An error code was received while attempting Snort XMLRPC sync with {$url}:{$port} - Code " . $resp->faultCode() . ": " . $resp->faultString();
-			syslog(LOG_ERR, $error);
-			file_notice("sync_settings", $error, "Snort Settings Sync", "");
-		} else {
-			syslog(LOG_NOTICE, "[snort] XMLRPC sync reload configuration success with {$url}:{$port} (pfsense.exec_php).");
-		}
 	}
+
+	$resp = $rpc_client->xmlrpc_exec_php($execcmd, $synctimeout);
+	$resp = $rpc_client->xmlrpc_exec_php($execcmd2, $synctimeout);
+}
+
+function snort_plugin_xmlrpc_send() {
+	if (config_get_path('installedpackages/snortsync/config/0/varsynconchanges') != 'auto') {
+		return [];
+	}
+
+	return [
+		'installedpackages/snortsync/config/0/varsynconchanges',
+		'installedpackages/snortglobal'
+	];
+}
+
+function snort_plugin_xmlrpc_recv($new_sections) {
+	if (array_get_path($new_sections, 'installedpackages/snortsync/config/0/varsynconchanges') != 'auto') {
+		return [];
+	}
+
+	$section_paths = [
+		'installedpackages/snortglobal'
+	];
+
+	$ret = [
+		'xmlrpc_recv_result' => false
+	];
+	foreach ($section_paths as $path) {
+		$old_section = config_get_path($path, []);
+		$new_section = array_get_path($new_sections, $path, []);
+
+		// Don't save empty configuration sections.
+		if (empty($old_section) && empty($new_section)) {
+			continue;
+		}
+		// Ignore unchanged configuration sections.
+		if ($old_section === $new_section) {
+			continue;
+		}
+
+		$ret[$path] = array_merge($old_section, $new_section);
+		$ret['xmlrpc_recv_result'] = true;
+	}
+
+	return $ret;
 }
 
 function snort_get_vpns_list() {

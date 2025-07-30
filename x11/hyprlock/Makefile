@@ -1,19 +1,22 @@
 PORTNAME=	hyprlock
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.5.0
+DISTVERSION=	0.8.2
+PORTREVISION=	2
 CATEGORIES=	x11 wayland
 
-MAINTAINER=	jbeich@FreeBSD.org
+MAINTAINER=	tagattie@FreeBSD.org
 COMMENT=	Hyprland's GPU-accelerated screen locking utility #'
 WWW=		https://github.com/hyprwm/hyprlock
 
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-BUILD_DEPENDS=	wayland-protocols>0:graphics/wayland-protocols
+BUILD_DEPENDS=	hyprwayland-scanner>=0.4.4:devel/hyprwayland-scanner \
+		wayland-protocols>=1.35:graphics/wayland-protocols
 LIB_DEPENDS=	libhyprlang.so:devel/hyprlang \
 		libhyprutils.so:devel/hyprutils \
 		libsdbus-c++.so:devel/sdbus-cpp \
+		libhyprgraphics.so:graphics/hyprgraphics \
 		libdrm.so:graphics/libdrm \
 		libwayland-client.so:graphics/wayland \
 		libwebp.so:graphics/webp \

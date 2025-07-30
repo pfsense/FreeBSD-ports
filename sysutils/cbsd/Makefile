@@ -1,8 +1,8 @@
 PORTNAME=	cbsd
-DISTVERSION=	14.2.1
+DISTVERSION=	14.3.0
 CATEGORIES=	sysutils
 
-MAINTAINER=	olevole@olevole.ru
+MAINTAINER=	fbsd-ports@convectix.com
 COMMENT=	Yet another FreeBSD Jail, XEN and Bhyve Management Utility
 WWW=		https://github.com/cbsd/cbsd
 
@@ -12,8 +12,7 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 LIB_DEPENDS=	libcurl.so:ftp/curl \
 		libsqlite3.so:databases/sqlite3 \
 		libssh2.so:security/libssh2
-RUN_DEPENDS=	${LOCALBASE}/share/certs/ca-root-nss.crt:security/ca_root_nss \
-		curl:ftp/curl \
+RUN_DEPENDS=	curl:ftp/curl \
 		jq:textproc/jq \
 		rsync:net/rsync \
 		sqlite3:databases/sqlite3 \

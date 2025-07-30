@@ -35,13 +35,12 @@
     SUBDIR += cx88
     SUBDIR += dav1d
     SUBDIR += decord
+    SUBDIR += deforaos-camera
     SUBDIR += deforaos-player
-    SUBDIR += dirac
     SUBDIR += dovi_tool
     SUBDIR += dragon
     SUBDIR += droidcam
     SUBDIR += dtv-scan-tables
-    SUBDIR += dumpmpeg
     SUBDIR += dv2sub
     SUBDIR += dvb-apps
     SUBDIR += dvbcut
@@ -53,7 +52,6 @@
     SUBDIR += dvdstyler
     SUBDIR += elementary-videos
     SUBDIR += emby-server
-    SUBDIR += emovix
     SUBDIR += ffaudioconverter
     SUBDIR += ffdec
     SUBDIR += ffmpeg
@@ -62,18 +60,14 @@
     SUBDIR += ffmpegthumbnailer
     SUBDIR += ffms2
     SUBDIR += ffnvcodec-headers
-    SUBDIR += ffsubsync
     SUBDIR += filebot
     SUBDIR += flvmeta
     SUBDIR += fswebcam
     SUBDIR += gaupol
     SUBDIR += gavl
-    SUBDIR += gdialog
     SUBDIR += get_iplayer
     SUBDIR += gmmlib
     SUBDIR += gmp-api
-    SUBDIR += gmtk
-    SUBDIR += gnome-mplayer
     SUBDIR += gpac-libgpac
     SUBDIR += gpac-mp4box
     SUBDIR += gpodder
@@ -169,7 +163,6 @@
     SUBDIR += libdvdcss
     SUBDIR += libdvdnav
     SUBDIR += libdvdread
-    SUBDIR += libfame
     SUBDIR += libgav1
     SUBDIR += libhdhomerun
     SUBDIR += libmatroska
@@ -226,6 +219,7 @@
     SUBDIR += makemkv
     SUBDIR += mediaelch
     SUBDIR += mediainfo
+    SUBDIR += mediamtx
     SUBDIR += mencoder
     SUBDIR += minisatip
     SUBDIR += minitube
@@ -240,7 +234,6 @@
     SUBDIR += mp3cd
     SUBDIR += mp4v2
     SUBDIR += mpc-qt
-    SUBDIR += mpeg_encode
     SUBDIR += mplayer
     SUBDIR += mplayer-skins
     SUBDIR += mplex
@@ -248,7 +241,6 @@
     SUBDIR += mpv-mpris
     SUBDIR += mpvpaper
     SUBDIR += mpvqt
-    SUBDIR += msdl
     SUBDIR += msopenh264
     SUBDIR += mswebrtc
     SUBDIR += musikcube
@@ -262,6 +254,7 @@
     SUBDIR += nymphcast
     SUBDIR += nymphcastlib
     SUBDIR += nymphrpc
+    SUBDIR += obs-multi-rtmp
     SUBDIR += obs-recursion-effect
     SUBDIR += obs-streamfx
     SUBDIR += obs-studio
@@ -269,7 +262,6 @@
     SUBDIR += obs-waveform
     SUBDIR += obuparse
     SUBDIR += oggvideotools
-    SUBDIR += ogmrip
     SUBDIR += ogmtools
     SUBDIR += olive
     SUBDIR += onevpl
@@ -289,19 +281,18 @@
     SUBDIR += peek
     SUBDIR += phonon
     SUBDIR += phonon-designerplugin
+    SUBDIR += phonon-mpv
     SUBDIR += phonon-vlc
     SUBDIR += photofilmstrip
     SUBDIR += pipe-viewer
     SUBDIR += pipewire
     SUBDIR += pitivi
-    SUBDIR += plasma5-plank-player
     SUBDIR += plasmatube
     SUBDIR += playerctl
     SUBDIR += plexmediaserver
     SUBDIR += plexmediaserver-plexpass
     SUBDIR += podcastdl
     SUBDIR += poe
-    SUBDIR += projectx
     SUBDIR += ptx-kmod
     SUBDIR += pwcbsd
     SUBDIR += pwcview
@@ -310,9 +301,9 @@
     SUBDIR += py-cec
     SUBDIR += py-decord
     SUBDIR += py-enzyme
-    SUBDIR += py-ffmpeg-python
     SUBDIR += py-gstreamer1
     SUBDIR += py-guessit
+    SUBDIR += py-knowit
     SUBDIR += py-mat2
     SUBDIR += py-metadata-cleaner
     SUBDIR += py-mido
@@ -328,6 +319,7 @@
     SUBDIR += py-srt
     SUBDIR += py-subliminal
     SUBDIR += py-tartube
+    SUBDIR += py-trakit
     SUBDIR += py-tvnamer
     SUBDIR += py-ustreamer
     SUBDIR += qmmp-plugin-pack-qt5
@@ -341,7 +333,6 @@
     SUBDIR += qwinff
     SUBDIR += rage
     SUBDIR += rav1e
-    SUBDIR += recmpeg
     SUBDIR += recordmydesktop
     SUBDIR += replex
     SUBDIR += ringrtc
@@ -353,6 +344,7 @@
     SUBDIR += scte35dump
     SUBDIR += shotcut
     SUBDIR += shotcut-qt6
+    SUBDIR += showtime
     SUBDIR += simplescreenrecorder
     SUBDIR += smpeg
     SUBDIR += smpeg2
@@ -360,11 +352,11 @@
     SUBDIR += smplayer-skins
     SUBDIR += smplayer-themes
     SUBDIR += snapcast
-    SUBDIR += spook
     SUBDIR += streamlink
     SUBDIR += subtitlecomposer
     SUBDIR += subtitleoffsetmodifier
     SUBDIR += subtools
+    SUBDIR += supersonic
     SUBDIR += svt-av1
     SUBDIR += svt-av1-psy
     SUBDIR += svt-hevc
@@ -372,7 +364,6 @@
     SUBDIR += syncplay
     SUBDIR += szap-s2
     SUBDIR += tautulli
-    SUBDIR += tcmplex-panteltje
     SUBDIR += termplay
     SUBDIR += tinyobjloader
     SUBDIR += tivodecode

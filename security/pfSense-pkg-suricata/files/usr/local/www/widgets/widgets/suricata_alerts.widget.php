@@ -7,7 +7,7 @@
  * Copyright (c) 2003-2004 Manuel Kasper
  * Copyright (c) 2005 Bill Marquette
  * Copyright (c) 2009 Robert Zelaya Sr. Developer
- * Copyright (c) 2024 Bill Meeks
+ * Copyright (c) 2025 Bill Meeks
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -111,8 +111,8 @@ function suricata_widget_get_alerts() {
 
 		// make sure alert file exists, then grab the most recent {$suri_nentries} from it
 		// and write them to a temp file.
-		if (file_exists("{$g['varlog_path']}/suricata/suricata_{$if_real}{$suricata_uuid}/alerts.log")) {
-			exec("/usr/bin/tail -{$suri_nentries} -r {$g['varlog_path']}/suricata/suricata_{$if_real}{$suricata_uuid}/alerts.log > {$g['tmp_path']}/surialerts_{$suricata_uuid}");
+		if (file_exists(SURICATALOGDIR . "suricata_{$if_real}{$suricata_uuid}/alerts.log")) {
+			exec("/usr/bin/tail -{$suri_nentries} -r " . SURICATALOGDIR . "suricata_{$if_real}{$suricata_uuid}/alerts.log > {$g['tmp_path']}/surialerts_{$suricata_uuid}");
 
 			if (file_exists("{$g['tmp_path']}/surialerts_{$suricata_uuid}")) {
 

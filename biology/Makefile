@@ -37,7 +37,6 @@
     SUBDIR += canu
     SUBDIR += cd-hit
     SUBDIR += cdbfasta
-    SUBDIR += checkm
     SUBDIR += chip-seq
     SUBDIR += clustal-omega
     SUBDIR += clustalw
@@ -52,6 +51,7 @@
     SUBDIR += erminej
     SUBDIR += exonerate
     SUBDIR += fasda
+    SUBDIR += fasda-utils
     SUBDIR += fasta
     SUBDIR += fasta3
     SUBDIR += fastahack
@@ -123,7 +123,6 @@
     SUBDIR += ncbi-cxx-toolkit
     SUBDIR += ncbi-entrez-direct
     SUBDIR += ncbi-toolkit
-    SUBDIR += ncbi-vdb
     SUBDIR += ngs-sdk
     SUBDIR += p5-AcePerl
     SUBDIR += p5-Bio-ASN1-EntrezGene
@@ -190,11 +189,10 @@
     SUBDIR += py-multiqc
     SUBDIR += py-newick
     SUBDIR += py-ont-fast5-api
-    SUBDIR += py-orange3-bioinformatics
-    SUBDIR += py-orange3-single-cell
     SUBDIR += py-pandas-charm
     SUBDIR += py-py2bit
     SUBDIR += py-pybigwig
+    SUBDIR += py-pydeseq2
     SUBDIR += py-pyfaidx
     SUBDIR += py-pyrodigal
     SUBDIR += py-pysam

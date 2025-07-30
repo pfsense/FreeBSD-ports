@@ -1,5 +1,5 @@
 PORTNAME=	hyperswitch
-DISTVERSION=	2024.10.25.0
+DISTVERSION=	2025.05.16.0
 PORTREVISION=	2
 CATEGORIES=	finance
 
@@ -11,6 +11,7 @@ WWW=		https://hyperswitch.io/ \
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
+BROKEN_armv7=	compilation fails: error[E0412]: cannot find type `AtomicU128` in module `core::sync::atomic`
 BROKEN_i386=	compilation fails: error[E0412]: cannot find type `AtomicU128` in module `core::sync::atomic`
 
 LIB_DEPENDS=	librdkafka.so:net/librdkafka \
@@ -61,6 +62,7 @@ CARGO_CRATES=	actix-codec-0.5.2 \
 		asn1-rs-derive-0.5.1 \
 		asn1-rs-impl-0.2.0 \
 		assert-json-diff-2.0.2 \
+		async-bb8-diesel-0.2.1 \
 		async-compression-0.4.12 \
 		async-lock-3.4.0 \
 		async-stream-0.3.5 \
@@ -70,57 +72,42 @@ CARGO_CRATES=	actix-codec-0.5.2 \
 		atomic-waker-1.1.2 \
 		autocfg-1.3.0 \
 		awc-3.5.1 \
-		aws-config-0.55.3 \
-		aws-config-1.5.5 \
-		aws-credential-types-0.55.3 \
-		aws-credential-types-1.2.1 \
-		aws-endpoint-0.55.3 \
-		aws-http-0.55.3 \
-		aws-runtime-1.4.2 \
-		aws-sdk-kms-0.28.0 \
-		aws-sdk-lambda-1.43.0 \
-		aws-sdk-s3-0.28.0 \
-		aws-sdk-sesv2-0.28.0 \
-		aws-sdk-sso-0.28.0 \
-		aws-sdk-sso-1.40.0 \
-		aws-sdk-ssooidc-1.41.0 \
-		aws-sdk-sts-0.28.0 \
-		aws-sdk-sts-1.40.0 \
-		aws-sig-auth-0.55.3 \
-		aws-sigv4-0.55.3 \
-		aws-sigv4-1.2.3 \
-		aws-smithy-async-0.55.3 \
-		aws-smithy-async-1.2.1 \
-		aws-smithy-checksums-0.55.3 \
-		aws-smithy-client-0.55.3 \
-		aws-smithy-eventstream-0.55.3 \
-		aws-smithy-eventstream-0.60.4 \
-		aws-smithy-http-0.55.3 \
-		aws-smithy-http-0.60.10 \
-		aws-smithy-http-tower-0.55.3 \
-		aws-smithy-json-0.55.3 \
+		aws-config-1.5.10 \
+		aws-credential-types-1.2.2 \
+		aws-runtime-1.5.6 \
+		aws-sdk-kms-1.51.0 \
+		aws-sdk-lambda-1.60.0 \
+		aws-sdk-s3-1.65.0 \
+		aws-sdk-sesv2-1.57.0 \
+		aws-sdk-sso-1.50.0 \
+		aws-sdk-ssooidc-1.51.0 \
+		aws-sdk-sts-1.51.0 \
+		aws-sigv4-1.3.0 \
+		aws-smithy-async-1.2.5 \
+		aws-smithy-checksums-0.60.13 \
+		aws-smithy-eventstream-0.60.8 \
+		aws-smithy-http-0.60.12 \
+		aws-smithy-http-0.62.0 \
+		aws-smithy-http-client-1.0.0 \
 		aws-smithy-json-0.60.7 \
-		aws-smithy-query-0.55.3 \
+		aws-smithy-json-0.61.3 \
 		aws-smithy-query-0.60.7 \
-		aws-smithy-runtime-1.7.1 \
-		aws-smithy-runtime-api-1.7.2 \
-		aws-smithy-types-0.55.3 \
-		aws-smithy-types-1.2.4 \
-		aws-smithy-xml-0.55.3 \
-		aws-smithy-xml-0.60.8 \
-		aws-types-0.55.3 \
-		aws-types-1.3.3 \
-		axum-0.6.20 \
+		aws-smithy-runtime-1.8.0 \
+		aws-smithy-runtime-api-1.7.4 \
+		aws-smithy-types-1.3.0 \
+		aws-smithy-xml-0.60.9 \
+		aws-types-1.3.6 \
 		axum-0.7.5 \
-		axum-core-0.3.4 \
 		axum-core-0.4.3 \
 		backtrace-0.3.73 \
+		base16ct-0.1.1 \
 		base16ct-0.2.0 \
 		base32-0.4.0 \
 		base62-2.0.2 \
 		base64-0.13.1 \
 		base64-0.21.7 \
 		base64-0.22.1 \
+		base64-serde-0.8.0 \
 		base64-simd-0.8.0 \
 		base64ct-1.6.0 \
 		bb8-0.8.5 \
@@ -146,14 +133,14 @@ CARGO_CRATES=	actix-codec-0.5.2 \
 		byteorder-1.5.0 \
 		byteorder-lite-0.1.0 \
 		bytes-0.4.12 \
-		bytes-1.7.1 \
+		bytes-1.10.1 \
 		bytes-utils-0.1.4 \
 		bytestring-1.3.1 \
 		camino-1.1.9 \
 		cargo-platform-0.1.8 \
 		cargo_metadata-0.18.1 \
 		cast-0.3.0 \
-		cc-1.1.18 \
+		cc-1.2.1 \
 		cfb-0.7.3 \
 		cfg-if-0.1.10 \
 		cfg-if-1.0.0 \
@@ -161,6 +148,7 @@ CARGO_CRATES=	actix-codec-0.5.2 \
 		chrono-0.4.38 \
 		chrono-tz-0.9.0 \
 		chrono-tz-build-0.3.0 \
+		chumsky-0.9.3 \
 		ciborium-0.2.2 \
 		ciborium-io-0.2.2 \
 		ciborium-ll-0.2.2 \
@@ -202,6 +190,7 @@ CARGO_CRATES=	actix-codec-0.5.2 \
 		crossbeam-utils-0.7.2 \
 		crossbeam-utils-0.8.20 \
 		crunchy-0.2.2 \
+		crypto-bigint-0.4.9 \
 		crypto-bigint-0.5.5 \
 		crypto-common-0.1.6 \
 		csv-1.3.0 \
@@ -218,6 +207,7 @@ CARGO_CRATES=	actix-codec-0.5.2 \
 		data-encoding-2.6.0 \
 		deadpool-0.10.0 \
 		deadpool-runtime-0.1.4 \
+		der-0.6.1 \
 		der-0.7.9 \
 		der-parser-9.0.0 \
 		deranged-0.3.11 \
@@ -226,7 +216,7 @@ CARGO_CRATES=	actix-codec-0.5.2 \
 		derive_builder_macro-0.12.0 \
 		derive_deref-1.1.1 \
 		derive_more-0.99.18 \
-		deunicode-1.6.0 \
+		deunicode-1.6.1 \
 		diesel-2.2.3 \
 		diesel_derives-2.2.3 \
 		diesel_migrations-2.2.0 \
@@ -239,11 +229,15 @@ CARGO_CRATES=	actix-codec-0.5.2 \
 		dotenvy-0.15.7 \
 		dsl_auto_type-0.1.2 \
 		dyn-clone-1.0.17 \
+		ecdsa-0.14.8 \
 		ecdsa-0.16.9 \
 		ed25519-2.2.3 \
 		ed25519-dalek-2.1.1 \
 		either-1.13.0 \
+		elliptic-curve-0.12.3 \
 		elliptic-curve-0.13.8 \
+		email-encoding-0.3.0 \
+		email_address-0.2.9 \
 		encoding_rs-0.8.34 \
 		equivalent-1.0.1 \
 		erased-serde-0.3.31 \
@@ -255,9 +249,9 @@ CARGO_CRATES=	actix-codec-0.5.2 \
 		event-listener-strategy-0.5.2 \
 		fake-2.9.2 \
 		fantoccini-0.19.3 \
-		fastrand-1.9.0 \
-		fastrand-2.1.1 \
+		fastrand-2.3.0 \
 		fdeflate-0.3.4 \
+		ff-0.12.1 \
 		ff-0.13.0 \
 		fiat-crypto-0.2.9 \
 		fixedbitset-0.4.2 \
@@ -265,6 +259,7 @@ CARGO_CRATES=	actix-codec-0.5.2 \
 		float-cmp-0.9.0 \
 		flume-0.11.0 \
 		fnv-1.0.7 \
+		foldhash-0.1.4 \
 		foreign-types-0.3.2 \
 		foreign-types-shared-0.1.1 \
 		form_urlencoded-1.2.1 \
@@ -275,7 +270,7 @@ CARGO_CRATES=	actix-codec-0.5.2 \
 		futures-0.1.31 \
 		futures-0.3.30 \
 		futures-channel-0.3.30 \
-		futures-core-0.3.30 \
+		futures-core-0.3.31 \
 		futures-executor-0.3.30 \
 		futures-intrusive-0.5.0 \
 		futures-io-0.3.30 \
@@ -293,6 +288,7 @@ CARGO_CRATES=	actix-codec-0.5.2 \
 		globwalk-0.8.1 \
 		globwalk-0.9.1 \
 		graphviz-rust-0.6.6 \
+		group-0.12.1 \
 		group-0.13.0 \
 		h2-0.3.26 \
 		h2-0.4.6 \
@@ -300,7 +296,8 @@ CARGO_CRATES=	actix-codec-0.5.2 \
 		hashbrown-0.12.3 \
 		hashbrown-0.13.2 \
 		hashbrown-0.14.5 \
-		hashlink-0.9.1 \
+		hashbrown-0.15.2 \
+		hashlink-0.10.0 \
 		headers-0.3.9 \
 		headers-core-0.2.0 \
 		heck-0.4.1 \
@@ -308,9 +305,12 @@ CARGO_CRATES=	actix-codec-0.5.2 \
 		hermit-abi-0.3.9 \
 		hermit-abi-0.4.0 \
 		hex-0.4.3 \
+		histogram-0.6.9 \
 		hkdf-0.12.4 \
 		hmac-0.12.1 \
 		home-0.5.9 \
+		hostname-0.4.0 \
+		html-escape-0.2.13 \
 		http-0.2.12 \
 		http-1.1.0 \
 		http-body-0.4.6 \
@@ -320,26 +320,36 @@ CARGO_CRATES=	actix-codec-0.5.2 \
 		httpdate-1.0.3 \
 		humansize-2.1.3 \
 		hyper-0.14.30 \
-		hyper-1.4.1 \
+		hyper-1.6.0 \
 		hyper-proxy-0.9.1 \
 		hyper-rustls-0.23.2 \
 		hyper-rustls-0.24.2 \
-		hyper-timeout-0.4.1 \
 		hyper-timeout-0.5.1 \
 		hyper-tls-0.5.0 \
 		hyper-tls-0.6.0 \
-		hyper-util-0.1.7 \
+		hyper-util-0.1.10 \
 		iana-time-zone-0.1.60 \
 		iana-time-zone-haiku-0.1.2 \
+		icu_collections-1.5.0 \
+		icu_locid-1.5.0 \
+		icu_locid_transform-1.5.0 \
+		icu_locid_transform_data-1.5.0 \
+		icu_normalizer-1.5.0 \
+		icu_normalizer_data-1.5.0 \
+		icu_properties-1.5.1 \
+		icu_properties_data-1.5.0 \
+		icu_provider-1.5.0 \
+		icu_provider_macros-1.5.0 \
 		ident_case-1.0.1 \
 		idna-0.5.0 \
+		idna-1.0.3 \
+		idna_adapter-1.2.0 \
 		ignore-0.4.22 \
 		image-0.25.2 \
 		impl-more-0.1.6 \
 		indexmap-1.9.3 \
 		indexmap-2.5.0 \
 		infer-0.15.0 \
-		instant-0.1.13 \
 		into-attr-0.1.1 \
 		into-attr-derive-0.2.1 \
 		iovec-0.1.4 \
@@ -351,7 +361,7 @@ CARGO_CRATES=	actix-codec-0.5.2 \
 		isocountry-0.3.2 \
 		itertools-0.10.5 \
 		itertools-0.11.0 \
-		itertools-0.12.1 \
+		itertools-0.13.0 \
 		itoa-1.0.11 \
 		jobserver-0.1.32 \
 		josekit-0.8.7 \
@@ -363,6 +373,7 @@ CARGO_CRATES=	actix-codec-0.5.2 \
 		kinded_macros-0.3.0 \
 		language-tags-0.3.2 \
 		lazy_static-1.5.0 \
+		lettre-0.11.10 \
 		libc-0.2.158 \
 		libgit2-sys-0.17.0+1.8.1 \
 		libm-0.2.8 \
@@ -372,12 +383,15 @@ CARGO_CRATES=	actix-codec-0.5.2 \
 		libz-sys-1.1.20 \
 		linked-hash-map-0.5.6 \
 		linux-raw-sys-0.4.14 \
+		litemap-0.7.3 \
 		local-channel-0.1.5 \
 		local-waker-0.1.4 \
 		lock_api-0.3.4 \
 		lock_api-0.4.12 \
 		log-0.4.22 \
+		lru-0.12.5 \
 		lru-cache-0.1.2 \
+		lz4_flex-0.11.3 \
 		matchers-0.1.0 \
 		matchit-0.7.3 \
 		maud-0.26.0 \
@@ -401,7 +415,7 @@ CARGO_CRATES=	actix-codec-0.5.2 \
 		miow-0.2.2 \
 		moka-0.12.7 \
 		multimap-0.10.0 \
-		mutually_exclusive_features-0.0.3 \
+		mutually_exclusive_features-0.1.0 \
 		nanoid-0.4.0 \
 		native-tls-0.2.12 \
 		net2-0.2.39 \
@@ -423,24 +437,25 @@ CARGO_CRATES=	actix-codec-0.5.2 \
 		oauth2-4.4.2 \
 		object-0.36.4 \
 		oid-registry-0.7.1 \
-		once_cell-1.19.0 \
+		once_cell-1.21.1 \
 		oncemutex-0.1.1 \
 		oorandom-11.1.4 \
 		openidconnect-3.5.0 \
 		opensearch-2.3.0 \
-		openssl-0.10.66 \
+		openssl-0.10.70 \
 		openssl-macros-0.1.1 \
 		openssl-probe-0.1.5 \
-		openssl-sys-0.9.103 \
-		opentelemetry-0.19.0 \
-		opentelemetry-otlp-0.12.0 \
-		opentelemetry-proto-0.2.0 \
-		opentelemetry_api-0.19.0 \
-		opentelemetry_sdk-0.19.0 \
+		openssl-sys-0.9.105 \
+		opentelemetry-0.27.1 \
+		opentelemetry-aws-0.15.0 \
+		opentelemetry-otlp-0.27.0 \
+		opentelemetry-proto-0.27.0 \
+		opentelemetry_sdk-0.27.1 \
 		ordered-float-2.10.1 \
 		ordered-multimap-0.6.0 \
 		outref-0.5.1 \
 		overload-0.1.1 \
+		p256-0.11.1 \
 		p256-0.13.2 \
 		p384-0.13.0 \
 		parking-2.2.0 \
@@ -471,6 +486,7 @@ CARGO_CRATES=	actix-codec-0.5.2 \
 		pin-project-lite-0.2.14 \
 		pin-utils-0.1.0 \
 		pkcs1-0.7.5 \
+		pkcs8-0.9.0 \
 		pkcs8-0.10.2 \
 		pkg-config-0.3.30 \
 		plotters-0.3.6 \
@@ -486,14 +502,13 @@ CARGO_CRATES=	actix-codec-0.5.2 \
 		proc-macro-crate-3.2.0 \
 		proc-macro-error-1.0.4 \
 		proc-macro-error-attr-1.0.4 \
-		proc-macro2-1.0.86 \
+		proc-macro2-1.0.94 \
 		proptest-1.5.0 \
-		prost-0.11.9 \
 		prost-0.13.2 \
 		prost-build-0.13.2 \
-		prost-derive-0.11.9 \
 		prost-derive-0.13.2 \
 		prost-types-0.13.2 \
+		psm-0.1.24 \
 		ptr_meta-0.1.4 \
 		ptr_meta_derive-0.1.4 \
 		qrcode-0.14.1 \
@@ -501,11 +516,13 @@ CARGO_CRATES=	actix-codec-0.5.2 \
 		quick-error-1.2.3 \
 		quick-xml-0.31.0 \
 		quote-1.0.37 \
+		quoted_printable-0.5.1 \
 		r2d2-0.8.10 \
 		radium-0.7.0 \
 		rand-0.8.5 \
 		rand_chacha-0.3.1 \
 		rand_core-0.6.4 \
+		rand_pcg-0.3.1 \
 		rand_xorshift-0.3.0 \
 		raw-cpuid-11.1.0 \
 		rayon-1.10.0 \
@@ -526,6 +543,7 @@ CARGO_CRATES=	actix-codec-0.5.2 \
 		rend-0.4.2 \
 		reqwest-0.11.27 \
 		reqwest-0.12.7 \
+		rfc6979-0.3.1 \
 		rfc6979-0.4.0 \
 		ring-0.16.20 \
 		ring-0.17.8 \
@@ -551,9 +569,9 @@ CARGO_CRATES=	actix-codec-0.5.2 \
 		rustls-native-certs-0.6.3 \
 		rustls-pemfile-1.0.4 \
 		rustls-pemfile-2.1.3 \
-		rustls-pki-types-1.8.0 \
+		rustls-pki-types-1.11.0 \
 		rustls-webpki-0.101.7 \
-		rustls-webpki-0.102.7 \
+		rustls-webpki-0.102.8 \
 		rustversion-1.0.17 \
 		rusty-fork-0.3.0 \
 		ryu-1.0.18 \
@@ -565,9 +583,10 @@ CARGO_CRATES=	actix-codec-0.5.2 \
 		sct-0.7.1 \
 		sdd-3.0.2 \
 		seahash-4.1.0 \
+		sec1-0.3.0 \
 		sec1-0.7.3 \
 		security-framework-2.11.1 \
-		security-framework-sys-2.11.1 \
+		security-framework-sys-2.14.0 \
 		semver-0.9.0 \
 		semver-1.0.23 \
 		semver-parser-0.7.0 \
@@ -595,6 +614,7 @@ CARGO_CRATES=	actix-codec-0.5.2 \
 		signal-hook-0.3.17 \
 		signal-hook-registry-1.4.2 \
 		signal-hook-tokio-0.3.1 \
+		signature-1.6.4 \
 		signature-2.2.0 \
 		simd-adler32-0.3.7 \
 		simdutf8-0.1.4 \
@@ -605,19 +625,22 @@ CARGO_CRATES=	actix-codec-0.5.2 \
 		slug-0.1.6 \
 		smallvec-0.6.14 \
 		smallvec-1.13.2 \
+		snap-1.1.1 \
 		socket2-0.5.7 \
 		spin-0.5.2 \
 		spin-0.9.8 \
+		spki-0.6.0 \
 		spki-0.7.3 \
-		sqlformat-0.2.4 \
-		sqlx-0.8.2 \
-		sqlx-core-0.8.2 \
-		sqlx-macros-0.8.2 \
-		sqlx-macros-core-0.8.2 \
-		sqlx-mysql-0.8.2 \
-		sqlx-postgres-0.8.2 \
-		sqlx-sqlite-0.8.2 \
+		sqlx-0.8.3 \
+		sqlx-core-0.8.3 \
+		sqlx-macros-0.8.3 \
+		sqlx-macros-core-0.8.3 \
+		sqlx-mysql-0.8.3 \
+		sqlx-postgres-0.8.3 \
+		sqlx-sqlite-0.8.3 \
 		stable_deref_trait-1.2.0 \
+		stacker-0.1.17 \
+		static_assertions-1.1.0 \
 		stringmatch-0.4.0 \
 		stringprep-0.1.5 \
 		strsim-0.10.0 \
@@ -628,7 +651,7 @@ CARGO_CRATES=	actix-codec-0.5.2 \
 		strum_macros-0.26.4 \
 		subtle-2.6.1 \
 		syn-1.0.109 \
-		syn-2.0.77 \
+		syn-2.0.100 \
 		syn_derive-0.1.8 \
 		sync_wrapper-0.1.2 \
 		sync_wrapper-1.0.1 \
@@ -646,12 +669,15 @@ CARGO_CRATES=	actix-codec-0.5.2 \
 		thirtyfour-0.31.0 \
 		thirtyfour-macros-0.1.3 \
 		thiserror-1.0.63 \
+		thiserror-2.0.12 \
 		thiserror-impl-1.0.63 \
+		thiserror-impl-2.0.12 \
 		thread_local-1.1.8 \
 		time-0.3.36 \
 		time-core-0.1.2 \
 		time-macros-0.2.18 \
 		tiny-keccak-2.0.2 \
+		tinystr-0.7.6 \
 		tinytemplate-1.2.1 \
 		tinyvec-1.8.0 \
 		tinyvec_macros-0.1.1 \
@@ -662,14 +688,13 @@ CARGO_CRATES=	actix-codec-0.5.2 \
 		tokio-executor-0.1.10 \
 		tokio-fs-0.1.7 \
 		tokio-io-0.1.13 \
-		tokio-io-timeout-1.2.0 \
 		tokio-macros-2.4.0 \
 		tokio-native-tls-0.3.1 \
 		tokio-reactor-0.1.12 \
 		tokio-rustls-0.23.4 \
 		tokio-rustls-0.24.1 \
 		tokio-rustls-0.25.0 \
-		tokio-stream-0.1.15 \
+		tokio-stream-0.1.17 \
 		tokio-sync-0.1.8 \
 		tokio-tcp-0.1.4 \
 		tokio-threadpool-0.1.18 \
@@ -683,8 +708,7 @@ CARGO_CRATES=	actix-codec-0.5.2 \
 		toml_datetime-0.6.8 \
 		toml_edit-0.19.15 \
 		toml_edit-0.22.20 \
-		tonic-0.8.3 \
-		tonic-0.12.2 \
+		tonic-0.12.3 \
 		tonic-build-0.12.2 \
 		tonic-reflection-0.12.2 \
 		tonic-types-0.12.2 \
@@ -693,18 +717,18 @@ CARGO_CRATES=	actix-codec-0.5.2 \
 		tower-layer-0.3.3 \
 		tower-service-0.3.3 \
 		tracing-0.1.40 \
-		tracing-actix-web-0.7.11 \
+		tracing-actix-web-0.7.15 \
 		tracing-appender-0.2.3 \
 		tracing-attributes-0.1.27 \
 		tracing-core-0.1.32 \
 		tracing-futures-0.2.5 \
-		tracing-log-0.1.4 \
 		tracing-log-0.2.0 \
-		tracing-opentelemetry-0.19.0 \
+		tracing-opentelemetry-0.28.0 \
 		tracing-serde-0.1.3 \
 		tracing-subscriber-0.3.18 \
 		triomphe-0.1.13 \
 		try-lock-0.2.5 \
+		twox-hash-1.6.3 \
 		typeid-1.0.2 \
 		typenum-1.17.0 \
 		ucd-trie-0.1.6 \
@@ -722,13 +746,15 @@ CARGO_CRATES=	actix-codec-0.5.2 \
 		unicode-properties-0.1.2 \
 		unicode-segmentation-1.11.0 \
 		unicode-xid-0.2.5 \
-		unicode_categories-0.1.1 \
 		unidecode-0.3.0 \
 		untrusted-0.7.1 \
 		untrusted-0.9.0 \
-		url-2.5.2 \
+		url-2.5.4 \
 		urlencoding-2.1.3 \
 		urlparse-0.7.3 \
+		utf16_iter-1.0.5 \
+		utf8-width-0.1.7 \
+		utf8_iter-1.0.4 \
 		utf8parse-0.2.2 \
 		utoipa-4.2.3 \
 		utoipa-gen-4.3.0 \
@@ -746,13 +772,14 @@ CARGO_CRATES=	actix-codec-0.5.2 \
 		want-0.3.1 \
 		wasi-0.11.0+wasi-snapshot-preview1 \
 		wasite-0.1.0 \
-		wasm-bindgen-0.2.93 \
-		wasm-bindgen-backend-0.2.93 \
+		wasm-bindgen-0.2.99 \
+		wasm-bindgen-backend-0.2.99 \
 		wasm-bindgen-futures-0.4.43 \
-		wasm-bindgen-macro-0.2.93 \
-		wasm-bindgen-macro-support-0.2.93 \
-		wasm-bindgen-shared-0.2.93 \
+		wasm-bindgen-macro-0.2.99 \
+		wasm-bindgen-macro-support-0.2.99 \
+		wasm-bindgen-shared-0.2.99 \
 		web-sys-0.3.70 \
+		web-time-1.1.0 \
 		webdriver-0.46.0 \
 		webpki-0.22.4 \
 		webpki-roots-0.22.6 \
@@ -764,6 +791,7 @@ CARGO_CRATES=	actix-codec-0.5.2 \
 		winapi-i686-pc-windows-gnu-0.4.0 \
 		winapi-util-0.1.9 \
 		winapi-x86_64-pc-windows-gnu-0.4.0 \
+		windows-0.52.0 \
 		windows-core-0.52.0 \
 		windows-registry-0.2.0 \
 		windows-result-0.2.0 \
@@ -792,22 +820,38 @@ CARGO_CRATES=	actix-codec-0.5.2 \
 		winnow-0.6.18 \
 		winreg-0.50.0 \
 		wiremock-0.6.1 \
+		write16-1.0.0 \
+		writeable-0.5.5 \
 		ws2_32-sys-0.2.1 \
 		wyz-0.5.1 \
 		x509-parser-0.16.0 \
 		xmlparser-0.13.6 \
 		yaml-rust-0.4.5 \
+		yoke-0.7.4 \
+		yoke-derive-0.7.4 \
 		zerocopy-0.7.35 \
 		zerocopy-derive-0.7.35 \
+		zerofrom-0.1.4 \
+		zerofrom-derive-0.1.4 \
 		zeroize-1.8.1 \
+		zerovec-0.10.4 \
+		zerovec-derive-0.10.3 \
 		zstd-0.13.2 \
 		zstd-safe-7.2.1 \
 		zstd-sys-2.0.13+zstd.1.5.6 \
 		rust-i18n,rust-i18n-macro,rust-i18n-support@git+https://github.com/kashif-m/rust-i18n?rev=f2d8096aaaff7a87a847c35a5394c269f75e077a\#f2d8096aaaff7a87a847c35a5394c269f75e077a \
-		async-bb8-diesel@git+https://github.com/jarnura/async-bb8-diesel?rev=53b4ab901aab7635c8215fd1c2d542c8db443094\#53b4ab901aab7635c8215fd1c2d542c8db443094 \
-		rusty-money@git+https://github.com/varunsrin/rusty_money?rev=bbc0150742a0fff905225ff11ee09388e9babdcc\#bbc0150742a0fff905225ff11ee09388e9babdcc
+		rusty-money@git+https://github.com/varunsrin/rusty_money?rev=bbc0150742a0fff905225ff11ee09388e9babdcc\#bbc0150742a0fff905225ff11ee09388e9babdcc \
+		josekit@git+https://github.com/sumanmaji4/josekit-rs.git?rev=5ab54876c29a84f86aef8c169413a46026883efe\#5ab54876c29a84f86aef8c169413a46026883efe \
+		scylla,scylla-cql,scylla-macros@git+https://github.com/juspay/scylla-rust-driver.git?rev=5700aa2847b25437cdd4fcf34d707aa90dca8b89\#5700aa2847b25437cdd4fcf34d707aa90dca8b89
 
 RUSTFLAGS+=	--cfg uuid_unstable
+
+# disable LTO due to runaway builds: https://github.com/rust-lang/rust/issues/137496
+WITHOUT_LTO=	yes
+#CARGO_ENV=	CARGO_PROFILE_RELEASE_LTO="thin" \
+		CARGO_PROFILE_RELEASE_PANIC="abort" \
+		CARGO_PROFILE_RELEASE_CODEGEN_UNITS=1 # change LTO to "thin" because otherwise link consumes tens of GB of memory and runs out of memory on arm64 causing runaway builds
+CARGO_ENV=	CARGO_PROFILE_RELEASE_LTO="false"
 
 OPENSSLINC=	/usr/include
 OPENSSLLIB=	/usr/lib

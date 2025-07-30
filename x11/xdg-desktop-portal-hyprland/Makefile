@@ -1,19 +1,20 @@
 PORTNAME=	xdg-desktop-portal-hyprland
 DISTVERSIONPREFIX=	v
-DISTVERSION=	1.3.8
+DISTVERSION=	1.3.9
+PORTREVISION=	7
 CATEGORIES=	x11 wayland
 
-MAINTAINER=	jbeich@FreeBSD.org
+MAINTAINER=	tagattie@FreeBSD.org
 COMMENT=	xdg-desktop-portal backend for hyprland
 WWW=		https://github.com/hyprwm/xdg-desktop-portal-hyprland
 
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-BUILD_DEPENDS=	hyprutils>0:devel/hyprutils \
-		hyprwayland-scanner>=0.4.2:devel/hyprwayland-scanner \
-		wayland-protocols>=1.31:graphics/wayland-protocols
+BUILD_DEPENDS=	hyprwayland-scanner>=0.4.2:devel/hyprwayland-scanner \
+		wayland-protocols>=1.33:graphics/wayland-protocols
 LIB_DEPENDS=	libhyprlang.so:devel/hyprlang \
+		libhyprutils.so:devel/hyprutils \
 		libsdbus-c++.so:devel/sdbus-cpp \
 		libdrm.so:graphics/libdrm \
 		libwayland-client.so:graphics/wayland \

@@ -5,9 +5,12 @@ CATEGORIES=	devel
 MASTER_SITES=	GNOME
 PKGNAMESUFFIX=	06
 
-MAINTAINER=	kwm@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	GObject collection library
 WWW=		https://live.gnome.org/Libgee
+
+DEPRECATED=     Legacy verision, unsupported upstream
+EXPIRATION_DATE=2025-07-31
 
 USES=		cpe gmake gnome libtool pathfix pkgconfig tar:xz
 CPE_VENDOR=	gnome

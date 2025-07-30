@@ -1,7 +1,7 @@
-PORTREVISION=	1
+PORTREVISION=	0
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
-COMMENT=	Python support for libpeas
+COMMENT=	Python support for Peas (2.0 API)
 
 LIBPEAS_SLAVE=	python
 

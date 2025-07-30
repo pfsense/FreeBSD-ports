@@ -1,4 +1,4 @@
---- printing/print_settings.h.orig	2024-11-04 08:56:03 UTC
+--- printing/print_settings.h.orig	2025-06-19 07:37:57 UTC
 +++ printing/print_settings.h
 @@ -25,7 +25,7 @@
  #include "base/values.h"
@@ -36,7 +36,7 @@
    AdvancedSettings& advanced_settings() { return advanced_settings_; }
    const AdvancedSettings& advanced_settings() const {
      return advanced_settings_;
-@@ -429,7 +429,7 @@ class COMPONENT_EXPORT(PRINTING_SETTINGS) PrintSetting
+@@ -434,7 +434,7 @@ class COMPONENT_EXPORT(PRINTING_SETTINGS) PrintSetting
    // Number of pages per sheet.
    int pages_per_sheet_;
  

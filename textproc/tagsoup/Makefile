@@ -1,18 +1,17 @@
 PORTNAME=	tagsoup
 PORTVERSION=	1.2.1
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	textproc java
-MASTER_SITES=	http://vrici.lojban.org/~cowan/XML/tagsoup/
+MASTER_SITES=	http://vrici.lojban.org/~cowan/tagsoup/
 EXTRACT_SUFX=	.jar
 
 MAINTAINER=	java@FreeBSD.org
 COMMENT=	SAX-compliant parser written in Java
-WWW=		http://vrici.lojban.org/~cowan/XML/tagsoup
+WWW=		http://vrici.lojban.org/~cowan/tagsoup
 
 LICENSE=	APACHE20
 
-USE_JAVA=	yes
-JAVA_RUN=	jre
+USES=		java
 
 NO_ARCH=	yes
 NO_BUILD=	yes

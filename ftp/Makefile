@@ -61,6 +61,8 @@
     SUBDIR += php83-ftp
     SUBDIR += php84-curl
     SUBDIR += php84-ftp
+    SUBDIR += php85-curl
+    SUBDIR += php85-ftp
     SUBDIR += phpwebftp
     SUBDIR += proftpd
     SUBDIR += proftpd-mod_vroot
@@ -91,7 +93,6 @@
     SUBDIR += vsftpd
     SUBDIR += vsftpd-ext
     SUBDIR += waiho
-    SUBDIR += wcurl
     SUBDIR += weex
     SUBDIR += wget
     SUBDIR += wmget

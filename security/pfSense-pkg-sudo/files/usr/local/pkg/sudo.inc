@@ -112,8 +112,6 @@ function sudo_write_config() {
 	if (stristr($result, "parsed OK")) {
 		rename($tmpsudoers, SUDO_SUDOERS);
 		chmod(SUDO_SUDOERS, 0440);
-		/* sync the config over XMLRPC */
-		sudo_sync_config();
 	} else {
 		log_error("Sudoers file invalid: {$result}");
 		unlink($tmpsudoers);
@@ -125,30 +123,55 @@ function sudo_write_config() {
  * entries.  Optionally include "ALL" as a user (for use by the Run As list)
  */
 function sudo_get_users($list_all_user = false) {
-	/* Make an entry for root, even though admin is essentially the same
-	 * as root, they are distinct.
-	 */
-	config_set_path('system/user/', ['name' => 'root']);
+	/* Collect users and groups from config */
+	$users_config = config_get_path('system/user', []);
+	$groups_config = config_get_path('system/group', []);
 
-	/* Include users created by other packages */
-	$stdout = '';
-	$stderr = '';
-
+	/* Collect users and groups from packages */
+	$package_users = [];
+	$stdout = $stderr = '';
 	pkg_exec('query %U', $stdout, $stderr);
 	foreach (explode(PHP_EOL, $stdout) as $user) {
 		if ($user == '') {
 			continue;
 		}
-		config_set_path('system/user/', ['name' => $user]);
+		$package_users[$user] = $user;
 	}
-
-	/* Include groups created by other packages */
+	$package_groups = [];
+	$stdout = $stderr = '';
 	pkg_exec('query %G', $stdout, $stderr);
 	foreach (explode(PHP_EOL, $stdout) as $group) {
 		if ($group == '') {
 			continue;
 		}
-		config_set_path('system/group/', ['name' => $group]);
+		$package_groups[$group] = $group;
+	}
+
+	/* Create a map from the list for easier searching */
+	$config_users = array_column($users_config, 'name', 'name');
+	$config_groups = array_column($groups_config, 'name', 'name');
+
+	/* Make an entry for root, even though admin is essentially the same
+	 * as root, they are distinct.
+	 */
+	if (!isset($config_users['root'])) {
+		$users_config[] = ['name' => 'root'];
+	}
+
+	/* Include users created by other packages */
+	foreach ($package_users as $package_user) {
+		if (isset($config_users[$package_user])) {
+			continue;
+		}
+		$users_config[] = ['name' => $package_user];
+	}
+
+	/* Include groups created by other packages */
+	foreach ($package_groups as $package_group) {
+		if (isset($config_groups[$package_group])) {
+			continue;
+		}
+		$groups_config[] = ['name' => $package_group];
 	}
 
 	$users = array();
@@ -161,7 +184,7 @@ function sudo_get_users($list_all_user = false) {
 		$users[] = $tmpuser;
 	}
 
-	foreach (config_get_path('system/user', []) as $user) {
+	foreach ($users_config as $user) {
 		$tmpuser = array();
 		$tmpuser["name"] = "user:{$user['name']}";
 		$tmpuser["descr"] = "User: {$user['name']}";
@@ -177,7 +200,7 @@ function sudo_get_users($list_all_user = false) {
 	$tmpuser["descr"] = "Group: wheel";
 	$users[] = $tmpuser;
 
-	foreach (config_get_path('system/group', []) as $group) {
+	foreach ($groups_config as $group) {
 		/*
 		 * The "all" group is internal and doesn't make sense to use
 		 * here.
@@ -217,49 +240,45 @@ function sudo_validate_commands(&$input_errors) {
 	}
 }
 
-function sudo_sync_config() {
-	$system_carp = config_get_path('hasync');
-	if (!is_array($system_carp) ||
-	    !$system_carp['synchronizetoip'] ||
-	    !$system_carp['username'] ||
-	    !$system_carp['password']) {
-		return -1;
-	}
-	if (config_get_path('system/webgui/protocol') == "http") {
-		$varsyncprotocol = "http";
-		$varsyncport = config_get_path('system/webgui/port') ?: '80';
-	} else {
-		$varsyncprotocol = "https";
-		$varsyncport = config_get_path('system/webgui/port') ?: '443';
-	}
-	sudo_do_xmlrpc_sync($system_carp['synchronizetoip'], $varsyncport,
-	    $varsyncprotocol, $system_carp['username'],
-	    $system_carp['password'], 100);
+function sudo_plugin_xmlrpc_send() {
+	return [
+		'installedpackages/sudo'
+	];
 }
 
-/* Do the actual XMLRPC sync */
-function sudo_do_xmlrpc_sync($sync_to_ip, $port, $protocol, $username,
-    $password, $synctimeout) {
-	/*
-	 * Send over the <sudo> portion of config.xml
-	 * $xml will hold the section to sync.
-	 */
-	$xml = array();
-	$xml['sudo'] = config_get_path('installedpackages/sudo');
+function sudo_plugin_xmlrpc_recv($new_sections) {
+	$section_paths = [
+		'installedpackages/sudo'
+	];
 
-	$remote_sudo_config_apply = <<<EOD
-require_once('/usr/local/pkg/sudo.inc');
-sudo_write_config();
-EOD;
+	$ret = [
+		'xmlrpc_recv_result' => false
+	];
+	foreach ($section_paths as $path) {
+		$old_section = config_get_path($path, []);
+		$new_section = array_get_path($new_sections, $path, []);
 
-	$synctimeout = intval($synctimeout);
-	$rpc_client = new pfsense_xmlrpc_client();
-	$rpc_client->setConnectionData($sync_to_ip, $port, $username, $password,
-	    $protocol);
-	$resp = $rpc_client->xmlrpc_method('merge_installedpackages_section',
-	    $xml, $synctimeout);
-	$resp = $rpc_client->xmlrpc_exec_php($remote_sudo_config_apply,
-	    $synctimeout);
+		// Don't save empty configuration sections.
+		if (empty($old_section) && empty($new_section)) {
+			continue;
+		}
+		// Ignore unchanged configuration sections.
+		if ($old_section === $new_section) {
+			continue;
+		}
+
+		$ret[$path] = array_merge($old_section, $new_section);
+		$ret['xmlrpc_recv_result'] = true;
+	}
+
+	return $ret;
+}
+
+function sudo_plugin_xmlrpc_recv_done($xmlrpc_recv_result) {
+	if (array_get_path($xmlrpc_recv_result, 'sudo/xmlrpc_recv_result') !== true) {
+		return;
+	}
+	sudo_write_config();
 }
 
 ?>

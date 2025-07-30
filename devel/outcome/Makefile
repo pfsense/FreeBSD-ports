@@ -1,11 +1,12 @@
 PORTNAME=	outcome
 DISTVERSIONPREFIX=	v
-DISTVERSION=	2.2.11
+DISTVERSION=	2.2.12
 CATEGORIES=	devel
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	C++14 library for reporting and handling function failures
-WWW=		https://ned14.github.io/outcome/
+WWW=		https://ned14.github.io/outcome/ \
+		https://github.com/ned14/outcome
 
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/Licence.txt
@@ -28,4 +29,13 @@ NO_ARCH=	yes
 
 PORTSCOUT=	limit:^.*[0-9]\.[0-9].*
 
-.include <bsd.port.mk>
+.include <bsd.port.pre.mk>
+
+.if ${ARCH:Marmv?}
+pre-configure:
+	${FIND} ${WRKDIR} \( -name \*.hpp -o -name \*.h \) -exec ${REINPLACE_CMD} -e 's,@progbits,%progbits,' {} +
+.endif
+
+# tests as of 2.2.12: 100% tests passed, 0 tests failed out of 4
+
+.include <bsd.port.post.mk>

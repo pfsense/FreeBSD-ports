@@ -42,6 +42,7 @@ do-install:
 		${SED} -e 's#^${STAGEDIR}${PREFIX}/#@dir #' >> ${TMPPLIST}
 
 .if defined(MAINTAINER_MODE)
+MASTER_SITES=	https://ftp.tu-chemnitz.de/pub/tug/historic/systems/texlive/2025/
 EXCLUDE_FILES=		\*/doc/man ls-R doc dvipdfm dvipdfmx dvips \
 			fonts/cmap/dvipdfmx fonts/cmap/uptex fonts/enc/dvips \
 			fonts/map/dvipdfm fonts/map/dvipdfmx fonts/map/dvips \
@@ -50,7 +51,7 @@ EXCLUDE_FILES=		\*/doc/man ls-R doc dvipdfm dvipdfmx dvips \
 			tex/lambda fonts/ovp/public/japanese-otf-uptex source \
 			fonts/tfm/public/japanese-otf fonts/vf/ptex xdvi \
 			fonts/tfm/public/japanese-otf-uptex tex/generic/dvips \
-			tex/latex/base fonts/tfm/uptex fonts/type1/ptex \
+			tex/latex-dev fonts/tfm/uptex fonts/type1/ptex \
 			fonts/vf/public/japanese-otf tex/lualatex tex/luatex \
 			fonts/vf/public/japanese-otf-uptex fonts/vf/uptex \
 			tex/generic/config/luatex-unicode-letters.tex \
@@ -103,7 +104,12 @@ TEXLIVE_BASE_PLIST!=	grep TEXMFDISTDIR ${.CURDIR}/../texlive-base/pkg-plist | se
 EXTRACT_AFTER_ARGS=	| ${TAR} xf - \
 			${EXCLUDE_FILES:S,^,--exclude ${DISTNAME_TEXMF}/texmf-dist/,}
 
-_maintainer-extract:
+_maintainer-fetch:
+	@${MKDIR} ${DISTDIR}/${DIST_SUBDIR}
+	${FETCH_CMD} ${MASTER_SITES}/${DISTNAME_TEXMF}${EXTRACT_SUFX} \
+		-o ${DISTDIR}/${DIST_SUBDIR}/${DISTNAME_TEXMF}${EXTRACT_SUFX}
+
+_maintainer-extract: _maintainer-fetch
 	${MAKE} clean
 	${MKDIR} ${WRKSRC}
 	${CAT} ${DISTDIR}/${DIST_SUBDIR}/${DISTNAME_TEXMF}${EXTRACT_SUFX} \
@@ -115,13 +121,16 @@ _maintainer-patch: _maintainer-extract
 	${REINPLACE_CMD} -i '' \
 		's/\\def\\magyar@sugg@ie@low#1#2#3/\\def\\magyar@sugg@ie@low\\protect #1#2#3/' \
 		${WRKSRC}/texmf-dist/tex/generic/babel-hungarian/magyar.ldf
+	${REINPLACE_CMD} -i '' \
+		'/liturgic/d' \
+		${WRKSRC}/texmf-dist/tex/generic/config/language.dat \
+		${WRKSRC}/texmf-dist/tex/generic/config/language.def
 	${FIND} ${WRKSRC} -type f | \
 		${XARGS} ${REINPLACE_CMD} -i '' -E -e '1s|/bin/bash|${bash_CMD}|; \
 		1s|/usr/bin/perl|${perl_CMD}|; \
 		1s|/usr/bin/env python[23]?|${python_CMD}|; \
 		1s|/usr/bin/python|${python_CMD}|; \
 		1s|/bin/python3|${python_CMD}|; \
-		/ec\.tex/d; \
 		1s|/usr/bin/luatex|${LOCALBASE}/bin/luatex|'
 
 _maintainer-dist: _maintainer-patch

@@ -1,14 +1,17 @@
 PORTNAME=	asterisk
-DISTVERSION=	20.11.0
+DISTVERSION=	20.14.1
+PORTREVISION=	1
 CATEGORIES=	net
 MASTER_SITES=	https://downloads.asterisk.org/pub/telephony/%SUBDIR%/:DEFAULT,g729
 MASTER_SITE_SUBDIR=	asterisk/ \
 			asterisk/old-releases/ \
 			sounds/releases/:g729
 PKGNAMESUFFIX=	20
-DISTFILES=	${DISTNAME}${EXTRACT_SUFX}
+DISTFILES=	${DISTNAME}${EXTRACT_SUFX} \
+		${ASTERISK_CORE_G729_SOUNDS}:g729 \
+		${ASTERISK_MOH_G729_SOUNDS}:g729
 DIST_SUBDIR=	${PORTNAME}
-EXTRACT_ONLY:=	${DISTNAME}${EXTRACT_SUFX}
+EXTRACT_ONLY=	${DISTNAME}${EXTRACT_SUFX}
 
 MAINTAINER=	o.kryvulia@flex-it.com.ua
 COMMENT=	Open Source PBX and telephony toolkit
@@ -18,7 +21,7 @@ LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
 LIB_DEPENDS=	libjansson.so:devel/jansson \
-		libuuid.so:misc/e2fsprogs-libuuid
+		libuuid.so:misc/libuuid
 
 USES=		bison compiler:c11 cpe gmake gnome iconv libedit localbase \
 		ncurses pkgconfig shebangfix sqlite ssl
@@ -67,7 +70,7 @@ OPTIONS_DEFINE_amd64=		DAHDI GEOLOCATION
 OPTIONS_DEFINE_i386=		DAHDI GEOLOCATION
 OPTIONS_DEFINE_powerpc=		DAHDI
 OPTIONS_DEFINE_powerpc64=	DAHDI
-OPTIONS_DEFINE_powerpc64le=	DAHDI
+OPTIONS_DEFINE_powerpc64le=	DAHDI GEOLOCATION
 OPTIONS_DEFAULT=		CURL FREETDS GSM LUA MACRO MP3PLAYER NEWT ODBC OPUS MYSQL PGSQL \
 				PJSIP PORTAUDIO RADIUS SNMP SPANDSP SPEEX SRTP URIPARSER \
 				VORBIS XMLDOC
@@ -128,9 +131,6 @@ EXCHANGE_CONFIGURE_OFF=	--without-neon --without-neon29
 FREETDS_LIB_DEPENDS=	libsybdb.so:databases/freetds
 FREETDS_CONFIGURE_ON=	--with-tds=${LOCALBASE}
 FREETDS_CONFIGURE_OFF=	--without-tds
-
-G729_DISTFILES=		${ASTERISK_CORE_G729_SOUNDS}:g729 \
-			${ASTERISK_MOH_G729_SOUNDS}:g729
 
 GEOLOCATION_USE=	GNOME=libxslt
 
@@ -209,17 +209,21 @@ XMLDOC_CONFIGURE_ENABLE=	xmldoc
 XMPP_LIB_DEPENDS=	libiksemel.so:textproc/iksemel
 XMPP_CONFIGURE_WITH=	iksemel
 
-ASTERISK_CORE_G729_SOUNDS=	asterisk-core-sounds-en-g729-1.5.tar.gz
+ASTERISK_CORE_G729_SOUNDS=	asterisk-core-sounds-en-g729-1.6.tar.gz
 ASTERISK_MOH_G729_SOUNDS=	asterisk-moh-opsound-g729-2.03.tar.gz
 
 ASTERISK_USER=	asterisk
 ASTERISK_GROUP=	asterisk
 
-PJSIP_VERSION=	2.14.1
+PJSIP_VERSION=	2.15.1
 
 .include <bsd.port.options.mk>
 
 .include <bsd.port.pre.mk>
+
+.if ${OPSYS} == FreeBSD && ${OSVERSION} < 1500026
+EXTRA_PATCHES=	${PATCHDIR}/extra-patch-third-party_pjproject_Makefile
+.endif
 
 .if (${OPSYS} == FreeBSD && ${OSVERSION} >= 1400092 && ${SSL_DEFAULT} == base) || \
 	${SSL_DEFAULT:Mopenssl3*}
@@ -251,6 +255,8 @@ LLD_EMULATION=	elf_i386
 LLD_EMULATION=	elf_x86_64
 .elif ${ARCH} == aarch64
 LLD_EMULATION=	aarch64elf
+.elif ${ARCH} == powerpc64le
+LLD_EMULATION=	elf64lppc
 .endif
 .endif
 

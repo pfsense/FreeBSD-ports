@@ -10,5 +10,6 @@ USES=		compiler:c++11-lang perl5 qmake qt-dist:5,charts tar:xz
 USE_PERL5=	build
 USE_QT=		core declarative network gui widgets designer \
 		buildtools:build qmake:build
+USE_LDCONFIG=	${PREFIX}/${QT_LIBDIR_REL}
 
 .include <bsd.port.mk>

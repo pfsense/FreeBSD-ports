@@ -1,5 +1,6 @@
 PORTNAME=	sssd
 PORTVERSION=	2.9.6
+PORTREVISION=	4
 CATEGORIES=	security
 PKGNAMESUFFIX=	2
 
@@ -40,11 +41,11 @@ LIB_DEPENDS=	libcares.so:dns/c-ares \
 		libsamba-util.so:${SAMBA_PORT} \
 		libsasl2.so:security/cyrus-sasl2 \
 		libsmbclient.so:${SAMBA_PORT} \
-		libtalloc.so:devel/talloc \
-		libtdb.so:databases/tdb \
-		libtevent.so:devel/tevent \
+		libtalloc.so:${SAMBA_TALLOC_PORT} \
+		libtdb.so:${SAMBA_TDB_PORT} \
+		libtevent.so:${SAMBA_TEVENT_PORT} \
 		libunistring.so:devel/libunistring \
-		libuuid.so:misc/e2fsprogs-libuuid
+		libuuid.so:misc/libuuid
 
 RUN_DEPENDS=	adcli:net-mgmt/adcli \
 		cyrus-sasl-gssapi>0:security/cyrus-sasl2-gssapi

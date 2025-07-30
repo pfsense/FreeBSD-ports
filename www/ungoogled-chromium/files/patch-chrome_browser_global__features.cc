@@ -1,24 +1,24 @@
---- chrome/browser/global_features.cc.orig	2024-10-01 07:26:23 UTC
+--- chrome/browser/global_features.cc.orig	2025-05-31 17:16:41 UTC
 +++ chrome/browser/global_features.cc
-@@ -10,7 +10,7 @@
- #include "build/build_config.h"
- #include "chrome/browser/permissions/system/platform_handle.h"
+@@ -23,7 +23,7 @@
+ #include "chrome/browser/glic/host/glic_synthetic_trial_manager.h"  // nogncheck
+ #endif
  
 -#if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX)
 +#if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_BSD)
  // This causes a gn error on Android builds, because gn does not understand
  // buildflags, so we include it only on platforms where it is used.
- #include "components/user_education/common/user_education_features.h"  // nogncheck
-@@ -49,7 +49,7 @@ void GlobalFeatures::ReplaceGlobalFeaturesForTesting(
+ #include "chrome/browser/ui/webui/whats_new/whats_new_registrar.h"
+@@ -62,7 +62,7 @@ void GlobalFeatures::ReplaceGlobalFeaturesForTesting(
  
  void GlobalFeatures::Init() {
    system_permissions_platform_handle_ = CreateSystemPermissionsPlatformHandle();
 -#if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX)
 +#if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_BSD)
-   if (user_education::features::IsWhatsNewV2()) {
-     whats_new_registry_ = CreateWhatsNewRegistry();
-   }
-@@ -61,7 +61,7 @@ GlobalFeatures::CreateSystemPermissionsPlatformHandle(
+   whats_new_registry_ = CreateWhatsNewRegistry();
+ #endif
+ 
+@@ -96,7 +96,7 @@ GlobalFeatures::CreateSystemPermissionsPlatformHandle(
    return system_permission_settings::PlatformHandle::Create();
  }
  

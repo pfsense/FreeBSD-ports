@@ -1,5 +1,5 @@
 PORTNAME=	uproot
-PORTVERSION=	5.5.1
+PORTVERSION=	5.6.3
 CATEGORIES=	devel python
 MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -21,7 +21,7 @@ RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}awkward>=2.4.6:math/py-awkward@${PY_FLAVOR} 
 		${PYTHON_PKGNAMEPREFIX}packaging>=0:devel/py-packaging@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}xxhash>=0:devel/py-xxhash@${PY_FLAVOR}
 
-USES=		python:3.9+
+USES=		python
 USE_PYTHON=	autoplist concurrent pep517
 
 NO_ARCH=	yes
@@ -33,7 +33,7 @@ XROOTD_DESC=	Access extended ROOT daemon
 
 HTTP_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}aiohttp>=0:www/py-aiohttp@${PY_FLAVOR}
 S3_RUN_DEPENDS=		${PYTHON_PKGNAMEPREFIX}s3fs>=0:filesystems/py-s3fs@${PY_FLAVOR}
-XROOTD_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}fsspec-xrootd>=0:filesystems/py-fsspec-xrootd@${PY_FLAVOR}
+XROOTD_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}fsspec-xrootd>=0.5.0:filesystems/py-fsspec-xrootd@${PY_FLAVOR}
 
 .include <bsd.port.pre.mk>
 

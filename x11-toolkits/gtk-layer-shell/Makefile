@@ -1,6 +1,6 @@
 PORTNAME=	gtk-layer-shell
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.9.0
+DISTVERSION=	0.9.2
 CATEGORIES=	x11-toolkits
 
 MAINTAINER=	jbeich@FreeBSD.org
@@ -29,6 +29,13 @@ DOCS_BUILD_DEPENDS=	gtk-doc>0:textproc/gtk-doc
 DOCS_MESON_TRUE=	docs
 
 EXAMPLES_MESON_TRUE=	examples
+
+pre-configure:
+# .if !exists() evaluates too early before gtk3 has a chance to be installed
+	@if ! pkg-config --exists gdk-wayland-3.0; then \
+		${ECHO_MSG} "${PKGNAME}: Needs gtk3 with WAYLAND support enabled."; \
+		${FALSE}; \
+	fi
 
 pre-test:
 	@if [ ! -e ${WRKDIR}/.meson_build_tests ]; then \

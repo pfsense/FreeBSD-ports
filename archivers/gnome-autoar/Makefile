@@ -1,6 +1,5 @@
 PORTNAME=	gnome-autoar
-DISTVERSION=	0.4.3
-PORTREVISION=	2
+DISTVERSION=	0.4.5
 CATEGORIES=	archivers
 MASTER_SITES=	GNOME
 DIST_SUBDIR=	gnome
@@ -16,7 +15,7 @@ USES=		cpe gettext-runtime gmake gnome libarchive meson pkgconfig \
 		tar:xz vala:build
 
 CPE_VENDOR=	gnome
-USE_GNOME=	cairo gdkpixbuf2 gtk30 introspection:build
+USE_GNOME=	cairo gdkpixbuf gtk30 introspection:build
 
 OPTIONS_DEFINE=	DOCS
 

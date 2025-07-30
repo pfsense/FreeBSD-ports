@@ -1,13 +1,12 @@
 PORTNAME=	mame
-DISTVERSION=	0.264
+DISTVERSION=	0.277
+PORTREVISION=	2
 CATEGORIES=	emulators games
 
 PATCH_SITES=	https://github.com/${GH_ACCOUNT}/${GH_PROJECT}/commit/
-PATCHFILES+=	4da99a13f5cd8054ff8f747a0234a74b271b663d.patch:-p1 # fix build with clang 18
-PATCHFILES+=	b7e0fa72b92f8f6761a1a59e8ffdc46f6d17e6cc.patch:-p1 # idem
-PATCHFILES+=	c75845b1ef01d76379bcc0a6937f1ca678484c68.patch:-p1 # fix build with clang 19
+PATCHFILES=	b4e1f5f1b50fd3402232dd0385cac021ba488db6.patch:-p1 # Only link asmjit if native DRCs are built.
 
-MAINTAINER=	agh@riseup.net
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	MAME: a multi-purpose emulation framework
 WWW=		https://mamedev.org/
 
@@ -48,7 +47,8 @@ USE_XORG=	x11 xext xi xinerama xrender
 MAKEFILE=	makefile
 MAKE_ARGS=	SILENT= \
 		verbose=yes
-MAKE_ENV=	NO_USE_PORTAUDIO=1 \
+MAKE_ENV=	FORCE_DRC_C_BACKEND=1 \
+		NO_USE_PORTAUDIO=1 \
 		NO_USE_PULSEAUDIO=1 \
 		NOWERROR=1 \
 		OVERRIDE_AR="llvm-ar${LLVM_VERSION}" \

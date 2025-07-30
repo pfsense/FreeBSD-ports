@@ -1,6 +1,7 @@
 PORTNAME=	pytorch
 DISTVERSIONPREFIX=	v
-DISTVERSION=	2.5.1
+DISTVERSION=	2.7.1
+PORTREVISION=	1
 CATEGORIES=	misc # machine-learning
 MASTER_SITES=	https://github.com/pytorch/pytorch/releases/download/v${DISTVERSION}/
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -9,12 +10,14 @@ DIST_SUBDIR=	${PORTNAME}
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	PyTorch: Tensors and dynamic neural networks in Python
-WWW=		https://pytorch.org/
+WWW=		https://pytorch.org/ \
+		https://github.com/pytorch/pytorch
 
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-BROKEN_aarch64=	build fails: CMake Error at third_party/QNNPACK/CMakeLists.txt:47 (MESSAGE): Unrecognized CMAKE_SYSTEM_NAME = FreeBSD
+BROKEN_aarch64=	build fails: CMake Error at third_party/QNNPACK/CMakeLists.txt:47 (MESSAGE): Unrecognized CMAKE_SYSTEM_NAME = FreeBSD, see https://github.com/pytorch/pytorch/issues/144608
+BROKEN_armv7=	build fails: CMake Error at third_party/QNNPACK/CMakeLists.txt:47 (MESSAGE): Unrecognized CMAKE_SYSTEM_NAME = FreeBSD, see https://github.com/pytorch/pytorch/issues/144608
 BROKEN_i386=	build fails: DispatchStub.cpp:162:29: [0m[0;1;31merror: [0m[1muse of undeclared identifier 'AVX2'[0m
 
 BUILD_DEPENDS=	cmake:devel/cmake-core \
@@ -33,12 +36,17 @@ LIB_DEPENDS=	libabsl_base.so:devel/abseil \
 		libprotobuf.so:devel/protobuf \
 		libsleef.so:math/sleef
 RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}filelock>0:sysutils/py-filelock@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}Jinja2>=0:devel/py-Jinja2@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}fsspec>0:filesystems/py-fsspec@${PY_FLAVOR}  \
+		${PYTHON_PKGNAMEPREFIX}Jinja2>0:devel/py-Jinja2@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}networkx>0:math/py-networkx@${PY_FLAVOR} \
 		${PYNUMPY} \
-		${PYTHON_PKGNAMEPREFIX}sympy>0:math/py-sympy@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}typing-extensions>0:devel/py-typing-extensions@${PY_FLAVOR}
-RUN_DEPENDS+=	${PYTHON_PKGNAMEPREFIX}dill>0:devel/py-dill@${PY_FLAVOR} # optional dependency
+		${PYTHON_PKGNAMEPREFIX}sympy>=1.13.1:math/py-sympy@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}typing-extensions>=4.10.0:devel/py-typing-extensions@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}pyyaml>0:devel/py-pyyaml@${PY_FLAVOR}
+RUN_DEPENDS+=	${PYTHON_PKGNAMEPREFIX}astunparse>0:devel/py-astunparse@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}dill>0:devel/py-dill@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}networkx>0:math/py-networkx@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}protobuf>0:devel/py-protobuf@${PY_FLAVOR} # optional dependencies
 
 USES=		compiler:c++17-lang localbase:ldflags python
 USE_PYTHON=	distutils autoplist
@@ -53,10 +61,14 @@ MAKE_ENV+=	USE_CUDNN=0
 MAKE_ENV+=	USE_LAPACK=1 # needed on FreeBSD to run w/out GPU
 MAKE_ENV+=	USE_QNNPACK=0
 LDFLAGS+=	-lexecinfo
+LDFLAGS_powerpc64le=	-pthread
 
 BINARY_ALIAS=	make=${GMAKE}
 
 POST_PLIST=	fix-plist
+
+TEST_ENV=	${MAKE_ENV} PYTHONPATH=${STAGEDIR}${PYTHONPREFIX_SITELIBDIR}
+TEST_WRKSRC=	${WRKSRC}/test
 
 .include <bsd.port.options.mk>
 
@@ -73,11 +85,14 @@ post-patch:
 post-install: # strip binaries
 	@${STRIP_CMD} \
 		${STAGEDIR}${PYTHON_SITELIBDIR}/torch/bin/torch_shm_manager \
-		${STAGEDIR}${PYTHON_SITELIBDIR}/torch/_C${PYTHON_EXT_SUFFIX}.so \
-		${STAGEDIR}${PYTHON_SITELIBDIR}/functorch/_C${PYTHON_EXT_SUFFIX}.so \
+		${STAGEDIR}${PYTHON_SITELIBDIR}/torch/_C${PYTHON_TAG}.so \
+		${STAGEDIR}${PYTHON_SITELIBDIR}/functorch/_C${PYTHON_TAG}.so \
 		${STAGEDIR}${PYTHON_SITELIBDIR}/torch/lib/lib*.so
 
 fix-plist: # remove the stray %%PYTHON_SITELIBDIR%%/caffe2 file
 	@${REINPLACE_CMD} -e "s|.*/caffe2$$||" ${TMPPLIST}
+
+do-test:
+	cd ${TEST_WRKSRC} && ${SETENV} ${TEST_ENV} ${PYTHON_CMD} run_test.py
 
 .include <bsd.port.mk>

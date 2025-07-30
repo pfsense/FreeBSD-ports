@@ -1,7 +1,7 @@
 PORTNAME=	dotnet
 DISTVERSIONPREFIX=	v
 DISTVERSION=	${DOTNETVERSION}.6
-PORTREVISION=	1
+PORTREVISION=	4
 CATEGORIES=	lang devel
 MASTER_SITES=	https://github.com/dotnet/dotnet/releases/download/${DISTVERSIONPREFIX}${DISTVERSION}/release.json?dummy=/:dotnetmanifest \
 		LOCAL/arrowd/dotnet/:bootstrap
@@ -29,7 +29,7 @@ LIB_DEPENDS=	libicuuc.so:devel/icu \
 		libinotify.so:devel/libinotify \
 		libunwind.so:devel/libunwind
 RUN_DEPENDS=	terminfo-db>0:misc/terminfo-db \
-		dotnet:lang/dotnet-runtime
+		dotnet:lang/dotnet-host
 
 USES=		autoreconf:build gssapi:mit llvm:noexport nodejs pkgconfig \
 		python:build,3.9+ shebangfix ssl
@@ -40,7 +40,7 @@ SHEBANG_FILES=	src/diagnostics/src/Tools/dotnet-trace/*.sh \
 		src/source-build-externals/src/azure-activedirectory-identitymodel-extensions-for-dotnet/updateAssemblyInfo.sh
 
 BINARY_ALIAS=	grep=${LOCALBASE}/bin/ggrep
-DOTNET_ENV=	PYTHON=${PYTHON_CMD}
+DOTNET_ENV=	PYTHON=${PYTHON_CMD} PATH=${PATH}:${LLVM_PREFIX}/bin
 
 BOOTSTRAP_DOTNETVERSION=			8.0
 BOOTSTRAP_SDKVERSION=				${BOOTSTRAP_DOTNETVERSION}.100
@@ -97,14 +97,14 @@ do-build:
 		-maxcpucount:${MAKE_JOBS_NUMBER}
 
 do-install:
-	${MKDIR} ${STAGEDIR}${PREFIX}/dotnet
-	${EXTRACT_CMD} ${EXTRACT_BEFORE_ARGS} ${WRKSRC}/artifacts/${DOTNET_ARCH}/Release/${SDK_DISTNAME}${EXTRACT_SUFX} -C ${STAGEDIR}${PREFIX}/dotnet ${EXTRACT_AFTER_ARGS}
-	${RM} -r ${STAGEDIR}${PREFIX}/dotnet/packs/NETStandard.Library.Ref
+	@${MKDIR} ${STAGEDIR}${DATADIR}
+	${EXTRACT_CMD} ${EXTRACT_BEFORE_ARGS} ${WRKSRC}/artifacts/${DOTNET_ARCH}/Release/${SDK_DISTNAME}${EXTRACT_SUFX} -C ${STAGEDIR}${DATADIR} ${EXTRACT_AFTER_ARGS}
+	${RM} -r ${STAGEDIR}${DATADIR}/packs/NETStandard.Library.Ref
 
-	${STRIP_CMD} ${STAGEDIR}${PREFIX}/dotnet/sdk/${SDKVERSION}/AppHostTemplate/apphost
-	${STRIP_CMD} ${STAGEDIR}${PREFIX}/dotnet/packs/Microsoft.NETCore.App.Host.freebsd-${DOTNET_ARCH}/${DISTVERSION}/runtimes/freebsd-${DOTNET_ARCH}/native/apphost
-	${STRIP_CMD} ${STAGEDIR}${PREFIX}/dotnet/packs/Microsoft.NETCore.App.Host.freebsd-${DOTNET_ARCH}/${DISTVERSION}/runtimes/freebsd-${DOTNET_ARCH}/native/singlefilehost
-	${FIND} ${STAGEDIR}${PREFIX}/dotnet -name "*.so" -exec ${STRIP_CMD} -s "{}" ";"
+	${STRIP_CMD} ${STAGEDIR}${DATADIR}/sdk/${SDKVERSION}/AppHostTemplate/apphost
+	${STRIP_CMD} ${STAGEDIR}${DATADIR}/packs/Microsoft.NETCore.App.Host.freebsd-${DOTNET_ARCH}/${DISTVERSION}/runtimes/freebsd-${DOTNET_ARCH}/native/apphost
+	${STRIP_CMD} ${STAGEDIR}${DATADIR}/packs/Microsoft.NETCore.App.Host.freebsd-${DOTNET_ARCH}/${DISTVERSION}/runtimes/freebsd-${DOTNET_ARCH}/native/singlefilehost
+	${FIND} ${STAGEDIR}${DATADIR} -name "*.so" -exec ${STRIP_CMD} -s "{}" ";"
 
 bootstrap-makesum:
 	cd ${WRKSRC}/artifacts/${DOTNET_ARCH}/Release && sha256 ${SOURCEBUILT_ARTIFACTS_DISTNAME}${EXTRACT_SUFX}

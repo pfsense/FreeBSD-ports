@@ -1,7 +1,8 @@
-%%NREPL%%bin/s7-nrepl
 %%REPL%%bin/s7-repl
 include/s7.h
 lib/libs7.so
+lib/libs7.so.0
+lib/libs7.so.0.0.0
 %%DATADIR%%/case.scm
 %%DATADIR%%/cload.scm
 %%DATADIR%%/debug.scm
@@ -28,6 +29,7 @@ lib/libs7.so
 %%DATADIR%%/snd-lint.scm
 %%DATADIR%%/stuff.scm
 %%DATADIR%%/tools/auto-tester.scm
+%%DATADIR%%/tools/cb.scm
 %%DATADIR%%/tools/compare-calls.scm
 %%DATADIR%%/tools/concordance.scm
 %%DATADIR%%/tools/dup.scm
@@ -39,6 +41,7 @@ lib/libs7.so
 %%DATADIR%%/tools/tari.scm
 %%DATADIR%%/tools/tauto.scm
 %%DATADIR%%/tools/tbig.scm
+%%DATADIR%%/tools/tbit.scm
 %%DATADIR%%/tools/tcase.scm
 %%DATADIR%%/tools/tclo.scm
 %%DATADIR%%/tools/tcomplex.scm

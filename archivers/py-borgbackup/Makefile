@@ -1,5 +1,5 @@
 PORTNAME=	borgbackup
-DISTVERSION=	1.4.0
+DISTVERSION=	1.4.1
 PORTREVISION=	1
 CATEGORIES=	archivers python
 MASTER_SITES=	PYPI
@@ -13,7 +13,7 @@ LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
 # note that borgbackup pins the msgpack version range per patchlevel version!
-_BB_DEPENDS=	${PYTHON_PKGNAMEPREFIX}msgpack>=1.0.3<1.1.1:devel/py-msgpack@${PY_FLAVOR}
+_BB_DEPENDS=	${PYTHON_PKGNAMEPREFIX}msgpack>=1.0.3<1.1.1_99:devel/py-msgpack@${PY_FLAVOR}
 BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}pkgconfig>=0:devel/py-pkgconfig@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}setuptools-scm>=1.7:devel/py-setuptools-scm@${PY_FLAVOR} \
 		${_BB_DEPENDS}
@@ -27,7 +27,8 @@ TEST_DEPENDS=	${RUN_DEPENDS} \
 		${PYTHON_PKGNAMEPREFIX}virtualenv>=0:devel/py-virtualenv@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}wheel>=0:devel/py-wheel@${PY_FLAVOR} \
 		fakeroot:security/fakeroot
-USES=		pkgconfig python:3.9+ ssl
+
+USES=		pkgconfig python ssl
 USE_PYTHON=	autoplist distutils
 MAKE_ENV=	BORG_OPENSSL_PREFIX=${OPENSSLBASE}
 
@@ -50,7 +51,6 @@ EXTRA_PATCHES	+= ${FILESDIR}/extrapatch-setup.py
 post-patch:
 	${CP} ${FILESDIR}/acl_extended_file_np.c ${WRKSRC}/src/borg/platform/
 .endif
-
 
 _BORGHOME=${WRKDIR}/testhome
 _BORGENV=-i BORG_PASSPHRASE=secret123 PYTHONPATH=${STAGEDIR}${PYTHON_SITELIBDIR} HOME=${_BORGHOME}

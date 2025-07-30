@@ -149,7 +149,7 @@ for _file in "${@}"; do
 		case ${dp_TARGET} in
 			do-fetch|makesum)
 				${dp_ECHO_MSG} "=> Attempting to fetch ${site}${file}"
-				if env -S "${dp_FETCH_ENV}" ${_fetch_cmd}; then
+				if eval env -S "${dp_FETCH_ENV}" ${_fetch_cmd}; then
 					actual_size=$(stat -f %z "${file}")
 					if [ -n "${dp_DISABLE_SIZE}" ] || [ -z "${CKSIZE}" ] || [ "${actual_size}" -eq "${CKSIZE}" ]; then
 						continue 2

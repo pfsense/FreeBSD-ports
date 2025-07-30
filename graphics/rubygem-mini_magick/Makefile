@@ -1,5 +1,5 @@
 PORTNAME=	mini_magick
-PORTVERSION=	5.0.1
+PORTVERSION=	5.3.0
 CATEGORIES=	graphics rubygems
 MASTER_SITES=	RG
 
@@ -9,6 +9,8 @@ WWW=		https://github.com/minimagick/minimagick
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/MIT-LICENSE
+
+RUN_DEPENDS=	rubygem-logger>=0:devel/rubygem-logger
 
 USES=		gem magick:${FLAVOR}
 

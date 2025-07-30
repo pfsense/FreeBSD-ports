@@ -2,7 +2,7 @@
 # script_AWS_AP_SOUTH.sh - By BBcan177@gmail.com - 03-20-2022
 # Pre-Script to collect Amazon AWS Region AP (Asia Pacific - South)
 # (ap-south-1,ap-south-2)
-# Copyright (c) 2015-2023 BBcan177@gmail.com
+# Copyright (c) 2015-2024 BBcan177@gmail.com
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License Version 2 as

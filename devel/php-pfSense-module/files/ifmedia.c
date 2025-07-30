@@ -156,17 +156,6 @@ media_status(int s)
 			else
 				printf("no carrier");
 			break;
-
-#if (__FreeBSD_version < 1200000)
-		case IFM_FDDI:
-		case IFM_TOKEN:
-			if (ifmr.ifm_status & IFM_ACTIVE)
-				printf("inserted");
-			else
-				printf("no ring");
-			break;
-#endif
-
 		case IFM_IEEE80211:
 			if (ifmr.ifm_status & IFM_ACTIVE) {
 				/* NB: only sta mode associates */
@@ -227,7 +216,7 @@ ifmedia_getstate(int s)
 		mwords = (int *)malloc(ifmr->ifm_count * sizeof(int));
 		if (mwords == NULL)
 			err(1, "malloc");
-  
+
 		ifmr->ifm_ulist = mwords;
 		if (ioctl(s, SIOCGIFMEDIA, (caddr_t)ifmr) < 0)
 			err(1, "SIOCGIFMEDIA");
@@ -371,26 +360,6 @@ static struct ifmedia_description ifm_subtype_ethernet_aliases[] =
 static struct ifmedia_description ifm_subtype_ethernet_option_descriptions[] =
     IFM_SUBTYPE_ETHERNET_OPTION_DESCRIPTIONS;
 
-#if (__FreeBSD_version < 1200000)
-static struct ifmedia_description ifm_subtype_tokenring_descriptions[] =
-    IFM_SUBTYPE_TOKENRING_DESCRIPTIONS;
-
-static struct ifmedia_description ifm_subtype_tokenring_aliases[] =
-    IFM_SUBTYPE_TOKENRING_ALIASES;
-
-static struct ifmedia_description ifm_subtype_tokenring_option_descriptions[] =
-    IFM_SUBTYPE_TOKENRING_OPTION_DESCRIPTIONS;
-
-static struct ifmedia_description ifm_subtype_fddi_descriptions[] =
-    IFM_SUBTYPE_FDDI_DESCRIPTIONS;
-
-static struct ifmedia_description ifm_subtype_fddi_aliases[] =
-    IFM_SUBTYPE_FDDI_ALIASES;
-
-static struct ifmedia_description ifm_subtype_fddi_option_descriptions[] =
-    IFM_SUBTYPE_FDDI_OPTION_DESCRIPTIONS;
-#endif
-
 static struct ifmedia_description ifm_subtype_ieee80211_descriptions[] =
     IFM_SUBTYPE_IEEE80211_DESCRIPTIONS;
 
@@ -462,44 +431,6 @@ static struct ifmedia_type_to_subtype ifmedia_types_to_subtypes[] = {
 			{ NULL, 0 },
 		},
 	},
-#if (__FreeBSD_version < 1200000)
-	{
-		{
-			{ &ifm_subtype_shared_descriptions[0], 0 },
-			{ &ifm_subtype_shared_aliases[0], 1 },
-			{ &ifm_subtype_tokenring_descriptions[0], 0 },
-			{ &ifm_subtype_tokenring_aliases[0], 1 },
-			{ NULL, 0 },
-		},
-		{
-			{ &ifm_shared_option_descriptions[0], 0 },
-			{ &ifm_shared_option_aliases[0], 1 },
-			{ &ifm_subtype_tokenring_option_descriptions[0], 0 },
-			{ NULL, 0 },
-		},
-		{
-			{ NULL, 0 },
-		},
-	},
-	{
-		{
-			{ &ifm_subtype_shared_descriptions[0], 0 },
-			{ &ifm_subtype_shared_aliases[0], 1 },
-			{ &ifm_subtype_fddi_descriptions[0], 0 },
-			{ &ifm_subtype_fddi_aliases[0], 1 },
-			{ NULL, 0 },
-		},
-		{
-			{ &ifm_shared_option_descriptions[0], 0 },
-			{ &ifm_shared_option_aliases[0], 1 },
-			{ &ifm_subtype_fddi_option_descriptions[0], 0 },
-			{ NULL, 0 },
-		},
-		{
-			{ NULL, 0 },
-		},
-	},
-#endif
 	{
 		{
 			{ &ifm_subtype_shared_descriptions[0], 0 },
@@ -663,7 +594,7 @@ static struct ifmedia_type_to_subtype *get_toptype_ttos(int ifmw)
 	return ttos;
 }
 
-static struct ifmedia_description *get_subtype_desc(int ifmw, 
+static struct ifmedia_description *get_subtype_desc(int ifmw,
     struct ifmedia_type_to_subtype *ttos)
 {
 	int i;
@@ -682,7 +613,7 @@ static struct ifmedia_description *get_subtype_desc(int ifmw,
 	return NULL;
 }
 
-static struct ifmedia_description *get_mode_desc(int ifmw, 
+static struct ifmedia_description *get_mode_desc(int ifmw,
     struct ifmedia_type_to_subtype *ttos)
 {
 	int i;

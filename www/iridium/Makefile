@@ -1,5 +1,5 @@
 PORTNAME=	iridium
-PORTVERSION=	2024.10.130.1
+PORTVERSION=	2025.06.137.3
 PORTREVISION=	2
 PULSEMV=	16
 PULSEV=		${PULSEMV}.1
@@ -19,7 +19,7 @@ WWW=		https://iridiumbrowser.de/
 LICENSE=	BSD3CLAUSE LGPL21 MPL11
 LICENSE_COMB=	multi
 
-ONLY_FOR_ARCHS=	aarch64 amd64 i386
+ONLY_FOR_ARCHS=	aarch64 amd64
 
 BUILD_DEPENDS=	bash:shells/bash \
 		${PYTHON_PKGNAMEPREFIX}Jinja2>0:devel/py-Jinja2@${PY_FLAVOR} \
@@ -47,7 +47,6 @@ LIB_DEPENDS=	libatk-bridge-2.0.so:accessibility/at-spi2-core \
 		libdbus-1.so:devel/dbus \
 		libdbus-glib-1.so:devel/dbus-glib \
 		libepoll-shim.so:devel/libepoll-shim \
-		libevent.so:devel/libevent \
 		libffi.so:devel/libffi \
 		libicuuc.so:devel/icu \
 		libjsoncpp.so:devel/jsoncpp \
@@ -83,7 +82,7 @@ USES=		bison compiler:c++17-lang cpe desktop-file-utils gl gmake gnome \
 CPE_VENDOR=	google
 CPE_PRODUCT=	chrome
 USE_GL=		gbm gl
-USE_GNOME=	atk dconf gdkpixbuf2 glib20 gtk30 libxml2 libxslt
+USE_GNOME=	atk dconf gdkpixbuf glib20 gtk30 libxml2 libxslt
 USE_LDCONFIG=	${DATADIR}
 USE_PERL5=	build
 USE_XORG=	x11 xcb xcomposite xcursor xext xdamage xfixes xi \
@@ -107,7 +106,6 @@ GN_ARGS+=	clang_use_chrome_plugins=false \
 		chrome_pgo_phase=0 \
 		enable_backup_ref_ptr_support=false \
 		enable_hangout_services_extension=true \
-		enable_log_error_not_reached=true \
 		enable_nacl=false \
 		enable_remoting=false \
 		fatal_linker_warnings=false \
@@ -173,13 +171,15 @@ DEBUG_VARS=		BUILDTYPE=Debug \
 			GN_ARGS+=is_component_build=false \
 			GN_ARGS+=symbol_level=1 \
 			GN_BOOTSTRAP_FLAGS+=--debug \
-			WANTSPACE="21 GB"
+			WANTSPACE="60 GB" \
+			WANTMEM="32 GB"
 DEBUG_VARS_OFF=		BUILDTYPE=Release \
 			GN_ARGS+=blink_symbol_level=0 \
 			GN_ARGS+=is_debug=false \
 			GN_ARGS+=is_official_build=true \
 			GN_ARGS+=symbol_level=0 \
-			WANTSPACE="14 GB"
+			WANTSPACE="35 GB" \
+			WANTMEM="8 GB"
 
 HEIMDAL_LIB_DEPENDS=	libkrb.so.26:security/heimdal
 KERBEROS_VARS=		GN_ARGS+=use_kerberos=true
@@ -187,7 +187,8 @@ KERBEROS_VARS_OFF=	GN_ARGS+=use_kerberos=false
 
 LTO_VARS=		GN_ARGS+=use_thin_lto=true \
 			GN_ARGS+=thin_lto_enable_optimizations=true \
-			WANTSPACE="14 GB"
+			WANTSPACE="40 GB" \
+			WANTMEM="16 GB"
 LTO_VARS_OFF=		GN_ARGS+=use_thin_lto=false
 
 MIT_LIB_DEPENDS=	libkrb.so.3:security/krb5
@@ -214,7 +215,7 @@ SNDIO_VARS_OFF=		GN_ARGS+=use_sndio=false
 IGNORE=		you have selected HEIMDAL_BASE but do not have Heimdal installed in base
 .endif
 
-LLVM_DEFAULT=		18
+LLVM_DEFAULT=		19
 BUILD_DEPENDS+=		clang${LLVM_DEFAULT}:devel/llvm${LLVM_DEFAULT}
 BINARY_ALIAS+=		cpp=${LOCALBASE}/bin/clang-cpp${LLVM_DEFAULT} \
 			cc=${LOCALBASE}/bin/clang${LLVM_DEFAULT} \
@@ -258,8 +259,10 @@ GN_ARGS+=	enable_rust=true \
 
 pre-everything::
 	@${ECHO_MSG}
-	@${ECHO_MSG} "To build Iridium, you should have around 2GB of memory"
-	@${ECHO_MSG} "and around ${WANTSPACE} of free disk space."
+	@${ECHO_MSG} "To build ${PORTNAME}, you should have at least:"
+	@${ECHO_MSG} "- ${WANTMEM} of memory"
+	@${ECHO_MSG} "- ${WANTSPACE} of free disk space"
+	@${ECHO_MSG} "- 1.5 million free inodes"
 	@${ECHO_MSG}
 
 pre-configure:
@@ -269,7 +272,7 @@ pre-configure:
 	#./build/linux/unbundle/remove_bundled_libraries.py [list of preserved]
 	cd ${WRKSRC} && ${SETENV} ${CONFIGURE_ENV} ${PYTHON_CMD} \
 		./build/linux/unbundle/replace_gn_files.py --system-libraries \
-		dav1d flac fontconfig freetype harfbuzz-ng icu libdrm libevent libpng \
+		dav1d flac fontconfig harfbuzz-ng libdrm libpng \
 		libusb libwebp libxml libxslt openh264 opus || ${FALSE}
 	# Iridium uses an unreleased version of FFmpeg, so configure it
 	cd ${WRKSRC}/media/ffmpeg && \
@@ -282,7 +285,8 @@ pre-configure:
 .endfor
 	touch ${WRKDIR}/pulseaudio-${PULSEV}/src/pulse/version.h
 	@${REINPLACE_CMD} -e 's|$${LOCALBASE}|${LOCALBASE}|;s|$${MODCLANG_VERSION}|${LLVM_DEFAULT}|' \
-		${WRKSRC}/build/rust/rust_bindgen.gni
+		${WRKSRC}/build/rust/rust_bindgen.gni \
+		${WRKSRC}/build/rust/rust_bindgen_generator.gni
 
 do-configure:
 	# GN generator bootstrapping and generating ninja files

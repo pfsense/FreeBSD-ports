@@ -1,10 +1,9 @@
 PORTNAME=	gammaray
-DISTVERSION=	3.1.0
+DISTVERSION=	3.2.0
 CATEGORIES=	devel
 MASTER_SITES=	https://github.com/KDAB/GammaRay/releases/download/v${DISTVERSION}/
 
-# implicit-approval+: arrowd
-MAINTAINER=	bofh@FreeBSD.org
+MAINTAINER=	kde@FreeBSD.org
 COMMENT=	Debugging tool for Qt-application
 WWW=		https://www.kdab.com/development-resources/qt-tools/gammaray/
 
@@ -24,6 +23,7 @@ LICENSE_FILE_MIT=	${WRKSRC}/LICENSES/MIT.txt
 
 LIB_DEPENDS=	libdwarf.so:devel/libdwarf \
 		libelf.so:devel/libelf
+RUN_DEPENDS=	lsof:sysutils/lsof
 
 FLAVORS=	qt6 qt5
 FLAVOR?=	qt6
@@ -46,10 +46,11 @@ QT_VERSION=${QT5_VERSION:C/\./_/:C/\..*//}
 .else
 USES+=		gl kde:6 qt:6
 USE_GL=		gl
-USE_QT+=	base positioning shadertools
+USE_QT+=	base positioning shadertools tools:build
 QT_VERSION=${QT6_VERSION:C/\./_/:C/\..*//}
 .endif
 
+CMAKE_ARGS+=	QT_VERSION_MAJOR=${_QT_VER}
 CMAKE_ON=	STACK_DETAILS_DWARF
 CMAKE_OFF=	STACK_DETAILS_AUTO_DETECT
 
@@ -74,5 +75,7 @@ PLIST_SUB+=	ARCH=${ARCH:S/amd64/x86_64/:S/i386/i686/:C/armv./arm/} \
 		PORTMAJMIN=${PORTVERSION:C/(.*)\..*/\1/} \
 		PORTVERSION=${PORTVERSION} \
 		QTVER=${QT_VERSION}
+
+WRKSRC=		${WRKDIR}/GammaRay-${DISTVERSION}
 
 .include <bsd.port.mk>

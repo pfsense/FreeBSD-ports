@@ -1,10 +1,11 @@
 PORTNAME=	haishoku
 DISTVERSION=	1.1.8
+PORTREVISION=	1
 CATEGORIES=	graphics python
 MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
-MAINTAINER=	DtxdF@disroot.org
+MAINTAINER=	dtxdf@FreeBSD.org
 COMMENT=	Tool for grabbing the representative color palette from an image
 WWW=		https://github.com/LanceGin/haishoku/
 

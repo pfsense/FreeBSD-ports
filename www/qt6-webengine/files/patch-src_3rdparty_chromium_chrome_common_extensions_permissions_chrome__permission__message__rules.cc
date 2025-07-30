@@ -1,4 +1,4 @@
---- src/3rdparty/chromium/chrome/common/extensions/permissions/chrome_permission_message_rules.cc.orig	2023-12-12 22:08:45 UTC
+--- src/3rdparty/chromium/chrome/common/extensions/permissions/chrome_permission_message_rules.cc.orig	2025-02-21 12:29:33 UTC
 +++ src/3rdparty/chromium/chrome/common/extensions/permissions/chrome_permission_message_rules.cc
 @@ -287,7 +287,7 @@ int GetEnterpriseReportingPrivatePermissionMessageId()
  #endif

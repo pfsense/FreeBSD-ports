@@ -1,10 +1,11 @@
 PORTNAME=	pytomlpp
 DISTVERSION=	1.0.13
+PORTREVISION=	1
 CATEGORIES=	textproc python
 MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
-MAINTAINER=	DtxdF@disroot.org
+MAINTAINER=	dtxdf@FreeBSD.org
 COMMENT=	Python wrapper for toml++
 WWW=		https://pypi.org/project/${PORTNAME}/ \
 		https://github.com/bobfang1992/${PORTNAME}

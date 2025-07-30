@@ -1,4 +1,4 @@
---- net/base/network_change_notifier_passive.cc.orig	2023-06-05 19:39:05 UTC
+--- net/base/network_change_notifier_passive.cc.orig	2025-05-31 17:16:41 UTC
 +++ net/base/network_change_notifier_passive.cc
 @@ -107,7 +107,7 @@ NetworkChangeNotifierPassive::GetAddressMapOwnerIntern
  NetworkChangeNotifier::NetworkChangeCalculatorParams

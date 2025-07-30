@@ -1,5 +1,5 @@
 PORTNAME=	proj
-DISTVERSION=	9.5.1
+DISTVERSION=	9.6.0
 PORTEPOCH=	1
 CATEGORIES=	graphics geography
 MASTER_SITES=	https://github.com/OSGeo/PROJ/releases/download/${DISTVERSION}/ \
@@ -18,7 +18,7 @@ LIB_DEPENDS=	libcurl.so:ftp/curl \
 TEST_DEPENDS=	googletest>0:devel/googletest
 #RUN_DEPENDS=	proj-data>=0:graphics/proj-data
 
-USES=		compiler:c++11-lang cmake:testing cpe pathfix pkgconfig sqlite
+USES=		compiler:c++17-lang cmake:testing cpe pathfix pkgconfig sqlite
 CPE_VENDOR=	proj_project
 USE_LDCONFIG=	yes
 

@@ -1,6 +1,6 @@
 PORTNAME=	time-machine
-DISTVERSION=	2.11.0
-PORTREVISION=	1
+DISTVERSION=	2.13.0
+PORTREVISION=	0
 CATEGORIES=	devel python
 MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -22,6 +22,6 @@ USES=		python
 USE_PYTHON=	autoplist pep517
 
 post-install:
-		${STRIP_CMD} ${STAGEDIR}${PYTHON_SITELIBDIR}/_time_machine${PYTHON_EXT_SUFFIX}.so
+		${STRIP_CMD} ${STAGEDIR}${PYTHON_SITELIBDIR}/_time_machine${PYTHON_TAG}.so
 
 .include <bsd.port.mk>

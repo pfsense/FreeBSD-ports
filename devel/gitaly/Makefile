@@ -19,15 +19,15 @@ LIB_DEPENDS=	libcurl.so:ftp/curl \
 		libiconv.so:converters/libiconv \
 		libpcre2-8.so:devel/pcre2
 
-USES=		cpe gmake go:modules,no_targets,1.22 iconv pkgconfig
+USES=		cpe gmake go:modules,no_targets,1.23 iconv pkgconfig
 
 CPE_VENDOR=	gitlab
 
 USE_GITLAB=	yes
 GL_ACCOUNT=	gitlab-org
-GO_MOD_DIST=	gitlab
-GO_MODULE=	gitlab.com/gitlab-org/gitaly/v17
 GL_TUPLE=	gitlab-org:git:v${GITLAB_GIT_VERSION}:_build/_build/deps/git-v${GITLAB_GIT_VERSION_SHORT}
+GO_MOD_DIST=	gitlab
+GO_MODULE=	gitlab.com/gitlab-org/gitaly/v18
 
 MAKE_ENV=	GOFLAGS="${GO_BUILDFLAGS}"
 # make sure to pass go build options into make process

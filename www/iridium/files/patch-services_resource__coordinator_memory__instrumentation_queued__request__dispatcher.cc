@@ -1,4 +1,4 @@
---- services/resource_coordinator/memory_instrumentation/queued_request_dispatcher.cc.orig	2024-06-25 12:08:48 UTC
+--- services/resource_coordinator/memory_instrumentation/queued_request_dispatcher.cc.orig	2025-06-19 07:37:57 UTC
 +++ services/resource_coordinator/memory_instrumentation/queued_request_dispatcher.cc
 @@ -54,7 +54,7 @@ uint32_t CalculatePrivateFootprintKb(const mojom::RawO
                                       uint32_t shared_resident_kb) {
@@ -17,17 +17,17 @@
 +#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_ANDROID) || BUILDFLAG(IS_BSD)
    os_dump->private_footprint_swap_kb =
        internal_os_dump.platform_private_footprint->vm_swap_bytes / 1024;
- #endif
-@@ -219,7 +219,7 @@ void QueuedRequestDispatcher::SetUpAndDispatch(
+   os_dump->mappings_count = internal_os_dump.mappings_count;
+@@ -222,7 +222,7 @@ void QueuedRequestDispatcher::SetUpAndDispatch(
  
  // On most platforms each process can dump data about their own process
  // so ask each process to do so Linux is special see below.
 -#if !BUILDFLAG(IS_LINUX) && !BUILDFLAG(IS_CHROMEOS)
 +#if !BUILDFLAG(IS_LINUX) && !BUILDFLAG(IS_CHROMEOS) && !BUILDFLAG(IS_BSD)
      request->pending_responses.insert({client_info.pid, ResponseType::kOSDump});
-     client->RequestOSMemoryDump(request->memory_map_option(),
-                                 {base::kNullProcessId},
-@@ -234,7 +234,7 @@ void QueuedRequestDispatcher::SetUpAndDispatch(
+     client->RequestOSMemoryDump(
+         request->memory_map_option(), request->memory_dump_flags(),
+@@ -237,7 +237,7 @@ void QueuedRequestDispatcher::SetUpAndDispatch(
  
  // In some cases, OS stats can only be dumped from a privileged process to
  // get around to sandboxing/selinux restrictions (see crbug.com/461788).
@@ -36,7 +36,7 @@
    std::vector<base::ProcessId> pids;
    mojom::ClientProcess* browser_client = nullptr;
    base::ProcessId browser_client_pid = base::kNullProcessId;
-@@ -280,7 +280,7 @@ void QueuedRequestDispatcher::SetUpAndDispatchVmRegion
+@@ -284,7 +284,7 @@ void QueuedRequestDispatcher::SetUpAndDispatchVmRegion
      const OsCallback& os_callback) {
  // On Linux, OS stats can only be dumped from a privileged process to
  // get around to sandboxing/selinux restrictions (see crbug.com/461788).
@@ -45,7 +45,7 @@
    mojom::ClientProcess* browser_client = nullptr;
    base::ProcessId browser_client_pid = 0;
    for (const auto& client_info : clients) {
-@@ -330,7 +330,7 @@ QueuedRequestDispatcher::FinalizeVmRegionRequest(
+@@ -334,7 +334,7 @@ QueuedRequestDispatcher::FinalizeVmRegionRequest(
      // each client process provides 1 OS dump, % the case where the client is
      // disconnected mid dump.
      OSMemDumpMap& extra_os_dumps = response.second.os_dumps;
@@ -54,7 +54,7 @@
      for (auto& kv : extra_os_dumps) {
        auto pid = kv.first == base::kNullProcessId ? original_pid : kv.first;
        DCHECK(results.find(pid) == results.end());
-@@ -391,7 +391,7 @@ void QueuedRequestDispatcher::Finalize(QueuedRequest* 
+@@ -395,7 +395,7 @@ void QueuedRequestDispatcher::Finalize(QueuedRequest* 
      // crash). In the latter case (OS_LINUX) we expect the full map to come
      // from the browser process response.
      OSMemDumpMap& extra_os_dumps = response.second.os_dumps;

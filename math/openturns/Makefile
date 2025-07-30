@@ -1,7 +1,7 @@
 PORTNAME=	openturns
 DISTVERSIONPREFIX=	v
-DISTVERSION=	1.23
-PORTREVISION=	5
+DISTVERSION=	1.24
+PORTREVISION=	6
 CATEGORIES=	math
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -11,8 +11,6 @@ WWW=		https://openturns.github.io/www/ \
 
 LICENSE=	LGPL3
 LICENSE_FILE=	${WRKSRC}/COPYING.LESSER
-
-BROKEN_FreeBSD_15=	compilation fails with clang-19, see https://github.com/openturns/openturns/issues/2811
 
 BUILD_DEPENDS=	boost-libs>0:devel/boost-libs \
 		flex:textproc/flex \
@@ -98,5 +96,7 @@ PORTEXAMPLES=		*
 
 post-install:
 	@${RM} -r ${STAGEDIR}${DOCSDIR}
+
+# tests as of 1.24: 99% tests passed, 1 tests failed out of 537, see https://github.com/openturns/openturns/issues/2862
 
 .include <bsd.port.mk>

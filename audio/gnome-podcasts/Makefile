@@ -1,6 +1,6 @@
 PORTNAME=	podcasts
 DISTVERSION=	0.7.1
-PORTREVISION=	6
+PORTREVISION=	11
 CATEGORIES=	audio
 PKGNAMEPREFIX=	gnome-
 
@@ -15,7 +15,7 @@ BUILD_DEPENDS=	bash:shells/bash
 
 USES=		cargo gettext gnome gstreamer meson pkgconfig sqlite ssl
 USE_GITLAB=	yes
-USE_GNOME=	gdkpixbuf2 gtk40 libadwaita
+USE_GNOME=	gdkpixbuf gtk40 libadwaita
 USE_GSTREAMER=	bad good libav
 GL_SITE=	https://gitlab.gnome.org
 GL_ACCOUNT=	World
@@ -27,7 +27,7 @@ GLIB_SCHEMAS=	org.gnome.Podcasts.gschema.xml
 
 .include <bsd.port.options.mk>
 
-.if ${ARCH} == i386 || ${ARCH} == powerpc
+.if ${ARCH} == i386 || ${ARCH} == powerpc || ${ARCH:Marmv?}
 # https://github.com/rust-lang/rust/issues/85598
 LTO_UNSAFE=	yes
 .endif

@@ -1,10 +1,8 @@
 PORTNAME=	inkscape
-DISTVERSION=	1.4
+DISTVERSION=	1.4.2
+PORTREVISION=	1
 CATEGORIES=	graphics gnome
 MASTER_SITES=	https://media.inkscape.org/dl/resources/file/
-
-PATCH_SITES=	https://gitlab.com/${PORTNAME}/${PORTNAME}/-/commit/
-PATCHFILES+=	eb6dadcf1a5c660167ba43f3606c8e7cc6529787.patch:-p1 # https://gitlab.com/inkscape/inkscape/-/merge_requests/6755
 
 MAINTAINER=	gnome@FreeBSD.org
 COMMENT=	Full featured open source SVG editor
@@ -39,7 +37,7 @@ RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}numpy>0:math/py-numpy@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}cachecontrol>0:www/py-cachecontrol@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}cssselect>0:www/py-cssselect@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}filelock>=3.7.1:sysutils/py-filelock@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}lxml>0:devel/py-lxml@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}lxml5>0:devel/py-lxml5@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}requests>0:www/py-requests@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}scour>0:textproc/py-scour@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}tinycss2>0:textproc/py-tinycss2@${PY_FLAVOR} \
@@ -50,12 +48,12 @@ TEST_DEPENDS=	googletest>0:devel/googletest \
 USES=		compiler:c++20-lang cmake:testing cpe desktop-file-utils ghostscript:run \
 		gnome jpeg pathfix pkgconfig python \
 		readline shebangfix tar:xz xorg
-USE_GNOME=	cairo gdkpixbuf2 glibmm gtkmm30 gtksourceview4 libxml2 libxslt
+USE_GNOME=	cairo gdkpixbuf glibmm gtkmm30 gtksourceview4 libxml2 libxslt
 USE_PYTHON=	cython
 USE_XORG=	sm ice x11 xext
 USE_LDCONFIG=	yes
 
-DATETAG=	2024-10-09_e7c3feb100
+DATETAG=	2025-05-08_ebf0e940d0
 WRKSRC=		${WRKDIR}/${PORTNAME}-${DISTVERSION}_${DATETAG}
 
 BINARY_ALIAS=	python3=${PYTHON_CMD}

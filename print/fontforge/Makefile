@@ -1,6 +1,6 @@
 PORTNAME=	fontforge
 DISTVERSION=	20230101
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	print
 MASTER_SITES=	https://github.com/${PORTNAME}/${PORTNAME}/releases/download/${DISTVERSION}/
 
@@ -47,7 +47,7 @@ GIF_LIB_DEPENDS=	libgif.so:graphics/giflib
 GIF_CMAKE_BOOL=	ENABLE_LIBGIF
 
 GTK3_LIB_DEPENDS=	libharfbuzz.so:print/harfbuzz
-GTK3_USE=	gnome=gdkpixbuf2,gtk30
+GTK3_USE=	gnome=gdkpixbuf,gtk30
 
 JPEG_USES=	jpeg
 JPEG_CMAKE_BOOL=ENABLE_LIBJPEG

@@ -1,6 +1,5 @@
 %%SITE_PERL%%/Test/Builder.pm
 %%SITE_PERL%%/Test/Builder/Formatter.pm
-%%SITE_PERL%%/Test/Builder/IO/Scalar.pm
 %%SITE_PERL%%/Test/Builder/Module.pm
 %%SITE_PERL%%/Test/Builder/Tester.pm
 %%SITE_PERL%%/Test/Builder/Tester/Color.pm
@@ -59,6 +58,7 @@
 %%SITE_PERL%%/Test2/Compare/String.pm
 %%SITE_PERL%%/Test2/Compare/Undef.pm
 %%SITE_PERL%%/Test2/Compare/Wildcard.pm
+%%SITE_PERL%%/Test2/Env.pm
 %%SITE_PERL%%/Test2/Event.pm
 %%SITE_PERL%%/Test2/Event/Bail.pm
 %%SITE_PERL%%/Test2/Event/Diag.pm
@@ -178,6 +178,7 @@
 %%SITE_PERL%%/Test2/Util/HashBase.pm
 %%SITE_PERL%%/Test2/Util/Importer.pm
 %%SITE_PERL%%/Test2/Util/Ref.pm
+%%SITE_PERL%%/Test2/Util/Sig.pm
 %%SITE_PERL%%/Test2/Util/Stash.pm
 %%SITE_PERL%%/Test2/Util/Sub.pm
 %%SITE_PERL%%/Test2/Util/Table.pm
@@ -238,6 +239,7 @@
 %%PERL5_MAN3%%/Test2::Compare::String.3.gz
 %%PERL5_MAN3%%/Test2::Compare::Undef.3.gz
 %%PERL5_MAN3%%/Test2::Compare::Wildcard.3.gz
+%%PERL5_MAN3%%/Test2::Env.3.gz
 %%PERL5_MAN3%%/Test2::Event.3.gz
 %%PERL5_MAN3%%/Test2::Event::Bail.3.gz
 %%PERL5_MAN3%%/Test2::Event::Diag.3.gz
@@ -357,6 +359,7 @@
 %%PERL5_MAN3%%/Test2::Util::HashBase.3.gz
 %%PERL5_MAN3%%/Test2::Util::Importer.3.gz
 %%PERL5_MAN3%%/Test2::Util::Ref.3.gz
+%%PERL5_MAN3%%/Test2::Util::Sig.3.gz
 %%PERL5_MAN3%%/Test2::Util::Stash.3.gz
 %%PERL5_MAN3%%/Test2::Util::Sub.3.gz
 %%PERL5_MAN3%%/Test2::Util::Table.3.gz
@@ -373,7 +376,6 @@
 %%PERL5_MAN3%%/Test2::Workflow::Task::Group.3.gz
 %%PERL5_MAN3%%/Test::Builder.3.gz
 %%PERL5_MAN3%%/Test::Builder::Formatter.3.gz
-%%PERL5_MAN3%%/Test::Builder::IO::Scalar.3.gz
 %%PERL5_MAN3%%/Test::Builder::Module.3.gz
 %%PERL5_MAN3%%/Test::Builder::Tester.3.gz
 %%PERL5_MAN3%%/Test::Builder::Tester::Color.3.gz

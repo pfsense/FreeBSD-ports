@@ -9,6 +9,7 @@ COMMENT=	Accessibilty features for Qt6
 USES=		cmake compiler:c++17-lang gl pkgconfig qt-dist:6
 USE_GL=		opengl
 USE_QT=		base declarative multimedia
+USE_LDCONFIG=	${PREFIX}/${QT_LIBDIR_REL}
 
 OPTIONS_DEFINE=		ALSA
 OPTIONS_DEFAULT=	SPEECHD

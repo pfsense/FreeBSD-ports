@@ -1,5 +1,6 @@
 PORTNAME=	opendnssec
 DISTVERSION=	2.1.14
+PORTREVISION=	1
 CATEGORIES=	dns
 MASTER_SITES=	https://dist.opendnssec.org/source/
 PKGNAMESUFFIX=	2
@@ -12,10 +13,11 @@ LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
 BUILD_DEPENDS=	ldns>=1.6.16:dns/ldns
-LIB_DEPENDS=	libldns.so:dns/ldns \
-		libxml2.so:textproc/libxml2
+LIB_DEPENDS=	libldns.so:dns/ldns
 
-USES=		autoreconf cpe libtool ssl
+USES=		autoreconf cpe gnome libtool ssl
+USE_GNOME=	libxml2
+
 USE_RC_SUBR=	opendnssec
 
 GNU_CONFIGURE=	yes

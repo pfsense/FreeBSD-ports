@@ -1,5 +1,5 @@
 PORTNAME=	webstorm
-PORTVERSION=	2024.3.1
+DISTVERSION=	2024.3.5
 CATEGORIES=	devel
 MASTER_SITES=	https://download-cdn.jetbrains.com/webstorm/
 PKGNAMEPREFIX=	jetbrains-
@@ -24,10 +24,9 @@ RUN_DEPENDS=	intellij-fsnotifier>0:java/intellij-fsnotifier \
 		jetbrains-sqlite>=241.15989.150:devel/jetbrains-sqlite \
 		lsof:sysutils/lsof
 
-USES=		cpe python:run
+USES=		cpe java python:run
 
 CPE_VENDOR=	jetbrains
-USE_JAVA=	yes
 JAVA_VERSION=	17+
 
 DATADIR=	${PREFIX}/share/jetbrains/${PORTNAME}
@@ -38,7 +37,7 @@ NO_BUILD=	yes
 SUB_FILES=	${PORTNAME} ${PORTNAME}.desktop pkg-message
 SUB_LIST=	JAVA_HOME=${JAVA_HOME}
 
-WRKSRC=		${WRKDIR}/WebStorm-243.22562.112
+WRKSRC=		${WRKDIR}/WebStorm-243.26053.12
 
 _PTY4J_ARCH=	freebsd/${ARCH:S/amd64/x86-64/}
 _SQLITE_ARCH=	linux-${ARCH:S/amd64/x86_64/}
@@ -61,8 +60,7 @@ do-install:
 		${WRKSRC}/lib/native \
 		${WRKSRC}/lib/pty4j \
 		${WRKSRC}/plugins/cwm-plugin \
-		${WRKSRC}/plugins/gateway-plugin \
-		${WRKSRC}/plugins/gateway-terminal \
+		${WRKSRC}/plugins/gateway-plugin/lib/remote-dev-workers \
 		${WRKSRC}/plugins/remote-dev-server \
 		${WRKSRC}/plugins/webp/lib/libwebp
 	${MKDIR} ${STAGEDIR}${DATADIR}

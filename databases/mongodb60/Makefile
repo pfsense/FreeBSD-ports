@@ -1,8 +1,12 @@
 PORTNAME=	mongodb
 DISTVERSIONPREFIX=	r
-DISTVERSION=	6.0.19
+DISTVERSION=	6.0.24
 CATEGORIES=	databases net
+MASTER_SITES=	https://hg.mozilla.org/mozilla-central/raw-rev/:patches
 PKGNAMESUFFIX=	${DISTVERSION:R:S/.//}
+DISTFILES=	223087fdc29f18678f6174e9807b8780e439acf6:patches # https://bugzilla.mozilla.org/1894423
+EXTRACT_ONLY=	${GH_ACCOUNT}-${GH_PROJECT}-${DISTVERSIONPREFIX}${DISTVERSION}_GH0.tar.gz \
+		${GH_ACCOUNT}-forks-spidermonkey-${MOZJS_TAG}_GH0.tar.gz
 
 MAINTAINER=	ronald@FreeBSD.org
 COMMENT=	MongoDB Community Edition (6.0.x Branch)
@@ -13,6 +17,9 @@ LICENSE_COMB=	multi
 LICENSE_NAME_SSPLv1=	Server Side Public License Version 1
 LICENSE_FILE_SSPLv1=	${WRKSRC}/LICENSE-Community.txt
 LICENSE_PERMS_SSPLv1=	dist-mirror dist-sell pkg-mirror pkg-sell auto-accept
+
+DEPRECATED=	EOL starting August 2025, see https://www.mongodb.com/legal/support-policy/lifecycles, please use databases/mongodb70
+EXPIRATION_DATE=	2025-10-30
 
 ONLY_FOR_ARCHS=	aarch64 amd64 powerpc64le
 ONLY_FOR_ARCHS_REASON=	only ported to amd64, aarch64, and powerpc64le on FreeBSD; upstream supports arm64, ppc64le, s390x, and x86-64
@@ -69,7 +76,8 @@ MAKE_ARGS=	--cxx-std=17 \
 		MONGO_VERSION=${DISTVERSION} \
 		VERBOSE=on
 
-CFLAGS+=	-DBOOST_NO_CXX98_FUNCTION_BASE
+CFLAGS+=	-DBOOST_NO_CXX98_FUNCTION_BASE \
+		-Wno-deprecated-builtins
 
 CONFLICTS_INSTALL=	mongodb[0-9][0-9]
 
@@ -98,12 +106,6 @@ NOAVX_MAKE_ARGS=	--experimental-optimization="-sandybridge"
 SASL_LIB_DEPENDS=	libsasl2.so:security/cyrus-sasl2
 SASL_MAKE_ARGS=		--use-sasl-client
 
-.include <bsd.port.options.mk>
-
-.if ${OPSYS} == FreeBSD && ${OSVERSION} >= 1500026 # llvm 19.1.2 import
-USES+=		llvm:max=18,build
-.endif
-
 .include <bsd.port.pre.mk>
 
 ALL_TARGET=	install-core
@@ -122,16 +124,17 @@ MOZJS_ARCH=	ppc64le
 MOZJS_ARCH=	${ARCH}
 .endif
 
+post-extract:
+# Verify we downloaded the proper mozjs git tag.
+	${SH} -xc "test \"X`grep -E '^LIB_GIT_REVISION=' ${WRKSRC}/src/third_party/mozjs/get-sources.sh`\" = \"XLIB_GIT_REVISION=${MOZJS_TAG}\""
+
 post-patch:
 # fix build with python-3.11
 	${REINPLACE_CMD} -e 's#rU#r#g' ${WRKDIR}/spidermonkey-${MOZJS_TAG}/python/mozbuild/mozbuild/util.py
 	${REINPLACE_CMD} -e 's#rU#r#g' ${WRKDIR}/spidermonkey-${MOZJS_TAG}/python/mozbuild/mozbuild/preprocessor.py
 	${REINPLACE_CMD} -e 's#rU#r#g' ${WRKDIR}/spidermonkey-${MOZJS_TAG}/python/mozbuild/mozbuild/backend/base.py
 	${REINPLACE_CMD} -e 's#rU#r#g' ${WRKDIR}/spidermonkey-${MOZJS_TAG}/python/mozbuild/mozbuild/action/process_define_files.py
-
-pre-configure:
-	# Verify we downloaded the proper mozjs git tag.
-	${SH} -c "test \"X`grep -E '^LIB_GIT_REVISION=' ${WRKSRC}/src/third_party/mozjs/get-sources.sh`\" = \"XLIB_GIT_REVISION=${MOZJS_TAG}\""
+	${PATCH} -d ${WRKSRC}/src/third_party/mozjs/extract --quiet -p1 -V none < ${DISTDIR}/223087fdc29f18678f6174e9807b8780e439acf6
 
 do-configure:
 # Replacement of ${WRKSRC}/src/third_party/mozjs/get-sources.sh

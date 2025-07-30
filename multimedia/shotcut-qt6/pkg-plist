@@ -1,5 +1,4 @@
 bin/shotcut
-bin/shotcut-real
 lib/libCuteLogger.so
 share/applications/org.shotcut.Shotcut.desktop
 share/icons/hicolor/128x128/apps/org.shotcut.Shotcut.png
@@ -101,6 +100,8 @@ share/mime/packages/org.shotcut.Shotcut.xml
 %%DATADIR%%/qml/filters/audiolevelgraph/meta.qml
 %%DATADIR%%/qml/filters/audiolevelgraph/ui.qml
 %%DATADIR%%/qml/filters/audiolevelgraph/vui.qml
+%%DATADIR%%/qml/filters/bigsh0t_eq_cap/meta.qml
+%%DATADIR%%/qml/filters/bigsh0t_eq_cap/ui.qml
 %%DATADIR%%/qml/filters/bigsh0t_eq_mask/icon.webp
 %%DATADIR%%/qml/filters/bigsh0t_eq_mask/meta.qml
 %%DATADIR%%/qml/filters/bigsh0t_eq_mask/ui.qml
@@ -112,6 +113,8 @@ share/mime/packages/org.shotcut.Shotcut.xml
 %%DATADIR%%/qml/filters/bigsh0t_eq_to_stereo/meta.qml
 %%DATADIR%%/qml/filters/bigsh0t_eq_to_stereo/ui.qml
 %%DATADIR%%/qml/filters/bigsh0t_eq_to_stereo/vui.qml
+%%DATADIR%%/qml/filters/bigsh0t_eq_wrap/meta.qml
+%%DATADIR%%/qml/filters/bigsh0t_eq_wrap/ui.qml
 %%DATADIR%%/qml/filters/bigsh0t_hemi_to_eq/icon.webp
 %%DATADIR%%/qml/filters/bigsh0t_hemi_to_eq/meta.qml
 %%DATADIR%%/qml/filters/bigsh0t_hemi_to_eq/ui.qml
@@ -251,6 +254,9 @@ share/mime/packages/org.shotcut.Shotcut.xml
 %%DATADIR%%/qml/filters/gradient/meta.qml
 %%DATADIR%%/qml/filters/gradient/ui.qml
 %%DATADIR%%/qml/filters/gradient/vui.qml
+%%DATADIR%%/qml/filters/gradientmap/icon.webp
+%%DATADIR%%/qml/filters/gradientmap/meta.qml
+%%DATADIR%%/qml/filters/gradientmap/ui.qml
 %%DATADIR%%/qml/filters/grain/meta.qml
 %%DATADIR%%/qml/filters/grain/ui.qml
 %%DATADIR%%/qml/filters/grid/icon.webp
@@ -262,6 +268,12 @@ share/mime/packages/org.shotcut.Shotcut.xml
 %%DATADIR%%/qml/filters/hqdn3d/icon.webp
 %%DATADIR%%/qml/filters/hqdn3d/meta.qml
 %%DATADIR%%/qml/filters/hqdn3d/ui.qml
+%%DATADIR%%/qml/filters/hslprimaries/icon.webp
+%%DATADIR%%/qml/filters/hslprimaries/meta.qml
+%%DATADIR%%/qml/filters/hslprimaries/ui.qml
+%%DATADIR%%/qml/filters/hslrange/icon.webp
+%%DATADIR%%/qml/filters/hslrange/meta.qml
+%%DATADIR%%/qml/filters/hslrange/ui.qml
 %%DATADIR%%/qml/filters/hue_lightness_saturation/icon.webp
 %%DATADIR%%/qml/filters/hue_lightness_saturation/meta.qml
 %%DATADIR%%/qml/filters/hue_lightness_saturation/ui.qml
@@ -406,6 +418,8 @@ share/mime/packages/org.shotcut.Shotcut.xml
 %%DATADIR%%/qml/filters/stabilize/icon.webp
 %%DATADIR%%/qml/filters/stabilize/meta.qml
 %%DATADIR%%/qml/filters/stabilize/ui.qml
+%%DATADIR%%/qml/filters/strobe/meta.qml
+%%DATADIR%%/qml/filters/strobe/ui.qml
 %%DATADIR%%/qml/filters/subtitle/icon.webp
 %%DATADIR%%/qml/filters/subtitle/meta.qml
 %%DATADIR%%/qml/filters/subtitle/ui.qml
@@ -463,6 +477,7 @@ share/mime/packages/org.shotcut.Shotcut.xml
 %%DATADIR%%/qml/modules/Shotcut/Controls/Button.qml
 %%DATADIR%%/qml/modules/Shotcut/Controls/ColorPicker.qml
 %%DATADIR%%/qml/modules/Shotcut/Controls/ComboBox.qml
+%%DATADIR%%/qml/modules/Shotcut/Controls/CurveComboBox.qml
 %%DATADIR%%/qml/modules/Shotcut/Controls/DoubleSpinBox.qml
 %%DATADIR%%/qml/modules/Shotcut/Controls/EditMenu.qml
 %%DATADIR%%/qml/modules/Shotcut/Controls/Gauge.qml
@@ -527,6 +542,7 @@ share/mime/packages/org.shotcut.Shotcut.xml
 %%DATADIR%%/translations/shotcut_eu.qm
 %%DATADIR%%/translations/shotcut_fi.qm
 %%DATADIR%%/translations/shotcut_fr.qm
+%%DATADIR%%/translations/shotcut_ga.qm
 %%DATADIR%%/translations/shotcut_gd.qm
 %%DATADIR%%/translations/shotcut_gl.qm
 %%DATADIR%%/translations/shotcut_he_IL.qm

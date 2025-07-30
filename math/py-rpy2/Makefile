@@ -1,5 +1,6 @@
 PORTNAME=	rpy2
-PORTVERSION=	3.5.16
+PORTVERSION=	3.5.17
+PORTREVISION=	1
 CATEGORIES=	math python
 MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -27,20 +28,16 @@ USE_PYTHON=	autoplist concurrent pep517
 
 MAKE_ENV=	RPY2_CFFI_MODE=BOTH
 
-OPTIONS_DEFINE=	PANDAS
-OPTIONS_DEFAULT=PANDAS
+OPTIONS_DEFINE=	NUMPY PANDAS
+OPTIONS_DEFAULT=NUMPY PANDAS
+NUMPY__DESC=	Numpy support
 PANDAS_DESC=	Pandas support
 
-PANDAS_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}numpy>=0,1:math/py-numpy@${PY_FLAVOR} \
+NUMPY_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}numpy>=1.26,1:math/py-numpy@${PY_FLAVOR}
+PANDAS_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}numpy>=1.26,1:math/py-numpy@${PY_FLAVOR} \
 			${PYTHON_PKGNAMEPREFIX}pandas>=1.3.5,1:math/py-pandas@${PY_FLAVOR}
-
-.include <bsd.port.pre.mk>
-
-.if ${PYTHON_REL} < 30900
-RUN_DEPENDS+=	${PYTHON_PKGNAMEPREFIX}backports.zoneinfo>=0:devel/py-backports.zoneinfo@${PY_FLAVOR}
-.endif
 
 post-install:
 	${FIND} ${STAGEDIR}${PYTHON_SITELIBDIR} -name '*.so' -exec ${STRIP_CMD} {} +
 
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

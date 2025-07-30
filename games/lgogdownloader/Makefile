@@ -1,5 +1,5 @@
 PORTNAME=	lgogdownloader
-DISTVERSION=	3.15
+DISTVERSION=	3.17
 PORTREVISION=	1
 CATEGORIES=	games
 MASTER_SITES=	https://github.com/Sude-/${PORTNAME}/releases/download/v${DISTVERSION}/

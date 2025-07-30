@@ -1,6 +1,7 @@
 PORTNAME=	mongodb
 DISTVERSIONPREFIX=	r
-DISTVERSION=	7.0.15
+DISTVERSION=	7.0.21
+PORTREVISION=	2
 CATEGORIES=	databases net
 PKGNAMESUFFIX=	${DISTVERSION:R:S/.//}
 
@@ -22,24 +23,29 @@ BUILD_DEPENDS=	${PY_SETUPTOOLS} \
 		${PYTHON_PKGNAMEPREFIX}packaging>0:devel/py-packaging@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}psutil>0:sysutils/py-psutil@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}pymongo>0:databases/py-pymongo@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}pyyaml>=3.11:devel/py-pyyaml@${PY_FLAVOR}
+		${PYTHON_PKGNAMEPREFIX}pyyaml>=3.11:devel/py-pyyaml@${PY_FLAVOR} \
+		rust-cbindgen>0:devel/rust-cbindgen
 # build depends used while running ${WRKSRC}/src/third_party/mozjs/gen-config.sh
 BUILD_DEPENDS+=	gm4:devel/m4 \
 		gsed:textproc/gsed
 LIB_DEPENDS=	libcurl.so:ftp/curl \
-		libpcre2-8.so:devel/pcre2 \
 		libsnappy.so:archivers/snappy \
 		libstemmer.so:textproc/snowballstemmer \
 		libunwind.so:devel/libunwind \
 		libyaml-cpp.so:devel/yaml-cpp \
 		libzstd.so:archivers/zstd
 
+FLAVORS=	default armv80a
+
+armv80a_PKGNAMESUFFIX=	${DISTVERSION:R:S/.//}-armv80a
+
 USES=		compiler:c++20-lang cpe python:build scons shebangfix ssl
 # gmake is used while running ${WRKSRC}/src/third_party/mozjs/gen-config.sh
 USES+=		gmake pkgconfig
+CPE_PRODUCT=	mongodb
 
 # mozjs tag comes from ${WRKSRC}/src/third_party/mozjs/get-sources.sh
-MOZJS_TAG=	22954e1ce6bf72c7cf36f3a29ef030fff4ff6d33
+MOZJS_TAG=	98c8be22bec7bb650156e0d389b425322d8c323c
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	mongodb mongodb-forks:mozjs
@@ -50,7 +56,12 @@ USE_RC_SUBR=	mongod
 SHEBANG_FILES=	buildscripts/scons.py
 python_OLD_CMD=	@python_interpreter@
 
-CONFIGURE_ENV+=	M4=${LOCALBASE}/bin/gm4
+HAS_CONFIGURE=		yes
+CONFIGURE_SCRIPT=	gen-config.sh
+CONFIGURE_ARGS+=	${MOZJS_ARCH} \
+			freebsd
+CONFIGURE_ENV+=		PYTHON3="${PYTHON_CMD}"
+
 MAKE_ARGS=	--allocator=system \
 		--cxx-std=20 \
 		--disable-warnings-as-errors \
@@ -58,7 +69,6 @@ MAKE_ARGS=	--allocator=system \
 		--runtime-hardening=on \
 		--ssl \
 		--use-system-libunwind \
-		--use-system-pcre2 \
 		--use-system-snappy \
 		--use-system-stemmer \
 		--use-system-yaml \
@@ -68,19 +78,25 @@ MAKE_ARGS=	--allocator=system \
 		AR=llvm-ar \
 		MONGO_VERSION=${DISTVERSION} \
 		VERBOSE=on
+ALL_TARGET=	install-core
 
 CFLAGS+=	-DBOOST_NO_CXX98_FUNCTION_BASE
 
 CONFLICTS_INSTALL=	mongodb[0-9][0-9]
 
-EXTRACT_AFTER_ARGS=	--exclude src/third_party/pcre2 \
-			--exclude src/third_party/snappy-* \
+EXTRACT_AFTER_ARGS=	--exclude src/third_party/snappy-* \
 			--exclude src/third_party/libstemmer_c \
 			--exclude src/third_party/unwind \
 			--exclude src/third_party/yaml-cpp \
 			--exclude src/third_party/zlib-* \
 			--exclude src/third_party/zstandard \
 			--no-same-owner --no-same-permissions
+
+# This ports is only following the Major Release.
+# https://docs.mongodb.com/manual/reference/versioning/
+PORTSCOUT=	limit:^7\.0\.
+
+CONFIGURE_WRKSRC=	${MOZJS_WRKSRC}
 
 USERS=		mongodb
 GROUPS=		mongodb
@@ -106,21 +122,17 @@ NOAVX_EXTRA_PATCHES=	${FILESDIR}/extrapatch-src_third__party_mozjs_SConscript \
 SASL_LIB_DEPENDS=	libsasl2.so:security/cyrus-sasl2
 SASL_MAKE_ARGS=		--use-sasl-client
 
-.include <bsd.port.options.mk>
+MOZJS_WRKSRC=	${WRKSRC}/src/third_party/mozjs
 
-.if ${OPSYS} == FreeBSD && ${OSVERSION} >= 1500026 # llvm 19.1.2 import
-USES+=		llvm:max=18,build
+.if ${FLAVOR:U} == armv80a
+OPTIONS_SET+=	ARMV80A
 .endif
 
 .include <bsd.port.pre.mk>
 
-ALL_TARGET=	install-core
-
-# This ports is only following the Major Release.
-# https://docs.mongodb.com/manual/reference/versioning/
-PORTSCOUT=	limit:^7\.0\.
-
-CPE_PRODUCT=	mongodb
+.if ${FLAVOR:U} == armv80a && ${ARCH} != aarch64
+IGNORE=		flavor armv80a is only valid on aarch64
+.endif
 
 .if ${ARCH} == amd64
 MOZJS_ARCH=	x86_64
@@ -130,6 +142,10 @@ MOZJS_ARCH=	ppc64le
 MOZJS_ARCH=	${ARCH}
 .endif
 
+post-extract:
+# Verify we downloaded the proper mozjs git tag.
+	${SH} -xc "test \"X`grep -E '^LIB_GIT_REVISION=' ${MOZJS_WRKSRC}/get-sources.sh`\" = \"XLIB_GIT_REVISION=${MOZJS_TAG}\""
+
 post-patch:
 # fix build with python-3.11
 	${REINPLACE_CMD} -e 's#rU#r#g' ${WRKDIR}/spidermonkey-${MOZJS_TAG}/python/mozbuild/mozbuild/util.py
@@ -138,13 +154,8 @@ post-patch:
 	${REINPLACE_CMD} -e 's#rU#r#g' ${WRKDIR}/spidermonkey-${MOZJS_TAG}/python/mozbuild/mozbuild/action/process_define_files.py
 
 pre-configure:
-# Verify we downloaded the proper mozjs git tag.
-	${SH} -c "test \"X`grep -E '^LIB_GIT_REVISION=' ${WRKSRC}/src/third_party/mozjs/get-sources.sh`\" = \"XLIB_GIT_REVISION=${MOZJS_TAG}\""
-
-do-configure:
 # Replacement of ${WRKSRC}/src/third_party/mozjs/get-sources.sh
-	${LN} -sF ${WRKDIR}/spidermonkey-${MOZJS_TAG} ${WRKSRC}/src/third_party/mozjs/mozilla-release
-	cd ${WRKSRC}/src/third_party/mozjs && PYTHON3="${PYTHON_CMD}" ${SH} ./gen-config.sh ${MOZJS_ARCH} freebsd
+	${LN} -sF ${WRKDIR}/spidermonkey-${MOZJS_TAG} ${MOZJS_WRKSRC}/mozilla-release
 
 do-build:
 	${WRKSRC}/buildscripts/scons.py	-C ${WRKSRC} ${MAKE_ARGS}

@@ -1,6 +1,6 @@
 PORTNAME=	zathura-pdf-mupdf
 DISTVERSION=	0.4.4
-PORTREVISION=	1
+PORTREVISION=	4
 CATEGORIES=	graphics
 MASTER_SITES=	https://pwmt.org/projects/zathura-pdf-mupdf/download/
 

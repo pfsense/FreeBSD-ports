@@ -1,5 +1,6 @@
 PORTNAME=	simsimd
 DISTVERSION=	6.0.4
+PORTREVISION=	1
 CATEGORIES=	devel python
 MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -18,6 +19,6 @@ USES=		python
 USE_PYTHON=	distutils autoplist
 
 post-install:
-	@${STRIP_CMD} ${STAGEDIR}${PYTHON_SITELIBDIR}/simsimd${PYTHON_EXT_SUFFIX}.so
+	@${STRIP_CMD} ${STAGEDIR}${PYTHON_SITELIBDIR}/simsimd${PYTHON_TAG}.so
 
 .include <bsd.port.mk>

@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<pfsensepkgs>
+	<package>
+		<name>mDNS Bridge</name>
+		<internal_name>mDNS-Bridge</internal_name>
+		<website>https://github.com/dennypage/mdns-bridge/</website>
+		<descr><![CDATA[mDNS Bridge provides sharing of Multicast DNS (mDNS) and DNS Service Discovery (DNS-SD) information across network interfaces.]]></descr>
+		<version>%%PKGVERSION%%</version>
+		<configurationfile>mdns_bridge.xml</configurationfile>
+	</package>
+</pfsensepkgs>

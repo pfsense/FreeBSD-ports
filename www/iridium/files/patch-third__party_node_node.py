@@ -1,4 +1,4 @@
---- third_party/node/node.py.orig	2024-08-01 05:47:53 UTC
+--- third_party/node/node.py.orig	2025-05-07 06:48:23 UTC
 +++ third_party/node/node.py
 @@ -20,6 +20,8 @@ def GetBinaryPath():
    return os_path.join(os_path.dirname(__file__), *{

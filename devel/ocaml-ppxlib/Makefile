@@ -21,7 +21,6 @@ RUN_DEPENDS=	${SA_DIR}/ocaml-compiler-libs/META:devel/ocaml-compiler-libs \
 USES=		ocaml:dune
 USE_GITHUB=	yes
 GH_ACCOUNT=	ocaml-ppx
-USE_OCAML=	yes
 
 DOCSDIR=	${OCAML_DOCSDIR}/${PORTNAME}
 PORTDOCS=	CHANGES.md HISTORY.md LICENSE.md README.md odoc-pages
@@ -30,6 +29,12 @@ OPTIONS_DEFINE=	DOCS
 
 DUNE_INSTALL_TARGETS=	${PORTNAME}
 SA_DIR=			${LOCALBASE}/${OCAML_SITELIBDIR}
+
+.include <bsd.port.options.mk>
+
+.if ${ARCH} == powerpc
+USE_BINUTILS=	yes
+.endif
 
 post-patch:
 	@(cd ${WRKSRC}; \

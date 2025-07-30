@@ -3,6 +3,7 @@ bin/fluent-bit
 @sample %%ETCDIR%%/parsers.conf.sample
 %%ETCDIR%%/plugins.conf
 include/fluent-bit.h
+include/fluent-bit/calyptia_constants.h
 include/fluent-bit/config_format/flb_cf.h
 include/fluent-bit/config_format/flb_cf_fluentbit.h
 include/fluent-bit/config_format/flb_cf_yaml.h
@@ -15,9 +16,12 @@ include/fluent-bit/flb_bits.h
 include/fluent-bit/flb_bucket_queue.h
 include/fluent-bit/flb_byteswap.h
 include/fluent-bit/flb_callback.h
+include/fluent-bit/flb_cfl_ra_key.h
+include/fluent-bit/flb_cfl_record_accessor.h
 include/fluent-bit/flb_chunk_trace.h
 include/fluent-bit/flb_compat.h
 include/fluent-bit/flb_compression.h
+include/fluent-bit/flb_conditionals.h
 include/fluent-bit/flb_config.h
 include/fluent-bit/flb_config_format.h
 include/fluent-bit/flb_config_map.h
@@ -63,6 +67,7 @@ include/fluent-bit/flb_input_event.h
 include/fluent-bit/flb_input_log.h
 include/fluent-bit/flb_input_metric.h
 include/fluent-bit/flb_input_plugin.h
+include/fluent-bit/flb_input_profiles.h
 include/fluent-bit/flb_input_thread.h
 include/fluent-bit/flb_input_trace.h
 include/fluent-bit/flb_intermediate_metric.h
@@ -143,6 +148,7 @@ include/fluent-bit/flb_time.h
 include/fluent-bit/flb_time_utils.h
 include/fluent-bit/flb_typecast.h
 include/fluent-bit/flb_unescape.h
+include/fluent-bit/flb_unicode.h
 include/fluent-bit/flb_upstream.h
 include/fluent-bit/flb_upstream_conn.h
 include/fluent-bit/flb_upstream_ha.h
@@ -153,6 +159,8 @@ include/fluent-bit/flb_utf8.h
 include/fluent-bit/flb_utils.h
 include/fluent-bit/flb_version.h
 include/fluent-bit/flb_worker.h
+include/fluent-bit/flb_zstd.h
+include/fluent-bit/simdutf/flb_simdutf_connector.h
 include/fluent-bit/tls/flb_tls.h
 include/fluent-bit/tls/flb_tls_info.h
 include/fluent-bit/wasm/flb_wasm.h
@@ -164,6 +172,7 @@ include/monkey/mk_core/mk_event.h
 include/monkey/mk_core/mk_event_epoll.h
 include/monkey/mk_core/mk_event_kqueue.h
 include/monkey/mk_core/mk_event_libevent.h
+include/monkey/mk_core/mk_event_poll.h
 include/monkey/mk_core/mk_event_select.h
 include/monkey/mk_core/mk_file.h
 include/monkey/mk_core/mk_getopt.h

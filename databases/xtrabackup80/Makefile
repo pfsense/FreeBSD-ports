@@ -1,7 +1,7 @@
 PORTNAME=	xtrabackup80
 PORTVERSION=	8.0.35
 DISTVERSIONSUFFIX=	-30
-PORTREVISION=	5
+PORTREVISION=	9
 CATEGORIES=	databases
 MASTER_SITES=	https://downloads.percona.com/downloads/Percona-XtraBackup-8.0/Percona-XtraBackup-8.0.35-30/source/tarball/:percona \
 		SF/boost/boost/${BOOST_VERSION}:boost
@@ -14,9 +14,6 @@ WWW=		https://docs.percona.com/percona-xtrabackup/8.0/
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/LICENSE
-
-DEPRECATED=	Unsupported upstream, consider migrating to databases/xtrabackup84
-EXPIRATION_DATE=2025-01-31
 
 ONLY_FOR_ARCHS=	amd64 i386
 

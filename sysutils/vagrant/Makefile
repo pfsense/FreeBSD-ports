@@ -1,7 +1,6 @@
 PORTNAME=	vagrant
-PORTVERSION=	2.3.7
+PORTVERSION=	2.4.1
 DISTVERSIONPREFIX=	v
-PORTREVISION=	1
 CATEGORIES=	sysutils rubygems devel
 
 MAINTAINER=	joe@thrallingpenguin.com
@@ -78,6 +77,8 @@ REMOVE_TARGETS=	.envrc .runner.sh .vimrc .yardopts flake.lock flake.nix Gemfile 
 
 REMOVE_TARGETS_EXT=	gem_make.out mkmf.log
 
+.include <bsd.port.pre.mk>
+
 post-patch:
 	@${REINPLACE_CMD} -e 's|@PREFIX@|${PREFIX}|g' \
 		${WRKSRC}/bin/vagrant \
@@ -115,4 +116,4 @@ post-install-ZSH-on:
 	${MKDIR} ${STAGEDIR}${PREFIX}/share/share/zsh/site-functions
 	${RLN} ${STAGEDIR}${PREFIX}/lib/ruby/gems/${RUBY_VER}/gems/${PORTNAME}-${PORTVERSION}/contrib/zsh/_vagrant ${STAGEDIR}${PREFIX}/share/share/zsh/site-functions
 
-.include <bsd.port.mk>
+.include <bsd.port.post.mk>

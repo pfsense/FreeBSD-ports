@@ -1,15 +1,19 @@
 PORTNAME=	obs-studio
-DISTVERSION=	30.2.3
+DISTVERSION=	31.1.1
 PORTREVISION=	1
 CATEGORIES=	multimedia
+MASTER_SITES=	https://github.com/obsproject/obs-studio/releases/download/${DISTVERSION}/
+DISTFILES=	OBS-Studio-${DISTVERSION}-Sources${EXTRACT_SUFX}
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Open source streaming/recording software
-WWW=		https://obsproject.com/
+WWW=		https://obsproject.com/ \
+		https://github.com/obsproject/obs-studio
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
+BROKEN_armv7=	compilation fails: format specifies type 'unsigned long' but the argument has type 'size_t' (aka 'unsigned int') [-Werror,-Wformat] (32-builds aren't supported, see issue 10481)
 BROKEN_i386=	link fails: relocation R_386_PC32 cannot be used against symbol 'strlist_split'; recompile with -fPIC, see https://github.com/obsproject/obs-studio/issues/10481
 
 BUILD_DEPENDS=	asio>0:net/asio \
@@ -28,7 +32,7 @@ LIB_DEPENDS=	libasound.so:audio/alsa-lib \
 		libfontconfig.so:x11-fonts/fontconfig \
 		libfreetype.so:print/freetype2 \
 		libjansson.so:devel/jansson \
-		libmbedtls.so:security/mbedtls \
+		libmbedtls.so:security/mbedtls3 \
 		libpci.so:devel/libpci \
 		libqrcodegencpp.so:graphics/qr-code-generator \
 		librist.so:multimedia/librist \
@@ -45,24 +49,17 @@ LIB_DEPENDS=	libasound.so:audio/alsa-lib \
 		libxcb-render-util.so:x11/xcb-util-renderutil \
 		libxcb-util.so:x11/xcb-util \
 		libxkbcommon.so:x11/libxkbcommon \
-		libuuid.so:misc/e2fsprogs-libuuid \
+		libuuid.so:misc/libuuid \
 		libva.so:multimedia/libva
 
-USES=		cmake compiler:c++17-lang desktop-file-utils gl gnome lua luajit \
+USES=		cmake compiler:c++17-lang desktop-file-utils gl gnome kde:6 lua luajit \
 		pkgconfig python qt:6 xorg
 USE_QT=		base svg tools:build
+USE_KDE=	ecm:build
 USE_GNOME=	glib20
 USE_GL=		gl
 USE_XORG=	ice sm x11 xcb xcomposite xext xfixes xinerama xrandr
 USE_LDCONFIG=	yes
-
-USE_GITHUB=	yes
-GH_ACCOUNT=	obsproject
-GH_TUPLE=	obsproject:libdshowcapture:ef8c1d2e19c93e664100dd41e1a0df4f8ad45430:obsproject_libdshowcapture/plugins/win-dshow/libdshowcapture \
-		obsproject:obs-browser:e4e523df775bd6fa216d40a7488b76f3b21c1733:obsproject_obs_browser/plugins/obs-browser \
-		Mixer:ftl-sdk:d0c8469f66806b5ea738d607f7d2b000af8b1129:Mixer_ftl_sdk/plugins/obs-outputs/ftl-sdk \
-		obsproject:obs-websocket:a73c92788d70f08f91b8c0477b74f99c999beb09:obsproject_obs_websocket/plugins/obs-websocket \
-		elgatosf:capture-device-support:81c94fb13dfddb412fcb17f1ba031917ec24be64:elgatosf_capture_device_support/deps/libdshowcapture/src/external/capture-device-support
 
 CMAKE_ON=	UNIX_STRUCTURE
 CMAKE_ARGS=	-DOBS_VERSION_OVERRIDE:STRING="${PORTVERSION}" \
@@ -72,6 +69,8 @@ CMAKE_ARGS=	-DOBS_VERSION_OVERRIDE:STRING="${PORTVERSION}" \
 CFLAGS_powerpc64=	-Wno-error=deprecated-altivec-src-compat -Wno-error=pass-failed
 CFLAGS_powerpc64le=	-Wno-error=deprecated-altivec-src-compat
 LDFLAGS+=	-fPIC # pending https://github.com/obsproject/obs-studio/issues/3436
+
+WRKSRC=		${WRKDIR}/${PORTNAME}-${PORTVERSION}-sources
 
 OPTIONS_DEFINE=		BROWSER PIPEWIRE VLC VST WAYLAND
 OPTIONS_DEFAULT=	PIPEWIRE VLC VST WAYLAND

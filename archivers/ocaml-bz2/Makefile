@@ -10,12 +10,10 @@ WWW=		https://gitlab.com/irill/camlbz2
 LICENSE=	LGPL21 LGPL3
 LICENSE_COMB=	dual
 
-USES=		ocaml:dune
+USES=		ocaml:dune,ldconfig
 USE_GITLAB=	yes
 GL_ACCOUNT=	irill
 GL_PROJECT=	camlbz2
-USE_OCAML=	yes
-USE_OCAML_LDCONFIG=	yes
 
 DOCSDIR=	${OCAML_DOCSDIR}/${PORTNAME}
 EXAMPLESDIR=	${OCAML_EXAMPLESDIR}/${PORTNAME}
@@ -23,6 +21,12 @@ PORTDOCS=	LICENSE README
 PORTEXAMPLES=	bunzip2.ml
 
 OPTIONS_DEFINE=	DOCS EXAMPLES
+
+.include <bsd.port.options.mk>
+
+.if ${ARCH} == powerpc
+USE_BINUTILS=	yes
+.endif
 
 post-install:
 	@${STRIP_CMD} \

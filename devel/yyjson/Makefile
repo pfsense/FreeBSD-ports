@@ -1,5 +1,5 @@
 PORTNAME=	yyjson
-PORTVERSION=	0.10.0
+PORTVERSION=	0.11.1
 CATEGORIES=	devel
 
 MAINTAINER=	pkubaj@FreeBSD.org
@@ -8,7 +8,7 @@ WWW=		https://github.com/ibireme/yyjson
 
 LICENSE=	MIT
 
-USES=		cmake
+USES=		cmake pathfix
 USE_GITHUB=	yes
 GH_ACCOUNT=	ibireme
 

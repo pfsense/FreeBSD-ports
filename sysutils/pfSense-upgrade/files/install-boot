@@ -1,0 +1,414 @@
+#!/bin/sh
+#
+# install-boot
+#
+# part of pfSense (https://www.pfsense.org)
+# Copyright (c) 2024-2025 Rubicon Communications, LLC (Netgate)
+# All rights reserved.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+# http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+ME="$(basename $0)"
+DIR="$(dirname $0)"
+
+UPDATE="-u"
+
+_echo()
+{
+	[ -z "${QUIET}" ] && echo "$*"
+}
+
+die()
+{
+	_echo "$*"
+	exit 1
+}
+
+doit()
+{
+	_echo "$*"
+	eval "$*"
+}
+
+#
+# Utility function to make function pipeable
+#
+make_pipeable()
+{
+	local _func="${1}"
+	shift
+
+	while read -r _l; do
+		${_func} ${_l} "$@"
+	done </dev/stdin
+}
+
+#
+# Invoke install-boot.sh
+#
+install_boot()
+{
+	local _q=">/dev/null 2>&1"
+	local _s="${DIR}/../libexec/${ME}.sh"
+
+	[ -x "${_s}" ] || \
+		die "Unable to locate ${_s}"
+
+	[ -z "${QUIET}" ] && unset _q
+
+	doit ${_s} "$@" ${_q}
+}
+
+#
+# Identify the boot method used to boot the system
+#
+boot_method_current()
+{
+	local _model="$(sysctl -nq dev.netgate.model)"
+	case "${_model}" in
+	1100|2100)
+		echo "uefi"
+		;;
+	3100)
+		echo "uboot"
+		;;
+	*)
+		sysctl -qn machdep.bootmethod | tr '[:upper:]' '[:lower:]'
+		;;
+	esac
+}
+
+#
+# Identify the boot method parameter to use with install-boot.sh
+#
+boot_method()
+{
+	local _model="$(sysctl -nq dev.netgate.model)"
+	case "${_model}" in
+	1100|2100)
+		echo "uefi"
+		;;
+	*)
+		echo "auto"
+		;;
+	esac
+}
+
+#
+# Get root filesystem type
+#
+rootfs_type()
+{
+	local _mountfrom="$(/bin/kenv -q vfs.root.mountfrom)"
+	echo "${_mountfrom%%:*}"
+}
+
+#
+# Get root filesystem path
+#
+rootfs_path()
+{
+	local _mountfrom="$(/bin/kenv -q vfs.root.mountfrom)"
+	echo "${_mountfrom##*:}"
+}
+
+#
+# Test if root on ZFS
+#
+zfs_on_root()
+{
+	[ "$(rootfs_type)" = "zfs" ]
+}
+
+#
+# Test if root on UFS
+#
+ufs_on_root()
+{
+	[ "$(rootfs_type)" = "ufs" ]
+}
+
+#
+# Translate glabel to dev node
+#
+glabel_dev()
+{
+	geom label status -s | awk -v _dev="${1##/dev/}" '
+		BEGIN { _found=0; }
+		{ _devs[$1]=$3; }
+		END {
+			if (_dev in _devs) {
+				_found=1
+				_dev=_devs[_dev]
+			}
+			print "/dev/" _dev
+			if (!_found)
+				exit 1
+		}
+	' 2>/dev/null
+}
+
+#
+# Resolve glabel(s) of a device node
+#
+dev_glabels()
+{
+	geom LABEL status -s | \
+	while read -r _name _status _dev; do
+		[ "${_dev}" = "${1##/dev/}" ] || continue
+		echo "/dev/${_name}"
+	done
+}
+
+#
+# Get mount point for a device/glabel node
+#
+get_dev_mount()
+{
+	local _devs="/dev/${1##/dev/}"
+
+	# Append possible labels for the device
+	_devs="${_devs} $(glabel_dev "${1}")"
+	_devs="${_devs} $(dev_glabels "${1}")"
+
+	# Scan mountpoints looking for one of _devs
+	mount -p | \
+	while read -r _mdev _mmp _mmore; do
+		for _dev in $_devs; do
+			[ "${_dev}" = "${_mdev}" ] || continue
+			echo "${_mmp}"
+			return
+		done
+	done
+}
+
+#
+# Find the root device for a given part/slice device
+#
+root_dev()
+{
+	geom PART status -s | awk -v _dev="${1##/dev/}" '
+		function resolve(_d) {
+			if (_d in _devs) {
+				_depth++;
+				return resolve(_devs[_d])
+			}
+			if (_depth)
+				return "/dev/" _d
+			exit 1;
+		}
+		BEGIN { _depth=0; }
+		{ _devs[$1] = $3; }
+		END { print resolve(_dev); }
+	' 2>/dev/null
+}
+
+#
+# Filter to expand glabels to device nodes (if any)
+#
+glabel_devp()
+{
+	make_pipeable "glabel_dev"
+}
+
+#
+# Filter to resolve root device for part/slice nodes (if any)
+root_devp()
+{
+	make_pipeable "root_dev"
+}
+
+find_ufs_bootdevs()
+{
+	ufs_on_root || die "Unexpected error."
+
+	echo "$(rootfs_path)" | glabel_devp | root_devp
+}
+
+#
+# Get a list of potential ZFS boot devices
+#
+find_zfs_bootdevs()
+{
+	local _root="$(rootfs_path)"
+
+	zfs_on_root || die "Unexpected error."
+
+	zpool list -HPv "${_root%%/*}" | awk '
+		$1 ~ /^\/.*$/ {
+			if ($10 == "ONLINE")
+				print $1;
+		}
+	' | glabel_devp | root_devp
+}
+
+#
+# Return a list of boot devices for the root filesystem
+#
+find_bootdevs()
+{
+	eval find_$(rootfs_type)_bootdevs || die "Unable to locate boot devices"
+}
+
+#
+# Return the partition scheme for a given device node
+#
+dev_scheme()
+{
+	gpart show "${1}" 2>/dev/null | \
+		head -n 1 | \
+			cut -w -f 5 | \
+				tr '[:upper:]' '[:lower:]'
+}
+
+#
+# Called early to probe the platform
+#
+platform_detect()
+{
+	case "$(sysctl -nq dev.netgate.model)" in
+	1100|2100)
+		CURBOOTMETHOD="uefi"
+		BOOTMETHOD="uefi"
+		unset UPDATE
+		;;
+	3100)
+		_echo "Unsupported platform."
+		exit 0
+		;;
+	*)
+		CURBOOTMETHOD="$(sysctl -nq machdep.bootmethod | tr '[:upper:]' '[:lower:]')"
+		BOOTMETHOD="auto"
+		;;
+	esac
+
+	FSTYPE="$(rootfs_type)"
+
+	# We want to display them in ascending order, but
+	# process them in descending order
+	BOOTDEVS="$(find_bootdevs)"
+	BOOTDEVSR="$(find_bootdevs | sort -r)"
+}
+
+print_key_values()
+{
+	local _key="${1}"; shift
+	printf '%s: %s\n' "${_key}" "${1}"; shift
+	for _value in $*; do
+		printf '%*s  %s\n' ${#_key} "" "${_value}"
+	done
+}
+
+print_sys_info()
+{
+	_echo "System Configuration"
+
+	_echo
+
+	print_key_values "Architecture" "$(uname -m)"
+	print_key_values "Boot Devices"	${BOOTDEVS}
+	print_key_values " Boot Method"	"${CURBOOTMETHOD}"
+	print_key_values "  Filesystem"	"${FSTYPE}"
+	print_key_values "    Platform" "$(sysctl -nq dev.netgate.desc)"
+
+	_echo
+}
+
+usage()
+{
+	cat << EOD >&2
+Usage: ${ME} [-hnqy] [-d destdir]
+    -h         - This help/usage text
+    -n         - Dry run
+    -q         - Quiet mode (requires -y)
+    -y         - Assume yes when asked for confirmation
+    -d destir  - Alternate root directory for locating boot code
+EOD
+}
+
+unset DESTDIRPARAM
+unset DRYRUN
+unset YES
+unset QUIET
+
+#
+# Main entry point
+#
+main()
+{
+	platform_detect
+
+	print_sys_info
+
+	# Sanity checks
+	[ -z "${BOOTDEVSR}" ] && die "Unable to find boot device(s)"
+	[ -z "${BOOTMETHOD}" ] && die "Unable to determine boot method"
+	[ -z "${FSTYPE}" ] && die "Unable to determine filesystem type"
+
+	[ -n "${DRYRUN}" ] || \
+		[ -n "${QUIET}" -a -z "${YES}" ] && exit
+
+	if [ -z "${YES}" ]; then
+		read -p "Proced with updating boot code? [y/N]: " opt
+		case "$opt" in
+		y|Y)
+			;;
+		*)
+			die "Aborted."
+			;;
+		esac
+	fi
+
+	# Do the update
+	_echo
+	_echo "Updating boot code..."
+	_echo
+	for _dev in ${BOOTDEVSR}; do
+		local _scheme="$(dev_scheme "${_dev}")"
+		install_boot -b ${BOOTMETHOD} ${DESTDIRPARAM} -f ${FSTYPE} -s ${_scheme} ${UPDATE} ${_dev##/dev/} || \
+			die "Unable to update boot code on ${_dev}"
+		_echo
+		unset _scheme
+	done
+
+	_echo "Done."
+	exit 0
+}
+
+while getopts "d:hnqy" opt; do
+    case "$opt" in
+	d)
+		[ -d "${OPTARG}" ] && DESTDIRPARAM="-d ${OPTARG}" || \
+			die "${OPTARG} is not a valid directory path"
+		;;
+	h)
+		usage
+		exit 0
+		;;
+	n)
+		DRYRUN=1
+		;;
+	q)
+		QUIET=1
+		;;
+	y)
+		YES=1
+		;;
+	*)
+		usage
+		exit 1
+		;;
+    esac
+done
+
+main

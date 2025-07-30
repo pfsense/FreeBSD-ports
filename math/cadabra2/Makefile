@@ -1,6 +1,6 @@
 PORTNAME=	cadabra2
 DISTVERSION=	2.5.8
-PORTREVISION=	1
+PORTREVISION=	3
 CATEGORIES=	math
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -10,6 +10,7 @@ WWW=		https://cadabra.science/
 LICENSE=	LGPL3
 LICENSE_FILE=	${WRKSRC}/doc/license.txt
 
+BROKEN=		fails to build with Boost>=1.87
 BROKEN_FreeBSD_15=	compilation fails with clang-17, see https://github.com/kpeeters/cadabra2/issues/285
 
 BUILD_DEPENDS=	${LOCALBASE}/include/websocketpp/client.hpp:devel/websocketpp
@@ -20,7 +21,7 @@ LIB_DEPENDS=	${PY_BOOST} \
 		libpcrecpp.so:devel/pcre \
 		libjsoncpp.so:devel/jsoncpp \
 		libgmp.so:math/gmp \
-		libuuid.so:misc/e2fsprogs-libuuid
+		libuuid.so:misc/libuuid
 RUN_DEPENDS=	${PYTHON_SITELIBDIR}/sympy/__init__.py:math/py-sympy@${PY_FLAVOR} \
 		${PYTHON_SITELIBDIR}/matplotlib/__init__.py:math/py-matplotlib@${PY_FLAVOR}
 
@@ -47,10 +48,10 @@ OPTIONS_DEFAULT=	GUI
 OPTIONS_SUB=		yes
 
 GUI_USES=		desktop-file-utils
-GUI_USE=		GNOME=gtkmm30,gdkpixbuf2
+GUI_USE=		GNOME=gtkmm30,gdkpixbuf
 GUI_CMAKE_BOOL=		ENABLE_FRONTEND
 
-_PY_SONAME=	${PYTHON_EXT_SUFFIX}
+_PY_SONAME=	${PYTHON_TAG}
 
 post-extract: # unbundle
 	@${RM} -r ${WRKSRC}/libs/jsoncpp ${WRKSRC}/libs/websocketpp

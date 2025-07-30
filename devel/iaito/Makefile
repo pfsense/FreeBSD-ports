@@ -2,6 +2,9 @@ PORTNAME=	iaito
 DISTVERSION=	5.9.9
 CATEGORIES=	devel
 
+PATCH_SITES=	https://github.com/radareorg/iaito/commit/
+PATCHFILES+=	14d843c138defd36b8550c37f067e64d6b8316fb.patch:-p1 # Fix build with Qt >= 6.9.0
+
 MAINTAINER=	freebsd@sysctl.cz
 COMMENT=	Official QT frontend of radare2, a libre reverse engineering framework
 WWW=		https://github.com/radareorg/iaito
@@ -13,8 +16,8 @@ BROKEN_i386=	error: non-constant-expression cannot be narrowed from type 'const 
 LIB_DEPENDS=	libcapstone.so:devel/capstone \
 		libr_core.so:devel/radare2
 
-FLAVORS=		qt5 qt6
-FLAVOR?=		${FLAVORS:[2]}
+FLAVORS=		qt6 qt5
+FLAVOR?=		qt6
 qt5_PKGNAMESUFFIX=	-qt5
 qt6_PKGNAMESUFFIX=	-qt6
 

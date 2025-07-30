@@ -1,5 +1,6 @@
 PORTNAME=	lacaml
 DISTVERSION=	11.0.10
+PORTREVISION=	2
 CATEGORIES=	devel
 PKGNAMEPREFIX=	ocaml-
 
@@ -10,11 +11,9 @@ WWW=		https://mmottl.github.io/lacaml/
 LICENSE=	LGPL21
 LICENSE_FILE=	${WRKSRC}/LICENSE.md
 
-USES=		blaslapack fortran ocaml:dune
+USES=		blaslapack fortran ocaml:dune,ldconfig
 USE_GITHUB=	yes
 GH_ACCOUNT=	mmottl
-USE_OCAML=	yes
-USE_OCAML_LDCONFIG=	yes
 
 MAKE_ENV+=	LACAML_LIBS="-L${LOCALBASE}/lib ${BLASLIB} ${LAPACKLIB}"
 

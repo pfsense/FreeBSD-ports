@@ -3,7 +3,7 @@
  *
  * part of pfSense (https://www.pfsense.org)
  * Copyright (c) 2016-2025 Rubicon Communications, LLC (Netgate)
- * Copyright (c) 2015-2023 BBcan177@gmail.com
+ * Copyright (c) 2015-2024 BBcan177@gmail.com
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -30,26 +30,6 @@ window.onload = function() {
 		// Toggle Collapsible window
 		$("[id$='customlist_panel-body']").removeClass('out').addClass('in');
 	}
-}
-
-var asnarray = [];
-// Collect ASN list and format for Autocomplete for Source (URL) field lookup
-function pfb_collect_asn_list() {
-
-	$.ajax(
-		{
-			type: 'GET',
-			url: asnlist,
-			dataType: 'text',
-			success: function(data) {
-				var lines = data.split("\n");
-				for (var x=0; x < lines.length-1; x++) {
-					asnarray.push(lines[x]);
-				}
-				pfb_autocomplete();
-			}
-		}
-	);
 }
 
 // 'GeoIP ISOs'/ASNs Auto-Complete for Source (URL) field lookup
@@ -92,8 +72,8 @@ function pfb_autocomplete_function(input_type, destroy, pageload) {
 
 		$(url_fld).autocomplete( {
 			minLength: 3,
-			delay: 100,
-			source: asnarray,
+			delay: 200,
+			source: '/pfblockerng/pfblockerng_category_edit.php',
 			select: function(event,ui) {
 					$(url_fld).val('');
 					$(hdr_fld).val('');
@@ -218,7 +198,7 @@ events.push(function() {
 	else if (pagetype == 'advanced') {
 
 		if (geoiparray != 'disabled') {
-			pfb_collect_asn_list();
+			pfb_autocomplete();
 			$('#addrow').click(function() {
 				pfb_autocomplete();
 

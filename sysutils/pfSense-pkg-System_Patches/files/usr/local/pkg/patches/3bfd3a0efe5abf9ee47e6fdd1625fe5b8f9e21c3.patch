@@ -1,0 +1,27 @@
+commit 3bfd3a0efe5abf9ee47e6fdd1625fe5b8f9e21c3
+Author: R. Christian McDonald <cmcdonald@netgate.com>
+Date:   Thu Dec 5 12:24:07 2024 -0500
+
+    kea: ignore default and max lease time within pool context. Fixes #15332
+
+diff --git a/src/etc/inc/services.inc b/src/etc/inc/services.inc
+index f7b7333469..ce79612034 100644
+--- a/src/etc/inc/services.inc
++++ b/src/etc/inc/services.inc
+@@ -1578,16 +1578,6 @@ function services_kea4_configure() {
+ 				];
+ 			}
+ 
+-			// default-lease-time
+-			if ($poolconf['defaultleasetime'] && ($poolconf['defaultleasetime'] != $dhcpifconf['defaultleasetime'])) {
+-				$keapool['valid-lifetime'] = $poolconf['defaultleasetime'];
+-			}
+-
+-			// max-lease-time
+-			if ($poolconf['maxleasetime'] && ($poolconf['maxleasetime'] != $dhcpifconf['maxleasetime'])) {
+-				$keapool['max-valid-lifetime'] = $poolconf['maxleasetime'];
+-			}
+-
+ 			// ignore-client-uids
+ 			if (isset($poolconf['ignoreclientuids'])) {
+ 				$keasubnet['match-client-id'] = false;

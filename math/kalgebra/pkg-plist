@@ -8,6 +8,8 @@ share/icons/hicolor/scalable/apps/kalgebra.svgz
 %%WEBENGINE%%share/katepart5/syntax/kalgebra.xml
 share/locale/ar/LC_MESSAGES/kalgebra.mo
 share/locale/ar/LC_MESSAGES/kalgebramobile.mo
+share/locale/ast/LC_MESSAGES/kalgebra.mo
+share/locale/ast/LC_MESSAGES/kalgebramobile.mo
 share/locale/be/LC_MESSAGES/kalgebra.mo
 share/locale/bg/LC_MESSAGES/kalgebra.mo
 share/locale/bg/LC_MESSAGES/kalgebramobile.mo
@@ -27,12 +29,14 @@ share/locale/el/LC_MESSAGES/kalgebramobile.mo
 share/locale/en_GB/LC_MESSAGES/kalgebra.mo
 share/locale/en_GB/LC_MESSAGES/kalgebramobile.mo
 share/locale/eo/LC_MESSAGES/kalgebra.mo
+share/locale/eo/LC_MESSAGES/kalgebramobile.mo
 share/locale/es/LC_MESSAGES/kalgebra.mo
 share/locale/es/LC_MESSAGES/kalgebramobile.mo
 share/locale/et/LC_MESSAGES/kalgebra.mo
 share/locale/et/LC_MESSAGES/kalgebramobile.mo
 share/locale/eu/LC_MESSAGES/kalgebra.mo
 share/locale/eu/LC_MESSAGES/kalgebramobile.mo
+share/locale/fa/LC_MESSAGES/kalgebra.mo
 share/locale/fi/LC_MESSAGES/kalgebra.mo
 share/locale/fi/LC_MESSAGES/kalgebramobile.mo
 share/locale/fr/LC_MESSAGES/kalgebra.mo
@@ -40,10 +44,14 @@ share/locale/fr/LC_MESSAGES/kalgebramobile.mo
 share/locale/ga/LC_MESSAGES/kalgebra.mo
 share/locale/gl/LC_MESSAGES/kalgebra.mo
 share/locale/gl/LC_MESSAGES/kalgebramobile.mo
+share/locale/he/LC_MESSAGES/kalgebra.mo
+share/locale/he/LC_MESSAGES/kalgebramobile.mo
 share/locale/hi/LC_MESSAGES/kalgebra.mo
+share/locale/hi/LC_MESSAGES/kalgebramobile.mo
 share/locale/hne/LC_MESSAGES/kalgebra.mo
 share/locale/hr/LC_MESSAGES/kalgebra.mo
 share/locale/hu/LC_MESSAGES/kalgebra.mo
+share/locale/hu/LC_MESSAGES/kalgebramobile.mo
 share/locale/ia/LC_MESSAGES/kalgebra.mo
 share/locale/ia/LC_MESSAGES/kalgebramobile.mo
 share/locale/it/LC_MESSAGES/kalgebra.mo
@@ -59,6 +67,7 @@ share/locale/ko/LC_MESSAGES/kalgebramobile.mo
 share/locale/lt/LC_MESSAGES/kalgebra.mo
 share/locale/lt/LC_MESSAGES/kalgebramobile.mo
 share/locale/lv/LC_MESSAGES/kalgebra.mo
+share/locale/lv/LC_MESSAGES/kalgebramobile.mo
 share/locale/mai/LC_MESSAGES/kalgebra.mo
 share/locale/ml/LC_MESSAGES/kalgebra.mo
 share/locale/ml/LC_MESSAGES/kalgebramobile.mo
@@ -81,6 +90,8 @@ share/locale/pt_BR/LC_MESSAGES/kalgebramobile.mo
 share/locale/ro/LC_MESSAGES/kalgebra.mo
 share/locale/ru/LC_MESSAGES/kalgebra.mo
 share/locale/ru/LC_MESSAGES/kalgebramobile.mo
+share/locale/sa/LC_MESSAGES/kalgebra.mo
+share/locale/sa/LC_MESSAGES/kalgebramobile.mo
 share/locale/se/LC_MESSAGES/kalgebra.mo
 share/locale/si/LC_MESSAGES/kalgebra.mo
 share/locale/sk/LC_MESSAGES/kalgebra.mo

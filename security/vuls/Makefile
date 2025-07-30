@@ -1,6 +1,7 @@
 PORTNAME=	vuls
 DISTVERSIONPREFIX=v
-DISTVERSION=	0.28.0
+DISTVERSION=	0.33.2
+PORTREVISION=	1
 CATEGORIES=	security
 
 MAINTAINER=	girgen@FreeBSD.org
@@ -10,7 +11,7 @@ WWW=		https://vuls.io
 LICENSE=	GPLv3+
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-USES=		go:1.23,modules
+USES=		go:1.24,modules
 
 GO_MODULE=	github.com/future-architect/vuls
 GO_TARGET=	./cmd/${PORTNAME}
@@ -23,6 +24,9 @@ SUB_LIST=	PORTNAME=${PORTNAME} USERS=${USERS} GROUPS=${GROUPS}
 
 USERS=		vuls
 GROUPS=		vuls
+
+NOT_FOR_ARCHS=			i386
+NOT_FOR_ARCHS_REASON_i386=	https://gitlab.com/cznic/libc/-/issues/45
 
 post-patch:
 	@${REINPLACE_CMD} -e 's,%%ETCDIR%%,${ETCDIR},' \

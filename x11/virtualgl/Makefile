@@ -1,6 +1,5 @@
 PORTNAME=	virtualgl
-DISTVERSION=	3.1.1
-PORTREVISION=	1
+DISTVERSION=	3.1.3
 CATEGORIES=	x11 graphics
 MASTER_SITES=	https://github.com/VirtualGL/${PORTNAME}/releases/download/${DISTVERSION}/
 DISTNAME=	VirtualGL-${DISTVERSION}

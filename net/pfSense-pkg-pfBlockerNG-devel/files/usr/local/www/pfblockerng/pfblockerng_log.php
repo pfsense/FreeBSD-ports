@@ -426,12 +426,12 @@ $section->addInput(new Form_Select(
 $form->add($section);
 
 // Add appropriate buttons for logfile
-$logbtns = '&emsp;&nbsp;<i class="fa-solid fa-arrows-rotate icon-pointer icon-primary" onclick="loadFile()" title="Refresh current logfile."></i>';
+$logbtns = '&emsp;&nbsp;<i class="fa-solid fa-arrows-rotate icon-pointer" onclick="loadFile()" title="Refresh current logfile."></i>';
 if ($downloadable) {
-	$logbtns .= '&emsp;<i class="fa-solid fa-download icon-pointer icon-primary" name="download[]" id="downloadicon" title="Download current logfile."></i>';
+	$logbtns .= '&emsp;<i class="fa-solid fa-download icon-pointer" name="download[]" id="downloadicon" title="Download current logfile."></i>';
 }
 if ($clearable) {
-	$logbtns .= '&emsp;<i class="fa-solid fa-trash-can icon-pointer icon-primary no-confirm" name="clear[]" id="clearicon" title="Clear selected logfile."></i>';
+	$logbtns .= '&emsp;<i class="fa-solid fa-trash-can icon-pointer no-confirm" name="clear[]" id="clearicon" title="Clear selected logfile."></i>';
 }
 
 $section = new Form_Section('Log/File Details');

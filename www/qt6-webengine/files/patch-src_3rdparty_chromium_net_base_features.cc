@@ -1,11 +1,24 @@
---- src/3rdparty/chromium/net/base/features.cc.orig	2023-12-12 22:08:45 UTC
+--- src/3rdparty/chromium/net/base/features.cc.orig	2025-02-21 12:29:33 UTC
 +++ src/3rdparty/chromium/net/base/features.cc
-@@ -181,7 +181,7 @@ BASE_FEATURE(kChromeRootStoreUsed,
- #if BUILDFLAG(CHROME_ROOT_STORE_OPTIONAL)
- BASE_FEATURE(kChromeRootStoreUsed,
-              "ChromeRootStoreUsed",
--#if BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_ANDROID)
-+#if BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_ANDROID) || BUILDFLAG(IS_BSD)
+@@ -28,7 +28,7 @@ BASE_FEATURE(kChromeStaticPinning,
+              base::FEATURE_ENABLED_BY_DEFAULT);
+ 
+ #if BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_ANDROID) || \
+-    BUILDFLAG(IS_WIN) || BUILDFLAG(IS_LINUX)
++    BUILDFLAG(IS_WIN) || BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_BSD)
+ BASE_FEATURE(kAsyncDns,
+              "AsyncDns",
               base::FEATURE_ENABLED_BY_DEFAULT
- #else
-              base::FEATURE_DISABLED_BY_DEFAULT
+@@ -535,7 +535,12 @@ BASE_FEATURE(kSpdyHeadersToHttpResponseUseBuilder,
+              "SpdyHeadersToHttpResponseUseBuilder",
+              base::FEATURE_DISABLED_BY_DEFAULT);
+ 
++#if BUILDFLAG(IS_OPENBSD)
++// No IP_RECVTOS support
+ BASE_FEATURE(kReportEcn, "ReportEcn", base::FEATURE_DISABLED_BY_DEFAULT);
++#else
++BASE_FEATURE(kReportEcn, "ReportEcn", base::FEATURE_DISABLED_BY_DEFAULT);
++#endif
+ 
+ BASE_FEATURE(kUseNewAlpsCodepointHttp2,
+              "UseNewAlpsCodepointHttp2",

@@ -1,8 +1,8 @@
 PORTNAME=	exult
-DISTVERSION?=	1.10.1
-PORTREVISION?=	0
+DISTVERSION=	1.12.0
 PORTEPOCH=	1
 CATEGORIES=	games
+MASTER_SITES=	SF/exult/exult-all-versions/${DISTVERSION:R}/
 
 MAINTAINER=	eduardo@FreeBSD.org
 COMMENT=	Engine for Ultima VII (BG, FOV, SI, SS)
@@ -11,14 +11,14 @@ WWW=		http://exult.info
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
+BUILD_DEPENDS=	autoconf-archive>=0:devel/autoconf-archive
 LIB_DEPENDS=	libogg.so:audio/libogg \
 		libpng16.so:graphics/png \
 		libvorbis.so:audio/libvorbis
-BUILD_DEPENDS=	autoconf-archive>=0:devel/autoconf-archive
 
 USES=		autoreconf compiler:c++17-lang gmake libtool localbase \
 		pkgconfig sdl xorg
-USE_GNOME=	cairo gdkpixbuf2
+USE_GNOME=	cairo gdkpixbuf
 USE_SDL=	sdl2
 USE_XORG=	x11 xext
 
@@ -27,15 +27,8 @@ CONFIGURE_ARGS=	--disable-static \
 		--enable-shared \
 		--with-icondir=${PREFIX}/share/pixmaps
 
-CONFLICTS_INSTALL=	exult-devel
-SUB_FILES=		pkg-message
-PLIST?=			${.CURDIR}/pkg-plist
-
-.if !defined(MASTERDIR)
-MASTER_SITES=	http://prdownloads.sourceforge.net/exult/
-.else
-USE_GITHUB=	yes
-.endif
+SUB_FILES=	pkg-message
+PORTDOCS=	*
 
 OPTIONS_DEFINE=		ALSA DEBUG DOCS FLUIDSYNTH GIMP STUDIO
 OPTIONS_DEFAULT=	STUDIO

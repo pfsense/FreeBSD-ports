@@ -1,13 +1,15 @@
 PORTNAME=	xorgxrdp
-DISTVERSIONPREFIX=	v
-DISTVERSION=	0.10.2
+DISTVERSION=	0.10.4
 # Be sure to bump PORTREVISION after xorg-server update to force rebuild
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	x11-drivers
+MASTER_SITES=	https://github.com/neutrinolabs/${PORTNAME}/releases/download/v${DISTVERSION}/ \
+		https://github.com/neutrinolabs/xrdp/releases/download/v${XRDPVER}/:xrdp
+DISTFILES=	${DISTNAME}${EXTRACT_SUFX} \
+		xrdp-${XRDPVER}${EXTRACT_SUFX}:xrdp
 DIST_SUBDIR=	xrdp
 
-PATCH_SITES=	https://github.com/${GH_ACCOUNT}/${GH_PROJECT}/commit/
-PATCHFILES=	95ddf9c.patch:-p1
+PATCH_SITES=	https://github.com/neutrinolabs/${GH_PROJECT}/commit/
 
 MAINTAINER=	meta@FreeBSD.org
 COMMENT=	X.Org driver enabling use through an RDP session with xrdp
@@ -16,31 +18,33 @@ WWW=		https://www.xrdp.org/
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-RUN_DEPENDS=	xauth:x11/xauth
 BUILD_DEPENDS=	nasm:devel/nasm
+RUN_DEPENDS=	xauth:x11/xauth
 
 USES=		autoreconf libtool:build localbase pkgconfig xorg
-USE_XORG=	xorgproto xorg-server
 USE_LDCONFIG=	yes
-USE_GITHUB=	yes
+USE_XORG=	xorg-server xorgproto
 
-GH_ACCOUNT=	neutrinolabs
-GH_TUPLE=	neutrinolabs:xrdp:v0.10.1:xrdp
+XRDPVER=		0.10.4.1
+
 GNU_CONFIGURE=	yes
+CONFIGURE_ENV=	XRDP_CFLAGS=-I${WRKDIR}/xrdp-${XRDPVER}/common
 INSTALL_TARGET=	install-strip
 
-CONFIGURE_ENV=	XRDP_CFLAGS=-I${WRKSRC_xrdp}/common
 CONFLICTS=	xorgxrdp-devel
 
-OPTIONS_DEFINE=	DEBUG DRI3
+OPTIONS_DEFINE=		DEBUG DRI3
 OPTIONS_DEFAULT=	DRI3
 
-DRI3_DESC=	DRI3/Glamor OpenGL Support
-DRI3_CONFIGURE_ENABLE=	glamor
-DRI3_LIB_DEPENDS=	libepoxy.so:graphics/libepoxy
+DRI3_DESC=		DRI3/Glamor OpenGL Support
 DRI3_BUILD_DEPENDS=	${LOCALBASE}/include/libdrm/drm.h:graphics/libdrm
+DRI3_LIB_DEPENDS=	libepoxy.so:graphics/libepoxy
+DRI3_CONFIGURE_ENABLE=	glamor
 DRI3_CFLAGS=		-I${LOCALBASE}/include/libdrm
 DRI3_SUB_FILES=		pkg-message
+
+# Bug 285815
+NO_SHLIB_REQUIRES_GLOB=	libglamoregl.so
 
 post-patch-DEBUG-on:
 	${FIND} ${WRKSRC} -type f | ${XARGS} ${REINPLACE_CMD} -e 's|#define LOG_LEVEL [0-9]*|#define LOG_LEVEL 20|'

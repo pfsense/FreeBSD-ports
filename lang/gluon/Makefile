@@ -1,7 +1,7 @@
 PORTNAME=	gluon
 DISTVERSIONPREFIX=	v
 DISTVERSION=	0.18.2
-PORTREVISION=	8
+PORTREVISION=	13
 CATEGORIES=	lang
 PKGNAMESUFFIX=	-language
 
@@ -394,7 +394,7 @@ PLIST_FILES=	bin/${PORTNAME}
 
 .include <bsd.port.options.mk>
 
-.if ${ARCH} == i386
+.if ${ARCH} == armv7 || ${ARCH} == i386 || ${ARCH} == powerpc
 LTO_UNSAFE=	yes
 .endif
 

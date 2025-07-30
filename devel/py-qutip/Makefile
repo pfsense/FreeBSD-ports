@@ -17,21 +17,19 @@ PY_DEPENDS=	${PYNUMPY} \
 		${PYTHON_PKGNAMEPREFIX}scipy>=1.9:science/py-scipy@${PY_FLAVOR}
 BUILD_DEPENDS=	${PY_DEPENDS} \
 		${PY_SETUPTOOLS} \
-		${PYTHON_PKGNAMEPREFIX}cython3>=3.0.0:lang/cython3@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}pip>0:devel/py-pip@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}wheel>=0.32.0:devel/py-wheel@${PY_FLAVOR}
-RUN_DEPENDS=	${PY_DEPENDS} \
-		${PYTHON_PKGNAMEPREFIX}cython3>=3.0.0:lang/cython3@${PY_FLAVOR}
+RUN_DEPENDS=	${PY_DEPENDS}
 TEST_DEPENDS=	${PYTHON_PKGNAMEPREFIX}nose>0:devel/py-nose@${PY_FLAVOR}
 # the optional graphics/py-mayavi dependency is omitted because it is python-2.7 -only
 
 USES=		python
-USE_PYTHON=	pep517 autoplist
+USE_PYTHON=	autoplist cython3 cython3_run pep517
 
 post-install:
 	@${STRIP_CMD} \
-		${STAGEDIR}${PYTHON_SITELIBDIR}/qutip/*/*${PYTHON_EXT_SUFFIX}.so \
-		${STAGEDIR}${PYTHON_SITELIBDIR}/qutip/*/*/*${PYTHON_EXT_SUFFIX}.so
+		${STAGEDIR}${PYTHON_SITELIBDIR}/qutip/*/*${PYTHON_TAG}.so \
+		${STAGEDIR}${PYTHON_SITELIBDIR}/qutip/*/*/*${PYTHON_TAG}.so
 
 do-test: # 3 tests fail, see https://github.com/qutip/qutip/issues/2190
 	@${ECHO} "==> Running tests. Please note that tests require X11 display access."

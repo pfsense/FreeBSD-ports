@@ -19,7 +19,6 @@ RUN_DEPENDS=	${SA_DIR}/ppxlib/META:devel/ocaml-ppxlib
 USES=		ocaml:dune
 USE_GITHUB=	yes
 GH_ACCOUNT=	johnwhitington
-USE_OCAML=	yes
 
 DOCSDIR=	${OCAML_DOCSDIR}/${PORTNAME}
 PORTDOCS=	CHANGES.md LICENSE.txt README.md
@@ -27,6 +26,12 @@ PORTDOCS=	CHANGES.md LICENSE.txt README.md
 OPTIONS_DEFINE=	DOCS
 
 SA_DIR=		${LOCALBASE}/${OCAML_SITELIBDIR}
+
+.include <bsd.port.options.mk>
+
+.if ${ARCH} == powerpc
+USE_BINUTILS=	yes
+.endif
 
 post-patch:
 	@${REINPLACE_CMD} \

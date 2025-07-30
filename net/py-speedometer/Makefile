@@ -1,10 +1,11 @@
 PORTNAME=	Speedometer
 DISTVERSION=	2.9
+PORTREVISION=	1
 CATEGORIES=	net python
 MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
-MAINTAINER=	DtxdF@disroot.org
+MAINTAINER=	dtxdf@FreeBSD.org
 COMMENT=	Chart network TX/RX and file download rates on the console
 WWW=		https://excess.org/speedometer/
 

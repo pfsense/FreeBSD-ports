@@ -1,7 +1,7 @@
 PORTNAME=	alsa-plugins
 PORTVERSION=	1.2.7.1
 DISTVERSIONSUFFIX=	-1.el9
-PORTREVISION=	4
+PORTREVISION=	5
 CATEGORIES=	audio linux
 MASTER_SITES=	ROCKY_LINUX
 MASTER_SITE_SUBDIR=	${LINUX_DIST_VER}/BaseOS/source/tree/Packages/a/ \
@@ -19,7 +19,7 @@ LICENSE=	LGPL21+
 
 USES=		autoreconf:build gmake libtool:build linux:rl9 pkgconfig
 USE_LDCONFIG=	yes
-USE_LINUX=	alsalib:build,run alsa-lib-devel:build base:build devtools:build libsigsegv:build,run
+USE_LINUX=	alsalib:build,run alsa-lib-devel:build base:build devtools:build
 USE_LINUX_PREFIX=yes
 
 CONFIG_ARGS=	--disable-static --disable-mix --disable-usbstream \
@@ -51,6 +51,10 @@ post-extract:
 	@(cd ${WRKDIR} && ${EXTRACT_CMD} ${EXTRACT_BEFORE_ARGS} \
 		${PORTNAME}-${PORTVERSION}.tar.bz2 ${EXTRACT_AFTER_ARGS})
 
+post-patch:
+	${REINPLACE_CMD} -e 's|mkdir -p|${MKDIR}|g' ${WRKSRC32}/install-hooks.am || true
+	${REINPLACE_CMD} -e 's|mkdir -p|${MKDIR}|g' ${WRKSRC}/install-hooks.am
+
 do-configure:
 .if !empty(COMPAT32_CFLAGS_${ARCH})
 	@(cd ${WRKSRC32} && ${AUTORECONF} -f -i && ${SETENV} \
@@ -58,6 +62,7 @@ do-configure:
 		CFLAGS="${CFLAGS:N-march=*} ${COMPAT32_CFLAGS_${ARCH}}" \
 		LDFLAGS="${LDFLAGS}" MAKE="${LOCALBASE}/bin/gmake" \
 		MKDIR_P="${MKDIR}" PKG_CONFIG="${LOCALBASE}/bin/pkgconf" \
+		INSTALL="/usr/bin/install -c" \
 		PKG_CONFIG_PATH=${LINUXBASE}/usr/lib/pkgconfig \
 		${CONFIG_ARGS})
 .endif
@@ -65,6 +70,7 @@ do-configure:
 		PATH=${LINUXBASE}/usr/bin ./configure CPPFLAGS="${CPPFLAGS}" \
 		CFLAGS="${CFLAGS:N-march=*}" LDFLAGS="${LDFLAGS}" \
 		MAKE="${LOCALBASE}/bin/gmake" MKDIR_P="${MKDIR}" \
+		INSTALL="/usr/bin/install -c" \
 		PKG_CONFIG="${LOCALBASE}/bin/pkgconf" \
 		PKG_CONFIG_PATH=${LINUXBASE}${LIBDIR_${ARCH}}/pkgconfig \
 		--libdir ${LIBDIR_${ARCH}} ${CONFIG_ARGS})
@@ -88,14 +94,9 @@ do-install:
 		${LOCALBASE}/bin/gmake install-strip \
 		DESTDIR=${STAGEDIR}${LINUXBASE})
 	${RM} -r ${STAGEDIR}${LINUXBASE}${LIBDIR_${ARCH}}/alsa-lib/*.la
-	${MKDIR} ${STAGEDIR}${LINUXBASE}/etc/alsa/conf.d
+	${MKDIR} -p ${STAGEDIR}${LINUXBASE}/etc/alsa/conf.d
 	${LN} -sf ../../../usr/share/alsa/alsa.conf.d/50-oss.conf \
 		${STAGEDIR}${LINUXBASE}/etc/alsa/conf.d
-
-## Pet poudriere's stage-qa
-post-install:
-.if defined(WRKDIRPREFIX) && !empty(WRKDIRPREFIX)
-	${RM} -r ${LINUXBASE}${WRKDIRPREFIX}
-.endif
+	${RM} -r ${STAGEDIR}${LINUXBASE}/usr/etc
 
 .include <bsd.port.mk>

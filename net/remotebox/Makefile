@@ -1,5 +1,6 @@
 PORTNAME=	remotebox
 DISTVERSION=	3.2
+PORTREVISION=	2
 CATEGORIES=	net
 MASTER_SITES=	http://remotebox.knobgoblin.org.uk/downloads/
 DISTNAME=	RemoteBox-${DISTVERSION}
@@ -29,7 +30,7 @@ OPTIONS_MULTI=		VIEWER
 OPTIONS_MULTI_VIEWER=	FREERDP RDESKTOP TIGERVNC VINAGRE
 
 FREERDP_DESC=	RDP client (fork of rdesktop with more features)
-KRDC_DESC=	RDP/VNC client for KDE5
+KRDC_DESC=	RDP/VNC client for KDE
 RDESKTOP_DESC=	RDP client (less features than FreeRDP)
 TIGERVNC_DESC=	VNC client (desktop neutral)
 VINAGRE_DESC=	VNC client for GNOME

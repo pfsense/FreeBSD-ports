@@ -1,6 +1,6 @@
 PORTNAME=	kubie
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.24.0
+DISTVERSION=	0.25.2
 PORTREVISION=	2
 CATEGORIES=	sysutils
 
@@ -17,6 +17,8 @@ ONLY_FOR_ARCHS_REASON=	Requires 64-bit processor
 USES=		cargo
 USE_GITHUB=	yes
 GH_ACCOUNT=	sbstp
+
+BUILD_DEPENDS=	${LOCALBASE}/llvm${LLVM_DEFAULT}/lib/libclang.so:devel/llvm${LLVM_DEFAULT}
 
 PLIST_FILES=	bin/${PORTNAME} \
 		etc/bash_completion.d/${PORTNAME}.bash \

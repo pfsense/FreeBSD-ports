@@ -1,59 +1,43 @@
-PORTNAME=	xml-security
-DISTVERSION=	1_5_5
-PORTREVISION=	1
+PORTNAME=	xmlsec
+DISTVERSION=	3.0.5
 CATEGORIES=	security java
-MASTER_SITES=	https://archive.apache.org/dist/santuario/java-library/${DISTVERSION}/
-DISTNAME=	${PORTNAME}-src-${DISTVERSION}
+MASTER_SITES=	https://repo1.maven.org/maven2/org/apache/santuario/xmlsec/${DISTVERSION}/
+DISTFILES=	${PORTNAME}-${PORTVERSION}.jar
 
 MAINTAINER=	ale@FreeBSD.org
 COMMENT=	Java library for XML Signature and Encryption
 WWW=		https://santuario.apache.org/javaindex.html
 
-BUILD_DEPENDS=	${JAVALIBDIR}/commons-logging.jar:java/apache-commons-logging \
-		${JAVALIBDIR}/xalan.jar:textproc/xalan-j
-RUN_DEPENDS=	${JAVALIBDIR}/commons-logging.jar:java/apache-commons-logging
-
 LICENSE=	APACHE20
 
-OPTIONS_DEFINE=	DOCS EXAMPLES
-USES=		cpe zip
+RUN_DEPENDS=	${JAVALIBDIR}/commons-logging.jar:java/apache-commons-logging
+
+USES=		cpe java:run
 CPE_PRODUCT=	xml_security_for_java
 CPE_VENDOR=	apache
-USE_JAVA=	yes
-WRKSRC=		${WRKDIR}/${PORTNAME}-${DISTVERSION}
-USE_ANT=	yes
-MAKE_ENV=	ANT_INCLUDE_SHARED_JARS=YES
-ALL_TARGET=	jar
+
+NO_BUILD=	yes
+NO_ARCH=	yes
+EXTRACT_ONLY=
 
 PORTDOCS=	*
-PORTEXAMPLES=	*
 
 PLIST_FILES=	%%JAVAJARDIR%%/xmlsec.jar
 
-.include <bsd.port.options.mk>
-
-.if ${PORT_OPTIONS:MDOCS}
-ALL_TARGET+=	javadoc
-.endif
+OPTIONS_DEFINE=	DOCS
+DOCS_DISTFILES=	${PORTNAME}-${PORTVERSION}-javadoc.jar
 
 do-install:
 	@${ECHO} -n ">> Installing JAR as ${JAVAJARDIR}/xmlsec.jar..."
-	@${INSTALL_DATA} ${WRKSRC}/build/xmlsec-${PORTVERSION}.jar \
+	${INSTALL_DATA} ${DISTDIR}/xmlsec-${PORTVERSION}.jar \
 		${STAGEDIR}/${JAVAJARDIR}/xmlsec.jar
 	@${ECHO} " [ DONE ]"
-.if ${PORT_OPTIONS:MDOCS}
+
+do-install-DOCS-on:
 	@${ECHO} -n ">> Installing documentation in ${DOCSDIR}..."
-	@${MKDIR} ${STAGEDIR}/${DOCSDIR}
-	@(cd ${WRKSRC}/build/docs/html && ${COPYTREE_SHARE} javadoc \
-		${STAGEDIR}/${DOCSDIR})
+	${MKDIR} ${STAGEDIR}/${DOCSDIR}
+	${INSTALL_DATA} ${DISTDIR}/xmlsec-${PORTVERSION}-javadoc.jar \
+		${STAGEDIR}/${DOCSDIR}/xmlsec-javadoc.jar
 	@${ECHO} " [ DONE ]"
-.endif
-.if ${PORT_OPTIONS:MEXAMPLES}
-	@${ECHO} -n ">> Installing examples in ${EXAMPLESDIR}..."
-	@${MKDIR} ${STAGEDIR}/${EXAMPLESDIR}
-	@(cd ${WRKSRC}/samples && ${COPYTREE_SHARE} "javax org" \
-		${STAGEDIR}/${EXAMPLESDIR})
-	@${ECHO} " [ DONE ]"
-.endif
 
 .include <bsd.port.mk>

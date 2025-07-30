@@ -1,11 +1,7 @@
 PORTNAME=	waybar
-DISTVERSION=	0.11.0
-PORTREVISION=	2
+DISTVERSION=	0.13.0
 CATEGORIES=	x11 wayland
 PKGNAMESUFFIX=	${FLAVOR:N${FLAVORS:[1]}:C/.+/-${FLAVOR}/}
-PATCH_SITES=    https://github.com/Alexays/Waybar/commit/
-# see https://github.com/Alexays/Waybar/issues/3616
-PATCHFILES= 0d02f6877d88551ea2be0cd151c1e6354e208b1c.patch:-p1
 
 MAINTAINER=	nivit@FreeBSD.org
 COMMENT=	Highly customizable Wayland bar for Sway and wlroots-based compositors
@@ -16,16 +12,17 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 
 BUILD_DEPENDS=	wayland-protocols>0:graphics/wayland-protocols
 LIB_DEPENDS=	libdate-tz.so:devel/date \
+		libfmt.so:devel/libfmt \
+		libgps.so:astro/gpsd@nox11 \
+		libgtk-layer-shell.so:x11-toolkits/gtk-layer-shell \
 		libinotify.so:devel/libinotify \
 		libjsoncpp.so:devel/jsoncpp \
-		libfmt.so:devel/libfmt \
 		libspdlog.so:devel/spdlog \
 		libwayland-client.so:graphics/wayland \
-		libgtk-layer-shell.so:x11-toolkits/gtk-layer-shell \
 		libxkbregistry.so:x11/libxkbcommon
 TEST_DEPENDS=	catch>0:devel/catch
 
-FLAVORS=	default nopulse
+FLAVORS=		default nopulse
 CONFLICTS_INSTALL=	${PORTNAME}*
 
 USES=		compiler:c++20-lang gnome meson pkgconfig
@@ -44,8 +41,10 @@ CONFIGURE_ENV+=	PKG_CONFIG_PATH="${WRKDIR}"
 SUB_FILES+=	date.pc
 .endif
 
-OPTIONS_DEFINE=		CAVA DBUS EVDEV ICONSFONT JACK MANPAGES MPD MPRIS PIPEWIRE PULSEAUDIO SNDIO UDEV UPOWER WIREPLUMBER
-OPTIONS_DEFAULT=	CAVA DBUS EVDEV ICONSFONT JACK MANPAGES MPD MPRIS PIPEWIRE PULSEAUDIO SNDIO UDEV UPOWER WIREPLUMBER
+OPTIONS_DEFINE=		CAVA DBUS EVDEV ICONSFONT JACK MANPAGES MPD MPRIS \
+			PIPEWIRE PULSEAUDIO SNDIO UDEV UPOWER WIREPLUMBER
+OPTIONS_DEFAULT=	CAVA DBUS EVDEV ICONSFONT JACK MANPAGES MPD MPRIS \
+			PIPEWIRE PULSEAUDIO SNDIO UDEV UPOWER WIREPLUMBER
 OPTIONS_EXCLUDE+=	CAVA # https://github.com/karlstav/cava/issues/487
 .if ${FLAVOR:U:M*nopulse}
 OPTIONS_EXCLUDE+=	PULSEAUDIO
@@ -75,7 +74,8 @@ JACK_VARS=		MANPAGES_PLIST_FILES+=share/man/man5/${PORTNAME}-jack.5.gz
 
 MANPAGES_BUILD_DEPENDS=	scdoc:textproc/scdoc
 MANPAGES_MESON_ENABLED=	man-pages
-MANPAGES_PLIST_FILES=	share/man/man5/${PORTNAME}-battery.5.gz \
+MANPAGES_PLIST_FILES=	\
+			share/man/man5/${PORTNAME}-battery.5.gz \
 			share/man/man5/${PORTNAME}-cffi.5.gz \
 			share/man/man5/${PORTNAME}-clock.5.gz \
 			share/man/man5/${PORTNAME}-cpu.5.gz \
@@ -84,6 +84,7 @@ MANPAGES_PLIST_FILES=	share/man/man5/${PORTNAME}-battery.5.gz \
 			share/man/man5/${PORTNAME}-dwl-tags.5.gz \
 			share/man/man5/${PORTNAME}-dwl-window.5.gz \
 			share/man/man5/${PORTNAME}-gamemode.5.gz \
+			share/man/man5/${PORTNAME}-gps.5.gz \
 			share/man/man5/${PORTNAME}-hyprland-language.5.gz \
 			share/man/man5/${PORTNAME}-hyprland-submap.5.gz \
 			share/man/man5/${PORTNAME}-hyprland-window.5.gz \
@@ -109,8 +110,7 @@ MANPAGES_PLIST_FILES=	share/man/man5/${PORTNAME}-battery.5.gz \
 			share/man/man5/${PORTNAME}-sway-workspaces.5.gz \
 			share/man/man5/${PORTNAME}-temperature.5.gz \
 			share/man/man5/${PORTNAME}-wlr-taskbar.5.gz \
-			share/man/man5/${PORTNAME}.5.gz \
-			${NULL}
+			share/man/man5/${PORTNAME}.5.gz
 
 MPD_DESC=		Music Player Daemon support
 MPD_LIB_DEPENDS=	libmpdclient.so:audio/libmpdclient
@@ -126,10 +126,10 @@ PIPEWIRE_LIB_DEPENDS=	libpipewire-0.3.so:multimedia/pipewire
 PIPEWIRE_MESON_ENABLED=	pipewire
 PIPEWIRE_VARS=		MANPAGES_PLIST_FILES+=share/man/man5/${PORTNAME}-privacy.5.gz
 
-PULSEAUDIO_LIB_DEPENDS=	libpulse.so:audio/pulseaudio
+PULSEAUDIO_LIB_DEPENDS=		libpulse.so:audio/pulseaudio
 PULSEAUDIO_MESON_ENABLED=	pulseaudio
-PULSEAUDIO_VARS=	MANPAGES_PLIST_FILES+=share/man/man5/${PORTNAME}-pulseaudio-slider.5.gz \
-			MANPAGES_PLIST_FILES+=share/man/man5/${PORTNAME}-pulseaudio.5.gz
+PULSEAUDIO_VARS=		MANPAGES_PLIST_FILES+=share/man/man5/${PORTNAME}-pulseaudio-slider.5.gz \
+				MANPAGES_PLIST_FILES+=share/man/man5/${PORTNAME}-pulseaudio.5.gz
 
 SNDIO_LIB_DEPENDS=	libsndio.so:audio/sndio
 SNDIO_USES=		localbase:ldflags
@@ -175,25 +175,5 @@ pre-test:
 		${MAKE} -C${.CURDIR} build MESON_ARGS="${MESON_ARGS} --reconfigure -Dtests=enabled"; \
 		${TOUCH} ${WRKDIR}/.meson_build_tests; \
 	fi
-
-# XXX Drop after FreeBSD 13.3 EOL around 2025-07-01 (don't forget distinfo)
-.if ${CXX} == c++ && exists(/usr/include/c++/v1/__chrono/concepts.h) && \
-    !exists(/usr/include/c++/v1/__chrono/tzdb.h) || make(makesum) || make(fetch)
-USES+=		cmake:indirect
-CMAKE_ARGS=	-B ${WRKDIR}/libcxx_build -S ${WRKSRC_libcxx}/libcxx
-CMAKE_OFF=	LIBCXX_INCLUDE_BENCHMARKS
-CMAKE_INSTALL_PREFIX=	${WRKDIR}/libcxx_prefix
-
-# XXX Move into separate port and standardize via USES
-GH_TUPLE+=	llvm:llvm-project:llvmorg-16.0.1:libcxx
-CXXFLAGS+=	-nostdinc++ -isystem${WRKDIR}/libcxx_prefix/include/c++/v1
-# Don't link against new libc++ as it's not necessary
-#LDFLAGS+=	-nostdlib++ -L${WRKDIR}/libcxx_prefix/lib -l:libc++.a -lcxxrt
-
-pre-configure:	bundled-libcxx
-bundled-libcxx:
-	@${SETENVI} ${WRK_ENV} ${CONFIGURE_ENV} ${CMAKE_BIN} ${CMAKE_ARGS}
-	@${DO_MAKE_BUILD:NDESTDIR*} install -C ${WRKDIR}/libcxx_build
-.endif # exists(/usr/include/c++/v1/__chrono/concepts.h)
 
 .include <bsd.port.mk>

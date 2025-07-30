@@ -1,9 +1,13 @@
 PORTNAME=	theseus-ship
 DISTVERSIONPREFIX=	v
 DISTVERSION=	6.2.0
-CATEGORIES=	x11-wm # wayland: https://github.com/winft/theseus-ship/issues/9
+PORTREVISION=	3
+CATEGORIES=	x11-wm wayland
 
-MAINTAINER=	jbeich@FreeBSD.org
+PATCH_SITES=	https://github.com/${GH_ACCOUNT}/${GH_PROJECT}/commit/
+PATCHFILES+=	01030427325c.patch:-p1 # https://github.com/winft/theseus-ship/pull/17
+
+MAINTAINER=	jsm@FreeBSD.org
 COMMENT=	Wayland and X11 compositor for KDE Plasma Desktop
 WWW=		https://github.com/winft/theseus-ship
 
@@ -14,7 +18,7 @@ LIB_DEPENDS=	libepoxy.so:graphics/libepoxy \
 		libwayland-server.so:graphics/wayland \
 		libWraplandServer.so:graphics/wrapland \
 		libcomo-script.so.0:x11-toolkits/como \
-		libwlroots-0.18.so:x11-toolkits/wlroots \
+		libwlroots-0.18.so:x11-toolkits/wlroots018 \
 		libxkbcommon.so:x11/libxkbcommon \
 		libxcb-cursor.so:x11/xcb-util-cursor \
 		libxcb-keysyms.so:x11/xcb-util-keysyms \

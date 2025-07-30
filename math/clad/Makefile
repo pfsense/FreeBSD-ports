@@ -1,7 +1,6 @@
 PORTNAME=	clad
 DISTVERSIONPREFIX=	v
-DISTVERSION=	1.7
-PORTREVISION=	1
+DISTVERSION=	1.8
 CATEGORIES=	math
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -10,6 +9,10 @@ WWW=		https://github.com/vgvassilev/clad
 
 LICENSE=	LGPL3
 LICENSE_FILE=	${WRKSRC}/License.txt
+
+.if !exists(/usr/include/omp.h)
+BROKEN=		requires OpenMP support that is missing on this architecture
+.endif
 
 TEST_DEPENDS=	kokkos>0:devel/kokkos
 
@@ -27,6 +30,7 @@ CMAKE_TESTING_ON=	FREEBSD_BUILD_TESTS FREEBSD_BUILD_DEMOS
 CMAKE_TESTING_TARGET=	check-clad
 
 #CXXFLAGS+=	-D_OPENMP
+CXXFLAGS+=	-fopenmp
 
 post-patch:
 	@${REINPLACE_CMD} \
@@ -36,6 +40,6 @@ post-patch:
 		' \
 		${WRKSRC}/test/lit.cfg
 
-# tests fail to compile: https://github.com/vgvassilev/clad/issues/993
+# tests fail to compile: https://github.com/vgvassilev/clad/issues/993, https://github.com/vgvassilev/clad/issues/1181
 
 .include <bsd.port.mk>

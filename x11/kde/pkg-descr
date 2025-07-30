@@ -1,0 +1,5 @@
+KDE is a powerful Free Software graphical desktop environment for Linux
+and Unix workstations.
+
+x11/kde contains Plasma Desktop and basic set of KDE Applications.
+More KDE applications can be found in x11/kde-gear metaport.

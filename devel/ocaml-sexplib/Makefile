@@ -23,7 +23,6 @@ RUN_DEPENDS=	${SA_DIR}/num/META:math/ocaml-num \
 USES=		ocaml:dune
 USE_GITHUB=	yes
 GH_ACCOUNT=	janestreet
-USE_OCAML=	yes
 
 OPTIONS_DEFINE=	DOCS
 
@@ -33,6 +32,12 @@ PORTDOCS=	CHANGES.md CHANGES.txt LICENSE.md LICENSE-Tywith.txt README.org
 OPTIONS_DEFINE=	DOCS
 
 SA_DIR=		${LOCALBASE}/${OCAML_SITELIBDIR}
+
+.include <bsd.port.options.mk>
+
+.if ${ARCH} == powerpc
+USE_BINUTILS=	yes
+.endif
 
 post-install:
 	@${STRIP_CMD} \

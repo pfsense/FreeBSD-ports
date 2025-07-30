@@ -1,6 +1,7 @@
 PORTNAME=	telegraf
 DISTVERSIONPREFIX=v
-DISTVERSION=	1.33.0
+DISTVERSION=	1.35.1
+PORTREVISION=	1
 CATEGORIES=	net-mgmt
 
 MAINTAINER=	girgen@FreeBSD.org
@@ -11,7 +12,7 @@ LICENSE=	MIT
 
 ONLY_FOR_ARCHS=	aarch64 amd64 armv6 armv7
 
-USES=		go:1.23,modules
+USES=		go:1.24,modules
 
 USE_RC_SUBR=	telegraf
 
@@ -34,6 +35,9 @@ USERS=		${TELEGRAF_USER}
 GROUPS=		${TELEGRAF_GROUP}
 
 TELEGRAF_LOGDIR=/var/log/${PORTNAME}
+
+post-patch:
+	@${REINPLACE_CMD} -e 's|/usr/local|${PREFIX}|g' ${WRKSRC}/config/config.go
 
 post-install:
 	${MKDIR} ${STAGEDIR}${TELEGRAF_LOGDIR}

@@ -1,5 +1,6 @@
 PORTNAME=	pandas
-PORTVERSION=	2.1.4
+PORTVERSION=	2.2.3
+PORTREVISION=	2
 PORTEPOCH=	1
 CATEGORIES=	math devel python
 MASTER_SITES=	PYPI
@@ -7,7 +8,7 @@ PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
 MAINTAINER=	python@FreeBSD.org
 COMMENT=	Flexible, high-performance data analysis in Python
-WWW=		https://pandas.pydata.org/ \
+WWW=		https://pandas.pydata.org \
 		https://pandas.pydata.org/docs/ \
 		https://github.com/pandas-dev/pandas
 
@@ -23,13 +24,16 @@ RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}numpy>=1.26.0,1<2,1:math/py-numpy@${PY_FLAVO
 		${PYTHON_PKGNAMEPREFIX}python-dateutil>=2.8.2:devel/py-python-dateutil@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}pytz>=2020.1,1:devel/py-pytz@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}sqlite3>=0:databases/py-sqlite3@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}tzdata>=2022.1:devel/py-tzdata@${PY_FLAVOR}
+		${PYTHON_PKGNAMEPREFIX}tzdata>=2022.7:devel/py-tzdata@${PY_FLAVOR}
 TEST_DEPENDS=	${PYTHON_PKGNAMEPREFIX}arrow>=0:devel/py-arrow@${PY_FLAVOR}
 
 USES=		cpe python
-USE_PYTHON=	autoplist concurrent cython pep517
+USE_PYTHON=	autoplist concurrent cython3 pep517 pytest
 
 CPE_VENDOR=	numfocus
+
+TEST_ENV=	${MAKE_ENV} PYTHONPATH=${STAGEDIR}${PYTHONPREFIX_SITELIBDIR}
+TEST_WRKSRC=	${WRKSRC}/pandas
 
 OPTIONS_DEFINE=		MPL SCIPY
 OPTIONS_GROUP=		ACCEL STORAGE HTML EXCEL
@@ -75,7 +79,7 @@ HTML5LIB_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}beautifulsoup>=4.2.1:www/py-beautif
 			${PYTHON_PKGNAMEPREFIX}html5lib>0:www/py-html5lib@${PY_FLAVOR}
 JINJA2_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}Jinja2>0:devel/py-Jinja2@${PY_FLAVOR}
 LXML_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}beautifulsoup>=4.2.1:www/py-beautifulsoup@${PY_FLAVOR} \
-			${PYTHON_PKGNAMEPREFIX}lxml>0:devel/py-lxml@${PY_FLAVOR}
+			${PYTHON_PKGNAMEPREFIX}lxml5>0:devel/py-lxml5@${PY_FLAVOR}
 MPL_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}matplotlib>=2.0.0:math/py-matplotlib@${PY_FLAVOR}
 NUMEXPR_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}numexpr>=2.6.1:math/py-numexpr@${PY_FLAVOR}
 OPENPYXL_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}openpyxl>=2.4.0:textproc/py-openpyxl@${PY_FLAVOR}
@@ -86,6 +90,9 @@ XLSX_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}XlsxWriter>0:textproc/py-xlsxwriter@${P
 XLWT_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}xlwt>0:textproc/py-xlwt@${PY_FLAVOR}
 
 post-install:
-	${FIND} ${STAGEDIR}${PYTHONPREFIX_SITELIBDIR} -name '*.so' -exec ${STRIP_CMD} {} +
+	@${FIND} ${STAGEDIR}${PYTHONPREFIX_SITELIBDIR} -name '*.so' -exec ${STRIP_CMD} {} +
+
+do-test:
+	@cd ${TEST_WRKSRC} && ${SETENV} ${TEST_ENV} ${PYTHON_CMD} -c "import pandas; pandas.test()"
 
 .include <bsd.port.mk>

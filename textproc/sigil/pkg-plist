@@ -46,6 +46,7 @@ share/pixmaps/sigil.png
 %%DATADIR%%/plugin_launchers/python/compatibility_utils.py
 %%DATADIR%%/plugin_launchers/python/epub_utils.py
 %%DATADIR%%/plugin_launchers/python/hrefutils.py
+%%DATADIR%%/plugin_launchers/python/imghdr.py
 %%DATADIR%%/plugin_launchers/python/inputcontainer.py
 %%DATADIR%%/plugin_launchers/python/launcher.py
 %%DATADIR%%/plugin_launchers/python/navprocessor.py
@@ -77,6 +78,9 @@ share/pixmaps/sigil.png
 %%DATADIR%%/python3lib/cssreformatter.py
 %%DATADIR%%/python3lib/diffstat.py
 %%DATADIR%%/python3lib/fix_opf_ids.py
+%%DATADIR%%/python3lib/fr_utils.py
+%%DATADIR%%/python3lib/functionrep.py
+%%DATADIR%%/python3lib/functionsearch.py
 %%DATADIR%%/python3lib/gencheck.py
 %%DATADIR%%/python3lib/metadata_utils.py
 %%DATADIR%%/python3lib/metaproc2.py
@@ -90,6 +94,7 @@ share/pixmaps/sigil.png
 %%DATADIR%%/python3lib/repomanager.py
 %%DATADIR%%/python3lib/sanitycheck.py
 %%DATADIR%%/python3lib/sdifflibparser.py
+%%DATADIR%%/python3lib/titlecase.py
 %%DATADIR%%/python3lib/unidecode/LICENSE
 %%DATADIR%%/python3lib/unidecode/README.rst
 %%DATADIR%%/python3lib/unidecode/__init__.py
@@ -289,6 +294,7 @@ share/pixmaps/sigil.png
 %%DATADIR%%/python3lib/updatechecker.py
 %%DATADIR%%/python3lib/xmlprocessor.py
 %%DATADIR%%/python3lib/xmlsanitycheck.py
+%%DATADIR%%/translations/sigil_ar.qm
 %%DATADIR%%/translations/sigil_de.qm
 %%DATADIR%%/translations/sigil_en.qm
 %%DATADIR%%/translations/sigil_es.qm

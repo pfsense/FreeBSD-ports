@@ -1,6 +1,6 @@
---- chrome/browser/ui/webui/interstitials/interstitial_ui.cc.orig	2024-11-16 12:20:41 UTC
+--- chrome/browser/ui/webui/interstitials/interstitial_ui.cc.orig	2025-05-06 12:23:00 UTC
 +++ chrome/browser/ui/webui/interstitials/interstitial_ui.cc
-@@ -74,7 +74,7 @@
+@@ -77,7 +77,7 @@
  #include "components/security_interstitials/content/captive_portal_blocking_page.h"
  #endif
  
@@ -9,16 +9,16 @@
  #include "chrome/browser/supervised_user/supervised_user_verification_controller_client.h"
  #include "chrome/browser/supervised_user/supervised_user_verification_page_blocked_sites.h"
  #include "chrome/browser/supervised_user/supervised_user_verification_page_youtube.h"
-@@ -309,7 +309,7 @@ std::unique_ptr<ManagedProfileRequiredPage> CreateMana
-                                                                kRequestUrl));
+@@ -424,7 +424,7 @@ std::unique_ptr<EnterpriseWarnPage> CreateEnterpriseWa
  }
+ #endif
  
 -#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_WIN)
 +#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_WIN) || BUILDFLAG(IS_BSD)
  std::unique_ptr<SupervisedUserVerificationPageForYouTube>
  CreateSupervisedUserVerificationPageForYouTube(
      content::WebContents* web_contents,
-@@ -467,7 +467,7 @@ void InterstitialHTMLSource::StartDataRequest(
+@@ -651,7 +651,7 @@ void InterstitialHTMLSource::StartDataRequest(
      interstitial_delegate = CreateInsecureFormPage(web_contents);
    } else if (path_without_query == "/https_only") {
      interstitial_delegate = CreateHttpsOnlyModePage(web_contents);

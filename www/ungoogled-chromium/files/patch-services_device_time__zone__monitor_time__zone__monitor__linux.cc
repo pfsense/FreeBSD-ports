@@ -1,14 +1,15 @@
---- services/device/time_zone_monitor/time_zone_monitor_linux.cc.orig	2024-08-26 14:40:28 UTC
+--- services/device/time_zone_monitor/time_zone_monitor_linux.cc.orig	2025-03-09 21:38:10 UTC
 +++ services/device/time_zone_monitor/time_zone_monitor_linux.cc
-@@ -136,7 +136,11 @@ class TimeZoneMonitorLinuxImpl
+@@ -131,9 +131,12 @@ class TimeZoneMonitorLinuxImpl
      // false positives are harmless, assuming the false positive rate is
      // reasonable.
-     const char* const kFilesToWatch[] = {
+     const auto kFilesToWatch = std::to_array<const char*>({
 +#if BUILDFLAG(IS_BSD)
-+        "/etc/localtime",
+         "/etc/localtime",
 +#else
-         "/etc/localtime", "/etc/timezone", "/etc/TZ",
+         "/etc/timezone",
+         "/etc/TZ",
 +#endif
-     };
+     });
      for (size_t index = 0; index < std::size(kFilesToWatch); ++index) {
        file_path_watchers_.push_back(std::make_unique<base::FilePathWatcher>());

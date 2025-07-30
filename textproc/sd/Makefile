@@ -1,10 +1,10 @@
 PORTNAME=	sd
 DISTVERSIONPREFIX=	v
 DISTVERSION=	1.0.0
-PORTREVISION=	11
+PORTREVISION=	16
 CATEGORIES=	textproc
 
-MAINTAINER=	mikael@FreeBSD.org
+MAINTAINER=	bofh@FreeBSD.org
 COMMENT=	Intuitive find and replace tool
 WWW=		https://github.com/chmln/sd
 

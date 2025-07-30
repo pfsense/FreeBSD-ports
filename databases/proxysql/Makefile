@@ -1,5 +1,6 @@
 PORTNAME=	proxysql
 PORTVERSION=	2.6.6
+PORTREVISION=	1
 CATEGORIES=	databases
 
 MAINTAINER=	zi@FreeBSD.org
@@ -15,13 +16,12 @@ BUILD_DEPENDS=	aclocal:devel/automake \
 		autoreconf:devel/autoconf \
 		bash:shells/bash \
 		cmake:devel/cmake-core \
-		${LOCALBASE}/bin/grep:textproc/gnugrep \
+		ggrep:textproc/gnugrep \
 		libgcrypt>0:security/libgcrypt \
 		libtoolize:devel/libtool \
-		e2fsprogs-libuuid>0:misc/e2fsprogs-libuuid \
 		gnutls>0:security/gnutls
+LIB_DEPENDS=	libuuid.so:misc/libuuid
 RUN_DEPENDS=	libgcrypt>0:security/libgcrypt \
-		e2fsprogs-libuuid>0:misc/e2fsprogs-libuuid \
 		gnutls>0:security/gnutls
 
 USES=		compiler:c++11-lang gmake libtool perl5 python:build shebangfix
@@ -48,7 +48,7 @@ post-patch:
 		-e '7s/^/pidfile="\/var\/run\/${PORTNAME}\/${PORTNAME}.pid"\n/g' \
 		${WRKSRC}/src/proxysql.cfg
 	@${REINPLACE_CMD} \
-		-e 's,grep -P,${LOCALBASE}/bin/grep -P,g' \
+		-e 's,grep -P,g&,' \
 		-e '/ export C/d' \
 		-e 's,PROXYSQLCLICKHOUSE=1 ,,g' \
 		-e 's,--enable-fastopen=false ,--enable-fastopen=false --enable-shared=no ,g' \

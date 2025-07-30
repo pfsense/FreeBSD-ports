@@ -1,5 +1,6 @@
 PORTNAME=	lwjgl
-DISTVERSION=	3.3.5
+DISTVERSION=	3.3.6
+PORTREVISION=	3
 CATEGORIES=	games java
 MASTER_SITES=	https://repo1.maven.org/:source1
 PKGNAMESUFFIX=	3
@@ -47,14 +48,13 @@ LIB_DEPENDS=		libdraco.so:archivers/draco \
 			libfreetype.so:print/freetype2 \
 			libharfbuzz.so:print/harfbuzz
 
-USES=		gl gnome
-USE_ANT=	yes
+USES=		gl gnome java:ant,run
+JAVA_VERSION=	17+
 USE_GITHUB=	yes
 GH_ACCOUNT=	${PORTNAME:tu}
 GH_PROJECT=	${PORTNAME}${PKGNAMESUFFIX}
 USE_GL=		gl
 USE_GNOME=	glib20 gtk30
-USE_JAVA=	17+
 
 MAKE_ARGS=	-Dbuild.offline=true \
 		-Djavadoc.skip=true \
@@ -87,7 +87,7 @@ post-extract:
 		${WRKSRC}/bin/libs/java/joml.jar
 	${LN} -s ${DISTDIR}/maven2/org/jspecify/jspecify/1.0.0/jspecify-1.0.0-sources.jar \
 		${WRKSRC}/bin/libs/java/jspecify-sources.jar
-	${LN} -s ${DISTDIR}/maven2/org/jspecify/jspecify/1.0.0/jspecify-1.0.0.jar \
+	${CP}    ${DISTDIR}/maven2/org/jspecify/jspecify/1.0.0/jspecify-1.0.0.jar \
 		${WRKSRC}/bin/libs/java/jspecify.jar
 	${LN} -s ${DISTDIR}/maven2/org/openjdk/jmh/jmh-core/1.37/jmh-core-1.37-sources.jar \
 		${WRKSRC}/bin/libs/java/jmh-core-sources.jar

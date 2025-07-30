@@ -1,10 +1,10 @@
---- lib/mount_bsd.c.orig	2023-02-17 09:31:14 UTC
+--- lib/mount_bsd.c.orig	2025-03-24 12:25:30 UTC
 +++ lib/mount_bsd.c
-@@ -8,7 +8,6 @@
-   See the file COPYING.LIB.
- */
+@@ -214,6 +214,7 @@ mount:
+ 			_exit(EXIT_FAILURE);
+ 		}
  
--#include "config.h"
- #include "fuse_i.h"
- #include "fuse_misc.h"
- #include "fuse_opt.h"
++		waitpid(pid, &status, 0);
+ 		_exit(EXIT_SUCCESS);
+ 	}
+ 

@@ -14,10 +14,8 @@ BUILD_DEPENDS=	dune:devel/ocaml-dune
 LIB_DEPENDS+=	libfreetype.so:print/freetype2 \
 		libfontconfig.so:x11-fonts/fontconfig
 
-USES=		gnome pkgconfig
+USES=		gnome ocaml pkgconfig
 USE_GNOME=	cairo
-USE_OCAML=	yes
-
 USE_GITHUB=	yes
 GH_ACCOUNT=	Chris00
 GH_PROJECT=	${PKGNAMEPREFIX}${PORTNAME}
@@ -26,6 +24,12 @@ DOCSDIR=	${OCAML_DOCSDIR}/cairo2
 EXAMPLESDIR=	${OCAML_EXAMPLESDIR}/${PORTNAME}
 
 OPTIONS_DEFINE=	DOCS EXAMPLES
+
+.include <bsd.port.options.mk>
+
+.if ${ARCH} == powerpc
+USE_BINUTILS=	yes
+.endif
 
 do-build:
 	cd ${BUILD_WRKSRC} && dune build --verbose -j ${MAKE_JOBS_NUMBER} -p cairo2

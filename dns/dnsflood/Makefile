@@ -1,15 +1,15 @@
 PORTNAME=	dnsflood
 PORTVERSION=	1.20
 CATEGORIES=	dns
-MASTER_SITES=	http://www.adotout.com/ \
-		ZI
-EXTRACT_SUFX=	.tgz
+MASTER_SITES=	ZI
 
 MAINTAINER=	zi@FreeBSD.org
 COMMENT=	DNS flood detector
 WWW=		http://www.adotout.com/
 
 LICENSE=	GPLv2
+
+USES=		tar:tgz
 
 WRKSRC=		${WRKDIR}/dns_flood_detector_1.2
 

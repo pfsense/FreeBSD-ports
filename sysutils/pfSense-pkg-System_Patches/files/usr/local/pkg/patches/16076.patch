@@ -1,0 +1,57 @@
+diff --git a/src/etc/inc/pfsense-utils.inc b/src/etc/inc/pfsense-utils.inc
+index f52cf92a8b..365174042f 100644
+--- a/src/etc/inc/pfsense-utils.inc
++++ b/src/etc/inc/pfsense-utils.inc
+@@ -3062,16 +3062,18 @@ function filter_rules_sort() {
+ 	$rules = config_get_path('filter/rule', []);
+ 
+ 	/* mark each rule with the sequence number (to retain the order while sorting) */
+-	for ($i = 0; isset($rules[$i]); $i++) {
+-		$rules[$i]['seq'] =$i;
++	$i = 0;
++	foreach ($rules as &$rule) {
++		$rule['seq'] = $i++;
+ 	}
++	unset($rule);
+ 	usort($rules, "filter_rules_compare");
+ 
+ 	/* strip the sequence numbers again */
+-	for ($i = 0; isset($rules[$i]); $i++) {
+-		unset($rules[$i]['seq']);
++	foreach ($rules as &$rule) {
++		unset($rule['seq']);
+ 	}
+-
++	unset($rule);
+ 	/* commit changes */
+ 	config_set_path('filter/rule', $rules);
+ }
+diff --git a/src/usr/local/www/firewall_rules_edit.php b/src/usr/local/www/firewall_rules_edit.php
+index d64620472a..046bbe205d 100644
+--- a/src/usr/local/www/firewall_rules_edit.php
++++ b/src/usr/local/www/firewall_rules_edit.php
+@@ -1183,20 +1183,20 @@ if ($_POST['save']) {
+ 
+ 			$ridx = get_interface_ruleindex($tmpif, $after);
+ 			if (is_numeric($after) && ($tmpif == $if || (isset($pconfig['floating'])) || isset($pconfig['ethernet']))) {
+-				// save the rule after the one being requested
+-				array_splice($a_filter, $after+1, 0, array($filterent));
+-				// shift the separators
++				// shift the separators and insert the rule
+ 				$a_separators = config_get_path('filter/separator/' . strtolower($tmpif), []);
+ 				if ($after == -1) {
+ 					// rule is being placed on top
+ 					shift_separators($a_separators, -1);
++					array_splice($a_filter, $ridx['first'], 0, array($filterent));
+ 				} else {
+ 					// rule is being placed after another rule
+ 					shift_separators($a_separators, $ridx['index']);
++					array_splice($a_filter, $after+1, 0, array($filterent));
+ 				}
+ 				config_set_path('filter/separator/' . strtolower($tmpif), $a_separators);
+ 			} else {
+-				// rule copied to different interface; place it at the bottom
++				// rule is being added at the end or copied to a different interface; place it at the bottom
+ 				array_splice($a_filter, $ridx['last']+1, 0, array($filterent));
+ 			}
+ 		}

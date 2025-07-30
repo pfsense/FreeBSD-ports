@@ -1,6 +1,6 @@
---- src/3rdparty/chromium/sandbox/policy/switches.h.orig	2023-07-16 15:47:57 UTC
+--- src/3rdparty/chromium/sandbox/policy/switches.h.orig	2024-10-22 08:31:56 UTC
 +++ src/3rdparty/chromium/sandbox/policy/switches.h
-@@ -56,10 +56,10 @@ SANDBOX_POLICY_EXPORT extern const char kWindowsSystem
+@@ -58,10 +58,10 @@ SANDBOX_POLICY_EXPORT extern const char kWindowsSystem
  SANDBOX_POLICY_EXPORT extern const char kMirroringSandbox[];
  #endif  // BUILDFLAG(IS_MAC)
  
@@ -13,7 +13,7 @@
  SANDBOX_POLICY_EXPORT extern const char kHardwareVideoEncodingSandbox[];
  #endif  // BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS)
  
-@@ -80,7 +80,8 @@ SANDBOX_POLICY_EXPORT extern const char kDisableSetuid
+@@ -83,7 +83,8 @@ SANDBOX_POLICY_EXPORT extern const char kDisableSetuid
  SANDBOX_POLICY_EXPORT extern const char kGpuSandboxAllowSysVShm[];
  SANDBOX_POLICY_EXPORT extern const char kGpuSandboxFailuresFatal[];
  SANDBOX_POLICY_EXPORT extern const char kNoSandbox[];

@@ -10,7 +10,7 @@
 
 PORTNAME=	dovecot
 DISTVERSION=	2.3.21.1
-PORTREVISION=	1
+PORTREVISION=	3
 CATEGORIES=	mail
 MASTER_SITES=	https://dovecot.org/releases/2.3/
 
@@ -20,6 +20,11 @@ WWW=		https://www.dovecot.org/
 
 LICENSE=	LGPL21 MIT
 LICENSE_COMB=	dual
+
+FLAVORS=	default mysql pgsql
+FLAVOR?=	${FLAVORS[1]}
+mysql_PKGNAMESUFFIX=	-mysql
+pgsql_PKGNAMESUFFIX=	-pgsql
 
 LIB_DEPENDS=	libzstd.so:archivers/zstd
 
@@ -87,8 +92,10 @@ GSSAPI_MIT_USES=		gssapi:mit
 GSSAPI_NONE_CONFIGURE_ON=	--without-gssapi
 GSSAPI_NONE_CONFIGURE_OFF=	--with-gssapi ${GSSAPI_CONFIGURE_ARGS}
 
-ICU_LIB_DEPENDS=		libicui18n.so:devel/icu
+ICU_LIB_DEPENDS=		libicui18n.so:devel/icu \
+				libicuuc.so:devel/icu
 ICU_CONFIGURE_WITH=		icu
+ICU_LDFLAGS=			-licuuc
 
 LDAP_USES=			ldap
 LDAP_CONFIGURE_WITH=		ldap
@@ -112,9 +119,17 @@ LUCENE_CONFIGURE_WITH=		lucene stemmer
 LZ4_LIB_DEPENDS=		liblz4.so:archivers/liblz4
 LZ4_CONFIGURE_WITH=		lz4
 
+.if ${FLAVOR:U} == mysql
+OPTIONS_DEFAULT+=	MYSQL
+.endif
+
 MYSQL_USES=			mysql
 MYSQL_CONFIGURE_WITH=		mysql
 MYSQL_VARS=			_REQUIRE+=mysql
+
+.if ${FLAVOR:U} == pgsql
+OPTIONS_DEFAULT+=	PGSQL
+.endif
 
 PGSQL_USES=			pgsql
 PGSQL_CONFIGURE_WITH=		pgsql

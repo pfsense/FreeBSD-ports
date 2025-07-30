@@ -1,6 +1,6 @@
 PORTNAME=	go
 DISTVERSION?=	g20240208
-PORTREVISION?=	0
+PORTREVISION?=	2
 CATEGORIES=	lang
 MASTER_SITES?=	https://github.com/dmgk/go-bootstrap/releases/download/${BOOTSTRAP_TAG}/:bootstrap \
 		LOCAL/dmgk:bootstrap
@@ -32,6 +32,7 @@ TEST_DEPENDS_aarch64=	binutils>0:devel/binutils
 USES=		cpe shebangfix
 
 CPE_VENDOR=	golang
+NO_SHLIB_REQUIRES_GLOB=	*
 
 .ifndef MASTERDIR
 USE_GITHUB=	yes

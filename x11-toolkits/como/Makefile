@@ -1,14 +1,15 @@
 PORTNAME=	como
 DISTVERSIONPREFIX=	v
 DISTVERSION=	0.3.0
-PORTREVISION=	1
+PORTREVISION=	4
 CATEGORIES=	x11-toolkits
 
 PATCH_SITES=	https://github.com/${GH_ACCOUNT}/${GH_PROJECT}/commit/
 PATCHFILES+=	325e41b02b58.patch:-p1 # https://github.com/winft/como/pull/22
 PATCHFILES+=	d250e3a81b91.patch:-p1 # https://github.com/winft/como/pull/22
+PATCHFILES+=	7ad1bc1d9b7b.patch:-p1 # https://github.com/winft/como/pull/31
 
-MAINTAINER=	jbeich@FreeBSD.org
+MAINTAINER=	jsm@FreeBSD.org
 COMMENT=	Compositor Modules for Wayland and X11
 WWW=		https://github.com/winft/como
 
@@ -19,7 +20,7 @@ BUILD_DEPENDS=	evdev-proto>0:devel/evdev-proto
 LIB_DEPENDS=	libepoxy.so:graphics/libepoxy \
 		libwayland-server.so:graphics/wayland \
 		libWraplandServer.so:graphics/wrapland \
-		libwlroots-0.18.so:x11-toolkits/wlroots \
+		libwlroots-0.18.so:x11-toolkits/wlroots018 \
 		libinput.so:x11/libinput \
 		libxkbcommon.so:x11/libxkbcommon \
 		libxcb-image.so:x11/xcb-util-image \

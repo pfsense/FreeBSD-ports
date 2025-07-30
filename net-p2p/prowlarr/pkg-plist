@@ -1,6 +1,6 @@
 %%DATADIR%%/bin/AngleSharp.Xml.dll
 %%DATADIR%%/bin/AngleSharp.dll
-%%DATADIR%%/bin/BouncyCastle.Crypto.dll
+%%DATADIR%%/bin/BouncyCastle.Cryptography.dll
 %%DATADIR%%/bin/Dapper.dll
 %%DATADIR%%/bin/Diacritical.dll
 %%DATADIR%%/bin/DryIoc.Microsoft.DependencyInjection.dll
@@ -73,6 +73,7 @@
 %%DATADIR%%/bin/Localization/Core/uk.json
 %%DATADIR%%/bin/Localization/Core/vi.json
 %%DATADIR%%/bin/Localization/Core/zh_CN.json
+%%DATADIR%%/bin/Localization/Core/zh_Hans.json
 %%DATADIR%%/bin/Localization/Core/zh_TW.json
 %%DATADIR%%/bin/MailKit.dll
 %%DATADIR%%/bin/Microsoft.AspNetCore.Antiforgery.dll
@@ -443,13 +444,13 @@
 %%DATADIR%%/bin/System.Xml.XmlSerializer.dll
 %%DATADIR%%/bin/System.Xml.dll
 %%DATADIR%%/bin/System.dll
-%%DATADIR%%/bin/UI/286-4b123301b187fdad3519.js
-%%DATADIR%%/bin/UI/286-4b123301b187fdad3519.js.map
-%%DATADIR%%/bin/UI/509-a967ff6f696575a877fa.js
-%%DATADIR%%/bin/UI/509-a967ff6f696575a877fa.js.LICENSE.txt
-%%DATADIR%%/bin/UI/509-a967ff6f696575a877fa.js.map
-%%DATADIR%%/bin/UI/Content/286-663d0c600d1ad0e06d55.css
-%%DATADIR%%/bin/UI/Content/286-663d0c600d1ad0e06d55.css.map
+%%DATADIR%%/bin/UI/194-0bd4624df983e06e6ccb.js
+%%DATADIR%%/bin/UI/194-0bd4624df983e06e6ccb.js.LICENSE.txt
+%%DATADIR%%/bin/UI/194-0bd4624df983e06e6ccb.js.map
+%%DATADIR%%/bin/UI/286-7ee7ca0e6ec0168ce571.js
+%%DATADIR%%/bin/UI/286-7ee7ca0e6ec0168ce571.js.map
+%%DATADIR%%/bin/UI/Content/286-0d675ae17bab3c952d78.css
+%%DATADIR%%/bin/UI/Content/286-0d675ae17bab3c952d78.css.map
 %%DATADIR%%/bin/UI/Content/Fonts/Roboto-Light.ttf
 %%DATADIR%%/bin/UI/Content/Fonts/Roboto-Light.woff
 %%DATADIR%%/bin/UI/Content/Fonts/Roboto-Light.woff2
@@ -491,8 +492,8 @@
 %%DATADIR%%/bin/UI/Content/robots.txt
 %%DATADIR%%/bin/UI/Content/styles.css
 %%DATADIR%%/bin/UI/Content/styles.css.map
-%%DATADIR%%/bin/UI/index-b8998d96c195ef1f229a.js
-%%DATADIR%%/bin/UI/index-b8998d96c195ef1f229a.js.map
+%%DATADIR%%/bin/UI/index-2d5ba92aeb5517d26bea.js
+%%DATADIR%%/bin/UI/index-2d5ba92aeb5517d26bea.js.map
 %%DATADIR%%/bin/UI/index.html
 %%DATADIR%%/bin/UI/login.html
 %%DATADIR%%/bin/UI/oauth.html

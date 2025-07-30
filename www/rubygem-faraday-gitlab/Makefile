@@ -1,5 +1,5 @@
 PORTNAME=	faraday
-PORTVERSION=	2.12.2
+PORTVERSION=	2.13.1
 CATEGORIES=	www rubygems
 MASTER_SITES=	RG
 PKGNAMESUFFIX=	-gitlab
@@ -13,7 +13,7 @@ LICENSE_FILE=	${WRKSRC}/LICENSE.md
 
 RUN_DEPENDS=	rubygem-faraday-net_http-gitlab>=2.0<3.5:www/rubygem-faraday-net_http-gitlab \
 		rubygem-json>=0:devel/rubygem-json \
-		rubygem-logger>=0:devel/rubygem-logger
+		rubygem-logger-gitlab>=0:devel/rubygem-logger-gitlab
 
 USES=		cpe gem
 

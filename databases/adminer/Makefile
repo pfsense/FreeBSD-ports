@@ -1,11 +1,11 @@
 PORTNAME=	adminer
-PORTVERSION=	4.8.1
+DISTVERSION=	5.3.0
 CATEGORIES=	databases www
-MASTER_SITES=	https://github.com/vrana/adminer/releases/download/v${PORTVERSION}/
+MASTER_SITES=	https://github.com/vrana/adminer/releases/download/v${DISTVERSION}/
 EXTRACT_SUFX=	.php
 EXTRACT_ONLY=
 
-MAINTAINER=	uzsolt@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Full-featured database management tool written in PHP
 WWW=		https://www.adminer.org
 
@@ -19,7 +19,8 @@ NO_BUILD=	yes
 
 SUB_FILES=	pkg-message
 SUB_LIST=	PHPVER="${PHP_VER}"
-PLIST_SUB=	WWWOWN="${WWWOWN}" WWWGRP="${WWWGRP}"
+PLIST_SUB=	WWWGRP="${WWWGRP}" \
+		WWWOWN="${WWWOWN}"
 
 do-install:
 	${MKDIR} ${STAGEDIR}${WWWDIR}

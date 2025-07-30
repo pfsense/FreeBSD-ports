@@ -1,7 +1,7 @@
 PORTNAME=	conserve
 DISTVERSIONPREFIX=	v
 DISTVERSION=	24.8.0
-PORTREVISION=	2
+PORTREVISION=	7
 CATEGORIES=	sysutils
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -338,5 +338,11 @@ CARGO_CRATES=	addr2line-0.21.0 \
 		zeroize-1.7.0
 
 PLIST_FILES=	bin/${PORTNAME}
+
+.include <bsd.port.options.mk>
+
+.if ${ARCH} == armv7 || ${ARCH} == powerpc
+LTO_UNSAFE=	yes
+.endif
 
 .include <bsd.port.mk>

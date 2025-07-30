@@ -1,5 +1,6 @@
 PORTNAME=	telegram-desktop
-DISTVERSION=	5.9.0
+DISTVERSION=	5.16.4
+PORTREVISION=	1
 CATEGORIES=	net-im
 MASTER_SITES=	https://github.com/${GH_ACCOUNT}/${GH_PROJECT}/releases/download/v${DISTVERSION}/
 DISTNAME=	tdesktop-${DISTVERSION}-full
@@ -24,6 +25,7 @@ BUILD_DEPENDS=	boost-libs>0:devel/boost-libs \
 		tl-expected>0:devel/tl-expected \
 		v4l_compat>0:multimedia/v4l_compat \
 		yasm:devel/yasm \
+		${LOCALBASE}/lib/libtde2e.a:net-im/tde2e \
 		${LOCALBASE}/lib/libtg_owt.a:net-im/tg_owt
 LIB_DEPENDS=	libabsl_base.so:devel/abseil \
 		libada.so:devel/libada \
@@ -32,7 +34,11 @@ LIB_DEPENDS=	libabsl_base.so:devel/abseil \
 		libdbus-1.so:devel/dbus \
 		libdispatch.so:devel/libdispatch \
 		libfmt.so:devel/libfmt \
+		libgeoclue-2.so:net/geoclue \
+		libgeocode-glib-2.so:net/geocode-glib2 \
+		libheif.so:graphics/libheif \
 		libhunspell-1.7.so:textproc/hunspell \
+		libjxl.so:graphics/libjxl \
 		liblz4.so:archivers/liblz4 \
 		libopenh264.so:multimedia/openh264 \
 		libopus.so:audio/opus \
@@ -44,39 +50,25 @@ LIB_DEPENDS=	libabsl_base.so:devel/abseil \
 		libxxhash.so:devel/xxhash \
 		libvpx.so:multimedia/libvpx
 
-FLAVORS=	qt5 qt6
-FLAVOR?=	${FLAVORS:[1]}
-qt5_PKGNAMESUFFIX=
-qt6_PKGNAMESUFFIX=	-qt6
-qt5_CONFLICTS_INSTALL=	${PORTNAME}-qt6
-qt6_CONFLICTS_INSTALL=	${PORTNAME}
-
-USES=		cmake compiler:c++20-lang desktop-file-utils gl gnome jpeg localbase \
-		minizip openal pkgconfig python:build ssl
+USES=		cmake compiler:c++20-lang desktop-file-utils gl gnome jpeg kde:6 localbase \
+		minizip openal pkgconfig python:build qt:6 ssl
 
 USE_GITHUB=	nodefault
 GH_ACCOUNT=	telegramdesktop
 GH_PROJECT=	tdesktop
 
-.if ${FLAVOR} == qt5
-USES+=		kde:5 qt:5
-USE_QT=		buildtools:build core dbus declarative gui imageformats network qmake:build \
-		svg widgets
-USE_KDE=	coreaddons kimageformats
-.else
-USES+=		kde:6 qt:6
 USE_QT=		5compat base declarative imageformats lottie shadertools svg tools:build
 USE_KDE=	coreaddons kimageformats
-.endif
 
 USE_GL=		gl
 USE_GNOME=	glib20 glibmm26 introspection
 
 CMAKE_ARGS=	-DTDESKTOP_API_ID=${TELEGRAM_API_ID} -DTDESKTOP_API_HASH=${TELEGRAM_API_HASH} \
-		-DQT_VERSION_MAJOR=${FLAVOR:S/qt//}
-CMAKE_ON=	DESKTOP_APP_USE_PACKAGED DESKTOP_APP_DISABLE_CRASH_REPORTS \
-		DESKTOP_APP_DISABLE_JEMALLOC \
-		DESKTOP_APP_DISABLE_SCUDO
+		-DQT_VERSION_MAJOR=6
+# The order of the variables is important here due to complex combination validation 
+CMAKE_ON=	DESKTOP_APP_USE_PACKAGED \
+		DESKTOP_APP_DISABLE_CRASH_REPORTS \
+		DESKTOP_APP_DISABLE_QT_PLUGINS
 
 # Since cmake 3.25.0, BSDs are no longer recognised as Linux (in this port).
 CMAKE_ARGS+=	-DLINUX=true
@@ -100,28 +92,17 @@ SYSTEM_FONTS_DESC=	Use system fonts instead of bundled patched ones
 
 ALSA_LIB_DEPENDS=	libasound.so:audio/alsa-lib
 PULSEAUDIO_LIB_DEPENDS=	libpulse.so:audio/pulseaudio
-ALSA_CMAKE_BOOL_OFF=	LIBTGVOIP_DISABLE_ALSA
-PULSEAUDIO_CMAKE_BOOL_OFF=	LIBTGVOIP_DISABLE_PULSEAUDIO
 SYSTEM_FONTS_CMAKE_BOOL_OFF=	DESKTOP_APP_USE_PACKAGED_FONTS
-WAYLAND_CMAKE_BOOL_OFF=	DESKTOP_APP_DISABLE_WAYLAND_INTEGRATION
 WAYLAND_USE=		qt=wayland
 X11_CMAKE_BOOL_OFF=	DESKTOP_APP_DISABLE_X11_INTEGRATION
 X11_USES=		xorg
-X11_USE=		xorg=x11,xcb,xcomposite,xdamage,xext,xfixes,xrandr,xrender,xtst
+X11_USE=		xorg=x11,xcb,xcomposite,xdamage,xext,xfixes,xrandr,xtst
 X11_LIB_DEPENDS=	libxcb-keysyms.so:x11/xcb-util-keysyms \
 			libxkbcommon.so:x11/libxkbcommon
 
 # Telegram asks each custom build to have its own API ID and hash.
 TELEGRAM_API_HASH=	20a3432aab43f24bb4460fceac5ba38d
 TELEGRAM_API_ID=	601761
-
-.include <bsd.port.options.mk>
-
-.if ${OPSYS} == FreeBSD && defined(WITH_CCACHE_BUILD) && !defined(NO_CCACHE)
-CMAKE_ARGS+=	-DCMAKE_CC_COMPILER_LAUNCHER="${LOCALBASE}/bin/ccache" \
-		-DCMAKE_CPP_COMPILER_LAUNCHER="${LOCALBASE}/bin/ccache" \
-		-DCMAKE_CXX_COMPILER_LAUNCHER="${LOCALBASE}/bin/ccache"
-.endif
 
 post-extract:
 	# Some of the third-party components already built, and

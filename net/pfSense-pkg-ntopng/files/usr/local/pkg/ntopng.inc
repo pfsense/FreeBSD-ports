@@ -171,13 +171,13 @@ function ntopng_sync_package() {
 			}
 		}
 	}
-	if (config_get_path('installedpackages/ntopng/config/0/server_ipv6') == "on") {
+	elseif (config_get_path('installedpackages/ntopng/config/0/server_ipv6') == "on") {
 		if ($iface == "All") {
 			$listen_array[] = "[::]:" . HTTP_PORT;
 		} else {
 			$addr = get_interface_ipv6($iface);
 			if (is_ipaddrv6($addr)) {
-				$listen_array[] = "{$addr}:" . HTTP_PORT;
+				$listen_array[] = "[{$addr}]:" . HTTP_PORT;
 			}
 		}
 	}

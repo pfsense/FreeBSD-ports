@@ -35,12 +35,12 @@
     SUBDIR += ethash
     SUBDIR += go-ethereum
     SUBDIR += gtk-gnutella
+    SUBDIR += hostd
     SUBDIR += intermodal
     SUBDIR += jackett
     SUBDIR += jigdo
     SUBDIR += ktorrent
     SUBDIR += libktorrent
-    SUBDIR += libswift
     SUBDIR += libtorrent
     SUBDIR += libtorrent-rasterbar
     SUBDIR += libtorrent-rasterbar2
@@ -53,6 +53,7 @@
     SUBDIR += lxmf
     SUBDIR += microdc2
     SUBDIR += minder
+    SUBDIR += mkbrr
     SUBDIR += mktorrent
     SUBDIR += mldonkey
     SUBDIR += mldonkey-core
@@ -66,12 +67,8 @@
     SUBDIR += ogmios
     SUBDIR += opendchub
     SUBDIR += oura
-    SUBDIR += p5-Net-BitTorrent
-    SUBDIR += p5-Net-BitTorrent-File
-    SUBDIR += p5-Net-BitTorrent-PeerPacket
     SUBDIR += p5-Net-DirectConnect
     SUBDIR += p5-WWW-BitTorrent
-    SUBDIR += phex
     SUBDIR += prowlarr
     SUBDIR += pulsar-client-cpp
     SUBDIR += py-ed2k-tools
@@ -87,11 +84,11 @@
     SUBDIR += qbittorrent
     SUBDIR += radarr
     SUBDIR += readarr
+    SUBDIR += renterd
     SUBDIR += reticulum
     SUBDIR += retroshare
     SUBDIR += rslsync
     SUBDIR += rtorrent
-    SUBDIR += shx
     SUBDIR += sonarr
     SUBDIR += torrent-file-editor
     SUBDIR += torrentcheck
@@ -103,7 +100,7 @@
     SUBDIR += twitch-tui
     SUBDIR += udpt
     SUBDIR += uhub
-    SUBDIR += vuze
+    SUBDIR += walletd
     SUBDIR += warpinator
     SUBDIR += xbt
     SUBDIR += xmrig

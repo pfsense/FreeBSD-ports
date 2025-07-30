@@ -1,6 +1,7 @@
 PORTNAME=	wcm
 DISTVERSIONPREFIX=	v
 DISTVERSION=	0.9.0
+PORTREVISION=	1
 CATEGORIES=	x11 wayland
 
 MAINTAINER=	jbeich@FreeBSD.org
@@ -22,7 +23,7 @@ CONFLICTS_INSTALL=	wcmcommander # bin/wcm
 
 USES=		compiler:c++17-lang gnome meson pkgconfig
 USE_GITHUB=	yes
-USE_GNOME=	gdkpixbuf2 gtk30 libxml2
+USE_GNOME=	gdkpixbuf gtk30 libxml2
 GH_ACCOUNT=	WayfireWM
 MESON_ARGS=	-Denable_wdisplays=false # use package
 DATADIR=	${PREFIX}/share/wayfire

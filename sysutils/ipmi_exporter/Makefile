@@ -1,6 +1,6 @@
 PORTNAME=	ipmi_exporter
 DISTVERSIONPREFIX=	v
-DISTVERSION=	1.9.0
+DISTVERSION=	1.10.1
 CATEGORIES=	sysutils
 
 MAINTAINER=	meka@tilda.center

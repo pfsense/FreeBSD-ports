@@ -1,8 +1,8 @@
 PORTNAME=	perl
 DISTVERSION=	${PERL_VERSION}
-PORTREVISION=	0
+PORTREVISION=	1
 CATEGORIES=	lang devel perl5
-MASTER_SITES=	CPAN/../../src/5.0
+MASTER_SITES=	CPAN/../../src/5.0 CPAN/../by-authors/id/B/BO/BOOK
 DIST_SUBDIR=	perl
 
 MAINTAINER=	mat@FreeBSD.org
@@ -272,6 +272,10 @@ post-patch:
 		/^if.*nopods.*versiononly || /s/.*/if (1) {/' \
 		${WRKSRC}/installperl
 .endif
+	cd ${PATCHDIR}; for patch in patch-*; do \
+		${AWK} -v patch="$$patch" 'seen == 1 && /,NULL/ {print ",\"FreeBSD:" patch "\""} {print} /local_patches\[\]/ { seen=1 }' ${WRKSRC}/patchlevel.h > ${WRKDIR}/patchlevel.h; \
+		mv -f ${WRKDIR}/patchlevel.h ${WRKSRC}/patchlevel.h ; \
+	done
 
 post-install:
 	@${REINPLACE_CMD} -e '/^lddlflags/s|-L${WRKSRC} ||' \

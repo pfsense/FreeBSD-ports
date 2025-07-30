@@ -1,6 +1,6 @@
 PORTNAME=	onlykey
 PORTVERSION=	1.2.2
-PORTREVISION=	3
+PORTREVISION=	4
 CATEGORIES=	security python
 MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -10,6 +10,9 @@ COMMENT=	Python command line tool for configuring and using OnlyKey
 WWW=		https://github.com/trustcrypto/python-onlykey
 
 LICENSE=	MIT
+
+DEPRECATED=	Depends on expired security/libu2f-host
+EXPIRATION_DATE=2025-09-01
 
 RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}hidapi>0:comms/py-hidapi@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}aenum>0:devel/py-aenum@${PY_FLAVOR} \

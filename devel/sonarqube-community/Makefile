@@ -1,6 +1,6 @@
 PORTNAME=	sonarqube
 DISTVERSION=	24.12.0.100206
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	devel security www java
 MASTER_SITES=	https://binaries.sonarsource.com/Distribution/sonarqube/:m_core \
 		https://binaries.sonarsource.com/Distribution/sonar-csharp-plugin/:m_csharp \
@@ -30,9 +30,8 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 RUN_DEPENDS=	bash:shells/bash #\
 #		jna>0:devel/jna
 
-USES=		cpe shebangfix zip nodejs:lts,run
+USES=		cpe java shebangfix zip nodejs:lts,run
 CPE_VENDOR=	sonarsource
-USE_JAVA=	yes
 
 SHEBANG_FILES=	elasticsearch/bin/elasticsearch-cli \
 		elasticsearch/bin/elasticsearch-env
@@ -54,10 +53,10 @@ TEMP_DIR=	${DBBASE_DIR}/temp
 
 # If you want to update plugins, simply update the version number below,
 # and run "make makesum".
-SONARCSHARP_VER=	10.3.0.106239
-SONARJAVA_VER=		8.7.0.37452
+SONARCSHARP_VER=	10.4.0.108396
+SONARJAVA_VER=		8.8.0.37665
 SONARJAVASCRIPT_VER=	10.19.0.29100
-SONARPHP_VER=		3.40.0.12590
+SONARPHP_VER=		3.41.0.12692
 SONARPYTHON_VER=	4.25.0.19056
 SONARVBNET_VER=		${SONARCSHARP_VER}
 

@@ -1,5 +1,6 @@
 PORTNAME=	openbabel
 DISTVERSION=	3.1.1.1
+PORTREVISION=	1
 CATEGORIES=	science # chemistry
 MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -27,6 +28,6 @@ post-patch:
 .endif
 
 post-install:
-	@${STRIP_CMD} ${STAGEDIR}${PYTHON_SITELIBDIR}/openbabel/_openbabel${PYTHON_EXT_SUFFIX}.so
+	@${STRIP_CMD} ${STAGEDIR}${PYTHON_SITELIBDIR}/openbabel/_openbabel${PYTHON_TAG}.so
 
 .include <bsd.port.mk>

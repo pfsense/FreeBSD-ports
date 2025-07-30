@@ -1,5 +1,5 @@
 PORTNAME=	shotwell
-PORTVERSION=	0.32.10
+PORTVERSION=	0.32.13
 PORTREVISION=	1
 CATEGORIES=	graphics gnome
 MASTER_SITES=	GNOME
@@ -25,13 +25,12 @@ LIB_DEPENDS=	libportal.so:deskutils/libportal \
 		libraw.so:graphics/libraw \
 		libwebp.so:graphics/webp \
 		libgcr-ui-3.so:security/gcr3 \
-		libsecret-1.so:security/libsecret \
-		libxml2.so:textproc/libxml2
+		libsecret-1.so:security/libsecret
 
 USES=		compiler:c++11-lib cpe desktop-file-utils gettext gnome gstreamer meson \
 		ninja pkgconfig python:build sqlite tar:xz vala:build xorg
 CPE_VENDOR=	gnome
-USE_GNOME=	cairo gtk30
+USE_GNOME=	cairo gtk30 libxml2
 USE_LDCONFIG=	yes
 USE_XORG=	x11
 

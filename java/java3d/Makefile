@@ -1,26 +1,25 @@
 PORTNAME=	java3d
 PORTVERSION=	1.5.2
-PORTREVISION=	7
+PORTREVISION=	8
 CATEGORIES=	java graphics games devel
 MASTER_SITES=	https://sites.google.com/site/daemonwizard/
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Provides API for creating and manipulation of 3D geometry
-WWW=		http://java3d.java.net/
+WWW=		https://www.oracle.com/java/technologies/javase/java-3d.html \
+		https://download.java.net/media/java3d/builds/release/1.5.2/README-download.html
 
 LICENSE=	BSD2CLAUSE GPLv2
 LICENSE_COMB=	multi
 
-BROKEN_aarch64=		fails to compile: GVector.java:168: bad use of '>'
 BROKEN_armv6=		fails to compile: build.xml: Compile failed; see the compiler error output for details
 BROKEN_armv7=		fails to compile: build.xml: Compile failed; see the compiler error output for details
 
-USES=		compiler:c11 gl tar:bzip2 xorg
-USE_JAVA=	8
+USES=		compiler:c11 gl java:ant,run tar:bzip2 xorg
+JAVA_VERSION=	8
 USE_GL=		gl
 USE_XORG=	xt
 JAVA_VENDOR=	openjdk
-USE_ANT=	yes
 LLD_UNSAFE=	yes
 
 PLIST_SUB+=	JAVA_HOME=${JAVA_HOME:S/^${PREFIX}\///} ARCH=${ARCH}

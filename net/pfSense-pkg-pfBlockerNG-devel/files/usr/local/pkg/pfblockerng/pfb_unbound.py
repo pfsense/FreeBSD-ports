@@ -193,8 +193,6 @@ def init_standard(id, env):
     pfb['rr_types'] = (RR_TYPE_A, RR_TYPE_AAAA, RR_TYPE_ANY, RR_TYPE_CNAME, RR_TYPE_DNAME, RR_TYPE_SIG, \
                        RR_TYPE_MX, RR_TYPE_NS, RR_TYPE_PTR, RR_TYPE_SRV, RR_TYPE_TXT, 64, 65)
 
-    pfb['rr_types2'] = ('A', 'AAAA')
-
     # List of HSTS preload TLDs
     pfb['hsts_tlds'] = ('android', 'app', 'bank', 'chrome', 'dev', 'foo', 'gle', 'gmail', 'google', 'hangout', \
                         'insurance', 'meet', 'new', 'page', 'play', 'search', 'youtube')
@@ -257,10 +255,6 @@ def init_standard(id, env):
                 pfb['dnsbl_ipv6'] = '::' + pfb['dnsbl_ipv4']
             else:
                 pfb['dnsbl_ipv6'] = '::'
-
-            # DNSBL IP/Log types (0 = Null Blocking logging, 1 = DNSBL Web Server logging, 2 = Null Blocking no logging)
-            pfb['dnsbl_ip'] = {'A': {'0': '0.0.0.0', '1': pfb['dnsbl_ipv4'], '2': '0.0.0.0'},
-                               'AAAA': {'0': '::', '1': pfb['dnsbl_ipv6'], '2': '::'} }
 
             # List of DNS R_CODES
             rcodeDB = {0: 'NoError', 1: 'FormErr', 2: 'ServFail', 3: 'NXDOMAIN', 4: 'NotImp', 5: 'Refused', 6: 'YXDomain',
@@ -764,7 +758,7 @@ def get_details_dnsbl(m_type, qinfo, qstate, rep, kwargs):
     if isDNSBL is not None:
 
         # If logging is disabled, do not log blocked DNSBL events (Utilize DNSBL Webserver) except for Python nullblock events
-        if pfb['python_nolog'] and not isDNSBL['b_ip'] in ('0.0.0.0', '::'):
+        if pfb['python_nolog'] and not isDNSBL['null']:
             return True
 
         # Increment dnsblgroup counter
@@ -1392,11 +1386,11 @@ def operate(id, event, qstate, qdata):
             # Determine if domain has been previously validated
             if q_name not in excludeDB:
 
-                q_type_str = qstate.qinfo.qtype_str
                 isFound = False
                 log_type = False
                 isInWhitelist = False
                 isInHsts = False
+                nullBlocking = True
                 b_type = 'Python'
                 p_type = 'Python'
                 feed = 'Unknown'
@@ -1544,10 +1538,7 @@ def operate(id, event, qstate, qdata):
                                     if isDomainInHsts is not None:
                                         #print q_name + " q: " + q + " HSTS blacklist"
                                         isInHsts = True
-                                        if q_type_str in pfb['rr_types2']:
-                                            p_type = 'HSTS_' + q_type_str
-                                        else:
-                                            p_type = 'HSTS'
+                                        p_type = 'HSTS'
                                         break
                                     else:
                                         q = q.split('.', 1)
@@ -1556,67 +1547,39 @@ def operate(id, event, qstate, qdata):
                                 # print q_name + ' break'
 
                         # Determine blocked IP type (DNSBL VIP vs Null Blocking)
-                        if not isInHsts:
-                            # A/AAAA RR_Types
-                            if q_type_str in pfb['rr_types2']:
-                                if log_type:
-                                    b_ip = pfb['dnsbl_ip'][q_type_str][log_type]
-                                else:
-                                    b_ip = pfb['dnsbl_ip'][q_type_str]['0']
-
-                            # All other RR_Types (use A RR_Type)
-                            else:
-                                if log_type:
-                                    b_ip = pfb['dnsbl_ip']['A'][log_type]
-                                else:
-                                    b_ip = pfb['dnsbl_ip']['A']['0']
-
-                            # print q_name + ' ' + str(qstate.qinfo.qtype) + ' ' + q_type_str
-
-                        else:
-                            if q_type_str in pfb['rr_types2']:
-                                b_ip = pfb['dnsbl_ip'][q_type_str]['0']
-                            else:
-                                b_ip = pfb['dnsbl_ip']['A']['0']
-
+                        if log_type == '1' and not isInHsts:
+                            nullBlocking = False
 
                         # Add 'CNAME' suffix to Block type (CNAME Validation)
                         if isCNAME:
                             b_type = b_type + '_CNAME'
                             q_name = q_name_original
 
-                        # Add q_type to b_type (Block type)
-                        b_type = b_type + '_' + q_type_str
-
                         # Skip subsequent DNSBL validation for domain, and add domain to dict for get_details_dnsbl function
-                        dnsblDB[q_name] = {'qname': q_name, 'b_type': b_type, 'p_type': p_type, 'b_ip': b_ip, 'log': log_type, 'feed': feed, 'group': group, 'b_eval': b_eval }
+                        dnsblDB[q_name] = {'qname': q_name, 'b_type': b_type, 'p_type': p_type, 'null': nullBlocking, 'log': log_type, 'feed': feed, 'group': group, 'b_eval': b_eval }
                         # Skip subsequent DNSBL validation for original domain (CNAME validation), and add domain to dict for get_details_dnsbl function
                         if isCNAME and dnsblDB.get(q_name_original) is None:
-                            dnsblDB[q_name_original] = {'qname': q_name_original, 'b_type': b_type, 'p_type': p_type, 'b_ip': b_ip, 'log': log_type, 'feed': feed, 'group': group, 'b_eval': b_eval }
+                            dnsblDB[q_name_original] = {'qname': q_name_original, 'b_type': b_type, 'p_type': p_type, 'null': nullBlocking, 'log': log_type, 'feed': feed, 'group': group, 'b_eval': b_eval }
 
                         # Add domain data to DNSBL cache for Reports tab
                         write_sqlite(3, '', [b_type, q_name, group, b_eval, feed])
 
                 # Use previously blocked domain details
                 else:
-                    b_ip = isDomainInDNSBL['b_ip']
-                    b_type = isDomainInDNSBL['b_type']
+                    nullBlocking = isDomainInDNSBL['null']
                     isFound = True
                     # print "v: " + q_name 
 
                 if isFound and not isInWhitelist:
 
-                    # Default RR_TYPE ANY -> A
-                    if q_type == RR_TYPE_ANY:
-                        q_type = RR_TYPE_A
-                        q_type_str = 'A'
-
-                    # print q_name + ' Blocked ' + b_ip + ' ' + q_type_str
-
                     # Create FQDN Reply Message
                     msg = DNSMessage(qstate.qinfo.qname_str, q_type, RR_CLASS_IN, PKT_QR | PKT_RA)
-                    msg.answer.append("{}. 60 IN {} {}" .format(q_name, q_type_str, b_ip))
 
+                    if q_type == RR_TYPE_A or q_type == RR_TYPE_ANY:
+                        msg.answer.append("{}. 3600 IN A {}" .format(q_name, '0.0.0.0' if nullBlocking else pfb['dnsbl_ipv4']))
+                    if q_type == RR_TYPE_AAAA or q_type == RR_TYPE_ANY:
+                        msg.answer.append("{}. 3600 IN AAAA {}" .format(q_name, '::' if nullBlocking else pfb['dnsbl_ipv6']))
+                    
                     msg.set_return_msg(qstate)
                     if msg is None or not msg.set_return_msg(qstate):
                         qstate.ext_state[id] = MODULE_ERROR

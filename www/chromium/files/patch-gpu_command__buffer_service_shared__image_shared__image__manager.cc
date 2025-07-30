@@ -1,11 +1,11 @@
---- gpu/command_buffer/service/shared_image/shared_image_manager.cc.orig	2024-11-14 07:57:23 UTC
+--- gpu/command_buffer/service/shared_image/shared_image_manager.cc.orig	2025-07-02 06:08:04 UTC
 +++ gpu/command_buffer/service/shared_image/shared_image_manager.cc
-@@ -605,7 +605,7 @@ bool SharedImageManager::SupportsScanoutImages() {
+@@ -736,7 +736,7 @@ bool SharedImageManager::SupportsScanoutImages() {
    return true;
  #elif BUILDFLAG(IS_ANDROID)
    return base::AndroidHardwareBufferCompat::IsSupportAvailable();
 -#elif BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_FUCHSIA)
 +#elif BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_FUCHSIA) || BUILDFLAG(IS_BSD)
-   // We are in the process of tightening scanout support on Ozone to be guarded
-   // by overlays being supported rather than merely native pixmaps being
-   // supported, as native pixmap support doesn't always imply that those native
+   return supports_overlays_on_ozone_;
+ #elif BUILDFLAG(IS_WIN)
+   return gl::DirectCompositionTextureSupported();

@@ -1,7 +1,6 @@
 PORTNAME=	containers-common
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.60.4
-PORTREVISION=	1
+DISTVERSION=	0.63.1
 CATEGORIES=	sysutils
 
 MAINTAINER=	dfr@FreeBSD.org
@@ -18,17 +17,17 @@ BUILD_DEPENDS=	bash:shells/bash \
 USES=		gmake
 
 USE_GITHUB=	nodefault
-GH_ACCOUNT=	containers:common containers:image containers:storage \
-		containers:skopeo
-GH_PROJECT=	common:common image:image storage:storage skopeo:skopeo
+GH_ACCOUNT=	containers:common containers:image containers:skopeo \
+		containers:storage
+GH_PROJECT=	common:common image:image skopeo:skopeo storage:storage
 GH_TAGNAME=	v${DISTVERSION}:common v${IMAGEVERSION}:image \
-		v${STORAGEVERSION}:storage v${SKOPEOVERSION}:skopeo
+		v${SKOPEOVERSION}:skopeo v${STORAGEVERSION}:storage
 
 NO_ARCH=	yes
 
-IMAGEVERSION=	5.32.2
-STORAGEVERSION=	1.55.1
-SKOPEOVERSION=	1.16.1
+IMAGEVERSION=	5.35.0
+SKOPEOVERSION=	1.19.0
+STORAGEVERSION=	1.58.0
 
 do-build:
 	${GMAKE} -C ${WRKSRC_common}/docs

@@ -86,6 +86,7 @@ USE_QT=		core declarative gui location network printsupport \
 		buildtools:build designer:build qmake:build
 USE_XORG=	x11 xcb xcomposite xcursor xdamage xext xfixes xi xkbfile \
 		xorgproto xrandr xrender xscrnsaver xtst
+USE_LDCONFIG=	${PREFIX}/${QT_LIBDIR_REL}
 
 QMAKE_CONFIGURE_ARGS=	-proprietary-codecs -system-ffmpeg
 
@@ -169,5 +170,11 @@ post-build:
 	@${REINPLACE_CMD} -e '/${QT5_VERSION} $${_Qt5${module}_FIND_VERSION_EXACT}/s|${QT5_VERSION}|'"$$(${MAKE} -C ../../devel/qt5-core -VQT5_VERSION)"'|' \
 		${BUILD_WRKSRC}/lib/cmake/Qt5${module}/Qt5${module}Config.cmake
 .endfor
+
+post-install:
+	for lib in ${STAGEDIR}${PREFIX}/${QT_LIBDIR_REL}/*.so.${_QT_VERSION:C/-.*//} ; \
+	do \
+		${BRANDELF} -t FreeBSD $$lib ; \
+	done
 
 .include <bsd.port.post.mk>

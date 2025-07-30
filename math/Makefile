@@ -3,7 +3,6 @@
     SUBDIR += 4ti2
     SUBDIR += GiNaC
     SUBDIR += Imath
-    SUBDIR += PDL
     SUBDIR += R
     SUBDIR += R-cran-ADGofTest
     SUBDIR += R-cran-Amelia
@@ -130,6 +129,7 @@
     SUBDIR += R-cran-quantreg
     SUBDIR += R-cran-raster
     SUBDIR += R-cran-recipes
+    SUBDIR += R-cran-reformulas
     SUBDIR += R-cran-rgenoud
     SUBDIR += R-cran-robustbase
     SUBDIR += R-cran-sandwich
@@ -393,6 +393,7 @@
     SUBDIR += gsl
     SUBDIR += half
     SUBDIR += hexcalc
+    SUBDIR += hexowl
     SUBDIR += heyoka
     SUBDIR += highs
     SUBDIR += hmat-oss
@@ -471,7 +472,6 @@
     SUBDIR += librdata
     SUBDIR += librsb
     SUBDIR += libsemigroups
-    SUBDIR += libsharp2
     SUBDIR += libtexprintf
     SUBDIR += libtommath
     SUBDIR += libxls
@@ -500,7 +500,6 @@
     SUBDIR += mathomatic
     SUBDIR += mathpresso
     SUBDIR += matio
-    SUBDIR += matlab-installer
     SUBDIR += maxima
     SUBDIR += mbasecalc
     SUBDIR += mcsim
@@ -564,14 +563,17 @@
     SUBDIR += octave-forge-bsltl
     SUBDIR += octave-forge-cfitsio
     SUBDIR += octave-forge-cgi
+    SUBDIR += octave-forge-chartjs
     SUBDIR += octave-forge-civil-engineering
     SUBDIR += octave-forge-coder
     SUBDIR += octave-forge-communications
     SUBDIR += octave-forge-control
+    SUBDIR += octave-forge-csg-dataset
     SUBDIR += octave-forge-csg-toolkit
     SUBDIR += octave-forge-data-smoothing
     SUBDIR += octave-forge-database
     SUBDIR += octave-forge-dataframe
+    SUBDIR += octave-forge-datatypes
     SUBDIR += octave-forge-dicom
     SUBDIR += octave-forge-divand
     SUBDIR += octave-forge-doctest
@@ -582,6 +584,7 @@
     SUBDIR += octave-forge-fileio
     SUBDIR += octave-forge-financial
     SUBDIR += octave-forge-fits
+    SUBDIR += octave-forge-fl-core
     SUBDIR += octave-forge-fpl
     SUBDIR += octave-forge-fuzzy-logic-toolkit
     SUBDIR += octave-forge-ga
@@ -623,6 +626,7 @@
     SUBDIR += octave-forge-nurbs
     SUBDIR += octave-forge-oct2mat
     SUBDIR += octave-forge-octave-pool
+    SUBDIR += octave-forge-octave_php_wrapper
     SUBDIR += octave-forge-octave_tar
     SUBDIR += octave-forge-octave_zstd
     SUBDIR += octave-forge-octclip
@@ -636,6 +640,7 @@
     SUBDIR += octave-forge-outliers
     SUBDIR += octave-forge-parallel
     SUBDIR += octave-forge-pde1dm
+    SUBDIR += octave-forge-piqp
     SUBDIR += octave-forge-pkg-octave-doc
     SUBDIR += octave-forge-plot
     SUBDIR += octave-forge-ponchon-savarit
@@ -686,7 +691,6 @@
     SUBDIR += openlibm
     SUBDIR += openmesh
     SUBDIR += openscop
-    SUBDIR += opensolaris-libm
     SUBDIR += openturns
     SUBDIR += optpp
     SUBDIR += or-tools
@@ -817,6 +821,24 @@
     SUBDIR += p5-Number-Uncertainty
     SUBDIR += p5-Number-WithError
     SUBDIR += p5-Number-WithError-LaTeX
+    SUBDIR += p5-PDL
+    SUBDIR += p5-PDL-DateTime
+    SUBDIR += p5-PDL-Fit
+    SUBDIR += p5-PDL-GSL
+    SUBDIR += p5-PDL-Graphics-IIS
+    SUBDIR += p5-PDL-Graphics-Limits
+    SUBDIR += p5-PDL-Graphics-PLplot
+    SUBDIR += p5-PDL-IO-Browser
+    SUBDIR += p5-PDL-IO-Dicom
+    SUBDIR += p5-PDL-IO-ENVI
+    SUBDIR += p5-PDL-IO-GD
+    SUBDIR += p5-PDL-IO-HDF
+    SUBDIR += p5-PDL-IO-IDL
+    SUBDIR += p5-PDL-LinearAlgebra
+    SUBDIR += p5-PDL-Minuit
+    SUBDIR += p5-PDL-Opt-Simplex
+    SUBDIR += p5-PDL-Perldl2
+    SUBDIR += p5-PDL-Transform-Proj4
     SUBDIR += p5-Parse-Range
     SUBDIR += p5-Roman
     SUBDIR += p5-Set-IntSpan
@@ -855,6 +877,7 @@
     SUBDIR += paritwine
     SUBDIR += parmetis
     SUBDIR += parmgridgen
+    SUBDIR += pcalc
     SUBDIR += pdal
     SUBDIR += pear-Math_BigInteger
     SUBDIR += pear-Math_Combinatorics
@@ -872,6 +895,8 @@
     SUBDIR += php83-gmp
     SUBDIR += php84-bcmath
     SUBDIR += php84-gmp
+    SUBDIR += php85-bcmath
+    SUBDIR += php85-gmp
     SUBDIR += physcalc
     SUBDIR += picosat
     SUBDIR += piranha
@@ -889,10 +914,9 @@
     SUBDIR += primesum
     SUBDIR += primme
     SUBDIR += prng
-    SUBDIR += pspp
+    SUBDIR += proxsuite
     SUBDIR += psurface
     SUBDIR += py-CyLP
-    SUBDIR += py-Diofant
     SUBDIR += py-GridDataFormats
     SUBDIR += py-MutatorMath
     SUBDIR += py-POT
@@ -922,7 +946,6 @@
     SUBDIR += py-bitmath
     SUBDIR += py-bitvector
     SUBDIR += py-blis
-    SUBDIR += py-blis07
     SUBDIR += py-bottleneck
     SUBDIR += py-brial
     SUBDIR += py-chaospy
@@ -940,6 +963,7 @@
     SUBDIR += py-cvxpy
     SUBDIR += py-cyipopt
     SUBDIR += py-cypari2
+    SUBDIR += py-daqp
     SUBDIR += py-deap
     SUBDIR += py-dgl
     SUBDIR += py-diffcp
@@ -952,12 +976,12 @@
     SUBDIR += py-evalidate
     SUBDIR += py-faiss
     SUBDIR += py-fastcluster
-    SUBDIR += py-fastdtw
     SUBDIR += py-fenics-basix
     SUBDIR += py-fenics-ffcx
     SUBDIR += py-fenics-ufl
     SUBDIR += py-flax
     SUBDIR += py-formulaic
+    SUBDIR += py-formulaic-contrasts
     SUBDIR += py-fpylll
     SUBDIR += py-fraction
     SUBDIR += py-fsph
@@ -1018,7 +1042,6 @@
     SUBDIR += py-nevergrad
     SUBDIR += py-nlopt
     SUBDIR += py-numba-stats
-    SUBDIR += py-numdifftools
     SUBDIR += py-numexpr
     SUBDIR += py-numpoly
     SUBDIR += py-numpy
@@ -1031,6 +1054,7 @@
     SUBDIR += py-pandas
     SUBDIR += py-pandas-datareader
     SUBDIR += py-patsy
+    SUBDIR += py-pcodec
     SUBDIR += py-pdal
     SUBDIR += py-permutation
     SUBDIR += py-petsc4py
@@ -1039,6 +1063,7 @@
     SUBDIR += py-pplpy
     SUBDIR += py-primecountpy
     SUBDIR += py-primme
+    SUBDIR += py-pwlf
     SUBDIR += py-py-find-1st
     SUBDIR += py-pyFFTW
     SUBDIR += py-pyaudi
@@ -1059,9 +1084,9 @@
     SUBDIR += py-pyprobables
     SUBDIR += py-pyreadr
     SUBDIR += py-pyreadstat
+    SUBDIR += py-pyrfr
     SUBDIR += py-pyrr
     SUBDIR += py-pysmt
-    SUBDIR += py-pystan
     SUBDIR += py-pysym
     SUBDIR += py-pytanque
     SUBDIR += py-pytensor
@@ -1098,7 +1123,6 @@
     SUBDIR += py-spopt
     SUBDIR += py-spot
     SUBDIR += py-spreg
-    SUBDIR += py-spvcm
     SUBDIR += py-squarify
     SUBDIR += py-ssm
     SUBDIR += py-statsmodels
@@ -1113,6 +1137,7 @@
     SUBDIR += py-umap-learn
     SUBDIR += py-uncertainties
     SUBDIR += py-unyt
+    SUBDIR += py-vector
     SUBDIR += py-vincenty
     SUBDIR += py-yt
     SUBDIR += py-z3-solver
@@ -1158,7 +1183,6 @@
     SUBDIR += rubygem-rb-gsl
     SUBDIR += rumur
     SUBDIR += saga
-    SUBDIR += sage
     SUBDIR += savage
     SUBDIR += sc
     SUBDIR += sc-im

@@ -4,6 +4,7 @@ bin/appjail-config-user
 bin/appjail-dns
 bin/appjail-user
 @sample %%ETCDIR%%/appjail.conf.sample
+etc/bash_completion.d/_appjail.bash
 etc/rc.d/appjail
 etc/rc.d/appjail-dns
 etc/rc.d/appjail-health
@@ -74,6 +75,7 @@ libexec/appjail/network/network
 %%DATADIR%%/lib/copy
 %%DATADIR%%/lib/devfs
 %%DATADIR%%/lib/files
+%%DATADIR%%/lib/initscript
 %%DATADIR%%/lib/jail
 %%DATADIR%%/lib/jail_types
 %%DATADIR%%/lib/kern_modules
@@ -157,11 +159,13 @@ libexec/appjail/network/network
 %%DATADIR%%/scripts/ajconf.sh
 %%DATADIR%%/scripts/ajdns.sh
 %%DATADIR%%/scripts/ajuser.sh
+%%DATADIR%%/scripts/appjail-completion.bash
 %%DATADIR%%/scripts/ascii2oct.sh
 %%DATADIR%%/scripts/bind-ddns-hook.sh
 %%DATADIR%%/scripts/create-bridge.sh
 %%DATADIR%%/scripts/dns.sh
 %%DATADIR%%/scripts/dnsmasq-hook.sh
+%%DATADIR%%/scripts/dummy-hook.sh
 %%DATADIR%%/scripts/escape-env-val.sh
 %%DATADIR%%/scripts/get_depends.sh
 %%DATADIR%%/scripts/git.sh
@@ -172,7 +176,6 @@ libexec/appjail/network/network
 %%DATADIR%%/scripts/run_jail.sh
 %%DATADIR%%/scripts/runas.sh
 %%DATADIR%%/scripts/super-mv.sh
-%%PORTDOCS%%%%DOCSDIR%%/README.md
 %%EXAMPLESDIR%%/appjail.conf
 %%EXAMPLESDIR%%/templates/bridge.conf
 %%EXAMPLESDIR%%/templates/freebsd-oci.conf

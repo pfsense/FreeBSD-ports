@@ -1,6 +1,6 @@
 PORTNAME=	opendht
 DISTVERSIONPREFIX=	v
-DISTVERSION=	3.2.0
+DISTVERSION=	3.3.1
 PORTREVISION=	1
 CATEGORIES=	devel net
 
@@ -56,5 +56,6 @@ PUSH_NOTIFICATIONS_CMAKE_BOOL=	OPENDHT_PUSH_NOTIFICATIONS
 PORTDOCS=	*
 
 # several tests fail, see https://github.com/savoirfairelinux/opendht/issues/721
+# tests throw exceptions, see https://github.com/savoirfairelinux/opendht/issues/751
 
 .include <bsd.port.mk>

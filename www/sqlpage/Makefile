@@ -1,6 +1,6 @@
 PORTNAME=	sqlpage
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.31.0
+DISTVERSION=	0.35.2
 PORTREVISION=	1
 CATEGORIES=	www databases
 MASTER_SITES=	https://cdn.jsdelivr.net/npm/:npm
@@ -15,7 +15,10 @@ LICENSE=	MIT
 
 LIB_DEPENDS=	libzstd.so:archivers/zstd
 
-USES=		cargo
+MAKE_ENV=	LIBCLANG_PATH=${LLVM_PREFIX}/lib \
+		LLVM_CONFIG_PATH=${LLVM_CONFIG}
+
+USES=		cargo llvm
 USE_RC_SUBR=	${PORTNAME}
 
 USE_GITHUB=	yes
@@ -25,15 +28,21 @@ GH_PROJECT=	SQLPage
 USERS=		sqlpage
 GROUPS=		sqlpage
 
-NPM_DISTFILES=	apexcharts@4.0.0/dist/apexcharts.min.js:npm \
-		@tabler/core@1.0.0-beta20/dist/css/tabler.min.css:npm \
-		@tabler/core@1.0.0-beta20/dist/css/tabler-vendors.min.css:npm \
-		@tabler/core@1.0.0-beta20/dist/js/tabler.min.js:npm \
-		@tabler/icons-sprite@3.21.0/dist/tabler-sprite.svg:npm \
+NPM_DISTFILES=	apexcharts@4.7.0/dist/apexcharts.min.js:npm \
+		@tabler/core@1.3.1/dist/css/tabler.min.css:npm \
+		@tabler/core@1.3.1/dist/css/tabler-vendors.min.css:npm \
+		@tabler/core@1.3.1/dist/js/tabler.min.js:npm \
+		@tabler/icons-sprite@3.33.0/dist/tabler-sprite.svg:npm \
+		tom-select@2.4.3/dist/css/tom-select.bootstrap5.css:npm \
 		tom-select@2.4.1/dist/js/tom-select.popular.min.js:npm
 
+ARTEFACTS=	${WRKSRC}/target/sqlpage_artefacts
+
 post-extract:
-		cd ${DISTDIR}; ${PAX} -rw ${NPM_DISTFILES:C/\/.*//g} ${WRKSRC}
+		${MKDIR} ${ARTEFACTS}
+.for f in ${NPM_DISTFILES:S/:npm//}
+		${CP} ${DISTDIR}/$f ${ARTEFACTS}/https___cdn.jsdelivr.net_npm_${f:C/[\@\/]/_/g}
+.endfor
 
 post-install:
 		${MKDIR} ${STAGEDIR}/${ETCDIR} ;\

@@ -70,7 +70,7 @@ _INCLUDE_USES_GO_MK=	yes
 
 # When adding a version, please keep the comment in
 # Mk/bsd.default-versions.mk in sync.
-GO_VALID_VERSIONS=	1.20 1.21 1.22 1.23 1.24-devel
+GO_VALID_VERSIONS=	1.20 1.21 1.22 1.23 1.24 1.25-devel
 
 # Check arguments sanity
 .  if !empty(go_ARGS:N[1-9].[0-9][0-9]:N*-devel:Nmodules:Nno_targets:Nrun)
@@ -167,7 +167,18 @@ MASTER_SITES+=	${GO_MOD_DIST}
 DISTFILES+=	go.mod
 # Fallback to default GO_PROXY
 .        else
+
+# `GOPROXY` presents sources via the proxy service and in the downloaded
+# `WRKSRC` differently as of v2.x versions of projects. Support this different
+# directory/REST API scheme: https://go.dev/ref/mod#major-version-suffixes .
+# GO_MODVERSION_MAJOR=	${GO_MODVERSION:C/^v//g:C/\..+//g}
+# .if ${GO_MODVERSION_MAJOR} > 1
+# WRKSRC=		${WRKDIR}/${GO_MODNAME}/v${GO_MODVERSION_MAJOR}@${GO_MODVERSION}
+# MASTER_SITES+=	${GO_GOPROXY}/${GO_MODNAME:C/([A-Z])/!\1/g:tl}/v${GO_MODVERSION_MAJOR}/@v/
+# .else
+# WRKSRC=		${WRKDIR}/${GO_MODNAME}@${GO_MODVERSION}
 MASTER_SITES+=	${GO_GOPROXY}/${GO_MODNAME:C/([A-Z])/!\1/g:tl}/@v/
+# .endif
 DISTFILES+=	${GO_MODFILE} ${GO_DISTFILE}
 WRKSRC=		${WRKDIR}/${GO_MODNAME}@${GO_MODVERSION}
 .        endif
@@ -175,8 +186,7 @@ WRKSRC=		${WRKDIR}/${GO_MODNAME}@${GO_MODVERSION}
 .      endif
 EXTRACT_ONLY?=	${DISTFILES:N*.mod\:*:N*.mod:C/:.*//}
 DIST_SUBDIR=	go/${PKGORIGIN:S,/,_,g}/${DISTNAME}
-FETCH_DEPENDS+=	${GO_CMD}:${GO_PORT} \
-		ca_root_nss>0:security/ca_root_nss
+FETCH_DEPENDS+=	${GO_CMD}:${GO_PORT}
 USES+=		zip
 .    else
 GO_ENV+=	GO_NO_VENDOR_CHECKS=1

@@ -1,7 +1,7 @@
 PORTNAME=	libtorrent
-DISTVERSION=	0.14.0
+DISTVERSION=	0.15.5
 CATEGORIES=	net-p2p
-MASTER_SITES=	https://github.com/rakshasa/rtorrent/releases/download/v0.10.0/
+MASTER_SITES=	https://github.com/rakshasa/rtorrent/releases/download/v${DISTVERSION}/
 
 MAINTAINER=	eduardo@FreeBSD.org
 COMMENT=	BitTorrent Library written in C++
@@ -10,7 +10,9 @@ WWW=		https://github.com/rakshasa/libtorrent
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-USES=		compiler:c++11-lang cpe libtool localbase:ldflags pathfix \
+TEST_DEPENDS=	cppunit>0:devel/cppunit
+
+USES=		compiler:c++17-lang cpe libtool localbase:ldflags pathfix \
 		pkgconfig ssl
 USE_LDCONFIG=	yes
 
@@ -24,6 +26,9 @@ CONFIGURE_ENV=	OPENSSL_CFLAGS="-I ${OPENSSLINC}" \
 MAKE_ARGS=	LDFLAGS="${LDFLAGS}"
 
 INSTALL_TARGET=	install-strip
+TEST_TARGET=	check
+
+TESTING_UNSAFE=	https://github.com/rakshasa/libtorrent/issues/292
 
 OPTIONS_DEFINE=		KQUEUE
 OPTIONS_DEFAULT=	KQUEUE

@@ -1,7 +1,7 @@
 PORTNAME=	deno-dom
 DISTVERSIONPREFIX=	v
 DISTVERSION=	0.1.48
-PORTREVISION=	2
+PORTREVISION=	7
 CATEGORIES=	www
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -14,6 +14,7 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 
 BROKEN_armv7=	compilation fails, mismatched types, see https://github.com/b-fuze/deno-dom/issues/178
 BROKEN_i386=	compilation fails, mismatched types, see https://github.com/b-fuze/deno-dom/issues/178
+BROKEN_powerpc=	compilation fails, mismatched types, see https://github.com/b-fuze/deno-dom/issues/178
 
 USES=		cargo
 

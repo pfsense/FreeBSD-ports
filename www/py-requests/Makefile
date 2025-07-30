@@ -1,5 +1,5 @@
 PORTNAME=	requests
-PORTVERSION=	2.32.3
+PORTVERSION=	2.32.4
 CATEGORIES=	www python
 MASTER_SITES=	PYPI \
 		https://github.com/psf/requests/releases/download/v${PORTVERSION}/
@@ -8,6 +8,7 @@ PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Python HTTP for Humans
 WWW=		https://docs.python-requests.org/en/latest/ \
+		https://requests.readthedocs.io/en/latest/ \
 		https://github.com/psf/requests
 
 LICENSE=	APACHE20

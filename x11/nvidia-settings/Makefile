@@ -1,6 +1,5 @@
 PORTNAME=	nvidia-settings
-PORTVERSION=	535.146.02
-PORTREVISION=	1
+PORTVERSION=	570.169
 CATEGORIES=	x11
 
 MAINTAINER=	x11@FreeBSD.org
@@ -12,15 +11,17 @@ LICENSE=	GPLv2
 ONLY_FOR_ARCHS=		amd64 i386
 ONLY_FOR_ARCHS_REASON=	Nvidia driver is only available on x86
 
-BUILD_DEPENDS=	${LOCALBASE}/include/dbus-1.0/dbus/dbus.h:devel/dbus
+BUILD_DEPENDS=	${LOCALBASE}/include/dbus-1.0/dbus/dbus.h:devel/dbus \
+		vulkan-headers>0:graphics/vulkan-headers
 LIB_DEPENDS=	libfontconfig.so:x11-fonts/fontconfig \
 		libfreetype.so:print/freetype2 \
 		libharfbuzz.so:print/harfbuzz \
 		libjansson.so:devel/jansson \
 		libvdpau.so:multimedia/libvdpau
 
-USES=		gl gmake gnome pkgconfig gettext-runtime xorg
-USE_GNOME=	gtk30 cairo gdkpixbuf2
+USES=		gl gmake gnome pkgconfig gettext-runtime xorg \
+		desktop-file-utils
+USE_GNOME=	gtk30 cairo gdkpixbuf
 USE_GL=		gl
 USE_XORG=	x11 xext xv xxf86vm
 

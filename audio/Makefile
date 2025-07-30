@@ -73,7 +73,6 @@
     SUBDIR += caps-lv2
     SUBDIR += caps-plugins
     SUBDIR += cardinal
-    SUBDIR += carla
     SUBDIR += cava
     SUBDIR += cd-discid
     SUBDIR += cddb-bundle
@@ -219,13 +218,13 @@
     SUBDIR += gogglesmm
     SUBDIR += gonic
     SUBDIR += goobox
-    SUBDIR += gqradio
     SUBDIR += gramofile
     SUBDIR += grip
     SUBDIR += gsequencer
     SUBDIR += gsm
     SUBDIR += gsound
     SUBDIR += gstreamer1-plugins-a52dec
+    SUBDIR += gstreamer1-plugins-alsa
     SUBDIR += gstreamer1-plugins-amrnb
     SUBDIR += gstreamer1-plugins-amrwbdec
     SUBDIR += gstreamer1-plugins-bs2b
@@ -233,6 +232,7 @@
     SUBDIR += gstreamer1-plugins-chromaprint
     SUBDIR += gstreamer1-plugins-faac
     SUBDIR += gstreamer1-plugins-faad
+    SUBDIR += gstreamer1-plugins-fdkaac
     SUBDIR += gstreamer1-plugins-flac
     SUBDIR += gstreamer1-plugins-flite
     SUBDIR += gstreamer1-plugins-gme
@@ -283,7 +283,6 @@
     SUBDIR += id3el
     SUBDIR += id3lib
     SUBDIR += id3mtag
-    SUBDIR += id3tool
     SUBDIR += id3v2
     SUBDIR += iir1
     SUBDIR += infamous-plugins-lv2
@@ -354,7 +353,7 @@
     SUBDIR += libkcddb
     SUBDIR += libkcompactdisc
     SUBDIR += libkeyfinder
-    SUBDIR += liblastfm-qt5
+    SUBDIR += liblastfm
     SUBDIR += liblo
     SUBDIR += liblscp
     SUBDIR += libltc
@@ -405,7 +404,6 @@
     SUBDIR += linux-c7-openal-soft
     SUBDIR += linux-c7-pulseaudio-libs
     SUBDIR += linux-c7-pulseaudio-utils
-    SUBDIR += linux-c7-sdl_mixer
     SUBDIR += linux-laudio
     SUBDIR += linux-rl9-alsa-lib
     SUBDIR += linux-rl9-alsa-lib-devel
@@ -425,7 +423,6 @@
     SUBDIR += liquidsfz
     SUBDIR += listener
     SUBDIR += littlefly-lv2
-    SUBDIR += lmms
     SUBDIR += logitechmediaserver
     SUBDIR += logitechmediaserver-dynamicplaylist
     SUBDIR += logitechmediaserver-lazysearch
@@ -478,7 +475,6 @@
     SUBDIR += mp3asm
     SUBDIR += mp3blaster
     SUBDIR += mp3burn
-    SUBDIR += mp3check
     SUBDIR += mp3gain
     SUBDIR += mp3guessenc
     SUBDIR += mp3lint
@@ -516,6 +512,7 @@
     SUBDIR += ncpamixer
     SUBDIR += ncspot
     SUBDIR += netease-music-tui
+    SUBDIR += neuralrack-lv2
     SUBDIR += noise-repellent-lv2
     SUBDIR += noise-suppression-for-voice-lv2
     SUBDIR += normalize
@@ -524,6 +521,7 @@
     SUBDIR += nyquist
     SUBDIR += oaml
     SUBDIR += ocp
+    SUBDIR += odin2-synthesizer
     SUBDIR += ogg2mp3
     SUBDIR += openal-soft
     SUBDIR += opencore-amr
@@ -594,12 +592,11 @@
     SUBDIR += pianod2
     SUBDIR += picard
     SUBDIR += picard-plugins
+    SUBDIR += piper
+    SUBDIR += piper-phonemize
     SUBDIR += pipewire-module-xrdp
     SUBDIR += pipewire-spa-oss
     SUBDIR += pithos
-    SUBDIR += plasma5-kpipewire
-    SUBDIR += plasma5-oxygen-sounds
-    SUBDIR += plasma5-plasma-pa
     SUBDIR += plasma6-kpipewire
     SUBDIR += plasma6-ocean-sound-theme
     SUBDIR += plasma6-oxygen-sounds
@@ -651,7 +648,6 @@
     SUBDIR += py-pydub
     SUBDIR += py-pyjacklib
     SUBDIR += py-pylast
-    SUBDIR += py-pyliblo
     SUBDIR += py-pymad
     SUBDIR += py-pyogg
     SUBDIR += py-pyradio
@@ -685,6 +681,7 @@
     SUBDIR += qtractor
     SUBDIR += quimup
     SUBDIR += qxgedit
+    SUBDIR += ratatouille-lv2
     SUBDIR += raul
     SUBDIR += rawrec
     SUBDIR += re
@@ -742,6 +739,7 @@
     SUBDIR += sonata
     SUBDIR += songrec
     SUBDIR += sonic-visualiser
+    SUBDIR += sonicradio
     SUBDIR += sonivox
     SUBDIR += sonivox-eas
     SUBDIR += sorcer-lv2
@@ -750,6 +748,7 @@
     SUBDIR += soundtouch
     SUBDIR += soundtracker
     SUBDIR += sox
+    SUBDIR += sox-noise
     SUBDIR += spc2it
     SUBDIR += spectacle-lv2
     SUBDIR += spectmorph
@@ -759,7 +758,6 @@
     SUBDIR += speexdsp
     SUBDIR += spek
     SUBDIR += spiralloops
-    SUBDIR += spiralsynth
     SUBDIR += spiralsynthmodular
     SUBDIR += spotify-player
     SUBDIR += spotify-qt
@@ -849,6 +847,7 @@
     SUBDIR += wavplay
     SUBDIR += webrtc-audio-processing
     SUBDIR += webrtc-audio-processing0
+    SUBDIR += webrtc-audio-processing2
     SUBDIR += welle.io
     SUBDIR += whysynth
     SUBDIR += wildmidi
@@ -871,6 +870,7 @@
     SUBDIR += xmmix
     SUBDIR += xmp
     SUBDIR += xoscope
+    SUBDIR += xsynth
     SUBDIR += xsynth-dssi
     SUBDIR += xuidesigner
     SUBDIR += xwave

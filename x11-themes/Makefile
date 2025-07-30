@@ -4,6 +4,7 @@
     SUBDIR += adapta-backgrounds
     SUBDIR += adapta-gtk-theme
     SUBDIR += adwaita-icon-theme
+    SUBDIR += adwaita-icon-theme-legacy
     SUBDIR += adwaita-qt5
     SUBDIR += adwaita-qt6
     SUBDIR += ant-dracula-theme
@@ -93,10 +94,8 @@
     SUBDIR += irssi-themes
     SUBDIR += kde-icons-black-and-white
     SUBDIR += kde-icons-nuovext2
-    SUBDIR += kf5-breeze-icons
     SUBDIR += kf5-kemoticons
     SUBDIR += kf5-kiconthemes
-    SUBDIR += kf5-oxygen-icons5
     SUBDIR += kf5-qqc2-desktop-style
     SUBDIR += kf6-breeze-icons
     SUBDIR += kf6-kcolorscheme
@@ -132,12 +131,9 @@
     SUBDIR += numix-icon-theme
     SUBDIR += numix-icon-theme-circle
     SUBDIR += openbox-arc-theme
+    SUBDIR += oxygen-icons
     SUBDIR += papirus-icon-theme
-    SUBDIR += plasma5-breeze
-    SUBDIR += plasma5-breeze-gtk
-    SUBDIR += plasma5-kde-gtk-config
-    SUBDIR += plasma5-oxygen
-    SUBDIR += plasma5-plasma-workspace-wallpapers
+    SUBDIR += plasma6-aurorae
     SUBDIR += plasma6-breeze
     SUBDIR += plasma6-breeze-gtk
     SUBDIR += plasma6-kde-gtk-config
@@ -151,6 +147,7 @@
     SUBDIR += qogir-gtk-themes
     SUBDIR += qogir-icon-themes
     SUBDIR += qt5-style-plugins
+    SUBDIR += qt6gtk2
     SUBDIR += qtcurve
     SUBDIR += qtcurve-gtk2
     SUBDIR += qtcurve-kf5

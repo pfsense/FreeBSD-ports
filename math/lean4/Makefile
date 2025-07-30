@@ -1,11 +1,13 @@
 PORTNAME=	lean4
 DISTVERSIONPREFIX=	v
-DISTVERSION=	4.12.0
+DISTVERSION=	4.20.1
+PORTREVISION=	1
 CATEGORIES=	math lang devel # lean4 is primarily a math theorem prover, but it is also a language and a development environment
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Theorem prover and functional language for math (new gen)
-WWW=		https://lean-lang.org/
+WWW=		https://lean-lang.org/ \
+		https://github.com/leanprover/lean4
 
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/LICENSE
@@ -19,13 +21,19 @@ LIB_DEPENDS=	libgmp.so:math/gmp \
 		libuv.so:devel/libuv
 RUN_DEPENDS=	cadical:math/cadical
 
-USES=		cmake:noninja,testing compiler:c++14-lang gmake python:build # ninja fails + gmake scripts are included in the project
+USES=		cmake:noninja,testing compiler:c++14-lang gmake pkgconfig python:build # ninja fails + gmake scripts are included in the project
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	leanprover
 
 CFLAGS+=	-fPIC
 CXXFLAGS+=	-fPIC
+
+CMAKE_OFF=	USE_MIMALLOC
+
+#MAKE_ARGS+=	V=1 VERBOSE=1
+#MAKE_JOBS_UNSAFE=     yes
+MAKE_ENV=	LD_LIBRARY_PATH=${BUILD_WRKSRC}/stage0/lib/lean
 
 BINARY_ALIAS=	make=${GMAKE} python=${PYTHON_CMD}
 
@@ -55,8 +63,6 @@ post-install:
 		lib/lean/libInit_shared.so \
 		lib/lean/libleanshared.so
 
-# 2 test failures:
-# https://github.com/leanprover/lean4/issues/4396: The test leanlaketest_old times out
-# https://github.com/leanprover/lean4/issues/4397: The test leanlaketest_serve fails: error: unexpected identifier; expected command
+tests as of 4.20.0: 99% tests passed, 16 tests failed out of 2594, see https://github.com/leanprover/lean4/issues/8628
 
 .include <bsd.port.mk>

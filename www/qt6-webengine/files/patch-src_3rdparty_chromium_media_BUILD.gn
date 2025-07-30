@@ -1,12 +1,12 @@
---- src/3rdparty/chromium/media/BUILD.gn.orig	2023-12-12 22:08:45 UTC
+--- src/3rdparty/chromium/media/BUILD.gn.orig	2025-02-21 12:29:33 UTC
 +++ src/3rdparty/chromium/media/BUILD.gn
-@@ -96,6 +96,9 @@ config("media_config") {
+@@ -100,6 +100,9 @@ config("media_config") {
        defines += [ "DLOPEN_PULSEAUDIO" ]
      }
    }
 +  if (use_sndio) {
 +    defines += [ "USE_SNDIO" ]
 +  }
-   if (use_cras) {
-     defines += [ "USE_CRAS" ]
-   }
+ }
+ 
+ # Internal grouping of the configs necessary to support sub-folders having their

@@ -1,7 +1,7 @@
 PORTNAME=	wx
 DISTVERSIONPREFIX=	v
 DISTVERSION=	3.0.5.1
-PORTREVISION=	5
+PORTREVISION=	6
 CATEGORIES=	x11-toolkits
 MASTER_SITES=	https://github.com/wxWidgets/wxWidgets/releases/download/v${DISTVERSION}/
 PKGNAMESUFFIX=	${_SHORT_WX_VER}-${FLAVOR}
@@ -26,7 +26,7 @@ USES=		compiler:c++11-lib gl gmake gnome iconv jpeg localbase \
 		pkgconfig tar:bz2 xorg
 USE_XORG=	x11 sm xxf86vm xinerama
 USE_GL=		gl glu
-USE_GNOME=	cairo gdkpixbuf2
+USE_GNOME=	cairo gdkpixbuf
 USE_LDCONFIG=	yes
 USE_CXXSTD=	c++11
 GNU_CONFIGURE=	yes
@@ -67,7 +67,7 @@ MSPACK_CONFIGURE_WITH=	libmspack
 MSPACK_LIB_DEPENDS=	libmspack.so:archivers/libmspack
 
 WEBKIT_CONFIGURE_ENABLE=	webview
-WEBKIT_LIB_DEPENDS=	libwebkit2gtk-4.0.so:www/webkit2-gtk3
+WEBKIT_LIB_DEPENDS=	libwebkit2gtk-4.0.so:www/webkit2-gtk@40
 
 FLAVORS=	gtk3 gtk2
 FLAVOR?=	${FLAVORS:[1]}

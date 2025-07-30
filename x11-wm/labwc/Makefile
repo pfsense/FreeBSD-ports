@@ -1,5 +1,5 @@
 PORTNAME=	labwc
-DISTVERSION=	0.8.2
+DISTVERSION=	0.9.0
 CATEGORIES=	x11-wm wayland
 
 MAINTAINER=	jbeich@FreeBSD.org
@@ -9,10 +9,10 @@ WWW=		https://github.com/labwc/labwc
 LICENSE=	GPLv2
 
 BUILD_DEPENDS=	evdev-proto>0:devel/evdev-proto \
-		wayland-protocols>=1.35:graphics/wayland-protocols
+		wayland-protocols>=1.39:graphics/wayland-protocols
 LIB_DEPENDS=	libpng.so:graphics/png \
 		libwayland-server.so:graphics/wayland \
-		libwlroots-0.18.so:x11-toolkits/wlroots \
+		libwlroots-0.19.so:x11-toolkits/wlroots019 \
 		libinput.so:x11/libinput \
 		libxkbcommon.so:x11/libxkbcommon
 
@@ -21,8 +21,9 @@ USE_GITHUB=	yes
 USE_GITLAB=	nodefault
 USE_GNOME=	cairo libxml2 pango
 USE_XORG=	pixman
-GL_TUPLE=	https://gitlab.freedesktop.org:vyivel:libsfdo:v0.1.3:libsfdo/subprojects/libsfdo-basedir
+GL_TUPLE=	https://gitlab.freedesktop.org:vyivel:libsfdo:v0.1.4:libsfdo/subprojects/libsfdo-basedir
 PLIST_FILES=	bin/${PORTNAME} \
+		bin/lab-sensible-terminal \
 		share/icons/hicolor/scalable/apps/${PORTNAME}-symbolic.svg \
 		share/icons/hicolor/scalable/apps/${PORTNAME}.svg \
 		share/wayland-sessions/${PORTNAME}.desktop \
@@ -47,6 +48,7 @@ MANPAGES_PLIST_FILES=	share/man/man1/${PORTNAME}.1.gz \
 NLS_USES=		gettext
 NLS_MESON_ENABLED=	nls
 NLS_PLIST_FILES=	share/locale/ar/LC_MESSAGES/${PORTNAME}.mo \
+			share/locale/ca/LC_MESSAGES/${PORTNAME}.mo \
 			share/locale/cs/LC_MESSAGES/${PORTNAME}.mo \
 			share/locale/da/LC_MESSAGES/${PORTNAME}.mo \
 			share/locale/de/LC_MESSAGES/${PORTNAME}.mo \
@@ -65,12 +67,14 @@ NLS_PLIST_FILES=	share/locale/ar/LC_MESSAGES/${PORTNAME}.mo \
 			share/locale/ka/LC_MESSAGES/${PORTNAME}.mo \
 			share/locale/ko/LC_MESSAGES/${PORTNAME}.mo \
 			share/locale/lt/LC_MESSAGES/${PORTNAME}.mo \
+			share/locale/ms/LC_MESSAGES/${PORTNAME}.mo \
 			share/locale/nl/LC_MESSAGES/${PORTNAME}.mo \
 			share/locale/pa/LC_MESSAGES/${PORTNAME}.mo \
 			share/locale/pl/LC_MESSAGES/${PORTNAME}.mo \
 			share/locale/pt/LC_MESSAGES/${PORTNAME}.mo \
 			share/locale/pt_BR/LC_MESSAGES/${PORTNAME}.mo \
 			share/locale/ru/LC_MESSAGES/${PORTNAME}.mo \
+			share/locale/sk/LC_MESSAGES/${PORTNAME}.mo \
 			share/locale/sv/LC_MESSAGES/${PORTNAME}.mo \
 			share/locale/tr/LC_MESSAGES/${PORTNAME}.mo \
 			share/locale/uk/LC_MESSAGES/${PORTNAME}.mo \

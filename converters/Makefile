@@ -16,6 +16,8 @@
     SUBDIR += btoa
     SUBDIR += chmview
     SUBDIR += cl-babel
+    SUBDIR += cl-babel-ccl
+    SUBDIR += cl-babel-clisp
     SUBDIR += cl-babel-sbcl
     SUBDIR += cmios9
     SUBDIR += cocot
@@ -44,7 +46,6 @@
     SUBDIR += libb64
     SUBDIR += libiconv
     SUBDIR += libticonv
-    SUBDIR += libutf-8
     SUBDIR += linux-c7-fribidi
     SUBDIR += linux-rl9-fribidi
     SUBDIR += lua-iconv
@@ -128,6 +129,7 @@
     SUBDIR += p5-Unicode-RecursiveDowngrade
     SUBDIR += p5-Unicode-String
     SUBDIR += p5-Unicode-Stringprep
+    SUBDIR += p5-Unicode-UTF8
     SUBDIR += p5-Unicode-UTF8simple
     SUBDIR += p5-WAP-wbxml
     SUBDIR += p5-XML-WBXML
@@ -145,6 +147,8 @@
     SUBDIR += php83-mbstring
     SUBDIR += php84-iconv
     SUBDIR += php84-mbstring
+    SUBDIR += php85-iconv
+    SUBDIR += php85-mbstring
     SUBDIR += psiconv
     SUBDIR += py-bencode.py
     SUBDIR += py-bencoder
@@ -152,6 +156,8 @@
     SUBDIR += py-bincopy
     SUBDIR += py-bsdconv
     SUBDIR += py-gotenberg-client
+    SUBDIR += py-mammoth
+    SUBDIR += py-markitdown
     SUBDIR += py-rencode
     SUBDIR += py-svglib
     SUBDIR += py-text-unidecode
@@ -163,6 +169,7 @@
     SUBDIR += recode
     SUBDIR += rubygem-base32
     SUBDIR += rubygem-base64
+    SUBDIR += rubygem-base6402
     SUBDIR += rubygem-iconv
     SUBDIR += rubygem-json-ld
     SUBDIR += rubygem-json-ld-preloaded
@@ -178,7 +185,6 @@
     SUBDIR += unix2dos
     SUBDIR += uudeview
     SUBDIR += uulib
-    SUBDIR += wkhtmltopdf
     SUBDIR += xdeview
     SUBDIR += xml2c
     SUBDIR += yj

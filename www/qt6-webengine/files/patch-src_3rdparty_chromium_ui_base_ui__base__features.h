@@ -1,20 +1,11 @@
---- src/3rdparty/chromium/ui/base/ui_base_features.h.orig	2023-10-11 18:22:24 UTC
+--- src/3rdparty/chromium/ui/base/ui_base_features.h.orig	2025-02-21 12:29:33 UTC
 +++ src/3rdparty/chromium/ui/base/ui_base_features.h
-@@ -138,7 +138,7 @@ BASE_DECLARE_FEATURE(kSupportF11AndF12KeyShortcuts);
- COMPONENT_EXPORT(UI_BASE_FEATURES) bool AreF11AndF12ShortcutsEnabled();
- #endif  // BUILDFLAG(IS_CHROMEOS_ASH)
+@@ -143,7 +143,7 @@ BASE_DECLARE_FEATURE(kWaylandTextInputV3);
+ BASE_DECLARE_FEATURE(kWaylandTextInputV3);
+ #endif  // BUILDFLAG(IS_OZONE)
  
--#if BUILDFLAG(IS_CHROMEOS_LACROS) || BUILDFLAG(IS_LINUX)
-+#if BUILDFLAG(IS_CHROMEOS_LACROS) || BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_BSD)
+-#if BUILDFLAG(IS_LINUX)
++#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_BSD)
  COMPONENT_EXPORT(UI_BASE_FEATURES)
- BASE_DECLARE_FEATURE(kRedundantImeCompositionClearing);
- #endif  // BUILDFLAG(IS_CHROMEOS_LACROS) || BUILDFLAG(IS_LINUX)
-@@ -273,7 +273,7 @@ enum class ChromeRefresh2023Level {
- COMPONENT_EXPORT(UI_BASE_FEATURES)
- ChromeRefresh2023Level GetChromeRefresh2023Level();
- 
--#if !BUILDFLAG(IS_LINUX)
-+#if !BUILDFLAG(IS_LINUX) && !BUILDFLAG(IS_BSD)
- COMPONENT_EXPORT(UI_BASE_FEATURES) BASE_DECLARE_FEATURE(kWebUiSystemFont);
- #endif
- 
+ BASE_DECLARE_FEATURE(kOverrideDefaultOzonePlatformHintToAuto);
+ #endif  // BUILDFLAG(IS_LINUX)

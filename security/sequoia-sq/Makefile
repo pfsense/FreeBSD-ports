@@ -1,7 +1,7 @@
 PORTNAME=	sq
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.36.0
-PORTREVISION=	5
+DISTVERSION=	1.3.1
+PORTREVISION=	2
 CATEGORIES=	security
 PKGNAMEPREFIX=	sequoia-
 
@@ -13,8 +13,7 @@ LICENSE=	LGPL20+
 LICENSE_FILE=	${WRKSRC}/LICENSE.txt
 
 BUILD_DEPENDS=	capnp:devel/capnproto
-LIB_DEPENDS=	libnettle.so:security/nettle \
-		libgmp.so:math/gmp
+LIB_DEPENDS=	libnettle.so:security/nettle
 
 USES=	cargo llvm sqlite ssl
 
@@ -29,6 +28,13 @@ OPTIONS_DEFAULT=	BASH ELVISH FISH MANPAGES ZSH
 OPTIONS_SUB=	yes
 
 ELVISH_DESC=	Install Elvish module
+
+.include <bsd.port.pre.mk>
+
+.if ${ARCH:Marmv?}
+LTO_UNSAFE=	yes
+CARGO_ENV+=	CARGO_PROFILE_RELEASE_LTO=false
+.endif
 
 post-install-BASH-on:
 	@${MKDIR} ${STAGEDIR}${PREFIX}/share/bash-completion/completions
@@ -55,4 +61,4 @@ post-install-ZSH-on:
 	${CARGO_TARGET_DIR}/shell-completions/_${PORTNAME}.ps1 \
 		${STAGEDIR}${PREFIX}/share/zsh/site-functions
 
-.include <bsd.port.mk>
+.include <bsd.port.post.mk>

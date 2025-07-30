@@ -1,6 +1,7 @@
 PORTNAME=	openEMS
 DISTVERSIONPREFIX=	v
 DISTVERSION=	0.0.36
+PORTREVISION=	1
 CATEGORIES=	science
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
@@ -34,7 +35,7 @@ post-patch:
 
 post-install:
 .for name in _nf2ff openEMS
-	@${STRIP_CMD} ${STAGEDIR}${PYTHON_SITELIBDIR}/openEMS/${name}${PYTHON_EXT_SUFFIX}.so
+	@${STRIP_CMD} ${STAGEDIR}${PYTHON_SITELIBDIR}/openEMS/${name}${PYTHON_TAG}.so
 .endfor
 
 .include <bsd.port.mk>

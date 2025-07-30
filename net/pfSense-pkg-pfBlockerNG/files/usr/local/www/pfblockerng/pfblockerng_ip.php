@@ -40,6 +40,7 @@ $pconfig['enable_log']		= $pfb['iconfig']['enable_log']				?: '';
 $pconfig['ip_placeholder']	= $pfb['iconfig']['ip_placeholder']			?: '127.1.7.7';
 $pconfig['maxmind_locale']	= $pfb['iconfig']['maxmind_locale']			?: 'en';
 $pconfig['asn_reporting']	= $pfb['iconfig']['asn_reporting']			?: 'disabled';
+$pconfig['asn_token']		= $pfb['iconfig']['asn_token']				?: '';
 $pconfig['database_cc']		= $pfb['iconfig']['database_cc']			?: '';
 $pconfig['maxmind_account']	= $pfb['iconfig']['maxmind_account']			?: '';
 $pconfig['maxmind_key']		= $pfb['iconfig']['maxmind_key']			?: '';
@@ -124,6 +125,10 @@ if ($_POST) {
 			$input_errors[] = 'MaxMind License key Invalid';
 		}
 
+		if (!empty($_POST['asn_token']) && empty(pfb_filter($_POST['asn_token'], PFB_FILTER_WORD, 'ip'))) {
+			$input_errors[] = 'IPinfo Token Invalid';
+		}
+
 		$v4suppression = explode("\r\n", $_POST['v4suppression']);
 		if (!empty($v4suppression)) {
 			foreach ($v4suppression as $line) {
@@ -186,6 +191,7 @@ if ($_POST) {
 			$pfb['iconfig']['maxmind_account']	= pfb_filter($_POST['maxmind_account'], PFB_FILTER_WORD, 'ip')	?: '';
 			$pfb['iconfig']['maxmind_key']		= pfb_filter($_POST['maxmind_key'], PFB_FILTER_WORD, 'ip')	?: '';
 			$pfb['iconfig']['asn_reporting']	= $_POST['asn_reporting']					?: 'disabled';
+			$pfb['iconfig']['asn_token']		= $_POST['asn_token']					?: '';
 			$pfb['iconfig']['inbound_interface']	= implode(',', (array)$_POST['inbound_interface'])		?: '';
 			$pfb['iconfig']['inbound_deny_action']	= $_POST['inbound_deny_action']					?: '';
 			$pfb['iconfig']['outbound_interface']	= implode(',', (array)$_POST['outbound_interface'])		?: '';
@@ -312,16 +318,47 @@ $section->addInput(new Form_Input(
 	. 'This IP address will be used as a placeholder IP to avoid empty Feeds/Aliases.'
 );
 
+$form->add($section);
+$section = new Form_Section('ASN configuration');
+
+$section->addInput(new Form_StaticText(
+	'Attribution',
+	'<small>'
+	. 'ASN database distributed under the Creative Commons Attribution-ShareAlike 4.0 International License by: '
+	. '<a target="_blank" href="https://ipinfo.io">IPinfo</a><br />'
+	. 'The ASN database is automatically updated each day at a random hour.</small>'
+));
+
+
 $section->addInput(new Form_Select(
 	'asn_reporting',
 	'ASN Reporting',
 	$pconfig['asn_reporting'],
 	$options_asn_reporting
-))->setHelp('Query for the ASN (BGPview.io API) for each block/reject/permit/match IP entry. ASN values are cached as per the defined selection.')
+))->setHelp('Query for the ASN (IPinfo downloaded ASN database) for each block/reject/permit/match IP entry. ASN values are cached as per the defined selection.')
   ->setAttribute('style', 'width: auto');
+
+$section->addInput(new Form_Input(
+        'asn_token',
+        gettext('ASN IPinfo Token'),
+        'text',
+        $pconfig['asn_token'],
+        ['placeholder' => 'Enter your IPinfo Token']
+))->setHelp('To utilize the free IPinfo ASN functionality, you must first register for a free IPinfo user account. Visit the following '
+        . '<a href="https://ipinfo.io/signup" target="_blank">Link to Register</a> for a free IPinfo user account. '
+        . '<strong>NOTE: If you use Snort/Suricata, check for IPinfo blocked events!</strong>')
+  ->setAttribute('autocomplete', 'off');
 
 $form->add($section);
 $section = new Form_Section('MaxMind GeoIP configuration');
+
+$section->addInput(new Form_StaticText(
+        'Attribution',
+        '<small>'
+        . 'GeoIP database GeoLite2 distributed under the Creative Commons Attribution-ShareAlike 4.0 International License by: '
+	. '<a target="_blank" href="https://www.maxmind.com">MaxMind Inc.</a><br />'
+	. 'The GeoIP database is automatically updated each day at a random hour.</small>'
+));
 
 $section->addInput(new Form_Input(
 	'maxmind_account',

@@ -1,30 +1,30 @@
 PORTNAME=	xmlgraphics-commons
-PORTVERSION=	2.6
+DISTVERSION=	2.11
 DISTVERSIONSUFFIX=	-bin
 CATEGORIES=	graphics textproc java
 MASTER_SITES=	APACHE/xmlgraphics/commons/binaries \
 		https://archive.apache.org/dist/xmlgraphics/commons/binaries/
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	atanubiswas484@gmail.com
 COMMENT=	Several reusable components used by Apache Batik and FOP
 WWW=		https://xmlgraphics.apache.org/commons/
 
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-USE_JAVA=	yes
+USES=		java
 
 NO_ARCH=	yes
 NO_BUILD=	yes
 
-WRKSRC=		${WRKDIR}/${PORTNAME}-${PORTVERSION}
+WRKSRC=		${WRKDIR}/${PORTNAME}-${DISTVERSION}
 
 PLIST_FILES=	${JAVAJARDIR}/${JARFILE_VER} \
 		${JAVAJARDIR}/${JARFILE}
 PORTDOCS=	*
 
 JARFILE=	${PORTNAME}.jar
-JARFILE_VER=	${PORTNAME}-${PORTVERSION}.jar
+JARFILE_VER=	${PORTNAME}-${DISTVERSION}.jar
 
 OPTIONS_DEFINE=	DOCS
 

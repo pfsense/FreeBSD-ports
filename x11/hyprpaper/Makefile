@@ -1,9 +1,10 @@
 PORTNAME=	hyprpaper
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.7.1
+DISTVERSION=	0.7.5
+PORTREVISION=	2
 CATEGORIES=	x11 wayland
 
-MAINTAINER=	jbeich@FreeBSD.org
+MAINTAINER=	tagattie@FreeBSD.org
 COMMENT=	Blazing fast Wayland wallpaper utility with IPC controls
 WWW=		https://github.com/hyprwm/hyprpaper
 
@@ -14,6 +15,7 @@ BUILD_DEPENDS=	hyprwayland-scanner>=0.4.0:devel/hyprwayland-scanner \
 		wayland-protocols>0:graphics/wayland-protocols
 LIB_DEPENDS=	libhyprlang.so:devel/hyprlang \
 		libhyprutils.so:devel/hyprutils \
+		libhyprgraphics.so:graphics/hyprgraphics \
 		libwayland-client.so:graphics/wayland \
 		libwebp.so:graphics/webp
 
@@ -35,7 +37,9 @@ post-patch:
 	@${REINPLACE_CMD} -e '/pango/d' \
 		-e '/OpenGL/d; /GLESv2/d' \
 		-e '/ rt)/d' \
+		-e '/install.*systemd/d' \
 		${WRKSRC}/CMakeLists.txt
+	@${REINPLACE_CMD} '/GLES3/d' ${WRKSRC}/src/includes.hpp
 # Respect consolekit2 as XDG_RUNTIME_DIR fallback
 	@${REINPLACE_CMD} 's,/run/user,/var&,' \
 		${WRKSRC}/src/ipc/Socket.cpp

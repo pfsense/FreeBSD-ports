@@ -74,6 +74,7 @@
     SUBDIR += muffin
     SUBDIR += mutter
     SUBDIR += niri
+    SUBDIR += notion
     SUBDIR += nscde
     SUBDIR += obconf
     SUBDIR += obconf-qt
@@ -85,10 +86,9 @@
     SUBDIR += phoc
     SUBDIR += picom
     SUBDIR += piewm
-    SUBDIR += plasma5-kdecoration
-    SUBDIR += plasma5-kwin
     SUBDIR += plasma6-kdecoration
     SUBDIR += plasma6-kwin
+    SUBDIR += plasma6-kwin-x11
     SUBDIR += pwm
     SUBDIR += qtile
     SUBDIR += ratpoison

@@ -1,5 +1,5 @@
 PORTNAME=	strawberry-graphql
-DISTVERSION=	0.254.0
+DISTVERSION=	0.276.0
 CATEGORIES=	devel python
 MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -39,23 +39,24 @@ FLASK_DESC=		Basic Flask integration
 OPENTELEMETRY_DESC=	Generate Open Telemetry compatible tracing information
 PYDANTIC_DESC=		Support for Pydantic models
 
-AIOHTTP_RUN_DEPENDS=		${PYTHON_PKGNAMEPREFIX}aiohttp>=3.7.4:www/py-aiohttp@${PY_FLAVOR}
+AIOHTTP_RUN_DEPENDS=		${PYTHON_PKGNAMEPREFIX}aiohttp>=3.7.4<4:www/py-aiohttp@${PY_FLAVOR}
 ASGI_RUN_DEPENDS=		${PYTHON_PKGNAMEPREFIX}multipart>=0.0.7:devel/py-multipart@${PY_FLAVOR} \
 				${PYTHON_PKGNAMEPREFIX}starlette>=0.18.0:www/py-starlette@${PY_FLAVOR}
-CHANNELS_RUN_DEPENDS=		${PYTHON_PKGNAMEPREFIX}asgiref>=3.2:www/py-asgiref@${PY_FLAVOR} \
+CHANNELS_RUN_DEPENDS=		${PYTHON_PKGNAMEPREFIX}asgiref>=3.2<4:www/py-asgiref@${PY_FLAVOR} \
 				${PYTHON_PKGNAMEPREFIX}channels>=3.0.5:www/py-channels@${PY_FLAVOR}
-CLI_RUN_DEPENDS=		${PYTHON_PKGNAMEPREFIX}libcst>=1.0.0:devel/py-libcst@${PY_FLAVOR} \
-				${PYTHON_PKGNAMEPREFIX}pygments>=2.3:textproc/py-pygments@${PY_FLAVOR} \
+CLI_RUN_DEPENDS=		${PYTHON_PKGNAMEPREFIX}libcst>0:devel/py-libcst@${PY_FLAVOR} \
+				${PYTHON_PKGNAMEPREFIX}pygments>=2.3<3:textproc/py-pygments@${PY_FLAVOR} \
 				${PYTHON_PKGNAMEPREFIX}rich>=12.0.0:textproc/py-rich@${PY_FLAVOR} \
 				${PYTHON_PKGNAMEPREFIX}typer>=0.7.0:devel/py-typer@${PY_FLAVOR}
-DEBUG-SERVER_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}libcst>=1.0.0:devel/py-libcst@${PY_FLAVOR} \
+DEBUG-SERVER_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}libcst>0:devel/py-libcst@${PY_FLAVOR} \
 				${PYTHON_PKGNAMEPREFIX}multipart>=0.0.7:devel/py-multipart@${PY_FLAVOR} \
-				${PYTHON_PKGNAMEPREFIX}pygments>=2.3:textproc/py-pygments@${PY_FLAVOR} \
+				${PYTHON_PKGNAMEPREFIX}pygments>=2.3<3:textproc/py-pygments@${PY_FLAVOR} \
 				${PYTHON_PKGNAMEPREFIX}rich>=12.0.0:textproc/py-rich@${PY_FLAVOR} \
 				${PYTHON_PKGNAMEPREFIX}starlette>=0.18.0:www/py-starlette@${PY_FLAVOR} \
 				${PYTHON_PKGNAMEPREFIX}typer>=0.7.0:devel/py-typer@${PY_FLAVOR} \
-				${PYTHON_PKGNAMEPREFIX}uvicorn>=0.11.6:www/py-uvicorn@${PY_FLAVOR}
-DEBUG_RUN_DEPENDS=		${PYTHON_PKGNAMEPREFIX}libcst>=1.0.0:devel/py-libcst@${PY_FLAVOR} \
+				${PYTHON_PKGNAMEPREFIX}uvicorn>=0.11.6:www/py-uvicorn@${PY_FLAVOR} \
+				${PYTHON_PKGNAMEPREFIX}websockets>=15.0.1<16:devel/py-websockets@${PY_FLAVOR}
+DEBUG_RUN_DEPENDS=		${PYTHON_PKGNAMEPREFIX}libcst>0:devel/py-libcst@${PY_FLAVOR} \
 				${PYTHON_PKGNAMEPREFIX}rich>=12.0.0:textproc/py-rich@${PY_FLAVOR}
 # NB: www/py-channels (via CHANNELS) options depends on www/py-djangoXX, which
 # should be taken into account when creating a port for a specific Django version.
@@ -70,15 +71,4 @@ OPENTELEMETRY_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}opentelemetry-api<2:devel/py-o
 # NB: Switch to devel/py-pydantic once www/py-fastapi uses it
 PYDANTIC_RUN_DEPENDS=		${PYTHON_PKGNAMEPREFIX}pydantic2>1.6.1:devel/py-pydantic2@${PY_FLAVOR}
 
-.include <bsd.port.pre.mk>
-
-.if ${PYTHON_REL} < 30900
-RUN_DEPENDS+=	${PYTHON_PKGNAMEPREFIX}astunparse>=1.6.3:devel/py-astunparse@${PY_FLAVOR}
-
-. if ${PORT_OPTIONS:MCLI}
-RUN_DEPENDS+=	${PYTHON_PKGNAMEPREFIX}graphlib-backport>0:graphics/py-graphlib-backport@${PY_FLAVOR}
-. endif
-
-.endif
-
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

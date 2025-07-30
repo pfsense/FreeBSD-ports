@@ -246,6 +246,17 @@
 			<size>100</size>
 		</field>
 	</fields>
+	<plugins>
+		<item>
+			<type>plugin_xmlrpc_send</type>
+		</item>
+		<item>
+			<type>plugin_xmlrpc_recv</type>
+		</item>
+		<item>
+			<type>plugin_xmlrpc_recv_done</type>
+		</item>
+	</plugins>
 	<custom_add_php_command/>
 	<custom_php_validation_command>
 		squidguard_validate($_POST, $input_errors);
