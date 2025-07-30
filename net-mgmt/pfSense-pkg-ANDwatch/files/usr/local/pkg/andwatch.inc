@@ -80,10 +80,10 @@ function andwatch_write_rcfile() {
 		$filter = null;
 		switch (array_get_path($current_config, "interfaces/{$interface}/pcap_filter", 'none')) {
 			case 'link-local':
-				$filter = 'not net fe80::0/10';
+				$filter = 'not net 169.254.0.0/16 and not net fe80::0/10';
 				break;
-			case 'link-local-private':
-				$filter = 'not net fe80::0/10 and not net fc00::0/7';
+			case 'link-local-unique':
+				$filter = 'not net 169.254.0.0/16 and not net fe80::0/10 and not net fc00::0/7';
 				break;
 			case 'custom':
 				$filter = trim(array_get_path($current_config, "interfaces/{$interface}/custom_filter"));

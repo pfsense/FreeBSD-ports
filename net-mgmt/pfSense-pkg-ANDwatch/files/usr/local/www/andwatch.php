@@ -100,8 +100,8 @@ if ($_POST) {
 
 $pcap_filter_options = array(
 	'none' => gettext('none'),
-	'link-local' => gettext('Filter out IPv6 link-local (fe80::/10) addresses'),
-	'link-local-private' => gettext('Filter out IPv6 link-local (fe80::/10) and private (fc00::/7) addresses'),
+	'link-local' => gettext('Ignore link-local addresses (169.254.0.0/16, fe80::/10)'),
+	'link-local-unique' => gettext('Ignore link-local and unique local addresses (169.254.0.0/16, fe80::/10, fc00::/7)'),
 	'custom' => gettext('Custom filter') );
 
 $expiration_options = array(
@@ -132,7 +132,7 @@ $custom_filter_help = gettext(
 	'pcap-filter man page' . '</a>.<br>' .
 	'Filters can be validated prior to use by using the -d option to tcpdump.');
 
-$custom_filter_placeholder = gettext('not net fe80::0/10 and not net fc00::0/7');
+$custom_filter_placeholder = gettext('not net 169.254.0.0/16 and not net fe80::0/10 and not net fc00::0/7');
 
 
 $pgtitle = array(gettext("Services"), gettext("ANDwatch"));
@@ -196,7 +196,7 @@ foreach ($available_interfaces as $interface => $name) {
 
 	// PCAP filter
 	if (is_null($interface_config['pcap_filter'])) {
-		$interface_config['pcap_filter'] = 'link-local-private';
+		$interface_config['pcap_filter'] = 'link-local-unique';
 	}
 	$group = new Form_Group('PCAP Filter');
 	$group->add(new Form_Select(
@@ -204,7 +204,7 @@ foreach ($available_interfaces as $interface => $name) {
 		null,
 		$interface_config['pcap_filter'],
 		$pcap_filter_options
-	))->setHelp($pcap_filter_help);
+	))->setWidth(7)->setHelp($pcap_filter_help);
 	$section->add($group);
 
 	// Custom filter
@@ -215,7 +215,7 @@ foreach ($available_interfaces as $interface => $name) {
 		null,
 		'text',
 		$interface_config['custom_filter'])
-	)->setHelp($custom_filter_help)->setAttribute('placeholder', $custom_filter_placeholder);
+	)->setWidth(7)->setHelp($custom_filter_help)->setAttribute('placeholder', $custom_filter_placeholder);
 	$section->add($group);
 
 	$form->add($section);
