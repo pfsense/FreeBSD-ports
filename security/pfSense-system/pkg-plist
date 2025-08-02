@@ -509,6 +509,7 @@ www/head.inc
 www/help.php
 www/ifstats.php
 www/includes/functions.inc.php
+www/includes/iconheaders.html
 www/index.php
 www/interfaces.php
 www/interfaces_assign.php
