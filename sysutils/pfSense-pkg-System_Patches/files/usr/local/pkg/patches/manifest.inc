@@ -26,6 +26,20 @@ global $recommended_patches;
  */
 $recommended_patches = [
 [
+  'uniqid' => '80a490e4d8f2c5973e63e2f54e92500a5bc29799',
+  'versions' => ['24.11', '2.8.0', '2.7.2'],
+  'descr' => 'Fix potential stored XSS in OpenVPN Dashboard widget',
+  'links' => [
+      [ 'text' => 'Redmine #16258',
+         'url' => 'https://redmine.pfsense.org/issues/16258', ],
+      [ 'text' => 'pfSense-SA-25_08.webgui',
+         'url' => 'https://docs.netgate.com/downloads/pfSense-SA-25_08.webgui.asc', ],
+  ],
+  'basedir' => '/',
+  'pathstrip' => 2,
+  'ignorewhitespace' => true,
+],
+[
   'uniqid' => 'acb-update-24.11',
   'versions' => ['24.11'],
   'descr' => 'AutoConfigBackup Update',
