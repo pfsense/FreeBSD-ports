@@ -1656,7 +1656,7 @@ $section->addInput(new Form_Select(
 	'eve_log_tls_extended_fields',
 	'Extended TLS Fields',
 	explode(", ",$pconfig['eve_log_tls_extended_fields']),
-	array("subject"=>"Subject","issuer"=>"Issuer","session_resumed"=>"Session Resumed","serial"=>"Serial","fingerprint"=>"Fingerprint","sni"=>"SNI (Server Name Indication)","version"=>"Version","not_before"=>"Not Before","not_after"=>"Not After","certifcate"=>"Certificate","chain"=>"Chain","ja3"=>"JA3","ja3s"=>"JA3S"),
+	array("subject"=>"Subject","issuer"=>"Issuer","session_resumed"=>"Session Resumed","serial"=>"Serial","fingerprint"=>"Fingerprint","sni"=>"SNI (Server Name Indication)","version"=>"Version","not_before"=>"Not Before","not_after"=>"Not After","certificate"=>"Certificate","chain"=>"Chain","ja3"=>"JA3","ja3s"=>"JA3S"),
 	true
 ))->setHelp('Select TLS extended fields for logging.  Use CTRL + click for multiple selections.');
 
