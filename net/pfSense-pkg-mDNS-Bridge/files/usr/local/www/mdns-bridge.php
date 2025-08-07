@@ -3,7 +3,7 @@
  * mdns-bridge.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2024 Denny Page
+ * Copyright (c) 2024-2025 Denny Page
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -403,7 +403,7 @@ $section->addInput(new Form_Checkbox(
 	'Disable Packet Filtering',
 	'Completely disable packet decoding and filtering',
 	$pconfig['disable_packet_filtering']
-))->setHelp(gettext('Selecting this option will cause packets received from one interface to be forwarded directly to neighboring interfaces without any further processing. <b>This option disables all mDNS packet validation. Use with caution.</b>'));
+))->setHelp(gettext('Selecting this option will cause packets received from one interface to be forwarded directly to neighboring interfaces without any further processing. <b>This option disables all mDNS packet validation and filtering, including link local addresses. Use this option with extreme caution.</b>'));
 $form->add($section);
 
 print($form);
