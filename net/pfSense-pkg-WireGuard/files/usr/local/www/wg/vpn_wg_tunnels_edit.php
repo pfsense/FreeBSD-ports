@@ -300,9 +300,6 @@ if (!is_wg_tunnel_assigned($pconfig['name'])) {
 
 			// Hack to ensure empty lists default to /128 mask
 			$pconfig['addresses']['row'][0]['mask'] = '128';
-			if (!$is_new) {
-				config_set_path("installedpackages/wireguard/tunnels/item/{$tun_idx}/addresses/row/0/mask", $pconfig['addresses']['row'][0]['mask']);
-			}
 		}
 
 	$last = count($pconfig['addresses']['row']) - 1;
