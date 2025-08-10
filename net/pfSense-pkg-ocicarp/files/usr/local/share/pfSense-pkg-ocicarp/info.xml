@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<pfsensepkgs>
+	<package>
+		<name>Oracle Cloud Infrastructure CARP</name>
+		<internal_name>ocicarp</internal_name>
+		<website>https://www.oracle.com/cloud/</website>
+		<descr><![CDATA[Integrates pfSense unicast CARP VIP movement with Oracle Cloud Infrastructure (OCI) APIs to move IPs between vNICs in off-box virtualisation.]]></descr>
+		<version>%%PKGVERSION%%</version>
+		<configurationfile>ocicarp.xml</configurationfile>
+	</package>
+</pfsensepkgs>
