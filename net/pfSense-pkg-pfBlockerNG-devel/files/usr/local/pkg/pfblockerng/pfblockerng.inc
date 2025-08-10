@@ -699,6 +699,7 @@ function pfb_global() {
 
 	$pfb['enable']		= $pfb['config']['enable_cb'];			// Enable/Disable of pfBlockerNG
 	$pfb['keep']		= $pfb['config']['pfb_keep'];			// Keep blocklists on pfBlockerNG Disable
+	$pfb['resolve']		= $pfb['config']['pfb_resolve'];		// Resolve IP Addresses
 	$pfb['interval']	= $pfb['config']['pfb_interval']	?: '1';	// Hour cycle for scheduler
 
 	// Validate Cron settings
@@ -5829,7 +5830,11 @@ function pfb_daemon_filterlog() {
 						$log = "{$ts},{$d[3]},{$d[4]},{$int},{$d[6]},{$d[8]},";
 					}
 
-					$resolved_host = gethostbyaddr($host) ?: 'Unknown';
+					if ($pfb['resolve']) {
+						$resolved_host = gethostbyaddr($host) ?: 'Unknown';
+                                        } else {
+						$resolved_host = 'Unknown';
+                                        }
 					if ($host == $resolved_host || $resolved_host == 'Unknown') {
 						$resolved_host = 'Unknown';
 					} else {
