@@ -57,7 +57,6 @@ class acme_sh {
 	private $name;
 	private $debug = true;
 	public $dnssleep;
-	public $ocspstaple;
 	public $preferredchain;
 	
 	private function execacmesh($command, $envvariables = null) {
@@ -180,9 +179,6 @@ class acme_sh {
 		if (is_numericint($this->dnssleep)) {
 			$cmdparameters .= " --dnssleep " . escapeshellarg($this->dnssleep);
 		}
-		if ($this->ocspstaple == "yes") {
-			$cmdparameters .= " --ocsp-must-staple ";
-		}
 		if (!empty($this->preferredchain)) {
 			$cmdparameters .= " --preferred-chain " . escapeshellarg($this->preferredchain);
 		}
@@ -269,7 +265,7 @@ EOF;
 				}
 
 				$acmechalengedom = (substr($nsupdatedomain, 0, 2) === "*.") ? substr($nsupdatedomain, 2) : $nsupdatedomain;
-				file_put_contents("{$nsupdatefileprefix}_acme-challenge.{$acmechalengedom}.server", $domain->NSUPDATE_SERVER);
+				file_put_contents("{$nsupdatefileprefix}" . ($domain->challengedomain != "yes" ? "_acme-challenge." : "") . "{$acmechalengedom}.server", $domain->NSUPDATE_SERVER);
 				$nsupdatekey = base64_decode($domain->NSUPDATE_KEY);
 
 				/* Set a default key algo of HMAC-MD5 if the key type is invalid. */
@@ -283,7 +279,7 @@ key "{$key_name}." {
 	secret "{$nsupdatekey}";
 };
 EOD;
-				file_put_contents("{$nsupdatefileprefix}_acme-challenge.{$acmechalengedom}.key", $keydata);
+				file_put_contents("{$nsupdatefileprefix}" . ($domain->challengedomain != "yes" ? "_acme-challenge." : "") . "{$acmechalengedom}.key", $keydata);
 			}
 		}
 
