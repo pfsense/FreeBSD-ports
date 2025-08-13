@@ -27,7 +27,6 @@
 	</copyright>
 	<name>andwatch</name>
 	<title>Services: ANDwatch</title>
-	<savetext>Change</savetext>
 	<include_file>/usr/local/pkg/andwatch.inc</include_file>
 	<menu>
 		<name>ANDwatch</name>

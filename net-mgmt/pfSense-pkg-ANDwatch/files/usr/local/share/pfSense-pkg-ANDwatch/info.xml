@@ -3,7 +3,7 @@
 	<package>
 		<name>ANDwatch</name>
 		<website>https://github.com/dennypage/andwatch/</website>
-		<descr><![CDATA[ANDwatch monitors Arp and Neighbor Discovery activity, maintains a database of IP to Ethernet address mappings, and sends notifications when a mapping changes.]]></descr>
+		<descr><![CDATA[ANDwatch monitors ARP and Neighbor Discovery activity, maintains a database of IP to Ethernet address mappings, and sends notifications when a mapping changes.]]></descr>
 		<version>%%PKGVERSION%%</version>
 		<configurationfile>andwatch.xml</configurationfile>
 	</package>

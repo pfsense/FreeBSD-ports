@@ -48,7 +48,7 @@ function andwatch_write_rcfile() {
 
 	// Get the real interface names
 	$interfaces = array();
-	foreach (explode(',', array_get_path($current_config, 'active_interfaces', '')) as $interface) {
+	foreach (array_filter(explode(',', array_get_path($current_config, 'active_interfaces', ''))) as $interface) {
 		$interfaces[$interface] = get_real_interface($interface);
 	}
 
@@ -63,7 +63,7 @@ function andwatch_write_rcfile() {
 	$start .= "\techo Starting ANDwatch daemons";
 	foreach ($interfaces as $interface => $real_interface) {
 		// Basic configuration with syslog and pid file
-		$cmd = ANDWATCHD_CMD . " -s -p " . ANDWATCHD_PID_PREFIX . "${real_interface}.pid";
+		$cmd = ANDWATCHD_CMD . " -s -p " . ANDWATCHD_PID_PREFIX . "{$real_interface}.pid";
 
 		// Notifications
 		if (array_get_path($current_config, "interfaces/{$interface}/notifications", false)) {
@@ -73,28 +73,28 @@ function andwatch_write_rcfile() {
 		// Expiration (andwatchd default is 30)
 		$expiration = array_get_path($current_config, "interfaces/{$interface}/expiration", '30');
 		if ($expiration != '30') {
-			$cmd .= " -O ${expiration}";
+			$cmd .= " -O {$expiration}";
 		}
 
 		// PCAP filter
 		$filter = null;
 		switch (array_get_path($current_config, "interfaces/{$interface}/pcap_filter", 'none')) {
 			case 'link-local':
-				$filter = 'not net 169.254.0.0/16 and not net fe80::0/10';
+				$filter = "'not net 169.254.0.0/16 and not net fe80::0/10'";
 				break;
 			case 'link-local-unique':
-				$filter = 'not net 169.254.0.0/16 and not net fe80::0/10 and not net fc00::0/7';
+				$filter = "'not net 169.254.0.0/16 and not net fe80::0/10 and not net fc00::0/7'";
 				break;
 			case 'custom':
-				$filter = trim(array_get_path($current_config, "interfaces/{$interface}/custom_filter"));
+				$filter = escapeshellarg(trim(array_get_path($current_config, "interfaces/{$interface}/custom_filter")));
 				break;
 		}
 		if (!empty($filter)) {
-			$cmd .= " -F '${filter}'";
+			$cmd .= " -F " . $filter;
 		}
 
-		$cmd .= " ${real_interface}";
-		$start .= "\n\t${cmd}";
+		$cmd .= " {$real_interface}";
+		$start .= "\n\t{$cmd}";
 	}
 
 	// Write the rc file
@@ -156,6 +156,7 @@ function andwatch_deinstall_command() {
 		stop_service(ANDWATCH_SVC_NAME);
 	}
 
+	install_cron_job(ANDWATCH_UPDATE_MA_CMD, false);
 	unlink_if_exists(ANDWATCH_RC_FILE);
 }
 
