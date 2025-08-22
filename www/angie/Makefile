@@ -1,11 +1,11 @@
 PORTNAME?=	angie
-DISTVERSION=	1.10.0
+DISTVERSION=	1.10.1
 CATEGORIES+=	www
 MASTER_SITES+=	https://download.angie.software/files/:angie
 DISTNAME=	angie-${DISTVERSIONFULL}
 DISTFILES+=	${DISTNAME}${EXTRACT_SUFX}:angie
 
-MAINTAINER?=	oleg@mamontov.net
+MAINTAINER?=	sko@rostwald.de
 COMMENT?=	Efficient, powerful and scalable reverse proxy and web server
 WWW?=		https://angie.software/en/
 

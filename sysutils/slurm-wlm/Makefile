@@ -1,11 +1,11 @@
 PORTNAME=	slurm
 DISTVERSION=	23.11.7
-PORTREVISION=	4
+PORTREVISION=	7
 CATEGORIES=	sysutils
 MASTER_SITES=	https://download.schedmd.com/slurm/
 PKGNAMESUFFIX=	-wlm
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	rikka.goering@outlook.de
 COMMENT=	Simple Linux Utility for Resource Management
 WWW=		https://slurm.schedmd.com/
 
@@ -43,7 +43,8 @@ GNU_CONFIGURE=	yes
 GNU_CONFIGURE_MANPREFIX=${PREFIX}/share
 INSTALL_TARGET=	install-strip
 TEST_TARGET=	check
-PLIST_SUB=	PORTVERSION="${DISTVERSION}" VER="${DISTVERSION:R}"
+PLIST_SUB=	PORTVERSION="${DISTVERSION}" VER="${DISTVERSION:R}"	\
+		USERS=${USERS} GROUPS=${GROUPS}
 SHEBANG_FILES=	doc/html/shtml2html.py doc/man/man2html.py
 PORTDOCS=	*
 
@@ -162,6 +163,8 @@ pre-configure:
 		${REINPLACE_CMD} -e 's|htmldir = \$${datadir.*$$|htmldir = @htmldir@|'
 
 post-install:
+	@${MKDIR} ${STAGEDIR}/var/spool/slurmctld
+	@${CHMOD} 700 ${STAGEDIR}/var/spool/slurmctld
 	${INSTALL_DATA} ${WRKSRC}/etc/slurm.conf.example \
 		${STAGEDIR}${PREFIX}/etc/slurm.conf.sample
 

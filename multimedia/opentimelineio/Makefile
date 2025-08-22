@@ -1,7 +1,7 @@
 PORTNAME=	opentimelineio
 DISTVERSIONPREFIX=	v
 DISTVERSION=	0.17.0
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	multimedia
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -11,7 +11,7 @@ WWW=		https://github.com/PixarAnimationStudios/OpenTimelineIO
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/LICENSE.txt
 
-LIB_DEPENDS=	libImath-3_1.so:math/Imath
+LIB_DEPENDS=	libImath.so:math/Imath
 
 USES=		cmake:testing compiler:c++14-lang
 USE_LDCONFIG=	yes

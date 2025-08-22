@@ -1,5 +1,5 @@
 PORTNAME=	libusbmuxd
-PORTVERSION=	2.1.0
+PORTVERSION=	2.1.1
 CATEGORIES=	comms
 MASTER_SITES=	https://github.com/libimobiledevice/${PORTNAME}/releases/download/${PORTVERSION}/
 
@@ -13,7 +13,7 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 LIB_DEPENDS=	libimobiledevice-glue-1.0.so:comms/libimobiledevice-glue \
 		libplist-2.0.so:devel/libplist
 
-USES=		cpe libtool pathfix pkgconfig tar:bzip2
+USES=		cpe libtool pkgconfig tar:bzip2
 CPE_VENDOR=	libimobiledevice
 USE_LDCONFIG=	yes
 

@@ -1,6 +1,7 @@
 PORTNAME=	netdata
 DISTVERSIONPREFIX=	v
-DISTVERSION=	2.5.4
+DISTVERSION=	2.6.1
+PORTREVISION=	1
 CATEGORIES=	net-mgmt
 MASTER_SITES=	https://github.com/${PORTNAME}/${PORTNAME}/releases/download/v${DISTVERSION}/:netdata \
 		https://raw.githubusercontent.com/netdata/netdata/refs/tags/v${DISTVERSION}/src/go/:goplugin \
@@ -75,7 +76,7 @@ NETDATA_CACHE=	/var/cache/${PORTNAME}
 NETDATA_LOG=	/var/log/${PORTNAME}
 NETDATA_PERST=	/var/db/${PORTNAME}
 NETDATA_RUN=	/var/run/${PORTNAME}
-NETDATA_DASHBOARD_VERSION=	20250629
+NETDATA_DASHBOARD_VERSION=	20250723
 
 PLIST_SUB=	NETDATA_CACHE=${NETDATA_CACHE} \
 		NETDATA_LOG=${NETDATA_LOG} \
@@ -83,8 +84,7 @@ PLIST_SUB=	NETDATA_CACHE=${NETDATA_CACHE} \
 		NETDATA_RUN=${NETDATA_RUN}
 
 OPTIONS_DEFINE=		CUPS DASHBOARD FREEIPMI GOPLUGIN ML PROMETHEUS
-OPTIONS_DEFAULT=	ML
-OPTIONS_EXCLUDE_powerpc64le=	ML
+OPTIONS_DEFAULT=	DASHBOARD GOPLUGIN ML
 OPTIONS_SUB=		YES
 
 CUPS_DESC=		Enable support for cups
@@ -152,10 +152,10 @@ post-install:
 	${INSTALL_DATA} ${WRKDIR}/netdata.conf.sample ${STAGEDIR}${ETCDIR}/netdata.conf.sample
 	${INSTALL_DATA} ${FILESDIR}/netdata.newsyslog.conf.sample ${STAGEDIR}${ETCDIR}/netdata.newsyslog.conf.sample
 	${TOUCH} ${STAGEDIR}${ETCDIR}/.opt-out-from-anonymous-statistics
-	@(cd ${STAGEDIR}${LOCALBASE}/lib/${PORTNAME} && mmv ";*.conf" "#1#2.conf.sample")
-	${RM} ${STAGEDIR}${ETCDIR}/netdata-updater.conf
-	${RM} ${STAGEDIR}${LOCALBASE}/libexec/netdata/netdata-updater.sh
-	${RM} -r ${STAGEDIR}${PREFIX}/lib/netdata/system
+	${RM} -r ${STAGEDIR}${PREFIX}/libexec/${PORTNAME}/netdata-updater.sh \
+		 ${STAGEDIR}${PREFIX}/lib/${PORTNAME}/conf.d/netdata-updater.conf \
+		 ${STAGEDIR}${PREFIX}/lib/${PORTNAME}/system
+	@(cd ${STAGEDIR}${PREFIX}/lib/${PORTNAME} && mmv ";*.conf" "#1#2.conf.sample")
 
 post-install-DASHBOARD-on:
 	@(cd ${WRKDIR}/dist/agent && ${COPYTREE_SHARE} . ${STAGEDIR}/${DATADIR}/web)

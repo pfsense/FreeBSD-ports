@@ -91,7 +91,7 @@ KDE_PLASMA5_VERSION?=		5.27.12
 KDE_PLASMA5_BRANCH?=		stable
 
 # Current KDE Plasma desktop.
-KDE_PLASMA6_VERSION?=		6.4.3
+KDE_PLASMA6_VERSION?=		6.4.4
 KDE_PLASMA6_BRANCH?=		stable
 
 # Legacy KDE frameworks (Qt5 based).
@@ -99,13 +99,13 @@ KDE_FRAMEWORKS5_VERSION?=	5.116.0
 KDE_FRAMEWORKS5_BRANCH?=	stable
 
 # Current KDE Frameworks (Qt6 based).
-KDE_FRAMEWORKS6_VERSION?=	6.16.0
+KDE_FRAMEWORKS6_VERSION?=	6.17.0
 KDE_FRAMEWORKS6_BRANCH?=	stable
 
 # Current KDE applications. Update _${PORTNAME}_PROJECT_VERSION for the following ports:
 # devel/kdevelop, games/libkdegames, games/libkmahjongg, graphics/kgraphviewer
-KDE_APPLICATIONS6_VERSION?=	25.04.3
-KDE_APPLICATIONS6_SHLIB_VER?=	6.4.3
+KDE_APPLICATIONS6_VERSION?=	25.08.0
+KDE_APPLICATIONS6_SHLIB_VER?=	6.5.0
 # G as in KDE Gear, and as in "don't make the variable name longer than required".
 KDE_APPLICATIONS6_SHLIB_G_VER?=	${KDE_APPLICATIONS6_VERSION}
 KDE_APPLICATIONS6_BRANCH?=	stable
@@ -331,8 +331,8 @@ _USE_PLASMA6_ALL=	activities activities-stats activitymanagerd \
 _USE_PLASMA_ALL=	${_USE_PLASMA${_KDE_VERSION}_ALL}
 
 # List of frequently used components of the KDE Gears distribution.
-_USE_GEAR5_ALL=		libkdcraw libkexiv2
-_USE_GEAR6_ALL=		baloo-widgets kate kosm kpublictransport \
+_USE_GEAR5_ALL=		libkdcraw
+_USE_GEAR6_ALL=		baloo-widgets kosm kpublictransport \
 			libkcddb libkcompactdisc libkdcraw \
 			libkdegames libkeduvocdocument libkexiv2 \
 			libksane marble okular
@@ -962,9 +962,6 @@ kde-akonadi_LIB=		libKPim${_KDE_VERSION}AkonadiPrivate.so
 kde-baloo-widgets_PORT=		sysutils/baloo-widgets
 kde-baloo-widgets_LIB=		libKF${_KDE_VERSION}BalooWidgets.so
 
-kde-kate_PORT=			editors/kate
-kde-kate_PATH=			${QT_PLUGINDIR}/ktexteditor/katebacktracebrowserplugin.so
-
 kde-libkcddb_PORT=		audio/libkcddb
 kde-libkcddb_LIB=		libKCddb${_KDE_VERSION}.so
 
@@ -982,10 +979,8 @@ kde-libkdegames_LIB=		libKDEGames${_KDE_VERSION}.so
 kde-libkeduvocdocument_PORT=	misc/libkeduvocdocument
 kde-libkeduvocdocument_LIB=	libKEduVocDocument.so
 
-kde-libkexiv2_PORT=		graphics/libkexiv2@qt${_KDE_VERSION}
-kde-libkexiv2_LIB5=		libKF${_KDE_VERSION}KExiv2.so
-kde-libkexiv2_LIB6=		libKExiv2Qt${_KDE_VERSION}.so
-kde-libkexiv2_LIB=		${kde-libkexiv2_LIB${_KDE_VERSION}}
+kde-libkexiv2_PORT=		graphics/libkexiv2
+kde-libkexiv2_LIB=		libKExiv2Qt6.so
 
 kde-libksane_PORT=		graphics/libksane
 kde-libksane_LIB=		libKSaneWidgets${_KDE_VERSION}.so

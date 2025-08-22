@@ -196,6 +196,11 @@ WITH=	SDK
 
 .include <bsd.port.pre.mk>
 
+.if ${OPSYS} == FreeBSD && ${OSVERSION} < 1500000
+# nm: '../unxfbsdi.pro/slo/b2dcubicbezier.o': Invalid argument
+EXTRA_PATCHES+=		${FILESDIR}/extra-patch-nm
+.endif
+
 .if defined(WITH_DEBUG)
 CONFIGURE_ARGS+=	--enable-symbols
 .else

@@ -1,7 +1,6 @@
 PORTNAME=	usbmuxd
-DISTVERSION=	1.1.1-58
-PORTREVISION=	1
-DISTVERSIONSUFFIX=	-gbc0b91c
+DISTVERSION=	1.1.1-69
+DISTVERSIONSUFFIX=	-g523f700
 CATEGORIES=	comms
 #MASTER_SITES=	https://github.com/libimobiledevice/${PORTNAME}/releases/download/${DISTVERSION}/
 
@@ -18,7 +17,7 @@ LIB_DEPENDS=	libplist-2.0.so:devel/libplist \
 		libimobiledevice-1.0.so:comms/libimobiledevice \
 		libimobiledevice-glue-1.0.so:comms/libimobiledevice-glue
 
-USES=		autoreconf cpe libtool localbase pathfix pkgconfig
+USES=		autoreconf cpe libtool localbase pkgconfig
 CPE_VENDOR=	nikias_bassen
 
 USE_GITHUB=	yes

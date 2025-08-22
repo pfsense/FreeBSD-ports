@@ -1,5 +1,8 @@
 PORTNAME=	sqlite3
 DISTVERSION=	3.50.2
+# SECURITY WARNING: when updating this port, also file vuxml entry
+# for ports/databases/linux-c7-sqlite3 (but mind it has a different EPOCH)
+# and coordinate with ports/emulators/linux_base which also ships sqlite3.
 PORTREVISION=	1
 PORTEPOCH=	1
 CATEGORIES=	databases
@@ -31,7 +34,7 @@ icu_PKGNAMESUFFIX=	-${FLAVOR}	# databases/p5-DBD-SQLite with ICU support
 tcl_PKGNAMESUFFIX=	-${FLAVOR}	# lang/tcl* support
 .endif
 
-USES=	libtool ncurses pathfix zip
+USES=	libtool ncurses zip
 USE_LDCONFIG=	yes
 
 HAS_CONFIGURE=	yes

@@ -1,6 +1,6 @@
 PORTNAME=	avro
 PORTVERSION=	1.12.0
-PORTREVISION=	4
+PORTREVISION=	5
 CATEGORIES=	devel
 MASTER_SITES=	APACHE/avro/avro-${PORTVERSION}/cpp
 PKGNAMESUFFIX=	-cpp
@@ -11,10 +11,11 @@ COMMENT=	C++ library for Apache Avro
 WWW=		https://avro.apache.org/ \
 		https://github.com/apache/avro
 
+BROKEN=		Lots of cmake warnings, does not find snappy, does not link libfmt dynamically
+
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-BUILD_DEPENDS=	libfmt>=10.2.1<10.2.1_99:devel/libfmt
 LIB_DEPENDS=	libboost_regex.so:devel/boost-libs \
 		libfmt.so:devel/libfmt \
 		libsnappy.so:archivers/snappy

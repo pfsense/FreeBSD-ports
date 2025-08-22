@@ -1,5 +1,6 @@
 PORTNAME=	gimp
 DISTVERSION=	3.0.4
+PORTREVISION=	1
 CATEGORIES?=	graphics gnome
 MASTER_SITES=	GIMP/gimp/v${PORTVERSION:R}
 PKGNAMESUFFIX=	3-app
@@ -125,6 +126,7 @@ LUA_RUN_DEPENDS=	${LUA_REFMODLIBDIR}/lgi/corelgilua${LUA_VER_STR}.so:devel/lua-l
 
 LUAJIT_DESC?=		Lua scripting language support via Luajit
 LUAJIT_USES=		luajit
+LUAJIT_BROKEN=		LuaJIT cannot use devel/lua-lgi module yet
 
 LUA_NONE_DESC?=		Disable Lua scripting language support
 LUA_NONE_MESON_FALSE=	lua

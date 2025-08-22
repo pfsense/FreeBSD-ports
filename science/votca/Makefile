@@ -11,7 +11,7 @@ WWW=		https://www.votca.org/ \
 
 LICENSE=	APACHE20
 
-BROKEN_i386=	undefined reference to `__atomic_load'
+BROKEN_i386=		undefined reference to `__atomic_load' # '
 
 PY_DEPENDS=	\
 		${PYTHON_PKGNAMEPREFIX}ase>0:science/py-ase@${PY_FLAVOR} \

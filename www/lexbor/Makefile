@@ -1,10 +1,9 @@
 PORTNAME=	lexbor
 DISTVERSIONPREFIX=	v
-DISTVERSION=	2.4.0
-PORTREVISION=	1
+DISTVERSION=	2.5.0
 CATEGORIES=	www
 
-MAINTAINER=	alster@vinterdalen.se
+MAINTAINER=	alven@FreeBSD.org
 COMMENT=	Modular web engine (HTML/CSS parser, renderer, ...)
 WWW=		https://lexbor.com/ \
 		https://github.com/lexbor/lexbor/
@@ -15,8 +14,6 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 USES=		cmake:testing
 USE_GITHUB=	yes
 USE_LDCONFIG=	yes
-
-PLIST_SUB=	SOVERSION=${DISTVERSION}
 
 CMAKE_TESTING_ON=	LEXBOR_BUILD_TESTS
 

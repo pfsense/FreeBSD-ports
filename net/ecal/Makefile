@@ -1,8 +1,10 @@
 PORTNAME=	ecal
 DISTVERSIONPREFIX=	v
 DISTVERSION=	5.13.3
-PORTREVISION=	7
+PORTREVISION=	8
 CATEGORIES=	net devel
+
+BROKEN=		incompatible with asio >= 1.33
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Enhanced Communication Abstraction Layer

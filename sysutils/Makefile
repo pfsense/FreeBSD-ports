@@ -81,6 +81,7 @@
     SUBDIR += b3sum
     SUBDIR += b43-fwcutter
     SUBDIR += backdown
+    SUBDIR += backrest
     SUBDIR += backuppc
     SUBDIR += backuppc-devel
     SUBDIR += backuppc4
@@ -443,6 +444,7 @@
     SUBDIR += gdu
     SUBDIR += genimage
     SUBDIR += genisoimage
+    SUBDIR += geomman
     SUBDIR += getdelta
     SUBDIR += geteltorito
     SUBDIR += getssl
@@ -514,6 +516,7 @@
     SUBDIR += httplog
     SUBDIR += hw-probe
     SUBDIR += hwstat
+    SUBDIR += hyprpolkitagent
     SUBDIR += i2c-tools
     SUBDIR += i7z
     SUBDIR += iat
@@ -704,7 +707,6 @@
     SUBDIR += memdump
     SUBDIR += memfetch
     SUBDIR += memtest86
-    SUBDIR += memtest86+
     SUBDIR += memtester
     SUBDIR += metalog
     SUBDIR += mfid
@@ -740,6 +742,7 @@
     SUBDIR += mstflint
     SUBDIR += mtm
     SUBDIR += mtxorbd
+    SUBDIR += mult
     SUBDIR += multitail
     SUBDIR += munin-common
     SUBDIR += munin-contrib
@@ -847,6 +850,9 @@
     SUBDIR += p5-MogileFS-Server
     SUBDIR += p5-MogileFS-Utils
     SUBDIR += p5-Monitor-Simple
+    SUBDIR += p5-OpenTelemetry
+    SUBDIR += p5-OpenTelemetry-Exporter-OTLP
+    SUBDIR += p5-OpenTelemetry-SDK
     SUBDIR += p5-POSIX-Run-Capture
     SUBDIR += p5-Plugtools
     SUBDIR += p5-Plugtools-Plugins-HomeOU
@@ -1237,6 +1243,7 @@
     SUBDIR += rubygem-win32-file-stat
     SUBDIR += rubygem-winrm
     SUBDIR += rubygem-winrm-elevated
+    SUBDIR += rubygem-winrm-elevated-gitlab
     SUBDIR += rubygem-yell
     SUBDIR += runas
     SUBDIR += rundeck
@@ -1282,6 +1289,7 @@
     SUBDIR += seatd
     SUBDIR += seatools
     SUBDIR += sec
+    SUBDIR += sensors
     SUBDIR += sensu-go
     SUBDIR += serf
     SUBDIR += setcdboot
@@ -1354,6 +1362,7 @@
     SUBDIR += szyszka
     SUBDIR += tai64nfrac
     SUBDIR += tailspin
+    SUBDIR += tarbsd-builder
     SUBDIR += tarsnap
     SUBDIR += tarsnap-gui
     SUBDIR += tarsnap-periodic
@@ -1513,6 +1522,7 @@
     SUBDIR += usrinfo
     SUBDIR += utcount
     SUBDIR += vagrant
+    SUBDIR += vagrant-gitlab
     SUBDIR += vbetool
     SUBDIR += vchanger
     SUBDIR += vcp
