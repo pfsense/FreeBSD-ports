@@ -1887,7 +1887,6 @@ x11/plasma5-kwayland-server|x11-wm/plasma5-kwin|2023-02-07|Reintegrated into x11
 finance/py-TA-Lib|finance/py-ta-lib|2023-02-12|Remove duplicate port
 x11-toolkits/gnocl||2023-02-13|Fails to build, newer snapshot depends on a removed port
 games/opendungeons||2023-02-14|Has expired: Broken for more than 6 months
-databases/mysql-connector-odbc|databases/mysql-connector-odbc-80|2023-02-18|Has expired: Requires EOLd mysql version
 devel/yaml-cpp03|devel/yaml-cpp|2023-02-21|Used by blender-lts28 which is EOL'd
 sysutils/uutils|sysutils/rust-coreutils|2023-02-22|Request by upstream
 print/harfbuzz-hb-view|print/harfbuzz-cairo|2023-02-23|Match feature and library name
@@ -3962,7 +3961,6 @@ sysutils/u-boot-duovero||2025-01-02|Unknown, port deleted long time ago, entry a
 sysutils/watchman450||2025-01-02|Unknown, port deleted long time ago, entry added to clean up portscout.freebsd.org
 textproc/checkbashisms||2025-01-02|Unknown, port deleted long time ago, entry added to clean up portscout.freebsd.org
 textproc/fmtlib||2025-01-02|Unknown, port deleted long time ago, entry added to clean up portscout.freebsd.org
-textproc/logseq||2025-01-02|Unknown, port deleted long time ago, entry added to clean up portscout.freebsd.org
 textproc/node-re2||2025-01-02|Unknown, port deleted long time ago, entry added to clean up portscout.freebsd.org
 textproc/py-elasticsearch-curator-py||2025-01-02|Unknown, port deleted long time ago, entry added to clean up portscout.freebsd.org
 textproc/rubygem-sassc-rails||2025-01-02|Unknown, port deleted long time ago, entry added to clean up portscout.freebsd.org
@@ -4542,7 +4540,6 @@ misc/py-orange3-associate||2025-06-23|Has expired: Depends on expiring misc/oran
 misc/py-orange3-network||2025-06-23|Has expired: Depends on expiring misc/orange3
 www/onionshare||2025-06-23|Has expired: Depends on expired devel/py-atomicwrites
 deskutils/py-todoman||2025-06-23|Has expired: Depends on expired devel/py-atomicwrites
-deskutils/py-khard||2025-06-23|Has expired: Depends on expired devel/py-atomicwrites
 devel/py-pytest4-flakes||2025-06-23|Has expired: Depends on expiring devel/py-pytest4
 devel/py-pytest-pep8||2025-06-23|Has expired: Depends on expiring devel/py-pytest4
 devel/py-pytest4-cache||2025-06-23|Has expired: Depends on expiring devel/py-pytest4
@@ -4664,3 +4661,82 @@ devel/py-cog|devel/py-cogapp|2025-07-14|Renamed to match upstream PyPI package n
 devel/pycharm-ce|devel/pycharm|2025-07-14|Has expired: Pycharm is now unified product. Please switch to devel/pycharm
 devel/pycharm-pro|devel/pycharm|2025-07-14|Has expired: Pycharm is now unified product. Please switch to devel/pycharm
 textproc/hq|textproc/html-query|2025-07-21|Project was renamed
+misc/python-langgraph-checkpoint|misc/py-langgraph-checkpoint|2025-07-22|Rename to a proper name
+databases/libgdamm5||2025-07-24|No release for a year, depends libgda5 which is not supported anymore upstream
+deskutils/kuserfeedback||2025-07-26|Remove Qt5 port, all consumers have been ported to KF6/Qt6
+net/amneziawg-kmod||2025-07-26|Port was committed prematurely
+net/amneziawg-tools||2025-07-26|Port was committed prematurely
+www/novnc-websockify|devel/py-websockify|2025-07-30|Port is a duplicate
+databases/mongodb50|databases/mongodb60|2025-07-31|Has expired: EOL from October 2024, see https://www.mongodb.com/legal/support-policy/lifecycles, please use databases/mongodb60
+multimedia/svt-av1-psy|multimedia/svt-av1-hdr|2025-07-31|New upstream
+www/php85-opcache||2025-08-01|Part of default php85
+devel/rpc2||2025-08-02|Has expired: Outdated, unsupported upstream and unmaintained for years in tree
+devel/publib||2025-08-02|Has expired: Upstream is gone and last release around 2012
+devel/qmake||2025-08-02|Has expired: Obsolete and unsupported upstream
+devel/godot35-tools|devel/godot-tools|2025-08-02|Has expired: Fails to build and legacy, consider migrating to devel/godot-tools
+graphics/cosmoplayer||2025-08-02|Has expired: Abandonware
+devel/netscape-java40||2025-08-02|Has expired: Abandonware
+devel/aegis||2025-08-02|Has expired: Abandoned upstream, last release in 2012
+devel/wrangler||2025-08-02|Has expired: Deprecated upstream as of Aug 3, 2023
+devel/libgee06|devel/libgee|2025-08-02|Has expired: Legacy verision, unsupported upstream
+comms/hackrf-devel|comms/hackrf|2025-08-02|Has expired: Legacy version, consider migrating to comms/hackrf
+www/webcopy||2025-08-02|Has expired: Upstream is long gone and project not touched in decades, consider using ftp/wget
+finance/libstocks||2025-08-02|Has expired: Abandoned upstream, last release in 2000
+java/servingxml||2025-08-02|Has expired: Abandoned and obsolete, last release in 2010
+mail/lmtp2nntp||2025-08-02|Has expired: Obsolete, last release in 2005 and uses legacy Local Mail Transfer Protocol
+math/R-cran-RSvgDevice||2025-08-02|Has expired: Package RSvgDevice was removed from the CRAN repository
+net/flower||2025-08-02|Has expired: Unmaintained upstream
+net/linknx||2025-08-02|Has expired: Outdated and unsupported upstream
+www/mediawiki142||2025-08-02|Has expired: Upstream EOL
+devel/arpc||2025-08-02|Has expired: Unmaintained upstream
+devel/libgpc||2025-08-02|Has expired: No longer distributed by upstream as of August 2020
+devel/libfortuna||2025-08-02|Has expired: Legacy fortuna library, last upstream activity 10 years ago
+devel/pth-hard||2025-08-02|Has expired: Abandoned, last release in 2006
+devel/pth||2025-08-02|Has expired: Abandoned, last release in 2006
+databases/rrdtool12|databases/rrdtool|2025-08-02|Has expired: Legacy version that's unsupported upstream and unfetchable
+sysutils/memtest86+||2025-08-02|Has expired: ELF binary for BIOS boot has been broken for a long while
+textproc/xmlenc||2025-08-02|Has expired: Outdated and obsolete, last release in 2005
+devel/make++||2025-08-02|Has expired: Abandonware, last release in 2017
+devel/scandoc||2025-08-02|Has expired: Abandoned project, last release in in 2001
+devel/silc-toolkit||2025-08-02|Has expired: Protocol that never got any traction, last release in 2014
+devel/ossp-xds||2025-08-02|Has expired: Abandoned upstream, last release in 2005
+devel/ossp-al||2025-08-02|Has expired: Obsolete and abandoned upstream, last release in 2005
+devel/ossp-val||2025-08-02|Has expired: Abandoned upstream, last release in 2005
+devel/ossp-l2||2025-08-02|Has expired: Abandoned upstream, last release in 2007
+devel/ossp-var||2025-08-02|Has expired: Obsolete, last release in 2002
+devel/ossp-cfg||2025-08-02|Has expired: Abandoned upstream, last release in 2006
+net/ossp-sa||2025-08-02|Removed, depends on expired devel/ossp-ex
+devel/ossp-ex||2025-08-02|Has expired: Abandoned upstream, last release in 2007
+security/openiked-portable|security/openiked|2025-08-02|Merged into security/openiked
+devel/bmake||2025-08-03|Has expired: Outdated and redundant
+devel/bmkdep||2025-08-03|Has expired: Outdated and redundant
+astro/R-cran-maptools||2025-08-03|Has expired: Fails to build and upstream recommends using math/R-cran-sf or math/R-cran-terra instead
+security/openssl31-quictls||2025-08-04|Has expired: End-of-Life, please switch to security/quictls or OpenSSL 3.5
+security/openssl31||2025-08-04|Has expired: End-of-Life, will be removed when new vulnerabilities are reported or at end of quarter. Upgrade to security/openssl35 latest LTS
+databases/pear-DoctrineDBAL||2025-08-04|Has expired: Upstream no longer serves through PEAR channel and has been moved to Composer
+www/py-wsaccel||2025-08-04|Has expired: Upstream ceased development
+databases/pear-DoctrineCommon||2025-08-05|Has expired: Upstream no longer serves through PEAR channel and has been moved to Composer
+devel/tclthread|devel/tcl8-thread|2025-08-07|Use tcl8-thread with Tcl8 and tcl9-thread Tcl9
+graphics/libkexiv2@qt5||2025-08-08|Unflavorize; Qt5 flavor is not needed anymore
+graphics/libkexiv2@qt6|graphics/libkexiv2|2025-08-08|Unflavorize; Qt5 flavor is not needed anymore
+databases/mariadb105-server||2025-08-09|Has expired: Upstream End-of-Life, please switch to databases/mariadb118-server
+databases/mariadb105-client||2025-08-09|Has expired: Upstream End-of-Life, please switch to databases/mariadb118-client
+japanese/font-moralerspace-hwnf|japanese/font-moralerspace-hw|2025-08-09|Moralerspace variants now include Nerd Fonts by default
+japanese/font-moralerspace-nf|japanese/font-moralerspace|2025-08-09|Moralerspace variants now include Nerd Fonts by default
+multimedia/gstreamer1-validate|devel/gstreamer1-devtools|2025-08-11|Project renamed
+devel/py-types-PyYAML|devel/py-types-pyyaml|2025-08-12|Move devel/py-types-PyYAML to devel/py-types-pyyaml
+devel/py-pluggy0|devel/py-pluggy|2025-08-12|Remove obsoleted port. Use devel/py-pluggy instead
+devel/py-types-click|devel/py-click|2025-08-12|Remove obsoleted port. The click package includes type annotations or type stubs since version 8.0. Use devel/py-click instead
+devel/py-types-cryptography|security/py-cryptography|2025-08-12|Remove obsoleted port. The cryptography package includes type annotations or type stubs since version 3.4.4. Use security/py-cryptography instead
+devel/py-types-Flask|www/py-flask|2025-08-12|Remove obsoleted port. The Flask package includes type annotations or type stubs since version 2.0. Use www/py-flask instead
+devel/py-types-futures||2025-08-12|Remove obsoleted port
+devel/py-types-Jinja2|devel/py-Jinja2|2025-08-12|Remove obsoleted port. The Jinja2 package includes type annotations or type stubs since version 3.0. Use devel/py-Jinja2 instead
+devel/py-types-MarkupSafe|textproc/py-markupsafe|2025-08-12|Remove obsoleted port. The MarkupSafe package includes type annotations or type stubs since version 2.0. Use textproc/py-markupsafe instead
+devel/py-types-Pillow|graphics/py-pillow|2025-08-12|Remove obsoleted port. The Pillow package includes type annotations or type stubs since version 10.3.0. Use graphics/py-pillow instead
+devel/py-types-typed-ast||2025-08-12|Remove obsoleted port. types-typed-ast is unmaintained and won't be updated
+devel/py-types-Werkzeug|www/py-werkzeug|2025-08-12|Remove obsoleted port. The Werkzeug package includes type annotations or type stubs since version 2.0. Use www/py-werkzeug instead
+devel/pear-channel-doctrine||2025-08-14|Has expired: Upstream no longer serves through PEAR channel and has been moved to Composer
+devel/qcoro@qt5||2025-08-15|Unflavorize; Qt5 flavor has no consumers
+devel/qcoro@qt6|devel/qcoro|2025-08-15|Unflavorize; Qt5 flavor has no consumers
+devel/cervisia||2025-08-15|Not ported to Qt6 and excluded from KDE Gear releases
+databases/mysql-connector-odbc-80|databases/mysql-connector-odbc@unixodbc|2025-08-21|Was tied to only mysql80 and now supports all MySQL versions

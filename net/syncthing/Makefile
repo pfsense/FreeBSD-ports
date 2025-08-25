@@ -1,7 +1,7 @@
 PORTNAME=	syncthing
 DISTVERSIONPREFIX=	v
-DISTVERSION=	1.30.0
-PORTREVISION=	2
+DISTVERSION=	2.0.2
+PORTREVISION=	1
 CATEGORIES=	net
 MASTER_SITES=	https://github.com/${PORTNAME}/${PORTNAME}/releases/download/v${DISTVERSION}/
 DISTNAME=	${PORTNAME}-source-${DISTVERSIONFULL}
@@ -29,6 +29,8 @@ NO_WRKSUBDIR=	yes
 
 USERS=		syncthing
 GROUPS=		syncthing
+
+CONFLICTS=	syncthing1
 
 .for x in ${BINS}
 PLIST_FILES+=	bin/${x}

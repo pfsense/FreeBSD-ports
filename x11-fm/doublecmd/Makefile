@@ -1,13 +1,8 @@
 PORTNAME=	doublecmd
-PORTVERSION=	1.1.26
+PORTVERSION=	1.1.27
 DISTVERSIONPREFIX=	v
 CATEGORIES=	x11-fm
 PKGNAMESUFFIX=	${LAZARUS_PKGNAMESUFFIX}
-
-#PATCH_SITES+=	https://github.com/doublecmd/doublecmd/commit/
-#PATCHFILES+=	11f8742da2464570b588865fffe6090107a7f543.patch:-p1
-#PATCHFILES+=	e38813f8d5a1c0ea9696a9b8c4f5580b17681627.patch:-p1
-#PATCHFILES+=	68d1c6e4e1dc0dd16755ee6209bf21bdf95c7690.patch:-p1
 
 MAINTAINER=	fluffy@FreeBSD.org
 COMMENT=	Total Commander like file manager for the X Window System
@@ -333,7 +328,7 @@ do-install:
 
 .if ${PORT_OPTIONS:MWLX_MPLAYER}
 	@${MKDIR} ${STAGEDIR}${DATADIR}/plugins/wlx/wlxmplayer/
-	${INSTALL_LIB} ${WRKSRC}/plugins/wlx/WlxMplayer/lib/wlxmplayer.wlx ${STAGEDIR}${DATADIR}/plugins/wlx/wlxmplayer/
+	${INSTALL_LIB} ${WRKSRC}/plugins/wlx/WlxMplayer/wlxmplayer.wlx ${STAGEDIR}${DATADIR}/plugins/wlx/wlxmplayer/
 .endif
 
 .if ${PORT_OPTIONS:MDSX_LOCATE}

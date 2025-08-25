@@ -371,7 +371,6 @@ proxydeps_suggest_uses() {
 		${pkg} = "graphics/cairomm" -o \
 		${pkg} = "devel/dconf" -o \
 		${pkg} = "devel/gconf2" -o \
-		${pkg} = "devel/gconfmm26" -o \
 		${pkg} = "devel/glib20" -o \
 		${pkg} = "devel/glibmm" -o \
 		${pkg} = "audio/gsound" -o \
@@ -386,7 +385,6 @@ proxydeps_suggest_uses() {
 		${pkg} = "x11-toolkits/gtksourceviewmm3" -o \
 		${pkg} = "databases/libgda5" -o \
 		${pkg} = "databases/libgda5-ui" -o \
-		${pkg} = "databases/libgdamm5" -o \
 		${pkg} = "devel/libglade2" -o \
 		${pkg} = "graphics/libgnomecanvas" -o \
 		${pkg} = "x11/libgnomekbd" -o \

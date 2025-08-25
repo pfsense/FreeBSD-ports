@@ -1,5 +1,6 @@
 PORTNAME=	vscode
-DISTVERSION=	1.102.1
+DISTVERSION=	1.103.0
+PORTREVISION=	1
 CATEGORIES=	editors
 MASTER_SITES=	https://github.com/tagattie/FreeBSD-VSCode/releases/download/${DISTVERSION}/:node_modules
 DISTFILES=	vscode-node-modules-${DISTVERSION}${EXTRACT_SUFX}:node_modules \
@@ -68,7 +69,7 @@ USES=		desktop-file-utils gl gmake gnome gssapi:mit iconv:wchar_t \
 USE_GITHUB=	yes
 GH_ACCOUNT=	microsoft
 
-SOURCE_COMMIT_HASH=	7adae6a56e34cb64d08899664b814cf620465925
+SOURCE_COMMIT_HASH=	e3550cfac4b63ca4eafca7b601f0d2885817fd1f
 
 BINARY_ALIAS=	python=${PYTHON_CMD}
 
@@ -77,7 +78,7 @@ USE_XORG=	x11 xcb xcomposite xcursor xdamage xext xfixes xi xkbfile \
 USE_GL=		gbm gl glesv2
 USE_GNOME=	atk cairo pango gdkpixbuf gtk30 libxml2 libxslt
 
-SHEBANG_REGEX=	./(extensions|node_modules|resources|scripts|src)/.*\.sh$$
+SHEBANG_REGEX=	./(extensions|node_modules|resources|scripts|src)/.*(\.(pl|py|sh)|makeBlacker|makeFF)$$
 PATHFIX_FILES=	src/vs/workbench/contrib/debug/node/terminals.ts
 
 DATADIR=	${PREFIX}/share/code-oss
@@ -97,7 +98,7 @@ TEST_ENV=	${MAKE_ENV:C/TMPDIR=.*//}
 
 NODEJS_DIR=	${.CURDIR:H:H}/www/node22
 .include "${NODEJS_DIR}/Makefile.version"
-ELECTRON_DIR=	${.CURDIR:H:H}/devel/electron35
+ELECTRON_DIR=	${.CURDIR:H:H}/devel/electron37
 .include "${ELECTRON_DIR}/Makefile.version"
 
 ELECTRON_DOWNLOAD_URL=	https://github.com/electron/electron/releases/download/v${ELECTRON_VER}

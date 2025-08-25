@@ -1,10 +1,9 @@
 PORTNAME=	evilwm
-DISTVERSION=	1.4.2
-PORTREVISION=	1
+DISTVERSION=	1.4.3
 CATEGORIES=	x11-wm
 MASTER_SITES=	http://www.6809.org.uk/evilwm/
 
-MAINTAINER=	cmangin@arobas.net
+MAINTAINER=	cmanv@duck.com
 COMMENT=	Minimalist window manager based on 9wm
 WWW=		https://www.6809.org.uk/evilwm/
 

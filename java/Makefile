@@ -86,6 +86,7 @@
     SUBDIR += openjdk19
     SUBDIR += openjdk20
     SUBDIR += openjdk21
+    SUBDIR += openjdk21-jre
     SUBDIR += openjdk22
     SUBDIR += openjdk23
     SUBDIR += openjdk24
@@ -94,7 +95,6 @@
     SUBDIR += openjfx14
     SUBDIR += phpeclipse
     SUBDIR += proguard
-    SUBDIR += servingxml
     SUBDIR += sigar
     SUBDIR += springframework
     SUBDIR += springframework31

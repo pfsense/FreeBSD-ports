@@ -1,5 +1,5 @@
 PORTNAME=	librenms
-PORTVERSION=	25.7.0
+PORTVERSION=	25.8.0
 PORTEPOCH=	1
 CATEGORIES=	net-mgmt
 MASTER_SITES=	LOCAL/dvl:vendor
@@ -18,8 +18,7 @@ RUN_DEPENDS+=	${PYTHON_PKGNAMEPREFIX}psutil>0:sysutils/py-psutil@${PY_FLAVOR} \
 		bash:shells/bash \
 		dot:graphics/graphviz \
 		rrdtool:databases/rrdtool \
-		snmpget:net-mgmt/net-snmp \
-		sudo:security/sudo
+		snmpget:net-mgmt/net-snmp
 
 USES=		cpe php python shebangfix
 USE_GITHUB=	yes
@@ -46,10 +45,10 @@ SHEBANG_FILES=	../${PORTNAME}-vendor-${PORTVERSION}/paragonie/random_compat/buil
 		../librenms-vendor-${PORTVERSION}/symfony/error-handler/Resources/bin/patch-type-declarations \
 		../librenms-vendor-${PORTVERSION}/symfony/var-dumper/Resources/bin/var-dump-server \
 		../librenms-vendor-${PORTVERSION}/symfony/yaml/Resources/bin/yaml-lint \
-		alerts.php artisan billing-calculate.php \
-		check-services.php config_to_json.php cronic daily.php daily.sh \
-		delhost.php discovery-wrapper.py discovery.php dist-pollers.php \
-		irc.php librenms-service.py LibreNMS/command_runner.py \
+		alerts.php artisan billing-calculate.php check-services.php \
+		config_to_json.php cronic daily.php daily.sh delhost.php \
+		discovery-wrapper.py discovery.php dist-pollers.php irc.php \
+		librenms-service.py LibreNMS/command_runner.py \
 		LibreNMS/wrapper.py lnms misc/lnms-completion.bash \
 		misc/smokeping-debian.example misc/smokeping-rhel.example \
 		ping.php poll-billing.php poller-wrapper.py poller.php \
@@ -71,8 +70,8 @@ SHEBANG_FILES=	../${PORTNAME}-vendor-${PORTVERSION}/paragonie/random_compat/buil
 		scripts/rename-mibs.php scripts/rrdstep.php \
 		scripts/save-test-data.php scripts/syslog-notify-oxidized.php \
 		scripts/test-alert.php scripts/test-template.php \
-		scripts/watchmaillog/watchmaillog.pl \
-		snmp-scan.py snmptrap.php syslog.php validate.php
+		scripts/watchmaillog/watchmaillog.pl snmp-scan.py snmptrap.php \
+		syslog.php validate.php
 
 NO_ARCH=	yes
 NO_BUILD=	yes
@@ -94,12 +93,20 @@ DBDIR=		/var/db/${PORTNAME}
 
 OPTIONS_DEFINE=		DOCS EXAMPLES FPING IPMITOOL LIBVIRT MYSQLD NAGPLUGINS \
 			NMAP WMIC X11
-OPTIONS_DEFAULT=	FPING IPMITOOL LIBVIRT NAGPLUGINS NMAP PYPOLLER WMIC
+OPTIONS_DEFAULT=	FPING IPMITOOL LIBVIRT NAGPLUGINS NMAP PYPOLLER SUDO \
+			WMIC
+OPTIONS_RADIO=		SUDO
+OPTIONS_RADIO_SUDO=	SUDO SUDO_SSSD
+
+SUDO_RUN_DEPENDS=	sudo:security/sudo
+SUDO_SSSD_RUN_DEPENDS=	sudo:security/sudo@sssd
 
 FPING_DESC=	Enable fping support ping monitoring
 IPMITOOL_DESC=	Enable support for monitoring hardware IPMI
 MYSQLD_DESC=	Use local MySQL server
 WMIC_DESC=	Enable support for WMI polling
+SUDO_DESC=	use security/sudo
+SUDO_SSSD_DESC=	use security/sudo@sssd
 
 FPING_RUN_DEPENDS=	fping:net/fping
 IPMITOOL_RUN_DEPENDS=	ipmitool:sysutils/ipmitool
@@ -119,14 +126,14 @@ _ROOT_FILES=		alerts.php artisan billing-calculate.php \
 			config.php.default config_to_json.php cronic daily.php \
 			delhost.php discovery-wrapper.py discovery.php \
 			dist-pollers.php irc.php librenms-service.py mkdocs.yml \
-			phpunit.xml ping.php poll-billing.php \
-			poller.php poller-wrapper.py renamehost.php \
-			snmp-scan.py snmptrap.php syslog.php validate.php
+			phpunit.xml ping.php poll-billing.php poller.php \
+			poller-wrapper.py renamehost.php snmp-scan.py \
+			snmptrap.php syslog.php validate.php
 _SCRIPT_FILES=		daily.sh lnms
 # _RELEASE_TIMESTAMP is used for a patch inside the vendor code
 # it represents the release date via: git show --pretty='%H|%ct' -s 1.42.01
 # It sits here so you remember to update it with each release
-_RELEASE_TIMESTAMP=	1752667260
+_RELEASE_TIMESTAMP=	1755492731
 _ROOT_DIRS=		LibreNMS app bootstrap config database doc html \
 			includes lang licenses mibs misc resources routes \
 			scripts tests

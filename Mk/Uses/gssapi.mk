@@ -86,7 +86,7 @@ _local:=	${_A}
 .      if ${SSL_DEFAULT} != base
 IGNORE=	You are using OpenSSL from ports and have selected GSSAPI from base, please select another GSSAPI value
 .      endif
-.      if exists(/usr/libexec/krb5kdc)
+.      if exists(/usr/libdata/pkgconfig/mit-krb5.pc)
          # Base has MIT KRB5 installed
 KRB5_HOME?=	/usr
 GSSAPIBASEDIR=	${KRB5_HOME}
@@ -94,7 +94,7 @@ GSSAPILIBDIR=	${GSSAPIBASEDIR}/lib
 GSSAPIINCDIR=	${GSSAPIBASEDIR}/include
 _HEADERS+=	gssapi/gssapi.h gssapi/gssapi_krb5.h krb5/krb5.h
 GSSAPICPPFLAGS=	-I"${GSSAPIINCDIR}"
-GSSAPILIBS=	-lkrb5 -lgssapi -lgssapi_krb5
+GSSAPILIBS=	-lkrb5 -lgssapi_krb5
 GSSAPILDFLAGS=
 .      else
          # Base has Heimdal KRB5 installed

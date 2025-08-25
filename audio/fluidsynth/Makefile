@@ -1,6 +1,6 @@
 PORTNAME=	fluidsynth
 DISTVERSIONPREFIX=	v
-DISTVERSION=	2.4.6
+DISTVERSION=	2.4.7
 CATEGORIES=	audio
 
 MAINTAINER=	multimedia@FreeBSD.org
@@ -10,7 +10,7 @@ WWW=		https://www.fluidsynth.org/
 LICENSE=	LGPL21
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-USES=		cmake cpe gnome pathfix pkgconfig
+USES=		cmake cpe gnome pkgconfig
 USE_GNOME=	glib20
 USE_LDCONFIG=	yes
 
