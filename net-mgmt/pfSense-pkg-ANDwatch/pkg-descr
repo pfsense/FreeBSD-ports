@@ -1,0 +1,3 @@
+ANDwatch is a daemon for monitoring ARP and Neighbor Discovery
+activity, keeping track of IP to Ethernet address mappings, and
+providing notifications when the mappings change.
