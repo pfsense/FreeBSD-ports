@@ -1,13 +1,12 @@
 PORTNAME=	kea
 DISTVERSION=	3.0.0
-PORTREVISION=	5
+PORTREVISION=	6
 CATEGORIES=	net
 MASTER_SITES=	ISC/kea/${DISTVERSION}
 
-#PATCHFILES+=	netgate.diff:-p1
+PATCHFILES+=	netgate.diff:-p1
 MASTER_SITE_BACKUP=
 FETCH_DEPENDS=	curl:ftp/curl
-#PLIST_FILES+=	lib/kea/hooks/libdhcp_lease_options.a lib/kea/hooks/libdhcp_lease_options.so
 
 MAINTAINER=	apevnev@me.com
 COMMENT=	Alternative DHCP implementation by ISC
