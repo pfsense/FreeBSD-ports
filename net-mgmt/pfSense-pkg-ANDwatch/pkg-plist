@@ -1,0 +1,10 @@
+/etc/inc/priv/andwatch.priv.inc
+pkg/andwatch.xml
+pkg/andwatch.inc
+pkg/andwatch-notify.php
+%%DATADIR%%/info.xml
+www/andwatch.php
+www/status_andwatch.php
+www/shortcuts/pkg_andwatch.inc
+@dir /etc/inc/priv
+@dir /etc/inc
