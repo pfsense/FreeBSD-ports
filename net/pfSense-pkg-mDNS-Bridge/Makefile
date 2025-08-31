@@ -1,6 +1,6 @@
 
 PORTNAME=	pfSense-pkg-mDNS-Bridge
-PORTVERSION=	2.1
+PORTVERSION=	2.2
 CATEGORIES=	net
 MASTER_SITES=	# empty
 DISTFILES=	# empty
@@ -11,7 +11,7 @@ WWW=		https://github.com/dennypage/mdns-bridge
 
 LICENSE=	APACHE20
 
-RUN_DEPENDS=	mdns-bridge>=2.1.0:net/mdns-bridge
+RUN_DEPENDS=	mdns-bridge>=2.2.0:net/mdns-bridge
 
 NO_BUILD=	yes
 NO_MTREE=	yes
