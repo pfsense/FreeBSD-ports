@@ -62,6 +62,14 @@ remove_crontab() {
 	touch ${_crondir}
 }
 
+if [ "${2}" = "PRE-INSTALL" ]; then
+	if [ $( sysctl -n kern.osreldate ) -lt 1500063 ]; then
+		sysctl kern.signosys=0
+		echo 'kern.signosys=0' >> /boot/loader.conf.local
+	else
+		rm /boot/loader.conf.local
+	fi
+fi
 if [ "${2}" != "POST-INSTALL" ]; then
 	exit 0
 fi
