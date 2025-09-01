@@ -2392,9 +2392,6 @@ fi
 
 unset NEW_MAJOR
 
-# Disable SIGSYS on return from invalid syscall
-/sbin/sysctl kern.signosys=0
-
 # Fetch the latest settings.
 /usr/local/sbin/${product}-repo-setup ${dont_update}
 case "$?" in
