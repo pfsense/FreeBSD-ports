@@ -62,8 +62,12 @@ function mdns_bridge_write_files() {
 
 	// Get the real interface names
 	$interfaces = array();
-	foreach (explode(',', array_get_path($current_config, 'active_interfaces', '')) as $interface) {
-		$interfaces[$interface] = get_real_interface($interface);
+	foreach (array_filter(explode(',', array_get_path($current_config, 'active_interfaces', ''))) as $interface) {
+		$interface_name = get_real_interface($interface);
+		if (!isset($interface_name)) {
+			continue;
+		}
+		$interfaces[$interface] = $interface_name;
 	}
 
 	// Global section
@@ -153,7 +157,11 @@ function mdns_bridge_write_files() {
 	}
 
 	// Write the rc file
-	$start = MDNS_BRIDGE_CMD . ' -s -c ' . MDNS_BRIDGE_CONF_FILE . ' -p ' . MDNS_BRIDGE_PID_FILE;
+	$start = MDNS_BRIDGE_CMD;
+	if (config_get_path('installedpackages/mdns-bridge/decode_warnings', false)) {
+		$start .= ' -w';
+	}
+	$start .= ' -s -c ' . MDNS_BRIDGE_CONF_FILE . ' -p ' . MDNS_BRIDGE_PID_FILE;
 	$stop = '/usr/bin/killall ' . MDNS_BRIDGE_SVC_NAME;
 	write_rcfile(array(
 		"file" => "mdns-bridge.sh",
