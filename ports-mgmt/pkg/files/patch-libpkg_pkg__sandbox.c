@@ -1,17 +1,14 @@
 --- libpkg/pkg_sandbox.c.orig	2025-08-05 06:16:40 UTC
 +++ libpkg/pkg_sandbox.c
-@@ -34,6 +34,10 @@
+@@ -33,6 +33,7 @@
+ #include <sys/types.h>
  #include <sys/wait.h>
  #include <sys/socket.h>
- 
-+#if __FreeBSD_version >= 1500061
 +#include <sys/sysctl.h>
-+#endif
-+
+ 
  #ifdef HAVE_CAPSICUM
  #include <sys/capsicum.h>
- #endif
-@@ -226,13 +230,20 @@ pkg_drop_privileges(void)
+@@ -226,13 +227,20 @@ pkg_drop_privileges(void)
  void
  pkg_drop_privileges(void)
  {
