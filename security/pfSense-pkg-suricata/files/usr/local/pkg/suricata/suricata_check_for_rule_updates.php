@@ -373,13 +373,25 @@ function suricata_fetch_new_rules($file_url, $file_dst, $file_md5, $desc = "") {
 		error_log(gettext("\tDone downloading rules file.\n"),3, SURICATA_RULES_UPD_LOGFILE);
 
 		// Test integrity of the rules file.  Turn off update if file has wrong md5 hash
+/*
+    PHP ERROR: Type: 1, File: /usr/local/pkg/suricata/suricata_check_for_rule_updates.php, Line: 379, Message: Uncaught ValueError: gettext(): Argument #1 ($message) is too long in /usr/local/pkg/suricata/suricata_check_for_rule_updates.php:379
+    Stack trace:
+    #0 /usr/local/pkg/suricata/suricata_check_for_rule_updates.php(379): gettext(', but expected ...')
+    #1 /usr/local/pkg/suricata/suricata_check_for_rule_updates.php(456): suricata_fetch_new_rules('https://rules.e...', '/tmp/suricata_r...', '<!DOCTYPE html>...', 'Emerging Threat...')
+    #2 /usr/local/pkg/suricata/suricata_post_install.php(159): include('/usr/local/pkg/...')
+    #3 /etc/inc/pkg-utils.inc(800) : eval()'d code(1): include_once('/usr/local/pkg/...')
+    #4 /etc/inc/pkg-utils.inc(800): eval()
+    #5 /etc/inc/pkg-utils.inc(917): eval_once('include_once("/...')
+    #6 /etc/rc.packages(76): install_package_xml('suricata')
+    #7 {main}
+*/
 		if ($file_md5 != trim(md5_file($file_dst))){
 			suricata_update_status(gettext("{$desc} file MD5 checksum failed!") . "\n");
 			syslog(LOG_ERR, gettext("[Suricata] ERROR: {$desc} file download failed.  Bad MD5 checksum."));
-        	        syslog(LOG_ERR, gettext("[Suricata] ERROR: Downloaded file has MD5: " . md5_file($file_dst)). gettext(", but expected MD5: {$file_md5}"));
+        	        syslog(LOG_ERR, gettext("[Suricata] ERROR: Downloaded file has MD5: ") . md5_file($file_dst) . gettext(", but expected MD5: ") . $file_md5);
 			error_log(gettext("\t{$desc} file download failed.  Bad MD5 checksum.\n"), 3, SURICATA_RULES_UPD_LOGFILE);
 			error_log(gettext("\tDownloaded {$desc} file MD5: " . md5_file($file_dst) . "\n"), 3, SURICATA_RULES_UPD_LOGFILE);
-			error_log(gettext("\tExpected {$desc} file MD5: {$file_md5}\n"), 3, SURICATA_RULES_UPD_LOGFILE);
+			error_log(gettext("\tExpected {$desc} file MD5: ") . $file_md5 . PHP_EOL, 3, SURICATA_RULES_UPD_LOGFILE);
 			error_log(gettext("\t{$desc} file download failed.  {$desc} will not be updated.\n"), 3, SURICATA_RULES_UPD_LOGFILE);
 			$notify_message .= gettext("- {$desc} will not be updated, bad MD5 checksum.\n");
 			$update_errors = true;
