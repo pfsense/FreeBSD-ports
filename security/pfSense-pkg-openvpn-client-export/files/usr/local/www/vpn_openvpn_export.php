@@ -133,43 +133,55 @@ $simplefields = array('server','useaddr','useaddr_hostname','verifyservercn','bl
 	'useproxy','useproxytype','proxyaddr','proxyport', 'silent','useproxypass','proxyuser');
 	//'pass','proxypass','advancedoptions'
 
-$cfg_path = 'installedpackages/vpn_openvpn_export/defaultsettings';
+$package_config = config_get_path('installedpackages/vpn_openvpn_export', []);
+array_init_path($package_config, 'defaultsettings');
+
+// Use default settings; may be overriden below by server-specific settings.
+$pconfig = &$package_config['defaultsettings'];
 
 if (isset($_POST['save'])) {
-	$vpnid = $_POST['server'];
-	$index = count(config_get_path('installedpackages/vpn_openvpn_export/serverconfig/item', []));
-	foreach(config_get_path('installedpackages/vpn_openvpn_export/serverconfig/item', []) as $key => $cfg) {
-		if ($cfg['server'] == $vpnid) {
-			$index = $key;
+	// Check for existing server-specific settings.
+	foreach(array_get_path($package_config, 'serverconfig/item', []) as $i => $item) {
+		if ($item['server'] == $_POST['server']) {
+			$pconfig = &$package_config['serverconfig']["item"][$i];
 			break;
 		}
 	}
-	$cfg_path = "installedpackages/vpn_openvpn_export/serverconfig/item/{$index}";
+	if (!isset($pconfig)) {
+		// Add new servcer-specific settings.
+		array_set_path($package_config, 'serverconfig/item/', []);
+		$pconfig = &$package_config['serverconfig']["item"][array_key_last($package_config['serverconfig']["item"])];
+	}
+
 	if ($_POST['pass'] <> DMYPWD) {
 		if ($_POST['pass'] <> $_POST['pass_confirm']) {
 			$input_errors[] = "Different certificate passwords entered.";
+		} else {
+			$pconfig['pass'] = $_POST['pass'];
 		}
-		config_set_path("{$cfg_path}/pass", $_POST['pass']);
 	}
 	if ($_POST['proxypass'] <> DMYPWD) {
 		if ($_POST['proxypass'] <> $_POST['proxypass_confirm']) {
 			$input_errors[] = "Different Proxy passwords entered.";
+		} else {
+			$pconfig['proxypass'] = $_POST['proxypass'];
 		}
-		config_set_path("{$cfg_path}/proxypass", $_POST['proxypass']);
 	}
 
 	foreach ($simplefields as $value) {
-		config_set_path("{$cfg_path}/{$value}", $_POST[$value]);
+		$pconfig[$value] = $_POST[$value];
 	}
-	config_set_path("{$cfg_path}/advancedoptions", base64_encode($_POST['advancedoptions']));
+
+	if (isset($_POST['advancedoptions']) && (strlen(strval($_POST['advancedoptions'])) > 0)) {
+		$pconfig['advancedoptions'] = base64_encode($_POST['advancedoptions']);
+	} else {
+		$pconfig['advancedoptions'] = '';
+	}
+
 	if (empty($input_errors)) {
+		config_set_path('installedpackages/vpn_openvpn_export', $package_config);
 		write_config("Save openvpn client export defaults");
 	}
-}
-
-foreach(config_get_path('installedpackages/vpn_openvpn_export/serverconfig/item', []) as $i => $item) {
-	config_set_path("installedpackages/vpn_openvpn_export/serverconfig/item/{$i}/advancedoptions",
-	    base64_decode($item['advancedoptions']));
 }
 
 if (!empty($act)) {
@@ -231,7 +243,7 @@ if (!empty($act)) {
 		if ($_POST['password'] != DMYPWD) {
 			$password = $_POST['password'];
 		} else {
-			$password = config_get_path("{$cfg_path}/pass");
+			$password = $pconfig['pass'];
 		}
 	}
 	if (isset($_POST['p12encryption']) &&
@@ -295,7 +307,7 @@ if (!empty($act)) {
 				if ($_POST['proxy_password'] != DMYPWD) {
 					$proxy['password'] = $_POST['proxy_password'];
 				} else {
-					$proxy['password'] = config_get_path("{$cfg_path}/proxypass");
+					$proxy['password'] = $pconfig['proxypass'];
 				}
 			}
 		}
@@ -435,8 +447,6 @@ $tab_array[] = array(gettext("Wizards"), false, "wizard.php?xml=openvpn_wizard.x
 add_package_tabs("OpenVPN", $tab_array);
 display_top_tabs($tab_array);
 
-$cfg = config_get_path($cfg_path, []);
-
 $form = new Form("Save as default");
 
 $section = new Form_Section('OpenVPN Server');
@@ -449,7 +459,7 @@ foreach ($ras_server as $server) {
 $section->addInput(new Form_Select(
 	'server',
 	'Remote Access Server',
-	$cfg['server'],
+	$pconfig['server'],
 	$serverlist
 	));
 
@@ -481,7 +491,7 @@ $useaddrlist["other"] = "Other";
 $section->addInput(new Form_Select(
 	'useaddr',
 	'Host Name Resolution',
-	$cfg['useaddr'],
+	$pconfig['useaddr'],
 	$useaddrlist
 	));
 
@@ -489,14 +499,14 @@ $section->addInput(new Form_Input(
 	'useaddr_hostname',
 	'Host Name',
 	'text',
-	$cfg['useaddr_hostname']
+	$pconfig['useaddr_hostname']
 ))->setHelp('Enter the hostname or IP address the client will use to connect to this server.');
 
 
 $section->addInput(new Form_Select(
 	'verifyservercn',
 	'Verify Server CN',
-	$cfg['verifyservercn'],
+	$pconfig['verifyservercn'],
 	array(
 		"auto" => "Automatic - Use verify-x509-name where possible",
 		"none" => "Do not verify the server CN")
@@ -506,27 +516,27 @@ $section->addInput(new Form_Checkbox(
 	'blockoutsidedns',
 	'Block Outside DNS',
 	'Block access to DNS servers except across OpenVPN while connected, forcing clients to use only VPN DNS servers.',
-	$cfg['blockoutsidedns']
+	$pconfig['blockoutsidedns']
 ))->setHelp("Requires Windows 10 and OpenVPN 2.3.9 or later. Only Windows 10 is prone to DNS leakage in this way, other clients will ignore the option as they are not affected.");
 
 $section->addInput(new Form_Checkbox(
 	'legacy',
 	'Legacy Client',
 	'Do not include OpenVPN 2.5 and later settings in the client configuration.',
-	$cfg['legacy']
+	$pconfig['legacy']
 ))->setHelp("When using an older client (OpenVPN 2.4.x), check this option to prevent the exporter from placing known-incompatible settings into the client configuration.");
 
 $section->addInput(new Form_Checkbox(
 	'silent',
 	'Silent Installer',
 	'Create Windows installer for unattended deploy.',
-	$cfg['silent']
+	$pconfig['silent']
 ))->setHelp("Create a silent Windows installer for unattended deploy; installer must be run with elevated permissions. Since this installer is not signed, you may need special software to deploy it correctly.");
 
 $section->addInput(new Form_Select(
 	'bindmode',
 	'Bind Mode',
-	$cfg['bindmode'],
+	$pconfig['bindmode'],
 	array(
 		"nobind" => "Do not bind to the local port",
 		"lport0" => "Use a random local source port",
@@ -541,14 +551,14 @@ $section->addInput(new Form_Checkbox(
 	'usepkcs11',
 	'PKCS#11 Certificate Storage',
 	'Use PKCS#11 storage device (cryptographic token, HSM, smart card) instead of local files.',
-	$cfg['usepkcs11']
+	$pconfig['usepkcs11']
 ));
 
 $section->addInput(new Form_Input(
 	'pkcs11providers',
 	'PKCS#11 Providers',
 	'text',
-	$cfg['pkcs11providers']
+	$pconfig['pkcs11providers']
 ))->setHelp('Enter the client local path to the PKCS#11 provider(s) (DLL, module), multiple separated by a space character.');
 
 $section->addInput(new Form_Input(
@@ -561,21 +571,21 @@ $section->addInput(new Form_Checkbox(
 	'usetoken',
 	'Microsoft Certificate Storage',
 	'Use Microsoft Certificate Storage instead of local files.',
-	$cfg['usetoken']
+	$pconfig['usetoken']
 ));
 
 $section->addInput(new Form_Checkbox(
 	'usepass',
 	'Password Protect Certificate',
 	'Use a password to protect the PKCS#12 file contents or key in Viscosity bundle.',
-	$cfg['usepass']
+	$pconfig['usepass']
 ));
 
 $section->addPassword(new Form_Input(
 	'pass',
 	'Certificate Password',
 	'password',
-	$cfg['pass']
+	$pconfig['pass']
 ))->setHelp('Password used to protect the certificate file contents.');
 
 $section->addInput(new Form_Select(
@@ -594,13 +604,13 @@ $section->addInput(new Form_Checkbox(
 	'useproxy',
 	'Use A Proxy',
 	'Use proxy to communicate with the OpenVPN server.',
-	$cfg['useproxy']
+	$pconfig['useproxy']
 ));
 
 $section->addInput(new Form_Select(
 	'useproxytype',
 	'Proxy Type',
-	$cfg['useproxytype'],
+	$pconfig['useproxytype'],
 	array(
 		"http" => "HTTP",
 		"socks" => "SOCKS")
@@ -610,20 +620,20 @@ $section->addInput(new Form_Input(
 	'proxyaddr',
 	'Proxy IP Address',
 	'text',
-	$cfg['proxyaddr']
+	$pconfig['proxyaddr']
 ))->setHelp('Hostname or IP address of proxy server.');
 
 $section->addInput(new Form_Input(
 	'proxyport',
 	'Proxy Port',
 	'text',
-	$cfg['proxyport']
+	$pconfig['proxyport']
 ))->setHelp('Port where proxy server is listening.');
 
 $section->addInput(new Form_Select(
 	'useproxypass',
 	'Proxy Authentication',
-	$cfg['useproxypass'],
+	$pconfig['useproxypass'],
 	array(
 		"none" => "None",
 		"basic" => "Basic",
@@ -634,14 +644,14 @@ $section->addInput(new Form_Input(
 	'proxyuser',
 	'Proxy Username',
 	'text',
-	$cfg['proxyuser']
+	$pconfig['proxyuser']
 ))->setHelp('Username for authentication to proxy server.');
 
 $section->addPassword(new Form_Input(
 	'proxypass',
 	'Proxy Password',
 	'password',
-	$cfg['proxypass']
+	$pconfig['proxypass']
 ))->setHelp('Password for authentication to proxy server.');
 $form->add($section);
 
@@ -650,7 +660,7 @@ $section = new Form_Section('Advanced');
 	$section->addInput(new Form_Textarea(
 		'advancedoptions',
 		'Additional configuration options',
-		$cfg['advancedoptions']
+		(!empty($pconfig['advancedoptions']) ? base64_decode($pconfig['advancedoptions']) : '')
 	))->setHelp('Enter any additional options to add to the OpenVPN client export configuration here, separated by a line break or semicolon.<br/><br/>EXAMPLE: remote-random;');
 
 $form->add($section);
@@ -762,7 +772,22 @@ servers[<?=$sindex?>][3][<?=$c?>][1] = '<?=str_replace("'", "\\'", $cert['certna
 endforeach;
 ?>
 
-serverdefaults = <?=json_encode(config_get_path('installedpackages/vpn_openvpn_export/serverconfig/item', []))?>;
+serverdefaults = <?php
+	// Decode applicable settings for JS code.
+	$serverdefaults = array_get_path($package_config, 'serverconfig/item', []);
+	foreach($serverdefaults as &$item) {
+		if (empty($item['advancedoptions'])) {
+			continue;
+		}
+		$advancedoptions_decoded = base64_decode($item['advancedoptions'], true);
+		if (!is_string($advancedoptions_decoded)) {
+			continue;
+		}
+		$item['advancedoptions'] = base64_decode($item['advancedoptions']);
+	}
+	unset($item);
+	echo json_encode($serverdefaults);
+?>;
 
 function make_form_variable(varname, varvalue) {
 	var exportinput = document.createElement("input");
