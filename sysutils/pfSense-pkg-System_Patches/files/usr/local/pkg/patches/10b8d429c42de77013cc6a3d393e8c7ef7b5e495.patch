@@ -1,0 +1,30 @@
+commit 10b8d429c42de77013cc6a3d393e8c7ef7b5e495
+Author: R. Christian McDonald <rcm@rcm.sh>
+Date:   Fri Aug 1 11:50:16 2025 -0400
+
+    Prevent tailscale interface from being assignable. Fixes #15909
+
+diff --git a/src/etc/inc/util.inc b/src/etc/inc/util.inc
+index 2e922e0630..300ec04604 100644
+--- a/src/etc/inc/util.inc
++++ b/src/etc/inc/util.inc
+@@ -1984,7 +1984,8 @@ function get_interface_list($mode = "active", $keyby = "physical", $vfaces = fal
+ 				'enc',
+ 				'tun',
+ 				'lagg',
+-				'vip'
++				'vip',
++				'tailscale'
+ 		);
+ 	} else {
+ 		$vfaces = array(
+@@ -2003,7 +2004,8 @@ function get_interface_list($mode = "active", $keyby = "physical", $vfaces = fal
+ 				'tun',
+ 				'lagg',
+ 				'vip',
+-				'l2tps'
++				'l2tps',
++				'tailscale'
+ 		);
+ 	}
+ 	switch ($mode) {
