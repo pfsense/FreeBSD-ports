@@ -53,7 +53,7 @@ if ($_POST['mode'] == 'iprep_catlist_add' && isset($_POST['iplist'])) {
 	$pconfig = $_POST;
 
 	// Test the supplied IP List file to see if it exists
-	if (file_exists($_POST['iplist'])) {
+	if (file_exists($iprep_path . basename($_POST['iplist']))) {
 		if (!$input_errors) {
 			$a_nat['iprep_catlist'] = basename($_POST['iplist']);
 			config_set_path("installedpackages/suricata/rule/{$id}", $a_nat);
@@ -72,7 +72,7 @@ if ($_POST['mode'] == 'iplist_add' && isset($_POST['iplist'])) {
 	$pconfig = $_POST;
 
 	// Test the supplied IP List file to see if it exists
-	if (file_exists($_POST['iplist'])) {
+	if (file_exists($iprep_path . basename($_POST['iplist']))) {
 		// See if the file is already assigned to the interface
 		foreach (array_get_path($a_nat, 'iplist_files/item', []) as $f) {
 			if ($f == basename($_POST['iplist'])) {
