@@ -137,6 +137,13 @@ if ($argv[1] == 'bl' || $argv[1] == 'bls') {
 
 		$selected = array_flip(explode(',', $argv[2])) ?: array();
 		foreach ($pfb['blconfig']['item'] as $item) {
+
+			// Temporarily Discontinue Shallalist
+			if ($item['title'] == 'Shallalist') {
+				pfb_logger("\nTerminating Shallalist as its now discontinued!\n", 2);
+				continue;
+			}
+
 			if (isset($selected[$item['xml']])) {
 				$pfb['extras'][$next_key]		= array();
 				$pfb['extras'][$next_key]['url']	= $item['feed'];
@@ -1551,7 +1558,7 @@ foreach (config_get_path('aliases/alias', []) as $alias) {
 $ports_list			= trim($portslist, ',');
 $networks_list			= trim($networkslist, ',');
 
-$options_autoproto_in		= $options_autoproto_out	= [ '' => 'any', 'tcp' => 'TCP', 'udp' => 'UDP', 'tcp/udp' => 'TCP/UDP' ];
+$options_autoproto_in		= $options_autoproto_out	= get_ipprotocols();
 $options_agateway_in		= $options_agateway_out		= pfb_get_gateways();
 
 $continent_display		= str_replace('_', ' ', "{$continent}");				// Continent name displayed on page
@@ -1606,8 +1613,8 @@ if ($_POST) {
 						'aliasports_out'	=> '',
 						'aliasaddr_in'		=> '',
 						'aliasaddr_out'		=> '',
-						'autoproto_in'		=> '',
-						'autoproto_out'		=> '',
+						'autoproto_in'		=> 'any',
+						'autoproto_out'		=> 'any',
 						'agateway_in'		=> 'default',
 						'agateway_out'		=> 'default',
 						);
@@ -1656,13 +1663,13 @@ if ($_POST) {
 
 		// Validate Adv. firewall rule 'Protocol' setting
 		if (!empty($_POST['autoports_in']) || !empty($_POST['autoaddr_in'])) {
-			if (empty($_POST['autoproto_in'])) {
-				$input_errors[] = "Settings: Protocol setting cannot be set to 'Default' with Advanced Inbound firewall rule settings.";
+			if (empty($_POST['autoproto_in']) || $_POST['autoproto_in'] == 'any') {
+				$input_errors[] = "Settings: Protocol setting cannot be set to 'Any' with Advanced Inbound firewall rule settings.";
 			}
 		}
 		if (!empty($_POST['autoports_out']) || !empty($_POST['autoaddr_out'])) {
-			if (empty($_POST['autoproto_out'])) {
-				$input_errors[] = "Settings: Protocol setting cannot be set to 'Default' with Advanced Outbound firewall rule settings.";
+			if (empty($_POST['autoproto_out']) || $_POST['autoproto_out'] == 'any') {
+				$input_errors[] = "Settings: Protocol setting cannot be set to 'Any' with Advanced Outbound firewall rule settings.";
 			}
 		}
 
@@ -1674,7 +1681,7 @@ if ($_POST) {
 		// Avoid creating a permit rule on WAN with 'any'
 		if ($_POST['action'] == 'Permit_Inbound' || $_POST['action'] == 'Permit_Both') {
 			$pfb_warning = FALSE;
-			if ($_POST['autoproto_in'] == '') {
+			if ($_POST['autoproto_in'] == '' || $_POST['autoproto_in'] == 'any') {
 				$pfb_warning = TRUE;
 				$input_errors[] = "Warning: When using an Action setting of 'Permit Inbound or Permit Both',"
 					. " you must configure the 'Advanced Inbound Custom Protocol' setting. The current setting of 'Any' is not allowed.";
@@ -1704,7 +1711,7 @@ if ($_POST) {
 			$pfb['geoipconfig']['autoaddr_in']		= pfb_filter($_POST['autoaddr_in'], PFB_FILTER_ON_OFF, 'Geoip');
 			$pfb['geoipconfig']['autonot_in']		= pfb_filter($_POST['autonot_in'], PFB_FILTER_ON_OFF, 'Geoip');
 			$pfb['geoipconfig']['aliasaddr_in']		= $_POST['aliasaddr_in']				?: '';
-			$pfb['geoipconfig']['autoproto_in']		= $_POST['autoproto_in']				?: '';
+			$pfb['geoipconfig']['autoproto_in']		= $_POST['autoproto_in']				?: 'any';
 			$pfb['geoipconfig']['agateway_in']		= $_POST['agateway_in']					?: '';
 
 			$pfb['geoipconfig']['autoaddrnot_out']		= pfb_filter($_POST['autoaddrnot_out'], PFB_FILTER_ON_OFF, 'Geoip');
@@ -1713,7 +1720,7 @@ if ($_POST) {
 			$pfb['geoipconfig']['autoaddr_out']		= pfb_filter($_POST['autoaddr_out'], PFB_FILTER_ON_OFF, 'Geoip');
 			$pfb['geoipconfig']['autonot_out']		= pfb_filter($_POST['autonot_out'], PFB_FILTER_ON_OFF, 'Geoip');
 			$pfb['geoipconfig']['aliasaddr_out']		= $_POST['aliasaddr_out']				?: '';
-			$pfb['geoipconfig']['autoproto_out']		= $_POST['autoproto_out']				?: '';
+			$pfb['geoipconfig']['autoproto_out']		= $_POST['autoproto_out']				?: 'any';
 			$pfb['geoipconfig']['agateway_out']		= $_POST['agateway_out']				?: '';
 
 			config_set_path("installedpackages/{$conf_type}/config/0", $pfb['geoipconfig']);
@@ -1988,7 +1995,7 @@ foreach (array( 'In' => 'Source', 'Out' => 'Destination') as $adv_mode => $adv_t
 		$pconfig['autoproto_' . $advmode],
 		$options_autoproto_in
 	))->setHelp("<strong>Default: any</strong><br />Select the Protocol used for {$adv_mode}bound Firewall Rule(s).<br />
-		<span class=\"text-danger\">Note:</span>&nbsp;Do not use 'any' with Adv. {$adv_mode}bound Rules as it will bypass these settings!");
+		<span class=\"text-danger\">Note:</span>&nbsp;Do not use 'Any' with Adv. {$adv_mode}bound Rules as it will bypass these settings!");
 	$section->add($group);
 
 	$group = new Form_Group('Custom Gateway');

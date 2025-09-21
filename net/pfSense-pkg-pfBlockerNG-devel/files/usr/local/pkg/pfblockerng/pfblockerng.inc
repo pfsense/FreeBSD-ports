@@ -4045,7 +4045,7 @@ function pfb_download($list_url, $file_dwn, $pflex=FALSE, $header, $format, $log
 
 				if (isset($pfb['rfc7231'][$http_status])) {
 					if ($logtype < 3) {
-						pfb_logger(". {$pfb['rfc7231'][$http_status]}", $logtype);
+						pfb_logger(". {$pfb['rfc7231'][$http_status]}", 2);
 					} else {
 						pfb_logger(" {$file_dwn}\t\t{$pfb['rfc7231'][$http_status]}\n", $logtype);
 					}
@@ -5325,7 +5325,7 @@ function pfb_collect_localhosts() {
 
 	// Collect static DHCP hostnames/IPs
 	foreach (config_get_path('dhcpd', []) as $dhcp) {
-		if (is_array($dhcp['staticmap'])) {
+		if (isset($dhcp['staticmap']) && is_array($dhcp['staticmap'])) {
 			foreach ($dhcp['staticmap'] as $smap) {
 				$local_hosts[$smap['ipaddr']] = strtolower("{$smap['hostname']}");
 			}
@@ -5334,7 +5334,7 @@ function pfb_collect_localhosts() {
 
 	// Collect static DHCPv6 hostnames/IPs
 	foreach (config_get_path('dhcpdv6', []) as $dhcpv6) {
-		if (is_array($dhcpv6['staticmap'])) {
+		if (isset($dhcpv6['staticmap']) && is_array($dhcpv6['staticmap'])) {
 			foreach ($dhcpv6['staticmap'] as $smap) {
 				$local_hosts[$smap['ipaddrv6']] = strtolower("{$smap['hostname']}");
 			}
@@ -5687,14 +5687,20 @@ function pfb_daemon_filterlog() {
 							$geoip = 'Unk';
 						}
 
+						$resolved_host = gethostbyaddr($host) ?: 'Unknown';
+						if ($host == $resolved_host || $resolved_host == 'Unknown') {
+							$resolved_host = 'Unknown';
+						}
+
 						// Save entry to IP cache
-						$db_update = "INSERT into ipcache ( host, q0, q1, geoip ) VALUES ( :host, :q0, :q1, :geoip )";
+						$db_update = "INSERT into ipcache ( host, q0, q1, geoip, resolved_host ) VALUES ( :host, :q0, :q1, :geoip, :resolved_host )";
 						$db_handle = pfb_open_sqlite(7, 'Add to IP cache');
 						if ($db_handle) {
 							$pfb_host	= pfb_filter($host, PFB_FILTER_HTML, 'pfb_daemon_filterlog');
 							$pfb_query[0]	= pfb_filter($pfb_query[0], PFB_FILTER_HTML, 'pfb_daemon_filterlog');
 							$pfb_query[1]	= pfb_filter($pfb_query[1], PFB_FILTER_HTML, 'pfb_daemon_filterlog');
 							$geoip		= pfb_filter($geoip, PFB_FILTER_HTML, 'pfb_daemon_filterlog');
+							$resolved_host	= pfb_filter($resolved_host, PFB_FILTER_HOSTNAME, 'pfb_daemon_filterlog', 'Unknown');
 
 							$stmt = $db_handle->prepare($db_update);
 							if ($stmt) {
@@ -5702,6 +5708,7 @@ function pfb_daemon_filterlog() {
 								$stmt->bindValue(':q0', $pfb_query[0], SQLITE3_TEXT);
 								$stmt->bindValue(':q1', $pfb_query[1], SQLITE3_TEXT);
 								$stmt->bindValue(':geoip', $geoip, SQLITE3_TEXT);
+								$stmt->bindValue(':resolved_host', $resolved_host, SQLITE3_TEXT);
 								$stmt->execute();
 							}
 						}
@@ -5710,11 +5717,12 @@ function pfb_daemon_filterlog() {
 
 					// Use cached entries
 					else {
-						$host		= htmlspecialchars($ip_cache['host'])	?: 'Unknown';
+						$host		= htmlspecialchars($ip_cache['host'])		?: 'Unknown';
 						$pfb_query	= array();
-						$pfb_query[0]	= htmlspecialchars($ip_cache['q0'])	?: 'Unknown';
-						$pfb_query[1]	= htmlspecialchars($ip_cache['q1'])	?: 'Unknown';
-						$geoip		= htmlspecialchars($ip_cache['geoip'])	?: 'Unknown';
+						$pfb_query[0]	= htmlspecialchars($ip_cache['q0'])		?: 'Unknown';
+						$pfb_query[1]	= htmlspecialchars($ip_cache['q1'])		?: 'Unknown';
+						$geoip		= htmlspecialchars($ip_cache['geoip'])		?: 'Unknown';
+						$resolved_host	= htmlspecialchars($ip_cache['resolved_host'])	?: 'Unknown';
 					}
 
 					// Modify host for ASN query
@@ -5821,13 +5829,6 @@ function pfb_daemon_filterlog() {
 					} else {
 						$ts = date('M j H:i:s', strtotime($f[1]));
 						$log = "{$ts},{$d[3]},{$d[4]},{$int},{$d[6]},{$d[8]},";
-					}
-
-					$resolved_host = gethostbyaddr($host) ?: 'Unknown';
-					if ($host == $resolved_host || $resolved_host == 'Unknown') {
-						$resolved_host = 'Unknown';
-					} else {
-						$resolved_host = pfb_filter($resolved_host, PFB_FILTER_HOSTNAME, 'pfb_daemon_filterlog', 'Unknown');
 					}
 
 					// Details:	"Direction/GeoIP/Aliasname/IP evaluated/Feed Name/Resolved Hostname/Client Hostname/ASN/Duplicate status"
@@ -6312,7 +6313,7 @@ function pfb_open_sqlite($table, $message) {
 	} elseif ($table == 7) {
 		$database	= $pfb['ip_cache'];
 		$db_table	= 'ipcache';
-		$db_create	= "CREATE TABLE IF NOT EXISTS ipcache ( host TEXT, q0 TEXT, q1 TEXT, geoip TEXT );";
+		$db_create      = "CREATE TABLE IF NOT EXISTS ipcache ( host TEXT, q0 TEXT, q1 TEXT, geoip TEXT, resolved_host TEXT );";
 	}
 
 	try {

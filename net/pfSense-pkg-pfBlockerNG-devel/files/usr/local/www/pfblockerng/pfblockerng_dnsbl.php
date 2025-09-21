@@ -97,7 +97,7 @@ $pconfig['aliasports_in']	= $pfb['dconfig']['aliasports_in']			?: '';
 $pconfig['autoaddr_in']		= $pfb['dconfig']['autoaddr_in']			?: '';
 $pconfig['autonot_in']		= $pfb['dconfig']['autonot_in']				?: '';
 $pconfig['aliasaddr_in']	= $pfb['dconfig']['aliasaddr_in']			?: '';
-$pconfig['autoproto_in']	= $pfb['dconfig']['autoproto_in']			?: '';
+$pconfig['autoproto_in']	= $pfb['dconfig']['autoproto_in']			?: 'any';
 $pconfig['agateway_in']		= $pfb['dconfig']['agateway_in']			?: 'default';
 
 $pconfig['autoaddrnot_out']	= $pfb['dconfig']['autoaddrnot_out']			?: '';
@@ -106,7 +106,7 @@ $pconfig['aliasports_out']	= $pfb['dconfig']['aliasports_out']			?: '';
 $pconfig['autoaddr_out']	= $pfb['dconfig']['autoaddr_out']			?: '';
 $pconfig['autonot_out']		= $pfb['dconfig']['autonot_out']			?: '';
 $pconfig['aliasaddr_out']	= $pfb['dconfig']['aliasaddr_out']			?: '';
-$pconfig['autoproto_out']	= $pfb['dconfig']['autoproto_out']			?: '';
+$pconfig['autoproto_out']	= $pfb['dconfig']['autoproto_out']			?: 'any';
 $pconfig['agateway_out']	= $pfb['dconfig']['agateway_out']			?: 'default';
 
 $pconfig['suppression']		= base64_decode($pfb['dconfig']['suppression'])		?: '';
@@ -352,9 +352,8 @@ $networks_list			= trim($networks_list, ',');
 $options_aliasports_in		= $options_aliasports_out	= explode(',', $ports_list);
 $options_aliasaddr_in		= $options_aliasaddr_out	= explode(',', $networks_list);
 
-$options_autoproto_in		= $options_autoproto_out	= ['' => 'any', 'tcp' => 'TCP', 'udp' => 'UDP', 'tcp/udp' => 'TCP/UDP'];
+$options_autoproto_in		= $options_autoproto_out	= get_ipprotocols();
 $options_agateway_in		= $options_agateway_out		= pfb_get_gateways();
-
 
 // Validate input fields and save
 if ($_POST) {
@@ -381,8 +380,8 @@ if ($_POST) {
 						'aliasports_out'	=> '',
 						'aliasaddr_in'		=> '',
 						'aliasaddr_out'		=> '',
-						'autoproto_in'		=> '',
-						'autoproto_out'		=> '',
+						'autoproto_in'		=> 'any',
+						'autoproto_out'		=> 'any',
 						'agateway_in'		=> 'default',
 						'agateway_out'		=> 'default'
 						);
@@ -528,13 +527,13 @@ if ($_POST) {
 
 		// Validate Adv. firewall rule 'Protocol' setting
 		if (!empty($_POST['autoports_in']) || !empty($_POST['autoaddr_in'])) {
-			if (empty($_POST['autoproto_in'])) {
-				$input_errors[] = "Settings: Protocol setting cannot be set to 'Default' with Advanced Inbound firewall rule settings.";
+			if (empty($_POST['autoproto_in']) || $_POST['autoproto_in'] == 'any') {
+				$input_errors[] = "Settings: Protocol setting cannot be set to 'Any' with Advanced Inbound firewall rule settings.";
 			}
 		}
 		if (!empty($_POST['autoports_out']) || !empty($_POST['autoaddr_out'])) {
-			if (empty($_POST['autoproto_out'])) {
-				$input_errors[] = "Settings: Protocol setting cannot be set to 'Default' with Advanced Outbound firewall rule settings.";
+			if (empty($_POST['autoproto_out']) || $_POST['autoproto_out'] == 'any') {
+				$input_errors[] = "Settings: Protocol setting cannot be set to 'Any' with Advanced Outbound firewall rule settings.";
 			}
 		}
 
@@ -611,7 +610,7 @@ if ($_POST) {
 			$pfb['dconfig']['autoaddr_in']		= pfb_filter($_POST['autoaddr_in'], PFB_FILTER_ON_OFF, 'dnsbl')		?: '';
 			$pfb['dconfig']['autonot_in']		= pfb_filter($_POST['autonot_in'], PFB_FILTER_ON_OFF, 'dnsbl')		?: '';
 			$pfb['dconfig']['aliasaddr_in']		= $_POST['aliasaddr_in']						?: '';
-			$pfb['dconfig']['autoproto_in']		= $_POST['autoproto_in']						?: '';
+			$pfb['dconfig']['autoproto_in']		= $_POST['autoproto_in']						?: 'any';
 			$pfb['dconfig']['agateway_in']		= $_POST['agateway_in']							?: 'default';
 
 			$pfb['dconfig']['autoaddrnot_out']	= pfb_filter($_POST['autoaddrnot_out'], PFB_FILTER_ON_OFF, 'dnsbl')	?: '';
@@ -620,7 +619,7 @@ if ($_POST) {
 			$pfb['dconfig']['autoaddr_out']		= pfb_filter($_POST['autoaddr_out'], PFB_FILTER_ON_OFF, 'dnsbl')	?: '';
 			$pfb['dconfig']['autonot_out']		= pfb_filter($_POST['autonot_out'], PFB_FILTER_ON_OFF, 'dnsbl')		?: '';
 			$pfb['dconfig']['aliasaddr_out']	= $_POST['aliasaddr_out']						?: '';
-			$pfb['dconfig']['autoproto_out']	= $_POST['autoproto_out']						?: '';
+			$pfb['dconfig']['autoproto_out']	= $_POST['autoproto_out']						?: 'any';
 			$pfb['dconfig']['agateway_out']		= $_POST['agateway_out']						?: 'default';
 
 			$pfb['dconfig']['alexa_enable']		= pfb_filter($_POST['alexa_enable'], PFB_FILTER_ON_OFF, 'dnsbl')	?: '';
@@ -3032,8 +3031,8 @@ $list_action_text = 'Default: <strong>Disabled</strong>
 				still allowing <u>deliberate</u> outgoing sessions to be created in the other direction.</li>
 				</ul>
 
-				<strong><u>\'Alias\' Rule:</u></strong><br />
-				<strong>\'Alias\'</strong> rules create an <a href="/firewall_aliases.php">alias</a> for the list (and do nothing else).
+				<strong><u>\'Alias Deny\' Rule:</u></strong><br />
+				<strong>\'Alias Deny\'</strong> rules create an <a href="/firewall_aliases.php">alias</a> for the list (and do nothing else).
 				This enables a pfBlockerNG list to be used by name, in any firewall rule or pfSense function, as desired.
 			</div>';
 
@@ -3143,7 +3142,7 @@ foreach (array( 'In' => 'Source', 'Out' => 'Destination') as $adv_mode => $adv_t
 		$pconfig['autoproto_' . $advmode],
 		$options_autoproto_in
 	))->setHelp("<strong>Default: any</strong><br />Select the Protocol used for {$adv_mode}bound Firewall Rule(s).<br />
-		<span class=\"text-danger\">Note:</span>&nbsp;Do not use 'any' with Adv. {$adv_mode}bound Rules as it will bypass these settings!")
+		<span class=\"text-danger\">Note:</span>&nbsp;Do not use 'Any' with Adv. {$adv_mode}bound Rules as it will bypass these settings!")
 	  ->addClass('dnsbl_ip');
 	$section->add($group);
 
