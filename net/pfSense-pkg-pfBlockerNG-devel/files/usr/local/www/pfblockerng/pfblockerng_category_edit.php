@@ -413,7 +413,7 @@ foreach (config_get_path('aliases/alias', []) as $alias) {
 $ports_list			= trim($portslist, ',');
 $networks_list			= trim($networkslist, ',');
 
-$options_autoproto_in		= $options_autoproto_out	= [ '' => 'any', 'tcp' => 'TCP', 'udp' => 'UDP', 'tcp/udp' => 'TCP/UDP' ];
+$options_autoproto_in		= $options_autoproto_out	= get_ipprotocols();
 $options_agateway_in		= $options_agateway_out		= pfb_get_gateways();
 
 $options_order			= [ 'default' => 'Default', 'primary' => 'Primary' ];
@@ -464,8 +464,8 @@ if ($_POST && isset($_POST['save'])) {
 					'aliasports_out'	=> '',
 					'aliasaddr_in'		=> '',
 					'aliasaddr_out'		=> '',
-					'autoproto_in'		=> '',
-					'autoproto_out'		=> '',
+					'autoproto_in'		=> 'any',
+					'autoproto_out'		=> 'any',
 					'agateway_in'		=> 'default',
 					'agateway_out'		=> 'default',
 					'order'			=> 'default',
@@ -545,7 +545,11 @@ if ($_POST && isset($_POST['save'])) {
 			}
 
 			if ($value != 'Disabled' && $_POST["format-{$key_1}"] == 'geoip') {
-				$k_validate = str_replace('_', '', strstr($_POST["url-{$key_1}"], ' ', TRUE)); 
+				if (strpos($_POST["url-{$key_1}"], "_") !== FALSE) {
+					$k_validate = str_replace('_', '', strstr($_POST["url-{$key_1}"], ' ', TRUE));
+				} else {
+					$k_validate = strstr($_POST["url-{$key_1}"], ' ', TRUE); 
+				}
 				if (empty(pfb_filter($k_validate, PFB_FILTER_ALNUM, 'Category_edit'))) {
 					$input_errors[] = "{$type} Source Definitions, Line {$line}: "
 							. "Invalid GeoIP entry!";
@@ -592,13 +596,13 @@ if ($_POST && isset($_POST['save'])) {
 
 	// Validate Adv. firewall rule 'Protocol' setting
 	if (!empty($_POST['autoports_in']) || !empty($_POST['autoaddr_in'])) {
-		if (empty($_POST['autoproto_in'])) {
-			$input_errors[] = "Settings: Protocol setting cannot be set to 'Default' with Advanced Inbound firewall rule settings.";
+		if (empty($_POST['autoproto_in']) || $_POST['autoproto_in'] == 'any') {
+			$input_errors[] = "Settings: Protocol setting cannot be set to 'Any' with Advanced Inbound firewall rule settings.";
 		}
 	}
 	if (!empty($_POST['autoports_out']) || !empty($_POST['autoaddr_out'])) {
-		if (empty($_POST['autoproto_out'])) {
-			$input_errors[] = "Settings: Protocol setting cannot be set to 'Default' with Advanced Outbound firewall rule settings.";
+		if (empty($_POST['autoproto_out']) || $_POST['autoproto_out'] == 'any') {
+			$input_errors[] = "Settings: Protocol setting cannot be set to 'Any' with Advanced Outbound firewall rule settings.";
 		}
 	}
 
@@ -619,7 +623,7 @@ if ($_POST && isset($_POST['save'])) {
 	// Avoid creating a permit rule on WAN with 'any'
 	if ($_POST['action'] == 'Permit_Inbound' || $_POST['action'] == 'Permit_Both') {
 		$pfb_warning = FALSE;
-		if ($_POST['autoproto_in'] == '') {
+		if ($_POST['autoproto_in'] == '' || $_POST['autoproto_in'] == 'any') {
 			$pfb_warning = TRUE;
 			$input_errors[] = "Warning: When using an Action setting of 'Permit Inbound or Permit Both',"
 					. " you must configure the 'Advanced Inbound Custom Protocol' setting. The current setting of 'Any' is not allowed.";
@@ -737,7 +741,7 @@ if ($_POST && isset($_POST['save'])) {
 			config_set_path("installedpackages/{$conf_type}/config/{$rowid}/autoaddr_in", pfb_filter($_POST['autoaddr_in'], PFB_FILTER_ON_OFF, 'Category_edit'));
 			config_set_path("installedpackages/{$conf_type}/config/{$rowid}/autonot_in", pfb_filter($_POST['autonot_in'], PFB_FILTER_ON_OFF, 'Category_edit'));
 			config_set_path("installedpackages/{$conf_type}/config/{$rowid}/aliasaddr_in", $_POST['aliasaddr_in'] ?: '');
-			config_set_path("installedpackages/{$conf_type}/config/{$rowid}/autoproto_in", $_POST['autoproto_in'] ?: '');
+			config_set_path("installedpackages/{$conf_type}/config/{$rowid}/autoproto_in", $_POST['autoproto_in'] ?: 'any');
 			config_set_path("installedpackages/{$conf_type}/config/{$rowid}/agateway_in", $_POST['agateway_in'] ?: 'default');
 
 			config_set_path("installedpackages/{$conf_type}/config/{$rowid}/autoaddrnot_out", pfb_filter($_POST['autoaddrnot_out'], PFB_FILTER_ON_OFF, 'Category_edit'));
@@ -746,7 +750,7 @@ if ($_POST && isset($_POST['save'])) {
 			config_set_path("installedpackages/{$conf_type}/config/{$rowid}/autoaddr_out", pfb_filter($_POST['autoaddr_out'], PFB_FILTER_ON_OFF, 'Category_edit'));
 			config_set_path("installedpackages/{$conf_type}/config/{$rowid}/autonot_out", pfb_filter($_POST['autonot_out'], PFB_FILTER_ON_OFF, 'Category_edit'));
 			config_set_path("installedpackages/{$conf_type}/config/{$rowid}/aliasaddr_out", $_POST['aliasaddr_out'] ?: '');
-			config_set_path("installedpackages/{$conf_type}/config/{$rowid}/autoproto_out", $_POST['autoproto_out'] ?: '');
+			config_set_path("installedpackages/{$conf_type}/config/{$rowid}/autoproto_out", $_POST['autoproto_out'] ?: 'any');
 			config_set_path("installedpackages/{$conf_type}/config/{$rowid}/agateway_out", $_POST['agateway_out'] ?: 'default');
 
 			config_set_path("installedpackages/{$conf_type}/config/{$rowid}/suppression_cidr", $_POST['suppression_cidr'] ?: 'Disabled');
@@ -1476,8 +1480,8 @@ if ($gtype == 'ipv4' || $gtype == 'ipv6') {
 			NULL,
 			$pconfig['autoproto_' . $advmode],
 			$options_autoproto_in
-		))->setHelp("<strong>Default: any</strong><br />Select the Protocol used for {$adv_mode}bound Firewall Rule(s).<br />"
-				. "<span class=\"text-danger\">Note:</span>&nbsp;Do not use 'any' with Adv. {$adv_mode}bound Rules as it will bypass these settings!");
+		))->setHelp("<strong>Default: Any</strong><br />Select the Protocol used for {$adv_mode}bound Firewall Rule(s).<br />"
+				. "<span class=\"text-danger\">Note:</span>&nbsp;Do not use 'Any' with Adv. {$adv_mode}bound Rules as it will bypass these settings!");
 		$section->add($group);
 
 		$group = new Form_Group('Custom Gateway');
@@ -1595,7 +1599,7 @@ if ($gtype == 'ipv4' || $gtype == 'ipv6') {
 	$custom_txt = "<span class=\"text-danger\">Note: </span>&nbsp;Custom List can be used in <strong>ONE</strong> of two ways:<br />
 			<ul>
 				1. {$type} addresses entered directly into the custom list, as per the required format.<br />
-				2. Domain names or AS numbers, which will be converted into their respective {$type} addresses.
+				2. Domain names or AS numbers (ASN), which will be converted into their respective {$type} addresses.
 			</ul>";
 }
 else {

@@ -4336,7 +4336,7 @@ if (!$alert_summary):
 				$pfbfilterlimit = $dnsfilterlimit;
 				break;
 			case 'Unified':
-				$colspan = "colspan='7'";
+				$colspan = "colspan='9'";
 
 				if ($pfb['filterlogentries']) {
 					$pfbfilterlimit = FALSE;
@@ -4367,7 +4367,7 @@ if (!$alert_summary):
 			$fcounter = "{$fcounter} (IP/DNSBL/DNS Reply)";
 		}
 
-		print ("			<td {$colspan} style='font-size:10px; background-color: #F0F0F0;' >Found {$fcounter} Alert Entries{$msg}</td>");
+		print ("			<td {$colspan} style='font-size:10px; color: red; background-color: #F0F0F0;' >Found {$fcounter} Alert Entries{$msg}</td>");
 		$fcounter = 0; $msg = '';
 	?>
 

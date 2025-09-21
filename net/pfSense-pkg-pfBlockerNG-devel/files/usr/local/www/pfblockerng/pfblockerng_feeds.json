@@ -55,6 +55,7 @@
 					"header":	"Abuse_IPBL"
 				},
 				{
+					"status":	"discontinued",
 					"feed":		"Abuse SSL Blacklist",
 					"website":	"https://sslbl.abuse.ch/",
 					"url":		"https://sslbl.abuse.ch/blacklist/sslipblacklist.txt",
@@ -220,6 +221,8 @@
 					"header":	"MDL"
 				},
 				{
+
+					"status":	"discontinued",	
 					"feed":		"MaxMind",
 					"website":	"https://www.maxmind.com/en/high-risk-ip-sample-list",
 					"contact":	"https://www.maxmind.com/en/contact",
@@ -355,6 +358,7 @@
 					"header":	"Botvrij_IP"
 				},
 				{
+					"status":	"discontinued",
 					"feed":		"CoinBlocker",
 					"website":	"https://zerodot1.gitlab.io/CoinBlockerListsWeb/index.html",
 					"url":		"https://zerodot1.gitlab.io/CoinBlockerLists/MiningServerIPList.txt",
@@ -417,6 +421,7 @@
 						]
 				},
 				{
+					"status":	"discontinued",
 					"feed":		"NoVirusThanks",
 					"website":	"http://www.ipspamlist.com/",
 					"url":		"http://www.ipspamlist.com/public_feeds.csv",
@@ -1771,6 +1776,7 @@
 			"cron":		"EveryDay",
 			"feeds": [
 				{
+					"status":	"discontinued",
 					"feed":		"CoinBlocker",
 					"website":	"https://zerodot1.gitlab.io/CoinBlockerListsWeb/index.html",
 					"url":		"https://zerodot1.gitlab.io/CoinBlockerLists/list.txt",
@@ -1782,7 +1788,9 @@
 							}
 						]
 				},
-				{	"feed":		"CoinBlocker",
+				{
+					"status":	"discontinued",
+					"feed":		"CoinBlocker",
 					"website":	"https://zerodot1.gitlab.io/CoinBlockerListsWeb/index.html",
 					"url":		"https://zerodot1.gitlab.io/CoinBlockerLists/list_optional.txt",
 					"header":	"CoinBlocker_Opt"
@@ -2102,6 +2110,7 @@
 			"cron":		"EveryDay",
 			"feeds": [
 				{
+					"status":	"discontinued",
 					"feed":		"ZeroDot1 CoinBlockerLists",
 					"website":	"https://gitlab.com/ZeroDot1/CoinBlockerLists",
 					"url":		"https://zerodot1.gitlab.io/CoinBlockerLists/hosts_browser",
