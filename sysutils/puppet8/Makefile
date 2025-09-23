@@ -1,5 +1,6 @@
 PORTNAME=	puppet
 PORTVERSION=	8.10.0
+PORTREVISION=	1
 CATEGORIES=	sysutils
 MASTER_SITES=   https://forge.puppet.com/v3/files/:forge
 PKGNAMESUFFIX=	8
@@ -27,7 +28,7 @@ USES=		cpe ruby
 USE_GITHUB=	yes
 GH_ACCOUNT=	puppetlabs
 
-CONFLICTS_INSTALL=	puppet[0-9]
+CONFLICTS_INSTALL=	openvox-agent[0-9] puppet[0-9]
 PLIST_SUB=	PORTVERSION="${PORTVERSION}"
 NO_ARCH=	yes
 NO_BUILD=	yes

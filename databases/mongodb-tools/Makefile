@@ -1,5 +1,5 @@
 PORTNAME=	mongodb-tools
-DISTVERSION=	100.12.0
+DISTVERSION=	100.12.2
 PORTREVISION=	1
 CATEGORIES=	databases
 
@@ -22,8 +22,6 @@ GO_BUILDFLAGS=	-tags "${USE_MY_TAGS}"
 # MAKE_ENV instead of TEST_ENV in the do-test target.
 # https://bugs.freebsd.org/bugzilla/show_bug.cgi?id=284387
 MAKE_ENV+=		TOOLS_TESTING_UNIT=true
-
-CONFLICTS_INSTALL=	mongodb42-tools
 
 OPTIONS_DEFINE=		DOCS
 OPTIONS_DEFAULT=	BSONDUMP MONGODUMP MONGOEXPORT MONGOFILES MONGOIMPORT \
@@ -56,7 +54,7 @@ SASL_LIB_DEPENDS=	libsasl2.so:security/cyrus-sasl2
 SASL_USE=		my_tags=sasl
 SSL_USE=		my_tags=ssl
 
-pre-configure:
+post-extract:
 # Verify we use the proper go version.
 	${SH} -xc "test \"X`grep -E '^go [[:digit:]]+\.[[:digit:]]+\.[[:digit:]]+$$' ${WRKSRC}/go.mod`\" = \"Xgo ${GO_VERSION}.0\""
 

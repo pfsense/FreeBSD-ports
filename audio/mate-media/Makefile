@@ -1,5 +1,6 @@
 PORTNAME=	mate-media
 PORTVERSION=	1.28.1
+PORTREVISION=	1
 CATEGORIES=	audio mate
 MASTER_SITES=	MATE
 DIST_SUBDIR=	mate
@@ -20,7 +21,7 @@ LIB_DEPENDS=	libcanberra-gtk3.so:audio/libcanberra-gtk3 \
 
 PORTSCOUT=	limitw:1,even
 
-USES=		gettext gmake gnome libtool localbase mate pathfix \
+USES=		gettext gmake gnome libtool localbase mate \
 		pkgconfig tar:xz xorg
 USE_MATE=	desktop mixer panel
 USE_GNOME=	cairo glib20 gtk30 intlhack libxml2

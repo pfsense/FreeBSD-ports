@@ -1,7 +1,6 @@
 PORTNAME=	es-de
 DISTVERSIONPREFIX=	v
-DISTVERSION=	3.2.0
-PORTREVISION=	1
+DISTVERSION=	3.3.0
 CATEGORIES=	emulators
 
 MAINTAINER=	bsdcode@disroot.org
@@ -29,7 +28,7 @@ LIB_DEPENDS=	libavcodec.so:multimedia/ffmpeg \
 		libharfbuzz.so:print/harfbuzz \
 		libicuuc.so:devel/icu \
 		liblunasvg.so:graphics/lunasvg \
-		libpoppler.so:graphics/poppler \
+		libpoppler-cpp.so:graphics/poppler \
 		libpugixml.so:textproc/pugixml \
 		librlottie.so:graphics/rlottie
 RUN_DEPENDS=	${_BR_DEPENDS}
@@ -54,7 +53,7 @@ DEINIT_DESC=	Deinit frontend on emulator launch
 
 DEINIT_CMAKE_BOOL=	DEINIT_ON_LAUNCH
 
-NLS_USES=		gettext
+NLS_USES=		gettext-runtime gettext-tools
 NLS_CMAKE_BOOL=		COMPILE_LOCALIZATIONS
 
 post-install:

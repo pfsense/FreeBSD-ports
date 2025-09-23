@@ -1,6 +1,7 @@
 PORTNAME=	snmp_exporter
 DISTVERSIONPREFIX=v
 DISTVERSION=	0.29.0
+PORTREVISION=	5
 CATEGORIES=	sysutils
 
 MAINTAINER=	ivy@FreeBSD.org
@@ -20,6 +21,7 @@ GO_TARGET=	. \
 
 post-install:
 	${MKDIR} ${STAGEDIR}${PREFIX}/etc/snmp_exporter/
-	${INSTALL_DATA} ${FILESDIR}/generator.yml ${STAGEDIR}${PREFIX}/etc/snmp_exporter/generator.yml.sample
+	${INSTALL_DATA} ${WRKSRC}/snmp.yml ${STAGEDIR}${PREFIX}/etc/snmp_exporter/snmp.yml.sample
+	${INSTALL_DATA} ${WRKSRC}/generator/generator.yml ${STAGEDIR}${PREFIX}/etc/snmp_exporter/generator.yml.sample
 
 .include <bsd.port.mk>

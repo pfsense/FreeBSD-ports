@@ -1,12 +1,13 @@
 PORTNAME=	cvc5
 DISTVERSIONPREFIX=	cvc5-
-DISTVERSION=	1.2.1
+DISTVERSION=	1.3.0
 CATEGORIES=	math java
 EXTRACT_ONLY=	${DISTNAME}${EXTRACT_SUFX}
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Automatic theorem prover for SMT (Satisfiability Modulo Theories)
-WWW=		https://cvc5.github.io/
+WWW=		https://cvc5.github.io/ \
+		https://github.com/cvc5/cvc5
 
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/COPYING
@@ -18,10 +19,9 @@ BUILD_DEPENDS=	bash:shells/bash \
 		${PYTHON_PKGNAMEPREFIX}pexpect>0:misc/py-pexpect@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}pybind11>0:devel/py-pybind11@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}pyparsing>0:devel/py-pyparsing@${PY_FLAVOR}
-LIB_DEPENDS=	libantlr3c.so:devel/libantlr3c \
-		libcadical.so:math/cadical
+LIB_DEPENDS=	libcadical.so:math/cadical
 
-USES=		cmake:testing ncurses compiler:c++17-lang java:build \
+USES=		cmake:testing ncurses compiler:c++17-lang \
 		localbase:ldflags pkgconfig python:build
 USE_LDCONFIG=	yes
 USE_GITHUB=	yes
@@ -92,5 +92,6 @@ PORTSCOUT=	limit:^[1-9]\.[0-9]+\.[0-9]+ # prevent older generation versions like
 
 # some tests are skipped without any explanation, see https://github.com/cvc5/cvc5/issues/10456
 # test interactive_shell_define_fun_rec_multiline fails, see https://github.com/cvc5/cvc5/issues/11146
+# tests as of 1.3.0: 99% tests passed, 1 tests failed out of 4040, see https://github.com/cvc5/cvc5/issues/11996
 
 .include <bsd.port.mk>

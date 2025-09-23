@@ -1,5 +1,5 @@
 PORTNAME=	dbvis
-DISTVERSION=	25.1.3
+DISTVERSION=	25.2.2
 CATEGORIES=	java databases
 MASTER_SITES=	https://www.dbvis.com/product_download/${PORTNAME}-${DISTVERSION}/media/ \
 		https://storage.googleapis.com/${PORTNAME}-download/product_download/${PORTNAME}-${DISTVERSION}/media/
@@ -25,9 +25,12 @@ WRKSRC=		${WRKDIR}/DbVisualizer
 PLIST_FILES=	bin/dbvis
 
 do-install:
-	cd ${WRKSRC} && ${COPYTREE_SHARE} . ${STAGEDIR}${DATADIR}
-	cd ${STAGEDIR}${PREFIX}/bin && ${LN} -s ../share/dbvis/dbvis dbvis
-	${CHMOD} a+x ${STAGEDIR}${DATADIR}/dbvis
+	(cd ${WRKSRC} && ${COPYTREE_SHARE} . ${STAGEDIR}${DATADIR} \
+		"! ( -name dbvis -o -name dbviscmd.sh -o -name dbvisgui.sh )")
+	${INSTALL_SCRIPT} ${WRKSRC}/dbvis	${STAGEDIR}${DATADIR}
+	${INSTALL_SCRIPT} ${WRKSRC}/dbviscmd.sh	${STAGEDIR}${DATADIR}
+	${INSTALL_SCRIPT} ${WRKSRC}/dbvisgui.sh	${STAGEDIR}${DATADIR}
+	${RLN} ${STAGEDIR}${DATADIR}/dbvis	${STAGEDIR}${PREFIX}/bin/dbvis
 
 post-install:
 	${FIND} ${STAGEDIR}${DATADIR} -not -type d \

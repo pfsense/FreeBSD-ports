@@ -1,9 +1,10 @@
 PORTNAME=	walk
 DISTVERSIONPREFIX=	v
 DISTVERSION=	1.13.0
+PORTREVISION=	4
 CATEGORIES=	sysutils
 
-MAINTAINER=	DtxdF@disroot.org
+MAINTAINER=	dtxdf@FreeBSD.org
 COMMENT=	Terminal file manager
 WWW=		https://github.com/antonmedv/${PORTNAME}
 

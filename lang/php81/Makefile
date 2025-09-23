@@ -1,5 +1,5 @@
 PORTNAME=	php81
-DISTVERSION=	8.1.32
+DISTVERSION=	8.1.33
 PORTREVISION?=	0
 CATEGORIES?=	lang devel www
 MASTER_SITES=	PHP/distributions
@@ -21,11 +21,6 @@ PHP_VER=	81
 CONFLICTS_INSTALL?=	php[0-9][0-9]${PKGNAMESUFFIX}
 
 .if !defined(PKGNAMESUFFIX)
-# For now disable the exra patches for libxml2 until libxml2 is updated
-# Uncomment the following lines when libxml2 is updated
-#PATCH_SITES=	https://github.com/php/php-src/commit/
-#PATCHFILES=	0a39890c967aa57225bb6bdf4821aff7a3a3c082.patch:-p1 \
-#			061058a9b1bbd90d27d97d79aebcf2b5029767b0.patch:-p1
 
 LIB_DEPENDS=	libargon2.so:security/libargon2 \
 		libpcre2-8.so:devel/pcre2
@@ -186,7 +181,7 @@ COMMENT=	The ${PHP_MODNAME} shared extension for php
 USES+=		php:ext,noflavors
 PHP_MODNAME=	${PKGNAMESUFFIX:S/-//}
 PHP_VER=	81
-IGNORE_WITH_PHP=	82 83 84
+IGNORE_WITH_PHP=	82 83 84 85
 
 EXTSUBDIR=	${DISTNAME}/ext/${PHP_MODNAME}
 WRKSRC=		${WRKDIR}/${EXTSUBDIR}

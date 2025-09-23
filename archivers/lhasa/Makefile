@@ -1,8 +1,7 @@
 PORTNAME=	lhasa
 DISTVERSION=	0.4.0
 CATEGORIES=	archivers
-MASTER_SITES=	https://soulsphere.org/projects/lhasa/ \
-		http://suyai.innolan.net/
+MASTER_SITES=	https://github.com/fragglet/${PORTNAME}/releases/download/v${DISTVERSION}/
 
 MAINTAINER=	cs@innolan.dk
 COMMENT=	Command line tool and library for parsing LHA archives
@@ -13,7 +12,7 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 
 TEST_DEPENDS=	bash>0:shells/bash
 
-USES=		autoreconf cpe libtool pathfix
+USES=		autoreconf cpe libtool
 CPE_VENDOR=	lhasa_project
 USE_LDCONFIG=	yes
 

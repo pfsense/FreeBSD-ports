@@ -42,8 +42,9 @@ foreach ($a_instance as $instance) {
 	}
 }
 
-if ($_POST['download']) {
-	if (file_exists($filepath)) {
+if (!empty($filepath) &&
+    file_exists($filepath)) {
+	if ($_POST['download']) {
 		if (isset($_SERVER['HTTPS'])) {
 			header('Pragma: ');
 			header('Cache-Control: ');
@@ -55,14 +56,19 @@ if ($_POST['download']) {
 		header("Content-length: " . filesize($filepath));
 		header("Content-disposition: attachment; filename = {$file_hash}.file");
 		readfile($filepath);
-	} else {
-		$savemsg = gettext("An error occurred while creating archive");
 	}
+} else {
+	$input_errors[] = gettext("The requested file does not exist.");
 }
 
 $pglinks = array("", "/suricata/suricata_interfaces.php", "@self");
 $pgtitle = array("Services", "Suricata", "File Check");
 include_once("head.inc");
+
+if ($input_errors) {
+	print_input_errors($input_errors);
+	die;
+}
 
 if ($savemsg) {
 	print_info_box($savemsg);
@@ -90,37 +96,37 @@ if ($savemsg) {
 				<!-- IP threat source links -->
 				<tr>
 					<td><span style="color: blue;">Hash Lookups</span><i class="fa-solid fa-globe pull-right"></i></td>
-					<td><a target="_blank" href="https://www.virustotal.com/gui/file/<?=$file_hash;?>/detection/">
+					<td><a target="_blank" href="https://www.virustotal.com/gui/file/<?=urlencode($file_hash);?>/detection/">
 						<?=gettext("VirusTotal");?></a></td>
 				</tr>
 				<tr>
 					<td><i class="fa-solid fa-globe pull-right"></i></td>
-					<td><a target="_blank" href="https://www.hybrid-analysis.com/sample/<?=$file_hash;?>">
+					<td><a target="_blank" href="https://www.hybrid-analysis.com/sample/<?=urlencode($file_hash);?>">
 						<?=gettext("Hybrid Analysis");?></a></td>
 				</tr>
 				<tr>
 					<td><i class="fa-solid fa-globe pull-right"></i></td>	
-					<td><a target="_blank" href="https://virusscan.jotti.org/en-US/search/hash/<?=$file_hash;?>">
+					<td><a target="_blank" href="https://virusscan.jotti.org/en-US/search/hash/<?=urlencode($file_hash);?>">
 						<?=gettext("Jotti's malware scan");?></a></td>
 				</tr>
 				<tr>
 					<td><i class="fa-solid fa-globe pull-right"></i></td>	
-					<td><a target="_blank" href="https://metadefender.opswat.com/results/file/<?=$file_hash;?>/hash/overview?lang=en">
+					<td><a target="_blank" href="https://metadefender.opswat.com/results/file/<?=urlencode($file_hash);?>/hash/overview?lang=en">
 						<?=gettext("OPSWAT MetaDefender Cloud");?></a></td>
 				</tr>
 				<tr>
 					<td><i class="fa-solid fa-globe pull-right"></i></td>	
-					<td><a target="_blank" href="https://www.joesandbox.com/search?q=<?=$file_hash;?>">
+					<td><a target="_blank" href="https://www.joesandbox.com/search?q=<?=urlencode($file_hash);?>">
 						<?=gettext("JOESandbox Cloud");?></a></td>
 				</tr>
 				<tr>
 					<td><i class="fa-solid fa-globe pull-right"></i></td>	
-					<td><a target="_blank" href="https://opentip.kaspersky.com/<?=$file_hash;?>/">
+					<td><a target="_blank" href="https://opentip.kaspersky.com/<?=urlencode($file_hash);?>/">
 						<?=gettext("Kaspersky Threat Intelligence Portal");?></a></td>
 				</tr>
 				<tr>
 					<td><i class="fa-solid fa-globe pull-right"></i></td>	
-					<td><a target="_blank" href="https://beta.virusbay.io/sample/browse?q=<?=$file_hash;?>">
+					<td><a target="_blank" href="https://beta.virusbay.io/sample/browse?q=<?=urlencode($file_hash);?>">
 						<?=gettext("VirusBay");?></a></td>
 				</tr>
 			</tbody>

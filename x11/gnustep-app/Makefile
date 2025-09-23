@@ -1,6 +1,6 @@
 PORTNAME=	gnustep-app
 PORTVERSION=	2.0.0
-PORTREVISION=	21
+PORTREVISION=	24
 CATEGORIES=	x11 gnustep
 
 MAINTAINER=	ports@FreeBSD.org
@@ -60,7 +60,6 @@ RUN_DEPENDS=	aclock>0:x11-clocks/aclock \
 		paje>0:science/paje \
 		pantomime>0:mail/pantomime \
 		pikopixel>0:graphics/pikopixel \
-		pixen>0:graphics/pixen \
 		plopfolio>0:deskutils/plopfolio \
 		poe>0:multimedia/poe \
 		gnustep-preview>0:graphics/preview \
@@ -73,7 +72,6 @@ RUN_DEPENDS=	aclock>0:x11-clocks/aclock \
 		toolboxkit>0:deskutils/toolboxkit \
 		waiho>0:ftp/waiho \
 		wizardkit>0:devel/wizardkit \
-		zillion>0:net/zillion \
 		zipper>0:archivers/zipper
 
 .include <bsd.port.mk>

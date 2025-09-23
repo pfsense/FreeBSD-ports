@@ -1,7 +1,7 @@
 PORTNAME=	connect
 DISTVERSIONPREFIX=	v
-DISTVERSION=	4.38.0
-PORTREVISION=	2
+DISTVERSION=	4.61.0
+PORTREVISION=	1
 CATEGORIES=	net
 PKGNAMEPREFIX=	redpanda-
 
@@ -15,7 +15,8 @@ LICENSE_COMB=	multi
 LICENSE_NAME_RCL=	Redpanda Community License Agreement
 LICENSE_FILE_APACHE20=	${WRKSRC}/licenses/Apache-2.0.txt
 LICENSE_FILE_RCL=	${WRKSRC}/licenses/rcl.md
-LICENSE_PERMS_RCL=	dist-mirror dist-sell pkg-mirror pkg-sell no-auto-accept
+LICENSE_PERMS_RCL=	dist-mirror dist-sell pkg-mirror pkg-sell \
+			no-auto-accept
 LICENSE_PERMS=	dist-mirror dist-sell pkg-mirror pkg-sell auto-accept
 
 USES=		go:modules
@@ -30,12 +31,12 @@ ETCDIR=		${PREFIX}/etc/${PKGNAMEPREFIX}${PORTNAME}
 USERS=		benthos
 GROUPS=		benthos
 
-PLIST_FILES=	bin/redpanda-connect \
-		"@dir(,,755) %%ETCDIR%%" \
-		"@sample %%ETCDIR%%/config.yaml.sample"
+PLIST_FILES=	"@dir(,,755) %%ETCDIR%%" \
+		"@sample %%ETCDIR%%/config.yaml.sample" \
+		bin/redpanda-connect
 
-OPTIONS_DEFINE=	ENTERPRISE
-ENTERPRISE_DESC=Enable connectors under the RCL license
+OPTIONS_DEFINE=		ENTERPRISE
+ENTERPRISE_DESC=	Enable connectors under the RCL license
 
 .include <bsd.port.pre.mk>
 

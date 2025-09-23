@@ -1,5 +1,6 @@
 PORTNAME=	halloy
-DISTVERSION=	2025.5
+DISTVERSION=	2025.6
+PORTREVISION=	1
 CATEGORIES=	irc
 
 MAINTAINER=	pokeysquirrel@gmail.com
@@ -25,4 +26,12 @@ post-install:
 		$${f%org.squidowl.halloy.png}halloy.png; done && \
 		${COPYTREE_SHARE} . ${STAGEDIR}${PREFIX}/share/icons/hicolor)
 
-.include <bsd.port.mk>
+.include <bsd.port.pre.mk>
+
+.if ${ARCH:Marmv?}
+LTO_UNSAFE=	yes
+CARGO_ENV+=	CARGO_PROFILE_RELEASE_LTO=false
+.endif
+
+
+.include <bsd.port.post.mk>

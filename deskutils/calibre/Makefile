@@ -1,11 +1,9 @@
 PORTNAME=	calibre
-PORTVERSION=	8.4.0
+PORTVERSION=	8.9.0
 CATEGORIES=	deskutils python
-MASTER_SITES=	https://download.calibre-ebook.com/${PORTVERSION}/:DEFAULT \
-		https://raw.githubusercontent.com/rhasspy/piper/${PIPER_VOICES_HASH}/:piper
-DISTFILES=	${DISTNAME}${EXTRACT_SUFX}:DEFAULT VOICES.md:piper
+MASTER_SITES=	https://download.calibre-ebook.com/${PORTVERSION}/
+DISTFILES=	${DISTNAME}${EXTRACT_SUFX}
 DIST_SUBDIR=	${PORTNAME}
-EXTRACT_ONLY=	${DISTFILES:C/:.*//:S/VOICES.md//1}
 
 MAINTAINER=	madpilot@FreeBSD.org
 COMMENT=	Ebook management application
@@ -22,7 +20,7 @@ BUILD_DEPENDS=		${LOCALBASE}/bin/cmake:devel/cmake-core \
 			${PYTHON_PKGNAMEPREFIX}css-parser>=1.0.10:www/py-css-parser@${PY_FLAVOR} \
 			${PYTHON_PKGNAMEPREFIX}python-dateutil>=2.8.2:devel/py-python-dateutil@${PY_FLAVOR} \
 			${PYTHON_PKGNAMEPREFIX}html5-parser>=0.4.12:www/py-html5-parser@${PY_FLAVOR} \
-			${PYTHON_PKGNAMEPREFIX}lxml>=4.9.3:devel/py-lxml@${PY_FLAVOR} \
+			${PYTHON_PKGNAMEPREFIX}lxml5>=4.9.3:devel/py-lxml5@${PY_FLAVOR} \
 			${PYTHON_PKGNAMEPREFIX}mechanize>=0.4.8:www/py-mechanize@${PY_FLAVOR} \
 			${PYTHON_PKGNAMEPREFIX}msgpack>=0.3:devel/py-msgpack@${PY_FLAVOR} \
 			${PYTHON_PKGNAMEPREFIX}pillow>=7.0.0:graphics/py-pillow@${PY_FLAVOR} \
@@ -49,7 +47,7 @@ RUN_DEPENDS=		${PYTHON_PKGNAMEPREFIX}apsw>=3.43.0.0:databases/py-apsw@${PY_FLAVO
 			${PYTHON_PKGNAMEPREFIX}feedparser>=6.0.10:textproc/py-feedparser@${PY_FLAVOR} \
 			${PYTHON_PKGNAMEPREFIX}html5-parser>=0.4.12:www/py-html5-parser@${PY_FLAVOR} \
 			${PYTHON_PKGNAMEPREFIX}jeepney>=0.8.0:devel/py-jeepney@${PY_FLAVOR} \
-			${PYTHON_PKGNAMEPREFIX}lxml>=4.9.3:devel/py-lxml@${PY_FLAVOR} \
+			${PYTHON_PKGNAMEPREFIX}lxml5>=4.9.3:devel/py-lxml5@${PY_FLAVOR} \
 			${PYTHON_PKGNAMEPREFIX}markdown>=3.4.4:textproc/py-markdown@${PY_FLAVOR} \
 			${PYTHON_PKGNAMEPREFIX}mechanize>=0.4.8:www/py-mechanize@${PY_FLAVOR} \
 			${PYTHON_PKGNAMEPREFIX}msgpack>=1.0.7:devel/py-msgpack@${PY_FLAVOR} \
@@ -68,9 +66,8 @@ USES=		desktop-file-utils gettext-runtime:build gl localbase:ldflags \
 		pkgconfig pyqt:6 python:3.11+ qt:6 shared-mime-info shebangfix sqlite ssl \
 		tar:xz xorg
 USE_GITHUB=	nodefault
-GH_TUPLE=	kovidgoyal:calibre-translations:f2af128:translations \
-		LibreOffice:dictionaries:0d46e01:hypenation
-PIPER_VOICES_HASH=	c0670df63daf07070c9be36b5c4bed270ad72383
+GH_TUPLE=	kovidgoyal:calibre-translations:6890dae:translations \
+		LibreOffice:dictionaries:ea41884:hypenation
 USE_GL=		opengl
 USE_PYQT=	pyqt6 pysip webengine qtbuilder:build sip:build
 USE_QT=		base
@@ -96,9 +93,7 @@ MAKE_ENV=	CALIBRE_CONFIG_DIRECTORY=${WRKDIR}/calibre-config \
 		XDG_UTILS_INSTALL_MODE=system
 SUB_LIST=	PYTHON_VERSION=${PYTHON_VERSION}
 
-.include <bsd.port.pre.mk>
-
-ISOCODESWRKSRC!=	${BSDMAKE} -C ${.CURDIR}/../../misc/iso-codes -V WRKSRC
+ISOCODESWRKSRC_CMD=	${BSDMAKE} -C ${.CURDIR}/../../misc/iso-codes -V WRKSRC
 
 post-extract:
 	@${CP} ${FILESDIR}/user-agent-data.json ${WRKSRC}/resources
@@ -124,8 +119,7 @@ do-build:
 		--path-to-hyphenation=${WRKSRC_hypenation} \
 		--path-to-translations=${WRKSRC_translations} \
 		--path-to-cacerts=${LOCALBASE}/share/certs/ca-root-nss.crt \
-		--path-to-isocodes=${ISOCODESWRKSRC} --isocodes-extracted \
-		--path-to-piper_voices=${DISTDIR}/${DIST_SUBDIR}/VOICES.md \
+		--path-to-isocodes=$$(${ISOCODESWRKSRC_CMD}) --isocodes-extracted \
 	)
 	@${RMDIR} ${LOCALBASE}/libexec/qt6/locales 2>/dev/null || ${TRUE}
 
@@ -150,4 +144,4 @@ update-recent-uas: patch
 		${PYSETUP} recent_uas)
 	${CP} ${BUILD_WRKSRC}/resources/user-agent-data.json ${FILESDIR}
 
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

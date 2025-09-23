@@ -309,11 +309,11 @@ gotify:*:365:
 opengist:*:366:
 velbustcpd:*:367:
 sshesame:*:368:
-# free: 369
+neo4j:*:369:
 _wsdd:*:370:
-# free: 371
-# free: 372
-# free: 373
+reposilite:*:371:
+beam:*:372:
+mautrix-whatsapp:*:373:
 # free: 374
 # free: 375
 # free: 376
@@ -322,7 +322,7 @@ walletd:*:378:
 renterd:*:379:
 spoofdpi:*:380:
 hydroxide:*:381:
-# free: 382
+_tlsrpt:*:382:
 # free: 383
 # free: 384
 # free: 385
@@ -337,7 +337,7 @@ ldap:*:389:
 # free: 394
 # free: 395
 # free: 396
-# free: 397
+rtorrent:*:397:
 tiarra:*:398:
 # free: 399
 # free: 400
@@ -470,7 +470,7 @@ dkimproxy:*:525:
 # free: 527
 # free: 528
 # free: 529
-# free: 530
+_bgplgd:*:530:
 # free: 531
 # free: 532
 # free: 533
@@ -731,7 +731,7 @@ stirlingpdf:*:785:
 # free: 787
 # free: 788
 # free: 789
-# free: 790
+healthchecks:*:790:
 # free: 791
 # free: 792
 # free: 793
@@ -775,12 +775,12 @@ cirrus:*:828:
 # free: 831
 beehive:*:832:
 # free: 833
-# free: 834
-# free: 835
-# free: 836
-# free: 837
+pocket-id:*:834:
+filebrowser:*:835:
+tinyauth:*:836:
+homebox:*:837:
 # free: 838
-# free: 839
+shiori:*:839:
 netdisco:*:840:
 tcpcryptd:*:841:
 munin:*:842:
@@ -799,8 +799,8 @@ ebusd:*:854:
 opensearch:*:855:
 # free: 856
 # free: 857
-# free: 858
-# free: 859
+umurmur:*:858:
+kanidm:*:859:
 plocate:*:860:
 rekor:*:861:
 timestamp-authority:*:862:

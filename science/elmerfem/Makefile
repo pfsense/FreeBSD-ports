@@ -1,7 +1,7 @@
 PORTNAME=	elmerfem
 DISTVERSIONPREFIX=	release-
 DISTVERSION=	9.0
-PORTREVISION=	21
+PORTREVISION=	22
 CATEGORIES=	science
 
 PATCH_SITES=	https://github.com/ElmerCSC/${PORTNAME}/commit/
@@ -9,9 +9,11 @@ PATCHFILES=	48e9430c.patch:-p1 # https://github.com/ElmerCSC/elmerfem/pull/294
 
 MAINTAINER=	henrik@gulbra.net
 COMMENT=	Multiphysical simulation software
-WWW=		https://www.csc.fi/web/elmer
+WWW=		https://www.elmerfem.org/blog/
 
 LICENSE=	GPLv2
+
+BROKEN=		fails to build with vtk-9.5.0, see https://github.com/ElmerCSC/elmerfem/issues/677
 
 LIB_DEPENDS=	libblas.so:math/blas \
 		libhdf5.so:science/hdf5 \

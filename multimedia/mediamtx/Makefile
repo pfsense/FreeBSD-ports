@@ -1,8 +1,8 @@
 PORTNAME=	mediamtx
 DISTVERSIONPREFIX=	v
-DISTVERSION=	1.12.2
+DISTVERSION=	1.14.0
 CATEGORIES=	multimedia net
-MASTER_SITES+=	https://github.com/video-dev/hls.js/releases/download/v1.6.2/
+MASTER_SITES+=	https://github.com/video-dev/hls.js/releases/download/v1.6.10/
 DISTFILES+=	release.zip
 
 MAINTAINER=	diizzy@FreeBSD.org
@@ -12,7 +12,7 @@ WWW=		https://github.com/bluenviron/mediamtx
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-USES=		go:1.23,modules
+USES=		go:1.24,modules
 GO_MODULE=	github.com/bluenviron/mediamtx
 
 USE_RC_SUBR=	mediamtx
@@ -25,6 +25,7 @@ SUB_LIST=	USER=${USERS} GROUP=${GROUPS}
 
 post-extract:
 	${MV} ${WRKDIR}/dist/hls.min.js ${WRKSRC}/internal/servers/hls
+	${RM} -r ${WRKSRC}/internal/staticsources/rpicamera
 
 pre-configure:
 	${ECHO} ${DISTVERSIONFULL} > ${WRKSRC}/internal/core/VERSION

@@ -1,5 +1,6 @@
 PORTNAME=	git-absorb
 DISTVERSION=	0.8.0
+PORTREVISION=	2
 CATEGORIES=	devel
 
 MAINTAINER=	eduardo@FreeBSD.org

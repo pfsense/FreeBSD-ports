@@ -1,5 +1,5 @@
 PORTNAME=	libarchive
-DISTVERSION=	3.7.9
+DISTVERSION=	3.8.1
 PORTEPOCH=	1
 CATEGORIES=	archivers
 MASTER_SITES=	https://github.com/${PORTNAME}/${PORTNAME}/releases/download/v${DISTVERSION}/ \
@@ -14,11 +14,10 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 
 LIB_DEPENDS=	libexpat.so:textproc/expat2
 
-USES=		cpe iconv libtool localbase:ldflags pathfix pkgconfig tar:xz
+USES=		cpe iconv libtool localbase:ldflags pkgconfig tar:xz
 USE_LDCONFIG=	yes
 
 GNU_CONFIGURE=	yes
-GNU_CONFIGURE_MANPREFIX=${PREFIX}/share
 
 INSTALL_TARGET=	install-strip
 TEST_TARGET=	check

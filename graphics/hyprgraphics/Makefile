@@ -1,10 +1,10 @@
 PORTNAME=	hyprgraphics
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.1.3
+DISTVERSION=	0.1.5
 PORTREVISION=	2
 CATEGORIES=	graphics
 
-MAINTAINER=	jbeich@FreeBSD.org
+MAINTAINER=	tagattie@FreeBSD.org
 COMMENT=	Hyprland graphics / resource utilities
 WWW=		https://github.com/hyprwm/hyprgraphics
 
@@ -13,7 +13,7 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 
 LIB_DEPENDS=	libhyprutils.so:devel/hyprutils \
 		libjxl.so:graphics/libjxl \
-		libspng.so:graphics/libspng \
+		libpng.so:graphics/png \
 		libwebp.so:graphics/webp
 
 USES=		cmake:testing compiler:c++11-lib gnome jpeg pkgconfig xorg

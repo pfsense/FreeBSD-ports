@@ -1,10 +1,9 @@
 PORTNAME=	maxima
-DISTVERSION=	5.47.0
-PORTREVISION=	24
+DISTVERSION=	5.48.1
 CATEGORIES=	math lisp tk
 MASTER_SITES=	SF/maxima/Maxima-source/${PORTVERSION}-source
 
-MAINTAINER=	uzsolt@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Symbolic mathematics program
 WWW=		http://maxima.sourceforge.net/
 

@@ -37,7 +37,7 @@ linux_ARGS=		${LINUX_DEFAULT}
 .  if ${linux_ARGS} == c7
 LINUX_DIST_VER?=	7.9.2009
 .  elif ${linux_ARGS} == rl9
-LINUX_DIST_VER?=	9.5
+LINUX_DIST_VER?=	9.6
 .  else
 ERROR+=			"Invalid Linux distribution: ${linux_ARGS}"
 .  endif
@@ -63,7 +63,6 @@ _linux_${linux_ARGS}_atk=		linux-${linux_ARGS}-atk>0:accessibility/linux-${linux
 _linux_${linux_ARGS}_avahi-libs=	linux-${linux_ARGS}-avahi-libs>0:net/linux-${linux_ARGS}-avahi-libs
 _linux_c7_base=				linux_base-c7>=7.6.1810_7:emulators/linux_base-c7
 _linux_rl9_base=			linux_base-rl9>=9.2:emulators/linux_base-rl9
-_linux_rl9_brotli=			linux-rl9-brotli>0:archivers/linux-rl9-brotli
 _linux_${linux_ARGS}_ca-certificates=	linux-${linux_ARGS}-ca-certificates>0:security/linux-${linux_ARGS}-ca-certificates
 _linux_${linux_ARGS}_cairo=		linux-${linux_ARGS}-cairo>0:graphics/linux-${linux_ARGS}-cairo
 _linux_${linux_ARGS}_cairo-gobject=	linux-${linux_ARGS}-cairo-gobject>0:graphics/linux-${linux_ARGS}-cairo-gobject
@@ -106,20 +105,16 @@ _linux_${linux_ARGS}_libdrm=		linux-${linux_ARGS}-libdrm>0:graphics/linux-${linu
 _linux_${linux_ARGS}_libepoxy=		linux-${linux_ARGS}-libepoxy>0:graphics/linux-${linux_ARGS}-libepoxy
 _linux_rl9_libevent=			linux-rl9-libevent>0:devel/linux-rl9-libevent
 _linux_${linux_ARGS}_libgcrypt=		linux-${linux_ARGS}-libgcrypt>0:security/linux-${linux_ARGS}-libgcrypt
-_linux_${linux_ARGS}_libgfortran=	linux-${linux_ARGS}-libgfortran>0:devel/linux-${linux_ARGS}-libgfortran
 _linux_${linux_ARGS}_libglvnd=		linux-${linux_ARGS}-libglvnd>0:graphics/linux-${linux_ARGS}-libglvnd
 _linux_${linux_ARGS}_libgpg-error=	linux-${linux_ARGS}-libgpg-error>0:security/linux-${linux_ARGS}-libgpg-error
-_linux_rl9_libidn2=			linux-${linux_ARGS}-libidn2>0:dns/linux-rl9-libidn2
 _linux_rl9_libjxl=			linux-rl9-libjxl>0:graphics/linux-rl9-libjxl
 _linux_rl9_libksba=			linux-rl9-libksba>0:security/linux-rl9-libksba
 _linux_rl9_libnghttp2=			linux-rl9-libnghttp2>0:www/linux-rl9-libnghttp2
 _linux_${linux_ARGS}_libogg=		linux-${linux_ARGS}-libogg>0:audio/linux-${linux_ARGS}-libogg
 _linux_${linux_ARGS}_libpciaccess=	linux-${linux_ARGS}-libpciaccess>0:devel/linux-${linux_ARGS}-libpciaccess
-_linux_rl9_libpsl=			linux-rl9-libpsl>0:dns/linux-rl9-libpsl
 _linux_${linux_ARGS}_librsvg2=		linux-${linux_ARGS}-librsvg2>0:graphics/linux-${linux_ARGS}-librsvg2
 _linux_rl9_libsecret=			linux-rl9-libsecret>0:security/linux-rl9-libsecret
 _linux_${linux_ARGS}_libsigc++20=	linux-${linux_ARGS}-libsigc++20>0:devel/linux-${linux_ARGS}-libsigc++20
-_linux_rl9_libsoup=			linux-rl9-libsoup>0:devel/linux-rl9-libsoup
 _linux_${linux_ARGS}_libsndfile=	linux-${linux_ARGS}-libsndfile>0:audio/linux-${linux_ARGS}-libsndfile
 _linux_rl9_libssh=			linux-rl9-libssh>0:security/linux-rl9-libssh
 _linux_c7_libssh2=			linux-c7-libssh2>0:security/linux-c7-libssh2
@@ -129,7 +124,6 @@ _linux_${linux_ARGS}_libthai=		linux-${linux_ARGS}-libthai>0:devel/linux-${linux
 _linux_${linux_ARGS}_libtheora=		linux-${linux_ARGS}-libtheora>0:multimedia/linux-${linux_ARGS}-libtheora
 _linux_${linux_ARGS}_libtool-ltdl=	linux-${linux_ARGS}-libtool-ltdl>0:devel/linux-${linux_ARGS}-libtool-ltdl
 _linux_rl9_libtracker-sparql=		linux-rl9-libtracker-sparql>0:databases/linux-rl9-libtracker-sparql
-_linux_rl9_libunistring=		linux-rl9-libunistring>0:devel/linux-rl9-libunistring
 _linux_${linux_ARGS}_libunwind=		linux-${linux_ARGS}-libunwind>0:devel/linux-${linux_ARGS}-libunwind
 _linux_${linux_ARGS}_libv4l=		linux-${linux_ARGS}-libv4l>0:multimedia/linux-${linux_ARGS}-libv4l
 _linux_rl9_libva=			linux-rl9-libva>0:multimedia/linux-rl9-libva
@@ -189,14 +183,11 @@ _linux_rl9_qtxmlpatterns=		linux-rl9-qt5-qtxmlpatterns>0:textproc/linux-rl9-qt5-
 _linux_${linux_ARGS}_sdl12=		linux-${linux_ARGS}-sdl>0:devel/linux-${linux_ARGS}-sdl12
 _linux_${linux_ARGS}_sdl12-extralibs=	linux-${linux_ARGS}-sdl12-extralibs>0:misc/linux-${linux_ARGS}-sdl12-extralibs
 _linux_${linux_ARGS}_sdl20=		linux-${linux_ARGS}-sdl20>0:devel/linux-${linux_ARGS}-sdl20
-_linux_${linux_ARGS}_sdl2gfx=		linux-${linux_ARGS}-sdl2_gfx>0:graphics/linux-${linux_ARGS}-sdl2_gfx
-_linux_${linux_ARGS}_sdl2image=		linux-${linux_ARGS}-sdl2_image>0:graphics/linux-${linux_ARGS}-sdl2_image
-_linux_${linux_ARGS}_sdl2mixer=		linux-${linux_ARGS}-sdl2_mixer>0:audio/linux-${linux_ARGS}-sdl2_mixer
-_linux_${linux_ARGS}_sdl2ttf=		linux-${linux_ARGS}-sdl2_ttf>0:graphics/linux-${linux_ARGS}-sdl2_ttf
-_linux_${linux_ARGS}_sdl2sound=		linux-${linux_ARGS}-sdl2_sound>0:audio/linux-${linux_ARGS}-sdl2_sound
+_linux_${linux_ARGS}_sdl20-extralibs=	linux-${linux_ARGS}-sdl20-extralibs>0:misc/linux-${linux_ARGS}-sdl20-extralibs
 _linux_rl9_shaderc=			linux-rl9-shaderc>0:graphics/linux-rl9-shaderc
 _linux_rl9_spirv-tools=			linux-rl9-spirv-tools>0:graphics/linux-rl9-spirv-tools
-_linux_${linux_ARGS}_sqlite3=		linux-${linux_ARGS}-sqlite>0:databases/linux-${linux_ARGS}-sqlite3
+_linux_c7_sqlite3=			linux-c7-sqlite>0:databases/linux-c7-sqlite3
+_linux_rl9_sqlite3=			${_linux_rl9_base}
 _linux_${linux_ARGS}_strace=		linux-${linux_ARGS}-strace>0:devel/linux-${linux_ARGS}-strace
 _linux_${linux_ARGS}_systemd-libs=	linux-${linux_ARGS}-systemd-libs>0:devel/linux-${linux_ARGS}-systemd-libs
 _linux_c7_tcl85=			linux-c7-tcl85>0:lang/linux-c7-tcl85
@@ -351,7 +342,7 @@ PLIST?=			${PKGDIR}/pkg-plist.${ARCH}
 .    if !target(do-install)
 do-install:
 	(cd ${WRKSRC} && \
-		${FIND} * | ${CPIO} -dumpl --quiet ${STAGEDIR}${PREFIX})
+		${FIND} * -not -path 'usr/lib/.build-id*' | ${CPIO} -dumpl --quiet ${STAGEDIR}${PREFIX})
 .      for d in bin lib lib64 sbin
 	[ ! -e ${STAGEDIR}${PREFIX}/${d} -o -L ${STAGEDIR}${PREFIX}/${d} ] || \
 		(cd ${STAGEDIR}${PREFIX} && \
@@ -362,6 +353,7 @@ do-install:
 		(cd ${STAGEDIR}${PREFIX}/usr/share && ${FIND} icons | \
 		${CPIO} -dumpl --quiet ${STAGEDIR}${LOCALBASE}/share && \
 		${RM} -r icons)
+	${RMDIR} ${STAGEDIR}${PREFIX}/usr/lib ${STAGEDIR}${PREFIX}/usr/lib64 || ${TRUE}
 .    endif
 
 .  endif # USE_LINUX_RPM

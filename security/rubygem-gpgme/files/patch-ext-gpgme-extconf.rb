@@ -1,10 +1,10 @@
---- ext/gpgme/extconf.rb.orig	2022-10-13 10:24:31 UTC
+--- ext/gpgme/extconf.rb.orig	2025-06-24 09:21:26 UTC
 +++ ext/gpgme/extconf.rb
-@@ -60,7 +60,6 @@ follows:
+@@ -63,7 +63,6 @@ EOS
  EOS
  
    require 'rubygems'
 -  require 'mini_portile2'
  
-   libgpg_error_recipe = MiniPortile.new('libgpg-error', '1.46').tap do |recipe|
+   libgpg_error_recipe = MiniPortile.new('libgpg-error', '1.47').tap do |recipe|
      recipe.target = File.join(ROOT, "ports")

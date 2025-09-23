@@ -159,7 +159,7 @@ PLIST_SUB+=	EXTENSIONSDIR="@comment "
 PLIST_FILES+=	lib/libnvidia-wayland-client.so.${DISTVERSION}
 .endif
 
-CONFLICTS_INSTALL+=	nvidia-driver nvidia-driver-*
+CONFLICTS_INSTALL+=	nvidia-driver*
 .if ${PORTNAME} != nvidia-secondary-driver
 CONFLICTS_INSTALL+=	nvidia-secondary-driver
 .endif
@@ -320,6 +320,15 @@ post-patch: .SILENT
 # Conditionally install documentation (but you generally want it)
 .if ! ${PORT_OPTIONS:MDOCS}
 	${REINPLACE_CMD} -E 's/(x11).*/\1/ ; /doc/d' ${WRKSRC}/Makefile
+.endif
+# DMAP_MIN_ADDRESS and DMAP_MAX_ADDRESS is deleted from src at commit
+# 4dd828c80828637452a8a4e07a64e294c82e5d8b on main branch.
+# Note that there are about 10 days of broken window, as the commit
+# does not have corresponding version bump.
+.if ${OSVERSION} >= 1500051
+	${REINPLACE_CMD} -e 's/DMAP_MIN_ADDRESS/kva_layout.dmap_low/' \
+		-e 's/DMAP_MAX_ADDRESS/kva_layout.dmap_high/' \
+		${WRKSRC}/src/${NVSRC}/nvidia_subr.c
 .endif
 
 pre-install:

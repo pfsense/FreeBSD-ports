@@ -1,5 +1,5 @@
 PORTNAME=	aws-sdk-resources
-PORTVERSION=	3.226.0
+PORTVERSION=	3.236.0
 CATEGORIES=	devel rubygems
 MASTER_SITES=	RG
 
@@ -14,6 +14,7 @@ RUN_DEPENDS=	rubygem-aws-sdk-accessanalyzer>=1<2:devel/rubygem-aws-sdk-accessana
 		rubygem-aws-sdk-account>=1<2:devel/rubygem-aws-sdk-account \
 		rubygem-aws-sdk-acm>=1<2:devel/rubygem-aws-sdk-acm \
 		rubygem-aws-sdk-acmpca>=1<2:devel/rubygem-aws-sdk-acmpca \
+		rubygem-aws-sdk-aiops>=1<2:devel/rubygem-aws-sdk-aiops \
 		rubygem-aws-sdk-amplify>=1<2:devel/rubygem-aws-sdk-amplify \
 		rubygem-aws-sdk-amplifybackend>=1<2:devel/rubygem-aws-sdk-amplifybackend \
 		rubygem-aws-sdk-amplifyuibuilder>=1<2:devel/rubygem-aws-sdk-amplifyuibuilder \
@@ -52,6 +53,8 @@ RUN_DEPENDS=	rubygem-aws-sdk-accessanalyzer>=1<2:devel/rubygem-aws-sdk-accessana
 		rubygem-aws-sdk-bcmpricingcalculator>=1<2:devel/rubygem-aws-sdk-bcmpricingcalculator \
 		rubygem-aws-sdk-bedrock>=1<2:devel/rubygem-aws-sdk-bedrock \
 		rubygem-aws-sdk-bedrockagent>=1<2:devel/rubygem-aws-sdk-bedrockagent \
+		rubygem-aws-sdk-bedrockagentcore>=1<2:devel/rubygem-aws-sdk-bedrockagentcore \
+		rubygem-aws-sdk-bedrockagentcorecontrol>=1<2:devel/rubygem-aws-sdk-bedrockagentcorecontrol \
 		rubygem-aws-sdk-bedrockagentruntime>=1<2:devel/rubygem-aws-sdk-bedrockagentruntime \
 		rubygem-aws-sdk-bedrockdataautomation>=1<2:devel/rubygem-aws-sdk-bedrockdataautomation \
 		rubygem-aws-sdk-bedrockdataautomationruntime>=1<2:devel/rubygem-aws-sdk-bedrockdataautomationruntime \
@@ -158,6 +161,7 @@ RUN_DEPENDS=	rubygem-aws-sdk-accessanalyzer>=1<2:devel/rubygem-aws-sdk-accessana
 		rubygem-aws-sdk-emrserverless>=1<2:devel/rubygem-aws-sdk-emrserverless \
 		rubygem-aws-sdk-entityresolution>=1<2:devel/rubygem-aws-sdk-entityresolution \
 		rubygem-aws-sdk-eventbridge>=1<2:devel/rubygem-aws-sdk-eventbridge \
+		rubygem-aws-sdk-evs>=1<2:devel/rubygem-aws-sdk-evs \
 		rubygem-aws-sdk-finspace>=1<2:devel/rubygem-aws-sdk-finspace \
 		rubygem-aws-sdk-finspacedata>=1<2:devel/rubygem-aws-sdk-finspacedata \
 		rubygem-aws-sdk-firehose>=1<2:devel/rubygem-aws-sdk-firehose \
@@ -215,6 +219,7 @@ RUN_DEPENDS=	rubygem-aws-sdk-accessanalyzer>=1<2:devel/rubygem-aws-sdk-accessana
 		rubygem-aws-sdk-kendra>=1<2:devel/rubygem-aws-sdk-kendra \
 		rubygem-aws-sdk-kendraranking>=1<2:devel/rubygem-aws-sdk-kendraranking \
 		rubygem-aws-sdk-keyspaces>=1<2:devel/rubygem-aws-sdk-keyspaces \
+		rubygem-aws-sdk-keyspacesstreams>=1<2:devel/rubygem-aws-sdk-keyspacesstreams \
 		rubygem-aws-sdk-kinesis>=1<2:devel/rubygem-aws-sdk-kinesis \
 		rubygem-aws-sdk-kinesisanalytics>=1<2:devel/rubygem-aws-sdk-kinesisanalytics \
 		rubygem-aws-sdk-kinesisanalyticsv2>=1<2:devel/rubygem-aws-sdk-kinesisanalyticsv2 \
@@ -270,6 +275,7 @@ RUN_DEPENDS=	rubygem-aws-sdk-accessanalyzer>=1<2:devel/rubygem-aws-sdk-accessana
 		rubygem-aws-sdk-migrationhuborchestrator>=1<2:devel/rubygem-aws-sdk-migrationhuborchestrator \
 		rubygem-aws-sdk-migrationhubrefactorspaces>=1<2:devel/rubygem-aws-sdk-migrationhubrefactorspaces \
 		rubygem-aws-sdk-migrationhubstrategyrecommendations>=1<2:devel/rubygem-aws-sdk-migrationhubstrategyrecommendations \
+		rubygem-aws-sdk-mpa>=1<2:devel/rubygem-aws-sdk-mpa \
 		rubygem-aws-sdk-mq>=1<2:devel/rubygem-aws-sdk-mq \
 		rubygem-aws-sdk-mturk>=1<2:devel/rubygem-aws-sdk-mturk \
 		rubygem-aws-sdk-mwaa>=1<2:devel/rubygem-aws-sdk-mwaa \
@@ -284,6 +290,7 @@ RUN_DEPENDS=	rubygem-aws-sdk-accessanalyzer>=1<2:devel/rubygem-aws-sdk-accessana
 		rubygem-aws-sdk-notificationscontacts>=1<2:devel/rubygem-aws-sdk-notificationscontacts \
 		rubygem-aws-sdk-oam>=1<2:devel/rubygem-aws-sdk-oam \
 		rubygem-aws-sdk-observabilityadmin>=1<2:devel/rubygem-aws-sdk-observabilityadmin \
+		rubygem-aws-sdk-odb>=1<2:devel/rubygem-aws-sdk-odb \
 		rubygem-aws-sdk-omics>=1<2:devel/rubygem-aws-sdk-omics \
 		rubygem-aws-sdk-opensearchserverless>=1<2:devel/rubygem-aws-sdk-opensearchserverless \
 		rubygem-aws-sdk-opensearchservice>=1<2:devel/rubygem-aws-sdk-opensearchservice \
@@ -310,7 +317,6 @@ RUN_DEPENDS=	rubygem-aws-sdk-accessanalyzer>=1<2:devel/rubygem-aws-sdk-accessana
 		rubygem-aws-sdk-pipes>=1<2:devel/rubygem-aws-sdk-pipes \
 		rubygem-aws-sdk-polly>=1<2:devel/rubygem-aws-sdk-polly \
 		rubygem-aws-sdk-pricing>=1<2:devel/rubygem-aws-sdk-pricing \
-		rubygem-aws-sdk-privatenetworks>=1<2:devel/rubygem-aws-sdk-privatenetworks \
 		rubygem-aws-sdk-prometheusservice>=1<2:devel/rubygem-aws-sdk-prometheusservice \
 		rubygem-aws-sdk-proton>=1<2:devel/rubygem-aws-sdk-proton \
 		rubygem-aws-sdk-qapps>=1<2:devel/rubygem-aws-sdk-qapps \
@@ -345,6 +351,7 @@ RUN_DEPENDS=	rubygem-aws-sdk-accessanalyzer>=1<2:devel/rubygem-aws-sdk-accessana
 		rubygem-aws-sdk-s3control>=1<2:devel/rubygem-aws-sdk-s3control \
 		rubygem-aws-sdk-s3outposts>=1<2:devel/rubygem-aws-sdk-s3outposts \
 		rubygem-aws-sdk-s3tables>=1<2:devel/rubygem-aws-sdk-s3tables \
+		rubygem-aws-sdk-s3vectors>=1<2:devel/rubygem-aws-sdk-s3vectors \
 		rubygem-aws-sdk-sagemaker>=1<2:devel/rubygem-aws-sdk-sagemaker \
 		rubygem-aws-sdk-sagemakeredgemanager>=1<2:devel/rubygem-aws-sdk-sagemakeredgemanager \
 		rubygem-aws-sdk-sagemakerfeaturestoreruntime>=1<2:devel/rubygem-aws-sdk-sagemakerfeaturestoreruntime \
@@ -410,6 +417,7 @@ RUN_DEPENDS=	rubygem-aws-sdk-accessanalyzer>=1<2:devel/rubygem-aws-sdk-accessana
 		rubygem-aws-sdk-workmail>=1<2:devel/rubygem-aws-sdk-workmail \
 		rubygem-aws-sdk-workmailmessageflow>=1<2:devel/rubygem-aws-sdk-workmailmessageflow \
 		rubygem-aws-sdk-workspaces>=1<2:devel/rubygem-aws-sdk-workspaces \
+		rubygem-aws-sdk-workspacesinstances>=1<2:devel/rubygem-aws-sdk-workspacesinstances \
 		rubygem-aws-sdk-workspacesthinclient>=1<2:devel/rubygem-aws-sdk-workspacesthinclient \
 		rubygem-aws-sdk-workspacesweb>=1<2:devel/rubygem-aws-sdk-workspacesweb \
 		rubygem-aws-sdk-xray>=1<2:devel/rubygem-aws-sdk-xray

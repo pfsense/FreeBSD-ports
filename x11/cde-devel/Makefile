@@ -1,6 +1,5 @@
 PORTNAME=	cde
 PORTVERSION=	${COMMIT_DATE}
-PORTREVISION=	5
 CATEGORIES=	x11
 .if !defined(MASTERDIR)
 PKGNAMESUFFIX=	-devel
@@ -13,23 +12,14 @@ WWW=		https://sourceforge.net/p/cdesktopenv/wiki/Home/
 USE_GITHUB=	yes
 GH_ACCOUNT=	cschuber
 GH_PROJECT=	cdesktopenv-code
-GH_TAGNAME=	f0be964d6
-COMMIT_DATE=	2025.03.19
+GH_TAGNAME=	9f0f015c4
+COMMIT_DATE=	2025.06.13
 
 LICENSE=	LGPL21
 
 BROKEN_i386=		cannot bind to a temporary of type va_list
 
 WRKSRC_SUBDIR=	${PORTNAME}
-
-# For concurrent testing purposes only. Define DT_ID in make.conf to build
-# a cde-25 pkg which will coexist with cde-24.
-.if defined(CDE_CONCURRENT) && !defined(MASTERDIR)
-DT_ID=	${PKGNAMESUFFIX}
-.else
-DT_ID=
-.endif
-PLIST_SUB=	DT_ID=${DT_ID}
 
 BUILD_DEPENDS=	ksh93:shells/ksh			\
 		bdftopcf:x11-fonts/bdftopcf		\
@@ -53,9 +43,9 @@ USES=		autoreconf:build iconv:wchar_t gmake jpeg libtool motif perl5 \
 SHEBANG_LANG=	pl
 SHEBANG_FILES=	programs/dtinfo/tools/bin/ccdate \
 		programs/dtdocbook/tcl/docbook.tcl
-DT_PREFIX=	${PREFIX}/dt${DT_ID}
+DT_PREFIX=	${PREFIX}/dt
 USE_LDCONFIG=	${DT_PREFIX}/lib
-USE_RC_SUBR=	dtcms${DT_ID} dtlogin${DT_ID}
+USE_RC_SUBR=	dtcms dtlogin
 USE_XORG=	ice sm x11 xau xdmcp xext xinerama xmu xscrnsaver xt
 
 GNU_CONFIGURE=	yes
@@ -63,7 +53,12 @@ GNU_CONFIGURE_PREFIX=	${DT_PREFIX}
 GNU_CONFIGURE_MANPREFIX=	${DT_PREFIX}/share
 MANDIRS=	${DT_PREFIX}/share/man
 INFODIR=	${DT_PREFIX}/share/info
-CONFIGURE_ARGS=	--with-tcl=${LOCALBASE}/lib/tcl8.6 MAKE="gmake"
+CONFIGURE_ARGS=	--with-tcl=${LOCALBASE}/lib/tcl8.6 MAKE="gmake" \
+		--enable-german \
+		--enable-italian \
+		--enable-french \
+		--enable-spanish \
+		--enable-japanese
 MAKE_ARGS+=	PERL=${PERL} "LOCAL_LDFLAGS=${LDFLAGS}"
 MAKE_JOBS_UNSAFE=yes
 MAKE_ENV=	MALLOC_CONF=junk:false
@@ -125,8 +120,8 @@ post-patch:
 
 post-install:
 	@${INSTALL_DATA} ${WRKSRC}/lib/pam/libpam/pam.conf \
-		${STAGEDIR}${PREFIX}/etc/pam.d/cde${DT_ID}.conf
-	@${ECHO_CMD} MANPATH /usr/local/dt/share/man >  ${STAGEDIR}/${PREFIX}/etc/man.d/cde${DT_ID}.conf
+		${STAGEDIR}${PREFIX}/etc/pam.d/cde.conf
+	@${ECHO_CMD} MANPATH /usr/local/dt/share/man >  ${STAGEDIR}/${PREFIX}/etc/man.d/cde.conf
 	@${FIND} ${STAGEDIR}/${DT_PREFIX} -type f -exec ${SH} -c '${STRIP_CMD} {} > /dev/null 2>&1' \;
 	@${FIND} ${STAGEDIR}/${DT_PREFIX} -type f -name '*.bak' -delete
 	@cd ${WRKSRC}/examples && @${FIND} . | ${CPIO} -pd ${STAGEDIR}/${DT_PREFIX}/share

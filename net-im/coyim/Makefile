@@ -1,7 +1,7 @@
 PORTNAME=	coyim
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.3.11
-PORTREVISION=	30
+DISTVERSION=	0.4.1
+PORTREVISION=	3
 CATEGORIES=	net-im
 
 MAINTAINER=	fox@FreeBSD.org
@@ -37,11 +37,12 @@ GTK_VERSION=	"$$(pkg-config --modversion gtk+-3.0 | ${TR} . _ | cut -d '_' -f 1-
 GTK_BUILD_TAG=	gtk_${GTK_VERSION}
 
 COYIM_ICON=	coyim.png
-COYIM_ICON_SRC=	${WRKSRC}/build/mac-bundle/coy.iconset/icon_32x32@2x.png
-COYIM_DESKTOP=	${WRKSRC}/build/coyim.desktop
+COYIM_ICON_SRC=	${WRKSRC}/build/osx/mac-bundle/coyim.iconset/icon_32x32@2x.png
+COYIM_DESKTOP=	${WRKDIR}/coyim.desktop
 
-pre-build:
-	cd ${WRKSRC} && ${SH} ./gen_version_file.sh ${DISTVERSIONPREFIX}${DISTVERSION}
+post-extract:
+	cd ${WRKSRC} && ${RM} ./windows_amd64_icon.syso
+	cp ${FILESDIR}/coyim.desktop ${WRKDIR}
 
 post-build:
 	@${REINPLACE_CMD} -e '/^#/d' \

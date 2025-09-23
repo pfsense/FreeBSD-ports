@@ -1,10 +1,10 @@
 PORTNAME=	highlight
-PORTVERSION=	4.15
+PORTVERSION=	4.16
 PORTEPOCH=	3
 CATEGORIES=	textproc
 MASTER_SITES=	http://andre-simon.de/zip/
 
-MAINTAINER=	kwm@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Customizable syntax highlighter
 WWW=		http://andre-simon.de/
 

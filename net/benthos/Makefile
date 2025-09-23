@@ -1,7 +1,7 @@
 PORTNAME=	benthos
 DISTVERSIONPREFIX=	v
 DISTVERSION=	4.27.0
-PORTREVISION=	7
+PORTREVISION=	11
 CATEGORIES=	net
 
 MAINTAINER=	olgeni@FreeBSD.org
@@ -10,6 +10,9 @@ WWW=		https://www.benthos.dev/
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
+
+DEPRECATED=	Superseded by net/redpanda-connect
+EXPIRATION_DATE=	2025-09-11
 
 USES=		go:modules
 USE_RC_SUBR=	benthos

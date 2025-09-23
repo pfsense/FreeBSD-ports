@@ -23,6 +23,7 @@ pkg/acme/dnsapi/dns_autodns.sh
 pkg/acme/dnsapi/dns_aws.sh
 pkg/acme/dnsapi/dns_azion.sh
 pkg/acme/dnsapi/dns_azure.sh
+pkg/acme/dnsapi/dns_beget.sh
 pkg/acme/dnsapi/dns_bookmyname.sh
 pkg/acme/dnsapi/dns_bunny.sh
 pkg/acme/dnsapi/dns_cf.sh
@@ -54,17 +55,20 @@ pkg/acme/dnsapi/dns_durabledns.sh
 pkg/acme/dnsapi/dns_dyn.sh
 pkg/acme/dnsapi/dns_dynu.sh
 pkg/acme/dnsapi/dns_easydns.sh
+pkg/acme/dnsapi/dns_edgecenter.sh
 pkg/acme/dnsapi/dns_edgedns.sh
 pkg/acme/dnsapi/dns_euserv.sh
 pkg/acme/dnsapi/dns_exoscale.sh
 pkg/acme/dnsapi/dns_fornex.sh
 pkg/acme/dnsapi/dns_freedns.sh
+pkg/acme/dnsapi/dns_freemyip.sh
 pkg/acme/dnsapi/dns_gandi_livedns.sh
 pkg/acme/dnsapi/dns_gcloud.sh
 pkg/acme/dnsapi/dns_gcore.sh
 pkg/acme/dnsapi/dns_gd.sh
 pkg/acme/dnsapi/dns_geoscaling.sh
 pkg/acme/dnsapi/dns_googledomains.sh
+pkg/acme/dnsapi/dns_he_ddns.sh
 pkg/acme/dnsapi/dns_he.sh
 pkg/acme/dnsapi/dns_hetzner.sh
 pkg/acme/dnsapi/dns_hexonet.sh
@@ -94,6 +98,7 @@ pkg/acme/dnsapi/dns_loopia.sh
 pkg/acme/dnsapi/dns_lua.sh
 pkg/acme/dnsapi/dns_me.sh
 pkg/acme/dnsapi/dns_miab.sh
+pkg/acme/dnsapi/dns_mijnhost.sh
 pkg/acme/dnsapi/dns_misaka.sh
 pkg/acme/dnsapi/dns_myapi.sh
 pkg/acme/dnsapi/dns_mydnsjp.sh
@@ -116,6 +121,7 @@ pkg/acme/dnsapi/dns_oci.sh
 pkg/acme/dnsapi/dns_omglol.sh
 pkg/acme/dnsapi/dns_one.sh
 pkg/acme/dnsapi/dns_online.sh
+pkg/acme/dnsapi/dns_openprovider_rest.sh
 pkg/acme/dnsapi/dns_openprovider.sh
 pkg/acme/dnsapi/dns_ovh.sh
 pkg/acme/dnsapi/dns_pdns.sh
@@ -133,6 +139,8 @@ pkg/acme/dnsapi/dns_selectel.sh
 pkg/acme/dnsapi/dns_selfhost.sh
 pkg/acme/dnsapi/dns_servercow.sh
 pkg/acme/dnsapi/dns_simply.sh
+pkg/acme/dnsapi/dns_spaceship.sh
+pkg/acme/dnsapi/dns_technitium.sh
 pkg/acme/dnsapi/dns_tele3.sh
 pkg/acme/dnsapi/dns_tencent.sh
 pkg/acme/dnsapi/dns_timeweb.sh
@@ -151,6 +159,7 @@ pkg/acme/dnsapi/dns_yandex360.sh
 pkg/acme/dnsapi/dns_yandex.sh
 pkg/acme/dnsapi/dns_yc.sh
 pkg/acme/dnsapi/dns_zilore.sh
+pkg/acme/dnsapi/dns_zoneedit.sh
 pkg/acme/dnsapi/dns_zone.sh
 pkg/acme/dnsapi/dns_zonomi.sh
 www/acme/acme_accountkeys.php

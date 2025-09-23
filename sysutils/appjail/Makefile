@@ -1,9 +1,9 @@
 PORTNAME=	appjail
 DISTVERSIONPREFIX=	v
-DISTVERSION=	3.9.0
+DISTVERSION=	4.2.1
 CATEGORIES=	sysutils
 
-MAINTAINER=	DtxdF@disroot.org
+MAINTAINER=	dtxdf@FreeBSD.org
 COMMENT=	Simple and easy-to-use tool for creating portable jails
 WWW=		https://github.com/DtxdF/AppJail/
 

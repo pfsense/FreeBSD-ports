@@ -1,30 +1,27 @@
 PORTNAME=	Net_DNS2
-PORTVERSION=	1.5.4
+PORTVERSION=	2.0.3
 DISTVERSIONPREFIX=	v
-PORTREVISION=	1
 CATEGORIES=	dns net pear
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	PHP Resolver library used to communicate with a DNS server
-WWW=		https://pear.php.net/package/Net_DNS2 \
+WWW=		https://netdns2.com/ \
 		https://github.com/mikepultz/netdns2
 
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-USES=		pear
+USES=		pear:env
+
+NO_ARCH=	yes
+NO_BUILD=	yes
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	mikepultz
 GH_PROJECT=	netdns2
 
-NO_ARCH=	yes
-
-PLIST_FILES=	${PEARDIR}/Net/DNS2/Names.php \
-		${PEARDIR}/Net/DNS2/RR/ZONEMD.php
-
-post-install:
-	${INSTALL_DATA} ${WRKSRC}/Net/DNS2/Names.php ${STAGEDIR}${PEARDIR}/Net/DNS2/Names.php
-	${INSTALL_DATA} ${WRKSRC}/Net/DNS2/RR/ZONEMD.php ${STAGEDIR}${PEARDIR}/Net/DNS2/RR/ZONEMD.php
+do-install:
+	${MKDIR} ${STAGEDIR}${DATADIR}
+	cd ${WRKSRC}/src/ && ${COPYTREE_SHARE} . ${STAGEDIR}${DATADIR}
 
 .include <bsd.port.mk>

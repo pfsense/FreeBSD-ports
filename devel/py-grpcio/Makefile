@@ -1,5 +1,5 @@
 PORTNAME=	grpcio
-PORTVERSION=	1.72.0
+PORTVERSION=	1.74.0
 PORTREVISION=	0
 CATEGORIES=	devel python
 MASTER_SITES=	PYPI
@@ -29,6 +29,6 @@ post-patch:
 
 post-install:
 	${STRIP_CMD} ${STAGEDIR}${PYTHONPREFIX_SITELIBDIR}/grpc/_cython/cygrpc*.so
-	${REINPLACE_CMD} -e 's|^.*so$$|${PYTHONPREFIX_SITELIBDIR}/grpc/_cython/cygrpc${PYTHON_EXT_SUFFIX}.so|' ${_PYTHONPKGLIST}
+	${REINPLACE_CMD} -e 's|^.*so$$|${PYTHONPREFIX_SITELIBDIR}/grpc/_cython/cygrpc${PYTHON_TAG}.so|' ${_PYTHONPKGLIST}
 
 .include <bsd.port.mk>

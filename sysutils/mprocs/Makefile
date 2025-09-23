@@ -1,10 +1,10 @@
 PORTNAME=	mprocs
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.7.2
+DISTVERSION=	0.7.3
 PORTREVISION=	2
 CATEGORIES=	sysutils
 
-MAINTAINER=	DtxdF@disroot.org
+MAINTAINER=	dtxdf@FreeBSD.org
 COMMENT=	Run multiple commands in parallel
 WWW=		https://github.com/pvolok/mprocs/
 
@@ -19,9 +19,4 @@ CARGO_INSTALL_PATH=	src
 
 PLIST_FILES=	bin/mprocs
 
-.include <bsd.port.pre.mk>
-
-post-patch:
-	@${REINPLACE_CMD} -Ee 's/new\("make"\)/new("gmake")/' ${WRKSRC}/cargo-crates/luajit-src-*/src/lib.rs
-
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

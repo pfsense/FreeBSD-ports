@@ -1,6 +1,6 @@
 PORTNAME=	glabels
 PORTVERSION=	3.4.1
-PORTREVISION=	5
+PORTREVISION=	6
 CATEGORIES=	deskutils
 MASTER_SITES=	GNOME
 
@@ -12,7 +12,7 @@ BUILD_DEPENDS=	itstool:textproc/itstool
 LIB_DEPENDS=	libsecret-1.so:security/libsecret \
 		libsoup-2.4.so:devel/libsoup
 
-USES=		desktop-file-utils gettext gmake gnome libtool pathfix \
+USES=		desktop-file-utils gettext gmake gnome libtool \
 		pkgconfig shared-mime-info tar:xz
 USE_GNOME=	cairo gdkpixbuf gtk30 intltool librsvg2
 INSTALL_TARGET=	install-strip

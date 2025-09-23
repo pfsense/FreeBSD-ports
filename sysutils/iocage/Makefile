@@ -1,15 +1,11 @@
 PORTNAME=	iocage
-PORTVERSION=	1.10
-PORTREVISION=	3
+PORTVERSION=	1.11
 CATEGORIES=	sysutils python
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
 # Pull in PR #61 to unbreak default route detection on CURRENT
-# Pull in PR #58 to fix stopping jails that contain
-# dots in their hostuuid
 PATCH_SITES=    https://github.com/freebsd/iocage/commit/
-PATCHFILES=	2120a86d1d4fd3d383a3f0bddfc1e92eb5a7d2e7.patch:-p1 \
-		c55e05aebb305b4013554ec80298113c50d1c74c.patch:-p1
+PATCHFILES=	2120a86d1d4fd3d383a3f0bddfc1e92eb5a7d2e7.patch:-p1
 
 MAINTAINER=	grembo@FreeBSD.org
 COMMENT=	FreeBSD jail manager written in Python3
@@ -28,17 +24,14 @@ RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}netifaces>0:net/py-netifaces@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}gitpython>0:devel/py-gitpython@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}jsonschema>0:devel/py-jsonschema@${PY_FLAVOR}
 TEST_DEPENDS=	${PYTHON_PKGNAMEPREFIX}libzfs>=1.0.2:filesystems/py-libzfs@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}mock>0:devel/py-mock@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}pytest4>0:devel/py-pytest4@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}pytest4-cov>0:devel/py-pytest4-cov@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}pytest-pep8>0:devel/py-pytest-pep8@${PY_FLAVOR}
+		${PYTHON_PKGNAMEPREFIX}mock>0:devel/py-mock@${PY_FLAVOR}
 
 USES=		python
 USE_GITHUB=	yes
 GH_ACCOUNT=	freebsd
 USE_PYTHON=	autoplist distutils
 
-CONFLICTS=	py*-iocage py*-iocage-devel
+CONFLICTS=	py*[0-9]-iocage py*-iocage-devel
 NO_ARCH=	yes
 
 PLIST_FILES=	${PYTHONPREFIX_SITELIBDIR}/${PORTNAME}_lib-${PORTVERSION}-py${PYTHON_VER}.egg-info/PKG-INFO \

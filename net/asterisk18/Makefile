@@ -1,5 +1,5 @@
 PORTNAME=	asterisk
-PORTVERSION=	18.26.1
+PORTVERSION=	18.26.3
 CATEGORIES=	net
 MASTER_SITES=	https://downloads.asterisk.org/pub/telephony/%SUBDIR%/:DEFAULT,g729
 MASTER_SITE_SUBDIR=	asterisk/ \
@@ -10,6 +10,9 @@ DISTFILES=	${DISTNAME}${EXTRACT_SUFX}
 DIST_SUBDIR=	${PORTNAME}
 EXTRACT_ONLY:=	${DISTNAME}${EXTRACT_SUFX}
 
+DEPRECATED=	Migrate to newer asterisk, security support ends soon
+EXPIRATION_DATE=2025-10-20
+
 MAINTAINER=	cmt@FreeBSD.org
 COMMENT=	Open Source PBX and telephony toolkit
 WWW=		https://www.asterisk.org
@@ -17,7 +20,7 @@ WWW=		https://www.asterisk.org
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-LIB_DEPENDS=	libuuid.so:misc/e2fsprogs-libuuid \
+LIB_DEPENDS=	libuuid.so:misc/libuuid \
 		libjansson.so:devel/jansson
 
 USES=		bison compiler:c11 cpe gmake gnome iconv libedit localbase \
@@ -65,8 +68,8 @@ OPTIONS_DEFINE=			ASTVERSION BACKTRACE CURL EXCHANGE FREETDS G729 LDAP LUA MACRO
 OPTIONS_DEFINE_aarch64=		GEOLOCATION
 OPTIONS_DEFINE_amd64=		DAHDI GEOLOCATION
 OPTIONS_DEFINE_i386=		DAHDI GEOLOCATION
-OPTIONS_DEFINE_powerpc=		DAHDI
-OPTIONS_DEFINE_powerpc64=	DAHDI
+OPTIONS_DEFINE_powerpc=		DAHDI GEOLOCATION
+OPTIONS_DEFINE_powerpc64=	DAHDI GEOLOCATION
 OPTIONS_DEFINE_powerpc64le=	DAHDI GEOLOCATION
 OPTIONS_DEFAULT=		CURL FREETDS GSM LUA MACRO MP3PLAYER NEWT ODBC OPUS MYSQL PGSQL \
 				PJSIP PORTAUDIO RADIUS SNMP SPANDSP SPEEX SRTP URIPARSER \
@@ -254,6 +257,10 @@ LLD_EMULATION=	elf_x86_64
 LLD_EMULATION=	aarch64elf
 .elif ${ARCH} == powerpc64le
 LLD_EMULATION=	elf64lppc
+.elif ${ARCH} == powerpc64
+LLD_EMULATION=	elf64ppc
+.elif ${ARCH} == powerpc
+LLD_EMULATION=	elf32ppc
 .endif
 .endif
 

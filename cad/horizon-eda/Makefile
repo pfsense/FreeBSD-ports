@@ -1,12 +1,8 @@
 PORTNAME=	horizon-eda
 DISTVERSIONPREFIX=	v
-DISTVERSION=	2.6.0
-PORTREVISION=	6
+DISTVERSION=	2.7.0
+PORTREVISION=	2
 CATEGORIES=	cad
-
-PATCH_SITES=	https://github.com/${GH_ACCOUNT}/${GH_PROJECT}/commit/
-PATCHFILES=	3b6b783db797b593119756821c04ac64b66b7ffa.patch:-p1 # Fix build with libgit2 1.8.2
-PATCHFILES+=	d5a46d2d7e879e82d0d2798715c1369f8ae54fcd.patch:-p1
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	EDA package for printed circuit board design
@@ -28,7 +24,7 @@ LIB_DEPENDS=	libcurl.so:ftp/curl \
 		libpodofo09.so:graphics/podofo09 \
 		libspnav.so:misc/libspnav \
 		libTKDESTEP.so:cad/opencascade \
-		libuuid.so:misc/e2fsprogs-libuuid \
+		libuuid.so:misc/libuuid \
 		libzmq.so:net/libzmq4
 
 USES=		desktop-file-utils gnome libarchive localbase meson pkgconfig python:build sqlite

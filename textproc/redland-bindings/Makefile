@@ -4,7 +4,7 @@ PORTREVISION=	4
 CATEGORIES=	textproc
 MASTER_SITES=	http://download.librdf.org/source/
 
-MAINTAINER=	kde@FreeBSD.org
+MAINTAINER=	office@FreeBSD.org
 COMMENT=	Language bindings for the Redland package
 WWW=		https://librdf.org/bindings/
 
@@ -26,7 +26,7 @@ OPTIONS_SUB=	yes
 
 PHP_CONFIGURE_WITH=	php
 PHP_USES=		php:build
-PYTHON_CONFIGURE_WITH=	python python-libext=${PYTHON_EXT_SUFFIX}.so
+PYTHON_CONFIGURE_WITH=	python python-libext=${PYTHON_TAG}.so
 PYTHON_USES=		python
 RUBY_CONFIGURE_WITH=	ruby
 RUBY_USES=		ruby

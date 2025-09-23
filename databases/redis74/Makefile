@@ -1,10 +1,10 @@
 PORTNAME=	redis
-DISTVERSION=	7.4.3
+DISTVERSION=	7.4.5
 CATEGORIES=	databases
 MASTER_SITES=	https://download.redis.io/releases/
 PKGNAMESUFFIX=	74
 
-MAINTAINER=	yasu@FreeBSD.org
+MAINTAINER=	bofh@freebsd.org
 COMMENT=	Persistent key-value database with built-in net interface
 WWW=		https://redis.io/
 

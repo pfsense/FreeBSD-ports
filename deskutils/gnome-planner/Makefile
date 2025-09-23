@@ -1,6 +1,6 @@
 PORTNAME=	gnome-planner
 PORTVERSION=	0.14.6.20220531
-PORTREVISION=	1
+PORTREVISION=	3
 CATEGORIES=	deskutils gnome
 DIST_SUBDIR=	gnome
 
@@ -15,12 +15,12 @@ BUILD_DEPENDS=	appstream-util:devel/appstream-glib \
 LIB_DEPENDS=	libgoa-1.0.so:net/gnome-online-accounts \
 		libgraphene-1.0.so:graphics/graphene \
 		libical.so:devel/libical \
-		libpeas-1.0.so:devel/libpeas \
+		libpeas-1.0.so:devel/libpeas1 \
 		libsecret-1.so:security/libsecret \
 		libsoup-2.4.so:devel/libsoup \
 		libgda-5.0.so:databases/libgda5
 
-USES=	desktop-file-utils gettext pathfix \
+USES=	desktop-file-utils gettext \
 		shared-mime-info tar:xz meson pkgconfig
 USE_GNOME=	gnomeprefix intlhack libgnomeui libgnomeprintui \
 		libgsf

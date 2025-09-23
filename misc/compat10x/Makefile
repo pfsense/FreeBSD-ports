@@ -1,6 +1,6 @@
 PORTNAME=	compat10x
 PORTVERSION=	10.4.1004000.20181014
-PORTREVISION=	1
+PORTREVISION=	3
 CATEGORIES=	misc
 MASTER_SITES=	LOCAL/des
 PKGNAMESUFFIX=	-${ARCH}
@@ -16,6 +16,7 @@ PLIST=		${PKGDIR}/pkg-plist.${ARCH}
 TARGET_DIR=	${PREFIX}/lib/compat
 TARGET32_DIR=	${PREFIX}/lib32/compat
 USE_LDCONFIG=	${TARGET_DIR}
+NO_SHLIB_PROVIDES_GLOB= libreadline.so.* libhistory.so.*
 
 .include <bsd.port.pre.mk>
 
@@ -23,8 +24,8 @@ USE_LDCONFIG=	${TARGET_DIR}
 USE_LDCONFIG32=	${TARGET32_DIR}
 .endif
 
-.if ${OPSYS} == FreeBSD && ${OSVERSION} >= 1300000
-RUN_DEPENDS+=	compat12x-${ARCH}>=0:misc/compat12x
+.if ${OPSYS} == FreeBSD && ${OSVERSION} >= 1200000
+RUN_DEPENDS+=	compat11x-${ARCH}>=0:misc/compat11x
 .endif
 
 do-install:

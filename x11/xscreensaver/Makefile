@@ -1,22 +1,23 @@
 PORTNAME=	xscreensaver
-DISTVERSION=	6.09
+DISTVERSION=	6.12
 CATEGORIES=	x11
 MASTER_SITES=	http://www.jwz.org/xscreensaver/
 
-MAINTAINER=	zirias@FreeBSD.org
+MAINTAINER=	vsasjason@gmail.com
 COMMENT=	Save your screen while you entertain your cat
 WWW=		https://www.jwz.org/xscreensaver/
 
 LICENSE=	MIT
 
-LIB_DEPENDS=	libfontconfig.so:x11-fonts/fontconfig \
-		libfreetype.so:print/freetype2 \
-		libgle.so:graphics/gle \
-		libharfbuzz.so:print/harfbuzz
-RUN_DEPENDS=	giftopnm:graphics/netpbm \
-		p5-libwww>0:www/p5-libwww \
-		p5-LWP-Protocol-https>0:www/p5-LWP-Protocol-https \
-		unix-selfauth-helper>0:security/unix-selfauth-helper
+EXTRACT_DEPENDS=	gtar:archivers/gtar
+LIB_DEPENDS=		libfontconfig.so:x11-fonts/fontconfig \
+			libfreetype.so:print/freetype2 \
+			libgle.so:graphics/gle \
+			libharfbuzz.so:print/harfbuzz
+RUN_DEPENDS=		giftopnm:graphics/netpbm \
+			p5-libwww>0:www/p5-libwww \
+			p5-LWP-Protocol-https>0:www/p5-LWP-Protocol-https \
+			unix-selfauth-helper>0:security/unix-selfauth-helper
 
 USES=		cpe gettext gl gmake gnome jpeg localbase:ldflags perl5 \
 		pkgconfig shebangfix xorg
@@ -28,7 +29,6 @@ USE_XORG=	ice sm x11 xext xft xi xinerama xmu xrandr xrender xt xxf86vm
 SHEBANG_FILES=	hacks/check-configs.pl
 
 GNU_CONFIGURE=	yes
-GNU_CONFIGURE_MANPREFIX=	${PREFIX}/share
 CONFIGURE_ARGS=	--enable-locking \
 		--with-app-defaults=${PREFIX}/lib/X11/app-defaults \
 		--with-configdir=${PREFIX}/share/xscreensaver/config/ \
@@ -53,11 +53,12 @@ CONFIGURE_ENV=	PERL="${PERL}"
 
 MAKE_ARGS=	install_prefix=${STAGEDIR}
 
+EXTRACT_CMD=	gtar
 SUB_FILES=	xscreensaver-blank.desktop xscreensaver-lock.desktop \
 		xscreensaver-start.desktop xscreensaver-stop.desktop
 
-OPTIONS_DEFINE=	FIREF NLS NSFW SETUID_HACKS XAOS1 XDALI XEARTH XMOUN XPLANET \
-		XSNOW
+OPTIONS_DEFINE=	FIREF NLS NSFW SETUID_HACKS WAYLAND XAOS1 XDALI XEARTH XMOUN \
+		XPLANET XSNOW
 OPTIONS_SUB=	yes
 
 FIREF_DESC=		Add extra port x11/fireflies
@@ -74,6 +75,9 @@ FIREF_RUN_DEPENDS=		${FIREF_HACKBIN}:x11/fireflies
 NLS_USES=			gettext-runtime
 NLS_CONFIGURE_ENABLE=		nls
 SETUID_HACKS_CONFIGURE_WITH=	setuid-hacks
+WAYLAND_BUILD_DEPENDS=		wayland-protocols>0:graphics/wayland-protocols
+WAYLAND_LIB_DEPENDS=		libwayland-client.so:graphics/wayland
+WAYLAND_CONFIGURE_WITH=		wayland
 XAOS1_RUN_DEPENDS=		xaos:graphics/xaos
 XDALI_RUN_DEPENDS=		xdaliclock:x11-clocks/xdaliclock
 XEARTH_RUN_DEPENDS=		xearth:astro/xearth

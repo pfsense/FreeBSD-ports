@@ -1,5 +1,5 @@
 PORTNAME=	postfix
-DISTVERSION=	3.10.2
+DISTVERSION=	3.10.4
 PORTREVISION?=	0
 PORTEPOCH=	1
 CATEGORIES=	mail
@@ -96,7 +96,7 @@ USERS=		postfix
 GROUPS=		mail maildrop postfix
 
 OPTIONS_DEFINE=		BDB BLACKLISTD CDB DOCS EAI INST_BASE LDAP LMDB MONGO \
-			MYSQL NIS PCRE2 PGSQL SASL SQLITE TEST TLS
+			MYSQL NIS PCRE2 PGSQL SASL SQLITE TEST TLS TLSRPT
 OPTIONS_DEFAULT?=	BLACKLISTD EAI PCRE2 TLS
 OPTIONS_RADIO=		RG1
 OPTIONS_RADIO_RG1=	SASLKMIT SASLKRB5
@@ -128,6 +128,7 @@ SASLKMIT_DESC=		If your SASL req. MIT Kerberos5, select this
 SASLKRB5_DESC=		If your SASL req. Kerberos5, select this
 SASL_DESC=		Cyrus SASL support (Dovecot SASL is always built in)
 TEST_DESC=		SMTP/LMTP test server and generator
+TLSRPT_DESC=		Enable sending RFC 8460 TLS reports
 
 BDB_USES=			bdb
 BLACKLISTD_EXTRA_PATCHES=	${FILESDIR}/extra-patch-blacklistd
@@ -143,6 +144,7 @@ PGSQL_USES=			pgsql
 SASLKMIT_LIB_DEPENDS=		libkrb5.so:security/krb5
 SASL_LIB_DEPENDS=		libsasl2.so:security/cyrus-sasl2
 SQLITE_USES=			sqlite
+TLSRPT_LIB_DEPENDS=		libtlsrpt.so:mail/libtlsrpt
 
 ALL_TARGET=		default
 
@@ -162,7 +164,7 @@ MAKEFILEFLAGS+=	DEBUG=
 
 MAKEFILEFLAGS+=	pie=yes CC="${CC}" OPT="${CFLAGS}"
 
-.if ${SSL_DEFAULT} == libressl
+.if defined(TLS) && ${SSL_DEFAULT} == libressl
 BROKEN=		error: OpenSSL-1.1.1 is the minimum supported version. LibreSSL is not supported
 .endif
 
@@ -275,6 +277,11 @@ POSTFIX_CCARGS+=	-DUSE_TLS -I${OPENSSLINC}
 POSTFIX_AUXLIBS+=	-L${OPENSSLLIB} ${LDFLAGS} -lssl -lcrypto
 .else
 POSTFIX_CCARGS+=	-DNO_TLS
+.endif
+
+.if ${PORT_OPTIONS:MTLSRPT}
+POSTFIX_CCARGS+=	-DUSE_TLSRPT -I${LOCALBASE}/include
+POSTFIX_AUXLIBS+=	-L${LOCALBASE}/lib -Wl,-rpath,${LOCALBASE}/lib -ltlsrpt
 .endif
 
 .if ${PORT_OPTIONS:MBDB}

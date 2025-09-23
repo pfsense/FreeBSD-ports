@@ -206,7 +206,7 @@ EOD;
 
 	/* (re)start service */
 	if (is_service_running("telegraf")) {
-		restart_service("telegraf");
+		restart_service("telegraf", $pidfile, 3);
 	} else {
 		start_service("telegraf");
 	}

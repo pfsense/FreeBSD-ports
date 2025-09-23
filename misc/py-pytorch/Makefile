@@ -1,6 +1,7 @@
 PORTNAME=	pytorch
 DISTVERSIONPREFIX=	v
-DISTVERSION=	2.7.0
+DISTVERSION=	2.8.0
+PORTREVISION=	2
 CATEGORIES=	misc # machine-learning
 MASTER_SITES=	https://github.com/pytorch/pytorch/releases/download/v${DISTVERSION}/
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -9,7 +10,8 @@ DIST_SUBDIR=	${PORTNAME}
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	PyTorch: Tensors and dynamic neural networks in Python
-WWW=		https://pytorch.org/
+WWW=		https://pytorch.org/ \
+		https://github.com/pytorch/pytorch
 
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE
@@ -48,6 +50,7 @@ RUN_DEPENDS+=	${PYTHON_PKGNAMEPREFIX}astunparse>0:devel/py-astunparse@${PY_FLAVO
 
 USES=		compiler:c++17-lang localbase:ldflags python
 USE_PYTHON=	distutils autoplist
+USE_LDCONFIG=	${PYTHON_SITELIBDIR}/torch/lib
 
 USE_GITHUB=	nodefault
 GH_TUPLE=	pytorch:cpuinfo:1e83a2f:cpuinfo/cpuinfo-with-freebsd-support # https://github.com/pytorch/cpuinfo/pull/230/commits
@@ -58,6 +61,7 @@ MAKE_ENV+=	USE_MKLDNN=0 # disable MKLDNN that doesn't exist, see https://github.
 MAKE_ENV+=	USE_CUDNN=0
 MAKE_ENV+=	USE_LAPACK=1 # needed on FreeBSD to run w/out GPU
 MAKE_ENV+=	USE_QNNPACK=0
+MAKE_ENV+=	USE_DISTRIBUTED=1
 LDFLAGS+=	-lexecinfo
 LDFLAGS_powerpc64le=	-pthread
 
@@ -68,6 +72,14 @@ POST_PLIST=	fix-plist
 TEST_ENV=	${MAKE_ENV} PYTHONPATH=${STAGEDIR}${PYTHONPREFIX_SITELIBDIR}
 TEST_WRKSRC=	${WRKSRC}/test
 
+OPTIONS_DEFINE=		VULKAN
+OPTIONS_DEFAULT=	VULKAN # VULKAN is experimental in PyTorch and only simple computations work
+
+VULKAN_MAKE_ENV=	USE_VULKAN=1 USE_VULKAN_SHADERC_RUNTIME=1 USE_VULKAN_WRAPPER=0 # see https://docs.pytorch.org/tutorials/unstable/vulkan_workflow.html
+VULKAN_BUILD_DEPENDS=	glslc:graphics/shaderc \
+			vulkan-headers>0:graphics/vulkan-headers
+VULKAN_LIB_DEPENDS=	libvulkan.so:graphics/vulkan-loader
+
 .include <bsd.port.options.mk>
 
 .if ${OPSYS} == FreeBSD
@@ -76,15 +88,15 @@ USES+=	llvm:max=15
 
 post-patch:
 	@cd ${WRKSRC} && \
-		${RM} -r third_party/cpuinfo third_party/fbgemm/third_party/cpuinfo && \
+		${RM} -r third_party/cpuinfo third_party/fbgemm/external/cpuinfo && \
 		${CP} -r cpuinfo-with-freebsd-support third_party/cpuinfo && \
-		${CP} -r cpuinfo-with-freebsd-support third_party/fbgemm/third_party/cpuinfo
+		${CP} -r cpuinfo-with-freebsd-support third_party/fbgemm/external/cpuinfo
 
 post-install: # strip binaries
 	@${STRIP_CMD} \
 		${STAGEDIR}${PYTHON_SITELIBDIR}/torch/bin/torch_shm_manager \
-		${STAGEDIR}${PYTHON_SITELIBDIR}/torch/_C${PYTHON_EXT_SUFFIX}.so \
-		${STAGEDIR}${PYTHON_SITELIBDIR}/functorch/_C${PYTHON_EXT_SUFFIX}.so \
+		${STAGEDIR}${PYTHON_SITELIBDIR}/torch/_C${PYTHON_TAG}.so \
+		${STAGEDIR}${PYTHON_SITELIBDIR}/functorch/_C${PYTHON_TAG}.so \
 		${STAGEDIR}${PYTHON_SITELIBDIR}/torch/lib/lib*.so
 
 fix-plist: # remove the stray %%PYTHON_SITELIBDIR%%/caffe2 file

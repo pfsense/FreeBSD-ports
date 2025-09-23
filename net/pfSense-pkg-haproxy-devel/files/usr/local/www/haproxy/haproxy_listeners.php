@@ -203,7 +203,12 @@ if ($savemsg) {
 
 $display_apply = file_exists($d_haproxyconfdirty_path) ? "" : "none";
 echo "<div id='showapplysettings' style='display: {$display_apply};'>";
-print_apply_box(sprintf(gettext("The haproxy configuration has been changed.%sYou must apply the changes in order for them to take effect."), "<br/>"));
+print_apply_box(sprintf(
+	gettext(
+		"The HAProxy configuration has been changed.%sServer states are preserved between configuration changes - " .
+		"use %sSettings > Force Service Restart%s to apply changes immediately."
+	), "<br/>", '<a href="/haproxy/haproxy_global.php">', '</a>'
+));
 echo "</div>";
 
 haproxy_display_top_tabs_active($haproxy_tab_array['haproxy'], "frontend");

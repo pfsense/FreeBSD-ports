@@ -3,7 +3,7 @@
  * mdns-bridge.priv.inc
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2024 Denny Page
+ * Copyright (c) 2024-2025 Denny Page
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");

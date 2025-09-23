@@ -1,5 +1,6 @@
 PORTNAME=	rrdtool
 DISTVERSION=	1.9.0
+PORTREVISION=	1
 CATEGORIES=	databases graphics
 MASTER_SITES=	https://github.com/oetiker/rrdtool-1.x/releases/download/v${DISTVERSION}/
 
@@ -10,7 +11,7 @@ WWW=		https://oss.oetiker.ch/rrdtool/
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-USES=		cpe gmake gnome libtool pathfix pkgconfig shebangfix
+USES=		cpe gmake gnome libtool pkgconfig shebangfix
 CPE_VENDOR=	rrdtool_project
 USE_GNOME=	glib20 libxml2
 USE_LDCONFIG=	yes

@@ -1,11 +1,10 @@
---- src/vs/platform/environment/node/userDataPath.ts.orig	2024-11-05 12:18:19 UTC
+--- src/vs/platform/environment/node/userDataPath.ts.orig	2025-06-11 13:47:56 UTC
 +++ src/vs/platform/environment/node/userDataPath.ts
-@@ -76,7 +76,7 @@ function doGetUserDataPath(cliArgs: NativeParsedArgs, 
- 		case 'darwin':
- 			appDataPath = path.join(os.homedir(), 'Library', 'Application Support');
+@@ -87,6 +87,7 @@ function doGetUserDataPath(cliArgs: NativeParsedArgs, 
+ 			appDataPath = join(homedir(), 'Library', 'Application Support');
  			break;
--		case 'linux':
-+		case 'linux': case 'freebsd':
- 			appDataPath = process.env['XDG_CONFIG_HOME'] || path.join(os.homedir(), '.config');
+ 		case 'linux':
++		case 'freebsd':
+ 			appDataPath = process.env['XDG_CONFIG_HOME'] || join(homedir(), '.config');
  			break;
  		default:

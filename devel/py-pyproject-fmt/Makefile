@@ -1,5 +1,5 @@
 PORTNAME=	pyproject-fmt
-PORTVERSION=	2.5.1
+PORTVERSION=	2.6.0
 PORTREVISION=	2
 CATEGORIES=	devel python
 MASTER_SITES=	PYPI
@@ -14,7 +14,7 @@ WWW=		https://github.com/tox-dev/toml-fmt/tree/main/pyproject-fmt \
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE.txt
 
-BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}maturin>=1.7.1:devel/py-maturin@${PY_FLAVOR}
+BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}maturin>=1.8.4:devel/py-maturin@${PY_FLAVOR}
 RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}toml-fmt-common>=1.0.1<1.0.1_99:devel/py-toml-fmt-common@${PY_FLAVOR}
 
 USES=		cargo python:3.9+

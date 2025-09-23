@@ -1,6 +1,6 @@
 PORTNAME=	wine
 DISTVERSION=	10.0
-PORTREVISION=	1
+PORTREVISION=	2
 PORTEPOCH=	1
 CATEGORIES=	emulators
 MASTER_SITES=	https://dl.winehq.org/wine/source/10.0/
@@ -35,6 +35,7 @@ CONFIGURE_ARGS+=--verbose \
 		--without-capi \
 		--without-coreaudio \
 		--without-dbus \
+		--without-ffmpeg \
 		--without-gettext --without-gettextpo \
 		--without-gphoto \
 		--without-gssapi \
@@ -153,6 +154,9 @@ post-patch:
 .else
 EXTRA_PATCHES+=	files/extra-patch-tools-winebuild-res32
 PLIST_SUB+=		WINE32="" WINE64="@comment " WINEARCH="i386"
+
+post-patch:
+	${MV} ${WRKSRC}/loader/*.man.in ${WRKSRC}/tools/wine/
 .endif
 
 pre-build:

@@ -1,6 +1,6 @@
 PORTNAME=	owntone
 DISTVERSION=	28.12
-PORTREVISION=	0
+PORTREVISION=	3
 CATEGORIES=	audio
 MASTER_SITES=	https://github.com/owntone/owntone-server/releases/download/${DISTVERSION}/
 
@@ -26,10 +26,10 @@ LIB_DEPENDS=	libavahi-client.so:net/avahi-app \
 		libsodium.so:security/libsodium \
 		libunistring.so:devel/libunistring \
 		libprotobuf-c.so:devel/protobuf-c \
-		libuuid.so:misc/e2fsprogs-libuuid
+		libuuid.so:misc/libuuid
 
 USES=		tar:xz localbase libtool iconv:wchar_t pkgconfig gnome gmake \
-		gperf sqlite gnome pathfix
+		gperf sqlite gnome
 USE_GNOME=	libxml2
 
 GNU_CONFIGURE=	yes

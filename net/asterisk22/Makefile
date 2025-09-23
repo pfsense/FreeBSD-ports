@@ -1,5 +1,5 @@
 PORTNAME=	asterisk
-DISTVERSION=	22.4.0
+DISTVERSION=	22.5.1
 CATEGORIES=	net
 MASTER_SITES=	https://downloads.asterisk.org/pub/telephony/%SUBDIR%/:DEFAULT,g729
 MASTER_SITE_SUBDIR=	asterisk/ \
@@ -20,7 +20,7 @@ LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
 LIB_DEPENDS=	libjansson.so:devel/jansson \
-		libuuid.so:misc/e2fsprogs-libuuid
+		libuuid.so:misc/libuuid
 
 USES=		bison compiler:c11 cpe gmake gnome iconv libedit localbase \
 		ncurses pkgconfig shebangfix sqlite ssl
@@ -67,9 +67,9 @@ OPTIONS_DEFINE=			ASTVERSION BACKTRACE CURL EXCHANGE FREETDS G729 LDAP LUA \
 OPTIONS_DEFINE_aarch64=		GEOLOCATION
 OPTIONS_DEFINE_amd64=		DAHDI GEOLOCATION
 OPTIONS_DEFINE_i386=		DAHDI GEOLOCATION
-OPTIONS_DEFINE_powerpc=		DAHDI
-OPTIONS_DEFINE_powerpc64=	DAHDI
-OPTIONS_DEFINE_powerpc64le=	DAHDI
+OPTIONS_DEFINE_powerpc=		DAHDI GEOLOCATION
+OPTIONS_DEFINE_powerpc64=	DAHDI GEOLOCATION
+OPTIONS_DEFINE_powerpc64le=	DAHDI GEOLOCATION
 OPTIONS_DEFAULT=		CURL FREETDS GSM LUA MP3PLAYER NEWT ODBC OPUS MYSQL PGSQL \
 				PJSIP PORTAUDIO RADIUS SNMP SPANDSP SPEEX SRTP URIPARSER \
 				VORBIS XMLDOC
@@ -252,6 +252,12 @@ LLD_EMULATION=	elf_i386
 LLD_EMULATION=	elf_x86_64
 .elif ${ARCH} == aarch64
 LLD_EMULATION=	aarch64elf
+.elif ${ARCH} == powerpc64le
+LLD_EMULATION=	elf64lppc
+.elif ${ARCH} == powerpc64
+LLD_EMULATION=	elf64ppc
+.elif ${ARCH} == powerpc
+LLD_EMULATION=	elf32ppc
 .endif
 .endif
 

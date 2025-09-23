@@ -1,6 +1,7 @@
 PORTNAME=	gnuradio
 DISTVERSIONPREFIX=	v
 DISTVERSION=	3.10.12.0
+PORTREVISION=	3
 CATEGORIES=	comms astro hamradio
 
 MAINTAINER=	hamradio@FreeBSD.org
@@ -11,7 +12,7 @@ LICENSE=	GPLv3
 
 BUILD_DEPENDS=	${PYNUMPY} \
 		${PYTHON_PKGNAMEPREFIX}jsonschema>0:devel/py-jsonschema@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}lxml>0:devel/py-lxml@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}lxml5>0:devel/py-lxml5@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}pyqtgraph>0:graphics/py-pyqtgraph@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}sphinx>=1.2.2,1:textproc/py-sphinx@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}pyyaml>0:devel/py-pyyaml@${PY_FLAVOR} \
@@ -54,7 +55,7 @@ LIB_DEPENDS=	libad9361.so:misc/libad9361-iio \
 RUN_DEPENDS:=	${BUILD_DEPENDS}
 
 USES=		cmake compiler:c++14-lang desktop-file-utils fortran gnome \
-		iconv localbase:ldflags pathfix perl5 pkgconfig pyqt:5 python \
+		iconv localbase:ldflags perl5 pkgconfig pyqt:5 python \
 		qt:5 shared-mime-info shebangfix
 
 SHEBANG_FILES=	gnuradio-runtime/python/gnuradio/ctrlport/gr-ctrlport-monitor \

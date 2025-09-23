@@ -1,5 +1,5 @@
 PORTNAME=	git
-DISTVERSION=	2.49.0
+DISTVERSION=	2.51.0
 CATEGORIES=	devel
 MASTER_SITES=	KERNEL_ORG/software/scm/git
 DISTFILES=	${DISTNAME}${EXTRACT_SUFX} \
@@ -59,10 +59,8 @@ SHEBANG_FILES=	Documentation/*.perl \
 		contrib/*/*.pl \
 		contrib/*/*/*.perl \
 		contrib/*/*/*.pl \
-		contrib/buildsystems/generate \
 		contrib/contacts/git-contacts \
 		contrib/fast-import/import-zips.py \
-		contrib/hooks/update-paranoid \
 		git-p4.py \
 		templates/hooks/fsmonitor-watchman.sample
 TEST_TARGET=	test
@@ -71,7 +69,7 @@ CONFIGURE_ARGS=	--enable-pthreads=-pthread ac_cv_header_libcharset_h=no
 
 .if ${SUBPORT} == core
 
-OPTIONS_DEFINE=	CONTRIB CURL GITWEB HTMLDOCS ICONV NLS PCRE2 PERL SEND_EMAIL \
+OPTIONS_DEFINE=	CONTRIB CURL DOCS GITWEB ICONV NLS PCRE2 PERL SEND_EMAIL \
 		SUBTREE
 OPTIONS_DEFAULT=CONTRIB CURL GITWEB ICONV PCRE2 PERL SEND_EMAIL SUBTREE
 
@@ -91,7 +89,6 @@ OPTIONS_FILE=		${PORT_DBDIR}/${OPTIONS_NAME}/${FLAVOR}-options
 CONTRIB_DESC=	Install contributed scripts
 CURL_DESC=	Install curl support (provides HTTPS transport)
 GITWEB_DESC=	Install gitweb
-HTMLDOCS_DESC=	Install additional documentation
 PCRE2_DESC=	Use Perl Compatible Regular Expressions (v2)
 SEND_EMAIL_DESC=Enable the git-send-email(1) script
 SUBTREE_DESC=	Install git-subtree
@@ -106,7 +103,6 @@ PERL_RUN_DEPENDS=	p5-Error>=0:lang/p5-Error
 PERL_MAKE_ARGS_OFF=	NO_PERL=1
 
 GITWEB_IMPLIES=		PERL
-GITWEB_RUN_DEPENDS=	p5-CGI>=0:www/p5-CGI
 GITWEB_MAKE_ARGS_OFF=	NO_GITWEB=1
 
 PCRE2_LIB_DEPENDS=	libpcre2-8.so:devel/pcre2
@@ -124,7 +120,7 @@ CURL_RUN_DEPENDS=	curl:ftp/curl
 CURL_LIB_DEPENDS=	libexpat.so:textproc/expat2
 CURL_MAKE_ARGS_OFF=	NO_CURL=1 NO_EXPAT=1
 
-HTMLDOCS_DISTFILES=	${PORTNAME}-htmldocs-${DISTVERSION}${EXTRACT_SUFX}
+DOCS_DISTFILES=	${PORTNAME}-htmldocs-${DISTVERSION}${EXTRACT_SUFX}
 
 SUBTREE_BUILD_DEPENDS=	asciidoctor:textproc/rubygem-asciidoctor \
 			xmlto:textproc/xmlto
@@ -190,7 +186,7 @@ RMMAN1+=	git-cvsimport.1 \
 RMMAN7+=	gitcvs-migration.7
 .endif
 
-post-extract-HTMLDOCS-on:
+post-extract-DOCS-on:
 	@${MKDIR} ${WRKDIR}/htmldocs
 	@cd ${WRKDIR}/htmldocs && ${EXTRACT_CMD} ${EXTRACT_BEFORE_ARGS} \
 		${DISTDIR}/${PORTNAME}-htmldocs-${DISTVERSION}${EXTRACT_SUFX} \
@@ -223,7 +219,7 @@ post-patch:
 .if ${SUBPORT} == gui
 	@${REINPLACE_CMD} -e "/exec wish/s,wish,${WISH}," \
 		${WRKSRC}/gitk-git/gitk \
-		${WRKSRC}/git-gui/git-gui--askpass
+		${WRKSRC}/git-gui/git-gui--askpass.sh
 .endif
 
 post-patch-CONTRIB-on:
@@ -252,18 +248,13 @@ post-install:
 		${COPYTREE_SHARE} . ${STAGEDIR}${PREFIX}/share/man/man5)
 	(cd ${WRKDIR}/man7/ && \
 		${COPYTREE_SHARE} . ${STAGEDIR}${PREFIX}/share/man/man7)
-	${MKDIR} ${STAGEDIR}${PREFIX}/share/emacs/site-lisp/git
-	${INSTALL_DATA} ${WRKSRC}/contrib/emacs/git.el \
-		${STAGEDIR}${PREFIX}/share/emacs/site-lisp/git/
-	${INSTALL_DATA} ${WRKSRC}/contrib/emacs/git-blame.el \
-		${STAGEDIR}${PREFIX}/share/emacs/site-lisp/git/
 	@${MKDIR} ${STAGEDIR}${PREFIX}/etc/bash_completion.d
 	${INSTALL_SCRIPT} ${WRKSRC}/contrib/completion/git-completion.bash \
 		${STAGEDIR}${PREFIX}/etc/bash_completion.d/
 	${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/scalar \
 		${STAGEDIR}${PREFIX}/libexec/git-core/scalar
 
-post-install-HTMLDOCS-on:
+post-install-DOCS-on:
 	# Manually remove the index.html symlink before installing, and then
 	# recreate it after. This is necessary because the distfile is
 	# extracted with --no-same-owner. If the distfile is extracted as a
@@ -304,8 +295,8 @@ do-install:
 		${STAGEDIR}${PREFIX}/libexec/git-core/
 	${LN} ${STAGEDIR}${PREFIX}/libexec/git-core/git-gui \
 		${STAGEDIR}${PREFIX}/libexec/git-core/git-citool
-	${INSTALL_SCRIPT} ${WRKSRC}/git-gui/git-gui--askpass \
-		${STAGEDIR}${PREFIX}/libexec/git-core/
+	${INSTALL_SCRIPT} ${WRKSRC}/git-gui/git-gui--askpass.sh \
+		${STAGEDIR}${PREFIX}/libexec/git-core/git-gui--askpass
 	${INSTALL_DATA} ${WRKSRC}/git-gui/lib/tclIndex \
 		${STAGEDIR}${PREFIX}/share/git-gui/lib/
 	${INSTALL_DATA} ${WRKSRC}/git-gui/lib/*.ico \

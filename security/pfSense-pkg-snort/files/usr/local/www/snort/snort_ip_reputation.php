@@ -60,7 +60,7 @@ if ($_POST['mode'] == 'blist_add' && isset($_POST['iplist'])) {
 	$pconfig = $_POST;
 
 	// Test the supplied IP List file to see if it exists
-	if (file_exists($_POST['iplist'])) {
+	if (file_exists($iprep_path . basename($_POST['iplist']))) {
 		// See if the file is already assigned to the interface
 		foreach ($a_nat['blist_files']['item'] as $f) {
 			if ($f == basename($_POST['iplist'])) {
@@ -86,7 +86,7 @@ if ($_POST['mode'] == 'wlist_add' && isset($_POST['iplist'])) {
 	$pconfig = $_POST;
 
 	// Test the supplied IP List file to see if it exists
-	if (file_exists($_POST['iplist'])) {
+	if (file_exists($iprep_path . basename($_POST['iplist']))) {
 		// See if the file is already assigned to the interface
 		foreach ($a_nat['wlist_files']['item'] as $f) {
 			if ($f == basename($_POST['iplist'])) {

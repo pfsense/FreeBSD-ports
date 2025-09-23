@@ -65,7 +65,6 @@
     SUBDIR += fyi
     SUBDIR += ganttproject
     SUBDIR += gcal
-    SUBDIR += gcalcli
     SUBDIR += genius
     SUBDIR += glabels
     SUBDIR += gnome-calendar
@@ -87,6 +86,7 @@
     SUBDIR += gnome-shell-extension-filesmenu
     SUBDIR += gnome-shell-extension-hidetopbar
     SUBDIR += gnome-shell-extension-lockkeys
+    SUBDIR += gnome-shell-extension-manager
     SUBDIR += gnome-shell-extension-mediaplayer
     SUBDIR += gnome-shell-extension-openweather
     SUBDIR += gnome-shell-extension-panel-osd
@@ -133,6 +133,7 @@
     SUBDIR += just
     SUBDIR += kaddressbook
     SUBDIR += kalarm
+    SUBDIR += kanbanapp
     SUBDIR += kcharselect
     SUBDIR += kchmviewer
     SUBDIR += kdeconnect-kde
@@ -152,7 +153,6 @@
     SUBDIR += kronometer
     SUBDIR += kruler
     SUBDIR += ktimetracker
-    SUBDIR += kuserfeedback
     SUBDIR += kweather
     SUBDIR += kweathercore
     SUBDIR += latte-dock
@@ -238,15 +238,16 @@
     SUBDIR += py-send2trash
     SUBDIR += py-taskw
     SUBDIR += py-term-background
-    SUBDIR += py-todoman
     SUBDIR += py-trash-cli
     SUBDIR += py-vdirsyncer
+    SUBDIR += py-vit
     SUBDIR += py-vobject
     SUBDIR += py-vorta
     SUBDIR += qlipper
     SUBDIR += qmediamanager
     SUBDIR += qownnotes
     SUBDIR += qtfeedback
+    SUBDIR += readur
     SUBDIR += recoll
     SUBDIR += rednotebook
     SUBDIR += remind

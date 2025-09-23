@@ -1,5 +1,5 @@
 PORTNAME=	gupnp-av
-PORTVERSION=	0.14.3
+PORTVERSION=	0.14.4
 CATEGORIES=	net
 MASTER_SITES=	GNOME
 
@@ -19,6 +19,8 @@ USE_GNOME=	glib20 introspection:build libxml2
 MESON_ARGS=	--default-library=both -Dgtk_doc=false -Dintrospection=true
 USE_CSTD=	c11
 USE_LDCONFIG=	yes
+
+PLIST_SUB=	PATCH_VERSION=${PORTVERSION:E}
 
 OPTIONS_DEFINE=	VAPI
 OPTIONS_SUB=	yes

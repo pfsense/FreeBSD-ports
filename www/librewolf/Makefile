@@ -1,5 +1,5 @@
 PORTNAME=	librewolf
-DISTVERSION=	138.0.4
+DISTVERSION=	141.0.3
 LWPATCH=	-1
 DISTVERSIONSUFFIX=	${LWPATCH}.source
 CATEGORIES=	www wayland
@@ -13,7 +13,7 @@ LICENSE=	MPL20
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
 BUILD_DEPENDS=	nspr>=4.32:devel/nspr \
-		nss>=3.110:security/nss \
+		nss>=3.112:security/nss \
 		icu>=76.1:devel/icu \
 		libevent>=2.1.8:devel/libevent \
 		harfbuzz>=10.1.0:print/harfbuzz \
@@ -23,7 +23,6 @@ BUILD_DEPENDS=	nspr>=4.32:devel/nspr \
 		libvpx>=1.15.0:multimedia/libvpx \
 		${PYTHON_PKGNAMEPREFIX}sqlite3>0:databases/py-sqlite3@${PY_FLAVOR} \
 		v4l_compat>0:multimedia/v4l_compat \
-		autoconf2.13:devel/autoconf2.13 \
 		nasm:devel/nasm \
 		yasm:devel/yasm \
 		zip:archivers/zip \
@@ -37,20 +36,22 @@ USE_MOZILLA=	-sqlite
 # dist/include/mozilla/intl/ICU4CGlue.h:8:10: fatal error: 'unicode/uenum.h' file not found, err: true
 CONFIGURE_ENV+=	BINDGEN_CFLAGS="-I${LOCALBASE}/include"
 CONFIGURE_ENV+=	MOZ_REQUIRE_SIGNING=""
-#CFLAGS_powerpc64=	-DHWY_COMPILE_ONLY_SCALAR
-CFLAGS_powerpc64le=	-DSQLITE_BYTEORDER=1234
 
 WRKSRC=		${WRKDIR}/${PORTNAME}-${DISTVERSION}${LWPATCH}
 
+FIREFOX_ICON=		${MOZILLA}.png
+FIREFOX_ICON_SRC=	${PREFIX}/lib/${MOZILLA}/browser/chrome/icons/default/default48.png
+
 MOZILLA_CAP=	${MOZILLA:C/^(.).*/\1/:tu}${MOZILLA:C/^.//}
 
-MOZ_EXPORT+=	MOZ_TELEMETRY_REPORTING="" \
+MOZ_EXPORT=	MOZ_TELEMETRY_REPORTING="" \
 		MOZILLA_OFFICIAL="1" \
 		MOZ_OFFICIAL_BRANDING="1" \
 		MOZ_APP_DISPLAYNAME="${MOZILLA_CAP}" \
 		MOZ_APP_NAME="${MOZILLA}"
 
 MOZ_OPTIONS=	--enable-application=browser \
+		--with-wasi-sysroot=${LOCALBASE}/share/wasi-sysroot \
 		--allow-addon-sideload \
 		--disable-crashreporter \
 		--disable-debug \
@@ -64,16 +65,18 @@ MOZ_OPTIONS=	--enable-application=browser \
 		--with-branding=browser/branding/${MOZILLA} \
 		--with-unsigned-addon-scopes=app,system \
 		--enable-bootstrap \
-		--with-wasi-sysroot=${LOCALBASE}/share/wasi-sysroot \
 		MOZ_CRASHREPORTER=0 \
 		MOZ_DATA_REPORTING=0
-
-FIREFOX_ICON=		${MOZILLA}.png
-FIREFOX_ICON_SRC=	${PREFIX}/lib/${MOZILLA}/browser/chrome/icons/default/default48.png
 
 .include "${.CURDIR}/../../www/firefox/Makefile.options"
 
 .include <bsd.port.options.mk>
+
+.if ${ARCH} == i386 && ${MACHINE_CPU:Msse2}
+# is not enabled on i386 by default
+# Fix for error: always_inline function '_mm_setzero_si64' requires target feature 'sse2'
+CFLAGS_i386+=	-msse2
+.endif
 
 .if ${ARCH} == amd64
 MOZ_OPTIONS+=	--enable-rust-simd
@@ -91,7 +94,7 @@ post-patch:
 	@${RM} ${WRKSRC}/mozconfig
 
 post-install:
-	${INSTALL_DATA} ${WRKDIR}/${MOZILLA_EXEC_NAME}.desktop ${STAGEDIR}${PREFIX}/share/applications
+	${INSTALL_DATA} ${WRKDIR}/${MOZILLA_EXEC_NAME}.desktop ${STAGEDIR}${DESKTOPDIR}
 	${MKDIR} ${STAGEDIR}${PREFIX}/share/pixmaps
 	${LN} -sf ${FIREFOX_ICON_SRC} ${STAGEDIR}${PREFIX}/share/pixmaps/${FIREFOX_ICON}
 

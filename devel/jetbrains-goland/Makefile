@@ -1,5 +1,5 @@
 PORTNAME=	goland
-DISTVERSION=	2024.3.5
+DISTVERSION=	2025.1.4
 CATEGORIES=	devel
 MASTER_SITES=	https://download-cdn.jetbrains.com/go/
 PKGNAMEPREFIX=	jetbrains-
@@ -26,7 +26,7 @@ RUN_DEPENDS=	intellij-fsnotifier>0:java/intellij-fsnotifier \
 USES=		cpe java python:run
 
 CPE_VENDOR=	jetbrains
-JAVA_VERSION=	17+
+JAVA_VERSION=	21+
 
 DATADIR=	${PREFIX}/share/jetbrains/${PORTNAME}
 
@@ -65,6 +65,7 @@ do-install:
 		${WRKSRC}/lib/jna \
 		${WRKSRC}/lib/native \
 		${WRKSRC}/lib/pty4j \
+		${WRKSRC}/lib/skiko-awt-runtime-all \
 		${WRKSRC}/plugins/cwm-plugin \
 		${WRKSRC}/plugins/gateway-plugin/lib/remote-dev-workers \
 		${WRKSRC}/plugins/go-plugin/lib/dlv \
@@ -92,6 +93,8 @@ do-install:
 # Use sqlite replacement provided by devel/jetbrains-sqlite
 	${MKDIR} ${STAGEDIR}${DATADIR}/lib/native/${_SQLITE_ARCH}
 	${LN} -sf ../../../../sqlite/${ARCH}/libsqliteij.so ${STAGEDIR}${DATADIR}/lib/native/${_SQLITE_ARCH}/libsqliteij.so
+# Disable automatic updates
+	${ECHO} "ide.no.platform.update=FreeBSD Ports" >> ${STAGEDIR}${DATADIR}/bin/idea.properties
 
 do-install-DELVE-on:
 	${ECHO} "dlv.path=${PREFIX}/bin/dlv" >> ${STAGEDIR}${DATADIR}/bin/idea.properties

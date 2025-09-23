@@ -1,13 +1,10 @@
 PORTNAME=	telegram-desktop
-DISTVERSION=	5.14.1
+DISTVERSION=	6.0.2
 PORTREVISION=	1
 CATEGORIES=	net-im
 MASTER_SITES=	https://github.com/${GH_ACCOUNT}/${GH_PROJECT}/releases/download/v${DISTVERSION}/
 DISTNAME=	tdesktop-${DISTVERSION}-full
 DISTFILES=	${DISTNAME}${EXTRACT_SUFX}
-
-PATCH_SITES=	https://github.com/telegramdesktop/tdesktop/commit/
-PATCHFILES=	f676d32f96e70874d9d8e78788c37b82b1e3324a.patch:-p1
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Telegram Desktop messaging app
@@ -28,6 +25,7 @@ BUILD_DEPENDS=	boost-libs>0:devel/boost-libs \
 		tl-expected>0:devel/tl-expected \
 		v4l_compat>0:multimedia/v4l_compat \
 		yasm:devel/yasm \
+		${LOCALBASE}/lib/libtde2e.a:net-im/tde2e \
 		${LOCALBASE}/lib/libtg_owt.a:net-im/tg_owt
 LIB_DEPENDS=	libabsl_base.so:devel/abseil \
 		libada.so:devel/libada \
@@ -38,7 +36,9 @@ LIB_DEPENDS=	libabsl_base.so:devel/abseil \
 		libfmt.so:devel/libfmt \
 		libgeoclue-2.so:net/geoclue \
 		libgeocode-glib-2.so:net/geocode-glib2 \
+		libheif.so:graphics/libheif \
 		libhunspell-1.7.so:textproc/hunspell \
+		libjxl.so:graphics/libjxl \
 		liblz4.so:archivers/liblz4 \
 		libopenh264.so:multimedia/openh264 \
 		libopus.so:audio/opus \
@@ -47,7 +47,6 @@ LIB_DEPENDS=	libabsl_base.so:devel/abseil \
 		libqrcodegencpp.so:graphics/qr-code-generator \
 		librnnoise.so:audio/rnnoise \
 		libsrtp2.so:net/libsrtp2 \
-		libtde2e.so:net-im/tdlib \
 		libxxhash.so:devel/xxhash \
 		libvpx.so:multimedia/libvpx
 
@@ -66,9 +65,10 @@ USE_GNOME=	glib20 glibmm26 introspection
 
 CMAKE_ARGS=	-DTDESKTOP_API_ID=${TELEGRAM_API_ID} -DTDESKTOP_API_HASH=${TELEGRAM_API_HASH} \
 		-DQT_VERSION_MAJOR=6
-CMAKE_ON=	DESKTOP_APP_USE_PACKAGED DESKTOP_APP_DISABLE_CRASH_REPORTS \
-		DESKTOP_APP_DISABLE_JEMALLOC \
-		DESKTOP_APP_DISABLE_SCUDO
+# The order of the variables is important here due to complex combination validation 
+CMAKE_ON=	DESKTOP_APP_USE_PACKAGED \
+		DESKTOP_APP_DISABLE_CRASH_REPORTS \
+		DESKTOP_APP_DISABLE_QT_PLUGINS
 
 # Since cmake 3.25.0, BSDs are no longer recognised as Linux (in this port).
 CMAKE_ARGS+=	-DLINUX=true
@@ -92,14 +92,11 @@ SYSTEM_FONTS_DESC=	Use system fonts instead of bundled patched ones
 
 ALSA_LIB_DEPENDS=	libasound.so:audio/alsa-lib
 PULSEAUDIO_LIB_DEPENDS=	libpulse.so:audio/pulseaudio
-ALSA_CMAKE_BOOL_OFF=	LIBTGVOIP_DISABLE_ALSA
-PULSEAUDIO_CMAKE_BOOL_OFF=	LIBTGVOIP_DISABLE_PULSEAUDIO
 SYSTEM_FONTS_CMAKE_BOOL_OFF=	DESKTOP_APP_USE_PACKAGED_FONTS
-WAYLAND_CMAKE_BOOL_OFF=	DESKTOP_APP_DISABLE_WAYLAND_INTEGRATION
 WAYLAND_USE=		qt=wayland
 X11_CMAKE_BOOL_OFF=	DESKTOP_APP_DISABLE_X11_INTEGRATION
 X11_USES=		xorg
-X11_USE=		xorg=x11,xcb,xcomposite,xdamage,xext,xfixes,xrandr,xrender,xtst
+X11_USE=		xorg=x11,xcb,xcomposite,xdamage,xext,xfixes,xrandr,xtst
 X11_LIB_DEPENDS=	libxcb-keysyms.so:x11/xcb-util-keysyms \
 			libxkbcommon.so:x11/libxkbcommon
 

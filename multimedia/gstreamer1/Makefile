@@ -1,6 +1,5 @@
 PORTNAME=	gstreamer
 PORTVERSION=	${_GST_VERSION}
-PORTREVISION=	1
 CATEGORIES=	multimedia
 MASTER_SITES=	https://gstreamer.freedesktop.org/src/gstreamer/
 PKGNAMESUFFIX=	1
@@ -60,5 +59,15 @@ PTP_MESON_ENABLED=	ptp-helper
 .if ${ARCH:Naarch64:Namd64:Narmv7:Ni386:Npowerpc64:Npowerpc64le:Npowerpc:Nriscv64}
 MESON_ARGS+=	-D ptp-helper=disabled
 .endif
+
+# Custom target to update distinfo for all gstreamer1 ports under control of
+# _GST1_VERSION set in Mk/Uses/gstreamer.mk
+makesum-all: makesum
+.for p in editing-services libav rtsp-server vaapi
+	@${MAKE} -C ${.CURDIR:H:H}/multimedia/gstreamer1-${p} makesum
+.endfor
+	@${MAKE} -C ${.CURDIR:H:H}/devel/gstreamer1-devtools makesum
+	@${MAKE} -C ${.CURDIR:H:H}/multimedia/gstreamer1-plugins makesum-all
+	@${MAKE} -C ${.CURDIR:H:H}/multimedia/py-gstreamer1 makesum
 
 .include <bsd.port.mk>

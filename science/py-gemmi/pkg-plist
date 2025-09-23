@@ -7,7 +7,6 @@
 %%PYTHON_SITELIBDIR%%/gemmi/examples/cif_i_sigi.py
 %%PYTHON_SITELIBDIR%%/gemmi/examples/col_order.py
 %%PYTHON_SITELIBDIR%%/gemmi/examples/from_json.py
-%%PYTHON_SITELIBDIR%%/gemmi/examples/hello.py
 %%PYTHON_SITELIBDIR%%/gemmi/examples/long_geom.py
 %%PYTHON_SITELIBDIR%%/gemmi/examples/map2mtz.py
 %%PYTHON_SITELIBDIR%%/gemmi/examples/maskcheck.py
@@ -22,10 +21,11 @@
 %%PYTHON_SITELIBDIR%%/gemmi/examples/qq-plot.py
 %%PYTHON_SITELIBDIR%%/gemmi/examples/rama_gather.py
 %%PYTHON_SITELIBDIR%%/gemmi/examples/rama_plot.py
+%%PYTHON_SITELIBDIR%%/gemmi/examples/read_cif.py
 %%PYTHON_SITELIBDIR%%/gemmi/examples/refln-stats.py
 %%PYTHON_SITELIBDIR%%/gemmi/examples/simple_search.py
 %%PYTHON_SITELIBDIR%%/gemmi/examples/sub_ccd.py
 %%PYTHON_SITELIBDIR%%/gemmi/examples/to_rdkit.py
 %%PYTHON_SITELIBDIR%%/gemmi/examples/weight.py
-%%PYTHON_SITELIBDIR%%/gemmi/gemmi_ext%%PYTHON_EXT_SUFFIX%%.so
+%%PYTHON_SITELIBDIR%%/gemmi/gemmi_ext%%PYTHON_TAG%%.so
 %%PYTHON_SITELIBDIR%%/gemmi/py.typed

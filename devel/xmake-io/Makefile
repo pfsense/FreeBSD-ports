@@ -1,6 +1,7 @@
 PORTNAME=	xmake-io
 DISTVERSIONPREFIX=	v
-DISTVERSION=	2.9.8
+DISTVERSION=	2.9.9
+PORTREVISION=	1
 CATEGORIES=	devel
 
 MAINTAINER=	pericycle.cc@gmail.com
@@ -21,6 +22,5 @@ GH_TUPLE=	tboox:tbox:914bd30a5f6faca7a749e7956630dfc6caece0b9:tbox/core/src/tbox
 
 HAS_CONFIGURE=	yes
 CONFIGURE_ARGS=	--external=yes
-MAKEFILE=	makefile
 
 .include <bsd.port.mk>

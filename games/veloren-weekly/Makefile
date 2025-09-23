@@ -1,5 +1,5 @@
 PORTNAME=	veloren
-PORTVERSION=	s20250512
+PORTVERSION=	s20250820
 CATEGORIES=	games wayland
 PKGNAMESUFFIX=	-weekly
 
@@ -10,8 +10,7 @@ WWW=		https://veloren.net/
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-BROKEN_i386=	https://github.com/bytecodealliance/wasmtime/issues/7924
-ONLY_FOR_ARCHS=	aarch64 amd64 i386
+ONLY_FOR_ARCHS=	aarch64 amd64
 ONLY_FOR_ARCHS_REASON=	unsupported platform by https://github.com/wasmerio/wasmer
 
 LIB_DEPENDS=	libzstd.so:archivers/zstd \
@@ -25,7 +24,7 @@ RUN_DEPENDS=	${LOCALBASE}/lib/alsa-lib/libasound_module_pcm_oss.so:audio/alsa-pl
 USES=		cargo xorg
 USE_XORG=	xcb
 USE_GITLAB=	yes
-GL_TAGNAME=	v0.17.0-757-gbb8fb2f27b # git describe --match='v[0-9]*' weekly
+GL_TAGNAME=	v0.17.0-990-g5a77877ae2 # git describe --match='v[0-9]*' weekly
 CARGO_ENV=	VELOREN_USERDATA_STRATEGY=system SHADERC_LIB_DIR="${LOCALBASE}/lib"
 PLIST_FILES=	bin/${PORTNAME}-server-cli \
 		bin/${PORTNAME}-voxygen \
@@ -36,10 +35,6 @@ PORTDATA=	*
 
 CONFLICTS_INSTALL=	${PORTNAME}
 
-.if ${MACHINE_ARCH} == i386
-# https://github.com/rust-lang/rust/issues/85598
-CARGO_ENV+=	CARGO_PROFILE_RELEASE_LTO=false
-.endif
 # Fixes error "Instruction does not dominate all uses!"
 WITHOUT_LTO=	yes # XXX bug 277333
 

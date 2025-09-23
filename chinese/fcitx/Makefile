@@ -1,6 +1,6 @@
 PORTNAME=	fcitx
 PORTVERSION=	4.2.9.9
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	chinese x11
 MASTER_SITES=	http://download.fcitx-im.org/fcitx/:fcitx \
 		http://download.fcitx-im.org/data/:data
@@ -30,7 +30,7 @@ LIB_DEPENDS=	libcairo.so:graphics/cairo \
 		libXinerama.so:x11/libXinerama \
 		libXrender.so:x11/libXrender \
 		libxkbcommon.so:x11/libxkbcommon \
-		libuuid.so:misc/e2fsprogs-libuuid
+		libuuid.so:misc/libuuid
 RUN_DEPENDS=	xdg-open:devel/xdg-utils \
 		xkeyboard-config>=0:x11/xkeyboard-config
 

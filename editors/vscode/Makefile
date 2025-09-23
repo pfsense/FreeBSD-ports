@@ -1,5 +1,6 @@
 PORTNAME=	vscode
-DISTVERSION=	1.100.2
+DISTVERSION=	1.103.0
+PORTREVISION=	1
 CATEGORIES=	editors
 MASTER_SITES=	https://github.com/tagattie/FreeBSD-VSCode/releases/download/${DISTVERSION}/:node_modules
 DISTFILES=	vscode-node-modules-${DISTVERSION}${EXTRACT_SUFX}:node_modules \
@@ -50,7 +51,6 @@ LIB_DEPENDS=	libatk-bridge-2.0.so:accessibility/at-spi2-core \
 		libcups.so:print/cups \
 		libfreetype.so:print/freetype2 \
 		libharfbuzz.so:print/harfbuzz \
-		libkrb5.so.3:security/krb5 \
 		libsecret-1.so:security/libsecret \
 		libnss3.so:security/nss \
 		libexpat.so:textproc/expat2 \
@@ -62,14 +62,14 @@ RUN_DEPENDS=	xdg-open:devel/xdg-utils \
 TEST_DEPENDS=	electron${ELECTRON_VER_MAJOR}:devel/electron${ELECTRON_VER_MAJOR} \
 		bash:shells/bash
 
-USES=		desktop-file-utils gl gmake gnome iconv:wchar_t jpeg \
-		localbase:ldflags nodejs:20,build pkgconfig python:build \
+USES=		desktop-file-utils gl gmake gnome gssapi:mit iconv:wchar_t \
+		jpeg localbase:ldflags nodejs:22,build pkgconfig python:build \
 		shebangfix xorg
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	microsoft
 
-SOURCE_COMMIT_HASH=	848b80aeb52026648a8ff9f7c45a9b0a80641e2e
+SOURCE_COMMIT_HASH=	e3550cfac4b63ca4eafca7b601f0d2885817fd1f
 
 BINARY_ALIAS=	python=${PYTHON_CMD}
 
@@ -78,7 +78,7 @@ USE_XORG=	x11 xcb xcomposite xcursor xdamage xext xfixes xi xkbfile \
 USE_GL=		gbm gl glesv2
 USE_GNOME=	atk cairo pango gdkpixbuf gtk30 libxml2 libxslt
 
-SHEBANG_REGEX=	./(extensions|node_modules|resources|scripts|src)/.*\.sh$$
+SHEBANG_REGEX=	./(extensions|node_modules|resources|scripts|src)/.*(\.(pl|py|sh)|makeBlacker|makeFF)$$
 PATHFIX_FILES=	src/vs/workbench/contrib/debug/node/terminals.ts
 
 DATADIR=	${PREFIX}/share/code-oss
@@ -96,9 +96,9 @@ MAKE_ENV+=	PLAYWRIGHT_BROWSERS_PATH=${WRKDIR}/pw-browsers \
 MAKE_ENV+=	PYTHONDONTWRITEBYTECODE=1
 TEST_ENV=	${MAKE_ENV:C/TMPDIR=.*//}
 
-NODEJS_DIR=	${.CURDIR:H:H}/www/node20
+NODEJS_DIR=	${.CURDIR:H:H}/www/node22
 .include "${NODEJS_DIR}/Makefile.version"
-ELECTRON_DIR=	${.CURDIR:H:H}/devel/electron34
+ELECTRON_DIR=	${.CURDIR:H:H}/devel/electron37
 .include "${ELECTRON_DIR}/Makefile.version"
 
 ELECTRON_DOWNLOAD_URL=	https://github.com/electron/electron/releases/download/v${ELECTRON_VER}
@@ -210,17 +210,6 @@ do-build:
 	@${MKDIR} ${WRKDIR}/.cache/electron/${ELECTRON_DOWNLOAD_URL_HASH}
 	@cd ${LOCALBASE}/share/electron${ELECTRON_VER_MAJOR} && \
 		zip -q -r ${WRKDIR}/.cache/electron/${ELECTRON_DOWNLOAD_URL_HASH}/electron-v${ELECTRON_VER}-linux-${ELECTRON_ARCH}.zip .
-	@cd ${WRKDIR}/.cache/electron/${ELECTRON_DOWNLOAD_URL_HASH} && \
-		${SHA256} -r *-v${ELECTRON_VER}-linux-*.zip | \
-		${SED} -e 's/ / */' > SHASUMS256.txt
-# add newline character at the end of the file if not already
-	@${AWK} '1' ${WRKSRC}/build/checksums/electron.txt > \
-		${WRKSRC}/build/checksums/electron.txt.new
-	@${MV} -f ${WRKSRC}/build/checksums/electron.txt.new \
-		${WRKSRC}/build/checksums/electron.txt
-	@cd ${WRKDIR}/.cache/electron/${ELECTRON_DOWNLOAD_URL_HASH} && \
-		${SHA256} -r *-v${ELECTRON_VER}-linux-*.zip | \
-		${SED} -e 's/ / */' >> ${WRKSRC}/build/checksums/electron.txt
 # remove backup files so that they are not included in the package
 	@${FIND} ${WRKSRC} -type f \( -name '*.orig' -o -name '*~' \) -delete
 # build and package vscode

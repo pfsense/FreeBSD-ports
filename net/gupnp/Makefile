@@ -1,5 +1,5 @@
 PORTNAME=	gupnp
-PORTVERSION=	1.6.8
+PORTVERSION=	1.6.9
 CATEGORIES=	net
 MASTER_SITES=	GNOME
 
@@ -16,7 +16,7 @@ BUILD_DEPENDS=	glib>=2.69:devel/glib20 \
 		libsoup3>=2.99.0:devel/libsoup3
 LIB_DEPENDS=	libgssdp-1.6.so:net/gssdp \
 		libsoup-3.0.so:devel/libsoup3 \
-		libuuid.so:misc/e2fsprogs-libuuid
+		libuuid.so:misc/libuuid
 
 USES=		compiler:c11 cpe gnome meson pkgconfig python:run shebangfix tar:xz
 USE_GNOME=	glib20 introspection:build libxml2

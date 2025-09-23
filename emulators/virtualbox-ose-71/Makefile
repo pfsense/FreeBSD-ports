@@ -1,5 +1,5 @@
 PORTNAME=	virtualbox-ose
-DISTVERSION=	7.1.8
+DISTVERSION=	7.1.12
 PORTREVISION?=	0
 CATEGORIES=	emulators
 MASTER_SITES=	https://download.virtualbox.org/virtualbox/${DISTVERSION}/:src \
@@ -21,7 +21,6 @@ ONLY_FOR_ARCHS=	amd64
 
 BUILD_DEPENDS=	gtar:archivers/gtar \
 		kmk:devel/kBuild \
-		libIDL-config-2:devel/libIDL \
 		yasm:devel/yasm \
 		xsltproc:textproc/libxslt
 LIB_DEPENDS=	libpng.so:graphics/png \
@@ -288,6 +287,9 @@ post-patch:
 	@${SED} -e 's|GXX3|VBoxGccFreeBSD|g' \
 	    ${LOCALBASE}/share/kBuild/tools/GXX3.kmk > \
 	    ${WRKSRC}/tools/kBuildTools/VBoxGccFreeBSD.kmk
+.endif
+.if ${OPSYS} == FreeBSD && ${OSVERSION} >= 1500013
+	@${ECHO_CMD} 'VBoxSVC_LDFLAGS.freebsd = -lsys' >> ${WRKSRC}/LocalConfig.kmk
 .endif
 	# Causes a "reinplace" QA warning with default LOCALBASE
 	@${REINPLACE_CMD} -e 's|/usr/local|${LOCALBASE}|g' \

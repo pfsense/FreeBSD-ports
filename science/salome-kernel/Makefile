@@ -1,7 +1,7 @@
 PORTNAME=	salome-kernel
 DISTVERSIONPREFIX=	V
 DISTVERSION=	9_11_0
-PORTREVISION=	3
+PORTREVISION=	4
 CATEGORIES=	science
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -10,6 +10,9 @@ WWW=		https://www.salome-platform.org/
 
 LICENSE=	LGPL21
 LICENSE_FILE=	${WRKSRC}/COPYING
+
+DEPRECATED=	Depends on expired science/salome-configuration
+EXPIRATION_DATE=2025-09-30
 
 FETCH_DEPENDS=	git:devel/git
 PY_DEPENDS=	${PYNUMPY} \

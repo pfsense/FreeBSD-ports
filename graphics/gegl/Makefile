@@ -1,5 +1,5 @@
 PORTNAME=	gegl
-DISTVERSION=	0.4.58
+DISTVERSION=	0.4.62
 PORTREVISION=	2
 CATEGORIES=	graphics
 MASTER_SITES=	GIMP
@@ -19,13 +19,8 @@ LIB_DEPENDS=	libbabl-0.1.so:x11/babl \
 		libnsgif.so:graphics/libnsgif \
 		libpng.so:graphics/png
 
-USES=		cpe gettext gnome jpeg localbase:ldflags meson pkgconfig shebangfix \
-		uniquefiles tar:xz
-.if exists(/usr/include/omp.h)
-USES+=		compiler:c++14-lang
-.else
-USES+=		compiler:gcc-c++11-lib
-.endif
+USES=		compiler:c++14-lang cpe gettext gnome jpeg localbase:ldflags \
+		meson pkgconfig shebangfix uniquefiles tar:xz
 USE_GNOME=	glib20 introspection:build
 USE_LDCONFIG=	yes
 
@@ -41,12 +36,12 @@ MESON_ARGS=	-Ddocs=false \
 		-Dmaxflow=disabled \
 		-Dmrg=disabled \
 		-Dpygobject=disabled \
-		-Dlua=disabled \
-		${MESON_ARGS_${ARCH}}
-MESON_ARGS_armv6=	-Dopenmp=disabled
-MESON_ARGS_armv7=	-Dopenmp=disabled
+		-Dlua=disabled
+.if !exists(/usr/include/omp.h)
+MESON_ARGS+=	-Dopenmp=disabled
+.endif
 
-GEGL_SHLIB=	0.457.1
+GEGL_SHLIB=	0.461.1
 GEGL_VER=	0.4
 PLIST_SUB+=	GEGL_SHLIB=${GEGL_SHLIB} GEGL_VER=${GEGL_VER}
 

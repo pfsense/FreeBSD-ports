@@ -47,7 +47,7 @@ DYNAMIC_UPSTREAM_IMPLIES=	STREAM
 DYNAMIC_UPSTREAM_GH_TUPLE=	ZigzagAK:ngx_dynamic_upstream:ab67fe7:dynamic_upstream
 DYNAMIC_UPSTREAM_VARS=		DSO_EXTMODS+=dynamic_upstream
 
-DEVEL_KIT_GH_TUPLE=		vision5:ngx_devel_kit:v0.3.3:devel_kit
+DEVEL_KIT_GH_TUPLE=		vision5:ngx_devel_kit:v0.3.4:devel_kit
 DEVEL_KIT_VARS=			FIRST_DSO_EXTMODS+=devel_kit
 
 ENCRYPTSESSION_IMPLIES=		DEVEL_KIT
@@ -66,7 +66,7 @@ GRIDFS_LIB_DEPENDS=	libbson-1.0.so:devel/libbson \
 			libmongoc-1.0.so:devel/mongo-c-driver
 GRIDFS_VARS=		DSO_EXTMODS+=gridfs GRIDFS_SUBDIR=/nginx-gridfs
 
-HEADERS_MORE_GH_TUPLE=		openresty:headers-more-nginx-module:84a65d6:headers_more
+HEADERS_MORE_GH_TUPLE=		openresty:headers-more-nginx-module:v0.39:headers_more
 HEADERS_MORE_VARS=		DSO_EXTMODS+=headers_more
 
 HTTP_ACCEPT_LANGUAGE_GH_TUPLE=	dvershinin:nginx_accept_language_module:5683967:accept_language
@@ -80,7 +80,7 @@ HTTP_AUTH_JWT_LIB_DEPENDS=	libjwt.so:www/libjwt
 HTTP_AUTH_JWT_EXTRA_PATCHES=	${PATCHDIR}/extra-patch-ngx_http_auth_jwt_module.c
 HTTP_AUTH_JWT_VARS=		DSO_EXTMODS+=auth_jwt
 
-HTTP_AUTH_KRB5_GH_TUPLE=	stnoonan:spnego-http-auth-nginx-module:60f0811:auth_krb5
+HTTP_AUTH_KRB5_GH_TUPLE=	stnoonan:spnego-http-auth-nginx-module:v1.1.3:auth_krb5
 HTTP_AUTH_KRB5_VARS=		DSO_EXTMODS+=auth_krb5
 HTTP_AUTH_KRB5_EXTRA_PATCHES=	${PATCHDIR}/extra-patch-spnego-http-auth-nginx-module-config
 
@@ -143,7 +143,7 @@ HTTP_PUSH_VARS=			DSO_EXTMODS+=push
 HTTP_PUSH_STREAM_GH_TUPLE=	wandenberg:nginx-push-stream-module:0.6.0:pushstream
 HTTP_PUSH_STREAM_VARS=		DSO_EXTMODS+=pushstream
 
-HTTP_REDIS_GH_TUPLE=		osokin:ngx_http_redis:ad7d90c:redis
+HTTP_REDIS_GH_TUPLE=		osokin:ngx_http_redis:0.4.0:redis
 HTTP_REDIS_VARS=		DSO_EXTMODS+=redis
 
 HTTP_SLICE_AHEAD_EXTRA_PATCHES=	${PATCHDIR}/extra-patch-src_http_modules_ngx_http_slice_read_ahead.c
@@ -226,7 +226,7 @@ MEMC_VARS=		DSO_EXTMODS+=memc
 
 MODSECURITY3_IMPLIES=		HTTP_ADDITION HTTP_IMAGE_FILTER HTTP_GUNZIP_FILTER HTTP_XSLT
 MODSECURITY3_LIB_DEPENDS=	libmodsecurity.so:security/modsecurity3
-MODSECURITY3_GH_TUPLE=		owasp-modsecurity:ModSecurity-nginx:17405e0:modsecurity3
+MODSECURITY3_GH_TUPLE=		owasp-modsecurity:ModSecurity-nginx:fd28e6a:modsecurity3
 MODSECURITY3_VARS=		DSO_EXTMODS+=modsecurity3
 
 NAXSI_NGINX_VER=	1.7
@@ -236,7 +236,7 @@ NAXSI_VARS=		DSO_EXTMODS+=naxsi NAXSI_SUBDIR=/naxsi_src
 NAXSI_EXTRA_PATCHES=	${PATCHDIR}/extra-patch-naxsi-libinjection__sqli_c \
 			${PATCHDIR}/extra-patch-naxsi_config
 
-NJS_GH_TUPLE=		nginx:njs:0.9.0:njs
+NJS_GH_TUPLE=		nginx:njs:0.9.1:njs
 NJS_CONFIGURE_ON=	--with-cc-opt="-I ${LOCALBASE}/include/quickjs"
 NJS_LIB_DEPENDS=	libquickjs.so:lang/quickjs \
 			libxml2.so:textproc/libxml2 \
@@ -315,7 +315,7 @@ VOD_LIB_DEPENDS=	libxml2.so:textproc/libxml2 \
 VOD_USES=		iconv
 VOD_VARS=		DSO_EXTMODS+=vod
 
-VTS_GH_TUPLE=		vozlt:nginx-module-vts:b6f6528:vts
+VTS_GH_TUPLE=		vozlt:nginx-module-vts:c382342:vts
 VTS_VARS=		DSO_EXTMODS+=vts
 
 XSS_GH_TUPLE=		openresty:xss-nginx-module:de2d87a:xss

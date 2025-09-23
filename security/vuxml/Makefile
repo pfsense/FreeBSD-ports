@@ -31,7 +31,8 @@ dir_DTD=	share/xml/dtd/vuxml
 .include <bsd.port.pre.mk>
 
 VUXML_FILE?=	${PKGDIR}/vuln.xml
-VUXML_FLAT_FILE?=	${PKGDIR}/vuln-flat.xml
+VUXML_FLAT_NAME=	vuln-flat.xml
+VUXML_FLAT_FILE?=	${PKGDIR}/${VUXML_FLAT_NAME}
 _YEAR!=	date +%Y
 VUXML_CURRENT_FILE?=	${PKGDIR}/vuln/${_YEAR}.xml
 
@@ -57,7 +58,7 @@ do-test:
 	@${CP} -R ${.CURDIR}/vuln.xml ${.CURDIR}/vuln ${WRKDIR}/test
 	@cd ${.CURDIR} && make validate PKGDIR=${WRKDIR}/test
 
-${VUXML_FLAT_FILE}: ${VUXML_FILE} vuln/*.xml
+${VUXML_FLAT_NAME}: ${VUXML_FILE} vuln/*.xml
 	xmllint -noent ${.ALLSRC:[1]} > ${.TARGET}
 
 validate: tidy
@@ -82,8 +83,12 @@ validate: tidy
 		return 1; \
 	fi
 	${PYTHON_CMD} ${FILESDIR}/extra-validation.py ${VUXML_FLAT_FILE}
+	@${ECHO_CMD}
+	@${ECHO_CMD} 'Be sure to get versioning right for PORTEPOCH and remember possible linux-* ports!'
+	@${ECHO_CMD} 'Also, <gt> tags are usually wrong in ranges. Use <ge> where adequate.'
+	@${ECHO_CMD}
 
-tidy: ${VUXML_FLAT_FILE}
+tidy: ${VUXML_FLAT_NAME}
 	@if [ ! -e ${LOCALBASE}/share/xml/dtd/vuxml/catalog.xml ]; \
 	then \
 		echo "Please install the VuXML port prior to running make validate/tidy."; \
@@ -92,7 +97,15 @@ tidy: ${VUXML_FLAT_FILE}
 	${SH} ${FILESDIR}/tidy.sh "${FILESDIR}/tidy.xsl" "${VUXML_FLAT_FILE}" > "${VUXML_FILE}.tidy"
 
 newentry:
+	@${ECHO_CMD}
+	@${ECHO_CMD} 'Be sure to get versioning right for PORTEPOCH and remember possible linux-* ports!'
+	@${ECHO_CMD} 'Also, <gt> tags are usually wrong in ranges. Use <ge> where adequate.'
+	@${ECHO_CMD}
 	@${SH} ${FILESDIR}/newentry.sh "${VUXML_CURRENT_FILE}" "CVE_ID=${CVE_ID}" "SA_ID=${SA_ID}"
+	@${ECHO_CMD}
+	@${ECHO_CMD} 'Be sure to get versioning right for PORTEPOCH and remember possible linux-* ports!'
+	@${ECHO_CMD} 'Also, <gt> tags are usually wrong in ranges. Use <ge> where adequate.'
+	@${ECHO_CMD}
 
 .if defined(VID) && !empty(VID)
 html: work/${VID}.html

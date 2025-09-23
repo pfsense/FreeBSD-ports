@@ -1,6 +1,6 @@
 PORTNAME=	baresip
 DISTVERSIONPREFIX=	v
-DISTVERSION=	3.22.0
+DISTVERSION=	4.0.0
 CATEGORIES=	audio
 
 MAINTAINER=	herbert@gojira.at
@@ -16,14 +16,6 @@ RUN_DEPENDS:=	${BUILD_DEPENDS}
 USES=		cmake pkgconfig ssl
 USE_GITHUB=	yes
 GH_ACCOUNT=	baresip
-
-# FIXME values of the next 3 variables taken from source code Makefile
-ABI_MAJOR=	20
-ABI_AGE=	22
-ABI_REV=	0
-PLIST_SUB=	ABI_MAJOR=${ABI_MAJOR}
-PLIST_SUB+=	ABI_AGE=${ABI_AGE} \
-		ABI_REV=${ABI_REV}
 
 OPTIONS_DEFINE=		ALSA AV1 AVCODEC AVFILTER AVFORMAT CTRL_DBUS DOCS \
 			EXAMPLES G711 G722 G726 GST MQTT OPUS OPUS_MS PLC \
@@ -54,7 +46,7 @@ VPX_DESC=	VP8/VP9 video codecs
 X11_DESC=	X11 video output
 
 _MODULES_LIST=	account aubridge auconv aufile auresamp ausine cons contact \
-		ctrl_tcp debug_cmd dtls_srtp ebuacip echo fakevideo httpd \
+		ctrl_tcp debug_cmd dtls_srtp echo fakevideo httpd \
 		httpreq ice l16 menu mixausrc mixminus mwi natpmp netroam pcp \
 		presence rtcpsummary selfview serreg srtp stdio stun syslog \
 		turn uuid vidbridge vidinfo vumeter

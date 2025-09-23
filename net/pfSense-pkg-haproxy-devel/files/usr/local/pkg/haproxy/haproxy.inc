@@ -446,6 +446,9 @@ if (haproxy_version() >= '1.6') {
 
 #end
 
+global $haproxy_server_state_path;
+$haproxy_server_state_path = '/tmp/haproxy_server_state';
+
 global $haproxy_version;
 function haproxy_version() {
 	global $haproxy_version;
@@ -1344,8 +1347,12 @@ function haproxy_configure() {
 	return haproxy_check_run(1);
 }
 
-function haproxy_check_and_run(&$messages, $reload) {
-	global $g;
+function haproxy_check_and_run(&$messages, $reload, $force = false) {
+	global $g, $haproxy_server_state_path;
+	if ($force) {
+		unlink_if_exists($haproxy_server_state_path);
+		log_error("Removed HAProxy server state file.");
+	}
 	$testpath = "{$g['varetc_path']}/haproxy_test";
 	haproxy_writeconf($testpath);
 	$retval = exec("haproxy -c -V -f $testpath/haproxy.cfg 2>&1", $output, $err);
@@ -1514,7 +1521,7 @@ function haproxy_updateocsp($socketupdate = true) {
 }
 
 function haproxy_writeconf($configpath) {
-	global $a_files_cache, $aliastable, $a_action, $a_error, $openssl111;
+	global $a_files_cache, $aliastable, $a_action, $a_error, $openssl111, $haproxy_server_state_path;
 	if (!isset($aliastable)) {
 		alias_make_table();
 	}
@@ -1605,7 +1612,7 @@ function haproxy_writeconf($configpath) {
 		if ($a_global['log-send-hostname']) {
 			fwrite ($fd, "\tlog-send-hostname\t\t{$a_global['log-send-hostname']}\n");
 		}
-		fwrite ($fd, "\tserver-state-file /tmp/haproxy_server_state\n");
+		fwrite ($fd, "\tserver-state-file {$haproxy_server_state_path}\n");
 
 		// lua-load
 		if (is_array($a_files)) {
@@ -2479,7 +2486,7 @@ function haproxy_carpipismaster($ip) {
 }
 
 function haproxy_check_run($reload) {
-	global $g, $haproxy_run_message;
+	global $g, $haproxy_run_message, $haproxy_server_state_path;
 	haproxy_config_init();
 	$haproxylock = lock("haproxy", LOCK_EX);
 	$a_global = config_get_path('installedpackages/haproxy', []);
@@ -2488,7 +2495,7 @@ function haproxy_check_run($reload) {
 	if ($reload) {
 		if (haproxy_is_running()) {
 			$r = haproxy_socket_command("show servers state");
-			file_put_contents("/tmp/haproxy_server_state", $r);
+			file_put_contents($haproxy_server_state_path, $r);
 		}
 
 		haproxy_writeconf($configpath);

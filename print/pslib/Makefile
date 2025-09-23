@@ -4,7 +4,7 @@ CATEGORIES=	print
 MASTER_SITES=	SF
 DISTFILES=	${DISTNAME}${EXTRACT_SUFX}
 
-MAINTAINER=	alster@vinterdalen.se
+MAINTAINER=	alven@FreeBSD.org
 COMMENT=	C-library for generating multi page PostScript documents
 WWW=		https://pslib.sourceforge.net/
 
@@ -47,12 +47,5 @@ post-patch-NLS-off:
 post-install-EXAMPLES-on:
 	cd ${EX_WRKSRC} && ${RM} Makefile.unix ChangeLog CMakeLists.txt && \
 		${COPYTREE_SHARE} . ${STAGEDIR}${EXAMPLESDIR}
-
-.include <bsd.port.options.mk>
-
-.if ${PORT_OPTIONS:MMANPAGES}
-DEPRECATED=	Depends on expired textproc/docbook-utils
-EXPIRATION_DATE=2025-06-21
-.endif
 
 .include <bsd.port.mk>

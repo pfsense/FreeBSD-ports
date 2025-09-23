@@ -1,5 +1,5 @@
 PORTNAME=	fig2dev
-PORTVERSION=	3.2.9
+PORTVERSION=	3.2.9a
 CATEGORIES=	print
 MASTER_SITES=	SF/mcj/
 
@@ -15,7 +15,7 @@ LICENSE_PERMS=	dist-mirror dist-sell pkg-mirror pkg-sell auto-accept
 LIB_DEPENDS=	libpng.so:graphics/png
 RUN_DEPENDS=	ppmtogif:graphics/netpbm
 
-USES=		alias cpe ghostscript:run iconv tar:xz xorg
+USES=		alias cpe ghostscript:run iconv localbase:ldflags tar:xz xorg
 USE_XORG=	xpm
 
 CPE_VENDOR=	xfig_project

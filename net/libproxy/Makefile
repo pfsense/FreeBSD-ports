@@ -1,6 +1,5 @@
 PORTNAME=	libproxy
-DISTVERSION=	0.5.9
-PORTREVISION=	1
+DISTVERSION=	0.5.10
 CATEGORIES=	net devel
 
 MAINTAINER=	desktop@FreeBSD.org
@@ -23,8 +22,6 @@ MESON_ARGS=	-Dtests=true \
 		-Dintrospection=true \
 		-Drelease=true
 USE_LDCONFIG=	yes
-# https://github.com/libproxy/libproxy/issues/320
-LLD_UNSAFE=	yes
 
 OPTIONS_DEFINE=	CURL DOCS VAPI
 OPTIONS_GROUP=	CONFIG PACRUNNER

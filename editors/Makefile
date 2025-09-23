@@ -41,6 +41,7 @@
     SUBDIR += emacs
     SUBDIR += emacs-devel
     SUBDIR += encryptpad
+    SUBDIR += enter-tex
     SUBDIR += featherpad
     SUBDIR += fileobj
     SUBDIR += flim
@@ -51,7 +52,6 @@
     SUBDIR += ghex
     SUBDIR += ghostwriter
     SUBDIR += gmanedit
-    SUBDIR += gnome-latex
     SUBDIR += gnome-text-editor
     SUBDIR += gobby
     SUBDIR += gomate
@@ -205,6 +205,7 @@
     SUBDIR += mg
     SUBDIR += mickey
     SUBDIR += micro
+    SUBDIR += microsoft-edit
     SUBDIR += mined
     SUBDIR += mle
     SUBDIR += mousepad

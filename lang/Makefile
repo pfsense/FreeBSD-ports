@@ -83,7 +83,6 @@
     SUBDIR += fpc-devel-source
     SUBDIR += fpc-docs
     SUBDIR += fpc-source
-    SUBDIR += frawk
     SUBDIR += fsharp
     SUBDIR += fth
     SUBDIR += gambit-c
@@ -103,7 +102,6 @@
     SUBDIR += gcc6-aux
     SUBDIR += gforth
     SUBDIR += ghc
-    SUBDIR += ghc810
     SUBDIR += ghc92
     SUBDIR += ghc94
     SUBDIR += ghc96
@@ -129,6 +127,7 @@
     SUBDIR += go122
     SUBDIR += go123
     SUBDIR += go124
+    SUBDIR += go125
     SUBDIR += gomacro
     SUBDIR += gprolog
     SUBDIR += gptscript
@@ -166,7 +165,6 @@
     SUBDIR += kawa
     SUBDIR += kf5-kross
     SUBDIR += kotlin
-    SUBDIR += kross-interpreters
     SUBDIR += kturtle
     SUBDIR += lafontaine
     SUBDIR += lci
@@ -178,12 +176,6 @@
     SUBDIR += librep
     SUBDIR += libstdc++_stldoc_4.2.2
     SUBDIR += linux-c7-tcl85
-    SUBDIR += linux-dotnet-cli
-    SUBDIR += linux-dotnet-runtime
-    SUBDIR += linux-dotnet-sdk
-    SUBDIR += linux-dotnet10-runtime
-    SUBDIR += linux-dotnet11-runtime
-    SUBDIR += linux-dotnet11-sdk
     SUBDIR += linux-j
     SUBDIR += linux-rl9-python3
     SUBDIR += linux-rl9-tcl86
@@ -192,7 +184,6 @@
     SUBDIR += lua53
     SUBDIR += lua54
     SUBDIR += luajit
-    SUBDIR += luajit-devel
     SUBDIR += luajit-openresty
     SUBDIR += malbolge
     SUBDIR += maude
@@ -272,9 +263,9 @@
     SUBDIR += pbasic
     SUBDIR += pcc
     SUBDIR += perl5-devel
-    SUBDIR += perl5.36
     SUBDIR += perl5.38
     SUBDIR += perl5.40
+    SUBDIR += perl5.42
     SUBDIR += petite-chez
     SUBDIR += pfe
     SUBDIR += pharo
@@ -287,6 +278,8 @@
     SUBDIR += php83-extensions
     SUBDIR += php84
     SUBDIR += php84-extensions
+    SUBDIR += php85
+    SUBDIR += php85-extensions
     SUBDIR += picoc
     SUBDIR += picolisp
     SUBDIR += pkl
@@ -372,10 +365,10 @@
     SUBDIR += spidermonkey128
     SUBDIR += spidermonkey78
     SUBDIR += spidermonkey91
-    SUBDIR += spl
     SUBDIR += squeak
     SUBDIR += squirrel
     SUBDIR += starlark-rust
+    SUBDIR += swift510
     SUBDIR += swipl
     SUBDIR += tauthon
     SUBDIR += tcbasic

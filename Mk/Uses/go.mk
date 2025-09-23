@@ -70,7 +70,7 @@ _INCLUDE_USES_GO_MK=	yes
 
 # When adding a version, please keep the comment in
 # Mk/bsd.default-versions.mk in sync.
-GO_VALID_VERSIONS=	1.20 1.21 1.22 1.23 1.24 1.25-devel
+GO_VALID_VERSIONS=	1.20 1.21 1.22 1.23 1.24 1.25 1.26-devel
 
 # Check arguments sanity
 .  if !empty(go_ARGS:N[1-9].[0-9][0-9]:N*-devel:Nmodules:Nno_targets:Nrun)
@@ -186,8 +186,7 @@ WRKSRC=		${WRKDIR}/${GO_MODNAME}@${GO_MODVERSION}
 .      endif
 EXTRACT_ONLY?=	${DISTFILES:N*.mod\:*:N*.mod:C/:.*//}
 DIST_SUBDIR=	go/${PKGORIGIN:S,/,_,g}/${DISTNAME}
-FETCH_DEPENDS+=	${GO_CMD}:${GO_PORT} \
-		ca_root_nss>0:security/ca_root_nss
+FETCH_DEPENDS+=	${GO_CMD}:${GO_PORT}
 USES+=		zip
 .    else
 GO_ENV+=	GO_NO_VENDOR_CHECKS=1

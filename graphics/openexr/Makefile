@@ -1,6 +1,6 @@
 PORTNAME?=	openexr
-PORTVERSION?=	3.3.3 # ALSO update openexr-website-docs! -- verify sigstore: make makesum verify-sigstore
-PORTREVISION?=	0
+PORTVERSION?=	3.3.5 # ALSO update openexr-website-docs! -- verify sigstore: make makesum verify-sigstore
+PORTREVISION?=	1
 CATEGORIES=	graphics devel
 .if !defined(MASTERDIR)
 MASTER_SITES=	https://raw.githubusercontent.com/AcademySoftwareFoundation/openexr-images/v1.0/:testimages \
@@ -36,7 +36,10 @@ LICENSE=	BSD3CLAUSE
 
 BUILD_DEPENDS?=	help2man:misc/help2man
 # exact libImath version required to avoid hard-to-debug issues
-LIB_DEPENDS?=	libImath-3_1.so.29:math/Imath \
+# but this is due to Imath and OpenEXR being close in terms of their
+# release engineering, no other port should version pin Imath
+# or OpenEXR without extremely good reason
+LIB_DEPENDS?=	libImath-3_2.so.30:math/Imath \
 		libdeflate.so:archivers/libdeflate
 
 USES?=		cmake:testing compiler:c++14-lang cpe pathfix pkgconfig

@@ -1,11 +1,7 @@
 PORTNAME=	gammaray
-DISTVERSION=	3.1.0
-PORTREVISION=	1
+DISTVERSION=	3.2.0
 CATEGORIES=	devel
 MASTER_SITES=	https://github.com/KDAB/GammaRay/releases/download/v${DISTVERSION}/
-
-PATCH_SITES=	https://github.com/KDAB/GammaRay/commit/
-PATCHFILES+=	73a102f50f0c4f9482f90b84814aa9cd812c3136.patch:-p1 # Fix build with Qt >= 6.9.0
 
 MAINTAINER=	kde@FreeBSD.org
 COMMENT=	Debugging tool for Qt-application
@@ -50,10 +46,11 @@ QT_VERSION=${QT5_VERSION:C/\./_/:C/\..*//}
 .else
 USES+=		gl kde:6 qt:6
 USE_GL=		gl
-USE_QT+=	base positioning shadertools
+USE_QT+=	base positioning shadertools tools:build
 QT_VERSION=${QT6_VERSION:C/\./_/:C/\..*//}
 .endif
 
+CMAKE_ARGS+=	QT_VERSION_MAJOR=${_QT_VER}
 CMAKE_ON=	STACK_DETAILS_DWARF
 CMAKE_OFF=	STACK_DETAILS_AUTO_DETECT
 
@@ -78,5 +75,7 @@ PLIST_SUB+=	ARCH=${ARCH:S/amd64/x86_64/:S/i386/i686/:C/armv./arm/} \
 		PORTMAJMIN=${PORTVERSION:C/(.*)\..*/\1/} \
 		PORTVERSION=${PORTVERSION} \
 		QTVER=${QT_VERSION}
+
+WRKSRC=		${WRKDIR}/GammaRay-${DISTVERSION}
 
 .include <bsd.port.mk>

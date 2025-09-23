@@ -2,7 +2,7 @@ PORTNAME=	libaudiofile
 PORTVERSION=	0.3.6
 PORTREVISION=	6
 CATEGORIES=	audio
-MASTER_SITES=	GNOME/sources/${PORTNAME:S/lib//}/${PORTVERSION:C/^([0-9]+\.[0-9]+).*/\1/}
+MASTER_SITES=	GNOME
 DISTNAME=	audiofile-${PORTVERSION}
 
 MAINTAINER=	gnome@FreeBSD.org
@@ -15,7 +15,7 @@ LIB_DEPENDS=	libFLAC.so:audio/flac
 
 CONFLICTS=	osalp-0.7.*
 
-USES=		cpe pathfix pkgconfig tar:xz libtool
+USES=		cpe pkgconfig tar:xz libtool
 USE_CXXSTD=	c++14
 CPE_PRODUCT=	audiofile
 USE_LDCONFIG=	yes

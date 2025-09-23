@@ -1,5 +1,6 @@
 PORTNAME=	shortwave
 DISTVERSION=	5.0.0
+PORTREVISION=	2
 CATEGORIES=	audio
 
 MAINTAINER=	decke@FreeBSD.org

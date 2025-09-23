@@ -1,9 +1,10 @@
 PORTNAME=	krakend-ce
 DISTVERSIONPREFIX=	v
-DISTVERSION=	2.9.4
+DISTVERSION=	2.10.2
+PORTREVISION=	1
 CATEGORIES=	net
 
-MAINTAINER=	alster@vinterdalen.se
+MAINTAINER=	alven@FreeBSD.org
 COMMENT=	High-performance, stateless, declarative, API Gateway
 WWW=		https://www.krakend.io/ \
 		https://github.com/krakend/krakend-ce/
@@ -14,7 +15,7 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 NOT_FOR_ARCHS=	armv7 i386
 NOT_FOR_ARCHS_REASON=	Build failure: vendor/github.com/krakendio/krakend-amqp/v2/consumer.go:47:20: cannot use math.MaxInt64 (untyped int constant 9223372036854775807) as int value in assignment (overflows)
 
-USES=		cpe go:1.24,modules
+USES=		cpe go:modules
 CPE_VENDOR=	krakend
 CPE_PRODUCT=	krakend
 CPE_SW_EDITION=	community
@@ -22,7 +23,7 @@ CPE_SW_EDITION=	community
 GO_MODULE=	github.com/krakendio/krakend-ce/v2
 GO_TARGET=	./cmd/${PORTNAME}
 GO_BUILDFLAGS=	-ldflags="-X github.com/luraproject/lura/v2/core.KrakendVersion=${DISTVERSION} \
-	-X github.com/luraproject/lura/v2/core.GoVersion=${GO_VERSION}"
+		-X github.com/luraproject/lura/v2/core.GoVersion=${GO_VERSION}"
 
 TEST_TARGET=	test
 

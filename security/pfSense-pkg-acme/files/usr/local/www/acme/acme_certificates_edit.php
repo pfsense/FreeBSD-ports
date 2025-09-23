@@ -52,7 +52,7 @@ if (!is_numeric($id))
 global $simplefields;
 $simplefields = array(
 	"name","descr","status",
-	"acmeaccount","keylength","ocspstaple",
+	"acmeaccount","keylength",
 	"preferredchain", "dnssleep","renewafter"
 );
 
@@ -369,13 +369,6 @@ $section->addInput(new \Form_Textarea(
 ))->setNoWrap()
 	->setAttribute('placeholder', "-----BEGIN PRIVATE KEY-----\nBASE64-ENCODED DATA\n-----END PRIVATE KEY-----")
 	->setHelp('Paste a private key in X.509 PEM format here.');
-
-$section->addInput(new \Form_Checkbox(
-	'ocspstaple',
-	'OCSP Must Staple',
-	'Add the OCSP Must Staple extension to the certificate.',
-	$pconfig['ocspstaple']
-))->setHelp('Do not enable this option unless the software using the certificate also supports OCSP stapling.');
 
 $section->addInput(new \Form_Input(
 	'preferredchain',

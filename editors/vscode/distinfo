@@ -1,7 +1,7 @@
-TIMESTAMP = 1747369448
-SHA256 (vscode/vscode-node-modules-1.100.2.tar.gz) = b9246cba227bc2bd827a9be7e45a13f65b6b68d4df5039517b314765c44ecf51
-SIZE (vscode/vscode-node-modules-1.100.2.tar.gz) = 400199168
-SHA256 (vscode/vscode-marketplace-exts-1.100.2.tar.gz) = 88553d52d84916e8f91fa57ccd00d78f5f91fb533cb7b403746b32f08ebb8fbf
-SIZE (vscode/vscode-marketplace-exts-1.100.2.tar.gz) = 1709308
-SHA256 (vscode/microsoft-vscode-1.100.2_GH0.tar.gz) = de57439ffcdfe70020d6c2397b0d62089cc01fe7fe612a65649cbaa5360a6a81
-SIZE (vscode/microsoft-vscode-1.100.2_GH0.tar.gz) = 22647395
+TIMESTAMP = 1754630292
+SHA256 (vscode/vscode-node-modules-1.103.0.tar.gz) = 43fba18609686b6459bbe8683b29944799f88f38aedcac15d67083578587b933
+SIZE (vscode/vscode-node-modules-1.103.0.tar.gz) = 397952526
+SHA256 (vscode/vscode-marketplace-exts-1.103.0.tar.gz) = 9eadd1f8a43498d3bf993b544dca80658eb44ca9f7bc30a5bdf0bd5de243c8c5
+SIZE (vscode/vscode-marketplace-exts-1.103.0.tar.gz) = 1713830
+SHA256 (vscode/microsoft-vscode-1.103.0_GH0.tar.gz) = 1850417b24dd935e2e9423e1709834660e7c995c84d6a6e818bd1c102208623b
+SIZE (vscode/microsoft-vscode-1.103.0_GH0.tar.gz) = 23205209

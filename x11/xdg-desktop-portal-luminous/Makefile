@@ -1,9 +1,10 @@
 PORTNAME=	xdg-desktop-portal-luminous
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.1.10
+DISTVERSION=	0.1.11
+PORTREVISION=	1
 CATEGORIES=	x11 wayland
 
-MAINTAINER=	jbeich@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	xdg-desktop-portal backend for wlroots
 WWW=		https://github.com/waycrate/xdg-desktop-portal-luminous
 

@@ -1,3 +1,5 @@
+lib/cmake/KF6ImageFormats/KF6ImageFormatsConfig.cmake
+lib/cmake/KF6ImageFormats/KF6ImageFormatsConfigVersion.cmake
 %%QT_PLUGINDIR%%/imageformats/kimg_ani.so
 %%AVIF%%%%QT_PLUGINDIR%%/imageformats/kimg_avif.so
 %%QT_PLUGINDIR%%/imageformats/kimg_dds.so
@@ -5,6 +7,7 @@
 %%OPENEXR%%%%QT_PLUGINDIR%%/imageformats/kimg_exr.so
 %%QT_PLUGINDIR%%/imageformats/kimg_hdr.so
 %%HEIF%%%%QT_PLUGINDIR%%/imageformats/kimg_heif.so
+%%QT_PLUGINDIR%%/imageformats/kimg_iff.so
 %%QT_PLUGINDIR%%/imageformats/kimg_jp2.so
 %%JXL%%%%QT_PLUGINDIR%%/imageformats/kimg_jxl.so
 %%QT_PLUGINDIR%%/imageformats/kimg_kra.so

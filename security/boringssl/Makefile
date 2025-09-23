@@ -1,7 +1,8 @@
 PORTNAME=	boringssl
-PORTVERSION=	0.0.0.0.2025.05.13.01
+PORTVERSION=	0.20250807.0
+PORTREVISION=	1
 CATEGORIES=	security
-EXTRACT_ONLY=	${GH_ACCOUNT}-${PORTNAME}-${PORTVERSION}-${GH_TAGNAME}_GH0.tar.gz
+EXTRACT_ONLY=	${GH_ACCOUNT}-${PORTNAME}-${PORTVERSION}_GH0.tar.gz
 
 MAINTAINER=	osa@FreeBSD.org
 COMMENT=	Fork of OpenSSL
@@ -13,13 +14,12 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 USES=		cmake:insource cpe go:no_targets,1.24 localbase perl5
 
 CONFLICTS_INSTALL=	libressl libressl-devel openssl openssl111 \
-			openssl3[12345] openssl-quictls openssl31-quictls
+			openssl3[2345] openssl-quictls openssl33-quictls
 
 CPE_VENDOR=	google
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	google
-GH_TAGNAME=	8997380
 CMAKE_ARGS+=	-DBUILD_SHARED_LIBS=1
 
 CFLAGS_i386=	-msse2

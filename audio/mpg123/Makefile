@@ -1,5 +1,5 @@
 PORTNAME=	mpg123
-DISTVERSION=	1.32.10
+DISTVERSION=	1.33.2
 CATEGORIES=	audio
 MASTER_SITES=	SF \
 		https://www.mpg123.de/download/
@@ -10,7 +10,7 @@ WWW=		https://www.mpg123.de/
 
 LICENSE=	LGPL21
 
-USES=		cpe tar:bzip2 libtool localbase pathfix
+USES=		cpe tar:bzip2 libtool localbase
 USE_LDCONFIG=	yes
 
 GNU_CONFIGURE=	yes

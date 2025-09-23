@@ -1,6 +1,5 @@
 PORTNAME=	rl9
 PORTVERSION=	${LINUX_DIST_VER}
-PORTREVISION=	8
 CATEGORIES=	emulators linux
 PKGNAMEPREFIX=	linux_base-
 EXTRACT_ONLY=	${DISTFILES:N*${SRC_SUFX}*:Nf/filesystem-*:C/:[^:]+$//}
@@ -15,7 +14,9 @@ USE_LINUX=	# empty
 USE_LINUX_RPM=	yes
 WANT_LINUX32=	yes
 
-CONFLICTS_INSTALL=	linux-${linux_ARGS}-libsigsegv
+# lib64/gconv/ stuff that is loaded dynamically and has rpath
+NO_SHLIB_REQUIRES_GLOB=	libCNS.so* libGB.so* libISOIR165.so* \
+			libJIS.so* libJISX0213.so* libKSC.so*
 
 .include	"${.CURDIR}/Makefile.version"
 
@@ -37,6 +38,7 @@ BIN_DISTNAMES=	bash-${bash_ver} \
 		ncurses-${ncurses_ver} \
 		sed-${sed_ver} \
 		setserial-${setserial_ver} \
+		sqlite-${sqlite_ver} \
 		util-linux-${util_ver} \
 		util-linux-core-${util_ver} \
 		which-${which_ver}
@@ -56,6 +58,7 @@ LIB_DISTNAMES=	bzip2-libs-${bzip2_ver} \
 		libacl-${libacl_ver} \
 		libattr-${libattr_ver} \
 		libblkid-${util_ver} \
+		libbrotli-${brotli_ver} \
 		libcap-${libcap_ver}  \
 		libcom_err-${e2fsprogs_ver} \
 		libdatrie-${libdatrie_ver} \
@@ -66,14 +69,18 @@ LIB_DISTNAMES=	bzip2-libs-${bzip2_ver} \
 		libffi-${libffi_ver} \
 		libgcc-${gcc_ver} \
 		libgudev-${libgudev_ver} \
+		libidn2-${libidn2_ver} \
 		libmount-${util_ver} \
 		libnsl-${glibc_ver} \
 		libproxy-${libproxy_ver} \
+		libpsl-${libpsl_ver} \
 		libselinux-${selinux_ver} \
 		libsepol-${sepol_ver} \
 		libsigsegv-${libsigsegv_ver} \
 		libsmartcols-${util_ver} \
+		libsoup-${libsoup_ver} \
 		libstdc++-${gcc_ver} \
+		libunistring-${libunistring_ver} \
 		libuuid-${util_ver} \
 		libverto-${libverto_ver} \
 		libxcrypt-${libxcrypt_ver} \
@@ -91,6 +98,7 @@ LIB_DISTNAMES=	bzip2-libs-${bzip2_ver} \
 		popt-${popt_ver} \
 		readline-${readline_ver} \
 		slang-${slang_ver} \
+		sqlite-libs-${sqlite_ver} \
 		xz-libs-${xz_ver} \
 		zlib-${zlib_ver}
 
@@ -133,6 +141,7 @@ SRC_DISTFILES=	acl-${libacl_ver}${SRC_SUFX}:SOURCE \
 		libselinux-${selinux_ver}${SRC_SUFX}:SOURCE \
 		libsepol-${sepol_ver}${SRC_SUFX}:SOURCE \
 		libsigsegv-${libsigsegv_ver}${SRC_SUFX}:SOURCE \
+		libsoup-${libsoup_ver}${SRC_SUFX}:SOURCE \
 		libverto-${libverto_ver}${SRC_SUFX}:SOURCE \
 		libxcrypt-${libxcrypt_ver}${SRC_SUFX}:SOURCE \
 		mpfr-${mpfr_ver}${SRC_SUFX}:SOURCE \
@@ -174,6 +183,7 @@ REMOVE_FILES=	bin/chfn bin/chsh bin/findmnt bin/login bin/lsblk bin/lscpu \
 		usr/bin/taskset usr/bin/unshare usr/sbin/agetty usr/sbin/blkid \
 		usr/sbin/blockdev usr/sbin/fsck usr/sbin/losetup usr/sbin/mkswap \
 		usr/sbin/partx usr/sbin/swapoff usr/sbin/swapon usr/sbin/switch_root \
+		usr/lib/gio/modules/libgiognutls.so usr/lib64/gio/modules/libgiognutls.so \
 		usr/share/man/man1/chrt.1.gz usr/share/man/man1/dmesg.1.gz \
 		usr/share/man/man1/flock.1.gz usr/share/man/man1/hardlink.1.gz \
 		usr/share/man/man1/ionice.1.gz usr/share/man/man1/ipcmk.1.gz \

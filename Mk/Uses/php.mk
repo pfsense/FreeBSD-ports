@@ -110,7 +110,7 @@ DIST_SUBDIR=	PECL
 
 PHPBASE?=	${LOCALBASE}
 
-_ALL_PHP_VERSIONS=	81 82 83 84
+_ALL_PHP_VERSIONS=	81 82 83 84 85
 
 # Make the already installed PHP the default one.
 .  if exists(${PHPBASE}/etc/php.conf)
@@ -179,7 +179,10 @@ PHP_VER=	${FLAVOR:S/^php//}
 	(${FLAVOR:Mphp[0-9][0-9]} && ${FLAVOR} != ${FLAVORS:[1]})
 # When adding a version, please keep the comment in
 # Mk/bsd.default-versions.mk in sync.
-.    if ${PHP_VER} == 84
+.    if ${PHP_VER} == 85
+PHP_EXT_DIR=   20240925
+PHP_EXT_INC=    hash json opcache openssl pcre random spl
+.    elif ${PHP_VER} == 84
 PHP_EXT_DIR=   20240924
 PHP_EXT_INC=    hash json openssl pcre random spl
 .    elif ${PHP_VER} == 83
@@ -375,7 +378,7 @@ add-plist-phpext:
 _USE_PHP_ALL=	bcmath bitset bz2 calendar ctype curl dba dom \
 		enchant exif ffi fileinfo filter ftp gd gettext gmp \
 		hash iconv igbinary imap intl json ldap mbstring mcrypt \
-		memcache memcached mysqli odbc opcache \
+		memcache memcached mysqli odbc \
 		openssl pcntl pcre pdo pdo_dblib pdo_firebird pdo_mysql \
 		pdo_odbc pdo_pgsql pdo_sqlite phar pgsql posix \
 		pspell radius random readline redis session shmop simplexml snmp \
@@ -383,10 +386,11 @@ _USE_PHP_ALL=	bcmath bitset bz2 calendar ctype curl dba dom \
 		tidy tokenizer xml xmlreader xmlrpc xmlwriter xsl zephir_parser \
 		zip zlib
 # version specific components
-_USE_PHP_VER81=	${_USE_PHP_ALL}
-_USE_PHP_VER82=	${_USE_PHP_ALL}
-_USE_PHP_VER83=	${_USE_PHP_ALL}
-_USE_PHP_VER84=	${_USE_PHP_ALL}
+_USE_PHP_VER81=	${_USE_PHP_ALL} opcache
+_USE_PHP_VER82=	${_USE_PHP_ALL} opcache
+_USE_PHP_VER83=	${_USE_PHP_ALL} opcache
+_USE_PHP_VER84=	${_USE_PHP_ALL} opcache
+_USE_PHP_VER85=	${_USE_PHP_ALL}
 
 bcmath_DEPENDS=	math/php${PHP_VER}-bcmath
 bitset_DEPENDS=	math/pecl-bitset@${PHP_FLAVOR}
@@ -473,9 +477,11 @@ RUN_DEPENDS+=	${PHPBASE}/lib/php/${PHP_EXT_DIR}/${extension:S/:build//}.so:${${e
 .        endif
 .      else
 .        if ${ext:tl} != "yes" && !defined(_IGNORE_PHP_SET)
+.          if empty(PHP_EXT_INC:M${extension:S/:build//})
 check-makevars::
 			@${ECHO_CMD} "Unknown extension ${extension:S/:build//} for PHP ${PHP_VER}."
 			@${FALSE}
+.          endif
 .        endif
 .      endif
 .    endfor

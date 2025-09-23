@@ -1,5 +1,5 @@
 PORTNAME=	hamlib
-PORTVERSION=	4.6.2
+PORTVERSION=	4.6.4
 CATEGORIES=	comms hamradio
 MASTER_SITES=	SF
 
@@ -12,7 +12,7 @@ LICENSE=	LGPL20
 BUILD_DEPENDS=	swig:devel/swig
 LIB_DEPENDS=	libltdl.so:devel/libltdl
 
-USES=		autoreconf gnome libtool:keepla localbase:ldflags pathfix perl5 pkgconfig python \
+USES=		autoreconf gnome libtool:keepla localbase:ldflags perl5 pkgconfig python \
 		readline shebangfix tcl
 USE_GNOME=	libxml2
 USE_LDCONFIG=	yes

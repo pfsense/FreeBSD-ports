@@ -1,7 +1,8 @@
 PORTNAME=	cramjam
-PORTVERSION=	2.10.0
+PORTVERSION=	2.11.0
 CATEGORIES=	archivers python
-MASTER_SITES=	PYPI
+MASTER_SITES=	PYPI \
+		https://github.com/milesgranger/cramjam/releases/download/v${PORTVERSION}/
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 DISTFILES=	${DISTNAME}${EXTRACT_SUFX}
 

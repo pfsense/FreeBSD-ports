@@ -1,7 +1,10 @@
 PORTNAME=	ares
 DISTVERSIONPREFIX=	v
-DISTVERSION=	144
+DISTVERSION=	145
+PORTREVISION=	1
 CATEGORIES=	emulators
+MASTER_SITES=	https://github.com/${PORTNAME}-emulator/${PORTNAME}/releases/download/${DISTVERSIONFULL}/
+DISTNAME=	${PORTNAME}-source
 
 MAINTAINER=	bsdcode@disroot.org
 COMMENT=	Multi-system emulator
@@ -13,16 +16,14 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 BUILD_DEPENDS=	librashader>0:devel/librashader
 
 USES=		cmake compiler:c++17-lang gl gnome pkgconfig xorg
-USE_GITHUB=	yes
-GH_ACCOUNT=	ares-emulator
 USE_GL=		opengl
 USE_GNOME=	gtk30
 USE_XORG=	x11 xext xrandr xrender
 
 CMAKE_ARGS=	-DARES_CORES="${_CORES:S/ /;/gW}" \
-		-DARES_VERSION_OVERRIDE=${DISTVERSIONFULL} \
 		-DENABLE_CCACHE=${CCACHE_ENABLED}
-CMAKE_ON=	ARES_SKIP_DEPS \
+CMAKE_ON=	ARES_BUILD_OFFICIAL \
+		ARES_SKIP_DEPS \
 		ARES_UNITY_CORES
 CMAKE_OFF=	ARES_BUILD_LOCAL \
 		ARES_BUNDLE_SHADERS \
@@ -30,6 +31,8 @@ CMAKE_OFF=	ARES_BUILD_LOCAL \
 
 EXTRACT_AFTER_ARGS=	--exclude thirdparty/librashader \
 			--no-same-owner --no-same-permissions
+
+WRKSRC=		${WRKDIR}/${PORTNAME}-${DISTVERSION}
 
 OPTIONS_DEFINE=			CHD SDL TOOLS
 OPTIONS_DEFAULT=		A26 ALSA AO CHD CV FC GB GBA LIBRASHADER \
@@ -61,7 +64,7 @@ GBA_DESC=		Game Boy Advance
 GB_DESC=		Game Boy / Game Boy Color
 HOTKEYS_DESC=		Inofficial hotkeys locking patch
 LIBRASHADER_DESC=	Slang-shader support via librashader
-LIBRETRO_DESC=		Install slang-shaders from libretro
+LIBRETRO_DESC=		Install slang-shaders from libretro (implies ${LIBRETRO_IMPLIES})
 MD_DESC=		Sega Mega Drive / Genesis
 MSX_DESC=		Microsoft MSX
 MS_DESC=		Sega Master System / Mark III
@@ -154,6 +157,8 @@ SG_VARS=			_CORES+=sg
 
 SPEC_VARS=			_CORES+=spec
 
+# https://github.com/ares-emulator/ares/issues/2090
+TOOLS_IMPLIES=			GBA MD NG SFC
 TOOLS_CMAKE_BOOL=		ARES_BUILD_OPTIONAL_TARGETS
 
 UDEV_LIB_DEPENDS=		libudev.so:devel/libudev-devd

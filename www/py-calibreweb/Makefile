@@ -1,6 +1,6 @@
 PORTNAME=	calibreweb
 PORTVERSION=	0.6.24
-PORTREVISION=	1
+PORTREVISION=	3
 CATEGORIES=	www python
 MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -26,7 +26,7 @@ RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}APScheduler>=0:devel/py-apscheduler@${PY_FLA
 		${PYTHON_PKGNAMEPREFIX}flask_limiter>=0:www/py-flask-limiter@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}flask_wtf>=0:www/py-flask-wtf@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}iso-639>=0:textproc/py-iso-639@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}lxml>=0:devel/py-lxml@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}lxml5>=0:devel/py-lxml5@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}netifaces-plus>=0:net/py-netifaces-plus@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}pypdf>=0:print/py-pypdf@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}python-magic>=0:devel/py-python-magic@${PY_FLAVOR} \
@@ -99,7 +99,7 @@ GDRIVE_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}gevent>=0:devel/py-gevent@${PY_FLAVOR
 			${PYTHON_PKGNAMEPREFIX}uritemplate>=0:net/py-uritemplate@${PY_FLAVOR}
 GMAIL_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}google-api-python-client>=0:www/py-google-api-python-client@${PY_FLAVOR} \
 			${PYTHON_PKGNAMEPREFIX}google-auth-oauthlib>=0:security/py-google-auth-oauthlib@${PY_FLAVOR}
-GREADS_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}Goodreads>=0:devel/py-goodreads@${PY_FLAVOR} \
+GREADS_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}goodreads>=0:devel/py-goodreads@${PY_FLAVOR} \
 			${PYTHON_PKGNAMEPREFIX}Levenshtein>=0:devel/py-Levenshtein@${PY_FLAVOR}
 IMAGICK6_NOX11_USES=	magick:6,run,nox11
 IMAGICK6_X11_USES=	magick:6,run

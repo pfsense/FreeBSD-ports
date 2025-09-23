@@ -1,6 +1,7 @@
     COMMENT = Internet Relay Chat utilities
 
     SUBDIR += anope
+    SUBDIR += anope-devel
     SUBDIR += atheme-services
     SUBDIR += bip
     SUBDIR += bitchx
@@ -9,7 +10,6 @@
     SUBDIR += bitlbee-facebook
     SUBDIR += bitlbee-mastodon
     SUBDIR += bitlbee-steam
-    SUBDIR += bnc
     SUBDIR += catgirl
     SUBDIR += cgiirc
     SUBDIR += dancer

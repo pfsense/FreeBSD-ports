@@ -171,4 +171,10 @@ post-build:
 		${BUILD_WRKSRC}/lib/cmake/Qt5${module}/Qt5${module}Config.cmake
 .endfor
 
+post-install:
+	for lib in ${STAGEDIR}${PREFIX}/${QT_LIBDIR_REL}/*.so.${_QT_VERSION:C/-.*//} ; \
+	do \
+		${BRANDELF} -t FreeBSD $$lib ; \
+	done
+
 .include <bsd.port.post.mk>

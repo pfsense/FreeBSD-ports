@@ -155,6 +155,8 @@ include/proxygen/lib/http/codec/compress/experimental/simulator/HPACKScheme.h
 include/proxygen/lib/http/codec/compress/experimental/simulator/QMINScheme.h
 include/proxygen/lib/http/codec/compress/experimental/simulator/QPACKScheme.h
 include/proxygen/lib/http/codec/compress/experimental/simulator/SimStreamingCallback.h
+include/proxygen/lib/http/codec/webtransport/WebTransportCapsuleCodec.h
+include/proxygen/lib/http/codec/webtransport/WebTransportFramer.h
 include/proxygen/lib/http/connpool/Endpoint.h
 include/proxygen/lib/http/connpool/ServerIdleSessionController.h
 include/proxygen/lib/http/connpool/SessionHolder.h
@@ -198,6 +200,7 @@ include/proxygen/lib/http/session/ServerPushLifecycle.h
 include/proxygen/lib/http/session/SimpleController.h
 include/proxygen/lib/http/session/TTLBAStats.h
 include/proxygen/lib/http/session/TransactionByteEvents.h
+include/proxygen/lib/http/session/WebTransportFilter.h
 include/proxygen/lib/http/sink/FlowControlInfo.h
 include/proxygen/lib/http/sink/HTTPConnectSink.h
 include/proxygen/lib/http/sink/HTTPSink.h
@@ -206,6 +209,7 @@ include/proxygen/lib/http/sink/HTTPTunnelSink.h
 include/proxygen/lib/http/stats/ConnectionStats.h
 include/proxygen/lib/http/stats/HTTPCodecStats.h
 include/proxygen/lib/http/stats/HTTPCodecStatsFilter.h
+include/proxygen/lib/http/stats/HttpServerStats.h
 include/proxygen/lib/http/stats/HeaderCodecStats.h
 include/proxygen/lib/http/stats/ResponseCodeStatsMinute.h
 include/proxygen/lib/http/stats/TLResponseCodeStats.h
@@ -215,6 +219,8 @@ include/proxygen/lib/http/structuredheaders/StructuredHeadersConstants.h
 include/proxygen/lib/http/structuredheaders/StructuredHeadersDecoder.h
 include/proxygen/lib/http/structuredheaders/StructuredHeadersEncoder.h
 include/proxygen/lib/http/structuredheaders/StructuredHeadersUtilities.h
+include/proxygen/lib/http/webtransport/FlowController.h
+include/proxygen/lib/http/webtransport/HTTPWebTransport.h
 include/proxygen/lib/http/webtransport/WebTransport.h
 include/proxygen/lib/http/webtransport/test/FakeSharedWebTransport.h
 include/proxygen/lib/pools/generators/FileServerListGenerator.h

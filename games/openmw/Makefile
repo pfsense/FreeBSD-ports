@@ -1,7 +1,7 @@
 PORTNAME=	openmw
 DISTVERSIONPREFIX=	openmw-
-DISTVERSION=	0.48.0
-PORTREVISION=	8
+DISTVERSION=	0.49.0
+PORTREVISION=	2
 CATEGORIES=	games
 
 MAINTAINER=	fluffy@FreeBSD.org
@@ -11,13 +11,11 @@ WWW=		https://openmw.org/
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-BROKEN_FreeBSD_15_aarch64=	clang crashes, see https://bugs.freebsd.org/bugzilla/show_bug.cgi?id=276702
-BROKEN_FreeBSD_15_amd64=	clang crashes, see https://bugs.freebsd.org/bugzilla/show_bug.cgi?id=276702
-
 LIB_DEPENDS=	libavcodec.so.60:multimedia/ffmpeg \
 		libboost_thread.so:devel/boost-libs \
 		libMyGUIEngine.so:x11-toolkits/mygui \
 		libBulletCollision.so:devel/bullet@double \
+		libcollada-dom2.5-dp.so:devel/collada-dom \
 		libosg.so:graphics/osg \
 		libRecast.so:graphics/recastnavigation \
 		libunshield.so:archivers/unshield \
@@ -25,16 +23,16 @@ LIB_DEPENDS=	libavcodec.so.60:multimedia/ffmpeg \
 		libicui18n.so:devel/icu \
 		libyaml-cpp.so:devel/yaml-cpp
 
-USES=		cmake compiler:c++17-lang desktop-file-utils gl luajit openal \
-		pkgconfig qt:5 sdl sqlite xorg
+USES=		cmake compiler:c++20-lang desktop-file-utils gl luajit openal \
+		pkgconfig qt:6 sdl sqlite xorg
 USE_GITHUB=	yes
 GH_ACCOUNT=	OpenMW
 USE_GL=		gl
-USE_QT=		core gui network opengl printsupport widgets buildtools:build \
-		qmake:build
+USE_QT=		base imageformats multimedia svg tools:build
 USE_SDL=	sdl2
+USE_CXXSTD=	c++20
 
-CMAKE_ARGS=	-DDESIRED_QT_VERSION=5 \
+CMAKE_ARGS=	-DDESIRED_QT_VERSION=${_QT_VER} \
 		-DOPENMW_USE_SYSTEM_BULLET=ON \
 		-DOPENMW_USE_SYSTEM_RECASTNAVIGATION=ON \
 		-DGLOBAL_DATA_PATH="${PREFIX}/share" \
@@ -64,6 +62,13 @@ PORTDOCS=	*
 # possibly incorrect addend values.
 LDFLAGS_i386+=	-Wl,--no-check-dynamic-relocations
 .endif
+
+post-patch:
+	${REINPLACE_CMD} -e 's/Qt6 Qt5/Qt6/' \
+	-e 's/program_options system/program_options/' \
+	${WRKSRC}/CMakeLists.txt
+	${REINPLACE_CMD} -e '/Boost::system/d' \
+	${WRKSRC}/components/CMakeLists.txt
 
 post-install:
 	@${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/*

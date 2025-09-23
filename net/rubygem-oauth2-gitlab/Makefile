@@ -1,5 +1,5 @@
 PORTNAME=	oauth2
-PORTVERSION=	2.0.10
+PORTVERSION=	2.0.12
 CATEGORIES=	net rubygems
 MASTER_SITES=	RG
 PKGNAMESUFFIX=	-gitlab
@@ -13,10 +13,10 @@ LICENSE_FILE=	${WRKSRC}/LICENSE.txt
 
 RUN_DEPENDS=	rubygem-faraday-gitlab>=0.17.3<4:www/rubygem-faraday-gitlab \
 		rubygem-jwt>=1.0<4:www/rubygem-jwt \
-		rubygem-logger>=1.2<2:devel/rubygem-logger \
+		rubygem-logger-gitlab>=1.2<2:devel/rubygem-logger-gitlab \
 		rubygem-multi_xml>=0.5<1:textproc/rubygem-multi_xml \
 		rubygem-rack>=1.2,3<4,3:www/rubygem-rack \
-		rubygem-snaky_hash>=2.0<3:devel/rubygem-snaky_hash \
+		rubygem-snaky_hash>=2.0.3<3:devel/rubygem-snaky_hash \
 		rubygem-version_gem>=1.1.8<3:devel/rubygem-version_gem
 
 USES=		gem

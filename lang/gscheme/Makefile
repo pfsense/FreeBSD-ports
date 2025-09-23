@@ -1,11 +1,10 @@
 PORTNAME=	gscheme
 PORTVERSION=	0.6
-PORTREVISION=	10
+PORTREVISION=	11
 CATEGORIES=	lang gnustep
 MASTER_SITES=	http://www.gnustep.it/marko/GScheme/ \
 		LOCAL/dinoex
 DISTNAME=	GScheme
-EXTRACT_SUFX=	.tgz
 DIST_SUBDIR=	repacked
 
 MAINTAINER=	ports@FreeBSD.org
@@ -14,7 +13,7 @@ WWW=		http://www.gnustep.it/marko/GScheme/index.html
 
 LICENSE=	GPLv2+
 
-USES=		gnustep
+USES=		gnustep tar:tgz
 USE_GNUSTEP=	back build
 
 post-patch:

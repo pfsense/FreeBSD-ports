@@ -1,5 +1,5 @@
 PORTNAME=	wolfssl
-PORTVERSION=	5.8.0
+PORTVERSION=	5.8.2
 PORTREVISION=	1
 CATEGORIES=	security devel
 MASTER_SITES=	https://www.wolfssl.com/ \
@@ -9,7 +9,7 @@ MAINTAINER=	fox@FreeBSD.org
 COMMENT=	Embedded SSL C-Library
 WWW=		https://www.wolfssl.com/
 
-LICENSE=	GPLv2+
+LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/COPYING
 
 USES=		cpe libtool zip
@@ -41,6 +41,10 @@ CONFIGURE_ARGS=	--disable-dependency-tracking \
 		--enable-context-extra-user-data
 TEST_TARGET=	check
 CFLAGS+=	-DWOLFSSL_ALT_NAMES -DWOLFSSL_GETRANDOM=1
+CFLAGS_i386=	-DWOLFSSL_SHA224
+CFLAGS_powerpc=	-DWOLFSSL_SHA224
+CFLAGS_powerpc64=	-DWOLFSSL_SHA224
+CFLAGS_powerpc64le=	-DWOLFSSL_SHA224
 
 OPTIONS_DEFINE=	DEBUG DOCS
 

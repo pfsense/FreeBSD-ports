@@ -2,7 +2,7 @@ PORTNAME=	kwin
 DISTVERSION=	${KDE_PLASMA_VERSION}
 CATEGORIES=	x11-wm kde kde-plasma
 
-COMMENT=	Easy to use, but flexible, X Window Manager and Wayland Compositor
+COMMENT=	Easy to use, but flexible, Wayland Compositor
 MAINTAINER=	kde@FreeBSD.org
 
 BUILD_DEPENDS=	${LOCALBASE}/include/linux/input.h:devel/evdev-proto \
@@ -33,13 +33,14 @@ CONFLICTS_INSTALL=	theseus-ship # bin/kwin_wayland
 USES=		cmake gettext gl kde:6 pkgconfig python qt:6 shebangfix tar:xz \
 		xorg
 USE_GL=		egl gbm gl opengl
-USE_KDE=	activities attica auth breeze colorscheme config \
+USE_KDE=	activities attica auth colorscheme config \
 		configwidgets coreaddons crash dbusaddons decoration \
 		globalaccel globalacceld guiaddons i18n idletime kcmutils \
 		kdeclarative kpipewire kscreenlocker libplasma newstuff \
 		notifications package runner service svg wayland widgetsaddons \
 		windowsystem xmlgui \
-		ecm:build plasma-wayland-protocols:build
+		ecm:build plasma-wayland-protocols:build \
+		aurorae:run breeze:run
 USE_QT=		base declarative multimedia sensors tools wayland
 USE_XORG=	ice sm x11 xcb xext xi
 

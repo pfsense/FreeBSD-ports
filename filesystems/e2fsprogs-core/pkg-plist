@@ -69,13 +69,10 @@ share/man/man8/fsck.ext4.8.gz
 share/man/man8/mkfs.ext2.8.gz
 share/man/man8/mkfs.ext3.8.gz
 share/man/man8/mkfs.ext4.8.gz
-share/man/man8/findfs.8.gz
-share/man/man8/blkid.8.gz
 share/man/man8/logsave.8.gz
 share/man/man8/fsck_ext2fs.8.gz
 share/man/man8/e2freefrag.8.gz
 sbin/badblocks
-sbin/blkid
 sbin/debugfs
 sbin/dumpe2fs
 sbin/e2freefrag
@@ -84,7 +81,6 @@ sbin/e2image
 sbin/e2label
 sbin/e2mmpstatus
 sbin/e2undo
-sbin/findfs
 sbin/fsck.ext2
 sbin/fsck.ext3
 sbin/fsck.ext4
@@ -112,6 +108,7 @@ sbin/tune2fs
 %%NLS%%share/locale/hu/LC_MESSAGES/e2fsprogs.mo
 %%NLS%%share/locale/id/LC_MESSAGES/e2fsprogs.mo
 %%NLS%%share/locale/it/LC_MESSAGES/e2fsprogs.mo
+%%NLS%%share/locale/ka/LC_MESSAGES/e2fsprogs.mo
 %%NLS%%share/locale/ms/LC_MESSAGES/e2fsprogs.mo
 %%NLS%%share/locale/nl/LC_MESSAGES/e2fsprogs.mo
 %%NLS%%share/locale/pl/LC_MESSAGES/e2fsprogs.mo

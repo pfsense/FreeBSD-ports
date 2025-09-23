@@ -1,6 +1,6 @@
 PORTNAME=	musikcube
 DISTVERSION=	3.0.4
-PORTREVISION=	4
+PORTREVISION=	5
 CATEGORIES=	multimedia audio
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -11,7 +11,7 @@ WWW=		https://musikcube.com/ \
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE.txt
 
-BUILD_DEPENDS=	asio>0:net/asio
+BUILD_DEPENDS=	asio130>0:net/asio130 # pending https://github.com/clangen/musikcube/issues/733
 LIB_DEPENDS=	libasound.so:audio/alsa-lib \
 		libavcodec.so:multimedia/ffmpeg \
 		libbasu.so:devel/basu \

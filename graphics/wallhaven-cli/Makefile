@@ -1,10 +1,10 @@
 PORTNAME=	wallhaven-cli
 DISTVERSIONPREFIX=	v
 DISTVERSION=	2.0.5
-PORTREVISION=	5
+PORTREVISION=	6
 CATEGORIES=	graphics
 
-MAINTAINER=	nxjoseph@protonmail.com
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	CLI for wallhaven to browse wallpapers in terminal
 WWW=		https://github.com/r3tr0ananas/wallhaven-cli
 

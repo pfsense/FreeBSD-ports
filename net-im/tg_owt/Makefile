@@ -1,5 +1,6 @@
 PORTNAME=	tg_owt
-PORTVERSION=	0.0.20250501
+PORTVERSION=	0.0.20250603
+PORTREVISION=	1
 CATEGORIES=	net-im
 
 MAINTAINER=	ports@FreeBSD.org
@@ -22,12 +23,13 @@ LIB_DEPENDS=	libabsl_base.so:devel/abseil \
 		libsrtp2.so:net/libsrtp2 \
 		libvpx.so:multimedia/libvpx
 
-USES=		cmake gl pkgconfig xorg
+USES=		cmake gl gnome pkgconfig xorg
 USE_XORG=	x11 xcomposite xdamage xrender xrandr xtst
 USE_GL=		gbm gl
 USE_GITHUB=	yes
+USE_GNOME=	glib20
 GH_ACCOUNT=	desktop-app
-GH_TAGNAME=	c4192e8
+GH_TAGNAME=	62321fd
 
 CMAME_ON=	TG_OWT_PACKAGED_BUILD
 

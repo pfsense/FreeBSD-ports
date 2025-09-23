@@ -42,6 +42,7 @@
     SUBDIR += dnsproxy
     SUBDIR += dnsrecon
     SUBDIR += dnsreflector
+    SUBDIR += dnssec-rr
     SUBDIR += dnstable
     SUBDIR += dnstable-convert
     SUBDIR += dnstop
@@ -94,8 +95,6 @@
     SUBDIR += libpsl
     SUBDIR += linux-c7-libasyncns
     SUBDIR += linux-rl9-libasyncns
-    SUBDIR += linux-rl9-libidn2
-    SUBDIR += linux-rl9-libpsl
     SUBDIR += lua-resty-dns
     SUBDIR += luaunbound
     SUBDIR += mDNSResponder_nss
@@ -171,6 +170,7 @@
     SUBDIR += pear-File_DNS
     SUBDIR += pear-Horde_Idna
     SUBDIR += pear-Net_DNS2
+    SUBDIR += pear-Net_DNS21
     SUBDIR += powerdns
     SUBDIR += powerdns-recursor
     SUBDIR += prometheus-dnssec-exporter
@@ -222,11 +222,13 @@
     SUBDIR += rubygem-simpleidn
     SUBDIR += rubygem-simpleidn02
     SUBDIR += rubygem-validates_hostname
+    SUBDIR += rubygem-validates_hostname-gitlab
     SUBDIR += rubygem-zonefile
     SUBDIR += samba-nsupdate
     SUBDIR += scavenge
     SUBDIR += sleuth
     SUBDIR += subfinder
+    SUBDIR += tldx
     SUBDIR += totd
     SUBDIR += udns
     SUBDIR += unbound

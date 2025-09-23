@@ -1,5 +1,6 @@
 PORTNAME=	picocrypt
-DISTVERSION=	1.48 # Missing modules.txt, generate one with `go mod vendor` and place it in ${FILESDIR}
+DISTVERSION=	1.49 # Missing modules.txt, generate one with `go mod vendor` and place it in ${FILESDIR}
+PORTREVISION=	1
 CATEGORIES=	security
 
 MAINTAINER=	eduardo@FreeBSD.org
@@ -15,7 +16,7 @@ ONLY_FOR_ARCHS_REASON=	upstream only supports 64-bit
 
 LIB_DEPENDS=	libharfbuzz.so:print/harfbuzz
 
-USES=		gl gnome go:1.24,modules pkgconfig xorg
+USES=		gl gnome go:modules pkgconfig xorg
 USE_GL=		gl
 USE_GNOME=	cairo gdkpixbuf gtk30
 USE_XORG=	x11 xau xcb xdmcp
@@ -23,7 +24,7 @@ USE_GITHUB=	yes
 GH_ACCOUNT=	Picocrypt
 GH_PROJECT=	Picocrypt
 GH_TUPLE=	Picocrypt:dialog:78f7b909315b:picocrypt_dialog/vendor/github.com/Picocrypt/dialog \
-		Picocrypt:giu:fe90a482e6f2:picocrypt_giu/vendor/github.com/Picocrypt/giu \
+		Picocrypt:giu:ec85cd24c933:picocrypt_giu/vendor/github.com/Picocrypt/giu \
 		Picocrypt:gl:767b58dbf936:picocrypt_gl/vendor/github.com/Picocrypt/gl \
 		Picocrypt:glfw:7b96bfdb8dd8:picocrypt_glfw_glfw/vendor/github.com/Picocrypt/glfw \
 		Picocrypt:imgui-go:d86b230f5fbb:picocrypt_imgui_go/vendor/github.com/Picocrypt/imgui-go \
@@ -32,8 +33,8 @@ GH_TUPLE=	Picocrypt:dialog:78f7b909315b:picocrypt_dialog/vendor/github.com/Picoc
 		Picocrypt:serpent:9ad6ab254fd7:picocrypt_serpent/vendor/github.com/Picocrypt/serpent \
 		Picocrypt:w32:1183079d4d57:picocrypt_w32/vendor/github.com/Picocrypt/w32 \
 		Picocrypt:zxcvbn-go:d59695960527:picocrypt_zxcvbn_go/vendor/github.com/Picocrypt/zxcvbn-go \
-		golang:crypto:v0.37.0:golang_crypto/vendor/golang.org/x/crypto \
-		golang:sys:v0.32.0:golang_sys/vendor/golang.org/x/sys
+		golang:crypto:v0.40.0:golang_crypto/vendor/golang.org/x/crypto \
+		golang:sys:v0.34.0:golang_sys/vendor/golang.org/x/sys
 
 WRKSRC_SUBDIR=	src
 

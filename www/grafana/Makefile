@@ -1,23 +1,18 @@
 PORTNAME=	grafana
 DISTVERSIONPREFIX=	v
-DISTVERSION=	12.0.0
+DISTVERSION=	12.1.0
+PORTREVISION=	1
 CATEGORIES=	www
 MASTER_SITES=	https://dl.grafana.com/oss/release/ \
 		https://raw.githubusercontent.com/${GH_ACCOUNT}/${GH_PROJECT}/${DISTVERSIONFULL}/:gomod
 DISTFILES=	grafana-${DISTVERSION}.linux-amd64${EXTRACT_SUFX} \
 		go.mod:gomod \
 		go.work:gomod \
-		.citools/bra/go.mod:gomod \
-		.citools/cog/go.mod:gomod \
-		.citools/cue/go.mod:gomod \
-		.citools/golangci-lint/go.mod:gomod \
-		.citools/jb/go.mod:gomod \
-		.citools/lefthook/go.mod:gomod \
-		.citools/swagger/go.mod:gomod \
 		apps/advisor/go.mod:gomod \
 		apps/alerting/notifications/go.mod:gomod \
 		apps/dashboard/go.mod:gomod \
 		apps/folder/go.mod:gomod \
+		apps/iam/go.mod:gomod \
 		apps/investigations/go.mod:gomod \
 		apps/playlist/go.mod:gomod \
 		pkg/aggregator/go.mod:gomod \
@@ -29,10 +24,7 @@ DISTFILES=	grafana-${DISTVERSION}.linux-amd64${EXTRACT_SUFX} \
 		pkg/codegen/go.mod:gomod \
 		pkg/plugins/codegen/go.mod:gomod \
 		pkg/promlib/go.mod:gomod \
-		pkg/semconv/go.mod:gomod \
-		pkg/storage/unified/apistore/go.mod:gomod \
-		pkg/storage/unified/resource/go.mod:gomod \
-		pkg/util/xorm/go.mod:gomod
+		pkg/semconv/go.mod:gomod
 EXTRACT_ONLY=	${DISTFILES:N*.mod\:*:N*.mod:C/:.*//:Ngo.work}
 
 MAINTAINER=	drtr0jan@yandex.ru
@@ -43,16 +35,16 @@ WWW=		https://grafana.com/grafana/ \
 LICENSE=	AGPLv3
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-ONLY_FOR_ARCHS=	aarch64 amd64 i386 riscv64
+ONLY_FOR_ARCHS=	aarch64 amd64 armv6 armv7 riscv64
 
 RUN_DEPENDS=	ca_root_nss>=0:security/ca_root_nss
 
-USES=		cpe go:1.24,modules
+USES=		cpe go:modules
 
 USE_GITHUB=	yes
 
 USE_RC_SUBR=	grafana
-TAG=		4c0e704
+TAG=		ccd7b6c
 
 GO_MOD_DIST=	github
 GO_MODULE=	github.com/grafana/grafana
@@ -87,6 +79,7 @@ GRAFANA_HOMEDIR?=		${DATADIR}
 GRAFANA_LOGDIR?=		/var/log/${PORTNAME}
 GRAFANA_PLUGINDIR?=		${GRAFANA_DATADIR}/plugins
 GRAFANA_PROVISIONINGDIR?=	${ETCDIR}/provisioning
+GRAFANA_PROVISIONING=		access-control alerting dashboards datasources plugins sample
 
 post-extract:
 	@${ECHO_MSG} "===> Tidying ${GO_MODNAME} dependencies";
@@ -111,14 +104,11 @@ pre-build:
 		./pkg/build/wire/cmd/wire/main.go gen -tags "oss" ./pkg/server)
 
 post-install:
-	${MKDIR} ${STAGEDIR}${GRAFANA_HOMEDIR}
-	${MKDIR} ${STAGEDIR}${GRAFANA_HOMEDIR}/conf
-	${MKDIR} ${STAGEDIR}${GRAFANA_DATADIR}
-	${MKDIR} ${STAGEDIR}${GRAFANA_PLUGINDIR}
-.for dir in access-control alerting dashboards datasources plugins
-	${MKDIR} ${STAGEDIR}${GRAFANA_PROVISIONINGDIR}/${dir}
-.endfor
-	${MKDIR} ${STAGEDIR}${GRAFANA_LOGDIR}
+	${MKDIR} ${STAGEDIR}${GRAFANA_HOMEDIR}/conf \
+		 ${STAGEDIR}${GRAFANA_DATADIR} \
+		 ${STAGEDIR}${GRAFANA_PLUGINDIR} \
+		 ${STAGEDIR}${GRAFANA_LOGDIR} \
+		 ${GRAFANA_PROVISIONING:M*:C|^|${STAGEDIR}${GRAFANA_PROVISIONINGDIR}/|}
 	(cd ${WRKDIR}/${PORTNAME}-${DISTVERSIONPREFIX}${DISTVERSION}${DISTVERSIONSUFFIX} \
 		&& ${COPYTREE_SHARE} public ${STAGEDIR}${GRAFANA_HOMEDIR})
 	${INSTALL_DATA} ${WRKSRC}/conf/defaults.ini \

@@ -1,10 +1,10 @@
 PORTNAME=	2fa
 DISTVERSIONPREFIX=	v
 DISTVERSION=	1.2.0
-PORTREVISION=	25
+PORTREVISION=	29
 CATEGORIES=	security
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	mauroeldritch@gmail.com
 COMMENT=	Two-factor authentication on the command line
 WWW=		https://github.com/rsc/2fa
 

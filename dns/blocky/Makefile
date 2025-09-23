@@ -1,6 +1,6 @@
 PORTNAME=	blocky
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.25
+DISTVERSION=	0.26.2
 PORTREVISION=	3
 CATEGORIES=	dns
 
@@ -11,13 +11,10 @@ WWW=		https://0xerr0r.github.io/blocky/
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-USES=		go:1.22,modules
-USE_GITHUB=	yes
-GH_ACCOUNT=	0xERR0R
+USES=		go:modules
 USE_RC_SUBR=	blocky
 
-GO_MOD_DIST=	github
-GO_MODULE=	github.com/${GH_ACCOUNT}/${GH_PROJECT}
+GO_MODULE=	github.com/0xERR0R/blocky
 GO_TARGET=	main.go:${PREFIX}/sbin/${PORTNAME}
 GO_BUILDFLAGS=	-ldflags "-w -s \
 		-X github.com/0xERR0R/blocky/util.Version=${DISTVERSION} \

@@ -1,6 +1,6 @@
 PORTNAME=	cyrus-imapd
 PORTVERSION=	3.2.12
-PORTREVISION=	2
+PORTREVISION=	4
 CATEGORIES=	mail
 MASTER_SITES=	https://github.com/cyrusimap/cyrus-imapd/releases/download/${PORTNAME}-${PORTVERSION}/
 PKGNAMESUFFIX=	32
@@ -17,7 +17,7 @@ BROKEN_riscv64=		fails to build: lib/chartable.c: Error 1
 LIB_DEPENDS=	libsasl2.so:security/cyrus-sasl2 \
 		libicuuc.so:devel/icu \
 		libjansson.so:devel/jansson \
-		libuuid.so:misc/e2fsprogs-libuuid
+		libuuid.so:misc/libuuid
 
 CONFLICTS_INSTALL=	cyrus-imapd2? cyrus-imapd3[013-] cyrus-imapd3[013-]-http
 
@@ -112,8 +112,12 @@ OPTIONS_RADIO_GSSAPI+=		GSSAPI_BASE
 OPTIONS_DEFAULT+=		GSSAPI_BASE
 .endif
 GSSAPI_BASE_USES=		gssapi
-GSSAPI_BASE_CONFIGURE_ON=	--enable-gssapi="${GSSAPIBASEDIR}" \
-				--with-gss_impl=heimdal
+GSSAPI_BASE_CONFIGURE_ON=	--enable-gssapi="${GSSAPIBASEDIR}"
+.if exists(/usr/libdata/pkgconfig/mit-krb5.pc)
+GSSAPI_BASE_CONFIGURE_ON+=	--with-gss_impl=mit
+.else
+GSSAPI_BASE_CONFIGURE_ON+=	--with-gss_impl=heimdal
+.endif
 GSSAPI_HEIMDAL_USES=		gssapi:heimdal,flags
 GSSAPI_HEIMDAL_CONFIGURE_ON=	--enable-gssapi="${GSSAPIBASEDIR}" \
 				--with-gss_impl=heimdal

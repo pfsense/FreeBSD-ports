@@ -1,6 +1,6 @@
 PORTNAME=	chemicalfun
 DISTVERSION=	0.1.8
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	science # chemistry
 MASTER_SITES=	https://bitbucket.org/${BB_ACCOUNT}/${PORTNAME}/get/${BB_COMMIT}${EXTRACT_SUFX}?dummy=/:src
 DISTFILES=	${PORTNAME}-${DISTVERSION}${EXTRACT_SUFX}:src
@@ -45,7 +45,7 @@ post-install-PYTHON-on:
 	@${FIND} ${STAGEDIR} -name "*.pyc" -delete
 	@${FIND} ${STAGEDIR} -name __pycache__ -delete
 	# strip binary
-	@${STRIP_CMD} ${STAGEDIR}${PYTHON_SITELIBDIR}/chemicalfun/PyChemicalFun${PYTHON_EXT_SUFFIX}.so
+	@${STRIP_CMD} ${STAGEDIR}${PYTHON_SITELIBDIR}/chemicalfun/PyChemicalFun${PYTHON_TAG}.so
 
 post-test:
 	@${ECHO} "==> run C++ tests"

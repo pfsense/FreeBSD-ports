@@ -88,6 +88,7 @@
     SUBDIR += piewm
     SUBDIR += plasma6-kdecoration
     SUBDIR += plasma6-kwin
+    SUBDIR += plasma6-kwin-x11
     SUBDIR += pwm
     SUBDIR += qtile
     SUBDIR += ratpoison
@@ -111,6 +112,7 @@
     SUBDIR += vtwm
     SUBDIR += wayfire
     SUBDIR += wayfire-plugins-extra
+    SUBDIR += wideriver
     SUBDIR += windowmaker
     SUBDIR += wlmaker
     SUBDIR += wm2

@@ -26,6 +26,92 @@ global $recommended_patches;
  */
 $recommended_patches = [
 [
+  'uniqid' => '891b161d2bd54390ed972ac82971d8b46971d4ae',
+  'versions' => ['25.07.1'],
+  'descr' => 'Fix unnecessary configuration change when manually verifying a ZFS Boot Environment',
+  'links' => [
+      [ 'text' => 'Redmine #15499',
+         'url' => 'https://redmine.pfsense.org/issues/15499', ],
+  ],
+  'basedir' => '/',
+  'pathstrip' => 2,
+  'ignorewhitespace' => true,
+],
+[
+  'uniqid' => '10b8d429c42de77013cc6a3d393e8c7ef7b5e495',
+  'versions' => ['25.07.1', '2.8.1'],
+  'descr' => 'Prevent tailscale interface from being assignable, mark it as virtual.',
+  'links' => [
+      [ 'text' => 'Redmine #15909',
+         'url' => 'https://redmine.pfsense.org/issues/15909', ],
+  ],
+  'basedir' => '/',
+  'pathstrip' => 2,
+  'ignorewhitespace' => true,
+],
+[
+  'uniqid' => 'f4a20381874486f6cc0448f75da923b8726a2936',
+  'versions' => ['25.07.1', '2.8.1'],
+  'descr' => 'Fix swap failing to activate when multiple swap partitions exist',
+  'links' => [
+      [ 'text' => 'Redmine #16232',
+         'url' => 'https://redmine.pfsense.org/issues/16232', ],
+  ],
+  'basedir' => '/',
+  'pathstrip' => 2,
+  'ignorewhitespace' => true,
+],
+[
+  'uniqid' => '7d545332c0c1f9879f805a23ae66f11865521f3d',
+  'versions' => ['25.07.1', '2.8.1'],
+  'descr' => 'Fix XMLRPC user manager synchronization not always retaining group memberships when modifying a user account',
+  'links' => [
+	[ 'text' => 'Redmine #16392',
+	  'url' => 'https://redmine.pfsense.org/issues/16392', ],
+  ],
+  'basedir' => '/',
+  'pathstrip' => 2,
+  'ignorewhitespace' => true,
+],
+[
+  'uniqid' => '8b6ab9b928db9356b5b8c56ffe343f500d429bd4',
+  'versions' => ['25.07.1', '2.8.1'],
+  'descr' => 'Fix Thermal Sensors Widget thresholds not being evaluated',
+  'links' => [
+      [ 'text' => 'Redmine #16266',
+         'url' => 'https://redmine.pfsense.org/issues/16266', ],
+  ],
+  'basedir' => '/',
+  'pathstrip' => 2,
+  'ignorewhitespace' => true,
+],
+[
+  'uniqid' => 'a05fb299cde018f1f8a47d6d363e2f773b2c44b7',
+  'versions' => ['2.8.1'],
+  'descr' => 'Fix PPPoE MSSFix values for 6RD',
+  'links' => [
+      [ 'text' => 'Redmine #16243',
+         'url' => 'https://redmine.pfsense.org/issues/16243', ],
+  ],
+  'basedir' => '/',
+  'pathstrip' => 2,
+  'ignorewhitespace' => true,
+],
+[
+  'uniqid' => '80a490e4d8f2c5973e63e2f54e92500a5bc29799',
+  'versions' => ['24.11', '2.8.0', '2.7.2'],
+  'descr' => 'Fix potential stored XSS in OpenVPN Dashboard widget',
+  'links' => [
+      [ 'text' => 'Redmine #16258',
+         'url' => 'https://redmine.pfsense.org/issues/16258', ],
+      [ 'text' => 'pfSense-SA-25_08.webgui',
+         'url' => 'https://docs.netgate.com/downloads/pfSense-SA-25_08.webgui.asc', ],
+  ],
+  'basedir' => '/',
+  'pathstrip' => 2,
+  'ignorewhitespace' => true,
+],
+[
   'uniqid' => 'acb-update-24.11',
   'versions' => ['24.11'],
   'descr' => 'AutoConfigBackup Update',

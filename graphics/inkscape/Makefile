@@ -1,15 +1,8 @@
 PORTNAME=	inkscape
-DISTVERSION=	1.4
-PORTREVISION=	4
+DISTVERSION=	1.4.2
+PORTREVISION=	1
 CATEGORIES=	graphics gnome
 MASTER_SITES=	https://media.inkscape.org/dl/resources/file/
-
-PATCH_SITES=	https://gitlab.com/${PORTNAME}/${PORTNAME}/-/commit/
-PATCHFILES+=	eb6dadcf1a5c660167ba43f3606c8e7cc6529787.patch:-p1 # https://gitlab.com/inkscape/inkscape/-/merge_requests/6755
-PATCHFILES+=	49604afa97be08608b65687633b1373eb9cf524b.patch:-p1 # https://gitlab.com/inkscape/inkscape/-/merge_requests/6839
-PATCHFILES+=	b1bd016ee3f91f3f5b2dbb928655eb049e8f62e4.patch:-p1 \
-							8abd30721e9bf5b15d705657d8e3a2103593e2f3.patch:-p1 # https://gitlab.com/inkscape/inkscape/-/merge_requests/6857
-PATCHFILES+=	9754274ea0ee76d9888ec0b306885ecba6926702.patch:-p1 # https://gitlab.com/inkscape/inkscape/-/merge_requests/6981
 
 MAINTAINER=	gnome@FreeBSD.org
 COMMENT=	Full featured open source SVG editor
@@ -44,7 +37,7 @@ RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}numpy>0:math/py-numpy@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}cachecontrol>0:www/py-cachecontrol@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}cssselect>0:www/py-cssselect@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}filelock>=3.7.1:sysutils/py-filelock@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}lxml>0:devel/py-lxml@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}lxml5>0:devel/py-lxml5@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}requests>0:www/py-requests@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}scour>0:textproc/py-scour@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}tinycss2>0:textproc/py-tinycss2@${PY_FLAVOR} \
@@ -56,11 +49,11 @@ USES=		compiler:c++20-lang cmake:testing cpe desktop-file-utils ghostscript:run 
 		gnome jpeg pathfix pkgconfig python \
 		readline shebangfix tar:xz xorg
 USE_GNOME=	cairo gdkpixbuf glibmm gtkmm30 gtksourceview4 libxml2 libxslt
-USE_PYTHON=	cython
+USE_PYTHON=	cython3
 USE_XORG=	sm ice x11 xext
 USE_LDCONFIG=	yes
 
-DATETAG=	2024-10-09_e7c3feb100
+DATETAG=	2025-05-08_ebf0e940d0
 WRKSRC=		${WRKDIR}/${PORTNAME}-${DISTVERSION}_${DATETAG}
 
 BINARY_ALIAS=	python3=${PYTHON_CMD}

@@ -1,6 +1,6 @@
 PORTNAME=	caldera
-DISTVERSION=	5.2.0
-PORTREVISION=	1
+DISTVERSION=	5.3.0
+PORTREVISION=	4
 CATEGORIES=	security python
 
 MAINTAINER=	acm@FreeBSD.org
@@ -12,7 +12,9 @@ CONFLICTS=	caldera4
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-BUILD_DEPENDS=	npm-node18>0:www/npm-node18
+ONLY_FOR_ARCHS=	aarch64 amd64
+
+BUILD_DEPENDS=	npm-node20>0:www/npm-node20
 RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}aiohttp>0:www/py-aiohttp@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}aiohttp-jinja2>0:www/py-aiohttp-jinja2@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}aiohttp-session>0:www/py-aiohttp-session@${PY_FLAVOR} \
@@ -31,7 +33,7 @@ RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}aiohttp>0:www/py-aiohttp@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}donut-shellcode>0:devel/py-donut-shellcode@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}marshmallow-enum>0:devel/py-marshmallow-enum@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}ldap3>0:net/py-ldap3@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}lxml>0:devel/py-lxml@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}lxml5>0:devel/py-lxml5@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}reportlab>0:print/py-reportlab@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}svglib>0:converters/py-svglib@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}markdown>0:textproc/py-markdown@${PY_FLAVOR} \
@@ -55,23 +57,23 @@ USE_GITHUB=	yes
 GH_ACCOUNT=	mitre
 GH_PROJECT=	${PORTNAME}
 GH_TUPLE=	mitre:access:775181b:access/plugins/access \
-		mitre:atomic:4f489bb:atomic/plugins/atomic \
+		mitre:atomic:b909588:atomic/plugins/atomic \
 		mitre:builder:2991945:builder/plugins/builder \
 		mitre:compass:85e2ebf:compass/plugins/compass \
 		mitre:debrief:eba44d5:debrief/plugins/debrief \
-		mitre:emu:4d442bc:emu/plugins/emu \
-		mitre:fieldmanual:2eb2e93:fieldmanual/plugins/fieldmanual \
+		mitre:emu:fdb0bab:emu/plugins/emu \
+		mitre:fieldmanual:83da7cb:fieldmanual/plugins/fieldmanual \
 		mitre:gameboard:dacb6ce:gameboard/plugins/gameboard \
 		mitre:human:fd242d7:human/plugins/human \
-		mitre:magma:32b5594:magma/plugins/magma \
-		mitre:manx:8adc3c8:manx/plugins/manx \
+		mitre:magma:66ebf0d:magma/plugins/magma \
+		mitre:manx:261f10b:manx/plugins/manx \
 		mitre:response:8ea6ab5:response/plugins/response \
 		mitre:sandcat:0a35cd5:sandcat/plugins/sandcat \
 		mitre:ssl:1ae8431:ssl/plugins/ssl \
-		mitre:stockpile:fcd1eea:stockpile/plugins/stockpile \
-		mitre:training:37f998f:training/plugins/training
+		mitre:stockpile:08f37d8:stockpile/plugins/stockpile \
+		mitre:training:d4d19a2:training/plugins/training
 
-USES=		dos2unix go:run nodejs:18,build python
+USES=		dos2unix go:run nodejs:20,build python
 USE_PYTHON=	cryptography
 
 NO_ARCH=	yes
@@ -107,11 +109,11 @@ DEPS_CACHE_DIR=		${WRKSRC}/plugins/magma
 .if (${DEV_UPDATE_MODE} == "yes")
 NPM_ARGS=	install
 post-build:
-	@cd ${DEPS_CACHE_DIR} && ${TAR} czf ${DISTDIR}/${DIST_SUBDIR}/${PORTNAME}-cache-${DISTVERSION}${EXTRACT_SUFX} node_modules
-	@${ECHO} "(!!!) Please upload the cache archive: ${DISTDIR}/${DIST_SUBDIR}/${PORTNAME}-cache-${DISTVERSION}${EXTRACT_SUFX}"
+	@cd ${DEPS_CACHE_DIR} && ${TAR} czf ${DISTDIR}/${DIST_SUBDIR}/${PORTNAME}-cache-${ARCH}-${DISTVERSION}${EXTRACT_SUFX} node_modules
+	@${ECHO} "(!!!) Please upload the cache archive: ${DISTDIR}/${DIST_SUBDIR}/${PORTNAME}-cache-${ARCH}-${DISTVERSION}${EXTRACT_SUFX}"
 .else
 MASTER_SITES+=	LOCAL/acm/caldera/:npm_cache
-DISTFILES+=	${PORTNAME}-cache-${DISTVERSION}${EXTRACT_SUFX}:npm_cache \
+DISTFILES+=	${PORTNAME}-cache-${ARCH}-${DISTVERSION}${EXTRACT_SUFX}:npm_cache \
 		${PORTNAME}-freebsd-logos.tar.gz:npm_cache
 NPM_ARGS=	run build
 
@@ -122,6 +124,9 @@ post-extract:
 	${RM} -R ${WRKSRC}/.github
 	cd ${WRKSRC} && ${RM} .coveragerc .dockerignore .eslintrc.js .flake8 \
 		.git* .pre* .stylelintrc.json Dockerfile
+
+post-build:
+	${RM} -r ${WRKSRC}/plugins/magma/node_modules
 .endif
 
 post-patch:
@@ -132,9 +137,6 @@ post-patch:
 do-build:
 	@cd ${WRKSRC}/plugins/magma && \
 		${NPM_BIN} ${NPM_ARGS}
-
-post-build:
-	${RM} -r ${WRKSRC}/plugins/magma/node_modules
 
 do-install:
 	@${MKDIR} ${STAGEDIR}/${WWWDIR}/ftp_dir

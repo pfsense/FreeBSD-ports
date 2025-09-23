@@ -208,6 +208,17 @@ $a_acmeserver['google-production'] = [
 	'url' => 'https://example.org'
 ];*/
 
+foreach (config_get_path('installedpackages/acme/customacme/servers', []) as $cas) {
+	if (empty($cas['intid']) ||
+	    empty($cas['url'])) {
+		continue;
+	}
+	$a_acmeserver[$cas['intid']] = [
+		'name' => $cas['name'],
+		'url' => $cas['url']
+	];
+}
+
 global $acme_domain_validation_method;
 $acme_domain_validation_method = [];
 $acme_domain_validation_method['webroot'] = [
@@ -410,10 +421,33 @@ $acme_domain_validation_method['dns_acmedns'] = [
 $acme_domain_validation_method['dns_active24'] = [
 	'name' => 'DNS-Active24',
 	'fields' => [
-		'ACTIVE24_Token' => [
-			'name' => 'active24_token',
-			'description' => 'Active24 Token',
-			'columnheader' => 'Token',
+		'Active24_ApiKey' => [
+			'name' => 'active24_apikey',
+			'description' => 'Active24 API Key',
+			'columnheader' => 'API Key',
+			'type' => 'password',
+		],
+		'Active24_ApiSecret' => [
+			'name' => 'active24_apisecret',
+			'description' => 'API Secret',
+			'columnheader' => 'API Secret',
+			'type' => 'password',
+		],
+	]
+];
+$acme_domain_validation_method['dns_beget'] = [
+	'name' => 'DNS-Beget.com',
+	'fields' => [
+		'BEGET_User' => [
+			'name' => 'beget_user',
+			'description' => 'Beget Username',
+			'columnheader' => 'Username',
+			'type' => 'textbox',
+		],
+		'BEGET_Password' => [
+			'name' => 'beget_password',
+			'description' => 'Beget Password',
+			'columnheader' => 'Password',
 			'type' => 'password',
 		],
 	]
@@ -1231,6 +1265,17 @@ $acme_domain_validation_method['dns_easydns'] = [
 		],
 	]
 ];
+$acme_domain_validation_method['dns_edgecenter'] = [
+	'name' => 'DNS-EdgeCenter.ru',
+	'fields' => [
+		'EDGECENTER_API_KEY' => [
+			'name' => 'edgecenter_api_key',
+			'description' => 'API Key',
+			'columnheader' => 'API Key',
+			'type' => 'password',
+		],
+	]
+];
 $acme_domain_validation_method['dns_euserv'] = [
 	'name' => 'DNS-Euserv.eu',
 	'fields' => [
@@ -1293,12 +1338,29 @@ $acme_domain_validation_method['dns_freedns'] = [
 		],
 	]
 ];
+$acme_domain_validation_method['dns_freemyip'] = [
+	'name' => 'DNS-FreeMyIP.com',
+	'fields' => [
+		'FREEMYIP_Token' => [
+			'name' => 'freemyip_token',
+			'description' => 'API Token',
+			'columnheader' => 'Token',
+			'type' => 'password',
+		],
+	]
+];
 $acme_domain_validation_method['dns_gandi_livedns'] = [
 	'name' => 'DNS-Gandi LiveDNS',
 	'fields' => [
+		'GANDI_LIVEDNS_TOKEN' => [
+			'name' => 'gandi_livedns_token',
+			'description' => 'Gandi LiveDNS Personal Access Token (PAT)',
+			'columnheader' => 'PAT',
+			'type' => 'password',
+		],
 		'GANDI_LIVEDNS_KEY' => [
 			'name' => 'gandi_livedns_key',
-			'description' => 'Gandi LiveDNS API Key, retrieved from <a href="https://account.gandi.net">https://account.gandi.net</a>',
+			'description' => 'Gandi LiveDNS API Key (Deprecated)',
 			'columnheader' => 'API Key',
 			'type' => 'password',
 		],
@@ -1430,6 +1492,17 @@ $acme_domain_validation_method['dns_he'] = [
 			'name' => 'he_password',
 			'description' => 'Hurricane Electric password',
 			'columnheader' => 'Password',
+			'type' => 'password',
+		],
+	]
+];
+$acme_domain_validation_method['dns_he_ddns'] = [
+	'name' => 'DNS-Hurricane Electric HE.net DDNS',
+	'fields' => [
+		'HE_DDNS_KEY' => [
+			'name' => 'he_ddns_key',
+			'description' => 'HE.net DDNS Key',
+			'columnheader' => 'Key',
 			'type' => 'password',
 		],
 	]
@@ -1815,6 +1888,17 @@ $acme_domain_validation_method['dns_miab'] = [
 		],
 	]
 ];
+$acme_domain_validation_method['dns_mijnhost'] = [
+	'name' => 'DNS-mijn.host',
+	'fields' => [
+		'MIJNHOST_API_KEY' => [
+			'name' => 'mijnhost_api_key',
+			'description' => 'mijn.host API Key',
+			'columnheader' => 'API Key',
+			'type' => 'password',
+		],
+	]
+];
 $acme_domain_validation_method['dns_misaka'] = [
 	'name' => 'DNS-misaka.io',
 	'fields' => [
@@ -2116,6 +2200,40 @@ $acme_domain_validation_method['dns_online'] = [
 		],
 	]
 ];
+$acme_domain_validation_method['dns_openprovider'] = [
+	'name' => 'DNS-OpenProvider',
+	'fields' => [
+		'OPENPROVIDER_USER' => [
+			'name' => 'openprovider_user',
+			'description' => 'OpenProvider Username',
+			'columnheader' => 'Username',
+			'type' => 'textbox',
+		],
+		'OPENPROVIDER_PASSWORDHASH' => [
+			'name' => 'openprovider_passwordhash',
+			'description' => 'OpenProvider Password Hash',
+			'columnheader' => 'Password Hash',
+			'type' => 'password',
+		],
+	]
+];
+$acme_domain_validation_method['dns_openprovider_rest'] = [
+	'name' => 'DNS-OpenProvider (REST)',
+	'fields' => [
+		'OPENPROVIDER_REST_USERNAME' => [
+			'name' => 'openprovider_rest_username',
+			'description' => 'OpenProvider Account Username',
+			'columnheader' => 'Username',
+			'type' => 'textbox',
+		],
+		'OPENPROVIDER_REST_PASSWORD' => [
+			'name' => 'openprovider_rest_password',
+			'description' => 'OpenProvider Account Password',
+			'columnheader' => 'Password Hash',
+			'type' => 'password',
+		],
+	]
+];
 $acme_domain_validation_method['dns_oci'] = [
 	'name' => 'DNS-Oracle Cloud Infrastructure',
 	'fields' => [
@@ -2142,23 +2260,6 @@ $acme_domain_validation_method['dns_oci'] = [
 			'description' => 'The private API signing key in PEM format. Using an encrypted private key that needs a passphrase is not supported.',
 			'columnheader' => 'Key (PEM)',
 			'type' => 'textarea',
-		],
-	]
-];
-$acme_domain_validation_method['dns_openprovider'] = [
-	'name' => 'DNS-OpenProvider',
-	'fields' => [
-		'OPENPROVIDER_USER' => [
-			'name' => 'openprovider_user',
-			'description' => 'OpenProvider Username',
-			'columnheader' => 'Username',
-			'type' => 'textbox',
-		],
-		'OPENPROVIDER_PASSWORDHASH' => [
-			'name' => 'openprovider_passwordhash',
-			'description' => 'OpenProvider Password Hash',
-			'columnheader' => 'Password Hash',
-			'type' => 'password',
 		],
 	]
 ];
@@ -2428,10 +2529,51 @@ $acme_domain_validation_method['dns_schlundtech'] = [
 $acme_domain_validation_method['dns_selectel'] = [
 	'name' => 'DNS-Selectel',
 	'fields' => [
+		'SL_Ver' => [
+			'name' => 'sl_ver',
+			'description' => 'Selectel API Version and use options matching that API version.',
+			'columnheader' => 'API Version',
+			'type' => 'select',
+			'items' => [
+				'v2' => ['name' => 'v2'],
+				'v1' => ['name' => 'v1 (Deprecated)'],
+			],
+		],
+		'SL_Login_ID' => [
+			'name' => 'sl_login_id',
+			'description' => 'v2 Account ID',
+			'columnheader' => 'v2 Account',
+			'type' => 'textbox',
+		],
+		'SL_Project_Name' => [
+			'name' => 'sl_project_name',
+			'description' => 'v2 Project Name',
+			'columnheader' => 'v2 Project',
+			'type' => 'textbox',
+		],
+		'SL_Login_Name' => [
+			'name' => 'sl_login_name',
+			'description' => 'v2 Service Username',
+			'columnheader' => 'v2 Username',
+			'type' => 'textbox',
+		],
+		'SL_Pswd' => [
+			'name' => 'sl_pswd',
+			'description' => 'v2 User Password',
+			'columnheader' => 'v2 Password',
+			'type' => 'password',
+		],
+		'SL_Expire' => [
+			'name' => 'sl_expire',
+			'description' => 'v2 Token Lifetime (Minutes, 0-1440)',
+			'columnheader' => 'v2 Lifetime',
+			'type' => 'textbox',
+		],
+
 		'SL_Key' => [
 			'name' => 'sl_key',
-			'description' => 'Selectel API Key',
-			'columnheader' => 'Key',
+			'description' => 'Selectel v1 API Key',
+			'columnheader' => 'v1 Key',
 			'type' => 'password',
 		],
 	]
@@ -2496,6 +2638,46 @@ $acme_domain_validation_method['dns_simply'] = [
 			'description' => 'API Endpoint URL. Default: https://api.simply.com/1',
 			'columnheader' => 'API',
 			'type' => 'textbox',
+		],
+	]
+];
+$acme_domain_validation_method['dns_spaceship'] = [
+	'name' => 'DNS-Spaceship.com',
+	'fields' => [
+		'SPACESHIP_API_KEY' => [
+			'name' => 'spaceship_api_key',
+			'description' => 'API Key',
+			'columnheader' => 'API Key',
+			'type' => 'password',
+		],
+		'SPACESHIP_API_SECRET' => [
+			'name' => 'spaceship_api_secret',
+			'description' => 'API Secret',
+			'columnheader' => 'Secret',
+			'type' => 'password',
+		],
+		'SPACESHIP_ROOT_DOMAIN' => [
+			'name' => 'spaceship_root_domain',
+			'description' => 'Root domain. Manually specify the root domain if auto-detection fails. Optional.',
+			'columnheader' => 'Root Domain',
+			'type' => 'textbox',
+		],
+	]
+];
+$acme_domain_validation_method['dns_technitium'] = [
+	'name' => 'DNS-Technitium DNS Server',
+	'fields' => [
+		'Technitium_Server' => [
+			'name' => 'technitium_server',
+			'description' => 'Technitium DNS Server Address',
+			'columnheader' => 'Server',
+			'type' => 'textbox',
+		],
+		'Technitium_Token' => [
+			'name' => 'technitium_token',
+			'description' => 'API Token',
+			'columnheader' => 'Token',
+			'type' => 'password',
 		],
 	]
 ];
@@ -2807,6 +2989,23 @@ $acme_domain_validation_method['dns_zone'] = [
 			'description' => 'Zone.ee API Key',
 			'columnheader' => 'API Key',
 			'type' => 'textbox',
+		],
+	]
+];
+$acme_domain_validation_method['dns_zoneedit'] = [
+	'name' => 'DNS-ZoneEdit.com',
+	'fields' => [
+		'ZONEEDIT_ID' => [
+			'name' => 'zoneedit_id',
+			'description' => 'ZoneEdit ID',
+			'columnheader' => 'ID',
+			'type' => 'textbox',
+		],
+		'ZONEEDIT_Token' => [
+			'name' => 'zoneedit_token',
+			'description' => 'ZoneEdit API Token',
+			'columnheader' => 'API Token',
+			'type' => 'password',
 		],
 	]
 ];
@@ -3218,7 +3417,6 @@ function get_certificate($name) {
 			$action = $renew == true ? "renew" : "issue";
 			$acmesh->dnssleep = $certificate['dnssleep'];
 			$acmesh->challengealias = $certificate['challengealias'];
-			$acmesh->ocspstaple = $certificate['ocspstaple'];
 			$acmesh->preferredchain = $certificate['preferredchain'];
 			$result = $acmesh->signCertificate($action, $accountkey, $certificatepsk, $domainstosign, $envvariables);
 		}

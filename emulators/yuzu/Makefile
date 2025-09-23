@@ -1,6 +1,6 @@
 PORTNAME=	yuzu
 PORTVERSION=	s20240301
-PORTREVISION=	6
+PORTREVISION=	9
 CATEGORIES=	emulators wayland
 .if make(makesum)
 MASTER_SITES=	https://api.yuzu-emu.org/gamedb/?dummy=/:gamedb
@@ -136,7 +136,7 @@ WEBENGINE_CMAKE_BOOL=	YUZU_USE_QT_WEB_ENGINE
 WEBENGINE_IMPLIES=	GUI
 
 post-extract:
-	@${CP} ${DISTFILES:M*\:gamedb:C/\:.*//:S,^,${_DISTDIR},} \
+	@${CP} ${DISTFILES:M*\:gamedb:C/\:.*//:S,^,${DISTDIR}/,} \
 		${WRKSRC}/dist/compatibility_list/
 
 post-patch:

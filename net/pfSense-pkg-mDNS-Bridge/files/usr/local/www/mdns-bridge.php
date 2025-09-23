@@ -3,7 +3,7 @@
  * mdns-bridge.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2024 Denny Page
+ * Copyright (c) 2024-2025 Denny Page
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -30,6 +30,7 @@ $package_path = 'installedpackages/mdns-bridge';
 $path_enable = 'enable';
 $path_carp_vhid = 'carp_vhid';
 $path_active_interfaces = 'active_interfaces';
+$path_decode_warnings = 'decode_warnings';
 $path_global_ip_protocols = 'global_ip_protocols';
 $path_global_filter_type = 'global_filter_type';
 $path_global_filter_list = 'global_filter_list';
@@ -40,7 +41,8 @@ $path_interfaces = 'interfaces';
 $current_config = config_get_path($package_path, []);
 $pconfig['enable'] = array_get_path($current_config, $path_enable);
 $pconfig['carp_vhid'] = array_get_path($current_config, $path_carp_vhid);
-$pconfig['active_interfaces'] = explode(',', array_get_path($current_config, $path_active_interfaces, ''));
+$pconfig['active_interfaces'] = array_filter(explode(',', array_get_path($current_config, $path_active_interfaces, '')));
+$pconfig['decode_warnings'] = array_get_path($current_config, $path_decode_warnings);
 $pconfig['global_ip_protocols'] = array_get_path($current_config, $path_global_ip_protocols, 'both');
 $pconfig['global_filter_type'] = array_get_path($current_config, $path_global_filter_type, 'none');
 $pconfig['global_filter_list'] = array_get_path($current_config, $path_global_filter_list, '');
@@ -65,7 +67,7 @@ if ($_POST) {
 
 	// Check for Avahi conflict
 	if ($pconfig['enable'] && $avahi_enabled) {
-		$input_errors[] = gettext('Avahi relfection must be disabled before enabling mDNS Bridge');
+		$input_errors[] = gettext('Avahi reflection must be disabled before enabling mDNS Bridge');
 	}
 
 	// Validate interfaces
@@ -81,7 +83,7 @@ if ($_POST) {
 	if ($pconfig['global_filter_type'] != 'none') {
 		$pconfig['disable_packet_filtering'] = false;
 		$filter_list = array();
-		foreach (explode(',', $pconfig['global_filter_list']) as $filter) {
+		foreach (array_filter(explode(',', $pconfig['global_filter_list'])) as $filter) {
 			$filter = trim($filter);
 			if (!is_domain($filter, false, false)) {
 				$input_errors[] = sprintf(gettext('Invalid domain in Global Filter List: "%1$s"'), $filter);
@@ -101,7 +103,7 @@ if ($_POST) {
 		if ($pconfig['inbound_filter_type_' . $interface] != 'none') {
 			$pconfig['disable_packet_filtering'] = false;
 			$filter_list = array();
-			foreach (explode(',', $pconfig['inbound_filter_list_' . $interface]) as $filter) {
+			foreach (array_filter(explode(',', $pconfig['inbound_filter_list_' . $interface])) as $filter) {
 				$filter = trim($filter);
 				if (!is_domain($filter, false, false)) {
 					$input_errors[] = sprintf(gettext('Invalid domain in %1$s Inbound Filter List: "%2$s"'),
@@ -120,7 +122,7 @@ if ($_POST) {
 		if ($pconfig['outbound_filter_type_' . $interface] != 'none') {
 			$pconfig['disable_packet_filtering'] = false;
 			$filter_list = array();
-			foreach (explode(',', $pconfig['outbound_filter_list_' . $interface]) as $filter) {
+			foreach (array_filter(explode(',', $pconfig['outbound_filter_list_' . $interface])) as $filter) {
 				$filter = trim($filter);
 				if (!is_domain($filter, false, false)) {
 					$input_errors[] = sprintf(gettext('Invalid domain in %1$s Outbound Filter List: "%2$s"'),
@@ -147,6 +149,7 @@ if ($_POST) {
 		array_set_path($current_config, $path_enable, $pconfig['enable']);
 		array_set_path($current_config, $path_carp_vhid, $pconfig['carp_vhid']);
 		array_set_path($current_config, $path_active_interfaces, implode(',', $pconfig['active_interfaces']));
+		array_set_path($current_config, $path_decode_warnings, $pconfig['decode_warnings']);
 		array_set_path($current_config, $path_global_ip_protocols, $pconfig['global_ip_protocols']);
 		array_set_path($current_config, $path_global_filter_type, $pconfig['global_filter_type']);
 		array_set_path($current_config, $path_global_filter_list, $pconfig['global_filter_list']);
@@ -224,6 +227,14 @@ $section->addInput(new Form_Select(
 	true
 ))->addClass('active_interfaces')->setHelp(gettext('Interfaces that the mDNS Bridge daemon will operate on. Two or more interfaces are required.'));
 $form->add($section);
+
+// Decode warnings
+$section->addInput(new Form_Checkbox(
+	'decode_warnings',
+	'Decode Warnings',
+	'Enable warnings for mDNS decoding errors that are silent by default',
+	$pconfig['decode_warnings']
+));
 
 $section = new Form_Section('Global Settings');
 // Global IP protocol list
@@ -403,7 +414,7 @@ $section->addInput(new Form_Checkbox(
 	'Disable Packet Filtering',
 	'Completely disable packet decoding and filtering',
 	$pconfig['disable_packet_filtering']
-))->setHelp(gettext('Selecting this option will cause packets received from one interface to be forwarded directly to neighboring interfaces without any further processing. <b>This option disables all mDNS packet validation. Use with caution.</b>'));
+))->setHelp(gettext('Selecting this option will cause packets received from one interface to be forwarded directly to neighboring interfaces without any further processing. <b>This option disables all mDNS packet validation and filtering, including link local addresses. Use this option with extreme caution.</b>'));
 $form->add($section);
 
 print($form);

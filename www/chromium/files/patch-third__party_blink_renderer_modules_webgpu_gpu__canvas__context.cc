@@ -1,6 +1,6 @@
---- third_party/blink/renderer/modules/webgpu/gpu_canvas_context.cc.orig	2025-05-05 10:57:53 UTC
+--- third_party/blink/renderer/modules/webgpu/gpu_canvas_context.cc.orig	2025-08-07 06:57:29 UTC
 +++ third_party/blink/renderer/modules/webgpu/gpu_canvas_context.cc
-@@ -207,7 +207,7 @@ bool GPUCanvasContext::PaintRenderingResultsToCanvas(
+@@ -224,7 +224,7 @@ CanvasResourceProvider* GPUCanvasContext::PaintRenderi
  
    scoped_refptr<WebGPUMailboxTexture> front_buffer_texture;
    if (source_buffer == kFrontBuffer) {

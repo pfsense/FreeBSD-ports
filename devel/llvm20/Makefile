@@ -1,5 +1,5 @@
 PORTNAME=	llvm
-DISTVERSION=	20.1.4
+DISTVERSION=	20.1.8
 PORTREVISION=	0
 CATEGORIES=	devel lang
 MASTER_SITES=	https://github.com/llvm/llvm-project/releases/download/llvmorg-${DISTVERSION}/
@@ -97,6 +97,7 @@ OPTIONS_DEFAULT_aarch64=	${_BE_${FLAVOR}}
 OPTIONS_DEFAULT_amd64=		${_BE_${FLAVOR}}
 OPTIONS_DEFAULT_powerpc64=	${_BE_${FLAVOR}}
 OPTIONS_DEFAULT_powerpc64le=	${_BE_${FLAVOR}}
+OPTIONS_DEFAULT_riscv64=	${_BE_${FLAVOR}}
 
 OPTIONS_EXCLUDE_armv6=	COMPILER_RT
 OPTIONS_EXCLUDE_armv7=	COMPILER_RT
@@ -199,7 +200,8 @@ LLDB_CMAKE_ON= \
 LLDB_DESC=		Install lldb, the LLVM debugger
 LLDB_IMPLIES=		CLANG
 LLDB_PLIST_SUB=		PYTHON_ABIVER=${PYTHON_ABIVER}
-LLDB_USES=		lua:53 libedit
+LLDB_USES=		gnome lua:54 libedit
+LLDB_USE=		gnome=libxml2
 LLDB_VARS=		_USES_PYTHON=python
 MLIR_DESC=		Multi-Level Intermediate Representation
 OPENMP_DESC=		Install libomp, the LLVM OpenMP runtime library
@@ -288,7 +290,6 @@ LLVM_ENABLE_PROJECTS+=	clang
 COMMANDS+=	${CLANG_COMMANDS}
 MAN1SRCS+=	${CLANG_MAN1SRCS}
 CLANG_PATTERN=	(amdgpu-arch|c-index-test|clang|diagtool|hmaptool|intercept-|libear|libscanbuild|nvptx-arch|analyze-|scan-|Reporter.py|ScanView.py|scanview.css|sorttable.js|startfile.py|c..-analyzer|AnalyzerPlugin.so)
-USES+=		gnome
 .endif
 
 .if ${PORT_OPTIONS:MCOMPILER_RT}
@@ -637,8 +638,9 @@ build-plist:
 	    ${GREP} -v '_ignorelist.txt$$' | \
 	    ${GREP} -v '[/-]lit$$' | ${GREP} -v 'FileCheck$$' | \
 	    ${GREP} -v man/man1 | ${SED} -e 's|${STAGEDIR}${PREFIX}/||' \
+	    -e 's|${LUA_MODLIBDIR:C|${PREFIX}/||}|%%LUA_MODLIBDIR%%|' \
 	    -e 's|${PYTHON_SITELIBDIR:C|${PREFIX}/||}|%%PYTHON_SITELIBDIR%%|' \
-	    -e 's|${PYTHON_EXT_SUFFIX:C/\./\\./g}${PYTHON_ABIVER}|%%PYTHON_EXT_SUFFIX%%%%PYTHON_ABIVER%%|' \
+	    -e 's|${PYTHON_TAG:C/\./\\./g}${PYTHON_ABIVER}|%%PYTHON_TAG%%%%PYTHON_ABIVER%%|' \
 	    -e 's|${LLVM_RELEASE}|%%LLVM_RELEASE%%|' \
 	    -e 's|release.cmake|%%CMAKE_BUILD_TYPE%%.cmake|' \
 	    -e 's|${LLVM_RELEASE:C/\./\\./g}|%%LLVM_RELEASE%%|' \

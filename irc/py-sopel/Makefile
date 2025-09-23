@@ -1,10 +1,10 @@
 PORTNAME=	sopel
-DISTVERSION=	8.0.0
+DISTVERSION=	8.0.3
 CATEGORIES=	irc python
 MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
-MAINTAINER=	DtxdF@disroot.org
+MAINTAINER=	dtxdf@FreeBSD.org
 COMMENT=	Easy-to-use and highly extensible IRC Bot framework
 WWW=		https://sopel.chat/
 
@@ -32,6 +32,7 @@ USES=		python
 USE_PYTHON=	autoplist pep517
 
 USE_RC_SUBR=	sopel
+NO_ARCH=	yes
 SUB_FILES+=	pkg-message
 SUB_LIST+=	PYTHON_CMD=${PYTHON_CMD}
 
@@ -49,8 +50,8 @@ post-install:
 .endfor
 	@${MKDIR} ${STAGEDIR}/var/db/sopel/www
 .for script in sopel sopel-config sopel-plugins
-	${CP} ${FILESDIR}/${script}.py ${STAGEDIR}${PREFIX}/bin/${script}
-	@${REINPLACE_CMD} -e "s|%%PYTHON_SHEBANG%%|#!${PYTHON_CMD}|" ${STAGEDIR}${PREFIX}/bin/${script}
+	${SED} -e "s|%%PYTHON_SHEBANG%%|#!${PYTHON_CMD}|" ${FILESDIR}/${script}.py \
+		> ${STAGEDIR}${PREFIX}/bin/${script}
 	${CHMOD} 555 ${STAGEDIR}${PREFIX}/bin/${script}
 .endfor
 

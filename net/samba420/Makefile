@@ -1,6 +1,6 @@
 PORTNAME=			${SAMBA4_BASENAME}420
 PORTVERSION=			${SAMBA4_VERSION}
-PORTREVISION=			4
+PORTREVISION=			10
 CATEGORIES?=			net
 MASTER_SITES=			SAMBA/samba/stable SAMBA/samba/rc
 DISTNAME=			${SAMBA4_DISTNAME}
@@ -47,7 +47,6 @@ EXTRA_PATCHES=			\
 				${PATCHDIR}/0028-Fix-rl_completion_func_t.patch:-p1 \
 				${PATCHDIR}/0028-s3-lib-system-add-FreeBSD-proc_fd_pattern.patch \
 				${PATCHDIR}/0100-Fix-pathref-handling-for-FreeBSD-13plus_samba42x.patch:-p1 \
-				${PATCHDIR}/0101-FreeBSD-add-fdescfs-paths-workaround.patch:-p1 \
 				${PATCHDIR}/0102-FreeBSD-vfs_freebsd-fix-sys_proc_fd_path-args.patch:-p1
 
 SAMBA4_BASENAME=		samba
@@ -99,7 +98,7 @@ CONFIGURE_ENV=			PTHREAD_LDFLAGS="-lpthread" \
 				PYTHONHASHSEED=1
 MAKE_ENV=			PYTHONHASHSEED=1
 
-USES=				compiler:c++11-lang iconv localbase:ldflags \
+USES=				bison compiler:c++11-lang iconv localbase:ldflags \
 				perl5 pkgconfig shebangfix waf gettext-runtime
 USE_PERL5=			build
 USE_LDCONFIG=			${SAMBA4_LIBDIR}
@@ -366,9 +365,14 @@ FAM_CONFIGURE_WITH=		fam
 
 GPGME_CONFIGURE_WITH=		gpgme
 GPGME_LIB_DEPENDS=		libgpgme.so:security/gpgme
-GPGME_RUN_DEPENDS=		${PYTHON_PKGNAMEPREFIX}gpgme>=1.14.0:security/py-gpgme@${PY_FLAVOR}
+GPGME_RUN_DEPENDS=		${PYTHON_PKGNAMEPREFIX}gpg>=2.0.0:security/py-gpg@${PY_FLAVOR}
 
-GSSAPI_BUILTIN_USES=		bison
+.if exists(/usr/libexec/krb5kdc)
+GSSAPI_BUILTIN_USES=		gssapi
+GSSAPI_MIT_CONFIGURE_ON=	--with-system-mitkrb5 ${GSSAPIBASEDIR} \
+				--with-system-mitkdc=${GSSAPIBASEDIR}/libexec/krb5kdc
+.endif
+
 GSSAPI_BUILTIN_BUILD_DEPENDS=	p5-JSON>=4.0:converters/p5-JSON
 
 GSSAPI_MIT_CONFIGURE_ON=	--with-system-mitkrb5 ${GSSAPIBASEDIR} \

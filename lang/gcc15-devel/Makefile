@@ -1,5 +1,5 @@
 PORTNAME=	gcc
-PORTVERSION=	15.1.1.s20250510
+PORTVERSION=	15.2.1.s20250816
 CATEGORIES=	lang
 MASTER_SITES=	GCC/snapshots/${DIST_VERSION}
 PKGNAMESUFFIX=	${SUFFIX}-devel
@@ -81,10 +81,6 @@ CONFIGURE_TARGET=	x86_64-portbld-${OPSYS:tl}${OSREL}
 
 .elif ${ARCH} == powerpc64
 CONFIGURE_ARGS+=	--with-abi=elfv2
-USE_GCC=	yes
-
-.elif ${ARCH} == powerpc64le
-USE_GCC=	yes
 .endif
 
 .if ${ARCH} == i386

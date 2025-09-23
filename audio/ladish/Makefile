@@ -1,6 +1,6 @@
 PORTNAME=	ladish
 DISTVERSION=	1.2
-PORTREVISION=	1
+PORTREVISION=	2
 DISTVERSIONSUFFIX=	-g4dcd67d7
 CATEGORIES=	audio
 MASTER_SITES=	https://dl.ladish.org/ladish/
@@ -15,7 +15,7 @@ LIB_DEPENDS=	libasound.so:audio/alsa-lib \
 		libdbus-1.so:devel/dbus \
 		libexpat.so:textproc/expat2 \
 		libjack.so:audio/jack \
-		libuuid.so:misc/e2fsprogs-libuuid
+		libuuid.so:misc/libuuid
 
 USES=		tar:bz2 localbase:ldflags pkgconfig python shebangfix waf
 USE_PERL5=	configure

@@ -1,5 +1,6 @@
 PORTNAME=	kamailio
-DISTVERSION=	6.0.1
+DISTVERSION=	6.0.2
+PORTREVISION=	2
 CATEGORIES=	net
 MASTER_SITES=	http://www.kamailio.org/pub/kamailio/${PORTVERSION}/src/
 DISTNAME=	${PORTNAME}-${DISTVERSION}_src
@@ -70,7 +71,6 @@ PYTHON3_DESC=		Execute embedded Python3 scripts
 SCTP_DESC=		SCTP support
 SIPREPO_DESC=		In-memory SIP message storage
 SLACK_DESC=		Connector to Slack channels
-WEBSOCKET_DESC=		WebSocket transport layer
 
 DIALPLAN_LIB_DEPENDS=	libpcre2-8.so:devel/pcre2
 DIALPLAN_VARS=		EXTRA_MODULES+=dialplan

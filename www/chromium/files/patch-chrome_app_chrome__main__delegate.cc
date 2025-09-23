@@ -1,6 +1,6 @@
---- chrome/app/chrome_main_delegate.cc.orig	2025-05-05 10:57:53 UTC
+--- chrome/app/chrome_main_delegate.cc.orig	2025-08-07 06:57:29 UTC
 +++ chrome/app/chrome_main_delegate.cc
-@@ -147,7 +147,7 @@
+@@ -146,7 +146,7 @@
  #include "components/webui/about/credit_utils.h"
  #endif
  
@@ -9,7 +9,7 @@
  #include "components/nacl/common/nacl_paths.h"
  #include "components/nacl/zygote/nacl_fork_delegate_linux.h"
  #endif
-@@ -188,17 +188,17 @@
+@@ -186,17 +186,17 @@
  #include "v8/include/v8.h"
  #endif
  
@@ -30,7 +30,7 @@
  #include "chrome/browser/policy/policy_path_parser.h"
  #include "components/crash/core/app/crashpad.h"
  #endif
-@@ -316,7 +316,7 @@ void AdjustLinuxOOMScore(const std::string& process_ty
+@@ -314,7 +314,7 @@ void AdjustLinuxOOMScore(const std::string& process_ty
  // and resources loaded.
  bool SubprocessNeedsResourceBundle(const std::string& process_type) {
    return
@@ -39,7 +39,7 @@
        // The zygote process opens the resources for the renderers.
        process_type == switches::kZygoteProcess ||
  #endif
-@@ -399,7 +399,7 @@ bool HandleVersionSwitches(const base::CommandLine& co
+@@ -397,7 +397,7 @@ bool HandleVersionSwitches(const base::CommandLine& co
    return false;
  }
  
@@ -48,7 +48,7 @@
  // Show the man page if --help or -h is on the command line.
  void HandleHelpSwitches(const base::CommandLine& command_line) {
    if (command_line.HasSwitch(switches::kHelp) ||
-@@ -411,7 +411,7 @@ void HandleHelpSwitches(const base::CommandLine& comma
+@@ -409,7 +409,7 @@ void HandleHelpSwitches(const base::CommandLine& comma
  }
  #endif  // BUILDFLAG(IS_LINUX)
  
@@ -57,7 +57,7 @@
  void SIGTERMProfilingShutdown(int signal) {
    content::Profiling::Stop();
    struct sigaction sigact;
-@@ -493,7 +493,7 @@ std::optional<int> AcquireProcessSingleton(
+@@ -491,7 +491,7 @@ std::optional<int> AcquireProcessSingleton(
    // process can be exited.
    ChromeProcessSingleton::CreateInstance(user_data_dir);
  
@@ -66,7 +66,7 @@
    // Read the xdg-activation token and set it in the command line for the
    // duration of the notification in order to ensure this is propagated to an
    // already running browser process if it exists.
-@@ -571,7 +571,7 @@ void InitializeUserDataDir(base::CommandLine* command_
+@@ -569,7 +569,7 @@ void InitializeUserDataDir(base::CommandLine* command_
    std::string process_type =
        command_line->GetSwitchValueASCII(switches::kProcessType);
  
@@ -93,7 +93,7 @@
    ui::SetOzonePlatformForLinuxIfNeeded(*base::CommandLine::ForCurrentProcess());
  #endif
    ui::OzonePlatform::PreEarlyInitialization();
-@@ -983,7 +983,7 @@ void ChromeMainDelegate::CommonEarlyInitialization(Inv
+@@ -981,7 +981,7 @@ void ChromeMainDelegate::CommonEarlyInitialization() {
    const bool is_canary_dev = IsCanaryDev();
    const bool emit_crashes =
  #if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_MAC) || \
@@ -102,7 +102,7 @@
        is_canary_dev;
  #else
        false;
-@@ -1131,7 +1131,7 @@ std::optional<int> ChromeMainDelegate::BasicStartupCom
+@@ -1129,7 +1129,7 @@ std::optional<int> ChromeMainDelegate::BasicStartupCom
      return 0;  // Got a --credits switch; exit with a success error code.
    }
  
@@ -111,7 +111,7 @@
    // This will directly exit if the user asked for help.
    HandleHelpSwitches(command_line);
  #endif
-@@ -1156,7 +1156,7 @@ std::optional<int> ChromeMainDelegate::BasicStartupCom
+@@ -1154,7 +1154,7 @@ std::optional<int> ChromeMainDelegate::BasicStartupCom
    ash::RegisterPathProvider();
    chromeos::dbus_paths::RegisterPathProvider();
  #endif
@@ -120,7 +120,7 @@
    nacl::RegisterPathProvider();
  #endif
  
-@@ -1444,7 +1444,7 @@ void ChromeMainDelegate::PreSandboxStartup() {
+@@ -1445,7 +1445,7 @@ void ChromeMainDelegate::PreSandboxStartup() {
      CHECK(!loaded_locale.empty()) << "Locale could not be found for " << locale;
    }
  
@@ -129,7 +129,7 @@
    // Zygote needs to call InitCrashReporter() in RunZygote().
    if (process_type != switches::kZygoteProcess &&
        !command_line.HasSwitch(switches::kDisableCrashpadForTesting)) {
-@@ -1532,13 +1532,13 @@ std::variant<int, content::MainFunctionParams> ChromeM
+@@ -1533,13 +1533,13 @@ std::variant<int, content::MainFunctionParams> ChromeM
  #else
  
  #if BUILDFLAG(IS_MAC) || (BUILDFLAG(ENABLE_NACL) && !BUILDFLAG(IS_LINUX) && \

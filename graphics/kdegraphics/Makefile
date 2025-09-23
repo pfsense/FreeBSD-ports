@@ -7,9 +7,9 @@ COMMENT=	Graphics applications for KDE (meta port)
 WWW=		https://apps.kde.org/categories/graphics/
 
 USES=		kde:6 metaport qt:6
-USE_QT=		#
 
-OPTIONS_DEFINE=	GPHOTO \
+OPTIONS_DEFINE=	COLORD \
+		GPHOTO \
 		GWENVIEW \
 		KCOLORCHOOSER \
 		KOLOURPAINT \
@@ -20,6 +20,9 @@ OPTIONS_DEFINE=	GPHOTO \
 		THUMBNAILER
 
 OPTIONS_DEFAULT=		${OPTIONS_DEFINE}
+
+COLORD_DESC=			Color profiles manager
+COLORD_RUN_DEPENDS=		colord-kde>=0:graphics/colord-kde
 
 GPHOTO_DESC=			Digital camera manager
 GPHOTO_RUN_DEPENDS=		kamera>=${KDE_APPLICATIONS_VERSION}:graphics/kamera

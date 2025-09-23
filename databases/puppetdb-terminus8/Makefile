@@ -11,7 +11,7 @@ WWW=		https://docs.puppetlabs.com/puppetdb/latest/
 
 LICENSE=	APACHE20
 
-CONFLICTS_INSTALL=	puppetdb-terminus[0-9]
+CONFLICTS_INSTALL=	openvoxdb-terminus[0-9] puppetdb-terminus[0-9]
 NO_BUILD=	yes
 USES=		gmake ruby
 

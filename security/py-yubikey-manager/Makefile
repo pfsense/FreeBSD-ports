@@ -22,7 +22,6 @@ RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}click>0:devel/py-click@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}pyusb>0:devel/py-pyusb@${PY_FLAVOR} \
 		RSA_SecurID_getpasswd:devel/libccid \
 		pcsc-spy:devel/pcsc-lite \
-		u2f-host:security/libu2f-host \
 		ykpersonalize:security/ykpers
 TEST_DEPENDS=	${PYTHON_PKGNAMEPREFIX}makefun>0:devel/py-makefun@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}pytest>0:devel/py-pytest@${PY_FLAVOR}

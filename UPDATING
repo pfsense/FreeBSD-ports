@@ -5,6 +5,207 @@ they are unavoidable.
 You should get into the habit of checking this file for changes each time
 you update your ports collection, before attempting any port upgrades.
 
+20250817:
+  AFFECTS: users of lang/perl5.*
+  AUTHOR: mat@FreeBSD.org
+
+  The default Perl version has been switched to 5.42.
+
+  See entry 20231017 for updating instructions.
+
+20250815:
+  AFFECTS: users of net/syncthing
+  AUTHOR: dvl@FreeBSD.org
+
+  Old single-dash long options are no longer supported, e.g. -home must be
+  given as --home. Database backend switched from LevelDB to SQLite. No
+  changes to run-time dependencies. There is a migration on first launch
+  which can be lengthy for larger setups.
+
+  More at https://github.com/syncthing/syncthing/releases/tag/v2.0.0
+
+20250804:
+  AFFECTS: users of databases/adminer
+  AUTHOR: pkaipila@gmail.com
+
+  Flavors have been added to the adminer port. Due to the change in PKGNAME,
+  pkg will not notice the update. Replace the package with a flavored one
+  such as php84-adminer.
+
+20250728:
+  AFFECTS: users of www/privatebin
+  AUTHOR: dvl@FreeBSD.org
+
+  This release changes configuration defaults including switching the template
+  and removing legacy features.
+
+  See details at https://github.com/PrivateBin/PrivateBin/releases/tag/2.0.0
+
+20250720:
+  AFFECTS: users of www/phpmyfaq
+  AUTHOR: flo@FreeBSD.org
+
+  Upgrading from 3.2.x is a major upgrade. Your existing templates will not
+  work with phpMyFAQ 4.0. Please make a full backup before you run the
+  upgrade! First, log in as admin into the admin section and enable the
+  maintenance mode. (Configuration >> Edit Configuration >> Set FAQ in
+  maintenance mode) Second, you have to delete all files except:
+
+    in the directory config/
+        keep the file database.php
+        only if using LDAP/ActiveDirectory support also keep the file ldap.php
+        only if using EntraID support also keep the file azure.php
+    the directory attachments/
+    the directory data/
+    the directory images/
+
+  Install the new version then open the following URL in your browser:
+
+  https://www.example.com/faq/update
+
+  Click the button of the update script, your version will automatically be updated.
+
+20250709:
+  AFFECTS: users of sysutils/bastille
+  AUTHOR: jdhurtado@orbiware.com
+
+  Potentially breaking changes since 1.0.20250714
+
+  Network: Bastille now handles all epairs dynamically, allowing both -V and -B
+  VNET jails to coexist. Previous versions only supported one type per system.
+  New naming scheme for network interfaces is e0a_jailname (host side) and
+  e0b_jailname (jail side). Additional interfaces: e1a_jailname, e1b_jailname, etc
+  (incrementing numbers). Long jail names are truncated with xx placeholder due to
+  interface name limitations
+
+  Required action after update:
+  Restart all jails (preferably one at a time) to trigger automatic conversion.
+  Bastille will auto-convert jail.conf and rc.conf files when jails are stopped.
+  Manual intervention required: If you previously used the network sub-command to
+  add interfaces, manually edit jail.conf and rc.conf files to update epair names
+  (increment numbers for additional interfaces).
+
+  Auto-conversion handles most cases, please report bugs if issues occur during the
+  transition.
+
+  Full release annoucement: https://github.com/BastilleBSD/bastille/releases/tag/1.0.20250714
+
+20250708:
+  AFFECTS: users of shells/bash
+  AUTHOR: michaelo@FreeBSD.org
+
+  The SYSBASHRC option is now enabled by default. For those who use bash
+  interactively the system-wide RC file shall be sourced automatically
+  giving the user the same experience as invoking it as a login shell.
+
+20250630:
+  AFFECTS: users of mail/bogofilter-bdb
+  AUTHOR: mandree@FreeBSD.org
+
+  The mail/bogofilter-bdb port has expired and will be removed.
+  
+  1. BEFORE uninstallation or changing to a different mail/bogofilter*
+  variant, please use bogoutil to export all user data bases (wordlist.db)
+  to text files, bogoutil has a -d option for that.
+  2. ONLY THEN install a different variant. The base port (bogofilter)
+  uses LMDB, the -kc variant uses KyotoCabinet and -sqlite uses SQLite3
+  for their database backends.
+  3. THEN re-import the word list for each user with bogoutil -l.
+
+20250629:
+  AFFECTS: users of japanese/anthy
+  AUTHOR: nobutaka@FreeBSD.org
+
+  japanese/anthy has been removed. Please use japanese/anthy-unicode as the
+  replacement.
+
+  japanese/anthy and japanese/anthy-unicode use different user dictionary
+  file location.
+
+  japanese/anthy: ~/.anthy/private_words_default
+  japanese/anthy-unicode: ~/.config/anthy/private_words_default
+
+  You can migrate your user dictionary for japanese/anthy with
+  anthy-dic-tool-unicode.
+
+  anthy-dic-tool-unicode --migrate
+
+  If you use the japanese-anthy or japanese-anthy-uim input method on Emacs,
+  please change them in your Emacs init file such as ~/.emacs.el and ~/.emacs
+  as follows:
+
+  japanese-anthy -> japanese-anthy-unicode
+  japanese-anthy-uim -> japanese-anthy-utf8-uim
+
+20250627:
+  AFFECTS: users of finance/ktoblzcheck
+  AUTHOR: jhale@FreeBSD.org
+
+  The bank data databases have been moved to finance/ktoblzcheck-data.
+  It may be necessary to remove ktoblzcheck < 1.59 before upgrading to
+  avoid conflicts.
+
+  pkg delete -f ktoblzcheck
+
+20250622:
+  AFFECTS: users of net-mgmt/netbox
+  AUTHOR: kai@FreeBSD.org
+
+  1. Please make sure that the PostgreSQL server for the NetBox instance is
+     running version 14 or higher.  This is because Django 5.2 requires
+     PostgreSQL 14 as a minimum.
+
+  2. Please also check the pkg-message and the changelogs for further info.
+
+20250620:
+  AFFECTS: users of x11/swww
+  AUTHOR: nivit@FreeBSD.org
+
+  Starting from version 0.10 the command swww init, previously deprecated, has
+  been properly deleted. The correct way of initializing the daemon is calling
+  swww-daemon directly.
+
+20250613:
+  AFFECTS: users of devel/py-gql, games/DDNet, net/mosquitto
+  AUTHOR: michaelo@FreeBSD.org
+
+  The WEBSOCKETS option has been renamed to WEBSOCKET to match the name from
+  RFC 6455, other ports and the description from Mk/bsd.options.desc.mk.
+
+20250610:
+  AFFECTS: users of devel/git
+  AUTHOR: michaelo@FreeBSD.org
+
+  The HTMLDOCS option has been renamed to DOCS to match the option name
+  with other ports and the description from Mk/bsd.options.desc.mk.
+
+20250610:
+  AFFECTS: users of security/krb5-12{0,1}
+  AUTHOR: michaelo@FreeBSD.org
+
+  The KRB5_{PDF,HTML} options have been consolidated into canonical DOCS option
+  to match the name with other ports and the description from Mk/bsd.options.desc.mk.
+
+20250606:
+  AFFECTS: users of net-mgmt/unifi9
+  AUTHOR: ronald@FreeBSD.org
+
+  The MongoDB dependency updates from 6.0 to 7.0.
+  Please read 20250520 about the upgrade instructions of
+  databases/mongodb60. Mind that the mongodb portnr for Unifi is 27117.
+  The 20240606 instructions for net-mgmt/unifi8 can also be
+  informative.
+
+  Always backup/snapshot before upgrading.
+  Turn off Unifi and MongoDB during the upgrade. (service unifi stop)
+
+  MongoDB 7.0 does not formally support ARM systems without Large System
+  Extensions (LSE) support.
+  Please use the unifi9-armv80a package when running on RPI4 or similar
+  systems.
+  Running the non-armv80a package will result in an "illegal instruction"
+  on these systems.
+
 20250520:
   AFFECTS: users of databases/mongodb60
   AUTHOR: ronald@FreeBSD.org
@@ -65,7 +266,7 @@ you update your ports collection, before attempting any port upgrades.
   Instructions:
   https://github.com/bitcoin/bitcoin/blob/29.x/doc/managing-wallets.md#migrating-legacy-wallets-to-descriptor-wallets
 
-  This release switches to CMake which results in a major refacoring of
+  This release switches to CMake which results in a major refactoring of
   the port and underlying build.  The result seems good, but please
   provide feedback if there are any unexpected changes or problems.
 

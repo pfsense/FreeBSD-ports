@@ -1,5 +1,6 @@
 PORTNAME=	python
 DISTVERSION=	${PYTHON_DISTVERSION}
+PORTREVISION=	1
 CATEGORIES=	lang python
 MASTER_SITES=	PYTHON/ftp/python/${DISTVERSION:C/[a-z].*//}
 PKGNAMESUFFIX=	${PYTHON_SUFFIX}
@@ -47,7 +48,6 @@ PLIST_SUB=		ABI=${ABIFLAGS} \
 OPTIONS_DEFINE=		DEBUG IPV6 LIBMPDEC LTO NLS PYMALLOC
 OPTIONS_DEFAULT=	LIBMPDEC LTO PYMALLOC
 OPTIONS_EXCLUDE_riscv64=	LTO
-OPTIONS_EXCLUDE_powerpc64le=	LTO
 OPTIONS_RADIO=		HASH
 OPTIONS_RADIO_HASH=	FNV SIPHASH
 OPTIONS_SUB=		yes
@@ -118,7 +118,7 @@ CONFIGURE_ARGS:=	${CONFIGURE_ARGS:N${LTO_CONFIGURE_ON}}
 .endif
 
 post-patch:
-# disable the detection of includes and library from e2fsprogs-libuuid,
+# disable the detection of includes and library from libuuid,
 # which introduces hidden dependency and breaks build
 	@${REINPLACE_CMD} -e 's|uuid/uuid.h|ignore_&|' ${WRKSRC}/configure
 

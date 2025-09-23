@@ -1000,13 +1000,14 @@ LC_ALL=		C
 # These need to be absolute since we don't know how deep in the ports
 # tree we are and thus can't go relative.  They can, of course, be overridden
 # by individual Makefiles or local system make configuration.
-_LIST_OF_WITH_FEATURES=	bind_now debug debuginfo lto pie relro sanitize ssp testing
+_LIST_OF_WITH_FEATURES=	bind_now debug debuginfo fortify lto pie relro \
+			sanitize ssp stack_autoinit testing zeroregs
 _DEFAULT_WITH_FEATURES=	ssp
 PORTSDIR?=		/usr/ports
 LOCALBASE?=		/usr/local
 LINUXBASE?=		/compat/linux
 DISTDIR?=		${PORTSDIR}/distfiles
-_DISTDIR?=		${DISTDIR}/${DIST_SUBDIR}
+_DISTDIR?=		${DISTDIR}${DIST_SUBDIR:D/${DIST_SUBDIR}}
 INDEXDIR?=		${PORTSDIR}
 SRC_BASE?=		/usr/src
 USESDIR?=		${PORTSDIR}/Mk/Uses
@@ -1164,7 +1165,7 @@ OSVERSION!=	${AWK} '/^\#define[[:blank:]]__FreeBSD_version/ {print $$3}' < ${SRC
 .    endif
 _EXPORTED_VARS+=	OSVERSION
 
-.    if ${OPSYS} == FreeBSD && (${OSVERSION} < 1304000 || (${OSVERSION} >= 1400000 && ${OSVERSION} < 1402000))
+.    if ${OPSYS} == FreeBSD && (${OSVERSION} < 1305000 || (${OSVERSION} >= 1400000 && ${OSVERSION} < 1402000))
 _UNSUPPORTED_SYSTEM_MESSAGE=	Ports Collection support for your ${OPSYS} version has ended, and no ports\
 								are guaranteed to build on this system. Please upgrade to a supported release.
 .      if defined(ALLOW_UNSUPPORTED_SYSTEM)
@@ -1202,14 +1203,6 @@ _OSVERSION_MAJOR=	${OSVERSION:C/([0-9]?[0-9])([0-9][0-9])[0-9]{3}/\1/}
 .      if !defined(_PKG_VERSION)
 _PKG_VERSION!=	${PKG_BIN} -v
 .      endif
-# XXX hack for smooth transition towards pkg 1.17
-_PKG_BEFORE_PKGEXT!= ${PKG_BIN} version -t ${_PKG_VERSION:C/-.*//g} 1.17.0
-.      if ${_PKG_BEFORE_PKGEXT} == "<"
-_PKG_TRANSITIONING_TO_NEW_EXT=	yes
-_EXPORTED_VARS+=	_PKG_TRANSITIONING_TO_NEW_EXT
-WARNING+=	"It is strongly recommended to upgrade to a newer version of pkg first"
-.      endif
-# XXX End of hack
 _PKG_STATUS!=	${PKG_VERSION} -t ${_PKG_VERSION:C/-.*//g} ${MINIMAL_PKG_VERSION}
 .      if ${_PKG_STATUS} == "<"
 IGNORE=		pkg(8) must be version ${MINIMAL_PKG_VERSION} or greater, but you have ${_PKG_VERSION}. You must upgrade the ${PKG_ORIGIN} port first
@@ -1910,8 +1903,14 @@ PLIST_FILES+=	"@ldconfig"
 .    if defined(NO_SHLIB_REQUIRES_GLOB)
 PKG_ENV+=	SHLIB_REQUIRE_IGNORE_GLOB="${NO_SHLIB_REQUIRES_GLOB:ts,}"
 .    endif
-.    if defined(NO_SHLIBS_REQUIRES_REGEX)
-PKG_ENV+=	SHLIB_REQUIRE_IGNORE_REGEX="${NO_SHLIBS_REQUIRES_REGEX:ts,}"
+.    if defined(NO_SHLIB_REQUIRES_REGEX)
+PKG_ENV+=	SHLIB_REQUIRE_IGNORE_REGEX="${NO_SHLIB_REQUIRES_REGEX:ts,}"
+.    endif
+.    if defined(NO_SHLIB_PROVIDES_GLOB)
+PKG_ENV+=	SHLIB_PROVIDE_IGNORE_GLOB="${NO_SHLIB_PROVIDES_GLOB:ts,}"
+.    endif
+.    if defined(NO_SHLIB_PROVIDES_REGEX)
+PKG_ENV+=	SHLIB_PROVIDE_IGNORE_REGEX="${NO_SHLIB_PROVIDES_REGEX:ts,}"
 .    endif
 
 PKG_IGNORE_DEPENDS?=		'this_port_does_not_exist'
@@ -2201,20 +2200,11 @@ TMPPLIST?=	${WRKDIR}/.PLIST.mktmp
 _PLIST?=	${WRKDIR}/.PLIST
 
 # backward compatibility for users
-.    if defined(_PKG_TRANSITIONING_TO_NEW_EXT)
-.      if defined(PKG_NOCOMPRESS)
-PKG_SUFX?=	.tar
-.      else
-PKG_SUFX?=	.txz
-.      endif
-PKG_COMPRESSION_FORMAT?=	${PKG_SUFX:S/.//}
-.    else
-.      if defined(PKG_SUFX)
+.    if defined(PKG_SUFX)
 PKG_COMPRESSION_FORMAT?=	${PKG_SUFX:S/.//}
 WARNING+= "PKG_SUFX is defined, it should be replaced with PKG_COMPRESSION_FORMAT"
-.      endif
-PKG_SUFX=	.pkg
 .    endif
+PKG_SUFX=	.pkg
 .    if defined(PKG_NOCOMPRESS)
 PKG_COMPRESSION_FORMAT?=	tar
 .    else
@@ -3449,18 +3439,6 @@ _EXTRA_PACKAGE_TARGET_DEP+=	${PKGLATESTFILE}
 ${PKGLATESTFILE}: ${PKGFILE} ${PKGLATESTREPOSITORY}
 	${INSTALL} -l rs ${PKGFILE} ${PKGLATESTFILE}
 
-.        if !defined(_PKG_TRANSITIONING_TO_NEW_EXT) && ${PKG_COMPRESSION_FORMAT} == txz
-_EXTRA_PACKAGE_TARGET_DEP+=	${PKGOLDLATESTFILE} ${PKGOLDSIGFILE}
-
-${PKGOLDLATESTFILE}: ${PKGFILE} ${PKGLATESTREPOSITORY}
-	${INSTALL} -l rs ${PKGFILE} ${PKGOLDLATESTFILE}
-
-# Temporary workaround to be deleted once every supported version of FreeBSD
-# have a bootstrap which handles the pkg extension.
-
-${PKGOLDSIGFILE}: ${PKGLATESTREPOSITORY}
-	${INSTALL} -l rs pkg.pkg.sig ${PKGOLDSIGFILE}
-.        endif
 .      endif
 
 .    endif
@@ -3622,10 +3600,6 @@ install-ldconfig-file:
 fixup-lib-pkgconfig:
 	@if [ -d ${STAGEDIR}${PREFIX}/lib/pkgconfig ]; then \
 		if [ -z "$$(${FIND} ${STAGEDIR}${PREFIX}/lib/pkgconfig -maxdepth 0 -empty)" ]; then \
-			if [ -n "${DEVELOPER:Dyes}" ]; then \
-				${ECHO_MSG} "===>   File(s) found in lib/pkgconfig while correct path is libdata/pkgconfig"; \
-				${ECHO_MSG} "       Applying fix but consider using USES= pathfix or adjust install path"; \
-			fi; \
 			${MKDIR} ${STAGEDIR}${PREFIX}/libdata/pkgconfig; \
 			${MV} ${STAGEDIR}${PREFIX}/lib/pkgconfig/* ${STAGEDIR}${PREFIX}/libdata/pkgconfig; \
 		fi; \
@@ -4515,7 +4489,7 @@ describe-json:
 	${ECHO_CMD} \"complete_options_list\":[\"${COMPLETE_OPTIONS_LIST:ts,:S/,/\",\"/g}\"], ;\
 	${ECHO_CMD} \"categories\":[\"${CATEGORIES:ts,:S/,/\",\"/g}\"], ;\
 	${ECHO_CMD} \"license\":[\"${LICENSE:ts,:S/,/\",\"/g}\"], ;\
-	${ECHO_CMD} \"deprecated\":\""${DEPRECATED:S/"/\\\"/g:S/\\\\*/*/g:S/\\\'/'/g}" \", ;\
+	${ECHO_CMD} \"deprecated\":\"${DEPRECATED:Q:S/"/\\\"/g:S/\\\\*/*/g:S/\\\'/'/g}\", ;\
 	${ECHO_CMD} \"broken\":\"${BROKEN:Q:S/"/\\\"/g:S/\\\\*/*/g:S/\\\'/'/g}\", ;\
 	${ECHO_CMD} \"distversion\":\"${DISTVERSION}\", ;\
 	${ECHO_CMD} \"distversionprefix\":\"${DISTVERSIONPREFIX}\", ;\

@@ -97,6 +97,7 @@ OPTIONS_DEFAULT_aarch64=	${_BE_${FLAVOR}}
 OPTIONS_DEFAULT_amd64=		${_BE_${FLAVOR}}
 OPTIONS_DEFAULT_powerpc64=	${_BE_${FLAVOR}}
 OPTIONS_DEFAULT_powerpc64le=	${_BE_${FLAVOR}}
+OPTIONS_DEFAULT_riscv64=	${_BE_${FLAVOR}}
 
 OPTIONS_EXCLUDE_armv6=	COMPILER_RT
 OPTIONS_EXCLUDE_armv7=	COMPILER_RT
@@ -629,7 +630,7 @@ build-plist:
 	    ${GREP} -v '[/-]lit$$' | ${GREP} -v 'FileCheck$$' | \
 	    ${GREP} -v man/man1 | ${SED} -e 's|${STAGEDIR}${PREFIX}/||' \
 	    -e 's|${PYTHON_SITELIBDIR:C|${PREFIX}/||}|%%PYTHON_SITELIBDIR%%|' \
-	    -e 's|${PYTHON_EXT_SUFFIX:C/\./\\./g}${PYTHON_ABIVER}|%%PYTHON_EXT_SUFFIX%%%%PYTHON_ABIVER%%|' \
+	    -e 's|${PYTHON_TAG:C/\./\\./g}${PYTHON_ABIVER}|%%PYTHON_TAG%%%%PYTHON_ABIVER%%|' \
 	    -e 's|${LLVM_RELEASE}|%%LLVM_RELEASE%%|' \
 	    -e 's|release.cmake|%%CMAKE_BUILD_TYPE%%.cmake|' \
 	    -e 's|${LLVM_RELEASE:C/\./\\./g}|%%LLVM_RELEASE%%|' \

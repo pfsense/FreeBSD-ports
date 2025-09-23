@@ -1,5 +1,5 @@
 PORTNAME=	virtualbox-ose
-DISTVERSION=	7.1.8
+DISTVERSION=	7.1.12
 CATEGORIES=	emulators
 MASTER_SITES=	https://download.virtualbox.org/virtualbox/${DISTVERSION}/
 PKGNAMESUFFIX=	-kmod-71
@@ -44,11 +44,13 @@ SUB_LIST=		OPSYS=${OPSYS} OSREL=${OSREL}
 
 WRKSRC=		${WRKDIR}/VirtualBox-${DISTVERSION}
 
-OPTIONS_DEFINE=		DEBUG VIMAGE
+OPTIONS_DEFINE=		DEBUG INVARIANTS VIMAGE
 OPTIONS_DEFAULT=	VIMAGE
 OPTIONS_SUB=		yes
 DEBUG_DESC=		Debug symbols, additional logs and assertions
+INVARIANTS_DESC=	Use if kernel is compiled with INVARIANTS option
 VIMAGE_DESC=		VIMAGE virtual networking support
+INVARIANTS_CFLAGS=	-DINVARIANTS
 
 .include <bsd.port.options.mk>
 

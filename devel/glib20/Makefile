@@ -1,6 +1,6 @@
 PORTNAME=	glib
 DISTVERSION=	2.84.1
-PORTREVISION=	2
+PORTREVISION=	3
 PORTEPOCH=	2
 CATEGORIES=	devel
 MASTER_SITES=	GNOME
@@ -36,11 +36,9 @@ USES=		compiler:c11 cpe gettext gnome iconv:wchar_t localbase:ldflags \
 		meson perl5 pkgconfig python tar:xz ${${FLAVOR}_USES}
 USE_LDCONFIG=	yes
 USE_PERL5=	build
-USE_PYTHON=	py3kplist
 TRIGGERS=	gio-modules glib-schemas
 MESON_ARGS=	-Db_lundef=false \
 		-Ddefault_library=both \
-		-Dfile_monitor_backend='libinotify-kqueue' \
 		-Dinstalled_tests=false \
 		-Dlibelf=disabled \
 		-Dlibmount=disabled \
@@ -84,6 +82,12 @@ PLIST_SUB+=	PORTDOCS='@comment ' NLS='@comment ' MANPAGES='@comment '
 .else
 BINARY_ALIAS+=	g-ir-scanner=${LOCALBASE}/gobject-introspection-bootstrap/bin/g-ir-scanner
 MESON_ARGS+=	-Dintrospection=enabled
+.endif
+
+.if exists(/usr/include/sys/inotify.h)
+MESON_ARGS+=	-Dfile_monitor_backend='inotify'
+.else
+MESON_ARGS+=	-Dfile_monitor_backend='libinotify-kqueue'
 .endif
 
 .if ${FLAVOR:U} == default

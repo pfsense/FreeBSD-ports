@@ -1,6 +1,5 @@
 PORTNAME=	calcurse
-DISTVERSION=	4.8.1
-PORTREVISION=	1
+DISTVERSION=	4.8.2
 CATEGORIES=	deskutils
 MASTER_SITES=	https://calcurse.org/files/ \
 		https://fossies.org/linux/privat/
@@ -12,10 +11,7 @@ WWW=		https://calcurse.org/
 LICENSE=	BSD2CLAUSE
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-DEPRECATED=	Depends on expired security/py-oauth2client
-EXPIRATION_DATE=2025-06-01
-
-USES=		ncurses shebangfix
+USES=		ncurses shebangfix pkgconfig
 SHEBANG_FILES=	contrib/caldav/calcurse-caldav \
 		contrib/caldav/calcurse-caldav.py \
 		contrib/vdir/calcurse-vdir \
@@ -31,8 +27,7 @@ CALDAV_DESC=	Support Calendaring Extensions to WebDAV
 
 CALDAV_USES=		python
 CALDAV_USES_OFF=	python:env
-CALDAV_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}httplib2>=0:www/py-httplib2@${PY_FLAVOR} \
-			${PYTHON_PKGNAMEPREFIX}oauth2client>=0:security/py-oauth2client@${PY_FLAVOR}
+CALDAV_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}httplib2>=0:www/py-httplib2@${PY_FLAVOR}
 
 DOCS_USES=		gmake
 DOCS_CONFIGURE_ENABLE=	docs

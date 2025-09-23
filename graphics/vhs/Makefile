@@ -1,10 +1,10 @@
 PORTNAME=	vhs
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.9.0
+DISTVERSION=	0.10.0
 PORTREVISION=	2
 CATEGORIES=	graphics
 
-MAINTAINER=	DtxdF@disroot.org
+MAINTAINER=	dtxdf@FreeBSD.org
 COMMENT=	Your CLI home video recorder
 WWW=		https://github.com/charmbracelet/vhs
 
@@ -17,6 +17,9 @@ RUN_DEPENDS=	bash>0:shells/bash \
 
 USES=		go:modules
 GO_MODULE=	github.com/charmbracelet/vhs
+GO_BUILDFLAGS=	-ldflags "\
+			-X 'main.Version=${DISTVERSIONPREFIX}${DISTVERSION}' \
+			-X 'main.CommitSHA=${GITID}'"
 
 PLIST_FILES=	bin/vhs
 
@@ -28,5 +31,9 @@ UNGOOGLED_CHROMIUM_DESC=	Install ungoogled-chromium
 
 CHROMIUM_RUN_DEPENDS=		chromium>0:www/chromium
 UNGOOGLED_CHROMIUM_RUN_DEPENDS=	ungoogled-chromium>0:www/ungoogled-chromium
+
+# Run 'git checkout ${DISTVERSIONPREFIX}${DISTVERSION} && git rev-parse HEAD'
+# in the VHS repository to get the value of GITID.
+GITID=		710bb769af94d844ffdc3c8b737a6775813fc0a4
 
 .include <bsd.port.mk>

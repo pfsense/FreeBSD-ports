@@ -1,5 +1,5 @@
 PORTNAME=	uv
-DISTVERSION=	0.6.14
+DISTVERSION=	0.8.3
 PORTREVISION=	1
 CATEGORIES=	devel
 
@@ -29,6 +29,8 @@ GH_ACCOUNT=	astral-sh
 
 OPENSSLINC=	/usr/include
 OPENSSLLIB=	/usr/lib
+
+RUSTFLAGS+=	-C link-args=-Wl,-rpath=${LOCALBASE}/lib
 
 PROGS=		uv uvx
 

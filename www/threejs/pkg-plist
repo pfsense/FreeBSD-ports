@@ -45,7 +45,6 @@
 %%WWWDIR%%/core/Raycaster.js
 %%WWWDIR%%/core/RenderTarget.js
 %%WWWDIR%%/core/RenderTarget3D.js
-%%WWWDIR%%/core/RenderTargetArray.js
 %%WWWDIR%%/core/Uniform.js
 %%WWWDIR%%/core/UniformsGroup.js
 %%WWWDIR%%/extras/Controls.js
@@ -121,6 +120,7 @@
 %%WWWDIR%%/lights/SpotLight.js
 %%WWWDIR%%/lights/SpotLightShadow.js
 %%WWWDIR%%/lights/webgpu/IESSpotLight.js
+%%WWWDIR%%/lights/webgpu/ProjectorLight.js
 %%WWWDIR%%/loaders/AnimationLoader.js
 %%WWWDIR%%/loaders/AudioLoader.js
 %%WWWDIR%%/loaders/BufferGeometryLoader.js
@@ -185,6 +185,7 @@
 %%WWWDIR%%/math/Cylindrical.js
 %%WWWDIR%%/math/Euler.js
 %%WWWDIR%%/math/Frustum.js
+%%WWWDIR%%/math/FrustumArray.js
 %%WWWDIR%%/math/Interpolant.js
 %%WWWDIR%%/math/Line3.js
 %%WWWDIR%%/math/MathUtils.js
@@ -239,6 +240,7 @@
 %%WWWDIR%%/nodes/accessors/StorageBufferNode.js
 %%WWWDIR%%/nodes/accessors/StorageTextureNode.js
 %%WWWDIR%%/nodes/accessors/Tangent.js
+%%WWWDIR%%/nodes/accessors/TangentUtils.js
 %%WWWDIR%%/nodes/accessors/Texture3DNode.js
 %%WWWDIR%%/nodes/accessors/TextureBicubic.js
 %%WWWDIR%%/nodes/accessors/TextureNode.js
@@ -285,6 +287,7 @@
 %%WWWDIR%%/nodes/core/StructNode.js
 %%WWWDIR%%/nodes/core/StructType.js
 %%WWWDIR%%/nodes/core/StructTypeNode.js
+%%WWWDIR%%/nodes/core/SubBuildNode.js
 %%WWWDIR%%/nodes/core/TempNode.js
 %%WWWDIR%%/nodes/core/UniformGroupNode.js
 %%WWWDIR%%/nodes/core/UniformNode.js
@@ -356,8 +359,10 @@
 %%WWWDIR%%/nodes/lighting/LightsNode.js
 %%WWWDIR%%/nodes/lighting/PointLightNode.js
 %%WWWDIR%%/nodes/lighting/PointShadowNode.js
+%%WWWDIR%%/nodes/lighting/ProjectorLightNode.js
 %%WWWDIR%%/nodes/lighting/RectAreaLightNode.js
 %%WWWDIR%%/nodes/lighting/ShadowBaseNode.js
+%%WWWDIR%%/nodes/lighting/ShadowFilterNode.js
 %%WWWDIR%%/nodes/lighting/ShadowNode.js
 %%WWWDIR%%/nodes/lighting/SpotLightNode.js
 %%WWWDIR%%/nodes/materialx/DISCLAIMER.md
@@ -384,12 +389,12 @@
 %%WWWDIR%%/nodes/utils/CubeMapNode.js
 %%WWWDIR%%/nodes/utils/DebugNode.js
 %%WWWDIR%%/nodes/utils/Discard.js
-%%WWWDIR%%/nodes/utils/EquirectUVNode.js
+%%WWWDIR%%/nodes/utils/EquirectUV.js
 %%WWWDIR%%/nodes/utils/FlipNode.js
 %%WWWDIR%%/nodes/utils/FunctionOverloadingNode.js
 %%WWWDIR%%/nodes/utils/JoinNode.js
 %%WWWDIR%%/nodes/utils/LoopNode.js
-%%WWWDIR%%/nodes/utils/MatcapUVNode.js
+%%WWWDIR%%/nodes/utils/MatcapUV.js
 %%WWWDIR%%/nodes/utils/MaxMipLevelNode.js
 %%WWWDIR%%/nodes/utils/MemberNode.js
 %%WWWDIR%%/nodes/utils/Oscillators.js
@@ -399,13 +404,14 @@
 %%WWWDIR%%/nodes/utils/ReflectorNode.js
 %%WWWDIR%%/nodes/utils/RemapNode.js
 %%WWWDIR%%/nodes/utils/RotateNode.js
+%%WWWDIR%%/nodes/utils/SampleNode.js
 %%WWWDIR%%/nodes/utils/SetNode.js
 %%WWWDIR%%/nodes/utils/SplitNode.js
 %%WWWDIR%%/nodes/utils/SpriteSheetUVNode.js
 %%WWWDIR%%/nodes/utils/SpriteUtils.js
 %%WWWDIR%%/nodes/utils/StorageArrayElementNode.js
 %%WWWDIR%%/nodes/utils/Timer.js
-%%WWWDIR%%/nodes/utils/TriplanarTexturesNode.js
+%%WWWDIR%%/nodes/utils/TriplanarTextures.js
 %%WWWDIR%%/nodes/utils/UVUtils.js
 %%WWWDIR%%/nodes/utils/ViewportUtils.js
 %%WWWDIR%%/objects/BatchedMesh.js
@@ -466,6 +472,8 @@
 %%WWWDIR%%/renderers/common/RendererUtils.js
 %%WWWDIR%%/renderers/common/SampledTexture.js
 %%WWWDIR%%/renderers/common/Sampler.js
+%%WWWDIR%%/renderers/common/Storage3DTexture.js
+%%WWWDIR%%/renderers/common/StorageArrayTexture.js
 %%WWWDIR%%/renderers/common/StorageBuffer.js
 %%WWWDIR%%/renderers/common/StorageBufferAttribute.js
 %%WWWDIR%%/renderers/common/StorageInstancedBufferAttribute.js

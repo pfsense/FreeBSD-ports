@@ -1,6 +1,6 @@
 PORTNAME=	bhyvemgr
 DISTVERSIONPREFIX=	v
-PORTVERSION=	1.5.2
+PORTVERSION=	1.9.0
 CATEGORIES=	sysutils
 PKGNAMESUFFIX=	${LAZARUS_PKGNAMESUFFIX}
 
@@ -20,15 +20,21 @@ USE_XORG=	x11
 USE_GITHUB=	yes
 GH_ACCOUNT=	alonsobsd
 
-OPTIONS_DEFINE=		FREERDP3
+OPTIONS_DEFINE=		FREERDP3 QEMU-TOOLS
 
 FREERDP3_DESC=		Install freerdp3 to enable rdp connection option
 FREERDP3_RUN_DEPENDS=	freerdp3>0:net/freerdp3
+
+QEMU-TOOLS_DESC=	Install qemu-img tool
+QEMU-TOOLS_RUN_DEPENDS=	qemu-img:emulators/qemu@tools
 
 .include <bsd.port.pre.mk>
 
 .if ${OPSYS} == FreeBSD && (${OSVERSION} >= 1500000)
 ONLY_FOR_ARCHS=	aarch64 amd64
+.endif
+
+.if ${OPSYS} == FreeBSD && (${OSVERSION} >= 1403000)
 RUN_DEPENDS+=	swtpm>0:sysutils/swtpm
 .endif
 
@@ -61,6 +67,6 @@ do-install:
 	@${MKDIR} ${STAGEDIR}${PREFIX}/share/icons/hicolor/scalable/apps
 	${INSTALL_DATA} ${WRKSRC}/setup/${PORTNAME}.svg ${STAGEDIR}${PREFIX}/share/icons/hicolor/scalable/apps/${PORTNAME}.svg
 	@${MKDIR} ${STAGEDIR}${DATADIR}
-	cd ${WRKSRC} && ${COPYTREE_SHARE} "images" ${STAGEDIR}${DATADIR}
+	cd ${WRKSRC} && ${COPYTREE_SHARE} "images samples templates" ${STAGEDIR}${DATADIR}
 
 .include <bsd.port.post.mk>

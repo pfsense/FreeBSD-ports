@@ -5,7 +5,7 @@ CATEGORIES=	audio
 MASTER_SITES=	https://downloads.xiph.org/releases/opus/ \
 		https://ftp.osuosl.org/pub/xiph/releases/opus/
 
-MAINTAINER=	liangtai.s16@gmail.com
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Opus playback library
 WWW=		https://opus-codec.org/
 
@@ -15,7 +15,7 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 LIB_DEPENDS=	libogg.so:audio/libogg \
 		libopus.so:audio/opus
 
-USES=		autoreconf libtool pathfix pkgconfig ssl
+USES=		autoreconf libtool pkgconfig ssl
 USE_LDCONFIG=	yes
 GNU_CONFIGURE=	yes
 MAKE_JOBS_UNSAFE=	yes

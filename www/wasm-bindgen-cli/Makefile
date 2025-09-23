@@ -1,5 +1,6 @@
 PORTNAME=	wasm-bindgen-cli
 DISTVERSION=	0.2.95
+PORTREVISION=	2
 CATEGORIES=	www
 
 MAINTAINER=	aokblast@FreeBSD.org

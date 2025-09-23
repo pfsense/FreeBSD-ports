@@ -1,10 +1,10 @@
 PORTNAME=	fife
 PORTVERSION=	0.4.2
-PORTREVISION=	10
+PORTREVISION=	11
 CATEGORIES=	games
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
-MAINTAINER=	fiziologus@gmail.com
+MAINTAINER=	danfe@FreeBSD.org
 COMMENT=	Flexible Isometric Free Engine
 WWW=		https://www.fifengine.net/
 

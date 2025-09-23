@@ -1,10 +1,9 @@
 PORTNAME=	shaderc
 DISTVERSIONPREFIX=	v
-DISTVERSION=	2025.2
-PORTREVISION=	1
+DISTVERSION=	2025.3
 CATEGORIES=	graphics devel
 
-MAINTAINER=	jbeich@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	GLSL/HLSL to SPIR-V shader compiler
 WWW=		https://github.com/google/shaderc
 
@@ -19,7 +18,7 @@ USES=		cmake:testing compiler:c++11-lib localbase:ldflags \
 USE_GITHUB=	yes
 USE_LDCONFIG=	yes
 GH_ACCOUNT=	google
-GH_TUPLE=	KhronosGroup:SPIRV-Headers:1.5.4.raytracing.fixed-411-gaa6cef1:headers/third_party/spirv-headers
+GH_TUPLE=	KhronosGroup:SPIRV-Headers:1.5.4.raytracing.fixed-430-g2a611a9:headers/third_party/spirv-headers
 SHEBANG_FILES=	utils/add_copyright.py
 CMAKE_ON+=	${CMAKE_TESTING_OFF}
 CMAKE_TESTING_OFF=	SHADERC_SKIP_TESTS

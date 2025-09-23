@@ -1,6 +1,6 @@
 PORTNAME=	cadabra2
 DISTVERSION=	2.5.8
-PORTREVISION=	1
+PORTREVISION=	3
 CATEGORIES=	math
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -21,7 +21,7 @@ LIB_DEPENDS=	${PY_BOOST} \
 		libpcrecpp.so:devel/pcre \
 		libjsoncpp.so:devel/jsoncpp \
 		libgmp.so:math/gmp \
-		libuuid.so:misc/e2fsprogs-libuuid
+		libuuid.so:misc/libuuid
 RUN_DEPENDS=	${PYTHON_SITELIBDIR}/sympy/__init__.py:math/py-sympy@${PY_FLAVOR} \
 		${PYTHON_SITELIBDIR}/matplotlib/__init__.py:math/py-matplotlib@${PY_FLAVOR}
 
@@ -51,7 +51,7 @@ GUI_USES=		desktop-file-utils
 GUI_USE=		GNOME=gtkmm30,gdkpixbuf
 GUI_CMAKE_BOOL=		ENABLE_FRONTEND
 
-_PY_SONAME=	${PYTHON_EXT_SUFFIX}
+_PY_SONAME=	${PYTHON_TAG}
 
 post-extract: # unbundle
 	@${RM} -r ${WRKSRC}/libs/jsoncpp ${WRKSRC}/libs/websocketpp

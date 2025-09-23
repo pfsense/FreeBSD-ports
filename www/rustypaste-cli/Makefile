@@ -1,9 +1,10 @@
 PORTNAME=	rustypaste-cli
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.9.3
+DISTVERSION=	0.9.4
+PORTREVISION=	2
 CATEGORIES=	www
 
-MAINTAINER=	DtxdF@disroot.org
+MAINTAINER=	dtxdf@FreeBSD.org
 COMMENT=	CLI tool for rustypaste
 WWW=		https://github.com/orhun/rustypaste-cli
 

@@ -1,10 +1,13 @@
 PORTNAME=	theseus-ship
 DISTVERSIONPREFIX=	v
 DISTVERSION=	6.2.0
-PORTREVISION=	1
-CATEGORIES=	x11-wm # wayland: https://github.com/winft/theseus-ship/issues/9
+PORTREVISION=	3
+CATEGORIES=	x11-wm wayland
 
-MAINTAINER=	jbeich@FreeBSD.org
+PATCH_SITES=	https://github.com/${GH_ACCOUNT}/${GH_PROJECT}/commit/
+PATCHFILES+=	01030427325c.patch:-p1 # https://github.com/winft/theseus-ship/pull/17
+
+MAINTAINER=	jsm@FreeBSD.org
 COMMENT=	Wayland and X11 compositor for KDE Plasma Desktop
 WWW=		https://github.com/winft/theseus-ship
 

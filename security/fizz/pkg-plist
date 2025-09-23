@@ -139,6 +139,7 @@ include/fizz/protocol/ech/GreaseECH.h
 include/fizz/protocol/ech/GreaseECHSetting.h
 include/fizz/protocol/ech/Types-inl.h
 include/fizz/protocol/ech/Types.h
+include/fizz/protocol/ech/test/TestUtil.h
 include/fizz/protocol/test/CertTestTypes.h
 include/fizz/protocol/test/CertUtil.h
 include/fizz/protocol/test/Matchers.h
@@ -151,8 +152,6 @@ include/fizz/record/Extensions-inl.h
 include/fizz/record/Extensions.h
 include/fizz/record/PlaintextRecordLayer.h
 include/fizz/record/RecordLayer.h
-include/fizz/record/RecordLayerUtils-inl.h
-include/fizz/record/RecordLayerUtils.h
 include/fizz/record/Types-inl.h
 include/fizz/record/Types.h
 include/fizz/record/test/ExtensionTestsBase.h

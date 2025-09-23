@@ -24,6 +24,7 @@ LICENSE=	BSD3CLAUSE LGPL21 MPL11 MIT
 LICENSE_COMB=	multi
 LICENSE_FILE=	${WRKSRC}/electron/LICENSE
 
+BROKEN_i386=	fetch fails: node process stalls during fetch phase and eats up all CPUs
 ONLY_FOR_ARCHS=	aarch64 amd64 i386
 
 FETCH_DEPENDS=	yarn${NODEJS_SUFFIX}>0:www/yarn${NODEJS_SUFFIX}
@@ -223,7 +224,7 @@ SNDIO_VARS_OFF=		GN_ARGS+=use_sndio=false
 # See ${WRKSRC}/electron/DEPS for CHROMIUM_VER
 CHROMIUM_VER=			134.0.6998.205
 # See ${WRKSRC}/electron/DEPS for NODE_VER
-NODE_VER=			22.15.0
+NODE_VER=			22.16.0
 # See ${WRKSRC}/electron/DEPS for NAN_VER
 NAN_VER=			e14bdcd1f72d62bca1d541b66da43130384ec213
 # See ${WRKSRC}/electron/DEPS for SQUIRREL_MAC_VER
@@ -244,7 +245,7 @@ YARN_TIMESTAMP=	61171200
 IGNORE=		you have selected HEIMDAL_BASE but do not have Heimdal installed in base
 .endif
 
-LLVM_DEFAULT=		19
+LLVM_DEFAULT=		20
 BUILD_DEPENDS+=		clang${LLVM_DEFAULT}:devel/llvm${LLVM_DEFAULT}
 BINARY_ALIAS+=		cpp=${LOCALBASE}/bin/clang-cpp${LLVM_DEFAULT} \
 			cc=${LOCALBASE}/bin/clang${LLVM_DEFAULT} \

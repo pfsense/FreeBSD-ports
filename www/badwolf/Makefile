@@ -1,10 +1,10 @@
 PORTNAME=	badwolf
 DISTVERSION=	1.3.0
-PORTREVISION=	3
+PORTREVISION=	4
 CATEGORIES=	www
 MASTER_SITES=	https://hacktivis.me/releases/
 
-MAINTAINER=	DtxdF@disroot.org
+MAINTAINER=	dtxdf@FreeBSD.org
 COMMENT=	Minimalist and privacy-oriented WebKitGTK browser
 WWW=		https://hacktivis.me/projects/badwolf
 

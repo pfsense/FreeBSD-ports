@@ -1,5 +1,6 @@
 PORTNAME=	pipewire-spa-oss
 DISTVERSION=	g20250416
+PORTREVISION=	2
 CATEGORIES=	audio
 
 MAINTAINER=	arrowd@FreeBSD.org

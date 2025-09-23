@@ -1,7 +1,7 @@
     COMMENT = Instant messaging
 
+    SUBDIR += abaddon
     SUBDIR += beebeep
-    SUBDIR += biboumi
     SUBDIR += coccinella
     SUBDIR += concord
     SUBDIR += conduit
@@ -60,6 +60,7 @@
     SUBDIR += matterbridge
     SUBDIR += matterhorn
     SUBDIR += matterircd
+    SUBDIR += mautrix-whatsapp
     SUBDIR += mbpurple
     SUBDIR += mcabber
     SUBDIR += meanwhile
@@ -120,6 +121,7 @@
     SUBDIR += py-slixmpp
     SUBDIR += py-toxcore-c
     SUBDIR += py-unmessage
+    SUBDIR += py-zapzap
     SUBDIR += qTox
     SUBDIR += quaternion
     SUBDIR += qxmpp
@@ -141,6 +143,7 @@
     SUBDIR += spectral
     SUBDIR += ssh-chat
     SUBDIR += sshout
+    SUBDIR += tde2e
     SUBDIR += tdlib
     SUBDIR += tdlib-purple
     SUBDIR += telegram-cli

@@ -1,5 +1,5 @@
 PORTNAME=	zeek
-DISTVERSION=	7.0.7
+DISTVERSION=	8.0.0
 CATEGORIES=	security
 MASTER_SITES=	https://download.zeek.org/
 
@@ -12,11 +12,12 @@ LICENSE=	CC-BY-4.0
 BUILD_DEPENDS=	bison>=3.3:devel/bison \
 		flex>=2.6:textproc/flex \
 		swig>=4.0.2:devel/swig
-LIB_DEPENDS=	libcares.so:dns/c-ares
+LIB_DEPENDS=	libcares.so:dns/c-ares \
+		libzmq.so:net/libzmq4
 RUN_DEPENDS=	c-ares>=1.25.0:dns/c-ares
 
-USES=           bison cmake compiler:c++17-lang cpe perl5 python \
-		shebangfix ssl
+USES=		bison cmake compiler:c++17-lang cpe gettext-runtime perl5 \
+		python shebangfix ssl
 
 USE_LDCONFIG=	yes
 
@@ -127,9 +128,11 @@ IPSUMDUMP_BUILD_DEPENDS=	ipsumdump:net/ipsumdump
 IPSUMDUMP_RUN_DEPENDS=		ipsumdump:net/ipsumdump
 LBL_CF_RUN_DEPENDS=		${LOCALBASE}/bin/cf:sysutils/lbl-cf
 LBL_HF_RUN_DEPENDS=		${LOCALBASE}/bin/hf:sysutils/lbl-hf
-PERFTOOLS_BUILD_DEPENDS=	${LOCALBASE}/bin/perftools-pprof:devel/google-perftools
+PERFTOOLS_BUILD_DEPENDS=	${LOCALBASE}/include/gperftools/tcmalloc.h:devel/google-perftools \
+				${LOCALBASE}/bin/pprof:devel/pprof
 PERFTOOLS_CMAKE_BOOL=		ENABLE_PERFTOOLS
-PERFTOOLS_RUN_DEPENDS=		${LOCALBASE}/bin/perftools-pprof:devel/google-perftools
+PERFTOOLS_RUN_DEPENDS=		${LOCALBASE}/lib/libtcmalloc.so.4:devel/google-perftools \
+				${LOCALBASE}/bin/pprof:devel/pprof
 SPICY_CMAKE_OFF=		-DDISABLE_SPICY=ON
 ZEEKCTL_BUILD_DEPENDS=		${LOCALBASE}/bin/bash:shells/bash \
 				${PYTHON_PKGNAMEPREFIX}sqlite3>0:databases/py-sqlite3@${PY_FLAVOR}

@@ -187,8 +187,6 @@ bin/dhcpd_gather_stats.php
 bin/iftop_parse.awk
 @(,,755) bin/iftop_parser.sh
 @(,,755) bin/ipsec_keepalive.php
-@(,,755) bin/kea_run4
-@(,,755) bin/kea_run6
 @(,,755) bin/kea2fib6
 @(,,755) bin/kea2unbound
 @(,,755) bin/mail.php
@@ -271,6 +269,8 @@ sbin/prefixes.php
 @(,,755) sbin/vpn-linkup-l2tp
 @(,,755) sbin/vpn-linkup-l2tp-route
 @(,,755) sbin/vpn-linkup-poes
+@(,,755) share/kea/scripts/kea_run4
+@(,,755) share/kea/scripts/kea_run6
 share/locale/af/LC_MESSAGES/pfSense.mo
 share/locale/af/LC_MESSAGES/pfSense.po
 share/locale/ar/LC_MESSAGES/pfSense.mo
@@ -509,6 +509,7 @@ www/head.inc
 www/help.php
 www/ifstats.php
 www/includes/functions.inc.php
+www/includes/iconheaders.html
 www/index.php
 www/interfaces.php
 www/interfaces_assign.php

@@ -1,6 +1,6 @@
 PORTNAME=	budgie-desktop
 DISTVERSION=	10.8.2
-PORTREVISION=	4
+PORTREVISION=	6
 DISTVERSIONPREFIX=	v
 CATEGORIES=	x11 budgie
 MASTER_SITES=	BUDGIE
@@ -17,8 +17,8 @@ BUILD_DEPENDS=	gnome-settings-daemon>0:sysutils/gnome-settings-daemon \
 		sassc:textproc/sassc \
 		zenity>0:x11/zenity
 LIB_DEPENDS=	libpolkit-gobject-1.so:sysutils/polkit \
-		libpeas-1.0.so:devel/libpeas \
-		libuuid.so:misc/e2fsprogs-libuuid \
+		libpeas-1.0.so:devel/libpeas1 \
+		libuuid.so:misc/libuuid \
 		libnotify.so:devel/libnotify \
 		libaccountsservice.so:sysutils/accountsservice \
 		libpulse.so:audio/pulseaudio \

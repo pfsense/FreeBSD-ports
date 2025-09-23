@@ -14,7 +14,7 @@ RUN_DEPENDS=	bash:shells/bash
 
 USE_RC_SUBR=	puppetdb
 
-CONFLICTS_INSTALL=	puppetdb[0-9] # etc/puppetdb/bootstrap.cfg.sample
+CONFLICTS_INSTALL=	openvoxdb[0-9] puppetdb[0-9] # etc/puppetdb/bootstrap.cfg.sample
 USES=		cpe java shebangfix
 CPE_VENDOR=	puppet
 SHEBANG_FILES=	ext/bin/puppetdb \

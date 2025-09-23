@@ -5,7 +5,7 @@ CATEGORIES=	audio python
 MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
-MAINTAINER=	DtxdF@disroot.org
+MAINTAINER=	dtxdf@FreeBSD.org
 COMMENT=	Python interface to CMU Sphinxbase and Pocketsphinx libraries
 WWW=	https://github.com/bambocher/pocketsphinx-python
 
@@ -24,9 +24,9 @@ BINARY_ALIAS=	swig=swig40
 CFLAGS+=	-I${LOCALBASE}/include
 
 post-install:
-	${STRIP_CMD} ${STAGEDIR}${PYTHON_SITELIBDIR}/pocketsphinx/_pocketsphinx${PYTHON_EXT_SUFFIX}.so
-	${STRIP_CMD} ${STAGEDIR}${PYTHON_SITELIBDIR}/sphinxbase/_ad_alsa${PYTHON_EXT_SUFFIX}.so
-	${STRIP_CMD} ${STAGEDIR}${PYTHON_SITELIBDIR}/sphinxbase/_ad_pulse${PYTHON_EXT_SUFFIX}.so
-	${STRIP_CMD} ${STAGEDIR}${PYTHON_SITELIBDIR}/sphinxbase/_sphinxbase${PYTHON_EXT_SUFFIX}.so
+	${STRIP_CMD} ${STAGEDIR}${PYTHON_SITELIBDIR}/pocketsphinx/_pocketsphinx${PYTHON_TAG}.so
+	${STRIP_CMD} ${STAGEDIR}${PYTHON_SITELIBDIR}/sphinxbase/_ad_alsa${PYTHON_TAG}.so
+	${STRIP_CMD} ${STAGEDIR}${PYTHON_SITELIBDIR}/sphinxbase/_ad_pulse${PYTHON_TAG}.so
+	${STRIP_CMD} ${STAGEDIR}${PYTHON_SITELIBDIR}/sphinxbase/_sphinxbase${PYTHON_TAG}.so
 
 .include <bsd.port.mk>

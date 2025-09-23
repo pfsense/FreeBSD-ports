@@ -1033,3 +1033,41 @@ diff -ruN ./snort-2.9.20.orig/src/snort.c ./snort-2.9.20/src/snort.c
  
  #ifdef SIDE_CHANNEL
      SideChannelStartTXThread();
+@@ -3108,6 +3110,26 @@ static void ParseCmdLine(int argc, char **argv)
+     SetSnortConfDir();
+ }
+ 
++static void DecodePPPoEthPkt(Packet * p, const DAQ_PktHdr_t * pkthdr, const uint8_t * pkt)
++{
++    uint32_t cap_len = pkthdr->caplen;
++    EtherHdr eh = { 0 };
++    
++    pc.total_processed++;
++
++    memset(p, 0, PKT_ZERO_LEN);
++
++    p->pkth = pkthdr;
++    p->pkt = pkt;
++
++    /* Point to a synthetic Ethernet header, because DecodePPPoEPkt() assumes
++     * there is one. */
++    eh.ether_type = htons(ETHERNET_TYPE_PPPoE_SESS);
++    p->eh = &eh;
++    
++    DecodePPPoEPkt(p->pkt, cap_len, p);
++}
++
+ /*
+  * Function: SetPktProcessor()
+  *
+@@ -3123,6 +3145,10 @@ static int SetPktProcessor(void)
+ 
+     switch ( dlt )
+     {
++        case DLT_PPP_ETHER:
++            slink = "PPPoE";
++            grinder = DecodePPPoEthPkt;
++            break;
+         case DLT_EN10MB:
+             slink = "Ethernet";
+             grinder = DecodeEthPkt;

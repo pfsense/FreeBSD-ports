@@ -26,7 +26,7 @@ USE_RC_SUBR=	puppetserver
 NO_ARCH=	yes
 NO_BUILD=	yes
 
-CONFLICTS_INSTALL=	puppetserver[0-9]
+CONFLICTS_INSTALL=	openvox-server[0-9] puppetserver[0-9]
 
 SHEBANG_FILES=	ext/bin/puppetserver
 

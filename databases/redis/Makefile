@@ -1,9 +1,9 @@
 PORTNAME=	redis
-DISTVERSION=	8.0.1
+DISTVERSION=	8.2.1
 CATEGORIES=	databases
 MASTER_SITES=	https://download.redis.io/releases/
 
-MAINTAINER=	yasu@FreeBSD.org
+MAINTAINER=	bofh@freebsd.org
 COMMENT=	Persistent key-value database with built-in net interface
 WWW=		https://redis.io/
 
@@ -23,9 +23,12 @@ MAKE_ENV=	OPTIMIZATION= \
 		V=yo
 
 LDFLAGS+=	-lpthread -lm -lexecinfo
+#PIE_UNSAFE=	ld: error: relocation R_X86_64_32 cannot be used against local \
+#		symbol; recompile with -fPIC
 
 CONFLICTS_INSTALL=	redis-devel redis62 redis72 redis74
 
+PORTSCOUT=	limit:^[0-9\.]*$$
 SUB_FILES=	pkg-message
 SUB_LIST=	PORTNAME=${PORTNAME} \
 		REDIS_DBDIR=${REDIS_DBDIR} \

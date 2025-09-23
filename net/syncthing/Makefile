@@ -1,6 +1,7 @@
 PORTNAME=	syncthing
 DISTVERSIONPREFIX=	v
-DISTVERSION=	1.29.6
+DISTVERSION=	2.0.2
+PORTREVISION=	1
 CATEGORIES=	net
 MASTER_SITES=	https://github.com/${PORTNAME}/${PORTNAME}/releases/download/v${DISTVERSION}/
 DISTNAME=	${PORTNAME}-source-${DISTVERSIONFULL}
@@ -12,7 +13,7 @@ WWW=		https://syncthing.net/
 LICENSE=	MPL20
 LICENSE_FILE=	${WRKSRC}/${PORTNAME}/LICENSE
 
-USES=		cpe go:1.23,modules
+USES=		cpe go:modules
 
 USE_RC_SUBR=	syncthing syncthing-discosrv syncthing-relaysrv \
 		syncthing-relaypoolsrv
@@ -28,6 +29,8 @@ NO_WRKSUBDIR=	yes
 
 USERS=		syncthing
 GROUPS=		syncthing
+
+CONFLICTS=	syncthing1
 
 .for x in ${BINS}
 PLIST_FILES+=	bin/${x}
