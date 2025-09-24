@@ -1031,6 +1031,22 @@
 					"header":	"AWS6"
 				}
 			]
+		},
+		"CC_6": {
+			"info":		"CautiousConnect list blocks all IPv6 space except for known good destinations.",
+			"description":	"CautiousConnect IP block ranges.",
+			"action":	"deny",
+			"cron":		"Weekly",
+			"feeds": [
+				{
+					"feed":		"SixInt CautiousConnect",
+					"website":	"https://sixint.io/products/cc_docs/about.html",
+					"url":		"https://block.sixint.io/cc/cautiousconnect-block.txt.gz?key=_API_KEY_",
+					"register":	"https://sixint.io/products/cautiousconnect.php",
+					"info":		"Free list; registration required.",
+					"header":	"CC6"
+				}
+			]
 		}
 	},
 	"dnsbl": {
