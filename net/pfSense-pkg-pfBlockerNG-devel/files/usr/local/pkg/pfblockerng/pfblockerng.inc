@@ -1670,12 +1670,6 @@ server.errorlog			= "|/usr/local/bin/php -f /usr/local/pkg/pfblockerng/pfblocker
 EOF;
 }
 
-if ($pfb['dnsbl_v6'] == 'on') {
-	$pfb_conf .= <<<EOF
-server.use-ipv6			= "enable"
-
-EOF;
-}
 	if (file_exists('/usr/local/lib/lighttpd/mod_openssl.so')) {
 		if (!$pfb['dnsbl_py_blacklist'] || $pfb['dnsbl_py_nolog'] == 'on') {
 			$pfb_conf .= 'server.modules			= ( "mod_access", "mod_auth", "mod_accesslog", "mod_fastcgi", "mod_rewrite", "mod_openssl" )';
