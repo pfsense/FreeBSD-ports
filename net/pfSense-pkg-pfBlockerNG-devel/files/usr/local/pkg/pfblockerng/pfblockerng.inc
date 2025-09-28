@@ -5287,37 +5287,58 @@ function pfb_collect_localhosts() {
 	}
 
 	// Collect dynamic DHCP hostnames/IPs
-	$leasesfile = "{$g['dhcpd_chroot_path']}/var/db/dhcpd.leases";
+	if (dhcp_is_backend('isc')) {
 
-	$end = $hostname = '';
-	if (file_exists("{$leasesfile}")) {
-		if (($l_handle = @fopen("{$leasesfile}", 'r')) !== FALSE) {
-			while (($line = @fgets($l_handle)) !== FALSE) {
-				if (strpos($line, '{') !== FALSE) {
-					$end = FALSE;
-					$data = explode(' ', $line);
-					$ip = $data[1];
-				}
-				if (strpos($line, 'client-hostname') !== FALSE) {
-					$data = explode(' ', $line);
-					$hostname = trim(str_replace(array('"', ';'), '', $data[3]));
-				}
-				if (strpos($line, '}') !== FALSE) {
-					$end = TRUE;
-				}
-				if ($end) {
-					if (!empty($ip)) {
-						$ip = pfb_filter($ip, PFB_FILTER_IP, 'Collect dynamic DHCP hostnames');
-					}
+		// DHCP ISC
+		$leasesfile = "{$g['dhcpd_chroot_path']}/var/db/dhcpd.leases";
 
-					if (!empty($hostname)) {
-						$hostname = pfb_filter($hostname, PFB_FILTER_HOSTNAME, 'Collect dynamic DHCP hostnames');
+		$end = $hostname = '';
+		if (file_exists("{$leasesfile}")) {
+			if (($l_handle = @fopen("{$leasesfile}", 'r')) !== FALSE) {
+				while (($line = @fgets($l_handle)) !== FALSE) {
+					if (strpos($line, '{') !== FALSE) {
+						$end = FALSE;
+						$data = explode(' ', $line);
+						$ip = $data[1];
 					}
+					if (strpos($line, 'client-hostname') !== FALSE) {
+						$data = explode(' ', $line);
+						$hostname = trim(str_replace(array('"', ';'), '', $data[3]));
+					}
+					if (strpos($line, '}') !== FALSE) {
+						$end = TRUE;
+					}
+					if ($end) {
+						if (!empty($ip)) {
+							$ip = pfb_filter($ip, PFB_FILTER_IP, 'Collect dynamic DHCP hostnames');
+						}
+
+						if (!empty($hostname)) {
+							$hostname = pfb_filter($hostname, PFB_FILTER_HOSTNAME, 'Collect dynamic DHCP hostnames');
+						}
+
+						if (!empty($ip) && !empty($hostname)) {
+							$local_hosts[$ip] = $hostname;
+						}
+						$ip = $hostname = '';
+					}
+				}
+			}
+		}
+	}
+	else {
+
+		// DHCP KEA
+		$leases = system_get_kea4leases();
+		if (isset($leases) && is_array($leases['lease'])) {
+			foreach ($leases['lease'] as $lease) {
+				if (!empty($lease)) {
+					$ip		= pfb_filter($lease['ip'], PFB_FILTER_IP, 'Collect dynamic DHCP hostnames');
+					$hostname	= pfb_filter($lease['hostname'], PFB_FILTER_HOSTNAME, 'Collect dynamic DHCP hostnames');
 
 					if (!empty($ip) && !empty($hostname)) {
 						$local_hosts[$ip] = $hostname;
 					}
-					$ip = $hostname = '';
 				}
 			}
 		}
