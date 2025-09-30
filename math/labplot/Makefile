@@ -1,6 +1,6 @@
 PORTNAME=	labplot
 DISTVERSION=	2.11.80
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	math kde
 MASTER_SITES=	KDE/stable/${PORTNAME}/
 DIST_SUBDIR=	KDE/invent.kde.org
@@ -31,6 +31,8 @@ USE_QT=		base mqtt serialport svg
 USE_XORG=	x11 xcb
 
 KDE_INVENT=	110f258e44a45354c5219e497409a22185fa2933 education labplot
+
+CXXFLAGS+=	-Wno-error=undef
 
 PLIST_SUB=	SHLIB_VER=${PORTVERSION}
 

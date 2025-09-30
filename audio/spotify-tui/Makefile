@@ -1,7 +1,7 @@
 PORTNAME=	spotify-tui
 DISTVERSIONPREFIX=	v
 DISTVERSION=	0.25.0
-PORTREVISION=	37
+PORTREVISION=	38
 CATEGORIES=	audio
 
 MAINTAINER=	lcook@FreeBSD.org
@@ -10,6 +10,9 @@ WWW=		https://github.com/Rigellute/spotify-tui
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
+
+DEPRECATED=	dead upstream and doesn't build
+EXPIRATION_DATE=2025-09-30
 
 USES=		cargo localbase:ldflags python:build ssl xorg
 USE_GITHUB=	yes

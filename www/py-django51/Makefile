@@ -1,5 +1,6 @@
 PORTNAME=	django
-PORTVERSION=	5.1.11
+PORTVERSION=	5.1.12
+PORTREVISION=	1
 CATEGORIES=	www python
 MASTER_SITES=	PYPI \
 		https://media.djangoproject.com/releases/${PORTVERSION:R}/
@@ -18,6 +19,9 @@ WWW=		https://www.djangoproject.com/
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
+DEPRECATED=	Extended support of Django 5.1 ends December 2025, upgrade to a newer version of Django. See https://www.djangoproject.com/download/
+EXPIRATION_DATE=2025-12-31
+
 BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}setuptools>=61.0.0:devel/py-setuptools@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}wheel>=0:devel/py-wheel@${PY_FLAVOR}
 RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}asgiref>=3.8.1:www/py-asgiref@${PY_FLAVOR} \
@@ -25,7 +29,7 @@ RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}asgiref>=3.8.1:www/py-asgiref@${PY_FLAVOR} \
 TEST_DEPENDS=	${PYTHON_PKGNAMEPREFIX}tblib>0:devel/py-tblib@${PY_FLAVOR}
 
 USES=		cpe python:3.10+ shebangfix
-USE_PYTHON=	autoplist pep517
+USE_PYTHON=	autoplist concurrent pep517
 
 NO_ARCH=	yes
 

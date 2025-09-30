@@ -1,5 +1,5 @@
 PORTNAME=	pytest
-PORTVERSION=	8.1.1
+PORTVERSION=	8.4.2
 PORTEPOCH=	1
 CATEGORIES=	devel python
 MASTER_SITES=	PYPI
@@ -7,7 +7,8 @@ PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
 MAINTAINER=	python@FreeBSD.org
 COMMENT=	Simple powerful testing with Python
-WWW=		https://docs.pytest.org/en/latest/
+WWW=		https://docs.pytest.org/en/latest/ \
+		https://github.com/pytest-dev/pytest
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
@@ -17,13 +18,13 @@ BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}setuptools>=61:devel/py-setuptools@${PY_FL
 		${PYTHON_PKGNAMEPREFIX}wheel>=0:devel/py-wheel@${PY_FLAVOR}
 RUN_DEPENDS=	${PY_EXCEPTIONGROUP} \
 		${PYTHON_PKGNAMEPREFIX}iniconfig>=0:devel/py-iniconfig@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}packaging>=0:devel/py-packaging@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}pluggy>=1.4<2.0:devel/py-pluggy@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}packaging>=20:devel/py-packaging@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}pluggy>=1.5<2.0:devel/py-pluggy@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}pygments>=2.7.2:textproc/py-pygments@${PY_FLAVOR} \
 		${PY_TOMLI}
 TEST_DEPENDS=	bash:shells/bash \
 		lsof:sysutils/lsof \
 		${PYTHON_PKGNAMEPREFIX}argcomplete>=0:devel/py-argcomplete@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}asynctest>=0:devel/py-asynctest@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}attrs>=19.2:devel/py-attrs@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}decorator>=0:devel/py-decorator@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}hypothesis>=3.56:devel/py-hypothesis@${PY_FLAVOR} \
@@ -46,5 +47,7 @@ NO_ARCH=	yes
 # XXX: test_pdb_custom_cls_with_set_trace fails
 do-test:
 	cd ${WRKSRC} && ${PYTHON_CMD} -m pytest -v -rs
+
+# tests as of 8.4.2: 1 failed, 3861 passed, 37 skipped, 12 xfailed, 7 xpassed in 652.09s (0:10:52), see https://github.com/pytest-dev/pytest/issues/13699
 
 .include <bsd.port.mk>

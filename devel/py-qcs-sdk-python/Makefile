@@ -1,7 +1,7 @@
 PORTNAME=	qcs-sdk-python
 DISTVERSIONPREFIX=	python/v
 DISTVERSION=	0.20.1
-PORTREVISION=	7
+PORTREVISION=	8
 CATEGORIES=	devel python
 #MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -509,7 +509,11 @@ WRKSRC_SUBDIR=	crates/python
 BINARY_ALIAS=	python3=${PYTHON_CMD}
 
 post-patch:
-	${MKDIR} ${WRKDIR}/quil-rs-quil-py
-	${MV} ${WRKDIR}/quil-rs-quil-py-v0.12.1 ${WRKDIR}/quil-rs-quil-py/v0.12.1
+	@${MKDIR} ${WRKDIR}/quil-rs-quil-py
+	@${MV} ${WRKDIR}/quil-rs-quil-py-v0.12.1 ${WRKDIR}/quil-rs-quil-py/v0.12.1
+	# prevent breakage due to crates/.cargo inclusion
+	@${REINPLACE_CMD} \
+		-e 's|members = \["crates/\*"\]|members = ["crates/python"]|' \
+		${WRKSRC}/../../Cargo.toml
 
 .include <bsd.port.mk>

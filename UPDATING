@@ -5,6 +5,41 @@ they are unavoidable.
 You should get into the habit of checking this file for changes each time
 you update your ports collection, before attempting any port upgrades.
 
+20250918:
+  AFFECTS: users of sysutils/py-mitogen
+  AUTHOR: dch@FreeBSD.org
+
+  Ansible 12 is soft deprecating the ANSIBLE_STRATEGY functionality that
+  mitogen uses to integrate with Ansible. A future version of ansible-core
+  may remove this. See https://github.com/mitogen-hq/mitogen/issues/1278
+
+20250917:
+  AFFECTS: users of mail/pflogsumm
+  AUTHOR: flo@FreeBSD.org
+
+  Some command line arguments were renamed in 1.1.11 and 1.1.12.
+
+  For details, see https://jimsun.linxnet.com/downloads/ChangeLog-1.1.12
+
+20250908:
+  AFFECTS: users of www/mod_wsgi4
+  AUTHOR: michaelo@FreeBSD.org
+
+  This port has been renamed to www/mod_wsgi to be able to upgrade to
+  version 5.
+
+20250828:
+  AFFECTS: users of databases/mongodb70, databases/mongodb80
+  AUTHOR: ronald@FreeBSD.org
+
+  Ports mongodb70 7.0.23 and mongodb80 since 8.0.0 contain a patch to
+  implement waitable atomics for FreeBSD.
+  This patch is developed by me. It did not go through QA of MongoDB Inc.
+  I don't have full QA in place and could only do limited testing. I
+  can't take any responsibility for the quality of the patch.
+  Make backups and test for yourself in your setup before upgrading
+  any critical production environment.
+
 20250817:
   AFFECTS: users of lang/perl5.*
   AUTHOR: mat@FreeBSD.org
@@ -88,7 +123,7 @@ you update your ports collection, before attempting any port upgrades.
   Auto-conversion handles most cases, please report bugs if issues occur during the
   transition.
 
-  Full release annoucement: https://github.com/BastilleBSD/bastille/releases/tag/1.0.20250714
+  Full release announcement: https://github.com/BastilleBSD/bastille/releases/tag/1.0.20250714
 
 20250708:
   AFFECTS: users of shells/bash

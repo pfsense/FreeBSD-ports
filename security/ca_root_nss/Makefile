@@ -1,5 +1,6 @@
 PORTNAME=	ca_root_nss
 PORTVERSION=	${VERSION_NSS}
+PORTREVISION=	3
 CATEGORIES=	security
 MASTER_SITES=	MOZILLA/security/nss/releases/${DISTNAME:tu:C/[-.]/_/g}_RTM/src
 DISTNAME=	nss-${VERSION_NSS}${NSS_SUFFIX}
@@ -18,6 +19,8 @@ WRKSRC_SUBDIR=	nss
 
 OPTIONS_DEFINE=		ETCSYMLINK
 OPTIONS_DEFAULT=	ETCSYMLINK
+OPTIONS_EXCLUDE_FreeBSD_15=	ETCSYMLINK
+OPTIONS_EXCLUDE_FreeBSD_16=	ETCSYMLINK
 
 OPTIONS_SUB=		yes
 
@@ -31,7 +34,7 @@ VERSION_NSS=	3.115
 CERTDATA_TXT_PATH=	lib/ckfw/builtins/certdata.txt
 BUNDLE_PROCESSOR=	MAca-bundle.pl
 
-SUB_FILES=	MAca-bundle.pl pkg-message
+SUB_FILES=	MAca-bundle.pl pkg-deinstall pkg-install pkg-message
 SUB_LIST=	VERSION_NSS=${VERSION_NSS}
 
 do-build:

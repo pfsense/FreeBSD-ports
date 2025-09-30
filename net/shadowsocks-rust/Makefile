@@ -1,13 +1,13 @@
 PORTNAME=	shadowsocks-rust
 DISTVERSIONPREFIX=	v
-DISTVERSION=	1.23.4
-PORTREVISION=	2
+DISTVERSION=	1.23.5
+PORTREVISION=	1
 CATEGORIES=	net
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Rust port of shadowsocks
 WWW=		https://shadowsocks.org/ \
-		https://github.com/shadowsocks/shadowsocks-org
+		https://github.com/shadowsocks/shadowsocks-rust
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE

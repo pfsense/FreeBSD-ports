@@ -1,5 +1,5 @@
 PORTNAME=	irsim
-DISTVERSION=	9.7.118
+DISTVERSION=	9.7.119
 CATEGORIES=	cad
 MASTER_SITES=	http://opencircuitdesign.com/irsim/archive/
 PKGNAMESUFFIX=	-${FLAVOR}
@@ -22,6 +22,8 @@ USES=		gmake localbase:ldflags tar:tgz xorg
 USE_XORG=	x11
 
 GNU_CONFIGURE=	yes
+
+PORTSCOUT=	limit:^9\.7\.\d{3}
 
 CONFIGURE_WRKSRC=	${WRKSRC}/scripts
 

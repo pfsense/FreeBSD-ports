@@ -1,13 +1,14 @@
 PORTNAME=	mesa
-DISTVERSION=	25.2-branchpoint-1864
-DISTVERSIONSUFFIX=	-g20f546d6c17
+DISTVERSION=	25.2-branchpoint-4080
+PORTREVISION=	1
+DISTVERSIONSUFFIX=	-g4531b8ace44
 CATEGORIES=	graphics
 PKGNAMESUFFIX=	-devel
 
 PATCH_SITES=	https://github.com/mesa3d/${GL_PROJECT}/commit/:github
 PATCHFILES+=	700efacda59c.patch:-p1:github
 PATCH_SITES+=	${GL_SITE}/${GL_ACCOUNT}/${GL_PROJECT}/-/commit/
-PATCHFILES+=	2930dcbb3329.patch:-p1 # https://gitlab.freedesktop.org/mesa/mesa/-/merge_requests/22246
+PATCHFILES+=	de5cf0a44b50.patch:-p1 # https://gitlab.freedesktop.org/mesa/mesa/-/merge_requests/22246
 
 MAINTAINER=	jbeich@FreeBSD.org
 COMMENT=	Bleeding edge Mesa drivers (OpenCL, OpenGL, Vulkan)
@@ -46,8 +47,8 @@ MESON_ARGS=	-Dgallium-mediafoundation=disabled \
 LDFLAGS+=	-Wl,--undefined-version # https://gitlab.freedesktop.org/mesa/mesa/-/issues/8003
 PLIST_SUB=	ARCH=${ARCH:S/amd/x86_/}
 
-OPTIONS_DEFINE=		DRM LLVM LTO OPENCL VAAPI VDPAU VKLAYERS WAYLAND X11 ZSTD
-OPTIONS_DEFAULT=	DRM LLVM LTO OPENCL VAAPI VDPAU VKLAYERS WAYLAND X11 ZSTD
+OPTIONS_DEFINE=		DRM LLVM LTO OPENCL VAAPI VKLAYERS WAYLAND X11 ZSTD
+OPTIONS_DEFAULT=	DRM LLVM LTO OPENCL VAAPI VKLAYERS WAYLAND X11 ZSTD
 OPTIONS_GROUP=		GALLIUM VULKAN
 OPTIONS_GROUP_GALLIUM=	crocus iris panfrost r600 radeonsi
 OPTIONS_GROUP_VULKAN=	anv hasvk radv
@@ -125,11 +126,6 @@ VAAPI_DESC=		Hardware encoding/decoding (only r600, radeonsi)
 VAAPI_BUILD_DEPENDS=	libva>0:multimedia/libva
 VAAPI_MESON_ENABLED=	gallium-va
 
-VDPAU_DESC=		Hardware decoding (only r600, radeonsi) (implies X11)
-VDPAU_BUILD_DEPENDS=	libvdpau>0:multimedia/libvdpau
-VDPAU_MESON_ENABLED=	gallium-vdpau
-VDPAU_IMPLIES=		X11
-
 VKLAYERS_DESC=		Vulkan layers: ${VKLAYERS_MESON_ON:C/.*=//} (implies ${VKLAYERS_IMPLIES})
 VKLAYERS_BUILD_DEPENDS=	glslangValidator:graphics/glslang
 VKLAYERS_LIB_DEPENDS=	libpng.so:graphics/png
@@ -151,8 +147,8 @@ ZSTD_MESON_ENABLED=	zstd
 
 post-patch:
 # Extract (snapshot) version from the port instead of empty string
-	@${REINPLACE_CMD} '/MESA_GIT_SHA1/s/""/" (git-${DISTVERSIONSUFFIX:C/.*-g//})"/' \
-		${WRKSRC}/bin/git_sha1_gen.py
+	@${REINPLACE_CMD} '/MESA_GIT_SHA1/s/@VCS_TAG@/" (git-${DISTVERSIONSUFFIX:C/.*-g//})"/' \
+		${WRKSRC}/src/git_sha1.h.in
 
 post-patch-COINST-on:
 	@${MV} ${WRKSRC}/src/util/00-${PORTNAME}-defaults.conf \

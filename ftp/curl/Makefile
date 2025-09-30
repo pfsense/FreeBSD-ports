@@ -1,5 +1,5 @@
 PORTNAME=	curl
-PORTVERSION=	8.15.0
+PORTVERSION=	8.16.0
 CATEGORIES=	ftp net www
 MASTER_SITES=	https://curl.se/download/ \
 		https://github.com/curl/curl/releases/download/curl-${PORTVERSION:S|.|_|g}/
@@ -28,9 +28,9 @@ CONFIGURE_ARGS=	--disable-unity \
 		--enable-openssl-auto-load-config \
 		--enable-progress-meter \
 		--enable-ssls-export \
+		--with-ca-path=/etc/ssl/certs \
 		--with-zsh-functions-dir=${LOCALBASE}/share/zsh/site-functions \
 		--without-ca-bundle \
-		--without-ca-path \
 		--without-fish-functions-dir
 CONFIGURE_ENV=	LOCALBASE=${LOCALBASE} \
 		ac_cv_func_SSLv2_client_method=no
@@ -92,7 +92,6 @@ CURL_DEBUG_CONFIGURE_ENABLE=	curldebug
 DEBUG_CONFIGURE_ENABLE=	debug
 DICT_CONFIGURE_ENABLE=	dict
 FTP_CONFIGURE_ENABLE=	ftp
-GNUTLS_CONFIGURE_ON=	--with-ca-fallback
 GNUTLS_CONFIGURE_WITH=	gnutls
 GNUTLS_LIB_DEPENDS=	libgnutls.so:security/gnutls \
 			libnettle.so:security/nettle
@@ -134,7 +133,6 @@ LIBUV_CONFIGURE_WITH=	libuv
 LIBUV_LIB_DEPENDS=	libuv.so:devel/libuv
 MQTT_CONFIGURE_ENABLE=	mqtt
 NTLM_CONFIGURE_ENABLE=	ntlm
-OPENSSL_CONFIGURE_ON=	--with-ca-fallback
 OPENSSL_CONFIGURE_WITH=	openssl=${OPENSSLBASE}
 OPENSSL_CPPFLAGS=	-I${OPENSSLINC}
 OPENSSL_LDFLAGS=	-L${OPENSSLLIB}

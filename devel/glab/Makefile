@@ -1,9 +1,9 @@
 PORTNAME=	glab
 DISTVERSIONPREFIX=	v
-DISTVERSION=	1.64.0
+DISTVERSION=	1.72.0
 CATEGORIES=	devel
 
-MAINTAINER=	lcook@FreeBSD.org
+MAINTAINER=	mfechner@FreeBSD.org
 COMMENT=	GitLab CLI tool bringing GitLab to your command line
 WWW=		https://gitlab.com/gitlab-org/cli
 
@@ -13,7 +13,7 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 BUILD_DEPENDS=	git:devel/git
 RUN_DEPENDS=	git:devel/git
 
-USES=		go:1.24,modules
+USES=		go:1.25,modules
 
 _BUILD_VERSION=		${DISTVERSION}
 _BUILD_PLATFORM=	${OPSYS:tl}

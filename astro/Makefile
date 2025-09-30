@@ -85,8 +85,10 @@
     SUBDIR += py-astral
     SUBDIR += py-astroML
     SUBDIR += py-astropy
+    SUBDIR += py-astropy-healpix
     SUBDIR += py-astropy-helpers
     SUBDIR += py-astropy-iers-data
+    SUBDIR += py-astroquery
     SUBDIR += py-ephem
     SUBDIR += py-extension-helpers
     SUBDIR += py-fitsio
@@ -101,6 +103,9 @@
     SUBDIR += py-pymeeus
     SUBDIR += py-pymetar
     SUBDIR += py-pysofa
+    SUBDIR += py-pytest-astropy
+    SUBDIR += py-pytest-astropy-header
+    SUBDIR += py-pyvo
     SUBDIR += py-pywapi
     SUBDIR += py-ro
     SUBDIR += py-sgp4
@@ -129,6 +134,7 @@
     SUBDIR += sunclock
     SUBDIR += sunwait
     SUBDIR += swe
+    SUBDIR += traccar
     SUBDIR += viking
     SUBDIR += wcslib
     SUBDIR += weather

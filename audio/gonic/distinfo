@@ -1,5 +1,5 @@
-TIMESTAMP = 1711442810
-SHA256 (go/audio_gonic/gonic-v0.16.4/v0.16.4.mod) = c0fbac2ec2b3a98b3db8053ecd11d26de347983f019b15b309f02a45e4a1b74d
-SIZE (go/audio_gonic/gonic-v0.16.4/v0.16.4.mod) = 2903
-SHA256 (go/audio_gonic/gonic-v0.16.4/v0.16.4.zip) = 785878ee33a80190f422f1ba35897b0ba34093781003b5c957c5d58a54ef075b
-SIZE (go/audio_gonic/gonic-v0.16.4/v0.16.4.zip) = 2064840
+TIMESTAMP = 1758591774
+SHA256 (go/audio_gonic/gonic-v0.18.0/v0.18.0.mod) = e656b0b3dbd56412cc6759d8cd3218e80259fefb27318350056f5f9a7bb9dd19
+SIZE (go/audio_gonic/gonic-v0.18.0/v0.18.0.mod) = 2720
+SHA256 (go/audio_gonic/gonic-v0.18.0/v0.18.0.zip) = 2a5e4f142c868cb4afff859b1a8e081482056d803a2e5659f5ef3c4b0883cf0b
+SIZE (go/audio_gonic/gonic-v0.18.0/v0.18.0.zip) = 2071202

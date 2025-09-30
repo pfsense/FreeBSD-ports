@@ -631,6 +631,7 @@
     SUBDIR += minerbold
     SUBDIR += minetest_game
     SUBDIR += minetestmapper
+    SUBDIR += minigalaxy
     SUBDIR += mirrormagic
     SUBDIR += miscom
     SUBDIR += mizuma
@@ -643,7 +644,6 @@
     SUBDIR += moonlight-embedded-devel
     SUBDIR += moonlight-qt
     SUBDIR += moria
-    SUBDIR += motogt
     SUBDIR += mrboom
     SUBDIR += mt_dolphin_ia
     SUBDIR += mt_gtk_client
@@ -754,7 +754,6 @@
     SUBDIR += pachi
     SUBDIR += pacmanarena
     SUBDIR += palapeli
-    SUBDIR += palomino
     SUBDIR += pangzero
     SUBDIR += passage
     SUBDIR += patapizza-tetris

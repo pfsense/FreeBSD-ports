@@ -18,6 +18,7 @@
     SUBDIR += denominator
     SUBDIR += dhisd
     SUBDIR += dlint
+    SUBDIR += dns-blackhole
     SUBDIR += dns-ui
     SUBDIR += dns2blackhole
     SUBDIR += dns2tcp

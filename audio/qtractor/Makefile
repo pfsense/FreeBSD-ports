@@ -1,6 +1,6 @@
 PORTNAME=	qtractor
 DISTVERSIONPREFIX=	v
-DISTVERSION=	1.5.7
+DISTVERSION=	1.5.8
 CATEGORIES=	audio
 MASTER_SITES=	https://download.steinberg.net/sdk_downloads/:vst3sdk
 DISTFILES=	${VST3_SDK_ARCHIVE}:vst3sdk
@@ -13,8 +13,6 @@ WWW=		https://qtractor.org \
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/LICENSE
-
-BROKEN_armv7=	non-constant-expression cannot be narrowed from type 'double' to 'float' in initializer list, see https://github.com/rncbc/qtractor/issues/353
 
 LIB_DEPENDS=	libasound.so:audio/alsa-lib \
 		libaubio.so:audio/aubio \

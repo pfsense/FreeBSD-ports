@@ -110,6 +110,7 @@
     SUBDIR += s3backer
     SUBDIR += s3fs
     SUBDIR += sandboxfs
+    SUBDIR += sasquatch
     SUBDIR += scan_ffs
     SUBDIR += securefs
     SUBDIR += simple-mtpfs
@@ -129,6 +130,7 @@
     SUBDIR += xfsprogs
     SUBDIR += xfuse
     SUBDIR += zap
+    SUBDIR += zerofs
     SUBDIR += zfs-periodic
     SUBDIR += zfs-replicate
     SUBDIR += zfs-snap-diff

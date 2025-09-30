@@ -1,6 +1,6 @@
 PORTNAME=	gource
 PORTVERSION=	0.51
-PORTREVISION=	11
+PORTREVISION=	12
 CATEGORIES=	graphics
 MASTER_SITES=	https://github.com/acaudwell/Gource/releases/download/${PORTNAME}-${PORTVERSION}/
 
@@ -12,6 +12,7 @@ LICENSE=	GPLv3+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
 BROKEN=		fails to build with boost-1.85+
+EXPIRATION_DATE=2025-10-13
 
 BUILD_DEPENDS=	${LOCALBASE}/include/glm/glm.hpp:math/glm
 LIB_DEPENDS=	libfreetype.so:print/freetype2 \

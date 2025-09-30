@@ -1,8 +1,11 @@
 PORTNAME=	waypipe
 DISTVERSIONPREFIX=	v
 DISTVERSION=	0.10.4
-PORTREVISION=	2
+PORTREVISION=	4
 CATEGORIES=	net wayland
+
+PATCH_SITES=	${GL_SITE}/${GL_ACCOUNT}/${GL_PROJECT}/-/commit/
+PATCHFILES+=	02891f1514bf.patch:-p1 # https://gitlab.freedesktop.org/mstoeckl/waypipe/-/merge_requests/32
 
 MAINTAINER=	jbeich@FreeBSD.org
 COMMENT=	Network transparency with Wayland
@@ -37,8 +40,9 @@ MANPAGES_MESON_ENABLED=	man-pages
 MANPAGES_PLIST_FILES=	share/man/man1/${PORTNAME}.1.gz
 
 VULKAN_BUILD_DEPENDS=	bindgen:devel/rust-bindgen-cli \
-			vulkan-loader>0:graphics/vulkan-loader \
-			${GL_DEFAULT}>0:graphics/${GL_DEFAULT}
+			vulkan-loader>0:graphics/vulkan-loader
+VULKAN_USES=		gl
+VULKAN_USE=		GL=gbm
 VULKAN_MESON_ENABLED=	with_dmabuf with_gbm
 
 ZSTD_LIB_DEPENDS=	libzstd.so:archivers/zstd

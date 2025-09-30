@@ -1,9 +1,9 @@
 PORTNAME=	av1an
 DISTVERSION=	0.4.4
-PORTREVISION=	5
+PORTREVISION=	6
 CATEGORIES=	multimedia
 
-MAINTAINER=	jbeich@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Command-line encoding framework with per scene quality
 WWW=		https://github.com/master-of-zen/Av1an
 

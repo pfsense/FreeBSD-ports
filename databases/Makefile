@@ -11,7 +11,6 @@
     SUBDIR += R-cran-sqldf
     SUBDIR += WWWdb
     SUBDIR += adminer
-    SUBDIR += adminerevo
     SUBDIR += adodb5
     SUBDIR += akonadi
     SUBDIR += apache-commons-dbutils
@@ -33,7 +32,6 @@
     SUBDIR += cegobridge
     SUBDIR += clickhouse
     SUBDIR += closql
-    SUBDIR += closql-devel
     SUBDIR += cockroach
     SUBDIR += couchdb3
     SUBDIR += courier-authlib-mysql
@@ -59,7 +57,6 @@
     SUBDIR += duckdb
     SUBDIR += ejdb
     SUBDIR += emacsql
-    SUBDIR += emacsql-devel
     SUBDIR += erlfdb
     SUBDIR += evolution-data-server
     SUBDIR += fastdb
@@ -559,6 +556,7 @@
     SUBDIR += pg_store_plans
     SUBDIR += pg_tileserv
     SUBDIR += pgaccess
+    SUBDIR += pgactive
     SUBDIR += pgadmin3
     SUBDIR += pgagroal
     SUBDIR += pgbackrest
@@ -579,6 +577,7 @@
     SUBDIR += pgroonga
     SUBDIR += pgrouting
     SUBDIR += pgsanity
+    SUBDIR += pgschema
     SUBDIR += pgtcl
     SUBDIR += pgtop
     SUBDIR += pguri
@@ -835,6 +834,7 @@
     SUBDIR += py-python-memcached
     SUBDIR += py-python-sql
     SUBDIR += py-python-swiftclient
+    SUBDIR += py-qdrant-client
     SUBDIR += py-queries
     SUBDIR += py-rb
     SUBDIR += py-redis
@@ -861,6 +861,7 @@
     SUBDIR += py-sqlite-migrate
     SUBDIR += py-sqlite-utils
     SUBDIR += py-sqlite3
+    SUBDIR += py-sqlmodel
     SUBDIR += py-sqlobject
     SUBDIR += py-sqloxide
     SUBDIR += py-sqlparse
@@ -898,7 +899,6 @@
     SUBDIR += redis74
     SUBDIR += redis80
     SUBDIR += redis_exporter
-    SUBDIR += redisdesktopmanager
     SUBDIR += redisjson
     SUBDIR += retcl
     SUBDIR += rocksdb
@@ -1113,6 +1113,7 @@
     SUBDIR += tcl-sqlite3
     SUBDIR += tdb
     SUBDIR += tdb1410
+    SUBDIR += tdb1413
     SUBDIR += tdbc
     SUBDIR += tile38
     SUBDIR += tiledb
@@ -1130,6 +1131,7 @@
     SUBDIR += valkey
     SUBDIR += vfront
     SUBDIR += virtualpg
+    SUBDIR += weaviate
     SUBDIR += webdis
     SUBDIR += wfb2sql
     SUBDIR += xapian-bindings

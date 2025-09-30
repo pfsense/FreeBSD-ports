@@ -22,6 +22,7 @@ lib/baresip/modules/fakevideo.so
 %%G711%%lib/baresip/modules/g711.so
 %%G722%%lib/baresip/modules/g722.so
 %%G726%%lib/baresip/modules/g726.so
+%%GTK3%%lib/baresip/modules/gtk.so
 lib/baresip/modules/httpd.so
 lib/baresip/modules/httpreq.so
 lib/baresip/modules/ice.so
@@ -61,8 +62,8 @@ lib/baresip/modules/vidinfo.so
 lib/baresip/modules/vumeter.so
 %%X11%%lib/baresip/modules/x11.so
 lib/libbaresip.so
-lib/libbaresip.so.21
-lib/libbaresip.so.21.0.0
+lib/libbaresip.so.22
+lib/libbaresip.so.22.1.0
 libdata/pkgconfig/libbaresip.pc
 share/applications/com.github.baresip.desktop
 %%DATADIR%%/autoanswer.wav
@@ -90,9 +91,6 @@ share/applications/com.github.baresip.desktop
 %%DATADIR%%/soundd.wav
 %%DATADIR%%/soundroute.wav
 %%DATADIR%%/soundstar.wav
-%%PORTDOCS%%%%DOCSDIR%%/CONTRIBUTING.md
-%%PORTDOCS%%%%DOCSDIR%%/ChangeLog
-%%PORTDOCS%%%%DOCSDIR%%/THANKS
 %%PORTEXAMPLES%%%%EXAMPLESDIR%%/accounts
 %%PORTEXAMPLES%%%%EXAMPLESDIR%%/config
 %%PORTEXAMPLES%%%%EXAMPLESDIR%%/contacts
