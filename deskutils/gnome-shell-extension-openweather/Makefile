@@ -1,6 +1,7 @@
 PORTNAME=	gnome-shell-extension-openweather
 DISTVERSION=	139
 DISTVERSIONPREFIX=	v
+PORTREVISION=	1
 CATEGORIES=	deskutils gnome
 MASTER_SITES=	https://github.com/penguin-teal/gnome-openweather/releases/download/${DISTVERSIONFULL}/
 DISTNAME=	${PORTNAME}refined-${DISTVERSIONFULL}
@@ -10,6 +11,9 @@ COMMENT=	OpenWeather extension for the GNOME Shell
 WWW=		https://github.com/penguin-teal/gnome-openweather
 
 LICENSE=	GPLv3
+
+DEPRECATED=	Superseded by deskutils/gnome-shell-extension-simple-weather
+EXPIRATION_DATE=	2025-10-13
 
 RUN_DEPENDS=	gnome-shell>=47.0:x11/gnome-shell \
 		gsettings-desktop-schemas>0:devel/gsettings-desktop-schemas

@@ -2,7 +2,6 @@ bin/victoria-logs
 bin/vlogscli
 %%PORTDOCS%%%%DOCSDIR%%/CHANGELOG.md
 %%PORTDOCS%%%%DOCSDIR%%/FAQ.md
-%%PORTDOCS%%%%DOCSDIR%%/LogsQL.md
 %%PORTDOCS%%%%DOCSDIR%%/QuickStart.md
 %%PORTDOCS%%%%DOCSDIR%%/README.md
 %%PORTDOCS%%%%DOCSDIR%%/Roadmap.md
@@ -34,5 +33,11 @@ bin/vlogscli
 %%PORTDOCS%%%%DOCSDIR%%/cluster.md
 %%PORTDOCS%%%%DOCSDIR%%/logql-to-logsql.md
 %%PORTDOCS%%%%DOCSDIR%%/sql-to-logsql.md
-
+%%PORTDOCS%%%%DOCSDIR%%/Articles.md
+%%PORTDOCS%%%%DOCSDIR%%/Release-Guide.md
+%%PORTDOCS%%%%DOCSDIR%%/security-and-lb.md
+%%PORTDOCS%%%%DOCSDIR%%/vlagent.md
+%%PORTDOCS%%%%DOCSDIR%%/metrics.md
+%%PORTDOCS%%%%DOCSDIR%%/vlagent-metrics.md
+%%PORTDOCS%%%%DOCSDIR%%/logsql.md
 @dir(%%VICTORIA_USER%%,%%VICTORIA_GROUP%%,750) %%VICTORIA_DATA%%

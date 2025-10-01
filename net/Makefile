@@ -58,7 +58,6 @@
     SUBDIR += beacon
     SUBDIR += beanstalkd
     SUBDIR += belle-sip
-    SUBDIR += benthos
     SUBDIR += bindtest
     SUBDIR += binkd
     SUBDIR += bird2
@@ -211,6 +210,7 @@
     SUBDIR += gnu-radius
     SUBDIR += go-bapu
     SUBDIR += go-cs
+    SUBDIR += go-pkgsite
     SUBDIR += go-tcping
     SUBDIR += gobgp
     SUBDIR += gofish
@@ -516,6 +516,7 @@
     SUBDIR += nats-nsc
     SUBDIR += nats-server
     SUBDIR += nats-streaming-server
+    SUBDIR += nats-surveyor
     SUBDIR += nats-top
     SUBDIR += natscli
     SUBDIR += nbd-server
@@ -534,6 +535,7 @@
     SUBDIR += netembryo
     SUBDIR += nethogs
     SUBDIR += netmap
+    SUBDIR += netpeek
     SUBDIR += netpipes
     SUBDIR += netscript
     SUBDIR += netsed
@@ -596,6 +598,7 @@
     SUBDIR += openvswitch
     SUBDIR += ortp
     SUBDIR += osrtspproxy
+    SUBDIR += ovhcloud-cli
     SUBDIR += owamp
     SUBDIR += p5-Acme-HTTP
     SUBDIR += p5-AddressBook
@@ -1196,6 +1199,7 @@
     SUBDIR += py-urlextract
     SUBDIR += py-urllib3
     SUBDIR += py-urllib3-future
+    SUBDIR += py-urllib31
     SUBDIR += py-whois
     SUBDIR += py-wmi-query
     SUBDIR += py-wsdd

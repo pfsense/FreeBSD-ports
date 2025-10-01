@@ -1,6 +1,6 @@
 PORTNAME=	telegraf
 DISTVERSIONPREFIX=v
-DISTVERSION=	1.35.4
+DISTVERSION=	1.36.2
 CATEGORIES=	net-mgmt
 
 MAINTAINER=	girgen@FreeBSD.org
@@ -11,12 +11,12 @@ LICENSE=	MIT
 
 ONLY_FOR_ARCHS=	aarch64 amd64 armv6 armv7
 
-USES=		go:1.24,modules
+USES=		go:1.25,modules
 
 USE_RC_SUBR=	telegraf
 
 GO_MODULE=	github.com/influxdata/telegraf
-GO_BUILDFLAGS=	-ldflags "-X main.goos=freebsd -X main.goarch=${ARCH} -X main.version=${DISTVERSION}"
+GO_BUILDFLAGS=	-ldflags "-X github.com/influxdata/telegraf/internal.Version=${DISTVERSION}"
 GO_TARGET=	./cmd/telegraf
 
 SUB_FILES=	telegraf

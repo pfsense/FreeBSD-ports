@@ -1,0 +1,5 @@
+TIMESTAMP = 1758618838
+SHA256 (go/databases_pgschema/pgschema-v1.1.0/v1.1.0.mod) = 02d936b8e6e16e2e81ac29e3e6c0b370fd62e023a09eb00de0dbf65d30a5e166
+SIZE (go/databases_pgschema/pgschema-v1.1.0/v1.1.0.mod) = 3456
+SHA256 (go/databases_pgschema/pgschema-v1.1.0/v1.1.0.zip) = dc11b267f261a43ec3912ec8c9a5565d646f6f922a4befd73e57449b728dbd10
+SIZE (go/databases_pgschema/pgschema-v1.1.0/v1.1.0.zip) = 1100072

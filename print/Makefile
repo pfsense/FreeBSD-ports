@@ -158,8 +158,10 @@
     SUBDIR += pkfonts400
     SUBDIR += pkfonts600
     SUBDIR += plasma6-print-manager
+    SUBDIR += plutobook
     SUBDIR += pnm2ppa
     SUBDIR += posterazor
+    SUBDIR += ppa6
     SUBDIR += ps2eps
     SUBDIR += pscal
     SUBDIR += psdim
@@ -203,7 +205,6 @@
     SUBDIR += rlpr
     SUBDIR += rtf2latex2e
     SUBDIR += rubygem-afm
-    SUBDIR += rubygem-afm0
     SUBDIR += rubygem-color
     SUBDIR += rubygem-color-tools
     SUBDIR += rubygem-color_diff
@@ -223,6 +224,7 @@
     SUBDIR += rubygem-prawn-rails
     SUBDIR += rubygem-prawn-security
     SUBDIR += rubygem-prawn-svg
+    SUBDIR += rubygem-prawn-svg036
     SUBDIR += rubygem-prawn-table
     SUBDIR += rubygem-prawn-templates
     SUBDIR += rubygem-prawn24

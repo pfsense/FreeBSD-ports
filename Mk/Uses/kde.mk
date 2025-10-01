@@ -91,7 +91,7 @@ KDE_PLASMA5_VERSION?=		5.27.12
 KDE_PLASMA5_BRANCH?=		stable
 
 # Current KDE Plasma desktop.
-KDE_PLASMA6_VERSION?=		6.4.4
+KDE_PLASMA6_VERSION?=		6.4.5
 KDE_PLASMA6_BRANCH?=		stable
 
 # Legacy KDE frameworks (Qt5 based).
@@ -99,13 +99,13 @@ KDE_FRAMEWORKS5_VERSION?=	5.116.0
 KDE_FRAMEWORKS5_BRANCH?=	stable
 
 # Current KDE Frameworks (Qt6 based).
-KDE_FRAMEWORKS6_VERSION?=	6.17.0
+KDE_FRAMEWORKS6_VERSION?=	6.18.0
 KDE_FRAMEWORKS6_BRANCH?=	stable
 
 # Current KDE applications. Update _${PORTNAME}_PROJECT_VERSION for the following ports:
 # devel/kdevelop, games/libkdegames, games/libkmahjongg, graphics/kgraphviewer
-KDE_APPLICATIONS6_VERSION?=	25.08.0
-KDE_APPLICATIONS6_SHLIB_VER?=	6.5.0
+KDE_APPLICATIONS6_VERSION?=	25.08.1
+KDE_APPLICATIONS6_SHLIB_VER?=	6.5.1
 # G as in KDE Gear, and as in "don't make the variable name longer than required".
 KDE_APPLICATIONS6_SHLIB_G_VER?=	${KDE_APPLICATIONS6_VERSION}
 KDE_APPLICATIONS6_BRANCH?=	stable

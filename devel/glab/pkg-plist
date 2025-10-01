@@ -9,6 +9,8 @@
 %%MANPAGES%%share/man/man1/glab-auth-login.1.gz
 %%MANPAGES%%share/man/man1/glab-auth-logout.1.gz
 %%MANPAGES%%share/man/man1/glab-auth-status.1.gz
+%%MANPAGES%%share/man/man1/glab-cluster-agent-token-list.1.gz
+%%MANPAGES%%share/man/man1/glab-cluster-agent-token.1.gz
 %%MANPAGES%%share/man/man1/glab-auth.1.gz
 %%MANPAGES%%share/man/man1/glab-changelog-generate.1.gz
 %%MANPAGES%%share/man/man1/glab-changelog.1.gz
@@ -34,6 +36,7 @@
 %%MANPAGES%%share/man/man1/glab-cluster-agent-check_manifest_usage.1.gz
 %%MANPAGES%%share/man/man1/glab-cluster-agent-get-token.1.gz
 %%MANPAGES%%share/man/man1/glab-cluster-agent-list.1.gz
+%%MANPAGES%%share/man/man1/glab-cluster-agent-token-revoke.1.gz
 %%MANPAGES%%share/man/man1/glab-cluster-agent-update-kubeconfig.1.gz
 %%MANPAGES%%share/man/man1/glab-cluster-agent.1.gz
 %%MANPAGES%%share/man/man1/glab-cluster.1.gz
@@ -50,6 +53,8 @@
 %%MANPAGES%%share/man/man1/glab-deploy-key.1.gz
 %%MANPAGES%%share/man/man1/glab-duo-ask.1.gz
 %%MANPAGES%%share/man/man1/glab-duo.1.gz
+%%MANPAGES%%share/man/man1/glab-duo-claude-token.1.gz
+%%MANPAGES%%share/man/man1/glab-duo-claude.1.gz
 %%MANPAGES%%share/man/man1/glab-incident-close.1.gz
 %%MANPAGES%%share/man/man1/glab-incident-list.1.gz
 %%MANPAGES%%share/man/man1/glab-incident-note.1.gz
@@ -81,6 +86,8 @@
 %%MANPAGES%%share/man/man1/glab-label-list.1.gz
 %%MANPAGES%%share/man/man1/glab-label.1.gz
 %%MANPAGES%%share/man/man1/glab-mr-approve.1.gz
+%%MANPAGES%%share/man/man1/glab-mcp-serve.1.gz
+%%MANPAGES%%share/man/man1/glab-mcp.1.gz
 %%MANPAGES%%share/man/man1/glab-mr-approvers.1.gz
 %%MANPAGES%%share/man/man1/glab-mr-checkout.1.gz
 %%MANPAGES%%share/man/man1/glab-mr-close.1.gz
@@ -100,6 +107,14 @@
 %%MANPAGES%%share/man/man1/glab-mr-update.1.gz
 %%MANPAGES%%share/man/man1/glab-mr-view.1.gz
 %%MANPAGES%%share/man/man1/glab-mr.1.gz
+%%MANPAGES%%share/man/man1/glab-opentofu-init.1.gz
+%%MANPAGES%%share/man/man1/glab-opentofu-state-delete.1.gz
+%%MANPAGES%%share/man/man1/glab-opentofu-state-download.1.gz
+%%MANPAGES%%share/man/man1/glab-opentofu-state-list.1.gz
+%%MANPAGES%%share/man/man1/glab-opentofu-state-lock.1.gz
+%%MANPAGES%%share/man/man1/glab-opentofu-state-unlock.1.gz
+%%MANPAGES%%share/man/man1/glab-opentofu-state.1.gz
+%%MANPAGES%%share/man/man1/glab-opentofu.1.gz
 %%MANPAGES%%share/man/man1/glab-release-create.1.gz
 %%MANPAGES%%share/man/man1/glab-release-delete.1.gz
 %%MANPAGES%%share/man/man1/glab-release-download.1.gz

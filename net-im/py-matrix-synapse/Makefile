@@ -1,9 +1,9 @@
 PORTNAME=	matrix-synapse
-DISTVERSION=	1.135.0
+DISTVERSION=	1.138.0
 CATEGORIES=	net-im python
 MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
-DISTFILES=	${PORTNAME:S/-/_/}-${DISTVERSION}.tar.gz
+DISTFILES+=	${PORTNAME:S/-/_/}-${DISTVERSION}${EXTRACT_SUFX}
 
 MAINTAINER=	ports@skyforge.at
 COMMENT=	Matrix protocol reference homeserver
@@ -48,7 +48,7 @@ RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}jsonschema>=3.0.0:devel/py-jsonschema@${PY_F
 		${LOCALBASE}/share/certs/ca-root-nss.crt:security/ca_root_nss
 TEST_DEPENDS=	${PYTHON_PKGNAMEPREFIX}virtualenv>=15.0:devel/py-virtualenv@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}tox>=2.3.1:devel/py-tox@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}lxml5>4.5.2:devel/py-lxml5@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}lxml>4.5.2:devel/py-lxml@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}parameterized>=0.7.4:devel/py-parameterized@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}authlib>=0.15.1:security/py-authlib@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}idna>=2.5:dns/py-idna@${PY_FLAVOR}
@@ -56,16 +56,19 @@ TEST_DEPENDS=	${PYTHON_PKGNAMEPREFIX}virtualenv>=15.0:devel/py-virtualenv@${PY_F
 USES=		cargo python shebangfix
 USE_PYTHON=	autoplist cryptography pep517
 USE_RC_SUBR=	synapse
-WRKSRC=		${WRKDIR}/${PORTNAME:S/-/_/}-${DISTVERSION}
-CARGO_CONFIGURE=	yes
-CARGO_BUILD=	no
-CARGO_TEST=	no
-CARGO_INSTALL=	no
-CARGO_CARGOTOML=	${WRKSRC}/rust/Cargo.toml
 
 SHEBANG_FILES=	synapse/_scripts/*.py
+
+CARGO_CONFIGURE=	yes
+CARGO_CARGOTOML=	${WRKSRC}/rust/Cargo.toml
+CARGO_BUILD=		no
+CARGO_INSTALL=		no
+CARGO_TEST=		no
+
 SUB_FILES=	pkg-message log.config
 SUB_LIST=	PYTHON_CMD=${PYTHON_CMD} DBDIR=${DBDIR} LOGDIR=${LOGDIR} PIDDIR=${PIDDIR} USERS=${USERS}
+
+WRKSRC=		${WRKDIR}/${PORTNAME:S/-/_/}-${DISTVERSION}
 
 USERS=		synapse
 GROUPS=		synapse
@@ -76,7 +79,7 @@ PIDDIR?=	/var/run/${PORTNAME}
 
 PLIST_FILES=	"@sample ${ETCDIR}/log.config.sample"
 
-DOCS=		README.rst UPGRADE.rst CHANGES.md docs/postgres.md
+DOCS=		CHANGES.md README.rst UPGRADE.rst docs/postgres.md
 PORTDOCS=	${DOCS:T}
 
 OPTIONS_DEFINE=		DOCS JWT LDAP OIDC PGSQL REDIS SQLITE URLPREVIEW
@@ -94,7 +97,7 @@ PGSQL_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}psycopg2>2.8:databases/py-psycopg2@${P
 REDIS_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}hiredis>=0:databases/py-hiredis@${PY_FLAVOR} \
 			${PYTHON_PKGNAMEPREFIX}txredisapi>=1.4.7:databases/py-txredisapi@${PY_FLAVOR}
 SQLITE_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}sqlite3>0:databases/py-sqlite3@${PY_FLAVOR}
-URLPREVIEW_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}lxml5>=4.2.0:devel/py-lxml5@${PY_FLAVOR}
+URLPREVIEW_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}lxml>=4.2.0:devel/py-lxml@${PY_FLAVOR}
 
 post-install:
 	${MKDIR} ${STAGEDIR}${ETCDIR}

@@ -34,6 +34,7 @@
     SUBDIR += budgie
     SUBDIR += budgie-desktop
     SUBDIR += budgie-screensaver
+    SUBDIR += budgie-session
     SUBDIR += cde
     SUBDIR += cde-devel
     SUBDIR += chayang
@@ -134,8 +135,10 @@
     SUBDIR += hypridle
     SUBDIR += hyprland-qtutils
     SUBDIR += hyprlock
+    SUBDIR += hyprls
     SUBDIR += hyprpaper
     SUBDIR += hyprpicker
+    SUBDIR += hyprviz
     SUBDIR += i3bar-river
     SUBDIR += i3blocks
     SUBDIR += i3lock-color
@@ -349,6 +352,7 @@
     SUBDIR += py-i3-quickterm
     SUBDIR += py-i3ipc
     SUBDIR += py-mouseinfo
+    SUBDIR += py-nwg-displays
     SUBDIR += py-pyautogui
     SUBDIR += py-pynput
     SUBDIR += py-pyscreenshot
@@ -454,11 +458,13 @@
     SUBDIR += virglrenderer
     SUBDIR += virtboard
     SUBDIR += virtualgl
+    SUBDIR += walker
     SUBDIR += wallutils
     SUBDIR += wapanel
     SUBDIR += watershot
     SUBDIR += way-displays
     SUBDIR += waybar
+    SUBDIR += waycheck
     SUBDIR += waycorner
     SUBDIR += wayidle
     SUBDIR += wayland-logout

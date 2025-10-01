@@ -32,7 +32,7 @@ MY_DEPENDS=	gitaly>=${GITLAB_VERSION}:devel/gitaly \
 	gitlab-elasticsearch-indexer>=5.7.0:textproc/gitlab-elasticsearch-indexer \
 	gitlab-agent>=${GITLAB_VERSION}:net/gitlab-agent \
 	gitlab-pages>=${GITLAB_VERSION}:www/gitlab-pages \
-	gitlab-shell>=14.44.0:devel/gitlab-shell \
+	gitlab-shell>=14.45.2:devel/gitlab-shell \
 	gitlab-workhorse>=${GITLAB_VERSION}:www/gitlab-workhorse \
 	gitlab-zoekt-indexer>=1.2.0:textproc/gitlab-zoekt-indexer \
 	redis>=6.2.11:databases/redis \
@@ -68,7 +68,7 @@ MY_DEPENDS=	gitaly>=${GITLAB_VERSION}:devel/gitaly \
 	rubygem-doorkeeper-openid_connect>=1.8.11<2:security/rubygem-doorkeeper-openid_connect \
 	rubygem-doorkeeper-device_authorization_grant>=1.0.0<1.1:security/rubygem-doorkeeper-device_authorization_grant \
 	rubygem-rexml>=3.4.1<3.5:textproc/rubygem-rexml \
-	rubygem-ruby-saml-gitlab>=1.18<2:security/rubygem-ruby-saml-gitlab \
+	rubygem-ruby-saml-gitlab>=1.18.1<2:security/rubygem-ruby-saml-gitlab \
 	rubygem-omniauth-saml-gitlab>=2.2.4<3:security/rubygem-omniauth-saml-gitlab \
 	rubygem-omniauth>=2.1.3<3:security/rubygem-omniauth \
 	rubygem-omniauth-auth0-gitlab>=3.1.1<3.2.0:net/rubygem-omniauth-auth0-gitlab \
@@ -82,7 +82,7 @@ MY_DEPENDS=	gitaly>=${GITLAB_VERSION}:devel/gitaly \
 	rubygem-openid_connect>=2.3.1<2.4:net/rubygem-openid_connect \
 	rubygem-omniauth-atlassian-oauth2>=0.2.0<0.3:security/rubygem-omniauth-atlassian-oauth2 \
 	rubygem-rack-oauth2-gitlab>=2.2.1<2.3:security/rubygem-rack-oauth2-gitlab \
-	rubygem-jwt>=2.10.2<2.11:www/rubygem-jwt \
+	rubygem-jwt2>=2.10.2<2.11:www/rubygem-jwt2 \
 	rubygem-gssapi>=1.3.1<1.4:security/rubygem-gssapi \
 	rubygem-recaptcha>=5.12<6.0:devel/rubygem-recaptcha \
 	rubygem-akismet>=3.0<4.0:devel/rubygem-akismet \
@@ -168,7 +168,7 @@ MY_DEPENDS=	gitaly>=${GITLAB_VERSION}:devel/gitaly \
 	rubygem-diffy>=3.4.4<4:textproc/rubygem-diffy \
 	rubygem-rack22>=2.2.17,3<2.3,3:www/rubygem-rack22 \
 	rubygem-rack-timeout>=0.7.0<0.8:www/rubygem-rack-timeout \
-	rubygem-puma>=6.6.1<6.6.2:www/rubygem-puma \
+	rubygem-puma6>=6.6.1<6.6.2:www/rubygem-puma6 \
 	rubygem-sd_notify>=0.1.1<0.2:devel/rubygem-sd_notify \
 	rubygem-state_machines-activerecord-gitlab>=0.8.0<0.9.0:databases/rubygem-state_machines-activerecord-gitlab \
 	rubygem-sidekiq-gitlab>=7.3.9:devel/rubygem-sidekiq-gitlab \

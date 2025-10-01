@@ -24,7 +24,6 @@
     SUBDIR += csxcad
     SUBDIR += cura
     SUBDIR += cura-engine
-    SUBDIR += cvc
     SUBDIR += digital
     SUBDIR += dinotrace
     SUBDIR += ecpprog
@@ -155,6 +154,7 @@
     SUBDIR += veroroute
     SUBDIR += veryl
     SUBDIR += xcircuit
+    SUBDIR += xschem
     SUBDIR += xyce
     SUBDIR += yosys
     SUBDIR += yosys-ghdl-plugin

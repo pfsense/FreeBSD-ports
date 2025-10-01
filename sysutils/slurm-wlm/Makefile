@@ -1,6 +1,6 @@
 PORTNAME=	slurm
 DISTVERSION=	23.11.7
-PORTREVISION=	7
+PORTREVISION=	12
 CATEGORIES=	sysutils
 MASTER_SITES=	https://download.schedmd.com/slurm/
 PKGNAMESUFFIX=	-wlm
@@ -115,12 +115,20 @@ PROC2FIX=	common/callerid.c common/fd.c common/fetch_config.c	\
 		plugins/switch/cray_aries/scaling.c	\
 		plugins/task/affinity/affinity.c slurmd/common/set_oomadj.c	\
 		slurmd/common/xcpuinfo.c slurmd/slurmstepd/pdebug.c	\
+		slurmctld/controller.c	\
+		slurmd/slurmd/slurmd.c	\
 		slurmd/slurmstepd/req.c
 
 LLD2FIX=	api plugins/openapi sacctmgr sackd scontrol scrontab scrun	\
 		slurmctld slurmd/slurmd squeue
 
 .include <bsd.port.options.mk>
+
+post-extract:
+	@${MKDIR} ${WRKSRC}/src/plugins/task/pgid
+# Use an existing plugin's Makefile.in as a template
+	@${CP}	${WRKSRC}/src/plugins/task/cray_aries/Makefile.in \
+		${WRKSRC}/src/plugins/task/pgid/Makefile.in
 
 # Hack around nonfunctional --disable-gtktest flag
 pre-configure-GUI-off:

@@ -1,6 +1,6 @@
 PORTNAME=	sttr
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.2.26
+DISTVERSION=	0.2.27
 PORTREVISION=	1
 CATEGORIES=	textproc
 
@@ -11,7 +11,7 @@ WWW=		https://github.com/abhimanyu003/sttr
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-USES=		go:modules,1.23
+USES=		go:modules,1.24
 GO_MODULE=	github.com/abhimanyu003/sttr
 GO_MOD_DIST=	github
 

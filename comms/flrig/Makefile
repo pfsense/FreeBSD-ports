@@ -1,8 +1,8 @@
 PORTNAME=	flrig
 DISTVERSION=	2.0.08
+PORTREVISION=	1
 CATEGORIES=	comms hamradio
-MASTER_SITES=	SF/fldigi/${PORTNAME} \
-		https://www.w1hkj.org/files/fldigi/
+MASTER_SITES=	SF/fldigi/${PORTNAME}
 
 MAINTAINER=	hamradio@FreeBSD.org
 COMMENT=	Ham Radio rig control program, cooperates with fldigi
@@ -25,10 +25,5 @@ CONFIGURE_ENV=	FLTK_CONFIG="${LOCALBASE}/bin/fltk-config"
 PLIST_FILES=	bin/flrig \
 		share/applications/flrig.desktop \
 		share/pixmaps/flrig.xpm
-
-OPTIONS_DEFINE=	NATIVE
-
-NATIVE_CONFIGURE_ON=	--enable-optimizations=native
-NATIVE_CONFIGURE_OFF=	--enable-optimizations=none
 
 .include <bsd.port.mk>

@@ -301,6 +301,7 @@
     SUBDIR += diskcheckd
     SUBDIR += diskimage-tools
     SUBDIR += diskonaut
+    SUBDIR += diskroaster
     SUBDIR += diskscrub
     SUBDIR += diskus
     SUBDIR += dmg2img
@@ -352,6 +353,7 @@
     SUBDIR += egress-monitor
     SUBDIR += eject
     SUBDIR += eksctl
+    SUBDIR += elephant
     SUBDIR += elfx86exts
     SUBDIR += endian
     SUBDIR += enteruser
@@ -520,6 +522,7 @@
     SUBDIR += i2c-tools
     SUBDIR += i7z
     SUBDIR += iat
+    SUBDIR += ictree
     SUBDIR += imgurbash2
     SUBDIR += immortal
     SUBDIR += incron
@@ -609,6 +612,7 @@
     SUBDIR += kustomize
     SUBDIR += kvmclock-kmod
     SUBDIR += lava
+    SUBDIR += lazyssh
     SUBDIR += lbl-cf
     SUBDIR += lbl-hf
     SUBDIR += lcdproc
@@ -731,6 +735,7 @@
     SUBDIR += monit
     SUBDIR += monitord
     SUBDIR += monitorix
+    SUBDIR += moor
     SUBDIR += moreutils
     SUBDIR += most
     SUBDIR += mountsmb2
@@ -763,6 +768,8 @@
     SUBDIR += netevent
     SUBDIR += nfcutils
     SUBDIR += ngbuddy
+    SUBDIR += nginx-ui
+    SUBDIR += nitro
     SUBDIR += nitrogen
     SUBDIR += nix
     SUBDIR += nmdaemon
@@ -996,6 +1003,7 @@
     SUBDIR += process-viewer
     SUBDIR += procmap
     SUBDIR += procs
+    SUBDIR += progress
     SUBDIR += pslist
     SUBDIR += psmisc
     SUBDIR += pstack
@@ -1013,6 +1021,7 @@
     SUBDIR += pxattr
     SUBDIR += py-ansible-compat
     SUBDIR += py-ansible-core
+    SUBDIR += py-ansible-core219
     SUBDIR += py-ansible-lint
     SUBDIR += py-ansible-runner
     SUBDIR += py-appjail-gui
@@ -1055,6 +1064,7 @@
     SUBDIR += py-ioztat
     SUBDIR += py-jailconf
     SUBDIR += py-keep
+    SUBDIR += py-kubernetes
     SUBDIR += py-leviathan
     SUBDIR += py-liquidctl
     SUBDIR += py-mitogen
@@ -1203,6 +1213,7 @@
     SUBDIR += rubygem-license_scout
     SUBDIR += rubygem-log4r
     SUBDIR += rubygem-logify
+    SUBDIR += rubygem-mdless
     SUBDIR += rubygem-mogilefs-client
     SUBDIR += rubygem-mothra
     SUBDIR += rubygem-murder
@@ -1330,6 +1341,7 @@
     SUBDIR += ssd_report
     SUBDIR += sshsudo
     SUBDIR += ssync
+    SUBDIR += stackit
     SUBDIR += stalepid
     SUBDIR += stepsync
     SUBDIR += storcli
@@ -1425,6 +1437,7 @@
     SUBDIR += u-boot-a13-olinuxino
     SUBDIR += u-boot-a64-olinuxino
     SUBDIR += u-boot-bananapi
+    SUBDIR += u-boot-bananapi-r2-pro
     SUBDIR += u-boot-bananapim2
     SUBDIR += u-boot-beaglebone
     SUBDIR += u-boot-bhyve-arm64
@@ -1490,6 +1503,7 @@
     SUBDIR += u-boot-tools
     SUBDIR += u-boot-wandboard
     SUBDIR += ua
+    SUBDIR += ucored
     SUBDIR += ucspi-ipc
     SUBDIR += ucspi-proxy
     SUBDIR += ucspi-ssl
@@ -1521,6 +1535,7 @@
     SUBDIR += userneu-devel
     SUBDIR += usrinfo
     SUBDIR += utcount
+    SUBDIR += util-linux
     SUBDIR += vagrant
     SUBDIR += vagrant-gitlab
     SUBDIR += vbetool
@@ -1619,8 +1634,10 @@
     SUBDIR += zetaback
     SUBDIR += zetaback-devel
     SUBDIR += zidrav
+    SUBDIR += zli
     SUBDIR += znapzend
     SUBDIR += zogftw
+    SUBDIR += zot
     SUBDIR += zoxide
     SUBDIR += zpool-iostat-viz
     SUBDIR += zrep

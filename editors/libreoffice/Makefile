@@ -1,4 +1,4 @@
-PORTREVISION=	0
+PORTREVISION=	1
 
 .include "${.CURDIR}/Makefile.common"
 
@@ -28,7 +28,7 @@ BUILD_DEPENDS=	p5-Archive-Zip>=0:archivers/p5-Archive-Zip \
 		${LOCALBASE}/include/glm/glm.hpp:math/glm \
 		bash:shells/bash \
 		gsed:textproc/gsed \
-		${PYTHON_PKGNAMEPREFIX}lxml5>0:devel/py-lxml5@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}lxml>0:devel/py-lxml@${PY_FLAVOR} \
 		coreutils>=8.23:sysutils/coreutils \
 		flex>=0.26:textproc/flex
 LIB_DEPENDS=	libapr-1.so:devel/apr1 \
@@ -111,7 +111,7 @@ DISTFILES+=	dtoa-20180411.tgz:src
 DISTFILES+=	dragonbox-1.1.3.tar.gz:src
 DISTFILES+=	frozen-1.2.0.tar.gz:src
 DISTFILES+=	skia-m136-28685d899b0a35894743e2cedad4c9f525e90e1e.tar.xz:src
-DISTFILES+=	zxcvbn-c-2.5.tar.gz:src
+DISTFILES+=	zxcvbn-c-2.6.tar.gz:src
 
 NOT_FOR_ARCHS=		armv6 armv7
 NOT_FOR_ARCHS_REASON=	Unsupported host_cpu

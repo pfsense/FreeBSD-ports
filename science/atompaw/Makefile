@@ -1,6 +1,6 @@
 PORTNAME=	atompaw
 DISTVERSION=	4.2.0.3
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	science
 MASTER_SITES=	http://users.wfu.edu/natalie/papers/pwpaw/
 
@@ -16,6 +16,7 @@ LIB_DEPENDS=	liblapack.so:math/lapack \
 
 USES=		fortran gmake libtool
 GNU_CONFIGURE=	yes
+CONFIGURE_ARGS=	--with-linalg-prefix=${LOCALBASE}
 
 OPTIONS_DEFINE=		DOCS LIBXC
 OPTIONS_DEFAULT=	LIBXC

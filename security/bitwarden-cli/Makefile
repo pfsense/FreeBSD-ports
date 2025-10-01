@@ -1,6 +1,6 @@
 PORTNAME=	bitwarden-cli
 DISTVERSIONPREFIX=	cli-v
-DISTVERSION=	2025.7.0
+DISTVERSION=	2025.9.0
 CATEGORIES=	security
 MASTER_SITES=	https://nodejs.org/dist/v${PKG_NODE_VER}/:node
 DISTFILES=	node-v${PKG_NODE_VER}${EXTRACT_SUFX}:node \
@@ -56,7 +56,7 @@ OPTIONS_DEFINE=	DOCS
 
 PREFETCH_FILE=	${PORTNAME}-${DISTVERSION}-node-modules${EXTRACT_SUFX}
 PREFETCH_TIMESTAMP=	61171200
-PKG_NODE_VER=	22.10.0
+PKG_NODE_VER=	22.15.1
 PKG_FETCH_VER=	3.5
 PKG_NODE_CONFIGURE_ARGS=--openssl-use-def-ca-store \
 			--shared-brotli \
@@ -77,7 +77,7 @@ pre-fetch:
 		${CP} -R ${FILESDIR}/packagejsons/* ${WRKDIR}/node-modules-cache; \
 		cd ${WRKDIR}/node-modules-cache && \
 		${SETENV} HOME=${WRKDIR} \
-			npm ci --ignore-scripts --no-progress --no-audit --no-fund; \
+			npm ci --ignore-scripts --no-progress --no-audit --no-fund --no-update-notifier; \
 		${FIND} ${WRKDIR}/node-modules-cache -type d -exec ${CHMOD} 755 {} ';'; \
 		for dir in `${FIND} -s ${WRKDIR}/node-modules-cache -type d -name node_modules -print | \
 			${GREP} -ve 'node_modules/.*/node_modules'`; do \
@@ -101,11 +101,10 @@ post-extract:
 
 post-patch:
 	# apply FreeBSD patches for node
-	for p in ${PATCHDIR}/node/patch-*;do \
-		${PATCH} -s -p0 -d ${WRKDIR}/node-v${PKG_NODE_VER} < $${p}; \
-	done
+	@${BSDMAKE} PATCHDIR=${FILESDIR}/node \
+		WRKSRC=${WRKDIR}/node-v${PKG_NODE_VER} do-patch
 	# apply node patch from pkg-fetch
-	${PATCH} -s -p1 -d ${WRKDIR}/node-v${PKG_NODE_VER} < \
+	@${PATCH} -s -p1 -d ${WRKDIR}/node-v${PKG_NODE_VER} < \
 		${WRKSRC}/node_modules/@yao-pkg/pkg-fetch/patches/node.v${PKG_NODE_VER}.cpp.patch
 
 pre-build:
