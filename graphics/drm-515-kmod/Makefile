@@ -53,6 +53,7 @@ PLIST_SUB+=	I915="@comment "
 .endif
 
 MAKE_ENV+=	MAKEOBJDIRPREFIX=${WRKSRC}/obj
+CFLAGS+=	-DWANT_NATIVE_PCI_GET_SLOT=1
 
 pre-build:
 		${MKDIR} ${WRKSRC}/obj
