@@ -666,10 +666,11 @@
 				},
 				{
 					"feed":		"Nix Spam",
-					"website":	"https://www.heise.de/ix/NiX-Spam-DNSBL-and-blacklist-for-download-499637.html",
-					"url":		"https://www.nixspam.net/download/nixspam-ip.dump.gz",
+					"website":	"https://hostblogger.de/blog/archives/7353-Die-AEra-der-ix.dnsbl.manitu.net-geht-zu-Ende.html",
+					"url":		"https://nixspam.net/download/nixspam-ip.dump.gz",
 					"past_urls": [
-								"http://www.dnsbl.manitu.net/download/nixspam-ip.dump.gz"
+								"http://www.dnsbl.manitu.net/download/nixspam-ip.dump.gz",
+								"https://www.nixspam.net/download/nixspam-ip.dump.gz"
 					],
 					"header":	"Nix_Spam"
 				},
