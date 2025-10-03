@@ -1,0 +1,5 @@
+#!/bin/sh
+
+if [ -x "${PKG_ROOTDIR}/usr/local/bin/php" ]; then
+    "${PKG_ROOTDIR}/usr/local/bin/php" -f /etc/rc.packages %%PORTNAME%% "$2"
+fi
