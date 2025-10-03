@@ -1,0 +1,11 @@
+hTorrentCreator is a BitTorrent file creator written in C++.
+
+Main Features are:
+  * Easy to use.
+  * Optimized to be as fast as possible.
+  * Single and Multi-file torrent creation.
+  * Single and Multiple trackers.
+  * Tracker groups.
+  * Custom piece size
+  * WebSeeds
+  * Comments
