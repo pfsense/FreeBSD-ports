@@ -2206,20 +2206,21 @@ function pfb_unbound_dnsbl($mode) {
 				$custom = explode ("\n", $unbound_custom);
 				foreach ($custom as $key => $line) {
 					if (strpos($line, 'pfb_dnsbl.*conf') !== FALSE) {
-						$pfbupdate = TRUE;
 						if (!$pfb['dnsbl_py_blacklist']) {
 							$log = "\nRemoving DNSBL SafeSearch mode (Resolver adv. setting)";
 							unset($custom[$key]);
+							$pfbupdate = TRUE;
 						}
 
 						// To be removed when SafeSearch CNAME python mode has been fixed
-						elseif ($pfb['safesearch_enable'] !== 'Disable') {
+						elseif ($mode == 'enabled' && $pfb['safesearch_enable'] !== 'Disable') {
 							//
 						}
 
 						else {
 							$log = "\nRemoving DNSBL Unbound mode and/or DNSBL SafeSearch CNAME mode (Resolver adv. setting)";
 							unset($custom[$key]);
+							$pfbupdate = TRUE;
 						}
 					}
 				}
@@ -10669,7 +10670,7 @@ function sync_package_pfblockerng($cron='') {
 			// Determine if CRON job requires updating
 			if (!pfblockerng_cron_exists($pfb_cmd, $pfb['min'], $pfb_hour, $pfb_mday, $pfb_wday)) {
 				install_cron_job('pfblockerng.php cron', false);
-				install_cron_job($pfb_cmd, true, $pfb['min'], $pfb_hour, $pfb_mday, $pfb_month, $pfb_wday, $pfb_who);
+				install_cron_job($pfb_cmd, true, $pfb['min'], $pfb_hour, $pfb_mday, $pfb_month, $pfb_wday, $pfb_who, false);
 			}
 		}
 		else {
@@ -10695,7 +10696,7 @@ function sync_package_pfblockerng($cron='') {
 		// Determine if CRON job requires updating
 		if (!pfblockerng_cron_exists($pfb_gcmd, $pfb_gmin, 'random', $pfb_gmday, $pfb_gwday)) {
 			install_cron_job('pfblockerng.php dcc', false);
-			install_cron_job($pfb_gcmd, true, $pfb_gmin, $pfb_ghour, $pfb_gmday, $pfb_gmonth, $pfb_gwday, $pfb_gwho);
+			install_cron_job($pfb_gcmd, true, $pfb_gmin, $pfb_ghour, $pfb_gmday, $pfb_gmonth, $pfb_gwday, $pfb_gwho, false);
 		}
 	}
 	else {
@@ -10733,7 +10734,7 @@ function sync_package_pfblockerng($cron='') {
 			// Determine if CRON job requires updating
 			if (!pfblockerng_cron_exists($pfb_bcmd, $pfb_bmin, 'random', $pfb_bmday, $pfb_bwday)) {
 				install_cron_job('pfblockerng.php bl', false);
-				install_cron_job($pfb_bcmd, true, $pfb_bmin, $pfb_bhour, $pfb_bmday, $pfb_bmonth, $pfb_bwday, $pfb_bwho);
+				install_cron_job($pfb_bcmd, true, $pfb_bmin, $pfb_bhour, $pfb_bmday, $pfb_bmonth, $pfb_bwday, $pfb_bwho, false);
 			}
 		}
 		else {
@@ -10762,7 +10763,7 @@ function sync_package_pfblockerng($cron='') {
 				}
 
 				if (!pfblockerng_cron_exists($pfb_cmd, '0', '0', '*', $pfb_day)) {
-					install_cron_job($pfb_cmd, true, '0', '0', '*', '*', $pfb_day, 'root');
+					install_cron_job($pfb_cmd, true, '0', '0', '*', '*', $pfb_day, 'root', false);
 				}
 			}
 			else {
