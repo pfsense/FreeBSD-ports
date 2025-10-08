@@ -191,10 +191,6 @@ function tinc_install() {
 		config_set_path('ifgroups/ifgroupentry/', $ifgroupentry);
 	}
 
-	/*
-	 * XXX: Do not remove this, otherwise the interface group may not be added properly.
-	 */
-	unlink_if_exists("{$g['tmp_path']}/config.cache");
 	write_config("[tinc] Package installed.");
 }
 
