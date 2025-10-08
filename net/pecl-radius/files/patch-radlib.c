@@ -1,5 +1,5 @@
---- radlib.c.orig	2016-02-15 15:11:50 UTC
-+++ radlib.c
+--- radlib.c.orig	2025-10-08 16:55:46.488007000 +0000
++++ radlib.c	2025-10-08 18:54:44.630988000 +0000
 @@ -47,6 +47,7 @@
  #include <string.h>
  #ifndef PHP_WIN32
@@ -8,7 +8,7 @@
  #endif
  
  #include "radlib_compat.h"
-@@ -58,8 +59,7 @@ static void	 generr(struct rad_handle *, const char *,
+@@ -58,8 +59,7 @@
  		    __printflike(2, 3);
  static void	 insert_scrambled_password(struct rad_handle *, int);
  static void	 insert_request_authenticator(struct rad_handle *, int);
@@ -18,7 +18,7 @@
  static int	 put_password_attr(struct rad_handle *, int,
  		    const void *, size_t,
  		    const struct rad_attr_options *);
-@@ -67,6 +67,9 @@ static int	 put_raw_attr(struct rad_handle *, int,
+@@ -67,6 +67,9 @@
  		    const void *, size_t,
  		    const struct rad_attr_options *);
  static int	 split(char *, char *[], int, char *, size_t);
@@ -28,7 +28,7 @@
  
  static void
  clear_password(struct rad_handle *h)
-@@ -144,20 +147,38 @@ insert_request_authenticator(struct rad_handle *h, int
+@@ -144,20 +147,38 @@
   * specified server.
   */
  static int
@@ -76,7 +76,7 @@
  		return 0;
  
  	/* Check the message length */
-@@ -277,49 +298,75 @@ int
+@@ -277,49 +298,75 @@
  rad_add_server(struct rad_handle *h, const char *host, int port,
      const char *secret, int timeout, int tries)
  {
@@ -179,7 +179,7 @@
  }
  
  void
-@@ -327,8 +374,10 @@ rad_close(struct rad_handle *h)
+@@ -327,8 +374,10 @@
  {
  	int srv;
  
@@ -192,7 +192,7 @@
  	for (srv = 0;  srv < h->num_servers;  srv++) {
  		memset(h->servers[srv].secret, 0,
  		    strlen(h->servers[srv].secret));
-@@ -482,42 +531,18 @@ rad_config(struct rad_handle *h, const char *path)
+@@ -482,42 +531,18 @@
  }
  
  /*
@@ -239,7 +239,7 @@
  	if (h->try == h->total_tries) {
  		generr(h, "No valid RADIUS responses received");
  		return -1;
-@@ -547,28 +572,24 @@ rad_continue_send_request(struct rad_handle *h, int se
+@@ -547,28 +572,24 @@
  			insert_scrambled_password(h, h->srv);
  
  	/* Send the request */
@@ -280,17 +280,17 @@
  }
  
  int
-@@ -581,8 +602,7 @@ rad_create_request(struct rad_handle *h, int code)
+@@ -581,8 +602,7 @@
  	/* Create a random authenticator */
  	for (i = 0;  i < LEN_AUTH;  i += 2) {
  		long r;
 -		TSRMLS_FETCH();
--		r = php_rand(TSRMLS_C);
-+		r = php_rand();
+-		r = (zend_long) php_mt_rand(TSRMLS_C);
++		r = (zend_long) php_mt_rand();
  		h->request[POS_AUTH+i] = (unsigned char) r;
  		h->request[POS_AUTH+i+1] = (unsigned char) (r >> 8);
  	}
-@@ -654,42 +674,92 @@ rad_get_attr(struct rad_handle *h, const void **value,
+@@ -654,42 +674,92 @@
  }
  
  /*
@@ -311,6 +311,12 @@
 +	h->total_tries = 0;
  
 -		if ((h->fd = socket(PF_INET, SOCK_DGRAM, IPPROTO_UDP)) == -1) {
+-#ifdef PHP_WIN32
+-			generr(h, "Cannot create socket: %d", WSAGetLastError());
+-#else
+-			generr(h, "Cannot create socket: %s", strerror(errno));
+-#endif
+-			return -1;
 +	for (srv = 0;  srv < h->num_servers;  srv++)
 +		if (h->servers[srv].addr.addr.sa_family == AF_INET)
 +			tries4 += h->servers[srv].max_tries;
@@ -324,14 +330,11 @@
 +
 +		h->fd4 = socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP);
 +		if (h->fd4 == -1) {
- #ifdef PHP_WIN32
--			generr(h, "Cannot create socket: %d", WSAGetLastError());
++#ifdef PHP_WIN32
 +			generr(h, "Cannot create ipv4 socket: %d", WSAGetLastError());
- #else
--			generr(h, "Cannot create socket: %s", strerror(errno));
++#else
 +			generr(h, "Cannot create ipv4 socket: %s", strerror(errno));
- #endif
--			return -1;
++#endif
 +			goto done4;
  		}
 -		memset(&sin, 0, sizeof sin);
@@ -405,7 +408,7 @@
  	if (h->request[POS_CODE] == RAD_ACCOUNTING_REQUEST
  	    || h->request[POS_CODE] == RAD_COA_REQUEST
  	    || h->request[POS_CODE] == RAD_COA_ACK
-@@ -723,18 +793,17 @@ rad_init_send_request(struct rad_handle *h, int *fd, s
+@@ -723,18 +793,17 @@
  	 * counter for each server.
  	 */
  	h->total_tries = 0;
@@ -429,7 +432,7 @@
  }
  
  /*
-@@ -749,11 +818,11 @@ rad_auth_open(void)
+@@ -749,11 +818,11 @@
  
  	h = (struct rad_handle *)malloc(sizeof(struct rad_handle));
  	if (h != NULL) {
@@ -440,15 +443,16 @@
 +		h->fd4 = -1;
 +		h->fd6 = -1;
  		h->num_servers = 0;
--		h->ident = php_rand(TSRMLS_C);
-+		h->ident = php_rand();
+-		h->ident = (zend_long) php_mt_rand(TSRMLS_C);
++		h->ident = (zend_long) php_mt_rand();
  		h->errmsg[0] = '\0';
  		memset(h->request, 0, sizeof h->request);
  		h->req_len = 0;
-@@ -828,6 +897,40 @@ rad_put_string(struct rad_handle *h, int type, const c
+@@ -827,7 +896,41 @@
+ {
  	return rad_put_attr(h, type, str, strlen(str), options);
  }
- 
++
 +static int
 +rad_receive(struct rad_handle *h, int fd)
 +{
@@ -474,7 +478,7 @@
 +#endif
 +		return -1;
 +	}
-+
+ 
 +	if (is_valid_response(h, (struct sockaddr *)&from)) {
 +		h->resp_len = h->response[POS_LENGTH] << 8 |
 +		    h->response[POS_LENGTH+1];
@@ -486,7 +490,7 @@
  /*
   * Returns the response type code on success, or -1 on failure.
   */
-@@ -836,47 +939,56 @@ rad_send_request(struct rad_handle *h)
+@@ -836,47 +939,56 @@
  {
  	struct timeval timelimit;
  	struct timeval tv;
@@ -569,7 +573,7 @@
  }
  
  const char *
-@@ -1035,7 +1147,7 @@ rad_put_vendor_attr(struct rad_handle *h, int vendor, 
+@@ -1035,7 +1147,7 @@
  	/* OK, allocate and start building the attribute. */
  	attr = emalloc(va_len);
  	if (attr == NULL) {
@@ -578,7 +582,7 @@
  		goto end;
  	}
  
-@@ -1218,12 +1330,12 @@ rad_demangle_mppe_key(struct rad_handle *h, const void
+@@ -1218,12 +1330,12 @@
  	*/
  	*len = *P;
  	if (*len > mlen - 1) {
@@ -593,7 +597,7 @@
  		return -1;
  	}
  
-@@ -1235,14 +1347,13 @@ int rad_salt_value(struct rad_handle *h, const char *i
+@@ -1235,14 +1347,13 @@
  {
  	char authenticator[16];
  	size_t i;
@@ -602,26 +606,25 @@
  	const char *in_pos;
  	MD5_CTX md5;
  	char *out_pos;
- 	php_uint32 random;
+ 	uint32_t random;
  	size_t salted_len;
  	const char *secret;
 -	TSRMLS_FETCH();
  
  	if (len == 0) {
  		out->len = 0;
-@@ -1289,7 +1400,7 @@ int rad_salt_value(struct rad_handle *h, const char *i
+@@ -1289,7 +1400,7 @@
  	}
  
  	/* Generate a random number to use as the salt. */
--	random = php_rand(TSRMLS_C);
-+	random = php_rand();
+-	random = (zend_long) php_mt_rand(TSRMLS_C);
++	random = (zend_long) php_mt_rand();
  
  	/* The RFC requires that the high bit of the salt be 1. Otherwise,
  	 * let's set up the header. */
-@@ -1341,5 +1452,3 @@ err:
+@@ -1341,5 +1452,3 @@
  
  	return -1;
  }
 -
 -/* vim: set ts=8 sw=8 noet: */
-
