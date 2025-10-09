@@ -222,7 +222,7 @@ function wg_service_cli_start($serialize = true) {
 	// Register the service environment and lock early to ensure singletons
 	wg_register_service_env(false);
 
-	if (platform_booting()) {
+	if (is_platform_booting()) {
 		// Output during booting must be to STDERR for some reason
 		fwrite(STDERR, gettext('Configuring WireGuard tunnels...'));
 
@@ -240,7 +240,7 @@ function wg_service_cli_start($serialize = true) {
 		$ret_code |= WG_ERROR_SVC_CREATE;
 	}
 
-	if (platform_booting()) {
+	if (is_platform_booting()) {
 		unmute_kernel_msgs();
 
 		fwrite(STDERR, "{$s(gettext('done.'))}\n");
@@ -311,7 +311,7 @@ function wg_service_cli_start($serialize = true) {
 
 // This is where we restart any extra services
 function wg_restart_extra_services($force = false) {
-	if (platform_booting() && !$force) {
+	if (is_platform_booting() && !$force) {
 		return false;
 	}
 
