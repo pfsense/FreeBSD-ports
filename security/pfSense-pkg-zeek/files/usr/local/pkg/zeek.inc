@@ -504,7 +504,7 @@ StatsLogExpireInterval = {$statsduration}
 StatusCmdShowAll = 0
 
 # Site-specific policy script to load. Zeek will look for this in
-# {$PREFIX}/share/zeek/site. A default local.zeek comes preinstalled
+# {\$PREFIX}/share/zeek/site. A default local.zeek comes preinstalled
 # and can be customized as desired.
 SitePolicyScripts = local.zeek
 
