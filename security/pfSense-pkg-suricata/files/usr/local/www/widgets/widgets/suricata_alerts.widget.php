@@ -255,7 +255,7 @@ function suricata_widget_get_alerts() {
 	</thead>
 	<tbody id="suricata-alert-entries">
 	<?php
-		$suricata_alerts = suricata_widget_get_alerts($suri_nentries);
+		$suricata_alerts = suricata_widget_get_alerts();
 		$counter=0;
 		if (is_array($suricata_alerts)) {
 			foreach ($suricata_alerts as $alert) {

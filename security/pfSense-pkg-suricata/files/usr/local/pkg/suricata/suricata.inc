@@ -42,6 +42,26 @@ global $g;
 // Suricata GUI needs at least 512MB to manipulate large rules arrays
 ini_set("memory_limit", config_get_path('system/php_memory_limit', '512') . "M");
 
+function suricata_is_single_addr_alias($alias) {
+	/***************************************************/
+	/* This function evaluates the passed Alias to     */
+	/* determine if it represents a single IP address, */
+	/* or a network in CIDR form, and returns TRUE if  */
+	/* the condition is met, and FALSE if not.         */
+	/*                                                 */
+	/* On Entry: $alias ==> Alias to be evaluated      */
+	/*  Returns: TRUE if Alias represents a single     */
+	/*           IP address or network, and FALSE      */
+	/*           if not.                               */
+	/***************************************************/
+
+	/* If spaces in expanded Alias, it's not a single entity */
+	if (strpos(trim(filter_expand_alias($alias)), " ") !== false)
+		return false;
+	else
+		return true;
+}
+
 function suricata_generate_id() {
 
 	while (true) {
@@ -2028,7 +2048,7 @@ function suricata_sid_mgmt_auto_categories($suricatacfg, $log_results = FALSE) {
 
 	// Configure the interface's logging subdirectory if log results is enabled
 	if ($log_results == TRUE) {
-		$log_file = SURICATALOGDIR . $suricatalogdir . "suricata_" . get_real_interface($suricatacfg['interface']) . "{$suricatacfg['uuid']}/sid_changes.log";
+		$log_file = SURICATALOGDIR . "suricata_" . get_real_interface($suricatacfg['interface']) . "{$suricatacfg['uuid']}/sid_changes.log";
 	} else {
 		$log_file = NULL;
 	}
@@ -2873,7 +2893,7 @@ function suricata_auto_sid_mgmt(&$rule_map, $suricatacfg, $log_results = FALSE) 
 
 	// Configure the interface's logging subdirectory if log results is enabled
 	if ($log_results == TRUE) {
-		$log_file = SURICATALOGDIR . $suricatalogdir . "suricata_" . get_real_interface($suricatacfg['interface']) . "{$suricatacfg['uuid']}/sid_changes.log";
+		$log_file = SURICATALOGDIR . "suricata_" . get_real_interface($suricatacfg['interface']) . "{$suricatacfg['uuid']}/sid_changes.log";
 	} else {
 		$log_file = NULL;
 	}
@@ -3026,8 +3046,8 @@ function suricata_modify_sids(&$rule_map, $suricatacfg) {
 
 	// Load up our enablesid and disablesid
 	// arrays with lists of modified SIDs.
-	$enablesid = suricata_load_sid_mods($suricatacfg['rule_sid_on'], "enablesid");
-	$disablesid = suricata_load_sid_mods($suricatacfg['rule_sid_off'], "disablesid");
+	$enablesid = suricata_load_sid_mods($suricatacfg['rule_sid_on']);
+	$disablesid = suricata_load_sid_mods($suricatacfg['rule_sid_off']);
 
 	/* Turn on any rules that need to be     */
 	/* forced "on" with enablesid mods.      */

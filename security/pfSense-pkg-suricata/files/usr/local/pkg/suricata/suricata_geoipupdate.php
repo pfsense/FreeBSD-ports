@@ -84,8 +84,9 @@ function suricata_download_geoip_file($url, $tmpfile, $user, $pwd, &$result = NU
 	curl_setopt($ch, CURLOPT_USERPWD, "{$user}:{$pwd}");
 
 	$rc = curl_exec($ch);
+	$response = curl_getinfo($ch, CURLINFO_RESPONSE_CODE);
 	if ($rc === true) {
-		switch ($response = curl_getinfo($ch, CURLINFO_RESPONSE_CODE)) {
+		switch ($response) {
 
 			case 401:  // Account ID or License Key invalid
 				syslog(LOG_ALERT, "[Suricata] ALERT: The Account ID or License Key for MaxMind GeoLite2 is invalid.");

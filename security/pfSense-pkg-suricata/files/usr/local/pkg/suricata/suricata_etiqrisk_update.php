@@ -90,7 +90,7 @@ if (!empty(config_get_path('installedpackages/suricata/config/0/iqrisk_code'))) 
 	$et_iqrisk_url = str_replace("_xxx_", config_get_path('installedpackages/suricata/config/0/iqrisk_code'), ET_IQRISK_DNLD_URL);
 }
 else {
-	syslog(gettext(LOG_ALERT, "[Suricata] ALERT: No IQRisk subscriber code found!  Aborting scheduled update of Emerging Threats IQRisk IP List."));
+	syslog(LOG_ALERT, gettext("[Suricata] ALERT: No IQRisk subscriber code found!  Aborting scheduled update of Emerging Threats IQRisk IP List."));
 	return(0);
 }
 
@@ -117,7 +117,7 @@ if (suricata_check_iprep_md5("categories.txt")) {
 				$notify_message .= gettext("- Successfully updated IPREP file 'categories.txt'.\n");
 			}
 			else
-				syslog(gettext(LOG_ALERT, "[Suricata] ALERT: MD5 integrity check of downloaded 'categories.txt' file failed!  Skipping update of this IPREP file."));
+				syslog(LOG_ALERT, gettext("[Suricata] ALERT: MD5 integrity check of downloaded 'categories.txt' file failed!  Skipping update of this IPREP file."));
 				$notify_message .= gettext("- MD5 integrity check of downloaded 'categories.txt' file failed!  Skipping update of this IPREP file.\n");
 		}
 	}
