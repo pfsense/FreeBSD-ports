@@ -795,7 +795,7 @@ EOD;
 	freeradius_sync_on_changes();
 	// Do not restart on boot
 	// Will get restarted later by freeradius_clients_resync() if called via XMLRPC sync
-	if ($via_rpc === false && !platform_booting()) {
+	if ($via_rpc === false && !is_platform_booting()) {
 		restart_service("radiusd");
 	}
 }
@@ -841,10 +841,10 @@ function freeradius_authorizedmacs_resync($restart_svc = true, $via_rpc = false)
 			$varmacsmaxbandwidthdown = ($macs['varmacsmaxbandwidthdown'] ? (int) $macs['varmacsmaxbandwidthdown'] * 1024 : '');
 
 			// Accounting-Interim-Interval
-			if (($users['varmacsacctinteriminterval'] >= '0') && ($users['varmacsacctinteriminterval'] < '60')) {
+			if (($macs['varmacsacctinteriminterval'] >= '0') && ($macs['varmacsacctinteriminterval'] < '60')) {
 				$varmacsacctinteriminterval = 60;
 			} else {
-				$varmacsacctinteriminterval = $users['varmacsacctinteriminterval'];
+				$varmacsacctinteriminterval = $macs['varmacsacctinteriminterval'];
 			}
 
 			// Clear variables for next mac foreach additional options TOP
@@ -1378,7 +1378,7 @@ eap {
 			lifetime = {$vareapconfcachelifetime}
 			max_entries = {$vareapconfcachemaxentries}
 			#name = "EAP module"
-			#persist_dir = "${logdir}/tlscache"
+			#persist_dir = "{\$logdir}/tlscache"
 		}
 		verify {
 	#		skip_if_ocsp_ok = no
@@ -2509,7 +2509,7 @@ function freeradius_plugin_xmlrpc_recv_done($xmlrpc_recv_result) {
 /* Do the actual XMLRPC sync */
 function freeradius_do_xmlrpc_sync($sync_to_ip, $username, $password, $varsyncport, $varsyncprotocol, $varsynctimeout) {
 	/* Detect boot process, do nothing during boot. */
-	if (platform_booting()) {
+	if (is_platform_booting()) {
 		return;
 	}
 
@@ -3744,8 +3744,8 @@ function freeradius_validate_users($post, &$input_errors) {
 	if ($post['varusersframedipnetmask']) {
 		if ($post['varusersframedipaddress'] == '') {
 			$input_errors[] = "To specify a 'Subnet Mask', the 'IPv4 Address' field must not be empty.";
-		} elseif (is_ipaddrv4($framedip)) {
-			$ip = long2ip(ip2long($framedip) & ip2long($post['varusersframedipnetmask']));
+		} elseif (is_ipaddrv4($post['varusersframedipaddress'])) {
+			$ip = long2ip(ip2long($post['varusersframedipaddress']) & ip2long($post['varusersframedipnetmask']));
 			$mask = 32 - log((ip2long($post['varusersframedipnetmask']) ^ ip2long('255.255.255.255')) +1, 2);
 			if (!is_subnetv4("{$ip}/{$mask}")) {
 				$input_errors[] = "The 'Subnet Mask' field must contain a valid subnet mask.";
@@ -3910,7 +3910,7 @@ function freeradius_validate_macs($post, &$input_errors) {
 	}
 
 	// IPv4 Address
-	if ($post['varusersframedipaddress'] && !is_ipaddrv4($post['varusersframedipaddress'])) {
+	if ($post['varmacsframedipaddress'] && !is_ipaddrv4($post['varmacsframedipaddress'])) {
 		$input_errors[] = "The 'IPv4 Address' field must contain a valid IPv4 address.";
 	}
 
@@ -3918,8 +3918,8 @@ function freeradius_validate_macs($post, &$input_errors) {
 	if ($post['varmacsframedipnetmask']) {
 		if ($post['varmacsframedipaddress'] == '') {
 			$input_errors[] = "To specify a 'Subnet Mask', the 'IPv4 Address' field must not be empty.";
-		} elseif (is_ipaddrv4($framedip)) {
-			$ip = long2ip(ip2long($framedip) & ip2long($post['varmacsframedipnetmask']));
+		} elseif (is_ipaddrv4($post['varmacsframedipaddress'])) {
+			$ip = long2ip(ip2long($post['varmacsframedipaddress']) & ip2long($post['varmacsframedipnetmask']));
 			$mask = 32 - log((ip2long($post['varmacsframedipnetmask']) ^ ip2long('255.255.255.255')) +1, 2);
 			if (!is_subnetv4("{$ip}/{$mask}")) {
 				$input_errors[] = "The 'Subnet Mask' field must contain a valid subnet mask.";
