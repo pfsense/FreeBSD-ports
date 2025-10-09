@@ -248,7 +248,7 @@ $pfb['rfc7231'] = array(
 			509 => '509 Bandwidth Limit Exceeded',	510 => '510 Not Extended',			511 => '511 Network Authentication Required',
 			521 => '521 Web Server is down',	598 => '598 Network read timeout error',	599 => '599 Network connect timeout error',
 
-			520 => 'CF 520 Unknown Error',		521 => 'CF 521 Web Server is Down',		522 => 'CF 522 Connection Timed Out',
+			520 => 'CF 520 Unknown Error',		522 => 'CF 522 Connection Timed Out',
 			523 => 'CF 523 Origin is Unreachable',	524 => 'CF 524 A Timeout Occured',		525 => 'CF 525 SSL Handshake Failed',
 			526 => 'CF 526 Invalid SSL Certificate',527 => 'CF 527 Railgun Error'
 			);
@@ -6512,7 +6512,7 @@ function pfb_daemon_queries() {
 		sleep($sleep_freq);
 
 		// If 'Live Sync' file marker exists skip DNSBL Queries daemon to avoid unbound-control collisions
-		if (platform_booting() || $g['pfblockerng_install'] || file_exists("{$pfb['dnsbl_file']}.sync")) {
+		if (is_platform_booting() || $g['pfblockerng_install'] || file_exists("{$pfb['dnsbl_file']}.sync")) {
 			continue;
 		}
 
@@ -6993,7 +6993,7 @@ function sync_package_pfblockerng($cron='') {
 	$pfb['filter_configure']	= FALSE;	// Flag to call filter_configure once
 
 	// Detect boot process or package installation
-	if (platform_booting() || $g['pfblockerng_install']) {
+	if (is_platform_booting() || $g['pfblockerng_install']) {
 		// Create DNSBL NAT, VIP, Lighttpd service and certs if required on reboot.
 		if ($pfb['dnsbl'] == 'on') {
 			pfb_create_dnsbl('enabled');
@@ -10616,7 +10616,7 @@ function sync_package_pfblockerng($cron='') {
 	#	XMLRPC - sync process		#
 	#########################################
 
-	if (!platform_booting() && !$g['pfblockerng_install']) {
+	if (!is_platform_booting() && !$g['pfblockerng_install']) {
 		pfblockerng_sync_on_changes();
 	}
 
