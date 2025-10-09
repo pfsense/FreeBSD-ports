@@ -1445,6 +1445,7 @@ function haproxy_write_certificate_fullchain($filename, $certid, $append = false
 function haproxy_write_certificate_issuer($filename, $certid) {
 	$cert = haproxy_lookup_cert($certid);
 	$certchaincontent = ca_chain($cert);
+	$certcontent = '';
 	if ($certchaincontent != "") {
 		$certcontent .= "\r\n" . $certchaincontent;
 	}
@@ -2881,6 +2882,7 @@ function haproxy_get_cert_acls($cert, $usealternativenames = false) {
 		$cert_cn_regex = "^{$cert_cn_regex}(:([0-9]){1,5})?$";// match both with and without port.
 
 		$acl_item['descr'] = "Certificate ACL matches: {$cert_cn}";
+		// TODO: fix unused variables
 		//$aclname_add = $usealternativenames ? "_{$i}" : "";
 		$acl_item['ref'] = array('name' => "{$aclname}_{$descr}{$aclname_add}",'expression' => 'host_regex', 'value' => $cert_cn_regex, 'certacl' => true);
 

@@ -924,27 +924,27 @@ $group->add(new Form_Checkbox(
 	'postonly',
 	'Only insert cookie on post requests.',
 	$pconfig['persist_cookie_postonly']
-),"haproxy_cookie_visible");
+));
 $group->add(new Form_Checkbox(
 	'persist_cookie_httponly',
 	'httponly',
 	'Prevent usage of cookie with non-HTTP components.',
 	$pconfig['persist_cookie_httponly']
-),"haproxy_cookie_visible");
+));
 $group->add(new Form_Checkbox(
 	'persist_cookie_secure',
 	'secure',
 	'Prevent usage of cookie over non-sercure channels.',
 	$pconfig['persist_cookie_secure']
-),"haproxy_cookie_visible");
+));
 $group->addClass("haproxy_cookie_visible");
 $section->add($group);
 
 $group = new Form_Group('Cookie Options');
 $group->add(new Form_Input('haproxy_cookie_maxidle', 'MaxIdle', 'text', $pconfig['haproxy_cookie_maxidle']
-),"haproxy_cookie_visible")->setHelp('Max idle time It only works with insert-mode cookies.');
+))->setHelp('Max idle time It only works with insert-mode cookies.');
 $group->add(new Form_Input('haproxy_cookie_maxlife', 'MaxLife', 'text', $pconfig['haproxy_cookie_maxlife']
-),"haproxy_cookie_visible")->setHelp('Max life time It only works with insert-mode cookies.');
+))->setHelp('Max life time It only works with insert-mode cookies.');
 
 $group->addClass("haproxy_cookie_visible");
 $section->add($group);

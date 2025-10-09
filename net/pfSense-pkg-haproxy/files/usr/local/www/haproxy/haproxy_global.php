@@ -36,7 +36,6 @@ $sslcompatibilitymodes = array('auto' => 'Auto', 'modern' => 'Modern', 'intermed
 
 $none = array();
 $none['']['name'] = "Dont log";
-$a_sysloglevel = $a_sysloglevel;
 
 $fields_mailers = array();
 $fields_mailers[0]['name'] = "name";

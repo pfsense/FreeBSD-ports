@@ -319,13 +319,6 @@ if (isset($_GET['dup'])) {
 $changedesc = "Services: HAProxy: Frontend";
 $changecount = 0;
 
-/* Deal with the renae is_portoralias -> is_port_or_alias() */
-if (!function_exists('is_port_or_alias')) {
-	function is_port_or_alias($port) {
-		return is_portoralias($port);
-	}
-}
-
 if ($_POST) {
 	$changecount++;
 

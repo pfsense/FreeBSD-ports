@@ -146,7 +146,7 @@ if ($_POST) {
 		}
 	}
 } else {
-	$result = haproxy_check_config($retval);
+	$result = haproxy_check_config();
 	if ($result) {
 		$savemsg = gettext($result);
 	}
