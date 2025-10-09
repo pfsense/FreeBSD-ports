@@ -28,7 +28,7 @@ if ($options["r"]) {
 if ($options["i"]) {
         $interface = $options["i"];
 } else {
-        $ifdescrs = get_configured_interface_with_descr(false, true);
+        $ifdescrs = get_configured_interface_with_descr();
         foreach ($ifdescrs as $ifdescr => $ifname) {
                 $ifinfo = get_interface_info($ifdescr);
                 if (preg_match("/ppp[0-9]*/", $ifinfo['hwif'])) {
