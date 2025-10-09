@@ -80,7 +80,7 @@ function sqstat_AJAX_prep($text) {
 
 function sqstat_AJAX_error($err) {
 	$err = sqstat_AJAX_prep($err);
-	$t .= "$('#sqstat_result').html('{$err}');";
+	$t = "$('#sqstat_result').html('{$err}');";
 	return $t;
 }
 
@@ -101,7 +101,7 @@ function sqstat_headerHTML() {
 	return <<< EOD
  	<form method="get" action="{$_SERVER["PHP_SELF"]}">
 		<input id="counter" name="counter" type="hidden" value=0 />
-		Squid RealTime stat {$squidclass->sqstat_version} for the {$servers} proxy server <a id='sqstat_serverver'>{$squidinfo}</a>.<br/>
+		Squid RealTime stat {$squidclass->sqstat_version} for the proxy server <a id='sqstat_serverver'>{$squidinfo}</a>.<br/>
 		Auto refresh:
 		<input id="refresh" name="refresh" type="text" size="4" value="{$squidclass->autorefresh}"/> sec.
 		<input type="button" value="Update" onclick="update_start();" />
@@ -118,7 +118,7 @@ function sqstat_serverInfoHTML() {
 function sqstat_resultHTML($data) {
 	global $squidclass;
 
-	$group_by_name = $squidclass->group_by_name;
+	$group_by_name = $squidclass->group_by;
 	$use_js = true;
 
 	$t = array();
@@ -176,7 +176,7 @@ function sqstat_resultHTML($data) {
 
 				// file size
 				$filesize = $squidclass->filesize_format($con["bytes"]);
-				$duration = $squidclass->duration($con["seconds"], "short");
+				$duration = $squidclass->duration($con["seconds"]);
 				$tbl[] = "<td nowrap align='right'>{$filesize}</td>";
 				$tbl[] = "<td nowrap align='right'>{$duration}</td>";
 
