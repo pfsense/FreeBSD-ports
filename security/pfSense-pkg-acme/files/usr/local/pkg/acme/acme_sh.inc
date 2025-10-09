@@ -118,10 +118,9 @@ class acme_sh {
 		$conf = "ACME_DIRECTORY='{$ca}'\nACCOUNT_EMAIL='{$email}'\n";
 		$cadir = parse_url($ca, PHP_URL_HOST) . parse_url($ca, PHP_URL_PATH);
 		$acmeconf = "/tmp/acme/{$name}/";
-		$this->acmeconf = $acmeconf;
 		$this->path_account = "{$acmeconf}/ca/{$cadir}";
 		safe_mkdir($this->path_account);
-		$this->accountconfig = "{$this->acmeconf}accountconf.conf";
+		$this->accountconfig = "{$acmeconf}accountconf.conf";
 		file_put_contents("{$this->accountconfig}", $conf);
 	}
 	

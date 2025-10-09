@@ -70,7 +70,7 @@ class FTPConnection
 		}
 		if ($this->scheme == "ftp" || $this->scheme == "ftps") {
 			if (!ftp_pasv($this->connection, true)) {//passive connection is usualy desired to pass through firewalls..
-				throw new \Exception("Could not switch to PASSIVE ftp for: {$this->scheme} to {$host} on port {$port}.");
+				throw new \Exception("Could not switch to PASSIVE ftp for: {$this->scheme}");
 			}
 		}
     }
