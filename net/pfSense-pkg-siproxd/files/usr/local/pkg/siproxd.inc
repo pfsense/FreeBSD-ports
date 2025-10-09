@@ -81,6 +81,7 @@ function siproxd_generate_rules($type) {
 	$rtpupper = $siproxd_conf['rtpupper'] ?: '7079';
 	$port = $siproxd_conf['port'] ?: '5060';
 
+	$rules = '';
 	switch($type) {
 		case 'nat':
 			$rules .= "\n# Setup Siproxd proxy redirect\n";
