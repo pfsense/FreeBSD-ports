@@ -103,7 +103,7 @@ function openvpn_client_pem_to_pk12($outpath, $outpass, $p12encryption, $crtpath
 			$hash = '-macalg sha256';
 	}
 
-	$tempdir = $g['tmp_path'] . "/openvpn-export-p12-".uniqid();
+	$tempdir = g_get('tmp_path') . "/openvpn-export-p12-".uniqid();
 	mkdir($tempdir, 0700, true);
 
 	/* Set the friendly name if available */
@@ -235,7 +235,7 @@ EOF;
 	}
 	
 	// determine basic variables
-	$remotes = openvpn_client_export_build_remote_lines($settings, $useaddr, $interface, $expformat, $nl, $legacy);
+	$remotes = openvpn_client_export_build_remote_lines($settings, $useaddr, $expformat, $nl, $legacy);
 	$digest = !empty($settings['digest']) ? $settings['digest'] : "SHA1";
 
 	// add basic settings
@@ -829,7 +829,7 @@ EOF;
 			$eoutpass = escapeshellarg($outpass);
 			$ekeyfile = escapeshellarg($keyfile);
 			$eclearkeyfile = escapeshellarg($clearkeyfile);
-			exec("/usr/bin/openssl rsa -in ${eclearkeyfile} -out ${ekeyfile} -des3 -passout pass:${eoutpass}");
+			exec("/usr/bin/openssl rsa -in {$eclearkeyfile} -out {$ekeyfile} -des3 -passout pass:{$eoutpass}");
 			unlink($clearkeyfile);
 		} else {
 			$keyfile = "{$tempdir}/key.key";
@@ -853,7 +853,7 @@ EOF;
 
 }
 
-function openvpn_client_export_build_remote_lines($settings, $useaddr, $interface, $expformat, $nl, $legacy=false) {
+function openvpn_client_export_build_remote_lines($settings, $useaddr, $expformat, $nl, $legacy=false) {
 	$remotes = array();
 	if (($useaddr == "serveraddr") || ($useaddr == "servermagic") || ($useaddr == "servermagichost")) {
 		$interface = $settings['interface'];
