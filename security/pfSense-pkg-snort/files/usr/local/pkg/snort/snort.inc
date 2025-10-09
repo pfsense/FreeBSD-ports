@@ -2685,7 +2685,7 @@ function snort_process_enablesid(&$rule_map, $snortcfg, $log_results = FALSE, $l
 		return;
 	}
 	else
-		$sid_mods = snort_parse_sidconf_file("{$snort_sidmods_dir}{$snortcfg['enable_sid_file']}");
+		$sid_mods = snort_parse_sidconf_file("{$snortcfg['enable_sid_file']}");
 
 	if (!empty($sid_mods))
 		snort_modify_sid_state($rule_map, $sid_mods, "enable", $log_results, $log_file);
@@ -2731,7 +2731,7 @@ function snort_process_disablesid(&$rule_map, $snortcfg, $log_results = FALSE, $
 		return;
 	}
 	else {
-		$sid_mods = snort_parse_sidconf_file("{$snort_sidmods_dir}{$snortcfg['disable_sid_file']}");
+		$sid_mods = snort_parse_sidconf_file("{$snortcfg['disable_sid_file']}");
 	}
 
 	if (!empty($sid_mods))

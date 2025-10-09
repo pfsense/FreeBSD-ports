@@ -821,7 +821,7 @@ function snort_apply_customizations($snortcfg, $if_real) {
 
 	/* Update the Preprocessor rules from the master configuration for the interface if Snort */
 	/* Subscriber rules are in use and the interface's preprocessor rules are not protected.  */
-	if ($vrt_enabled == 'on' && ($snortcfg['protect_preproc_rules'] != 'on' || $g['snort_postinstall'])) {
+	if ($vrt_enabled == 'on' && ($snortcfg['protect_preproc_rules'] != 'on' || g_get('snort_postinstall'))) {
 		$preproc_files = glob("{$snortdir}/preproc_rules/*.rules");
 		foreach ($preproc_files as $file) {
 			$newfile = basename($file);
