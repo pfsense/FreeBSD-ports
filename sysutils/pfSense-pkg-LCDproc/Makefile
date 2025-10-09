@@ -1,8 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	pfSense-pkg-LCDproc
-PORTVERSION=	0.12
-PORTREVISION=	2
+PORTVERSION=	0.12.1
 CATEGORIES=	sysutils
 MASTER_SITES=	# empty
 DISTFILES=	# empty
