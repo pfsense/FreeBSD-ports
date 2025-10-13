@@ -727,24 +727,24 @@ function pfb_global() {
 	$pfb['maxmind_account']	= pfb_filter($pfb['ipconfig']['maxmind_account'], PFB_FILTER_WORD, 'pfb_global')	?: '';		// Maxmind Account ID
 	$pfb['maxmind_key']	= pfb_filter($pfb['ipconfig']['maxmind_key'], PFB_FILTER_WORD, 'pfb_global')		?: '';		// Maxmind License Key
 
-	$pfb['dnsbl']		= $pfb['dnsblconfig']['pfb_dnsbl'];			// Enabled state of DNSBL
-	$pfb['dnsbl_vip_type']	= $pfb['dnsblconfig']['pfb_dnsvip_type'] ?: 'ipalias';	// Virtual IP type
+	$pfb['dnsbl']		= $pfb['dnsblconfig']['pfb_dnsbl'];									// Enabled state of DNSBL
+	$pfb['dnsbl_vip_type']	= isset($pfb['dnsblconfig']['pfb_dnsvip_type']) ? $pfb['dnsblconfig']['pfb_dnsvip_type'] : 'ipalias';	// Virtual IP type
 
 	$pfb['dnsbl_vip_vhid']	= isset($pfb['dnsblconfig']['pfb_dnsvip_vhid']) ? $pfb['dnsblconfig']['pfb_dnsvip_vhid'] : '';		// Virtual IP Carp VHID
 	$pfb['dnsbl_vip_base']	= isset($pfb['dnsblconfig']['pfb_dnsvip_base']) ? $pfb['dnsblconfig']['pfb_dnsvip_base'] : '';		// Virtual IP Carp advbase
 	$pfb['dnsbl_vip_skew']	= isset($pfb['dnsblconfig']['pfb_dnsvip_skew']) ? $pfb['dnsblconfig']['pfb_dnsvip_skew'] : '';		// Virtual IP Carp skew
 	$pfb['dnsbl_vip_pass']	= isset($pfb['dnsblconfig']['pfb_dnsvip_pass']) ? $pfb['dnsblconfig']['pfb_dnsvip_pass'] : '';		// Virtual IP Carp password (if required)
 
-	$pfb['dnsbl_iface']	= $pfb['dnsblconfig']['dnsbl_interface']?: 'lo0';	// VIP Local Interface setting
-	$pfb['dnsbl_vip']	= $pfb['dnsblconfig']['pfb_dnsvip']	?: '';		// Virtual IP local address
-	$pfb['dnsbl_v6']	= $pfb['dnsblconfig']['pfb_dnsblv6']	?: '';		// Enable/Disable DNSBL IPv6
-	$pfb['dnsbl_port']	= $pfb['dnsblconfig']['pfb_dnsport'];			// Lighttpd web server http port setting
-	$pfb['dnsbl_port_ssl']	= $pfb['dnsblconfig']['pfb_dnsport_ssl'];		// Lighttpd web server https port setting
-	$pfb['dnsbl_alexa']	= $pfb['dnsblconfig']['alexa_enable'];			// TOP1M whitelist
-	$pfb['dnsbl_alexatype'] = $pfb['dnsblconfig']['alexa_type'] ?: 'tranco';	// TOP1M type (Tranco, Alexa or Cisco)
-	$pfb['dnsbl_res_cache']	= $pfb['dnsblconfig']['pfb_cache'];			// DNSBL Option to backup/restore Resolver cache
-	$pfb['dnsbl_sync']	= $pfb['dnsblconfig']['pfb_dnsbl_sync'];		// Live Updates to Resolver without a Reload
-	$pfb['dnsbl_global_log']= $pfb['dnsblconfig']['global_log'] ?: '';		// Global Logging/Blocking mode
+	$pfb['dnsbl_iface']	= isset($pfb['dnsblconfig']['dnsbl_interface']) ? $pfb['dnsblconfig']['dnsbl_interface'] : 'lo0';	// VIP Local Interface setting
+	$pfb['dnsbl_vip']	= isset($pfb['dnsblconfig']['pfb_dnsvip'])	? $pfb['dnsblconfig']['pfb_dnsvip']	 : '10.10.10.1';// Virtual IP local address
+	$pfb['dnsbl_v6']	= isset($pfb['dnsblconfig']['pfb_dnsblv6'])	? $pfb['dnsblconfig']['pfb_dnsblv6']	 : '';		// Enable/Disable DNSBL IPv6
+	$pfb['dnsbl_port']	= $pfb['dnsblconfig']['pfb_dnsport'];									// Lighttpd web server http port setting
+	$pfb['dnsbl_port_ssl']	= $pfb['dnsblconfig']['pfb_dnsport_ssl'];								// Lighttpd web server https port setting
+	$pfb['dnsbl_alexa']	= $pfb['dnsblconfig']['alexa_enable'];									// TOP1M whitelist
+	$pfb['dnsbl_alexatype'] = isset($pfb['dnsblconfig']['alexa_type'])	? $pfb['dnsblconfig']['alexa_type'] 	 : 'tranco';	// TOP1M type (Tranco, Alexa or Cisco)
+	$pfb['dnsbl_res_cache']	= $pfb['dnsblconfig']['pfb_cache'];									// DNSBL Option to backup/restore Resolver cache
+	$pfb['dnsbl_sync']	= $pfb['dnsblconfig']['pfb_dnsbl_sync'];								// Live Updates to Resolver without a Reload
+	$pfb['dnsbl_global_log']= isset($pfb['dnsblconfig']['global_log']) 	? $pfb['dnsblconfig']['global_log']	 : '';		// Global Logging/Blocking mode
 
 	$pfb['dnsbl_mode']	= $pfb['dnsblconfig']['dnsbl_mode'];			// DNSBL Mode (Unbound/python mode)
 	$pfb['dnsbl_py_reply']	= $pfb['dnsblconfig']['pfb_py_reply'];			// DNSBL Resolver python DNS Reply logging
@@ -2206,20 +2206,21 @@ function pfb_unbound_dnsbl($mode) {
 				$custom = explode ("\n", $unbound_custom);
 				foreach ($custom as $key => $line) {
 					if (strpos($line, 'pfb_dnsbl.*conf') !== FALSE) {
-						$pfbupdate = TRUE;
 						if (!$pfb['dnsbl_py_blacklist']) {
 							$log = "\nRemoving DNSBL SafeSearch mode (Resolver adv. setting)";
 							unset($custom[$key]);
+							$pfbupdate = TRUE;
 						}
 
 						// To be removed when SafeSearch CNAME python mode has been fixed
-						elseif ($pfb['safesearch_enable'] !== 'Disable') {
+						elseif ($mode == 'enabled' && $pfb['safesearch_enable'] !== 'Disable') {
 							//
 						}
 
 						else {
 							$log = "\nRemoving DNSBL Unbound mode and/or DNSBL SafeSearch CNAME mode (Resolver adv. setting)";
 							unset($custom[$key]);
+							$pfbupdate = TRUE;
 						}
 					}
 				}
@@ -2290,7 +2291,7 @@ function pfb_unbound_dnsbl($mode) {
 					}
 
 					// To be removed when SafeSearch CNAME python mode has been fixed
-					elseif ($pfb['safesearch_enable'] !== 'Disable') {
+					elseif ($mode == 'enabled' && $pfb['safesearch_enable'] !== 'Disable') {
 						$unbound = TRUE;
 					}
 
@@ -2355,7 +2356,7 @@ function pfb_unbound_dnsbl($mode) {
 			}
 
 			// To be removed when SafeSearch CNAME python mode has been fixed
-			elseif ($pfb['safesearch_enable'] !== 'Disable') {
+			elseif ($mode == 'enabled' && $pfb['safesearch_enable'] !== 'Disable') {
 				$u_update = TRUE;
 				$u_msg .= "  Added DNSBL SafeSearch CNAME mode\n";
 				$conf[] = "\nserver:include: {$pfb['dnsbl_file']}.*conf\n";
@@ -5287,37 +5288,58 @@ function pfb_collect_localhosts() {
 	}
 
 	// Collect dynamic DHCP hostnames/IPs
-	$leasesfile = "{$g['dhcpd_chroot_path']}/var/db/dhcpd.leases";
+	if (dhcp_is_backend('isc')) {
 
-	$end = $hostname = '';
-	if (file_exists("{$leasesfile}")) {
-		if (($l_handle = @fopen("{$leasesfile}", 'r')) !== FALSE) {
-			while (($line = @fgets($l_handle)) !== FALSE) {
-				if (strpos($line, '{') !== FALSE) {
-					$end = FALSE;
-					$data = explode(' ', $line);
-					$ip = $data[1];
-				}
-				if (strpos($line, 'client-hostname') !== FALSE) {
-					$data = explode(' ', $line);
-					$hostname = trim(str_replace(array('"', ';'), '', $data[3]));
-				}
-				if (strpos($line, '}') !== FALSE) {
-					$end = TRUE;
-				}
-				if ($end) {
-					if (!empty($ip)) {
-						$ip = pfb_filter($ip, PFB_FILTER_IP, 'Collect dynamic DHCP hostnames');
-					}
+		// DHCP ISC
+		$leasesfile = "{$g['dhcpd_chroot_path']}/var/db/dhcpd.leases";
 
-					if (!empty($hostname)) {
-						$hostname = pfb_filter($hostname, PFB_FILTER_HOSTNAME, 'Collect dynamic DHCP hostnames');
+		$end = $hostname = '';
+		if (file_exists("{$leasesfile}")) {
+			if (($l_handle = @fopen("{$leasesfile}", 'r')) !== FALSE) {
+				while (($line = @fgets($l_handle)) !== FALSE) {
+					if (strpos($line, '{') !== FALSE) {
+						$end = FALSE;
+						$data = explode(' ', $line);
+						$ip = $data[1];
 					}
+					if (strpos($line, 'client-hostname') !== FALSE) {
+						$data = explode(' ', $line);
+						$hostname = trim(str_replace(array('"', ';'), '', $data[3]));
+					}
+					if (strpos($line, '}') !== FALSE) {
+						$end = TRUE;
+					}
+					if ($end) {
+						if (!empty($ip)) {
+							$ip = pfb_filter($ip, PFB_FILTER_IP, 'Collect dynamic DHCP hostnames');
+						}
+
+						if (!empty($hostname)) {
+							$hostname = pfb_filter($hostname, PFB_FILTER_HOSTNAME, 'Collect dynamic DHCP hostnames');
+						}
+
+						if (!empty($ip) && !empty($hostname)) {
+							$local_hosts[$ip] = $hostname;
+						}
+						$ip = $hostname = '';
+					}
+				}
+			}
+		}
+	}
+	else {
+
+		// DHCP KEA
+		$leases = system_get_kea4leases();
+		if (isset($leases) && is_array($leases['lease'])) {
+			foreach ($leases['lease'] as $lease) {
+				if (!empty($lease)) {
+					$ip		= pfb_filter($lease['ip'], PFB_FILTER_IP, 'Collect dynamic DHCP hostnames');
+					$hostname	= pfb_filter($lease['hostname'], PFB_FILTER_HOSTNAME, 'Collect dynamic DHCP hostnames');
 
 					if (!empty($ip) && !empty($hostname)) {
 						$local_hosts[$ip] = $hostname;
 					}
-					$ip = $hostname = '';
 				}
 			}
 		}
@@ -10648,7 +10670,7 @@ function sync_package_pfblockerng($cron='') {
 			// Determine if CRON job requires updating
 			if (!pfblockerng_cron_exists($pfb_cmd, $pfb['min'], $pfb_hour, $pfb_mday, $pfb_wday)) {
 				install_cron_job('pfblockerng.php cron', false);
-				install_cron_job($pfb_cmd, true, $pfb['min'], $pfb_hour, $pfb_mday, $pfb_month, $pfb_wday, $pfb_who);
+				install_cron_job($pfb_cmd, true, $pfb['min'], $pfb_hour, $pfb_mday, $pfb_month, $pfb_wday, $pfb_who, false);
 			}
 		}
 		else {
@@ -10674,7 +10696,7 @@ function sync_package_pfblockerng($cron='') {
 		// Determine if CRON job requires updating
 		if (!pfblockerng_cron_exists($pfb_gcmd, $pfb_gmin, 'random', $pfb_gmday, $pfb_gwday)) {
 			install_cron_job('pfblockerng.php dcc', false);
-			install_cron_job($pfb_gcmd, true, $pfb_gmin, $pfb_ghour, $pfb_gmday, $pfb_gmonth, $pfb_gwday, $pfb_gwho);
+			install_cron_job($pfb_gcmd, true, $pfb_gmin, $pfb_ghour, $pfb_gmday, $pfb_gmonth, $pfb_gwday, $pfb_gwho, false);
 		}
 	}
 	else {
@@ -10712,7 +10734,7 @@ function sync_package_pfblockerng($cron='') {
 			// Determine if CRON job requires updating
 			if (!pfblockerng_cron_exists($pfb_bcmd, $pfb_bmin, 'random', $pfb_bmday, $pfb_bwday)) {
 				install_cron_job('pfblockerng.php bl', false);
-				install_cron_job($pfb_bcmd, true, $pfb_bmin, $pfb_bhour, $pfb_bmday, $pfb_bmonth, $pfb_bwday, $pfb_bwho);
+				install_cron_job($pfb_bcmd, true, $pfb_bmin, $pfb_bhour, $pfb_bmday, $pfb_bmonth, $pfb_bwday, $pfb_bwho, false);
 			}
 		}
 		else {
@@ -10741,7 +10763,7 @@ function sync_package_pfblockerng($cron='') {
 				}
 
 				if (!pfblockerng_cron_exists($pfb_cmd, '0', '0', '*', $pfb_day)) {
-					install_cron_job($pfb_cmd, true, '0', '0', '*', '*', $pfb_day, 'root');
+					install_cron_job($pfb_cmd, true, '0', '0', '*', '*', $pfb_day, 'root', false);
 				}
 			}
 			else {

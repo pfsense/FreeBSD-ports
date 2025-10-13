@@ -583,7 +583,7 @@ foreach (array('clearip', 'cleardnsbl') as $type) {
 			$pfb_cmd = "/usr/local/bin/php /usr/local/www/pfblockerng/pfblockerng.php {$type} >/dev/null 2>&1";
 			if (!pfblockerng_cron_exists($pfb_cmd, '0', '0', '*', $pfb_day)) {
 				$ufound = TRUE;
-				install_cron_job($pfb_cmd, true, '0', '0', '*', '*', $pfb_day, 'root');
+				install_cron_job($pfb_cmd, true, '0', '0', '*', '*', $pfb_day, 'root', false);
 			}
 		}
 	}
