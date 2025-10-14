@@ -302,6 +302,12 @@
     SUBDIR += nvidia-driver-390
     SUBDIR += nvidia-driver-470
     SUBDIR += nvidia-driver-devel
+    SUBDIR += nvidia-kmod
+    SUBDIR += nvidia-kmod-304
+    SUBDIR += nvidia-kmod-340
+    SUBDIR += nvidia-kmod-390
+    SUBDIR += nvidia-kmod-470
+    SUBDIR += nvidia-kmod-devel
     SUBDIR += nvidia-settings
     SUBDIR += nvidia-xconfig
     SUBDIR += nwg-bar
@@ -482,6 +488,7 @@
     SUBDIR += wl-clipboard
     SUBDIR += wl-kbptr
     SUBDIR += wl-mirror
+    SUBDIR += wleave
     SUBDIR += wlogout
     SUBDIR += wlopm
     SUBDIR += wlr-randr

@@ -1,6 +1,7 @@
 PORTNAME=	connect
 DISTVERSIONPREFIX=	v
-DISTVERSION=	4.64.0
+DISTVERSION=	4.67.0
+PORTREVISION=	1
 CATEGORIES=	net
 PKGNAMEPREFIX=	redpanda-
 
@@ -44,6 +45,10 @@ EXTRA_PATCHES=	${FILESDIR}/extra-patch-public_components_all_package.go
 .endif
 
 .include <bsd.port.pre.mk>
+
+post-patch:
+	@${CP} ${WRKSRC}/vendor/github.com/AthenZ/athenz/libs/go/sia/util/os_util_linux.go \
+		${WRKSRC}/vendor/github.com/AthenZ/athenz/libs/go/sia/util/os_util_freebsd.go
 
 post-install:
 	@${MKDIR} ${STAGEDIR}${ETCDIR}

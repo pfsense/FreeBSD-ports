@@ -1,6 +1,6 @@
 PORTNAME=	hyprgraphics
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.1.6
+DISTVERSION=	0.2.0
 CATEGORIES=	graphics
 
 MAINTAINER=	tagattie@FreeBSD.org
@@ -23,12 +23,12 @@ GH_ACCOUNT=	hyprwm
 
 USE_LDCONFIG=	yes
 
-USE_GNOME=	cairo pango
+USE_GNOME=	cairo librsvg2 pango
 USE_XORG=	pixman
 
 LDFLAGS+=	-pthread
 
-PLIST_SUB=	SOVERSION_MAJOR=0 \
+PLIST_SUB=	SOVERSION_MAJOR=1 \
 		SOVERSION_FULL=${DISTVERSION:C/-.*//}
 
 .include <bsd.port.mk>

@@ -1,6 +1,6 @@
 PORTNAME=	tinyauth
 DISTVERSIONPREFIX=	v
-DISTVERSION=	3.6.2
+DISTVERSION=	4.0.0
 PORTREVISION=	1
 CATEGORIES=	www
 MASTER_SITES=	LOCAL/dtxdf/${PORTNAME}/
@@ -13,7 +13,9 @@ WWW=		https://tinyauth.app
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-USES=		go:1.23,modules
+BROKEN_i386=	cannot use int64(off) (value of type int64) as int32 value in assignment
+
+USES=		go:modules
 USE_GITHUB=	yes
 GH_ACCOUNT=	steveiliop56
 
@@ -32,7 +34,8 @@ SUB_LIST=	USER=${USERS:[1]}
 USERS=		${TINYAUTH_USER}
 GROUPS=		${TINYAUTH_GROUP}
 
-PLIST_FILES=	bin/${PORTNAME}
+PLIST_FILES=	bin/${PORTNAME} \
+		"@dir(${TINYAUTH_USER},${TINYAUTH_GROUP},0750) /var/db/${PORTNAME}"
 
 # Run 'git checkout ${DISTVERSIONPREFIX}${DISTVERSION} && git rev-parse HEAD'
 # in the Tinyauth repository to get the value of GITID.
@@ -46,5 +49,8 @@ TINYAUTH_GROUP=	${TINYAUTH_USER}
 pre-build:
 	@${MKDIR} ${WRKSRC}/internal/assets/dist
 	@cd ${WRKDIR}/tinyauth-frontend && ${COPYTREE_SHARE} . ${WRKSRC}/internal/assets/dist
+
+post-install:
+	@${MKDIR} ${STAGEDIR}/var/db/${PORTNAME}
 
 .include <bsd.port.mk>

@@ -1,4 +1,4 @@
---- vmblock/subr.c.orig	2025-10-01 18:57:53 UTC
+--- vmblock/subr.c.orig	2025-10-01 18:42:23 UTC
 +++ vmblock/subr.c
 @@ -208,7 +208,7 @@ VMBlockHashGet(struct mount *mp,        // IN: vmblock
        }
@@ -9,15 +9,6 @@
  }
  
  
-@@ -222,7 +222,7 @@ VMBlockHashGet(struct mount *mp,        // IN: vmblock
-  *
-  * Results:
-  *      Referenced, locked alias vnode if entry already in hash.  Otherwise
-- *      NULLVP.
-+ *      NULL.
-  *
-  * Side effects:
-  *      None.
 @@ -254,7 +254,7 @@ VMBlockHashInsert(struct mount *mp,             // IN:
     }
     LIST_INSERT_HEAD(hd, xp, hashEntry);

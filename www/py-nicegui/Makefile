@@ -1,6 +1,5 @@
 PORTNAME=	nicegui
-DISTVERSION=	2.23.3
-PORTREVISION=	1
+DISTVERSION=	3.0.0
 CATEGORIES=	www graphics python
 MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -57,7 +56,7 @@ MATPLOTLIB_DESC=	Enable support for matplotlib
 PLOTLY_DESC=		Enable support for plotly
 PYWEBVIEW_DESC=		Enable support for native mode
 PYWEBVIEW_GTK_DESC=	Use GTK port
-PYWEBVIEW_QT_DESC=	Use QT port
+PYWEBVIEW_QT_DESC=	Use Qt port
 
 LIBSASS_RUN_DEPENDS=		${PYTHON_PKGNAMEPREFIX}libsass>=0:www/py-libsass@${PY_FLAVOR}
 MATPLOTLIB_RUN_DEPENDS=		${PYTHON_PKGNAMEPREFIX}matplotlib>=0:math/py-matplotlib@${PY_FLAVOR}

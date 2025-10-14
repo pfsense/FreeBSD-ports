@@ -11,6 +11,7 @@
     SUBDIR += bindgraph
     SUBDIR += blocky
     SUBDIR += c-ares
+    SUBDIR += cascade
     SUBDIR += cli53
     SUBDIR += coredns
     SUBDIR += ddclient
@@ -44,6 +45,7 @@
     SUBDIR += dnsrecon
     SUBDIR += dnsreflector
     SUBDIR += dnssec-rr
+    SUBDIR += dnst
     SUBDIR += dnstable
     SUBDIR += dnstable-convert
     SUBDIR += dnstop

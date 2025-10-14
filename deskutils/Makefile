@@ -91,7 +91,6 @@
     SUBDIR += gnome-shell-extension-lockkeys
     SUBDIR += gnome-shell-extension-manager
     SUBDIR += gnome-shell-extension-mediaplayer
-    SUBDIR += gnome-shell-extension-openweather
     SUBDIR += gnome-shell-extension-panel-osd
     SUBDIR += gnome-shell-extension-recent-items
     SUBDIR += gnome-shell-extension-simple-weather
@@ -224,6 +223,7 @@
     SUBDIR += plasma6-sddm-kcm
     SUBDIR += plasma6-xdg-desktop-portal-kde
     SUBDIR += plopfolio
+    SUBDIR += podman-desktop
     SUBDIR += preferences
     SUBDIR += presage
     SUBDIR += projectlibre
@@ -279,6 +279,7 @@
     SUBDIR += tasksh
     SUBDIR += taskwarrior
     SUBDIR += taskwarrior-tui
+    SUBDIR += tatuin
     SUBDIR += teapot
     SUBDIR += terminal-image-viewer
     SUBDIR += thinkingrock
@@ -322,6 +323,7 @@
     SUBDIR += ydotool
     SUBDIR += zanshin
     SUBDIR += zim
+    SUBDIR += zk
     SUBDIR += znotes
     SUBDIR += zorro
 

@@ -1,5 +1,5 @@
 PORTNAME=	uv
-DISTVERSION=	0.8.21
+DISTVERSION=	0.9.1
 CATEGORIES=	devel
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -31,7 +31,10 @@ OPENSSLLIB=	/usr/lib
 
 RUSTFLAGS+=	-C link-args=-Wl,-rpath=${LOCALBASE}/lib
 
-PROGS=		uv uvx
+PROGS=		uv \
+		uvx \
+		uv-build \
+		uv-globfilter
 
 PLIST_FILES=	${PROGS:S/^/bin\//}
 

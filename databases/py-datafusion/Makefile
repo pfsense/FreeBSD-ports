@@ -1,5 +1,5 @@
 PORTNAME=	datafusion
-PORTVERSION=	49.0.0
+PORTVERSION=	50.0.0
 CATEGORIES=	databases python
 MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -12,6 +12,9 @@ WWW=		https://datafusion.apache.org/python/ \
 
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/LICENSE.txt
+
+BROKEN_armv7=	rustc-LLVM ERROR: out of memory
+BROKEN_i386=	rustc-LLVM ERROR: out of memory
 
 BUILD_DEPENDS=	protoc:devel/protobuf \
 		${PYTHON_PKGNAMEPREFIX}maturin>=1.8.1:devel/py-maturin@${PY_FLAVOR}

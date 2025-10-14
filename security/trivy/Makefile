@@ -1,6 +1,6 @@
 PORTNAME=	trivy
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.66.0
+DISTVERSION=	0.67.2
 PORTREVISION=	1
 CATEGORIES=	security
 
@@ -13,14 +13,19 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 
 BROKEN_i386=	not supported, see https://github.com/aquasecurity/trivy/pull/9102
 
-USES=		go:modules,1.24
+USES=		go:modules,1.25
 
+USE_GITHUB=	yes
+GH_ACCOUNT=	aquasecurity
+GH_PROJECT=	trivy
+GO_MOD_DIST=	github
 GO_MODULE=	github.com/aquasecurity/trivy
 GO_TARGET=	./cmd/trivy
 GO_BUILDFLAGS= -ldflags=" \
 		-extldflags '-static' \
 		-X github.com/aquasecurity/trivy/pkg/version.ver=${DISTVERSION} \
 		-s -w"
+MAKE_ENV=	GOEXPERIMENT=jsonv2
 
 PLIST_FILES=	bin/${PORTNAME}
 

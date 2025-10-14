@@ -321,14 +321,15 @@ reposilite:*:371:371::0:0:Reposilite user:/nonexistent:/usr/sbin/nologin
 beam:*:372:372::0:0:Erlang BEAM VM user:/nonexistent:/usr/sbin/nologin
 mautrix-whatsapp:*:373:373::0:0:Mautrix-Whatsapp Daemon:/nonexistent:/usr/sbin/nologin
 traccar:*:374:374::0:0:Traccar GPS Tracking Platform:/nonexistent:/usr/sbin/nologin
-# free: 375
-# free: 376
+unpackerr:*:375:375::0:0:Unpackerr Daemon:/nonexistent:/usr/sbin/nologin
+athens:*:376:376::0:0:Athens Go module registry:/nonexistent:/sbin/nologin
 hostd:*:377:377::0:0:hostd Daemon:/nonexistent:/usr/sbin/nologin
 walletd:*:378:378::0:0:walletd Daemon:/nonexistent:/usr/sbin/nologin
 renterd:*:379:379::0:0:renterd Daemon:/nonexistent:/usr/sbin/nologin
 spoofdpi:*:380:380::0:0:SpoofDPI Daemon:/nonexistent:/usr/sbin/nologin
 hydroxide:*:381:381::0:0:Hydroxide Daemon:/var/db/hydroxide:/usr/sbin/nologin
 _tlsrpt:*:382:382::0:0:TLSRPT Daemon:/nonexistent:/usr/sbin/nologin
+cascade:*:383:383::0:0:Cascade Daemon:/var/db/cascade:/usr/sbin/nologin
 # free: 383
 # free: 384
 # free: 385
@@ -783,7 +784,7 @@ beehive:*:832:832::0:0:beehive user:/nonexistent:/usr/sbin/nologin
 # free: 833
 pocket-id:*:834:834::0:0:OIDC provider that allows users to authenticate with their passkeys:/var/db/pocket-id:/usr/sbin/nologin
 filebrowser:*:835:835::0:0:Web File Browser:/var/db/filebrowser:/usr/sbin/nologin
-tinyauth:*:836:836::0:0:Simplest way to protect your apps with a login screen:/nonexistent:/usr/sbin/nologin
+tinyauth:*:836:836::0:0:Simplest way to protect your apps with a login screen:/var/db/tinyauth:/usr/sbin/nologin
 homebox:*:837:837::0:0:Inventory and organization system built for the Home User:/var/db/homebox:/usr/sbin/nologin
 # free: 838
 shiori:*:839:839::0:0:Simple bookmark manager built with Go:/var/db/shiori:/usr/sbin/nologin

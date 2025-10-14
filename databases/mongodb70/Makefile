@@ -1,6 +1,7 @@
 PORTNAME=	mongodb
 DISTVERSIONPREFIX=	r
 DISTVERSION=	7.0.24
+PORTREVISION=	1
 CATEGORIES=	databases net
 PKGNAMESUFFIX=	${DISTVERSION:R:S/.//}
 
@@ -130,6 +131,7 @@ MOZJS_WRKSRC=	${WRKSRC}/src/third_party/mozjs
 
 .if ${FLAVOR:U} == armv80a
 OPTIONS_SET+=	ARMV80A
+MAKE_JOBS_UNSAFE=	yes
 .endif
 
 .include <bsd.port.pre.mk>

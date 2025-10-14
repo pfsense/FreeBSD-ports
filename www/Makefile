@@ -13,6 +13,7 @@
     SUBDIR += R-cran-jose
     SUBDIR += R-cran-jquerylib
     SUBDIR += R-cran-miniUI
+    SUBDIR += R-cran-pixture
     SUBDIR += R-cran-pkgdown
     SUBDIR += R-cran-rvest
     SUBDIR += R-cran-scrapeR
@@ -153,6 +154,7 @@
     SUBDIR += dolibarr18
     SUBDIR += dolibarr19
     SUBDIR += dolibarr20
+    SUBDIR += dolibarr21
     SUBDIR += domoticz
     SUBDIR += domoticz-devel
     SUBDIR += dooble
@@ -463,6 +465,7 @@
     SUBDIR += moodle44
     SUBDIR += moodle45
     SUBDIR += moodle50
+    SUBDIR += moodle51
     SUBDIR += morty
     SUBDIR += multisort
     SUBDIR += multiwatch
@@ -1727,6 +1730,7 @@
     SUBDIR += py-dropbox
     SUBDIR += py-dtflickr
     SUBDIR += py-enmerkar
+    SUBDIR += py-essentials-openapi
     SUBDIR += py-fake-useragent
     SUBDIR += py-falcon
     SUBDIR += py-fastapi
@@ -1913,6 +1917,8 @@
     SUBDIR += py-qh3
     SUBDIR += py-qt5-webengine
     SUBDIR += py-qt6-webengine
+    SUBDIR += py-quart
+    SUBDIR += py-quart-trio
     SUBDIR += py-quilt3
     SUBDIR += py-readability-lxml
     SUBDIR += py-recaptcha
@@ -2359,7 +2365,6 @@
     SUBDIR += rubygem-rack_csrf
     SUBDIR += rubygem-rackup
     SUBDIR += rubygem-rackup10
-    SUBDIR += rubygem-rackup21
     SUBDIR += rubygem-rails-gitlab
     SUBDIR += rubygem-rails-settings-cached
     SUBDIR += rubygem-rails-settings-cached-rails5
@@ -2477,6 +2482,7 @@
     SUBDIR += rubygem-turbolinks
     SUBDIR += rubygem-turbolinks-source
     SUBDIR += rubygem-typhoeus
+    SUBDIR += rubygem-typhoeus14
     SUBDIR += rubygem-uglifier
     SUBDIR += rubygem-underscore-rails
     SUBDIR += rubygem-unicorn

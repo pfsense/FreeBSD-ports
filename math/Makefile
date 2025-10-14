@@ -118,6 +118,7 @@
     SUBDIR += R-cran-pbkrtest
     SUBDIR += R-cran-plot3D
     SUBDIR += R-cran-pls
+    SUBDIR += R-cran-polyclip
     SUBDIR += R-cran-polycor
     SUBDIR += R-cran-polynom
     SUBDIR += R-cran-pracma
@@ -603,6 +604,7 @@
     SUBDIR += octave-forge-interval
     SUBDIR += octave-forge-io
     SUBDIR += octave-forge-irsa
+    SUBDIR += octave-forge-joystick
     SUBDIR += octave-forge-level-set
     SUBDIR += octave-forge-linear-algebra
     SUBDIR += octave-forge-lssa
@@ -630,6 +632,7 @@
     SUBDIR += octave-forge-nurbs
     SUBDIR += octave-forge-oct2mat
     SUBDIR += octave-forge-octave-pool
+    SUBDIR += octave-forge-octave_mermaid_js
     SUBDIR += octave-forge-octave_php_wrapper
     SUBDIR += octave-forge-octave_tar
     SUBDIR += octave-forge-octave_zstd
@@ -962,6 +965,7 @@
     SUBDIR += py-cmyt
     SUBDIR += py-colormath
     SUBDIR += py-contourpy
+    SUBDIR += py-conway-polynomials
     SUBDIR += py-cryptominisat
     SUBDIR += py-cvxopt
     SUBDIR += py-cvxpy
@@ -1013,6 +1017,7 @@
     SUBDIR += py-isosurfaces
     SUBDIR += py-jacobi
     SUBDIR += py-jax
+    SUBDIR += py-jij-cimod
     SUBDIR += py-kahip
     SUBDIR += py-keras
     SUBDIR += py-keras-applications

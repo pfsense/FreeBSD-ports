@@ -643,13 +643,11 @@
     SUBDIR += lineak-defaultplugin
     SUBDIR += lineak-xosdplugin
     SUBDIR += lineakd
-    SUBDIR += linrename
     SUBDIR += linux-c7-lttng-ust
     SUBDIR += linux-c7-numactl-libs
     SUBDIR += linux-c7-userspace-rcu
     SUBDIR += linux-miniconda-installer
     SUBDIR += linux-rkbin
-    SUBDIR += linuxfdisk
     SUBDIR += littlejet
     SUBDIR += lmmon
     SUBDIR += lmon
@@ -735,7 +733,6 @@
     SUBDIR += monit
     SUBDIR += monitord
     SUBDIR += monitorix
-    SUBDIR += moor
     SUBDIR += moreutils
     SUBDIR += most
     SUBDIR += mountsmb2

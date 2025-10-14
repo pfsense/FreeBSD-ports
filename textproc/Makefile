@@ -494,6 +494,7 @@
     SUBDIR += mn-aspell
     SUBDIR += moar
     SUBDIR += modlogan
+    SUBDIR += moor
     SUBDIR += mp_doccer
     SUBDIR += mr-aspell
     SUBDIR += ms-aspell
@@ -1570,6 +1571,7 @@
     SUBDIR += py-python-docx
     SUBDIR += py-python-frontmatter
     SUBDIR += py-python-gettext
+    SUBDIR += py-python-iso639
     SUBDIR += py-python-lsp-black
     SUBDIR += py-python-lsp-jsonrpc
     SUBDIR += py-python-lsp-server
@@ -1689,6 +1691,9 @@
     SUBDIR += py-texttable
     SUBDIR += py-textual
     SUBDIR += py-textual-autocomplete
+    SUBDIR += py-textual-image
+    SUBDIR += py-textual-speedups
+    SUBDIR += py-textual0
     SUBDIR += py-textwrap3
     SUBDIR += py-three-merge
     SUBDIR += py-tika-client

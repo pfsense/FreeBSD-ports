@@ -1,4 +1,4 @@
---- vmblock/vfsops.c.orig	2025-05-15 19:16:07 UTC
+--- vmblock/vfsops.c.orig	2025-10-01 18:44:42 UTC
 +++ vmblock/vfsops.c
 @@ -173,7 +173,6 @@ VMBlockVFSMount(struct mount *mp)        // IN: mount(
  #endif

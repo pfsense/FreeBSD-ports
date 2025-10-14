@@ -67,8 +67,6 @@
     SUBDIR += boinc-client
     SUBDIR += boinc_curses
     SUBDIR += boinctui
-    SUBDIR += bosh-bootloader
-    SUBDIR += bosh-cli
     SUBDIR += bounce
     SUBDIR += bredbandskollen
     SUBDIR += brynet
@@ -80,7 +78,6 @@
     SUBDIR += c3270
     SUBDIR += calendarsupport
     SUBDIR += ccxstream
-    SUBDIR += cf
     SUBDIR += charm
     SUBDIR += chrony
     SUBDIR += chrony-lite
@@ -92,7 +89,6 @@
     SUBDIR += cloudquery
     SUBDIR += clusterit
     SUBDIR += cnd
-    SUBDIR += concourse-fly
     SUBDIR += containernetworking-plugins
     SUBDIR += corkscrew
     SUBDIR += corosync2
@@ -299,6 +295,7 @@
     SUBDIR += ipxe
     SUBDIR += irrd
     SUBDIR += isboot-kmod
+    SUBDIR += isboot-kmod-devel
     SUBDIR += isc-dhcp44-client
     SUBDIR += isc-dhcp44-relay
     SUBDIR += isc-dhcp44-server
@@ -528,7 +525,6 @@
     SUBDIR += ndproxy
     SUBDIR += neatvnc
     SUBDIR += nemesis
-    SUBDIR += netatalk3
     SUBDIR += netatalk4
     SUBDIR += netcat
     SUBDIR += netdiscover
@@ -917,7 +913,6 @@
     SUBDIR += p5-URI-Template-Restrict
     SUBDIR += p5-URI-cpan
     SUBDIR += p5-URI-db
-    SUBDIR += p5-URI-ws
     SUBDIR += p5-VM-EC2
     SUBDIR += p5-VM-EC2-Security-CredentialCache
     SUBDIR += p5-Validate-Net
@@ -1073,6 +1068,7 @@
     SUBDIR += py-gdown
     SUBDIR += py-geopy
     SUBDIR += py-gntp
+    SUBDIR += py-google-cloud-pubsub
     SUBDIR += py-greenstalk
     SUBDIR += py-gspread
     SUBDIR += py-h11
@@ -1704,6 +1700,7 @@
     SUBDIR += wpa_supplicant_gui
     SUBDIR += wping
     SUBDIR += wstunnel
+    SUBDIR += wutil
     SUBDIR += x11vnc
     SUBDIR += x2goclient
     SUBDIR += x2goclient-cli

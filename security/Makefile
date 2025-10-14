@@ -58,7 +58,6 @@
     SUBDIR += bitwarden-cli
     SUBDIR += blst
     SUBDIR += boringssl
-    SUBDIR += botan2
     SUBDIR += botan3
     SUBDIR += bruteblock
     SUBDIR += bsdsfv
@@ -235,7 +234,6 @@
     SUBDIR += hyperhotp
     SUBDIR += i2pd
     SUBDIR += iaikpkcs11wrapper
-    SUBDIR += iddawc
     SUBDIR += idea
     SUBDIR += identify
     SUBDIR += imds-filterd
@@ -453,7 +451,6 @@
     SUBDIR += openssl-quictls
     SUBDIR += openssl-unsafe
     SUBDIR += openssl111
-    SUBDIR += openssl32
     SUBDIR += openssl33
     SUBDIR += openssl33-quictls
     SUBDIR += openssl34
@@ -897,6 +894,7 @@
     SUBDIR += py-bcrypt
     SUBDIR += py-bitbox02
     SUBDIR += py-btchip-python
+    SUBDIR += py-cart
     SUBDIR += py-cerealizer
     SUBDIR += py-cert-human
     SUBDIR += py-certbot
@@ -920,6 +918,7 @@
     SUBDIR += py-certbot-dns-standalone
     SUBDIR += py-certbot-nginx
     SUBDIR += py-certifi
+    SUBDIR += py-certipy
     SUBDIR += py-certomancer
     SUBDIR += py-certstream
     SUBDIR += py-ckcc-protocol
@@ -957,6 +956,7 @@
     SUBDIR += py-gpsoauth
     SUBDIR += py-greenbone-feed-sync
     SUBDIR += py-gssapi
+    SUBDIR += py-guardpost
     SUBDIR += py-gvm-tools
     SUBDIR += py-hkdf
     SUBDIR += py-htpasswd
