@@ -130,7 +130,7 @@ _PERL5_FROM_BIN!=	${LOCALBASE}/bin/perl -e 'printf "%vd\n", $$^V;'
 _EXPORTED_VARS+=	_PERL5_FROM_BIN
 PERL5_DEFAULT:=		${_PERL5_FROM_BIN:R}
 .  endif
-# Possible values: 13, 14, 15, 16, 17
+# Possible values: 13, 14, 15, 16, 17, 18
 PGSQL_DEFAULT?=		17
 # Possible values: 8.1, 8.2, 8.3, 8.4, 8.5
 PHP_DEFAULT?=		8.3
@@ -152,7 +152,8 @@ RUST_DEFAULT?=		rust
 SAMBA_DEFAULT?=		4.16
 # When updating this, please also update the same list in ssl.mk and the checks
 # for USES=ssl in qa.sh!
-# Possible values: base, openssl, openssl111, openssl31, openssl32, openssl33, libressl, libressl-devel
+# Possible values: base, openssl, openssl111, openssl33, openssl34, openssl35,
+# openssl36, libressl, libressl-devel
 .  if !defined(SSL_DEFAULT)
 #	If no preference was set, check for an installed base version
 #	but give an installed port preference over it.

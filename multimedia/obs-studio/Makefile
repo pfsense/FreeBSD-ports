@@ -1,5 +1,6 @@
 PORTNAME=	obs-studio
-DISTVERSION=	31.1.2
+DISTVERSION=	32.0.1
+PORTREVISION=	1
 CATEGORIES=	multimedia
 MASTER_SITES=	https://github.com/obsproject/obs-studio/releases/download/${DISTVERSION}/
 DISTFILES=	OBS-Studio-${DISTVERSION}-Sources${EXTRACT_SUFX}
@@ -17,9 +18,10 @@ BROKEN_i386=	link fails: relocation R_386_PC32 cannot be used against symbol 'st
 
 BUILD_DEPENDS=	asio>0:net/asio \
 		${LOCALBASE}/include/nlohmann/json.hpp:devel/nlohmann-json \
-		v4l_compat>=0:multimedia/v4l_compat \
+		simde>0:devel/simde \
 		swig:devel/swig \
 		uthash>0:devel/uthash \
+		v4l_compat>=0:multimedia/v4l_compat \
 		websocketpp>0:devel/websocketpp
 LIB_DEPENDS=	libasound.so:audio/alsa-lib \
 		libavcodec.so:multimedia/ffmpeg \
@@ -64,8 +66,11 @@ CMAKE_ARGS=	-DOBS_VERSION_OVERRIDE:STRING="${PORTVERSION}" \
 		-DQT_VERSION=6 \
 		-DPython_EXECUTABLE="${PYTHON_CMD}"
 
+CFLAGS+=	-Wno-error=attribute-warning
 CFLAGS_powerpc64=	-Wno-error=deprecated-altivec-src-compat -Wno-error=pass-failed
 CFLAGS_powerpc64le=	-Wno-error=deprecated-altivec-src-compat
+CFLAGS+=	-fPIC # otherwise we get: relocation R_X86_64_PC32 cannot be used against symbol '__stack_chk_guard'; recompile with -fPIC
+CXXFLAGS+=	-fPIC # otherwise we get: relocation R_X86_64_PC32 cannot be used against symbol '__stack_chk_guard'; recompile with -fPIC
 LDFLAGS+=	-fPIC # pending https://github.com/obsproject/obs-studio/issues/3436
 
 WRKSRC=		${WRKDIR}/${PORTNAME}-${PORTVERSION}-sources

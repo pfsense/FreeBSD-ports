@@ -1,7 +1,6 @@
 PORTNAME=	satty
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.19.0
-PORTREVISION=	3
+DISTVERSION=	0.20.0
 CATEGORIES=	graphics wayland
 MASTER_SITES=	CRATESIO
 
@@ -18,7 +17,6 @@ USE_GITHUB=	yes
 USE_GNOME=	gdkpixbuf gtk40 libadwaita
 GH_ACCOUNT=	gabm
 GH_PROJECT=	Satty
-CARGO_ENV=	SOURCE_DIR="${WRKSRC}"
 PLIST_FILES=	bin/${PORTNAME} \
 		share/applications/${PORTNAME}.desktop \
 		share/icons/hicolor/scalable/apps/${PORTNAME}.svg

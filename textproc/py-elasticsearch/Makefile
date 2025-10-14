@@ -1,12 +1,12 @@
 PORTNAME=	elasticsearch
-PORTVERSION=	9.1.0
+PORTVERSION=	9.1.1
 CATEGORIES=	textproc python
 MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Official Python low-level client for Elasticsearch
-WWW=		https://www.elastic.co/guide/en/elasticsearch/client/python-api/current/index.html \
+WWW=		https://www.elastic.co/docs/reference/elasticsearch/clients/python \
 		https://github.com/elastic/elasticsearch-py
 
 LICENSE=	APACHE20

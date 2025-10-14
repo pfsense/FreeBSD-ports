@@ -1,6 +1,6 @@
 PORTNAME=	hyprsunset
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.3.2
+DISTVERSION=	0.3.3
 CATEGORIES=	accessibility wayland
 
 MAINTAINER=	tagattie@FreeBSD.org

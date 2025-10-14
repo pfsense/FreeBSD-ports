@@ -1,6 +1,6 @@
 PORTNAME=	xpra
-PORTVERSION=	6.3.2
-PORTREVISION=	2
+PORTVERSION=	6.3.4
+PORTREVISION=	1
 CATEGORIES=	x11
 MASTER_SITES=	https://xpra.org/src/
 
@@ -31,6 +31,7 @@ RUN_DEPENDS=	${PY_PILLOW} \
 		${PYTHON_PKGNAMEPREFIX}pyinotify>0:devel/py-pyinotify@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}PyOpenGL-accelerate>=3.1.0:graphics/py-PyOpenGL-accelerate@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}PyOpenGL>=3.1.0:graphics/py-PyOpenGL@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}aioquic>=0:www/py-aioquic@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}rencode>1:converters/py-rencode@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}xdg>0:devel/py-xdg@${PY_FLAVOR} \
 		setxkbmap:x11/setxkbmap \
@@ -38,6 +39,8 @@ RUN_DEPENDS=	${PY_PILLOW} \
 		xauth:x11/xauth \
 		xkbcomp:x11/xkbcomp \
 		Xvfb:x11-servers/xorg-server@xvfb
+TEST_DEPENDS=	bash:shells/bash \
+		coverage:devel/py-coverage@${PY_FLAVOR}
 
 USES=		desktop-file-utils gettext-runtime gnome localbase pkgconfig \
 		python shared-mime-info shebangfix tar:xz xorg
@@ -51,7 +54,8 @@ PLIST_SUB+=	PORTVERSION=${PORTVERSION} \
 SHEBANG_FILES=	fs/lib/cups/backend/xpraforwarder fs/libexec/xpra/auth_dialog \
 		fs/libexec/xpra/gnome-open fs/libexec/xpra/gvfs-open \
 		fs/libexec/xpra/xdg-open fs/libexec/xpra/xpra_signal_listener \
-		fs/libexec/xpra/xpra_udev_product_version
+		fs/libexec/xpra/xpra_udev_product_version \
+		tests/unittests/run
 
 OPTIONS_DEFINE=		AVAHI CUPS DOCS GSTREAMER LIBYUV \
 			WEBCAM
@@ -101,7 +105,10 @@ PYDISTUTILS_ARGS+=	--with-${opt}
 PYDISTUTILS_BUILDARGS+=	${PYDISTUTILS_ARGS}
 PYDISTUTILS_CONFIGUREARGS+=	${PYDISTUTILS_ARGS}
 PYDISTUTILS_INSTALLARGS+=	${PYDISTUTILS_ARGS}
-#MAKE_ENV=	pkgdir=${STAGEDIR}${PREFIX}/
+MY_TEST_ENV=		XDG_DATA_HOME=${WRKDIR}/test_home \
+			XDG_CONFIG_HOME=${WRKDIR}/test_home \
+			XDG_CACHE_HOME=${WRKDIR}/test_home/.cache \
+			HOME=${WRKDIR}/test_home
 
 post-patch:
 	@${REINPLACE_CMD} -e 's|/usr/share|${LOCALBASE}/share|' \
@@ -119,5 +126,11 @@ post-install:
 	${CP} -r ${STAGEDIR}${PREFIX}/etc/dbus-1 ${STAGEDIR}${PREFIX}/share && ${RM} -r ${STAGEDIR}${PREFIX}/dbus-1
 	${FIND} ${STAGEDIR}${PYTHON_SITELIBDIR}/${PORTNAME} -name '*.so' \
 	    -exec ${STRIP_CMD} {} +
+
+do-test:
+	@${MKDIR} ${BINARY_LINKDIR}
+	${RLN} ${PYTHON_CMD} ${BINARY_LINKDIR}/python3
+	cd ${BUILD_WRKSRC}; ${SETENVI} ${WRK_ENV} ${TEST_ENV} ${MY_TEST_ENV} \
+		${PYTHON_CMD} ${PYDISTUTILS_SETUP} unittests
 
 .include <bsd.port.post.mk>

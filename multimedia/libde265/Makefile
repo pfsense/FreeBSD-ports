@@ -1,5 +1,5 @@
 PORTNAME=	libde265
-DISTVERSION=	1.0.12
+DISTVERSION=	1.0.16
 CATEGORIES=	multimedia
 MASTER_SITES=	https://github.com/strukturag/${PORTNAME}/releases/download/v${DISTVERSION}/
 
@@ -11,24 +11,34 @@ LICENSE=	LGPL3
 LICENSE_FILE=	${WRKSRC}/COPYING
 
 USES=		autoreconf compiler:c++11-lib cpe libtool pathfix pkgconfig
-GNU_CONFIGURE=	yes
+CPE_VENDOR=	struktur
 USE_LDCONFIG=	yes
 
-CPE_VENDOR=	struktur
-
+GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--disable-static --disable-sherlock265
+INSTALL_TARGET=	install-strip
+
+OPTIONS_DEFINE=		SDL
+OPTIONS_DEFAULT=	SDL
+SDL_USES=		sdl
+SDL_USE=		SDL=sdl2
+SDL_CONFIGURE_ENABLE=	sdl2
+
+_BIN=	bjoentegaard block-rate-estim dec265 gen-enc-table rd-curves tests \
+	yuv-distortion
 
 .include <bsd.port.pre.mk>
 
-.if ${ARCH} == "armv6" || ${ARCH} == "armv7"
+.if ${ARCH:Marmv?}
 BUILD_DEPENDS+=	${LOCALBASE}/bin/as:devel/binutils
 CONFIGURE_ENV+=	CCASFLAGS="${CFLAGS} -B${LOCALBASE}/bin -no-integrated-as"
 LLD_UNSAFE=	yes
 .endif
 
 post-install:
-	${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/libde265.so.0.1.5
-	${MV} ${STAGEDIR}${PREFIX}/bin/dec265 \
-		${STAGEDIR}${PREFIX}/bin/libde265-dec265
+.for F in ${_BIN}
+	${MV} ${STAGEDIR}${PREFIX}/bin/${F} \
+		${STAGEDIR}${PREFIX}/bin/libde265-${F}
+.endfor
 
 .include <bsd.port.post.mk>

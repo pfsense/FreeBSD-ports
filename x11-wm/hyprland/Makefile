@@ -1,6 +1,7 @@
 PORTNAME=	hyprland
 DISTVERSIONPREFIX=	v
 DISTVERSION=	0.51.1
+PORTREVISION=	2
 CATEGORIES=	x11-wm wayland
 MASTER_SITES=	https://github.com/hyprwm/Hyprland/releases/download/${DISTVERSIONFULL}/
 DISTNAME=	source-${DISTVERSIONFULL}
@@ -61,12 +62,6 @@ X11_USE=		XORG=xcb
 X11_CMAKE_BOOL_OFF=	NO_XWAYLAND
 
 .include <bsd.port.options.mk>
-
-# XXX Delete after 14.2-RELEASE EoL (2025-09-30)
-# #embed directive in C23 standard requires llvm 19 or later
-.if ${OPSYS} == FreeBSD && (${OSVERSION} >= 1400000 && ${OSVERSION} < 1402501)
-USES+=		llvm:min=19
-.endif
 
 post-patch:
 # Respect consolekit2 as XDG_RUNTIME_DIR fallback

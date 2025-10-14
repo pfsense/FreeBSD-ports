@@ -1,10 +1,11 @@
 PORTNAME=	unit-otel
 PORTVERSION=	${UNIT_VERSION}
+PORTREVISION=	1
 CATEGORIES=	devel
 MASTER_SITES?=	https://unit.nginx.org/download/
 DISTFILES=	unit-${PORTVERSION}.tar.gz
 
-MAINTAINER=	osa@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	OTel static library for Unit
 WWW=		https://unit.nginx.org
 
