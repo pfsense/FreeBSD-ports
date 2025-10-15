@@ -163,7 +163,6 @@ if ($_POST) {
 	}
 	if (!isset($input_errors)) {
 		if ($changecount > 0) {
-			touch($d_acmeconfdirty_path);
 			write_config($changedesc);
 		}
 		echo "<pre/>";

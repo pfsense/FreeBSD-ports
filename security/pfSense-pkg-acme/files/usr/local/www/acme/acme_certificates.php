@@ -45,7 +45,6 @@ if($_POST['action'] == "toggle") {
 		}
 		$changedesc .= " set item '$id' status to: " . config_get_path('installedpackages/acme/certificates/item/' . get_certificate_id($id) . '/status');
 		
-		touch($d_acmeconfdirty_path);
 		write_config($changedesc);
 	}
 	echo "ok|";
@@ -84,10 +83,7 @@ if ($_POST) {
 				$deleted = true;
 			}
 			if ($deleted) {
-				if (write_config("Acme, deleting certificate(s)")) {
-					//mark_subsystem_dirty('filter');
-					touch($d_acmeconfdirty_path);
-				}
+				write_config("Acme, deleting certificate(s)");
 			}
 			header("Location: acme_certificates.php");
 			exit;
@@ -115,7 +111,6 @@ if ($_POST) {
 			array_moveitemsbefore($a_certificates, $moveto, $selected);
 			config_set_path('installedpackages/acme/certificates/item', $a_certificates);
 		
-			touch($d_acmeconfdirty_path);
 			write_config($changedesc);			
 		}
 	}
@@ -129,7 +124,6 @@ if ($_GET['act'] == "del") {
 			config_del_path("installedpackages/acme/certificates/item/{$id}");
 			$changedesc .= " Item delete";
 			write_config($changedesc);
-			touch($d_acmeconfdirty_path);
 		}
 		header("Location: acme_certificates.php");
 		exit;
@@ -145,11 +139,6 @@ if ($savemsg) {
 	print_info_box($savemsg);
 }
 
-/*$display_apply = file_exists($d_acmeconfdirty_path) ? "" : "none";
-echo "<div id='showapplysettings' style='display: {$display_apply};'>";
-print_apply_box(sprintf(gettext("The configuration has been changed.%sYou must apply the changes in order for them to take effect."), "<br/>"));
-echo "</div>";
-*/
 ?>
 <div id="renewoutputbox" class="alert alert-success clearfix hidden" role="alert">
 	<button type="button" class="close" data-dismiss="alert" aria-label="Close">

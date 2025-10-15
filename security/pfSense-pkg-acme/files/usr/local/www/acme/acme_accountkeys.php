@@ -34,12 +34,7 @@ $changedesc = "Services: Acme: Accountkeys";
 if ($_POST) {
 	$pconfig = $_POST;
 
-	if ($_POST['apply']) {
-		$result = haproxy_check_and_run($savemsg, true);
-		if ($result) {
-			unlink_if_exists($d_acmeconfdirty_path);
-		}
-	} elseif ($_POST['del_x']) {
+	if ($_POST['del_x']) {
 		/* delete selected rules */
 		$deleted = false;
 		if (is_array($_POST['rule']) && count($_POST['rule'])) {
@@ -52,10 +47,7 @@ if ($_POST) {
 				$deleted = true;
 			}
 			if ($deleted) {
-				if (write_config("Acme, deleting accountkey(s)")) {
-					//mark_subsystem_dirty('filter');
-					touch($d_acmeconfdirty_path);
-				}
+				write_config("Acme, deleting accountkey(s)");
 			}
 			header("Location: acme_accountkeys.php");
 			exit;
@@ -84,7 +76,6 @@ if ($_POST) {
 			array_moveitemsbefore($a_accountkeys, $moveto, $selected);
 			config_set_path('installedpackages/acme/accountkeys/item', $a_accountkeys);
 		
-			touch($d_acmeconfdirty_path);
 			write_config($changedesc);			
 		}
 	}
@@ -103,7 +94,6 @@ if ($_POST['act'] == "del") {
 			config_del_path("installedpackages/acme/accountkeys/item/{$id}");
 			$changedesc .= " Accountkey delete";
 			write_config($changedesc);
-			touch($d_acmeconfdirty_path);
 		}
 		header("Location: acme_accountkeys.php");
 		exit;
@@ -119,21 +109,6 @@ if ($savemsg) {
 	print_info_box($savemsg);
 }
 
-/*$display_apply = file_exists($d_acmeconfdirty_path) ? "" : "none";
-echo "<div id='showapplysettings' style='display: {$display_apply};'>";
-print_apply_box(sprintf(gettext("The configuration has been changed.%sYou must apply the changes in order for them to take effect."), "<br/>"));
-echo "</div>";
-*/
-?>
-<div id="renewoutputbox" class="alert alert-success clearfix hidden" role="alert">
-	<button type="button" class="close" data-dismiss="alert" aria-label="Close">
-		<span aria-hidden="true">×</span>
-	</button>
-	<div id="renewoutput" class="pull-left" style="white-space: pre-wrap">
-	</div>
-</div>
-
-<?php
 display_top_tabs_active($acme_tab_array['acme'], "accountkeys");
 ?>
 <form action="acme_accountkeys.php" method="post">
@@ -215,38 +190,6 @@ display_top_tabs_active($acme_tab_array['acme'], "accountkeys");
 function set_content(elementid, image) {
 	var item = document.getElementById(elementid);
 	item.innerHTML = image;
-}
-
-function js_callbackrenew(data) {
-	$('#renewoutputbox').removeClass("hidden");
-	$('#renewoutput').text(data);
-}
-
-function js_callback(req_content) {
-	
-	showapplysettings.style.display = 'block';
-	if(req_content !== '') {
-		var itemsplit = req_content.split("|");
-		buttonid = itemsplit[0];
-		enabled = parseInt(itemsplit[1]);
-		if (enabled === 1){
-			img = "<?=acmeicon("enabled", gettext("click to toggle enable/disable this certificate renewal"))?>";
-		} else {
-			img = "<?=acmeicon("disabled", gettext("click to toggle enable/disable this certificate renewal"))?>";
-		}
-		set_content('btn_'+buttonid, img);
-	}
-}
-
-function togglerow($id) {
-	ajaxRequest = $.ajax({
-		url: "",
-		type: "post",
-		data: { id: $id, action: "toggle"},
-		success: function(data) {
-			js_callback(data);
-		}
-	});
 }
 
 events.push(function() {

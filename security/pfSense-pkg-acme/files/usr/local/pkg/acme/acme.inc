@@ -157,7 +157,6 @@ require_once("acme_utils.inc");
 require_once("acme_sh.inc");
 require_once("acme/acme_serverconnectors.inc");
 
-$d_acmeconfdirty_path = $g['varrun_path'] . "/acme.conf.dirty";
 #region global array item definitions..
 // <editor-fold desc="global array item definitions">
 
