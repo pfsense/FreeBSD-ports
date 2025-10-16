@@ -1,5 +1,5 @@
---- radlib.c.orig	2025-10-08 16:55:46.488007000 +0000
-+++ radlib.c	2025-10-08 18:54:44.630988000 +0000
+--- radlib.c.orig	2025-10-16 17:52:50.689232000 +0000
++++ radlib.c	2025-10-16 17:54:06.044745000 +0000
 @@ -47,6 +47,7 @@
  #include <string.h>
  #ifndef PHP_WIN32
@@ -439,7 +439,7 @@
 -		TSRMLS_FETCH();
 -		php_srand(time(NULL) * getpid() * (unsigned long) (php_combined_lcg(TSRMLS_C) * 10000.0) TSRMLS_CC);
 -		h->fd = -1;
-+		php_srand(time(NULL) * getpid() * (unsigned long) (php_combined_lcg() * 10000.0));
++		php_mt_srand(time(NULL) * getpid() * (unsigned long) (php_combined_lcg() * 10000.0));
 +		h->fd4 = -1;
 +		h->fd6 = -1;
  		h->num_servers = 0;
