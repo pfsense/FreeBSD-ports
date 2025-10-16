@@ -48,7 +48,7 @@ $snort_uuid = $a_rule['uuid'];
 $snortlogdir = SNORTLOGDIR;
 $snortcfgdir = "{$snortdir}/snort_{$snort_uuid}_{$if_real}/";
 
-$file = htmlspecialchars($_GET['openruleset'], ENT_QUOTES | ENT_HTML401);
+$file = basename(htmlspecialchars($_GET['openruleset'], ENT_QUOTES | ENT_HTML401));
 $contents = '';
 $wrap_flag = "off";
 

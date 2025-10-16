@@ -175,6 +175,8 @@ elseif (isset($_GET['openruleset']))
 else
 	$currentruleset = $categories[array_key_first($categories)];
 
+$currentruleset = basename($currentruleset)
+
 // One last sanity check -- if the rules directory is empty, default to loading custom rules
 $tmp = glob("{$snortdir}/rules/*.rules");
 if (empty($tmp))

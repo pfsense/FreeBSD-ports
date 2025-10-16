@@ -145,7 +145,7 @@ if (isset($_POST['sidlist_edit']) && isset($a_list[$_POST['sidlist_id']])) {
 if (isset($_POST['save']) && isset($_POST['sidlist_data']) && isset($_POST['listid'])) {
 	if (strlen($_POST['sidlist_name']) > 0) {
 		$tmp = array();
-		$tmp['name'] = $_POST['sidlist_name'];
+		$tmp['name'] = basename($_POST['sidlist_name']);
 		$tmp['modtime'] = time();
 		$tmp['content'] = base64_encode(str_replace("\r\n", "\n", $_POST['sidlist_data']));
 
@@ -259,93 +259,50 @@ if (isset($_POST['save_auto_sid_conf'])) {
 	}
 }
 
-if (isset($_POST['sidlist_dnload']) && isset($_POST['sidlist_id'])) {
-	$file = $a_list[$_POST['sidlist_id']]['name'];
-
-	// Create a temporary directory to hold the list as an individual file
-	$tmpdirname = "{$g['tmp_path']}/sidmods/";
-	safe_mkdir("{$tmpdirname}");
-
-	file_put_contents($tmpdirname . $file, base64_decode($a_list[$_POST['sidlist_id']]['content']));
-	touch($tmpdirname . $file, $a_list[$_POST['sidlist_id']]['modtime']);	
-
-	if (file_exists($tmpdirname . $file)) {
-		ob_start(); //important or other posts will fail
-		if (isset($_SERVER['HTTPS'])) {
-			header('Pragma: ');
-			header('Cache-Control: ');
-		} else {
-			header("Pragma: private");
-			header("Cache-Control: private, must-revalidate");
-		}
-		header("Content-Type: application/octet-stream");
-		header("Content-length: " . filesize($tmpdirname . $file));
-		header("Content-disposition: attachment; filename = " . basename($file));
-		ob_end_clean(); //important or other post will fail
-		flush();
-		readfile($tmpdirname . $file);
-
-		// Clean up temporary file if created
-		if (is_dir($tmpdirname)) {
-			rmdir_recursive($tmpdirname);
-		}
-		exit;
-	}
-	else
+if (isset($_POST['sidlist_dnload']) &&
+    isset($_POST['sidlist_id'])) {
+	if (array_key_exists($_POST['sidlist_id'], $a_list)) {
+		send_user_download('data',
+					base64_decode($a_list[$_POST['sidlist_id']]['content']),
+					basename($a_list[$_POST['sidlist_id']]['name']));
+	} else {
 		$savemsg = gettext("Unable to locate the list specified!");
-
-	// Clean up temporary file if created
-	if (is_dir($tmpdirname)) {
-		rmdir_recursive($tmpdirname);
 	}
 }
 
 if (isset($_POST['sidlist_dnload_all'])) {
-	$save_date = date("Y-m-d-H-i-s");
-	$file_name = "snort_sid_conf_files_{$save_date}.tar.gz";
+	$file_path = g_get('tmp_path') . '/snort_sid_conf_files_' . date("Y-m-d-H-i-s") . '.tar.gz';
 	
 	// Create a temporary directory to hold the lists as individual files
-	$tmpdirname = "{$g['tmp_path']}/sidmods/";
-	safe_mkdir("{$tmpdirname}");
+	$tmpdirname = g_get('tmp_path') . '/sidmods/';
+	safe_mkdir($tmpdirname);
 
 	// Walk all saved lists and write them out to individual files
 	foreach($a_list as $list) {
-		file_put_contents($tmpdirname . $list['name'], base64_decode($list['content']));
-		touch($tmpdirname . $list['name'], $list['modtime']);	
+		file_put_contents($tmpdirname . basename($list['name']), base64_decode($list['content']));
+		touch($tmpdirname . basename($list['name']), $list['modtime']);
 	}
 
-	// Zip up all the files into a single tar gzip archive
-	exec("cd {$tmpdirname} && /usr/bin/tar -czf {$g['tmp_path']}/{$file_name} *");
+	// Put all the files into a single tar gzip archive
+	exec('/usr/bin/tar -C ' . escapeshellarg($tmpdirname) . ' --strip-components 1 -czf ' . escapeshellarg($file_path) . ' .');
 
-	if (file_exists("{$g['tmp_path']}/{$file_name}")) {
-		ob_start(); //important or other posts will fail
-		if (isset($_SERVER['HTTPS'])) {
-			header('Pragma: ');
-			header('Cache-Control: ');
-		} else {
-			header("Pragma: private");
-			header("Cache-Control: private, must-revalidate");
-		}
-		header("Content-Type: application/octet-stream");
-		header("Content-length: " . filesize("{$g['tmp_path']}/{$file_name}"));
-		header("Content-disposition: attachment; filename = {$file_name}");
-		ob_end_clean(); //important or other post will fail
-		readfile("{$g['tmp_path']}/{$file_name}");
+	if (file_exists($file_path)) {
 		// Remove all the temporary files and directory if created
 		if (is_dir($tmpdirname)) {
 			rmdir_recursive($tmpdirname);
-			unlink_if_exists($g['tmp_path'] . "/" . $file_name);
 		}
+		send_user_download('file', $file_path);
+		unlink_if_exists($file_path);
 		exit;
-	}
-	else
+	} else {
 		$savemsg = gettext("An error occurred while creating the gzip archive!");
+	}
 
 	// Remove all the temporary files and directory if created
 	if (is_dir($tmpdirname)) {
 		rmdir_recursive($tmpdirname);
-		unlink_if_exists($g['tmp_path'] . "/" . $file_name);
 	}
+	unlink_if_exists($file_path);
 }
 
 // Get all the SID Mods Lists as an array
@@ -491,9 +448,9 @@ print($section);
 					</div>
 
 					<div class="modal-body">
-						<input type="hidden" name="listid" id="listid" value="<?=$sidmodlist_id;?>" />
+						<input type="hidden" name="listid" id="listid" value="<?=htmlspecialchars($sidmodlist_id);?>" />
 						<?=gettext("List Name: ");?>
-						<input type="text" size="45" class="form-control file" id="sidlist_name" name="sidlist_name" value="<?=$sidmodlist_name;?>" /><br />
+						<input type="text" size="45" class="form-control file" id="sidlist_name" name="sidlist_name" value="<?=htmlspecialchars($sidmodlist_name);?>" /><br />
 						<button type="submit" class="btn btn-sm btn-primary" id="save" name="save" value="<?=gettext("Save");?>" title="<?=gettext("Save changes and close editor");?>">
 							<i class="fa-solid fa-save icon-embed-btn"></i>
 							<?=gettext("Save");?>
