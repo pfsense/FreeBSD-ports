@@ -620,7 +620,7 @@ function pfBlockerNG_get_header($mode='') {
 	}
 
 	// Status indicator if DNSBL is actively running
-	if ($pfb['enable'] == 'on' && $pfb['dnsbl'] == 'on' && $pfb['unbound_state'] == 'on' && $unbound_validate) {
+	if ($pfb['enable'] == 'on' && $pfb['dnsbl'] == 'on' && pfb_validate_vips($pfb['dnsbl_iface'], $pfb['dnsbl_vip4'], $pfb['dnsbl_vip6'])[0] && $pfb['unbound_state'] == 'on' && $unbound_validate) {
 
 		// Check DNSBL Database Sanity
 		$db_sanity = exec("{$pfb['grep']} 'DNSBL update' {$pfb['logdir']}/pfblockerng.log | tail -1 | {$pfb['grep']} -o 'OUT OF SYNC'");
@@ -629,7 +629,7 @@ function pfBlockerNG_get_header($mode='') {
 			$dnsbl_msg	= "DNSBL {$py_mode} is out of sync. Perform a Force Reload to correct.";
 		} else {
 			$dnsbl_status	= 'fa-solid fa-check-circle text-success';
-			$dnsbl_msg	= "DNSBL {$py_mode} is Active on vip: {$pfb['dnsbl_vip']} ports: {$pfb['dnsbl_port']} & {$pfb['dnsbl_port_ssl']}";
+			$dnsbl_msg	= "DNSBL {$py_mode} is Active on vip: {$pfb['dnsbl_vip4']} ports: {$pfb['dnsbl_port']} & {$pfb['dnsbl_port_ssl']}";
 		}
 
 		// Check for any Python Integration errors
