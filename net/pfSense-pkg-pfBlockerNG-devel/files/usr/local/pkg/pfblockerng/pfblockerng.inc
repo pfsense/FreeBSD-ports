@@ -1061,7 +1061,7 @@ function pfbng_text_area_decode($text, $mode=FALSE, $type=TRUE, $idn=FALSE) {
 							if (!empty($tmpline[0])) {
 								$tmpline[0] = '.' . $tmpline[0];
 							}
-						} else {
+						} elseif (is_string($tmpline[0]) && (strlen($tmpline[0]) > 0)) {
 							$tmpline[0] = idn_to_ascii($tmpline[0]);
 						}
 						if (empty($tmpline[0])) {
@@ -1076,7 +1076,7 @@ function pfbng_text_area_decode($text, $mode=FALSE, $type=TRUE, $idn=FALSE) {
 							if (!empty($line)) {
 								$line = '.' . $line;
 							}
-						} else {
+						} elseif (is_string($line) && (strlen($line) > 0)) {
 							$line = idn_to_ascii($line);
 						}
 						if (empty($line)) {
@@ -5800,7 +5800,7 @@ function pfb_daemon_filterlog() {
 										foreach ($asn_ex as $asn_element) {
 											if (strpos($asn_element, ':') !== FALSE) {
 												$asn_element_ex = explode(':', $asn_element);
-												if (is_array($asn_element_ex) && !empty($asn_element_ex)) {
+												if (is_array($asn_element_ex) && (is_string($asn_element_ex[1]) && (strlen($asn_element_ex[1]) > 0))) {
 													if (!ctype_print($asn_element_ex[1])) {
 														$asn_element_ex[1] = mb_convert_encoding($asn_element_ex[1], 'UTF-8',
 															mb_detect_encoding($asn_element_ex[1], 'UTF-8, ASCII, ISO-8859-1'));
