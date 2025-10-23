@@ -1,6 +1,6 @@
 PORTNAME=	logstalgia
 DISTVERSION=	1.1.4
-PORTREVISION=	10
+PORTREVISION=	11
 CATEGORIES=	sysutils www
 MASTER_SITES=	https://github.com/acaudwell/${PORTNAME}/releases/download/${DISTNAME}/
 
@@ -29,5 +29,6 @@ GNU_CONFIGURE=	yes
 post-patch:
 	@${REINPLACE_CMD} -e 's| -Wno-unused-but-set-variable||' \
 		${WRKSRC}/Makefile.am
+	@${REINPLACE_CMD} -e '/AX_BOOST_SYSTEM/d' ${WRKSRC}/configure.ac
 
 .include <bsd.port.mk>

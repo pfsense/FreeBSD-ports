@@ -637,6 +637,8 @@
     SUBDIR += nvidia-drm-66-kmod-devel
     SUBDIR += nvidia-drm-kmod
     SUBDIR += nvidia-drm-kmod-devel
+    SUBDIR += nvidia-drm-latest-kmod
+    SUBDIR += nvidia-drm-latest-kmod-devel
     SUBDIR += nvidia-texture-tools
     SUBDIR += ocaml-cairo
     SUBDIR += ocaml-images
@@ -1187,6 +1189,7 @@
     SUBDIR += simpleviewer
     SUBDIR += skanlite
     SUBDIR += skanpage
+    SUBDIR += skia
     SUBDIR += spirv-cross
     SUBDIR += spirv-tools
     SUBDIR += springgraph
