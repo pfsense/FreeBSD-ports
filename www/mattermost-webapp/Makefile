@@ -1,11 +1,11 @@
 PORTNAME=	mattermost-webapp
-PORTVERSION=	10.5.11
+PORTVERSION=	10.11.4
 DISTVERSIONPREFIX=	v
 CATEGORIES=	www
 MASTER_SITES=	https://releases.mattermost.com/${PORTVERSION}/
 DISTNAME=	mattermost-${PORTVERSION}-linux-amd64
 
-MAINTAINER=	bofh@FreeBSD.org
+MAINTAINER=	decke@FreeBSD.org
 COMMENT=	Webapp of Mattermost server
 WWW=		https://mattermost.org/
 

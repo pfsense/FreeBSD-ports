@@ -1,11 +1,11 @@
 PORTNAME=	gemini-cli
-DISTVERSION=	0.8.2
-PORTREVISION=	1
+DISTVERSION=	0.9.0
 CATEGORIES=	misc # machine-learning
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Open-source CLI for direct access to Google's Gemini AI model
-WWW=		https://google-gemini.github.io/gemini-cli/ \
+WWW=		https://geminicli.com/ \
+		https://google-gemini.github.io/gemini-cli/ \
 		https://github.com/google-gemini/gemini-cli
 
 LICENSE=	APACHE20

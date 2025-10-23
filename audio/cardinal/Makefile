@@ -1,8 +1,7 @@
 # CAVEAT cross-compilation (ex. CPUTYPE=znver3) fails, upstream needs to fix this: https://github.com/DISTRHO/Cardinal/issues/646
 
 PORTNAME=	cardinal
-DISTVERSION=	24.09
-PORTREVISION=	1
+DISTVERSION=	25.06
 CATEGORIES=	audio
 MASTER_SITES=	https://github.com/DISTRHO/Cardinal/releases/download/${DISTVERSION}/
 
@@ -14,8 +13,6 @@ WWW=		https://cardinal.kx.studio/ \
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-BROKEN_FreeBSD_13=	compilation fails, error: static assertion failed due to requirement 'is_arithmetic<rack::simd::Vector<float, 4>>::value', see https://github.com/DISTRHO/Cardinal/issues/726
-BROKEN_FreeBSD_15=	compilation fails, error: static assertion failed due to requirement 'is_arithmetic<rack::simd::Vector<float, 4>>::value', see https://github.com/DISTRHO/Cardinal/issues/726
 BROKEN_armv7=	compilation fails due to the variable name conflict with base header, see https://bugs.freebsd.org/bugzilla/show_bug.cgi?id=279134
 
 BUILD_DEPENDS=	${LOCALBASE}/include/FuzzySearchDatabase.hpp:textproc/fuzzysearchdatabase \

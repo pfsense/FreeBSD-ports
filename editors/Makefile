@@ -240,10 +240,10 @@
     SUBDIR += psgml
     SUBDIR += puff
     SUBDIR += py-babi
+    SUBDIR += py-editor
     SUBDIR += py-editorconfig
     SUBDIR += py-pynvim
     SUBDIR += py-vim-bridge
-    SUBDIR += quilter
     SUBDIR += rehex
     SUBDIR += retext
     SUBDIR += rubygem-neovim

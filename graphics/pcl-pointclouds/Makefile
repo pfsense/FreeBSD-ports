@@ -1,7 +1,7 @@
 PORTNAME=	pcl
 DISTVERSIONPREFIX=	pcl-
 DISTVERSION=	1.15.0
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	graphics math
 #MASTER_SITES=	https://github.com/PointCloudLibrary/${PORTNAME}/releases/download/${PORTNAME}-${DISTVERSION}/
 PKGNAMESUFFIX=	-pointclouds
@@ -20,7 +20,7 @@ BROKEN_i386=		undefined reference to `__atomic_load'
 NOT_FOR_ARCHS=		armv6 armv7
 NOT_FOR_ARCHS_REASON=	common/include/pcl/pcl_macros.h:420:4: error: aligned_malloc not supported on your platform
 
-LIB_DEPENDS=	libboost_system.so:devel/boost-libs \
+LIB_DEPENDS=	libboost_thread.so:devel/boost-libs \
 		libcjson.so:devel/libcjson \
 		libflann_cpp.so:math/flann \
 		libfreetype.so:print/freetype2 \
@@ -80,4 +80,8 @@ VTK_LIB_DEPENDS=	libvtkCommonCore-${VTK_VER}.so:math/vtk${VTK_VER:R}
 # tests as of 1.15.0: 100% tests passed, 0 tests failed out of 133
 
 .include <../../math/vtk9/Makefile.version>
+
+post-patch:
+	@${REINPLACE_CMD} -e '/MODULES/s| system||' ${WRKSRC}/cmake/pcl_find_boost.cmake
+
 .include <bsd.port.mk>

@@ -256,7 +256,6 @@
     SUBDIR += msglint
     SUBDIR += msmtp
     SUBDIR += mu
-    SUBDIR += mu4e
     SUBDIR += mu4e-maildirs
     SUBDIR += mulberry
     SUBDIR += mutt
@@ -519,6 +518,7 @@
     SUBDIR += py-dkimpy-milter
     SUBDIR += py-email-reply-parser
     SUBDIR += py-email-validator
+    SUBDIR += py-exchangelib
     SUBDIR += py-flanker
     SUBDIR += py-flask-mail
     SUBDIR += py-flufl.bounce
@@ -543,6 +543,7 @@
     SUBDIR += py-pyspf
     SUBDIR += py-python-slimta
     SUBDIR += py-pyzmail
+    SUBDIR += py-resend
     SUBDIR += py-rfc6555
     SUBDIR += py-spf-engine
     SUBDIR += py-tlsrpt-reporter

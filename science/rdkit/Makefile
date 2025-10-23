@@ -1,7 +1,7 @@
 PORTNAME=	rdkit
 DISTVERSIONPREFIX=	Release_
 DISTVERSION=	2025_03_1
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	science
 MASTER_SITES=	LOCAL/yuri/:font # unstable, changing font file: https://fonts.google.com/download?family=Comic%20Neue&dummy=/:font
 DISTFILES=	ComicNeue-Regular.ttf:font
@@ -19,11 +19,12 @@ LICENSE_FILE=	${WRKSRC}/license.txt
 BROKEN_FreeBSD_15_aarch64=	clang-17 crashes, see https://bugs.freebsd.org/bugzilla/show_bug.cgi?id=272652
 BROKEN_FreeBSD_15_amd64=	clang-17 crashes, see https://bugs.freebsd.org/bugzilla/show_bug.cgi?id=272652
 BROKEN_FreeBSD_15_i386=		clang-17 crashes, see https://bugs.freebsd.org/bugzilla/show_bug.cgi?id=272652
+BROKEN_FreeBSD_16_amd64=	clang-17 crashes, see https://bugs.freebsd.org/bugzilla/show_bug.cgi?id=272652
 
 BUILD_DEPENDS=	catch>0:devel/catch \
 		flex:textproc/flex \
 		rapidjson>=0:devel/rapidjson
-LIB_DEPENDS=	libboost_system.so:devel/boost-libs \
+LIB_DEPENDS=	libboost_thread.so:devel/boost-libs \
 		libcoordgen.so:science/coordgenlibs \
 		libfreetype.so:print/freetype2 \
 		libmaeparser.so:science/maeparser
