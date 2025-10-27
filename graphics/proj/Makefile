@@ -1,5 +1,5 @@
 PORTNAME=	proj
-DISTVERSION=	9.6.0
+DISTVERSION=	9.7.0
 PORTEPOCH=	1
 CATEGORIES=	graphics geography
 MASTER_SITES=	https://github.com/OSGeo/PROJ/releases/download/${DISTVERSION}/ \
@@ -10,7 +10,7 @@ COMMENT=	Cartographic Projections library
 WWW=		https://github.com/OSGeo/PROJ
 
 LICENSE=	MIT
-#LICENSE_FILE=	${WRKSRC}/COPYING
+LICENSE_FILE=	${WRKSRC}/COPYING
 
 BUILD_DEPENDS=	nlohmann-json>=3:devel/nlohmann-json
 LIB_DEPENDS=	libcurl.so:ftp/curl \

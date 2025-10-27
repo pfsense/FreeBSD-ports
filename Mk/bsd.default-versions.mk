@@ -73,7 +73,7 @@ GUILE_DEFAULT?=		2.2
 # Format:	     version[-flavor]
 # Examples:	     6-nox11, 7
 IMAGEMAGICK_DEFAULT?=	7
-# Possible values: 8, 11, 17, 18, 19, 20, 21, 22, 23, 24
+# Possible values: 8, 11, 17, 18, 19, 20, 21, 22, 23, 24, 25
 JAVA_DEFAULT?=		8
 # Possible values: 4.2, 4.99
 .  if (defined(WANT_LAZARUS_DEVEL) && !empty(WANT_LAZARUS_DEVEL)) || ${ARCH:Maarch64}
@@ -97,7 +97,7 @@ LINUX_DEFAULT?=		rl9
 LLVM_DEFAULT?=		19
 # Possible values: 5.1, 5.2, 5.3, 5.4
 LUA_DEFAULT?=		5.4
-# Possible values: luajit, luajit-devel, luajit-openresty
+# Possible values: luajit, luajit-openresty
 .  if ${ARCH:Mpowerpc64*}
 LUAJIT_DEFAULT?=	luajit-openresty
 .  else
@@ -105,11 +105,11 @@ LUAJIT_DEFAULT?=	luajit
 .  endif
 # Possible values: 5.10, 5.20, 6.8
 MONO_DEFAULT?=		5.20
-# Possible values: 8.0, 8.4, 9.1, 10.6m, 10.11m, 11.4m, 11.8m
+# Possible values: 8.0, 8.4, 9.1, 9.4, 10.6m, 10.11m, 11.4m, 11.8m
 MYSQL_DEFAULT?=		8.0
 # Possible values: ninja, samurai
 NINJA_DEFAULT?=		ninja
-# Possible value: 20, 22, 24, current, lts (Note: current = 24 and lts = 22)
+# Possible value: 20, 22, 24, 25, current, lts (Note: current = 24 and lts = 22)
 NODEJS_DEFAULT?=	lts
 # Possible value: 25, 26
 OPENLDAP_DEFAULT?=	26
