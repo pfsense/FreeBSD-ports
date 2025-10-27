@@ -1,3 +1,64 @@
+  <vuln vid="1f1cf967-b35c-11f0-bce7-bc2411002f50">
+    <topic>strongSwan -- Heap-based buffer overflow in eap-mschapv2 plugin due to improper handling of failure request packets</topic>
+    <affects>
+      <package>
+       <name>strongswan</name>
+       <range><ge>4.2.12</ge><lt>6.0.3</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+       <p>Xu Biang reports:</p>
+       <blockquote cite="https://www.strongswan.org/blog/2025/10/27/strongswan-vulnerability-(cve-2025-62291).html">
+       <p>The eap-mschapv2 plugin doesn't correctly check the length of an EAP-MSCHAPv2 Failure Request packet on the client,
+       which can cause an integer underflow that leads to a crash and, depending on the compiler options, even a heap-based
+       buffer overflow that's potentially exploitable for remote code execution. Affected are all strongSwan versions since 4.2.12.</p>
+       </blockquote>
+      </body>
+    </description>
+    <references>
+      <cvename>CVE-2025-62291</cvename>
+      <url>https://www.cve.org/CVERecord?id=CVE-2025-62291</url>
+    </references>
+    <dates>
+      <discovery>2025-10-27</discovery>
+      <entry>2025-10-27</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="823b4e48-b340-11f0-b3f7-a8a1599412c6">
+    <topic>chromium -- security fix</topic>
+    <affects>
+      <package>
+       <name>chromium</name>
+       <range><lt>141.0.7390.122</lt></range>
+      </package>
+      <package>
+       <name>ungoogled-chromium</name>
+       <range><lt>141.0.7390.122</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+       <p>Chrome Releases reports:</p>
+       <blockquote cite="https://chromereleases.googleblog.com/2025/10/stable-channel-update-for-desktop_21.html">
+	 <p>This update includes 1 security fix:</p>
+	 <ul>
+	    <li>[452296415] High CVE-2025-12036: Inappropriate implementation in V8. Reported by Google Big Sleep on 2025-10-15</li>
+	 </ul>
+       </blockquote>
+      </body>
+    </description>
+    <references>
+      <cvename>CVE-2025-12036</cvename>
+      <url>https://chromereleases.googleblog.com/2025/10/stable-channel-update-for-desktop_21.html</url>
+    </references>
+    <dates>
+      <discovery>2025-10-21</discovery>
+      <entry>2025-10-27</entry>
+    </dates>
+  </vuln>
+
   <vuln vid="ea1c485f-b025-11f0-bce7-bc2411002f50">
     <topic>unbound -- Possible domain hijacking via promiscuous records in the authority section</topic>
     <affects>
@@ -10,7 +71,7 @@
        <body xmlns="http://www.w3.org/1999/xhtml">
        <p>sep@nlnetlabs.nl reports:</p>
        <blockquote cite="https://www.nlnetlabs.nl/downloads/unbound/CVE-2025-11411.txt">
-         <p>NLnet Labs Unbound up to and including version 1.24.0 is vulnerable
+       <p>NLnet Labs Unbound up to and including version 1.24.0 is vulnerable
        to possible domain hijack attacks.  Promiscuous NS RRSets that
        complement positive DNS replies in the authority section can be
        used to trick resolvers to update their delegation information for

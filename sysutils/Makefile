@@ -370,7 +370,7 @@
     SUBDIR += evtviewer
     SUBDIR += exa
     SUBDIR += extipl
-    SUBDIR += extrace
+    SUBDIR += extrace-freebsd
     SUBDIR += eza
     SUBDIR += ezjail
     SUBDIR += f-upgrade
@@ -612,6 +612,7 @@
     SUBDIR += kshutdown
     SUBDIR += ksystemlog
     SUBDIR += kubectl
+    SUBDIR += kubetail
     SUBDIR += kubie
     SUBDIR += kubo-go
     SUBDIR += kustomize
@@ -652,6 +653,7 @@
     SUBDIR += linux-c7-numactl-libs
     SUBDIR += linux-c7-userspace-rcu
     SUBDIR += linux-miniconda-installer
+    SUBDIR += linux-racadm
     SUBDIR += linux-rkbin
     SUBDIR += littlejet
     SUBDIR += lmmon
@@ -1220,6 +1222,7 @@
     SUBDIR += rubygem-mothra
     SUBDIR += rubygem-murder
     SUBDIR += rubygem-ohai
+    SUBDIR += rubygem-openbolt
     SUBDIR += rubygem-openfact
     SUBDIR += rubygem-openvoxserver-ca
     SUBDIR += rubygem-parallel
@@ -1257,6 +1260,7 @@
     SUBDIR += rubygem-winrm
     SUBDIR += rubygem-winrm-elevated
     SUBDIR += rubygem-winrm-elevated-gitlab
+    SUBDIR += rubygem-winrm-gitlab
     SUBDIR += rubygem-yell
     SUBDIR += runas
     SUBDIR += rundeck
@@ -1548,6 +1552,7 @@
     SUBDIR += vii
     SUBDIR += vils
     SUBDIR += vimpager
+    SUBDIR += virt-firmware
     SUBDIR += virt-what
     SUBDIR += virtualmin
     SUBDIR += vivid

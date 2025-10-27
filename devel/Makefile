@@ -98,6 +98,7 @@
     SUBDIR += R-cran-msm
     SUBDIR += R-cran-multicool
     SUBDIR += R-cran-optparse
+    SUBDIR += R-cran-otel
     SUBDIR += R-cran-pak
     SUBDIR += R-cran-parallelly
     SUBDIR += R-cran-parsedate
@@ -909,8 +910,8 @@
     SUBDIR += gnustep-make
     SUBDIR += go-bindata
     SUBDIR += go-bindata-assetfs
-    SUBDIR += go-git
     SUBDIR += go-critic
+    SUBDIR += go-git
     SUBDIR += go-mode.el
     SUBDIR += go-perf
     SUBDIR += go-tools
@@ -5616,6 +5617,7 @@
     SUBDIR += py-pycognito
     SUBDIR += py-pycompilation
     SUBDIR += py-pycomplete
+    SUBDIR += py-pycomposefile
     SUBDIR += py-pyconify
     SUBDIR += py-pycparser
     SUBDIR += py-pycrdt
@@ -6339,7 +6341,6 @@
     SUBDIR += pycanberra
     SUBDIR += pycdc
     SUBDIR += pycharm
-    SUBDIR += pycomposefile
     SUBDIR += pycos
     SUBDIR += pycount
     SUBDIR += pydbus-common
@@ -6915,6 +6916,7 @@
     SUBDIR += rubygem-aws-sdk-route53recoverycontrolconfig
     SUBDIR += rubygem-aws-sdk-route53recoveryreadiness
     SUBDIR += rubygem-aws-sdk-route53resolver
+    SUBDIR += rubygem-aws-sdk-rtbfabric
     SUBDIR += rubygem-aws-sdk-s3
     SUBDIR += rubygem-aws-sdk-s3-gitlab
     SUBDIR += rubygem-aws-sdk-s3control
@@ -7391,6 +7393,7 @@
     SUBDIR += rubygem-forwardable
     SUBDIR += rubygem-forwardable-extended
     SUBDIR += rubygem-fugit
+    SUBDIR += rubygem-fugit-gitlab
     SUBDIR += rubygem-fugit111
     SUBDIR += rubygem-fuubar
     SUBDIR += rubygem-fuzzy_match
@@ -7579,6 +7582,7 @@
     SUBDIR += rubygem-json-canonicalization
     SUBDIR += rubygem-json-gitlab
     SUBDIR += rubygem-json-schema
+    SUBDIR += rubygem-json-schema-gitlab
     SUBDIR += rubygem-json1
     SUBDIR += rubygem-json_pure
     SUBDIR += rubygem-json_pure1
@@ -7614,6 +7618,7 @@
     SUBDIR += rubygem-logger-gitlab
     SUBDIR += rubygem-logger15
     SUBDIR += rubygem-logging
+    SUBDIR += rubygem-logging-gitlab
     SUBDIR += rubygem-logster
     SUBDIR += rubygem-loquacious
     SUBDIR += rubygem-lrama
@@ -7623,6 +7628,7 @@
     SUBDIR += rubygem-manpages
     SUBDIR += rubygem-map
     SUBDIR += rubygem-marcel
+    SUBDIR += rubygem-marcel-gitlab
     SUBDIR += rubygem-memo_wise
     SUBDIR += rubygem-memoist
     SUBDIR += rubygem-memoist3
@@ -7663,7 +7669,7 @@
     SUBDIR += rubygem-msgpack
     SUBDIR += rubygem-mspec
     SUBDIR += rubygem-multi_json
-    SUBDIR += rubygem-multi_json114
+    SUBDIR += rubygem-multi_json-gitlab
     SUBDIR += rubygem-multi_test
     SUBDIR += rubygem-murmurhash3
     SUBDIR += rubygem-mustache
@@ -8177,9 +8183,9 @@
     SUBDIR += rubygem-versionomy
     SUBDIR += rubygem-view_component-rails-gitlab
     SUBDIR += rubygem-virtus
-    SUBDIR += rubygem-vite_rails-rails70
+    SUBDIR += rubygem-vite_rails-gitlab
     SUBDIR += rubygem-vite_ruby
-    SUBDIR += rubygem-vite_ruby33
+    SUBDIR += rubygem-vite_ruby-gitlab
     SUBDIR += rubygem-warbler
     SUBDIR += rubygem-warden
     SUBDIR += rubygem-warning

@@ -234,6 +234,7 @@
     SUBDIR += gdome2
     SUBDIR += gh-grep
     SUBDIR += git-chglog
+    SUBDIR += gitlab-code-parser
     SUBDIR += gitlab-elasticsearch-indexer
     SUBDIR += gitlab-zoekt-indexer
     SUBDIR += gl-aspell
@@ -1932,6 +1933,7 @@
     SUBDIR += rubygem-nokogiri-diff
     SUBDIR += rubygem-octopress-escape-code
     SUBDIR += rubygem-opensearch-ruby-gitlab
+    SUBDIR += rubygem-openvox-strings
     SUBDIR += rubygem-opml
     SUBDIR += rubygem-org-ruby
     SUBDIR += rubygem-ox
