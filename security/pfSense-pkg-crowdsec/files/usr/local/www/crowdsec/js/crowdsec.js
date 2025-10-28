@@ -130,13 +130,13 @@ const CrowdSec = (function () {
   }
 
   function _parseDuration(duration) {
-    const re = /(-?)(?:(?:(\d+)h)?(\d+)m)?(\d+).\d+(m?)s/m;
+    const re = /(-?)(?:(\d+)h)?(?:(\d+)m)?(?:(\d+)(m?)s)/m;
     const matches = duration.match(re);
     let seconds = 0;
 
     if (!matches.length) {
       throw new Error(
-        'Unable to parse the following duration: ' + duration + '.',
+        'Unable to parse the following duration: ' + duration + '.'
       );
     }
     if (typeof matches[2] !== 'undefined') {
@@ -148,11 +148,11 @@ const CrowdSec = (function () {
     if (typeof matches[4] !== 'undefined') {
       seconds += parseInt(matches[4], 10); // seconds
     }
-    if (parseInt(matches[5], 10) === 'm') {
+    if (matches[5] === 'm') {
       // units in milliseconds
       seconds *= 0.001;
     }
-    if (parseInt(matches[1], 10) === '-') {
+    if (matches[1] === '-') {
       // negative
       seconds = -seconds;
     }

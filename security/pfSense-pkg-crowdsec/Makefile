@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	pfSense-pkg-crowdsec
-PORTVERSION=	0.1.5
+PORTVERSION=	0.1.6
 CATEGORIES=	security
 MASTER_SITES=	# empty
 DISTFILES=	# empty

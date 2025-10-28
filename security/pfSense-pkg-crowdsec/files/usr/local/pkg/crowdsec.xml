@@ -227,8 +227,8 @@
         <field>
             <fielddescr></fielddescr>
             <fieldname>rules_info</fieldname>
-            <type>info</type>
             <description><![CDATA[Rules will be hidden in the pfSense UI. If you have special needs, you can disable the rules here and provide your own.]]></description>
+            <type>info</type>
         </field>
         <field>
             <fielddescr>Apply to all interfaces</fielddescr>
