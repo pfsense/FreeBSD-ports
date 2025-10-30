@@ -23,6 +23,9 @@
 
 require_once('config.inc');
 require_once('globals.inc');
+
+define('LOG_PREFIX_PKG_PFBLOCKERNG', 'pfBlockerNG');
+
 global $g;
 
 config_read_file(false, true);
@@ -98,7 +101,7 @@ function pfb_python_mount($python_mode, $verbose, $type_mount, $type_umount, $ty
 
 			if ($retval != 0) {
 				$log_err = "Failed to mount /{$folder}";
-				log_error("[Unbound-pymod]: {$log_err}");
+				logger(LOG_ERR, "[Unbound-pymod]: {$log_err}", LOG_PREFIX_PKG_PFBLOCKERNG);
 				if ($verbose) {
 					pfb_logger("\n   {$log_err}", 1);
 				}
@@ -144,7 +147,7 @@ function pfb_python_mount($python_mode, $verbose, $type_mount, $type_umount, $ty
 		}
 		else {
 			$log_err = "Failed to unmount /{$folder}";
-			log_error("[Unbound-pymod]: {$log_err}");
+			logger(LOG_ERR, "[Unbound-pymod]: {$log_err}", LOG_PREFIX_PKG_PFBLOCKERNG);
 			if ($verbose) {
 				pfb_logger("\n   {$log_err}", 1);
 			}

@@ -32,6 +32,8 @@ if (file_exists('/usr/local/pkg/pfblockerng/pfblockerng_extra.inc')) {
 	require_once('/usr/local/pkg/pfblockerng/pfblockerng_extra.inc');	// 'include functions' not yet merged into pfSense
 }
 
+define('LOG_PREFIX_PKG_PFBLOCKERNG', 'pfBlockerNG');
+
 global $g, $pfb;
 if (!is_array($pfb)) {
 	$pfb = array();
@@ -1018,7 +1020,7 @@ if (isset($argv[1])) {
 			ignore_user_abort(TRUE);
 			set_time_limit(0);
 			if (!file_exists('/var/log/filter.log')) {
-				log_error('[pfBlockerNG] pfSense Firewall log missing');
+				logger(LOG_INFO, localize_text('pfSense Firewall log missing'), LOG_PREFIX_PKG_PFBLOCKERNG);
 				exit;
 			}
 			pfb_daemon_filterlog();
@@ -1831,7 +1833,7 @@ function pfb_create_dnsbl_cert() {
 	$old_err_level = error_reporting(0); /* otherwise openssl_ functions throw warnings directly to a page screwing menu tab */
 	if (!cert_create($cert, null, 2048, $cert_strict_values['max_server_cert_lifetime'] ?: 398, $dn, 'self-signed', 'sha256')) {
 		while ($ssl_err = openssl_error_string()) {
-			log_error(sprintf(gettext("Error creating pfBlockerNG DNSBL Certificate: openssl library returns: %s"), $ssl_err));
+			logger(LOG_ERR, localize_text("Could not create DNSBL Certificate: openssl library returns: %s", $ssl_err), LOG_PREFIX_PKG_PFBLOCKERNG);
 		}
 		error_reporting($old_err_level);
 		return null;
@@ -5885,7 +5887,7 @@ function pfb_daemon_filterlog() {
 		}
 	}
 	else {
-		log_error('[pfBlockerNG] filterlog - Failed to read STDIN');
+		logger(LOG_ERR, localize_text('filterlog - Failed to read STDIN'), LOG_PREFIX_PKG_PFBLOCKERNG);
 	}
 	if ($s_handle) {
 		@fclose($s_handle);
@@ -6240,7 +6242,7 @@ function pfb_daemon_dnsbl() {
 		}
 	}
 	else {
-		log_error('[pfBlockerNG] DNSBL conditional log parser - Failed to open handle');
+		logger(LOG_ERR, localize_text('DNSBL conditional log parser - Failed to open handle'), LOG_PREFIX_PKG_PFBLOCKERNG);
 	}
 	@fclose($h_handle);
 }
@@ -6261,7 +6263,7 @@ function pfb_daemon_dnsbl_index() {
 			$pfb_buffer = str_replace($p1, $p2, $pfb_buffer);
 
 			if (substr($pfb_buffer, 0, 6) == 'INDEX,' && substr_count($pfb_buffer, ',') == 4) {
-				$csvline = str_getcsv($pfb_buffer, ',', '"', '"');
+				$csvline = str_getcsv($pfb_buffer, ',', '', '"');
 
 				// Determine blocked domain type (Full, 1x1 or JS)
 				if (isset($csvline[1]) && !empty($csvline[1])) {
@@ -6298,7 +6300,7 @@ function pfb_daemon_dnsbl_index() {
 		}
 	}
 	else {
-		log_error('[pfBlockerNG] DNSBL index event parser - Failed to open handle');
+		logger(LOG_ERR, localize_text('DNSBL index event parser - Failed to open handle'), LOG_PREFIX_PKG_PFBLOCKERNG);
 	}
 	@fclose($i_handle);
 }
@@ -6374,7 +6376,7 @@ function pfb_open_sqlite($table, $message) {
 		}
 
 		if (!$pfb_validate) {
-			log_error("[pfBlockerNG] DNSBL SQLite3 database [ {$db_table} ] corrupt. Table deletion/re-creation completed.");
+			logger(LOG_WARNING, localize_text("DNSBL SQLite3 database [ %s ] corrupt. Table deletion/re-creation completed.", $db_table), LOG_PREFIX_PKG_PFBLOCKERNG);
 			@copy("{$database}", "{$database}.invalid");
 			$db_create = "DROP TABLE {$db_table}; {$db_create}";
 		}
@@ -7022,7 +7024,7 @@ function sync_package_pfblockerng($cron='') {
 		}
 		$log = 'Sync terminated during boot process.';
 		pfb_logger("\n{$log}\nUPDATE PROCESS ENDED [ NOW ]\n", 1);
-		log_error("[pfBlockerNG] {$log}");
+		logger(LOG_INFO, localize_text($log), LOG_PREFIX_PKG_PFBLOCKERNG);
 		return;
 	}
 
@@ -10946,7 +10948,7 @@ function pfblockerng_sync_on_changes() {
 				if (isset($pfb_sync['row'])) {
 					$rs = $pfb_sync['row'];
 				} else {
-					log_error('[pfBlockerNG] Manual XMLRPC sync is enabled but there are no replication targets configured.');
+					logger(LOG_WARNING, localize_text('Manual XMLRPC sync is enabled but there are no replication targets configured.'), LOG_PREFIX_PKG_PFBLOCKERNG);
 					return;
 				}
 				break;
@@ -10992,7 +10994,7 @@ function pfblockerng_sync_on_changes() {
 						}
 					} else {
 						pfb_logger(" terminated due to the following error(s): {$error}", 1);
-						log_error("[pfBlockerNG] XMLRPC sync to [ {$sync_to_ip}:{port} ] terminated due to the following error(s): {$error}");
+						logger(LOG_ERR, localize_text("XMLRPC sync to [ %s:%s ] terminated due to the following error(s): %s", $sync_to_ip, $port, $error), LOG_PREFIX_PKG_PFBLOCKERNG);
 					}
 				}
 			}
