@@ -84,6 +84,8 @@ define('BLACKLIST_LOGFILE',      'blacklist.log');
 define('APPLY_BTN',              'Apply');
 define('SAFESEARCH',             'safesearch');
 
+define('LOG_PREFIX_PKG_SQUIDGUARD', 'SquidGuard');
+
 $input_errors = array();
 
 # ==============================================================================
@@ -1555,7 +1557,7 @@ function squidguard_sync_on_changes() {
 			if (is_array(config_get_path("{$conf_path}/row"))) {
 				$rs = config_get_path("{$conf_path}/row");
 			} else {
-				log_error("[Squidguard]  XMLRPC sync is enabled but there are no hosts configured as replication targets.");
+				logger(LOG_WARNING, localize_text("XMLRPC sync is enabled but there are no hosts configured as replication targets."), LOG_PREFIX_PKG_SQUIDGUARD);
 				return;
 			}
 			break;
@@ -1564,7 +1566,7 @@ function squidguard_sync_on_changes() {
 			break;
 	}
 	if (is_array($rs)) {
-		log_error("[SquidGuard] XMLRPC sync is starting with timeout {$varsynctimeout} seconds.");
+		logger(LOG_INFO, localize_text("XMLRPC sync is starting with timeout %s seconds.", $varsynctimeout), LOG_PREFIX_PKG_SQUIDGUARD);
 		foreach ($rs as $sh) {
 			// Only sync enabled replication targets
 			if ($sh['varsyncdestinenable']) {
@@ -1592,13 +1594,13 @@ function squidguard_sync_on_changes() {
 				if ($valid) {
 					squidguard_do_xmlrpc_sync($sync_to_ip, $varsyncport, $varsyncprotocol, $username, $password, $varsynctimeout);
 				} else {
-					log_error("[SquidGuard] XMLRPC sync with '{$sync_to_ip}' aborted due to the following error(s): {$error}");
+					logger(LOG_ERR, localize_text("XMLRPC sync with '%s' aborted due to the following error(s): %s", $sync_to_ip, $error), LOG_PREFIX_PKG_SQUIDGUARD);
 				}
 			} else {
-				log_error("[SquidGuard] XMLRPC Sync with {$sh['varsyncipaddress']} is disabled");
+				logger(LOG_INFO, localize_text("XMLRPC Sync with %s is disabled", $sh['varsyncipaddress']), LOG_PREFIX_PKG_SQUIDGUARD);
 			}
 		}
-		log_error("[SquidGuard] XMLRPC sync is ending.");
+		logger(LOG_INFO, localize_text("XMLRPC sync is ending."), LOG_PREFIX_PKG_SQUIDGUARD);
 	}
 }
 
@@ -1611,7 +1613,7 @@ if(!function_exists('pf_version')) {
 /* Do the actual XMLRPC sync */
 function squidguard_do_xmlrpc_sync($sync_to_ip, $varsyncport, $varsyncprotocol, $username, $password, $varsynctimeout) {
 	if ($username == "" || $password == "" || $sync_to_ip == "" || $varsyncport == "" || $varsyncprotocol == "") {
-		log_error("[SquidGuard] A required XMLRPC sync parameter (username, password, replication target, port or protocol) is empty ... aborting pkg sync");
+		logger(LOG_WARNING, localize_text("A required XMLRPC sync parameter (username, password, replication target, port or protocol) is empty ... aborting pkg sync"), LOG_PREFIX_PKG_SQUIDGUARD);
 		return;
 	}
 
@@ -1708,7 +1710,7 @@ function squidguard_all_after_XMLRPC_resync() {
 	squidguard_resync_dest();
 	squidguard_resync();
 
-	log_error("[SquidGuard] Finished XMLRPC process. It should be OK. For more information look at the host which started sync.");
+	logger(LOG_INFO, localize_text("Finished XMLRPC process. It should be OK. For more information look at the host which started sync."), LOG_PREFIX_PKG_SQUIDGUARD);
 }
 
 ?>
