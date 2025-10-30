@@ -23,6 +23,8 @@ require_once("functions.inc");
 require_once("util.inc");
 require_once("service-utils.inc");
 
+define('LOG_PREFIX_PKG_NODEEXPORTER', 'node_exporter');
+
 const NODE_EXPORTER_CONFIG_DIR = "/usr/local/etc/rc.conf.d";
 const NODE_EXPORTER_CONFIG_FILE = "/usr/local/etc/rc.conf.d/node_exporter";
 const NODE_EXPORTER_RCFILE = "/usr/local/etc/rc.d/node_exporter.sh";
@@ -51,13 +53,13 @@ function node_exporter_write_config($node_exporter_config) {
 	safe_mkdir(NODE_EXPORTER_CONFIG_DIR);
 
 	if (!file_put_contents(NODE_EXPORTER_CONFIG_FILE, $txt)) {
-		log_error("ERROR: Could not open {" . NODE_EXPORTER_CONFIG_FILE . "} for writing");
+		logger(LOG_ERR, localize_text("Could not open %s for writing", NODE_EXPORTER_CONFIG_FILE), LOG_PREFIX_PKG_NODEEXPORTER);
 		exit;
 	}
 }
 function node_exporter_sync_config() {
 	if (is_service_running('node_exporter')) {
-		log_error("Stopping service node_exporter");
+		logger(LOG_INFO, localize_text("Stopping service node_exporter"), LOG_PREFIX_PKG_NODEEXPORTER);
 		stop_service('node_exporter');
 	}
 
@@ -71,18 +73,18 @@ function node_exporter_sync_config() {
 
 	/* Copy the rc script from the upstream one we bundle */
 	if (!copy(NODE_EXPORTER_RCFILE_UPSTREAM, NODE_EXPORTER_RCFILE)) {
-		log_error("ERROR: Could not copy {" . NODE_EXPORTER_RCFILE_UPSTREAM . "} to {" . NODE_EXPORTER_RCFILE . "}");
+		logger(LOG_ERR, localize_text("Could not copy %s to %s", NODE_EXPORTER_RCFILE_UPSTREAM, NODE_EXPORTER_RCFILE), LOG_PREFIX_PKG_NODEEXPORTER);
 		exit;
 	}
 	if (!chmod(NODE_EXPORTER_RCFILE, 0755)) {
-		log_error("ERROR: Could not set permissions on {" . NODE_EXPORTER_RCFILE . "}");
+		logger(LOG_ERR, localize_text("Could not set permissions on %s", NODE_EXPORTER_RCFILE), LOG_PREFIX_PKG_NODEEXPORTER);
 		exit;
 	}
 
 	if (platform_booting()) {
 		return;
 	}
-	log_error("Starting service node_exporter");
+	logger(LOG_INFO, localize_text("Starting service"), LOG_PREFIX_PKG_NODEEXPORTER);
 	start_service('node_exporter');
 }
 
@@ -104,7 +106,7 @@ function node_exporter_install_command() {
 
 function node_exporter_deinstall_command() {
 	if (is_service_running('node_exporter')) {
-		log_error("Stopping service node_exporter");
+		logger(LOG_INFO, localize_text("Stopping service"), LOG_PREFIX_PKG_NODEEXPORTER);
 		stop_service('node_exporter');
 	}
 	unlink_if_exists(NODE_EXPORTER_RCFILE);
