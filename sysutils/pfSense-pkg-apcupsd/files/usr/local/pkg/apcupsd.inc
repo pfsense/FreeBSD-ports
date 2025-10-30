@@ -25,6 +25,8 @@ require_once("functions.inc");
 require_once("pkg-utils.inc");
 require_once("globals.inc");
 
+define('LOG_PREFIX_PKG_APCUPSD', 'apcupsd');
+
 function php_install_apcupsd() {
 	sync_package_apcupsd();
 	apccontrol_scripts_install("","");
@@ -117,7 +119,7 @@ function sync_package_apcupsd() {
 
 
 	if (is_service_running('apcupsd') && !file_exists("{$g['tmp_path']}/.rc.start_packages.running")) {
-		log_error("Stopping service apcupsd");
+		logger(LOG_INFO, localize_text("Stopping service"), LOG_PREFIX_PKG_APCUPSD);
 		stop_service('apcupsd');
 	}
 
@@ -187,7 +189,7 @@ function sync_package_apcupsd() {
 		apccontrol_scripts_install($emailnotification,$shutdownbehavior);
 
 		if (!file_exists("{$g['tmp_path']}/.rc.start_packages.running")) {
-			log_error("Starting service apcupsd");
+			logger(LOG_INFO, localize_text("Starting service"), LOG_PREFIX_PKG_APCUPSD);
 			start_service("apcupsd");
 		}
 	}
