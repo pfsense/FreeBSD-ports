@@ -23,9 +23,11 @@ require_once('pfsense-utils.inc');
 require_once('service-utils.inc');
 require_once('interfaces.inc');
 
+define('LOG_PREFIX_PKG_UDPBROADCASTRELAY', 'udpbroadcastrelay');
+
 global $udpbr_global;
 if (!isset($udpbr_global)) {
-	$udpbr_global['name'] = 'udpbroadcastrelay';
+	$udpbr_global['name'] = LOG_PREFIX_PKG_UDPBROADCASTRELAY;
 	$udpbr_global = [
 		'name'        => $udpbr_global['name'],
 		'config_path' => "installedpackages/{$udpbr_global['name']}/config/0",
@@ -44,11 +46,7 @@ if (!isset($udpbr_global)) {
  *                              config revision.
  */
 function udpbr_log(string $message, int $priority = LOG_INFO, bool $config_revision = false): void {
-	global $udpbr_global;
-
-	openlog($udpbr_global['name'], LOG_ODELAY, LOG_DAEMON);
-	syslog($priority, $message);
-	closelog();
+	logger($priority, $message, LOG_PREFIX_PKG_UDPBROADCASTRELAY, LOG_DAEMON);
 
 	if ($config_revision) {
 		write_config("UDP Broadcast Relay: {$message}");
