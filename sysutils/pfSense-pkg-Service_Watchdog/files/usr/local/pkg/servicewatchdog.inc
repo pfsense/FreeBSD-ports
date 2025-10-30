@@ -25,6 +25,8 @@ require_once("service-utils.inc");
 require_once("util.inc");
 require_once("notices.inc");
 
+define('LOG_PREFIX_PKG_SERVICEWATCHDOG', 'Service Watchdog');
+
 function servicewatchdog_service_matches($svc1, $svc2) {
 	/* If the arrays are equal, it must be the same service. */
 	if ($svc1 == $svc2) {
@@ -88,8 +90,8 @@ function servicewatchdog_check_services() {
 		}
 		if (!get_service_status($svc)) {
 			$descr = strlen($svc['description']) > 50 ? substr($svc['description'], 0, 50) . "..." : $svc['description'];
-			$error_message = "Service Watchdog detected service {$svc['name']} stopped. Restarting {$svc['name']} ({$descr})";
-			log_error($error_message);
+			$error_message = localize_text('Detected service %1$s stopped. Restarting %1$s (%2$s)', $svc['name'], $descr);
+			logger(LOG_NOTICE, $error_message, LOG_PREFIX_PKG_SERVICEWATCHDOG);
 			if (isset($svc['notify'])) {
 				notify_all_remote($error_message);
 			}
