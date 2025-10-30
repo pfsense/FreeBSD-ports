@@ -35,6 +35,8 @@ if (!function_exists("filter_configure")) {
 	require_once("filter.inc");
 }
 
+define('LOG_PREFIX_PKG_ZEEK', 'Zeek');
+
 $shortcut_section = "zeek";
 
 define('ZEEK_LOCALBASE', '/usr/local');
@@ -97,10 +99,10 @@ function zeek_restart_services() {
 
 	if (zeek_enabled()) {
 		if (!is_service_running('zeek')) {
-			log_error("[zeek] Starting service...");
+			logger(LOG_INFO, localize_text("Starting service..."), LOG_PREFIX_PKG_ZEEK);
 			mwexec(ZEEK_ETC . "/rc.d/zeek.sh start");
 		} else {
-			log_error("[zeek] Reloading for configuration sync...");
+			logger(LOG_INFO, localize_text("Reloading for configuration sync..."), LOG_PREFIX_PKG_ZEEK);
 			mwexec(ZEEK_ETC . "/rc.d/zeek.sh restart");
 		}
 		// sleep for a couple seconds to give zeek a chance to fire up fully.
@@ -112,7 +114,7 @@ function zeek_restart_services() {
 	} else {
 		// Zeek is disabled
 		if (is_service_running('zeek')) {
-			log_error("[zeek] Stopping service...");
+			logger(LOG_INFO, localize_text("Stopping service..."), LOG_PREFIX_PKG_ZEEK);
 			mwexec_bg(ZEEK_ETC . "/rc.d/zeek.sh stop");
 		}
 	}
@@ -130,10 +132,10 @@ function zeek_install_cron($should_install) {
 	$cron_cmd = ZEEK_LOCALBASE . "/bin/zeekctl cron ";
 
 	if (($should_install) && (zeek_enabled())) {
-		log_error("[zeek] Adding cronjobs ...");
+		logger(LOG_INFO, localize_text("Adding cronjobs ..."), LOG_PREFIX_PKG_ZEEK);
 		install_cron_job("{$cron_cmd}", $should_install, "*/5", "*", "*", "*", "*", "root");
 	} else {
-		log_error("[zeek] Removing cronjobs ...");
+		logger(LOG_INFO, localize_text("Removing cronjobs ..."), LOG_PREFIX_PKG_ZEEK);
 		install_cron_job("{$cron_cmd}", false);
 	}
 }
@@ -172,19 +174,19 @@ function zeek_install_command() {
 
 	// creating a backup file of the original zeekctl.cfg no matter if user checked this or not
 	if (!file_exists(ZEEK_ETC . "/zeekctl.cfg.backup")) {
-		log_error("[zeek] Creating backup of the original file to " . ZEEK_ETC . "/zeekctl.cfg.backup");
+		logger(LOG_INFO, localize_text("Creating backup of the original file to %s", ZEEK_ETC . "/zeekctl.cfg.backup"), LOG_PREFIX_PKG_ZEEK);
 		copy(ZEEK_ETC . "/zeekctl.cfg", ZEEK_ETC . "/zeekctl.cfg.backup");
 	}
 
 	// creating a backup file of the original /etc/node no matter if user checked this or not
 	if (!file_exists(ZEEK_ETC . "/node.cfg.backup")) {
-		log_error("[zeek] Creating backup of the original file to " . ZEEK_ETC . "/node.cfg.backup");
+		logger(LOG_INFO, localize_text("Creating backup of the original file to %s", ZEEK_ETC . "/node.cfg.backup"), LOG_PREFIX_PKG_ZEEK);
 		copy(ZEEK_ETC . "/node.cfg", ZEEK_ETC . "/node.cfg.backup");
 	}
 
 	// creating a backup file of the original /etc/networks no matter if user checked this or not
 	if (!file_exists(ZEEK_ETC . "/networks.cfg.backup")) {
-		log_error("[zeek] Creating backup of the original file to " . ZEEK_ETC . "/networks.cfg.backup");
+		logger(LOG_INFO, localize_text("Creating backup of the original file to %s", ZEEK_ETC . "/networks.cfg.backup"), LOG_PREFIX_PKG_ZEEK);
 		copy(ZEEK_ETC . "/networks.cfg", ZEEK_ETC . "/networks.cfg.backup");
 	}
 	// Change owner of zeek created files
@@ -226,7 +228,7 @@ function zeek_validate_general($post, &$input_errors) {
 				$input_errors[] = "To use Zeek as cluster, visit Zeek NSM: Zeek cluster, configure and save the cluster settings first.";
 			}
 		} else {
-			log_error("[zeek] Enabled as cluster. If this is unintended, visit Zeek NSM: General and configure zeek interfaces.");
+			logger(LOG_INFO, localize_text("Enabled as cluster. If this is unintended, visit Zeek NSM: General and configure zeek interfaces."), LOG_PREFIX_PKG_ZEEK);
 		}
 	}
 
@@ -440,7 +442,7 @@ function zeek_zeekctl_resync() {
 	$statsduration = $settings['stats_duration'] ? $settings['stats_duration'] : 0;
 	$logdir = $settings['log_dir'] ? $settings['log_dir'] : '/usr/local/logs';
 	if (!is_dir($logdir)) {
-		log_error("[zeek] Creating Zeek log dir '{$logdir}' ...");
+		logger(LOG_INFO, localize_text("Creating Zeek log dir '%s' ...", $logdir), LOG_PREFIX_PKG_ZEEK);
 		safe_mkdir($logdir, 0755);
 	}
 
@@ -737,7 +739,7 @@ EOD;
 	chmod($destpath, 0640);
 
 	} else {
-		log_error("Enable Zeek instance first.");
+		logger(LOG_WARNING, localize_text("Enable Zeek instance first."), LOG_PREFIX_PKG_ZEEK);
 	}
 	zeek_sync_on_changes();
 	zeek_restart_services();
@@ -757,7 +759,7 @@ function zeek_sync_on_changes() {
 			if (is_array($zeek_sync['row'])) {
 				$rs = $zeek_sync['row'];
 			} else {
-				log_error("[zeek] XMLRPC sync is enabled but there are no hosts configured as replication targets.");
+				logger(LOG_WARNING, localize_text("XMLRPC sync is enabled but there are no hosts configured as replication targets."), LOG_PREFIX_PKG_ZEEK);
 				return;
 			}
 		break;
@@ -766,7 +768,7 @@ function zeek_sync_on_changes() {
 		break;
 	}
 	if (is_array($rs)) {
-		log_error("[zeek] XMLRPC sync is starting.");
+		logger(LOG_INFO, localize_text("XMLRPC sync is starting."), LOG_PREFIX_PKG_ZEEK);
 		foreach ($rs as $sh) {
 			// Only sync enabled replication targets
 			if ($sh['syncdestinenable']) {
@@ -794,11 +796,11 @@ function zeek_sync_on_changes() {
 				if ($valid) {
 					zeek_do_xmlrpc_sync($sync_to_ip, $username, $password, $port, $protocol, $synctimeout);
 				} else {
-					log_error("[zeek] XMLRPC sync with '{$sync_to_ip}' aborted due to the following error(s): {$error}");
+					logger(LOG_ERR, localize_text("XMLRPC sync with '%s' aborted due to the following error(s): %s", $sync_to_ip, $error), LOG_PREFIX_PKG_ZEEK);
 				}
 			}
 		}
-		log_error("[zeek] XMLRPC sync completed.");
+		logger(LOG_INFO, localize_text("XMLRPC sync completed."), LOG_PREFIX_PKG_ZEEK);
 	}
 }
 
@@ -807,7 +809,7 @@ function zeek_do_xmlrpc_sync($sync_to_ip, $username, $password, $varsyncport, $v
 	global $g;
 
 	if ($username == "" || $password == "" || $sync_to_ip == "" || $varsyncport == "" || $varsyncprotocol == "") {
-		log_error("[zeek] A required XMLRPC sync parameter (username, password, replication target, port or protocol) is empty ... aborting pkg sync");
+		logger(LOG_WARNING, localize_text("A required XMLRPC sync parameter (username, password, replication target, port or protocol) is empty ... aborting pkg sync"), LOG_PREFIX_PKG_ZEEK);
 		return;
 	}
 	/* XML will hold the sections to sync */
@@ -888,7 +890,7 @@ function zeek_all_after_XMLRPC_resync() {
 	zeek_cluster_resync();
 	zeek_script_resync();
 
-	log_error("[zeek]: Finished XMLRPC process. For more information look at the host which started sync.");
+	logger(LOG_INFO, localize_text("Finished XMLRPC process. For more information look at the host which started sync."), LOG_PREFIX_PKG_ZEEK);
 
 	mwexec_bg(ZEEK_ETC . "/rc.d/zeek.sh restart");
 }
