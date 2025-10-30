@@ -30,6 +30,7 @@ require_once("xmlrpc_client.inc");
 define('STUNNEL_LOCALBASE', '/usr/local');
 define('STUNNEL_ETCDIR', STUNNEL_LOCALBASE . "/etc/stunnel");
 define('STUNNEL_CHROOTDIR', '/var/tmp/stunnel');
+define('LOG_PREFIX_PKG_STUNNEL', 'stunnel');
 
 function stunnel_save() {
 	$stunnel_conf = STUNNEL_ETCDIR . "/stunnel.conf";
@@ -175,9 +176,9 @@ function stunnel_make_default_cert() {
 		chmod(STUNNEL_ETCDIR . "/stunnel.pem", 0600);
 	} else {
 		while ($ssl_err = openssl_error_string()) {
-			log_error(sprintf(gettext("Error creating stunnel " .
-			    "certificate: openssl library returns: %s"),
-			    $ssl_err));
+			logger(LOG_ERR, localize_text("Error creating stunnel " .
+			    "certificate: openssl library returns: %s",
+			    $ssl_err), LOG_PREFIX_PKG_STUNNEL);
 		}
 	}
 	error_reporting($old_err_level);
