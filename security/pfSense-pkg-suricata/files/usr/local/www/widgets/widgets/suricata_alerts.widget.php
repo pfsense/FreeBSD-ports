@@ -127,7 +127,7 @@ function suricata_widget_get_alerts() {
 				/************** *************************************************************************************************************************/
 
 				if (!$fd = fopen("{$g['tmp_path']}/surialerts_{$suricata_uuid}", "r")) {
-					log_error(gettext("[Suricata Widget] Failed to open file {$g['tmp_path']}/surialerts_{$suricata_uuid}"));
+					logger(LOG_ERR, localize_text("Widget failed to open file %s", "{$g['tmp_path']}/surialerts_{$suricata_uuid}"), LOG_PREFIX_PKG_SURICATA);
 					continue;
 				}
 
