@@ -1,8 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	pfSense-pkg-lldpd
-PORTVERSION=	0.9.11
-PORTREVISION=	3
+PORTVERSION=	0.9.12
 CATEGORIES=	net-mgmt
 MASTER_SITES=	# empty
 DISTFILES=	# empty
