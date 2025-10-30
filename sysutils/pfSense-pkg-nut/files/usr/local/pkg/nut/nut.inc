@@ -26,6 +26,8 @@ require_once("functions.inc");
 require_once("util.inc");
 require_once("service-utils.inc");
 
+define('LOG_PREFIX_PKG_NUT', 'NUT');
+
 const NUT_ETC = "/usr/local/etc/nut";
 const NUT_MONFILE = NUT_ETC . "/upsmon.conf";
 const NUT_UPSFILE = NUT_ETC . "/ups.conf";
@@ -62,7 +64,7 @@ function nut_check_var_db() {
 function nut_write_file($file, $content, $perm) {
 	$fd = fopen($file, "w");
 	if (!$fd) {
-		log_error("ERROR: Could not open {$file} for writing");
+		logger(LOG_ERR, localize_text("Could not open %s for writing", $file), LOG_PREFIX_PKG_NUT);
 		exit;
 	}
 	chmod($file, $perm);
@@ -129,7 +131,7 @@ function nut_write_shutdownfile() {
 
 function nut_sync_config() {
 	if (is_service_running('nut')) {
-		log_error("Stopping service nut");
+		logger(LOG_INFO, localize_text("Stopping service"), LOG_PREFIX_PKG_NUT);
 		stop_service('nut');
 	}
 
@@ -322,7 +324,7 @@ function nut_sync_config() {
 		return;
 	}
 
-	log_error("Starting service nut");
+	logger(LOG_INFO, localize_text("Starting service"), LOG_PREFIX_PKG_NUT);
 	start_service('nut');
 	sleep(3);
 }
@@ -479,7 +481,7 @@ function nut_ups_status()
 
 function nut_deinstall_command() {
 	if (is_service_running('nut')) {
-		log_error("Stopping service nut");
+		logger(LOG_INFO, localize_text("Stopping service"), LOG_PREFIX_PKG_NUT);
 		stop_service('nut');
 	}
 
