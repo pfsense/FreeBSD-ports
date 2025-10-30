@@ -21,6 +21,8 @@
 require_once("service-utils.inc");
 require_once("util.inc");
 
+define('LOG_PREFIX_PKG_OPENVMTOOLS', 'open-vm-tools');
+
 function open_vm_tools_deinstall() {
 	$tgt = "/usr/local/etc/rc.d";
 
@@ -45,7 +47,7 @@ EOF;
 	// Write out conf files.
 	$fd = fopen("$openvmtools_path/share/vmware-tools/tools.conf", "w");
 	if (!$fd) {
-		log_error("Could not open $openvmtools_path/share/vmware-tools/tools.conf for writing");
+		logger(LOG_ERR, localize_text("Could not open %s for writing", "{$openvmtools_path}/share/vmware-tools/tools.conf"), LOG_PREFIX_PKG_OPENVMTOOLS);
 		die("Could not open $openvmtools_path/share/vmware-tools/tools.conf for writing");
 	}
 	fwrite($fd, $vmware_tools_conf);
