@@ -35,6 +35,7 @@ require_once("xmlrpc_client.inc");
 
 define('BIND_LOCALBASE', '/usr/local');
 define('CHROOT_LOCALBASE', '/var/etc/named');
+define('LOG_PREFIX_PKG_BIND', 'bind');
 
 function bind_zone_validate($post, &$input_errors) {
 
@@ -624,7 +625,7 @@ EOD;
 									}
 								}
 								if ($key_restored > 0) {
-									log_error("[bind] {$key_restored} DNSSEC keys restored from XML backup for {$zonename} zone.");
+									logger(LOG_INFO, localize_text("%s DNSSEC keys restored from XML backup for %s zone.", $key_restored, $zonename), LOG_PREFIX_PKG_BIND);
 								}
 								$dnssec_bin = "/usr/local/sbin/dnssec-keygen";
 								$z = reverse_zonename($zonename, $zonereverso, $zonereversv6o);
@@ -635,7 +636,7 @@ EOD;
 										chown(CHROOT_LOCALBASE . "/etc/namedb/keys/{$filename}.key", "bind");
 										chown(CHROOT_LOCALBASE . "/etc/namedb/keys/{$filename}.private", "bind");
 									}
-									log_error("[bind] DNSSEC keys for {$zonename} created.");
+									logger(LOG_INFO, localize_text("DNSSEC keys for %s created.", $zonename), LOG_PREFIX_PKG_BIND);
 								}
 							}
 							// Get DS keys
@@ -668,7 +669,7 @@ EOD;
 									}
 								}
 								if ($dnssec_keys > 0) {
-									log_error("[bind] {$dnssec_keys} DNSSEC keys for {$zonename} zone saved on XML config.");
+									logger(LOG_INFO, localize_text("%s DNSSEC keys for %s zone saved on XML config.", $dnssec_keys, $zonename), LOG_PREFIX_PKG_BIND);
 								}
 							}
 						}
@@ -949,7 +950,7 @@ function bind_sync_on_changes() {
 				if (is_array($bind_sync['row'])) {
 					$rs = $bind_sync['row'];
 				} else {
-					log_error("[bind] XMLRPC sync is enabled but there are no hosts to push on BIND config.");
+					logger(LOG_WARNING, localize_text("XMLRPC sync is enabled but there are no hosts to push on BIND config."), LOG_PREFIX_PKG_BIND);
 					return;
 				}
 				break;
@@ -958,7 +959,7 @@ function bind_sync_on_changes() {
 				break;
 		}
 		if (is_array($rs)) {
-			log_error("[bind] XMLRPC sync is starting.");
+			logger(LOG_INFO, localize_text("XMLRPC sync is starting."), LOG_PREFIX_PKG_BIND);
 			foreach ($rs as $sh) {
 				// Only sync enabled replication targets
 				if ($sh['syncdestinenable']) {
@@ -1009,11 +1010,11 @@ function bind_sync_on_changes() {
 					if ($valid) {
 						bind_do_xmlrpc_sync($sync_to_ip, $port, $protocol, $username, $password, $synctimeout, $master_zone_ip);
 					} else {
-						log_error("[bind] XMLRPC sync with '{$sync_to_ip}' aborted due to the following error(s): {$error}");
+						logger(LOG_ERR, localize_text("XMLRPC sync with '%s' aborted due to the following error(s): %s", $sync_to_ip, $error), LOG_PREFIX_PKG_BIND);
 					}
 				}
 			}
-			log_error("[bind] XMLRPC sync completed.");
+			logger(LOG_INFO, localize_text("XMLRPC sync completed."), LOG_PREFIX_PKG_BIND);
 		}
 	}
 }
@@ -1087,7 +1088,7 @@ function bind_do_xmlrpc_sync($sync_to_ip, $port, $protocol, $username, $password
 	global $g;
 
 	if (($username == "") || ($password == "") || ($sync_to_ip == "") || ($port == "") || ($protocol == "") || ($master_zone_ip =="")) {
-		log_error("[bind] A required XMLRPC sync parameter (username, password, replication target, port, protocol or zone master IP) is empty ... aborting pkg sync");
+		logger(LOG_WARNING, localize_text("A required XMLRPC sync parameter (username, password, replication target, port, protocol or zone master IP) is empty ... aborting pkg sync"), LOG_PREFIX_PKG_BIND);
 		return;
 	}
 	
