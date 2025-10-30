@@ -117,7 +117,7 @@ function snort_widget_get_alerts() {
 				/*              0         1            2      3       4   5     6   7       8   9       10 11             12       13     14          */
 				/* File format: timestamp,generator_id,sig_id,sig_rev,msg,proto,src,srcport,dst,dstport,id,classification,priority,action,disposition */
 				if (!$fd = fopen("/tmp/alert_snort{$snort_uuid}", "r")) {
-					log_error(gettext("[Snort Widget] Failed to open file /tmp/alert_snort{$snort_uuid}"));
+					logger(LOG_ERR, localize_text("Widget failed to open file %s", "/tmp/alert_snort{$snort_uuid}"), LOG_PREFIX_PKG_SNORT);
 					continue;
 				}
 				while (($fields = fgetcsv($fd, 1000, ',', '"')) !== FALSE) {

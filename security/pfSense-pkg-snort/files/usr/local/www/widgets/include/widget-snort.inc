@@ -22,6 +22,8 @@
 
 require_once("config.inc");
 
+define('LOG_PREFIX_PKG_SNORT', 'Snort');
+
 //set variables for custom title and link
 $snort_alerts_title = "Snort Alerts";
 $snort_alerts_title_link = "snort/snort_alerts.php";
