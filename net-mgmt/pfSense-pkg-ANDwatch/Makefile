@@ -1,6 +1,7 @@
 
 PORTNAME=	pfSense-pkg-ANDwatch
 PORTVERSION=	2.1
+PORTREVISION=	1
 CATEGORIES=	net-mgmt
 MASTER_SITES=	# empty
 DISTFILES=	# empty

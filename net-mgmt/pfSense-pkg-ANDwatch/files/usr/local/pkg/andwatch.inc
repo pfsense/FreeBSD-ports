@@ -24,6 +24,8 @@ require_once("functions.inc");
 require_once("util.inc");
 require_once("service-utils.inc");
 
+define('LOG_PREFIX_PKG_ANDWATCH', 'ANDwatch');
+
 const ANDWATCH_SVC_NAME = 'andwatchd';
 const ANDWATCH_RC_FILE = '/usr/local/etc/rc.d/andwatch.sh';
 const ANDWATCHD_CMD = '/usr/local/bin/andwatchd';
@@ -116,7 +118,7 @@ function andwatch_write_rcfile() {
 function andwatch_sync_config() {
 	// Stop the service if it is currently running
 	if (is_service_running(ANDWATCH_SVC_NAME)) {
-		log_error("Stopping service ANDwatch");
+		logger(LOG_INFO, localize_text("Stopping service"), LOG_PREFIX_PKG_ANDWATCH);
 		stop_service(ANDWATCH_SVC_NAME);
 	}
 
@@ -148,7 +150,7 @@ function andwatch_sync_config() {
 	}
 
 	// Start the service
-	log_error("Starting service ANDwatch");
+	logger(LOG_INFO, localize_text("Starting service"), LOG_PREFIX_PKG_ANDWATCH);
 	start_service(ANDWATCH_SVC_NAME);
 }
 
@@ -156,7 +158,7 @@ function andwatch_sync_config() {
 // Clean up on deinstall
 function andwatch_deinstall_command() {
 	if (is_service_running(ANDWATCH_SVC_NAME)) {
-		log_error("Stopping service ANDwatch");
+		logger(LOG_INFO, localize_text("Stopping service"), LOG_PREFIX_PKG_ANDWATCH);
 		stop_service(ANDWATCH_SVC_NAME);
 	}
 
