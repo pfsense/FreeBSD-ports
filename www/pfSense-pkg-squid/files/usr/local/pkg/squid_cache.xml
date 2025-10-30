@@ -434,7 +434,7 @@
 		if ($cachedir_changed) {
 			// only delete directories under sane paths automatically
 			if (substr($oldcachedir, 0, 11) === "/var/squid/") {
-				log_error("[squid] Deleting Squid cache dir '{$oldcachedir}' since 'Hard Disk Cache Location' changed to '{$_POST['harddisk_cache_location']}'.");
+				logger(LOG_INFO, localize_text("Deleting Squid cache dir '%s' since 'Hard Disk Cache Location' changed to '%s'.", $oldcachedir, $_POST['harddisk_cache_location']), LOG_PREFIX_PKG_SQUID);
 				// cannot nuke disk cache while Squid is running
 				squid_stop_monitor();
 				if (is_service_running('squid')) {
@@ -445,8 +445,8 @@
 				// new cachedir will be created on squid_resync() below which calls squid_dash_z()
 				// also the services will get restarted there
 			} else {
-				log_error("[squid] 'Hard Disk Cache Location' changed to '{$_POST['harddisk_cache_location']}'.");
-				log_error("[squid] Will NOT delete Squid cache dir '{$oldcachedir}' since it is not located under /var/squid. Delete manually if required.");
+				logger(LOG_INFO, localize_text("'Hard Disk Cache Location' changed to '%s'.", $_POST['harddisk_cache_location']), LOG_PREFIX_PKG_SQUID);
+				logger(LOG_INFO, localize_text("Will NOT delete Squid cache dir '%s' since it is not located under %s. Delete manually if required.", $oldcachedir, '/var/squid'), LOG_PREFIX_PKG_SQUID);
 			}
 		}
 		squid_resync();

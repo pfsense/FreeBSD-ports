@@ -463,7 +463,7 @@ function squid_reverse_upgrade_config() {
 function squid_validate_reverse($post, &$input_errors) {
 	/* Manually refresh client CRL */
 	if ($post['refresh_crl'] == 'Refresh CRL') {
-		log_error("[squid] Client Certificate Revocation List refresh forced via GUI. Refreshing now...");
+		logger(LOG_INFO, localize_text("Client Certificate Revocation List refresh forced via GUI. Refreshing now..."), LOG_PREFIX_PKG_SQUID);
 		squid_refresh_crl();
 	}
 
