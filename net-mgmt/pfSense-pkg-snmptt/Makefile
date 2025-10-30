@@ -1,8 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	pfSense-pkg-snmptt
-PORTVERSION=	1.0.0
-PORTREVISION=	2
+PORTVERSION=	1.0.1
 CATEGORIES=	net-mgmt
 MASTER_SITES=	# empty
 DISTFILES=	# empty
