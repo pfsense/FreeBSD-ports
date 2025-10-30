@@ -25,26 +25,28 @@ require_once('service-utils.inc');
 require_once('util.inc');
 require_once('system.inc');
 
+define('LOG_PREFIX_PKG_TINC', 'tinc');
+
 function tinc_plugin_carp($pluginparams) {
 	// $pluginparams['type'] = 'carp';
 	// $pluginparams['event'] = 'rc.carpmaster';
 	// $pluginparams['interface'] = $argument;
-	log_error("[tinc] got carp event ");
+	logger(LOG_INFO, localize_text("got carp event "), LOG_PREFIX_PKG_TINC);
 	if ($pluginparams['type'] == 'carp') {
 		if ($pluginparams['event'] == 'rc.carpmaster') {
 			// start
-			log_error("[tinc] got CARP:MASTER -> starting");
+			logger(LOG_INFO, localize_text("got CARP:MASTER -> starting"), LOG_PREFIX_PKG_TINC);
 			if (is_service_running('tinc')) {
-				log_error("[tinc] already running");
+				logger(LOG_INFO, localize_text("Service already running"), LOG_PREFIX_PKG_TINC);
 			} else {
 				start_service("tinc");
 			}
 		}
 		if ($pluginparams['event'] == 'rc.carpbackup') {
 			// stop
-			log_error("[tinc] got CARP:BACKUP -> stopping");
+			logger(LOG_INFO, localize_text("got CARP:BACKUP -> stopping"), LOG_PREFIX_PKG_TINC);
 			if (!is_service_running('tinc')) {
-				log_error("[tinc] already stopped");
+				logger(LOG_INFO, localize_text("Service already stopped"), LOG_PREFIX_PKG_TINC);
 			} else {
 				stop_service("tinc");
 			}
@@ -67,7 +69,7 @@ function tinc_save() {
 
 	// No proper config, bail out.
 	if (!isset($tincconf['name']) || empty($tincconf['name'])) {
-		log_error("[tinc] Cannot configure (name not set). Check your configuration.");
+		logger(LOG_ERR, localize_text("Cannot configure (name not set). Check your configuration."), LOG_PREFIX_PKG_TINC);
 		return;
 	}
 
