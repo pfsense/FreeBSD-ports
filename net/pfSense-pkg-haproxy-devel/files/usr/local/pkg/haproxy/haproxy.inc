@@ -28,6 +28,8 @@ require_once("filter.inc");
 require_once("haproxy_utils.inc");
 require_once("haproxy_socketinfo.inc");
 
+define('LOG_PREFIX_PKG_HAPROXY', 'HAProxy');
+
 $d_haproxyconfdirty_path = $g['varrun_path'] . "/haproxy.conf.dirty";
 #region Global haproxy array item definitions..
 global $a_frontendmode;
@@ -1351,7 +1353,7 @@ function haproxy_check_and_run(&$messages, $reload, $force = false) {
 	global $g, $haproxy_server_state_path;
 	if ($force) {
 		unlink_if_exists($haproxy_server_state_path);
-		log_error("Removed HAProxy server state file.");
+		logger(LOG_INFO, localize_text("Removed HAProxy server state file."), LOG_PREFIX_PKG_HAPROXY);
 	}
 	$testpath = "{$g['varetc_path']}/haproxy_test";
 	haproxy_writeconf($testpath);
@@ -1445,7 +1447,7 @@ function haproxy_write_certificate_fullchain($filename, $certid, $append = false
 function haproxy_write_certificate_issuer($filename, $certid) {
 	$cert = haproxy_lookup_cert($certid);
 	$certchaincontent = ca_chain($cert);
-	$certcontent = "";
+	$certcontent = '';
 	if ($certchaincontent != "") {
 		$certcontent .= "\r\n" . $certchaincontent;
 	}
@@ -2520,7 +2522,7 @@ function haproxy_check_run($reload) {
 			$status = haproxy_carpipismaster($a_global['carpdev']);
 			if (!$status) {
 				if (haproxy_is_running()) {
-					log_error("Stopping haproxy on CARP backup.");
+					logger(LOG_INFO, localize_text("Stopping haproxy on CARP backup."), LOG_PREFIX_PKG_HAPROXY);
 					//exec("/bin/pkill -F /var/run/haproxy.pid haproxy");//doesnt work for multiple pid's in a pidfile
 					haproxy_kill();
 				}
@@ -2530,7 +2532,7 @@ function haproxy_check_run($reload) {
 				unlock($haproxylock);
 				return (0);
 			}
-			log_error("Starting haproxy on CARP master.");
+			logger(LOG_INFO, localize_text("Starting haproxy on CARP master."), LOG_PREFIX_PKG_HAPROXY);
 			/* fallthrough */
 		} elseif ($reload == 0) {
 			unlock($haproxylock);
