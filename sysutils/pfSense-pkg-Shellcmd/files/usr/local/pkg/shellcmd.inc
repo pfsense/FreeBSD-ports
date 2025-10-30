@@ -20,6 +20,8 @@
  * limitations under the License.
  */
 
+define('LOG_PREFIX_PKG_SHELLCMD', 'shellcmd');
+
 function shellcmd_install_command() {
 	shellcmd_import_config();
 	shellcmd_sync_package();
@@ -79,7 +81,7 @@ function shellcmd_delete_php_command() {
 
 /* Force restore of protected (early)shellcmds from system config */
 function shellcmd_forced_restore($pkg) {
-	log_error("[shellcmd] Refused to delete {$pkg} earlyshellcmd. Use {$pkg} to configure this entry.");
+	logger(LOG_WARNING, localize_text("Refused to delete %s earlyshellcmd. Use %s to configure this entry.", $pkg, $pkg), LOG_PREFIX_PKG_SHELLCMD);
 	shellcmd_import_config();
 	write_config("[shellcmd] Restore of {$pkg} earlyshellcmd forced.");
 	/* Send the user back to settings */
