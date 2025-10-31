@@ -1,3 +1,364 @@
+  <vuln vid="c4fb21e4-b579-11f0-871c-6805ca2fa271">
+    <topic>powerdns-recursor -- cache pollution</topic>
+    <affects>
+    <package>
+	<name>powerdns_recursor</name>
+	<range><lt>5.3.0</lt></range>
+    </package>
+    </affects>
+    <description>
+	<body xmlns="http://www.w3.org/1999/xhtml">
+	<p>PowerDNS Team reports:</p>
+	<blockquote cite="https://blog.powerdns.com/powerdns-security-advisory-2025-06-2025-10-22">
+	  <p>It has been brought to our attention that the Recursor does not
+	  apply strict enough validation of received delegation information.
+	  The malicious delegation information can be sent by an attacker
+	  spoofing packets.</p>
+	</blockquote>
+	</body>
+    </description>
+    <references>
+      <cvename>CVE-2025-59023</cvename>
+      <cvename>CVE-2025-59024</cvename>
+      <url>https://doc.powerdns.com/recursor/security-advisories/powerdns-advisory-2025-06.html</url>
+    </references>
+    <dates>
+      <discovery>2025-10-15</discovery>
+      <entry>2025-10-30</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="7c09fcb7-b5d6-11f0-b3f7-a8a1599412c6">
+    <topic>chromium -- multiple security fixes</topic>
+    <affects>
+      <package>
+       <name>chromium</name>
+       <range><lt>142.0.7444.59</lt></range>
+      </package>
+      <package>
+       <name>ungoogled-chromium</name>
+       <range><lt>142.0.7444.59</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+       <p>Chrome Releases reports:</p>
+       <blockquote cite="https://chromereleases.googleblog.com/2025/10/stable-channel-update-for-desktop_28.html">
+	 <p>This update includes 20 security fixes:</p>
+	 <ul>
+	    <li>[447613211] High CVE-2025-12428: Type Confusion in V8. Reported by Man Yue Mo of GitHub Security Lab on 2025-09-26</li>
+	    <li>[450618029] High CVE-2025-12429: Inappropriate implementation in V8. Reported by Aorui Zhang on 2025-10-10</li>
+	    <li>[442860743] High CVE-2025-12430: Object lifecycle issue in Media. Reported by round.about on 2025-09-04</li>
+	    <li>[436887350] High CVE-2025-12431: Inappropriate implementation in Extensions. Reported by Alesandro Ortiz on 2025-08-06</li>
+	    <li>[439522866] High CVE-2025-12432: Race in V8. Reported by Google Big Sleep on 2025-08-18</li>
+	    <li>[449760249] High CVE-2025-12433: Inappropriate implementation in V8. Reported by Google Big Sleep on 2025-10-07</li>
+	    <li>[452296415] High CVE-2025-12036: Inappropriate implementation in V8. Reported by Google Big Sleep on 2025-10-15</li>
+	    <li>[337356054] Medium CVE-2025-12434: Race in Storage. Reported by Lijo A.T on 2024-04-27</li>
+	    <li>[446463993] Medium CVE-2025-12435: Incorrect security UI in Omnibox. Reported by Hafiizh on 2025-09-21</li>
+	    <li>[40054742] Medium CVE-2025-12436: Policy bypass in Extensions. Reported by Luan Herrera (@lbherrera_) on 2021-02-08</li>
+	    <li>[446294487] Medium CVE-2025-12437: Use after free in PageInfo. Reported by Umar Farooq on 2025-09-20</li>
+	    <li>[433027577] Medium CVE-2025-12438: Use after free in Ozone. Reported by Wei Yuan of MoyunSec VLab on 2025-07-20</li>
+	    <li>[382234536] Medium CVE-2025-12439: Inappropriate implementation in App-Bound Encryption. Reported by Ari Novick on 2024-12-04</li>
+	    <li>[430555440] Low CVE-2025-12440: Inappropriate implementation in Autofill. Reported by Khalil Zhani on 2025-07-09</li>
+	    <li>[444049512] Medium CVE-2025-12441: Out of bounds read in V8. Reported by Google Big Sleep on 2025-09-10</li>
+	    <li>[452071845] Medium CVE-2025-12443: Out of bounds read in WebXR. Reported by Aisle Research on 2025-10-15</li>
+	    <li>[390571618] Low CVE-2025-12444: Incorrect security UI in Fullscreen UI. Reported by syrf on 2025-01-18</li>
+	    <li>[428397712] Low CVE-2025-12445: Policy bypass in Extensions. Reported by Thomas Greiner on 2025-06-29</li>
+	    <li>[444932667] Low CVE-2025-12446: Incorrect security UI in SplitView. Reported by Hafiizh on 2025-09-14</li>
+	    <li>[442636157] Low CVE-2025-12447: Incorrect security UI in Omnibox. Reported by Khalil Zhani on 2025-09-03</li>
+	 </ul>
+       </blockquote>
+      </body>
+    </description>
+    <references>
+      <cvename>CVE-2025-12036</cvename>
+      <cvename>CVE-2025-12428</cvename>
+      <cvename>CVE-2025-12429</cvename>
+      <cvename>CVE-2025-12430</cvename>
+      <cvename>CVE-2025-12431</cvename>
+      <cvename>CVE-2025-12432</cvename>
+      <cvename>CVE-2025-12433</cvename>
+      <cvename>CVE-2025-12434</cvename>
+      <cvename>CVE-2025-12435</cvename>
+      <cvename>CVE-2025-12436</cvename>
+      <cvename>CVE-2025-12437</cvename>
+      <cvename>CVE-2025-12438</cvename>
+      <cvename>CVE-2025-12439</cvename>
+      <cvename>CVE-2025-12440</cvename>
+      <cvename>CVE-2025-12441</cvename>
+      <cvename>CVE-2025-12443</cvename>
+      <cvename>CVE-2025-12444</cvename>
+      <cvename>CVE-2025-12445</cvename>
+      <cvename>CVE-2025-12446</cvename>
+      <cvename>CVE-2025-12447</cvename>
+      <url>https://chromereleases.googleblog.com/2025/10/stable-channel-update-for-desktop_28.html</url>
+    </references>
+    <dates>
+      <discovery>2025-10-29</discovery>
+      <entry>2025-10-30</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="291773e6-b5b2-11f0-8f61-b42e991fc52e">
+    <topic>Firefox -- use-after-free in the GPU or browser process</topic>
+    <affects>
+    <package>
+	<name>firefox</name>
+	<range><lt>144.0.2,2</lt></range>
+    </package>
+    </affects>
+    <description>
+	<body xmlns="http://www.w3.org/1999/xhtml">
+	<p>https://bugzilla.mozilla.org/show_bug.cgi?id=1993113 reports:</p>
+	<blockquote cite="https://bugzilla.mozilla.org/show_bug.cgi?id=1993113">
+	  <p>Starting with Firefox 142, it was possible for a
+	  compromised child process to trigger a use-after-free in the
+	  GPU or browser process using WebGPU-related IPC calls.
+	  This may have been usable to escape the child process
+	  sandbox.</p>
+	</blockquote>
+	</body>
+    </description>
+    <references>
+      <cvename>CVE-2025-12380</cvename>
+      <url>https://cveawg.mitre.org/api/cve/CVE-2025-12380</url>
+    </references>
+    <dates>
+      <discovery>2025-10-28</discovery>
+      <entry>2025-10-30</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="237f4f57-b50f-11f0-ae9b-b42e991fc52e">
+    <topic>Erlang - Absolute Path in Zip Module</topic>
+    <affects>
+	<package>
+	  <name>erlang</name>
+	  <range><ge>17.0</ge><lt>26.2.5.13,4</lt></range>
+	</package>
+	<package>
+	  <name>erlang-runtime26</name>
+	  <range><lt>26.2.5.13</lt></range>
+	</package>
+	<package>
+	  <name>erlang-runtime27</name>
+	  <range><lt>27.3.4.1</lt></range>
+	</package>
+	<package>
+	  <name>erlang-runtime28</name>
+	  <range><lt>28.0.1</lt></range>
+	</package>
+	</affects>
+	<description>
+	<body xmlns="http://www.w3.org/1999/xhtml">
+	<p>https://github.com/erlang/otp/security/advisories/GHSA-9g37-pgj9-wrhc reports:</p>
+	<blockquote cite="https://github.com/erlang/otp/security/advisories/GHSA-9g37-pgj9-wrhc">
+	  <p>Improper Limitation of a Pathname to a Restricted
+	  Directory ('Path Traversal') vulnerability in Erlang OTP
+	(stdlib modules) allows Absolute Path Traversal, File Manipulation.
+	This vulnerability is associated with program files lib/stdlib/src/zip.erl
+	and program routines zip:unzip/1, zip:unzip/2, zip:extract/1,
+	zip:extract/2unless the memory option is passed. This issue
+	affects OTP from OTP 17.0 until OTP28.0.1, OTP27.3.4.1 and
+	OTP26.2.5.13, corresponding to stdlib from 2.0 until 7.0.1,
+	6.2.2.1 and 5.2.3.4.</p>
+	</blockquote>
+	</body>
+    </description>
+    <references>
+      <cvename>CVE-2025-4748</cvename>
+      <url>https://cveawg.mitre.org/api/cve/CVE-2025-4748</url>
+    </references>
+    <dates>
+      <discovery>2025-06-16</discovery>
+      <entry>2025-10-29</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="55c4e822-b4e4-11f0-8438-001b217e4ee5">
+    <topic>ISC KEA -- Invalid characters cause assert</topic>
+    <affects>
+      <package>
+       <name>kea</name>
+       <range><ge>3.0.1</ge><lt>3.0.2</lt></range>
+      </package>
+      <package>
+       <name>kea-devel</name>
+       <range><ge>3.1.1</ge><lt>3.1.3</lt></range>
+      </package>
+    </affects>
+    <description>
+       <body xmlns="http://www.w3.org/1999/xhtml">
+       <p>Internet Systems Consortium, Inc. reports:</p>
+       <blockquote cite="https://kb.isc.org/docs/cve-2025-11232">
+       <p>To trigger the issue, three configuration parameters
+       must have specific settings: "hostname-char-set" must be
+       left at the default setting, which is "[^A-Za-z0-9.-]";
+       "hostname-char-replacement" must be empty (the default);
+       and "ddns-qualifying-suffix" must NOT be empty (the default is empty).
+       DDNS updates do not need to be enabled for this issue to manifest.
+       A client that sends certain option content would then
+       cause kea-dhcp4 to exit unexpectedly.
+       This addresses CVE-2025-11232 [#4142, #4155].</p>
+       </blockquote>
+       </body>
+    </description>
+    <references>
+      <cvename>CVE-2025-11232</cvename>
+      <url>https://kb.isc.org/docs/cve-2025-11232</url>
+    </references>
+    <dates>
+      <discovery>2025-10-29</discovery>
+      <entry>2025-10-29</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="c5889223-b4e1-11f0-ae9b-b42e991fc52e">
+    <topic>SQLite -- CWE-190 Integer Overflow or Wraparound</topic>
+    <affects>
+    <package>
+	<name>sqlite3</name>
+	<range><lt>3.50.3,1</lt></range>
+    </package>
+      <package>
+	<name>linux_base-rl9-9.6</name>
+	<range><le>9.6_1</le></range>
+      </package>
+      <package>
+	<name>linux-c7-sqlite</name>
+	<range><lt>3.50.3</lt></range>
+      </package>
+    </affects>
+    <description>
+	<body xmlns="http://www.w3.org/1999/xhtml">
+	<p>https://github.com/google/security-research/security/advisories/GHSA-v2c8-vqqp-hv3g reports:</p>
+	<blockquote cite="https://github.com/google/security-research/security/advisories/GHSA-v2c8-vqqp-hv3g">
+	  <p>An integer overflow exists in the FTS5 https://sqlite.org/fts5.html
+	  extension. It occurs when the size of an array of tombstone
+	  pointers is calculated and truncated into a 32-bit integer.
+	  A pointer to partially controlled data can then be written
+	  out of bounds.</p>
+	</blockquote>
+	</body>
+    </description>
+    <references>
+      <cvename>CVE-2025-7709</cvename>
+      <url>https://cveawg.mitre.org/api/cve/CVE-2025-7709</url>
+    </references>
+    <dates>
+      <discovery>2025-09-08</discovery>
+      <entry>2025-10-29</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="3116b6f3-b433-11f0-82ac-901b0edee044">
+    <topic>py-social-auth-app-django -- Unsafe account association</topic>
+    <affects>
+      <package>
+       <name>py39-social-auth-app-django</name>
+       <name>py310-social-auth-app-django</name>
+       <name>py311-social-auth-app-django</name>
+       <name>py312-social-auth-app-django</name>
+       <range><lt>5.4.3_1</lt></range>
+      </package>
+      <package>
+       <name>py310-dj51-social-auth-app-django</name>
+       <name>py311-dj51-social-auth-app-django</name>
+       <name>py312-dj51-social-auth-app-django</name>
+       <range><lt>5.6.0</lt></range>
+      </package>
+      <package>
+       <name>py310-dj52-social-auth-app-django</name>
+       <name>py311-dj52-social-auth-app-django</name>
+       <name>py312-dj52-social-auth-app-django</name>
+       <range><lt>5.6.0</lt></range>
+      </package>
+    </affects>
+    <description>
+       <body xmlns="http://www.w3.org/1999/xhtml">
+	<p>Michal Čihař reports:</p>
+	<blockquote cite="https://github.com/python-social-auth/social-app-django/security/advisories/GHSA-wv4w-6qv2-qqfg">
+	<p>Upon authentication, the user could be associated by e-mail even if the
+	associate_by_email pipeline was not included. This could lead to account
+	compromise when a third-party authentication service does not validate
+	provided e-mail addresses or doesn't require unique e-mail addresses.</p>
+	</blockquote>
+       </body>
+    </description>
+    <references>
+      <cvename>CVE-2025-61783</cvename>
+      <url>https://nvd.nist.gov/vuln/detail/CVE-2025-61783</url>
+    </references>
+    <dates>
+      <discovery>2025-10-09</discovery>
+      <entry>2025-10-29</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="2cd61f76-b41b-11f0-bf21-b42e991fc52e">
+    <topic>SQLite -- Integer Overflow vulnerability</topic>
+    <affects>
+    <package>
+	<name>sqlite3</name>
+	<range><lt>3.50.1,1</lt></range>
+    </package>
+      <package>
+	<name>linux_base-rl9-9.6</name>
+	<range><le>9.6_1</le></range>
+      </package>
+      <package>
+	<name>linux-c7-sqlite</name>
+	<range><lt>3.50.1</lt></range>
+      </package>
+    </affects>
+    <description>
+	<body xmlns="http://www.w3.org/1999/xhtml">
+	<p>http://sqlite3.com reports:</p>
+	<blockquote cite="http://sqlite3.com">
+	  <p>Integer Overflow vulnerability in SQLite SQLite3 v.3.50.0
+	  allows a remote attacker to cause a denial of service via
+	  the setupLookaside function</p>
+	</blockquote>
+	</body>
+    </description>
+    <references>
+      <cvename>CVE-2025-52099</cvename>
+      <url>https://cveawg.mitre.org/api/cve/CVE-2025-52099</url>
+    </references>
+    <dates>
+      <discovery>2025-10-24</discovery>
+      <entry>2025-10-28</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="a8dacd4b-b416-11f0-9f23-ecf4bbefc954">
+    <topic>privatebin - Missing HTML sanitisation of attached filename in file size hint enabling persistent XSS</topic>
+    <affects>
+      <package>
+      <name>privatebin</name>
+      <range><lt>2.0.2</lt></range>
+      </package>
+    </affects>
+    <description>
+	<body xmlns="http://www.w3.org/1999/xhtml">
+	<p>PrivateBin reports:</p>
+	<blockquote cite="https://privatebin.info/reports/vulnerability-2025-10-28.html">
+	  <p>We've identified an HTML injection/XSS vulnerability in the PrivateBin
+	   service that allows the injection of arbitrary HTML markup via the attached
+	   filename.</p>
+	</blockquote>
+	</body>
+    </description>
+    <references>
+      <cvename>CVE-2025-62796</cvename>
+      <url>https://www.cve.org/CVERecord?id=CVE-2025-62796</url>
+    </references>
+    <dates>
+      <discovery>2025-10-23</discovery>
+      <entry>2025-10-28</entry>
+    </dates>
+  </vuln>
+
   <vuln vid="1f1cf967-b35c-11f0-bce7-bc2411002f50">
     <topic>strongSwan -- Heap-based buffer overflow in eap-mschapv2 plugin due to improper handling of failure request packets</topic>
     <affects>
@@ -2703,7 +3064,7 @@
     <affects>
       <package>
 	<name>sqlite3</name>
-	<range><lt>3.49.1</lt></range>
+	<range><lt>3.49.1,1</lt></range>
       </package>
       <package>
 	<name>linux_base-rl9-9.6</name>
@@ -3363,7 +3724,7 @@
     <affects>
       <package>
 	<name>sqlite3</name>
-	<range><lt>3.49.1</lt></range>
+	<range><lt>3.49.1,1</lt></range>
       </package>
       <package>
 	<name>linux-c7-sqlite</name>

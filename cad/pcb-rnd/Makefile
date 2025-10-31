@@ -1,5 +1,6 @@
 PORTNAME=	pcb-rnd
 DISTVERSION=	3.1.7b
+PORTREVISION=	1
 CATEGORIES=	cad
 MASTER_SITES=	http://www.repo.hu/projects/${PORTNAME}/releases/
 
@@ -36,9 +37,6 @@ BINARY_ALIAS=	make=${MAKE_CMD}
 PORTDOCS=	*
 
 OPTIONS_DEFINE=	DOCS
-
-post-patch:
-	${ECHO_CMD} 'USER_CFLAGS += -DSCCONFIG_ACCEPT_IMPLICIT' >> ${WRKSRC}/scconfig/Makefile
 
 post-install:
 .for f in bxl2txt gsch2pcb-rnd pcb-rnd rect-union-rnd txt2bxl

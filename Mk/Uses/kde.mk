@@ -91,7 +91,7 @@ KDE_PLASMA5_VERSION?=		5.27.12
 KDE_PLASMA5_BRANCH?=		stable
 
 # Current KDE Plasma desktop.
-KDE_PLASMA6_VERSION?=		6.4.5
+KDE_PLASMA6_VERSION?=		6.5.0
 KDE_PLASMA6_BRANCH?=		stable
 
 # Legacy KDE frameworks (Qt5 based).
@@ -99,13 +99,13 @@ KDE_FRAMEWORKS5_VERSION?=	5.116.0
 KDE_FRAMEWORKS5_BRANCH?=	stable
 
 # Current KDE Frameworks (Qt6 based).
-KDE_FRAMEWORKS6_VERSION?=	6.18.0
+KDE_FRAMEWORKS6_VERSION?=	6.19.0
 KDE_FRAMEWORKS6_BRANCH?=	stable
 
 # Current KDE applications. Update _${PORTNAME}_PROJECT_VERSION for the following ports:
 # devel/kdevelop, games/libkdegames, games/libkmahjongg, graphics/kgraphviewer
-KDE_APPLICATIONS6_VERSION?=	25.08.1
-KDE_APPLICATIONS6_SHLIB_VER?=	6.5.1
+KDE_APPLICATIONS6_VERSION?=	25.08.2
+KDE_APPLICATIONS6_SHLIB_VER?=	6.5.2
 # G as in KDE Gear, and as in "don't make the variable name longer than required".
 KDE_APPLICATIONS6_SHLIB_G_VER?=	${KDE_APPLICATIONS6_VERSION}
 KDE_APPLICATIONS6_BRANCH?=	stable
@@ -317,6 +317,7 @@ _USE_PLASMA6_ALL=	activities activities-stats activitymanagerd \
 			aurorae breeze breeze-gtk decoration discover \
 			globalacceld infocenter kde-cli-tools \
 			kde-gtk-config kdeplasma-addons kgamma kmenuedit \
+			knighttime \
 			kpipewire kscreen kscreenlocker ksshaskpass \
 			ksystemstats kwallet-pam kwin kwin-x11 kwrited \
 			layer-shell-qt libkscreen libksysguard libplasma \
@@ -704,6 +705,9 @@ kde-kgamma_PATH=		${QT_PLUGINDIR}/plasma/kcms/systemsettings_qwidgets/kcm_kgamma
 kde-kmenuedit_PORT=		sysutils/plasma${_KDE_VERSION}-kmenuedit
 kde-kmenuedit_PATH=		${KDE_PREFIX}/bin/kmenuedit
 
+kde-knighttime_PORT=		sysutils/plasma${_KDE_VERSION}-knighttime
+kde-knighttime_LIB=		libKNightTime.so
+
 kde-kscreen_PORT=		x11/plasma${_KDE_VERSION}-kscreen
 kde-kscreen_PATH=		${KDE_PREFIX}/bin/kscreen-console
 
@@ -737,7 +741,7 @@ kde-libksysguard_LIB6=		libKSysGuardSystemStats.so
 kde-libksysguard_LIB=		${kde-libksysguard_LIB${_KDE_VERSION}}
 
 kde-milou_PORT=			deskutils/plasma${_KDE_VERSION}-milou
-kde-milou_PATH=		${QT_QMLDIR}/org/kde/milou/libmilouqmlplugin.so
+kde-milou_PATH=		${QT_QMLDIR}/org/kde/milou/libmilou.so
 
 kde-ocean-sound-theme_PORT=	audio/plasma${_KDE_VERSION}-ocean-sound-theme
 kde-ocean-sound-theme_PATH=	${KDE_PREFIX}/share/sounds/ocean/index.theme

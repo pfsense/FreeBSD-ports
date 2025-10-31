@@ -10,6 +10,8 @@ WWW=		https://gitlab.com/gitlab-org/rust/gitlab-code-parser
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE.md
 
+BROKEN_i386=	compilation fails: error: undefined symbol: __atomic_load
+
 BUILD_DEPENDS=	${LOCALBASE}/llvm${LLVM_DEFAULT}/lib/libclang.so:devel/llvm${LLVM_DEFAULT}
 LIB_DEPENDS=	libonig.so:devel/oniguruma \
 		libzstd.so:archivers/zstd

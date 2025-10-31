@@ -17,6 +17,7 @@
     SUBDIR += calculix
     SUBDIR += calculix-ccx
     SUBDIR += camotics
+    SUBDIR += camv-rnd
     SUBDIR += caneda
     SUBDIR += cascade
     SUBDIR += cascade-compiler
@@ -119,6 +120,7 @@
     SUBDIR += py-pygmsh
     SUBDIR += py-pymtl
     SUBDIR += py-pyvcd
+    SUBDIR += py-verilog-parser
     SUBDIR += py-vunit-hdl
     SUBDIR += python-gdsii
     SUBDIR += qcad
@@ -132,6 +134,7 @@
     SUBDIR += qucsator
     SUBDIR += repsnapper
     SUBDIR += rubygem-gdsii
+    SUBDIR += sch-rnd
     SUBDIR += scotch
     SUBDIR += silice
     SUBDIR += solvespace
