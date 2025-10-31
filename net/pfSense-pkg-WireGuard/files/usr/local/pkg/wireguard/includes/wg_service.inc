@@ -326,7 +326,8 @@ function wg_restart_extra_services($force = false) {
 
 	// TODO: This is where we will add facilities for users to pick what services to restart
 
-	return true;
+	// 0 means success
+	return 0;
 }
 
 // Main WireGuard service loop
