@@ -408,6 +408,7 @@
     SUBDIR += cgdb
     SUBDIR += cgit
     SUBDIR += cgprof
+    SUBDIR += chai
     SUBDIR += charva
     SUBDIR += check
     SUBDIR += checkbashisms
@@ -7394,7 +7395,6 @@
     SUBDIR += rubygem-forwardable-extended
     SUBDIR += rubygem-fugit
     SUBDIR += rubygem-fugit-gitlab
-    SUBDIR += rubygem-fugit111
     SUBDIR += rubygem-fuubar
     SUBDIR += rubygem-fuzzy_match
     SUBDIR += rubygem-gapic-common
@@ -8477,6 +8477,7 @@
     SUBDIR += ultragetopt
     SUBDIR += umbrello
     SUBDIR += umlgraph
+    SUBDIR += umpire
     SUBDIR += undead
     SUBDIR += unibilium
     SUBDIR += unit-otel

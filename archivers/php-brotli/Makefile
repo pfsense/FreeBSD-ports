@@ -1,9 +1,10 @@
 PORTNAME=	brotli
 DISTVERSION=	0.18.2
+PORTREVISION=	1
 CATEGORIES=	archivers
 PKGNAMEPREFIX=	${PHP_PKGNAMEPREFIX}
 
-MAINTAINER=	daniel@shafer.cc
+MAINTAINER=	pkaipila@gmail.com
 COMMENT=	Brotli extension for PHP
 WWW=		https://github.com/kjdev/php-ext-brotli
 

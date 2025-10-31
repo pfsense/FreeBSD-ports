@@ -6,6 +6,7 @@
     SUBDIR += R-cran-xfun
     SUBDIR += aclgen
     SUBDIR += actiona
+    SUBDIR += adiak
     SUBDIR += adios2
     SUBDIR += aichat
     SUBDIR += air
@@ -610,6 +611,7 @@
     SUBDIR += quantum++
     SUBDIR += quary
     SUBDIR += radio_datetime_analyzer
+    SUBDIR += raja
     SUBDIR += randomx
     SUBDIR += rash
     SUBDIR += raspberrypi-gpioshutdown

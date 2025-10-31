@@ -466,6 +466,7 @@
     SUBDIR += glogg
     SUBDIR += glow
     SUBDIR += gnome-control-center
+    SUBDIR += gnome-firmware
     SUBDIR += gnome-power-manager
     SUBDIR += gnome-settings-daemon
     SUBDIR += gnome-system-monitor
@@ -975,6 +976,7 @@
     SUBDIR += plasma6-kde-cli-tools
     SUBDIR += plasma6-kinfocenter
     SUBDIR += plasma6-kmenuedit
+    SUBDIR += plasma6-knighttime
     SUBDIR += plasma6-ksystemstats
     SUBDIR += plasma6-libksysguard
     SUBDIR += plasma6-plasma-disks

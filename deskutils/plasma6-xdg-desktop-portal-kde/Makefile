@@ -1,6 +1,5 @@
 PORTNAME=	xdg-desktop-portal-kde
 DISTVERSION=	${KDE_PLASMA_VERSION}
-PORTREVISION=	1
 CATEGORIES=	deskutils kde kde-plasma
 
 MAINTAINER=	kde@FreeBSD.org
@@ -10,6 +9,7 @@ BUILD_DEPENDS=	${LOCALBASE}/include/linux/input-event-codes.h:devel/evdev-proto 
 		wayland-protocols>=0:graphics/wayland-protocols
 LIB_DEPENDS=	libwayland-client.so:graphics/wayland \
 		libxkbcommon.so:x11/libxkbcommon
+RUN_DEPENDS=	xdg-desktop-portal>0:deskutils/xdg-desktop-portal
 
 USES=		cmake gettext gl kde:6 pkgconfig qt:6 tar:xz xorg
 USE_KDE=	bookmarks completion config coreaddons globalaccel guiaddons \
