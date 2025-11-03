@@ -267,7 +267,6 @@ function js_callback(req) {
 		$frontend2['ipport'] = $ipport;
 		$frontend2['type'] = $mainfrontend['type'];
 		$a_frontend_grouped[$mainname][] = $frontend2;
-		config_set_path("installedpackages/haproxy/ha_backends/item/{$fidx}", $frontend2);
 	}
 ?>
 
