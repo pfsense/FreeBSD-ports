@@ -447,13 +447,42 @@ if ($_POST) {
 		}
 
 		update_if_changed("advanced", $backend['advanced'], base64_encode($_POST['advanced']));
-		array_set_path($backend,'ha_acls/item', $a_acl);
-		array_set_path($backend,'ha_certificates/item', $a_certificates);
-		array_set_path($backend,'clientcert_ca/item', $a_clientcert_ca);
-		array_set_path($backend,'clientcert_crl/item', $a_clientcert_crl);
-		array_set_path($backend,'a_extaddr/item', $a_extaddr);
-		array_set_path($backend,'a_actionitems/item', $a_actionitems);
-		array_set_path($backend,'a_errorfiles/item', $a_errorfiles);
+
+		if (!empty($a_acl)) {
+			array_set_path($backend,'ha_acls/item', $a_acl);
+		} else {
+			array_del_path($backend,'ha_acls/item');
+		}
+		if (!empty($a_certificates)) {
+			array_set_path($backend,'ha_certificates/item', $a_certificates);
+		} else {
+			array_del_path($backend,'ha_certificates/item');
+		}
+		if (!empty($a_clientcert_ca)) {
+			array_set_path($backend,'clientcert_ca/item', $a_clientcert_ca);
+		} else {
+			array_del_path($backend,'clientcert_ca/item');
+		}
+		if (!empty($a_clientcert_crl)) {
+			array_set_path($backend,'clientcert_crl/item', $a_clientcert_crl);
+		} else {
+			array_del_path($backend,'clientcert_crl/item');
+		}
+		if (!empty($a_extaddr)) {
+			array_set_path($backend,'a_extaddr/item', $a_extaddr);
+		} else {
+			array_del_path($backend,'a_extaddr/item');
+		}
+		if (!empty($a_actionitems)) {
+			array_set_path($backend,'a_actionitems/item', $a_actionitems);
+		} else {
+			array_del_path($backend,'a_actionitems/item');
+		}
+		if (!empty($a_errorfiles)) {
+			array_set_path($backend,'a_errorfiles/item', $a_errorfiles);
+		} else {
+			array_del_path($backend,'a_errorfiles/item');
+		}
 
 		config_set_path('installedpackages/haproxy/ha_backends', $backends_config);
 
