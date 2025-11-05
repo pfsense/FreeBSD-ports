@@ -840,6 +840,7 @@ function pfb_pkg_ver() {
 
 // Firewall Filter Service
 function pfb_filter_service() {
+	$LOG_PREFIX_PKG_PFBLOCKERNG = LOG_PREFIX_PKG_PFBLOCKERNG;
 
 	$rc		= array();
 	$rc['file']	= 'pfb_filter.sh';
@@ -882,7 +883,7 @@ function pfb_filter_service() {
 
 	# Start pfBlockerNG Firewall filter Daemon
 	if [ -e '/var/log/filter.log' ]; then
-		/usr/bin/logger -p daemon.info -t "\${filter_type}" "[pfBlockerNG] Firewall Filter Service started"
+		/usr/bin/logger -p daemon.info -t "\${filter_type}" "INFO [{$LOG_PREFIX_PKG_PFBLOCKERNG}] Firewall Filter Service started"
 
 		if [ "\${filter_type}" == 'clog_pfb' ]; then
 			/usr/local/sbin/clog_pfb -f /var/log/filter.log | /usr/local/bin/php_pfb -f /usr/local/pkg/pfblockerng/pfblockerng.inc filterlog &
@@ -901,8 +902,8 @@ EOF;
 	fi
 
 	# Terminate pfBlockerNG Firewall filter Daemon (clog) and filter Daemon, if found
-	/usr/bin/logger -p daemon.info -t "\${filter_type}" "[pfBlockerNG] Firewall Filter Service stopped"
-	/usr/bin/logger -p daemon.info -t php_pfb "[pfBlockerNG] filterlog daemon stopped"
+	/usr/bin/logger -p daemon.info -t "\${filter_type}" "INFO [{$LOG_PREFIX_PKG_PFBLOCKERNG}] Firewall Filter Service stopped"
+	/usr/bin/logger -p daemon.info -t php_pfb "INFO [{$LOG_PREFIX_PKG_PFBLOCKERNG}] filterlog daemon stopped"
 	pidnum="\$(/bin/ps -wax | /usr/bin/grep '[c]log_pfb -f /var/log/filter.log\|[t]ail_pfb -n0 -F /var/log/filter.log\|[p]fblockerng.inc filterlog' | /usr/bin/awk '{print \$1}')"
 	if [ ! -z "\${pidnum}" ]; then
 		for i in \${pidnum}; do
@@ -917,6 +918,7 @@ EOF;
 
 // DNSBL Service
 function pfb_dnsbl_service() {
+	$LOG_PREFIX_PKG_PFBLOCKERNG = LOG_PREFIX_PKG_PFBLOCKERNG;
 
 	$rc		= array();
 	$rc['file']	= 'pfb_dnsbl.sh';
@@ -933,7 +935,7 @@ function pfb_dnsbl_service() {
 
 	# Start DNSBL Lighttpd webserver (Unbound/Python mode) and DNSBL HTTPS Daemon (Unbound mode only)
 	if [ -e '/var/unbound/pfb_dnsbl_lighty.conf' ]; then
-		/usr/bin/logger -p daemon.info -t lighttpd_pfb "[pfBlockerNG] DNSBL Webserver started"
+		/usr/bin/logger -p daemon.info -t lighttpd_pfb "INFO [{$LOG_PREFIX_PKG_PFBLOCKERNG}] DNSBL Webserver started"
 		/usr/local/sbin/lighttpd_pfb -f /var/unbound/pfb_dnsbl_lighty.conf
 	fi
 
@@ -944,14 +946,14 @@ function pfb_dnsbl_service() {
 	if [ "\${unbound_mode}" == 'dnsbl_unbound' ]; then
 		/usr/local/bin/php -f /usr/local/pkg/pfblockerng/pfblockerng.inc queries &
 	elif [ ! -e '/var/unbound/pfb_unbound.py' ]; then
-		/usr/bin/logger -p daemon.err -t php_pfb "[pfBlockerNG] DNSBL missing python script - forced reload required"
+		/usr/bin/logger -p daemon.err -t php_pfb "ERROR [{$LOG_PREFIX_PKG_PFBLOCKERNG}] DNSBL missing python script - forced reload required"
 	fi
 
 EOF;
 	$rc['stop']	= <<<EOF
 
 	# Terminate DNSBL Lighttpd webserver, if found
-	/usr/bin/logger -p daemon.info -t lighttpd_pfb "[pfBlockerNG] DNSBL Webserver stopped"
+	/usr/bin/logger -p daemon.info -t lighttpd_pfb "INFO [{$LOG_PREFIX_PKG_PFBLOCKERNG}] DNSBL Webserver stopped"
 	pidnum="\$(/bin/pgrep lighttpd_pfb)"
 	if [ ! -z "\${pidnum}" ]; then
 		/usr/bin/killall lighttpd_pfb
