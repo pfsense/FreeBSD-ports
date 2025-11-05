@@ -3526,6 +3526,7 @@ function suricata_create_rc() {
 	$suricatabindir = SURICATA_PBI_BINDIR;
 	$rcdir = RCFILEPREFIX;
 	$no_enabled_interface = TRUE;
+	$LOG_PREFIX_PKG_SURICATA = LOG_PREFIX_PKG_SURICATA;
 
 	// If no interfaces are configured for Suricata, remove any
 	// existing shell script and exit.
@@ -3570,7 +3571,7 @@ function suricata_create_rc() {
 
 	if [ -z \$pid ]; then
 		/bin/cp /dev/null {$suricatalogdir}suricata_{$if_real}{$suricata_uuid}/suricata.log
-		/usr/bin/logger -p daemon.info -i -t SuricataStartup "Suricata START for {$value['descr']}({$suricata_uuid}_{$if_real})..."
+		/usr/bin/logger -p daemon.info -i -t SuricataStartup "INFO [{$LOG_PREFIX_PKG_SURICATA}] START for {$value['descr']}({$suricata_uuid}_{$if_real})..."
 		{$suricatabindir}suricata {$run_mode} -D -c {$suricatadir}suricata_{$suricata_uuid}_{$if_real}/suricata.yaml --pidfile {$g['varrun_path']}/suricata_{$if_real}{$suricata_uuid}.pid {$verbose_logging} > /dev/null 2>&1
 	fi
 
@@ -3580,7 +3581,7 @@ EOE;
 
 	if [ -f {$g['varrun_path']}/suricata_{$if_real}{$suricata_uuid}.pid ]; then
 		pid=`/bin/pgrep -F {$g['varrun_path']}/suricata_{$if_real}{$suricata_uuid}.pid`
-		/usr/bin/logger -p daemon.info -i -t SuricataStartup "Suricata STOP for {$value['descr']}({$suricata_uuid}_{$if_real})..."
+		/usr/bin/logger -p daemon.info -i -t SuricataStartup "INFO [{$LOG_PREFIX_PKG_SURICATA}] STOP for {$value['descr']}({$suricata_uuid}_{$if_real})..."
 		if [ -f {$g['varrun_path']}/suricata-ctrl-socket-{$suricata_uuid} ]; then
 			/usr/local/bin/suricatasc -c shutdown {$g['varrun_path']}/suricata-ctrl-socket-{$suricata_uuid} 2>/dev/null
 		else
@@ -3600,7 +3601,7 @@ EOE;
 	else
 		pid=`/bin/pgrep -fn "suricata {$run_mode} -D -c {$suricatadir}suricata_{$suricata_uuid}_{$if_real}/suricata.yaml "`
 		if [ ! -z \$pid ]; then
-			/usr/bin/logger -p daemon.info -i -t SuricataStartup "Suricata STOP for {$value['descr']}({$suricata_uuid}_{$if_real})..."
+			/usr/bin/logger -p daemon.info -i -t SuricataStartup "INFO [{$LOG_PREFIX_PKG_SURICATA}] STOP for {$value['descr']}({$suricata_uuid}_{$if_real})..."
 			if [ -f {$g['varrun_path']}/suricata-ctrl-socket-{$suricata_uuid} ]; then
 				/usr/local/bin/suricatasc -c shutdown {$g['varrun_path']}/suricata-ctrl-socket-{$suricata_uuid} 2>/dev/null
 			else
@@ -3653,7 +3654,7 @@ case $1 in
 		if [ ! -f {$g['varrun_path']}/suricata_pkg_starting.lck ]; then
 			rc_start
 		else
-			/usr/bin/logger -p daemon.info -i -t SuricataStartup "Ignoring spurious START command since Suricata is already starting..."
+			/usr/bin/logger -p daemon.info -i -t SuricataStartup "INFO [{$LOG_PREFIX_PKG_SURICATA}] Ignoring spurious START command since Suricata is already starting..."
 		fi
 		;;
 	stop)
