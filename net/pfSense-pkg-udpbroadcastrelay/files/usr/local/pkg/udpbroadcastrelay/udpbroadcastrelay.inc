@@ -260,7 +260,7 @@ function udpbr_resync(): void {
 				{$run_command} 2>\$UDPBRTEMP >/dev/null
 				ERRORMSG=\$(cat \${UDPBRTEMP})
 				if [ "\$ERRORMSG" != '' ]; then
-					/usr/bin/logger -p daemon.err -t {$udpbr_global['name']} "{$func_gettext('Failed to start instance.')}: \${ERRORMSG}"
+					/usr/bin/logger -p daemon.err -t {$udpbr_global['name']} "ERROR [{$udpbr_global['name']}] {$func_gettext('Failed to start instance.')}: \${ERRORMSG}"
 				fi
 		
 		SSCRIPT;
@@ -283,7 +283,7 @@ function udpbr_resync(): void {
 	$start .= <<<ESSCRIPT
 	    rm -f "\${UDPBRTEMP}"
 	    else
-	        /usr/bin/logger -p daemon.err -t {$udpbr_global['name']} "{$func_gettext('Failed to start service.')} (\${ERRORMSG})"
+	        /usr/bin/logger -p daemon.err -t {$udpbr_global['name']} "ERROR [{$udpbr_global['name']}] {$func_gettext('Failed to start service.')} (\${ERRORMSG})"
 	    fi
 	ESSCRIPT;
 
