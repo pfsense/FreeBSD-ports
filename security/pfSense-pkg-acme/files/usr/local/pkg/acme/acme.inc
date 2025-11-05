@@ -3082,9 +3082,9 @@ $a_keylength['custom'] = array('name' => "Custom...");
 
 function set_cronjob() {
 	if (config_path_enabled('installedpackages/acme')) {
-		install_cron_job('/usr/local/pkg/acme/acme_command.sh "renewall" | /usr/bin/logger -t ACME 2>&1', true, "16", "3");
+		install_cron_job('/usr/local/pkg/acme/acme_command.sh "renewall" | sed "s/^/NOTICE /" | /usr/bin/logger -p user.notice -t ACME 2>&1', true, "16", "3");
 	} else {
-		install_cron_job('/usr/local/pkg/acme/acme_command.sh "renewall" | /usr/bin/logger -t ACME 2>&1', false);
+		install_cron_job('/usr/local/pkg/acme/acme_command.sh "renewall" | sed "s/^/NOTICE /" | /usr/bin/logger -p user.notice -t ACME 2>&1', false);
 	}
 }
 
