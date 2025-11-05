@@ -21,8 +21,7 @@
  */
 
 require_once("config.inc");
-
-define('LOG_PREFIX_PKG_SNORT', 'Snort');
+require("/usr/local/pkg/snort/snort_defs.inc");
 
 //set variables for custom title and link
 $snort_alerts_title = "Snort Alerts";

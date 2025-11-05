@@ -2,7 +2,7 @@
 
 PORTNAME=	pfSense-pkg-snort
 PORTVERSION=	4.1.7
-PORTREVISION=	3
+PORTREVISION=	4
 CATEGORIES=	security
 MASTER_SITES=	# empty
 DISTFILES=	# empty

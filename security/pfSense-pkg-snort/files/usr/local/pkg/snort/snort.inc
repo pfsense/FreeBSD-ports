@@ -3169,6 +3169,7 @@ function snort_create_rc() {
 	$snortbindir = SNORT_BINDIR;
 	$rcdir = RCFILEPREFIX;	
 	$no_enabled_interface = TRUE;
+	$LOG_PREFIX_PKG_SNORT = LOG_PREFIX_PKG_SNORT;
 
 	// If no interfaces are configured for Snort, exit
 	if (count(config_get_path('installedpackages/snortglobal/rule', [])) < 1) {
@@ -3222,7 +3223,7 @@ function snort_create_rc() {
 	fi
 
 	if [ -z \$pid ]; then
-		/usr/bin/logger -p daemon.info -i -t SnortStartup "Snort START for {$value['descr']}({$if_real})..."
+		/usr/bin/logger -p daemon.info -i -t SnortStartup "INFO [{$LOG_PREFIX_PKG_SNORT}] START for {$value['descr']}({$if_real})..."
 		{$snortbindir}snort -R _{$snort_uuid} -M -D {$quiet} {$daq_type} -l {$snortlogdir}/snort_{$if_real}{$snort_uuid} --pid-path {$g['varrun_path']} --nolock-pidfile --no-interface-pidfile -G {$snort_uuid} -c {$snortdir}/snort_{$snort_uuid}_{$if_real}/snort.conf -i {$iface} > /dev/null 2>&1
 	fi
 
@@ -3233,7 +3234,7 @@ EOE;
 	# Stop snort for {$value['descr']}
 	if [ -f {$g['varrun_path']}/snort_{$snort_uuid}.pid ]; then
 		pid=`/bin/pgrep -F {$g['varrun_path']}/snort_{$snort_uuid}.pid`
-		/usr/bin/logger -p daemon.info -i -t SnortStartup "Snort STOP for {$value['descr']}({$if_real})..."
+		/usr/bin/logger -p daemon.info -i -t SnortStartup "INFO [{$LOG_PREFIX_PKG_SNORT}] STOP for {$value['descr']}({$if_real})..."
 		/bin/pkill -F {$g['varrun_path']}/snort_{$snort_uuid}.pid -a
 		time=0 timeout=30
 		while kill -0 \$pid 2>/dev/null; do
@@ -3249,7 +3250,7 @@ EOE;
 	else
 		pid=`/bin/pgrep -fn "snort -R {$snort_uuid} "`
 		if [ ! -z \$pid ]; then
-			/usr/bin/logger -p daemon.info -i -t SnortStartup "Snort STOP for {$value['descr']}({$snort_uuid}_{$if_real})..."
+			/usr/bin/logger -p daemon.info -i -t SnortStartup "INFO [{$LOG_PREFIX_PKG_SNORT}] STOP for {$value['descr']}({$snort_uuid}_{$if_real})..."
 			/bin/pkill -fn "snort -R {$if_real} "
 			time=0 timeout=30
 			while kill -0 \$pid 2>/dev/null; do
@@ -3298,7 +3299,7 @@ case $1 in
 		if [ ! -f {$g['varrun_path']}/snort_pkg_starting.lck ]; then
 			rc_start
 		else
-			/usr/bin/logger -p daemon.info -i -t SnortStartup "Ignoring additional START command since Snort is already starting..."
+			/usr/bin/logger -p daemon.info -i -t SnortStartup "INFO [{$LOG_PREFIX_PKG_SNORT}] Ignoring additional START command since Snort is already starting..."
 		fi
 		;;
 	stop)
@@ -3309,7 +3310,7 @@ case $1 in
 			rc_stop
 			rc_start
 		else
-			/usr/bin/logger -p daemon.info -i -t SnortRestart "Ignoring RESTART command since Snort is already starting..."
+			/usr/bin/logger -p daemon.info -i -t SnortRestart "INFO [{$LOG_PREFIX_PKG_SNORT}] Ignoring RESTART command since Snort is already starting..."
 		fi
 		;;
 esac
