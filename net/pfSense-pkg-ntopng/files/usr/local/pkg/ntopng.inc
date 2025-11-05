@@ -247,6 +247,7 @@ function ntopng_sync_package() {
 	$redis_cli = REDIS_CLI;
 	$ntopng_cmd = NTOPNG_CMD;
 
+	$LOG_PREFIX_PKG_NTOPNG = LOG_PREFIX_PKG_NTOPNG;
 	$start = <<<EOD
 
 	# Make sure library path cache is updated
@@ -254,12 +255,12 @@ function ntopng_sync_package() {
 
 	if [ ! -f {$conf_file} ]
 	then
-		/usr/bin/logger -t ntopng "Configuration file missing. Re-save ntopng settings."
+		/usr/bin/logger -p user.notice -t ntopng "NOTICE [{$LOG_PREFIX_PKG_NTOPNG}] Configuration file missing. Re-save ntopng settings."
 		exit 1
 	fi
 	if [ ! -f {$db_file} ]
 	then
-		/usr/bin/logger -t ntopng "Redis database file missing. Re-save ntopng settings."
+		/usr/bin/logger -p user.notice -t ntopng "NOTICE [{$LOG_PREFIX_PKG_NTOPNG}] Redis database file missing. Re-save ntopng settings."
 		exit 1
 	fi
 
