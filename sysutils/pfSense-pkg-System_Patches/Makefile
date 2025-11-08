@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	pfSense-pkg-System_Patches
-DISTVERSION=	2.2.24
+DISTVERSION=	2.2.25
 CATEGORIES=	sysutils
 MASTER_SITES=	# empty
 DISTFILES=	# empty

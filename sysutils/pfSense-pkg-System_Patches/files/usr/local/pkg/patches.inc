@@ -23,6 +23,8 @@ require_once("util.inc");
 require_once("pfsense-utils.inc");
 require_once("patches/manifest.inc");
 
+define('LOG_PREFIX_PKG_SYSTEMPATCHES', 'System Patches');
+
 global $git_root_url, $patch_suffix, $patch_dir, $patch_cmd, $recommended_patches;
 $git_root_url = 'https://github.com/pfsense/pfsense/commit/';
 $patch_suffix = '.patch';
@@ -227,7 +229,7 @@ function patch_remove_shellcmd() {
 }
 
 function patchlog($msg) {
-	syslog(LOG_WARNING, gettext("System Patches: {$msg}"));
+	logger(LOG_WARNING, localize_text($msg), LOG_PREFIX_PKG_SYSTEMPATCHES);
 }
 
 function patch_descr($patch) {
