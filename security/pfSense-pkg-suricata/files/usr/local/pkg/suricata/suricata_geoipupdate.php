@@ -46,7 +46,7 @@ function suricata_download_geoip_file($url, $tmpfile, $user, $pwd, &$result = NU
 	$fout = fopen($tmpfile, "wb");
 	$ch = curl_init($url);
 	if (!$ch) {
-		syslog(LOG_ERR, gettext("[Suricata] ERROR: An error occurred attempting to download the database file for Geo-Location by IP."));
+		logger(LOG_ERR, localize_text("An error occurred attempting to download the database file for Geo-Location by IP."), LOG_PREFIX_PKG_SURICATA);
 		return FALSE;
 	}
 
@@ -89,7 +89,7 @@ function suricata_download_geoip_file($url, $tmpfile, $user, $pwd, &$result = NU
 		switch ($response) {
 
 			case 401:  // Account ID or License Key invalid
-				syslog(LOG_ALERT, "[Suricata] ALERT: The Account ID or License Key for MaxMind GeoLite2 is invalid.");
+				logger(LOG_ALERT, localize_text("The Account ID or License Key for MaxMind GeoLite2 is invalid."), LOG_PREFIX_PKG_SURICATA);
 				break;
 
 			case 200:  // Successful file download
@@ -97,10 +97,10 @@ function suricata_download_geoip_file($url, $tmpfile, $user, $pwd, &$result = NU
 				break;
 
 			default:
-				syslog(LOG_WARNING, "[Suricata] WARNING: Received an unexpected HTTP response code " . $response . " during GeoLite2-Country database update check.");
+				logger(LOG_WARNING, localize_text("Received an unexpected HTTP response code %s during GeoLite2-Country database update check.", $response), LOG_PREFIX_PKG_SURICATA);
 		}
 	} else {
-		syslog(LOG_ERR, "[Suricata] ERROR: GeoLite2-Country IP database download failed.  The HTTP Response Code was " . $response . ".");
+		logger(LOG_ERR, localize_text("GeoLite2-Country IP database download failed.  The HTTP Response Code was %s.", $response), LOG_PREFIX_PKG_SURICATA);
 	}
 	fclose($fout);
 	if (isset($result) && $rc === TRUE) {
@@ -120,7 +120,7 @@ $geoip_tmppath = "{$g['tmp_path']}/geoipup/";
 if (config_get_path('installedpackages/suricata/config/0/autogeoipupdate') == "off")
 	return;
 else
-	syslog(LOG_NOTICE, gettext("[Suricata] Checking for updated MaxMind GeoLite2 IP database file..."));
+	logger(LOG_NOTICE, localize_text("Checking for updated MaxMind GeoLite2 IP database file..."), LOG_PREFIX_PKG_SURICATA);
 	$notify_message = gettext("Suricata MaxMind GeoLite2 IP database update started: " . date("Y-m-d H:i:s") . "\n");
 
 // Create a temporary location to download the database to
@@ -155,16 +155,16 @@ $pwd = config_get_path('installedpackages/suricata/config/0/maxmind_geoipdb_key'
 if (suricata_download_geoip_file($sha256file_url, $sha256file, $user, $pwd, $result) && ($result == 200 || $result == 201)) {
 	if (file_exists($sha256file)) {
 		if ($sha256_hash == file_get_contents($sha256file)) {
-			syslog(LOG_NOTICE, "[Suricata] The GeoLite2-Country IP database is up-to-date.");
+			logger(LOG_NOTICE, localize_text("The GeoLite2-Country IP database is up-to-date."), LOG_PREFIX_PKG_SURICATA);
 			$notify_message .= gettext("- MaxMind GeoLite2 IP database is up-to-date.\n");
 		} else {
-			syslog(LOG_NOTICE, "[Suricata] A new GeoLite2-Country IP database is available.");
-			syslog(LOG_NOTICE, "[Suricata] Downloading new GeoLite2-Country IP database...");
+			logger(LOG_NOTICE, localize_text("A new GeoLite2-Country IP database is available."), LOG_PREFIX_PKG_SURICATA);
+			logger(LOG_NOTICE, localize_text("Downloading new GeoLite2-Country IP database..."), LOG_PREFIX_PKG_SURICATA);
 			$needs_update = true;
 		}
 	}
 } else {
-	syslog(LOG_ERR, "[Suricata] ERROR: GeoLite2-Country IP database update check failed. The GeoIP database was not updated!");
+	logger(LOG_ERR, localize_text("GeoLite2-Country IP database update check failed. The GeoIP database was not updated!"), LOG_PREFIX_PKG_SURICATA);
 	$notify_message .= gettext("- MaxMind GeoLite2 IP database update check failed. The GeoIP database was not updated!\n");
 }
 
@@ -180,25 +180,25 @@ if ($needs_update && suricata_download_geoip_file($dbfile_url, $dbtarfile, $user
 	// If the file downloaded successfully, unpack it and store the DB
 	// and SHA256 files in the PBI_BASE/share/suricata/GeoLite2 directory.
 	if (file_exists($dbtarfile) && ($result == 200 || $result == 201)) {
-		syslog(LOG_NOTICE, "[Suricata] New GeoLite2-Country IP database gzip archive successfully downloaded.");
-		syslog(LOG_NOTICE, "[Suricata] Extracting new GeoLite2-Country database from the archive...");
+		logger(LOG_NOTICE, localize_text("New GeoLite2-Country IP database gzip archive successfully downloaded."), LOG_PREFIX_PKG_SURICATA);
+		logger(LOG_NOTICE, localize_text("Extracting new GeoLite2-Country database from the archive..."), LOG_PREFIX_PKG_SURICATA);
 		mwexec("/usr/bin/tar -xzf {$dbtarfile} --strip=1 -C {$geoip_tmppath}");
-		syslog(LOG_NOTICE, "[Suricata] Moving new database to {$suricata_geoip_dbdir}GeoLite2-Country.mmdb...");
+		logger(LOG_NOTICE, localize_text("Moving new database to %s...", "{$suricata_geoip_dbdir}GeoLite2-Country.mmdb"), LOG_PREFIX_PKG_SURICATA);
 		@rename($dbfile, "{$suricata_geoip_dbdir}GeoLite2-Country.mmdb");
 		@rename($sha256file, "{$suricata_geoip_dbdir}GeoLite2-Country.mmdb.tar.gz.sha256");
-		syslog(LOG_NOTICE, "[Suricata] GeoLite2-Country database update completed.");
+		logger(LOG_NOTICE, localize_text("GeoLite2-Country database update completed."), LOG_PREFIX_PKG_SURICATA);
 		$notify_message .= gettext("- MaxMind GeoLite2 IP database update completed.\n");
 	} else {
-		syslog(LOG_ERR, "[Suricata] ERROR: GeoLite2-Country IP database download failed. The HTTP response code was '{$result}'. The GeoIP database was not updated!");
+		logger(LOG_ERR, localize_text("GeoLite2-Country IP database download failed. The HTTP response code was '%s'. The GeoIP database was not updated!", $result), LOG_PREFIX_PKG_SURICATA);
 		$notify_message .= gettext("- MaxMind GeoLite2 IP database download failed. The HTTP response code was '{$result}'. The GeoIP database was not updated!\n");
 	}
 } elseif ($needs_update) {
-	syslog(LOG_ERR, "[Suricata] ERROR: GeoLite2-Country IP database download failed. The GeoIP database was not updated!");
+	logger(LOG_ERR, localize_text("GeoLite2-Country IP database download failed. The GeoIP database was not updated!"), LOG_PREFIX_PKG_SURICATA);
 	$notify_message .= gettext("- MaxMind GeoLite2 IP database download failed. The GeoIP database was not updated!\n");
 }
 
 // Cleanup the tmp directory path
-syslog(LOG_NOTICE, "[Suricata] Cleaning up temp files after GeoLite2-Country database update.");
+logger(LOG_NOTICE, localize_text("Cleaning up temp files after GeoLite2-Country database update."), LOG_PREFIX_PKG_SURICATA);
 rmdir_recursive("$geoip_tmppath");
 $notify_message .= gettext("Suricata MaxMind GeoLite2 IP database update finished: " . date("Y-m-d H:i:s") . "\n");
 

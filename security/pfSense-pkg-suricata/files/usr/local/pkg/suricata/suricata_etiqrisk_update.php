@@ -60,11 +60,11 @@ function suricata_check_iprep_md5($filename) {
 		if ($new_md5 != $old_md5)
 			return TRUE;
 		else
-			syslog(LOG_NOTICE, gettext("[Suricata] IPREP file '{$filename}' is up to date."));
+			logger(LOG_NOTICE, localize_text("IPREP file '%s' is up to date.", $filename), LOG_PREFIX_PKG_SURICATA);
 			$notify_message .= gettext("- IPREP file '{$filename}' is up to date.");
 	}
 	else
-		syslog(LOG_ERR, gettext("[Suricata] ERROR: An error occurred downloading {$et_iqrisk_url}{$filename}.md5sum for IPREP.  Update of {$filename} file will be skipped."));
+		logger(LOG_ERR, localize_text("An error occurred downloading %s for IPREP.  Update of %s file will be skipped.", "{$et_iqrisk_url}{$filename}.md5sum", $filename), LOG_PREFIX_PKG_SURICATA);
 		$notify_message .= gettext("- An error occurred downloading {$et_iqrisk_url}{$filename}.md5sum for IPREP.  Update of {$filename} file will be skipped.\n");
 
 	return FALSE;
@@ -82,7 +82,7 @@ $success = FALSE;
 if (config_get_path('installedpackages/suricata/config/0/et_iqrisk_enable') == "off")
 	return(0);
 else
-	syslog(LOG_NOTICE, gettext("[Suricata] Updating the Emerging Threats IQRisk IP List..."));
+	logger(LOG_NOTICE, localize_text("Updating the Emerging Threats IQRisk IP List..."), LOG_PREFIX_PKG_SURICATA);
 	$notify_message = gettext("Suricata Emerging Threats IQRisk IP List update started: " . date("Y-m-d H:i:s") . "\n");
 
 // Construct the download URL using the saved ET IQRisk Subscriber Code
@@ -90,7 +90,7 @@ if (!empty(config_get_path('installedpackages/suricata/config/0/iqrisk_code'))) 
 	$et_iqrisk_url = str_replace("_xxx_", config_get_path('installedpackages/suricata/config/0/iqrisk_code'), ET_IQRISK_DNLD_URL);
 }
 else {
-	syslog(LOG_ALERT, gettext("[Suricata] ALERT: No IQRisk subscriber code found!  Aborting scheduled update of Emerging Threats IQRisk IP List."));
+	logger(LOG_ALERT, localize_text("No IQRisk subscriber code found!  Aborting scheduled update of Emerging Threats IQRisk IP List."), LOG_PREFIX_PKG_SURICATA);
 	return(0);
 }
 
@@ -100,9 +100,9 @@ safe_mkdir("$iqRisk_tmppath");
 // Test the posted MD5 checksum file against our local copy
 // to see if an update has been posted for 'categories.txt'.
 if (suricata_check_iprep_md5("categories.txt")) {
-	syslog(LOG_NOTICE, gettext("[Suricata] An updated IPREP 'categories.txt' file is available...downloading new file."));
+	logger(LOG_NOTICE, localize_text("An updated IPREP 'categories.txt' file is available...downloading new file."), LOG_PREFIX_PKG_SURICATA);
 	if (download_file("{$et_iqrisk_url}categories.txt", "{$iqRisk_tmppath}categories.txt") != true) {
-		syslog(LOG_ERR, gettext("[Suricata] ERROR: An error occurred downloading the 'categories.txt' file for IQRisk."));
+		logger(LOG_ERR, localize_text("An error occurred downloading the '%s' file for IQRisk.", 'categories.txt'), LOG_PREFIX_PKG_SURICATA);
 		$notify_message .= gettext("- An error occurred downloading the 'categories.txt' file for IQRisk.\n");
 	} else {
 		// If the files downloaded successfully, unpack them and store
@@ -113,11 +113,11 @@ if (suricata_check_iprep_md5("categories.txt")) {
 				@rename("{$iqRisk_tmppath}categories.txt", "{$iprep_path}categories.txt");
 				@rename("{$iqRisk_tmppath}categories.txt.md5", "{$iprep_path}categories.txt.md5");
 				$success = TRUE;
-				syslog(LOG_NOTICE, gettext("[Suricata] Successfully updated IPREP file 'categories.txt'."));
+				logger(LOG_NOTICE, localize_text("Successfully updated IPREP file '%s'.", 'categories.txt'), LOG_PREFIX_PKG_SURICATA);
 				$notify_message .= gettext("- Successfully updated IPREP file 'categories.txt'.\n");
 			}
 			else
-				syslog(LOG_ALERT, gettext("[Suricata] ALERT: MD5 integrity check of downloaded 'categories.txt' file failed!  Skipping update of this IPREP file."));
+				logger(LOG_ALERT, localize_text("MD5 integrity check of downloaded '%s' file failed!  Skipping update of this IPREP file.", 'categories.txt'), LOG_PREFIX_PKG_SURICATA);
 				$notify_message .= gettext("- MD5 integrity check of downloaded 'categories.txt' file failed!  Skipping update of this IPREP file.\n");
 		}
 	}
@@ -126,9 +126,9 @@ if (suricata_check_iprep_md5("categories.txt")) {
 // Test the posted MD5 checksum file against our local copy
 // to see if an update has been posted for 'iprepdata.txt.gz'.
 if (suricata_check_iprep_md5("iprepdata.txt.gz")) {
-	syslog(LOG_NOTICE, gettext("[Suricata] An updated IPREP 'iprepdata.txt' file is available...downloading new file."));
+	logger(LOG_NOTICE, localize_text("An updated IPREP '%s' file is available...downloading new file.", 'iprepdata.txt'), LOG_PREFIX_PKG_SURICATA);
 	if (download_file("{$et_iqrisk_url}iprepdata.txt.gz", "{$iqRisk_tmppath}iprepdata.txt.gz") != true) {
-		syslog(LOG_ERR, gettext("[Suricata] ERROR: An error occurred downloading the 'iprepdata.txt.gz' file for IQRisk."));
+		logger(LOG_ERR, localize_text("An error occurred downloading the '%s' file for IQRisk.", 'iprepdata.txt.gz'), LOG_PREFIX_PKG_SURICATA);
 		$notify_message .= gettext("- An error occurred downloading the 'iprepdata.txt.gz' file for IQRisk.\n");
 	} else {
 		// If the files downloaded successfully, unpack them and store
@@ -140,11 +140,11 @@ if (suricata_check_iprep_md5("iprepdata.txt.gz")) {
 				@rename("{$iqRisk_tmppath}iprepdata.txt", "{$iprep_path}iprepdata.txt");
 				@rename("{$iqRisk_tmppath}iprepdata.txt.gz.md5", "{$iprep_path}iprepdata.txt.gz.md5");
 				$success = TRUE;
-				syslog(LOG_NOTICE, gettext("[Suricata] Successfully updated IPREP file 'iprepdata.txt'."));
+				logger(LOG_NOTICE, localize_text("Successfully updated IPREP file '%s'.", 'iprepdata.txt'), LOG_PREFIX_PKG_SURICATA);
 				$notify_message .= gettext("- Successfully updated IPREP file 'iprepdata.txt'.\n");
 			}
 			else
-				syslog(LOG_ALERT, gettext("[Suricata] ALERT: MD5 integrity check of downloaded 'iprepdata.txt.gz' file failed!  Skipping update of this IPREP file."));
+				logger(LOG_ALERT, localize_text("MD5 integrity check of downloaded '%s' file failed!  Skipping update of this IPREP file.", 'iprepdata.txt.gz'), LOG_PREFIX_PKG_SURICATA);
 				$notify_message .= gettext("- MD5 integrity check of downloaded 'iprepdata.txt.gz' file failed!  Skipping update of this IPREP file.\n");
 		}
 	}
@@ -153,7 +153,7 @@ if (suricata_check_iprep_md5("iprepdata.txt.gz")) {
 // Cleanup the tmp directory path
 rmdir_recursive("$iqRisk_tmppath");
 
-syslog(LOG_NOTICE, gettext("[Suricata] Emerging Threats IQRisk IP List update finished."));
+logger(LOG_NOTICE, localize_text("Emerging Threats IQRisk IP List update finished."), LOG_PREFIX_PKG_SURICATA);
 $notify_message .= gettext("Suricata Emerging Threats IQRisk IP List update finished: " . date("Y-m-d H:i:s") . "\n");
 
 // If successful, signal any running Suricata process to live reload the rules and IP lists

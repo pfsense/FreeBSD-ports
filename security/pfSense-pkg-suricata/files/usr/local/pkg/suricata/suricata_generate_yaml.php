@@ -905,13 +905,13 @@ else {
 					elseif (is_ipaddrv4($addr) || is_subnetv4($addr))
 						$engine .= "{$addr}, ";
 					else
-						syslog(LOG_WARNING, "[suricata] WARNING: invalid IP address value '{$addr}' in Alias {$v['bind_to']} will be ignored.");
+						logger(LOG_WARNING, localize_text("invalid IP address value '%s' in Alias %s will be ignored.", $addr, $v['bind_to']), LOG_PREFIX_PKG_SURICATA);
 				}
 				$engine = trim($engine, ' ,');
 				$engine .= "]";
 			}
 			else {
-				syslog(LOG_WARNING, "[suricata] WARNING: unable to resolve IP List Alias '{$v['bind_to']}' for Host OS Policy '{$v['name']}' ... ignoring this entry.");
+				logger(LOG_WARNING, localize_text("unable to resolve IP List Alias '%s' for Host OS Policy '%s' ... ignoring this entry.", $v['bind_to'], $v['name']), LOG_PREFIX_PKG_SURICATA);
 				continue;
 			}
 		}
@@ -951,7 +951,7 @@ else {
 					elseif (is_ipaddrv4($addr) || is_subnetv4($addr))
 						$engine .= "{$addr}, ";
 					else {
-						syslog(LOG_WARNING, "[suricata] WARNING: invalid IP address value '{$addr}' in Alias {$v['bind_to']} will be ignored.");
+						logger(LOG_WARNING, localize_text("invalid IP address value '%s' in Alias %s will be ignored.", $addr, $v['bind_to']), LOG_PREFIX_PKG_SURICATA);
 						continue;
 					}
 				}
@@ -966,7 +966,7 @@ else {
 				$http_hosts_policy .= "   {$engine}\n";
 			}
 			else {
-				syslog(LOG_WARNING, "[suricata] WARNING: unable to resolve IP List Alias '{$v['bind_to']}' for Host OS Policy '{$v['name']}' ... ignoring this entry.");
+				logger(LOG_WARNING, localize_text("unable to resolve IP List Alias '%s' for Host OS Policy '%s' ... ignoring this entry.", $v['bind_to'], $v['name']), LOG_PREFIX_PKG_SURICATA);
 				continue;
 			}
 		}
@@ -1352,7 +1352,7 @@ if ($suricatacfg['ips_mode'] == 'ips_mode_inline' && $suricatacfg['blockoffender
 	if (interface_is_vlan($if_real)) {
 		$intf_list = get_parent_interface($if_real);
 		$if_netmap = $intf_list[0];
-		syslog(LOG_WARNING, "[suricata] WARNING: interface '{$if_real}' is a VLAN, so configuring Suricata to run on the parent interface, '{$if_netmap}', instead.");
+		logger(LOG_WARNING, localize_text("interface '%s' is a VLAN, so configuring Suricata to run on the parent interface, '%s', instead.", $if_real, $if_netmap), LOG_PREFIX_PKG_SURICATA);
 	}
 
 	// Note -- Netmap promiscuous mode logic is backwards from pcap

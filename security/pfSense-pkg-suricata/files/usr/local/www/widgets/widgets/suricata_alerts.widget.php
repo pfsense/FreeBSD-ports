@@ -190,7 +190,7 @@ function suricata_widget_get_alerts() {
 						$suricata_alerts[$counter]['timeonly'] = date_format($event_tm, "H:i:s");
 						$suricata_alerts[$counter]['dateonly'] = date_format($event_tm, "M d");
 					} catch (Exception $e) {
-						syslog(LOG_WARNING, "[suricata] WARNING: Dashboard Widget found invalid timestamp entry in current alerts.log, the line will be ignored and skipped.");
+						logger(LOG_WARNING, localize_text("Dashboard Widget found invalid timestamp entry in current alerts.log, the line will be ignored and skipped."), LOG_PREFIX_PKG_SURICATA);
 						continue;
 					}
 

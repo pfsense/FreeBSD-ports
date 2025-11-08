@@ -63,7 +63,7 @@ function suricata_check_dir_size_limit($suricataloglimitsize) {
 	$suricatalogdirsizeKB = suricata_Getdirsize(SURICATALOGDIR);
 
 	if ($suricatalogdirsizeKB > 0 && $suricatalogdirsizeKB > $suricataloglimitsizeKB) {
-		syslog(LOG_NOTICE, gettext("[Suricata] Log directory size exceeds configured limit of " . number_format($suricataloglimitsize) . " MB set on Global Settings tab. Starting cleanup of Suricata logs."));
+		logger(LOG_NOTICE, localize_text("Log directory size exceeds configured limit of %s MB set on Global Settings tab. Starting cleanup of Suricata logs.", number_format($suricataloglimitsize)), LOG_PREFIX_PKG_SURICATA);
 
 		// Initialize an array of the log files we want to prune
 		$logs = array ( "alerts.log", "block.log", "dns.log", "eve.json", "http.log", "sid_changes.log", "stats.log", "tls.log" );
@@ -79,7 +79,7 @@ function suricata_check_dir_size_limit($suricataloglimitsize) {
 			}
 			$suricata_uuid = $value['uuid'];
 			$suricata_log_dir = SURICATALOGDIR . "suricata_{$if_real}{$suricata_uuid}";
-			syslog(LOG_NOTICE, gettext("[Suricata] Cleaning logs for {$value['descr']} ({$if_real})..."));
+			logger(LOG_NOTICE, localize_text("Cleaning logs for %s (%s)...", $value['descr'], $if_real), LOG_PREFIX_PKG_SURICATA);
 
 			// Clean-up packet capture files if any exist
 			$filelist = glob("{$suricata_log_dir}/pcaps/log.pcap.*");
@@ -93,7 +93,7 @@ function suricata_check_dir_size_limit($suricataloglimitsize) {
 
 			// Cleanup any rotated logs
 			foreach ($logs as $file) {
-				syslog(LOG_NOTICE, gettext("[Suricata] Deleting rotated log files except last for {$value['descr']} ({$if_real}) $file..."));
+				logger(LOG_NOTICE, localize_text("Deleting rotated log files except last for %s (%s) %s...", $value['descr'], $if_real, $file), LOG_PREFIX_PKG_SURICATA);
 				$filelist = glob("{$suricata_log_dir}/{$file}.*");
 				// Keep most recent file
 				unset($filelist[count($filelist) - 1]);
@@ -117,7 +117,7 @@ function suricata_check_dir_size_limit($suricataloglimitsize) {
 		}
 
 		// Continue by cleaning up any other rotated logs not handled above
-		syslog(LOG_NOTICE, gettext("[Suricata] Deleting any additional rotated log files..."));
+		logger(LOG_NOTICE, localize_text("Deleting any additional rotated log files..."), LOG_PREFIX_PKG_SURICATA);
 		unlink_if_exists("{$suricata_log_dir}/suricata_*/*.log.*");
 		unlink_if_exists("{$suricata_log_dir}/suricata_*/*.json.*");
 
@@ -145,7 +145,7 @@ function suricata_check_dir_size_limit($suricataloglimitsize) {
 					try {
 						fclose(fopen("{$suricata_log_dir}/{$file}", 'w'));
 					} catch (Exception $e) {
-						syslog(LOG_ERR, "[Suricata] ERROR: Failed to truncate file '{$suricata_log_dir}/{$file}' -- error was {$e->getMessage()}");
+						logger(LOG_ERR, localize_text("Failed to truncate file '%s' -- error was %s", "{$suricata_log_dir}/{$file}", $e->getMessage()), LOG_PREFIX_PKG_SURICATA);
 					}
 				}
 
@@ -166,16 +166,16 @@ function suricata_check_dir_size_limit($suricataloglimitsize) {
 
 		// Truncate the Rules Update Log file if it exists
 		if (file_exists(SURICATA_RULES_UPD_LOGFILE)) {
-			syslog(LOG_NOTICE, gettext("[Suricata] Truncating the Rules Update Log file..."));
+			logger(LOG_NOTICE, localize_text("Truncating the Rules Update Log file..."), LOG_PREFIX_PKG_SURICATA);
 			try {
 				fclose(fopen(SURICATA_RULES_UPD_LOGFILE, 'w'));
 			} catch (Exception $e) {
-				syslog(LOG_ERR, "[Suricata] ERROR: Failed to truncate Rules Update Log '" . SURICATA_RULES_UPD_LOGFILE . "' -- error was {$e->getMessage()}");
+				logger(LOG_ERR, localize_text("Failed to truncate Rules Update Log '%s' -- error was %s", SURICATA_RULES_UPD_LOGFILE, $e->getMessage()), LOG_PREFIX_PKG_SURICATA);
 			}
 		}
 
 		cleanupExit:
-		syslog(LOG_NOTICE, gettext("[Suricata] Automatic clean-up of Suricata logs completed."));
+		logger(LOG_NOTICE, localize_text("Automatic clean-up of Suricata logs completed."), LOG_PREFIX_PKG_SURICATA);
 	}
 }
 
@@ -200,8 +200,8 @@ function suricata_check_filestore_limit_size($store_path, $store_limit) {
 	}
 
 	if (intval(suricata_folderSize($store_path)/1000000) >= $store_limit) {
-		$msg = sprintf("[Suricata] Automatic prune of File Store path '%s' started due to exceeding configured Captured Files storage size limit of %d Megabytes.", $store_path, $store_limit);
-		syslog(LOG_NOTICE, gettext($msg));
+		$msg = localize_text("Automatic prune of File Store path '%s' started due to exceeding configured Captured Files storage size limit of %d Megabytes.", $store_path, $store_limit);
+		logger(LOG_NOTICE, $msg, LOG_PREFIX_PKG_SURICATA);
 
 		// Get captured file names into array and sort by
 		// modified date/time ascending.
@@ -221,8 +221,8 @@ function suricata_check_filestore_limit_size($store_path, $store_limit) {
 			$file_index--;
 		}
 
-		$msg = sprintf("[Suricata] Automatic prune of File Store path '%s' completed. Removed %d captured files.", $store_path, $removed);
-		syslog(LOG_NOTICE, gettext($msg));
+		$msg = localize_text("Automatic prune of File Store path '%s' completed. Removed %d captured files.", $store_path, $removed);
+		logger(LOG_NOTICE, $msg, LOG_PREFIX_PKG_SURICATA);
 	}
 	return $removed;
 }
@@ -307,7 +307,7 @@ function suricata_check_rotate_log($log_file, $log_limit, $retention) {
 			touch($log_file);
 			$rotated_count++;
 		} catch (Exception $e) {
-			syslog(LOG_ERR, "[Suricata] ERROR: Failed to rotate file '{$log_file}' -- error was {$e->getMessage()}");
+			logger(LOG_ERR, localize_text("Failed to rotate file '%s' -- error was %s", $log_file, $e->getMessage()), LOG_PREFIX_PKG_SURICATA);
 		}
 	}
 
@@ -377,7 +377,7 @@ if (config_get_path('installedpackages/suricata/config/0/enable_log_mgmt') == 'o
 			// Send the running Suricata instance on this interface a SIGHUP signal
 			// so it will re-open the log files we rotated and truncated.
 			suricata_reload_config($value, SIGHUP);
-			syslog(LOG_NOTICE, gettext("[Suricata] Logs Mgmt job rotated {$rotated} file(s) in '{$suricata_log_dir}/' ..."));
+			logger(LOG_NOTICE, localize_text("Logs Mgmt job rotated %s file(s) in '%s' ...", $rotated, "{$suricata_log_dir}/"), LOG_PREFIX_PKG_SURICATA);
 		}
 
 		// Prune aged-out File Store captured files if any exist
@@ -386,7 +386,7 @@ if (config_get_path('installedpackages/suricata/config/0/enable_log_mgmt') == 'o
 
 			$prune_count = suricata_check_prune_filestore_files("{$suricata_log_dir}/filestore", config_get_path('installedpackages/suricata/config/0/file_store_retention'));
 			if ($prune_count > 0)
-				syslog(LOG_NOTICE, gettext("[Suricata] File Store captured files cleanup job removed {$prune_count} file(s) from '{$suricata_log_dir}/filestore/' path..."));
+				logger(LOG_NOTICE, localize_text("File Store captured files cleanup job removed %s file(s) from '%s' path...", $prune_count, "{$suricata_log_dir}/filestore/"), LOG_PREFIX_PKG_SURICATA);
 		}
 
 		// Check File Store captured files storage limit and prune if necessary
@@ -419,7 +419,7 @@ if (config_get_path('installedpackages/suricata/config/0/enable_log_mgmt') == 'o
 				}
 			}
 			if ($prune_count > 0)
-				syslog(LOG_NOTICE, gettext("[Suricata] TLS Certs Store cleanup job removed {$prune_count} file(s) from {$suricata_log_dir}/certs/..."));
+				logger(LOG_NOTICE, localize_text("TLS Certs Store cleanup job removed %s file(s) from %s...", $prune_count, "{$suricata_log_dir}/certs/"), LOG_PREFIX_PKG_SURICATA);
 			unset($files);
 		}
 
@@ -436,7 +436,7 @@ if (config_get_path('installedpackages/suricata/config/0/enable_log_mgmt') == 'o
 				}
 			}
 			if ($prune_count > 0)
-				syslog(LOG_NOTICE, gettext("[Suricata] PCAP files retention cleanup job removed {$prune_count} file(s) from {$suricata_log_dir}/pcaps/ whose creation date exceeded the retention limit."));
+				logger(LOG_NOTICE, localize_text("PCAP files retention cleanup job removed %s file(s) from %s whose creation date exceeded the retention limit.", $prune_count, "{$suricata_log_dir}/pcaps/"), LOG_PREFIX_PKG_SURICATA);
 			unset($files);
 		}
 
@@ -455,7 +455,7 @@ if (config_get_path('installedpackages/suricata/config/0/enable_log_mgmt') == 'o
 				unlink_if_exists($f);
 			}
 			if ($prune_count > 0)
-				syslog(LOG_NOTICE, gettext("[Suricata] Packet Capture log cleanup job removed {$prune_count} file(s) from {$suricata_log_dir}/pcaps/ to stay below the configured max files limit."));
+				logger(LOG_NOTICE, localize_text("Packet Capture log cleanup job removed %s file(s) from %s to stay below the configured max files limit.", $prune_count, "{$suricata_log_dir}/pcaps/"), LOG_PREFIX_PKG_SURICATA);
 			unset($files, $remove_files);
 		}
 	}

@@ -93,21 +93,21 @@ foreach ($map_files as $f) {
 
 // Download latest GeoIP DB updates and create cron task if feature is enabled and have a user key
 if (config_get_path('installedpackages/suricata/config/0/autogeoipupdate') == 'on' && config_get_path('installedpackages/suricata/config/0/maxmind_geoipdb_key') !== null) {
-	syslog(LOG_NOTICE, gettext("[Suricata] Installing free GeoLite2 country IP database file in /usr/local/share/suricata/GeoLite2/..."));
+	logger(LOG_NOTICE, localize_text("Installing free GeoLite2 country IP database file in %s...", '/usr/local/share/suricata/GeoLite2/'), LOG_PREFIX_PKG_SURICATA);
 	include '/usr/local/pkg/suricata/suricata_geoipupdate.php';
 	install_cron_job("/usr/bin/nice -n20 /usr/local/bin/php-cgi -f /usr/local/pkg/suricata/suricata_geoipupdate.php", TRUE, 0, 6, "*", "*", "*", "root");
 }
 
 // Download latest ET IQRisk updates and create cron task if feature is enabled and have user key
 if (config_get_path('installedpackages/suricata/config/0/et_iqrisk_enable') == 'on' && config_get_path('installedpackages/suricata/config/0/iqrisk_code') !== null) {
-	syslog(LOG_NOTICE, gettext("[Suricata] Installing Emerging Threats IQRisk IP List..."));
+	logger(LOG_NOTICE, localize_text("Installing Emerging Threats IQRisk IP List..."), LOG_PREFIX_PKG_SURICATA);
 	include '/usr/local/pkg/suricata/suricata_etiqrisk_update.php';
 	install_cron_job("/usr/bin/nice -n20 /usr/local/bin/php-cgi -f /usr/local/pkg/suricata/suricata_etiqrisk_update.php", TRUE, 0, "*/6", "*", "*", "*", "root");
 }
 
 // Remake saved settings if previously flagged to restore them
 if (config_get_path('installedpackages/suricata/config/0/forcekeepsettings') == 'on') {
-	syslog(LOG_NOTICE, gettext("[Suricata] Saved settings detected... rebuilding installation with saved settings."));
+	logger(LOG_NOTICE, localize_text("Saved settings detected... rebuilding installation with saved settings."), LOG_PREFIX_PKG_SURICATA);
 	update_status(gettext("Saved settings detected...") . "\n");
 
 	/****************************************************************/
@@ -155,7 +155,7 @@ if (config_get_path('installedpackages/suricata/config/0/forcekeepsettings') == 
 
 	if (!is_platform_booting()) {
 		// Update configured rules archives with a fresh download
-		syslog(LOG_NOTICE, gettext("[Suricata] Downloading and updating configured rule types."));
+		logger(LOG_NOTICE, localize_text("Downloading and updating configured rule types."), LOG_PREFIX_PKG_SURICATA);
 		include '/usr/local/pkg/suricata/suricata_check_for_rule_updates.php';
 		update_status(gettext("Generating suricata.yaml configuration file from saved settings.") . "\n");
 		$rebuild_rules = true;
@@ -209,7 +209,7 @@ if (config_get_path('installedpackages/suricata/config/0/forcekeepsettings') == 
 
 	$rebuild_rules = false;
 	update_status(gettext("Finished rebuilding Suricata configuration from saved settings.") . "\n");
-	syslog(LOG_NOTICE, gettext("[Suricata] Finished rebuilding installation from saved settings."));
+	logger(LOG_NOTICE, localize_text("Finished rebuilding installation from saved settings."), LOG_PREFIX_PKG_SURICATA);
 }
 
 // If this is first install and "forcekeepsettings" is empty,
@@ -251,7 +251,7 @@ write_config("Suricata pkg v" . config_get_path('installedpackages/package/' . g
 
 // Done with post-install, so clear flag
 unset($g['suricata_postinstall']);
-syslog(LOG_NOTICE, gettext("[Suricata] Package post-installation tasks completed."));
+logger(LOG_NOTICE, localize_text("Package post-installation tasks completed."), LOG_PREFIX_PKG_SURICATA);
 return true;
 
 ?>

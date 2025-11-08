@@ -33,12 +33,12 @@ $sidmodspath = SURICATA_SID_MODS_PATH;
 $iprep_path = SURICATA_IPREP_PATH;
 $rcdir = RCFILEPREFIX;
 
-syslog(LOG_NOTICE, gettext("[Suricata] Suricata package uninstall in progress..."));
+logger(LOG_NOTICE, localize_text("Suricata package uninstall in progress..."), LOG_PREFIX_PKG_SURICATA);
 
 /* Make sure all active Suricata processes are terminated */
 /* Log a message only if a running process is detected */
 if (is_service_running("suricata"))
-	syslog(LOG_NOTICE, gettext("[Suricata] Stopping Suricata on all configured interfaces..."));
+	logger(LOG_NOTICE, localize_text("Stopping Suricata on all configured interfaces..."), LOG_PREFIX_PKG_SURICATA);
 killbyname("suricata");
 sleep(1);
 
@@ -51,7 +51,7 @@ unlink_if_exists("{$g['varrun_path']}/suricata*.lck");
 /* Even though Barnyard2 is deprecated, this code remains  */
 /* to ensure no active Barnyard2 process remains.          */
 if (is_service_running("barnyard2"))
-	syslog(LOG_NOTICE, gettext("[Suricata] Stopping Barnyard2 on all configured interfaces..."));
+	logger(LOG_NOTICE, localize_text("Stopping Barnyard2 on all configured interfaces..."), LOG_PREFIX_PKG_SURICATA);
 killbyname("barnyard2");
 sleep(1);
 
@@ -67,7 +67,7 @@ install_cron_job("/usr/local/pkg/suricata/suricata_etiqrisk_update.php", false);
 
 /* See if we are to keep Suricata log files on uninstall */
 if (config_get_path('installedpackages/suricata/config/0/clearlogs') == 'on') {
-	syslog(LOG_NOTICE, gettext("[Suricata] Clearing all Suricata-related log files..."));
+	logger(LOG_NOTICE, localize_text("Clearing all Suricata-related log files..."), LOG_PREFIX_PKG_SURICATA);
 	unlink_if_exists(SURICATA_RULES_UPD_LOGFILE);
 	rmdir_recursive("{$suricatalogdir}");
 }
@@ -121,22 +121,22 @@ if (!empty($widgets)) {
 
 // See if we are to clear blocked hosts on uninstall
 if (config_get_path('installedpackages/suricata/config/0/clearblocks') == 'on') {
-	syslog(LOG_NOTICE, gettext("[Suricata] Flushing all blocked hosts from <snort2c> table due to package removal..."));
+	logger(LOG_NOTICE, localize_text("Flushing all blocked hosts from <snort2c> table due to package removal..."), LOG_PREFIX_PKG_SURICATA);
 	mwexec("/sbin/pfctl -t snort2c -T flush");
 }
 
 /* Keep this as the last step of the uninstall procedure */
 if (config_get_path('installedpackages/suricata/config/0/forcekeepsettings') != 'on') {
-	syslog(LOG_NOTICE, gettext("Not saving Suricata settings... all Suricata configuration info and logs deleted..."));
+	logger(LOG_NOTICE, localize_text("Not saving Suricata settings... all Suricata configuration info and logs deleted..."), LOG_PREFIX_PKG_SURICATA);
 	config_del_path('installedpackages/suricata');
 	config_del_path('installedpackages/suricatasync');
 	unlink_if_exists(SURICATA_RULES_UPD_LOGFILE);
 	rmdir_recursive("{$suricatalogdir}");
 	write_config("Deleted the Suricata package and its configuration settings.");
-	syslog(LOG_NOTICE, gettext("[Suricata] The package and its configuration settings have been deleted from this system..."));
+	logger(LOG_NOTICE, localize_text("The package and its configuration settings have been deleted from this system..."), LOG_PREFIX_PKG_SURICATA);
 } else {
 	write_config("Removed the Suricata package.");
-	syslog(LOG_NOTICE, gettext("[Suricata] The package has been removed from this system, but the configuration settings were retained..."));
+	logger(LOG_NOTICE, localize_text("The package has been removed from this system, but the configuration settings were retained..."), LOG_PREFIX_PKG_SURICATA);
 }
 return true;
 ?>

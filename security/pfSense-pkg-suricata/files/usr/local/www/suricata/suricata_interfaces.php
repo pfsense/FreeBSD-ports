@@ -58,16 +58,16 @@ if (isset($_POST['del_x'])) {
 			if ($if_real == "") {
 				rmdir_recursive("{$suricatalogdir}suricata_{$if_real}{$suricata_uuid}");
 				rmdir_recursive("{$suricatadir}suricata_{$suricata_uuid}_*");
-				syslog(LOG_NOTICE, "Deleted the Suricata instance on a previously removed pfSense interface per user request...");
+				logger(LOG_NOTICE, localize_text("Deleted the Suricata instance on a previously removed pfSense interface per user request..."), LOG_PREFIX_PKG_SURICATA);
 			}
 			else {
 				// Delete the interface sub-directories and then the instance itself
 				$if_friendly = convert_friendly_interface_to_friendly_descr($snortcfg['interface']);
-				syslog(LOG_NOTICE, "Stopping Suricata on {$if_friendly}({$if_real}) due to Suricata instance deletion...");
+				logger(LOG_NOTICE, localize_text("Stopping Suricata on %s(%s) due to Suricata instance deletion...", $if_friendly, $if_real), LOG_PREFIX_PKG_SURICATA);
 				suricata_stop($a_nat[$rulei], $if_real);
 				rmdir_recursive("{$suricatalogdir}suricata_{$if_real}{$suricata_uuid}");
 				rmdir_recursive("{$suricatadir}suricata_{$suricata_uuid}_{$if_real}");
-				syslog(LOG_NOTICE, "Deleted Suricata instance on {$if_friendly}({$if_real}) per user request...");
+				logger(LOG_NOTICE, localize_text("Deleted Suricata instance on %s(%s) per user request...", $if_friendly, $if_real), LOG_PREFIX_PKG_SURICATA);
 			}
 
 			// Finally, delete the interface's config entry entirely
@@ -111,16 +111,16 @@ if (isset($_POST['del_x'])) {
 		if ($if_real == "") {
 			rmdir_recursive("{$suricatalogdir}suricata_{$if_real}{$suricata_uuid}");
 			rmdir_recursive("{$suricatadir}suricata_{$suricata_uuid}_*");
-			syslog(LOG_NOTICE, "Deleted the Suricata instance on a previously removed pfSense interface per user request...");
+			logger(LOG_NOTICE, localize_text("Deleted the Suricata instance on a previously removed pfSense interface per user request..."), LOG_PREFIX_PKG_SURICATA);
 		}
 		else {
 			// Delete the interface sub-directories and then the instance itself
 			$if_friendly = convert_friendly_interface_to_friendly_descr($snortcfg['interface']);
-			syslog(LOG_NOTICE, "Stopping Suricata on {$if_friendly}({$if_real}) due to Suricata instance deletion...");
+			logger(LOG_NOTICE, localize_text("Stopping Suricata on %s(%s) due to Suricata instance deletion...", $if_friendly, $if_real), LOG_PREFIX_PKG_SURICATA);
 			suricata_stop($a_nat[$delbtn_list], $if_real);
 			rmdir_recursive("{$suricatalogdir}suricata_{$if_real}{$suricata_uuid}");
 			rmdir_recursive("{$suricatadir}suricata_{$suricata_uuid}_{$if_real}");
-			syslog(LOG_NOTICE, "Deleted Suricata instance on {$if_friendly}({$if_real}) per user request...");
+			logger(LOG_NOTICE, localize_text("Deleted Suricata instance on %s(%s) per user request...", $if_friendly, $if_real), LOG_PREFIX_PKG_SURICATA);
 		}
 
 		// Finally, delete the interface's config entry entirely
@@ -189,7 +189,7 @@ EOD;
 		case 'start':
 			file_put_contents("{$g['tmp_path']}/suricata_{$if_real}{$suricatacfg['uuid']}_startcmd.php", $suricata_start_cmd);
 			if (suricata_is_running($suricatacfg['uuid'], $if_real)) {
-				syslog(LOG_NOTICE, "Restarting Suricata on {$if_friendly}({$if_real}) per user request...");
+				logger(LOG_NOTICE, localize_text("Restarting Suricata on %s(%s) per user request...", $if_friendly, $if_real), LOG_PREFIX_PKG_SURICATA);
 				suricata_stop($suricatacfg, $if_real);
 				mwexec_bg("/usr/local/bin/php -f {$g['tmp_path']}/suricata_{$if_real}{$suricatacfg['uuid']}_startcmd.php");
 			}
@@ -199,14 +199,14 @@ EOD;
 				if (!suricata_is_running($suricatacfg['uuid'], $if_real)) {
 					unlink_if_exists("{$g['varrun_path']}/suricata_{$if_real}{$suricatacfg['uuid']}.pid");
 				}
-				syslog(LOG_NOTICE, "Starting Suricata on {$if_friendly}({$if_real}) per user request...");
+				logger(LOG_NOTICE, localize_text("Starting Suricata on %s(%s) per user request...", $if_friendly, $if_real), LOG_PREFIX_PKG_SURICATA);
 				mwexec_bg("/usr/local/bin/php -f {$g['tmp_path']}/suricata_{$if_real}{$suricatacfg['uuid']}_startcmd.php");
 			}
 			$suri_starting[$id] = TRUE;
 			break;
 		case 'stop':
 			if (suricata_is_running($suricatacfg['uuid'], $if_real)) {
-				syslog(LOG_NOTICE, "Stopping Suricata on {$if_friendly}({$if_real}) per user request...");
+				logger(LOG_NOTICE, localize_text("Stopping Suricata on %s(%s) per user request...", $if_friendly, $if_real), LOG_PREFIX_PKG_SURICATA);
 				suricata_stop($suricatacfg, $if_real);
 			}
 			unset($suri_starting[$id]);

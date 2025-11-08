@@ -251,8 +251,8 @@ function suricata_download_file_url($url, $file_out) {
 			$rc = curl_exec($ch);
 			if ($rc === true)
 				break;
-			syslog(LOG_ERR, gettext("[Suricata] ERROR: Rules download error: " . curl_error($ch)));
-			syslog(LOG_NOTICE, gettext("[Suricata] Will retry the download in 15 seconds..."));
+			logger(LOG_ERR, localize_text("Rules download error: %s", curl_error($ch)), LOG_PREFIX_PKG_SURICATA);
+			logger(LOG_NOTICE, localize_text("Will retry the download in 15 seconds..."), LOG_PREFIX_PKG_SURICATA);
 			sleep(15);
 		}
 		if ($rc === false)
@@ -264,12 +264,12 @@ function suricata_download_file_url($url, $file_out) {
 
 		// If we had to try more than once, log it
 		if ($counter > 1)
-			syslog(LOG_NOTICE, gettext("File '" . basename($file_out) . "' download attempts: {$counter} ..."));
+			logger(LOG_NOTICE, localize_text("File '%s' download attempts: %s ...", basename($file_out), $counter), LOG_PREFIX_PKG_SURICATA);
 		return ($http_code == 200) ? true : $http_code;
 	}
 	else {
 		$last_curl_error = gettext("Failed to create file " . $file_out);
-		syslog(LOG_ERR, gettext("[Suricata] ERROR: Failed to create file {$file_out} ..."));
+		logger(LOG_ERR, localize_text("Failed to create file %s ...", $file_out), LOG_PREFIX_PKG_SURICATA);
 		return false;
 	}
 }
@@ -310,7 +310,7 @@ function suricata_check_rule_md5($file_url, $file_dst, $desc = "") {
 			$md5_check_old = trim(file_get_contents("{$suricatadir}{$filename_md5}"));
 			if ($md5_check_new == $md5_check_old) {
 				suricata_update_status(gettext("{$desc} are up to date.") . "\n");
-				syslog(LOG_NOTICE, gettext("[Suricata] {$desc} are up to date..."));
+				logger(LOG_NOTICE, localize_text("%s are up to date...", $desc), LOG_PREFIX_PKG_SURICATA);
 				error_log(gettext("\t{$desc} are up to date.\n"), 3, SURICATA_RULES_UPD_LOGFILE);
 				$notify_message .= gettext("- {$desc} are up to date.\n");
 				return false;
@@ -325,8 +325,8 @@ function suricata_check_rule_md5($file_url, $file_dst, $desc = "") {
 		$suricata_err_msg = gettext("Server returned error code {$rc}.");
 		suricata_update_status(gettext("{$desc} md5 error ... Server returned error code {$rc}") . "\n");
 		suricata_update_status(gettext("{$desc} will not be updated.") . "\n");
-		syslog(LOG_ERR, gettext("[Suricata] ERROR: {$desc} md5 download failed..."));
-		syslog(LOG_ERR, gettext("[Suricata] ERROR: Remote server returned error code {$rc}..."));
+		logger(LOG_ERR, localize_text("%s md5 download failed...", $desc), LOG_PREFIX_PKG_SURICATA);
+		logger(LOG_ERR, localize_text("Remote server returned error code %s...", $rc), LOG_PREFIX_PKG_SURICATA);
 		error_log(gettext("\t{$suricata_err_msg}\n"), 3, SURICATA_RULES_UPD_LOGFILE);
 		error_log(gettext("\tServer error message was: {$last_curl_error}\n"), 3, SURICATA_RULES_UPD_LOGFILE);
 		error_log(gettext("\t{$desc} will not be updated.\n"), 3, SURICATA_RULES_UPD_LOGFILE);
@@ -361,7 +361,7 @@ function suricata_fetch_new_rules($file_url, $file_dst, $file_md5, $desc = "") {
 	$filename = basename($file_dst);
 
 	suricata_update_status(gettext("There is a new set of {$desc} posted. Downloading..."));
-	syslog(LOG_NOTICE, gettext("[Suricata] There is a new set of {$desc} posted. Downloading {$filename}..."));
+	logger(LOG_NOTICE, localize_text("There is a new set of %s posted. Downloading %s...", $desc, $filename), LOG_PREFIX_PKG_SURICATA);
 	error_log(gettext("\tThere is a new set of {$desc} posted.\n"), 3, SURICATA_RULES_UPD_LOGFILE);
 	error_log(gettext("\tDownloading file '{$filename}'...\n"), 3, SURICATA_RULES_UPD_LOGFILE);
        	$rc = suricata_download_file_url($file_url, $file_dst);
@@ -369,7 +369,7 @@ function suricata_fetch_new_rules($file_url, $file_dst, $file_md5, $desc = "") {
 	// See if the download from the URL was successful
 	if ($rc === true) {
 		suricata_update_status(gettext(" done.") . "\n");
-		syslog(LOG_NOTICE, "[Suricata] {$desc} file update downloaded successfully.");
+		logger(LOG_NOTICE, localize_text("%s file update downloaded successfully.", $desc), LOG_PREFIX_PKG_SURICATA);
 		error_log(gettext("\tDone downloading rules file.\n"),3, SURICATA_RULES_UPD_LOGFILE);
 
 		// Test integrity of the rules file.  Turn off update if file has wrong md5 hash
@@ -387,8 +387,8 @@ function suricata_fetch_new_rules($file_url, $file_dst, $file_md5, $desc = "") {
 */
 		if ($file_md5 != trim(md5_file($file_dst))){
 			suricata_update_status(gettext("{$desc} file MD5 checksum failed!") . "\n");
-			syslog(LOG_ERR, gettext("[Suricata] ERROR: {$desc} file download failed.  Bad MD5 checksum."));
-        	        syslog(LOG_ERR, gettext("[Suricata] ERROR: Downloaded file has MD5: ") . md5_file($file_dst) . gettext(", but expected MD5: ") . $file_md5);
+			logger(LOG_ERR, localize_text("%s file download failed.  Bad MD5 checksum.", $desc), LOG_PREFIX_PKG_SURICATA);
+        	logger(LOG_ERR, localize_text("Downloaded file has MD5: %s, but expected MD5: %s", md5_file($file_dst), $file_md5), LOG_PREFIX_PKG_SURICATA);
 			error_log(gettext("\t{$desc} file download failed.  Bad MD5 checksum.\n"), 3, SURICATA_RULES_UPD_LOGFILE);
 			error_log(gettext("\tDownloaded {$desc} file MD5: " . md5_file($file_dst) . "\n"), 3, SURICATA_RULES_UPD_LOGFILE);
 			error_log(gettext("\tExpected {$desc} file MD5: ") . $file_md5 . PHP_EOL, 3, SURICATA_RULES_UPD_LOGFILE);
@@ -402,7 +402,7 @@ function suricata_fetch_new_rules($file_url, $file_dst, $file_md5, $desc = "") {
 	}
 	else {
 		suricata_update_status(gettext("{$desc} file download failed!") . "\n");
-		syslog(LOG_ERR, gettext("[Suricata] ERROR: {$desc} file download failed... server returned error '{$rc}'."));
+		logger(LOG_ERR, localize_text("%s file download failed... server returned error '%s'.", $desc, $rc), LOG_PREFIX_PKG_SURICATA);
 		error_log(gettext("\tERROR: {$desc} file download failed.  Remote server returned error {$rc}.\n"), 3, SURICATA_RULES_UPD_LOGFILE);
 		error_log(gettext("\tThe error text was: {$last_curl_error}\n"), 3, SURICATA_RULES_UPD_LOGFILE);
 		error_log(gettext("\t{$desc} will not be updated.\n"), 3, SURICATA_RULES_UPD_LOGFILE);
@@ -477,7 +477,7 @@ if ($emergingthreats == 'on') {
 if ($snortdownload == 'on') {
 	$snort_custom_url = config_get_path('installedpackages/suricata/config/0/enable_snort_custom_url') == 'on' ? TRUE : FALSE;
 	if (empty($snort_filename)) {
-		syslog(LOG_WARNING, gettext("WARNING: No snortrules-snapshot filename has been set on Snort pkg GLOBAL SETTINGS tab.  Snort rules cannot be updated."));
+		logger(LOG_WARNING, localize_text("No snortrules-snapshot filename has been set on Snort pkg GLOBAL SETTINGS tab.  Snort rules cannot be updated."), LOG_PREFIX_PKG_SURICATA);
 		error_log(gettext("\tWARNING-- No snortrules-snapshot filename set on GLOBAL SETTINGS tab. Snort rules cannot be updated!\n"), 3, SURICATA_RULES_UPD_LOGFILE);
 		$snortdownload = 'off';
 	}
@@ -522,14 +522,14 @@ if ($feodotracker_rules == 'on') {
 	// See if the download from the URL was successful
 	if ($rc === true) {
 		suricata_update_status(gettext(" done.") . "\n");
-		syslog(LOG_NOTICE, "[Suricata] Feodo Tracker Botnet C2 IP rules file update downloaded successfully.");
+		logger(LOG_NOTICE, localize_text("Feodo Tracker Botnet C2 IP rules file update downloaded successfully."), LOG_PREFIX_PKG_SURICATA);
 		error_log(gettext("\tDone downloading rules file.\n"),3, SURICATA_RULES_UPD_LOGFILE);
 
 		// See if file has changed from our previously downloaded version
 		if ($old_file_md5 == trim(md5_file("{$tmpfname}/{$feodotracker_rules_filename}"))) {
 			// File is unchanged from previous download, so no update required
 			suricata_update_status(gettext("Feodo Tracker Botnet C2 IP rules are up to date.") . "\n");
-			syslog(LOG_NOTICE, gettext("[Suricata] Feodo Tracker Botnet C2 IP rules are up to date..."));
+			logger(LOG_NOTICE, localize_text("Feodo Tracker Botnet C2 IP rules are up to date..."), LOG_PREFIX_PKG_SURICATA);
 			error_log(gettext("\tFeodo Tracker Botnet C2 IP rules are up to date.\n"), 3, SURICATA_RULES_UPD_LOGFILE);
 			$notify_message .= gettext("- Feodo Tracker Botnet C2 IP rules are up to date.\n");
 			$feodotracker_rules = 'off';
@@ -541,14 +541,14 @@ if ($feodotracker_rules == 'on') {
 			error_log(gettext("\tExtracting and installing Feodo Tracker Botnet C2 IP rules...\n"), 3, SURICATA_RULES_UPD_LOGFILE);
 			exec("/usr/bin/tar xzf {$tmpfname}/{$feodotracker_rules_filename} -C {$suricata_rules_dir}");
 			suricata_update_status(gettext("Feodo Tracker Botnet C2 IP rules were updated.") . "\n");
-			syslog(LOG_NOTICE, gettext("[Suricata] Feodo Tracker Botnet C2 IP rules were updated..."));
+			logger(LOG_NOTICE, localize_text("Feodo Tracker Botnet C2 IP rules were updated..."), LOG_PREFIX_PKG_SURICATA);
 			error_log(gettext("\tFeodo Tracker Botnet C2 IP rules were updated.\n"), 3, SURICATA_RULES_UPD_LOGFILE);
 			$notify_message .= gettext("- Feodo Tracker Botnet C2 IP rules were updated.\n");
 		}
 	}
 	else {
 		suricata_update_status(gettext("Feodo Tracker Botnet C2 IP rules file download failed!") . "\n");
-		syslog(LOG_ERR, gettext("[Suricata] ERROR: Feodo Tracker Botnet C2 IP rules file download failed... server returned error '{$rc}'."));
+		logger(LOG_ERR, localize_text("Feodo Tracker Botnet C2 IP rules file download failed... server returned error '%s'.", $rc), LOG_PREFIX_PKG_SURICATA);
 		error_log(gettext("\tERROR: Feodo Tracker Botnet C2 IP rules file download failed.  Remote server returned error {$rc}.\n"), 3, SURICATA_RULES_UPD_LOGFILE);
 		error_log(gettext("\tThe error text was: {$last_curl_error}\n"), 3, SURICATA_RULES_UPD_LOGFILE);
 		error_log(gettext("\tFeodo Tracker Botnet C2 IP rules will not be updated.\n"), 3, SURICATA_RULES_UPD_LOGFILE);
@@ -575,14 +575,14 @@ if ($sslbl_rules == 'on') {
 	// See if the download from the URL was successful
 	if ($rc === true) {
 		suricata_update_status(gettext(" done.") . "\n");
-		syslog(LOG_NOTICE, "[Suricata] ABUSE.ch SSL Blacklist rules file update downloaded successfully.");
+		logger(LOG_NOTICE, localize_text("ABUSE.ch SSL Blacklist rules file update downloaded successfully."), LOG_PREFIX_PKG_SURICATA);
 		error_log(gettext("\tDone downloading rules file.\n"),3, SURICATA_RULES_UPD_LOGFILE);
 
 		// See if file has changed from our previously downloaded version
 		if ($old_file_md5 == trim(md5_file("{$tmpfname}/{$sslbl_rules_filename}"))) {
 			// File is unchanged from previous download, so no update required
 			suricata_update_status(gettext("ABUSE.ch SSL Blacklist rules are up to date.") . "\n");
-			syslog(LOG_NOTICE, gettext("[Suricata] ABUSE.ch SSL Blacklist rules are up to date..."));
+			logger(LOG_NOTICE, localize_text("ABUSE.ch SSL Blacklist rules are up to date..."), LOG_PREFIX_PKG_SURICATA);
 			error_log(gettext("\tABUSE.ch SSL Blacklist rules are up to date.\n"), 3, SURICATA_RULES_UPD_LOGFILE);
 			$notify_message .= gettext("- ABUSE.ch SSL Blacklist rules are up to date.\n");
 			$sslbl_rules = 'off';
@@ -594,14 +594,14 @@ if ($sslbl_rules == 'on') {
 			error_log(gettext("\tExtracting and installing ABUSE.ch SSL Blacklist rules...\n"), 3, SURICATA_RULES_UPD_LOGFILE);
 			exec("/usr/bin/tar xzf {$tmpfname}/{$sslbl_rules_filename} -C {$suricata_rules_dir}");
 			suricata_update_status(gettext("ABUSE.ch SSL Blacklist rules were updated.") . "\n");
-			syslog(LOG_NOTICE, gettext("[Suricata] ABUSE.ch SSL Blacklist rules were updated..."));
+			logger(LOG_NOTICE, localize_text("ABUSE.ch SSL Blacklist rules were updated..."), LOG_PREFIX_PKG_SURICATA);
 			error_log(gettext("\tABUSE.ch SSL Blacklist rules were updated.\n"), 3, SURICATA_RULES_UPD_LOGFILE);
 			$notify_message .= gettext("- ABUSE.ch SSL Blacklist rules were updated.\n");
 		}
 	}
 	else {
 		suricata_update_status(gettext("ABUSE.ch SSL Blacklist rules file download failed!") . "\n");
-		syslog(LOG_ERR, gettext("[Suricata] ERROR: ABUSE.ch SSL Blacklist rules file download failed... server returned error '{$rc}'."));
+		logger(LOG_ERR, localize_text("ABUSE.ch SSL Blacklist rules file download failed... server returned error '%s'.", $rc), LOG_PREFIX_PKG_SURICATA);
 		error_log(gettext("\tERROR: ABUSE.ch SSL Blacklist rules file download failed.  Remote server returned error {$rc}.\n"), 3, SURICATA_RULES_UPD_LOGFILE);
 		error_log(gettext("\tThe error text was: {$last_curl_error}\n"), 3, SURICATA_RULES_UPD_LOGFILE);
 		error_log(gettext("\tABUSE.ch SSL Blacklist rules will not be updated.\n"), 3, SURICATA_RULES_UPD_LOGFILE);
@@ -639,14 +639,14 @@ if (($enable_extra_rules == 'on') && !empty($extra_rules)) {
 		// See if the download from the URL was successful
 		if ($rc === true) {
 			suricata_update_status(gettext(" done.") . "\n");
-			syslog(LOG_NOTICE, "[Suricata] Extra {$exrule['name']} rules file update downloaded successfully.");
+			logger(LOG_NOTICE, localize_text("Extra %s rules file update downloaded successfully.", $exrule['name']), LOG_PREFIX_PKG_SURICATA);
 			error_log(gettext("\tDone downloading rules file.\n"),3, SURICATA_RULES_UPD_LOGFILE);
 
 			// See if file has changed from our previously downloaded version
 			if ($old_file_md5 == trim(md5_file("{$tmpextradir}/{$rulesfilename}"))) {
 				// File is unchanged from previous download, so no update required
 				suricata_update_status(gettext("Extra {$exrule['name']} rules are up to date.") . "\n");
-				syslog(LOG_NOTICE, gettext("[Suricata] Extra {$exrule['name']} rules are up to date..."));
+				logger(LOG_NOTICE, localize_text("Extra %s rules are up to date...", $exrule['name']), LOG_PREFIX_PKG_SURICATA);
 				error_log(gettext("\tExtra {$exrule['name']} rules are up to date.\n"), 3, SURICATA_RULES_UPD_LOGFILE);
 				$notify_message .= gettext("- Extra {$exrule['name']} rules are up to date.\n");
 			} else {
@@ -685,14 +685,14 @@ if (($enable_extra_rules == 'on') && !empty($extra_rules)) {
 				}
 
 				suricata_update_status(gettext("Extra {$exrule['name']} rules were updated.") . "\n");
-				syslog(LOG_NOTICE, gettext("[Suricata] Extra {$exrule['name']} rules were updated..."));
+				logger(LOG_NOTICE, localize_text("Extra %s rules were updated...", $exrule['name']), LOG_PREFIX_PKG_SURICATA);
 				error_log(gettext("\tExtra {$exrule['name']} rules were updated.\n"), 3, SURICATA_RULES_UPD_LOGFILE);
 				$notify_message .= gettext("- Extra {$exrule['name']} rules were updated.\n");
 				$extraupdated = 'on';
 			}
 		} else {
 			suricata_update_status(gettext("Extra {$exrule['name']} rules file download failed!") . "\n");
-			syslog(LOG_ERR, gettext("[Suricata] ERROR: Extra {$exrule['name']} rules file download failed... server returned error '{$rc}'."));
+			logger(LOG_ERR, localize_text("Extra %s rules file download failed... server returned error '%s'.", $exrule['name'], $rc), LOG_PREFIX_PKG_SURICATA);
 			error_log(gettext("\tERROR: Extra {$exrule['name']} rules file download failed. Remote server returned error {$rc}.\n"), 3, SURICATA_RULES_UPD_LOGFILE);
 			error_log(gettext("\tThe error text was: {$last_curl_error}\n"), 3, SURICATA_RULES_UPD_LOGFILE);
 			error_log(gettext("\tExtra {$exrule['name']} rules will not be updated.\n"), 3, SURICATA_RULES_UPD_LOGFILE);
@@ -880,7 +880,7 @@ if ($snortcommunityrules == 'on') {
 
 // If removing deprecated rules categories, then do it
 if (config_get_path('installedpackages/suricata/config/0/hide_deprecated_rules') == "on") {
-	syslog(LOG_NOTICE, gettext("[Suricata] Hide Deprecated Rules is enabled.  Removing obsoleted rules categories."));
+	logger(LOG_NOTICE, localize_text("Hide Deprecated Rules is enabled.  Removing obsoleted rules categories."), LOG_PREFIX_PKG_SURICATA);
 	suricata_remove_dead_rules();
 }
 
@@ -970,7 +970,7 @@ if ($snortdownload == 'on' || $emergingthreats == 'on' || $snortcommunityrules =
 				// If running and "Live Reload" is enabled, just reload the configuration;
 				// otherwise, start/restart the interface instance of Suricata.
 				if (suricata_is_running($value['uuid'], $if_real) && config_get_path('installedpackages/suricata/config/0/live_swap_updates') == 'on') {
-					syslog(LOG_NOTICE, gettext("[Suricata] Live-Reload of rules from auto-update is enabled..."));
+					logger(LOG_NOTICE, localize_text("Live-Reload of rules from auto-update is enabled..."), LOG_PREFIX_PKG_SURICATA);
 					error_log(gettext("\tLive-Reload of updated rules is enabled...\n"), 3, SURICATA_RULES_UPD_LOGFILE);
 					suricata_update_status(gettext("Signaling Suricata to live-load the new set of rules for " . convert_friendly_interface_to_friendly_descr($value['interface']) . "..."));
 					suricata_reload_config($value);
@@ -984,7 +984,7 @@ if ($snortdownload == 'on' || $emergingthreats == 'on' || $snortcommunityrules =
 					sleep(5);
 					suricata_start($value, $if_real);
 					suricata_update_status(gettext(" done.") . "\n");
-					syslog(LOG_NOTICE, gettext("[Suricata] Suricata has restarted with your new set of rules for " . convert_friendly_interface_to_friendly_descr($value['interface']) . "..."));
+					logger(LOG_NOTICE, localize_text("Suricata has restarted with your new set of rules for %s...", convert_friendly_interface_to_friendly_descr($value['interface'])), LOG_PREFIX_PKG_SURICATA);
 					error_log(gettext("\tSuricata has restarted with your new set of rules for " . convert_friendly_interface_to_friendly_descr($value['interface']) . ".\n"), 3, SURICATA_RULES_UPD_LOGFILE);
 				}
 			}
@@ -1007,7 +1007,7 @@ if (is_dir("{$tmpfname}")) {
 }
 
 suricata_update_status(gettext("The Rules update has finished.") . "\n");
-syslog(LOG_NOTICE, gettext("[Suricata] The Rules update has finished."));
+logger(LOG_NOTICE, localize_text("The Rules update has finished."), LOG_PREFIX_PKG_SURICATA);
 error_log(gettext("The Rules update has finished.  Time: " . date("Y-m-d H:i:s"). "\n\n"), 3, SURICATA_RULES_UPD_LOGFILE);
 $notify_message .= gettext("Suricata rules update finished: " . date("Y-m-d H:i:s"));
 
