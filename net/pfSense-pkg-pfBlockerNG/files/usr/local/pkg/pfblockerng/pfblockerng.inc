@@ -5505,7 +5505,7 @@ function pfb_daemon_filterlog() {
 	$max_retries = 0;
 	
 	if (($s_handle = @fopen('php://stdin', 'r')) !== FALSE) {
-		syslog(LOG_NOTICE, '[pfBlockerNG] filterlog daemon started');
+		logger(LOG_NOTICE, localize_text('filterlog daemon started'), LOG_PREFIX_PKG_PFBLOCKERNG);
 		while (!feof($s_handle)) {
 			$line = @fgets($s_handle);
 
@@ -6094,7 +6094,7 @@ function pfb_daemon_dnsbl() {
 	global $pfb;
 
 	if (($h_handle = @fopen('php://stdin', 'r')) !== FALSE) {
-		syslog(LOG_NOTICE, '[pfBlockerNG] DNSBL parser daemon started');
+		logger(LOG_NOTICE, localize_text('DNSBL parser daemon started'), LOG_PREFIX_PKG_PFBLOCKERNG);
 
 		$chk_ver	= FALSE;
 		$lighty_47	= FALSE;
@@ -10441,9 +10441,9 @@ function sync_package_pfblockerng($cron='') {
 			$log = "\n===[  Aliastables / Rules  ]================================\n\n";
 			pfb_logger("{$log}", 1);
 
-			$log = "Firewall rule changes found, applying Filter Reload\n";
-			syslog(LOG_NOTICE, "[pfBlockerNG] {$log}");
-			pfb_logger("{$log}", 1);
+			$log = localize_text("Firewall rule changes found, applying Filter Reload");
+			logger(LOG_NOTICE, $log, LOG_PREFIX_PKG_PFBLOCKERNG);
+			pfb_logger("{$log}\n", 1);
 		}
 
 		// Remove all pfB aliastables
@@ -10466,9 +10466,9 @@ function sync_package_pfblockerng($cron='') {
 			$log = "\n\n===[  Aliastables / Rules  ]==========================================\n\n";
 			pfb_logger("{$log}", 1);
 
-			$log = "No changes to Firewall rules, skipping Filter Reload\n";
-			syslog(LOG_NOTICE, "[pfBlockerNG] {$log}");
-			pfb_logger("{$log}", 1);
+			$log = localize_text("No changes to Firewall rules, skipping Filter Reload");
+			logger(LOG_NOTICE, $log, LOG_PREFIX_PKG_PFBLOCKERNG);
+			pfb_logger("{$log}\n", 1);
 
 			// Remove Alerts IP unlock file and force Reload of all Aliastables
 			if (file_exists("{$pfb['ip_unlock']}")) {
@@ -10608,7 +10608,7 @@ function sync_package_pfblockerng($cron='') {
 
 	if (!empty($log)) {
 		pfb_logger("\n\n** {$log} **\n", 1);
-		syslog(LOG_NOTICE, "[pfBlockerNG] {$log}");
+		logger(LOG_NOTICE, localize_text($log), LOG_PREFIX_PKG_PFBLOCKERNG);
 	}
 
 
@@ -10925,7 +10925,7 @@ function pfblockerng_sync_on_changes() {
 	}
 
 	pfb_logger("\n===[  XMLRPC Sync ]===================================================\n", 1);
-	syslog(LOG_NOTICE, '[pfBlockerNG] XMLRPC sync is starting.');
+	logger(LOG_NOTICE, localize_text('XMLRPC sync is starting.'), LOG_PREFIX_PKG_PFBLOCKERNG);
 
 	if (config_get_path('installedpackages/pfblockerngsync/config') != null) {
 		switch ($pfb_sync['varsynconchanges']) {
@@ -10973,7 +10973,7 @@ function pfblockerng_sync_on_changes() {
 
 						if ($success) {
 							pfb_logger(" done.\n", 1);
-							syslog(LOG_NOTICE, "[pfBlockerNG] XMLRPC sync to [ {$sync_to_ip}:{port} ] completed successfully.");
+							logger(LOG_NOTICE, localize_text("XMLRPC sync to [ %s ] completed successfully.", "{$sync_to_ip}:{$port}"), LOG_PREFIX_PKG_PFBLOCKERNG);
 						} else {
 							pfb_logger(" Failed!\n", 1);
 						}

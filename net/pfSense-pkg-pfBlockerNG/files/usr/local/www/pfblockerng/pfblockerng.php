@@ -170,7 +170,7 @@ if (in_array($argv[1], array('update', 'updateip', 'updatednsbl', 'dc', 'dcc', '
 	// Script Arguments
 	switch($argv[1]) {
 		case 'cron':		// Sync 'cron'
-			syslog(LOG_NOTICE, '[pfBlockerNG] Starting cron process.');
+			logger(LOG_NOTICE, localize_text('Starting cron process.'), LOG_PREFIX_PKG_PFBLOCKERNG);
 			pfblockerng_sync_cron();
 			break;
 		case 'updateip':	// Sync 'Force Reload IP only'
