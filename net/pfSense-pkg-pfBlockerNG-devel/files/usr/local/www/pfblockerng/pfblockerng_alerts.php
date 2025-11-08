@@ -1182,9 +1182,9 @@ if (isset($_POST) && !empty($_POST)) {
 					if ($pfb['dnsbl_py_blacklist']) {
 						@file_put_contents($pfb['unbound_py_data'], ",{$entry},,1,,\n", FILE_APPEND);
 						$dnsbl_py_changes = TRUE;
-					} else {
+					} elseif ($pfb['dnsbl'] == 'on') {
 						$domain_esc = escapeshellarg($entry);
-						exec("{$pfb['chroot_cmd']} local_data {$domain_esc} '60 IN A {$pfb['dnsbl_vip']}' 2>&1");
+						exec("{$pfb['chroot_cmd']} local_data {$domain_esc} '60 IN A {$pfb['dnsbl_vip4']}' 2>&1");
 					}
 				}
 			case 'delete_domainwildcard':
@@ -1205,10 +1205,10 @@ if (isset($_POST) && !empty($_POST)) {
 						if ($pfb['dnsbl_py_blacklist']) {
 							@file_put_contents($pfb['unbound_py_zone'], ",{$entry},,1,,\n", FILE_APPEND);
 							$dnsbl_py_changes = TRUE;
-						} else {
+						} elseif ($pfb['dnsbl'] == 'on') {
 							$domain_esc = escapeshellarg($entry);
 							exec("{$pfb['chroot_cmd']} local_zone {$domain_esc} redirect 2>&1");
-							exec("{$pfb['chroot_cmd']} local_data {$domain_esc} '60 IN A {$pfb['dnsbl_vip']}' 2>&1");
+							exec("{$pfb['chroot_cmd']} local_data {$domain_esc} '60 IN A {$pfb['dnsbl_vip4']}' 2>&1");
 						}
 					}
 				}
@@ -1435,12 +1435,12 @@ if (isset($_POST) && !empty($_POST)) {
 				}
 				pfb_reload_unbound('enabled', FALSE);
 			}
-			else {
+			elseif ($pfb['dnsbl'] == 'on') {
 
 				if ($dnsbl_type == 'TLD') {
 					exec("{$pfb['chroot_cmd']} local_zone {$domain_esc} redirect 2>&1");
 				}
-				exec("{$pfb['chroot_cmd']} local_data {$domain_esc} '60 IN A {$pfb['dnsbl_vip']}' 2>&1");
+				exec("{$pfb['chroot_cmd']} local_data {$domain_esc} '60 IN A {$pfb['dnsbl_vip4']}' 2>&1");
 			}
 
 			// Remove Domain from unlock file
@@ -1463,12 +1463,12 @@ if (isset($_POST) && !empty($_POST)) {
 				}
 				pfb_reload_unbound('enabled', FALSE);
 			}
-			else {
+			elseif ($pfb['dnsbl'] == 'on') {
 
 				if ($dnsbl_type == 'TLD') {
 					exec("{$pfb['chroot_cmd']} local_zone {$domain_esc} redirect 2>&1");
 				}
-				exec("{$pfb['chroot_cmd']} local_data {$domain_esc} '60 IN A {$pfb['dnsbl_vip']}' 2>&1");
+				exec("{$pfb['chroot_cmd']} local_data {$domain_esc} '60 IN A {$pfb['dnsbl_vip4']}' 2>&1");
 			}
 
 			// Add Domain to unlock file
