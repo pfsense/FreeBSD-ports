@@ -157,6 +157,8 @@ require_once("acme_utils.inc");
 require_once("acme_sh.inc");
 require_once("acme/acme_serverconnectors.inc");
 
+define('LOG_PREFIX_PKG_ACME', 'ACME');
+
 #region global array item definitions..
 // <editor-fold desc="global array item definitions">
 
@@ -3211,9 +3213,9 @@ function get_certificate($name) {
 			echo "Checking if renewal is needed for: {$certificate['name']}\n";
 			$res = issue_certificate($certificate['name'], $force);
 			if (!$res) {
-				$errmsg = "ACME, Failed to renew certificate for {$certificate['name']}";
-				syslog(LOG_WARNING, $errmsg);
-				$errors .= "{$errmsg}\n";
+				$errmsg = localize_text("Failed to renew certificate for %s", $certificate['name']);
+				logger(LOG_WARNING, $errmsg, LOG_PREFIX_PKG_ACME);
+				$errors .= LOG_PREFIX_PKG_ACME . " {$errmsg}\n";
 			}
 		}
 		if (!empty($errors)) {
@@ -3296,7 +3298,7 @@ function get_certificate($name) {
 		$cert['descr'] = "Acmecert: {$subject}";
 		ca_import($cert, $crt);
 		config_set_path('ca/', $cert);
-		syslog(LOG_NOTICE, "Acme, storing new CA: {$subject}");
+		logger(LOG_NOTICE, localize_text("storing new CA: %s", $subject), LOG_PREFIX_PKG_ACME);
 	}
 
 	function storeCertificateCer($certificatename, $keyfile, $cerfile, $fullchainfile) {
@@ -3319,7 +3321,7 @@ function get_certificate($name) {
 		}
 		foreach (config_get_path('cert', []) as $idx => $cert) {
 			if ($cert['descr'] == $certificatename) {
-				syslog(LOG_NOTICE, "Acme, storing new certificate: {$certificatename}");
+				logger(LOG_NOTICE, localize_text("storing new certificate: %s", $certificatename), LOG_PREFIX_PKG_ACME);
 				echo "\nupdate cert!";
 				cert_import($cert, $crt, $key);
 				config_set_path("cert/{$idx}", $cert);
@@ -3355,7 +3357,7 @@ function get_certificate($name) {
 		}
 
 		if ($timetorenew || $force) {
-			syslog(LOG_NOTICE, "Acme, renewing certificate: {$id}");
+			logger(LOG_NOTICE, localize_text("renewing certificate: %s", $id), LOG_PREFIX_PKG_ACME);
 			echo "Renewing certificate \n";
 			$domainstosign = array();
 			if (is_array($certificate) &&
