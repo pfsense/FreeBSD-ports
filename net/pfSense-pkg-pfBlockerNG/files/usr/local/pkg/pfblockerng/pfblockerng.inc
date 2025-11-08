@@ -3656,7 +3656,7 @@ function pfblockerng_top1m() {
 			}
 
 			// Collect Domain TLD
-			$csvline	= str_getcsv($line);
+			$csvline	= str_getcsv($line, ',', '"', "\\");
 			$tld		= substr($csvline[1], strrpos($csvline[1], '.') + 1);
 
 			if (isset($pfb_include[$tld])) {
@@ -6248,7 +6248,7 @@ function pfb_daemon_dnsbl_index() {
 			$pfb_buffer = str_replace($p1, $p2, $pfb_buffer);
 
 			if (substr($pfb_buffer, 0, 6) == 'INDEX,' && substr_count($pfb_buffer, ',') == 4) {
-				$csvline = str_getcsv($pfb_buffer, ',', '', '"');
+				$csvline = str_getcsv($pfb_buffer, ',', '"', '"');
 
 				// Determine blocked domain type (Full, 1x1 or JS)
 				if (isset($csvline[1]) && !empty($csvline[1])) {
@@ -8453,11 +8453,11 @@ function sync_package_pfblockerng($cron='') {
 
 												// Convert CSV line into array
 												if ($csv_parser) {
-													$csvline = str_getcsv($line, ',', '', '"');
+													$csvline = str_getcsv($line, ',', '"', '"');
 												}
 												elseif (!$run_once) {
 													if (substr_count($line, ',') >= 2) {
-														$csvline = str_getcsv($line, ',', '', '"');
+														$csvline = str_getcsv($line, ',', '"', '"');
 														$csv_parser = TRUE;
 													}
 													$run_once = TRUE;
