@@ -250,24 +250,6 @@ EOD;
 	$bind_conf .= "\n};\n\n";
 
 	if ($bind_logging == 'on') {
-		// See https://redmine.pfsense.org/issues/5524
-		if (pf_version() < "2.3.3") {
-			// Check if bind is included on syslog
-			$syslog_files = array("/etc/inc/system.inc", "/var/etc/syslog.conf");
-			$restart_syslog = 0;
-			foreach ($syslog_files as $syslog_file) {
-				$syslog_file_data = file_get_contents($syslog_file);
-				if (!preg_match("/dnsmasq,named,filterdns/", $syslog_file_data) || !preg_match("/'dnsmasq','named','filterdns'/", $syslog_file_data)) {
-					$syslog_file_data = preg_replace("/dnsmasq,filterdns/", "dnsmasq,named,filterdns", $syslog_file_data);
-					$syslog_file_data = preg_replace("/'dnsmasq','filterdns'/", "'dnsmasq','named','filterdns'", $syslog_file_data);
-					file_put_contents($syslog_file, $syslog_file_data);
-					$restart_syslog++;
-				}
-			}
-			if ($restart_syslog > 0) {
-				system("/usr/bin/killall -HUP syslogd");
-			}
-		}
 		$log_categories = explode(",", $bind['log_options']);
 		$log_severity = $bind['log_severity'] ? $bind['log_severity'] : 'default';
 		if (sizeof($log_categories) > 0 && ($log_categories[0] != "")) {
