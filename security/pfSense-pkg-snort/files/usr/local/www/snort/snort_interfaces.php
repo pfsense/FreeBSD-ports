@@ -107,15 +107,15 @@ if (isset($_POST['del_x'])) {
 			if ($if_real == "") {
 				rmdir_recursive("{$snortlogdir}/snort_*{$snort_uuid}");
 				rmdir_recursive("{$snortdir}/snort_{$snort_uuid}_*");
-				syslog(LOG_NOTICE, "Deleted the Snort instance on a previously removed pfSense interface per user request...");
+				logger(LOG_NOTICE, localize_text("Deleted the Snort instance on a previously removed pfSense interface per user request..."), LOG_PREFIX_PKG_SNORT);
 			}
 			else {
 				$if_friendly = convert_friendly_interface_to_friendly_descr($snortcfg['interface']);
-				syslog(LOG_NOTICE, "Stopping Snort on {$if_friendly}({$if_real}) due to Snort instance deletion...");
+				logger(LOG_NOTICE, localize_text("Stopping Snort on %s(%s) due to Snort instance deletion...", $if_friendly, $if_real), LOG_PREFIX_PKG_SNORT);
 				snort_stop($a_nat[$rulei], $if_real);
 				rmdir_recursive("{$snortlogdir}/snort_{$if_real}{$snort_uuid}");
 				rmdir_recursive("{$snortdir}/snort_{$snort_uuid}_{$if_real}");
-				syslog(LOG_NOTICE, "Deleted Snort instance on {$if_friendly}({$if_real}) per user request...");
+				logger(LOG_NOTICE, localize_text("Deleted Snort instance on %s(%s) per user request...", $if_friendly, $if_real), LOG_PREFIX_PKG_SNORT);
 			}
 
 			// Finally delete the interface's config entry entirely
@@ -157,15 +157,15 @@ else {
 		if ($if_real == "") {
 			rmdir_recursive("{$snortlogdir}/snort_*{$snort_uuid}");
 			rmdir_recursive("{$snortdir}/snort_{$snort_uuid}_*");
-			syslog(LOG_NOTICE, "Deleted the Snort instance on a previously removed pfSense interface per user request...");
+			logger(LOG_NOTICE, localize_text("Deleted the Snort instance on a previously removed pfSense interface per user request..."), LOG_PREFIX_PKG_SNORT);
 		}
 		else {
 			$if_friendly = convert_friendly_interface_to_friendly_descr($a_nat[$delbtn_list]['interface']);
-			syslog(LOG_NOTICE, "Stopping Snort on {$if_friendly}({$if_real}) due to interface deletion...");
+			logger(LOG_NOTICE, localize_text("Stopping Snort on %s(%s) due to interface deletion...", $if_friendly, $if_real), LOG_PREFIX_PKG_SNORT);
 			snort_stop($a_nat[$delbtn_list], $if_real);
 			rmdir_recursive("{$snortlogdir}/snort_{$if_real}{$snort_uuid}");
 			rmdir_recursive("{$snortdir}/snort_{$snort_uuid}_{$if_real}");
-			syslog(LOG_NOTICE, "Deleted Snort instance on {$if_friendly}({$if_real}) per user request...");
+			logger(LOG_NOTICE, localize_text("Deleted Snort instance on %s(%s) per user request...", $if_friendly, $if_real), LOG_PREFIX_PKG_SNORT);
 		}
 
 		// Finally delete the interface's config entry entirely
@@ -226,12 +226,12 @@ EOD;
 			unlink_if_exists($stop_lck_file);
 			file_put_contents("{$g['tmp_path']}/snort_{$if_real}_startcmd.php", $snort_start_cmd);
 			if (snort_is_running($snortcfg['uuid'])) {
-				syslog(LOG_NOTICE, "Restarting Snort on {$if_friendly}({$if_real}) per user request...");
+				logger(LOG_NOTICE, localize_text("Restarting Snort on %s(%s) per user request...", $if_friendly, $if_real), LOG_PREFIX_PKG_SNORT);
 				snort_stop($snortcfg, $if_real);
 				mwexec_bg("/usr/local/bin/php -f {$g['tmp_path']}/snort_{$if_real}_startcmd.php");
 			}
 			else {
-				syslog(LOG_NOTICE, "Starting Snort on {$if_friendly}({$if_real}) per user request...");
+				logger(LOG_NOTICE, localize_text("Starting Snort on %s(%s) per user request...", $if_friendly, $if_real), LOG_PREFIX_PKG_SNORT);
 				mwexec_bg("/usr/local/bin/php -f {$g['tmp_path']}/snort_{$if_real}_startcmd.php");
 			}
 			$snort_starting[$id] = TRUE;
@@ -239,7 +239,7 @@ EOD;
 		case 'stop':
 			if (snort_is_running($snortcfg['uuid'])) {
 				touch($stop_lck_file);
-				syslog(LOG_NOTICE, "Stopping Snort on {$if_friendly}({$if_real}) per user request...");
+				logger(LOG_NOTICE, localize_text("Stopping Snort on %s(%s) per user request...", $if_friendly, $if_real), LOG_PREFIX_PKG_SNORT);
 				snort_stop($snortcfg, $if_real);
 			}
 			unset($snort_starting[$id]);

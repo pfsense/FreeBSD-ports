@@ -42,7 +42,7 @@ $snortlogdir = SNORTLOGDIR;
 $rcdir = RCFILEPREFIX;
 $snort_rules_upd_log = SNORT_RULES_UPD_LOGFILE;
 
-syslog(LOG_NOTICE, gettext("[Snort] Snort package uninstall in progress..."));
+logger(LOG_NOTICE, localize_text("Snort package uninstall in progress..."), LOG_PREFIX_PKG_SNORT);
 
 // Remove our rc.d startup shell script
 unlink_if_exists("{$rcdir}snort.sh");
@@ -50,7 +50,7 @@ unlink_if_exists("{$rcdir}snort.sh");
 // Make sure all active Snort processes are terminated
 // Log a message only if a running process is detected
 if (is_process_running("snort")) {
-	syslog(LOG_NOTICE, gettext("[Snort] Snort STOP on all interfaces..."));
+	logger(LOG_NOTICE, localize_text("Snort STOP on all interfaces..."), LOG_PREFIX_PKG_SNORT);
 	snort_stop_all_interfaces();
 }
 sleep(2);
@@ -65,7 +65,7 @@ unlink_if_exists("{$g['varrun_path']}/snort_*.pid");
 // Make sure all active Barnyard2 processes are terminated
 // Log a message only if a running process is detected
 if (is_process_running("barnyard2")) {
-	syslog(LOG_NOTICE, gettext("[Snort] Barnyard2 STOP on all interfaces..."));
+	logger(LOG_NOTICE, localize_text("Barnyard2 STOP on all interfaces..."), LOG_PREFIX_PKG_SNORT);
 }
 mwexec('/usr/bin/killall -z barnyard2', true);
 sleep(2);
@@ -112,13 +112,13 @@ if (!empty($widgets)) {
 
 // See if we are to clear blocked hosts on uninstall
 if (config_get_path('installedpackages/snortglobal/clearblocks') == 'on') {
-	syslog(LOG_NOTICE, gettext("[Snort] Removing all blocked hosts from <snort2c> table..."));
+	logger(LOG_NOTICE, localize_text("Removing all blocked hosts from <snort2c> table..."), LOG_PREFIX_PKG_SNORT);
 	mwexec("/sbin/pfctl -t snort2c -T flush");
 }
 
 // See if we are to clear Snort log files on uninstall
 if (config_get_path('installedpackages/snortglobal/clearlogs') == 'on') {
-	syslog(LOG_NOTICE, gettext("[Snort] Clearing all Snort-related log files..."));
+	logger(LOG_NOTICE, localize_text("Clearing all Snort-related log files..."), LOG_PREFIX_PKG_SNORT);
 	unlink_if_exists("{$snort_rules_upd_log}");
 	rmdir_recursive($snortlogdir);
 }
@@ -127,7 +127,7 @@ if (config_get_path('installedpackages/snortglobal/clearlogs') == 'on') {
 /* Remove files and directories that pkg will not because */
 /* we changed or created them post-install.               */
 /**********************************************************/
-syslog(LOG_NOTICE, gettext("[Snort] Removing GUI package-modified files..."));
+logger(LOG_NOTICE, localize_text("Removing GUI package-modified files..."), LOG_PREFIX_PKG_SNORT);
 if (is_dir(SNORT_APPID_ODP_PATH)) {
 	rmdir_recursive(SNORT_APPID_ODP_PATH);
 }
@@ -166,7 +166,7 @@ foreach (config_get_path('installedpackages/snortglobal/rule', []) as $snortcfg)
 /**********************************************************/
 if ((config_get_path('installedpackages/snortglobal/clearblocks') != 'off') ||
     (config_get_path('installedpackages/snortglobal/forcekeepsettings') != 'on')) {
-	syslog(LOG_NOTICE, gettext("[Snort] Flushing <snort2c> firewall table to remove addresses blocked by Snort..."));
+	logger(LOG_NOTICE, localize_text("Flushing <snort2c> firewall table to remove addresses blocked by Snort..."), LOG_PREFIX_PKG_SNORT);
 	mwexec("/sbin/pfctl -t snort2c -T flush");
 }
 
@@ -176,16 +176,16 @@ if ((config_get_path('installedpackages/snortglobal/clearblocks') != 'off') ||
 /* has elected to not retain the package configuration.   */
 /**********************************************************/
 if (config_get_path('installedpackages/snortglobal/forcekeepsettings') != 'on') {
-	syslog(LOG_NOTICE, gettext("[Snort] Not saving settings... all Snort configuration info and logs will be deleted..."));
+	logger(LOG_NOTICE, localize_text("Not saving settings... all Snort configuration info and logs will be deleted..."), LOG_PREFIX_PKG_SNORT);
 	config_del_path('installedpackages/snortglobal');
 	config_del_path('installedpackages/snortsync');
 	unlink_if_exists("{$snort_rules_upd_log}");
 	rmdir_recursive("{$snortlogdir}");
 	write_config("Removing Snort configuration");
-	syslog(LOG_NOTICE, gettext("[Snort] The package and its configuration has been completely removed from this system."));
+	logger(LOG_NOTICE, localize_text("The package and its configuration has been completely removed from this system."), LOG_PREFIX_PKG_SNORT);
 }
 else {
-	syslog(LOG_NOTICE, gettext("[Snort] Package files removed but all Snort configuration info has been retained."));
+	logger(LOG_NOTICE, localize_text("Package files removed but all Snort configuration info has been retained."), LOG_PREFIX_PKG_SNORT);
 }
 
 return true;

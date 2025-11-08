@@ -133,7 +133,7 @@ if (!$input_errors) {
 
 		// If deprecated rules should be removed, then do it
 		if (config_get_path('installedpackages/snortglobal/hide_deprecated_rules') == "on") {
-			syslog(LOG_NOTICE, gettext("[Snort] Hide Deprecated Rules is enabled.  Removing obsoleted rules categories."));
+			logger(LOG_NOTICE, localize_text("Hide Deprecated Rules is enabled.  Removing obsoleted rules categories."), LOG_PREFIX_PKG_SNORT);
 			snort_remove_dead_rules();
 		}
 

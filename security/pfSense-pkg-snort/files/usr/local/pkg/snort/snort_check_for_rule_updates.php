@@ -238,8 +238,8 @@ function snort_download_file_url($url, $file_out) {
 			$rc = curl_exec($ch);
 			if ($rc === true)
 				break;
-			syslog(LOG_ERR, gettext("[Snort] Rules download error: " . curl_error($ch)));
-			syslog(LOG_ERR, gettext("[Snort] Will retry in 15 seconds..."));
+			logger(LOG_ERR, localize_text("Rules download error: %s", curl_error($ch)), LOG_PREFIX_PKG_SNORT);
+			logger(LOG_ERR, localize_text("Will retry in 15 seconds..."), LOG_PREFIX_PKG_SNORT);
 			sleep(15);
 		}
 		if ($rc === false)
@@ -251,12 +251,12 @@ function snort_download_file_url($url, $file_out) {
 
 		// If we had to try more than once, log it
 		if ($counter > 1)
-			syslog(LOG_NOTICE, gettext("File '" . basename($file_out) . "' download attempts: {$counter} ..."));
+			logger(LOG_NOTICE, localize_text("File '%s' download attempts: %d ...", basename($file_out), $counter), LOG_PREFIX_PKG_SNORT);
 		return ($http_code == 200) ? true : $http_code;
 	}
 	else {
 		$last_curl_error = gettext("Failed to create file " . $file_out);
-		syslog(LOG_ERR, gettext("[Snort] Failed to create file {$file_out} ..."));
+		logger(LOG_ERR, localize_text("Failed to create file %s ...", $file_out), LOG_PREFIX_PKG_SNORT);
 		return false;
 	}
 }
@@ -301,7 +301,7 @@ function snort_check_rule_md5($file_url, $file_dst, $desc = "") {
 			snort_update_status(gettext(" done.") . "\n");
 			if ($md5_check_new == $md5_check_old) {
 				snort_update_status(gettext("{$desc} are current. No update required.") . "\n");
-				syslog(LOG_NOTICE, gettext("[Snort] {$desc} are up to date..."));
+				logger(LOG_NOTICE, localize_text("%s are up to date...", $desc), LOG_PREFIX_PKG_SNORT);
 				error_log(gettext("\t{$desc} are up to date.\n"), 3, SNORT_RULES_UPD_LOGFILE);
 				return false;
 			}
@@ -318,8 +318,8 @@ function snort_check_rule_md5($file_url, $file_dst, $desc = "") {
 		snort_update_status(gettext(" FAILED!") . "\n");
 		snort_update_status(gettext("{$desc} md5 error ... Server returned error code {$rc} ...") . "\n");
 		snort_update_status(gettext("{$desc} will not be updated.\n{$snort_err_msg}") . "\n");
-		syslog(LOG_ERR, gettext("[Snort] {$desc} md5 download failed..."));
-		syslog(LOG_ERR, gettext("[Snort] Server returned error code {$rc}..."));
+		logger(LOG_ERR, localize_text("%s md5 download failed...", $desc), LOG_PREFIX_PKG_SNORT);
+		logger(LOG_ERR, localize_text("Server returned error code %s...", $rc), LOG_PREFIX_PKG_SNORT);
 		error_log(gettext("\t{$snort_err_msg}\n"), 3, SNORT_RULES_UPD_LOGFILE);
 		error_log(gettext("\tServer error message was: {$last_curl_error}\n"), 3, SNORT_RULES_UPD_LOGFILE);
 		error_log(gettext("\t{$desc} will not be updated.\n"), 3, SNORT_RULES_UPD_LOGFILE);
@@ -353,7 +353,7 @@ function snort_fetch_new_rules($file_url, $file_dst, $file_md5, $desc = "") {
 	$filename = basename($file_dst);
 
 	snort_update_status(gettext("There is a new set of {$desc} posted.\nDownloading {$filename}..."));
-	syslog(LOG_NOTICE, gettext("[Snort] There is a new set of {$desc} posted. Downloading {$filename}..."));
+	logger(LOG_NOTICE, localize_text("There is a new set of %s posted. Downloading %s...", $desc, $filename), LOG_PREFIX_PKG_SNORT);
 	error_log(gettext("\tThere is a new set of {$desc} posted.\n"), 3, SNORT_RULES_UPD_LOGFILE);
 	error_log(gettext("\tDownloading file '{$filename}'...\n"), 3, SNORT_RULES_UPD_LOGFILE);
        	$rc = snort_download_file_url($file_url, $file_dst);
@@ -361,15 +361,15 @@ function snort_fetch_new_rules($file_url, $file_dst, $file_md5, $desc = "") {
 	// See if the download from the URL was successful
 	if ($rc === true) {
 		snort_update_status(gettext(" done.") . "\n");
-		syslog(LOG_NOTICE, "[Snort] {$desc} file update downloaded successfully");
+		logger(LOG_NOTICE, localize_text("%s file update downloaded successfully", $desc), LOG_PREFIX_PKG_SNORT);
 		error_log(gettext("\tDone downloading rules file.\n"),3, SNORT_RULES_UPD_LOGFILE);
 	
 		// Test integrity of the rules file.  Turn off update if file has wrong md5 hash
 		if ($file_md5 != trim(md5_file($file_dst))){
 			snort_update_status(gettext("{$desc} file MD5 checksum failed...") . "\n");
-			syslog(LOG_ERR, gettext("[Snort] {$desc} file download failed.  Bad MD5 checksum..."));
-        	        syslog(LOG_ERR, gettext("[Snort] Downloaded File MD5: " . md5_file($file_dst)));
-			syslog(LOG_ERR, gettext("[Snort] Expected File MD5: {$file_md5}"));
+			logger(LOG_ERR, localize_text("%s file download failed.  Bad MD5 checksum...", $desc), LOG_PREFIX_PKG_SNORT);
+        	logger(LOG_ERR, localize_text("Downloaded File MD5: %s", md5_file($file_dst)), LOG_PREFIX_PKG_SNORT);
+			logger(LOG_ERR, localize_text("Expected File MD5: %s", $file_md5), LOG_PREFIX_PKG_SNORT);
 			error_log(gettext("\t{$desc} file download failed.  Bad MD5 checksum.\n"), 3, SNORT_RULES_UPD_LOGFILE);
 			error_log(gettext("\tDownloaded {$desc} file MD5: " . md5_file($file_dst) . "\n"), 3, SNORT_RULES_UPD_LOGFILE);
 			error_log(gettext("\tExpected {$desc} file MD5: {$file_md5}\n"), 3, SNORT_RULES_UPD_LOGFILE);
@@ -382,7 +382,7 @@ function snort_fetch_new_rules($file_url, $file_dst, $file_md5, $desc = "") {
 	else {
 		snort_update_status(gettext(" FAILED!") . "\n");
 		snort_update_status(gettext("{$desc} file download failed... server returned error '{$rc}'.") . "\n");
-		syslog(LOG_ERR, gettext("[Snort] {$desc} file download failed... server returned error '{$rc}'..."));
+		logger(LOG_ERR, localize_text("%s file download failed... server returned error '%s'...", $desc, $rc), LOG_PREFIX_PKG_SNORT);
 		error_log(gettext("\t{$desc} file download failed.  Server returned error {$rc}.\n"), 3, SNORT_RULES_UPD_LOGFILE);
 		error_log(gettext("\tThe error text was: {$last_curl_error}\n"), 3, SNORT_RULES_UPD_LOGFILE);
 		error_log(gettext("\t{$desc} will not be updated.\n"), 3, SNORT_RULES_UPD_LOGFILE);
@@ -399,9 +399,9 @@ function snort_untar($mode, $tarFile, $outputFolder = null, $extra = null){
 	exec($cmd, $output, $ret);
 	$success = $ret === 0;
 	if(!$success) {
-		$err_msg = gettext("Failed to extract a rules-update archive. Some snort rules might still be out-of-date. Make sure there is enough free disk space and try again. Tar file:") . $tarFile;
+		$err_msg = localize_text("Failed to extract a rules-update archive. Some snort rules might still be out-of-date. Make sure there is enough free disk space and try again. Tar file:%s", $tarFile);
 		error_log("\t" . $err_msg . "\n", 3, SNORT_RULES_UPD_LOGFILE);
-		syslog(LOG_ERR, '[Snort] ' . $err_msg);
+		logger(LOG_ERR, $err_msg, LOG_PREFIX_PKG_SNORT);
 	}
 	return $success;
 }
@@ -411,9 +411,9 @@ function snort_copy($srcFilePathPattern, $destPath){
 	exec($cmd, $output, $ret);
 	$success = $ret === 0;
 	if(!$success) {
-		$err_msg = gettext("Failed to copy some files from the rules-update archive. Some snort rules might still be out-of-date. Make sure there is enough free disk space and try again. File(s):") . $srcFilePathPattern;
+		$err_msg = localize_text("Failed to copy some files from the rules-update archive. Some snort rules might still be out-of-date. Make sure there is enough free disk space and try again. File(s):%s", $srcFilePathPattern);
 		error_log("\t" . $err_msg . "\n", 3, SNORT_RULES_UPD_LOGFILE);
-		syslog(LOG_ERR, '[Snort] ' . $err_msg);
+		logger(LOG_ERR, $err_msg, LOG_PREFIX_PKG_SNORT);
 	}
 	return $success;
 }
@@ -547,14 +547,14 @@ if ($feodotracker_rules == 'on') {
 	// See if the download from the URL was successful
 	if ($rc === true) {
 		snort_update_status(gettext(" done.") . "\n");
-		syslog(LOG_NOTICE, "[Snort] Feodo Tracker Botnet C2 IP rules file update downloaded successfully.");
+		logger(LOG_NOTICE, localize_text("Feodo Tracker Botnet C2 IP rules file update downloaded successfully."), LOG_PREFIX_PKG_SNORT);
 		error_log(gettext("\tDone downloading rules file.\n"),3, SNORT_RULES_UPD_LOGFILE);
 
 		// See if file has changed from our previously downloaded version
 		if ($old_file_md5 == trim(md5_file("{$tmpfname}/{$feodotracker_rules_filename}"))) {
 			// File is unchanged from previous download, so no update required
 			snort_update_status(gettext("Feodo Tracker Botnet C2 IP rules are up to date.") . "\n");
-			syslog(LOG_NOTICE, gettext("[Snort] Feodo Tracker Botnet C2 IP rules are up to date..."));
+			logger(LOG_NOTICE, localize_text("Feodo Tracker Botnet C2 IP rules are up to date..."), LOG_PREFIX_PKG_SNORT);
 			error_log(gettext("\tFeodo Tracker Botnet C2 IP rules are up to date.\n"), 3, SNORT_RULES_UPD_LOGFILE);
 			$feodotracker_rules = 'off';
 		}
@@ -565,14 +565,14 @@ if ($feodotracker_rules == 'on') {
 			error_log(gettext("\tExtracting and installing Feodo Tracker Botnet C2 IP rules...\n"), 3, SNORT_RULES_UPD_LOGFILE);
 			if(snort_untar("xzf", "{$tmpfname}/{$feodotracker_rules_filename}", "{$snortdir}/rules/")) {
 				snort_update_status(gettext("Feodo Tracker Botnet C2 IP rules were updated.") . "\n");
-				syslog(LOG_NOTICE, gettext("[Snort] Feodo Tracker Botnet C2 IP rules were updated..."));
+				logger(LOG_NOTICE, localize_text("Feodo Tracker Botnet C2 IP rules were updated..."), LOG_PREFIX_PKG_SNORT);
 				error_log(gettext("\tFeodo Tracker Botnet C2 IP rules were updated.\n"), 3, SNORT_RULES_UPD_LOGFILE);
 			}
 		}
 	}
 	else {
 		snort_update_status(gettext("Feodo Tracker Botnet C2 IP rules file download failed!") . "\n");
-		syslog(LOG_ERR, gettext("[Snort] ERROR: Feodo Tracker Botnet C2 IP rules file download failed... server returned error '{$rc}'."));
+		logger(LOG_ERR, localize_text("Feodo Tracker Botnet C2 IP rules file download failed... server returned error '%s'.", $rc), LOG_PREFIX_PKG_SNORT);
 		error_log(gettext("\tERROR: Feodo Tracker Botnet C2 IP rules file download failed.  Remote server returned error {$rc}.\n"), 3, SNORT_RULES_UPD_LOGFILE);
 		error_log(gettext("\tThe error text was: {$last_curl_error}\n"), 3, SNORT_RULES_UPD_LOGFILE);
 		error_log(gettext("\tFeodo Tracker Botnet C2 IP rules will not be updated.\n"), 3, SNORT_RULES_UPD_LOGFILE);
@@ -810,7 +810,7 @@ if ($emergingthreats == 'on') {
 
 // If removing deprecated rules categories, then do it
 if (config_get_path('installedpackages/snortglobal/hide_deprecated_rules') == "on") {
-	syslog(LOG_NOTICE, gettext("[Snort] Hide Deprecated Rules is enabled.  Removing obsoleted rules categories."));
+	logger(LOG_NOTICE, localize_text("Hide Deprecated Rules is enabled.  Removing obsoleted rules categories."), LOG_PREFIX_PKG_SNORT);
 	snort_remove_dead_rules();
 }
 
@@ -923,7 +923,7 @@ if ($snortdownload == 'on' || $emergingthreats == 'on' || $snortcommunityrules =
 				error_log(gettext("\tRestarting Snort on " . convert_friendly_interface_to_friendly_descr($value['interface']) . " to activate the new set of rules...\n"), 3, SNORT_RULES_UPD_LOGFILE);
 				snort_start($value, $if_real);
 				snort_update_status(gettext(" done.") . "\n");
-       				syslog(LOG_NOTICE, gettext("[Snort] Snort has restarted on " . convert_friendly_interface_to_friendly_descr($value['interface']) . " with your new set of rules..."));
+       				logger(LOG_NOTICE, localize_text("Snort has restarted on %s with your new set of rules...", convert_friendly_interface_to_friendly_descr($value['interface'])), LOG_PREFIX_PKG_SNORT);
 				error_log(gettext("\tSnort has restarted on " . convert_friendly_interface_to_friendly_descr($value['interface']) . " with your new set of rules.\n"), 3, SNORT_RULES_UPD_LOGFILE);
 			}
 		}
@@ -955,7 +955,7 @@ elseif ($openappid_detectors == 'on') {
 			error_log(gettext("\tRestarting Snort on " . convert_friendly_interface_to_friendly_descr($value['interface']) . " to activate the new set of OpenAppID detectors...\n"), 3, SNORT_RULES_UPD_LOGFILE);
 			snort_start($value, $if_real);
 			snort_update_status(gettext(" done.") . "\n");
-			syslog(LOG_NOTICE, gettext("[Snort] Snort has restarted on " . convert_friendly_interface_to_friendly_descr($value['interface']) . " with your new set of OpenAppID detectors..."));
+			logger(LOG_NOTICE, localize_text("Snort has restarted on %s with your new set of OpenAppID detectors...", convert_friendly_interface_to_friendly_descr($value['interface'])), LOG_PREFIX_PKG_SNORT);
 			error_log(gettext("\tSnort has restarted on " . convert_friendly_interface_to_friendly_descr($value['interface']) . " with your new set of OpenAppID detectors.\n"), 3, SNORT_RULES_UPD_LOGFILE);
 		}
 	}
@@ -969,7 +969,7 @@ if (is_dir("{$tmpfname}")) {
 }
 
 snort_update_status(gettext("The Rules update has finished.") . "\n");
-syslog(LOG_NOTICE, gettext("[Snort] The Rules update has finished."));
+logger(LOG_NOTICE, localize_text("The Rules update has finished."), LOG_PREFIX_PKG_SNORT);
 error_log(gettext("The Rules update has finished.  Time: " . date("Y-m-d H:i:s"). "\n\n"), 3, SNORT_RULES_UPD_LOGFILE);
 
 /* Save this update status to the rulesupd_status file */

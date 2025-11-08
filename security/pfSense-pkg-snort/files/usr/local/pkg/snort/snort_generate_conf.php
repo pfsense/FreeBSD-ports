@@ -213,7 +213,7 @@ foreach ($snort_ports as $alias => $avalue) {
 			$snort_ports[$alias] = trim(filter_expand_alias($snortcfg["def_{$alias}"]));
 		}
 		else {
-			syslog(LOG_WARNING, "[snort] WARNING: unable to resolve Alias specified for PORTS variable " . strtoupper($alias) . " ... using default value '{$avalue}' instead.");
+			logger(LOG_WARNING, localize_text("unable to resolve Alias specified for PORTS variable %s ... using default value '%s' instead.", strtoupper($alias), $avalue), LOG_PREFIX_PKG_SNORT);
 		}
 	}
 	$snort_ports[$alias] = preg_replace('/\s+/', ',', trim($snort_ports[$alias]));
@@ -351,12 +351,12 @@ foreach ($snortcfg['ftp_client_engine']['item'] as $f => $v) {
 			$buffer .= "{$tmp} \\\n";
 		}
 		else {
-			syslog(LOG_ERR, "[snort] ERROR: unable to resolve IP Address Alias '{$v['bind_to']}' for FTP client '{$v['name']}' ... skipping entry.");
+			logger(LOG_ERR, localize_text("unable to resolve IP Address Alias '%s' for FTP client '%s' ... skipping entry.", $v['bind_to'], $v['name']), LOG_PREFIX_PKG_SNORT);
 			continue;
 		}
 	}
 	else {
-			syslog(LOG_ERR, "[snort] ERROR: unable to resolve IP Address Alias '{$v['bind_to']}' for FTP client '{$v['name']}' ... skipping entry.");
+			logger(LOG_ERR, localize_text("unable to resolve IP Address Alias '%s' for FTP client '%s' ... skipping entry.", $v['bind_to'], $v['name']), LOG_PREFIX_PKG_SNORT);
 			continue;
 	}
 
@@ -386,9 +386,9 @@ foreach ($snortcfg['ftp_client_engine']['item'] as $f => $v) {
 				// One or both of the BOUNCE_TO alias values is not right,
 				// so figure out which and log an appropriate error.
 				if (empty($net) || !snort_is_single_addr_alias($v['bounce_to_net']))
-					syslog(LOG_ERR, "[snort] ERROR: illegal value for bounce_to Address Alias [{$v['bounce_to_net']}] for FTP client engine [{$v['name']}] ... omitting 'bounce_to' option for this client engine.");
+					logger(LOG_ERR, localize_text("illegal value for bounce_to Address Alias [{$v['bounce_to_net']}] for FTP client engine [{$v['name']}] ... omitting 'bounce_to' option for this client engine."), LOG_PREFIX_PKG_SNORT);
 				if (empty($port) || !(is_port($port) || is_portrange($port)))
-					syslog(LOG_ERR, "[snort] ERROR: illegal value for bounce_to Port Alias [{$v['bounce_to_port']}] for FTP client engine [{$v['name']}] ... omitting 'bounce_to' option for this client engine.");
+					logger(LOG_ERR, localize_text("illegal value for bounce_to Port Alias [{$v['bounce_to_port']}] for FTP client engine [{$v['name']}] ... omitting 'bounce_to' option for this client engine."), LOG_PREFIX_PKG_SNORT);
 				$buffer .= "\tbounce yes\n";
 			}
 		}
@@ -428,12 +428,12 @@ foreach ($snortcfg['ftp_server_engine']['item'] as $f => $v) {
 			$buffer .= "{$tmp} \\\n";
 		}
 		else {
-			syslog(LOG_ERR, "[snort] ERROR: unable to resolve IP Address Alias '{$v['bind_to']}' for FTP server '{$v['name']}' ... skipping entry.");
+			logger(LOG_ERR, localize_text("unable to resolve IP Address Alias '%s' for FTP server '%s' ... skipping entry.", $v['bind_to'], $v['name']), LOG_PREFIX_PKG_SNORT);
 			continue;
 		}
 	}
 	else {
-			syslog(LOG_ERR, "[snort] ERROR: unable to resolve IP Address Alias '{$v['bind_to']}' for FTP server '{$v['name']}' ... skipping entry.");
+			logger(LOG_ERR, localize_text("unable to resolve IP Address Alias '%s' for FTP server '%s' ... skipping entry.", $v['bind_to'], $v['name']), LOG_PREFIX_PKG_SNORT);
 			continue;
 	}
 
@@ -452,7 +452,7 @@ foreach ($snortcfg['ftp_server_engine']['item'] as $f => $v) {
 			$buffer .= "\tports { {$tmp} } \\\n";
 		}
 		else {
-			syslog(LOG_ERR, "[snort] ERROR: unable to resolve Port Alias '{$v['ports']}' for FTP server '{$v['name']}' ... reverting to defaults.");
+			logger(LOG_ERR, localize_text("unable to resolve Port Alias '%s' for FTP server '%s' ... reverting to defaults.", $v['ports'], $v['name']), LOG_PREFIX_PKG_SNORT);
 			$buffer .= "\tports { {$ftp_ports} } \\\n";
 		}
 	}
@@ -668,7 +668,7 @@ if (!empty($snortcfg['pscan_ignore_scanners'])) {
 			$sf_pscan_ignore_scanners = preg_replace('/\s+/', ',', trim($sf_pscan_ignore_scanners));
 		}
 		else {
-			syslog(LOG_WARNING, "[snort] WARNING: unable to resolve Alias {$snortcfg['pscan_ignore_scanners']} for PSCAN_IGNORE_SCANNERS ... reverting to default value of HOME_NET.");
+			logger(LOG_WARNING, localize_text("unable to resolve Alias %s for PSCAN_IGNORE_SCANNERS ... reverting to default value of HOME_NET.", $snortcfg['pscan_ignore_scanners']), LOG_PREFIX_PKG_SNORT);
 		}
 	} else {
         	$sf_pscan_ignore_scanners = $snortcfg['pscan_ignore_scanners'];
@@ -682,7 +682,7 @@ if (!empty($snortcfg['pscan_ignore_scanned'])) {
 			$sf_pscan_ignore_scanned = preg_replace('/\s+/', ',', trim($sf_pscan_ignore_scanned));
 		}
 		else {
-			syslog(LOG_WARNING, "[snort] WARNING: unable to resolve Alias {$snortcfg['pscan_ignore_scanned']} for PSCAN_IGNORE_SCANNED ... reverting to default value of null.");
+			logger(LOG_WARNING, localize_text("unable to resolve Alias %s for PSCAN_IGNORE_SCANNED ... reverting to default value of null.", $snortcfg['pscan_ignore_scanned']), LOG_PREFIX_PKG_SNORT);
 		}
 	} else {
           	$sf_pscan_ignore_scanned = $snortcfg['pscan_ignore_scanned'];
@@ -723,7 +723,7 @@ if (isset($snortcfg['ssh_preproc_ports'])) {
 			$ssh_ports = preg_replace('/\s+/', ',', trim($ssh_ports));
 		}
 		else {
-			syslog(LOG_WARNING, "[snort] WARNING: unable to resolve Alias {$snortcfg['ssh_preproc_ports']} for SSH Preprocessor Ports parameter ... reverting to default value of 22.");
+			logger(LOG_WARNING, localize_text("unable to resolve Alias %s for SSH Preprocessor Ports parameter ... reverting to default value of 22.", $snortcfg['ssh_preproc_ports']), LOG_PREFIX_PKG_SNORT);
 			$ssh_ports = "22";
 		}
 	} else {
@@ -1047,7 +1047,7 @@ foreach ($snort_servers as $alias => $avalue) {
 			$avalue = preg_replace('/\s+/', ',', trim($avalue));
 		}
 		else {
-			syslog(LOG_WARNING, "[snort] WARNING: unable to resolve Alias specified for SERVERS variable " . strtoupper($alias) . " ... using default value '{$avalue}' instead.");
+			logger(LOG_WARNING, localize_text("unable to resolve Alias specified for SERVERS variable %s ... using default value '%s' instead.", strtoupper($alias), $avalue), LOG_PREFIX_PKG_SNORT);
 		}
 	}
 	$ipvardef .= "ipvar " . strtoupper($alias) . " [{$avalue}]\n";
@@ -1098,7 +1098,7 @@ foreach ($snort_preproc as $preproc) {
 					$snort_preprocessors .= $$preproc;
 					$snort_preprocessors .= "\n";
 				} else
-					syslog(LOG_WARNING, "Could not find the {$preproclib} library file in '{$snortlibdir}/snort_dynamicpreprocessor/'. Snort might fail to start!");
+					logger(LOG_WARNING, localize_text("Could not find the %s library file in '%s'. Snort might fail to start!", $preproclib, "{$snortlibdir}/snort_dynamicpreprocessor/"), LOG_PREFIX_PKG_SNORT);
 			} else {
 				$snort_preprocessors .= $$preproc;
 				$snort_preprocessors .= "\n";
@@ -1133,7 +1133,7 @@ if (file_exists("{$snortcfgdir}/classification.config"))
 	$snort_misc_include_rules .= "include {$snortcfgdir}/classification.config\n";
 if (!file_exists("{$snortcfgdir}/preproc_rules/decoder.rules") || !file_exists("{$snortcfgdir}/preproc_rules/preprocessor.rules")) {
 	$snort_misc_include_rules .= "config autogenerate_preprocessor_decoder_rules\n";
-	syslog(LOG_ALERT, "[Snort] Seems preprocessor and/or decoder rules are missing, enabling autogeneration of them in conf file.");
+	logger(LOG_ALERT, localize_text("Seems preprocessor and/or decoder rules are missing, enabling autogeneration of them in conf file."), LOG_PREFIX_PKG_SNORT);
 }
 
 /* generate rule sections to load */
@@ -1199,7 +1199,7 @@ if ($snortcfg['frag3_detection'] == "on") {
 					$frag3_engine .= " \\\n\tbind_to {$tmp}";
 			}
 			else
-				syslog(LOG_WARNING, "[snort] WARNING: unable to resolve IP List Alias '{$v['bind_to']}' for Frag3 engine '{$v['name']}' ... using 0.0.0.0 failsafe.");
+				logger(LOG_WARNING, localize_text("unable to resolve IP List Alias '%s' for Frag3 engine '%s' ... using 0.0.0.0 failsafe.", $v['bind_to'], $v['name']), LOG_PREFIX_PKG_SNORT);
 		}
 		$frag3_engine .= " \\\n\ttimeout {$v['timeout']}";
 		$frag3_engine .= " \\\n\tmin_ttl {$v['min_ttl']}";
@@ -1295,7 +1295,7 @@ if ($snortcfg['stream5_reassembly'] == "on") {
 					$buffer .= " \\\n\tbind_to {$tmp},";
 			}
 			else {
-				syslog(LOG_WARNING, "[snort] WARNING: unable to resolve IP Address Alias [{$v['bind_to']}] for Stream5 TCP engine '{$v['name']}' ... skipping this engine.");
+				logger(LOG_WARNING, localize_text("unable to resolve IP Address Alias [%s] for Stream5 TCP engine '%s' ... skipping this engine.", $v['bind_to'], $v['name']), LOG_PREFIX_PKG_SNORT);
 				continue;
 			}
 		}
@@ -1329,7 +1329,7 @@ if ($snortcfg['stream5_reassembly'] == "on") {
 					$stream5_tcp_engine .= " " . trim(preg_replace('/\s+/', ' ', $tmp));
 				else {
 					$stream5_tcp_engine .= " {$stream5_ports_client}";
-					syslog(LOG_WARNING, "[snort] WARNING: unable to resolve Ports Client Alias [{$v['ports_client']}] for Stream5 TCP engine '{$v['name']}' ... using default value.");
+					logger(LOG_WARNING, localize_text("unable to resolve Ports Client Alias [%s] for Stream5 TCP engine '%s' ... using default value.", $v['ports_client'], $v['name']), LOG_PREFIX_PKG_SNORT);
 				}
 			}
 		}
@@ -1345,7 +1345,7 @@ if ($snortcfg['stream5_reassembly'] == "on") {
 					$stream5_tcp_engine .= " " . trim(preg_replace('/\s+/', ' ', $tmp));
 				else {
 					$stream5_tcp_engine .= " {$stream5_ports_both}";
-					syslog(LOG_WARNING, "[snort] WARNING: unable to resolve Ports Both Alias [{$v['ports_both']}] for Stream5 TCP engine '{$v['name']}' ... using default value.");
+					logger(LOG_WARNING, localize_text("unable to resolve Ports Both Alias [%s] for Stream5 TCP engine '%s' ... using default value.", $v['ports_both'], $v['name']), LOG_PREFIX_PKG_SNORT);
 				}
 			}
 		}
@@ -1361,7 +1361,7 @@ if ($snortcfg['stream5_reassembly'] == "on") {
 					$stream5_tcp_engine .= " " . trim(preg_replace('/\s+/', ' ', $tmp));
 				}
 				else
-					syslog(LOG_WARNING, "[snort] WARNING: unable to resolve Ports Server Alias [{$v['ports_server']}] for Stream5 TCP engine '{$v['name']}' ... defaulting to none.");
+					logger(LOG_WARNING, localize_text("unable to resolve Ports Server Alias [%s] for Stream5 TCP engine '%s' ... defaulting to none.", $v['ports_server'], $v['name']), LOG_PREFIX_PKG_SNORT);
 			}
 		}
 
@@ -1459,12 +1459,12 @@ if ($snortcfg['http_inspect'] <> "off") {
 					$buffer .= "\tserver { {$tmp} } \\\n";
 			}
 			else {
-				syslog(LOG_WARNING, "[snort] WARNING: unable to resolve IP Address Alias [{$v['bind_to']}] for HTTP_INSPECT server '{$v['name']}' ... skipping this server engine.");
+				logger(LOG_WARNING, localize_text("unable to resolve IP Address Alias [%s] for HTTP_INSPECT server '%s' ... skipping this server engine.", $v['bind_to'], $v['name']), LOG_PREFIX_PKG_SNORT);
 				continue;
 			}
 		}
 		else {
-				syslog(LOG_WARNING, "[snort] WARNING: unable to resolve IP Address Alias [{$v['bind_to']}] for HTTP_INSPECT server '{$v['name']}' ... skipping this server engine.");
+				logger(LOG_WARNING, localize_text("unable to resolve IP Address Alias [%s] for HTTP_INSPECT server '%s' ... skipping this server engine.", $v['bind_to'], $v['name']), LOG_PREFIX_PKG_SNORT);
 				continue;
 		}
 		$http_inspect_servers .= $buffer;
@@ -1483,12 +1483,12 @@ if ($snortcfg['http_inspect'] <> "off") {
 				$http_inspect_servers .= "\tports { {$tmp} } \\\n";
 			}
 			else {
-				syslog(LOG_WARNING, "[snort] WARNING: unable to resolve Ports Alias [{$v['ports']}] for HTTP_INSPECT server '{$v['name']}' ... using safe default instead.");
+				logger(LOG_WARNING, localize_text("unable to resolve Ports Alias [%s] for HTTP_INSPECT server '%s' ... using safe default instead.", $v['ports'], $v['name']), LOG_PREFIX_PKG_SNORT);
 				$http_inspect_servers .= "\tports { {$http_ports} } \\\n";
 			}
 		}
 		else {
-				syslog(LOG_WARNING, "[snort] WARNING: unable to resolve Ports Alias [{$v['ports']}] for HTTP_INSPECT server '{$v['name']}' ... using safe default instead.");
+				logger(LOG_WARNING, localize_text("unable to resolve Ports Alias [%s] for HTTP_INSPECT server '%s' ... using safe default instead.", $v['ports'], $v['name']), LOG_PREFIX_PKG_SNORT);
 				$http_inspect_servers .= "\tports { {$http_ports} } \\\n";
 		}
 
