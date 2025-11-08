@@ -42,15 +42,8 @@ $pconfig = array();
 $pconfig['pfb_dnsbl']		= $pfb['dconfig']['pfb_dnsbl']				?: '';
 $pconfig['pfb_tld']		= $pfb['dconfig']['pfb_tld']				?: '';
 $pconfig['pfb_control']		= $pfb['dconfig']['pfb_control']			?: '';
-$pconfig['pfb_dnsvip']		= $pfb['dconfig']['pfb_dnsvip']				?: '10.10.10.1';
-$pconfig['pfb_dnsblv6']		= $pfb['dconfig']['pfb_dnsblv6']			?: '';
-$pconfig['pfb_dnsvip_type']	= $pfb['dconfig']['pfb_dnsvip_type']			?: 'ipalias';
-
-$pconfig['pfb_dnsvip_vhid']	= isset($pfb['dconfig']['pfb_dnsvip_vhid']) ? $pfb['dconfig']['pfb_dnsvip_vhid'] : '1';
-$pconfig['pfb_dnsvip_base']	= isset($pfb['dconfig']['pfb_dnsvip_base']) ? $pfb['dconfig']['pfb_dnsvip_base'] : '1';
-$pconfig['pfb_dnsvip_skew']	= isset($pfb['dconfig']['pfb_dnsvip_skew']) ? $pfb['dconfig']['pfb_dnsvip_skew'] : '0';
-$pconfig['pfb_dnsvip_pass']	= isset($pfb['dconfig']['pfb_dnsvip_pass']) ? $pfb['dconfig']['pfb_dnsvip_pass'] : '';
-
+$pconfig['pfb_dnsvip4'] = $pfb['dconfig']['pfb_dnsvip4'] ?: 'none';
+$pconfig['pfb_dnsvip6'] = $pfb['dconfig']['pfb_dnsvip6'] ?: 'none';
 $pconfig['pfb_dnsport']		= $pfb['dconfig']['pfb_dnsport']			?: '8081';
 $pconfig['pfb_dnsport_ssl']	= $pfb['dconfig']['pfb_dnsport_ssl']			?: '8443';
 $pconfig['dnsbl_interface']	= $pfb['dconfig']['dnsbl_interface']			?: 'lo0';
@@ -123,10 +116,6 @@ $pconfig['tldwhitelist']	= base64_decode($pfb['dconfig']['tldwhitelist'])	?: '';
 // Select field options
 
 $options_dnsbl_mode		= [ 'dnsbl_unbound' => 'Unbound mode', 'dnsbl_python' => 'Unbound python mode' ];
-$options_pfb_dnsvip_type	= [ 'ipalias' => 'IP Alias', 'carp' => 'CARP' ];
-$options_pfb_dnsvip_vhid	= array_combine(range(1, 255, 1), range(1, 255, 1));
-$options_pfb_dnsvip_base	= array_combine(range(1, 254, 1), range(1, 254, 1));
-$options_pfb_dnsvip_skew	= array_combine(range(0, 254, 1), range(0, 254, 1));
 $options_dnsbl_interface	= pfb_build_if_list(FALSE, FALSE);
 $options_dnsbl_interface_all	= array_merge(array('lo0' => 'Localhost'), $options_dnsbl_interface);
 $options_dnsbl_interface_cnt	= count($options_dnsbl_interface) ?: '1';
@@ -365,10 +354,6 @@ if ($_POST) {
 
 		// Validate Select field options
 		$select_options = array(	'dnsbl_mode'		=> 'dnsbl_unbound',
-						'pfb_dnsvip_type'	=> 'ipalias',
-						'pfb_dnsvip_vhid'	=> '1',
-						'pfb_dnsvip_base'	=> '1',
-						'pfb_dnsvip_skew'	=> '0',
 						'dnsbl_interface'	=> 'lo0',
 						'global_log'		=> '',
 						'dnsbl_webpage'		=> 'dnsbl_default.php',
@@ -515,14 +500,15 @@ if ($_POST) {
 		}
 
 		// Validate DNSBL VIP address
-		if (!is_ipaddrv4($_POST['pfb_dnsvip'])) {
-			$input_errors[] = 'DNSBL Virtual IP: A valid IPv4 address must be specified.';
+		if ($_POST['pfb_dnsvip4'] == 'none') {
+			$_POST['pfb_dnsvip4'] = '';
 		}
-		else {
-			$ip_validate = where_is_ipaddr_configured($_POST['pfb_dnsvip'], '' , true, true, '');
-			if (count($ip_validate)) {
-				$input_errors[] = 'DNSBL Virtual IP: Address must be in an isolated Range that is not already used in the Network.';
-			}
+		if ($_POST['pfb_dnsvip6'] == 'none') {
+			$_POST['pfb_dnsvip6'] = '';
+		}
+		list($vips_valid, $error) = pfb_validate_vips($_POST['dnsbl_interface'], $_POST['pfb_dnsvip4'], $_POST['pfb_dnsvip6']);
+		if (!$vips_valid) {
+			$input_errors[] = "DNSBL: {$error}";
 		}
 
 		// Validate Adv. firewall rule 'Protocol' setting
@@ -537,37 +523,12 @@ if ($_POST) {
 			}
 		}
 
-		if (isset($_POST['pfb_dnsvip_pass']) && !empty($_POST['pfb_dnsvip_pass'])) {
-			if ($_POST['pfb_dnsvip_pass'] == $_POST['pfb_dnsvip_pass_confirm']) {
-				if ($_POST['pfb_dnsvip_pass'] != DMYPWD) {
-					$pfb['dconfig']['pfb_dnsvip_pass'] = pfb_filter($_POST['pfb_dnsvip_pass'], PFB_FILTER_HTML, 'dnsbl password');
-					config_set_path('installedpackages/pfblockerngdnsblsettings/config/0/pfb_dnsvip_pass', $pfb['dconfig']['pfb_dnsvip_pass']);
-				}
-			} else {
-				$input_errors[] = 'DNSBL VIP CARP password does not match the confirm password!';
-			}
-		}
-
 		if (!$input_errors) {
 
 			$pfb['dconfig']['pfb_dnsbl']		= pfb_filter($_POST['pfb_dnsbl'], PFB_FILTER_ON_OFF, 'dnsbl')		?: '';
 			$pfb['dconfig']['pfb_tld']		= pfb_filter($_POST['pfb_tld'], PFB_FILTER_ON_OFF, 'dnsbl')		?: '';
 			$pfb['dconfig']['pfb_control']		= pfb_filter($_POST['pfb_control'], PFB_FILTER_ON_OFF, 'dnsbl')		?: '';
-			$pfb['dconfig']['pfb_dnsblv6']		= pfb_filter($_POST['pfb_dnsblv6'], PFB_FILTER_ON_OFF, 'dnsbl')		?: '';
-			$pfb['dconfig']['pfb_dnsvip_type']	= $_POST['pfb_dnsvip_type']						?: 'ipalias';
-
-			if ($pfb['dconfig']['pfb_dnsvip_type'] == 'carp') {
-				$pfb['dconfig']['pfb_dnsvip_vhid']	= $_POST['pfb_dnsvip_vhid']					?: '1';
-				$pfb['dconfig']['pfb_dnsvip_base']	= $_POST['pfb_dnsvip_base']					?: '1';
-				$pfb['dconfig']['pfb_dnsvip_skew']	= $_POST['pfb_dnsvip_skew']					?: '0';
-			}
-			else {
-				foreach (array('vhid', 'base', 'skew') as $carp) {
-					if (isset($pfb['dconfig']['pfb_dnsvip_' . $carp])) {
-						unset($pfb['dconfig']['pfb_dnsvip_' . $carp]);
-					}
-				}
-			}
+			$pfb['dconfig']['pfb_dnsvip6'] = $_POST['pfb_dnsvip6'] ?: '';
 
 			$pfb['dconfig']['pfb_dnsport']		= $_POST['pfb_dnsport']							?: '8081';
 			$pfb['dconfig']['pfb_dnsport_ssl']	= $_POST['pfb_dnsport_ssl']						?: '8443';
@@ -660,18 +621,7 @@ if ($_POST) {
 			$pfb['dconfig']['pfb_py_block']		= pfb_filter($_POST['pfb_py_block'], PFB_FILTER_ON_OFF, 'dnsbl')	?: '';
 			$pfb['dconfig']['dnsbl_mode']		= $_POST['dnsbl_mode']							?: 'dnsbl_unbound';
 
-			// Clear any existing DNSBL VIP address on user modification
-			if ($_POST['pfb_dnsvip'] != $pconfig['pfb_dnsvip'] || $_POST['dnsbl_interface'] != $pconfig['dnsbl_interface']) {
-				$iface = escapeshellarg(get_real_interface($pconfig['dnsbl_interface']));
-				foreach (array("{$pconfig['pfb_dnsvip']}" => 'inet', "::{$pconfig['pfb_dnsvip']}" => 'inet6') as $vip => $inet) {
-					$vip = escapeshellarg($vip);
-					exec("/sbin/ifconfig {$iface} | {$pfb['grep']} {$vip} 2>&1", $result, $return);
-					if (!empty($result)) {
-						exec("/sbin/ifconfig {$iface} {$inet} {$vip} -alias");
-					}
-				}
-			}
-			$pfb['dconfig']['pfb_dnsvip']		= $_POST['pfb_dnsvip']							?: '10.10.10.1';
+			$pfb['dconfig']['pfb_dnsvip4']		= $_POST['pfb_dnsvip4']							?: '';
 			$pfb['dconfig']['dnsbl_interface']	= $_POST['dnsbl_interface']						?: 'lo0';
 
 			// Replace DNSBL active blocked webpage with user selection
@@ -2657,76 +2607,6 @@ $section->addInput(new Form_Textarea(
 $form->add($section);
 
 $section = new Form_Section('DNSBL Webserver Configuration');
-
-$section->addInput(new Form_Input(
-	'pfb_dnsvip',
-	gettext('Virtual IP Address'),
-	'text',
-	$pconfig['pfb_dnsvip'],
-	[ 'placeholder' => 'Enter DNSBL VIP address' ]
-))->setHelp('Example ( 10.10.10.1 )<br />'
-		. 'Enter a &emsp;<strong>single IPv4 VIP address</strong> &emsp;that is RFC1918 Compliant.<br /><br />'
-		. 'This address should be in an Isolated Range that is not already used in the Network.<br />'
-		. 'Rejected DNS Requests will be forwarded to this VIP (Virtual IP)<br />'
-		. 'RFC1918 Compliant - (10.0.0.0/8, 172.16.0.0/12, 192.168.0.0/16)<br />'
-		. 'Changes to the DNSBL VIP will require a Force Reload - DNSBL to take effect.'
-);
-
-$section->addInput(new Form_Checkbox(
-	'pfb_dnsblv6',
-	gettext('IPv6 DNSBL'),
-	'Enable',
-	$pconfig['pfb_dnsblv6'] === 'on' ? true:false,
-	'on'
-))->setHelp('Enable DNSBL for IPv6 DNS Resolution filtering. Default IPv6 Webserver address [ ::10.10.10.1 ] and ports [80/443]');
-
-$section->addInput(new Form_Select(
-	'pfb_dnsvip_type',
-	gettext('DNSBL VIP Type'),
-	$pconfig['pfb_dnsvip_type'],
-	$options_pfb_dnsvip_type
-))->setWidth(4)->setHelp('Select the DNSBL VIP type.<br />'
-			. 'Default: <strong>IP Alias</strong><br />'
-			. 'CARP: For High Availability (CARP Cluster Networks) only'
-);
-
-$group = new Form_Group('CARP Settings');
-$group->add(new Form_Select(
-	'pfb_dnsvip_vhid',
-	gettext('DNSBL VIP VHID'),
-	$pconfig['pfb_dnsvip_vhid'],
-	$options_pfb_dnsvip_vhid
-))->setHelp('VHID group')
-  ->addClass('dnsvip_carp')
-  ->setWidth(3);
-
-$group->add(new Form_Select(
-	'pfb_dnsvip_base',
-	gettext('DNSBL VIP Base'),
-	$pconfig['pfb_dnsvip_base'],
-	$options_pfb_dnsvip_base
-))->setHelp('Advertising Base')
-  ->addClass('dnsvip_carp')
-  ->setWidth(3);
-
-$group->add(new Form_Select(
-	'pfb_dnsvip_skew',
-	'Skew',
-	$pconfig['pfb_dnsvip_skew'],
-	$options_pfb_dnsvip_skew
-))->setHelp('Skew')
-  ->addClass('dnsvip_carp')
-  ->setWidth(3);
-$section->add($group);
-
-$section->addPassword(new Form_Input(
-	'pfb_dnsvip_pass',
-	'CARP Password',
-	'password',
-	$pconfig['pfb_dnsvip_pass'],
-	[ 'placeholder' => 'Enter Carp password' ]
-))->setHelp('Password')->addClass('dnsvip_carp');
-
 $section->addInput(new Form_Select(
 	'dnsbl_interface',
 	gettext('Web Server Interface'),
@@ -2734,6 +2614,27 @@ $section->addInput(new Form_Select(
 	$options_dnsbl_interface_all
 ))->setHelp('Select the interface which DNSBL Web Server will Listen on.<br />'
 	. 'Default: <strong>Localhost (ports 80/443)</strong> - Selected Interface should be a Local Interface only.');
+
+$group = new Form_Group('DNSBL Virtual IP');
+$vips = pfb_get_vips();
+$group->add(new Form_Select(
+	'pfb_dnsvip4',
+	gettext('IPv4 VIP'),
+	$pconfig['pfb_dnsvip4'],
+	pfb_get_vip_options(AF_INET)
+))->setWidth(4)->setHelp('IPv4 Virtual IP');
+$group->add(new Form_Select(
+	'pfb_dnsvip6',
+	gettext('IPv6 VIP'),
+	(!empty($pconfig['pfb_dnsvip6']) ? $pconfig['pfb_dnsvip6'] : 'none'),
+	pfb_get_vip_options(AF_INET6)
+))->setWidth(4)->setHelp('IPv6 Virtual IP (optional)');;
+$group->setHelp('Select the DNSBL VIP address.%1$s'
+		. 'Rejected DNS requests will be forwarded to this VIP.%1$s'
+		. 'VIPs %2$smust be configured first%3$s at %4$sFirewall > Virtual IPs%5$s.',
+	'<br />', '<strong>', '</strong>', '<a target="_blank" href="/firewall_virtual_ip.php">', '</a>'
+);
+$section->add($group);
 
 $section->addInput(new Form_Input(
 	'pfb_dnsport',
@@ -3188,14 +3089,6 @@ function enable_tld() {
 	}
 }
 
-function enable_carp() {
-	if ($('#pfb_dnsvip_type').val() == 'ipalias') {
-		hideMultiClass('dnsvip_carp', true);
-	} else {
-		hideMultiClass('dnsvip_carp', false);
-	}
-}
-
 function enable_ports() {
 	if ($('#dnsbl_interface').val() == 'lo0') {
 		hideInput('pfb_dnsport', true);
@@ -3306,11 +3199,6 @@ events.push(function(){
 		enable_tld();
 	});
 	enable_tld();
-
-	$('#pfb_dnsvip_type').click(function() {
-		enable_carp();
-	});
-	enable_carp();
 
 	$('#dnsbl_interface').click(function() {
 		enable_ports();
