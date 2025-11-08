@@ -199,7 +199,7 @@ function frr_generate_config_ospf6() {
 	$frr_conf = config_get_path('installedpackages/frr/config/0', []);
 	if (empty($frr_conf)) {
 		/* If FRR is not configured, stop. */
-		frr_package_log("FRR OSPF6d: No FRR global config data found.");
+		frr_package_log("OSPF6d: No FRR global config data found.");
 		return null;
 	}
 
@@ -212,15 +212,15 @@ function frr_generate_config_ospf6() {
 	} else {
 		/* If there is no raw configuration and no GUI configuration, stop. */
 		if (empty($frr_ospf6d_conf)) {
-			frr_package_log("FRR OSPF6d: No config data found.");
+			frr_package_log("OSPF6d: No config data found.");
 			return;
 		} elseif (empty($frr_ospf6d_conf['enable'])) {
 			/* OSPF6 daemon is not enabled. */
-			frr_package_log("FRR OSPF6d: OSPF6 disabled.");
+			frr_package_log("OSPF6d: OSPF6 disabled.");
 			return;
 		} elseif (empty($frr_conf['enable'])) {
 			/* FRR is disabled or BFD Daemon is not enabled. */
-			frr_package_log("FRR OSPF6d: FRR master disabled.");
+			frr_package_log("OSPF6d: FRR master disabled.");
 			return;
 		}
 
