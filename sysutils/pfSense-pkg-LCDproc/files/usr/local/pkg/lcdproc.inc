@@ -30,6 +30,7 @@ define('LCDPROC_CONFIG', '/usr/local/etc/LCDd.conf');
 define('LCDPROC_HOST', '127.0.0.1');
 define('LCDPROC_PORT', '13666');
 define('LCDPROC_SERVICE_NAME', 'lcdproc');
+define('LOG_PREFIX_PKG_LCDPROC', 'lcdproc');
 
 /* Common Lists */
 
@@ -225,11 +226,11 @@ function lcdproc_validate_list(&$input_errors, $postvar, $list, $name) {
 }
 
 function lcdproc_notice($msg) {
-	syslog(LOG_NOTICE, "lcdproc: {$msg}");
+	logger(LOG_NOTICE, $msg, LOG_PREFIX_PKG_LCDPROC);
 }
 
 function lcdproc_warn($msg) {
-	syslog(LOG_WARNING, "lcdproc: {$msg}");
+	logger(LOG_WARNING, $msg, LOG_PREFIX_PKG_LCDPROC);
 }
 
 function lcdproc_write_config($file, $text) {
