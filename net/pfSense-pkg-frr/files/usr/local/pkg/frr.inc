@@ -27,6 +27,7 @@ require_once("util.inc");
 
 define('PKG_FRR_CONFIG_BASE', '/var/etc/frr');
 define('PKG_FRR_LIST_NONE_VALUE', array('name' => 'None', 'value' => 'none'));
+define('LOG_PREFIX_PKG_FRR', 'FRR');
 
 /* Since we need to embed this in strings & HERE Docs, copy to a var. Can't embed constants. */
 global $frr_config_base;
@@ -717,7 +718,7 @@ function frr_package_log($string, $priority = LOG_INFO) {
 		return;
 	}
 
-	syslog($priority, "FRR Package: {$string}");
+	logger($priority, $string, LOG_PREFIX_PKG_FRR);
 }
 
 /* Main function to generate all of the configuration files and make general
