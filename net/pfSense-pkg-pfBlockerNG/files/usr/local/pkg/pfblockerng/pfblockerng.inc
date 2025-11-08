@@ -983,7 +983,7 @@ if (!file_exists('/usr/local/etc/rc.d/pfb_dnsbl.sh')) {
 }
 
 // clog is not required for pfSense 2.5 and above
-if (substr(trim(file_get_contents('/etc/version')), 0, 3) > '2.5' && file_exists('/usr/local/sbin/clog_pfb')) {
+if (file_exists('/usr/local/sbin/clog_pfb')) {
 	unlink_if_exists('/usr/local/sbin/clog_pfb');
 	unlink_if_exists('/usr/bin/tail_pfb');
 	link('/usr/bin/tail', '/usr/bin/tail_pfb');
