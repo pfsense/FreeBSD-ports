@@ -65,11 +65,7 @@ if ($_POST['save']) {
 	$reqdfields = explode(" ", "name");
 	$reqdfieldsn = array("Name");
 
-	$pf_version=substr(trim(file_get_contents("/etc/version")),0,3);
-	if ($pf_version < 2.1)
-		$input_errors = eval('do_input_validation($_POST, $reqdfields, $reqdfieldsn, &$input_errors); return $input_errors;');
-	else
-		do_input_validation($_POST, $reqdfields, $reqdfieldsn, $input_errors);
+	do_input_validation($_POST, $reqdfields, $reqdfieldsn, $input_errors);
 
 	if(strtolower($_POST['name']) == "defaultwhitelist")
 		$input_errors[] = "Whitelist file names may not be named defaultwhitelist.";
