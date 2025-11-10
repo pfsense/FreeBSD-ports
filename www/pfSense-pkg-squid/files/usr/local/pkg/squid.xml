@@ -503,7 +503,6 @@
 			</description>
 			<type>select</type>
 			<options>
-				<option><name>1024 (not recommended)</name><value>1024</value></option>
 				<option><name>2048 (default)</name><value>2048</value></option>
 				<option><name>4096 (very secure)</name><value>4096</value></option>
 			</options>
