@@ -1,14 +1,24 @@
---- radlib.c.orig	2025-10-16 17:52:50.689232000 +0000
-+++ radlib.c	2025-10-16 17:54:06.044745000 +0000
-@@ -47,6 +47,7 @@
+--- radlib.c.orig	2016-02-15 15:11:50 UTC
++++ radlib.c
+@@ -47,8 +47,17 @@
  #include <string.h>
  #ifndef PHP_WIN32
  #include <unistd.h>
 +#include <fcntl.h>
  #endif
  
++#ifdef HAVE_CONFIG_H
++#include "config.h"
++#endif
++
++#ifdef HAVE_OPENSSL
++#include <openssl/hmac.h>
++#endif
++
  #include "radlib_compat.h"
-@@ -58,8 +59,7 @@
+ #include "radlib_md5.h"
+ #include "radlib_private.h"
+@@ -58,8 +67,7 @@ static void	 insert_request_authenticator(struct rad_h
  		    __printflike(2, 3);
  static void	 insert_scrambled_password(struct rad_handle *, int);
  static void	 insert_request_authenticator(struct rad_handle *, int);
@@ -18,7 +28,7 @@
  static int	 put_password_attr(struct rad_handle *, int,
  		    const void *, size_t,
  		    const struct rad_attr_options *);
-@@ -67,6 +67,9 @@
+@@ -67,6 +75,9 @@ static int	 split(char *, char *[], int, char *, size_
  		    const void *, size_t,
  		    const struct rad_attr_options *);
  static int	 split(char *, char *[], int, char *, size_t);
@@ -28,7 +38,38 @@
  
  static void
  clear_password(struct rad_handle *h)
-@@ -144,20 +147,38 @@
+@@ -78,7 +89,30 @@ clear_password(struct rad_handle *h)
+ 	h->pass_pos = 0;
+ }
+ 
++#ifdef HAVE_OPENSSL
+ static void
++compute_hmac_md5(const char *key, unsigned char *data, int datalen, unsigned char *output)
++{
++	unsigned int len = 16;
++
++	HMAC(EVP_md5(), key, strlen(key), (unsigned char *)data, datalen, output, &len);
++}
++
++static void
++insert_message_authenticator(struct rad_handle *h, int srv)
++{
++	const struct rad_server *srvp;
++
++	srvp = &h->servers[srv];
++	h->request[POS_MSG_AUTH] = RAD_MSG_AUTH;
++	h->request[POS_MSG_AUTH + 1] = LEN_MSG_AUTH;
++	memset(&h->request[POS_MSG_AUTH + 2], 0, LEN_MSG_AUTH_HASH);
++
++	compute_hmac_md5(srvp->secret, h->request, h->req_len, &h->request[POS_MSG_AUTH + 2]);
++}
++#endif
++
++static void
+ generr(struct rad_handle *h, const char *format, ...)
+ {
+ 	va_list		 ap;
+@@ -144,20 +178,41 @@ static int
   * specified server.
   */
  static int
@@ -40,8 +81,11 @@
  	unsigned char md5[16];
 -	const struct rad_server *srvp;
 -	int len;
++	unsigned char buf[MSGSIZE];
 +	const struct rad_server *srvp = NULL;
-+	int len, srv;
++	int len, resp_type, resp_attr_len, srv;
++	int resp_pos = 0;
++	bool found = false;
  
 -	srvp = &h->servers[srv];
 +	for (srv = 0; srv < h->num_servers; srv++) {
@@ -76,7 +120,56 @@
  		return 0;
  
  	/* Check the message length */
-@@ -277,49 +298,75 @@
+@@ -166,6 +221,8 @@ is_valid_response(struct rad_handle *h, int srv,
+ 	len = h->response[POS_LENGTH] << 8 | h->response[POS_LENGTH+1];
+ 	if (len > h->resp_len)
+ 		return 0;
++	if (len > MSGSIZE)
++		return 0;
+ 
+ 	/* Check the response authenticator */
+ 	MD5Init(&ctx);
+@@ -177,6 +234,39 @@ is_valid_response(struct rad_handle *h, int srv,
+ 	if (memcmp(&h->response[POS_AUTH], md5, sizeof md5) != 0)
+ 		return 0;
+ 
++#ifdef HAVE_OPENSSL
++	if (h->msg_auth &&
++	    (h->response[POS_CODE] == RAD_ACCESS_ACCEPT ||
++	     h->response[POS_CODE] == RAD_ACCESS_REJECT ||
++	     h->response[POS_CODE] == RAD_ACCESS_CHALLENGE)) {
++		resp_pos = POS_ATTRS;
++		while (true) {
++			if (resp_pos >= h->resp_len)
++				break;
++
++			resp_type = h->response[resp_pos++];
++			resp_attr_len = h->response[resp_pos++] - 2;
++
++			if (resp_type == RAD_MSG_AUTH && resp_attr_len == LEN_MSG_AUTH_HASH) {
++				found = true;
++				break;
++			}
++
++			resp_pos += resp_attr_len;
++		}
++
++		if (found) {
++			memcpy(&buf[POS_CODE], &h->response[POS_CODE], POS_AUTH - POS_CODE);
++			memcpy(&buf[POS_AUTH], &h->request[POS_AUTH], LEN_AUTH);
++			memcpy(&buf[POS_ATTRS], &h->response[POS_ATTRS], len - POS_ATTRS);
++			memset(&buf[resp_pos], 0, LEN_MSG_AUTH_HASH);
++			compute_hmac_md5(srvp->secret, buf, len, md5);
++			if (memcmp(&h->response[resp_pos], md5, LEN_MSG_AUTH_HASH) != 0)
++				return 0;
++		}
++	}
++#endif
++
+ 	return 1;
+ }
+ 
+@@ -277,49 +367,75 @@ rad_add_server(struct rad_handle *h, const char *host,
  rad_add_server(struct rad_handle *h, const char *host, int port,
      const char *secret, int timeout, int tries)
  {
@@ -179,7 +272,7 @@
  }
  
  void
-@@ -327,8 +374,10 @@
+@@ -327,8 +443,10 @@ rad_close(struct rad_handle *h)
  {
  	int srv;
  
@@ -192,7 +285,7 @@
  	for (srv = 0;  srv < h->num_servers;  srv++) {
  		memset(h->servers[srv].secret, 0,
  		    strlen(h->servers[srv].secret));
-@@ -482,42 +531,18 @@
+@@ -482,42 +600,18 @@ rad_config(struct rad_handle *h, const char *path)
  }
  
  /*
@@ -239,8 +332,20 @@
  	if (h->try == h->total_tries) {
  		generr(h, "No valid RADIUS responses received");
  		return -1;
-@@ -547,28 +572,24 @@
+@@ -541,38 +635,39 @@ rad_continue_send_request(struct rad_handle *h, int se
+ 	    || h->request[POS_CODE] == RAD_DISCONNECT_NAK)
+ 		/* Insert the request authenticator into the request */
+ 		insert_request_authenticator(h, h->srv);
+-	else
++	else {
+ 		/* Insert the scrambled password into the request */
+ 		if (h->pass_pos != 0)
  			insert_scrambled_password(h, h->srv);
++#ifdef HAVE_OPENSSL
++		if (h->msg_auth)
++			insert_message_authenticator(h, h->srv);
++#endif
++	}
  
  	/* Send the request */
 -	n = sendto(h->fd, h->request, h->req_len, 0,
@@ -280,17 +385,39 @@
  }
  
  int
-@@ -581,8 +602,7 @@
+-rad_create_request(struct rad_handle *h, int code)
++rad_create_request(struct rad_handle *h, int code, bool msg_auth)
+ {
+ 	int i;
+ 
+@@ -581,14 +676,23 @@ rad_create_request(struct rad_handle *h, int code)
  	/* Create a random authenticator */
  	for (i = 0;  i < LEN_AUTH;  i += 2) {
  		long r;
 -		TSRMLS_FETCH();
--		r = (zend_long) php_mt_rand(TSRMLS_C);
+-		r = php_rand(TSRMLS_C);
 +		r = (zend_long) php_mt_rand();
  		h->request[POS_AUTH+i] = (unsigned char) r;
  		h->request[POS_AUTH+i+1] = (unsigned char) (r >> 8);
  	}
-@@ -654,42 +674,92 @@
+ 	h->req_len = POS_ATTRS;
+-	h->request_created = 1;    
++	h->request_created = 1;
+ 	clear_password(h);
++
++#ifdef HAVE_OPENSSL
++	if (msg_auth) {
++		h->msg_auth = true;
++		h->req_len += LEN_MSG_AUTH;
++	} else {
++		h->msg_auth = false;
++	}
++#endif
++
+ 	return 0;
+ }
+ 
+@@ -654,42 +758,92 @@ rad_get_attr(struct rad_handle *h, const void **value,
  }
  
  /*
@@ -311,12 +438,6 @@
 +	h->total_tries = 0;
  
 -		if ((h->fd = socket(PF_INET, SOCK_DGRAM, IPPROTO_UDP)) == -1) {
--#ifdef PHP_WIN32
--			generr(h, "Cannot create socket: %d", WSAGetLastError());
--#else
--			generr(h, "Cannot create socket: %s", strerror(errno));
--#endif
--			return -1;
 +	for (srv = 0;  srv < h->num_servers;  srv++)
 +		if (h->servers[srv].addr.addr.sa_family == AF_INET)
 +			tries4 += h->servers[srv].max_tries;
@@ -330,11 +451,14 @@
 +
 +		h->fd4 = socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP);
 +		if (h->fd4 == -1) {
-+#ifdef PHP_WIN32
+ #ifdef PHP_WIN32
+-			generr(h, "Cannot create socket: %d", WSAGetLastError());
 +			generr(h, "Cannot create ipv4 socket: %d", WSAGetLastError());
-+#else
+ #else
+-			generr(h, "Cannot create socket: %s", strerror(errno));
 +			generr(h, "Cannot create ipv4 socket: %s", strerror(errno));
-+#endif
+ #endif
+-			return -1;
 +			goto done4;
  		}
 -		memset(&sin, 0, sizeof sin);
@@ -408,7 +532,7 @@
  	if (h->request[POS_CODE] == RAD_ACCOUNTING_REQUEST
  	    || h->request[POS_CODE] == RAD_COA_REQUEST
  	    || h->request[POS_CODE] == RAD_COA_ACK
-@@ -723,18 +793,17 @@
+@@ -723,18 +877,17 @@ rad_init_send_request(struct rad_handle *h, int *fd, s
  	 * counter for each server.
  	 */
  	h->total_tries = 0;
@@ -432,7 +556,7 @@
  }
  
  /*
-@@ -749,11 +818,11 @@
+@@ -749,11 +902,11 @@ rad_auth_open(void)
  
  	h = (struct rad_handle *)malloc(sizeof(struct rad_handle));
  	if (h != NULL) {
@@ -443,16 +567,15 @@
 +		h->fd4 = -1;
 +		h->fd6 = -1;
  		h->num_servers = 0;
--		h->ident = (zend_long) php_mt_rand(TSRMLS_C);
+-		h->ident = php_rand(TSRMLS_C);
 +		h->ident = (zend_long) php_mt_rand();
  		h->errmsg[0] = '\0';
  		memset(h->request, 0, sizeof h->request);
  		h->req_len = 0;
-@@ -827,7 +896,41 @@
- {
+@@ -828,6 +981,40 @@ rad_put_string(struct rad_handle *h, int type, const c
  	return rad_put_attr(h, type, str, strlen(str), options);
  }
-+
+ 
 +static int
 +rad_receive(struct rad_handle *h, int fd)
 +{
@@ -478,7 +601,7 @@
 +#endif
 +		return -1;
 +	}
- 
++
 +	if (is_valid_response(h, (struct sockaddr *)&from)) {
 +		h->resp_len = h->response[POS_LENGTH] << 8 |
 +		    h->response[POS_LENGTH+1];
@@ -490,7 +613,7 @@
  /*
   * Returns the response type code on success, or -1 on failure.
   */
-@@ -836,47 +939,56 @@
+@@ -836,47 +1023,56 @@ rad_send_request(struct rad_handle *h)
  {
  	struct timeval timelimit;
  	struct timeval tv;
@@ -573,7 +696,7 @@
  }
  
  const char *
-@@ -1035,7 +1147,7 @@
+@@ -1035,7 +1231,7 @@ rad_put_vendor_attr(struct rad_handle *h, int vendor, 
  	/* OK, allocate and start building the attribute. */
  	attr = emalloc(va_len);
  	if (attr == NULL) {
@@ -582,7 +705,7 @@
  		goto end;
  	}
  
-@@ -1218,12 +1330,12 @@
+@@ -1218,12 +1414,12 @@ rad_demangle_mppe_key(struct rad_handle *h, const void
  	*/
  	*len = *P;
  	if (*len > mlen - 1) {
@@ -597,7 +720,7 @@
  		return -1;
  	}
  
-@@ -1235,14 +1347,13 @@
+@@ -1235,14 +1431,13 @@ int rad_salt_value(struct rad_handle *h, const char *i
  {
  	char authenticator[16];
  	size_t i;
@@ -606,23 +729,24 @@
  	const char *in_pos;
  	MD5_CTX md5;
  	char *out_pos;
- 	uint32_t random;
+-	php_uint32 random;
++	uint32_t random;
  	size_t salted_len;
  	const char *secret;
 -	TSRMLS_FETCH();
  
  	if (len == 0) {
  		out->len = 0;
-@@ -1289,7 +1400,7 @@
+@@ -1289,7 +1484,7 @@ int rad_salt_value(struct rad_handle *h, const char *i
  	}
  
  	/* Generate a random number to use as the salt. */
--	random = (zend_long) php_mt_rand(TSRMLS_C);
+-	random = php_rand(TSRMLS_C);
 +	random = (zend_long) php_mt_rand();
  
  	/* The RFC requires that the high bit of the salt be 1. Otherwise,
  	 * let's set up the header. */
-@@ -1341,5 +1452,3 @@
+@@ -1341,5 +1536,3 @@ err:
  
  	return -1;
  }

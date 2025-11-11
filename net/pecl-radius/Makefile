@@ -1,6 +1,6 @@
 PORTNAME=	radius
 PORTVERSION=	1.4.0b1
-PORTREVISION=	4
+PORTREVISION=	5
 CATEGORIES=	net security pear
 
 MAINTAINER=	sunpoet@FreeBSD.org
@@ -12,7 +12,7 @@ LICENSE=	BSD3CLAUSE
 
 USES=		php:pecl
 
-CONFIGURE_ARGS=	--enable-radius
+CONFIGURE_ARGS=	--enable-openssl --enable-radius
 
 OPTIONS_DEFINE=	EXAMPLES
 

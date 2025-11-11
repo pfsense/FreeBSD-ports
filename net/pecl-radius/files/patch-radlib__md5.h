@@ -1,4 +1,4 @@
---- radlib_md5.h.orig	2016-02-15 15:11:50 UTC
+--- radlib_md5.h.orig	2025-11-11 17:21:10 UTC
 +++ radlib_md5.h
 @@ -31,6 +31,9 @@ any other GPL-like (LGPL, GPL2) License.
      $Id$
@@ -16,4 +16,3 @@
  
 -/* vim: set ts=8 sw=8 noet: */
 +#endif /* _RADLIB_MD5_H */
-
