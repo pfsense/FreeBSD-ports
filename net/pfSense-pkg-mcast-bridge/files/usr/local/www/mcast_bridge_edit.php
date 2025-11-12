@@ -208,21 +208,25 @@ $section->addInput(new Form_Input(
 	$pconfig[MCB_CONF_NAME_SERVICE_PORT]
 ));
 
+$group = new Form_Group('Multicast Addresses');
 // IPv4 address
-$section->addInput(new Form_Input(
+$group->add(new Form_Input(
 	'ipv4',
 	'IPv4 Multicast Address',
 	'text',
 	$pconfig[MCB_CONF_NAME_SERVICE_IPV4]
-))->setHelp(gettext('Address must be routable (non 224.0.0.0/24).'));
-
+))->setHelp(gettext('IPv4 Multicast Address. Must be routable (non 224.0.0.0/24).'));
 // IPv6 address
-$section->addInput(new Form_Input(
+$group->add(new Form_Input(
 	'ipv6',
 	'IPv6 Multicast Address',
 	'text',
 	$pconfig[MCB_CONF_NAME_SERVICE_IPV6]
-))->setHelp(gettext('Address must be routable (non ff02::/16).'));
+))->setHelp(gettext('IPv6 Multicast Address. Must be routable (non ff02::/16).'));
+$group->setHelp(
+	gettext('A bridge may have an IPv4 multicast address, an IPv6 multicast address, ' .
+		'or both. At least one Multicast address is required.'));
+$section->add($group);
 
 // Inbound interfaces
 $group = new Form_Group('Inbound Interfaces');
@@ -241,6 +245,16 @@ $group->add(new Form_Select(
 	$available_interfaces,
 	true
 ))->setHelp(gettext('Static Inbound Interfaces.'));
+$group->setHelp(
+	gettext('Inbound Interfaces are interfaces that the bridge will receive packets ' .
+		'from. By default, the bridge will join the multicast group on an inbound ' .
+		'interface when there is an active subscriber on one of the outbound ' .
+		'interfaces, and leave the group when there are no more active subscribers. ' .
+		'However, if an interface is listed in the Static Inbound Interface list, ' .
+		'the bridge will join the multicast group on that interface immediately on ' .
+		'startup, and not leave the group even if no active subscribers are present. ' .
+		'Interfaces may be bi-directional, appearing in both Inbound Interface ' .
+                'and Outbound Interface lists.'));
 $section->add($group);
 
 // Outbound interfaces
@@ -260,6 +274,16 @@ $group->add(new Form_Select(
 	$available_interfaces,
 	true
 ))->setHelp(gettext('Static Outbound Interfaces.'));
+$group->setHelp(
+	gettext('Outbound Interfaces are interfaces that the bridge will forward packets ' .
+		'to. By default, the bridge will use IGMP (IPv4) and MLD (IPv6) to determine ' .
+		'if there are active subscribers present on the interface, and will only ' .
+		'forward packets to the interface if an active subscriber is currently ' .
+		'present. However, if an interface is in the Static Outbound Interface ' .
+		'list, IGMP/MLD will not be used on the interface, and the bridge will ' .
+		'always consider an active subscriber to be present on the interface. ' .
+		'Interfaces may be bi-directional, appearing in both Inbound Interface ' .
+                'and Outbound Interface lists.'));
 $section->add($group);
 
 $section->addInput(new Form_Input(
@@ -269,33 +293,6 @@ $section->addInput(new Form_Input(
 	$pconfig[MCB_CONF_NAME_SERVICE_DESC]
 ))->setHelp('Description of this bridge for reference (not parsed).');
 
-$section->addInput(new Form_StaticText(
-	gettext('Additional information'),
-	'<span class="help-block">' .
-	gettext('A bridge may have an IPv4 multicast address, an IPv6 multicast address, ' .
-		'or both. At least one IP address is required.') .
-	'<br/><br/>' .
-	gettext('Inbound Interfaces are interfaces that the bridge will receive packets ' .
-		'from. By default, the bridge will join the multicast group on an inbound ' .
-		'interface when there is an active subscriber on one of the outbound ' .
-		'interfaces, and leave the group when there are no active subscribers. ' .
-		'However, if an interface is in the Static Inbound Interface list, the ' .
-		'bridge will join the multicast group on that interface immediately on ' .
-		'startup, and not leave the group even if no active subscribers are ' .
-		'present.') .
-	'<br/><br/>' .
-	gettext('Outbound Interfaces are interfaces that the bridge will forward packets ' .
-		'to. By default, the bridge will use IGMP (IPv4) and MLD (IPv6) to determine ' .
-		'if there are active subscribers present on the interface, and will only ' .
-		'forward packets to the interface if an active subscriber is currently ' .
-		'present. However, if an interface is in the Static Outbound Interface ' .
-		'list, IGMP/MLD will not be used on the interface, and the bridge will ' .
-		'always consider an active subscriber to be present on the interface.') .
-	'<br/><br/>' .
-	gettext('Interfaces may be bi-directional, appearing in both Inbound Interface ' .
-		'and Outbound Interface lists.') .
-	'</span>'
-));
 $form->add($section);
 
 print($form);

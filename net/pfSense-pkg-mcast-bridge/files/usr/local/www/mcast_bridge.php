@@ -113,8 +113,8 @@ else if ($_POST['save']) {
 // Available options for Querier Modes
 $querier_mode_options = array(
         'never' => gettext('Never - the querier function is disabled'),
-        'quick' => gettext('Quick - activate querier at startup (default)'),
-        'delay' => gettext('Delay - activate querier after 125 seconds if no other is present'),
+        'quick' => gettext('Quick - activate at startup (default)'),
+        'delay' => gettext('Delay - activate after 125 seconds if no other querier is present'),
         'defer' => gettext('Defer - delay activation and always defer to other queriers') );
 
 $pgtitle = array(gettext("Services"), gettext("Multicast Bridge"));
@@ -161,7 +161,7 @@ $section->addInput(new Form_StaticText(
         '<span class="help-block">'.
         gettext('By default, mcast-bridge uses the IGMP (IPv4) and MLD (IPv6) protocols to ' .
                 'determine if active subscribers are present on outbound interfaces, and only ' .
-                'forwards packets to an interface if an active subscriber is current present. ' .
+                'forwards packets to an interface if an active subscriber is currently present. ' .
                 'If an interface is configured as static (indicated by an asterisk below), then ' .
 		'a subscriber is always assumed to be present and IGMP and MLD are not used ' .
 		'for that bridge interface.' .
