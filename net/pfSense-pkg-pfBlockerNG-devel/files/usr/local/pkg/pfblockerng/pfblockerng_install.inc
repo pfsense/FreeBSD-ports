@@ -97,6 +97,7 @@ if (
 	config_del_path('pfblockerng_wizard');
 
 	config_set_path('installedpackages/pfblockerngdnsblsettings/config/0', $pfb_dnsbl_config);
+	write_config('Migrated old pfBlockerNG VIP configuraiton');
 	pfb_global();
 }
 
@@ -127,6 +128,7 @@ if (strpos($widgets, 'pfblockerng') === FALSE) {
 		config_set_path('widgets/sequence', $widgets . ',pfblockerng:col2:open:0');
 	}
 	update_status(" done.");
+	write_config('Added pfBlockerNG widget to the dashboard');
 }
 
 // Create Firewall filter service and link required executables
