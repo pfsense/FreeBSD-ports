@@ -1,4 +1,4 @@
---- components/feature_engagement/public/feature_constants.h.orig	2025-10-02 04:28:32 UTC
+--- components/feature_engagement/public/feature_constants.h.orig	2025-11-12 08:17:34 UTC
 +++ components/feature_engagement/public/feature_constants.h
 @@ -31,7 +31,7 @@ FEATURE_CONSTANTS_DECLARE_FEATURE(kIPHDemoMode);
  FEATURE_CONSTANTS_DECLARE_FEATURE(kIPHDummyFeature);
@@ -9,7 +9,7 @@
  #if BUILDFLAG(GOOGLE_CHROME_BRANDING)
  FEATURE_CONSTANTS_DECLARE_FEATURE(kEsbDownloadRowPromoFeature);
  #endif
-@@ -377,7 +377,7 @@ FEATURE_CONSTANTS_DECLARE_FEATURE(kIPHiOSAIHubNewBadge
+@@ -380,7 +380,7 @@ FEATURE_CONSTANTS_DECLARE_FEATURE(kIPHiOSAIHubNewBadge
  
  #endif  // BUILDFLAG(IS_IOS)
  
@@ -18,7 +18,7 @@
      BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_ANDROID) || BUILDFLAG(IS_FUCHSIA)
  FEATURE_CONSTANTS_DECLARE_FEATURE(kIPHAutofillBnplAffirmOrZipSuggestionFeature);
  FEATURE_CONSTANTS_DECLARE_FEATURE(
-@@ -443,7 +443,7 @@ FEATURE_CONSTANTS_DECLARE_FEATURE(kIPHScalableIphHelpA
+@@ -444,7 +444,7 @@ FEATURE_CONSTANTS_DECLARE_FEATURE(kIPHScalableIphHelpA
  FEATURE_CONSTANTS_DECLARE_FEATURE(kIPHScalableIphGamingFeature);
  #endif
  
@@ -26,4 +26,4 @@
 +#if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_BSD)
  FEATURE_CONSTANTS_DECLARE_FEATURE(kIPHDesktopPWAsLinkCapturingLaunch);
  FEATURE_CONSTANTS_DECLARE_FEATURE(kIPHDesktopPWAsLinkCapturingLaunchAppInTab);
- FEATURE_CONSTANTS_DECLARE_FEATURE(kIPHSupervisedUserProfileSigninFeature);
+ FEATURE_CONSTANTS_DECLARE_FEATURE(kIPHSignInBenefitsFeature);

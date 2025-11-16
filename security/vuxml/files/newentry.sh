@@ -75,7 +75,8 @@ product_name=""
 product_range=""
 package_list="<package>
 <name></name>
-<range><lt></lt></range>"
+<range><lt></lt></range>
+</package>"
 references="INSERT URL HERE"
 topic=""
 source="SO-AND-SO"
@@ -243,7 +244,7 @@ cat << EOF >> "${tmp}" || exit 1
 ${package_list}
     </affects>
     <description>
-        ${DESC_BODY}
+	${DESC_BODY}
     </description>
     <references>
       <cvename>${cvename}</cvename>

@@ -24,6 +24,8 @@
     SUBDIR += blind
     SUBDIR += btavctpd
     SUBDIR += butt
+    SUBDIR += ccextractor
+    SUBDIR += ccextractor-gui
     SUBDIR += celluloid
     SUBDIR += cheese
     SUBDIR += chilitags
@@ -365,6 +367,7 @@
     SUBDIR += syncplay
     SUBDIR += szap-s2
     SUBDIR += tautulli
+    SUBDIR += tenacity
     SUBDIR += termplay
     SUBDIR += tinyobjloader
     SUBDIR += tivodecode

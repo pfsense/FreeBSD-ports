@@ -1,6 +1,6 @@
 PORTNAME=	deptry
 PORTVERSION=	0.23.1
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	devel python
 MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -20,7 +20,7 @@ RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}click>=8.0.0<9:devel/py-click@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}requirements-parser>=0.11.0<1:devel/py-requirements-parser@${PY_FLAVOR} \
 		${PY_TOMLI}
 
-USES=		cargo python:3.9+
+USES=		cargo python
 USE_PYTHON=	autoplist concurrent pep517
 
 CARGO_BUILD=	no

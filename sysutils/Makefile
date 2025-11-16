@@ -476,6 +476,7 @@
     SUBDIR += goaccess
     SUBDIR += goawk
     SUBDIR += gobi_loader
+    SUBDIR += gol
     SUBDIR += gomi
     SUBDIR += gomplate
     SUBDIR += gonzo
@@ -1039,6 +1040,7 @@
     SUBDIR += py-bitrot
     SUBDIR += py-blinkstick
     SUBDIR += py-borgmatic
+    SUBDIR += py-clustershell
     SUBDIR += py-concurrent-log-handler
     SUBDIR += py-container-inspector
     SUBDIR += py-cron-descriptor
@@ -1520,6 +1522,7 @@
     SUBDIR += udfclient
     SUBDIR += ufetch
     SUBDIR += uhidd
+    SUBDIR += uhubctl
     SUBDIR += uif2iso
     SUBDIR += unetbootin
     SUBDIR += uniutils
@@ -1570,6 +1573,7 @@
     SUBDIR += vtm
     SUBDIR += vttest
     SUBDIR += wait_on
+    SUBDIR += waitforssh
     SUBDIR += walk
     SUBDIR += watchfolder
     SUBDIR += watchman
@@ -1594,6 +1598,7 @@
     SUBDIR += wmscript
     SUBDIR += wmtop
     SUBDIR += wmupmon
+    SUBDIR += work-tuimer
     SUBDIR += worldtools
     SUBDIR += wuzzah
     SUBDIR += xbatt

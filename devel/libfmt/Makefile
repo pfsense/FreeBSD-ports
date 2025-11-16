@@ -1,5 +1,5 @@
 PORTNAME=	fmt
-PORTVERSION=	11.2.0
+PORTVERSION=	12.1.0
 CATEGORIES=	devel
 MASTER_SITES=	https://github.com/fmtlib/fmt/releases/download/${PORTVERSION}/
 PKGNAMEPREFIX=	lib
