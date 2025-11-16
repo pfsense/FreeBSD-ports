@@ -225,7 +225,7 @@ SNDIO_VARS_OFF=		GN_ARGS+=use_sndio=false
 # See ${WRKSRC}/electron/DEPS for CHROMIUM_VER
 CHROMIUM_VER=			140.0.7339.249
 # See ${WRKSRC}/electron/DEPS for NODE_VER
-NODE_VER=			22.20.0
+NODE_VER=			22.21.1
 # See ${WRKSRC}/electron/DEPS for NAN_VER
 NAN_VER=			e14bdcd1f72d62bca1d541b66da43130384ec213
 # See ${WRKSRC}/electron/DEPS for SQUIRREL_MAC_VER
@@ -290,11 +290,9 @@ MAKE_ENV+=	C_INCLUDE_PATH=${LOCALBASE}/include \
 		CPLUS_INCLUDE_PATH=${LOCALBASE}/include
 
 # rust
-RUSTC_VERSION!=	rustc -V 2>/dev/null || true
 MAKE_ENV+=	RUSTC_BOOTSTRAP=1
 GN_ARGS+=	enable_rust=true \
-		rust_sysroot_absolute="${LOCALBASE}" \
-		rustc_version="${RUSTC_VERSION}"
+		rust_sysroot_absolute="${LOCALBASE}"
 
 pre-everything::
 	@${ECHO_MSG}
@@ -381,6 +379,7 @@ pre-configure:
 .endfor
 	touch ${WRKSRC:H}/pulseaudio-${PULSEV}/src/pulse/version.h
 	@${REINPLACE_CMD} -e 's|$${LOCALBASE}|${LOCALBASE}|;s|$${MODCLANG_VERSION}|${LLVM_DEFAULT}|' \
+		${WRKSRC}/build/config/rust.gni \
 		${WRKSRC}/build/rust/rust_bindgen.gni \
 		${WRKSRC}/build/rust/rust_bindgen_generator.gni
 

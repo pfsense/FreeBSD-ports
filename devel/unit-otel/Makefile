@@ -1,6 +1,6 @@
 PORTNAME=	unit-otel
 PORTVERSION=	${UNIT_VERSION}
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	devel
 MASTER_SITES?=	https://unit.nginx.org/download/
 DISTFILES=	unit-${PORTVERSION}.tar.gz
@@ -11,6 +11,9 @@ WWW=		https://unit.nginx.org
 
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKDIR}/unit-${PORTVERSION}/LICENSE
+
+DEPRECATED=	Upstream repo archived on Oct 8 2025
+EXPIRATION_DATE=2025-12-31
 
 USES=		cargo cpe ssl
 

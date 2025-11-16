@@ -400,7 +400,6 @@
     SUBDIR += minio-client
     SUBDIR += miniserve
     SUBDIR += mirrorselect
-    SUBDIR += mitmproxy
     SUBDIR += mknmz-wwwoffle
     SUBDIR += mod_asn
     SUBDIR += mod_auth_cas
@@ -1457,7 +1456,6 @@
     SUBDIR += phpbb3
     SUBDIR += phpfpmtop
     SUBDIR += phpgroupware
-    SUBDIR += phpmustache
     SUBDIR += phpmyfaq
     SUBDIR += phprecipebook
     SUBDIR += phpsysinfo
@@ -1586,8 +1584,11 @@
     SUBDIR += py-dj52-django-guardian
     SUBDIR += py-dj52-django-htmx
     SUBDIR += py-dj52-django-js-asset
+    SUBDIR += py-dj52-django-modelcluster
     SUBDIR += py-dj52-django-mptt
     SUBDIR += py-dj52-django-multiselectfield
+    SUBDIR += py-dj52-django-netfields
+    SUBDIR += py-dj52-django-permissionedforms
     SUBDIR += py-dj52-django-prometheus
     SUBDIR += py-dj52-django-redis
     SUBDIR += py-dj52-django-rich
@@ -1596,12 +1597,15 @@
     SUBDIR += py-dj52-django-stubs-ext
     SUBDIR += py-dj52-django-tables2
     SUBDIR += py-dj52-django-taggit
+    SUBDIR += py-dj52-django-tasks
     SUBDIR += py-dj52-django-timezone-field
+    SUBDIR += py-dj52-django-treebeard
     SUBDIR += py-dj52-djangorestframework
     SUBDIR += py-dj52-djangorestframework-guardian
     SUBDIR += py-dj52-drf-spectacular
     SUBDIR += py-dj52-drf-spectacular-sidecar
     SUBDIR += py-dj52-drf-writable-nested
+    SUBDIR += py-dj52-laces
     SUBDIR += py-dj52-social-auth-app-django
     SUBDIR += py-dj52-strawberry-graphql-django
     SUBDIR += py-django-admin-rangefilter
@@ -1874,6 +1878,7 @@
     SUBDIR += py-mailman-hyperkitty
     SUBDIR += py-mechanicalsoup
     SUBDIR += py-mechanize
+    SUBDIR += py-modelsearch
     SUBDIR += py-multidict
     SUBDIR += py-mwoauth
     SUBDIR += py-nevow
@@ -2203,9 +2208,6 @@
     SUBDIR += rubygem-gon-rails-gitlab
     SUBDIR += rubygem-gon-rails5
     SUBDIR += rubygem-gon-rails50
-    SUBDIR += rubygem-gon-rails60
-    SUBDIR += rubygem-gon-rails61
-    SUBDIR += rubygem-gon-rails70
     SUBDIR += rubygem-hackpad-cli
     SUBDIR += rubygem-haml
     SUBDIR += rubygem-haml-coderay
@@ -2213,6 +2215,7 @@
     SUBDIR += rubygem-haml-rails-rails4
     SUBDIR += rubygem-haml5
     SUBDIR += rubygem-hamlit
+    SUBDIR += rubygem-hamlit-gitlab
     SUBDIR += rubygem-hamlit-rails
     SUBDIR += rubygem-hamlit-rails-rails5
     SUBDIR += rubygem-hamlit-rails-rails50
@@ -2322,6 +2325,7 @@
     SUBDIR += rubygem-nested_form
     SUBDIR += rubygem-net-http
     SUBDIR += rubygem-net-http-digest_auth
+    SUBDIR += rubygem-net-http-gitlab
     SUBDIR += rubygem-net-http-persistent
     SUBDIR += rubygem-net-http-persistent2
     SUBDIR += rubygem-net-http-pipeline

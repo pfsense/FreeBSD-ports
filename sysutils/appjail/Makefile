@@ -1,6 +1,6 @@
 PORTNAME=	appjail
 DISTVERSIONPREFIX=	v
-DISTVERSION=	4.4.0
+DISTVERSION=	4.6.0
 CATEGORIES=	sysutils
 
 MAINTAINER=	dtxdf@FreeBSD.org
@@ -20,17 +20,20 @@ CONFLICTS=	appjail-devel
 
 PORTDOCS=	README.md
 
-OPTIONS_DEFINE=	DEBOOTSTRAP DOAS DOCS GIT OCI
+OPTIONS_DEFINE=		DEBOOTSTRAP DOAS DOCS GIT OCI PKGBASE
+OPTIONS_DEFAULT=	PKGBASE
 
 DEBOOTSTRAP_DESC=	Support for Debian and Ubuntu jails
 DOAS_DESC=		Add support for unprivileged users
 OCI_DESC=		Add support for OCI
+PKGBASE_DESC=		Add support for pkgbase
 
 DEBOOTSTRAP_RUN_DEPENDS=	debootstrap>0:sysutils/debootstrap
 DOAS_RUN_DEPENDS=		doas>0:security/doas
 GIT_RUN_DEPENDS=		git>0:devel/git
 OCI_RUN_DEPENDS=		buildah>0:sysutils/buildah \
 				jq>0:textproc/jq
+PKGBASE_RUN_DEPENDS=		${LOCALBASE}/sbin/pkg:${PKG_ORIGIN}
 
 do-install-DOCS-on:
 	@${MKDIR} ${STAGEDIR}/${DOCSDIR}

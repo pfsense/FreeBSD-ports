@@ -1,16 +1,17 @@
 PORTNAME=	tblite
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.4.0
-PORTREVISION=	1
+DISTVERSION=	0.5.0
 CATEGORIES=	science # chemistry
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Light-weight tight-binding framework
-WWW=		https://github.com/tblite/tblite
+WWW=		https://tblite.readthedocs.io/ \
+		https://github.com/tblite/tblite/
 
-LICENSE=	GPLv3
-LICENSE_FILE=	${WRKSRC}/COPYING
+LICENSE=	LGPL3+
+LICENSE_FILE=	${WRKSRC}/COPYING.LESSER
 
+BROKEN=		compilation fails after science/dftd4 update, see https://github.com/tblite/tblite/issues/296
 .if !exists(/usr/include/omp.h)
 BROKEN=		requires OpenMP support that is missing on this architecture
 .endif

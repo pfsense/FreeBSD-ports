@@ -1,6 +1,6 @@
 PORTNAME=	kddockwidgets
 DISTVERSIONPREFIX=	v
-DISTVERSION=	2.3.0
+DISTVERSION=	2.4.0
 CATEGORIES=	x11-toolkits
 
 MAINTAINER=	kde@FreeBSD.org
@@ -23,6 +23,8 @@ GH_PROJECT=	KDDockWidgets
 
 CMAKE_ON=		KDDockWidgets_QT6
 CMAKE_TESTING_ON=	KDDockWidgets_TESTS KDDockWidgets_DEVELOPER_MODE
+
+PLIST_SUB=	SHLIB_VER=${PORTVERSION}
 
 post-install:
 	@${RM} -r ${STAGEDIR}${PREFIX}/share/doc

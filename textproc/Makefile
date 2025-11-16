@@ -1405,6 +1405,7 @@
     SUBDIR += py-genshi
     SUBDIR += py-gensim
     SUBDIR += py-gi-docgen
+    SUBDIR += py-gladtex
     SUBDIR += py-graphemeu
     SUBDIR += py-grep-ast
     SUBDIR += py-griffe
@@ -1450,6 +1451,7 @@
     SUBDIR += py-language-data
     SUBDIR += py-language-tags
     SUBDIR += py-laserhammer
+    SUBDIR += py-latex2mathml
     SUBDIR += py-latexcodec
     SUBDIR += py-license-expression
     SUBDIR += py-line-protocol-parser

@@ -1,6 +1,6 @@
 PORTNAME=	elephant
 DISTVERSIONPREFIX=	v
-DISTVERSION=	2.7.9
+DISTVERSION=	2.15.0
 CATEGORIES=	sysutils
 
 MAINTAINER=	tagattie@FreeBSD.org
@@ -13,7 +13,7 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 NOT_FOR_ARCHS=		aarch64 armv7 i386
 NOT_FOR_ARCHS_REASON=	-buildmode=plugin not supported on these architectures
 
-USES=		go:modules
+USES=		go:1.25,modules
 
 GO_MODULE=	github.com/abenz1267/elephant/v2
 GO_TARGET=	./cmd/elephant
@@ -24,17 +24,19 @@ PORTDOCS=	README.md
 OPTIONS_DEFINE=		DOCS
 OPTIONS_DEFAULT=	${OPTIONS_GROUP_PROVIDERS:NNIRISESSIONS}
 OPTIONS_GROUP=		PROVIDERS
-OPTIONS_GROUP_PROVIDERS=CALC CLIPBOARD DESKTOPAPPLICATIONS FILES MENUS \
-			NIRISESSIONS PROVIDERLIST RUNNER SNIPPETS SYMBOLS \
-			TODO UNICODE WEBSEARCH WINDOWS
+OPTIONS_GROUP_PROVIDERS=1PASSWORD BOOKMARKS CALC CLIPBOARD DESKTOPAPPLICATIONS \
+			FILES MENUS NIRISESSIONS PROVIDERLIST RUNNER SNIPPETS \
+			SYMBOLS TODO UNICODE WEBSEARCH WINDOWS
 
 PROVIDERS_DESC=		Enabled providers
+1PASSWORD_DESC=		Access your 1Password vaults
+BOOKMARKS_DESC=		URL bookmark manager
 CALC_DESC=		Perform calculation and unit-conversions
 CLIPBOARD_DESC=		Store clipboard history
 DESKTOPAPPLICATIONS_DESC=Run installed desktop applications
 FILES_DESC=		Find files/folders
-NIRISESSIONS_DESC=	Create predefined session layouts and open them
 MENUS_DESC=		Create custom menus
+NIRISESSIONS_DESC=	Create predefined session layouts and open them
 PROVIDERLIST_DESC=	Lists all providers and configured menus
 RUNNER_DESC=		Execute everything installed in your PATH
 SNIPPETS_DESC=		Create and access text snippets
@@ -44,6 +46,11 @@ UNICODE_DESC=		Search for unicode symbols
 WEBSEARCH_DESC=		Search web with custom defined search engines
 WINDOWS_DESC=		Find and focus opened windows
 
+1PASSWORD_RUN_DEPENDS=	op:security/1password-client2
+1PASSWORD_PLIST_FILES=	etc/xdg/elephant/providers/1password.so
+BOOKMARKS_RUN_DEPENDS=	jq:textproc/jq
+BOOKMARKS_USES=		sqlite
+BOOKMARKS_PLIST_FILES=	etc/xdg/elephant/providers/bookmarks.so
 CALC_RUN_DEPENDS=	qalc:math/libqalculate \
 			wl-copy:x11/wl-clipboard
 CALC_PLIST_FILES=	etc/xdg/elephant/providers/calc.so

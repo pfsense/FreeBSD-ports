@@ -1,7 +1,6 @@
 PORTNAME=	stgit
 DISTVERSIONPREFIX=	v
-DISTVERSION=	2.5.3
-PORTREVISION=	6
+DISTVERSION=	2.5.5
 CATEGORIES=	devel
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -19,195 +18,219 @@ USES=		cargo
 USE_GITHUB=	yes
 GH_ACCOUNT=	stacked-git
 
-CARGO_CRATES=	adler2-2.0.0 \
-		ahash-0.8.11 \
+CARGO_CRATES=	adler2-2.0.1 \
 		allocator-api2-0.2.21 \
-		anstream-0.6.18 \
-		anstyle-1.0.10 \
-		anstyle-parse-0.2.6 \
-		anstyle-query-1.1.2 \
-		anstyle-wincon-3.0.7 \
-		anyhow-1.0.96 \
+		anstream-0.6.21 \
+		anstyle-1.0.13 \
+		anstyle-parse-0.2.7 \
+		anstyle-query-1.1.4 \
+		anstyle-wincon-3.0.10 \
+		anyhow-1.0.100 \
 		arc-swap-1.7.1 \
-		autocfg-1.4.0 \
-		bitflags-2.8.0 \
-		bstr-1.11.3 \
+		bitflags-2.10.0 \
+		block-buffer-0.10.4 \
+		block2-0.6.2 \
+		bstr-1.12.1 \
+		byteorder-1.5.0 \
 		bzip2-rs-0.1.2 \
-		cc-1.2.15 \
-		cfg-if-1.0.0 \
+		cc-1.2.45 \
+		cfg-if-1.0.4 \
 		cfg_aliases-0.2.1 \
-		clap-4.5.30 \
-		clap_builder-4.5.30 \
-		clap_lex-0.7.4 \
+		clap-4.5.51 \
+		clap_builder-4.5.51 \
+		clap_lex-0.7.6 \
 		clru-0.6.2 \
-		colorchoice-1.0.3 \
-		crc32fast-1.4.2 \
-		ctrlc-3.4.5 \
-		curl-0.4.47 \
-		curl-sys-0.4.80+curl-8.12.1 \
+		colorchoice-1.0.4 \
+		cpufeatures-0.2.17 \
+		crc32fast-1.5.0 \
+		crypto-common-0.1.6 \
+		ctrlc-3.5.1 \
+		curl-0.4.49 \
+		curl-sys-0.4.84+curl-8.17.0 \
+		digest-0.10.7 \
+		dispatch2-0.3.0 \
 		displaydoc-0.2.5 \
 		dunce-1.0.5 \
 		encoding_rs-0.8.35 \
 		equivalent-1.0.2 \
-		errno-0.3.10 \
-		faster-hex-0.9.0 \
+		errno-0.3.14 \
+		faster-hex-0.10.0 \
 		fastrand-2.3.0 \
-		filetime-0.2.25 \
-		flate2-1.0.35 \
+		filetime-0.2.26 \
+		find-msvc-tools-0.1.4 \
+		flate2-1.1.5 \
 		fnv-1.0.7 \
-		form_urlencoded-1.2.1 \
-		getrandom-0.3.1 \
-		gix-0.70.0 \
-		gix-actor-0.33.2 \
-		gix-bitmap-0.2.14 \
-		gix-chunk-0.4.11 \
-		gix-command-0.4.1 \
-		gix-commitgraph-0.26.0 \
-		gix-config-0.43.0 \
-		gix-config-value-0.14.11 \
-		gix-date-0.9.3 \
-		gix-diff-0.50.0 \
-		gix-discover-0.38.0 \
-		gix-features-0.40.0 \
-		gix-fs-0.13.0 \
-		gix-glob-0.18.0 \
-		gix-hash-0.16.0 \
-		gix-hashtable-0.7.0 \
-		gix-index-0.38.0 \
-		gix-lock-16.0.0 \
-		gix-object-0.47.0 \
-		gix-odb-0.67.0 \
-		gix-pack-0.57.0 \
-		gix-packetline-0.18.3 \
-		gix-path-0.10.14 \
-		gix-protocol-0.48.0 \
-		gix-quote-0.4.15 \
-		gix-ref-0.50.0 \
-		gix-refspec-0.28.0 \
-		gix-revision-0.32.0 \
-		gix-revwalk-0.18.0 \
-		gix-sec-0.10.11 \
-		gix-shallow-0.2.0 \
-		gix-tempfile-16.0.0 \
-		gix-trace-0.1.12 \
-		gix-transport-0.45.0 \
-		gix-traverse-0.44.0 \
-		gix-url-0.29.0 \
-		gix-utils-0.1.14 \
-		gix-validate-0.9.3 \
-		hashbrown-0.14.5 \
-		hashbrown-0.15.2 \
-		hermit-abi-0.4.0 \
-		home-0.5.11 \
-		icu_collections-1.5.0 \
-		icu_locid-1.5.0 \
-		icu_locid_transform-1.5.0 \
-		icu_locid_transform_data-1.5.0 \
-		icu_normalizer-1.5.0 \
-		icu_normalizer_data-1.5.0 \
-		icu_properties-1.5.1 \
-		icu_properties_data-1.5.0 \
-		icu_provider-1.5.0 \
-		icu_provider_macros-1.5.0 \
-		idna-1.0.3 \
-		idna_adapter-1.2.0 \
-		indexmap-2.7.1 \
-		is-terminal-0.4.15 \
-		is_terminal_polyfill-1.70.1 \
-		itoa-1.0.14 \
-		jiff-0.1.29 \
-		jiff-0.2.1 \
-		jiff-tzdb-0.1.2 \
-		jiff-tzdb-platform-0.1.2 \
-		libc-0.2.169 \
-		libredox-0.1.3 \
-		libz-sys-1.1.21 \
-		linux-raw-sys-0.4.15 \
-		litemap-0.7.4 \
-		lock_api-0.4.12 \
-		log-0.4.26 \
+		foldhash-0.2.0 \
+		form_urlencoded-1.2.2 \
+		generic-array-0.14.9 \
+		getrandom-0.3.4 \
+		gix-0.74.1 \
+		gix-actor-0.35.6 \
+		gix-bitmap-0.2.15 \
+		gix-chunk-0.4.12 \
+		gix-command-0.6.3 \
+		gix-commitgraph-0.30.1 \
+		gix-config-0.47.1 \
+		gix-config-value-0.15.3 \
+		gix-date-0.10.7 \
+		gix-diff-0.54.1 \
+		gix-discover-0.42.0 \
+		gix-features-0.44.1 \
+		gix-fs-0.17.0 \
+		gix-glob-0.22.1 \
+		gix-hash-0.20.1 \
+		gix-hashtable-0.10.0 \
+		gix-index-0.42.1 \
+		gix-lock-19.0.0 \
+		gix-object-0.51.1 \
+		gix-odb-0.71.1 \
+		gix-pack-0.61.1 \
+		gix-packetline-0.19.3 \
+		gix-path-0.10.21 \
+		gix-protocol-0.52.1 \
+		gix-quote-0.6.1 \
+		gix-ref-0.54.1 \
+		gix-refspec-0.32.0 \
+		gix-revision-0.36.1 \
+		gix-revwalk-0.22.0 \
+		gix-sec-0.12.2 \
+		gix-shallow-0.6.0 \
+		gix-tempfile-19.0.1 \
+		gix-trace-0.1.15 \
+		gix-transport-0.49.1 \
+		gix-traverse-0.48.0 \
+		gix-url-0.33.1 \
+		gix-utils-0.3.1 \
+		gix-validate-0.10.1 \
+		hash32-0.3.1 \
+		hashbrown-0.16.0 \
+		heapless-0.8.0 \
+		hermit-abi-0.5.2 \
+		home-0.5.12 \
+		icu_collections-2.1.1 \
+		icu_locale_core-2.1.1 \
+		icu_normalizer-2.1.1 \
+		icu_normalizer_data-2.1.1 \
+		icu_properties-2.1.1 \
+		icu_properties_data-2.1.1 \
+		icu_provider-2.1.1 \
+		idna-1.1.0 \
+		idna_adapter-1.2.1 \
+		indexmap-2.12.0 \
+		is-terminal-0.4.17 \
+		is_terminal_polyfill-1.70.2 \
+		itoa-1.0.15 \
+		jiff-0.2.16 \
+		jiff-static-0.2.16 \
+		jiff-tzdb-0.1.4 \
+		jiff-tzdb-platform-0.1.3 \
+		libc-0.2.177 \
+		libredox-0.1.10 \
+		libz-rs-sys-0.5.2 \
+		libz-sys-1.1.22 \
+		linux-raw-sys-0.11.0 \
+		litemap-0.8.1 \
+		lock_api-0.4.14 \
+		log-0.4.28 \
 		maybe-async-0.2.10 \
-		memchr-2.7.4 \
-		memmap2-0.9.5 \
-		miniz_oxide-0.8.5 \
-		nix-0.29.0 \
-		once_cell-1.20.3 \
+		memchr-2.7.6 \
+		memmap2-0.9.9 \
+		miniz_oxide-0.8.9 \
+		nix-0.30.1 \
+		objc2-0.6.3 \
+		objc2-encode-4.1.0 \
+		once_cell-1.21.3 \
+		once_cell_polyfill-1.70.2 \
 		openssl-probe-0.1.6 \
-		openssl-sys-0.9.106 \
-		parking_lot-0.12.3 \
-		parking_lot_core-0.9.10 \
-		percent-encoding-2.3.1 \
-		pkg-config-0.3.31 \
-		portable-atomic-1.10.0 \
+		openssl-sys-0.9.111 \
+		parking_lot-0.12.5 \
+		parking_lot_core-0.9.12 \
+		percent-encoding-2.3.2 \
+		pkg-config-0.3.32 \
+		portable-atomic-1.11.1 \
 		portable-atomic-util-0.2.4 \
-		proc-macro2-1.0.93 \
-		prodash-29.0.0 \
-		quote-1.0.38 \
-		redox_syscall-0.5.9 \
-		regex-automata-0.4.9 \
-		rustix-0.38.44 \
-		ryu-1.0.19 \
+		potential_utf-0.1.4 \
+		proc-macro2-1.0.103 \
+		prodash-30.0.1 \
+		quote-1.0.42 \
+		r-efi-5.3.0 \
+		redox_syscall-0.5.18 \
+		regex-automata-0.4.13 \
+		rustix-1.1.2 \
+		ryu-1.0.20 \
 		same-file-1.0.6 \
-		schannel-0.1.27 \
+		schannel-0.1.28 \
 		scopeguard-1.2.0 \
-		serde-1.0.218 \
-		serde_derive-1.0.218 \
-		serde_json-1.0.139 \
-		sha1_smol-1.0.1 \
+		serde-1.0.228 \
+		serde_core-1.0.228 \
+		serde_derive-1.0.228 \
+		serde_json-1.0.145 \
+		sha1-0.10.6 \
+		sha1-checked-0.10.0 \
 		shell-words-1.1.0 \
 		shlex-1.3.0 \
-		smallvec-1.14.0 \
-		socket2-0.5.8 \
-		stable_deref_trait-1.2.0 \
+		simd-adler32-0.3.7 \
+		smallvec-1.15.1 \
+		socket2-0.6.1 \
+		stable_deref_trait-1.2.1 \
 		strsim-0.11.1 \
-		syn-2.0.98 \
-		synstructure-0.13.1 \
+		syn-2.0.110 \
+		synstructure-0.13.2 \
 		tar-0.4.44 \
-		tempfile-3.17.1 \
+		tempfile-3.23.0 \
 		termcolor-1.4.1 \
-		terminal_size-0.4.1 \
-		thiserror-2.0.11 \
-		thiserror-impl-2.0.11 \
-		tinystr-0.7.6 \
-		tinyvec-1.8.1 \
+		terminal_size-0.4.3 \
+		thiserror-2.0.17 \
+		thiserror-impl-2.0.17 \
+		tinystr-0.8.2 \
+		tinyvec-1.10.0 \
 		tinyvec_macros-0.1.1 \
+		typenum-1.19.0 \
 		unicode-bom-2.0.3 \
-		unicode-ident-1.0.17 \
-		unicode-normalization-0.1.24 \
-		url-2.5.4 \
-		utf16_iter-1.0.5 \
+		unicode-ident-1.0.22 \
+		unicode-normalization-0.1.25 \
+		url-2.5.7 \
 		utf8_iter-1.0.4 \
 		utf8parse-0.2.2 \
 		vcpkg-0.2.15 \
 		version_check-0.9.5 \
 		walkdir-2.5.0 \
-		wasi-0.13.3+wasi-0.2.2 \
-		winapi-util-0.1.9 \
-		windows-sys-0.52.0 \
+		wasip2-1.0.1+wasi-0.2.4 \
+		winapi-util-0.1.11 \
+		windows-link-0.2.1 \
 		windows-sys-0.59.0 \
+		windows-sys-0.60.2 \
+		windows-sys-0.61.2 \
 		windows-targets-0.52.6 \
+		windows-targets-0.53.5 \
 		windows_aarch64_gnullvm-0.52.6 \
+		windows_aarch64_gnullvm-0.53.1 \
 		windows_aarch64_msvc-0.52.6 \
+		windows_aarch64_msvc-0.53.1 \
 		windows_i686_gnu-0.52.6 \
+		windows_i686_gnu-0.53.1 \
 		windows_i686_gnullvm-0.52.6 \
+		windows_i686_gnullvm-0.53.1 \
 		windows_i686_msvc-0.52.6 \
+		windows_i686_msvc-0.53.1 \
 		windows_x86_64_gnu-0.52.6 \
+		windows_x86_64_gnu-0.53.1 \
 		windows_x86_64_gnullvm-0.52.6 \
+		windows_x86_64_gnullvm-0.53.1 \
 		windows_x86_64_msvc-0.52.6 \
-		winnow-0.6.26 \
-		winnow-0.7.3 \
-		wit-bindgen-rt-0.33.0 \
-		write16-1.0.0 \
-		writeable-0.5.5 \
-		xattr-1.4.0 \
-		yoke-0.7.5 \
-		yoke-derive-0.7.5 \
-		zerocopy-0.7.35 \
-		zerocopy-derive-0.7.35 \
-		zerofrom-0.1.5 \
-		zerofrom-derive-0.1.5 \
-		zerovec-0.10.4 \
-		zerovec-derive-0.10.3
+		windows_x86_64_msvc-0.53.1 \
+		winnow-0.7.13 \
+		wit-bindgen-0.46.0 \
+		writeable-0.6.2 \
+		xattr-1.6.1 \
+		yoke-0.8.1 \
+		yoke-derive-0.8.1 \
+		zerofrom-0.1.6 \
+		zerofrom-derive-0.1.6 \
+		zerotrie-0.2.3 \
+		zerovec-0.11.5 \
+		zerovec-derive-0.11.2 \
+		zlib-rs-0.5.2
 
 OPENSSLINC=	/usr/include
 OPENSSLLIB=	/usr/lib

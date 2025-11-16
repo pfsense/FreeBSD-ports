@@ -1,5 +1,5 @@
 PORTNAME?=	openexr
-PORTVERSION?=	3.4.1 # ALSO update openexr-website-docs! -- verify sigstore: make makesum verify-sigstore
+PORTVERSION?=	3.4.3 # ALSO update openexr-website-docs! -- verify sigstore: make makesum verify-sigstore
 PORTREVISION?=	1
 CATEGORIES=	graphics devel
 .if !defined(MASTERDIR)

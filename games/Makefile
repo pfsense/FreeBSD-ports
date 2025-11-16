@@ -132,7 +132,7 @@
     SUBDIR += bugsx
     SUBDIR += bumprace
     SUBDIR += burgerspace
-    SUBDIR += burrtools
+    SUBDIR += burr-tools
     SUBDIR += bzflag
     SUBDIR += bzflag-server
     SUBDIR += cake
@@ -594,6 +594,7 @@
     SUBDIR += lm-solve
     SUBDIR += lmarbles
     SUBDIR += lmpc
+    SUBDIR += loderunner-ng
     SUBDIR += lolcat
     SUBDIR += lordsawar
     SUBDIR += lpairs
@@ -719,7 +720,6 @@
     SUBDIR += openglad
     SUBDIR += openjazz
     SUBDIR += openjk
-    SUBDIR += openlierox
     SUBDIR += openmortal
     SUBDIR += openmsx
     SUBDIR += openmw
@@ -777,7 +777,6 @@
     SUBDIR += pipewalker
     SUBDIR += pmars
     SUBDIR += pmars-sdl
-    SUBDIR += pokerth
     SUBDIR += polyglot
     SUBDIR += pongix
     SUBDIR += ponscripter-07th-mod
@@ -860,7 +859,6 @@
     SUBDIR += redorblack
     SUBDIR += regoth
     SUBDIR += reminiscence
-    SUBDIR += renpy
     SUBDIR += rescue
     SUBDIR += retroarch
     SUBDIR += retroarch-assets

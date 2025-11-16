@@ -1,6 +1,6 @@
 PORTNAME=	wine
 DISTVERSION=	10.0
-PORTREVISION=	2
+PORTREVISION=	3
 PORTEPOCH=	1
 CATEGORIES=	emulators
 MASTER_SITES=	https://dl.winehq.org/wine/source/10.0/
@@ -35,7 +35,6 @@ CONFIGURE_ARGS+=--verbose \
 		--without-capi \
 		--without-coreaudio \
 		--without-dbus \
-		--without-ffmpeg \
 		--without-gettext --without-gettextpo \
 		--without-gphoto \
 		--without-gssapi \
@@ -68,8 +67,8 @@ SUB_FILES=	pkg-message
 
 PORTDATA=	wine.inf
 
-OPTIONS_DEFINE=	CUPS DOCS DOSBOX GNUTLS V4L WAYLAND X11 GECKO MONO
-OPTIONS_DEFAULT=ALSA GNUTLS X11
+OPTIONS_DEFINE=	CUPS DOCS DOSBOX FFMPEG GNUTLS V4L WAYLAND X11 GECKO MONO
+OPTIONS_DEFAULT=ALSA GNUTLS WAYLAND X11
 OPTIONS_RADIO=	AUDIO
 OPTIONS_RADIO_AUDIO=	ALSA OSS
 OPTIONS_SUB=	yes
@@ -89,6 +88,9 @@ CUPS_LIB_DEPENDS=	libcups.so:print/cups
 CUPS_CONFIGURE_WITH=	cups
 
 DOSBOX_RUN_DEPENDS=	dosbox:emulators/dosbox
+
+FFMPEG_LIB_DEPENDS=	libavutil.so:multimedia/ffmpeg
+FFMPEG_CONFIGURE_WITH=	ffmpeg
 
 GECKO_RUN_DEPENDS=	wine-gecko>0:emulators/wine-gecko
 
