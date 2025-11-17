@@ -165,7 +165,7 @@ if ($argv[1] == 'bl' || $argv[1] == 'bls') {
 if (in_array($argv[1], array('update', 'updateip', 'updatednsbl', 'dc', 'dcc', 'bu', 'uc', 'gc', 'al', 'asn', 'asn_shell', 'bl', 'bls', 'cron', 'ugc'))) {
 	pfb_global();
 
-	$pfb['extras_update'] = FALSE;  // Flag when Extras (MaxMind/TOP1M) are updateded via cron job
+	$pfb['extras_update'] = FALSE;  // Flag when Extras (MaxMind/TOP1M) are updated via cron job
 
 	// Script Arguments
 	switch($argv[1]) {
