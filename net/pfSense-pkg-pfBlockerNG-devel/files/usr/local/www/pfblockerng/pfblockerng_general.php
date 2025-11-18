@@ -221,7 +221,8 @@ $section->addInput(new Form_Checkbox(
 		. 'With \'Keep settings\' enabled, pfBlockerNG will maintain run state on Installation/Upgrade.<br />'
 		. ' If \'Keep Settings\' is not \'enabled\' on pkg Install/De-Install, all settings will be Wiped!<br /><br />'
 		. '<span class="text-danger">Note: </span>'
-		. ' To clear all downloaded lists, uncheck these two checkboxes and \'Save\'. Re-check both boxes and run a \'Force Update|Reload\''
+		. ' To clear all downloaded lists, uncheck both this \'Enable\' checkbox and the \'pfBlockerNG Enable\' checkbox above, and click \'Save\'. Then re-check both boxes, click	\'Save\', and run a \'Force Reload|All\'.<br />'
+		. '<strong>Caution</strong>: This will temporarily disable all pfBlockerNG functionality until all lists are re-downloaded and the \'Force Reload|All\' process completes!'
 );
 
 $group = new Form_Group('CRON Settings');
