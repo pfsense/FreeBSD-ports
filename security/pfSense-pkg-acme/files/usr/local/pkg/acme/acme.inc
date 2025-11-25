@@ -176,14 +176,6 @@ $a_acmeserver['letsencrypt-production-2'] = [
 	'name' => "Let's Encrypt Production ACME v2 (Applies rate limits to certificate requests)",
 	'url' => 'https://acme-v02.api.letsencrypt.org/directory'
 ];
-$a_acmeserver['buypass-staging'] = [
-	'name' => "BuyPass Staging (For TESTING purposes)",
-	'url' => 'https://api.test4.buypass.no/acme/directory'
-];
-$a_acmeserver['buypass-production'] = [
-	'name' => "BuyPass Production ACME v1 (Applies rate limits to certificate requests)",
-	'url' => 'https://api.buypass.com/acme/directory'
-];
 $a_acmeserver['zerossl-production'] = [
 	'name' => "ZeroSSL Production (Applies rate limits to certificate requests)",
 	'url' => 'https://acme.zerossl.com/v2/DV90'
