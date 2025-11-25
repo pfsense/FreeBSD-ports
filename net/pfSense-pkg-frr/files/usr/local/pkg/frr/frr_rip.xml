@@ -29,6 +29,7 @@
 	<title>Services/FRR/RIP</title>
 	<include_file>/usr/local/pkg/frr.inc</include_file>
 	<aftersaveredirect>pkg_edit.php?xml=frr/frr_rip.xml</aftersaveredirect>
+	<addedit_string>FRR: changed RIP</addedit_string>
 	<tabs>
 		<tab>
 			<text>RIP</text>

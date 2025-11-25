@@ -1,6 +1,5 @@
 PORTNAME=	pfSense-pkg-frr
-PORTVERSION=	2.0.2
-PORTREVISION=	7
+PORTVERSION=	2.1
 CATEGORIES=	net
 MASTER_SITES=	# empty
 DISTFILES=	# empty
@@ -11,8 +10,8 @@ COMMENT=	FRR package for pfSense
 
 LICENSE=	APACHE20
 
-RUN_DEPENDS=	frr9>=0:net/frr9 \
-		frr9-pythontools>=0:net/frr9-pythontools
+RUN_DEPENDS=	frr10>=0:net/frr10 \
+		frr10-pythontools>=0:net/frr10-pythontools
 
 CONFLICTS=	pfSense-pkg-OpenBGPD-[0-9]* \
 		pfSense-pkg-Quagga_OSPF-[0-9]*

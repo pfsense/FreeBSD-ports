@@ -29,6 +29,7 @@
 	<title>Services/FRR/BFD</title>
 	<include_file>/usr/local/pkg/frr.inc</include_file>
 	<aftersaveredirect>pkg.php?xml=frr/frr_bfd_profiles.xml</aftersaveredirect>
+	<addedit_string>FRR: changed BFD Profiles</addedit_string>
 	<tabs>
 		<tab>
 			<text>BFD</text>

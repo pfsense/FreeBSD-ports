@@ -410,8 +410,10 @@ function frr_bgp_generate_routeradvanced() {
 	if (!empty($frr_bgpadv_conf['disableebgpconnectedroutecheck'])) {
 		$advconf .= " bgp disable-ebgp-connected-route-check\n";
 	}
-	if (!empty($frr_bgpadv_conf['enforcefirstas'])) {
+	if (!array_key_exists('enforcefirstas', $frr_bgpadv_conf) || !empty($frr_bgpadv_conf['enforcefirstas'])) {
 		$advconf .= " bgp enforce-first-as\n";
+	} else {
+		$advconf .= " no bgp enforce-first-as\n";
 	}
 	if (!empty($frr_bgpadv_conf['disableebgprequirepolicy'])) {
 		$advconf .= " no bgp ebgp-requires-policy\n";

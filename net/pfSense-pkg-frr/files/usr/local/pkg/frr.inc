@@ -1214,14 +1214,47 @@ function frr_package_config_upgrade() {
 }
 
 function frr_set_tunables() {
+	$sysctl_frr = [
+		// frr10 still warns when kern.ipc.maxsockbuf=16777216
+		'kern.ipc.maxsockbuf' => [
+			'checked' => false,
+			'tunable' => 'kern.ipc.maxsockbuf',
+			'value' => 20971520,
+			'descr' => "Maximum socket buffer size - set by FRR package"
+		]
+	];
 	$sysctl_conf = config_get_path('sysctl/item', []);
-	$sysctl_maxsockbuff = array('tunable' => 'kern.ipc.maxsockbuf', 'value' => 16777216, 'descr' => "Maximum socket buffer size - set by FRR package");
+	$changed = false;
 
-	if (!in_array($sysctl_maxsockbuff, $sysctl_conf)) {
-		update_status("Installing maxsockbuf tunable ... ");
-		$sysctl_conf[] = $sysctl_maxsockbuff;
+	foreach ($sysctl_conf as &$item) {
+		if (!isset($sysctl_frr[$item['tunable']])) {
+			continue;
+		}
+		$sysctl_frr[$item['tunable']]['checked'] = true;
+		if ($item['value'] < $sysctl_frr[$item['tunable']]['value']) {
+			$item['value'] = $sysctl_frr[$item['tunable']]['value'];
+			$item['descr'] = $sysctl_frr[$item['tunable']]['descr'];
+			$changed = true;
+		}
+	}
+	unset($item);
+
+	foreach ($sysctl_frr as $item) {
+		if ($item['checked']) {
+			continue;
+		}
+		$sysctl_conf[] = [
+			'tunable' => $item['tunable'],
+			'value' => $item['value'],
+			'descr' => $item['descr']
+		];
+		$changed = true;
+	}
+
+	if ($changed) {
+		update_status("Adjusting system tunables...");
 		config_set_path('sysctl/item', $sysctl_conf);
-		write_config('FRR: Installed maxsockbuf tunable.');
+		write_config('FRR: Set system tunables');
 		system_setup_sysctl();
 		update_status("Done.\n");
 	}

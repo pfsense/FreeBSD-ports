@@ -29,6 +29,7 @@
 	<title>Services/FRR/RIP</title>
 	<include_file>/usr/local/pkg/frr.inc</include_file>
 	<aftersaveredirect>pkg.php?xml=frr/frr_rip_interfaces.xml</aftersaveredirect>
+	<addedit_string>FRR: changed RIP Interfaces</addedit_string>
 	<tabs>
 		<tab>
 			<text>RIP</text>
