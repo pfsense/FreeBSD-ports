@@ -226,11 +226,6 @@ if ($_POST) {
 			if (strtolower(substr($server['method'], 0, 3)) != "dns") {
 				$input_errors[] = "Wildcard 'Domainname' validation requires a DNS-based method.";
 			}
-			/* If the hostname is valid when allowing wildcards, but not without, then it must be a wildcard */
-			$account = get_accountkey($_POST['acmeaccount']);
-			if (substr($account['acmeserver'], -2, 2) != '-2') {
-				$input_errors[] = "A wildcard 'Domainname' is present but the ACME Account key is not registered to an ACME v2 server.";
-			}
 		}
 	}
 	$a_actions = $actionslist->acme_htmllist_get_values();
