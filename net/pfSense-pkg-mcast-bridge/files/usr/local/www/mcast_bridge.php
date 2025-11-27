@@ -62,9 +62,7 @@ if ($_REQUEST['act'] == "toggle") {
 	
 			// Write the config
 			write_config($changedesc);
-
-			// Sync the running configuration
-			mcast_bridge_sync_config();
+			mark_subsystem_dirty('mcast_bridge');
 		}
 	}
 }
@@ -82,12 +80,10 @@ else if ($_REQUEST['act'] == "delete") {
 			config_del_path(MCB_CONF_PATH . '/' . $service_path);
 			array_del_path($current_config, $service_path);
 
-			// Write the config
+			// Write the config and mark the subsystem dirty if appropriate
 			write_config($changedesc);
-
-			// Sync the running configuration if necessary
 			if (!isset($service[MCB_CONF_NAME_SERVICE_DISABLED])) {
-				mcast_bridge_sync_config();
+				mark_subsystem_dirty('mcast_bridge');
 			}
 		}
 
@@ -105,6 +101,11 @@ else if ($_POST['save']) {
 
 	// Write the config
 	write_config(gettext("Multicast Bridge: general settings changed"));
+	mark_subsystem_dirty('mcast_bridge');
+}
+
+else if ($_POST['apply']) {
+	clear_subsystem_dirty('mcast_bridge');
 
 	// Sync the running configuration
 	mcast_bridge_sync_config();
@@ -112,13 +113,18 @@ else if ($_POST['save']) {
 
 // Available options for Querier Modes
 $querier_mode_options = array(
-        'never' => gettext('Never - the querier function is disabled'),
-        'quick' => gettext('Quick - activate at startup (default)'),
-        'delay' => gettext('Delay - activate after 125 seconds if no other querier is present'),
-        'defer' => gettext('Defer - delay activation and always defer to other queriers') );
+	'never' => gettext('Never - the querier function is disabled'),
+	'quick' => gettext('Quick - activate at startup (default)'),
+	'delay' => gettext('Delay - activate after 125 seconds if no other querier is present'),
+	'defer' => gettext('Defer - delay activation and always defer to other queriers') );
 
 $pgtitle = array(gettext("Services"), gettext("Multicast Bridge"));
 include("head.inc");
+
+if (is_subsystem_dirty('mcast_bridge')) {
+	print_apply_box(gettext('The Mcast Bridge configuration has changed.') . '<br />' .
+			gettext('The changes must be applied to take effect.'));
+}
 
 $form = new Form;
 $section = new Form_Section('Settings');
@@ -157,22 +163,22 @@ $section->addInput(new Form_Select(
 
 // Additional Information
 $section->addInput(new Form_StaticText(
-        gettext('Additional Information'),
-        '<span class="help-block">'.
-        gettext('By default, mcast-bridge uses the IGMP (IPv4) and MLD (IPv6) protocols to ' .
-                'determine if active subscribers are present on outbound interfaces, and only ' .
-                'forwards packets to an interface if an active subscriber is currently present. ' .
-                'If an interface is configured as static (indicated by an asterisk below), then ' .
+	gettext('Additional Information'),
+	'<span class="help-block">'.
+	gettext('By default, mcast-bridge uses the IGMP (IPv4) and MLD (IPv6) protocols to ' .
+		'determine if active subscribers are present on outbound interfaces, and only ' .
+		'forwards packets to an interface if an active subscriber is currently present. ' .
+		'If an interface is configured as static (indicated by an asterisk below), then ' .
 		'a subscriber is always assumed to be present and IGMP and MLD are not used ' .
 		'for that bridge interface.' .
 		'<br><br>' .
-                'With both the IGMP and MLD protocols, a single "querier" is elected to be ' .
+		'With both the IGMP and MLD protocols, a single "querier" is elected to be ' .
 		'responsible for tracking multicast subscribers in the network. Most often, a ' .
 		'switch or router handles the role of querier, however mcast-bridge is also ' .
 		'capable of acting as the querier if enabled. Additional information on ' .
 		'querier modes is available in the ' .
 		'<a target="_blank" href="https://github.com/dennypage/mcast-bridge/blob/main/README.md#notes-on-querier-modes">' .
-        	'mcast-bridge README</a>.')
+		'mcast-bridge README</a>.')
 ));
 
 $form->add($section);

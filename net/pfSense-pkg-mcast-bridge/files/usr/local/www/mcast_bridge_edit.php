@@ -31,6 +31,10 @@ if (is_numericint($_REQUEST['id'])) {
 	$id = $_REQUEST['id'];
 	$init_path = MCB_CONF_PATH_SERVICE . '/' . $id;
 	$service_path .= $id;
+
+	if (!config_get_path($service_path . '/' . MCB_CONF_NAME_SERVICE_DISABLED)) {
+		$dirty = 1;
+	}
 }
 else if (is_numericint($_REQUEST['dup'])) {
 	$init_path = MCB_CONF_PATH_SERVICE . '/' . $_REQUEST['dup'];
@@ -148,6 +152,10 @@ if ($_POST) {
 		if ($pconfig[MCB_CONF_NAME_SERVICE_DISABLED]) {
 			$write_array[MCB_CONF_NAME_SERVICE_DISABLED] = $pconfig[MCB_CONF_NAME_SERVICE_DISABLED];
 		}
+		else {
+			$dirty = 1;
+		}
+
 		$write_array[MCB_CONF_NAME_SERVICE_PORT] = $pconfig[MCB_CONF_NAME_SERVICE_PORT];
 		$write_array[MCB_CONF_NAME_SERVICE_IPV4] = $pconfig[MCB_CONF_NAME_SERVICE_IPV4];
 		$write_array[MCB_CONF_NAME_SERVICE_IPV6] = $pconfig[MCB_CONF_NAME_SERVICE_IPV6];
@@ -171,8 +179,10 @@ if ($_POST) {
 			isset($id) ? gettext('edited') : gettext('added'),
 			$write_array[MCB_CONF_NAME_SERVICE_PORT]));
 
-		// Sync the running configuration
-		mcast_bridge_sync_config();
+		// Mark the subsystem as dirty if appropriate
+		if ($dirty) {
+			mark_subsystem_dirty('mcast_bridge');
+		}
 
 		// Return to the main page
 		header("Location: mcast_bridge.php");
@@ -254,7 +264,7 @@ $group->setHelp(
 		'the bridge will join the multicast group on that interface immediately on ' .
 		'startup, and not leave the group even if no active subscribers are present. ' .
 		'Interfaces may be bi-directional, appearing in both Inbound Interface ' .
-                'and Outbound Interface lists.'));
+		'and Outbound Interface lists.'));
 $section->add($group);
 
 // Outbound interfaces
@@ -283,7 +293,7 @@ $group->setHelp(
 		'list, IGMP/MLD will not be used on the interface, and the bridge will ' .
 		'always consider an active subscriber to be present on the interface. ' .
 		'Interfaces may be bi-directional, appearing in both Inbound Interface ' .
-                'and Outbound Interface lists.'));
+		'and Outbound Interface lists.'));
 $section->add($group);
 
 $section->addInput(new Form_Input(
