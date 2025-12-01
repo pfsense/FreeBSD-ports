@@ -29,7 +29,6 @@ require_once("certs.inc");
 require_once("classes/Form.class.php");
 
 global $current_openvpn_version, $current_openvpn_version_rev;
-global $previous_openvpn_version, $previous_openvpn_version_rev;
 global $legacy_openvpn_version, $legacy_openvpn_version_rev;
 global $dyndns_split_domain_types, $p12_encryption_levels;
 
@@ -376,12 +375,6 @@ if (!empty($act)) {
 			case "Win10":
 				$legacy = true;
 				$exp_name .= "{$legacy_openvpn_version}-I{$legacy_openvpn_version_rev}-Win10.exe";
-				break;
-			case "x86-previous":
-				$exp_name .= "{$previous_openvpn_version}-I{$previous_openvpn_version_rev}-x86.exe";
-				break;
-			case "x64-previous":
-				$exp_name .= "{$previous_openvpn_version}-I{$previous_openvpn_version_rev}-amd64.exe";
 				break;
 			case "x86-current":
 				$exp_name .= "{$current_openvpn_version}-I{$current_openvpn_version_rev}-x86.exe";
@@ -1026,11 +1019,6 @@ function server_changed() {
 		cell2.innerHTML += "<a href='javascript:download_begin(\"inst-x64-current\"," + i + ", -1)' class=\"btn btn-sm btn-primary\"><i class=\"fa-solid fa-download\"></i> 64-bit<\/a>";
 		cell2.innerHTML += "&nbsp;&nbsp; ";
 		cell2.innerHTML += "<a href='javascript:download_begin(\"inst-x86-current\"," + i + ", -1)' class=\"btn btn-sm btn-primary\"><i class=\"fa-solid fa-download\"></i> 32-bit<\/a>";
-		cell2.innerHTML += "<br\/>- Previous Windows Installers (<?=$previous_openvpn_version . '-Ix' . $previous_openvpn_version_rev?>):<br\/>";
-		cell2.innerHTML += "&nbsp;&nbsp; ";
-		cell2.innerHTML += "<a href='javascript:download_begin(\"inst-x64-previous\"," + i + ", -1)' class=\"btn btn-sm btn-primary\"><i class=\"fa-solid fa-download\"></i> 64-bit<\/a>";
-		cell2.innerHTML += "&nbsp;&nbsp; ";
-		cell2.innerHTML += "<a href='javascript:download_begin(\"inst-x86-previous\"," + i + ", -1)' class=\"btn btn-sm btn-primary\"><i class=\"fa-solid fa-download\"></i> 32-bit<\/a>";
 		cell2.innerHTML += "<br\/>- Legacy Windows Installers (<?=$legacy_openvpn_version . '-Ix' . $legacy_openvpn_version_rev?>):<br\/>";
 		cell2.innerHTML += "&nbsp;&nbsp; ";
 		cell2.innerHTML += "<a href='javascript:download_begin(\"inst-Win10\"," + i + ", -1)' class=\"btn btn-sm btn-primary\"><i class=\"fa-solid fa-download\"></i> 10/2016/2019<\/a>";
@@ -1073,12 +1061,6 @@ function server_changed() {
 		cell2.innerHTML += "<a href='javascript:download_begin(\"inst-x64-current\", -1," + j + ")' class=\"btn btn-sm btn-primary\"><i class=\"fa-solid fa-download\"></i> 64-bit<\/a>";
 		cell2.innerHTML += "&nbsp;&nbsp; ";
 		cell2.innerHTML += "<a href='javascript:download_begin(\"inst-x86-current\", -1," + j + ")' class=\"btn btn-sm btn-primary\"><i class=\"fa-solid fa-download\"></i> 32-bit<\/a>";
-		cell2.innerHTML += "&nbsp;&nbsp; ";
-		cell2.innerHTML += "<br\/>- Previous Windows Installer (<?=$previous_openvpn_version . '-Ix' . $previous_openvpn_version_rev?>):<br\/>";
-		cell2.innerHTML += "&nbsp;&nbsp; ";
-		cell2.innerHTML += "<a href='javascript:download_begin(\"inst-x64-previous\", -1," + j + ")' class=\"btn btn-sm btn-primary\"><i class=\"fa-solid fa-download\"></i> 64-bit<\/a>";
-		cell2.innerHTML += "&nbsp;&nbsp; ";
-		cell2.innerHTML += "<a href='javascript:download_begin(\"inst-x86-previous\", -1," + j + ")' class=\"btn btn-sm btn-primary\"><i class=\"fa-solid fa-download\"></i> 32-bit<\/a>";
 		cell2.innerHTML += "&nbsp;&nbsp; ";
 		cell2.innerHTML += "<br\/>- Legacy Windows Installers (<?=$legacy_openvpn_version . '-Ix' . $legacy_openvpn_version_rev?>):<br\/>";
 		cell2.innerHTML += "&nbsp;&nbsp; ";
@@ -1130,11 +1112,6 @@ function server_changed() {
 		cell2.innerHTML += "<a href='javascript:download_begin(\"inst-x64-current\"," + i + ")' class=\"btn btn-sm btn-primary\"><i class=\"fa-solid fa-download\"></i> 64-bit<\/a>";
 		cell2.innerHTML += "&nbsp;&nbsp; ";
 		cell2.innerHTML += "<a href='javascript:download_begin(\"inst-x86-current\"," + i + ")' class=\"btn btn-sm btn-primary\"><i class=\"fa-solid fa-download\"></i> 32-bit<\/a>";
-		cell2.innerHTML += "<br\/>- Previous Windows Installer (<?=$previous_openvpn_version . '-Ix' . $previous_openvpn_version_rev?>):<br\/>";
-		cell2.innerHTML += "&nbsp;&nbsp; ";
-		cell2.innerHTML += "<a href='javascript:download_begin(\"inst-x64-previous\"," + i + ")' class=\"btn btn-sm btn-primary\"><i class=\"fa-solid fa-download\"></i> 64-bit<\/a>";
-		cell2.innerHTML += "&nbsp;&nbsp; ";
-		cell2.innerHTML += "<a href='javascript:download_begin(\"inst-x86-previous\"," + i + ")' class=\"btn btn-sm btn-primary\"><i class=\"fa-solid fa-download\"></i> 32-bit<\/a>";
 		cell2.innerHTML += "<br\/>- Legacy Windows Installers (<?=$legacy_openvpn_version . '-Ix' . $legacy_openvpn_version_rev?>):<br\/>";
 		cell2.innerHTML += "&nbsp;&nbsp; ";
 		cell2.innerHTML += "<a href='javascript:download_begin(\"inst-Win10\"," + i + ")' class=\"btn btn-sm btn-primary\"><i class=\"fa-solid fa-download\"></i> 10/2016/2019<\/a>";

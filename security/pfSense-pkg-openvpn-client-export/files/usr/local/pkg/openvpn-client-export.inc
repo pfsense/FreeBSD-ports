@@ -28,12 +28,8 @@ require_once("util.inc");
 require_once("pfsense-utils.inc");
 
 global $current_openvpn_version, $current_openvpn_version_rev;
-$current_openvpn_version = "2.6.7";
+$current_openvpn_version = "2.6.17";
 $current_openvpn_version_rev = "001";
-
-global $previous_openvpn_version, $previous_openvpn_version_rev;
-$previous_openvpn_version = "2.5.9";
-$previous_openvpn_version_rev = "601";
 
 global $legacy_openvpn_version, $legacy_openvpn_version_rev;
 $legacy_openvpn_version = "2.4.12";
@@ -590,7 +586,6 @@ EOF;
 function openvpn_client_export_installer($srvid, $usrid, $crtid, $useaddr, $verifyservercn, $blockoutsidedns, $legacy, $bindmode, $usetoken, $outpass, $p12encryption, $proxy, $advancedoptions, $openvpn_version = "x64-current", $usepkcs11, $pkcs11providers, $pkcs11id, $silent) {
 	global $g, $input_errors;
 	global $current_openvpn_version, $current_openvpn_version_rev;
-	global $previous_openvpn_version, $previous_openvpn_version_rev;
 	global $legacy_openvpn_version, $legacy_openvpn_version_rev;
 
 	switch ($openvpn_version) {
@@ -601,12 +596,6 @@ function openvpn_client_export_installer($srvid, $usrid, $crtid, $useaddr, $veri
 		case "Win10":
 			$legacy = true;
 			$client_install_exe = "openvpn-install-{$legacy_openvpn_version}-I{$legacy_openvpn_version_rev}-Win10.exe";
-			break;
-		case "x86-previous":
-			$client_install_exe = "OpenVPN-{$previous_openvpn_version}-I{$previous_openvpn_version_rev}-x86.msi";
-			break;
-		case "x64-previous":
-			$client_install_exe = "OpenVPN-{$previous_openvpn_version}-I{$previous_openvpn_version_rev}-amd64.msi";
 			break;
 		case "x86-current":
 			$client_install_exe = "OpenVPN-{$current_openvpn_version}-I{$current_openvpn_version_rev}-x86.msi";
@@ -649,7 +638,7 @@ function openvpn_client_export_installer($srvid, $usrid, $crtid, $useaddr, $veri
 	/* OpenVPN Win7/Win10 installer stub is 32-bit, but could need to read a 64-bit registry.
 	 * Using the 64-bit-aware openvpn-postinstall works fine even on 32-bit Windows 10.
 	 */
-	if (in_array($openvpn_version, array('Win7', 'Win10', 'x64-previous', 'x64-current'))) {
+	if (in_array($openvpn_version, array('Win7', 'Win10', 'x64-current'))) {
 		rename("{$tempdir}/openvpn-postinstall64.exe", "{$tempdir}/openvpn-postinstall.exe");
 	}
 
@@ -823,13 +812,16 @@ EOF;
 
 		// write user .key
 		if (!empty($outpass)) {
+			$prvkey = base64_decode($cert['prv']);
+			$key_details = openssl_pkey_get_details(openssl_pkey_get_private($prvkey));
+			$keytype = ($key_details['type'] == OPENSSL_KEYTYPE_RSA) ? 'rsa' : 'ec';
 			$keyfile = "{$tempdir}/key.key";
 			$clearkeyfile = "{$tempdir}/key-clear.key";
-			file_put_contents($clearkeyfile, base64_decode($cert['prv']));
+			file_put_contents($clearkeyfile, $prvkey);
 			$eoutpass = escapeshellarg($outpass);
 			$ekeyfile = escapeshellarg($keyfile);
 			$eclearkeyfile = escapeshellarg($clearkeyfile);
-			exec("/usr/bin/openssl rsa -in {$eclearkeyfile} -out {$ekeyfile} -des3 -passout pass:{$eoutpass}");
+			exec("/usr/bin/openssl {$keytype} -in {$eclearkeyfile} -out {$ekeyfile} -des3 -passout pass:{$eoutpass}");
 			unlink($clearkeyfile);
 		} else {
 			$keyfile = "{$tempdir}/key.key";
