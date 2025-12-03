@@ -1,0 +1,904 @@
+diff --git a/dns64/dns64.c b/dns64/dns64.c
+index fbdbd87b..0de1ac42 100644
+--- a/dns64/dns64.c
++++ b/dns64/dns64.c
+@@ -496,8 +496,8 @@ handle_ipv6_ptr(struct module_qstate* qstate, int id)
+ 
+     /* Create the new sub-query. */
+     fptr_ok(fptr_whitelist_modenv_attach_sub(qstate->env->attach_sub));
+-    if(!(*qstate->env->attach_sub)(qstate, &qinfo, qstate->query_flags, 0, 0,
+-                &subq))
++    if(!(*qstate->env->attach_sub)(qstate, &qinfo, qstate->client_info,
++	    qstate->query_flags, 0, 0, &subq))
+         return module_error;
+     if (subq) {
+         subq->curmod = id;
+@@ -522,8 +522,8 @@ generate_type_A_query(struct module_qstate* qstate, int id)
+ 
+ 	/* Start the sub-query. */
+ 	fptr_ok(fptr_whitelist_modenv_attach_sub(qstate->env->attach_sub));
+-	if(!(*qstate->env->attach_sub)(qstate, &qinfo, qstate->query_flags, 0,
+-				       0, &subq))
++	if(!(*qstate->env->attach_sub)(qstate, &qinfo, qstate->client_info,
++		qstate->query_flags, 0, 0, &subq))
+ 	{
+ 		verbose(VERB_ALGO, "dns64: sub-query creation failed");
+ 		return module_error;
+diff --git a/doc/Changelog b/doc/Changelog
+index c78cdff3..33efba00 100644
+--- a/doc/Changelog
++++ b/doc/Changelog
+@@ -1,3 +1,11 @@
++30 September 2025: Wouter
++	- Fix for #1344: Fix that respip and dns64 can be enabled at the
++	  same time, the client info is copied for attach_sub and add_sub
++	  calls. That makes respip work on dns64 synthesized answers, and
++	  also makes RPZ work with DNS64. The order for the modules is
++	  module-config: "respip dns64 validator iterator".
++	  The repository continues with version 1.24.1.
++
+ 17 September 2025: Yorgos
+ 	- Too many quotes for the EDE message debug printout.
+ 
+diff --git a/edns-subnet/subnetmod.c b/edns-subnet/subnetmod.c
+index 88310a78..a2a3f184 100644
+--- a/edns-subnet/subnetmod.c
++++ b/edns-subnet/subnetmod.c
+@@ -567,8 +567,8 @@ generate_sub_request(struct module_qstate *qstate, int id, struct subnet_qstate*
+ 	}
+ 
+ 	fptr_ok(fptr_whitelist_modenv_attach_sub(qstate->env->attach_sub));
+-	if(!(*qstate->env->attach_sub)(qstate, &qinf, qflags, prime, valrec,
+-		&subq)) {
++	if(!(*qstate->env->attach_sub)(qstate, &qinf, qstate->client_info,
++		qflags, prime, valrec, &subq)) {
+ 		return 0;
+ 	}
+ 	if(subq) {
+diff --git a/ipsecmod/ipsecmod.c b/ipsecmod/ipsecmod.c
+index 1c9e6e6a..ce38b55c 100644
+--- a/ipsecmod/ipsecmod.c
++++ b/ipsecmod/ipsecmod.c
+@@ -163,7 +163,7 @@ generate_request(struct module_qstate* qstate, int id, uint8_t* name,
+ 	}
+ 
+ 	fptr_ok(fptr_whitelist_modenv_attach_sub(qstate->env->attach_sub));
+-	if(!(*qstate->env->attach_sub)(qstate, &ask,
++	if(!(*qstate->env->attach_sub)(qstate, &ask, NULL,
+ 		(uint16_t)(BIT_RD|flags), 0, 0, &newq)){
+ 		log_err("Could not generate request: out of memory");
+ 		return 0;
+diff --git a/iterator/iterator.c b/iterator/iterator.c
+index 71e64655..071dd082 100644
+--- a/iterator/iterator.c
++++ b/iterator/iterator.c
+@@ -829,7 +829,7 @@ generate_sub_request(uint8_t* qname, size_t qnamelen, uint16_t qtype,
+ 		struct mesh_state* sub = NULL;
+ 		fptr_ok(fptr_whitelist_modenv_add_sub(
+ 			qstate->env->add_sub));
+-		if(!(*qstate->env->add_sub)(qstate, &qinf,
++		if(!(*qstate->env->add_sub)(qstate, &qinf, NULL,
+ 			qflags, prime, valrec, &subq, &sub)){
+ 			return 0;
+ 		}
+@@ -838,8 +838,8 @@ generate_sub_request(uint8_t* qname, size_t qnamelen, uint16_t qtype,
+ 		/* attach subquery, lookup existing or make a new one */
+ 		fptr_ok(fptr_whitelist_modenv_attach_sub(
+ 			qstate->env->attach_sub));
+-		if(!(*qstate->env->attach_sub)(qstate, &qinf, qflags, prime,
+-			valrec, &subq)) {
++		if(!(*qstate->env->attach_sub)(qstate, &qinf, NULL, qflags,
++			prime, valrec, &subq)) {
+ 			return 0;
+ 		}
+ 	}
+diff --git a/pythonmod/interface.i b/pythonmod/interface.i
+index 2040fb9e..7ac868df 100644
+--- a/pythonmod/interface.i
++++ b/pythonmod/interface.i
+@@ -732,8 +732,8 @@ struct module_env {
+         char* tls_auth_name, struct module_qstate* q, int* was_ratelimited);
+     void (*detach_subs)(struct module_qstate* qstate);
+     int (*attach_sub)(struct module_qstate* qstate,
+-        struct query_info* qinfo, uint16_t qflags, int prime,
+-        int valrec, struct module_qstate** newq);
++        struct query_info* qinfo, struct respip_client_info* cinfo,
++        uint16_t qflags, int prime, int valrec, struct module_qstate** newq);
+     void (*kill_sub)(struct module_qstate* newq);
+     int (*detect_cycle)(struct module_qstate* qstate,
+         struct query_info* qinfo, uint16_t flags, int prime,
+diff --git a/respip/respip.c b/respip/respip.c
+index 353a0fd7..f39ce580 100644
+--- a/respip/respip.c
++++ b/respip/respip.c
+@@ -1074,7 +1074,8 @@ generate_cname_request(struct module_qstate* qstate,
+ 	subqi.qtype = qstate->qinfo.qtype;
+ 	subqi.qclass = qstate->qinfo.qclass;
+ 	fptr_ok(fptr_whitelist_modenv_attach_sub(qstate->env->attach_sub));
+-	return (*qstate->env->attach_sub)(qstate, &subqi, BIT_RD, 0, 0, &subq);
++	return (*qstate->env->attach_sub)(qstate, &subqi,
++		qstate->client_info, BIT_RD, 0, 0, &subq);
+ }
+ 
+ void
+@@ -1233,7 +1234,8 @@ respip_inform_super(struct module_qstate* qstate, int id,
+ 	struct respip_qstate* rq = (struct respip_qstate*)super->minfo[id];
+ 	struct reply_info* new_rep = NULL;
+ 
+-	rq->state = RESPIP_SUBQUERY_FINISHED;
++	if(rq)
++		rq->state = RESPIP_SUBQUERY_FINISHED;
+ 
+ 	/* respip subquery should have always been created with a valid reply
+ 	 * in super. */
+diff --git a/services/mesh.c b/services/mesh.c
+index 3212a6ab..a0aae5c9 100644
+--- a/services/mesh.c
++++ b/services/mesh.c
+@@ -1190,24 +1190,19 @@ void mesh_detach_subs(struct module_qstate* qstate)
+ }
+ 
+ int mesh_add_sub(struct module_qstate* qstate, struct query_info* qinfo,
+-        uint16_t qflags, int prime, int valrec, struct module_qstate** newq,
+-	struct mesh_state** sub)
++	struct respip_client_info* cinfo, uint16_t qflags, int prime,
++	int valrec, struct module_qstate** newq, struct mesh_state** sub)
+ {
+ 	/* find it, if not, create it */
+ 	struct mesh_area* mesh = qstate->env->mesh;
+-	*sub = mesh_area_find(mesh, NULL, qinfo, qflags,
+-		prime, valrec);
+-	if(mesh_detect_cycle_found(qstate, *sub)) {
+-		verbose(VERB_ALGO, "attach failed, cycle detected");
+-		return 0;
+-	}
++	*sub = mesh_area_find(mesh, cinfo, qinfo, qflags, prime, valrec);
+ 	if(!*sub) {
+ #ifdef UNBOUND_DEBUG
+ 		struct rbnode_type* n;
+ #endif
+ 		/* create a new one */
+-		*sub = mesh_state_create(qstate->env, qinfo, NULL, qflags, prime,
+-			valrec);
++		*sub = mesh_state_create(qstate->env, qinfo, cinfo, qflags,
++			prime, valrec);
+ 		if(!*sub) {
+ 			log_err("mesh_attach_sub: out of memory");
+ 			return 0;
+@@ -1236,12 +1231,14 @@ int mesh_add_sub(struct module_qstate* qstate, struct query_info* qinfo,
+ }
+ 
+ int mesh_attach_sub(struct module_qstate* qstate, struct query_info* qinfo,
+-        uint16_t qflags, int prime, int valrec, struct module_qstate** newq)
++	struct respip_client_info* cinfo, uint16_t qflags, int prime,
++	int valrec, struct module_qstate** newq)
+ {
+ 	struct mesh_area* mesh = qstate->env->mesh;
+ 	struct mesh_state* sub = NULL;
+ 	int was_detached;
+-	if(!mesh_add_sub(qstate, qinfo, qflags, prime, valrec, newq, &sub))
++	if(!mesh_add_sub(qstate, qinfo, cinfo, qflags, prime, valrec, newq,
++		&sub))
+ 		return 0;
+ 	was_detached = (sub->super_set.count == 0);
+ 	if(!mesh_state_attachment(qstate->mesh_info, sub))
+@@ -1684,7 +1681,7 @@ static void dns_error_reporting(struct module_qstate* qstate,
+ 
+ 	log_query_info(VERB_ALGO, "DNS Error Reporting: generating report "
+ 		"query for", &qinfo);
+-	if(mesh_add_sub(qstate, &qinfo, BIT_RD, 0, 0, &newq, &sub)) {
++	if(mesh_add_sub(qstate, &qinfo, NULL, BIT_RD, 0, 0, &newq, &sub)) {
+ 		qstate->env->mesh->num_dns_error_reports++;
+ 	}
+ 	return;
+diff --git a/services/mesh.h b/services/mesh.h
+index f19f423a..53a05b44 100644
+--- a/services/mesh.h
++++ b/services/mesh.h
+@@ -399,6 +399,8 @@ void mesh_detach_subs(struct module_qstate* qstate);
+  * @param qstate: the state to find mesh state, and that wants to receive
+  * 	the results from the new subquery.
+  * @param qinfo: what to query for (copied).
++ * @param cinfo: if non-NULL client specific info that may affect IP-based
++ * 	actions that apply to the query result. It is copied.
+  * @param qflags: what flags to use (RD / CD flag or not).
+  * @param prime: if it is a (stub) priming query.
+  * @param valrec: if it is a validation recursion query (lookup of key, DS).
+@@ -407,7 +409,8 @@ void mesh_detach_subs(struct module_qstate* qstate);
+  * @return: false on error, true if success (and init may be needed).
+  */
+ int mesh_attach_sub(struct module_qstate* qstate, struct query_info* qinfo,
+-	uint16_t qflags, int prime, int valrec, struct module_qstate** newq);
++	struct respip_client_info* cinfo, uint16_t qflags, int prime,
++	int valrec, struct module_qstate** newq);
+ 
+ /**
+  * Add detached query.
+@@ -426,6 +429,8 @@ int mesh_attach_sub(struct module_qstate* qstate, struct query_info* qinfo,
+  * @param qstate: the state to find mesh state, and that wants to receive
+  * 	the results from the new subquery.
+  * @param qinfo: what to query for (copied).
++ * @param cinfo: if non-NULL client specific info that may affect IP-based
++ * 	actions that apply to the query result. It is copied.
+  * @param qflags: what flags to use (RD / CD flag or not).
+  * @param prime: if it is a (stub) priming query.
+  * @param valrec: if it is a validation recursion query (lookup of key, DS).
+@@ -435,8 +440,8 @@ int mesh_attach_sub(struct module_qstate* qstate, struct query_info* qinfo,
+  * @return: false on error, true if success (and init may be needed).
+  */
+ int mesh_add_sub(struct module_qstate* qstate, struct query_info* qinfo,
+-        uint16_t qflags, int prime, int valrec, struct module_qstate** newq,
+-	struct mesh_state** sub);
++	struct respip_client_info* cinfo, uint16_t qflags, int prime,
++	int valrec, struct module_qstate** newq, struct mesh_state** sub);
+ 
+ /**
+  * Query state is done, send messages to reply entries.
+diff --git a/smallapp/unbound-checkconf.c b/smallapp/unbound-checkconf.c
+index 2ca69e9e..c9172075 100644
+--- a/smallapp/unbound-checkconf.c
++++ b/smallapp/unbound-checkconf.c
+@@ -783,7 +783,6 @@ morechecks(struct config_file* cfg)
+ 	/* check that the modules listed in module_conf exist */
+ 	check_modules_exist(cfg->module_conf);
+ 
+-	/* Respip is known to *not* work with dns64. */
+ 	if(strcmp(cfg->module_conf, "iterator") != 0
+ 		&& strcmp(cfg->module_conf, "validator iterator") != 0
+ 		&& strcmp(cfg->module_conf, "dns64 validator iterator") != 0
+@@ -803,6 +802,7 @@ morechecks(struct config_file* cfg)
+ 		&& strcmp(cfg->module_conf, "dns64 validator python iterator") != 0
+ 		&& strcmp(cfg->module_conf, "python dns64 iterator") != 0
+ 		&& strcmp(cfg->module_conf, "python dns64 validator iterator") != 0
++		&& strcmp(cfg->module_conf, "python respip dns64 validator iterator") != 0
+ #endif
+ #ifdef WITH_DYNLIBMODULE
+ 		&& strcmp(cfg->module_conf, "dynlib iterator") != 0
+diff --git a/testdata/respip_dns64_lookup.rpl b/testdata/respip_dns64_lookup.rpl
+new file mode 100644
+index 00000000..df6e5612
+--- /dev/null
++++ b/testdata/respip_dns64_lookup.rpl
+@@ -0,0 +1,522 @@
++; config options
++server:
++	target-fetch-policy: "0 0 0 0 0"
++	qname-minimisation: no
++	minimal-responses: yes
++	; respip is before dns64 in the module list.
++	module-config: "respip dns64 validator iterator"
++	dns64-prefix: 64:ff9b::0/96
++	response-ip: 10.20.30.42/32 always_refuse
++	response-ip: 10.20.30.43/32 redirect
++	response-ip-data: 10.20.30.43/32 "A 4.5.6.3"
++	response-ip: 5.6.7.9/32 redirect
++	response-ip-data: 5.6.7.9/32 "A 4.5.6.7"
++	response-ip: 5.6.7.10/32 always_nxdomain
++	response-ip: 64:ff9b::506:70B/128 redirect
++	response-ip-data: 64:ff9b::506:70B/128 "AAAA 2001:db8::4"
++
++rpz:
++	name: "rpz.example.com."
++	rpz-log: yes
++	zonefile:
++TEMPFILE_NAME rpz.example.com
++TEMPFILE_CONTENTS rpz.example.com
++$ORIGIN example.com.
++rpz	3600	IN	SOA	ns1.rpz.example.com. hostmaster.rpz.example.com. (
++		1379078166 28800 7200 604800 7200 )
++	3600	IN	NS	ns1.rpz.example.com.
++	3600	IN	NS	ns2.rpz.example.com.
++$ORIGIN rpz.example.com.
++32.44.30.20.10.rpz-ip CNAME .
++32.12.7.6.5.rpz-ip CNAME .
++32.13.7.6.5.rpz-ip A 4.5.6.13
++32.14.7.6.5.rpz-ip CNAME alias.example.com.
++TEMPFILE_END
++
++stub-zone:
++	name: "."
++	stub-addr: 193.0.14.129		# K.ROOT-SERVERS.NET.
++CONFIG_END
++
++SCENARIO_BEGIN Test respip and dns64 lookup.
++
++; K.ROOT-SERVERS.NET.
++RANGE_BEGIN 0 1000
++	ADDRESS 193.0.14.129
++ENTRY_BEGIN
++MATCH opcode qtype qname
++ADJUST copy_id
++REPLY QR NOERROR
++SECTION QUESTION
++. IN NS
++SECTION ANSWER
++. IN NS K.ROOT-SERVERS.NET.
++SECTION ADDITIONAL
++K.ROOT-SERVERS.NET.	IN	A	193.0.14.129
++ENTRY_END
++
++ENTRY_BEGIN
++MATCH opcode subdomain
++ADJUST copy_id copy_query
++REPLY QR NOERROR
++SECTION QUESTION
++com. IN NS
++SECTION AUTHORITY
++com.	IN NS	a.gtld-servers.net.
++SECTION ADDITIONAL
++a.gtld-servers.net.	IN	A	192.5.6.30
++ENTRY_END
++RANGE_END
++
++; a.gtld-servers.net.
++RANGE_BEGIN 0 1000
++	ADDRESS 192.5.6.30
++ENTRY_BEGIN
++MATCH opcode qtype qname
++ADJUST copy_id
++REPLY QR NOERROR
++SECTION QUESTION
++com. IN NS
++SECTION ANSWER
++com.	IN NS	a.gtld-servers.net.
++SECTION ADDITIONAL
++a.gtld-servers.net.	IN	A	192.5.6.30
++ENTRY_END
++
++ENTRY_BEGIN
++MATCH opcode subdomain
++ADJUST copy_id copy_query
++REPLY QR NOERROR
++SECTION QUESTION
++example.com. IN NS
++SECTION AUTHORITY
++example.com.	IN NS	ns.example.com.
++SECTION ADDITIONAL
++ns.example.com.	IN	A	1.2.3.4
++ENTRY_END
++RANGE_END
++
++; ns.example.com.
++RANGE_BEGIN 0 1000
++	ADDRESS 1.2.3.4
++ENTRY_BEGIN
++MATCH opcode qtype qname
++ADJUST copy_id
++REPLY QR NOERROR
++SECTION QUESTION
++example.com. IN NS
++SECTION ANSWER
++example.com.	IN NS	ns.example.com.
++SECTION ADDITIONAL
++ns.example.com.	IN	A	1.2.3.4
++ENTRY_END
++
++ENTRY_BEGIN
++MATCH opcode qtype qname
++ADJUST copy_id
++REPLY QR NOERROR
++SECTION QUESTION
++www.example.com. IN A
++SECTION ANSWER
++www.example.com. IN A 10.20.30.40
++ENTRY_END
++
++ENTRY_BEGIN
++MATCH opcode qtype qname
++ADJUST copy_id
++REPLY QR NOERROR
++SECTION QUESTION
++www2.example.com. IN A
++SECTION ANSWER
++www2.example.com. IN A 10.20.30.42
++ENTRY_END
++
++ENTRY_BEGIN
++MATCH opcode qtype qname
++ADJUST copy_id
++REPLY QR NOERROR
++SECTION QUESTION
++www3.example.com. IN A
++SECTION ANSWER
++www3.example.com. IN A 10.20.30.43
++ENTRY_END
++
++ENTRY_BEGIN
++MATCH opcode qtype qname
++ADJUST copy_id
++REPLY QR NOERROR
++SECTION QUESTION
++www4.example.com. IN A
++SECTION ANSWER
++www4.example.com. IN A 10.20.30.44
++ENTRY_END
++
++ENTRY_BEGIN
++MATCH opcode qtype qname
++ADJUST copy_id
++REPLY QR NOERROR
++SECTION QUESTION
++ip4.example.com. IN AAAA
++SECTION ANSWER
++; NO AAAA present
++SECTION AUTHORITY
++example.com. IN SOA a. b. 1 2 3 4 5
++ENTRY_END
++
++ENTRY_BEGIN
++MATCH opcode qtype qname
++ADJUST copy_id
++REPLY QR NOERROR
++SECTION QUESTION
++ip4.example.com. IN A
++SECTION ANSWER
++ip4.example.com. IN A 5.6.7.8
++ENTRY_END
++
++ENTRY_BEGIN
++MATCH opcode qtype qname
++ADJUST copy_id
++REPLY QR NOERROR
++SECTION QUESTION
++ip4-2.example.com. IN AAAA
++SECTION ANSWER
++; NO AAAA present
++SECTION AUTHORITY
++example.com. IN SOA a. b. 1 2 3 4 5
++ENTRY_END
++
++ENTRY_BEGIN
++MATCH opcode qtype qname
++ADJUST copy_id
++REPLY QR NOERROR
++SECTION QUESTION
++ip4-2.example.com. IN A
++SECTION ANSWER
++ip4-2.example.com. IN A 5.6.7.9
++ENTRY_END
++
++ENTRY_BEGIN
++MATCH opcode qtype qname
++ADJUST copy_id
++REPLY QR NOERROR
++SECTION QUESTION
++ip4-3.example.com. IN AAAA
++SECTION ANSWER
++; NO AAAA present
++SECTION AUTHORITY
++example.com. IN SOA a. b. 1 2 3 4 5
++ENTRY_END
++
++ENTRY_BEGIN
++MATCH opcode qtype qname
++ADJUST copy_id
++REPLY QR NOERROR
++SECTION QUESTION
++ip4-3.example.com. IN A
++SECTION ANSWER
++ip4-3.example.com. IN A 5.6.7.10
++ENTRY_END
++
++ENTRY_BEGIN
++MATCH opcode qtype qname
++ADJUST copy_id
++REPLY QR NOERROR
++SECTION QUESTION
++ip4-4.example.com. IN AAAA
++SECTION ANSWER
++; NO AAAA present
++SECTION AUTHORITY
++example.com. IN SOA a. b. 1 2 3 4 5
++ENTRY_END
++
++ENTRY_BEGIN
++MATCH opcode qtype qname
++ADJUST copy_id
++REPLY QR NOERROR
++SECTION QUESTION
++ip4-4.example.com. IN A
++SECTION ANSWER
++ip4-4.example.com. IN A 5.6.7.11
++ENTRY_END
++
++ENTRY_BEGIN
++MATCH opcode qtype qname
++ADJUST copy_id
++REPLY QR NOERROR
++SECTION QUESTION
++ip4-5.example.com. IN AAAA
++SECTION ANSWER
++; NO AAAA present
++SECTION AUTHORITY
++example.com. IN SOA a. b. 1 2 3 4 5
++ENTRY_END
++
++ENTRY_BEGIN
++MATCH opcode qtype qname
++ADJUST copy_id
++REPLY QR NOERROR
++SECTION QUESTION
++ip4-5.example.com. IN A
++SECTION ANSWER
++ip4-5.example.com. IN A 5.6.7.12
++ENTRY_END
++
++ENTRY_BEGIN
++MATCH opcode qtype qname
++ADJUST copy_id
++REPLY QR NOERROR
++SECTION QUESTION
++ip4-6.example.com. IN AAAA
++SECTION ANSWER
++; NO AAAA present
++SECTION AUTHORITY
++example.com. IN SOA a. b. 1 2 3 4 5
++ENTRY_END
++
++ENTRY_BEGIN
++MATCH opcode qtype qname
++ADJUST copy_id
++REPLY QR NOERROR
++SECTION QUESTION
++ip4-6.example.com. IN A
++SECTION ANSWER
++ip4-6.example.com. IN A 5.6.7.13
++ENTRY_END
++
++ENTRY_BEGIN
++MATCH opcode qtype qname
++ADJUST copy_id
++REPLY QR NOERROR
++SECTION QUESTION
++ip4-7.example.com. IN AAAA
++SECTION ANSWER
++; NO AAAA present
++SECTION AUTHORITY
++example.com. IN SOA a. b. 1 2 3 4 5
++ENTRY_END
++
++ENTRY_BEGIN
++MATCH opcode qtype qname
++ADJUST copy_id
++REPLY QR NOERROR
++SECTION QUESTION
++ip4-7.example.com. IN A
++SECTION ANSWER
++ip4-7.example.com. IN A 5.6.7.14
++ENTRY_END
++
++ENTRY_BEGIN
++MATCH opcode qtype qname
++ADJUST copy_id
++REPLY QR NOERROR
++SECTION QUESTION
++alias.example.com. IN A
++SECTION ANSWER
++alias.example.com. IN A 4.5.6.14
++ENTRY_END
++RANGE_END
++
++STEP 1 QUERY
++ENTRY_BEGIN
++REPLY RD
++SECTION QUESTION
++www.example.com. IN A
++ENTRY_END
++
++; The query is unaltered.
++STEP 10 CHECK_ANSWER
++ENTRY_BEGIN
++MATCH all
++REPLY QR RD RA NOERROR
++SECTION QUESTION
++www.example.com. IN A
++SECTION ANSWER
++www.example.com. IN A 10.20.30.40
++ENTRY_END
++
++STEP 20 QUERY
++ENTRY_BEGIN
++REPLY RD
++SECTION QUESTION
++www2.example.com. IN A
++ENTRY_END
++
++; The query is altered by respip, A query refused.
++STEP 30 CHECK_ANSWER
++ENTRY_BEGIN
++MATCH all
++REPLY QR RD RA REFUSED
++SECTION QUESTION
++www2.example.com. IN A
++SECTION ANSWER
++ENTRY_END
++
++STEP 40 QUERY
++ENTRY_BEGIN
++REPLY RD
++SECTION QUESTION
++www3.example.com. IN A
++ENTRY_END
++
++; The query is altered by respip, with redirect.
++STEP 50 CHECK_ANSWER
++ENTRY_BEGIN
++MATCH all
++REPLY QR RD RA NOERROR
++SECTION QUESTION
++www3.example.com. IN A
++SECTION ANSWER
++www3.example.com. IN A 4.5.6.3
++ENTRY_END
++
++STEP 60 QUERY
++ENTRY_BEGIN
++REPLY RD
++SECTION QUESTION
++ip4.example.com. IN AAAA
++ENTRY_END
++
++; synthesize from A record 5.6.7.8 with DNS64.
++STEP 70 CHECK_ANSWER
++ENTRY_BEGIN
++MATCH all
++REPLY QR RD RA NOERROR
++SECTION QUESTION
++ip4.example.com. IN AAAA
++SECTION ANSWER
++ip4.example.com. IN AAAA 64:ff9b::506:708
++ENTRY_END
++
++STEP 80 QUERY
++ENTRY_BEGIN
++REPLY RD
++SECTION QUESTION
++ip4-2.example.com. IN AAAA
++ENTRY_END
++
++; The dns64 subquery is altered by respip, with redirect.
++; and the respip result is dns64 synthesized.
++STEP 90 CHECK_ANSWER
++ENTRY_BEGIN
++MATCH all
++REPLY QR RD RA NOERROR
++SECTION QUESTION
++ip4-2.example.com. IN AAAA
++SECTION ANSWER
++ip4-2.example.com. IN AAAA 64:ff9b::405:607
++ENTRY_END
++
++STEP 100 QUERY
++ENTRY_BEGIN
++REPLY RD
++SECTION QUESTION
++ip4-3.example.com. IN AAAA
++ENTRY_END
++
++; The dns64 subquery is altered by respip, with nxdomain.
++; and the respip result is dns64 synthesized.
++STEP 110 CHECK_ANSWER
++ENTRY_BEGIN
++MATCH all
++REPLY QR RD RA NOERROR
++SECTION QUESTION
++ip4-3.example.com. IN AAAA
++SECTION ANSWER
++SECTION AUTHORITY
++example.com. IN SOA a. b. 1 2 3 4 5
++ENTRY_END
++
++STEP 120 QUERY
++ENTRY_BEGIN
++REPLY RD
++SECTION QUESTION
++ip4-4.example.com. IN AAAA
++ENTRY_END
++
++; The dns64 subquery is synthesized, respip operates on the
++; synthesized AAAA result, and makes a redirect.
++STEP 130 CHECK_ANSWER
++ENTRY_BEGIN
++MATCH all
++REPLY QR RD RA NOERROR
++SECTION QUESTION
++ip4-4.example.com. IN AAAA
++SECTION ANSWER
++ip4-4.example.com. IN AAAA 2001:db8::4
++ENTRY_END
++
++STEP 140 QUERY
++ENTRY_BEGIN
++REPLY RD
++SECTION QUESTION
++www4.example.com. IN A
++ENTRY_END
++
++; The query is blocked by rpz.
++STEP 150 CHECK_ANSWER
++ENTRY_BEGIN
++MATCH all
++REPLY QR RD RA NXDOMAIN
++SECTION QUESTION
++www4.example.com. IN A
++SECTION ANSWER
++ENTRY_END
++
++STEP 160 QUERY
++ENTRY_BEGIN
++REPLY RD
++SECTION QUESTION
++ip4-5.example.com. IN AAAA
++ENTRY_END
++
++; The dns64 subquery is blocked by RPZ.
++STEP 170 CHECK_ANSWER
++ENTRY_BEGIN
++MATCH all
++REPLY QR RD RA NOERROR
++SECTION QUESTION
++ip4-5.example.com. IN AAAA
++SECTION ANSWER
++SECTION AUTHORITY
++example.com. IN SOA a. b. 1 2 3 4 5
++ENTRY_END
++
++STEP 180 QUERY
++ENTRY_BEGIN
++REPLY RD
++SECTION QUESTION
++ip4-6.example.com. IN AAAA
++ENTRY_END
++
++; The dns64 subquery is redirected by RPZ.
++STEP 190 CHECK_ANSWER
++ENTRY_BEGIN
++MATCH all
++REPLY QR RD RA NOERROR
++SECTION QUESTION
++ip4-6.example.com. IN AAAA
++SECTION ANSWER
++ip4-6.example.com. AAAA 64:ff9b::405:60d
++ENTRY_END
++
++STEP 200 QUERY
++ENTRY_BEGIN
++REPLY RD
++SECTION QUESTION
++ip4-7.example.com. IN AAAA
++ENTRY_END
++
++; The dns64 subquery is a CNAME by RPZ.
++; that CNAME resolves to an A record, dns64 synthesizes that A record.
++STEP 210 CHECK_ANSWER
++ENTRY_BEGIN
++MATCH all
++REPLY QR RD RA NOERROR
++SECTION QUESTION
++ip4-7.example.com. IN AAAA
++SECTION ANSWER
++ip4-7.example.com. CNAME alias.example.com.
++alias.example.com. AAAA 64:ff9b::405:60e
++ENTRY_END
++
++SCENARIO_END
+diff --git a/util/fptr_wlist.c b/util/fptr_wlist.c
+index c6f3ca24..a4513406 100644
+--- a/util/fptr_wlist.c
++++ b/util/fptr_wlist.c
+@@ -380,7 +380,8 @@ fptr_whitelist_modenv_detach_subs(void (*fptr)(
+ int 
+ fptr_whitelist_modenv_attach_sub(int (*fptr)(
+         struct module_qstate* qstate, struct query_info* qinfo,
+-        uint16_t qflags, int prime, int valrec, struct module_qstate** newq))
++	struct respip_client_info* cinfo, uint16_t qflags, int prime,
++	int valrec, struct module_qstate** newq))
+ {
+ 	if(fptr == &mesh_attach_sub) return 1;
+ 	return 0;
+@@ -389,8 +390,8 @@ fptr_whitelist_modenv_attach_sub(int (*fptr)(
+ int 
+ fptr_whitelist_modenv_add_sub(int (*fptr)(
+         struct module_qstate* qstate, struct query_info* qinfo,
+-        uint16_t qflags, int prime, int valrec, struct module_qstate** newq,
+-	struct mesh_state** sub))
++	struct respip_client_info* cinfo, uint16_t qflags, int prime,
++	int valrec, struct module_qstate** newq, struct mesh_state** sub))
+ {
+ 	if(fptr == &mesh_add_sub) return 1;
+ 	return 0;
+diff --git a/util/fptr_wlist.h b/util/fptr_wlist.h
+index fb2475cc..a1a75625 100644
+--- a/util/fptr_wlist.h
++++ b/util/fptr_wlist.h
+@@ -233,7 +233,8 @@ int fptr_whitelist_modenv_detach_subs(void (*fptr)(
+  */
+ int fptr_whitelist_modenv_attach_sub(int (*fptr)(
+ 	struct module_qstate* qstate, struct query_info* qinfo, 
+-	uint16_t qflags, int prime, int valrec, struct module_qstate** newq));
++	struct respip_client_info* cinfo, uint16_t qflags, int prime,
++	int valrec, struct module_qstate** newq));
+ 
+ /**
+  * Check function pointer whitelist for module_env add_sub callback values.
+@@ -242,8 +243,9 @@ int fptr_whitelist_modenv_attach_sub(int (*fptr)(
+  * @return false if not in whitelist.
+  */
+ int fptr_whitelist_modenv_add_sub(int (*fptr)(struct module_qstate* qstate,
+-	struct query_info* qinfo, uint16_t qflags, int prime, int valrec,
+-	struct module_qstate** newq, struct mesh_state** sub));
++	struct query_info* qinfo, struct respip_client_info* cinfo,
++	uint16_t qflags, int prime, int valrec, struct module_qstate** newq,
++	struct mesh_state** sub));
+ /**
+  * Check function pointer whitelist for module_env kill_sub callback values.
+  *
+diff --git a/util/module.h b/util/module.h
+index edce4a52..8ad8c48d 100644
+--- a/util/module.h
++++ b/util/module.h
+@@ -411,6 +411,8 @@ struct module_env {
+ 	 * @param qstate: the state to find mesh state, and that wants to 
+ 	 * 	receive the results from the new subquery.
+ 	 * @param qinfo: what to query for (copied).
++	 * @param cinfo: if non-NULL client specific info that may affect
++	 *	IP-based actions that apply to the query result.
+ 	 * @param qflags: what flags to use (RD, CD flag or not).
+ 	 * @param prime: if it is a (stub) priming query.
+ 	 * @param valrec: validation lookup recursion, does not need validation
+@@ -419,8 +421,9 @@ struct module_env {
+ 	 * @return: false on error, true if success (and init may be needed).
+ 	 */ 
+ 	int (*attach_sub)(struct module_qstate* qstate, 
+-		struct query_info* qinfo, uint16_t qflags, int prime, 
+-		int valrec, struct module_qstate** newq);
++		struct query_info* qinfo, struct respip_client_info* cinfo,
++		uint16_t qflags, int prime, int valrec,
++		struct module_qstate** newq);
+ 
+ 	/**
+ 	 * Add detached query.
+@@ -440,6 +443,8 @@ struct module_env {
+ 	 * @param qstate: the state to find mesh state, and that wants to receive
+ 	 * 	the results from the new subquery.
+ 	 * @param qinfo: what to query for (copied).
++	 * @param cinfo: if non-NULL client specific info that may affect
++	 *	IP-based actions that apply to the query result.
+ 	 * @param qflags: what flags to use (RD / CD flag or not).
+ 	 * @param prime: if it is a (stub) priming query.
+ 	 * @param valrec: if it is a validation recursion query (lookup of key, DS).
+@@ -449,9 +454,9 @@ struct module_env {
+ 	 * @return: false on error, true if success (and init may be needed).
+ 	 */
+ 	int (*add_sub)(struct module_qstate* qstate, 
+-		struct query_info* qinfo, uint16_t qflags, int prime, 
+-		int valrec, struct module_qstate** newq,
+-		struct mesh_state** sub);
++		struct query_info* qinfo, struct respip_client_info* cinfo,
++		uint16_t qflags, int prime, int valrec,
++		struct module_qstate** newq, struct mesh_state** sub);
+ 
+ 	/**
+ 	 * Kill newly attached sub. If attach_sub returns newq for 
+diff --git a/validator/validator.c b/validator/validator.c
+index 5817fc80..c129df92 100644
+--- a/validator/validator.c
++++ b/validator/validator.c
+@@ -496,7 +496,7 @@ generate_request(struct module_qstate* qstate, int id, uint8_t* name,
+ 		struct mesh_state* sub = NULL;
+ 		fptr_ok(fptr_whitelist_modenv_add_sub(
+ 			qstate->env->add_sub));
+-		if(!(*qstate->env->add_sub)(qstate, &ask, 
++		if(!(*qstate->env->add_sub)(qstate, &ask, NULL,
+ 			(uint16_t)(BIT_RD|flags), 0, valrec, newq, &sub)){
+ 			log_err("Could not generate request: out of memory");
+ 			return 0;
+@@ -505,7 +505,7 @@ generate_request(struct module_qstate* qstate, int id, uint8_t* name,
+ 	else {
+ 		fptr_ok(fptr_whitelist_modenv_attach_sub(
+ 			qstate->env->attach_sub));
+-		if(!(*qstate->env->attach_sub)(qstate, &ask, 
++		if(!(*qstate->env->attach_sub)(qstate, &ask, NULL,
+ 			(uint16_t)(BIT_RD|flags), 0, valrec, newq)){
+ 			log_err("Could not generate request: out of memory");
+ 			return 0;

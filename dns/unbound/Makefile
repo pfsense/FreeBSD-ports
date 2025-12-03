@@ -1,5 +1,6 @@
 PORTNAME=	unbound
 DISTVERSION=	1.24.2
+PORTREVISION=	1
 CATEGORIES=	dns
 MASTER_SITES=	https://www.nlnetlabs.nl/downloads/unbound/
 
@@ -12,6 +13,9 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 
 LIB_DEPENDS=	libexpat.so:textproc/expat2 \
 		libnghttp2.so:www/libnghttp2
+
+### NETGATE
+EXTRA_PATCHES=	${PATCHDIR}/feeebc95f875ed378848ffc4441e5a66bdf5c50b.patch:-p1
 
 USES=		autoreconf cpe libtool pkgconfig ssl
 CPE_VENDOR=	nlnetlabs
