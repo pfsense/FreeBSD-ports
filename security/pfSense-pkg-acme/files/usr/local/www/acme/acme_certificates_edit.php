@@ -52,7 +52,7 @@ if (!is_numeric($id))
 global $simplefields;
 $simplefields = array(
 	"name","descr","status",
-	"acmeaccount","keylength",
+	"acmeaccount","keylength","addressfamily",
 	"preferredchain", "dnssleep","renewafter"
 );
 
@@ -226,11 +226,6 @@ if ($_POST) {
 			if (strtolower(substr($server['method'], 0, 3)) != "dns") {
 				$input_errors[] = "Wildcard 'Domainname' validation requires a DNS-based method.";
 			}
-			/* If the hostname is valid when allowing wildcards, but not without, then it must be a wildcard */
-			$account = get_accountkey($_POST['acmeaccount']);
-			if (substr($account['acmeserver'], -2, 2) != '-2') {
-				$input_errors[] = "A wildcard 'Domainname' is present but the ACME Account key is not registered to an ACME v2 server.";
-			}
 		}
 	}
 	$a_actions = $actionslist->acme_htmllist_get_values();
@@ -326,6 +321,28 @@ foreach($simplefields as $field){
 </script>
 </head>
 <?php
+
+/* Ensure the ACME server on the ACME Account is valid, warn if not. */
+if (!empty($pconfig['acmeaccount'])) {
+	$acmeserver = "";
+	foreach (config_get_path('installedpackages/acme/accountkeys/item', []) as $accountkey) {
+		if (empty($accountkey) ||
+		    !is_array($accountkey)) {
+			continue;
+		}
+		if ($accountkey['name'] == $pconfig['acmeaccount']) {
+			$acmeserver = $accountkey['acmeserver'];
+			break;
+		}
+	}
+	if (!empty($acmeserver) &&
+	    !array_key_exists($acmeserver, $a_acmeserver)) {
+		$input_errors[] = gettext("The ACME Server stored on the current ACME Account no longer exists. " .
+					"This certificate will not function until the ACME Account is configured " .
+					"with a functional ACME Server value, or another valid ACME Account is selected.");
+	}
+}
+
 if (isset($input_errors)) {
 	print_input_errors($input_errors);
 }
@@ -349,7 +366,7 @@ $section->addInput(new \Form_Select(
 ));
 $section->addInput(new \Form_Select(
 	'acmeaccount',
-	'Acme Account',
+	'ACME Account',
 	$pconfig['acmeaccount'],
 	form_name_array(config_get_path('installedpackages/acme/accountkeys/item', []))
 ));
@@ -376,6 +393,13 @@ $section->addInput(new \Form_Input(
 	$pconfig['preferredchain']
 ))->setHelp('If the ACME CA provides multiple trust chains, this field chooses an alternate %1$spreferred chain%2$s (uses a case-insensitive substring match).',
 	'<a href="https://github.com/acmesh-official/acme.sh/wiki/Preferred-Chain">', '</a>');
+
+$section->addInput(new \Form_Select(
+	'addressfamily',
+	'Use Address Family',
+	$pconfig['addressfamily'],
+	form_keyvalue_array($a_addressfamily)
+))->setHelp('Instructs acme.sh to use a specific address family when making requests where possible.');
 
 $section->addInput(new \Form_StaticText(
 	'Domain SAN list', 

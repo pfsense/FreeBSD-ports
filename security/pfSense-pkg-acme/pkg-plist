@@ -71,6 +71,7 @@ pkg/acme/dnsapi/dns_googledomains.sh
 pkg/acme/dnsapi/dns_he_ddns.sh
 pkg/acme/dnsapi/dns_he.sh
 pkg/acme/dnsapi/dns_hetzner.sh
+pkg/acme/dnsapi/dns_hetznercloud.sh
 pkg/acme/dnsapi/dns_hexonet.sh
 pkg/acme/dnsapi/dns_hostingde.sh
 pkg/acme/dnsapi/dns_huaweicloud.sh

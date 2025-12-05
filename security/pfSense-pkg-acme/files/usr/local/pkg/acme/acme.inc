@@ -169,20 +169,12 @@ $a_enabledisable['disable'] = array('name' => 'Disabled');
 global $a_acmeserver;
 $a_acmeserver = array();
 $a_acmeserver['letsencrypt-staging-2'] = [
-	'name' => "Let's Encrypt Staging ACME v2 (For TESTING purposes)",
+	'name' => "Let's Encrypt Staging (For TESTING purposes)",
 	'url' => 'https://acme-staging-v02.api.letsencrypt.org/directory'
 ];
 $a_acmeserver['letsencrypt-production-2'] = [
-	'name' => "Let's Encrypt Production ACME v2 (Applies rate limits to certificate requests)",
+	'name' => "Let's Encrypt Production (Applies rate limits to certificate requests)",
 	'url' => 'https://acme-v02.api.letsencrypt.org/directory'
-];
-$a_acmeserver['buypass-staging'] = [
-	'name' => "BuyPass Staging (For TESTING purposes)",
-	'url' => 'https://api.test4.buypass.no/acme/directory'
-];
-$a_acmeserver['buypass-production'] = [
-	'name' => "BuyPass Production ACME v1 (Applies rate limits to certificate requests)",
-	'url' => 'https://api.buypass.com/acme/directory'
 ];
 $a_acmeserver['zerossl-production'] = [
 	'name' => "ZeroSSL Production (Applies rate limits to certificate requests)",
@@ -197,12 +189,16 @@ $a_acmeserver['sslcom-ecc-production'] = [
 	'url' => 'https://acme.ssl.com/sslcom-dv-ecc'
 ];
 $a_acmeserver['google-staging'] = [
-	'name' => "Google ACMEv2 Staging (For TESTING purposes)",
+	'name' => "Google Staging (For TESTING purposes)",
 	'url' => 'https://dv.acme-v02.test-api.pki.goog/directory'
 ];
 $a_acmeserver['google-production'] = [
-	'name' => "Google Production ACME v2 (Applies rate limits to certificate requests)",
+	'name' => "Google Production (Applies rate limits to certificate requests)",
 	'url' => 'https://dv.acme-v02.api.pki.goog/directory'
+];
+$a_acmeserver['actalis'] = [
+	'name' => "Actalis (Free certificates may only have the doimain and www subdomain. No wildcards.)",
+	'url' => 'https://acme-api.actalis.com/acme/directory'
 ];
 /*$a_acmeserver['dummy'] = [
 	'name' => "dummy",
@@ -1440,6 +1436,35 @@ $acme_domain_validation_method['dns_hetzner'] = [
 		],
 	]
 ];
+$acme_domain_validation_method['dns_hetznercloud'] = [
+	'name' => 'DNS-Hetzner Cloud DNS',
+	'fields' => [
+		'HETZNER_TOKEN' => [
+			'name' => 'hetzner_token',
+			'description' => 'Hetzner Cloud DNS API Token (required)',
+			'columnheader' => 'API Token',
+			'type' => 'password',
+		],
+		'HETZNER_TTL' => [
+			'name' => 'hetzner_ttl',
+			'description' => 'Custom TTL for new TXT rrsets (default 120)',
+			'columnheader' => 'TTL',
+			'type' => 'textbox',
+		],
+		'HETZNER_API' => [
+			'name' => 'hetzner_api',
+			'description' => 'Override API endpoint (default https://api.hetzner.cloud/v1)',
+			'columnheader' => 'API URL',
+			'type' => 'textbox',
+		],
+		'HETZNER_MAX_ATTEMPTS' => [
+			'name' => 'hetzner_max_attempts',
+			'description' => 'Number of 1s polls to wait for async actions (default 120)',
+			'columnheader' => 'Max Polls',
+			'type' => 'textbox',
+		],
+	]
+];
 $acme_domain_validation_method['dns_hexonet'] = [
 	'name' => 'DNS-Hexonet',
 	'fields' => [
@@ -1780,8 +1805,8 @@ $acme_domain_validation_method['dns_la'] = [
 			'columnheader' => 'ID',
 			'type' => 'textbox',
 		],
-		'LA_Key' => [
-			'name' => 'la_key',
+		'LA_Sk' => [
+			'name' => 'la_sk',
 			'description' => 'Key',
 			'columnheader' => 'Key',
 			'type' => 'password',
@@ -3074,6 +3099,12 @@ $acme_newcertificateactions = array(
 // </editor-fold>
 #end
 
+$a_addressfamily = [
+	'' => [ 'name' => "OS Default" ],
+	'ipv4' => [ 'name' => "Force IPv4" ],
+	'ipv6' => [ 'name' => "Force IPv6" ]
+];
+
 $a_keylength = array();
 $a_keylength['2048'] = array('name' => "2048-bit RSA");
 $a_keylength['3072'] = array('name' => "3072-bit RSA");
@@ -3411,6 +3442,10 @@ function get_certificate($name) {
 			echo "server: $acmeserver \n";
 
 			global $a_acmeserver;
+			if (!array_key_exists($acmeserver, $a_acmeserver)) {
+				echo "The ACME Server does not exist and cannot be used. Edit the account key and select a new ACME Server. Stopping.";
+				return false;
+			}
 			$url = $a_acmeserver[$acmeserver]['url'];
 			$certificatepsk = getCertificatePSK($url, $certificate, $domainstosign[0]->domainname);
 			$acmesh = new acme_sh($certificate['name'], $url, $email);
@@ -3418,6 +3453,7 @@ function get_certificate($name) {
 			$acmesh->dnssleep = $certificate['dnssleep'];
 			$acmesh->challengealias = $certificate['challengealias'];
 			$acmesh->preferredchain = $certificate['preferredchain'];
+			$acmesh->addressfamily = $certificate['addressfamily'];
 			$result = $acmesh->signCertificate($action, $accountkey, $certificatepsk, $domainstosign, $envvariables);
 		}
 		return $result;

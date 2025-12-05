@@ -59,6 +59,7 @@ class acme_sh {
 	private $debug = true;
 	public $dnssleep;
 	public $preferredchain;
+	public $addressfamily;
 	
 	private function execacmesh($command, $envvariables = null) {
 		$command = "/usr/local/pkg/acme/acme.sh " . $command;
@@ -181,6 +182,13 @@ class acme_sh {
 		}
 		if (!empty($this->preferredchain)) {
 			$cmdparameters .= " --preferred-chain " . escapeshellarg($this->preferredchain);
+		}
+		if (!empty($this->addressfamily)) {
+			if ($this->addressfamily == 'ipv4') {
+				$cmdparameters .= " --request-v4";
+			} elseif ($this->addressfamily == 'ipv6') {
+				$cmdparameters .= " --request-v6";
+			}
 		}
 
 		$Le_Domain = $domainstosign[0]->domainname;

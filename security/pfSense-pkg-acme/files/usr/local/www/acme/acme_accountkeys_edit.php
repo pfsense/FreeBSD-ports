@@ -116,6 +116,10 @@ if ($_POST) {
 		}
 	}
 
+	if (!array_key_exists($_POST['acmeserver'], $a_acmeserver)) {
+		$input_errors[] = gettext("The supplied ACME Server does not exist.");
+	}
+
 	/* Ensure that our account key names are unique */
 	foreach (config_get_path("installedpackages/acme/accountkeys/item", []) as $i => $item) {
 		if (($i != $id) && ($_POST['name'] == $item['name'])) {
@@ -185,6 +189,14 @@ foreach($simplefields as $field){
 ?>
 <!--/head-->
 <?php
+if (!empty($pconfig['acmeserver']) &&
+    !array_key_exists($pconfig['acmeserver'], $a_acmeserver)) {
+	$input_errors[] = gettext("The ACME Server stored on this key no longer exists and the " .
+				"field has been reset to the default value. This key, and any " .
+				"certificates using this key, will not function until this key " .
+				"is configured with a functional ACME Server value.");
+}
+
 if (isset($input_errors)) {
 	print_input_errors($input_errors);
 }
@@ -203,16 +215,15 @@ $section->addInput(new \Form_Select(
 	'ACME Server',
 	$pconfig['acmeserver'],
 	form_keyvalue_array($a_acmeserver)
-))->setHelp('The ACME server which will be used to issue certificates using this key.%1$s' .
-	'Use testing servers until certificate validation works, then switch to production.%1$s' .
-	'Let\'s Encrypt ACMEv1 servers no longer allow new registrations, and in June 2021 they will be completely disabled.%1$s%1$s', '<br/>');
+))->setHelp('The Certificate Authority ACME server which will issue certificates for this key.%1$s' .
+	'Use testing servers until certificate validation works, then switch to production.%1$s%1$s', '<br/>');
 
 $section->addInput(new \Form_Input(
 	'email',
 	'E-Mail Address',
 	'text',
 	$pconfig['email']
-))->setHelp('The e-mail address to register for this key. This is used by Let\'s Encrypt to send automated certificate expiration notices.');
+))->setHelp('The e-mail address to register for this key. The CA may use this address to send important notices.');
 
 $section->addInput(new \Form_Textarea(
 	'accountkey',
