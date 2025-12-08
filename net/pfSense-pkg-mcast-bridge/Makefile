@@ -1,6 +1,6 @@
 
 PORTNAME=	pfSense-pkg-mcast-bridge
-PORTVERSION=	1.1
+PORTVERSION=	1.2
 CATEGORIES=	net
 MASTER_SITES=	# empty
 DISTFILES=	# empty
@@ -11,7 +11,7 @@ WWW=		https://github.com/dennypage/mcast-bridge
 
 LICENSE=	APACHE20
 
-RUN_DEPENDS=	mcast-bridge>=1.1.0:net/mcast-bridge
+RUN_DEPENDS=	mcast-bridge>=1.2.0:net/mcast-bridge
 
 NO_BUILD=	yes
 NO_MTREE=	yes
