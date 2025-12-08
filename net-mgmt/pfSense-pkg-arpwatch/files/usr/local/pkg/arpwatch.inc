@@ -242,6 +242,9 @@ if ((false !== $message) && ((false === strpos($message, ': Cron ')) ||
 	$send_subject = config_get_path('system/hostname') . "." . config_get_path('system/domain') . " - Arpwatch Notification : {$subject[1]}";
 
 	send_smtp_message($message, $send_subject);
+	if (function_exists('notify_via_slack')) {
+		notify_via_slack($send_subject . " - " . $message);
+	}
 	if (function_exists('notify_via_telegram')) {
 		notify_via_telegram($send_subject . " - " . $message);
 	}
