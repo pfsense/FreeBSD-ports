@@ -1,0 +1,11 @@
+/etc/inc/priv/ocicarp.priv.inc
+bin/ocicarp.py
+pkg/ocicarp.xml
+pkg/ocicarp/ocicarp.inc
+%%DATADIR%%/info.xml
+www/ocicarp_settings.php
+www/shortcuts/pkg_ocicarp.inc
+@dir /usr/local/etc/devd
+@dir /usr/local/etc/ocicarp
+@dir /etc/inc/priv
+@dir /etc/inc
