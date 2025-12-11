@@ -34,6 +34,7 @@ pkg/patches/15844-widgetkey-validation-ce-2.7.2.patch
 pkg/patches/15856-openvpn-mgmt-fix.patch
 pkg/patches/16076.patch
 pkg/patches/16076_2.patch
+pkg/patches/16312_16314.patch
 pkg/patches/17630ffa48e33def331a65ee50f1ba1d2c3a5de5.patch
 pkg/patches/18b8e41591905844627377b76347f8acba88f0a1.patch
 pkg/patches/1a57545864783b3acc5f28d166a79bd92a849759.patch
@@ -48,6 +49,7 @@ pkg/patches/22f7276c167210f644cf586704ec21da22002bb2.patch
 pkg/patches/2470d8fb789854d2bfa7623f423b77c7f0c9b861.patch
 pkg/patches/247909ff5387200fb31c76f13e7702a8fbdc06f4.patch
 pkg/patches/24c0f00ff82d78c1e5301e43df21c2ef8ebecf7f.patch
+pkg/patches/251e202ecd97c8c994cd9dbebe2c1dc198500b8e.patch
 pkg/patches/27fc5a3020fe981b7a5bc98fc9b1660e8773fc7d.patch
 pkg/patches/28e2b61100b0f1cf81de5e73fd579bb6bd36afb5.patch
 pkg/patches/290b3461bb816e9fc161568e499d43b24542cb9f.patch
@@ -88,6 +90,7 @@ pkg/patches/68ed289190a383795194d3499728a0f6023f8a52.patch
 pkg/patches/6a92af14584d22f077e1421e952674f880cd5b6c-2_7_2.patch
 pkg/patches/6a92af14584d22f077e1421e952674f880cd5b6c.patch
 pkg/patches/6bf3e080f56facab1f00e29acd24dff62d5bd707.patch
+pkg/patches/6c00e3c78c4119b729aa5ecfe01e2a26d38505a3.patch
 pkg/patches/6dc0750874b69373f8adbae9b0af223af13f5f4a.patch
 pkg/patches/6df70417029defed162b539720e8baa03984f653.patch
 pkg/patches/6f59a7f9fdfe3703667819fcbbd8b6f8cbec0d9f.patch
@@ -117,6 +120,7 @@ pkg/patches/8b962c6a752a654f2def293d93c102d2d20a6887.patch
 pkg/patches/8ddf2b5a999772754080825f07acf9b6326f1f04.patch
 pkg/patches/908e52f9fc52914b8f0a0c1ae71be3c71bef6c3b.patch
 pkg/patches/90c4a2fe6db1bafc8bb4bc038cf3e3664ac6db47.patch
+pkg/patches/921fa4bece49bbf8a8daac68c73fcb7c5e5e5770.patch
 pkg/patches/9270d777907048d2bfc31f4e57a01e915ff71a88.patch
 pkg/patches/93f8b28797a2b618f96589c916128019231f027e.patch
 pkg/patches/93f8b28797a2b618f96589c916128019231f027e-plus.patch

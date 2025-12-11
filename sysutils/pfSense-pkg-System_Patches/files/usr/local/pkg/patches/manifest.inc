@@ -26,6 +26,58 @@ global $recommended_patches;
  */
 $recommended_patches = [
 [
+  'uniqid' => '16312_16314',
+  'versions' => ['25.07.1', '2.8.1'],
+  'descr' => 'Workaround for sshguard GUI authentication failure log message handling of usernames containing problematic characters',
+  'links' => [
+      [ 'text' => 'Redmine #16312',
+         'url' => 'https://redmine.pfsense.org/issues/16312', ],
+      [ 'text' => 'Redmine #16314',
+         'url' => 'https://redmine.pfsense.org/issues/16314', ],
+      [ 'text' => 'pfSense-SA-25_09.sshguard',
+         'url' => 'https://docs.netgate.com/downloads/pfSense-SA-25_09.sshguard.asc', ],
+  ],
+  'basedir' => '/',
+  'pathstrip' => 2,
+  'ignorewhitespace' => true,
+],
+[
+  'uniqid' => '251e202ecd97c8c994cd9dbebe2c1dc198500b8e',
+  'versions' => ['25.11', '25.07.1', '2.8.1'],
+  'descr' => 'Fix Captive portal "Allowed IPs" not working when using a language other than English',
+  'links' => [
+      [ 'text' => 'Redmine #16549',
+         'url' => 'https://redmine.pfsense.org/issues/16549', ],
+  ],
+  'basedir' => '/',
+  'pathstrip' => 2,
+  'ignorewhitespace' => true,
+],
+[
+  'uniqid' => '6c00e3c78c4119b729aa5ecfe01e2a26d38505a3',
+  'versions' => ['25.11', '25.07.1', '2.8.1'],
+  'descr' => 'Fix firewall not matching PF rules with rule number 0',
+  'links' => [
+      [ 'text' => 'Redmine #16575',
+         'url' => 'https://redmine.pfsense.org/issues/16575', ],
+  ],
+  'basedir' => '/',
+  'pathstrip' => 2,
+  'ignorewhitespace' => true,
+],
+[
+  'uniqid' => '921fa4bece49bbf8a8daac68c73fcb7c5e5e5770',
+  'versions' => ['25.11', '25.07.1', '2.8.1'],
+  'descr' => 'Fix firewall log not correctly parsing "short" packet errors',
+  'links' => [
+      [ 'text' => 'Redmine #16579',
+         'url' => 'https://redmine.pfsense.org/issues/16579', ],
+  ],
+  'basedir' => '/',
+  'pathstrip' => 2,
+  'ignorewhitespace' => true,
+],
+[
   'uniqid' => '891b161d2bd54390ed972ac82971d8b46971d4ae',
   'versions' => ['25.07.1'],
   'descr' => 'Fix unnecessary configuration change when manually verifying a ZFS Boot Environment',

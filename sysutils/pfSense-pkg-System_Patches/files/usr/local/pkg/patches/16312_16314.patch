@@ -1,0 +1,61 @@
+diff --git a/src/etc/inc/auth.inc b/src/etc/inc/auth.inc
+index 7d8332cd70..b097f80e52 100644
+--- a/src/etc/inc/auth.inc
++++ b/src/etc/inc/auth.inc
+@@ -2151,6 +2151,30 @@ function authenticate_user($username, $password, $authcfg = NULL, &$attributes =
+ 	return $authenticated;
+ }
+ 
++/*
++ * Function to remove problematic characters from a username before using it in
++ * logs or other sensitive contexts.
++ *
++ * These usernames are not valid, so there is little use in printing them as-is.
++ */
++function cleanup_invalid_username($username) {
++	$clean_username = "";
++	/* Trim to 32 chars, add string indicate text was removed */
++	if (strlen($username) > 32) {
++		$username = substr($username, 0, 32);
++		$username .= "__truncated__";
++	}
++	/* Replace any non-word characters */
++	for ($i=0; $i < strlen($username); $i++) {
++		if (preg_match('/\w/', $username[$i])) {
++			$clean_username .= $username[$i];
++		} else {
++			$clean_username .= "_";
++		}
++	}
++	return $clean_username;
++}
++
+ function session_auth() {
+ 	global $_SESSION, $page;
+ 
+@@ -2217,7 +2241,9 @@ function session_auth() {
+ 		} else {
+ 			/* give the user an error message */
+ 			$_SESSION['Login_Error'] = gettext("Username or Password incorrect");
+-			log_auth(sprintf(gettext("webConfigurator authentication error for user '%1\$s' from: %2\$s"), $_POST['usernamefld'], get_user_remote_address(false)));
++			log_auth(sprintf("webConfigurator authentication error for user '%1\$s' from: %2\$s",
++				cleanup_invalid_username($_POST['usernamefld']),
++				get_user_remote_address(false)));
+ 			if (isAjax()) {
+ 				echo "showajaxmessage('{$_SESSION['Login_Error']}');";
+ 				return;
+diff --git a/src/usr/local/www/xmlrpc.php b/src/usr/local/www/xmlrpc.php
+index 6b701786e6..0f9e60f03c 100644
+--- a/src/usr/local/www/xmlrpc.php
++++ b/src/usr/local/www/xmlrpc.php
+@@ -65,8 +65,8 @@ class pfsense_xmlrpc_server {
+ 		}
+ 
+ 		if (!$login_ok) {
+-			log_auth(sprintf(gettext("webConfigurator authentication error for user '%1\$s' from: %2\$s"),
+-			    $username,
++			log_auth(sprintf("webConfigurator authentication error for user '%1\$s' from: %2\$s",
++			    cleanup_invalid_username($username),
+ 			    $this->remote_addr));
+ 
+ 			require_once("XML/RPC2/Exception.php");
