@@ -5773,7 +5773,7 @@ function pfb_daemon_filterlog() {
 
 							// Convert any IDN to ASCII
 							$asn_final = '';
-							if (!ctype_print($asn)) {
+							if (!empty($asn) && !ctype_print($asn)) {
 								if (strpos($asn, '|') !== FALSE) {
 									$asn_ex = explode('|', $asn);
 									if (is_array($asn_ex) && !empty($asn_ex)) {
@@ -8668,7 +8668,7 @@ function sync_package_pfblockerng($cron='') {
 											}
 
 											// Convert IDN (Unicode domains) to ASCII (punycode)
-											if (!ctype_print($line)) {
+											if (!empty($line) && !ctype_print($line)) {
 
 												// Convert encodings to UTF-8
 												$line = mb_convert_encoding($line, 'UTF-8',
