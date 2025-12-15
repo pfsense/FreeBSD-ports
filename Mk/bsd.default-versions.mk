@@ -75,11 +75,11 @@ GUILE_DEFAULT?=		2.2
 IMAGEMAGICK_DEFAULT?=	7
 # Possible values: 8, 11, 17, 18, 19, 20, 21, 22, 23, 24, 25
 JAVA_DEFAULT?=		8
-# Possible values: 4.2, 4.99
+# Possible values: 4.4, 4.99
 .  if (defined(WANT_LAZARUS_DEVEL) && !empty(WANT_LAZARUS_DEVEL)) || ${ARCH:Maarch64}
 LAZARUS_DEFAULT?=	4.99
 .  else
-LAZARUS_DEFAULT?=	4.2
+LAZARUS_DEFAULT?=	4.4
 .  endif
 # Possible values: rust, legacy
 .  if empty(ARCH:Naarch64:Namd64:Narmv7:Ni386:Npowerpc64:Npowerpc64le:Npowerpc:Nriscv64)
@@ -133,7 +133,7 @@ PERL5_DEFAULT:=		${_PERL5_FROM_BIN:R}
 # Possible values: 13, 14, 15, 16, 17, 18
 PGSQL_DEFAULT?=		17
 # Possible values: 8.1, 8.2, 8.3, 8.4, 8.5
-PHP_DEFAULT?=		8.3
+PHP_DEFAULT?=		8.4
 # Possible values: rust, legacy
 .  if empty(ARCH:Naarch64:Namd64:Narmv7:Ni386:Npowerpc64:Npowerpc64le:Npowerpc:Nriscv64)
 PYCRYPTOGRAPHY_DEFAULT?=	rust
@@ -144,11 +144,11 @@ PYCRYPTOGRAPHY_DEFAULT?=	legacy
 PYTHON_DEFAULT?=	3.11
 # Possible values: 2.7
 PYTHON2_DEFAULT?=	2.7
-# Possible values: 3.2, 3.3, 3.4, 3.5
+# Possible values: 3.2, 3.3, 3.4, 4.0
 RUBY_DEFAULT?=		3.3
 # Possible values: rust, rust-nightly
 RUST_DEFAULT?=		rust
-# Possible values: 4.16, 4.19, 4.20, 4.22
+# Possible values: 4.16, 4.19, 4.20, 4.22, 4.23
 SAMBA_DEFAULT?=		4.16
 # When updating this, please also update the same list in ssl.mk and the checks
 # for USES=ssl in qa.sh!

@@ -128,7 +128,6 @@
     SUBDIR += genseki
     SUBDIR += gensen
     SUBDIR += gentium
-    SUBDIR += gentium-basic
     SUBDIR += gentium-book
     SUBDIR += gentium-plus-compact
     SUBDIR += genwan
@@ -138,7 +137,6 @@
     SUBDIR += gnu-unifont-otf
     SUBDIR += gofont-ttf
     SUBDIR += gohufont
-    SUBDIR += google-fonts
     SUBDIR += hack-font
     SUBDIR += hanazono-fonts-ttf
     SUBDIR += hermit

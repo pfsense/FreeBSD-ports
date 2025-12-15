@@ -1102,7 +1102,6 @@ security/webscarab||2022-03-31|Has expired: Deprecated by upstream in 2014
 security/pscan||2022-03-31|Has expired: Abandonware, last release in 2000
 security/vnccrack||2022-03-31|Has expired: Outdated and abandoned, last release in 2008. Upstream is at 2.1 while version in ports is 1.0.0
 security/doscan||2022-03-31|Has expired: Abandonware, last release in 2014. Please consider using security/masscan or sysutils/pnscan
-security/radamsa||2022-03-31|Has expired: Abandonware, last release in 2017 and marked as BROKEN in late 2020
 security/trinokiller||2022-03-31|Has expired: Abandonware, dead upstream
 security/spybye||2022-03-31|Has expired: Abandonware, last release in 2008 and no upstream development
 security/razorback-officeCat||2022-03-31|Has expired: Abandonware, last release in 2012 and listed as alpha quality by upstream
@@ -2320,7 +2319,6 @@ devel/py-python-Levenshtein|devel/py-Levenshtein|2023-08-17|Rename to match upst
 devel/py-jaraco||2023-08-21|Remove obsoleted port
 security/rubygem-openssl2|security/rubygem-openssl|2023-08-21|Remove obsoleted port. Use security/rubygem-openssl instead
 games/cataclysm-dda-tiles|games/cataclysm-dda@tiles|2023-08-22|Moved to a flavored version
-devel/lua-language-server||2023-08-22|Has expired: Versions after 3.6.9 dump core (and do not compile)
 security/py-netbox-secretstore|security/py-netbox-secrets|2023-08-22|Has expired: No longer maintained by upstream, not compatible with NetBox 3.5, please migrate to security/py-netbox-secrets
 benchmarks/dbs||2023-08-22|Has expired: Broken on all supported releases for more than an year
 databases/virtuoso||2023-08-22|Has expired: Broken on all supported FreeBSD releases for more than an year
@@ -4873,3 +4871,33 @@ graphics/converseen@qt6|graphics/converseen|2025-11-14|Unflavorize port, as it i
 www/rubygem-gon-rails60|www/rubygem-gon-rails-gitlab|2025-11-15|Obsolete, use www/rubygem-gon-rails-gitlab instead
 www/rubygem-gon-rails61|www/rubygem-gon-rails-gitlab|2025-11-15|Obsolete, use www/rubygem-gon-rails-gitlab instead
 www/rubygem-gon-rails70|www/rubygem-gon-rails-gitlab|2025-11-15|Obsolete, use www/rubygem-gon-rails-gitlab instead
+deskutils/fet@qt5|deskutils/fet|2025-11-16|Qt Flavorization has been removed. Qt 5.x is EOL and deskutils/fet now based on Qt 6.x
+deskutils/fet@qt6|deskutils/fet|2025-11-16|Qt Flavorization has been removed. Continue to enjoy deskutils/fet based on Qt 6.x as usual
+lang/ruby35|lang/ruby40|2025-11-18|Upstream changed version of master branch in their repository from 3.5 to 4.0
+lang/spidermonkey91||2025-11-18|Removed
+science/zx||2025-11-25|Removed: upstream repository archived on Jun 15, 2023, they refactored this project into a different package
+x11/salut||2025-11-25|Has expired: fails to build with rust 1.90.0
+comms/gtkmmorse||2025-11-26|Has expired: Depends on expired devel/gconfmm26
+devel/gconfmm26||2025-11-26|Has expired: Gconf has been replaced with gsettings
+print/xreader|graphics/xreader|2025-11-27|Use proper category based on repocopy from graphics/atril
+audio/decibels||2025-12-01|Has expired: Depends on deprecated lang/typescript (which needs a maintainer), see https://bugs.freebsd.org/bugzilla/show_bug.cgi?id=289856
+lang/typescript||2025-12-01|Has expired: New port was added without port maintainer, submitter not interested in taking it.  See https://bugs.freebsd.org/bugzilla/show_bug.cgi?id=289856 and contact mandree@ if you are willing to maintain typescript and have a track record that lets you appear suitable for maintaining a high-profile port
+games/dose-response||2025-12-01|Has expired: fails to build with rust-1.91.0 and no maintainer for this port
+textproc/moar|textproc/moor|2025-12-01|Has expired: Upstream renamed to moor, use textproc/moor instead
+accessibility/gammy||2025-12-01|Has expired: Abandoned and unfetchable
+mail/mu4e-maildirs|mail/mu|2025-12-01|Has expired: Upstream discourages using this software and recommends feature now integrated into mail/mu
+devel/libavl||2025-12-04|Has expired: Since 2002 libavl is no longer distributed as a shared library
+net/py-netif||2025-12-04|Has expired: Upstream unmaintained
+x11-fonts/google-fonts||2025-12-04|Has expired: Depends on expired x11-fonts/gentium-basic
+x11-fonts/gentium-basic||2025-12-04|Has expired: Superceeded by Gentium-7.000 https://software.sil.org/gentium/download/
+www/rubygem-cssbundling-rails-gitlab|www/rubygem-cssbundling-rails-rails-gitlab|2025-12-05|Obsolete, use www/rubygem-cssbundling-rails-rails-gitlab instead
+misc/amazon-qldb-shell||2025-12-05|Discontinued by Amazon as of July 2025: old and new customers are advised to migrate to Amazon Aurora PostgreSQL
+devel/libmill||2025-12-05|Has expired: Abandonware, not use in the ports tree
+devel/py-bsd||2025-12-05|Has expired: Unmaintained upstream
+devel/electron34||2025-12-07|Has expired: EOLed upstream, switch to newer version
+devel/libbfd||2025-12-07|Obsolete port, use devel/binutils instead
+graphics/kdegraphics-mobipocket@qt5|graphics/kdegraphics-mobipocket|2025-12-12|Unflavorize port. Qt5 support has been dropped upstream
+graphics/kdegraphics-mobipocket@qt6|graphics/kdegraphics-mobipocket|2025-12-12|Unflavorize port. Qt5 support has been dropped upstream
+cad/meshlab||2025-12-12|Remove broken port
+math/octave-forge-onsas||2025-12-15|Incompatible with octave packaging structure
+devel/equinix-metal-cli||2025-12-15|Has expired: Equinix Platform EOL upstream

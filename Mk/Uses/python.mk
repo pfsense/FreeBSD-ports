@@ -651,29 +651,31 @@ TEST_DEPENDS+=	${CRYPTOGRAPHY_DEPENDS}
 .  endif
 
 # cython* support
+CYTHON_DEPENDS=${PYTHON_PKGNAMEPREFIX}cython>=0.29.37<3:lang/cython@${PY_FLAVOR}
+CYTHON3_DEPENDS=${PYTHON_PKGNAMEPREFIX}cython3>=3.2.1:lang/cython3@${PY_FLAVOR}
 
 .  if defined(_PYTHON_FEATURE_CYTHON)
-BUILD_DEPENDS+=	${PYTHON_PKGNAMEPREFIX}cython>=0.29.37<3:lang/cython@${PY_FLAVOR}
+BUILD_DEPENDS+=	${CYTHON_DEPENDS}
 .  endif
 
 .  if defined(_PYTHON_FEATURE_CYTHON_RUN)
-RUN_DEPENDS+=	${PYTHON_PKGNAMEPREFIX}cython>=0.29.37<3:lang/cython@${PY_FLAVOR}
+RUN_DEPENDS+=	${CYTHON_DEPENDS}
 .  endif
 
 .  if defined(_PYTHON_FEATURE_CYTHON_TEST)
-TEST_DEPENDS+=	${PYTHON_PKGNAMEPREFIX}cython>=0.29.37<3:lang/cython@${PY_FLAVOR}
+TEST_DEPENDS+=	${CYTHON_DEPENDS}
 .  endif
 
 .  if defined(_PYTHON_FEATURE_CYTHON3)
-BUILD_DEPENDS+=	${PYTHON_PKGNAMEPREFIX}cython3>=3.1.6:lang/cython3@${PY_FLAVOR}
+BUILD_DEPENDS+=	${CYTHON3_DEPENDS}
 .  endif
 
 .  if defined(_PYTHON_FEATURE_CYTHON3_RUN)
-RUN_DEPENDS+=	${PYTHON_PKGNAMEPREFIX}cython3>=3.1.6:lang/cython3@${PY_FLAVOR}
+RUN_DEPENDS+=	${CYTHON3_DEPENDS}
 .  endif
 
 .  if defined(_PYTHON_FEATURE_CYTHON3_TEST)
-TEST_DEPENDS+=	${PYTHON_PKGNAMEPREFIX}cython3>=3.1.6:lang/cython3@${PY_FLAVOR}
+TEST_DEPENDS+=	${CYTHON3_DEPENDS}
 .  endif
 
 .  if defined(_PYTHON_FEATURE_CONCURRENT)
@@ -868,6 +870,10 @@ PY_SETUPTOOLS=	${PYTHON_PKGNAMEPREFIX}setuptools>0:devel/py-setuptools@${PY_FLAV
 .  endif
 
 # Common Python modules that can be needed but only for some versions of Python.
+.  if ${PYTHON_REL} < 31400
+PY_BACKPORTS.ZSTD=	${PYTHON_PKGNAMEPREFIX}backports.zstd>=1.0.0:devel/py-backports.zstd@${PY_FLAVOR}
+.  endif
+
 .  if ${PYTHON_REL} < 31100
 PY_EXCEPTIONGROUP=	${PYTHON_PKGNAMEPREFIX}exceptiongroup>=1.1.1:devel/py-exceptiongroup@${PY_FLAVOR}
 PY_TOMLI=		${PYTHON_PKGNAMEPREFIX}tomli>=2.3<3:textproc/py-tomli@${PY_FLAVOR}

@@ -1,6 +1,5 @@
 PORTNAME=	flare
-DISTVERSION=	0.17.2
-PORTREVISION=	1
+DISTVERSION=	0.17.5
 CATEGORIES=	net-im
 
 MAINTAINER=	nxjoseph@protonmail.com
@@ -17,7 +16,7 @@ LIB_DEPENDS=	libdbus-1.so:devel/dbus \
 RUN_DEPENDS=	gnome-keyring:security/gnome-keyring \
 		noto-emoji>=0:x11-fonts/noto-emoji
 
-USES=		cargo gettext-tools gnome meson pkgconfig python:build
+USES=		cargo gettext-tools gnome meson pkgconfig python:build ssl
 USE_GITLAB=	yes
 GL_ACCOUNT=	schmiddi-on-mobile
 USE_GNOME=	cairo gdkpixbuf gtk40 gtksourceview5 libadwaita libxml2 pango

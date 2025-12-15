@@ -1,5 +1,6 @@
 PORTNAME=	qimgv
-PORTVERSION=	1.03.g20241011
+PORTVERSION=	1.03.g20250905
+PORTREVISION=	2
 CATEGORIES=	graphics
 
 MAINTAINER=	kenrap@kennethraplee.com
@@ -14,28 +15,21 @@ USES=		cmake compiler:c++17-lang desktop-file-utils \
 		localbase:ldflags
 USE_GITHUB=	yes
 GH_ACCOUNT=	easymodo
-GH_TAGNAME=	a4d475fae07847be7c106cb628fb97dad51ab920
+GH_TAGNAME=	6bdfad1f47be2cd5eb54c6da45073f8eee55963f
 
 LDFLAGS+=	-linotify
 
-OPTIONS_DEFINE=		EXIV2 KDE5 OPENCV VIDEO
+OPTIONS_DEFINE=		EXIV2 OPENCV VIDEO
 OPTIONS_DEFAULT=	EXIV2 OPENCV QT6 VIDEO
 OPTIONS_SINGLE=		QT
 OPTIONS_SINGLE_QT=	QT5 QT6
 OPTIONS_SUB=		yes
 
-KDE5_DESC=		${KDE_DESC} (require QT5)
 OPENCV_DESC=		Enables high quality scaling options
 VIDEO_DESC=		Enables video playback via mpv
 
 EXIV2_LIB_DEPENDS=	libexiv2.so:graphics/exiv2
 EXIV2_CMAKE_BOOL=	EXIV2
-
-KDE5_IMPLIES=		QT5
-KDE5_PREVENTS=		QT6
-KDE5_USES=		kde:5 xorg
-KDE5_USE=		kde=windowsystem xorg=x11
-KDE5_CMAKE_BOOL=	KDE_SUPPORT
 
 OPENCV_LIB_DEPENDS=	libopencv_core.so:graphics/opencv \
 			libopencv_imgproc.so:graphics/opencv
@@ -56,5 +50,7 @@ VIDEO_CMAKE_BOOL=	VIDEO_SUPPORT
 post-patch:
 	@${REINPLACE_CMD} -e 's|/usr/local|${LOCALBASE}|g' \
 		${WRKSRC}/qimgv/settings.cpp
+	@${REINPLACE_CMD} -e 's|^Exec=|Exec=QT_SCALE_FACTOR_ROUNDING_POLICY=RoundPreferFloor |' \
+		${WRKSRC}/qimgv/distrib/qimgv.desktop
 
 .include <bsd.port.mk>

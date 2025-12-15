@@ -256,7 +256,6 @@
     SUBDIR += msglint
     SUBDIR += msmtp
     SUBDIR += mu
-    SUBDIR += mu4e-maildirs
     SUBDIR += mulberry
     SUBDIR += mutt
     SUBDIR += mutt_vc_query
@@ -608,6 +607,7 @@
     SUBDIR += rubygem-actionmailbox71
     SUBDIR += rubygem-actionmailbox72
     SUBDIR += rubygem-actionmailbox80
+    SUBDIR += rubygem-actionmailbox81
     SUBDIR += rubygem-actionmailer-gitlab
     SUBDIR += rubygem-actionmailer4
     SUBDIR += rubygem-actionmailer5
@@ -619,6 +619,7 @@
     SUBDIR += rubygem-actionmailer71
     SUBDIR += rubygem-actionmailer72
     SUBDIR += rubygem-actionmailer80
+    SUBDIR += rubygem-actionmailer81
     SUBDIR += rubygem-email_reply_parser
     SUBDIR += rubygem-email_reply_parser-discourse
     SUBDIR += rubygem-email_reply_trimmer
@@ -627,6 +628,7 @@
     SUBDIR += rubygem-extended_email_reply_parser
     SUBDIR += rubygem-gitlab-mail_room
     SUBDIR += rubygem-mail
+    SUBDIR += rubygem-mail-gitlab
     SUBDIR += rubygem-mail_room
     SUBDIR += rubygem-mailboxer
     SUBDIR += rubygem-mailfactory

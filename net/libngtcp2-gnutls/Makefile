@@ -1,5 +1,5 @@
 PORTNAME=	ngtcp2
-PORTVERSION=	1.17.0
+PORTVERSION=	1.18.0
 CATEGORIES=	net
 MASTER_SITES=	https://github.com/ngtcp2/ngtcp2/releases/download/v${PORTVERSION}/
 PKGNAMEPREFIX=	lib
@@ -17,7 +17,7 @@ BUILD_DEPENDS=	libngtcp2>=${PORTVERSION}<${PORTVERSION}_99:net/libngtcp2
 LIB_DEPENDS=	libgnutls.so:security/gnutls
 RUN_DEPENDS=	libngtcp2>=${PORTVERSION}<${PORTVERSION}_99:net/libngtcp2
 
-USES=		libtool pathfix pkgconfig tar:xz
+USES=		libtool pkgconfig tar:xz
 
 CONFIGURE_ARGS=	--enable-lib-only \
 		--with-gnutls \

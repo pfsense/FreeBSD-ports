@@ -1,9 +1,9 @@
 PORTNAME=	zot
 DISTVERSIONPREFIX=v
-DISTVERSION=	2.1.10
-PORTREVISION=	2
+DISTVERSION=	2.1.11
+PORTREVISION=	1
 CATEGORIES=	sysutils
-MASTER_SITES=	https://github.com/project-zot/zui/releases/download/commit-731b639/:ui
+MASTER_SITES=	https://github.com/project-zot/zui/releases/download/commit-${ZUI_VERSION}/:ui
 DISTFILES=	zui.tgz:ui
 
 MAINTAINER=	decke@FreeBSD.org
@@ -18,6 +18,8 @@ BROKEN_i386=	modernc.org/libc does not compile on i386
 USES=		go:modules
 USE_GITHUB=	yes
 GH_ACCOUNT=	project-zot
+
+ZUI_VERSION=	f870292
 
 GO_MODULE=	zotproject.dev/zot
 GO_MOD_DIST=	https://raw.githubusercontent.com/project-zot/zot/refs/tags/v${DISTVERSION}/

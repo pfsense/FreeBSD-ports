@@ -1,5 +1,5 @@
 PORTNAME=	veloren
-PORTVERSION=	s20251112
+PORTVERSION=	s20251203
 CATEGORIES=	games wayland
 PKGNAMESUFFIX=	-weekly
 
@@ -10,6 +10,7 @@ WWW=		https://veloren.net/
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
+BROKEN_aarch64=	https://github.com/bytecodealliance/wasmtime/issues/5499
 ONLY_FOR_ARCHS=	aarch64 amd64
 ONLY_FOR_ARCHS_REASON=	unsupported platform by https://github.com/wasmerio/wasmer
 
@@ -24,7 +25,7 @@ RUN_DEPENDS=	${LOCALBASE}/lib/alsa-lib/libasound_module_pcm_oss.so:audio/alsa-pl
 USES=		cargo xorg
 USE_XORG=	xcb
 USE_GITLAB=	yes
-GL_TAGNAME=	v0.17.0-1400-g07b4403015 # git describe --match='v[0-9]*' weekly
+GL_TAGNAME=	v0.17.0-1455-g7e8cec0d08 # git describe --match='v[0-9]*' weekly
 CARGO_ENV=	VELOREN_USERDATA_STRATEGY=system SHADERC_LIB_DIR="${LOCALBASE}/lib"
 PLIST_FILES=	bin/${PORTNAME}-server-cli \
 		bin/${PORTNAME}-voxygen \

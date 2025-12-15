@@ -1,5 +1,6 @@
 PORTNAME=	redis
-DISTVERSION=	8.2.3
+DISTVERSION=	8.4.0
+PORTREVISION=	1
 CATEGORIES=	databases
 MASTER_SITES=	https://download.redis.io/releases/
 
@@ -15,14 +16,14 @@ LICENSE_FILE=	${WRKSRC}/LICENSE.txt
 LICENSE_PERMS_RSALv2=	dist-mirror dist-sell pkg-mirror pkg-sell auto-accept
 LICENSE_PERMS_SSPLv1=	dist-mirror dist-sell pkg-mirror pkg-sell auto-accept
 
-USES=		compiler:c11 cpe gmake tcl:test
+USES=		compiler:c11 cpe gmake localbase:ldflags pkgconfig tcl:test
 CPE_VENDOR=	redislabs
 USE_RC_SUBR=	redis sentinel
 
 MAKE_ENV=	OPTIMIZATION= \
 		V=yo
+BINARY_ALIAS=	gmd5sum=md5sum
 
-LDFLAGS+=	-lpthread -lm -lexecinfo
 #PIE_UNSAFE=	ld: error: relocation R_X86_64_32 cannot be used against local \
 #		symbol; recompile with -fPIC
 

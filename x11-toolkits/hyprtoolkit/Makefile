@@ -1,6 +1,6 @@
 PORTNAME=	hyprtoolkit
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.3.0
+DISTVERSION=	0.4.1
 CATEGORIES=	x11-toolkits
 
 MAINTAINER=	tagattie@FreeBSD.org
@@ -34,8 +34,8 @@ USE_XORG=	pixman
 
 LDFLAGS+=	-pthread
 
-PLIST_SUB=	SOVERSION_MAJOR=3 \
-		SOVERSION_FULL=${DISTVERSION}
+PLIST_SUB=	SOVERSION_FULL=${DISTVERSION} \
+		SOVERSION_MAJOR=4
 
 # XXX Drop after FreeBSD 13.5 EOL around 2026-04-30
 # https://cgit.freebsd.org/src/commit/?id=af93fea71038

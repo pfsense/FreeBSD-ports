@@ -188,6 +188,7 @@
     SUBDIR += dangen
     SUBDIR += darkplaces
     SUBDIR += defendguin
+    SUBDIR += devd-controller-rules
     SUBDIR += devilutionX
     SUBDIR += dhewm3
     SUBDIR += diaspora
@@ -208,7 +209,6 @@
     SUBDIR += doom-wolfendoom
     SUBDIR += doomlegacy
     SUBDIR += doomsday
-    SUBDIR += dose-response
     SUBDIR += dreamchess
     SUBDIR += duel
     SUBDIR += dunelegacy
@@ -751,6 +751,7 @@
     SUBDIR += p5-Games-GuessWord
     SUBDIR += p5-Games-Tournament-RoundRobin
     SUBDIR += pachi
+    SUBDIR += pacman.c
     SUBDIR += pacmanarena
     SUBDIR += palapeli
     SUBDIR += pangzero

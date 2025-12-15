@@ -1,6 +1,5 @@
 PORTNAME=	qemu
-DISTVERSION=	10.1.2
-PORTREVISION=	1
+DISTVERSION=	10.1.3
 CATEGORIES=	emulators
 MASTER_SITES=	https://download.qemu.org/
 DIST_SUBDIR=	qemu/${PORTVERSION}
@@ -124,6 +123,9 @@ CFLAGS:=	${CFLAGS:C/-fno-tree-vrp//}
 WITHOUT_CPU_CFLAGS=	yes #to avoid problems with register allocation
 
 BINARY_ALIAS=	python3=${PYTHON_VERSION}
+.if exists(/usr/include/sys/inotify.h)
+EXTRA_PATCHES+=                ${PATCHDIR}/extra-patch-meson.build
+.endif
 
 PORTDOCS=	.buildinfo _static/* about/* dbus-dbusindex.html devel/* docs \
 		genindex.html glossary.html index.html interop/* objects.inv \

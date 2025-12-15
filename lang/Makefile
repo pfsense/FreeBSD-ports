@@ -331,7 +331,7 @@
     SUBDIR += ruby32
     SUBDIR += ruby33
     SUBDIR += ruby34
-    SUBDIR += ruby35
+    SUBDIR += ruby40
     SUBDIR += rubygem-rb_sys
     SUBDIR += rubygem-ruby_language_server
     SUBDIR += runawk
@@ -368,8 +368,8 @@
     SUBDIR += spidermonkey102
     SUBDIR += spidermonkey115
     SUBDIR += spidermonkey128
+    SUBDIR += spidermonkey140
     SUBDIR += spidermonkey78
-    SUBDIR += spidermonkey91
     SUBDIR += squeak
     SUBDIR += squirrel
     SUBDIR += starlark-rust
@@ -387,7 +387,7 @@
     SUBDIR += tolua++
     SUBDIR += trealla-prolog
     SUBDIR += tuareg-mode.el
-    SUBDIR += typescript
+    SUBDIR += typescript-go
     SUBDIR += typstfmt
     SUBDIR += typstyle
     SUBDIR += ucc

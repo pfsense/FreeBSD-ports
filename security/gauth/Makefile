@@ -1,7 +1,7 @@
 PORTNAME=	gauth
 DISTVERSIONPREFIX=	v
 DISTVERSION=	1.5.0
-PORTREVISION=	4
+PORTREVISION=	5
 CATEGORIES=	security
 
 MAINTAINER=	nxjoseph@protonmail.com
@@ -12,7 +12,7 @@ WWW=		https://github.com/pcarrier/gauth \
 LICENSE=	ISCL
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-USES=		go:1.23,modules
+USES=		go:modules
 
 GO_MODULE=	github.com/pcarrier/gauth
 

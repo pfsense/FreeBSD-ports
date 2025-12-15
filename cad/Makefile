@@ -35,6 +35,7 @@
     SUBDIR += feappv
     SUBDIR += fidocadj
     SUBDIR += freecad
+    SUBDIR += freecad-devel
     SUBDIR += freehdl
     SUBDIR += fritzing
     SUBDIR += gds3d
@@ -74,6 +75,7 @@
     SUBDIR += ldview
     SUBDIR += leocad
     SUBDIR += lepton-eda
+    SUBDIR += lib3mf
     SUBDIR += libbgcode
     SUBDIR += libgdsii
     SUBDIR += libopencad
@@ -84,7 +86,6 @@
     SUBDIR += logisim
     SUBDIR += magic
     SUBDIR += meshdev
-    SUBDIR += meshlab
     SUBDIR += netgen
     SUBDIR += netgen-lvs
     SUBDIR += ngspice_rework

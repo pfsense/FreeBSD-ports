@@ -1,11 +1,11 @@
 PORTNAME=	hypothesis
-PORTVERSION=	6.146.0
+PORTVERSION=	6.148.7
 CATEGORIES=	devel python
 MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
 MAINTAINER=	sunpoet@FreeBSD.org
-COMMENT=	Library for property based testing
+COMMENT=	Property-based testing library for Python
 WWW=		https://hypothesis.works/ \
 		https://hypothesis.readthedocs.io/en/latest/ \
 		https://github.com/HypothesisWorks/hypothesis/tree/master/hypothesis-python
@@ -44,8 +44,8 @@ CLI_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}black>=20.8b0:devel/py-black@${PY_FLAVOR
 			${PYTHON_PKGNAMEPREFIX}click>=7.0:devel/py-click@${PY_FLAVOR} \
 			${PYTHON_PKGNAMEPREFIX}rich>=9.0.0:textproc/py-rich@${PY_FLAVOR}
 CODEMODS_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}libcst>=0.3.16:devel/py-libcst@${PY_FLAVOR}
-CROSSHAIR_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}crosshair-tool>=0.0.97:devel/py-crosshair-tool@${PY_FLAVOR} \
-			${PYTHON_PKGNAMEPREFIX}hypothesis-crosshair>=0.0.25:devel/py-hypothesis-crosshair@${PY_FLAVOR}
+CROSSHAIR_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}crosshair-tool>=0.0.99:devel/py-crosshair-tool@${PY_FLAVOR} \
+			${PYTHON_PKGNAMEPREFIX}hypothesis-crosshair>=0.0.26:devel/py-hypothesis-crosshair@${PY_FLAVOR}
 DATEUTIL_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}python-dateutil>=1.4:devel/py-python-dateutil@${PY_FLAVOR}
 DJANGO_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}django42>=4.2:www/py-django42@${PY_FLAVOR}
 DPCONTRACTS_RUN_DEPENDS=${PYTHON_PKGNAMEPREFIX}dpcontracts>=0.4:devel/py-dpcontracts@${PY_FLAVOR}

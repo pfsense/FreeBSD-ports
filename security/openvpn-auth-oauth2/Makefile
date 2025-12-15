@@ -1,6 +1,6 @@
 PORTNAME=	openvpn-auth-oauth2
 DISTVERSIONPREFIX=	v
-DISTVERSION=	1.26.2
+DISTVERSION=	1.26.4
 PORTREVISION=	2
 CATEGORIES=	security net net-vpn
 
@@ -13,9 +13,10 @@ LICENSE_FILE=	${WRKSRC}/LICENSE.txt
 
 EXTRACT_DEPENDS=	${BUILD_DEPENDS}
 
-USES=		go:1.25,modules
+USES=		go:modules
 
 GO_MODULE=	github.com/jkroepke/openvpn-auth-oauth2
+GO_TARGET=	./cmd/openvpn-auth-oauth2
 
 SUB_FILES=	openvpn_auth_oauth2
 

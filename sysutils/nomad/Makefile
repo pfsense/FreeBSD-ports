@@ -1,4 +1,5 @@
 PORTNAME=	nomad
+PORTREVISION=	1
 DISTVERSIONPREFIX=	v
 DISTVERSION=	1.9.6
 CATEGORIES=	sysutils
@@ -22,7 +23,7 @@ WWW=		https://www.nomadproject.io/
 LICENSE=	MPL20
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-USES=		cpe go:1.23,modules
+USES=		cpe go:modules
 CPE_VENDOR=	hashicorp
 USE_GITHUB=	yes
 GH_ACCOUNT=	hashicorp

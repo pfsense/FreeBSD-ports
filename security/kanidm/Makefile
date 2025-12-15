@@ -1,9 +1,9 @@
 PORTNAME=	kanidm
 DISTVERSIONPREFIX=	v
-DISTVERSION=	1.7.3
-PORTREVISION=	3
+DISTVERSION=	1.8.5
 CATEGORIES=	security net
 
+# implicit-approval+: dtxdf
 MAINTAINER=	bofh@FreeBSD.org
 COMMENT=	Simple and secure identity management platform ${${FLAVOR}_COMMENT}
 WWW=		https://kanidm.com \
@@ -57,7 +57,8 @@ SUB_LIST=	USER=${USERS} \
 		GROUP=${GROUPS} \
 		ETCDIR=${PREFIX}/etc/kanidm \
 		RUNDIR=/var/run/kanidmd \
-		LIBDIR=/var/lib/kanidmd
+		LIBDIR=/var/lib/kanidmd \
+		SHAREDIR=${PREFIX}/share/kanidm
 .endif
 
 .if ${FLAVOR} == client
@@ -78,6 +79,8 @@ do-install:
 	${MKDIR} ${STAGEDIR}${ETCDIR}
 	${MKDIR} ${STAGEDIR}${SERVER_LIBDIR}
 	${MKDIR} ${STAGEDIR}${SERVER_RUNDIR}
+	${MKDIR} ${STAGEDIR}${DATADIR}/ui/hpkg
+	(cd ${WRKSRC}/server/core/static/ && ${COPYTREE_SHARE} . ${STAGEDIR}${DATADIR}/ui/hpkg/)
 .endif
 
 .if ${FLAVOR} == client

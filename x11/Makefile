@@ -135,6 +135,7 @@
     SUBDIR += hypridle
     SUBDIR += hyprland-guiutils
     SUBDIR += hyprland-qtutils
+    SUBDIR += hyprlauncher
     SUBDIR += hyprlock
     SUBDIR += hyprls
     SUBDIR += hyprpaper
@@ -391,7 +392,6 @@
     SUBDIR += runner
     SUBDIR += rxvt-unicode
     SUBDIR += sakura
-    SUBDIR += salut
     SUBDIR += sandbar
     SUBDIR += sbxkb
     SUBDIR += screen-message
@@ -608,6 +608,7 @@
     SUBDIR += xkeycaps
     SUBDIR += xkeywrap
     SUBDIR += xkill
+    SUBDIR += xlibre
     SUBDIR += xload
     SUBDIR += xloadimage
     SUBDIR += xlockmore

@@ -389,6 +389,7 @@
     SUBDIR += seafile-server
     SUBDIR += semaphore
     SUBDIR += sendip
+    SUBDIR += simplomon
     SUBDIR += sipcalc
     SUBDIR += sjitter
     SUBDIR += smartctl_exporter
@@ -410,6 +411,7 @@
     SUBDIR += triton-guesttools
     SUBDIR += unbound_exporter
     SUBDIR += unifi9
+    SUBDIR += unifi10
     SUBDIR += victoria-logs
     SUBDIR += victoria-metrics
     SUBDIR += virt-viewer

@@ -1,7 +1,7 @@
 PORTNAME=	gotify-server
 PORTVERSION=	2.7.3
 DISTVERSIONPREFIX=	v
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	net
 MASTER_SITES=	https://github.com/mfechner/freebsd-net-gotify-server/raw/refs/heads/main/:yarn_cache
 DISTNAME=	server
@@ -17,7 +17,7 @@ BROKEN_i386=	Build does not succeed (timeout in poudriere)
 
 BUILD_DEPENDS=	yarn${NODEJS_SUFFIX}>=1.10.0:www/yarn${NODEJS_SUFFIX} \
 		
-USES=		go:modules,1.25 nodejs:build
+USES=		go:modules nodejs:build
 USE_RC_SUBR=	gotify_server
 GO_MODULE=	github.com/gotify/server/v2
 
