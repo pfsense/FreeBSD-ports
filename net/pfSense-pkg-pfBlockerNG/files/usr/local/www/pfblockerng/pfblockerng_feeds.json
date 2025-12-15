@@ -55,6 +55,7 @@
 					"header":	"Abuse_IPBL"
 				},
 				{
+					"status":	"discontinued",
 					"feed":		"Abuse SSL Blacklist",
 					"website":	"https://sslbl.abuse.ch/",
 					"url":		"https://sslbl.abuse.ch/blacklist/sslipblacklist.txt",
@@ -126,6 +127,7 @@
 					"header":	"Spamhaus_eDrop"
 				},
 				{
+					"status":	"discontinued",
 					"feed":		"Talos-Snort",
 					"website":	"https://www.talosintelligence.com/",
 					"contact":	"https://www.talosintelligence.com/contact/",
@@ -220,6 +222,7 @@
 					"header":	"MDL"
 				},
 				{
+					"status":	"discontinued",	
 					"feed":		"MaxMind",
 					"website":	"https://www.maxmind.com/en/high-risk-ip-sample-list",
 					"contact":	"https://www.maxmind.com/en/contact",
@@ -355,6 +358,7 @@
 					"header":	"Botvrij_IP"
 				},
 				{
+					"status":	"discontinued",
 					"feed":		"CoinBlocker",
 					"website":	"https://zerodot1.gitlab.io/CoinBlockerListsWeb/index.html",
 					"url":		"https://zerodot1.gitlab.io/CoinBlockerLists/MiningServerIPList.txt",
@@ -417,6 +421,7 @@
 						]
 				},
 				{
+					"status":	"discontinued",
 					"feed":		"NoVirusThanks",
 					"website":	"http://www.ipspamlist.com/",
 					"url":		"http://www.ipspamlist.com/public_feeds.csv",
@@ -661,10 +666,11 @@
 				},
 				{
 					"feed":		"Nix Spam",
-					"website":	"https://www.heise.de/ix/NiX-Spam-DNSBL-and-blacklist-for-download-499637.html",
-					"url":		"https://www.nixspam.net/download/nixspam-ip.dump.gz",
+					"website":	"https://hostblogger.de/blog/archives/7353-Die-AEra-der-ix.dnsbl.manitu.net-geht-zu-Ende.html",
+					"url":		"https://nixspam.net/download/nixspam-ip.dump.gz",
 					"past_urls": [
-								"http://www.dnsbl.manitu.net/download/nixspam-ip.dump.gz"
+								"http://www.dnsbl.manitu.net/download/nixspam-ip.dump.gz",
+								"https://www.nixspam.net/download/nixspam-ip.dump.gz"
 					],
 					"header":	"Nix_Spam"
 				},
@@ -1028,6 +1034,22 @@
 					"website":	"https://docs.aws.amazon.com/general/latest/gr/aws-ip-ranges.html",
 					"url":		"https://ip-ranges.amazonaws.com/ip-ranges.json",
 					"header":	"AWS6"
+				}
+			]
+		},
+		"CC_6": {
+			"info":		"CautiousConnect list blocks all IPv6 space except for known good destinations.",
+			"description":	"CautiousConnect IP block ranges.",
+			"action":	"deny",
+			"cron":		"Weekly",
+			"feeds": [
+				{
+					"feed":		"SixInt CautiousConnect",
+					"website":	"https://sixint.io/products/cc_docs/about.html",
+					"url":		"https://block.sixint.io/cc/cautiousconnect-block.txt.gz?key=_API_KEY_",
+					"register":	"https://sixint.io/products/cautiousconnect.php",
+					"info":		"Free list; registration required.",
+					"header":	"CC6"
 				}
 			]
 		}
@@ -1430,7 +1452,7 @@
 				{
 					"feed":		"OpenPhish",
 					"website":	"https://openphish.com/phishing_feeds.html",
-					"url":		"https://openphish.com/feed.txt",
+					"url":		"https://raw.githubusercontent.com/openphish/public_feed/refs/heads/main/feed.txt",
 					"header":	"OpenPhish"
 				},
 				{
@@ -1771,6 +1793,7 @@
 			"cron":		"EveryDay",
 			"feeds": [
 				{
+					"status":	"discontinued",
 					"feed":		"CoinBlocker",
 					"website":	"https://zerodot1.gitlab.io/CoinBlockerListsWeb/index.html",
 					"url":		"https://zerodot1.gitlab.io/CoinBlockerLists/list.txt",
@@ -1782,7 +1805,9 @@
 							}
 						]
 				},
-				{	"feed":		"CoinBlocker",
+				{
+					"status":	"discontinued",
+					"feed":		"CoinBlocker",
 					"website":	"https://zerodot1.gitlab.io/CoinBlockerListsWeb/index.html",
 					"url":		"https://zerodot1.gitlab.io/CoinBlockerLists/list_optional.txt",
 					"header":	"CoinBlocker_Opt"
@@ -2102,6 +2127,7 @@
 			"cron":		"EveryDay",
 			"feeds": [
 				{
+					"status":	"discontinued",
 					"feed":		"ZeroDot1 CoinBlockerLists",
 					"website":	"https://gitlab.com/ZeroDot1/CoinBlockerLists",
 					"url":		"https://zerodot1.gitlab.io/CoinBlockerLists/hosts_browser",

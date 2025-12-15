@@ -629,7 +629,7 @@ function pfBlockerNG_get_header($mode='') {
 			$dnsbl_msg	= "DNSBL {$py_mode} is out of sync. Perform a Force Reload to correct.";
 		} else {
 			$dnsbl_status	= 'fa-solid fa-check-circle text-success';
-			$dnsbl_msg	= "DNSBL {$py_mode} is Active on vip: {$pfb['dnsbl_vip']} ports: {$pfb['dnsbl_port']} & {$pfb['dnsbl_port_ssl']}";
+			$dnsbl_msg	= "DNSBL {$py_mode} is Active on vip: {$pfb['dnsbl_vip4']} ports: {$pfb['dnsbl_port']} & {$pfb['dnsbl_port_ssl']}";
 		}
 
 		// Check for any Python Integration errors

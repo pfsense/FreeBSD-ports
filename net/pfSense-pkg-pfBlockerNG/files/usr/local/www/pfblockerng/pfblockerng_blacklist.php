@@ -28,6 +28,16 @@ global $pfb;
 pfb_global();
 
 $blacklist_types = glob("/usr/local/pkg/pfblockerng/*_global_usage");
+
+// Temporarily Discontinue Shallalist
+if (isset($blacklist_types) && is_array($blacklist_types)) {
+	foreach ($blacklist_types as $b_key => $b_type) {
+		if ($b_type == '/usr/local/pkg/pfblockerng/shallalist_global_usage') {
+			unset($blacklist_types[$b_key]);
+		}
+	}
+}
+
 $blacklist_options = array();
 if (!empty($blacklist_types)) {
 	foreach ($blacklist_types as $key => $type) {

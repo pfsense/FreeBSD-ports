@@ -149,6 +149,9 @@
 				<dt><strong>DNSBL</strong>:</dt>
 				<dd>Utilizing the DNS Resolver, ADverts and the worst known malicious domains will be blocked.</dd>
 			</dl>
+			<ul>
+				<li>A VIP on the Localhost interface <strong>must be configured first</strong> at <a target="_blank" href="/firewall_virtual_ip.php">Firewall > Virtual IPs</a>.</li>
+			</ul>
 		</div>
 		<div class="col-sm-11">
 			<br />
@@ -218,20 +221,31 @@
 <step>
 	<id>4</id>
 	<title>pfBlockerNG DNSBL Component Configuration</title>
-	<description>On this screen the pfBlockerNG DNSBL Category parameters will be set.</description>
+	<description><![CDATA[On this screen the pfBlockerNG DNSBL Category parameters will be set.<br />A VIP on the Localhost interface <strong>must be configured first</strong> at <a target="_blank" href="/firewall_virtual_ip.php">Firewall > Virtual IPs</a>.]]></description>
 	<fields>
 		<field>
 			<name>DNSBL Webserver Configuration</name>
 			<type>listtopic</type>
 		</field>
 		<field>
-			<name>pfb_dnsvip</name>
-			<displayname>VIP Address</displayname>
-			<bindstofield>pfblockerng_wizard-&gt;step3-&gt;pfb_dnsvip</bindstofield>
-			<type>input</type>
-			<value>10.10.10.1</value>
-			<validate>^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$</validate>
-			<message>IP Address field is invalid</message>
+			<name>pfb_dnsvip4</name>
+			<type>select_source</type>
+			<source><![CDATA[pfb_get_vip_options(AF_INET, true)]]></source>
+			<source_name>descr</source_name>
+			<source_value>id</source_value>
+			<description>Select the IPv4 DNSBL Virtual IP</description>
+			<displayname>IPv4 DNSBL Virtual IP</displayname>
+			<bindstofield>pfblockerng_wizard-&gt;step3-&gt;pfb_dnsvip4</bindstofield>
+		</field>
+		<field>
+			<name>pfb_dnsvip6</name>
+			<type>select_source</type>
+			<source><![CDATA[pfb_get_vip_options(AF_INET6, true)]]></source>
+			<source_name>descr</source_name>
+			<source_value>id</source_value>
+			<description>Select the IPv6 DNSBL Virtual IP</description>
+			<displayname>IPv6 DNSBL Virtual IP</displayname>
+			<bindstofield>pfblockerng_wizard-&gt;step3-&gt;pfb_dnsvip6</bindstofield>
 		</field>
 		<field>
 			<name>pfb_dnsport</name>
@@ -250,13 +264,6 @@
 			<type>input</type>
 			<value>8443</value>
 			<size>10</size>
-		</field>
-		<field>
-			<name>pfb_dnsblv6</name>
-			<displayname>IPv6 DNSBL</displayname>
-			<bindstofield>pfblockerng_wizard-&gt;step3-&gt;pfb_dnsblv6</bindstofield>
-			<description>Enable DNSBL for IPv6 DNS Resolution filtering.</description>
-			<type>checkbox</type>
 		</field>
 		<field>
 			<name>suppression</name>

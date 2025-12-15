@@ -1229,7 +1229,7 @@ closingprocess() {
 		countm="$(grep -c ^ ${masterfile})"
 		echo; echo "   [ Final IP Count  ]  [ ${countm} ]"; echo
 
-		s1="$(grep -cv ^${ip_placeholder2}$ ${masterfile})"
+		s1="$(grep -cv ^${ip_placeholder2}$ ${mastercat})"
 		s2="$(find ${pfbdeny}*.txt ! -name *_v6.txt -type f 2>/dev/null | xargs cat | grep -cv ^${ip_placeholder2}$)"
 		s3="$(sort ${mastercat} | uniq -d | tail -30)"
 		s4="$(find ${pfbdeny}*.txt ! -name *_v6.txt -type f 2>/dev/null | xargs cat | sort | uniq -d | tail -30 | grep -v ^${ip_placeholder2}$)"

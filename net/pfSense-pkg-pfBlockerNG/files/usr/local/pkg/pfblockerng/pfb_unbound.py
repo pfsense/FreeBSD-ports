@@ -158,7 +158,6 @@ def init_standard(id, env):
     pfb['gpListDB'] = False
     pfb['noAAAADB'] = False
     pfb['python_idn'] = False
-    pfb['python_ipv6'] = False
     pfb['python_hsts'] = False
     pfb['python_reply'] = False
     pfb['python_cname'] = False
@@ -226,8 +225,6 @@ def init_standard(id, env):
         if config.has_section('MAIN'):
             if config.has_option('MAIN', 'python_enable'):
                 pfb['python_enable'] = config.getboolean('MAIN', 'python_enable')
-            if config.has_option('MAIN', 'python_ipv6'):
-                pfb['python_ipv6'] = config.getboolean('MAIN', 'python_ipv6')
             if config.has_option('MAIN', 'python_reply'):
                 pfb['python_reply'] = config.getboolean('MAIN', 'python_reply')
             if config.has_option('MAIN', 'python_blocking'):
@@ -244,6 +241,8 @@ def init_standard(id, env):
                 pfb['python_tlds'] = config.get('MAIN', 'python_tlds').split(',')
             if config.has_option('MAIN', 'dnsbl_ipv4'):
                 pfb['dnsbl_ipv4'] = config.get('MAIN', 'dnsbl_ipv4')
+            if config.has_option('MAIN', 'dnsbl_ipv6'):
+                pfb['dnsbl_ipv6'] = config.get('MAIN', 'dnsbl_ipv6')
             if config.has_option('MAIN', 'python_nolog'):
                 pfb['python_nolog'] = config.getboolean('MAIN', 'python_nolog')
             if config.has_option('MAIN', 'python_cname'):
@@ -251,9 +250,7 @@ def init_standard(id, env):
             if config.has_option('MAIN', 'python_control'):
                 pfb['python_control'] = config.getboolean('MAIN', 'python_control')
 
-            if pfb['python_ipv6']:
-                pfb['dnsbl_ipv6'] = '::' + pfb['dnsbl_ipv4']
-            else:
+            if pfb['dnsbl_ipv6'] == '':
                 pfb['dnsbl_ipv6'] = '::'
 
             # List of DNS R_CODES
@@ -1451,7 +1448,7 @@ def operate(id, event, qstate, qdata):
                     if not isFound:
 
                         # Allow only approved TLDs
-                        if pfb['python_tld'] and tld != '' and q_name not in (pfb['dnsbl_ipv4'], '::' + pfb['dnsbl_ipv4']) and tld not in pfb['python_tlds']:
+                        if pfb['python_tld'] and tld != '' and q_name not in (pfb['dnsbl_ipv4'], pfb['dnsbl_ipv6']) and tld not in pfb['python_tlds']:
                             isFound = True
                             feed = 'TLD_Allow'
                             group = 'DNSBL_TLD_Allow'

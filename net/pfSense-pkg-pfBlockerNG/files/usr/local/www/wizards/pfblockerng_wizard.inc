@@ -88,18 +88,20 @@ function step3_submitphpaction() {
 	if ($_POST) {
 		if ($_POST['back'] == 'Back') {
 			$stepid = 0;
+			return;
 		}
 	}
 
 	// Validate DNSBL VIP address
-	if (!is_ipaddrv4($_POST['pfb_dnsvip'])) {
-		$input_errors[] = 'DNSBL Virtual IP: A valid IPv4 address must be specified.';
+	if ($_POST['pfb_dnsvip4'] == 'none') {
+		$_POST['pfb_dnsvip4'] = '';
 	}
-	else {
-		$ip_validate = where_is_ipaddr_configured($_POST['pfb_dnsvip'], '' , true, true, '');
-		if (count($ip_validate)) {
-			$input_errors[] = 'DNSBL Virtual IP: Address must be in an isolated Range that is not used in your Network.';
-		}
+	if ($_POST['pfb_dnsvip6'] == 'none') {
+		$_POST['pfb_dnsvip6'] = '';
+	}
+	list($vips_valid, $error) = pfb_validate_vips('lo0', $_POST['pfb_dnsvip4'], $_POST['pfb_dnsvip6']);
+	if (!$vips_valid) {
+		$input_errors[] = "DNSBL: {$error}";
 	}
 
 	// Validate DNSBL Port selections
@@ -139,15 +141,11 @@ function step4_submitphpaction() {
 	$new_config['pfblockerngipsettings']['config'][0]['outbound_deny_action']	= 'reject';	
 	$new_config['pfblockerngipsettings']['config'][0]['pass_order']			= 'order_0';
 
-	$new_config['pfblockerngdnsblsettings']['config'][0]['pfb_dnsvip']		= config_get_path('pfblockerng_wizard/step3/pfb_dnsvip');
+	$new_config['pfblockerngdnsblsettings']['config'][0]['pfb_dnsvip4'] = config_get_path('pfblockerng_wizard/step3/pfb_dnsvip4');
+	$new_config['pfblockerngdnsblsettings']['config'][0]['pfb_dnsvip6'] = config_get_path('pfblockerng_wizard/step3/pfb_dnsvip6');
 	$new_config['pfblockerngdnsblsettings']['config'][0]['pfb_dnsport']		= config_get_path('pfblockerng_wizard/step3/pfb_dnsport');
 	$new_config['pfblockerngdnsblsettings']['config'][0]['pfb_dnsport_ssl']		= config_get_path('pfblockerng_wizard/step3/pfb_dnsport_ssl');
 
-	if (config_get_path('pfblockerng_wizard/step3/pfb_dnsblv6') == 'on') {
-		$new_config['pfblockerngdnsblsettings']['config'][0]['pfb_dnsblv6']	= 'on';
-	} else {
-		$new_config['pfblockerngdnsblsettings']['config'][0]['pfb_dnsblv6']	= '';
-	}
 	$new_config['pfblockerngdnsblsettings']['config'][0]['pfb_dnsbl']		= 'on';
 
 	// Default DNSBL Whitelist
