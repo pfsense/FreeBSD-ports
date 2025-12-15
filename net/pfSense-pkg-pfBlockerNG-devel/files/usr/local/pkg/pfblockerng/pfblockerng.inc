@@ -5699,7 +5699,7 @@ function pfb_daemon_filterlog() {
 
 							// Convert any IDN to ASCII
 							$asn_final = '';
-							if (!ctype_print($asn)) {
+							if (!empty($asn) && !ctype_print($asn)) {
 								if (strpos($asn, '|') !== FALSE) {
 									$asn_ex = explode('|', $asn);
 									if (is_array($asn_ex) && !empty($asn_ex)) {
@@ -8587,7 +8587,7 @@ function sync_package_pfblockerng($cron='') {
 											}
 
 											// Convert IDN (Unicode domains) to ASCII (punycode)
-											if (!ctype_print($line)) {
+											if (!empty($line) && !ctype_print($line)) {
 
 												// Convert encodings to UTF-8
 												$line = mb_convert_encoding($line, 'UTF-8',
@@ -10576,7 +10576,7 @@ function sync_package_pfblockerng($cron='') {
 			// Determine if CRON job requires updating
 			if (!pfblockerng_cron_exists($pfb_cmd, $pfb['min'], $pfb_hour, $pfb_mday, $pfb_wday)) {
 				install_cron_job('pfblockerng.php cron', false);
-				install_cron_job($pfb_cmd, true, $pfb['min'], $pfb_hour, $pfb_mday, $pfb_month, $pfb_wday, $pfb_who, false);
+				install_cron_job($pfb_cmd, true, $pfb['min'], $pfb_hour, $pfb_mday, $pfb_month, $pfb_wday, $pfb_who);
 			}
 		}
 		else {
@@ -10602,7 +10602,7 @@ function sync_package_pfblockerng($cron='') {
 		// Determine if CRON job requires updating
 		if (!pfblockerng_cron_exists($pfb_gcmd, $pfb_gmin, 'random', $pfb_gmday, $pfb_gwday)) {
 			install_cron_job('pfblockerng.php dcc', false);
-			install_cron_job($pfb_gcmd, true, $pfb_gmin, $pfb_ghour, $pfb_gmday, $pfb_gmonth, $pfb_gwday, $pfb_gwho, false);
+			install_cron_job($pfb_gcmd, true, $pfb_gmin, $pfb_ghour, $pfb_gmday, $pfb_gmonth, $pfb_gwday, $pfb_gwho);
 		}
 	}
 	else {
@@ -10640,7 +10640,7 @@ function sync_package_pfblockerng($cron='') {
 			// Determine if CRON job requires updating
 			if (!pfblockerng_cron_exists($pfb_bcmd, $pfb_bmin, 'random', $pfb_bmday, $pfb_bwday)) {
 				install_cron_job('pfblockerng.php bl', false);
-				install_cron_job($pfb_bcmd, true, $pfb_bmin, $pfb_bhour, $pfb_bmday, $pfb_bmonth, $pfb_bwday, $pfb_bwho, false);
+				install_cron_job($pfb_bcmd, true, $pfb_bmin, $pfb_bhour, $pfb_bmday, $pfb_bmonth, $pfb_bwday, $pfb_bwho);
 			}
 		}
 		else {
@@ -10669,7 +10669,7 @@ function sync_package_pfblockerng($cron='') {
 				}
 
 				if (!pfblockerng_cron_exists($pfb_cmd, '0', '0', '*', $pfb_day)) {
-					install_cron_job($pfb_cmd, true, '0', '0', '*', '*', $pfb_day, 'root', false);
+					install_cron_job($pfb_cmd, true, '0', '0', '*', '*', $pfb_day, 'root');
 				}
 			}
 			else {
