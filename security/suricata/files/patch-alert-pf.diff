@@ -20,15 +20,15 @@ diff -ruN ./suricata-7.0.7.orig/src/Makefile.am ./suricata-7.0.7/src/Makefile.am
 diff -ruN ./suricata-7.0.7.orig/src/Makefile.in ./suricata-7.0.7/src/Makefile.in
 --- ./suricata-7.0.7.orig/src/Makefile.in	2024-10-01 02:16:27.000000000 -0400
 +++ ./src/Makefile.in	2024-10-10 10:45:12.000000000 -0400
-@@ -153,6 +153,7 @@
+@@ -156,6 +156,7 @@
  libsuricata_c_a_LIBADD =
  am_libsuricata_c_a_OBJECTS = alert-debuglog.$(OBJEXT) \
  	alert-fastlog.$(OBJEXT) alert-syslog.$(OBJEXT) \
 +	alert-pf.$(OBJEXT) \
- 	app-layer.$(OBJEXT) app-layer-detect-proto.$(OBJEXT) \
- 	app-layer-dnp3.$(OBJEXT) app-layer-dnp3-objects.$(OBJEXT) \
- 	app-layer-enip.$(OBJEXT) app-layer-enip-common.$(OBJEXT) \
-@@ -625,6 +626,7 @@
+ 	app-layer-detect-proto.$(OBJEXT) \
+ 	app-layer-dnp3-objects.$(OBJEXT) app-layer-dnp3.$(OBJEXT) \
+ 	app-layer-events.$(OBJEXT) app-layer-expectation.$(OBJEXT) \
+@@ -603,6 +604,7 @@
  am__maybe_remake_depfiles = depfiles
  am__depfiles_remade = ./$(DEPDIR)/alert-debuglog.Po \
  	./$(DEPDIR)/alert-fastlog.Po ./$(DEPDIR)/alert-syslog.Po \
@@ -2242,11 +2242,12 @@ diff -ruN ./suricata-7.0.7.orig/src/output.c ./suricata-7.0.7/src/output.c
 diff -ruN ./suricata-7.0.7.orig/src/suricata-common.h ./suricata-7.0.7/src/suricata-common.h
 --- ./suricata-7.0.7.orig/src/suricata-common.h	2024-10-01 02:11:20.000000000 -0400
 +++ ./src/suricata-common.h	2024-10-10 10:47:32.000000000 -0400
-@@ -489,6 +489,7 @@
-     LOGGER_JSON_METADATA,
+@@ -509,6 +509,7 @@
      LOGGER_JSON_FRAME,
      LOGGER_JSON_STREAM,
+     LOGGER_JSON_ARP,
 +    LOGGER_ALERT_PF,
-     LOGGER_SIZE,
- } LoggerId;
  
+     /* An ID that can be used by loggers registered by plugins and/or
+      * library users. */ 
+
