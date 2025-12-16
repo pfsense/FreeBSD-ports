@@ -1,10 +1,10 @@
 PORTNAME=	deltachat-desktop
 DISTVERSIONPREFIX=	v
-DISTVERSION=	2.25.1
+DISTVERSION=	2.33.0
 PORTREVISION=	0
 CATEGORIES=	net-im
 MASTER_SITES+=	LOCAL/feld:npmcache
-DISTFILES+=	${PORTNAME}-${DISTVERSIONPREFIX}${DISTVERSION}-node-deps.tgz:npmcache
+DISTFILES+=	${PORTNAME}-${DISTVERSIONFULL}-node-deps.tgz:npmcache
 
 MAINTAINER=	feld@FreeBSD.org
 COMMENT=	Cross-platform decentralized encrypted messaging service
@@ -16,7 +16,7 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 ELECTRON_VER=	37
 
 # Important to keep the RPC server core in sync with the Desktop release
-RUN_DEPENDS=	deltachat-rpc-server>=2.25<2.26:net/deltachat-rpc-server
+RUN_DEPENDS=	deltachat-rpc-server>=2.33<2.34:net/deltachat-rpc-server
 BUILD_DEPENDS=	electron${ELECTRON_VER}:devel/electron${ELECTRON_VER} \
 		npm:www/npm${NODEJS_SUFFIX}
 USES=		desktop-file-utils nodejs:22,build pkgconfig
@@ -35,7 +35,7 @@ GH_PROJECT=	deltachat-desktop
 MAKE_ENV+=	ELECTRON_SKIP_BINARY_DOWNLOAD=1 \
 		ELECTRON_OVERRIDE_DIST_PATH=${LOCALBASE}/share/electron${ELECTRON_VER} \
 		PATH=${PATH}:${WRKSRC}/node_modules/.bin/ \
-		VERSION_INFO_GIT_REF=freebsd
+		VERSION_INFO_GIT_REF=${GH_TAGNAME}
 
 .include <bsd.port.pre.mk>
 

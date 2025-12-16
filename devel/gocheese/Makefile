@@ -1,20 +1,20 @@
 PORTNAME=	gocheese
-DISTVERSION=	4.2.0
-PORTREVISION=	17
+DISTVERSION=	4.3.0
+PORTREVISION=	1
 CATEGORIES=	devel python
-MASTER_SITES=	http://www.gocheese.cypherpunks.ru/download/
+MASTER_SITES=	http://www.gocheese.cypherpunks.su/download/
 
 MAINTAINER=	bofh@FreeBSD.org
 COMMENT=	Python private package repository and caching proxy
-WWW=		http://www.gocheese.cypherpunks.ru/
+WWW=		http://www.gocheese.cypherpunks.su/
 
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/COPYING
 
 USES=		go tar:zst
 
-GO_PKGNAME=	go.cypherpunks.ru/gocheese/v3
-GO_TARGET=	go.cypherpunks.ru/gocheese/v3:${PORTNAME}
+GO_PKGNAME=	go.cypherpunks.ru/gocheese/v5
+GO_TARGET=	go.cypherpunks.ru/gocheese/v5:${PORTNAME}
 
 INFO=		${PORTNAME}
 PLIST_FILES=	${DOCSDIR}/README \

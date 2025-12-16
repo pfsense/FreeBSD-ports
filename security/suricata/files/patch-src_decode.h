@@ -1,17 +1,17 @@
---- src/decode.h.orig	2025-06-25 15:35:22 UTC
-+++ src/decode.h
-@@ -949,6 +949,10 @@ void DecodeUnregisterCounters(void);
- #define DLT_EN10MB 1
- #endif
+--- src/decode.h.orig	2025-11-05 14:48:19.000000000 +0000
++++ src/decode.h	2025-12-15 20:02:09.774248000 +0000
+@@ -1239,6 +1239,10 @@
  
-+#ifndef DLT_PPP_ETHER
-+#define DLT_PPP_ETHER 51
+ #ifndef IPPROTO_SHIM6
+ #define IPPROTO_SHIM6 140
 +#endif
 +
- #ifndef DLT_C_HDLC
- #define DLT_C_HDLC 104
++#ifndef DLT_PPP_ETHER
++#define DLT_PPP_ETHER 51
  #endif
-@@ -1128,6 +1132,9 @@ static inline void DecodeLinkLayer(ThreadVars *tv, Dec
+ 
+ /* Packet Flags */
+@@ -1420,6 +1424,9 @@
  {
      /* call the decoder */
      switch (datalink) {

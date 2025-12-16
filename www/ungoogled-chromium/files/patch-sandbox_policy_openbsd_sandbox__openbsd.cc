@@ -1,4 +1,4 @@
---- sandbox/policy/openbsd/sandbox_openbsd.cc.orig	2025-11-01 06:40:37 UTC
+--- sandbox/policy/openbsd/sandbox_openbsd.cc.orig	2025-12-12 07:44:27 UTC
 +++ sandbox/policy/openbsd/sandbox_openbsd.cc
 @@ -0,0 +1,396 @@
 +// Copyright (c) 2012 The Chromium Authors. All rights reserved.

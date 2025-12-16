@@ -1585,10 +1585,13 @@ pkg_upgrade() {
 			delete_annotation=""
 
 			# Upgrade drm if it is in use
-			if pkg-static info -e drm-510-kmod; then
-				_exec "pkg-static install -r ${product} -y ${desired_drm_package}" \
-				    "Upgrading drm to ${desired_drm_package}"
-			elif kldstat -qm i915kms; then
+			for _p in ${legacy_drm_packages}; do
+				if pkg-static info -e drm-510-kmod; then
+					_exec "pkg-static install -r ${product} -y ${desired_drm_package}" \
+					    "Upgrading drm to ${desired_drm_package}"
+				fi
+			done
+			if kldstat -qm i915kms; then
 				_exec "pkg-static upgrade -r ${product} -f drm-\*" \
 				    "Upgrading drm"
 			fi
@@ -2160,7 +2163,8 @@ pid_file="/var/run/$(basename $0).pid"
 logfile="/cf/conf/upgrade_log.txt"
 upgrade_logfile="/cf/conf/upgrade_log.latest.txt"
 stdout='/dev/null'
-desired_drm_package='drm-515-kmod'
+desired_drm_package='drm-61-kmod'
+legacy_drm_packages='drm-510-kmod drm-515-kmod'
 
 # Export necessary PATH
 export PATH=/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin

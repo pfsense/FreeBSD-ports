@@ -42,7 +42,6 @@ sbin/smbd
 sbin/winbindd
 include/samba4/credentials.h
 include/samba4/dcerpc.h
-%%AD_DC%%include/samba4/dcerpc_server.h
 include/samba4/gen_ndr/ndr_samr_c.h
 include/samba4/ldb.h
 include/samba4/ldb_errors.h
@@ -137,8 +136,6 @@ include/samba4/wbclient.h
 @dir include/samba4
 %%SAMBA4_LIBDIR%%/libdcerpc-samr.so
 %%SAMBA4_LIBDIR%%/libdcerpc-samr.so.0
-%%AD_DC%%%%SAMBA4_LIBDIR%%/libdcerpc-server.so
-%%AD_DC%%%%SAMBA4_LIBDIR%%/libdcerpc-server.so.0
 %%SAMBA4_LIBDIR%%/libdcerpc.so
 %%SAMBA4_LIBDIR%%/libdcerpc.so.0
 %%SAMBA4_LIBDIR%%/libldb.so
@@ -314,7 +311,6 @@ libexec/samba/samba-dcerpcd
 %%PKGCONFIGDIR%%/wbclient.pc
 %%PKGCONFIGDIR%%/dcerpc.pc
 %%PKGCONFIGDIR%%/dcerpc_samr.pc
-%%AD_DC%%%%PKGCONFIGDIR%%/dcerpc_server.pc
 %%PKGCONFIGDIR%%/ldb.pc
 %%PKGCONFIGDIR%%/samba-credentials.pc
 %%PKGCONFIGDIR%%/samba-hostconfig.pc
@@ -432,7 +428,7 @@ libexec/samba/samba-dcerpcd
 @dir %%SAMBA4_PRIVATEDIR%%
 @dir %%SAMBA4_BINDDNSDIR%%
 @comment Use bundled libraries
-%%SAMBA4_BUNDLED_CMOCKA%%%%SAMBA4_LIBDIR%%/private/libcmocka-private-samba.so
+%%BUNDLED_CMOCKA%%%%SAMBA4_LIBDIR%%/private/libcmocka-private-samba.so
 %%PYTHON3%%%%PYTHON_SITELIBDIR%%/_ldb_text.py
 %%PYTHON3%%%%PYTHON_SITELIBDIR%%/ldb%%PYTHON_TAG%%.so
 %%PYTHON3%%%%SAMBA4_LIBDIR%%/private/libpyldb-util%%PYTHON_TAG%%-private-samba.so
@@ -446,18 +442,17 @@ bin/ldbsearch
 %%SAMBA4_LIBDIR%%/private/libldb-key-value-private-samba.so
 %%SAMBA4_LIBDIR%%/private/libldb-tdb-err-map-private-samba.so
 %%SAMBA4_LIBDIR%%/private/libldb-tdb-int-private-samba.so
-%%AD_DC%%%%SAMBA4_MODULEDIR%%/ldb/count_attrs.so
-%%SAMBA4_MODULEDIR%%/ldb/asq.so
-%%SAMBA4_MODULEDIR%%/ldb/ildap.so
-%%LDAP%%%%SAMBA4_MODULEDIR%%/ldb/ldap.so
-%%SAMBA4_MODULEDIR%%/ldb/ldb.so
-%%SAMBA4_MODULEDIR%%/ldb/ldbsamba_extensions.so
-%%SAMBA4_MODULEDIR%%/ldb/paged_searches.so
-%%SAMBA4_MODULEDIR%%/ldb/rdn_name.so
-%%SAMBA4_MODULEDIR%%/ldb/sample.so
-%%SAMBA4_MODULEDIR%%/ldb/server_sort.so
-%%SAMBA4_MODULEDIR%%/ldb/skel.so
-%%SAMBA4_MODULEDIR%%/ldb/tdb.so
+%%LDAP%%%%SAMBA_LDB_MODULESDIR%%/ldap.so
+%%SAMBA_LDB_MODULESDIR%%/asq.so
+%%SAMBA_LDB_MODULESDIR%%/ildap.so
+%%SAMBA_LDB_MODULESDIR%%/ldb.so
+%%SAMBA_LDB_MODULESDIR%%/ldbsamba_extensions.so
+%%SAMBA_LDB_MODULESDIR%%/paged_searches.so
+%%SAMBA_LDB_MODULESDIR%%/rdn_name.so
+%%SAMBA_LDB_MODULESDIR%%/sample.so
+%%SAMBA_LDB_MODULESDIR%%/server_sort.so
+%%SAMBA_LDB_MODULESDIR%%/skel.so
+%%SAMBA_LDB_MODULESDIR%%/tdb.so
 %%MANPAGES%%share/man/man3/ldb.3.gz
 %%MANPAGES%%share/man/man1/ldbadd.1.gz
 %%MANPAGES%%share/man/man1/ldbdel.1.gz
@@ -465,21 +460,21 @@ bin/ldbsearch
 %%MANPAGES%%share/man/man1/ldbmodify.1.gz
 %%MANPAGES%%share/man/man1/ldbrename.1.gz
 %%MANPAGES%%share/man/man1/ldbsearch.1.gz
-%%MANPAGES%%%%SAMBA4_BUNDLED_TDB%%share/man/man8/tdbbackup.8.gz
-%%MANPAGES%%%%SAMBA4_BUNDLED_TDB%%share/man/man8/tdbdump.8.gz
-%%MANPAGES%%%%SAMBA4_BUNDLED_TDB%%share/man/man8/tdbrestore.8.gz
-%%MANPAGES%%%%SAMBA4_BUNDLED_TDB%%share/man/man8/tdbtool.8.gz
-%%SAMBA4_BUNDLED_TALLOC%%%%PYTHON3%%%%PYTHON_SITELIBDIR%%/talloc%%PYTHON_TAG%%.so
-%%SAMBA4_BUNDLED_TALLOC%%%%PYTHON3%%%%SAMBA4_LIBDIR%%/private/libpytalloc-util%%PYTHON_TAG%%-private-samba.so
-%%SAMBA4_BUNDLED_TALLOC%%%%SAMBA4_LIBDIR%%/private/libtalloc-private-samba.so
-%%SAMBA4_BUNDLED_TALLOC%%share/man/man3/samba-talloc.3.gz
-%%SAMBA4_BUNDLED_TDB%%%%PYTHON3%%%%PYTHON_SITELIBDIR%%/_tdb_text.py
-%%SAMBA4_BUNDLED_TDB%%%%PYTHON3%%%%PYTHON_SITELIBDIR%%/tdb%%PYTHON_TAG%%.so
-%%SAMBA4_BUNDLED_TDB%%bin/tdbbackup
-%%SAMBA4_BUNDLED_TDB%%bin/tdbdump
-%%SAMBA4_BUNDLED_TDB%%bin/tdbrestore
-%%SAMBA4_BUNDLED_TDB%%bin/tdbtool
-%%SAMBA4_BUNDLED_TDB%%%%SAMBA4_LIBDIR%%/private/libtdb-private-samba.so
-%%SAMBA4_BUNDLED_TEVENT%%%%PYTHON3%%%%PYTHON_SITELIBDIR%%/_tevent%%PYTHON_TAG%%.so
-%%SAMBA4_BUNDLED_TEVENT%%%%PYTHON3%%%%PYTHON_SITELIBDIR%%/tevent.py
-%%SAMBA4_BUNDLED_TEVENT%%%%SAMBA4_LIBDIR%%/private/libtevent-private-samba.so
+%%MANPAGES%%%%BUNDLED_TDB%%share/man/man8/samba-tdbbackup.8.gz
+%%MANPAGES%%%%BUNDLED_TDB%%share/man/man8/samba-tdbdump.8.gz
+%%MANPAGES%%%%BUNDLED_TDB%%share/man/man8/samba-tdbrestore.8.gz
+%%MANPAGES%%%%BUNDLED_TDB%%share/man/man8/samba-tdbtool.8.gz
+%%BUNDLED_TALLOC%%%%PYTHON3%%%%PYTHON_SITELIBDIR%%/talloc%%PYTHON_TAG%%.so
+%%BUNDLED_TALLOC%%%%PYTHON3%%%%SAMBA4_LIBDIR%%/private/libpytalloc-util%%PYTHON_TAG%%-private-samba.so
+%%BUNDLED_TALLOC%%%%SAMBA4_LIBDIR%%/private/libtalloc-private-samba.so
+%%BUNDLED_TALLOC%%share/man/man3/samba-talloc.3.gz
+%%BUNDLED_TDB%%%%PYTHON3%%%%PYTHON_SITELIBDIR%%/_tdb_text.py
+%%BUNDLED_TDB%%%%PYTHON3%%%%PYTHON_SITELIBDIR%%/tdb%%PYTHON_TAG%%.so
+%%BUNDLED_TDB%%bin/tdbbackup
+%%BUNDLED_TDB%%bin/tdbdump
+%%BUNDLED_TDB%%bin/tdbrestore
+%%BUNDLED_TDB%%bin/tdbtool
+%%BUNDLED_TDB%%%%SAMBA4_LIBDIR%%/private/libtdb-private-samba.so
+%%BUNDLED_TEVENT%%%%PYTHON3%%%%PYTHON_SITELIBDIR%%/_tevent%%PYTHON_TAG%%.so
+%%BUNDLED_TEVENT%%%%PYTHON3%%%%PYTHON_SITELIBDIR%%/tevent.py
+%%BUNDLED_TEVENT%%%%SAMBA4_LIBDIR%%/private/libtevent-private-samba.so

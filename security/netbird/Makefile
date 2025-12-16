@@ -1,10 +1,9 @@
 PORTNAME=	netbird
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.59.8
-PORTREVISION=	1
+DISTVERSION=	0.60.7
 CATEGORIES=	security net net-vpn
 
-MAINTAINER=	hakan.external@netbird.io
+MAINTAINER=	dev@netbird.io
 COMMENT=	Peer-to-peer VPN that seamlessly connects your devices
 WWW=		https://netbird.io/
 

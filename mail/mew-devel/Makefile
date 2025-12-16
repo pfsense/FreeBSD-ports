@@ -1,11 +1,11 @@
 PORTNAME=	mew
 DISTVERSIONPREFIX=	v
-DISTVERSION=	6.10-46
-DISTVERSIONSUFFIX=	-g8b710a0
+DISTVERSION=	6.10-49
+DISTVERSIONSUFFIX=	-ge50839a
 CATEGORIES=	mail elisp
 PKGNAMESUFFIX=	-devel${EMACS_PKGNAMESUFFIX}
 
-MAINTAINER=	yasu@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Messaging in the Emacs World for emacs (Development Version)
 WWW=		https://www.Mew.org/
 

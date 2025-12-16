@@ -1,6 +1,6 @@
 PORTNAME=	hyprlang
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.6.4
+DISTVERSION=	0.6.7
 PORTREVISION=	1
 CATEGORIES=	devel
 
@@ -23,7 +23,7 @@ USE_LDCONFIG=	yes
 PLIST_FILES=	include/${PORTNAME}.hpp \
 		lib/lib${PORTNAME}.so \
 		lib/lib${PORTNAME}.so.2 \
-		lib/lib${PORTNAME}.so.0.6.3 \
+		lib/lib${PORTNAME}.so.${DISTVERSION} \
 		libdata/pkgconfig/${PORTNAME}.pc
 
 .include <bsd.port.mk>

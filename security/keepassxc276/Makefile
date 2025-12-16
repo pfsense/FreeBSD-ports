@@ -1,10 +1,13 @@
 PORTNAME=	keepassxc
 DISTVERSION=	2.7.6
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	security
 MASTER_SITES=	https://github.com/keepassxreboot/keepassxc/releases/download/${DISTVERSION}/
 PKGNAMESUFFIX=	276
 DISTNAME=	${PORTNAME}-${DISTVERSION}-src
+
+PATCH_SITES+=	https://github.com/keepassxreboot/keepassxc/commit/
+PATCHFILES+=	fedcbf60c5c0dc7c3602c49a984d53a45c154c73.diff:-p1
 
 MAINTAINER=	lwhsu@FreeBSD.org
 COMMENT=	KeePass Cross-platform Community Edition

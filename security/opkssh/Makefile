@@ -11,7 +11,7 @@ COMMENT=	Tool which enables SSH to be used with OpenID Connect
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-USES=		go:1.23,modules
+USES=		go:modules
 USE_GITHUB=	yes
 GH_ACCOUNT=	openpubkey
 GO_BUILDFLAGS=	-ldflags "-X main.Version=${DISTVERSIONPREFIX}${DISTVERSION}"

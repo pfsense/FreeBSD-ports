@@ -1,4 +1,4 @@
---- chrome/common/chrome_paths.cc.orig	2025-11-01 06:40:37 UTC
+--- chrome/common/chrome_paths.cc.orig	2025-12-12 07:44:27 UTC
 +++ chrome/common/chrome_paths.cc
 @@ -31,7 +31,7 @@
  #include "base/apple/foundation_util.h"
@@ -66,7 +66,7 @@
  #if BUILDFLAG(ENABLE_EXTENSIONS_CORE) &&                                   \
      (BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_MAC) || \
 -     BUILDFLAG(IS_ANDROID))
-+     BUILDFLAG(IS_ANDROID) || BUILDFLAG(IS_BSD))
++     BUILDFLAG(IS_ANDROID)) || BUILDFLAG(IS_BSD)
      case chrome::DIR_NATIVE_MESSAGING:
  #if BUILDFLAG(IS_MAC)
  #if BUILDFLAG(GOOGLE_CHROME_BRANDING)

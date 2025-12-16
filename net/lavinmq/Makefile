@@ -1,6 +1,6 @@
 PORTNAME=	lavinmq
 DISTVERSIONPREFIX=	v
-DISTVERSION=	2.4.5
+DISTVERSION=	2.5.2
 CATEGORIES=	net
 
 # JavaScripts
@@ -29,10 +29,10 @@ EXTRACT_ONLY=	${DISTNAME}${EXTRACT_SUFX} \
 		chart.js-${_CHARTJS}.tgz
 
 # Crystal library versions
-_AMQP_CLIENT=		1.3.1
-_AMQP_PROTO=		1.1.15
+_AMQP_CLIENT=		1.3.2
+_AMQP_PROTO=		1.1.16
 _LZ4=		96d714f7593c66ca7425872fd26c7b1286806d3d
-_MQTT=		36ff248ff8e9aaa749cfff3d251103e0e5f661bc
+_MQTT=		5cf504b32313b3b63eecde22e2a136b9b9935b8b
 
 # JavaScript library versions
 _AMQP_JS=		3.1.1
@@ -49,6 +49,8 @@ LICENSE=	APACHE20
 BUILD_DEPENDS=	crystal:lang/crystal \
 		help2man:misc/help2man \
 		shards:devel/shards
+LIB_DEPENDS=	liblz4.so:archivers/liblz4 \
+		libpcre2-8.so:devel/pcre2
 
 USES=		pkgconfig ssl:build
 USE_GITHUB=	yes
@@ -69,7 +71,7 @@ PORTDOCS=	CHANGELOG.md NOTICE README.md SECURITY.md
 OPTIONS_DEFINE=	DOCS
 
 SHARDS_ENV=	--time --verbose --production --release --no-color --stats \
-		--static -Dgc_none --error-on-warnings -Dpreview_mt -Dexecution_context
+		-Dgc_none --error-on-warnings -Dpreview_mt -Dexecution_context
 
 .include <bsd.port.options.mk>
 
