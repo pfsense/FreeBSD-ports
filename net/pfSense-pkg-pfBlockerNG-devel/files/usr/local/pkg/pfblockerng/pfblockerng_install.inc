@@ -67,7 +67,7 @@ if (
 		config_set_path('virtualip/vip', $vips_config);
 	} elseif (is_ipaddrv4($pfb_dnsbl_config['pfb_dnsvip'])) {
 		// DNSBL is enabled but a VIP isn't configured.
-		file_notice('pfBlockerNG', gettext('The DNSBL VIP needs be configured manually'), 'pfBlockerNG', '/pfblockerng/pfblockerng_dnsbl.php', 2);
+		file_notice('pfBlockerNG', gettext('The DNSBL VIP needs to be configured manually'), 'pfBlockerNG', '/pfblockerng/pfblockerng_dnsbl.php', 2);
 	}
 
 	// If DNSBL is not configured, don't set new config.
