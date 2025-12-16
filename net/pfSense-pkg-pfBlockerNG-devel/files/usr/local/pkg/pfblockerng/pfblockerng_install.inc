@@ -42,28 +42,33 @@ if (
 	isset($pfb_dnsbl_config['pfb_dnsvip_pass'])
 ) {
 	// Update existing VIPs.
-	$pfb_configured_vip_id = null;
+	$vips_found = false;
 	$vips_config = config_get_path('virtualip/vip', []);
 	foreach ($vips_config as &$vip) {
 		if (!str_starts_with($vip['descr'], 'pfB DNSBL')) {
 			continue;
 		}
+		$vips_found = true;
 
 		$vip['descr'] = 'pfBlockerNG DNSBL';
 		$vip['uniqid'] = $vip['uniqid'] ?? uniqid();
 
 		$vip_id = "_vip{$vip['uniqid']}";
 		if ($pfb_dnsbl_config['pfb_dnsvip'] == $vip['subnet']) {
-			$pfb_configured_vip_id = $vip_id;
-		}
-		if (is_ipaddrv4($vip['subnet'])) {
 			$pfb_dnsbl_config['pfb_dnsvip4'] = $vip_id;
-		} else {
+		} elseif (empty($pfb_dnsbl_config['pfb_dnsvip4']) && is_ipaddrv4($vip['subnet'])) {
+			$pfb_dnsbl_config['pfb_dnsvip4'] = $vip_id;
+		} elseif (is_ipaddrv6($vip['subnet'])) {
 			$pfb_dnsbl_config['pfb_dnsvip6'] = $vip_id;
 		}
 	}
 	unset($vip);
-	config_set_path('virtualip/vip', $vips_config);
+	if ($vips_found) {
+		config_set_path('virtualip/vip', $vips_config);
+	} elseif (is_ipaddrv4($pfb_dnsbl_config['pfb_dnsvip'])) {
+		// DNSBL is enabled but a VIP isn't configured.
+		file_notice('pfBlockerNG', gettext('The DNSBL VIP needs be configured manually'), 'pfBlockerNG', '/pfblockerng/pfblockerng_dnsbl.php', 2);
+	}
 
 	// If DNSBL is not configured, don't set new config.
 	if (
