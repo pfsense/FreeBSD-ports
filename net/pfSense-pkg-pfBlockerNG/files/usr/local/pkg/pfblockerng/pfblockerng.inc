@@ -824,11 +824,13 @@ function pfb_global() {
 	$pfb['dnsbl_vip4'] = get_configured_vip_ipv4($pfb['dnsblconfig']['pfb_dnsvip4']) ?? '';
 	$pfb['dnsbl_vip6'] = get_configured_vip_ipv6($pfb['dnsblconfig']['pfb_dnsvip6']) ?? '';
 	$pfb['dnsbl_iface']	= isset($pfb['dnsblconfig']['dnsbl_interface']) ? $pfb['dnsblconfig']['dnsbl_interface'] : 'lo0';	// VIP Local Interface setting
-	$vips_valid_result = pfb_validate_vips($pfb['dnsbl_iface'], $pfb['dnsblconfig']['pfb_dnsvip4'], $pfb['dnsblconfig']['pfb_dnsvip6']);
-	if (!$vips_valid_result[0]) {
-		// Force DNSBL to be disabled if VIPs are invalid.
-		$pfb['dnsbl'] = '';
-		pfb_logger("\nDNSBL disabled: {$vips_valid_result[1]}", 1);
+	if (!empty($pfb['dnsbl'])) {
+		$vips_valid_result = pfb_validate_vips($pfb['dnsbl_iface'], $pfb['dnsblconfig']['pfb_dnsvip4'], $pfb['dnsblconfig']['pfb_dnsvip6']);
+		if (!$vips_valid_result[0]) {
+			// Force DNSBL to be disabled if VIPs are invalid.
+			$pfb['dnsbl'] = '';
+			pfb_logger("\nDNSBL disabled: {$vips_valid_result[1]}", 1);
+		}
 	}
 
 	$pfb['dnsbl_port']	= $pfb['dnsblconfig']['pfb_dnsport'];									// Lighttpd web server http port setting
