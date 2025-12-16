@@ -27,6 +27,7 @@ pathgunzip=/usr/bin/gunzip
 pathhost=/usr/bin/host
 pathtar=/usr/bin/tar
 pathpfctl=/sbin/pfctl
+pathwc=/usr/bin/wc
 
 # Script Arguments
 alias="${2}"
@@ -1301,7 +1302,9 @@ closingprocess() {
 
 	echo; echo 'pfSense Table Stats'; echo '-------------------'
 	"${pathpfctl}" -s memory | grep 'table-entries'
-	pfctlcount="$(${pathpfctl} -vvsTables | awk '/Addresses/ {s+=$2}; END {print s}')"
+	# See https://redmine.pfsense.org/issues/16588
+	#pfctlcount="$(${pathpfctl} -vvsTables | awk '/Addresses/ {s+=$2}; END {print s}')"
+	pfctlcount=NA
 	echo "Table Usage Count         ${pfctlcount}"
 }
 

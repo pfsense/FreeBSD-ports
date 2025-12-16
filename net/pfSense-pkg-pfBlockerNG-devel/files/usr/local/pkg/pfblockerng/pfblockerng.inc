@@ -67,6 +67,7 @@ $pfb['sed']	= '/usr/bin/sed';
 $pfb['cat']	= '/bin/cat';
 $pfb['ls']	= '/bin/ls';
 $pfb['pfctl']	= '/sbin/pfctl';
+$pfb['wc']	= '/usr/bin/wc';
 
 // Folder Array
 $pfb['folder_array'] = array(	"{$pfb['dbdir']}", "{$pfb['logdir']}", "{$pfb['ccdir']}", "{$pfb['origdir']}", "{$pfb['nativedir']}",
@@ -9070,7 +9071,11 @@ function sync_package_pfblockerng($cron='') {
 						}
 
 						// Check if pfBlockerNG pfctl Continent tables are empty (pfBlockerNG was disabled w/ "keep", then re-enabled)
-						$pfctlck = exec("{$pfb['pfctl']} -vvsTables | {$pfb['grep']} -A1 {$cc_alias} | {$pfb['awk']} '/Addresses/ {s+=\$2}; END {print s}'");
+						$pfctlck = trim(exec_command(implode(' ', [
+							$pfb['pfctl'], '-t',
+							$cc_alias,
+							'-Tshow', '|', $pfb['wc'], '-l'
+						])));
 
 						if (empty($pfctlck) && file_exists("{$pfbfolder}/{$cc_alias}.txt")) {
 							@copy("{$pfbfolder}/{$cc_alias}.txt", "{$pfb['aliasdir']}/{$cc_alias}.txt");
@@ -9893,7 +9898,11 @@ function sync_package_pfblockerng($cron='') {
 								$header_esc	= escapeshellarg($header);
 								$urlvalue	.= "{$header},";
 
-								$pfctlck = exec("{$pfb['pfctl']} -vvsTables | {$pfb['grep']} -A1 {$alias_esc} | {$pfb['awk']} '/Addresses/ {s+=\$2}; END {print s}'");
+								$pfctlck = trim(exec_command(implode(' ', [
+									$pfb['pfctl'], '-t',
+									$alias_esc,
+									'-Tshow', '|', $pfb['wc'], '-l'
+								])));
 
 								// Update alias if list file exists and its been updated or if the alias URL table is empty.
 								if (file_exists("{$pfbfolder}/{$header}.txt") && (in_array($alias, $final_alias) || empty($pfctlck))) {
@@ -9922,7 +9931,11 @@ function sync_package_pfblockerng($cron='') {
 
 					// Update alias if list file exists and its been updated or if the alias URL table is empty.
 					$alias_esc = escapeshellarg($alias);
-					$pfctlck = exec("{$pfb['pfctl']} -vvsTables | {$pfb['grep']} -A1 {$alias_esc} | {$pfb['awk']} '/Addresses/ {s+=\$2}; END {print s}'");
+					$pfctlck = trim(exec_command(implode(' ', [
+						$pfb['pfctl'], '-t',
+						$alias_esc,
+						'-Tshow', '|', $pfb['wc'], '-l'
+					])));
 					if (!empty($list['custom'])) {
 						$urlvalue .= "{$aliasname},";
 						if (file_exists("{$pfbfolder}/{$aliasname}.txt") && in_array($alias, $final_alias) ||
