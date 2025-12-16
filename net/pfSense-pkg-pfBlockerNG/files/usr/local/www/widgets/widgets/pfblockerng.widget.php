@@ -284,7 +284,11 @@ function pfBlockerNG_update_table() {
 
 			if (isset($pfb_alias)) {
 				if (substr($line, 0, 9) == 'Addresses') {
-					$addr = trim(substr(strrchr($line, ':'), 1));
+					$addr = trim(exec_command(implode(' ', [
+						$pfb['pfctl'], '-t',
+						escapeshellarg($pfb_alias),
+						'-Tshow', '|', $pfb['wc'], '-l'
+					])));
 					if (!is_numeric($addr)) {
 						$addr = 0;
 					}
