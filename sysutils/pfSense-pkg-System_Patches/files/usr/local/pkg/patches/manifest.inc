@@ -26,6 +26,20 @@ global $recommended_patches;
  */
 $recommended_patches = [
 [
+  'uniqid' => '16593',
+  'versions' => ['25.11', '25.07.1', '2.8.1'],
+  'descr' => 'Fix rtsold RCE via DNSSL router advertisement messages',
+  'links' => [
+      [ 'text' => 'Redmine #16593',
+         'url' => 'https://redmine.pfsense.org/issues/16593', ],
+      [ 'text' => 'FreeBSD-SA-25:12.rtsold',
+         'url' => 'https://www.freebsd.org/security/advisories/FreeBSD-SA-25:12.rtsold.asc', ],
+  ],
+  'basedir' => '/',
+  'pathstrip' => 2,
+  'ignorewhitespace' => true,
+],
+[
   'uniqid' => '16312_16314',
   'versions' => ['25.07.1', '2.8.1'],
   'descr' => 'Workaround for sshguard GUI authentication failure log message handling of usernames containing problematic characters',
