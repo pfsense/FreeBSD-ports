@@ -28,6 +28,7 @@
 	<description>RRD Summary Page</description>
 	<name>RRD Summary</name>
 	<title>Status: RRD Summary</title>
+	<donotsave>true</donotsave>
 	<menu>
 		<name>RRD Summary</name>
 		<tooltiptext>Estimated month-over-month traffic passed In/Out during the specified period.</tooltiptext>
