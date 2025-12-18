@@ -27,6 +27,7 @@
 	</copyright>
 	<name>snmptt_conf</name>
 	<title>Services: SNMPTT</title>
+	<addedit_string>snmptt: changed conf</addedit_string>
 	<include_file>/usr/local/pkg/snmptt.inc</include_file>
 	<tabs>
 		<tab>
