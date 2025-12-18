@@ -26,6 +26,7 @@
 	</copyright>
 	<name>arpwatch</name>
 	<title>Services/Arpwatch</title>
+	<addedit_string>Arpwatch: changed Settings</addedit_string>
 	<include_file>/usr/local/pkg/arpwatch.inc</include_file>
 	<aftersaveredirect>/pkg_edit.php?xml=arpwatch.xml</aftersaveredirect>
 	<menu>
