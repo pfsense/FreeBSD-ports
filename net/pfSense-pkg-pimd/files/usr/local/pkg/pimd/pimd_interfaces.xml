@@ -27,6 +27,7 @@
 	</copyright>
 	<name>pimd_interfaces</name>
 	<title>Services/PIMD/Interfaces</title>
+	<addedit_string>pimd: changed Interfaces</addedit_string>
 	<include_file>/usr/local/pkg/pimd.inc</include_file>
 	<aftersaveredirect>pkg.php?xml=pimd/pimd_interfaces.xml</aftersaveredirect>
 	<shortcut_section>pimd</shortcut_section>

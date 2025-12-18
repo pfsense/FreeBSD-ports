@@ -27,6 +27,7 @@
 	</copyright>
 	<name>pimd_rpaddress</name>
 	<title>Services/PIMD/RP Address</title>
+	<addedit_string>pimd: changed RP Addresses</addedit_string>
 	<include_file>/usr/local/pkg/pimd.inc</include_file>
 	<aftersaveredirect>pkg.php?xml=pimd/pimd_rpaddress.xml</aftersaveredirect>
 	<shortcut_section>pimd</shortcut_section>

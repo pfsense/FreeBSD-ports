@@ -27,6 +27,7 @@
 	</copyright>
 	<name>pimd_bsrcandidate</name>
 	<title>Services/PIMD/BSD Candidates</title>
+	<addedit_string>pimd: changed BSR Candidates</addedit_string>
 	<include_file>/usr/local/pkg/pimd.inc</include_file>
 	<aftersaveredirect>pkg.php?xml=pimd/pimd_bsrcandidate.xml</aftersaveredirect>
 	<shortcut_section>pimd</shortcut_section>

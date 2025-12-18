@@ -27,6 +27,7 @@
 	</copyright>
 	<name>pimd_rpcandidate</name>
 	<title>Services/PIMD/RP Candidates</title>
+	<addedit_string>pimd: changed RP Candidates</addedit_string>
 	<include_file>/usr/local/pkg/pimd.inc</include_file>
 	<aftersaveredirect>pkg.php?xml=pimd/pimd_rpcandidate.xml</aftersaveredirect>
 	<shortcut_section>pimd</shortcut_section>
