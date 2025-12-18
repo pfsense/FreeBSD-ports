@@ -29,6 +29,7 @@
 	</copyright>
 	<name>suricatasync</name>
 	<title>Suricata: XMLRPC Sync</title>
+	<addedit_string>Suricata: changed Sync</addedit_string>
 	<include_file>/usr/local/pkg/suricata/suricata.inc</include_file>
 	<tabs>
 		<tab>

@@ -29,6 +29,7 @@
 	<description>Suricata IDS/IPS Package</description>
 	<name>suricata</name>
 	<title>Services: Suricata IDS</title>
+	<donotsave>true</donotsave>
 	<include_file>/usr/local/pkg/suricata/suricata.inc</include_file>
 	<menu>
 		<name>Suricata</name>
