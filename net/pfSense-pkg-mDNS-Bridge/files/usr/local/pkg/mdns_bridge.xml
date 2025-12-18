@@ -27,6 +27,7 @@
 	</copyright>
 	<name>mDNS Bridge</name>
 	<title>Services: mDNS Bridge</title>
+	<donotsave>true</donotsave>
 	<savetext>Change</savetext>
 	<include_file>/usr/local/pkg/mdns-bridge.inc</include_file>
 	<menu>
