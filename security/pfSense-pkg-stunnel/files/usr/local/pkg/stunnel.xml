@@ -28,6 +28,7 @@
 	<name>stunnel</name>
 	<version>%%PKGVERSION%%</version>
 	<title>Services: Secure Tunnel</title>
+	<addedit_string>stunnel: changed settings</addedit_string>
 	<include_file>/usr/local/pkg/stunnel.inc</include_file>
 	<menu>
 		<name>STunnel</name>
