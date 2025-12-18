@@ -28,6 +28,7 @@
 	</copyright>
 	<name>squidremote</name>
 	<title>Proxy Server: Remote Proxy Settings</title>
+	<addedit_string>squid: changed Remote Cache</addedit_string>
 	<include_file>/usr/local/pkg/squid.inc</include_file>
 	<tabs>
 		<tab>

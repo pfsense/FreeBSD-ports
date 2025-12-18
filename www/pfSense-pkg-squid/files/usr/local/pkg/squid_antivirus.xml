@@ -28,6 +28,7 @@
 	</copyright>
 	<name>squidantivirus</name>
 	<title>Proxy Server: Antivirus</title>
+	<addedit_string>squid: changed Antivirus</addedit_string>
 	<include_file>/usr/local/pkg/squid.inc</include_file>
 	<tabs>
 		<tab>

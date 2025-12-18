@@ -28,6 +28,7 @@
 	</copyright>
 	<name>squid</name>
 	<title>Proxy Server: General Settings</title>
+	<addedit_string>squid: changed ACLs</addedit_string>
 	<include_file>/usr/local/pkg/squid.inc</include_file>
 	<menu>
 		<name>Squid Proxy Server</name>

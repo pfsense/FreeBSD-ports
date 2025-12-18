@@ -28,6 +28,7 @@
 	</copyright>
 	<name>squidsync</name>
 	<title>Proxy Server: XMLRPC Sync</title>
+	<addedit_string>squid: changed Sync</addedit_string>
 	<include_file>/usr/local/pkg/squid.inc</include_file>
 	<tabs>
 		<tab>

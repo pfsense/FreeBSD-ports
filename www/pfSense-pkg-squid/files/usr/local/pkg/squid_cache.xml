@@ -28,6 +28,7 @@
 	</copyright>
 	<name>squidcache</name>
 	<title>Proxy Server: Cache Management</title>
+	<addedit_string>squid: changed Local Cache</addedit_string>
 	<include_file>/usr/local/pkg/squid.inc</include_file>
 	<tabs>
 		<tab>

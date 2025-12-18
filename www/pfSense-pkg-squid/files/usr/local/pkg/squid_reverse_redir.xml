@@ -28,6 +28,7 @@
 	</copyright>
 	<name>squidreverseredir</name>
 	<title>Reverse Proxy Server: Redirects</title>
+	<addedit_string>squid: changed Reverse Proxy Redirects</addedit_string>
 	<include_file>/usr/local/pkg/squid.inc</include_file>
 	<tabs>
 	<tab>
