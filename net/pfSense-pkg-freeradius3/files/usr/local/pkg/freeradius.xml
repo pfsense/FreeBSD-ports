@@ -28,6 +28,7 @@
 	</copyright>
 	<name>freeradius</name>
 	<title>Services/FreeRADIUS</title>
+	<addedit_string>FreeRADIUS: changed Users</addedit_string>
 	<include_file>/usr/local/pkg/freeradius.inc</include_file>
 	<menu>
 		<name>FreeRADIUS</name>

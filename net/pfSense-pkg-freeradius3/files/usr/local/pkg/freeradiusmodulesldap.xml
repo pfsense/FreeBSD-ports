@@ -31,6 +31,7 @@
 ]]>	</copyright>
 	<name>freeradiusmodulesldap</name>
 	<title>Services/FreeRADIUS</title>
+	<addedit_string>FreeRADIUS: changed LDAP</addedit_string>
 	<aftersaveredirect>pkg_edit.php?xml=freeradiusmodulesldap.xml</aftersaveredirect>
 	<include_file>/usr/local/pkg/freeradius.inc</include_file>
 	<tabs>
