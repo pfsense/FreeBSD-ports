@@ -27,6 +27,7 @@
 	</copyright>
     <name>telegraf</name>
     <title>Services: Telegraf</title>
+    <addedit_string>telegraf: changed settings</addedit_string>
     <include_file>/usr/local/pkg/telegraf.inc</include_file>
     <menu>
         <name>Telegraf</name>
