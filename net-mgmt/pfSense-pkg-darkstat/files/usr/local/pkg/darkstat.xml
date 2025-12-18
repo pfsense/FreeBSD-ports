@@ -28,6 +28,7 @@
 	<name>Darkstat</name>
 	<version>%%PKGVERSION%%</version>
 	<title>Services/Darkstat</title>
+	<addedit_string>darkstat: changed Settings</addedit_string>
 	<include_file>/usr/local/pkg/darkstat.inc</include_file>
 	<menu>
 		<name>darkstat</name>
