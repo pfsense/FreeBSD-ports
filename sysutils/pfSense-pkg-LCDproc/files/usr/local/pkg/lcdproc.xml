@@ -30,6 +30,7 @@
 	<name>lcdproc</name>
 	<version>%%PKGVERSION%%</version>
 	<title>Services/LCDProc</title>
+	<donotsave>true</donotsave>
 	<include_file>/usr/local/pkg/lcdproc.inc</include_file>
 	<menu>
 		<name>LCDproc</name>
