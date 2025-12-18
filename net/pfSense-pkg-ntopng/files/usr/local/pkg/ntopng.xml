@@ -27,6 +27,7 @@
 	</copyright>
 	<name>ntopng</name>
 	<title>Diagnostics: ntopng Settings</title>
+	<addedit_string>ntopng: changed settings</addedit_string>
 	<include_file>/usr/local/pkg/ntopng.inc</include_file>
 	<aftersaveredirect>pkg_edit.php?xml=ntopng.xml</aftersaveredirect>
 	<menu>
