@@ -28,6 +28,7 @@
 	</copyright>
 	<name>lightsquid</name>
 	<title>Squid Proxy Reports: Settings</title>
+	<addedit_string>lightsquid: changed settings</addedit_string>
 	<category>Status</category>
 	<include_file>/usr/local/pkg/lightsquid.inc</include_file>
 	<menu>
