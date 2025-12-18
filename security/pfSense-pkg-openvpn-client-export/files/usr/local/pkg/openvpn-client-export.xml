@@ -28,6 +28,7 @@
 	</copyright>
 	<name>OpenVPN Client Export</name>
 	<title>OpenVPN Client Export</title>
+	<donotsave>true</donotsave>
 	<include_file>/usr/local/pkg/openvpn-client-export.inc</include_file>
 	<tabs>
 		<tab>
