@@ -28,6 +28,7 @@
 	<name>tinchosts</name>
 	<version>%%PKGVERSION%%</version>
 	<title>VPN: Tinc: Hosts</title>
+	<addedit_string>tinc: changed Hosts</addedit_string>
 	<include_file>/usr/local/pkg/tinc.inc</include_file>
 	<tabs>
 		<tab>

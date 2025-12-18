@@ -29,6 +29,7 @@
 	<name>tinc</name>
 	<version>%%PKGVERSION%%</version>
 	<title>VPN: Tinc: Settings</title>
+	<addedit_string>tinc: changed Settings</addedit_string>
 	<include_file>/usr/local/pkg/tinc.inc</include_file>
 	<menu>
 		<name>tinc</name>
