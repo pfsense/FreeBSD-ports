@@ -27,6 +27,7 @@
 	</copyright>
 	<name>open-vm-tools</name>
 	<title>Open VM Tools</title>
+	<donotsave>true</donotsave>
 	<include_file>/usr/local/pkg/open-vm-tools.inc</include_file>
 	<service>
 		<name>vmware-guestd</name>
