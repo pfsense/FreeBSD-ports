@@ -56,7 +56,7 @@
 		</tab>
 	</tabs>
 	<delete_string>SNMP user deleted</delete_string>
-	<addedit_string>SNMP user created/modified</addedit_string>
+	<addedit_string>NET-SNMP: changed Users</addedit_string>
 	<adddeleteeditpagefields>
 		<columnitem>
 			<fielddescr>Username</fielddescr>

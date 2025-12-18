@@ -59,8 +59,8 @@
 			<url>/pkg_edit.php?xml=netsnmp.xml</url>
 		</tab>
 	</tabs>
-	<delete_string>snmptrapd forward deleted</delete_string>
-	<addedit_string>snmptrapd forward created/modified</addedit_string>
+	<delete_string>NET-SNMP: forward deleted</delete_string>
+	<addedit_string>NET-SNMP: changed Trap Forwards</addedit_string>
 	<adddeleteeditpagefields>
 		<columnitem>
 			<fielddescr>Destination</fielddescr>

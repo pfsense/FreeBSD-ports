@@ -55,8 +55,8 @@
 			<url>/pkg_edit.php?xml=net-snmptrapd.xml</url>
 		</tab>
 	</tabs>
-	<delete_string>SNMP user deleted</delete_string>
-	<addedit_string>SNMP user created/modified</addedit_string>
+	<delete_string>NET-SNMP: deleted community</delete_string>
+	<addedit_string>NET-SNMP: changed Communities</addedit_string>
 	<adddeleteeditpagefields>
 		<columnitem>
 			<fielddescr>Community Name</fielddescr>

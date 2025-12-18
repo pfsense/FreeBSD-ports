@@ -27,6 +27,7 @@
 	</copyright>
 	<name>netsnmp_trapgen</name>
 	<title>NET-SNMP</title>
+	<addedit_string>NET-SNMP: changed Trap Generation</addedit_string>
 	<include_file>/usr/local/pkg/net-snmp.inc</include_file>
 	<tabs>
 		<tab>
