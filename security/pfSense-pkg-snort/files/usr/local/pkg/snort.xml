@@ -66,6 +66,7 @@
 	<name>Snort</name>
 	<version>%%PKGVERSION%%</version>
 	<title>Services: Snort IDS</title>
+	<donotsave>true</donotsave>
 	<include_file>/usr/local/pkg/snort/snort.inc</include_file>
 	<menu>
 		<name>Snort</name>
