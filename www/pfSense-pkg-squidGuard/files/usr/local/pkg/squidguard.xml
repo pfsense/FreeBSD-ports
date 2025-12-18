@@ -28,6 +28,7 @@
 	</copyright>
 	<name>squidguardgeneral</name>
 	<title>Proxy filter SquidGuard: General settings</title>
+	<addedit_string>SquidGuard: changed General settings</addedit_string>
 	<include_file>/usr/local/pkg/squidguard.inc</include_file>
 	<!-- Installation -->
 	<menu>
