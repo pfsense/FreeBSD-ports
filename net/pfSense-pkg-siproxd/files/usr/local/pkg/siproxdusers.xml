@@ -27,6 +27,7 @@
 	</copyright>
 	<name>siproxdusers</name>
 	<title>siproxd: Users</title>
+	<addedit_string>SIPROXD: changed Users</addedit_string>
 	<include_file>/usr/local/pkg/siproxd.inc</include_file>
 	<tabs>
 		<tab>
