@@ -27,6 +27,7 @@
 	</copyright>
 	<title>node_exporter</title>
 	<name>node_exporter</name>
+	<addedit_string>node_exporter: changed settings</addedit_string>
 	<include_file>/usr/local/pkg/node_exporter.inc</include_file>
 	<menu>
 		<name>Prometheus node_exporter</name>
