@@ -27,6 +27,7 @@
 	</copyright>
 	<name>sudo</name>
 	<title>System/Sudo</title>
+	<addedit_string>sudo: changed settings</addedit_string>
 	<include_file>/usr/local/pkg/sudo.inc</include_file>
 	<menu>
 		<name>sudo</name>
