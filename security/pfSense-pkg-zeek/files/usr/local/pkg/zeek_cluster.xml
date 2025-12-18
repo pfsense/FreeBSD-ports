@@ -30,6 +30,7 @@
 	</copyright>
 	<name>zeekcluster</name>
 	<title>Services/Zeek NSM</title>
+	<addedit_string>Zeek: changed Cluster</addedit_string>
 	<include_file>/usr/local/pkg/zeek.inc</include_file>
 	<tabs>
 		<tab>

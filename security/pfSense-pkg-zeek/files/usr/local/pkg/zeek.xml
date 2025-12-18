@@ -32,6 +32,7 @@
 	<name>zeek</name>
 	<version>%%PKGVERSION%%</version>
 	<title>Services/Zeek NSM</title>
+	<addedit_string>Zeek: changed NSM</addedit_string>
 	<include_file>/usr/local/pkg/zeek.inc</include_file>
 	<menu>
 		<name>Zeek NSM</name>
