@@ -28,6 +28,7 @@
 	<name>lldpd</name>
 	<version>0.9.4</version>
 	<title>Services: LLDP</title>
+	<donotsave>true</donotsave>
 	<savetext>Change</savetext>
 	<include_file>/usr/local/pkg/lldpd/lldpd.inc</include_file>
 	<menu>
