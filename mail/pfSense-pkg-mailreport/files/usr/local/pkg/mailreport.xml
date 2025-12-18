@@ -28,6 +28,7 @@
 	<name>mailreport</name>
 	<version>%%PKGVERSION%%</version>
 	<title>Status/Email Reports</title>
+	<donotsave>true</donotsave>
 	<menu>
 		<name>Email Reports</name>
 		<tooltiptext>Setup periodic email reports.</tooltiptext>
