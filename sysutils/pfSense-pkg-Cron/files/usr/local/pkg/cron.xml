@@ -29,6 +29,7 @@
 	<name>cron</name>
 	<version>%%PKGVERSION%%</version>
 	<title>Cron Settings</title>
+	<donotsave>true</donotsave>
 	<include_file>/usr/local/pkg/cron.inc</include_file>
 	<menu>
 		<name>Cron</name>
