@@ -30,7 +30,7 @@
 	<name>nut</name>
 	<version>%%PKGVERSION%%</version>
 	<title>Services: UPS</title>
-	<savetext>Change</savetext>
+	<donotsave>true</donotsave>
 	<include_file>/usr/local/pkg/nut/nut.inc</include_file>
 	<menu>
 		<name>UPS</name>
