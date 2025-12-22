@@ -916,7 +916,6 @@ function pfb_global() {
 		$pfb['install']	= FALSE;
 	}
 }
-pfb_global();
 
 // Function to get pfBlockerNG package version
 function pfb_pkg_ver() {

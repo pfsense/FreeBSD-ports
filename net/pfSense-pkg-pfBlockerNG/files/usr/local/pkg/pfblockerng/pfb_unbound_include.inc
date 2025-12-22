@@ -35,6 +35,7 @@ $verbose = FALSE;
 if ($g['pfblockerng_include_verbose']) {
 	$verbose = TRUE;
 	require_once('/usr/local/pkg/pfblockerng/pfblockerng.inc');
+	pfb_global();
 }
 
 // Ensure log file permissions are set as 'unbound:unbound'
