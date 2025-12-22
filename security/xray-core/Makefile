@@ -1,6 +1,7 @@
 PORTNAME=	xray-core
 DISTVERSIONPREFIX=	v
 DISTVERSION=	25.12.8
+PORTREVISION=	1
 CATEGORIES=	security
 MASTER_SITES=	https://github.com/v2fly/geoip/releases/download/202512050148/:geoip \
 		https://github.com/v2fly/domain-list-community/releases/download/20251212112114/:geosite
@@ -15,7 +16,7 @@ WWW=		https://github.com/XTLS/Xray-core
 LICENSE=	MPL20
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-USES=		go:1.25,modules
+USES=		go:1.25+,modules
 USE_GITHUB=	yes
 GH_ACCOUNT=	XTLS
 GH_PROJECT=	Xray-core

@@ -388,7 +388,6 @@
     SUBDIR += trealla-prolog
     SUBDIR += tuareg-mode.el
     SUBDIR += typescript-go
-    SUBDIR += typstfmt
     SUBDIR += typstyle
     SUBDIR += ucc
     SUBDIR += urweb
@@ -403,5 +402,6 @@
     SUBDIR += ypsilon
     SUBDIR += zephir
     SUBDIR += zig
+    SUBDIR += zig014
 
 .include <bsd.port.subdir.mk>

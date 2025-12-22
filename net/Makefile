@@ -1660,6 +1660,7 @@
     SUBDIR += usbredir
     SUBDIR += usockets
     SUBDIR += utftpd
+    SUBDIR += uvgrtp
     SUBDIR += v2ray
     SUBDIR += vde
     SUBDIR += vde2
