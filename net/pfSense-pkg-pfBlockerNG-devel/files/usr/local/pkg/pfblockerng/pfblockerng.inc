@@ -6252,7 +6252,7 @@ function pfb_open_sqlite($table, $message) {
 
 	try {
 		$db_handle = new SQLite3($database);
-		$db_handle->busyTimeout("{$pfb['sqlite_timeout']}");//
+		$db_handle->busyTimeout("{$pfb['sqlite_timeout']}");
 	}
 	catch (Exception $e) {
 		@file_put_contents($pfb['errlog'], "\nDNSBL_SQL: Failed to open DB - {$message}", FILE_APPEND | LOCK_EX);
