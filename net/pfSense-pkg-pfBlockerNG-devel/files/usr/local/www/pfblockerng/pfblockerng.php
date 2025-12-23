@@ -60,6 +60,7 @@ require_once('/usr/local/pkg/pfblockerng/pfblockerng.inc');
 require_once('/usr/local/pkg/pfblockerng/pfblockerng_extra.inc');	// 'include functions' not yet merged into pfSense
 
 global $g, $pfb;
+pfb_global();
 
 // Clear IP/DNSBL counters via CRON
 if (isset($argv[1])) {
