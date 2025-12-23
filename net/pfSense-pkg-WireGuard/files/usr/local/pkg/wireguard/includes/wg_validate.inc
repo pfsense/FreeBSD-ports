@@ -192,6 +192,14 @@ function wg_validate_peer_post($pconfig, $posted_peer_idx) {
 	} elseif (!wg_is_valid_key($pconfig['publickey'])) {
 		$input_errors[] = "The public key ({$pconfig['publickey']}) is not a valid WireGuard public key.";
 	} elseif (!empty($pconfig['tun'])) {
+		// We don't want peers to have the same key pair as the tunnel itself.
+		$result = wg_tunnel_get_config_by_name($pconfig['tun']);
+		if ($result == false) {
+			$input_errors[] = "Tunnel ({$pconfig['tun']}) doesn't exist.";
+		} elseif ($result[1]['publickey'] == $pconfig['publickey']) {
+			$input_errors[] = "The public key ({$pconfig['publickey']}) is already used by the tunnel itself ({$pconfig['tun']}).";
+		}
+
 		foreach (wg_tunnel_get_peers_config($pconfig['tun']) as [$peer_idx, $peer, $is_new]) {
 			// We don't want duplicate public keys per tunnel, but re-saving is okay...
 			if (($peer['publickey'] == $pconfig['publickey']) && ($peer_idx != $posted_peer_idx)) {
