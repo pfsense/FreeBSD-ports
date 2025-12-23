@@ -65,7 +65,7 @@ SHEBANG_FILES=			source3/script* source4/scripting/bin/* selftest/*
 
 CONFIGURE_LOG=			bin/config.log
 CONFIGURE_ARGS=			--mandir="${PREFIX}/share/man" \
-				--sysconfdir="${_CONFDIR}" \
+				--sysconfdir="${ETCDIR}" \
 				--includedir="${SAMBA_INCLUDEDIR}" \
 				--datadir="${DATADIR}" \
 				--libdir="${SAMBA_LIBDIR}" \
@@ -74,7 +74,7 @@ CONFIGURE_ARGS=			--mandir="${PREFIX}/share/man" \
 				--with-modulesdir="${SAMBA_MODULESDIR}" \
 				--with-ldbmodulesdir="${SAMBA_LDB_MODULESDIR}" \
 				--with-pkgconfigdir="${_PKGCONFIGDIR}" \
-				--localstatedir="${VARDIR}" \
+				--localstatedir="${_LOCALSTATEDIR}" \
 				--with-piddir="${_RUNDIR}" \
 				--with-sockets-dir="${_RUNDIR}" \
 				--with-privileged-socket-dir="${_RUNDIR}" \
@@ -134,6 +134,7 @@ LDFLAGS+=			-Wl,--undefined-version
 
 CONFLICTS_INSTALL=		ldb2[0-9]-* samba4*
 
+ETCDIR=				${PREFIX}/etc
 EXTRA_PATCHES=			\
 				${PATCHDIR}/0001-Compact-and-simplify-modules-build-and-config-genera.patch:-p1 \
 				${PATCHDIR}/0002-Adjust-abi_gen.sh-script-to-run-under-FreeBSD-with-i.patch:-p1 \
@@ -161,8 +162,7 @@ EXTRA_PATCHES=			\
 				${PATCHDIR}/0028-s3-lib-system-add-FreeBSD-proc_fd_pattern.patch \
 
 SUB_FILES=			pkg-message README.FreeBSD
-SUB_LIST=			PKGCONFIGDIR=${_PKGCONFIGDIR_REL} \
-				${_SAMBA_SUB}
+SUB_LIST=			${_SAMBA_SUB}
 
 # PLIST must be defined here explicitly as we append to PLIST later on to
 # handle extra pkg-plist files like pkg-plist.python.
@@ -171,8 +171,7 @@ PLIST_DIRS=			${SAMBA_MODULESDIR} \
 				${_MODULE_CLASSES:S|^|${SAMBA_MODULESDIR}/|}
 # ":C|_|/|:C|-|_|" is a workaround for turning "nss-info_*" modules into "nss_info/*".
 PLIST_FILES+=			${_SHARED_MODULES:C|_|/|:C|-|_|:S|^|${SAMBA_MODULESDIR}/|:S|$|.so|}
-PLIST_SUB=			PKGCONFIGDIR=${_PKGCONFIGDIR_REL} \
-				${_SAMBA_SUB}
+PLIST_SUB=			${_SAMBA_SUB}
 PORTDOCS=			README.FreeBSD
 
 OPTIONS_DEFINE=			AD_DC ADS CLUSTER CUPS DOCS FAM LDAP GPGME \
@@ -183,7 +182,7 @@ OPTIONS_DEFAULT=		AD_DC ADS DOCS FAM LDAP MANPAGES \
 				FRUIT GSSAPI_BUILTIN AVAHI
 OPTIONS_GROUP=			BUNDLED_DEPS DEVELOPMENT VFS
 OPTIONS_GROUP_BUNDLED_DEPS=	BUNDLED_CMOCKA BUNDLED_TALLOC BUNDLED_TDB BUNDLED_TEVENT
-OPTIONS_GROUP_DEVELOPMENT=	DEVELOPER MEMORY_DEBUG PICKY_DEVELOPER TEST
+OPTIONS_GROUP_DEVELOPMENT=	DEVELOPER MEMORY_DEBUG TEST
 OPTIONS_GROUP_VFS=		FRUIT GLUSTERFS
 OPTIONS_SINGLE=			GSSAPI ZEROCONF
 OPTIONS_SINGLE_GSSAPI=		GSSAPI_BUILTIN GSSAPI_MIT
@@ -207,7 +206,6 @@ GPGME_DESC=			GpgME support
 GSSAPI_BUILTIN_DESC=		GSSAPI support via bundled Heimdal
 LDAP_DESC=			LDAP client
 MEMORY_DEBUG_DESC=		Debug memory allocator
-PICKY_DEVELOPER_DESC=		Treat compiler warnings as errors(implies DEVELOPER)
 PROFILE_DESC=			Profiling data
 QUOTAS_DESC=			Disk quota support
 UTMP_DESC=			UTMP accounting
@@ -305,7 +303,7 @@ GPGME_CONFIGURE_WITH=		gpgme
 GSSAPI_BUILTIN_USES=		bison
 
 GSSAPI_MIT_USES=		bison gssapi:mit
-GSSAPI_MIT_CONFIGURE_ON=	--with-system-mitkrb5 ${GSSAPIBASEDIR} \
+GSSAPI_MIT_CONFIGURE_ON=	--with-system-mitkrb5 \
 				--with-system-mitkdc=${GSSAPIBASEDIR}/sbin/krb5kdc \
 				--with-experimental-mit-ad-dc
 GSSAPI_MIT_PLIST_FILES=		${SAMBA_MODULESDIR}/krb5/winbind_krb5_localauth.so \
@@ -324,13 +322,8 @@ MDNSRESPONDER_LIB_DEPENDS=	libdns_sd.so:net/mDNSResponder
 MDNSRESPONDER_CONFIGURE_ENABLE=	dnssd
 MDNSRESPONDER_VARS=		_SAMBA_SERVICES+=mdnsd
 
-MEMORY_DEBUG_IMPLIES=		DEBUG
 MEMORY_DEBUG_LIB_DEPENDS=	libjemalloc.so.2:devel/jemalloc
 MEMORY_DEBUG_CONFIGURE_ENV=	ADDITIONAL_CFLAGS="-DENABLE_JEMALLOC `pkg-config --cflags jemalloc`" ADDITIONAL_LDFLAGS="`pkg-config --libs jemalloc`"
-
-# https://bugzilla.samba.org/show_bug.cgi?id=8969
-PICKY_DEVELOPER_IMPLIES=	DEVELOPER
-PICKY_DEVELOPER_CONFIGURE_ON=	--picky-developer
 
 PROFILE_CONFIGURE_WITH=		profiling-data
 
@@ -398,7 +391,8 @@ _SHARED_MODULES+=		vfs_acl_tdb vfs_acl_xattr vfs_aio_fork vfs_aio_pthread \
 				vfs_widelinks vfs_worm vfs_xattr_tdb vfs_zfsacl
 
 _SAMBA_MAJVERNAME=		samba4
-_SAMBA_SUB=			SAMBA4_LOGDIR="${_LOGDIR}" \
+_SAMBA_SUB=			PKGCONFIGDIR=${_PKGCONFIGDIR_REL} \
+				SAMBA4_LOGDIR="${_LOGDIR}" \
 				SAMBA4_RUNDIR="${_RUNDIR}" \
 				SAMBA4_LOCKDIR="${_LOCKDIR}" \
 				SAMBA4_LIBDIR="${SAMBA_LIBDIR}" \
@@ -406,15 +400,13 @@ _SAMBA_SUB=			SAMBA4_LOGDIR="${_LOGDIR}" \
 				SAMBA_LDB_MODULESDIR="${SAMBA_LDB_MODULESDIR}" \
 				SAMBA4_BINDDNSDIR="${_BINDDNSDIR}" \
 				SAMBA4_PRIVATEDIR="${_PRIVATEDIR}" \
-				SAMBA4_CONFDIR="${_CONFDIR}" \
 				SAMBA4_CONFIG="${_SAMBA_CONFIG}" \
 				SAMBA4_SERVICES="${_SAMBA_SERVICES}"
 
 _SAMBA_CONFIG=			smb4.conf
 
-# XXX: Instead of defining _CONFDIR we could probably just set ETCDIR.
-_CONFDIR=			${PREFIX}/etc
 _BINDDNSDIR=			${_LOCKDIR}/bind-dns
+_LOCALSTATEDIR=			${_VARDIR}
 _LOCKDIR=			${_VARDIR}/db/${_SAMBA_MAJVERNAME}
 _LOGDIR=			${_VARDIR}/log/${_SAMBA_MAJVERNAME}
 _PAMDIR=			${PREFIX}/lib
@@ -422,7 +414,7 @@ _PKGCONFIGDIR=			${PREFIX}/${_PKGCONFIGDIR_REL}
 _PKGCONFIGDIR_REL=		libdata/pkgconfig
 _PRIVATEDIR=			${_LOCKDIR}/private
 _RUNDIR=			${_VARDIR}/run/${_SAMBA_MAJVERNAME}
-_VARDIR=			${DESTDIR}/var
+_VARDIR=			/var
 
 .include <bsd.port.options.mk>
 
@@ -496,6 +488,8 @@ post-install-CLUSTER-on:
 	${RLN} ${STAGEDIR}${PREFIX}/share/ctdb/events/legacy/05.system.script ${STAGEDIR}${PREFIX}/etc/ctdb/events/legacy/05.system.script
 	${RLN} ${STAGEDIR}${PREFIX}/share/ctdb/events/legacy/10.interface.script ${STAGEDIR}${PREFIX}/etc/ctdb/events/legacy/10.interface.script
 	${RLN} ${STAGEDIR}${PREFIX}/share/ctdb/events/legacy/95.database.script ${STAGEDIR}${PREFIX}/etc/ctdb/events/legacy/95.database.script
+
+	${RLN} ${STAGEDIR}${PREFIX}/libexec/ctdb/statd_callout ${STAGEDIR}${PREFIX}/etc/ctdb/statd-callout
 
 post-install-DOCS-on:
 	${MKDIR} ${STAGEDIR}${DOCSDIR}

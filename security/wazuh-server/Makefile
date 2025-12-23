@@ -1,6 +1,5 @@
 PORTNAME=	wazuh
-PORTVERSION=	4.12.0
-PORTREVISION=	1
+PORTVERSION=	4.14.1
 CATEGORIES=	security
 MASTER_SITES=	LOCAL/acm/${PORTNAME}/:config_samples \
 		https://packages.wazuh.com/4.x/filebeat/:wazuh_module \
@@ -41,7 +40,7 @@ WAZUH-MANAGER_DESC=	Install wazuh manager component
 
 FILEBEAT_RUN_DEPENDS=		filebeat:sysutils/beats7
 LOGSTASH_RUN_DEPENDS=		${LOCALBASE}/logstash/bin/logstash:sysutils/logstash8
-WAZUH-MANAGER_RUN_DEPENDS=	${WAZUH_LOCALBASE}/bin/wazuh-control:security/wazuh-manager
+WAZUH-MANAGER_RUN_DEPENDS=	wazuh-manager>=0:security/wazuh-manager
 
 do-extract:
 	@${MKDIR} ${WRKSRC}

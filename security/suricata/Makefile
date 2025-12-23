@@ -1,9 +1,10 @@
 PORTNAME=	suricata
 DISTVERSION=	8.0.2
+PORTREVISION=	1
 CATEGORIES=	security
 MASTER_SITES=	https://www.openinfosecfoundation.org/download/
 
-MAINTAINER=	franco@opnsense.org
+MAINTAINER=	bofh@FreeBSD.org
 COMMENT=	High Performance Network IDS, IPS and Security Monitoring engine
 WWW=		https://suricata.io
 

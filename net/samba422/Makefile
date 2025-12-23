@@ -75,7 +75,7 @@ CONFIGURE_ARGS=			--mandir="${PREFIX}/share/man" \
 				--with-modulesdir="${SAMBA_MODULESDIR}" \
 				--with-ldbmodulesdir="${SAMBA_LDB_MODULESDIR}" \
 				--with-pkgconfigdir="${_PKGCONFIGDIR}" \
-				--localstatedir="${VARDIR}" \
+				--localstatedir="${_LOCALSTATEDIR}" \
 				--with-piddir="${_RUNDIR}" \
 				--with-sockets-dir="${_RUNDIR}" \
 				--with-privileged-socket-dir="${_RUNDIR}" \
@@ -325,7 +325,6 @@ MDNSRESPONDER_LIB_DEPENDS=	libdns_sd.so:net/mDNSResponder
 MDNSRESPONDER_CONFIGURE_ENABLE=	dnssd
 MDNSRESPONDER_VARS=		_SAMBA_SERVICES+=mdnsd
 
-MEMORY_DEBUG_IMPLIES=		DEBUG
 MEMORY_DEBUG_LIB_DEPENDS=	libjemalloc.so.2:devel/jemalloc
 MEMORY_DEBUG_CONFIGURE_ENV=	ADDITIONAL_CFLAGS="-DENABLE_JEMALLOC `pkg-config --cflags jemalloc`" ADDITIONAL_LDFLAGS="`pkg-config --libs jemalloc`"
 
@@ -416,6 +415,7 @@ _SAMBA_CONFIG=			smb4.conf
 # XXX: Instead of defining _CONFDIR we could probably just set ETCDIR.
 _CONFDIR=			${PREFIX}/etc
 _BINDDNSDIR=			${_LOCKDIR}/bind-dns
+_LOCALSTATEDIR=			${_VARDIR}
 _LOCKDIR=			${_VARDIR}/db/${_SAMBA_MAJVERNAME}
 _LOGDIR=			${_VARDIR}/log/${_SAMBA_MAJVERNAME}
 _PAMDIR=			${PREFIX}/lib
@@ -423,7 +423,7 @@ _PKGCONFIGDIR=			${PREFIX}/${_PKGCONFIGDIR_REL}
 _PKGCONFIGDIR_REL=		libdata/pkgconfig
 _PRIVATEDIR=			${_LOCKDIR}/private
 _RUNDIR=			${_VARDIR}/run/${_SAMBA_MAJVERNAME}
-_VARDIR=			${DESTDIR}/var
+_VARDIR=			/var
 
 .include <bsd.port.options.mk>
 
@@ -497,6 +497,8 @@ post-install-CLUSTER-on:
 	${RLN} ${STAGEDIR}${PREFIX}/share/ctdb/events/legacy/05.system.script ${STAGEDIR}${PREFIX}/etc/ctdb/events/legacy/05.system.script
 	${RLN} ${STAGEDIR}${PREFIX}/share/ctdb/events/legacy/10.interface.script ${STAGEDIR}${PREFIX}/etc/ctdb/events/legacy/10.interface.script
 	${RLN} ${STAGEDIR}${PREFIX}/share/ctdb/events/legacy/95.database.script ${STAGEDIR}${PREFIX}/etc/ctdb/events/legacy/95.database.script
+
+	${RLN} ${STAGEDIR}${PREFIX}/libexec/ctdb/statd_callout ${STAGEDIR}${PREFIX}/etc/ctdb/statd-callout
 
 post-install-DOCS-on:
 	${MKDIR} ${STAGEDIR}${DOCSDIR}

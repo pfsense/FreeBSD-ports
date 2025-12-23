@@ -1606,6 +1606,7 @@
     SUBDIR += py-dj52-django-tasks
     SUBDIR += py-dj52-django-timezone-field
     SUBDIR += py-dj52-django-treebeard
+    SUBDIR += py-dj52-django-treenode
     SUBDIR += py-dj52-djangorestframework
     SUBDIR += py-dj52-djangorestframework-guardian
     SUBDIR += py-dj52-drf-spectacular
@@ -1952,7 +1953,6 @@
     SUBDIR += py-requests-file
     SUBDIR += py-requests-futures
     SUBDIR += py-requests-gssapi
-    SUBDIR += py-requests-kerberos
     SUBDIR += py-requests-mock
     SUBDIR += py-requests-oauthlib
     SUBDIR += py-requests-toolbelt
@@ -2454,6 +2454,8 @@
     SUBDIR += rubygem-responders-rails70
     SUBDIR += rubygem-responders-rails71
     SUBDIR += rubygem-responders-rails72
+    SUBDIR += rubygem-responders-rails80
+    SUBDIR += rubygem-responders-rails81
     SUBDIR += rubygem-rest-client
     SUBDIR += rubygem-rest-client-gitlab
     SUBDIR += rubygem-rfacebook
