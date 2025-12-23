@@ -1087,6 +1087,7 @@ if (isset($argv[1])) {
 
 	// DNSBL Lighttpd HTTPS daemon (Collects HTTPS events from the Lighttpd dnsbl_error.log)
 	if ($argv[1] == 'dnsbl') {
+			pfb_global();
 			ignore_user_abort(TRUE);
 			set_time_limit(0);
 			pfb_daemon_dnsbl();
@@ -1095,6 +1096,7 @@ if (isset($argv[1])) {
 
 	// DNSBL Lighttpd HTTP daemon (Collects HTTP events from the index.php script)
 	elseif ($argv[1] == 'index') {
+			pfb_global();
 			ignore_user_abort(TRUE);
 			set_time_limit(0);
 			pfb_daemon_dnsbl_index();
@@ -1103,6 +1105,7 @@ if (isset($argv[1])) {
 
 	// DNSBL daemon to monitor Resolver queries and manage SQLite3 database
 	elseif ($argv[1] == 'queries') {
+			pfb_global();
 			ignore_user_abort(TRUE);
 			set_time_limit(0);
 			pfb_daemon_queries();
@@ -1111,6 +1114,7 @@ if (isset($argv[1])) {
 
 	// IP filter daemon to convert filter.log to ip_block|ip_permit|ip_match log format
 	elseif ($argv[1] == 'filterlog') {
+			pfb_global();
 			ignore_user_abort(TRUE);
 			set_time_limit(0);
 			if (!file_exists('/var/log/filter.log')) {
@@ -6248,7 +6252,7 @@ function pfb_open_sqlite($table, $message) {
 
 	try {
 		$db_handle = new SQLite3($database);
-		$db_handle->busyTimeout("{$pfb['sqlite_timeout']}");
+		$db_handle->busyTimeout("{$pfb['sqlite_timeout']}");//
 	}
 	catch (Exception $e) {
 		@file_put_contents($pfb['errlog'], "\nDNSBL_SQL: Failed to open DB - {$message}", FILE_APPEND | LOCK_EX);
