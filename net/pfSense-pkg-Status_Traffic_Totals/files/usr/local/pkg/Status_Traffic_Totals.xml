@@ -34,6 +34,7 @@
 	<title>Status: Traffic Totals</title>
 	<donotsave>true</donotsave>
 	<include_file>/usr/local/pkg/status_traffic_totals.inc</include_file>
+	<ramdisk_dir_names>vnstat</ramdisk_dir_names>
 	<menu>
 		<name>Traffic Totals</name>
 		<tooltiptext>Traffic totals per interface for different periods of time.</tooltiptext>

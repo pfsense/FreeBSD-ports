@@ -30,6 +30,7 @@
 	<title>Proxy filter SquidGuard: General settings</title>
 	<addedit_string>SquidGuard: changed General settings</addedit_string>
 	<include_file>/usr/local/pkg/squidguard.inc</include_file>
+	<ramdisk_dir_names>squidGuard</ramdisk_dir_names>
 	<!-- Installation -->
 	<menu>
 		<name>SquidGuard Proxy Filter</name>

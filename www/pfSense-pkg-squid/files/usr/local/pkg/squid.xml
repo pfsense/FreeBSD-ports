@@ -30,6 +30,7 @@
 	<title>Proxy Server: General Settings</title>
 	<addedit_string>squid: changed ACLs</addedit_string>
 	<include_file>/usr/local/pkg/squid.inc</include_file>
+	<ramdisk_dir_names>clamav</ramdisk_dir_names>
 	<menu>
 		<name>Squid Proxy Server</name>
 		<tooltiptext>Modify the proxy server settings</tooltiptext>

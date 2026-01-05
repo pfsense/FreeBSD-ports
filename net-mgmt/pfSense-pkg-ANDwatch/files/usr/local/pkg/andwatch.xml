@@ -29,6 +29,7 @@
 	<title>Services: ANDwatch</title>
 	<donotsave>true</donotsave>
 	<include_file>/usr/local/pkg/andwatch.inc</include_file>
+	<ramdisk_dir_names>andwatch</ramdisk_dir_names>
 	<menu>
 		<name>ANDwatch</name>
 		<tooltiptext>ANDwatch Settings</tooltiptext>

@@ -30,6 +30,7 @@
 	<title>VPN/Tailscale</title>
 	<addedit_string>tailscale: changed settings</addedit_string>
 	<include_file>/usr/local/pkg/tailscale/tailscale.inc</include_file>
+	<ramdisk_dir_names>tailscale</ramdisk_dir_names>
 	<aftersaveredirect>/pkg_edit.php?xml=tailscale.xml</aftersaveredirect>
 	<service>
 		<name>tailscale</name>

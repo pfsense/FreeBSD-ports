@@ -32,6 +32,7 @@
 	<title>Services: UPS</title>
 	<donotsave>true</donotsave>
 	<include_file>/usr/local/pkg/nut/nut.inc</include_file>
+	<ramdisk_dir_names>nut</ramdisk_dir_names>
 	<menu>
 		<name>UPS</name>
 		<tooltiptext>Network UPS Tools status</tooltiptext>
