@@ -71,6 +71,7 @@ if ($_POST) {
 	}
 
 	// Validate interfaces
+	$pconfig['active_interfaces'] = array_get_path($pconfig, 'active_interfaces', []);
 	if (count($pconfig['active_interfaces']) < 2) {
 		$input_errors[] = gettext('A minimum of two interfaces are required');
 	}
