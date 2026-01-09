@@ -1,0 +1,4 @@
+Multicast Bridge is a daemon for forwarding UDP multicast data between
+network interfaces, supporting both IPv4 and IPv6. It supports staticly
+configured forwarding, and dynamic interest-based forwarding using IGMP
+and MLD. 

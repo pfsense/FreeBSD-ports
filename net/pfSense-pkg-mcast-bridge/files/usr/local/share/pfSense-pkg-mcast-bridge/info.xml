@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<pfsensepkgs>
+	<package>
+		<name>Multicast Bridge</name>
+		<internal_name>mcast-bridge</internal_name>
+		<website>https://github.com/dennypage/mcast-bridge/</website>
+		<descr><![CDATA[Multicast Bridge provides forwarding of UDP Multicast across network interfaces.]]></descr>
+		<version>%%PKGVERSION%%</version>
+		<configurationfile>mcast_bridge.xml</configurationfile>
+	</package>
+</pfsensepkgs>
