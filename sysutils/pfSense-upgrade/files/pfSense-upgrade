@@ -1034,7 +1034,7 @@ be_pkg_upgrade()
 
 	# Cleanup caches and unnecessary packages before unmounting
 	_exec "_pkg autoremove" "Removing unnecessary packages" mute ignore_result
-	_exec "_pkg clean" "Cleanup pkg cache" mute ignore_result
+	_exec "_pkg clean -a" "Cleanup pkg cache" mute ignore_result
 
 	# All done working in the chroot
 	unset PKG_OPTS
@@ -1669,7 +1669,7 @@ pkg_upgrade() {
 
 		# cleanup caches
 		_exec "_pkg autoremove" "Removing unnecessary packages" mute ignore_result
-		_exec "_pkg clean" "Cleanup pkg cache" mute ignore_result
+		_exec "_pkg clean -a" "Cleanup pkg cache" mute ignore_result
 	fi
 
 	gitsync=$(read_xml_tag.sh boolean system/gitsync/synconupgrade)
