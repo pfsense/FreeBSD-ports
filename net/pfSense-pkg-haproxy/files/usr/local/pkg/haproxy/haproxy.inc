@@ -1378,7 +1378,7 @@ function haproxy_check_and_run(&$messages, $reload, $force = false) {
 	if ($ok && $reload) {
 		global $haproxy_run_message;
 		rmdir_recursive($testpath);
-		$ok = haproxy_check_run(1) == 0;
+		$ok = haproxy_check_run(1, !$force) == 0;
 		$messages = $haproxy_run_message;
 	}
 	return $ok;
@@ -2488,7 +2488,7 @@ function haproxy_carpipismaster($ip) {
 	return null;
 }
 
-function haproxy_check_run($reload) {
+function haproxy_check_run($reload, $keep_server_state = true) {
 	global $g, $haproxy_run_message, $haproxy_server_state_path;
 	haproxy_config_init();
 	$haproxylock = lock("haproxy", LOCK_EX);
@@ -2496,7 +2496,7 @@ function haproxy_check_run($reload) {
 	$configpath = "{$g['varetc_path']}/haproxy";
 
 	if ($reload) {
-		if (haproxy_is_running()) {
+		if ($keep_server_state && haproxy_is_running()) {
 			$r = haproxy_socket_command("show servers state");
 			file_put_contents($haproxy_server_state_path, $r);
 		}
