@@ -9001,7 +9001,13 @@ function sync_package_pfblockerng($cron='') {
 				$log = "\nMaxMind download already in process...\n";
 				pfb_logger("{$log}", 1);
 			}
+		} else {
+			$log = "\n\nGeoIP: files already exist! No action taken.\n";
+			pfb_logger("{$log}", 1);
 		}
+	} else {
+		$log = "\n\nGeoIP: maxmind_key is empty! No action taken.\n";
+		pfb_logger("{$log}", 1);
 	}
 
 	$maxmind_run_once = TRUE;
