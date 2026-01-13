@@ -123,6 +123,7 @@ tcp_print(struct sbuf *sbuf, register const u_char *bp, register u_int length,
         register char ch;
         u_int16_t sport, dport, win, urp;
         u_int32_t seq, ack;
+	struct sbuf *sbhelper;
         register const struct ip6_hdr *ip6;
 
         tp = (const struct tcphdr *)bp;
@@ -208,7 +209,11 @@ tcp_print(struct sbuf *sbuf, register const u_char *bp, register u_int length,
                         --hlen;			/* account for type byte */
 			register u_int datalen = 0;
 
-                        sbuf_printf(sbuf, "%s", code2str(tcp_option_values, "Unknown Option %u", opt));
+			sbhelper = sbuf_new_auto();
+			sbuf_printf(sbhelper, "Unknown Option %u", opt);
+			sbuf_finish(sbhelper);
+                        sbuf_printf(sbuf, "%s", code2str(tcp_option_values, sbuf_data(sbhelper), opt));
+			sbuf_delete(sbhelper);
 
 			switch (opt) {
                         case TCPOPT_MAXSEG:
