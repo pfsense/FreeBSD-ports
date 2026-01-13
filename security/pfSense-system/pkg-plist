@@ -104,6 +104,7 @@
 @(,,755) /etc/rc.backup_captiveportal.sh
 @(,,755) /etc/rc.backup_dhcpleases.sh
 @(,,755) /etc/rc.backup_logs.sh
+@(,,755) /etc/rc.backup_packages_data.sh
 @(,,755) /etc/rc.backup_rrd.sh
 @(,,755) /etc/rc.banner
 @(,,755) /etc/rc.bootup
