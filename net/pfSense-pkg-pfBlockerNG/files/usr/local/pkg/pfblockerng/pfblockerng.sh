@@ -1302,9 +1302,7 @@ closingprocess() {
 
 	echo; echo 'pfSense Table Stats'; echo '-------------------'
 	"${pathpfctl}" -s memory | grep 'table-entries'
-	# See https://redmine.pfsense.org/issues/16588
-	#pfctlcount="$(${pathpfctl} -vvsTables | awk '/Addresses/ {s+=$2}; END {print s}')"
-	pfctlcount=NA
+	pfctlcount="$(${pathpfctl} -vvsTables | awk '/Addresses/ {s+=$2}; END {print s}')"
 	echo "Table Usage Count         ${pfctlcount}"
 }
 
