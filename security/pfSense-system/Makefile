@@ -82,7 +82,7 @@ RUN_DEPENDS=	bind-tools>=0:dns/bind-tools \
 
 LIB_DEPENDS=	libltdl.so:devel/libltdl
 
-USES=		kmod php:flavors
+USES=		php:flavors
 
 IGNORE_WITH_PHP=	72 73 74 80 81 82
 USE_PHP=	bz2 bcmath ctype curl dom filter gettext gmp intl json mbstring \
