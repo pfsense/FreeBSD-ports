@@ -153,7 +153,7 @@ $pfb['continent_list'] = array_flip(array('pfB_Africa', 'pfB_Antarctica', 'pfB_A
 $pfb['base_rule_reg'] = array('ipprotocol' => 'inet');
 
 // Floating rules, base rule array
-$pfb['base_rule_float'] = array('quick' => 'yes', 'floating' => 'yes', 'ipprotocol' => 'inet');
+$pfb['base_rule_float'] = array('floating' => 'yes', 'ipprotocol' => 'inet');
 
 // Define Arrays for managing the IP mastefile
 foreach (array('existing', 'actual') as $pftype) {
