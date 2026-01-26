@@ -1020,8 +1020,8 @@ be_pkg_upgrade()
 
 	# Do the package upgrade in the mounted environment
 	LAST_EXEC_CMD="pkg"
-	_exec "pkg fetch -U ${desired_drm_package}" "Fetching drm package"
-	_exec "pkg fetch -U if_pppoe-kmod" "Fetching if_pppoe package"
+	_exec "_pkg fetch -U ${desired_drm_package}" "Fetching drm package"
+	_exec "_pkg fetch -U if_pppoe-kmod" "Fetching if_pppoe package"
 	pkg_with_pb "upgrade" "Upgrading packages in cloned boot environment ${UPGRADE_BE}"
 	drm_upgrade
 	if_pppoe_upgrade
