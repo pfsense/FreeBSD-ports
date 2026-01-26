@@ -648,6 +648,9 @@ fetch_upgrade_packages() {
 	if [ -f /boot/modules/i915kms.ko ]; then
 		pkg_with_pb "fetch -yU ${desired_drm_package}" "Downloading drm"
 	fi
+	if [ -f /boot/modules/if_pppoe.ko ]; then
+		pkg_with_pb "fetch -yU if_pppoe-kmod" "Downloading if_pppoe-kmod"
+	fi
 }
 
 pkg_lock() {
@@ -1017,7 +1020,11 @@ be_pkg_upgrade()
 
 	# Do the package upgrade in the mounted environment
 	LAST_EXEC_CMD="pkg"
+	_exec "pkg fetch -U ${desired_drm_package}" "Fetching drm package"
+	_exec "pkg fetch -U if_pppoe-kmod" "Fetching if_pppoe package"
 	pkg_with_pb "upgrade" "Upgrading packages in cloned boot environment ${UPGRADE_BE}"
+	drm_upgrade
+	if_pppoe_upgrade
 	unset LAST_EXEC_CMD
 
 	# Set some ZFS user properties (again)
@@ -1584,19 +1591,8 @@ pkg_upgrade() {
 			    "Upgrading necessary packages"
 			delete_annotation=""
 
-			# Upgrade drm if it is in use
-			local _drm _drm_done
-			for _drm in ${legacy_drm_packages}; do
-				if pkg-static info -e "${_drm}"; then
-					_exec "pkg-static install -r ${product} -y ${desired_drm_package}" \
-					    "Upgrading drm to ${desired_drm_package}"
-					_drm_done=1
-				fi
-			done
-			if [ -z "${_drm_done}" ] && kldstat -qm i915kms; then
-				_exec "pkg-static upgrade -r ${product} -f drm-\*" \
-				    "Upgrading drm"
-			fi
+			drm_upgrade
+			if_pppoe_upgrade
 
 			# Make sure PHP setup is fine
 			_exec "/etc/rc.d/ldconfig onestart" \
@@ -2157,6 +2153,34 @@ label_esp() {
 	rm -rf ${tmpdir}
 	trap - EXIT
     fi
+}
+
+drm_upgrade() {
+	# Upgrade drm if it is in use
+	local _drm _drm_done
+	for _drm in ${legacy_drm_packages}; do
+		if _pkg info -e "${_drm}"; then
+			_exec "_pkg install -U -r ${product} -y ${desired_drm_package}" \
+				"Upgrading drm to ${desired_drm_package}"
+			_drm_done=1
+		fi
+	done
+	if [ -z "${_drm_done}" ] && kldstat -qm i915kms; then
+		_exec "_pkg upgrade -U -r ${product} -f drm-\*" "Upgrading drm"
+	fi
+}
+
+if_pppoe_upgrade() {
+	local _ifpppoe_version
+	if _ifpppoe_version="$(_pkg info -E if_pppoe-kmod)"; then
+		_ifpppoe_version="${_ifpppoe_version%.*}"
+		_ifpppoe_version="${_ifpppoe_version%.*}"
+		_ifpppoe_version="${_ifpppoe_version##*.}"
+
+		if [ "${_ifpppoe_version}" -gt "20250520" ] &&  [ "${_ifpppoe_version}" -lt "20260119" ]; then
+			_exec "_pkg upgrade -U -r ${product} -f if_pppoe-kmod" "Upgrading if_pppoe"
+		fi
+	fi
 }
 
 export LANG=C
