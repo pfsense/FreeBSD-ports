@@ -1726,6 +1726,17 @@ get_meta_pkg_name() {
 	fi
 }
 
+get_dep_pkg_name() {
+	# figure out main dependency package name
+	if is_pkg_installed ${product}; then
+		echo "${product}-system"
+	else
+		_echo -o stderr "ERROR: It was not possible to identify which" \
+		    "${product} dependency package is installed"
+		_exit 1
+	fi
+}
+
 check_upgrade() {
 	local _mute="$1"
 	local _skip_update="$2"
@@ -2458,7 +2469,7 @@ else
 fi
 
 if [ "${action}" = "install" ]; then
-	new_php_pkg=$(_pkg rquery -U %dn $(get_meta_pkg_name) \
+	new_php_pkg=$(_pkg rquery -U %dn $(get_dep_pkg_name) \
 	    | egrep '^php[0-9]{2}$')
 
 	if [ "${cur_php_pkg}" != "${new_php_pkg}" ]; then
