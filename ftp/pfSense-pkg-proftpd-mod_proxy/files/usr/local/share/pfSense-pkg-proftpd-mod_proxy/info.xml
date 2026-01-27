@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<pfsensepkgs>
+	<package>
+		<name>proftpd-mod_proxy</name>
+		<internal_name>proftpd-mod_proxy</internal_name>
+		<descr><![CDATA[FTP Reverse Proxy using ProFTPD.]]></descr>
+		<version>%%PKGVERSION%%</version>
+		<configurationfile>proftpd-mod_proxy.xml</configurationfile>
+	</package>
+</pfsensepkgs>
