@@ -1717,10 +1717,8 @@ get_meta_pkg_name() {
 	# figure out main meta package name
 	if is_pkg_installed ${product}-vmware; then
 		echo "${product}-vmware"
-	elif is_pkg_installed ${product}-php72; then
-		echo "${product}-php72"
 	elif is_pkg_installed ${product}; then
-		echo "${product}-system"
+		echo "${product}"
 	else
 		_echo -o stderr "ERROR: It was not possible to identify which" \
 		    "${product} meta package is installed"
@@ -1884,7 +1882,6 @@ There are no new releases for the SG-1000."
 			local _pkg_args=""
 			local _pkgs="${_core_pkgs} ${_meta_pkg}"
 			if [ ${_is_configured_repo} -eq 0 ]; then
-				_pkgs="${product}-base"
 				_pkg_args="-C ${_repopath}/pkg.conf"
 				# No repo db files, initialize
 				if [ ! -f "${_db_dir}/${_reponame}/db/repo-pfSense.sqlite" ] ||
@@ -1982,7 +1979,7 @@ compare_pkg_version() {
 		return 1
 	fi
 
-	local _rver=$(_pkg rquery ${_conf_args} -U %v ${_pkg_name})
+	local _rver=$(_pkg ${_conf_args} rquery -U %v ${_pkg_name})
 
 	# Maybe we need fresh metadata, lets try to obtain it respecting
 	# dont_update variable
