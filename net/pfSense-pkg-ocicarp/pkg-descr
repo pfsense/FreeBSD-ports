@@ -1,0 +1,5 @@
+This is a package to facilitate the movement of CARP Virtual IPs in an
+Oracle Cloud Infrastructure (OCI) deployment. OCI utilises off-box network
+virtualisation and needs to be notified of VIP movement so that the
+network virtualisation layer can be updated. This package allows for the
+configuration of calls to OCI to facilitate this movement.
