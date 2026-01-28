@@ -645,7 +645,7 @@ fetch_upgrade_packages() {
 	# Workaround for pkg bug https://github.com/freebsd/pkg/issues/1613
 	# *ALWAYS* download pkg itself to avoid being bitten by it again
 	pkg_with_pb "fetch -yU pkg" "Downloading pkg"
-	if [ -f /boot/modules/i915kms.ko ]; then
+	if is_amd64 && [ -f /boot/modules/i915kms.ko ]; then
 		pkg_with_pb "fetch -yU ${desired_drm_package}" "Downloading drm"
 	fi
 	if [ -f /boot/modules/if_pppoe.ko ]; then
@@ -703,6 +703,10 @@ unset_vital_flag() {
 		[ "${_vflag}" = "0" ] && continue
 		_exec "_pkg set -y -v 0 ${_package}" "Removing vital flag from ${_package}" mute
 	done
+}
+
+is_amd64() {
+	[ -n "${ARCH}" ] && [ "${ARCH}" = "amd64" ]
 }
 
 is_ce() {
@@ -1020,10 +1024,14 @@ be_pkg_upgrade()
 
 	# Do the package upgrade in the mounted environment
 	LAST_EXEC_CMD="pkg"
-	_exec "_pkg fetch -U ${desired_drm_package}" "Fetching drm package"
+	if is_amd64; then
+		_exec "_pkg fetch -U ${desired_drm_package}" "Fetching drm package"
+	fi
 	_exec "_pkg fetch -U if_pppoe-kmod" "Fetching if_pppoe package"
 	pkg_with_pb "upgrade" "Upgrading packages in cloned boot environment ${UPGRADE_BE}"
-	drm_upgrade
+	if is_amd64; then
+		drm_upgrade
+	fi
 	if_pppoe_upgrade
 	unset LAST_EXEC_CMD
 
@@ -1591,7 +1599,9 @@ pkg_upgrade() {
 			    "Upgrading necessary packages"
 			delete_annotation=""
 
-			drm_upgrade
+			if is_amd64; then
+				drm_upgrade
+			fi
 			if_pppoe_upgrade
 
 			# Make sure PHP setup is fine
@@ -2193,6 +2203,7 @@ if_pppoe_upgrade() {
 
 export LANG=C
 
+ARCH="$(/usr/bin/uname -p)"
 pid_file="/var/run/$(basename $0).pid"
 logfile="/cf/conf/upgrade_log.txt"
 upgrade_logfile="/cf/conf/upgrade_log.latest.txt"
