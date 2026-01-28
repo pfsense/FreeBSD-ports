@@ -1,7 +1,7 @@
 <?php
 /*
  * acme_certificates.php
- * 
+ *
  * part of pfSense (https://www.pfsense.org/)
  * Copyright (c) 2016 PiBa-NL
  * All rights reserved.
@@ -30,7 +30,7 @@ require_once("acme/acme_gui.inc");
 require_once("acme/acme_utils.inc");
 require_once("acme/pkg_acme_tabs.inc");
 
-$changedesc = "Services: Acme: Certificates";
+$changedesc = "Services: ACME: Certificates";
 
 if($_POST['action'] == "toggle") {
 	$id = $_POST['id'];
@@ -44,7 +44,7 @@ if($_POST['action'] == "toggle") {
 			echo "1|";
 		}
 		$changedesc .= " set item '$id' status to: " . config_get_path('installedpackages/acme/certificates/item/' . get_certificate_id($id) . '/status');
-		
+
 		write_config($changedesc);
 	}
 	echo "ok|";
@@ -88,7 +88,7 @@ if ($_POST) {
 			header("Location: acme_certificates.php");
 			exit;
 		}
-	} else {	
+	} else {
 
 		// from '\src\usr\local\www\vpn_ipsec.php'
 		/* yuck - IE won't send value attributes for image buttons, while Mozilla does - so we use .x/.y to find move button clicks instead... */
@@ -99,7 +99,7 @@ if ($_POST) {
 				$movebtn = substr($pd, 5);
 			}
 		}
-		
+
 		/* move selected p1 entries before this */
 		if (isset($movebtn) && is_array($_POST['rule']) && count($_POST['rule'])) {
 			$moveto = get_certificate_id($movebtn);
@@ -110,8 +110,8 @@ if ($_POST) {
 			$a_certificates = config_get_path('installedpackages/acme/certificates/item', []);
 			array_moveitemsbefore($a_certificates, $moveto, $selected);
 			config_set_path('installedpackages/acme/certificates/item', $a_certificates);
-		
-			write_config($changedesc);			
+
+			write_config($changedesc);
 		}
 	}
 }
@@ -130,7 +130,7 @@ if ($_GET['act'] == "del") {
 	}
 }
 
-$pgtitle = array("Services", "Acme", "Certificates");
+$pgtitle = array("Services", "ACME", "Certificates");
 include("head.inc");
 if ($input_errors) {
 	print_input_errors($input_errors);
@@ -147,7 +147,7 @@ if ($savemsg) {
 	<div id="renewoutput" class="pull-left" style="white-space: pre-wrap">
 	</div>
 </div>
-	
+
 <?php
 display_top_tabs_active($acme_tab_array['acme'], "certificates");
 ?>
@@ -165,7 +165,7 @@ display_top_tabs_active($acme_tab_array['acme'], "certificates");
 	<div id="search-panel_panel-body" class="panel-body collapse in">
 		<div class="form-group">
 			<label class="col-sm-2 control-label">
-				<?=gettext("Search term")?>
+				<?=gettext("Search Term")?>
 			</label>
 			<div class="col-sm-5"><input class="form-control" name="searchstr" id="searchstr" type="text"/></div>
 			<div class="col-sm-2">
@@ -180,7 +180,7 @@ display_top_tabs_active($acme_tab_array['acme'], "certificates");
 				<a id="btnclear" title="<?=gettext("Clear")?>" class="btn btn-info btn-sm"><i class="fa-solid fa-undo icon-embed-btn"></i><?=gettext("Clear")?></a>
 			</div>
 			<div class="col-sm-10 col-sm-offset-2">
-				<span class="help-block"><?=gettext('Enter a search string or *nix regular expression to search certificate names and distinguished names.')?></span>
+				<span class="help-block"><?=gettext('Enter a string or regular expression to filter certificate names and descriptions.')?></span>
 			</div>
 		</div>
 	</div>
@@ -195,17 +195,18 @@ display_top_tabs_active($acme_tab_array['acme'], "certificates");
 				<thead>
 					<tr>
 						<th data-sortable="false"></th>
-						<th>On</th>
+						<th>Status</th>
 						<th>Name</th>
 						<th>Description</th>
-						<th>Account</th>
-						<th data-sortable-type="date">Last renewed</th>
+						<th>Account Key</th>
+						<th data-sortable-type="date">Last Renewed</th>
 						<th data-sortable="false">Renew</th>
 						<th data-sortable="false">Actions</th>
 					</tr>
 				</thead>
 				<tbody class="user-entries">
 <?php
+		$a_accountkeys = config_get_path('installedpackages/acme/accountkeys/item', []);
 		foreach (config_get_path('installedpackages/acme/certificates/item', []) as $certificate) {
 			$certificatename = $certificate['name'];
 			$disabled = $certificate['status'] != 'active';
@@ -217,7 +218,7 @@ display_top_tabs_active($acme_tab_array['acme'], "certificates");
 					<input type="checkbox" id="frc<?=$certificatename;?>" onClick="fr_toggle('<?=$certificatename;?>')" name="rule[]" value="<?=$certificatename;?>"/>
 					<a class="fa-solid fa-anchor" id="Xmove_<?=$certificatename?>" title="<?=gettext("Move checked entries to here")?>"></a>
 				</td>
-			  <td>
+				<td>
 				<?php
 					if ($certificate['status']=='disabled'){
 						$iconfn = "disabled";
@@ -225,67 +226,75 @@ display_top_tabs_active($acme_tab_array['acme'], "certificates");
 						$iconfn = "enabled";
 					}?>
 				<a id="btn_<?=$certificatename;?>" href='javascript:togglerow("<?=$certificatename;?>");'>
-					<?=acmeicon($iconfn, gettext("click to toggle enable/disable this certificate renewal"))?>
+					<?=acmeicon($iconfn, gettext("Click to toggle certificate Status"))?>
 				</a>
-			  </td>
-			  <td>
-				<?=$certificate['name'];?>
-			  </td>
-			  <td>
-				<?=htmlspecialchars($certificate['descr']);?>
-			  </td>
-			  <td>
+				</td>
+				<td>
+					<?=$certificate['name'];?>
+				</td>
+				<td>
+					<?=htmlspecialchars($certificate['descr']);?>
+				</td>
+				<td>
 				<?=htmlspecialchars($certificate['acmeaccount']);?>
-			  </td>
-			  <td style="white-space: nowrap">
-				<?=cert_format_date('', $certificate['lastrenewal'], true);?>
-				<?php if ($issuedcert): ?>
-				<br/><?=gettext("Issued Certificate Dates:")?>
-				<?=cert_print_dates($issuedcert);?>
-				<?php endif; ?>
-			  </td>
-			  <td>
-				  <?php
-					$method = "";
-					if (is_array($certificate) &&
-					    is_array($certificate['a_domainlist']) &&
-					    is_array($certificate['a_domainlist']['item'])) {
-						foreach($certificate['a_domainlist']['item'] as $domain) {
-							if ($domain['status'] == 'disable') {
-								continue;
-							}
-							$method = $domain['method'];
+				<?php
+					foreach ($a_accountkeys as $acctkey) {
+						if (($acctkey['name'] == $certificate['acmeaccount']) &&
+						    !empty($acctkey['descr'])) {
+							echo '<br/>' . htmlspecialchars($acctkey['descr']);
 						}
 					}
-			
-				  if ($method == "dns_manual"): ?>
-				  <a href='javascript:renewcertificate("<?=$certificatename;?>");' class="btn btn-sm btn-primary">
-					  <i id="btnrenewicon_<?=$certificatename;?>" class="fa-solid fa-check"></i> Renew
-				  </a>
-				  <a href='javascript:issuecertificate("<?=$certificatename;?>");' class="btn btn-sm btn-primary">
-					  <i id="btnissueicon_<?=$certificatename;?>" class="fa-solid fa-check"></i> Issue
-				  </a>
-				  <?php else: ?>
-				  <a href='javascript:issuecertificate("<?=$certificatename;?>");' class="btn btn-sm btn-primary">
-					  <i id="btnissueicon_<?=$certificatename;?>" class="fa-solid fa-check"></i> Issue/Renew
-				  </a>
-				  <?php endif; ?>
-			  </td>
-			  <td class="action-icons">
-				<button style="display: none;" class="btn btn-default btn-xs" type="submit" id="move_<?=$certificatename?>" name="move_<?=$certificatename?>" value="move_<?=$certificatename?>"></button>
-				<a href="acme_certificates_edit.php?id=<?=$certificatename;?>">
-					<?=acmeicon("edit", gettext("edit"))?>
-				</a>
-				<a href="acme_certificates.php?act=del&amp;id=<?=$certificatename;?>">
-					<?=acmeicon("delete", gettext("delete"))?>
-				</a>
-				<a href="acme_certificates_edit.php?dup=<?=$certificatename;?>">
-					<?=acmeicon("clone", gettext("clone"))?>
-				</a>
-			  </td>
+				?>
+				</td>
+				<td style="white-space: nowrap">
+					<?=cert_format_date('', $certificate['lastrenewal'], true);?>
+					<?php if ($issuedcert): ?>
+					<br/><?=gettext("Issued Certificate Dates:")?>
+					<?=cert_print_dates($issuedcert);?>
+					<?php endif; ?>
+				</td>
+				<td>
+				<?php
+				$method = "";
+				if (is_array($certificate) &&
+				    is_array($certificate['a_domainlist']) &&
+				    is_array($certificate['a_domainlist']['item'])) {
+					foreach($certificate['a_domainlist']['item'] as $domain) {
+						if ($domain['status'] == 'disable') {
+							continue;
+						}
+						$method = $domain['method'];
+					}
+				}
+
+				if ($method == "dns_manual"): ?>
+					<a href='javascript:renewcertificate("<?=$certificatename;?>");' class="btn btn-sm btn-primary">
+						<i id="btnrenewicon_<?=$certificatename;?>" class="fa-solid fa-check"></i> Renew
+					</a>
+					<a href='javascript:issuecertificate("<?=$certificatename;?>");' class="btn btn-sm btn-primary">
+						<i id="btnissueicon_<?=$certificatename;?>" class="fa-solid fa-check"></i> Issue
+					</a>
+				<?php else: ?>
+					<a href='javascript:issuecertificate("<?=$certificatename;?>");' class="btn btn-sm btn-primary">
+						<i id="btnissueicon_<?=$certificatename;?>" class="fa-solid fa-check"></i> Issue/Renew
+					</a>
+				<?php endif; ?>
+				</td>
+				<td class="action-icons">
+					<button style="display: none;" class="btn btn-default btn-xs" type="submit" id="move_<?=$certificatename?>" name="move_<?=$certificatename?>" value="move_<?=$certificatename?>"></button>
+					<a href="acme_certificates_edit.php?id=<?=$certificatename;?>">
+						<?=acmeicon("edit", gettext("Edit"))?>
+					</a>
+					<a href="acme_certificates.php?act=del&amp;id=<?=$certificatename;?>">
+						<?=acmeicon("delete", gettext("Delete"))?>
+					</a>
+					<a href="acme_certificates_edit.php?dup=<?=$certificatename;?>">
+						<?=acmeicon("clone", gettext("Clone"))?>
+					</a>
+				</td>
 			</tr><?php
 		}
-?>				
+?>
 				</tbody>
 			</table>
 		</div>
@@ -306,9 +315,13 @@ display_top_tabs_active($acme_tab_array['acme'], "certificates");
 	</nav>
 
 <div class="infoblock blockopen">
-	<?php print_info_box(sprintf(gettext('Use the search box to filter the list and show only matching entries. <br />' .
-						   'Click table column headers to sort table entries. ' .
-						   'Do not use the movement/reordering controls after sorting the table.'), '<br />'), 'info', false); ?>
+	<?php print_info_box(sprintf(gettext(
+		'Use the search box to filter the list and show only matching entries.%1$s' .
+		'Click table column headers to sort table entries. ' .
+		'Do not use the movement/reordering controls after sorting the table.'),
+		'<br />'),
+		'info',
+		false); ?>
 </div>
 </form>
 
@@ -326,15 +339,15 @@ function js_callbackrenew(data) {
 }
 
 function js_callback(req_content) {
-	
+
 	if(req_content !== '') {
 		var itemsplit = req_content.split("|");
 		buttonid = itemsplit[0];
 		enabled = parseInt(itemsplit[1]);
 		if (enabled === 1){
-			img = "<?=acmeicon("enabled", gettext("click to toggle enable/disable this certificate renewal"))?>";
+			img = "<?=acmeicon("enabled", gettext("Click to toggle certificate Status"))?>";
 		} else {
-			img = "<?=acmeicon("disabled", gettext("click to toggle enable/disable this certificate renewal"))?>";
+			img = "<?=acmeicon("disabled", gettext("Click to toggle certificate Status"))?>";
 		}
 		set_content('btn_'+buttonid, img);
 	}
@@ -342,7 +355,7 @@ function js_callback(req_content) {
 
 function issuecertificate($id) {
 	$("i[id='btnissueicon_"+$id+"']").removeClass("fa-check").addClass("fa-cog fa-solid fa-spin");
-	
+
 	ajaxRequest = $.ajax({
 		url: "",
 		type: "post",
@@ -359,7 +372,7 @@ function issuecertificate($id) {
 
 function renewcertificate($id) {
 	$("i[id='btnrenewicon_"+$id+"']").removeClass("fa-check").addClass("fa-cog fa-solid fa-spin");
-	
+
 	ajaxRequest = $.ajax({
 		url: "",
 		type: "post",
@@ -385,7 +398,7 @@ function togglerow($id) {
 }
 
 events.push(function() {
-	
+
 	$('#clearallnotices').click(function() {
 		ajaxRequest = $.ajax({
 			url: "/index.php",
@@ -399,7 +412,7 @@ events.push(function() {
 			}
 		});
 	});
-	
+
 	$('[id^=Xmove_]').click(function (event) {
 		buttonid = event.target.id.slice(1);
 		$("[id='" + buttonid + "']").click();
@@ -409,7 +422,7 @@ events.push(function() {
 
 	// Check all of the rule checkboxes so that their values are posted
 	$('#order-store').click(function () {
-	   $('[id^=frc]').prop('checked', true);
+		$('[id^=frc]').prop('checked', true);
 	});
 
 	// Make these controls plain buttons

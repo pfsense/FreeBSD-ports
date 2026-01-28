@@ -1,7 +1,7 @@
 <?php
 /*
  * acme_accountkeys.php
- * 
+ *
  * part of pfSense (https://www.pfsense.org/)
  * Copyright (c) 2016 PiBa-NL
  * All rights reserved.
@@ -29,7 +29,7 @@ require_once("acme/acme_gui.inc");
 require_once("acme/acme_utils.inc");
 require_once("acme/pkg_acme_tabs.inc");
 
-$changedesc = "Services: Acme: Accountkeys";
+$changedesc = "Services: ACME: Account Keys";
 
 if ($_POST) {
 	$pconfig = $_POST;
@@ -47,12 +47,12 @@ if ($_POST) {
 				$deleted = true;
 			}
 			if ($deleted) {
-				write_config("Acme, deleting accountkey(s)");
+				write_config("ACME, deleting accountkey(s)");
 			}
 			header("Location: acme_accountkeys.php");
 			exit;
 		}
-	} else {	
+	} else {
 
 		// from '\src\usr\local\www\vpn_ipsec.php'
 		/* yuck - IE won't send value attributes for image buttons, while Mozilla does - so we use .x/.y to find move button clicks instead... */
@@ -64,7 +64,7 @@ if ($_POST) {
 			}
 		}
 		//
-		
+
 		/* move selected p1 entries before this */
 		if (isset($movebtn) && is_array($_POST['rule']) && count($_POST['rule'])) {
 			$moveto = get_accountkey_id($movebtn);
@@ -75,8 +75,8 @@ if ($_POST) {
 			$a_accountkeys = config_get_path('installedpackages/acme/accountkeys/item', []);
 			array_moveitemsbefore($a_accountkeys, $moveto, $selected);
 			config_set_path('installedpackages/acme/accountkeys/item', $a_accountkeys);
-		
-			write_config($changedesc);			
+
+			write_config($changedesc);
 		}
 	}
 } else {
@@ -100,7 +100,7 @@ if ($_POST['act'] == "del") {
 	}
 }
 
-$pgtitle = array("Services", "Acme", "Accountkeys");
+$pgtitle = array("Services", "ACME", "Account Keys");
 include("head.inc");
 if ($input_errors) {
 	print_input_errors($input_errors);
@@ -114,7 +114,7 @@ display_top_tabs_active($acme_tab_array['acme'], "accountkeys");
 <form action="acme_accountkeys.php" method="post">
 	<div class="panel panel-default">
 		<div class="panel-heading">
-			<h2 class="panel-title">Account keys</h2>
+			<h2 class="panel-title">Account Keys</h2>
 		</div>
 		<div id="mainarea" class="table-responsive panel-body">
 			<table class="table table-hover table-striped table-condensed">
@@ -123,7 +123,7 @@ display_top_tabs_active($acme_tab_array['acme'], "accountkeys");
 						<th></th>
 						<th width="30%">Name</th>
 						<th width="20%">Description</th>
-						<th>CA</th>
+						<th>ACME Server</th>
 						<th>Actions</th>
 					</tr>
 				</thead>
@@ -140,30 +140,37 @@ display_top_tabs_active($acme_tab_array['acme'], "accountkeys");
 					<input type="checkbox" id="frc<?=$accountname;?>" onClick="fr_toggle('<?=$accountname;?>')" name="rule[]" value="<?=$accountname;?>"/>
 					<a class="fa-solid fa-anchor" id="Xmove_<?=$accountname?>" title="<?=gettext("Move checked entries to here")?>"></a>
 				</td>
-			  <td>
-				<?=$accountname;?>
-			  </td>
-			  <td>
-				<?=htmlspecialchars($accountkey['descr']);?>
-			  </td>
-			  <td>
-				<?=htmlspecialchars($accountkey['acmeserver']);?>
-			  </td>
-			  <td class="action-icons">
-				<button style="display: none;" class="btn btn-default btn-xs" type="submit" id="move_<?=urlencode($accountname)?>" name="move_<?=urlencode($accountname)?>" value="move_<?=urlencode($accountname)?>"></button>
-				<a href="acme_accountkeys_edit.php?id=<?=urlencode($accountname);?>">
-					<?=acmeicon("edit", gettext("edit"))?>
-				</a>
-				<a href="acme_accountkeys.php?act=del&amp;id=<?=$accountname;?>" usepost>
-					<?=acmeicon("delete", gettext("delete"))?>
-				</a>
-				<a href="acme_accountkeys_edit.php?dup=<?=urlencode($accountname);?>">
-					<?=acmeicon("clone", gettext("clone"))?>
-				</a>
-			  </td>
+				<td>
+					<?=$accountname;?>
+				</td>
+				<td>
+					<?=htmlspecialchars($accountkey['descr']);?>
+				</td>
+				<td>
+				<?php
+					echo htmlspecialchars($accountkey['acmeserver']);
+					if (array_key_exists($accountkey['acmeserver'], $a_acmeserver)) {
+						echo '<br/>' . htmlspecialchars($a_acmeserver[$accountkey['acmeserver']]['name']);
+					} else {
+
+					}
+				?>
+				</td>
+				<td class="action-icons">
+					<button style="display: none;" class="btn btn-default btn-xs" type="submit" id="move_<?=urlencode($accountname)?>" name="move_<?=urlencode($accountname)?>" value="move_<?=urlencode($accountname)?>"></button>
+					<a href="acme_accountkeys_edit.php?id=<?=urlencode($accountname);?>">
+						<?=acmeicon("edit", gettext("Edit"))?>
+					</a>
+					<a href="acme_accountkeys.php?act=del&amp;id=<?=$accountname;?>" usepost>
+						<?=acmeicon("delete", gettext("Delete"))?>
+					</a>
+					<a href="acme_accountkeys_edit.php?dup=<?=urlencode($accountname);?>">
+						<?=acmeicon("clone", gettext("Clone"))?>
+					</a>
+				</td>
 			</tr><?php
 		}
-?>				
+?>
 				</tbody>
 			</table>
 		</div>
@@ -193,7 +200,7 @@ function set_content(elementid, image) {
 }
 
 events.push(function() {
-	
+
 	$('#clearallnotices').click(function() {
 		ajaxRequest = $.ajax({
 			url: "/index.php",
@@ -207,7 +214,7 @@ events.push(function() {
 			}
 		});
 	});
-	
+
 	$('[id^=Xmove_]').click(function (event) {
 		$('#' + event.target.id.slice(1)).click();
 		return false;
@@ -216,7 +223,7 @@ events.push(function() {
 
 	// Check all of the rule checkboxes so that their values are posted
 	$('#order-store').click(function () {
-	   $('[id^=frc]').prop('checked', true);
+		$('[id^=frc]').prop('checked', true);
 	});
 });
 //]]>

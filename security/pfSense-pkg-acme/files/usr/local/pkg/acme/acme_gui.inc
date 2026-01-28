@@ -1,7 +1,7 @@
 <?php
 /*
  * acme_gui.inc
- * 
+ *
  * part of pfSense (https://www.pfsense.org/)
  * Copyright (c) 2016 PiBa-NL
  * All rights reserved.
@@ -113,7 +113,7 @@ function acmeicon($iconname, $title) {
 	global $g, $acme_icons;
 	$title = htmlspecialchars($title);
 	$title = str_replace("'", "&#39;", $title);
-	
+
 	$faicon = $acme_icons[$iconname]["faicon"];
 	return "<i class='fa-solid $faicon' title='$title'></i>";
 }

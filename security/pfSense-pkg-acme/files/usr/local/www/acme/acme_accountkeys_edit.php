@@ -1,7 +1,7 @@
 <?php
 /*
  * acme_accountkeys_edit.php
- * 
+ *
  * part of pfSense (https://www.pfsense.org/)
  * Copyright (c) 2016 PiBa-NL
  * All rights reserved.
@@ -39,8 +39,10 @@ if ($_POST['action'] == "registerkey") {
 	$key = $_POST['key'];
 	$email = $_POST['email'];
 	$ca = $a_acmeserver[$caname]['url'];
-	echo "Register key at ca: {$ca}\n";
-	echo (registerAcmeAccountKey("_registerkey", $ca, $key, $email)) ? "reg-ok" : "reg-fail" ;
+	$eabkid = (!empty($_POST['eabkid'])) ? $_POST['eabkid'] : "";
+	$eabhmac = (!empty($_POST['eabhmac'])) ? $_POST['eabhmac'] : "";
+	echo "Register key at CA: {$ca}\n";
+	echo (registerAcmeAccountKey("_registerkey", $ca, $key, $email, $eabkid, $eabhmac)) ? "reg-ok" : "reg-fail" ;
 	exit;
 }
 
@@ -61,8 +63,7 @@ if (!is_numeric($id))
 
 global $simplefields;
 $simplefields = array(
-	"name","descr", "email",
-	"acmeserver","renewafter"
+	"name", "descr", "email", "eabkid", "eabhmac", "acmeserver"
 );
 
 function customdrawcell_actions($object, $item, $itemvalue, $editable, $itemname, $counter) {
@@ -84,7 +85,7 @@ if (isset($_GET['dup'])) {
 	unset($id);
 	$pconfig['name'] .= "-copy";
 }
-$changedesc = "Services: Acme: Certificate options: ";
+$changedesc = "Services: ACME: Account Keys: Edit: ";
 $changecount = 0;
 
 if ($_POST) {
@@ -92,19 +93,19 @@ if ($_POST) {
 
 	unset($input_errors);
 	$pconfig = $_POST;
-	
+
 	$reqdfields = explode(" ", "name");
-	$reqdfieldsn = explode(",", "Name");		
+	$reqdfieldsn = explode(",", "Name");
 
 	do_input_validation($_POST, $reqdfields, $reqdfieldsn, $input_errors);
 
 	if ($_POST['stats_enabled']) {
 		$reqdfields = explode(" ", "name stats_uri");
-		$reqdfieldsn = explode(",", "Name,Stats Uri");		
+		$reqdfieldsn = explode(",", "Name,Stats Uri");
 		do_input_validation($_POST, $reqdfields, $reqdfieldsn, $input_errors);
 		if ($_POST['stats_username']) {
 			$reqdfields = explode(" ", "stats_password stats_realm");
-			$reqdfieldsn = explode(",", "Stats Password,Stats Realm");		
+			$reqdfieldsn = explode(",", "Stats Password,Stats Realm");
 			do_input_validation($_POST, $reqdfields, $reqdfieldsn, $input_errors);
 		}
 	}
@@ -159,7 +160,7 @@ if ($_POST) {
 	foreach($simplefields as $stat) {
 		update_if_changed($stat, $accountkey[$stat], $_POST[$stat]);
 	}
-	
+
 	if (isset($id) && config_get_path("installedpackages/acme/accountkeys/item/{$id}")) {
 		config_set_path("installedpackages/acme/accountkeys/item/{$id}", $accountkey);
 	} else {
@@ -177,14 +178,9 @@ if ($_POST) {
 }
 
 //$closehead = false;
-$pgtitle = array("Services", "Acme", "Certificate options: Edit");
+$pgtitle = array("Services", "ACME", "Account Keys", "Edit");
 include("head.inc");
 display_top_tabs_active($acme_tab_array['acme'], "accountkeys");
-
-// 'processing' done, make all simple fields usable in html.
-foreach($simplefields as $field){
-	$pconfig[$field] = htmlspecialchars($pconfig[$field]);
-}
 
 ?>
 <!--/head-->
@@ -205,63 +201,104 @@ $counter=0;
 
 $form = new \Form;
 
-$section = new \Form_Section('Edit Certificate options');
-$section->addInput(new \Form_Input('name', 'Name', 'text', $pconfig['name']
-))->setHelp('');
-$section->addInput(new \Form_Input('descr', 'Description', 'text', $pconfig['descr']));
+$section = new \Form_Section('Identification');
+$section->addInput(new \Form_Input(
+	'name',
+	'Name',
+	'text',
+	$pconfig['name']
+))->setHelp('Short name for this Account Key.');
 
-$section->addInput(new \Form_Select(
-	'acmeserver',
-	'ACME Server',
-	$pconfig['acmeserver'],
-	form_keyvalue_array($a_acmeserver)
-))->setHelp('The Certificate Authority ACME server which will issue certificates for this key.%1$s' .
-	'Use testing servers until certificate validation works, then switch to production.%1$s%1$s', '<br/>');
+$section->addInput(new \Form_Input(
+	'descr',
+	'Description',
+	'text', $pconfig['descr']
+))->setHelp('Longer text description of this Account Key and its purpose.');
 
 $section->addInput(new \Form_Input(
 	'email',
 	'E-Mail Address',
 	'text',
 	$pconfig['email']
-))->setHelp('The e-mail address to register for this key. The CA may use this address to send important notices.');
+))->setHelp('The e-mail address to associate with this key. ' .
+	'The CA may use this address to send important notices.');
+
+$form->add($section);
+$section = new \Form_Section('ACME Server');
+
+$section->addInput(new \Form_Select(
+	'acmeserver',
+	'ACME Server',
+	$pconfig['acmeserver'],
+	form_keyvalue_array($a_acmeserver)
+))->setHelp('The Certificate Authority/ACME server which will issue certificates for this key.%1$s' .
+	'Use a staging or testing server, if available, until certificate validation works, ' .
+	'then switch to a production server.%1$s%1$s', '<br/>');
+
+$section->addInput(new \Form_Input(
+	'eabkid',
+	'EAB Key ID',
+	'text',
+	$pconfig['eabkid']
+))->setHelp('External Account Binding Key ID. Optional. Leave blank unless required by the CA.%1$s' .
+	'Registers this Account Key with a specific account at the CA.%1$s%1$s' .
+	'Check with the CA to determine if this is required and for information on how to generate the value.', '<br/>');
+
+$section->addInput(new \Form_Textarea(
+	'eabhmac',
+	'EAB HMAC Key',
+	$pconfig['eabhmac']
+))->setHelp('External Account Binding HMAC Key. Optional. Leave blank unless required by the CA.%1$s' .
+	'Registers this Account Key with a specific account at the CA.%1$s%1$s' .
+	'Check with the CA to determine if this is required and for information on how to generate the value.', '<br/>');
+
+$form->add($section);
+$section = new \Form_Section('Account Key');
 
 $section->addInput(new \Form_Textarea(
 	'accountkey',
-	'Account key',
+	'Account Key',
 	$pconfig['accountkey']
-))->setNoWrap();
+))->setNoWrap()->setHelp('Key that uniquely identifies and authorizes the account.%1$s' .
+	'If empty, click %2$sGenerate New Account Key%3$s to create a new key.',
+	'<br/>', '<b>', '</b>');
 
 $section->addInput(new \Form_StaticText(
-	'', 
+	'',
 	"<a id='btncreatekey' class='btn btn-sm btn-primary'>"
-		. "<i id='btncreatekeyicon' class='fa-solid fa-plus'></i> Create new account key</a>"
+		. "<i id='btncreatekeyicon' class='fa-solid fa-plus'></i> Generate New Account Key</a>"
 ));
 
+$form->add($section);
+$section = new \Form_Section('Registration');
+
 $section->addInput(new \Form_StaticText(
-	'ACME account registration',
+	'Account Key Registration',
 	"<a id='btnregisterkey' class='btn btn-sm btn-primary'>"
-		. "<i id='btnregisterkeyicon' class='fa-solid fa-key'></i> Register ACME account key</a>"
-))->setHelp('Before using an accountkey, it must first be registered with the chosen ACME Server. %1$s' .
-	    '%2$s indicates a successful registration, %3$s indicates a failure. ' .
-	    '%1$s In the case of a failure, check %4$s for more information.',
-	    '<br/>',
-	    '<i class="fa-solid fa-check"></i>',
-	    '<i class="fa-solid fa-times"></i>',
-	    '<tt>/tmp/acme/_registerkey/acme_issuecert.log</tt>');
+		. "<i id='btnregisterkeyicon' class='fa-solid fa-key'></i> Register ACME Account Key</a>"
+))->setHelp('Before using an Account Key, it must first be registered with the chosen ACME Server.%1$s' .
+	'Click %5$sRegister ACME Account Key%6$s to register this Account Key%1$s%1$s' .
+	'%2$s indicates a successful registration, %3$s indicates a failure. ' .
+	'%1$s In the case of a failure, check %4$s for more information.',
+	'<br/>',
+	'<i class="fa-solid fa-check"></i>',
+	'<i class="fa-solid fa-times"></i>',
+	'<tt>/tmp/acme/_registerkey/acme_issuecert.log</tt>',
+	'<b>', '</b>');
 
 $form->add($section);
 
 print $form;
-?>	
+?>
 	<?php if (isset($id) && $a_certificates[$id]): ?>
 	<input name="id" type="hidden" value="<?=$id;?>" />
 	<?php endif; ?>
 <br/>
 <script type="text/javascript">
 	browser_InnerText_support = (document.getElementsByTagName("body")[0].innerText !== undefined) ? true : false;
-	
+
 	totalrows =  <?php echo $counter; ?>;
-	
+
 	function table_domains_listitem_change(tableId, fieldId, rowNr, field) {
 		if (fieldId === "toggle_details") {
 			fieldId = "method";
@@ -269,9 +306,9 @@ print $form;
 		}
 		if (fieldId === "method") {
 			var actiontype = field.value;
-			
+
 			var table = d.getElementById(tableId);
-			
+
 			for(var actionkey in showhide_domainfields) {
 				var fields = showhide_domainfields[actionkey]['fields'];
 				for(var fieldkey in fields){
@@ -288,7 +325,7 @@ print $form;
 				}
 			}
 		}
-	}	
+	}
 </script>
 <script type="text/javascript">
 //<![CDATA[
@@ -313,9 +350,11 @@ events.push(function() {
 		var key = $("#accountkey").val();
 		var caname = $("#acmeserver").val();
 		var email = $("#email").val();
+		var eabkid = $("#eabkid").val();
+		var eabhmac = $("#eabhmac").val();
 		ajaxRequest = $.ajax({
 			type: "post",
-			data: { action: "registerkey", caname: caname, key: key, email: email },
+			data: { action: "registerkey", caname: caname, key: key, email: email, eabkid: eabkid, eabhmac: eabhmac },
 			success: function(data) {
 				if (data.toLowerCase().indexOf("reg-ok") > -1 ) {
 					$("#btnregisterkeyicon").removeClass("fa-cog fa-spin").addClass("fa-solid fa-check");
@@ -325,7 +364,7 @@ events.push(function() {
 			}
 		});
 	});
-	
+
 	$('#btncreatekey').click(function() {
 		$("#btncreatekeyicon").removeClass("fa-plus").addClass("fa-cog fa-solid fa-spin");
 		var caname = $("#acmeserver").val();
@@ -337,9 +376,9 @@ events.push(function() {
 				$("#btncreatekeyicon").removeClass("fa-cog fa-spin").addClass("fa-solid fa-check");
 			}
 		});
-		
+
 	});
-	
+
 	/*
 	$('#stats_enabled').click(function () {
 		updatevisibility();
@@ -352,10 +391,10 @@ events.push(function() {
 
 <script type="text/javascript">
 	function clearcombo(){
-	  for (var i=document.iform.serversSelect.options.length-1; i>=0; i--){
-		document.iform.serversSelect.options[i] = null;
-	  }
-	  document.iform.serversSelect.selectedIndex = -1;
+		for (var i=document.iform.serversSelect.options.length-1; i>=0; i--){
+			document.iform.serversSelect.options[i] = null;
+		}
+		document.iform.serversSelect.selectedIndex = -1;
 	}
 
 	function setCSSdisplay(cssID, display)
@@ -382,7 +421,7 @@ events.push(function() {
 			}
 		}
 	}
-	
+
 	function updatevisibility()
 	{
 		d = document;

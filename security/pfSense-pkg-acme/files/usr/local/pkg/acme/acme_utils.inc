@@ -1,7 +1,7 @@
 <?php
 /*
  * acme_utils.php
- * 
+ *
  * part of pfSense (https://www.pfsense.org/)
  * Copyright (c) 2016 PiBa-NL
  * All rights reserved.
@@ -19,7 +19,7 @@
  * limitations under the License.
  */
 /*
-  This file contains functions which are NOT specific to the package and may/could/should 
+  This file contains functions which are NOT specific to the package and may/could/should
   be moved to the general pfSense php library for possible easy use by other parts of pfSense
 */
 
@@ -55,7 +55,7 @@ if(!function_exists('is_arrayset')){
 
 function array_moveitemsbefore(&$items, $before, $selected) {
 	// generic function to move array items before the set item by their numeric indexes.
-	
+
 	$a_new = array();
 	/* copy all entries < $before and not selected */
 	for ($i = 0; $i < $before; $i++) {
@@ -158,11 +158,15 @@ function form_keyvalue_array($item_array) {
 	return $result;
 }
 
-function form_name_array($item_array) {
+function form_name_array($item_array, $adddesc = false) {
 	$result = array();
 	if (is_array($item_array)) {
 		foreach($item_array as $key => $item) {
 			$name = $item['name'];
+			if (array_key_exists('descr', $item) &&
+			    !empty($item['descr'])) {
+				$name .= " ({$item['descr']})";
+			}
 			$result[$name] = $name;
 		}
 	}

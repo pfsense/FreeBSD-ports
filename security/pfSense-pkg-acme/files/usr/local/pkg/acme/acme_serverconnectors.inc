@@ -1,7 +1,7 @@
 <?php
 /*
  * acme_serverconnectors.inc
- * 
+ *
  * part of pfSense (https://www.pfsense.org/)
  * Copyright (c) 2016 PiBa-NL
  * All rights reserved.
@@ -23,12 +23,12 @@ namespace pfsense_pkg\acme;
 
 class FTPConnection
 {
-    private $connection;
-    private $sftp;
+	private $connection;
+	private $sftp;
 	private $scheme;
 
-    public function __construct($url)
-    {
+	public function __construct($url)
+	{
 		$this->scheme = parse_url($url, PHP_URL_SCHEME);
 		$host = parse_url($url, PHP_URL_HOST);
 		$port = parse_url($url, PHP_URL_PORT);
@@ -48,19 +48,19 @@ class FTPConnection
 		} elseif ($this->scheme == "ftps") {
 			$this->connection = \ftp_ssl_connect($host, $port);
 		}
-        if (! $this->connection) {
+	if (! $this->connection) {
 			throw new \Exception("Could not connect with {$this->scheme} to {$host} on port {$port}.");
 		}
-    }
+	}
 
-    public function login($username, $password)
-    {
+	public function login($username, $password)
+	{
 		if ($this->scheme == "ftp" || $this->scheme == "ftps") {
 			if(!ftp_login($this->connection, $username, $password)){
 				throw new \Exception("Could not authenticate with username {$username} and its password");
 			}
 		} else {
-	        if (!ssh2_auth_password($this->connection, $username, $password)) {
+		if (!ssh2_auth_password($this->connection, $username, $password)) {
 				throw new \Exception("Could not authenticate with username {$username} and its password");
 			}
 			$this->sftp = ssh2_sftp($this->connection);
@@ -69,13 +69,13 @@ class FTPConnection
 			}
 		}
 		if ($this->scheme == "ftp" || $this->scheme == "ftps") {
-			if (!ftp_pasv($this->connection, true)) {//passive connection is usualy desired to pass through firewalls..
+			if (!ftp_pasv($this->connection, true)) {//passive connection is usualy desired to pass through firewalls.
 				throw new \Exception("Could not switch to PASSIVE ftp for: {$this->scheme}");
 			}
 		}
-    }
-	
-    public function uploadData($data_to_send, $remote_file) {
+	}
+
+	public function uploadData($data_to_send, $remote_file) {
 		if ($this->scheme == "ftp" || $this->scheme == "ftps") {
 			echo "\n upload:{$data_to_send}  tofile: {$remote_file}";
 			$tempHandle = fopen('php://temp', 'r+');
@@ -97,7 +97,7 @@ class FTPConnection
 			fclose($stream);
 		}
 	}
-	
+
 	public function deleteFile($remote_file) {
 		if ($this->scheme == "ftp" || $this->scheme == "ftps") {
 			if (!ftp_delete($this->connection , $remote_file)) {
@@ -124,7 +124,7 @@ class FTPConnection
 					ftp_chdir($this->connection, $part);
 					//ftp_chmod($ftpcon, 0777, $part);
 				}
-		   }
+			}
 		} else {
 			ssh2_sftp_mkdir($this->sftp, $remote_dir, 0777, $recursive);
 		}
