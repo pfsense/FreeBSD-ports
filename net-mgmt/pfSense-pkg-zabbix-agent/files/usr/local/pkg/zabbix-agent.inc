@@ -92,7 +92,9 @@ function validate_input_zabbix_agent($post, &$input_errors) {
 		if ($post['refreshactchecks'] != '') {
 			if (!is_numericint($post['refreshactchecks'])) {
 				$input_errors[] = "'Refresh Active Checks' value is not numeric.";
-			} elseif ($post['refreshactchecks'] < 60 || $post['refreshactchecks'] > 3600) {
+			} elseif (($post['refreshactchecks'] < 1 || $post['refreshactchecks'] > 86400) and (ZABBIX_VERSION == 7 || ZABBIX_VERSION == 72)) {
+				$input_errors[] = "You must enter a valid value for 'Refresh Active Checks'.";
+			} elseif (($post['refreshactchecks'] < 60 || $post['refreshactchecks'] > 3600) and (ZABBIX_VERSION == 5 || ZABBIX_VERSION == 6 || ZABBIX_VERSION == 64)) {
 				$input_errors[] = "You must enter a valid value for 'Refresh Active Checks'.";
 			}
 		}
