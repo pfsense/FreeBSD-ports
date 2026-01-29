@@ -6,4 +6,5 @@ $vendorDir = dirname(__DIR__);
 $baseDir = dirname(dirname(dirname(dirname(dirname(dirname($vendorDir))))));
 
 return array(
+    'SimplePie' => array($vendorDir . '/simplepie/simplepie/library'),
 );
