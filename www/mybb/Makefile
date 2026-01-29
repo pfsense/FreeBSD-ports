@@ -1,15 +1,15 @@
 PORTNAME=	mybb
-DISTVERSION=	1.8.33
+DISTVERSION=	1.8.39
 CATEGORIES=	www
 
-MAINTAINER=	joneum@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	PHP-based bulletin board / discussion forum system
 WWW=		https://mybboard.net/
 
 LICENSE=	GPLv3
 
 USE_GITHUB=	yes
-GH_TAGNAME=	${PORTNAME}_1832
+GH_TAGNAME=	${PORTNAME}_1839
 
 USES=		cpe mysql php:web
 NO_BUILD=	yes

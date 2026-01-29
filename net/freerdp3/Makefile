@@ -1,5 +1,5 @@
 PORTNAME=	freerdp
-DISTVERSION=	3.19.1
+DISTVERSION=	3.21.0
 CATEGORIES=	net comms
 MASTER_SITES+=	https://pub.freerdp.com/releases/:freerdp \
 		https://github.com/FreeRDP/FreeRDP/releases/download/${DISTVERSION}/:freerdp
@@ -15,7 +15,7 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 
 LIB_DEPENDS=	libepoll-shim.so:devel/libepoll-shim
 
-USES=		alias cmake compiler:c++11-lib cpe desktop-file-utils \
+USES=		cmake compiler:c++11-lib cpe desktop-file-utils \
 		localbase:ldflags pathfix pkgconfig ssl xorg
 
 BROKEN_SSL=	libressl-devel

@@ -1,5 +1,6 @@
 PORTNAME=	octopus
 DISTVERSION=	16.0
+PORTREVISION=	1
 CATEGORIES=	science # chemistry
 MASTER_SITES=	https://octopus-code.org/download/${DISTVERSION}/
 
@@ -8,6 +9,8 @@ COMMENT=	Scientific program aimed at the ab initio virtual experimentation
 WWW=		https://octopus-code.org/documentation/15/
 
 LICENSE=	GPLv2
+
+BROKEN_aarch64=	fails to build: Cannot find an intrinsic module named 'ieee_arithmetic'
 
 BUILD_DEPENDS=	bash:shells/bash
 LIB_DEPENDS=	libarpack.so:math/arpack-ng \

@@ -1,7 +1,7 @@
 PORTNAME=	zerofs
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.16.2
-PORTREVISION=	2
+DISTVERSION=	1.0.0
+PORTREVISION=	1
 CATEGORIES=	filesystems sysutils
 
 MAINTAINER=	stephan@lichtenauer.co.za
@@ -14,11 +14,14 @@ LICENSE_FILE=	${WRKSRC:H}/LICENSE
 NOT_FOR_ARCHS=	armv6 armv7 i386 powerpc
 NOT_FOR_ARCHS_REASON=	32-bit compilation is not supported
 
-USES=		cargo gmake
+LIB_DEPENDS+=	libzstd.so:archivers/zstd
 
+USES=		cargo gmake
 USE_GITHUB=	yes
 GH_ACCOUNT=	Barre
 GH_PROJECT=	ZeroFS
+
+RUSTFLAGS+=	--cfg tokio_unstable
 
 WRKSRC_SUBDIR=	zerofs
 

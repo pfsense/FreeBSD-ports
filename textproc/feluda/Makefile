@@ -1,6 +1,6 @@
 PORTNAME=	feluda
 DISTVERSIONPREFIX=	v
-DISTVERSION=	1.10.3 # Cargo.lock patched: `make patch cargo-crates`
+DISTVERSION=	1.11.0 # Cargo.lock patched: `make patch cargo-crates`
 PORTREVISION=	1
 CATEGORIES=	textproc
 

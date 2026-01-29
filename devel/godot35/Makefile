@@ -1,7 +1,7 @@
 PORTNAME=	godot
 DISTVERSION=	3.5.3
 DISTVERSIONSUFFIX=	-stable
-PORTREVISION?=	4
+PORTREVISION?=	5
 CATEGORIES=	devel games
 PKGNAMESUFFIX?=	35
 
@@ -13,6 +13,9 @@ LICENSE=		MIT CC-BY-3.0
 LICENSE_COMB=		multi
 LICENSE_FILE_CC-BY-3.0=	${WRKSRC}/LOGO_LICENSE.md
 LICENSE_FILE_MIT=	${WRKSRC}/LICENSE.txt
+
+DEPRECATED=	Legacy version should have been removed with devel/godot35-tools, consider migrating to devel/godot
+EXPIRATION_DATE=	2026-02-28
 
 BUILD_DEPENDS=	yasm:devel/yasm
 LIB_DEPENDS=	libfreetype.so:print/freetype2 \

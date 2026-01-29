@@ -1,5 +1,5 @@
 PORTNAME=	ty
-DISTVERSION=	0.0.1a34
+DISTVERSION=	0.0.12
 PORTREVISION=	1
 CATEGORIES=	devel python
 MASTER_SITES=	PYPI
@@ -16,7 +16,7 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}maturin>=1.0<2.0:devel/py-maturin@${PY_FLAVOR}
 LIB_DEPENDS=	libzstd.so:archivers/zstd
 
-USES=		cargo python
+USES=		cargo gmake python
 
 USE_PYTHON=	autoplist concurrent pep517
 
@@ -24,6 +24,7 @@ CARGO_CARGOTOML=${WRKSRC}/ruff/Cargo.toml
 CARGO_CARGOLOCK=${WRKSRC}/ruff/Cargo.lock
 CARGO_BUILD=	no
 CARGO_INSTALL=	no
+CARGO_TEST_ARGS=--no-fail-fast
 
 MAKE_ENV=	${CARGO_ENV}
 

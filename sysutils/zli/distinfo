@@ -1,5 +1,5 @@
-TIMESTAMP = 1763728358
-SHA256 (go/sysutils_zli/project-zot-zot-v2.1.11_GH0/go.mod) = c38f2281b6183b3e5df076b48cdec1c99167579a42818fc9c773706ac1c7e7a0
-SIZE (go/sysutils_zli/project-zot-zot-v2.1.11_GH0/go.mod) = 31562
-SHA256 (go/sysutils_zli/project-zot-zot-v2.1.11_GH0/project-zot-zot-v2.1.11_GH0.tar.gz) = 0ac69f3edaaca919f097d6b44e49c5c2c586167b2a4798ad9b00f84902345c2c
-SIZE (go/sysutils_zli/project-zot-zot-v2.1.11_GH0/project-zot-zot-v2.1.11_GH0.tar.gz) = 1295125
+TIMESTAMP = 1769616372
+SHA256 (go/sysutils_zli/project-zot-zot-v2.1.14_GH0/go.mod) = 6c92302e630dd1322c88c559997d34f3c2f36ada79b6337f1276d7f671cbf440
+SIZE (go/sysutils_zli/project-zot-zot-v2.1.14_GH0/go.mod) = 32154
+SHA256 (go/sysutils_zli/project-zot-zot-v2.1.14_GH0/project-zot-zot-v2.1.14_GH0.tar.gz) = 62b4809a161fb24e94334f4b2a1c00c6c046cd6d90116114fd5939c85d331fb6
+SIZE (go/sysutils_zli/project-zot-zot-v2.1.14_GH0/project-zot-zot-v2.1.14_GH0.tar.gz) = 1369009

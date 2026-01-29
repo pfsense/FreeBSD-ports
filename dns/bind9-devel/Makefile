@@ -1,14 +1,14 @@
 # pkg-help formatted with fmt 59 63
 
 PORTNAME=	bind
-DISTVERSION=	9.21.16
+DISTVERSION=	9.21.17
 .if defined(BIND_TOOLS_SLAVE)
 # dns/bind-tools here
-PORTREVISION=	0
+PORTREVISION=	2
 .else
 # XXX: correct version
 # dns/bind9xx here
-PORTREVISION=	0
+PORTREVISION=	2
 .endif
 CATEGORIES=	dns net
 MASTER_SITES=	ISC/bind9/${DISTVERSION}
@@ -88,7 +88,8 @@ PORTDOCS=	*
 
 OPTIONS_DEFINE=		DNSTAP DOCS GEOIP IDN LMDB OVERRIDECACHE QUERYTRACE \
 			START_LATE
-OPTIONS_DEFAULT=	DNSTAP GSSAPI_NONE IDN LMDB STATS_JSON STATS_XML
+OPTIONS_DEFAULT=	DNSTAP ${${OSREL:R} < 15:?GSSAPI_NONE:GSSAPI_BASE} IDN \
+			LMDB STATS_JSON STATS_XML
 
 OPTIONS_GROUP=		STATS
 OPTIONS_GROUP_STATS=	STATS_JSON STATS_XML
@@ -104,7 +105,7 @@ OPTIONS_EXCLUDE=	DOCS GEOIP LMDB OVERRIDECACHE QUERYTRACE START_LATE \
 OPTIONS_SUB=	yes
 
 DNSTAP_DESC=		Provides fast passive logging of DNS messages
-GSSAPI_BASE_DESC=	Using Heimdal in base (nsupdate is broken)
+GSSAPI_BASE_DESC=	Using ${${OSREL:R} < 15:?Heimdal in base (nsupdate is broken):MIT in base}
 GSSAPI_HEIMDAL_DESC=	Using security/heimdal (nsupdate is broken)
 GSSAPI_MIT_DESC=	Using security/krb5
 GSSAPI_NONE_DESC=	Disable
@@ -188,6 +189,13 @@ SUB_LIST+=	ENGINES=${LOCALBASE}/lib/engines
 .endif
 
 .if !defined(BIND_TOOLS_SLAVE)
+regen-patches:
+	cd ${.CURDIR} ; \
+		make clean ; \
+		mv files/extrapatch-bind-min-override-ttl files/patch-bind-min-override-ttl ; \
+		make extract do-patch makepatch BATCH= NO_IGNORE= PATCH_DEBUG=yes EXTRA_PATCHES= || : ; \
+		mv files/patch-bind-min-override-ttl files/extrapatch-bind-min-override-ttl
+
 post-install:
 	${MKDIR} ${STAGEDIR}${PREFIX}/etc/mtree
 	${MKDIR} ${STAGEDIR}${ETCDIR}

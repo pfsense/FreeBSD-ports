@@ -1,4 +1,4 @@
---- components/autofill/core/browser/data_manager/payments/payments_data_manager.cc.orig	2025-12-05 10:12:50 UTC
+--- components/autofill/core/browser/data_manager/payments/payments_data_manager.cc.orig	2026-01-14 08:33:23 UTC
 +++ components/autofill/core/browser/data_manager/payments/payments_data_manager.cc
 @@ -480,7 +480,7 @@ void PaymentsDataManager::OnWebDataServiceRequestDone(
  
@@ -27,15 +27,15 @@
  bool PaymentsDataManager::IsAutofillHasSeenBnplPrefEnabled() const {
    return prefs::HasSeenBnpl(pref_service_);
  }
-@@ -2140,7 +2140,7 @@ bool PaymentsDataManager::AreEwalletAccountsSupported(
+@@ -2139,7 +2139,7 @@ bool PaymentsDataManager::AreEwalletAccountsSupported(
  
  bool PaymentsDataManager::AreBnplIssuersSupported() const {
  #if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX) || \
 -    BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_ANDROID)
 +    BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_ANDROID) || BUILDFLAG(IS_BSD)
-   return (app_locale_ == "en-US" || app_locale_ == "en-GB" ||
-           app_locale_ == "en-CA") &&
-          GetCountryCodeForExperimentGroup() == "US" &&
+   return app_locale_ == "en-US" &&
+          (GetCountryCodeForExperimentGroup() == "US" ||
+           base::FeatureList::IsEnabled(
 @@ -2175,7 +2175,7 @@ void PaymentsDataManager::ClearAllCreditCardBenefits()
  }
  

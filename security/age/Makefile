@@ -1,7 +1,7 @@
 PORTNAME=	age
 DISTVERSIONPREFIX=	v
-DISTVERSION=	1.2.1
-PORTREVISION=	11
+DISTVERSION=	1.3.1
+PORTREVISION=	1
 CATEGORIES=	security
 
 MAINTAINER=	bofh@FreeBSD.org
@@ -19,7 +19,9 @@ GO_TARGET=	./cmd/age \
 
 PLIST_FILES=	bin/age \
 		bin/age-keygen \
+		share/man/man1/age-inspect.1.gz \
 		share/man/man1/age-keygen.1.gz \
+		share/man/man1/age-plugin-batchpass.1.gz \
 		share/man/man1/age.1.gz
 
 post-install:

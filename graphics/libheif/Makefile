@@ -1,8 +1,12 @@
 PORTNAME=	libheif
-DISTVERSION=	1.19.8
-PORTREVISION=	5
+DISTVERSION=	1.21.2
+PORTREVISION=	1
 CATEGORIES=	graphics
 MASTER_SITES=	https://github.com/strukturag/${PORTNAME}/releases/download/v${DISTVERSION}/
+
+PATCH_SITES=	https://github.com/strukturag/${PORTNAME}/commit/
+PATCHFILES+=	61923302d12f.patch:-p1 # https://github.com/strukturag/libheif/pull/1680
+PATCHFILES+=	f9919e348689.patch:-p1 # https://github.com/strukturag/libheif/pull/1680
 
 MAINTAINER=	makc@FreeBSD.org
 COMMENT=	ISO/IEC 23008-12:2017 HEIF file format de- and encoder
@@ -13,7 +17,7 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 
 LIB_DEPENDS=	libsharpyuv.so:graphics/webp
 
-USES=		cmake:testing compiler:c++11-lang cpe gettext-runtime gnome \
+USES=		cmake:testing compiler:c++20-lang cpe gettext-runtime gnome \
 		localbase:ldflags pathfix pkgconfig
 CPE_VENDOR=	struktur
 USE_GNOME=	gdkpixbuf glib20
@@ -51,6 +55,8 @@ DAV1D_CMAKE_BOOL=	WITH_DAV1D
 
 EXAMPLES_LIB_DEPENDS=	libpng16.so:graphics/png \
 			libtiff.so:graphics/tiff
+EXAMPLES_USES=		sdl
+EXAMPLES_USE=		SDL=sdl2
 EXAMPLES_CMAKE_BOOL=	WITH_EXAMPLES
 EXAMPLE_IMPLIES=	JPEG
 

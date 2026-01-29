@@ -203,7 +203,7 @@ LUA_LIB_DEPENDS=	libluajit-5.1.so:lang/luajit-openresty
 LUA_RUN_DEPENDS=	lua-resty-core>0:www/lua-resty-core
 LUA_CONFIGURE_ENV=	LUAJIT_INC=${LOCALBASE}/include/luajit-2.1 \
 			LUAJIT_LIB=${LOCALBASE}/lib
-LUA_GH_TUPLE=		openresty:lua-nginx-module:v0.10.28:lua
+LUA_GH_TUPLE=		openresty:lua-nginx-module:v0.10.29:lua
 LUA_VARS=		DSO_EXTMODS+=lua
 
 LUASTREAM_IMPLIES=	DEVEL_KIT
@@ -242,7 +242,7 @@ NJS_XML_IMPLIES=	HTTP NJS
 NJS_XML_LIB_DEPENDS=	libxml2.so:textproc/libxml2 \
 			libxslt.so:textproc/libxslt
 
-OTEL_GH_TUPLE=		osokin:nginx-otel:8f0857d:otel
+OTEL_GH_TUPLE=		osokin:nginx-otel:51273ec:otel
 OTEL_VARS=		DSO_EXTMODS+=otel OTEL_SUBDIR=/
 OTEL_LIB_DEPENDS=	libabsl_base.so:devel/abseil \
 			libcares.so:dns/c-ares \

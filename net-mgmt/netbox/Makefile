@@ -1,6 +1,6 @@
 PORTNAME=	netbox
 DISTVERSIONPREFIX=	v
-DISTVERSION=	4.4.8
+DISTVERSION=	4.4.10
 CATEGORIES=	net-mgmt python
 
 MAINTAINER=	kai@FreeBSD.org
@@ -32,25 +32,25 @@ RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}django52>=5.2.9<5.3:www/py-django52@${PY_FLA
 		${PYTHON_PKGNAMEPREFIX}dj52-django-prometheus>=2.4.1<2.5:www/py-dj52-django-prometheus@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}dj52-django-redis>=6.0.0<7:www/py-dj52-django-redis@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}dj52-django-rich>=2.2.0<3:www/py-dj52-django-rich@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}dj52-django-rq>=3.0.1<3.3:devel/py-dj52-django-rq@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}dj52-django-rq>=3.2.1<3.3:devel/py-dj52-django-rq@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}dj52-django-storages>=1.14.6<2:www/py-dj52-django-storages@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}dj52-django-tables2>=2.8.0<2.9:www/py-dj52-django-tables2@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}dj52-django-taggit>=6.1.0<7:www/py-dj52-django-taggit@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}dj52-django-timezone-field>=7.2.1<8:www/py-dj52-django-timezone-field@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}dj52-djangorestframework>=3.16.1<3.17.0:www/py-dj52-djangorestframework@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}dj52-drf-spectacular>=0.29.0<1:www/py-dj52-drf-spectacular@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}dj52-drf-spectacular-sidecar>=2025.12.1:www/py-dj52-drf-spectacular-sidecar@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}dj52-social-auth-app-django>=5.6.0<6:www/py-dj52-social-auth-app-django@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}dj52-drf-spectacular-sidecar>=2026.1.1:www/py-dj52-drf-spectacular-sidecar@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}dj52-social-auth-app-django>=5.7.0<6:www/py-dj52-social-auth-app-django@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}dj52-sorl-thumbnail>=12.11.0<13:graphics/py-dj52-sorl-thumbnail@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}dj52-strawberry-graphql>=0.287.2<0.300:devel/py-dj52-strawberry-graphql@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}dj52-strawberry-graphql-django>=0.70.1<1:www/py-dj52-strawberry-graphql-django@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}dj52-strawberry-graphql>=0.288.2<0.300:devel/py-dj52-strawberry-graphql@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}dj52-strawberry-graphql-django>=0.73.0<1:www/py-dj52-strawberry-graphql-django@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}django-pglocks>=1.0.4<1.1:www/py-django-pglocks@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}colorama>=0.4.6<1:devel/py-colorama@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}feedparser>=6.0.12<7:textproc/py-feedparser@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}Jinja2>=3.1.6<4:devel/py-Jinja2@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}jsonschema>=4.25.1<5:devel/py-jsonschema@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}markdown>=3.9<3.11:textproc/py-markdown@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}mkdocs-material>=9.7.0<10:textproc/py-mkdocs-material@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}mkdocs-material>=9.7.1<10:textproc/py-mkdocs-material@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}mkdocstrings>=1.0.0<2:textproc/py-mkdocstrings@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}mkdocstrings-python>=2.0.1:textproc/py-mkdocstrings-python@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}netaddr>=1.3.0<2:net/py-netaddr@${PY_FLAVOR} \
@@ -61,12 +61,12 @@ RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}django52>=5.2.9<5.3:www/py-django52@${PY_FLA
 		${PYTHON_PKGNAMEPREFIX}psycopg-pool>=3.3.0<4:databases/py-psycopg-pool@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}requests>=2.32.5<3:www/py-requests@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}rq>=2.6.1<3:devel/py-rq@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}social-auth-core>=4.8.1<5:security/py-social-auth-core@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}social-auth-core>=4.8.3<5:security/py-social-auth-core@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}svgwrite>=1.4.3<2:graphics/py-svgwrite@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}tablib>=3.9.0<4:textproc/py-tablib@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}tzdata>=2025.2:devel/py-tzdata@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}pyyaml>=6.0.3<7:devel/py-pyyaml@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}gunicorn>=23.0.0<24:www/py-gunicorn@${PY_FLAVOR}
+		${PYTHON_PKGNAMEPREFIX}gunicorn>=23.0.0<25:www/py-gunicorn@${PY_FLAVOR}
 
 USES=		cpe pgsql:14+ python
 CPE_VENDOR=	netbox

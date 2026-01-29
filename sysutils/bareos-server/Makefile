@@ -1,7 +1,7 @@
 PORTNAME=	bareos
 DISTVERSIONPREFIX=	Release/
-DISTVERSION=	24.0.7
-PORTREVISION?=	0
+DISTVERSION=	25.0.1
+PORTREVISION?=	1
 CATEGORIES?=	sysutils
 PKGNAMEPREFIX?=	#
 PKGNAMESUFFIX?=	-server
@@ -13,7 +13,7 @@ WWW=		https://www.bareos.org/
 LICENSE=	AGPLv3 LGPL3
 LICENSE_COMB=	multi
 
-CONFLICTS?=	bareos20-server bareos21-server bareos22-server bareos23-server
+CONFLICTS?=	bareos22-server bareos23-server bareos24-server
 
 BUILD_DEPENDS+=	utf8cpp>0:devel/utf8cpp \
 		microsoft-gsl>0:devel/microsoft-gsl \
@@ -26,10 +26,11 @@ LIB_DEPENDS+=	liblzo2.so:archivers/lzo2 \
 		libfmt.so:devel/libfmt \
 		libxxhash.so:devel/xxhash
 
-USES+=		cmake compiler:c++11-lang cpe localbase:ldflags perl5 pkgconfig readline \
+USES+=		cmake compiler:c++20-lang cpe localbase:ldflags perl5 pkgconfig readline \
 		shebangfix
 USE_GITHUB=	yes
 USE_PERL5=	run
+USE_CXXSTD?=	c++20
 
 USERS=		bareos
 GROUPS=		${USERS}
@@ -53,15 +54,12 @@ NDMP_DESC=		Enable build of NDMP support
 SCSICRYPTO_DESC=	Build LTO AME crypto plugin
 
 .if ${PKGNAMESUFFIX} == "-server"
-OPTIONS_GROUP=	BACKENDS
-OPTIONS_GROUP_BACKENDS=	GFAPI
 OPTIONS_DEFINE=		MTX PYTHON LMDB NDMP NLS SCSICRYPTO
 OPTIONS_DEFAULT+=	LMDB PGSQL SCSICRYPTO
 OPTIONS_SINGLE_DATABASE=	PGSQL
 OPTIONS_SINGLE+=		DATABASE
 BACKENDS_DESC=		Storage backends
 DATABASE_DESC=		Database support
-GFAPI_DESC=	GFAPI backend support
 LMDB_DESC=	Enable faster accurate backup support
 
 NDMP_CMAKE_ON=	-Dndmp=ON
@@ -117,7 +115,8 @@ CMAKE_ARGS+=	-Dtcp-wrappers=ON \
 		-Dsbin-perm=755 \
 		-Ddb_user=bareos \
 		-Dbaseport=9101 \
-		-Dpiddir=/var/run/bareos
+		-Dpiddir=/var/run/bareos \
+		-Dlocalbase=${LOCALBASE}
 
 .if defined(WITH_CLIENT_ONLY)
 CFLAGS+=	-DMDB_DSYNC=O_SYNC -DMDB_USE_POSIX_SEM=1
@@ -154,9 +153,9 @@ SUB_LIST=	BAREOS_USER=${BAREOS_USER} \
 		BAREOS_DIR=${BAREOS_DIR}
 
 NLS_USES=		gettext
-NLS_CMAKE_ON=		-Dnls=ON
-GFAPI_CMAKE_ON=		-Dgfapi=ON
-GFAPI_LIB_DEPENDS=	libglusterfs.so:net/glusterfs
+NLS_CMAKE_ON=		-Dnls=ON \
+			-DENABLE_NLS=ON
+NLS_CMAKE_OFF=		-DENABLE_NLS=OFF
 
 # Client only or full server version
 .if defined(WITH_CLIENT_ONLY)
@@ -200,6 +199,7 @@ post-patch:
 .if ${PKGNAMESUFFIX} == "-client"
 	@${REINPLACE_CMD} -e 's|-Werror -Wall|-Wall|g' ${PATCH_WRKSRC}/core/CMakeLists.txt
 	@${REINPLACE_CMD} -e 's|enable_testing()||g' ${WRKSRC}/CMakeLists.txt
+	@${REINPLACE_CMD} -e 's|CMAKE_CXX_STANDARD 20|CMAKE_CXX_STANDARD 17|g' ${WRKSRC}/core/CMakeLists.txt
 .endif
 
 	@${REINPLACE_CMD} -e 's/CMAKE_INSTALL_FULL_DATAROOTDIR/CMAKE_INSTALL_DATAROOTDIR/g' \
@@ -215,8 +215,14 @@ post-extract:
 .endif
 	@${MV} ${WRKSRC}/core/src/defaultconfigs/bareos-dir.d/fileset/'Windows All Drives.conf' \
 		${WRKSRC}/core/src/defaultconfigs/bareos-dir.d/fileset/'WindowsAllDrives.conf'
-	@${MV} ${WRKSRC}/contrib/misc/bsmc/etc/bareos/bsmc.conf \
-		${WRKSRC}/contrib/misc/bsmc/etc/bareos/bsmc.conf.sample
+	@${MV} ${WRKSRC}/contrib/misc/media_vault/media_vault.ini.example.in \
+		${WRKSRC}/contrib/misc/media_vault/media_vault.ini.in
+	@${MV} ${WRKSRC}/contrib/misc/media_vault/job_admin-media_vault.conf.example.in \
+		${WRKSRC}/contrib/misc/media_vault/job_admin-media_vault.conf.in
+	@${MV} ${WRKSRC}/contrib/misc/media_vault/console_media_vault.conf.example \
+		${WRKSRC}/contrib/misc/media_vault/console_media_vault.conf
+	@${MV} ${WRKSRC}/contrib/misc/media_vault/profile_media_vault.conf.example \
+		${WRKSRC}/contrib/misc/media_vault/profile_media_vault.conf
 
 .if !target(post-install)
 post-install:

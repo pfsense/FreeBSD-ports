@@ -1,6 +1,6 @@
 PORTNAME=	yt
 DISTVERSION=	4.3.1
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	math astro python
 MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -33,7 +33,7 @@ RUN_DEPENDS=	${PYNUMPY} \
 		${PYTHON_PKGNAMEPREFIX}unyt>=2.8.0:math/py-unyt@${PY_FLAVOR}
 
 USES=		dos2unix localbase python
-USE_PYTHON=	autoplist concurrent cython3 distutils
+USE_PYTHON=	autoplist concurrent cython distutils
 
 post-patch:
 	@${REINPLACE_CMD} -e "s|check_for_pyembree() is not None|False|" \

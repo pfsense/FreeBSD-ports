@@ -1,12 +1,13 @@
 PORTNAME=	microbin
 DISTVERSIONPREFIX=	v
 DISTVERSION=	2.0.4
-PORTREVISION=	22
+PORTREVISION=	23
 CATEGORIES=	www
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Tiny, self-contained, configurable paste bin and URL shortener
-WWW=		https://microbin.eu
+WWW=		https://microbin.eu \
+		https://github.com/szabodanika/microbin
 
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE

@@ -1,5 +1,6 @@
 PORTNAME=	librenms
-PORTVERSION=	25.12.0
+PORTVERSION=	26.1.1
+PORTREVISION=	1
 PORTEPOCH=	1
 CATEGORIES=	net-mgmt
 MASTER_SITES=	LOCAL/dvl:vendor
@@ -47,12 +48,12 @@ SHEBANG_FILES=	../${PORTNAME}-vendor-${PORTVERSION}/paragonie/random_compat/buil
 		../librenms-vendor-${PORTVERSION}/symfony/yaml/Resources/bin/yaml-lint \
 		alerts.php artisan billing-calculate.php check-services.php \
 		config_to_json.php cronic daily.php daily.sh delhost.php \
-		discovery-wrapper.py discovery.php irc.php \
-		librenms-service.py LibreNMS/command_runner.py \
-		LibreNMS/wrapper.py lnms misc/lnms-completion.bash \
-		misc/smokeping-debian.example misc/smokeping-rhel.example \
-		ping.php poll-billing.php poller-wrapper.py poller.php \
-		renamehost.php scripts/auth_test.php scripts/bash_lint.sh \
+		discovery-wrapper.py discovery.php irc.php librenms-service.py \
+		LibreNMS/command_runner.py LibreNMS/wrapper.py lnms \
+		misc/lnms-completion.bash misc/smokeping-debian.example \
+		misc/smokeping-rhel.example ping.php poll-billing.php \
+		poller-wrapper.py poller.php renamehost.php \
+		scripts/auth_test.php scripts/bash_lint.sh \
 		scripts/check_requirements.py scripts/collect-port-polling.php \
 		scripts/collect-snmp-data.php scripts/composer_wrapper.php \
 		scripts/dynamic_check_requirements.py scripts/gen_rancid.php \
@@ -67,11 +68,10 @@ SHEBANG_FILES=	../${PORTNAME}-vendor-${PORTVERSION}/paragonie/random_compat/buil
 		scripts/Migration/XML_Conversion/mkdir.sh scripts/new-os.php \
 		scripts/pre-commit.php scripts/purge-port.php \
 		scripts/removespikes.php scripts/removespikes.pl \
-		scripts/rename-mibs.php scripts/rrdstep.php \
-		scripts/save-test-data.php scripts/syslog-notify-oxidized.php \
-		scripts/test-alert.php scripts/test-template.php \
-		scripts/watchmaillog/watchmaillog.pl snmp-scan.py snmptrap.php \
-		syslog.php validate.php
+		scripts/rename-mibs.php scripts/save-test-data.php \
+		scripts/syslog-notify-oxidized.php scripts/test-alert.php \
+		scripts/test-template.php scripts/watchmaillog/watchmaillog.pl \
+		snmp-scan.py snmptrap.php syslog.php validate.php
 
 NO_ARCH=	yes
 NO_BUILD=	yes
@@ -104,7 +104,6 @@ FPING_RUN_DEPENDS=	fping:net/fping
 IPMITOOL_RUN_DEPENDS=	ipmitool:sysutils/ipmitool
 LIBVIRT_RUN_DEPENDS=	virsh:devel/libvirt
 MYSQLD_USES=		mysql:server
-MYSQLD_USES_OFF=	mysql:client
 NAGPLUGINS_RUN_DEPENDS=	${LOCALBASE}/libexec/nagios/check_nagios:net-mgmt/nagios-plugins
 NMAP_RUN_DEPENDS=	nmap:security/nmap
 WMIC_RUN_DEPENDS=	wmic:net-mgmt/wmi-client
@@ -116,16 +115,16 @@ X11_USES_OFF=		magick:6,nox11
 _ROOT_FILES=		alerts.php artisan billing-calculate.php \
 			check-services.php composer.json composer.lock \
 			config.php.default config_to_json.php cronic daily.php \
-			delhost.php discovery-wrapper.py discovery.php \
-			irc.php librenms-service.py mkdocs.yml \
-			phpunit.xml ping.php poll-billing.php poller.php \
-			poller-wrapper.py renamehost.php snmp-scan.py \
-			snmptrap.php syslog.php validate.php
+			delhost.php discovery-wrapper.py discovery.php irc.php \
+			librenms-service.py mkdocs.yml phpunit.xml ping.php \
+			poll-billing.php poller.php poller-wrapper.py \
+			renamehost.php snmp-scan.py snmptrap.php syslog.php \
+			validate.php
 _SCRIPT_FILES=		daily.sh lnms
 # _RELEASE_TIMESTAMP is used for a patch inside the vendor code
 # it represents the release date via: git show --pretty='%H|%ct' -s 1.42.01
 # It sits here so you remember to update it with each release
-_RELEASE_TIMESTAMP=	1765807513
+_RELEASE_TIMESTAMP=	1768260332
 _ROOT_DIRS=		LibreNMS app bootstrap config database doc html \
 			includes lang licenses mibs misc resources routes \
 			scripts tests

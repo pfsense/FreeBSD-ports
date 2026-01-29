@@ -1,6 +1,6 @@
 PORTNAME=	openjfx
 DISTVERSION=	14.0.2.1+1
-PORTREVISION=	17
+PORTREVISION=	18
 CATEGORIES=	java x11-toolkits devel
 MASTER_SITES=	https://repo.maven.apache.org/maven2/org/apache/lucene/lucene-core/7.7.1/:core \
 		https://repo.maven.apache.org/maven2/org/apache/lucene/lucene-grouping/7.7.1/:grouping \
@@ -28,7 +28,8 @@ ONLY_FOR_ARCHS=	aarch64 amd64 i386 powerpc64 powerpc64le
 BUILD_DEPENDS=	zip:archivers/zip \
 		apache-ant>0:devel/apache-ant \
 		gradle62>=6.2:devel/gradle62 \
-		${JAVALIBDIR}/junit.jar:java/junit
+		${JAVALIBDIR}/junit.jar:java/junit \
+		rubygem-getoptlong>0:devel/rubygem-getoptlong
 LIB_DEPENDS=	libasound.so:audio/alsa-lib \
 		libfontconfig.so:x11-fonts/fontconfig \
 		libfreetype.so:print/freetype2

@@ -91,7 +91,7 @@ KDE_PLASMA5_VERSION?=		5.27.12
 KDE_PLASMA5_BRANCH?=		stable
 
 # Current KDE Plasma desktop.
-KDE_PLASMA6_VERSION?=		6.5.4
+KDE_PLASMA6_VERSION?=		6.5.5
 KDE_PLASMA6_BRANCH?=		stable
 
 # Legacy KDE frameworks (Qt5 based).
@@ -99,13 +99,13 @@ KDE_FRAMEWORKS5_VERSION?=	5.116.0
 KDE_FRAMEWORKS5_BRANCH?=	stable
 
 # Current KDE Frameworks (Qt6 based).
-KDE_FRAMEWORKS6_VERSION?=	6.21.0
+KDE_FRAMEWORKS6_VERSION?=	6.22.0
 KDE_FRAMEWORKS6_BRANCH?=	stable
 
 # Current KDE applications. Update _${PORTNAME}_PROJECT_VERSION for the following ports:
 # devel/kdevelop, games/libkdegames, games/libkmahjongg, graphics/kgraphviewer
-KDE_APPLICATIONS6_VERSION?=	25.12.0
-KDE_APPLICATIONS6_SHLIB_VER?=	6.6.0
+KDE_APPLICATIONS6_VERSION?=	25.12.1
+KDE_APPLICATIONS6_SHLIB_VER?=	6.6.1
 # G as in KDE Gear, and as in "don't make the variable name longer than required".
 KDE_APPLICATIONS6_SHLIB_G_VER?=	${KDE_APPLICATIONS6_VERSION}
 KDE_APPLICATIONS6_BRANCH?=	stable
@@ -305,7 +305,7 @@ _USE_FRAMEWORKS6_ALL=	apidox archive attica auth baloo bookmarks \
 			jobwidgets kcmutils kdav kdeclarative kded kdesu \
 			kimageformats kio kirigami2 kquickcharts newstuff \
 			networkmanagerqt notifications notifyconfig package parts \
-			people plasma-wayland-protocols plotting prison pty purpose \
+			people plotting prison pty purpose \
 			qqc2-desktop-style runner service solid sonnet \
 			statusnotifieritem svg syndication \
 			syntaxhighlighting texteditor texttemplate \
@@ -571,7 +571,7 @@ kde-plasma-framework_PORT=	x11/kf${_KDE_VERSION}-plasma-framework
 kde-plasma-framework_LIB=	libKF${_KDE_VERSION}Plasma.so
 
 kde-plasma-wayland-protocols_PORT=	x11/plasma-wayland-protocols
-kde-plasma-wayland-protocols_PATH=	${KDE_PREFIX}/lib/cmake/PlasmaWaylandProtocols/PlasmaWaylandProtocolsConfig.cmake
+kde-plasma-wayland-protocols_PATH=	${KDE_PREFIX}/share/cmake/PlasmaWaylandProtocols/PlasmaWaylandProtocolsConfig.cmake
 
 kde-plotting_PORT=		graphics/kf${_KDE_VERSION}-kplotting
 kde-plotting_LIB=		libKF${_KDE_VERSION}Plotting.so

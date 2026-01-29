@@ -8,7 +8,7 @@ PKGNAMESUFFIX=	${DISTVERSION:C/^g[0-9]+/-devel/:C/^([0-9]+)\.([0-9]+).*/\1\2/}
 DISTFILES?=	go-${OPSYS:tl}-${GOARCH_${ARCH}}${GOARM_${ARCH}}-${BOOTSTRAP_TAG}.tar.xz:bootstrap
 
 MAINTAINER=	go@FreeBSD.org
-COMMENT?=	Go programming language (development version)
+COMMENT?=	Go programming language (deprecated version)
 WWW=		https://golang.org
 
 LICENSE=	BSD3CLAUSE
@@ -35,6 +35,9 @@ CPE_VENDOR=	golang
 NO_SHLIB_REQUIRES_GLOB=	*
 
 .ifndef MASTERDIR
+DEPRECATED=	Old version of Go. Use the go package (lang/go) instead.
+EXPIRATION_DATE=2026-03-01
+
 USE_GITHUB=	yes
 GH_ACCOUNT=	golang
 # go1.22

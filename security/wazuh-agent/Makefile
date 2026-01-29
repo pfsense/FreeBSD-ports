@@ -1,8 +1,8 @@
 PORTNAME=	wazuh
-DISTVERSION=	4.14.1
+DISTVERSION=	4.14.2
 DISTVERSIONPREFIX=	v
 CATEGORIES=	security
-MASTER_SITES=	https://packages.wazuh.com/deps/47/libraries/sources/:wazuh_sources
+MASTER_SITES=	https://packages.wazuh.com/deps/48/libraries/sources/:wazuh_sources
 PKGNAMESUFFIX=	-agent
 DISTFILES=	${EXTERNAL_DISTFILES}
 DIST_SUBDIR=	${PORTNAME}-${DISTVERSION}
@@ -15,19 +15,19 @@ WWW=		https://github.com/wazuh/wazuh
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-LIB_DEPENDS=	libnghttp2.so:www/libnghttp2
+LIB_DEPENDS=	libnghttp2.so:www/libnghttp2 \
+		libepoll-shim.so:devel/libepoll-shim
 
 USES=		cmake:indirect cpe gmake perl5 readline shebangfix sqlite:3 uidfix
 
 USE_GITHUB=	yes
-GH_TUPLE=	alonsobsd:wazuh-freebsd:${WAZUH_EXTRAFILE_TAGNAME}:wazuh
+GH_ACCOUNT=	alonsobsd
+GH_PROJECT=	wazuh-freebsd
+GH_TAGNAME=	e3b7f4ccbb4cf0004ca58b1e56e4fe2d1b7474a7
 
 USE_RC_SUBR=	${PORTNAME}${PKGNAMESUFFIX}
 
 MAKE_ARGS+=	TARGET=agent
-
-WAZUH_EXTRAFILE=	alonsobsd-${PORTNAME}-freebsd-${WAZUH_EXTRAFILE_TAGNAME}_GH0${EXTRACT_SUFX}
-WAZUH_EXTRAFILE_TAGNAME=2f1307c
 
 EXTERNAL_DISTFILES=	cJSON.tar.gz:wazuh_sources \
 			curl.tar.gz:wazuh_sources \
@@ -90,6 +90,16 @@ WAZUHMOD770=	/etc/shared/default /logs /queue/alerts /queue/fim \
 
 WAZUHPREFIX=	/var/ossec
 
+.include <bsd.port.options.mk>
+
+.if ${ARCH} == powerpc64
+MAKE_ENV+=	OSSL_TARGET=BSD-ppc64
+.elif ${ARCH} == powerpc64le
+MAKE_ENV+=	OSSL_TARGET=BSD-ppc64le
+.elif ${ARCH} == riscv64
+MAKE_ENV+=	OSSL_TARGET=BSD-riscv64
+.endif
+
 .include <bsd.port.pre.mk>
 
 .if ${OSVERSION} >= 1300139 && ${OSVERSION} < 1400000
@@ -108,10 +118,6 @@ post-extract:
 .for FILE in ${EXTERNAL_DISTFILES}
 	@cd ${WRKSRC}/src/external && ${EXTRACT_CMD} ${EXTRACT_BEFORE_ARGS} ${_DISTDIR}/${FILE:S/:wazuh_sources//} ${EXTRACT_AFTER_ARGS}
 .endfor
-	@${MKDIR} ${WRKSRC}/ruleset/sca/freebsd
-	@cd ${WRKDIR} && ${EXTRACT_CMD} ${EXTRACT_BEFORE_ARGS} ${_DISTDIR}/${WAZUH_EXTRAFILE} ${EXTRACT_AFTER_ARGS}
-	@${MV} ${WRKDIR}/${PORTNAME}-freebsd-${WAZUH_EXTRAFILE_TAGNAME} ${WRKDIR}/wazuh-freebsd
-	@cd ${WRKDIR}/wazuh-freebsd/var/ossec/ruleset/sca && ${CP} *.yml ${WRKSRC}/ruleset/sca/freebsd/
 
 post-patch:
 	${REINPLACE_CMD} -e 's|CC=|CC?=|g' -e 's|AR=|AR?=|g' ${WRKSRC}/src/external/bzip2/Makefile

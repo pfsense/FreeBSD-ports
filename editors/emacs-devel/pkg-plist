@@ -1001,7 +1001,6 @@ share/applications/emacsclient.desktop
 %%DATADIR%%/%%EMACS_VER%%/etc/tutorials/TUTORIAL.uk
 %%DATADIR%%/%%EMACS_VER%%/etc/tutorials/TUTORIAL.zh
 %%DATADIR%%/%%EMACS_VER%%/etc/w32-feature.el
-%%DATADIR%%/%%EMACS_VER%%/etc/yow.lines
 %%DATADIR%%/%%EMACS_VER%%/lisp/COPYING
 %%DATADIR%%/%%EMACS_VER%%/lisp/README
 %%DATADIR%%/%%EMACS_VER%%/lisp/abbrev.el.gz
@@ -1757,6 +1756,8 @@ share/applications/emacsclient.desktop
 %%DATADIR%%/%%EMACS_VER%%/lisp/emacs-lisp/nadvice.elc
 %%DATADIR%%/%%EMACS_VER%%/lisp/emacs-lisp/oclosure.el.gz
 %%DATADIR%%/%%EMACS_VER%%/lisp/emacs-lisp/oclosure.elc
+%%DATADIR%%/%%EMACS_VER%%/lisp/emacs-lisp/package-activate.el.gz
+%%DATADIR%%/%%EMACS_VER%%/lisp/emacs-lisp/package-activate.elc
 %%DATADIR%%/%%EMACS_VER%%/lisp/emacs-lisp/package-vc.el.gz
 %%DATADIR%%/%%EMACS_VER%%/lisp/emacs-lisp/package-vc.elc
 %%DATADIR%%/%%EMACS_VER%%/lisp/emacs-lisp/package.el.gz
@@ -3850,6 +3851,8 @@ share/applications/emacsclient.desktop
 %%DATADIR%%/%%EMACS_VER%%/lisp/subr.elc
 %%DATADIR%%/%%EMACS_VER%%/lisp/svg.el.gz
 %%DATADIR%%/%%EMACS_VER%%/lisp/svg.elc
+%%DATADIR%%/%%EMACS_VER%%/lisp/system-taskbar.el.gz
+%%DATADIR%%/%%EMACS_VER%%/lisp/system-taskbar.elc
 %%DATADIR%%/%%EMACS_VER%%/lisp/t-mouse.el.gz
 %%DATADIR%%/%%EMACS_VER%%/lisp/t-mouse.elc
 %%DATADIR%%/%%EMACS_VER%%/lisp/tab-bar.el.gz

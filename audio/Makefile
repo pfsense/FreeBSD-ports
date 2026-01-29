@@ -428,11 +428,6 @@
     SUBDIR += liquidsfz
     SUBDIR += listener
     SUBDIR += littlefly-lv2
-    SUBDIR += logitechmediaserver
-    SUBDIR += logitechmediaserver-dynamicplaylist
-    SUBDIR += logitechmediaserver-lazysearch
-    SUBDIR += logitechmediaserver-sqlplaylist
-    SUBDIR += logitechmediaserver-trackstat
     SUBDIR += lollypop
     SUBDIR += lpcnet
     SUBDIR += lsp-plugins-lv2
@@ -443,6 +438,7 @@
     SUBDIR += lv2lint
     SUBDIR += lv2proc
     SUBDIR += lvtk
+    SUBDIR += lyrionmusicserver
     SUBDIR += mac
     SUBDIR += madfufw
     SUBDIR += madplay
@@ -587,7 +583,6 @@
     SUBDIR += pavucontrol
     SUBDIR += pavucontrol-qt
     SUBDIR += pavumeter
-    SUBDIR += pc-mixer
     SUBDIR += pcaudiolib
     SUBDIR += pd
     SUBDIR += pd-cyclone
@@ -814,7 +809,6 @@
     SUBDIR += tkeca
     SUBDIR += toccata-lv2
     SUBDIR += tosha
-    SUBDIR += traverso
     SUBDIR += triceratops-lv2
     SUBDIR += tse3
     SUBDIR += tta

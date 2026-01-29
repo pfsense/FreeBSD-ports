@@ -1,5 +1,5 @@
 PORTNAME=	lxml
-DISTVERSION=	6.0.1
+DISTVERSION=	6.0.2
 CATEGORIES=	devel python
 MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -17,7 +17,7 @@ BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}setuptools>0:devel/py-setuptools@${PY_FLAV
 
 USES=		compiler cpe gnome python
 USE_GNOME=	libxml2 libxslt
-USE_PYTHON=	autoplist concurrent cython3 pep517
+USE_PYTHON=	autoplist concurrent cython pep517
 
 LDFLAGS+=	-Wl,-rpath=${LOCALBASE}/lib
 

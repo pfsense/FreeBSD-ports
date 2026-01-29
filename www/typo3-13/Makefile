@@ -16,7 +16,6 @@ USES=		cpe php:web,flavors shebangfix
 # php openssl extension is required but it's statically linked in default php
 USE_PHP=	ctype dom exif fileinfo filter gd intl mbstring pdo session \
 		simplexml tokenizer xml zip zlib
-IGNORE_WITH_PHP=	81
 
 SHEBANG_GLOB=	*.php *.sh
 NO_ARCH=	yes
@@ -30,7 +29,7 @@ WRKSRC=		${WRKDIR}/${PORTNAME}_src-${DISTVERSION}
 
 PORT_V_MAJOR=	13
 PORT_V_MINOR=	4
-PORT_V_PATCH=	15
+PORT_V_PATCH=	23
 
 TYPO3DIR=	www/${PORTNAME}-${PORT_V_MAJOR}
 

@@ -1,6 +1,7 @@
 PORTNAME=	codex
 DISTVERSIONPREFIX=	rust-v
-DISTVERSION=	0.77.0
+DISTVERSION=	0.89.0
+PORTREVISION=	1
 CATEGORIES=	misc devel
 
 MAINTAINER=	tagattie@FreeBSD.org
@@ -11,7 +12,8 @@ WWW=		https://openai.com/codex \
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-LIB_DEPENDS=	libdbus-1.so:devel/dbus \
+LIB_DEPENDS=	libzstd.so:archivers/zstd \
+		libdbus-1.so:devel/dbus \
 		libonig.so:devel/oniguruma
 RUN_DEPENDS=	bash:shells/bash \
 		rg:textproc/ripgrep
@@ -64,12 +66,10 @@ post-patch:
 		${BUILD_WRKSRC}/core/src/shell_snapshot.rs \
 		${BUILD_WRKSRC}/core/src/tools/handlers/shell.rs \
 		${BUILD_WRKSRC}/core/src/tools/handlers/unified_exec.rs \
-		${BUILD_WRKSRC}/core/src/tools/spec.rs \
 		${BUILD_WRKSRC}/core/tests/suite/exec.rs \
 		${BUILD_WRKSRC}/core/tests/suite/unified_exec.rs \
 		${BUILD_WRKSRC}/core/tests/suite/user_notification.rs \
-		${BUILD_WRKSRC}/tui/src/exec_command.rs \
-		${BUILD_WRKSRC}/tui2/src/exec_command.rs
+		${BUILD_WRKSRC}/tui/src/exec_command.rs
 	@${REINPLACE_CMD} -e 's|python3|${PYTHON_VERSION}|' \
 		${BUILD_WRKSRC}/app-server/tests/suite/codex_message_processor_flow.rs \
 		${BUILD_WRKSRC}/app-server/tests/suite/v2/turn_start.rs \
@@ -79,7 +79,8 @@ post-patch:
 		${BUILD_WRKSRC}/core/tests/suite/tools.rs \
 		${BUILD_WRKSRC}/core/tests/suite/unified_exec.rs \
 		${BUILD_WRKSRC}/exec/tests/suite/sandbox.rs \
-		${BUILD_WRKSRC}/mcp-server/tests/suite/codex_tool.rs
+		${BUILD_WRKSRC}/mcp-server/tests/suite/codex_tool.rs \
+		${BUILD_WRKSRC}/utils/pty/src/tests.rs
 
 post-build-COMPLETIONS-on:
 	@${MKDIR} ${WRKSRC}/completions

@@ -1,6 +1,6 @@
 PORTNAME=	FreeCAD
 DISTVERSION=	1.0.2
-PORTREVISION=	6
+PORTREVISION=	7
 CATEGORIES=	cad
 
 MAINTAINER=	cmt@FreeBSD.org
@@ -38,7 +38,7 @@ LIB_DEPENDS=	libexpat.so:textproc/expat2 \
 		libboost_thread.so:devel/boost-libs \
 		libfontconfig.so:x11-fonts/fontconfig \
 		libfreeimage.so:graphics/freeimage \
-		libavutil.so.58:multimedia/ffmpeg \
+		libavutil.so.60:multimedia/ffmpeg \
 		libavformat.so.58:multimedia/ffmpeg4 \
 		libmed.so:french/med \
 		libshiboken6.abi3.so:devel/shiboken6@${PY_FLAVOR} \

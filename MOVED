@@ -4646,7 +4646,6 @@ lang/linux-dotnet11-runtime||2025-07-01|Has expired: Ancient version, no practic
 lang/linux-dotnet-sdk||2025-07-01|Removed: Depends on expired lang/linux-dotnet-runtime, MASTER_SITES gone
 lang/linux-dotnet-runtime||2025-07-01|Has expired: Ancient version, no practical use
 lang/linux-dotnet-cli||2025-07-01|Removed, depends on removed lang/linux-dotnet-runtime
-math/manifold||2025-07-06|Removed, planned to update BRL-CAD, but currently blocked
 shells/bash53||2025-07-07|Removed in favour of updating shells/bash
 devel/etcd31||2025-07-08|Has expired: EOLed upstream, switch to a newer version
 devel/etcd32||2025-07-08|Has expired: EOLed upstream, switch to a newer version
@@ -4888,7 +4887,6 @@ accessibility/gammy||2025-12-01|Has expired: Abandoned and unfetchable
 mail/mu4e-maildirs|mail/mu|2025-12-01|Has expired: Upstream discourages using this software and recommends feature now integrated into mail/mu
 devel/libavl||2025-12-04|Has expired: Since 2002 libavl is no longer distributed as a shared library
 net/py-netif||2025-12-04|Has expired: Upstream unmaintained
-x11-fonts/google-fonts||2025-12-04|Has expired: Depends on expired x11-fonts/gentium-basic
 x11-fonts/gentium-basic|x11-fonts/gentium|2025-12-04|Has expired: Superceeded by Gentium-7.000 https://software.sil.org/gentium/download/
 www/rubygem-cssbundling-rails-gitlab|www/rubygem-cssbundling-rails-rails-gitlab|2025-12-05|Obsolete, use www/rubygem-cssbundling-rails-rails-gitlab instead
 misc/amazon-qldb-shell||2025-12-05|Discontinued by Amazon as of July 2025: old and new customers are advised to migrate to Amazon Aurora PostgreSQL
@@ -4905,3 +4903,202 @@ lang/typstfmt||2025-12-15|Discontinued, upstream repository archived on June 8, 
 www/py-requests-kerberos|security/py-requests-kerberos|2025-12-17|Remove duplicate port. Use security/py-requests-kerberos instead
 games/melonds@qt5|games/melonds|2025-12-19|Unflavorize port. Qt5 is defunct. Please use melonds based on Qt6 instead
 games/melonds@qt6|games/melonds|2025-12-19|Unflavorize port. Continue to use melonds based on Qt6
+sysutils/bareos-traymonitor@qt5|sysutils/bareos-traymonitor|2025-12-27|Unflavorize port. Qt5 is EoL. Please use bareos-traymonitor based on Qt6 instead
+sysutils/bareos-traymonitor@qt6|sysutils/bareos-traymonitor|2025-12-27|Unflavorize port. Qt5 is EoL. Please use bareos-traymonitor based on Qt6 instead
+audio/mixxx@qt5|audio/mixxx|2025-12-27|Unflavorize port. Qt5 is EoL. Please use mixxx based on Qt6 instead
+audio/mixxx@qt6|audio/mixxx|2025-12-27|Unflavorize port. Qt5 is EoL. Please use mixxx based on Qt6 instead
+audio/logitechmediaserver|audio/lyrionmusicserver|2025-12-28|With version 9, the project gets a new name
+audio/logitechmediaserver-dynamicplaylist||2025-12-28|unmaintained, unsure if working with lyrionmusicserver
+audio/logitechmediaserver-lazysearch||2025-12-28|unmaintained, unsure if working with lyrionmusicserver
+audio/logitechmediaserver-sqlplaylist||2025-12-28|unmaintained, unsure if working with lyrionmusicserver
+audio/logitechmediaserver-trackstat||2025-12-28|unmaintained, unsure if working with lyrionmusicserver
+deskutils/showdown||2025-12-28|Broken and unmaintained upstream since 2022
+games/rlvm||2025-12-28|Broken for more than a year
+www/castor||2025-12-28|Abandoned upstream and fails to build with OpenSSL 3
+www/py-lia-web|www/py-cross-web|2025-12-29|Renamed to match upstream name
+security/clamtk||2025-12-31|Has expired: Maintainer has retired
+deskutils/charmtimetracker||2025-12-31|Has expired: Abandoned upstream, upstream repo archived Sep 24, 2023
+www/py-dj51-django-taggit||2025-12-31|Has expired: Extended support of Django 5.1 ends December 2025, upgrade to the Django 5.2+ version of this port. See https://www.djangoproject.com/download/
+www/py-dj51-django-filter||2025-12-31|Has expired: Extended support of Django 5.1 ends December 2025, upgrade to the Django 5.2+ version of this port. See https://www.djangoproject.com/download/
+www/py-dj51-django-celery-results||2025-12-31|Has expired: Extended support of Django 5.1 ends December 2025, upgrade to the Django 5.2+ version of this port. See https://www.djangoproject.com/download/
+www/py-dj51-django-extensions||2025-12-31|Has expired: Extended support of Django 5.1 ends December 2025, upgrade to the Django 5.2+ version of this port. See https://www.djangoproject.com/download/
+www/py-dj51-channels-redis||2025-12-31|Has expired: Extended support of Django 5.1 ends December 2025, upgrade to the Django 5.2+ version of this port. See https://www.djangoproject.com/download/
+www/py-dj51-django-soft-delete||2025-12-31|Has expired: Extended support of Django 5.1 ends December 2025, upgrade to the Django 5.2+ version of this port. See https://www.djangoproject.com/download/
+www/py-dj51-django-netfields||2025-12-31|Has expired: Extended support of Django 5.1 ends December 2025, upgrade to the Django 5.2+ version of this port. See https://www.djangoproject.com/download/
+www/py-dj51-djangorestframework-guardian||2025-12-31|Has expired: Extended support of Django 5.1 ends December 2025, upgrade to the Django 5.2+ version of this port. See https://www.djangoproject.com/download/
+www/py-dj51-django-multiselectfield||2025-12-31|Has expired: Extended support of Django 5.1 ends December 2025, upgrade to the Django 5.2+ version of this port. See https://www.djangoproject.com/download/
+www/py-dj51-drf-writable-nested||2025-12-31|Has expired: Extended support of Django 5.1 ends December 2025, upgrade to the Django 5.2+ version of this port. See https://www.djangoproject.com/download/
+devel/py-dj51-django-rq||2025-12-31|Has expired: Extended support of Django 5.1 ends December 2025, upgrade to the Django 5.2+ version of this port. See https://www.djangoproject.com/download/
+www/py-dj51-django-mptt||2025-12-31|Has expired: Extended support of Django 5.1 ends December 2025, upgrade to the Django 5.2+ version of this port. See https://www.djangoproject.com/download/
+www/py-dj51-django-rich||2025-12-31|Has expired: Extended support of Django 5.1 ends December 2025, upgrade to the Django 5.2+ version of this port. See https://www.djangoproject.com/download/
+www/py-dj51-django-js-asset||2025-12-31|Has expired: Extended support of Django 5.1 ends December 2025, upgrade to the Django 5.2+ version of this port. See https://www.djangoproject.com/download/
+www/py-dj51-social-auth-app-django||2025-12-31|Has expired: Extended support of Django 5.1 ends December 2025, upgrade to the Django 5.2+ version of this port. See https://www.djangoproject.com/download/
+www/py-dj51-django-redis||2025-12-31|Has expired: Extended support of Django 5.1 ends December 2025, upgrade to the Django 5.2+ version of this port. See https://www.djangoproject.com/download/
+www/py-dj51-django-prometheus||2025-12-31|Has expired: Extended support of Django 5.1 ends December 2025, upgrade to the Django 5.2+ version of this port. See https://www.djangoproject.com/download/
+www/py-dj51-django-cors-headers||2025-12-31|Has expired: Extended support of Django 5.1 ends December 2025, upgrade to the Django 5.2+ version of this port. See https://www.djangoproject.com/download/
+www/py-dj51-django-guardian||2025-12-31|Has expired: Extended support of Django 5.1 ends December 2025, upgrade to the Django 5.2+ version of this port. See https://www.djangoproject.com/download/
+www/py-dj51-drf-spectacular||2025-12-31|Has expired: Extended support of Django 5.1 ends December 2025, upgrade to the Django 5.2+ version of this port. See https://www.djangoproject.com/download/
+www/py-dj51-django-compression-middleware||2025-12-31|Has expired: Extended support of Django 5.1 ends December 2025, upgrade to the Django 5.2+ version of this port. See https://www.djangoproject.com/download/
+www/py-dj51-strawberry-graphql-django||2025-12-31|Has expired: Extended support of Django 5.1 ends December 2025, upgrade to the Django 5.2+ version of this port. See https://www.djangoproject.com/download/
+www/py-dj51-django-debug-toolbar||2025-12-31|Has expired: Extended support of Django 5.1 ends December 2025, upgrade to the Django 5.2+ version of this port. See https://www.djangoproject.com/download/
+www/py-dj51-django-timezone-field||2025-12-31|Has expired: Extended support of Django 5.1 ends December 2025, upgrade to the Django 5.2+ version of this port. See https://www.djangoproject.com/download/
+www/py-dj51-drf-spectacular-sidecar||2025-12-31|Has expired: Extended support of Django 5.1 ends December 2025, upgrade to the Django 5.2+ version of this port. See https://www.djangoproject.com/download/
+www/py-dj51-django-allauth||2025-12-31|Has expired: Extended support of Django 5.1 ends December 2025, upgrade to the Django 5.2+ version of this port. See https://www.djangoproject.com/download/
+www/py-dj51-django-auditlog||2025-12-31|Has expired: Extended support of Django 5.1 ends December 2025, upgrade to the Django 5.2+ version of this port. See https://www.djangoproject.com/download/
+www/py-dj51-django-auth-ldap||2025-12-31|Has expired: Extended support of Django 5.1 ends December 2025, upgrade to the Django 5.2+ version of this port. See https://www.djangoproject.com/download/
+www/py-dj51-django-choices-field||2025-12-31|Has expired: Extended support of Django 5.1 ends December 2025, upgrade to the Django 5.2+ version of this port. See https://www.djangoproject.com/download/
+devel/py-dj51-strawberry-graphql||2025-12-31|Has expired: Extended support of Django 5.1 ends December 2025, upgrade to the Django 5.2+ version of this port. See https://www.djangoproject.com/download/
+www/py-dj51-channels||2025-12-31|Has expired: Extended support of Django 5.1 ends December 2025, upgrade to the Django 5.2+ version of this port. See https://www.djangoproject.com/download/
+www/py-dj51-django-htmx||2025-12-31|Has expired: Extended support of Django 5.1 ends December 2025, upgrade to the Django 5.2+ version of this port. See https://www.djangoproject.com/download/
+www/py-dj51-django-tables2||2025-12-31|Has expired: Extended support of Django 5.1 ends December 2025, upgrade to the Django 5.2+ version of this port. See https://www.djangoproject.com/download/
+www/py-dj51-djangorestframework||2025-12-31|Has expired: Extended support of Django 5.1 ends December 2025, upgrade to the Django 5.2+ version of this port. See https://www.djangoproject.com/download/
+audio/pc-mixer||2025-12-31|Has expired: Abandoned upstream and depends on deprecated QT5
+devel/bam||2025-12-31|Has expired: Outdated, current release in tree is from 2013 while latest upstream is 2018
+devel/libunit||2025-12-31|Has expired: Upstream repo archived on Oct 8 2025
+x11-fonts/powerline-fonts|x11-fonts/nerd-fonts|2025-12-31|Has expired: Use x11-fonts/nerd-fonts instead
+math/rapid||2025-12-31|Has expired: unfetchable
+security/tls-check||2025-12-31|Has expired: Obsolete tool and relies on deprecated libraries
+www/unit-python||2025-12-31|Has expired: Upstream repo archived on Oct 8 2025
+audio/traverso||2025-12-31|Has expired: unfetchable
+ftp/net2ftp||2025-12-31|Has expired: unfetchable
+graphics/stamp||2025-12-31|Has expired: historical tool, use imagemagick instead
+japanese/eterm||2025-12-31|Has expired: unmaintained upstream, use x11/terminology instead
+x11/eterm||2025-12-31|Has expired: unmaintained upstream, use x11/terminology instead
+databases/pgpool-II-42||2025-12-31|Has expired: Upstream EOL reaches on 2025-11-30
+www/unit-perl||2025-12-31|Has expired: Upstream repo archived on Oct 8 2025
+www/unit-php||2025-12-31|Has expired: Upstream repo archived on Oct 8 2025
+graphics/p5-Image-PNG-QRCode||2025-12-31|Has expired: Abandoned
+www/unit-wasm||2025-12-31|Has expired: Upstream repo archived on Oct 8 2025
+devel/libstatgrab0|devel/libstatgrab|2025-12-31|Has expired: Use devel/libstatgrab instead
+www/shellinabox|sysutils/ttyd|2025-12-31|Has expired: Abandonware and outdated, last release in 2016. Use sysutils/ttyd instead
+security/krb5-120||2025-12-31|Has expired: Now that MIT KRB5 1.22 is GA 1.20 is EOL
+games/keeperrl||2025-12-31|Has expired: Very outdated, fails to build and unmaintained in tree for years
+misc/openhab2-addons|misc/openhab-addons|2025-12-31|Has expired: superseeded by misc/openhab-addons
+misc/openhab2|misc/openhab|2025-12-31|Has expired: superseeded by misc/openhab
+www/unit-java||2025-12-31|Has expired: Upstream repo archived on Oct 8 2025
+deskutils/znotes||2025-12-31|Has expired: Abandonware, depends on legacy QT 5 and last release in 2011
+devel/arachne-pnr|devel/nextpnr|2025-12-31|Has expired: Superseded by devel/nextpnr
+graphics/jpgtn||2025-12-31|Has expired: obsolete historical tool, use imagemagick instead
+security/rkhunter||2025-12-31|Has expired: Project abandoned in 2009
+graphics/tumble||2025-12-31|Has expired: historical tool, use imagemagick instead
+devel/py-cadquery-pywrap||2025-12-31|Has expired: This port was part of an effort to port CadQuery. This has been abandoned, so this port is no longer needed as it serves no other purpose
+www/unit-ruby||2025-12-31|Has expired: Upstream repo archived on Oct 8 2025
+www/unitc||2025-12-31|Removed, part of expired www/unit
+www/unit||2025-12-31|Has expired: Upstream repo archived on Oct 8 2025
+archivers/py-borgbackup12|archivers/py-borgbackup|2025-12-31|Has expired: Likely the final 1.2.x release, please migrate to using 1.4.x (it is quite similar)
+devel/fastcrc||2025-12-31|Has expired: dead upstream
+graphics/osgearth||2025-12-31|Has expired: fails to build
+security/nextcloud-passman||2025-12-31|Has expired: Upstream unmaintained
+net-mgmt/hastmon||2025-12-31|Has expired: broken, dead upstream
+www/py-django51||2025-12-31|Has expired: Extended support of Django 5.1 ends December 2025, upgrade to a newer version of Django. See https://www.djangoproject.com/download/
+sysutils/ipfs-go-fs-repo-migrations||2025-12-31|Has expired: Obsolete port, no longer required for migrations
+devel/inastemp||2025-12-31|Has expired: unfetchable
+www/moodle44||2025-12-31|Has expired: Upstream EOL
+www/angie-module-rtmp||2025-12-31|Has expired: Upstream development has slowed down and there are a lot of unresolved issues and PRs upstream, consider migrating to multimedia/mediamtx
+www/mediawiki139||2025-12-31|Has expired: Upstream EOL
+www/forgejo7||2025-12-31|Has expired: Obsolete, please switch to www/forgejo-lts
+lang/spidermonkey78||2025-12-31|Has expired: Legacy version
+textproc/xsv-rs||2025-12-31|Has expired: Abandoned, repo archived on Apr 24, 2025. Consider migrating to textproc/xan or textproc/miller
+lang/spidermonkey102||2025-12-31|Has expired: Old version, no more users in the ports tree
+devel/unit-otel||2025-12-31|Has expired: Upstream repo archived on Oct 8 2025
+devel/electron36||2025-12-31|Has expired: EOLed upstream, switch to newer version
+x11/xwaylandvideobridge||2025-12-31|Has expired: Project has been discontinued
+x11/hyprland-qtutils|x11/hyprland-guiutils|2025-12-31|Has expired: Superceded by hyprland-guiutils. Use x11/hyprland-guiutils instead
+www/servlet-api||2025-12-31|Has expired: Superseded upstream by newer versions many years ago
+databases/cockroach||2025-12-31|Has expired: Current versions are fully-proprietary software, see PR 272257
+java/springframework31||2025-12-31|Has expired: Superseded upstream by newer versions many years ago
+java/springframework||2025-12-31|Has expired: Superseded upstream by newer versions many years ago
+devel/llvm11||2025-12-31|Has expired: obsolete with few dependencies
+archivers/php81-zip|archivers/php82-zip|2025-12-31|Has expired: Security support ended on 2025-12-31
+archivers/php81-phar|archivers/php82-phar|2025-12-31|Has expired: Security support ended on 2025-12-31
+archivers/php81-bz2|archivers/php82-bz2|2025-12-31|Has expired: Security support ended on 2025-12-31
+archivers/php81-zlib|archivers/php82-zlib|2025-12-31|Has expired: Security support ended on 2025-12-31
+converters/php81-mbstring|converters/php82-mbstring|2025-12-31|Has expired: Security support ended on 2025-12-31
+converters/php81-iconv|converters/php82-iconv|2025-12-31|Has expired: Security support ended on 2025-12-31
+net-mgmt/php81-snmp|net-mgmt/php82-snmp|2025-12-31|Has expired: Security support ended on 2025-12-31
+lang/php81|lang/php82|2025-12-31|Has expired: Security support ended on 2025-12-31
+lang/php81-extensions|lang/php82-extensions|2025-12-31|Has expired: Security support ended on 2025-12-31
+devel/php81-sysvsem|devel/php82-sysvsem|2025-12-31|Has expired: Security support ended on 2025-12-31
+devel/php81-intl|devel/php82-intl|2025-12-31|Has expired: Security support ended on 2025-12-31
+devel/php81-tokenizer|devel/php82-tokenizer|2025-12-31|Has expired: Security support ended on 2025-12-31
+devel/php81-readline|devel/php82-readline|2025-12-31|Has expired: Security support ended on 2025-12-31
+devel/php81-sysvmsg|devel/php82-sysvmsg|2025-12-31|Has expired: Security support ended on 2025-12-31
+devel/php81-gettext|devel/php82-gettext|2025-12-31|Has expired: Security support ended on 2025-12-31
+devel/php81-ffi|devel/php82-ffi|2025-12-31|Has expired: Security support ended on 2025-12-31
+devel/php81-shmop|devel/php82-shmop|2025-12-31|Has expired: Security support ended on 2025-12-31
+devel/php81-sysvshm|devel/php82-sysvshm|2025-12-31|Has expired: Security support ended on 2025-12-31
+devel/php81-pcntl|devel/php82-pcntl|2025-12-31|Has expired: Security support ended on 2025-12-31
+math/php81-gmp|math/php82-gmp|2025-12-31|Has expired: Security support ended on 2025-12-31
+math/php81-bcmath|math/php82-bcmath|2025-12-31|Has expired: Security support ended on 2025-12-31
+sysutils/php81-posix|sysutils/php82-posix|2025-12-31|Has expired: Security support ended on 2025-12-31
+sysutils/php81-fileinfo|sysutils/php82-fileinfo|2025-12-31|Has expired: Security support ended on 2025-12-31
+graphics/php81-exif|graphics/php82-exif|2025-12-31|Has expired: Security support ended on 2025-12-31
+graphics/php81-gd|graphics/php82-gd|2025-12-31|Has expired: Security support ended on 2025-12-31
+mail/php81-imap|mail/php82-imap|2025-12-31|Has expired: Security support ended on 2025-12-31
+www/php81-opcache|www/php82-opcache|2025-12-31|Has expired: Security support ended on 2025-12-31
+www/mod_php81|www/mod_php82|2025-12-31|Has expired: Security support ended on 2025-12-31
+www/php81-tidy|www/php82-tidy|2025-12-31|Has expired: Security support ended on 2025-12-31
+www/php81-session|www/php82-session|2025-12-31|Has expired: Security support ended on 2025-12-31
+textproc/php81-enchant|textproc/php82-enchant|2025-12-31|Has expired: Security support ended on 2025-12-31
+textproc/php81-pspell|textproc/php82-pspell|2025-12-31|Has expired: Security support ended on 2025-12-31
+textproc/php81-xmlwriter|textproc/php82-xmlwriter|2025-12-31|Has expired: Security support ended on 2025-12-31
+textproc/php81-simplexml|textproc/php82-simplexml|2025-12-31|Has expired: Security support ended on 2025-12-31
+textproc/php81-xmlreader|textproc/php82-xmlreader|2025-12-31|Has expired: Security support ended on 2025-12-31
+textproc/php81-ctype|textproc/php82-ctype|2025-12-31|Has expired: Security support ended on 2025-12-31
+textproc/php81-xsl|textproc/php82-xsl|2025-12-31|Has expired: Security support ended on 2025-12-31
+textproc/php81-dom|textproc/php82-dom|2025-12-31|Has expired: Security support ended on 2025-12-31
+textproc/php81-xml|textproc/php82-xml|2025-12-31|Has expired: Security support ended on 2025-12-31
+ftp/php81-ftp|ftp/php82-ftp|2025-12-31|Has expired: Security support ended on 2025-12-31
+ftp/php81-curl|ftp/php82-curl|2025-12-31|Has expired: Security support ended on 2025-12-31
+misc/php81-calendar|misc/php82-calendar|2025-12-31|Has expired: Security support ended on 2025-12-31
+net/php81-ldap|net/php82-ldap|2025-12-31|Has expired: Security support ended on 2025-12-31
+net/php81-sockets|net/php82-sockets|2025-12-31|Has expired: Security support ended on 2025-12-31
+net/php81-soap|net/php82-soap|2025-12-31|Has expired: Security support ended on 2025-12-31
+databases/php81-pdo_pgsql|databases/php82-pdo_pgsql|2025-12-31|Has expired: Security support ended on 2025-12-31
+databases/php81-pdo_sqlite|databases/php82-pdo_sqlite|2025-12-31|Has expired: Security support ended on 2025-12-31
+databases/php81-pdo_odbc|databases/php82-pdo_odbc|2025-12-31|Has expired: Security support ended on 2025-12-31
+databases/php81-pdo|databases/php82-pdo|2025-12-31|Has expired: Security support ended on 2025-12-31
+databases/php81-sqlite3|databases/php82-sqlite3|2025-12-31|Has expired: Security support ended on 2025-12-31
+databases/php81-pdo_firebird|databases/php82-pdo_firebird|2025-12-31|Has expired: Security support ended on 2025-12-31
+databases/php81-pgsql|databases/php82-pgsql|2025-12-31|Has expired: Security support ended on 2025-12-31
+databases/php81-mysqli|databases/php82-mysqli|2025-12-31|Has expired: Security support ended on 2025-12-31
+databases/php81-pdo_dblib|databases/php82-pdo_dblib|2025-12-31|Has expired: Security support ended on 2025-12-31
+databases/php81-dba|databases/php82-dba|2025-12-31|Has expired: Security support ended on 2025-12-31
+databases/php81-pdo_mysql|databases/php82-pdo_mysql|2025-12-31|Has expired: Security support ended on 2025-12-31
+databases/php81-odbc|databases/php82-odbc|2025-12-31|Has expired: Security support ended on 2025-12-31
+security/php81-sodium|security/php82-sodium|2025-12-31|Has expired: Security support ended on 2025-12-31
+security/php81-filter|security/php82-filter|2025-12-31|Has expired: Security support ended on 2025-12-31
+lang/go120||2026-01-01|Has expired: Old version, unsupported upstream
+net/gwhois||2026-01-01|Has expired: source and WWW is gone. Hasn't been updated for 12yrs
+lang/go121||2026-01-01|Has expired: Old version, unsupported upstream
+sysutils/beats7|sysutils/beats8|2026-01-02|Has expired: Only works with expired go1.22
+devel/gwenhywfar-fox16||2026-01-03|Leaf library not used in the ports tree
+devel/gwenhywfar-gtk2||2026-01-03|Leaf library not used in the ports tree
+devel/gwenhywfar-qt5||2026-01-03|Leaf library not used in the ports tree
+multimedia/mlt7-glaxnimate@qt5||2026-01-08|Qt5 support has been dropped by upstream
+multimedia/mlt7-glaxnimate@qt6|multimedia/mlt7-glaxnimate|2026-01-08|Unflavorize; only Qt6 is supported
+multimedia/mlt7-qt@qt5||2026-01-08|Qt5 support has been dropped by upstream
+multimedia/mlt7-qt@qt6|multimedia/mlt7-qt|2026-01-08|Unflavorize; only Qt6 is supported
+devel/pydbus-common|devel/py-dbus|2026-01-09|Merged into devel/py-dbus
+devel/fam||2026-01-11|Remove obsolete and unmaintained port
+lang/go122||2026-01-14|Has expired: Old version, unsupported upstream
+lang/go123||2026-01-14|Has expired: Old version, unsupported upstream
+devel/py-confusable_homoglyphs|devel/py-confusable-homoglyphs|2026-01-15|Rename to match upstream naming
+devel/py-pyyaml_env_tag|devel/py-pyyaml-env-tag|2026-01-15|Rename to match upstream naming
+www/py-aiohttp_cors|www/py-aiohttp-cors|2026-01-15|Rename to match upstream naming
+lang/cython3|lang/cython|2026-01-15|Remove obsoleted port. Use lang/cython instead
+multimedia/gpac-mp4box|multimedia/gpac|2026-01-15|Merge mp4box and libgpac and add gpac
+java/openjdk18||2026-01-16|Has expired: No longer supported by upstream
+textproc/py-pyRdfa3|textproc/py-pyrdfa3|2026-01-18|Rename to match upstream naming
+devel/tcl8-thread|devel/tcl-thread|2026-01-19|The new tcl-thread port supports both Tcl8 and Tcl9
+devel/tcl9-thread|devel/tcl-thread|2026-01-19|The new tcl-thread port supports both Tcl8 and Tcl9
+java/jta||2026-01-19|Has expired: manual download, no users in the ports tree, newer version is at https://github.com/jakartaee/transactions
+multimedia/ccextractor-gui||2026-01-20|Superseeded by flutter GUI, which we do not support
+x11-fonts/open-sans|x11-fonts/opensans-ttf|2026-01-24|Rename to match upstream naming
+x11-toolkits/py-wxPython4|x11-toolkits/py-wxpython|2026-01-26|Normalise and match Python package name
+math/p5-Alien-GSL|math/p5-Math-GSL-Alien|2026-01-29|Leaf port not used in the ports tree. Use math/p5-Math-GSL-Alien
+math/rubygem-rb-gsl||2026-01-29|Upstream repo archived, does not support GSL 2.8
+www/bareos22-webui||2026-01-29|Has expired: not supported upstream
+sysutils/bareos22-client||2026-01-29|Has expired: not supported upstream
+sysutils/bareos22-traymonitor||2026-01-29|Has expired: not supported upstream
+sysutils/bareos22-server||2026-01-29|Has expired: not supported upstream

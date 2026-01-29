@@ -60,6 +60,16 @@ SUB_PATCHES+=	extra-patch-src-nvidia_dev.c \
 SUB_PATCHES+=	extra-patch-src-nvidia_subr.c
 .endif
 
+# At commit 9562994a7aacee2baae6ddee1a7b558b48ae39ef on main,
+# Local sym resolution was disabled by default in kernel linker.
+# Explicitly export functions from nvidia.ko to make nvidia-drm-*-kmod
+# ports work after the commit. These symbols do not exist in legacy
+# versions prior to 580 series.
+
+.if ${NVVERSION} >= 580.00000
+SUB_PATCHES+=	extra-patch-src-Makefile-2
+.endif
+
 # Temporarily disable GSP firmware as it is known to cause
 # issues with suspend/resume
 .if ${NVVERSION} >= 565.00000

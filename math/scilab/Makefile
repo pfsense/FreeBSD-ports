@@ -1,6 +1,6 @@
 PORTNAME=	scilab
 DISTVERSION=	6.1.1
-PORTREVISION=	24
+PORTREVISION=	25
 CATEGORIES=	math cad java
 MASTER_SITES=	https://www.scilab.org/download/${DISTVERSION}/
 DISTFILES=	${DISTNAME}-src${EXTRACT_SUFX}
@@ -28,6 +28,7 @@ USES=		compiler:c++17-lang cpe desktop-file-utils eigen:3,build \
 		fortran gettext gmake gnome iconv:wchar_t libtool \
 		localbase ncurses pathfix pkgconfig shared-mime-info
 USE_GNOME=	libxml2
+JAVA_VERSION=	8
 USE_LOCALE=	en_US.UTF-8
 
 GNU_CONFIGURE=	yes
