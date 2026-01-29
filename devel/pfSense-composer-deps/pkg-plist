@@ -1,16 +1,11 @@
 pfSense/include/vendor/autoload.php
 pfSense/include/vendor/composer/ClassLoader.php
-pfSense/include/vendor/composer/InstalledVersions.php
 pfSense/include/vendor/composer/LICENSE
 pfSense/include/vendor/composer/autoload_classmap.php
-pfSense/include/vendor/composer/autoload_files.php
 pfSense/include/vendor/composer/autoload_namespaces.php
 pfSense/include/vendor/composer/autoload_psr4.php
 pfSense/include/vendor/composer/autoload_real.php
 pfSense/include/vendor/composer/autoload_static.php
-pfSense/include/vendor/composer/installed.json
-pfSense/include/vendor/composer/installed.php
-pfSense/include/vendor/composer/platform_check.php
 pfSense/include/vendor/mikehaertl/php-shellcommand/.github/workflows/tests.yml
 pfSense/include/vendor/mikehaertl/php-shellcommand/CHANGELOG.md
 pfSense/include/vendor/mikehaertl/php-shellcommand/LICENSE
