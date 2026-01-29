@@ -1,8 +1,8 @@
 # $FreeBSD$
 
 PORTNAME?=	pfSense-pkg-zabbix-proxy
-PORTVERSION=	1.0.9
-PORTREVISION?=	1
+PORTVERSION=	1.1
+PORTREVISION?=	0
 CATEGORIES=	net-mgmt
 MASTER_SITES=	# empty
 DISTFILES=	# empty
@@ -13,10 +13,9 @@ COMMENT=	pfSense package zabbix-proxy
 
 LICENSE=	APACHE20
 
-CONFLICTS?=	pfSense-pkg-zabbix-proxy4 \
-		pfSense-pkg-zabbix-proxy44 \
-		pfSense-pkg-zabbix-proxy5 \
-		pfSense-pkg-zabbix-proxy54
+CONFLICTS?=	pfSense-pkg-zabbix-proxy6 \
+		pfSense-pkg-zabbix-proxy7 \
+		pfSense-pkg-zabbix-proxy74
 
 RUN_DEPENDS?=	zabbix_proxy:net-mgmt/zabbix3-proxy
 
