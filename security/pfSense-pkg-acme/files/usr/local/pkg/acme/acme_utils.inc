@@ -165,9 +165,11 @@ function form_name_array($item_array, $adddesc = false) {
 			$name = $item['name'];
 			if (array_key_exists('descr', $item) &&
 			    !empty($item['descr'])) {
-				$name .= " ({$item['descr']})";
+				$descr = "{$name} ({$item['descr']})";
+			} else {
+				$descr = $name;
 			}
-			$result[$name] = $name;
+			$result[$name] = $descr;
 		}
 	}
 	return $result;
