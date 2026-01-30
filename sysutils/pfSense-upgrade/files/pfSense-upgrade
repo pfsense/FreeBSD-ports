@@ -612,7 +612,11 @@ notice() {
 
 	/usr/local/bin/php -r \
 	    "require_once('notices.inc'); \
-	    file_notice('${product}-Upgrade', '${msg}', 'Upgrade', '', 1, true);"
+		if (is_platform_booting()) { \
+			logger(LOG_WARNING, localize_text('${msg}'), '${product}-upgrade'); \
+		} else { \
+			file_notice('${product}-upgrade', '${msg}', 'Upgrade', '', 1, true); \
+		}"
 }
 
 pkg_with_pb() {
