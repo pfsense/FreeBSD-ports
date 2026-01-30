@@ -153,7 +153,7 @@ $pfb['continent_list'] = array_flip(array('pfB_Africa', 'pfB_Antarctica', 'pfB_A
 $pfb['base_rule_reg'] = array('ipprotocol' => 'inet');
 
 // Floating rules, base rule array
-$pfb['base_rule_float'] = array('floating' => 'yes', 'ipprotocol' => 'inet');
+$pfb['base_rule_float'] = array('quick' => 'yes', 'floating' => 'yes', 'ipprotocol' => 'inet');
 
 // Define Arrays for managing the IP mastefile
 foreach (array('existing', 'actual') as $pftype) {
@@ -4560,6 +4560,7 @@ function pfb_firewall_rule($action, $pfb_alias, $vtype, $pfb_log, $agateway_in='
 		case 'Match_Outbound':
 			$rule = $pfb['base_rule_float'];
 			$rule['type'] = 'match';
+			unset($rule['quick']);
 			if ($vtype == '_v6') {
 				$rule['ipprotocol'] = 'inet6';
 			}
@@ -4599,6 +4600,7 @@ function pfb_firewall_rule($action, $pfb_alias, $vtype, $pfb_log, $agateway_in='
 		case 'Match_Inbound':
 			$rule = $pfb['base_rule_float'];
 			$rule['type'] = 'match';
+			unset($rule['quick']);
 			if ($vtype == '_v6') {
 				$rule['ipprotocol'] = 'inet6';
 			}
