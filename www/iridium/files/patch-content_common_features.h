@@ -1,11 +1,11 @@
---- content/common/features.h.orig	2025-06-19 07:37:57 UTC
+--- content/common/features.h.orig	2025-12-10 15:04:57 UTC
 +++ content/common/features.h
-@@ -59,7 +59,7 @@ CONTENT_EXPORT BASE_DECLARE_FEATURE(kCommittedOriginEn
- CONTENT_EXPORT BASE_DECLARE_FEATURE(kCommittedOriginTracking);
+@@ -65,7 +65,7 @@ CONTENT_EXPORT BASE_DECLARE_FEATURE(kCopyFromSurfaceAl
  CONTENT_EXPORT BASE_DECLARE_FEATURE(kCriticalClientHint);
+ CONTENT_EXPORT BASE_DECLARE_FEATURE(kDelayRfhDestructionsOnUnloadAndDetach);
  CONTENT_EXPORT BASE_DECLARE_FEATURE(kDocumentPolicyNegotiation);
 -#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS)
 +#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_BSD)
  CONTENT_EXPORT BASE_DECLARE_FEATURE(kEnableDevToolsJsErrorReporting);
  #endif  // BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS)
- CONTENT_EXPORT BASE_DECLARE_FEATURE(kEmbeddingRequiresOptIn);
+ CONTENT_EXPORT BASE_DECLARE_FEATURE(kEnforceSameDocumentOriginInvariants);

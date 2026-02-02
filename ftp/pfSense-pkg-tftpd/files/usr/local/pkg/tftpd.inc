@@ -34,6 +34,7 @@ define('BACKUP_PATH', BACKUP_DIR . '/' . BACKUP_FILENAME);
  * Note: Such modifications are completely unsupported!
  */
 define('FILES_DIR', '/tftpboot');
+define('LOG_PREFIX_PKG_TFTPD', 'tftpd');
 
 /* Create backup of the TFTP server directory */
 function tftp_create_backup($trigger_download = false) {
@@ -59,7 +60,7 @@ function tftp_restore_backup() {
 function tftp_filesdir_bounds_check($filename, $error_msg) {
 	$basedirlength = strlen(FILES_DIR);
 	if (substr($filename, 0, $basedirlength) !== FILES_DIR) {
-		log_error("[tftpd] {$error_msg}");
+		logger(LOG_ERR, $error_msg, LOG_PREFIX_PKG_TFTPD);
 		file_notice("tftpd", "{$error_msg}", "Packages");
 		return false;
 	} else {

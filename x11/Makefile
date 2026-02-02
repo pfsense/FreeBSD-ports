@@ -16,6 +16,7 @@
     SUBDIR += apwal
     SUBDIR += arandr
     SUBDIR += arcan-trayicon
+    SUBDIR += ashell
     SUBDIR += aterm
     SUBDIR += autorandr
     SUBDIR += babl
@@ -33,6 +34,7 @@
     SUBDIR += budgie
     SUBDIR += budgie-desktop
     SUBDIR += budgie-screensaver
+    SUBDIR += budgie-session
     SUBDIR += cde
     SUBDIR += cde-devel
     SUBDIR += chayang
@@ -131,10 +133,14 @@
     SUBDIR += hybrid-bar
     SUBDIR += hyprcursor
     SUBDIR += hypridle
+    SUBDIR += hyprland-guiutils
     SUBDIR += hyprland-qtutils
+    SUBDIR += hyprlauncher
     SUBDIR += hyprlock
+    SUBDIR += hyprls
     SUBDIR += hyprpaper
     SUBDIR += hyprpicker
+    SUBDIR += hyprviz
     SUBDIR += i3bar-river
     SUBDIR += i3blocks
     SUBDIR += i3lock-color
@@ -298,6 +304,12 @@
     SUBDIR += nvidia-driver-390
     SUBDIR += nvidia-driver-470
     SUBDIR += nvidia-driver-devel
+    SUBDIR += nvidia-kmod
+    SUBDIR += nvidia-kmod-304
+    SUBDIR += nvidia-kmod-340
+    SUBDIR += nvidia-kmod-390
+    SUBDIR += nvidia-kmod-470
+    SUBDIR += nvidia-kmod-devel
     SUBDIR += nvidia-settings
     SUBDIR += nvidia-xconfig
     SUBDIR += nwg-bar
@@ -348,6 +360,7 @@
     SUBDIR += py-i3-quickterm
     SUBDIR += py-i3ipc
     SUBDIR += py-mouseinfo
+    SUBDIR += py-nwg-displays
     SUBDIR += py-pyautogui
     SUBDIR += py-pynput
     SUBDIR += py-pyscreenshot
@@ -379,7 +392,6 @@
     SUBDIR += runner
     SUBDIR += rxvt-unicode
     SUBDIR += sakura
-    SUBDIR += salut
     SUBDIR += sandbar
     SUBDIR += sbxkb
     SUBDIR += screen-message
@@ -453,15 +465,19 @@
     SUBDIR += virglrenderer
     SUBDIR += virtboard
     SUBDIR += virtualgl
+    SUBDIR += walker
     SUBDIR += wallutils
     SUBDIR += wapanel
     SUBDIR += watershot
     SUBDIR += way-displays
     SUBDIR += waybar
+    SUBDIR += waycheck
+    SUBDIR += waycorner
     SUBDIR += wayidle
     SUBDIR += wayland-logout
     SUBDIR += waylock
     SUBDIR += wayout
+    SUBDIR += wayst
     SUBDIR += wbar
     SUBDIR += wcm
     SUBDIR += wdisplays
@@ -473,6 +489,7 @@
     SUBDIR += wl-clipboard
     SUBDIR += wl-kbptr
     SUBDIR += wl-mirror
+    SUBDIR += wleave
     SUBDIR += wlogout
     SUBDIR += wlopm
     SUBDIR += wlr-randr
@@ -591,6 +608,7 @@
     SUBDIR += xkeycaps
     SUBDIR += xkeywrap
     SUBDIR += xkill
+    SUBDIR += xlibre
     SUBDIR += xload
     SUBDIR += xloadimage
     SUBDIR += xlockmore

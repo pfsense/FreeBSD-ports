@@ -1,6 +1,6 @@
 PORTNAME=	transmission
 DISTVERSION=	4.0.6
-PORTREVISION=	0
+PORTREVISION=	1
 CATEGORIES=	net-p2p
 
 MAINTAINER=	mondo.debater_0q@icloud.com
@@ -18,7 +18,7 @@ CLI_DESC=	Build command-line client (deprecated)
 DAEMON_DESC=	Build daemon
 DOCS_DESC=	Install documentation
 GTK_DESC=	Build GTK+ client
-QT_DESC=	Build QT client
+QT_DESC=	Build Qt client
 UTILS_DESC=	Build utilities (create, edit, remote, show)
 WEB_DESC=	Install web interface
 

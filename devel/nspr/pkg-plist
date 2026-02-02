@@ -3,8 +3,6 @@ include/nspr/md/_aix32.cfg
 include/nspr/md/_aix64.cfg
 include/nspr/md/_darwin.cfg
 include/nspr/md/_freebsd.cfg
-include/nspr/md/_hpux32.cfg
-include/nspr/md/_hpux64.cfg
 include/nspr/md/_linux.cfg
 include/nspr/md/_netbsd.cfg
 include/nspr/md/_nto.cfg
@@ -68,7 +66,6 @@ include/nspr/prtpool.h
 include/nspr/prtrace.h
 include/nspr/prtypes.h
 include/nspr/prvrsion.h
-include/nspr/prwin.h
 @(,,444) lib/libnspr4.a
 @(,,444) lib/libnspr4.so
 @(,,444) lib/libplc4.a

@@ -21,7 +21,6 @@
     SUBDIR += dsbmd
     SUBDIR += e2fsprogs
     SUBDIR += e2fsprogs-core
-    SUBDIR += e2fsprogs-libblkid
     SUBDIR += e2tools
     SUBDIR += encfs
     SUBDIR += exfat
@@ -43,6 +42,7 @@
     SUBDIR += jmtpfs
     SUBDIR += kio-fuse
     SUBDIR += libbde
+    SUBDIR += libblkid
     SUBDIR += libfsapfs
     SUBDIR += libfsext
     SUBDIR += libfsfat
@@ -76,6 +76,7 @@
     SUBDIR += mp3fs
     SUBDIR += mtools
     SUBDIR += mtpfs
+    SUBDIR += nbd-client-kmod
     SUBDIR += nbt
     SUBDIR += ntfs
     SUBDIR += ntfs-compression
@@ -106,9 +107,11 @@
     SUBDIR += rar2fs
     SUBDIR += rubygem-chef-winrm-fs
     SUBDIR += rubygem-winrm-fs
+    SUBDIR += rubygem-winrm-fs-gitlab
     SUBDIR += s3backer
     SUBDIR += s3fs
     SUBDIR += sandboxfs
+    SUBDIR += sasquatch
     SUBDIR += scan_ffs
     SUBDIR += securefs
     SUBDIR += simple-mtpfs
@@ -122,13 +125,13 @@
     SUBDIR += ufs_copy
     SUBDIR += unionfs
     SUBDIR += unreliablefs
-    SUBDIR += vzvol
     SUBDIR += webdavfs
     SUBDIR += wimlib
     SUBDIR += xfsm
     SUBDIR += xfsprogs
     SUBDIR += xfuse
     SUBDIR += zap
+    SUBDIR += zerofs
     SUBDIR += zfs-periodic
     SUBDIR += zfs-replicate
     SUBDIR += zfs-snap-diff

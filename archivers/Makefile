@@ -100,6 +100,7 @@
     SUBDIR += nwreckdum
     SUBDIR += ocaml-bz2
     SUBDIR += ocaml-zip
+    SUBDIR += openzl
     SUBDIR += opkg-openwrt
     SUBDIR += ouch
     SUBDIR += p5-Archive-Any
@@ -155,6 +156,7 @@
     SUBDIR += pecl-rar
     SUBDIR += pecl-zstd
     SUBDIR += php-brotli
+    SUBDIR += php-bzip3
     SUBDIR += php-horde_lz4
     SUBDIR += php-lz4
     SUBDIR += php-snappy
@@ -175,6 +177,10 @@
     SUBDIR += php84-phar
     SUBDIR += php84-zip
     SUBDIR += php84-zlib
+    SUBDIR += php85-bz2
+    SUBDIR += php85-phar
+    SUBDIR += php85-zip
+    SUBDIR += php85-zlib
     SUBDIR += pigz
     SUBDIR += pixz
     SUBDIR += plakar
@@ -195,6 +201,7 @@
     SUBDIR += py-comicapi
     SUBDIR += py-compressed-rtf
     SUBDIR += py-cramjam
+    SUBDIR += py-extractcode
     SUBDIR += py-inflate64
     SUBDIR += py-laszip
     SUBDIR += py-libarchive-c
@@ -248,6 +255,7 @@
     SUBDIR += rzip
     SUBDIR += sectar
     SUBDIR += sharutils
+    SUBDIR += smpq
     SUBDIR += snappy
     SUBDIR += snappy-java
     SUBDIR += snzip
@@ -274,6 +282,7 @@
     SUBDIR += unlzx
     SUBDIR += unmakeself
     SUBDIR += unmass
+    SUBDIR += unpackerr
     SUBDIR += unrar
     SUBDIR += unrar-iconv
     SUBDIR += unrpa

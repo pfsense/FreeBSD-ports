@@ -2,7 +2,7 @@ post-patch:
 .if (${PKGNAMESUFFIX} == "-traymonitor-qt5") || (${PKGNAMESUFFIX} == "-traymonitor-qt6")
 	@${REINPLACE_CMD} -e 's|-Werror -Wall|-Wall|g' ${PATCH_WRKSRC}/core/CMakeLists.txt
 	@${REINPLACE_CMD} -e 's|\@bindir\@|${LOCALBASE}/bin|g' ${WRKSRC}/core/src/qt-tray-monitor/bareos-tray-monitor.desktop.in
-	@${REINPLACE_CMD}  '206d' ${WRKSRC}/CMakeLists.txt
+	@${REINPLACE_CMD}  '207d' ${WRKSRC}/CMakeLists.txt
 .endif
 
 post-extract:
@@ -46,6 +46,9 @@ do-install:
 	${INSTALL_SCRIPT} ${WRKSRC}/core/src/defaultconfigs/tray-monitor.d/${d}/*.sample ${STAGEDIR}${ETCDIR}/tray-monitor.d/${d}/
 .endfor
 	${INSTALL_PROGRAM} ${CONFIGURE_WRKSRC}/core/src/qt-tray-monitor/bareos-tray-monitor ${STAGEDIR}${PREFIX}/bin
-	${INSTALL_DATA} ${WRKSRC}/core/src/images/bareos_1.png ${STAGEDIR}${PREFIX}/share/pixmaps/bareos-tray-monitor.png
+	@${MKDIR} ${STAGEDIR}${PREFIX}/share/icons/hicolor/128x128/apps
+	${INSTALL_DATA} ${WRKSRC}/core/src/images/bareos-logo_128x128.png ${STAGEDIR}${PREFIX}/share/icons/hicolor/128x128/apps/bareos-tray-monitor.png
+	@${MKDIR} ${STAGEDIR}${PREFIX}/share/icons/hicolor/scalable/apps
+	${INSTALL_DATA} ${WRKSRC}/core/src/images/bareos-logo.svg ${STAGEDIR}${PREFIX}/share/icons/hicolor/scalable/apps/bareos-tray-monitor.svg
 	${INSTALL_DATA} ${WRKSRC}/core/src/qt-tray-monitor/bareos-tray-monitor.desktop.in ${STAGEDIR}${DESKTOPDIR}/bareos-tray-monitor.desktop
 .endif

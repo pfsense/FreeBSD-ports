@@ -11,7 +11,7 @@ WWW=		https://github.com/vmware/govmomi/
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/LICENSE.txt
 
-USES=		go:1.22,modules
+USES=		go:modules
 GO_MODULE=	github.com/vmware/govmomi
 
 GO_TARGET=	./govc \

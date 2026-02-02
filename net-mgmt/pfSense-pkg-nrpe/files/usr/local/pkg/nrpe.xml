@@ -29,6 +29,7 @@
 	<name>nrpe</name>
 	<version>3.0</version>
 	<title>Services: NRPE</title>
+	<addedit_string>NRPE: changed settings</addedit_string>
 	<aftersaveredirect>/pkg_edit.php?xml=nrpe.xml&amp;id=0</aftersaveredirect>
 	<include_file>/usr/local/pkg/nrpe.inc</include_file>
 	<menu>

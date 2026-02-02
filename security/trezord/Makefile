@@ -1,7 +1,7 @@
 PORTNAME=	trezord
 DISTVERSIONPREFIX=	v
-DISTVERSION=	2.0.33
-PORTREVISION=	4
+DISTVERSION=	2.0.33-9
+DISTVERSIONSUFFIX=	-ga58468e
 CATEGORIES=	security
 
 MAINTAINER=	ale@FreeBSD.org
@@ -11,7 +11,7 @@ WWW=		https://github.com/trezor/trezord-go
 LICENSE=	LGPL3
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-USES=		go:1.20,modules
+USES=		go:modules
 
 USE_RC_SUBR=	${PORTNAME}
 

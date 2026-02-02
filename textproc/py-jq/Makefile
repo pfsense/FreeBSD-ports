@@ -1,6 +1,6 @@
 PORTNAME=	jq
-PORTVERSION=	1.8.0
-PORTREVISION=	1
+PORTVERSION=	1.10.0
+PORTREVISION=	0
 CATEGORIES=	textproc python
 MASTER_SITES=	PYPI LOCAL/mandree:mandree
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -25,7 +25,7 @@ TEST_DEPENDS=	${PYTHON_PKGNAMEPREFIX}certifi>=0:security/py-certifi@${PY_FLAVOR}
 MAKE_ENV+=	JQPY_USE_SYSTEM_LIBS=1
 
 USES=		localbase python
-USE_PYTHON=	autoplist distutils
+USE_PYTHON=	autoplist cython3 distutils
 
 post-install:
 		${STRIP_CMD} ${STAGEDIR}${PYTHONPREFIX_SITELIBDIR}/jq*.so

@@ -30,6 +30,7 @@
 	<name>filer_sync</name>
 	<version>%%PKGVERSION%%</version>
 	<title>Diagnostics/Filer</title>
+	<addedit_string>Filer: changed XMLRPC Sync</addedit_string>
 	<include_file>/usr/local/pkg/filer.inc</include_file>
 	<tabs>
 		<tab>

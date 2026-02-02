@@ -74,7 +74,7 @@ RUN_DEPENDS=	bind-tools>=0:dns/bind-tools \
 		xinetd>=0:security/xinetd \
 		openvpn-auth-script>=0:security/openvpn-auth-script \
 		opensc>0:security/opensc \
-		ccid>0:devel/libccid \
+		libccid>0:devel/libccid \
 		iftop>0:net-mgmt/iftop \
 		nss_ldap>0:net/nss_ldap \
 		pam_ldap>0:security/pam_ldap \
@@ -82,9 +82,9 @@ RUN_DEPENDS=	bind-tools>=0:dns/bind-tools \
 
 LIB_DEPENDS=	libltdl.so:devel/libltdl
 
-USES=		kmod php:flavors
+USES=		php:flavors
 
-IGNORE_WITH_PHP=	72 73 74 80 81 82
+IGNORE_WITH_PHP=	72 73 74 80 81 82 83 84
 USE_PHP=	bz2 bcmath ctype curl dom filter gettext gmp intl json mbstring \
 		mcrypt opcache openssl pcntl pdo pdo_sqlite posix \
 		radius readline session shmop simplexml sockets sysvmsg sysvsem \

@@ -13,7 +13,6 @@
     SUBDIR += ajaxzip2-data
     SUBDIR += alias-fonts
     SUBDIR += another-htmllint
-    SUBDIR += anthy
     SUBDIR += anthy-unicode
     SUBDIR += aobook
     SUBDIR += bible_names-fpw
@@ -54,6 +53,7 @@
     SUBDIR += fcitx-skk
     SUBDIR += fcitx5-anthy
     SUBDIR += fcitx5-cskk
+    SUBDIR += fcitx5-skk
     SUBDIR += flower-fpw
     SUBDIR += foldoc-fpw
     SUBDIR += font-aozoramincho
@@ -93,9 +93,7 @@
     SUBDIR += font-moralerspace
     SUBDIR += font-moralerspace-hw
     SUBDIR += font-moralerspace-hwjpdoc
-    SUBDIR += font-moralerspace-hwnf
     SUBDIR += font-moralerspace-jpdoc
-    SUBDIR += font-moralerspace-nf
     SUBDIR += font-motoya-al
     SUBDIR += font-mplus-bitmap
     SUBDIR += font-mplus-ipa
@@ -142,7 +140,6 @@
     SUBDIR += jls
     SUBDIR += jvim3
     SUBDIR += kakasi
-    SUBDIR += kasumi
     SUBDIR += kasumi-unicode
     SUBDIR += kbanner
     SUBDIR += kcc
@@ -233,6 +230,7 @@
     SUBDIR += qkc
     SUBDIR += qolibri
     SUBDIR += quit
+    SUBDIR += radish-play
     SUBDIR += roget-fpw
     SUBDIR += rogue_s
     SUBDIR += ruby-romkan
@@ -279,7 +277,6 @@
     SUBDIR += timidity++-slang
     SUBDIR += today
     SUBDIR += tomoe
-    SUBDIR += uim-anthy
     SUBDIR += uim-anthy-unicode
     SUBDIR += uim-mozc
     SUBDIR += uim-tomoe-gtk

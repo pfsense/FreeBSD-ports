@@ -1,6 +1,6 @@
---- build/rust/allocator/lib.rs.orig	2025-05-20 09:16:26 UTC
+--- build/rust/allocator/lib.rs.orig	2025-10-04 08:35:33 UTC
 +++ build/rust/allocator/lib.rs
-@@ -0,0 +1,119 @@
+@@ -0,0 +1,132 @@
 +// Copyright 2025 The Chromium Authors
 +// Use of this source code is governed by a BSD-style license that can be
 +// found in the LICENSE file.
@@ -92,11 +92,24 @@
 +    /// As part of rustc's contract for using `#[global_allocator]` without
 +    /// rustc-generated shims we must define this symbol, since we are opting in
 +    /// to unstable functionality. See https://github.com/rust-lang/rust/issues/123015
++    #[rustc_std_internal_symbol]
++    #[linkage = "weak"]
++    fn __rust_no_alloc_shim_is_unstable_v2() {}
++
++    // TODO(crbug.com/422538133) Remove after rolling past
++    // https://github.com/rust-lang/rust/pull/141061
 +    #[no_mangle]
 +    #[linkage = "weak"]
 +    static __rust_no_alloc_shim_is_unstable: u8 = 0;
 +
++    #[rustc_std_internal_symbol]
++    #[linkage = "weak"]
++    fn __rust_alloc_error_handler_should_panic_v2() -> u8 {
++        0
++    }
++
 +    // Mangle the symbol name as rustc expects.
++    // TODO(crbug.com/440481922): Remove this after rolling past https://github.com/rust-lang/rust/pull/143387
 +    #[rustc_std_internal_symbol]
 +    #[allow(non_upper_case_globals)]
 +    #[linkage = "weak"]

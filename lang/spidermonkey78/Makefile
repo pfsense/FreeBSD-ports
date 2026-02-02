@@ -1,6 +1,6 @@
 PORTNAME=	spidermonkey
 DISTVERSION=	78.15.0
-PORTREVISION=	34
+PORTREVISION=	39
 CATEGORIES=	lang
 MASTER_SITES=	MOZILLA/firefox/releases/${DISTVERSION}esr/source
 PKGNAMESUFFIX=	${SP_VER}
@@ -17,6 +17,9 @@ WWW=		https://spidermonkey.dev/
 LICENSE=	MPL20
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
+DEPRECATED=	Legacy version
+EXPIRATION_DATE=	2025-12-31
+
 BUILD_DEPENDS=	${RUST_DEFAULT}>=1.35:lang/${RUST_DEFAULT} \
 		autoconf2.13:devel/autoconf2.13 \
 		rust-cbindgen>=0.8.7:devel/rust-cbindgen
@@ -30,9 +33,9 @@ USE_LDCONFIG=	yes
 SP_VER=		78
 HAS_CONFIGURE=	yes
 
+CONFIGURE_OUTSOURCE=	yes
 WRKSRC=			${WRKDIR}/firefox-${DISTVERSION}
 PATCH_WRKSRC=		${WRKDIR}/firefox-${DISTVERSION}/
-CONFIGURE_OUTSOURCE=	yes
 
 CONFIGURE_ARGS=	--enable-application=js \
 		--disable-debug \

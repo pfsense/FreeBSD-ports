@@ -29,7 +29,6 @@
     SUBDIR += bincimap
     SUBDIR += bmf
     SUBDIR += bogofilter
-    SUBDIR += bogofilter-bdb
     SUBDIR += bogofilter-kc
     SUBDIR += bogofilter-sqlite
     SUBDIR += bsd-vacation
@@ -182,6 +181,7 @@
     SUBDIR += libesmtp
     SUBDIR += libetpan
     SUBDIR += libmilter
+    SUBDIR += libopensmtpd
     SUBDIR += libpst
     SUBDIR += libsieve
     SUBDIR += libspamtest
@@ -193,7 +193,6 @@
     SUBDIR += linux-r7-organizer
     SUBDIR += linux-r7-organizer-pro
     SUBDIR += listadmin
-    SUBDIR += lmtp2nntp
     SUBDIR += lookout
     SUBDIR += lurker
     SUBDIR += mail-expire
@@ -257,8 +256,6 @@
     SUBDIR += msglint
     SUBDIR += msmtp
     SUBDIR += mu
-    SUBDIR += mu4e
-    SUBDIR += mu4e-maildirs
     SUBDIR += mulberry
     SUBDIR += mutt
     SUBDIR += mutt_vc_query
@@ -291,6 +288,7 @@
     SUBDIR += opensmtpd-extras-table-redis
     SUBDIR += opensmtpd-extras-table-socketmap
     SUBDIR += opensmtpd-extras-table-sqlite
+    SUBDIR += opensmtpd-filter-dkimsign
     SUBDIR += opensmtpd-filter-rspamd
     SUBDIR += opensmtpd-filter-senderscore
     SUBDIR += opensmtpd-table-sqlite
@@ -479,6 +477,7 @@
     SUBDIR += phplist
     SUBDIR += phpmailer
     SUBDIR += phpmailer6
+    SUBDIR += phpmailer7
     SUBDIR += pine-pgp-filters
     SUBDIR += pizauth
     SUBDIR += pm-lib
@@ -519,6 +518,7 @@
     SUBDIR += py-dkimpy-milter
     SUBDIR += py-email-reply-parser
     SUBDIR += py-email-validator
+    SUBDIR += py-exchangelib
     SUBDIR += py-flanker
     SUBDIR += py-flask-mail
     SUBDIR += py-flufl.bounce
@@ -543,6 +543,7 @@
     SUBDIR += py-pyspf
     SUBDIR += py-python-slimta
     SUBDIR += py-pyzmail
+    SUBDIR += py-resend
     SUBDIR += py-rfc6555
     SUBDIR += py-spf-engine
     SUBDIR += py-tlsrpt-reporter
@@ -606,6 +607,7 @@
     SUBDIR += rubygem-actionmailbox71
     SUBDIR += rubygem-actionmailbox72
     SUBDIR += rubygem-actionmailbox80
+    SUBDIR += rubygem-actionmailbox81
     SUBDIR += rubygem-actionmailer-gitlab
     SUBDIR += rubygem-actionmailer4
     SUBDIR += rubygem-actionmailer5
@@ -617,6 +619,7 @@
     SUBDIR += rubygem-actionmailer71
     SUBDIR += rubygem-actionmailer72
     SUBDIR += rubygem-actionmailer80
+    SUBDIR += rubygem-actionmailer81
     SUBDIR += rubygem-email_reply_parser
     SUBDIR += rubygem-email_reply_parser-discourse
     SUBDIR += rubygem-email_reply_trimmer
@@ -625,6 +628,7 @@
     SUBDIR += rubygem-extended_email_reply_parser
     SUBDIR += rubygem-gitlab-mail_room
     SUBDIR += rubygem-mail
+    SUBDIR += rubygem-mail-gitlab
     SUBDIR += rubygem-mail_room
     SUBDIR += rubygem-mailboxer
     SUBDIR += rubygem-mailfactory

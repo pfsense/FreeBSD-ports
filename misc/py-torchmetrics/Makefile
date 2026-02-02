@@ -1,6 +1,6 @@
 PORTNAME=	torchmetrics
 DISTVERSIONPREFIX=	v
-DISTVERSION=	1.6.2
+DISTVERSION=	1.8.1
 PORTREVISION=	1
 CATEGORIES=	misc python # machine-learning
 #MASTER_SITES=	PYPI # no tests

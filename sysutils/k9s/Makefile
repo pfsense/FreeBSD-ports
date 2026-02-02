@@ -1,6 +1,6 @@
 PORTNAME=	k9s
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.50.6
+DISTVERSION=	0.50.16
 PORTREVISION=	2
 CATEGORIES=	sysutils
 
@@ -11,11 +11,13 @@ WWW=		https://github.com/derailed/k9s
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-USES=		go:1.24,modules
+NOT_FOR_ARCHS=	i386
+
+USES=		go:modules
 GO_MODULE=	github.com/derailed/k9s
 GO_BUILDFLAGS=	-ldflags="-X github.com/derailed/k9s/cmd.version=${DISTVERSIONFULL} \
 		-X github.com/derailed/k9s/cmd.date=$$(date +'%Y-%m-%dT%H:%M:%SZ') \
-		-X github.com/derailed/k9s/cmd.commit=13cb55bb66272ac4c872a1f6bfa3e820d7d0ca5b"
+		-X github.com/derailed/k9s/cmd.commit=3c37ca2197ca48591566d1f599b7b3a50d54a408"
 
 PLIST_FILES=	bin/${PORTNAME}
 

@@ -1,4 +1,4 @@
---- media/video/video_encode_accelerator_adapter.cc.orig	2025-05-06 12:23:00 UTC
+--- media/video/video_encode_accelerator_adapter.cc.orig	2025-10-21 16:57:35 UTC
 +++ media/video/video_encode_accelerator_adapter.cc
 @@ -468,7 +468,7 @@ void VideoEncodeAcceleratorAdapter::InitializeOnAccele
  

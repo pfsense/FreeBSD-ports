@@ -1,4 +1,4 @@
---- content/public/common/content_switches.h.orig	2025-05-28 14:55:43 UTC
+--- content/public/common/content_switches.h.orig	2025-12-05 10:12:50 UTC
 +++ content/public/common/content_switches.h
 @@ -108,6 +108,7 @@ CONTENT_EXPORT extern const char kEnableGpuMemoryBuffe
  CONTENT_EXPORT extern const char kEnableIsolatedWebAppsInRenderer[];

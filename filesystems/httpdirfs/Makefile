@@ -1,10 +1,10 @@
 PORTNAME=	httpdirfs
 DISTVERSION=	1.2.7
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	filesystems
 PKGNAMEPREFIX=	fusefs-
 
-MAINTAINER=	alster@vinterdalen.se
+MAINTAINER=	alven@FreeBSD.org
 COMMENT=	FUSE filesystem to mount HTTP directory listings, with a permanent cache
 WWW=		https://github.com/fangfufu/httpdirfs/
 
@@ -16,7 +16,7 @@ LICENSE_PERMS=	dist-mirror dist-sell pkg-mirror pkg-sell auto-accept
 LIB_DEPENDS=	libcurl.so:ftp/curl \
 		libexpat.so:textproc/expat2 \
 		libgumbo.so:devel/gumbo \
-		libuuid.so:misc/e2fsprogs-libuuid
+		libuuid.so:misc/libuuid
 
 USES=		fuse:3 meson pkgconfig ssl
 USE_GITHUB=	yes

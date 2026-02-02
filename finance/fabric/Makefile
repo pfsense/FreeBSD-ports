@@ -1,7 +1,7 @@
 PORTNAME=	fabric
 DISTVERSIONPREFIX=	v
 DISTVERSION=	3.0.0
-PORTREVISION=	6
+PORTREVISION=	7
 CATEGORIES=	finance
 PKGNAMESUFFIX=	-hyperledger
 
@@ -14,7 +14,7 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 
 NOT_FOR_ARCHS=	armv6 armv7 i386 mips powerpc # compilation fails on non-64-bit systems: fabric-amcl/core/FP256BN/FP.go:111:19: cannot convert MConst (constant 30564559323915749 of type Chunk) to type int
 
-USES=		go:1.23,modules
+USES=		go:modules
 USE_GITHUB=	yes
 GH_ACCOUNT=	hyperledger
 

@@ -1,5 +1,5 @@
 PORTNAME=	gsequencer
-DISTVERSION=	7.5.5
+DISTVERSION=	8.1.24
 CATEGORIES=	audio
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -21,7 +21,7 @@ LIB_DEPENDS=	libfftw3.so:math/fftw3 \
 		libsamplerate.so:audio/libsamplerate \
 		libsndfile.so:audio/libsndfile \
 		libsoup-3.0.so:devel/libsoup3 \
-		libuuid.so:misc/e2fsprogs-libuuid \
+		libuuid.so:misc/libuuid \
 		libvulkan.so:graphics/vulkan-loader \
 		libwebkit2gtk-4.0.so:www/webkit2-gtk@40
 RUN_DEPENDS=	dssi>0:audio/dssi

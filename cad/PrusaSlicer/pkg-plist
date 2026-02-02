@@ -4,6 +4,7 @@ lib/OCCTWrapper.so
 %%DATADIR%%/data/embossed_text.obj
 %%DATADIR%%/data/hints.ini
 %%DATADIR%%/data/printer_gantries/geometries.json
+%%DATADIR%%/data/printer_gantries/prusa3d_coreoneL_gantry.stl
 %%DATADIR%%/data/printer_gantries/prusa3d_coreone_gantry.stl
 %%DATADIR%%/data/printer_gantries/prusa3d_ht90_actuator.stl
 %%DATADIR%%/data/printer_gantries/prusa3d_mini_gantry.stl
@@ -735,6 +736,8 @@ lib/OCCTWrapper.so
 %%DATADIR%%/profiles/Print4Taste/MC2.0_thumbnail.png
 %%DATADIR%%/profiles/PrusaResearch.idx
 %%DATADIR%%/profiles/PrusaResearch.ini
+%%DATADIR%%/profiles/PrusaResearch/COREONEL_thumbnail.png
+%%DATADIR%%/profiles/PrusaResearch/COREONEMMU3_thumbnail.png
 %%DATADIR%%/profiles/PrusaResearch/COREONE_thumbnail.png
 %%DATADIR%%/profiles/PrusaResearch/MINIIS_ALPHA_thumbnail.png
 %%DATADIR%%/profiles/PrusaResearch/MINIIS_BETA_thumbnail.png
@@ -777,6 +780,8 @@ lib/OCCTWrapper.so
 %%DATADIR%%/profiles/PrusaResearch/XL_thumbnail.png
 %%DATADIR%%/profiles/PrusaResearch/coreone.svg
 %%DATADIR%%/profiles/PrusaResearch/coreone_bed.stl
+%%DATADIR%%/profiles/PrusaResearch/coreonel.svg
+%%DATADIR%%/profiles/PrusaResearch/coreonel_bed.stl
 %%DATADIR%%/profiles/PrusaResearch/mini.svg
 %%DATADIR%%/profiles/PrusaResearch/miniIS.svg
 %%DATADIR%%/profiles/PrusaResearch/miniISbeta.svg
@@ -806,6 +811,22 @@ lib/OCCTWrapper.so
 %%DATADIR%%/profiles/PrusaResearchSLA/sl1s_bed.stl
 %%DATADIR%%/profiles/QIDITechnology.idx
 %%DATADIR%%/profiles/QIDITechnology.ini
+%%DATADIR%%/profiles/QIDITechnology/Q1 Pro.svg
+%%DATADIR%%/profiles/QIDITechnology/Q1 Pro_bed.stl
+%%DATADIR%%/profiles/QIDITechnology/Q1 Pro_thumbnail.png
+%%DATADIR%%/profiles/QIDITechnology/X-MAX 3.svg
+%%DATADIR%%/profiles/QIDITechnology/X-MAX 3_bed.stl
+%%DATADIR%%/profiles/QIDITechnology/X-MAX 3_thumbnail.png
+%%DATADIR%%/profiles/QIDITechnology/X-Plus 3.svg
+%%DATADIR%%/profiles/QIDITechnology/X-Plus 3_bed.stl
+%%DATADIR%%/profiles/QIDITechnology/X-Plus 3_thumbnail.png
+%%DATADIR%%/profiles/QIDITechnology/X-Plus 4 + BOX_thumbnail.png
+%%DATADIR%%/profiles/QIDITechnology/X-Plus 4.svg
+%%DATADIR%%/profiles/QIDITechnology/X-Plus 4_bed.stl
+%%DATADIR%%/profiles/QIDITechnology/X-Plus 4_thumbnail.png
+%%DATADIR%%/profiles/QIDITechnology/X-smart 3.svg
+%%DATADIR%%/profiles/QIDITechnology/X-smart 3_bed.stl
+%%DATADIR%%/profiles/QIDITechnology/X-smart 3_thumbnail.png
 %%DATADIR%%/profiles/RatRig.idx
 %%DATADIR%%/profiles/RatRig.ini
 %%DATADIR%%/profiles/RatRig/VC3_300_thumbnail.png
@@ -838,20 +859,39 @@ lib/OCCTWrapper.so
 %%DATADIR%%/profiles/Rigid3D/zero_bed.stl
 %%DATADIR%%/profiles/Snapmaker.idx
 %%DATADIR%%/profiles/Snapmaker.ini
+%%DATADIR%%/profiles/Snapmaker/A250_bed.stl
+%%DATADIR%%/profiles/Snapmaker/A250_texture.svg
+%%DATADIR%%/profiles/Snapmaker/A250_thumbnail.png
+%%DATADIR%%/profiles/Snapmaker/A350_bed.stl
+%%DATADIR%%/profiles/Snapmaker/A350_texture.svg
+%%DATADIR%%/profiles/Snapmaker/A350_thumbnail.png
+%%DATADIR%%/profiles/Snapmaker/Snapmaker A250 BKit_cover.png
+%%DATADIR%%/profiles/Snapmaker/Snapmaker A250 Dual BKit_cover.png
+%%DATADIR%%/profiles/Snapmaker/Snapmaker A250 Dual QS+B Kit_cover.png
 %%DATADIR%%/profiles/Snapmaker/Snapmaker A250 Dual QSKit_cover.png
 %%DATADIR%%/profiles/Snapmaker/Snapmaker A250 Dual_cover.png
+%%DATADIR%%/profiles/Snapmaker/Snapmaker A250 Dual_texture.svg
+%%DATADIR%%/profiles/Snapmaker/Snapmaker A250 QS+B Kit_cover.png
 %%DATADIR%%/profiles/Snapmaker/Snapmaker A250 QSKit_cover.png
 %%DATADIR%%/profiles/Snapmaker/Snapmaker A250 QSKit_texture.svg
 %%DATADIR%%/profiles/Snapmaker/Snapmaker A250_bed.stl
 %%DATADIR%%/profiles/Snapmaker/Snapmaker A250_cover.png
 %%DATADIR%%/profiles/Snapmaker/Snapmaker A250_texture.svg
+%%DATADIR%%/profiles/Snapmaker/Snapmaker A350 BKit_cover.png
+%%DATADIR%%/profiles/Snapmaker/Snapmaker A350 Dual BKit_cover.png
+%%DATADIR%%/profiles/Snapmaker/Snapmaker A350 Dual QS+B Kit_cover.png
 %%DATADIR%%/profiles/Snapmaker/Snapmaker A350 Dual QSKit_cover.png
 %%DATADIR%%/profiles/Snapmaker/Snapmaker A350 Dual_cover.png
+%%DATADIR%%/profiles/Snapmaker/Snapmaker A350 Dual_texture.svg
+%%DATADIR%%/profiles/Snapmaker/Snapmaker A350 QS+B Kit_cover.png
 %%DATADIR%%/profiles/Snapmaker/Snapmaker A350 QSKit_cover.png
 %%DATADIR%%/profiles/Snapmaker/Snapmaker A350 QSKit_texture.svg
 %%DATADIR%%/profiles/Snapmaker/Snapmaker A350_bed.stl
 %%DATADIR%%/profiles/Snapmaker/Snapmaker A350_cover.png
 %%DATADIR%%/profiles/Snapmaker/Snapmaker A350_texture.svg
+%%DATADIR%%/profiles/Snapmaker/Snapmaker Artisan_bed.stl
+%%DATADIR%%/profiles/Snapmaker/Snapmaker Artisan_cover.png
+%%DATADIR%%/profiles/Snapmaker/Snapmaker Artisan_texture.svg
 %%DATADIR%%/profiles/Snapmaker/Snapmaker J1_bed.stl
 %%DATADIR%%/profiles/Snapmaker/Snapmaker J1_cover.png
 %%DATADIR%%/profiles/Snapmaker/Snapmaker J1_texture.svg

@@ -1,10 +1,10 @@
 PORTNAME=	plutosvg
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.0.6
-PORTREVISION=	1
+DISTVERSION=	0.0.7
+PORTREVISION=	2
 CATEGORIES=	graphics
 
-MAINTAINER=	alster@vinterdalen.se
+MAINTAINER=	alven@FreeBSD.org
 COMMENT=	Tiny SVG rendering library in C
 WWW=		https://github.com/sammycage/plutosvg/
 

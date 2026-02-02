@@ -1,0 +1,28 @@
+commit 891b161d2bd54390ed972ac82971d8b46971d4ae
+Author: R. Christian McDonald <rcm@rcm.sh>
+Date:   Thu Jul 31 14:59:35 2025 -0400
+
+    Don't POST traffic graph widget settings on manual BE Verification. Fixes #15499
+
+diff --git a/src/usr/local/www/widgets/widgets/traffic_graphs.widget.php b/src/usr/local/www/widgets/widgets/traffic_graphs.widget.php
+index 0f00b8f3a1..4cecf7c425 100644
+--- a/src/usr/local/www/widgets/widgets/traffic_graphs.widget.php
++++ b/src/usr/local/www/widgets/widgets/traffic_graphs.widget.php
+@@ -39,7 +39,7 @@ if (ipsec_enabled()) {
+ 	$ifdescrs['enc0'] = "IPsec";
+ }
+ 
+-if ($_POST) {
++if ($_POST && $_POST['widget'] === __FILE__) {
+ 
+ 	if (!is_array($user_settings["widgets"]["traffic_graphs"])) {
+ 		$user_settings["widgets"]["traffic_graphs"] = array();
+@@ -257,7 +257,7 @@ $tg_displayed_realifsarray = [];
+ 
+ 		<div class="form-group">
+ 			<div class="col-sm-offset-3 col-sm-6">
+-				<button type="submit" class="btn btn-primary"><i class="fa-solid fa-save icon-embed-btn"></i><?=gettext('Save')?></button>
++				<button type="submit" class="btn btn-primary" name="widget" value="<?=__FILE__?>"><i class="fa-solid fa-save icon-embed-btn"></i><?=gettext('Save')?></button>
+ 				<button id="showalltgitems" type="button" class="btn btn-info"><i class="fa-solid fa-undo icon-embed-btn"></i><?=gettext('All')?></button>
+ 			</div>
+ 		</div>

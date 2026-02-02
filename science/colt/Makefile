@@ -8,6 +8,11 @@ MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Java package for scalable scientific and technical computing
 WWW=		https://acs.lbl.gov/~hoschek/colt/
 
+DEPRECATED=	java 8 only, unmaintained, no users in the ports tree, latest release was 2004
+EXPIRATION_DATE=	2026-04-13
+
+JAVA_VERSION=	8
+
 NO_ARCH=	yes
 
 WRKSRC=		${WRKDIR}/${PORTNAME}

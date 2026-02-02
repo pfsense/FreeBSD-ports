@@ -7,6 +7,7 @@
 	<faq>Currently there are no FAQ items provided.</faq>
 	<name>squidguarddefault</name>
 	<title>Proxy filter SquidGuard: Common Access Control List (ACL)</title>
+	<addedit_string>SquidGuard: changed Common ACL</addedit_string>
 	<include_file>/usr/local/pkg/squidguard.inc</include_file>
 	<tabs>
 		<tab>

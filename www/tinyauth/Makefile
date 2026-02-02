@@ -1,9 +1,10 @@
 PORTNAME=	tinyauth
 DISTVERSIONPREFIX=	v
-DISTVERSION=	3.4.1
+DISTVERSION=	4.0.1
+PORTREVISION=	2
 CATEGORIES=	www
 MASTER_SITES=	LOCAL/dtxdf/${PORTNAME}/
-DISTFILES=	${PORTNAME}-${DISTVERSION}.frontend${EXTRACT_SUFX}
+DISTFILES=	${PORTNAME}-${DISTVERSIONPREFIX}${DISTVERSION}.frontend${EXTRACT_SUFX}
 
 MAINTAINER=	dtxdf@FreeBSD.org
 COMMENT=	Simplest way to protect your apps with a login screen
@@ -12,7 +13,9 @@ WWW=		https://tinyauth.app
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-USES=		go:1.23,modules
+BROKEN_i386=	cannot use int64(off) (value of type int64) as int32 value in assignment
+
+USES=		go:modules
 USE_GITHUB=	yes
 GH_ACCOUNT=	steveiliop56
 
@@ -31,11 +34,12 @@ SUB_LIST=	USER=${USERS:[1]}
 USERS=		${TINYAUTH_USER}
 GROUPS=		${TINYAUTH_GROUP}
 
-PLIST_FILES=	bin/${PORTNAME}
+PLIST_FILES=	bin/${PORTNAME} \
+		"@dir(${TINYAUTH_USER},${TINYAUTH_GROUP},0750) /var/db/${PORTNAME}"
 
 # Run 'git checkout ${DISTVERSIONPREFIX}${DISTVERSION} && git rev-parse HEAD'
 # in the Tinyauth repository to get the value of GITID.
-GITID=		9eb296f14644267410655122e8aff6f0db83371a
+GITID=		5f7f88421ee0d2cc8fd17316fa378b958386a000
 
 BUILD_DATE=	$$(date -u '+%Y-%m-%dT%H:%M:%S')
 
@@ -45,5 +49,8 @@ TINYAUTH_GROUP=	${TINYAUTH_USER}
 pre-build:
 	@${MKDIR} ${WRKSRC}/internal/assets/dist
 	@cd ${WRKDIR}/tinyauth-frontend && ${COPYTREE_SHARE} . ${WRKSRC}/internal/assets/dist
+
+post-install:
+	@${MKDIR} ${STAGEDIR}/var/db/${PORTNAME}
 
 .include <bsd.port.mk>

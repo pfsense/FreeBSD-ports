@@ -1,7 +1,7 @@
 Version 11.00 added multi-threading support, but we need to link to -lpthread
 to resolve symbols.
 
---- CMakeLists.txt.orig	2025-04-25 04:13:46 UTC
+--- CMakeLists.txt.orig	2025-09-05 10:46:54 UTC
 +++ CMakeLists.txt
 @@ -6,6 +6,8 @@ option(BUILD_UTIL "Build the mac command line tool" ON
  option(BUILD_SHARED "Build libMAC as a shared library" ON)

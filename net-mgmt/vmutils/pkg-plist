@@ -7,10 +7,12 @@ bin/vmrestore
 @sample etc/prometheus/prometheus.yml.sample
 %%PORTDOCS%%%%DOCSDIR%%/vmagent.md
 %%PORTDOCS%%%%DOCSDIR%%/vmagent.webp
+%%PORTDOCS%%%%DOCSDIR%%/vmagent_flags.md
 %%PORTDOCS%%%%DOCSDIR%%/vmalert-tool.md
 %%PORTDOCS%%%%DOCSDIR%%/vmalert.md
 %%PORTDOCS%%%%DOCSDIR%%/vmalert_cluster.excalidraw
 %%PORTDOCS%%%%DOCSDIR%%/vmalert_cluster.webp
+%%PORTDOCS%%%%DOCSDIR%%/vmalert_flags.md
 %%PORTDOCS%%%%DOCSDIR%%/vmalert_ha.excalidraw
 %%PORTDOCS%%%%DOCSDIR%%/vmalert_ha.webp
 %%PORTDOCS%%%%DOCSDIR%%/vmalert_multicluster.excalidraw
@@ -29,9 +31,22 @@ bin/vmrestore
 %%PORTDOCS%%%%DOCSDIR%%/vmbackupmanager_root_folder.webp
 %%PORTDOCS%%%%DOCSDIR%%/vmbackupmanager_rp_daily_1.webp
 %%PORTDOCS%%%%DOCSDIR%%/vmbackupmanager_rp_daily_2.webp
-%%PORTDOCS%%%%DOCSDIR%%/vmctl.md
+%%PORTDOCS%%%%DOCSDIR%%/vmctl/_index.md
+%%PORTDOCS%%%%DOCSDIR%%/vmctl/cortex.md
+%%PORTDOCS%%%%DOCSDIR%%/vmctl/influxdb.md
+%%PORTDOCS%%%%DOCSDIR%%/vmctl/mimir.md
+%%PORTDOCS%%%%DOCSDIR%%/vmctl/opentsdb.md
+%%PORTDOCS%%%%DOCSDIR%%/vmctl/prometheus.md
+%%PORTDOCS%%%%DOCSDIR%%/vmctl/promscale.md
+%%PORTDOCS%%%%DOCSDIR%%/vmctl/remoteread.md
+%%PORTDOCS%%%%DOCSDIR%%/vmctl/thanos.md
+%%PORTDOCS%%%%DOCSDIR%%/vmctl/victoriametrics.md
+%%PORTDOCS%%%%DOCSDIR%%/vmctl/vmctl.md
 %%PORTDOCS%%%%DOCSDIR%%/vmgateway-access-control.webp
 %%PORTDOCS%%%%DOCSDIR%%/vmgateway-overview.webp
 %%PORTDOCS%%%%DOCSDIR%%/vmgateway-rate-limiting.webp
 %%PORTDOCS%%%%DOCSDIR%%/vmgateway.md
+%%PORTDOCS%%%%DOCSDIR%%/vminsert_flags.md
 %%PORTDOCS%%%%DOCSDIR%%/vmrestore.md
+%%PORTDOCS%%%%DOCSDIR%%/vmselect_flags.md
+%%PORTDOCS%%%%DOCSDIR%%/vmstorage_flags.md

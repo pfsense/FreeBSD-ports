@@ -127,7 +127,7 @@ function suricata_widget_get_alerts() {
 				/************** *************************************************************************************************************************/
 
 				if (!$fd = fopen("{$g['tmp_path']}/surialerts_{$suricata_uuid}", "r")) {
-					log_error(gettext("[Suricata Widget] Failed to open file {$g['tmp_path']}/surialerts_{$suricata_uuid}"));
+					logger(LOG_ERR, localize_text("Widget failed to open file %s", "{$g['tmp_path']}/surialerts_{$suricata_uuid}"), LOG_PREFIX_PKG_SURICATA);
 					continue;
 				}
 
@@ -190,7 +190,7 @@ function suricata_widget_get_alerts() {
 						$suricata_alerts[$counter]['timeonly'] = date_format($event_tm, "H:i:s");
 						$suricata_alerts[$counter]['dateonly'] = date_format($event_tm, "M d");
 					} catch (Exception $e) {
-						syslog(LOG_WARNING, "[suricata] WARNING: Dashboard Widget found invalid timestamp entry in current alerts.log, the line will be ignored and skipped.");
+						logger(LOG_WARNING, localize_text("Dashboard Widget found invalid timestamp entry in current alerts.log, the line will be ignored and skipped."), LOG_PREFIX_PKG_SURICATA);
 						continue;
 					}
 
@@ -255,7 +255,7 @@ function suricata_widget_get_alerts() {
 	</thead>
 	<tbody id="suricata-alert-entries">
 	<?php
-		$suricata_alerts = suricata_widget_get_alerts($suri_nentries);
+		$suricata_alerts = suricata_widget_get_alerts();
 		$counter=0;
 		if (is_array($suricata_alerts)) {
 			foreach ($suricata_alerts as $alert) {

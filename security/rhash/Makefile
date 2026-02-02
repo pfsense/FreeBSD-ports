@@ -1,6 +1,6 @@
 PORTNAME=	rhash
 PORTVERSION=	1.4.4
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	security
 MASTER_SITES=	SF
 DISTNAME=	${PORTNAME}-${PORTVERSION}-src
@@ -18,7 +18,7 @@ LICENSE=	BSD0CLAUSE
 LICENSE_FILE=	${WRKSRC}/COPYING
 
 HAS_CONFIGURE=	yes
-CONFIGURE_ARGS=	--prefix="${PREFIX}" --mandir="${PREFIX}/share/man" \
+CONFIGURE_ARGS=	--prefix="${PREFIX}" \
 		--pkgconfigdir="${PREFIX}/libdata/pkgconfig" \
 		--enable-lib-static --enable-openssl-runtime \
 		--extra-cflags="${CFLAGS}" --extra-ldflags="${LDFLAGS}"
@@ -43,11 +43,14 @@ post-patch:
 	@${REINPLACE_CMD} -e '/BYTE_ORDER/s,__,_,g' \
 		${WRKSRC}/librhash/byte_order.h
 
+post-install:
+	${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/rhash ${STAGEDIR}${PREFIX}/lib/librhash.so
+
 post-install-DOCS-on:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}
 	${INSTALL_DATA} ${PORTDOCS:S,^,${WRKSRC}/,} ${STAGEDIR}${DOCSDIR}
 
 do-test:
-	cd ${WRKSRC}/tests && ${SH} test_rhash.sh --full --shared
+	cd ${WRKSRC}/tests && ${SH} test_rhash.sh --full --shared ../rhash
 
 .include <bsd.port.mk>

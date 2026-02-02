@@ -1,6 +1,6 @@
---- ui/views/widget/widget.h.orig	2025-05-07 06:48:23 UTC
+--- ui/views/widget/widget.h.orig	2025-12-10 15:04:57 UTC
 +++ ui/views/widget/widget.h
-@@ -487,7 +487,7 @@ class VIEWS_EXPORT Widget : public internal::NativeWid
+@@ -489,7 +489,7 @@ class VIEWS_EXPORT Widget : public internal::NativeWid
      bool force_system_menu_for_frameless = false;
  #endif  // BUILDFLAG(IS_WIN)
  

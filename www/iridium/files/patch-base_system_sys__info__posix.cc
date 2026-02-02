@@ -1,4 +1,4 @@
---- base/system/sys_info_posix.cc.orig	2025-05-07 06:48:23 UTC
+--- base/system/sys_info_posix.cc.orig	2025-12-10 15:04:57 UTC
 +++ base/system/sys_info_posix.cc
 @@ -143,7 +143,7 @@ void GetKernelVersionNumbers(int32_t* major_version,
  
@@ -17,8 +17,8 @@
 +#endif  // !BUILDFLAG(IS_BSD)
  
  // static
- uint64_t SysInfo::AmountOfVirtualMemory() {
-@@ -285,6 +285,8 @@ std::string SysInfo::OperatingSystemArchitecture() {
+ ByteCount SysInfo::AmountOfVirtualMemory() {
+@@ -289,6 +289,8 @@ std::string SysInfo::OperatingSystemArchitecture() {
      arch = "x86";
    } else if (arch == "amd64") {
      arch = "x86_64";

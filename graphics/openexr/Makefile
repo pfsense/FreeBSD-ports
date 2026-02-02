@@ -1,5 +1,5 @@
 PORTNAME?=	openexr
-PORTVERSION?=	3.3.4 # ALSO update openexr-website-docs! -- verify sigstore: make makesum verify-sigstore
+PORTVERSION?=	3.4.4 # ALSO update openexr-website-docs! -- verify sigstore: make makesum verify-sigstore
 PORTREVISION?=	0
 CATEGORIES=	graphics devel
 .if !defined(MASTERDIR)
@@ -34,10 +34,15 @@ WWW=		https://www.openexr.com/
 
 LICENSE=	BSD3CLAUSE
 
-BUILD_DEPENDS?=	help2man:misc/help2man
+BUILD_DEPENDS?=	help2man:misc/help2man \
+		openjph>=0.23.0:graphics/openjph
 # exact libImath version required to avoid hard-to-debug issues
-LIB_DEPENDS?=	libImath-3_1.so.29:math/Imath \
-		libdeflate.so:archivers/libdeflate
+# but this is due to Imath and OpenEXR being close in terms of their
+# release engineering, no other port should version pin Imath
+# or OpenEXR without extremely good reason
+LIB_DEPENDS?=	libImath-3_2.so.30:math/Imath \
+		libdeflate.so:archivers/libdeflate \
+		libopenjph.so:graphics/openjph
 
 USES?=		cmake:testing compiler:c++14-lang cpe pathfix pkgconfig
 
@@ -62,8 +67,8 @@ CPPFLAGS+=	-I.
 # must be linked with -l{thr|pthread} explicitly
 LDFLAGS+=	-lpthread
 
-_MAJORVER=	3_3
-_VER=		32
+_MAJORVER=	3_4
+_VER=		33
 _REL=		${PORTVERSION}
 PLIST_SUB+=	MAJORVER=${_MAJORVER} \
 		VER=${_VER} \

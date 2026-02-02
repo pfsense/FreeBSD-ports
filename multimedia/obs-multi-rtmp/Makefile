@@ -1,5 +1,5 @@
 PORTNAME=	obs-multi-rtmp
-DISTVERSION=	0.7.2
+DISTVERSION=	0.7.3.2
 CATEGORIES=	multimedia
 
 MAINTAINER=	freebsd@sysctl.cz
@@ -9,6 +9,7 @@ WWW=		https://github.com/sorayuki/obs-multi-rtmp/
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
+BUILD_DEPENDS=	simde>0:devel/simde
 LIB_DEPENDS=	libobs.so:multimedia/obs-studio
 
 USES=		cmake gl qt:6

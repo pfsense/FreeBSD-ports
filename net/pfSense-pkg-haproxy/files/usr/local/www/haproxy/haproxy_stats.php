@@ -109,7 +109,12 @@ if ($savemsg) {
 	print_info_box($savemsg);
 }
 if (file_exists($d_haproxyconfdirty_path)) {
-	print_apply_box(sprintf(gettext("The haproxy configuration has been changed.%sYou must apply the changes in order for them to take effect."), "<br/>"));
+	print_apply_box(sprintf(
+		gettext(
+			"The HAProxy configuration has been changed.%sServer states are preserved between configuration changes - " .
+			"use %sSettings > Force Service Restart%s to apply changes immediately."
+		), "<br/>", '<a href="/haproxy/haproxy_global.php">', '</a>'
+	));
 }
 haproxy_display_top_tabs_active($haproxy_tab_array['haproxy'], "stats");
 
@@ -118,19 +123,19 @@ haproxy_display_top_tabs_active($haproxy_tab_array['haproxy'], "stats");
 
 	<?php
 if (isset($_GET['showstatresolvers'])){
-	$showstatresolversname = $_GET['showstatresolvers'];
 	echo "<td colspan='2'>";
-	echo "Resolver statistics: $sticktablename<br/>";
-	$res = haproxy_socket_command("show resolvers $showstatresolversname");
+	echo "Resolver statistics:<br/>";
+	$res = haproxy_socket_command("show resolvers globalresolvers");
 	foreach($res as $line){
 		echo "<br/>".print_r($line,true);
 	}
 	echo "</td>";
-} elseif (isset($_GET['showsticktablecontent'])){
+} elseif (isset($_GET['showsticktablecontent']) &&
+	 (array_key_exists($_GET['showsticktablecontent'], haproxy_get_tables()))) {
 	$sticktablename = $_GET['showsticktablecontent'];
 	echo "<td colspan='2'>";
-	echo "Contents of the sticktable: $sticktablename<br/>";
-	$res = haproxy_socket_command("show table $sticktablename");
+	echo "Contents of the sticktable: " . htmlspecialchars($sticktablename) . "<br/>";
+	$res = haproxy_socket_command("show table {$sticktablename}");
 	foreach($res as $line){
 		echo "<br/>".print_r($line,true);
 	}

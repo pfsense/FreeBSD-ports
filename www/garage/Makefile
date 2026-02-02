@@ -1,5 +1,5 @@
 PORTNAME=	garage
-DISTVERSION=	1.1.0
+DISTVERSION=	2.1.0
 PORTREVISION=	2
 CATEGORIES=	www
 MASTER_SITES=	https://git.deuxfleurs.fr/Deuxfleurs/${PORTNAME}/archive/v${PORTVERSION}.tar.gz?dummy=/
@@ -22,6 +22,7 @@ CARGO_INSTALL_PATH=	src/garage
 SUB_FILES=	pkg-message
 USE_RC_SUBR=	garage
 CARGO_VENDOR_DIR=	${WRKDIR}/cargo-crates
+CARGO_FEATURES=	syslog
 
 .include <bsd.port.pre.mk>
 

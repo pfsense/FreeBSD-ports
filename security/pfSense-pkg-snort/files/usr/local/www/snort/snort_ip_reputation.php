@@ -60,7 +60,7 @@ if ($_POST['mode'] == 'blist_add' && isset($_POST['iplist'])) {
 	$pconfig = $_POST;
 
 	// Test the supplied IP List file to see if it exists
-	if (file_exists($_POST['iplist'])) {
+	if (file_exists($iprep_path . basename($_POST['iplist']))) {
 		// See if the file is already assigned to the interface
 		foreach ($a_nat['blist_files']['item'] as $f) {
 			if ($f == basename($_POST['iplist'])) {
@@ -86,7 +86,7 @@ if ($_POST['mode'] == 'wlist_add' && isset($_POST['iplist'])) {
 	$pconfig = $_POST;
 
 	// Test the supplied IP List file to see if it exists
-	if (file_exists($_POST['iplist'])) {
+	if (file_exists($iprep_path . basename($_POST['iplist']))) {
 		// See if the file is already assigned to the interface
 		foreach ($a_nat['wlist_files']['item'] as $f) {
 			if ($f == basename($_POST['iplist'])) {
@@ -135,7 +135,7 @@ if ($_POST['apply']) {
 
 	// If Snort is already running, must restart to change IP REP preprocessor configuration.
 	if (snort_is_running($a_nat['uuid'])) {
-		syslog(LOG_NOTICE, gettext("Snort: restarting on interface " . convert_real_interface_to_friendly_descr($if_real) . " due to IP REP preprocessor configuration change."));
+		logger(LOG_NOTICE, localize_text("restarting on interface %s due to IP REP preprocessor configuration change.", convert_real_interface_to_friendly_descr($if_real)), LOG_PREFIX_PKG_SNORT);
 		snort_stop($a_nat, $if_real);
 		snort_start($a_nat, $if_real, TRUE);
 	}
@@ -178,7 +178,7 @@ if ($_POST['save']) {
 
 		// If Snort is already running, must restart to change IP REP preprocessor configuration.
 		if (snort_is_running($a_nat['uuid'])) {
-			syslog(LOG_NOTICE, gettext("Snort: restarting on interface " . convert_real_interface_to_friendly_descr($if_real) . " due to IP REP preprocessor configuration change."));
+			logger(LOG_NOTICE, localize_text("restarting on interface %s due to IP REP preprocessor configuration change.", convert_real_interface_to_friendly_descr($if_real)), LOG_PREFIX_PKG_SNORT);
 			snort_stop($a_nat, $if_real);
 			snort_start($a_nat, $if_real, TRUE);
 			$savemsg = gettext("Snort has been restarted on interface " . convert_real_interface_to_friendly_descr($if_real) . " because IP Reputation preprocessor changes require a restart.");

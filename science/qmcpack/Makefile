@@ -1,7 +1,6 @@
 PORTNAME=	qmcpack
 DISTVERSIONPREFIX=	v
-DISTVERSION=	4.0.0
-PORTREVISION=	2
+DISTVERSION=	4.1.0
 CATEGORIES=	science
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -17,7 +16,7 @@ BROKEN_i386=	undefined reference to `__atomic_load'
 BROKEN=		requires OpenMP support that is missing on this architecture
 .endif
 
-LIB_DEPENDS=	libboost_system.so:devel/boost-libs \
+LIB_DEPENDS=	libboost_thread.so:devel/boost-libs \
 		libfftw3.so:math/fftw3 \
 		libhdf5.so:science/hdf5 \
 		libmpich.so:net/mpich \

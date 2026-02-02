@@ -1,15 +1,6 @@
---- base/memory/platform_shared_memory_region_posix.cc.orig	2025-05-31 17:16:41 UTC
+--- base/memory/platform_shared_memory_region_posix.cc.orig	2025-10-21 16:57:35 UTC
 +++ base/memory/platform_shared_memory_region_posix.cc
-@@ -61,7 +61,7 @@ std::optional<FDAccessModeError> CheckFDAccessMode(int
- 
- }  // namespace
- 
--#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS)
-+#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_BSD)
- // static
- ScopedFD PlatformSharedMemoryRegion::ExecutableRegion::CreateFD(size_t size) {
-   PlatformSharedMemoryRegion region =
-@@ -183,7 +183,7 @@ bool PlatformSharedMemoryRegion::ConvertToUnsafe() {
+@@ -172,7 +172,7 @@ bool PlatformSharedMemoryRegion::ConvertToUnsafe() {
  // static
  PlatformSharedMemoryRegion PlatformSharedMemoryRegion::Create(Mode mode,
                                                                size_t size
@@ -18,7 +9,7 @@
                                                                ,
                                                                bool executable
  #endif
-@@ -212,7 +212,7 @@ PlatformSharedMemoryRegion PlatformSharedMemoryRegion:
+@@ -197,7 +197,7 @@ PlatformSharedMemoryRegion PlatformSharedMemoryRegion:
    // flag.
    FilePath directory;
    if (!GetShmemTempDir(

@@ -11,7 +11,7 @@ WWW=		https://github.com/wader/fq
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-USES=		go:1.22,modules
+USES=		go:modules
 USE_GITHUB=	yes
 GH_ACCOUNT=	wader
 GH_TUPLE=	\

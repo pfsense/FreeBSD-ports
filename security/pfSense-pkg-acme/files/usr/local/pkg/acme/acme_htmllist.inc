@@ -1,7 +1,7 @@
 <?php
 /*
  * acme_htmllist.php
- * 
+ *
  * part of pfSense (https://www.pfsense.org/)
  * Copyright (c) 2016 PiBa-NL
  * All rights reserved.
@@ -19,7 +19,7 @@
  * limitations under the License.
  */
 /*
-  This file contains functions which are NOT specific to the package and may/could/should 
+  This file contains functions which are NOT specific to the package and may/could/should
   be moved to the general pfSense php library for possible easy use by other parts of pfSense
 */
 
@@ -42,16 +42,16 @@ class HtmlList
 	public $editmode = false;
 	public $fields_details = null;
 	public $keyfield = "";
-	
+
 	public function __construct($tablename, $fields) {
 		$this->tablename = $tablename;
 		$this->fields = $fields;
 	}
-	
+
 	public function Draw($data) {
 		return $this->acme_htmllist($data, $this->fields, $this->editmode, $this->fields_details);
 	}
-	
+
 	public function outputjavascript() {
 		$table_def = array();
 		$table_def['keyfield'] = $this->keyfield;
@@ -109,7 +109,7 @@ class HtmlList
 		}
 		return $values;
 	}
-	
+
 	function acme_htmllist_drawcell($item, $itemvalue, $editable, $itemname, $counter) {
 		$result = "";
 		$itemnamenr = $this->tablename . $itemname . $counter;
@@ -212,14 +212,13 @@ class HtmlList
 				} else {
 					$key = "";
 				}
-				
+
 				if (!$editstate) {
 					$result .= "<tr id='tr_view_$counter' ondblclick='editRow($counter); return false;' >
 						<td>
 							<input type='checkbox' id='frvc{$counter}' onClick='fr_toggle_two({$counter},this)' name='{$tablename}_row[]' value='{$counter}'/>
 							<a class='fa-solid fa-anchor' id='Xmoveview_{$counter}' onClick='moveRowUpAboveAnchor({$counter}, \"{$tablename}\")' title='".gettext("Move checked entries to here")."'></a>
-						</td>
-				  ";
+						</td>";
 
 					$leftitem = true;
 					foreach($items as $item) {
@@ -233,7 +232,7 @@ class HtmlList
 						}
 						$result .= "</td>";
 						$leftitem = false;
-						
+
 					}
 					$result .= "
 					<td class='action-icons'>
@@ -259,7 +258,7 @@ class HtmlList
 						</td>";
 				foreach($items as $item){
 					$itemname = $item['name'];
-					$itemvalue = $value[$itemname];					
+					$itemvalue = $value[$itemname];
 					$result .= "<td>".$key;
 					if (isset($item['customdrawcell'])) {
 						$result .= $item['customdrawcell']($this, $item, $itemvalue, true, $itemname, $counter);
@@ -337,7 +336,7 @@ EOT
 							$result .= "</td>";
 							$result .= "<td style='border-left:0'>";
 							$itemvalue = $value[$itemname];
-							
+
 							if (!empty($item['description'])) {
 								$result .= "{$item['description']}<br/>";
 							}
@@ -361,7 +360,7 @@ EOT
 		}
 		$result .= "</tbody>
 		</table>
-			<button class='btn btn-success addbtn' type='button' value='add another entry' 
+			<button class='btn btn-success addbtn' type='button' value='add another entry'
 			onclick='javascript:addRowTo(\"{$tablename}\"); return false;'
 			><i class='fa-solid fa-plus icon-embed-btn'></i>Add</button>
 		</div></div>";
@@ -381,7 +380,7 @@ function acme_htmllist_js($tablename = "") {
 	global $g;
 ?><script type="text/javascript">
 	var theme = "<?=$g['theme']?>";
-	
+
 	function html_listitem_change(tableId, fieldId, rowNr, field) {
 		javascript_event = tableId + "_listitem_change";
 		var fn = window[javascript_event];
@@ -389,7 +388,7 @@ function acme_htmllist_js($tablename = "") {
 			fn(tableId, fieldId, rowNr, field);
 		}
 	}
-	
+
 	function htmllist_get_select_items(prefix, tableId) {
 		var items;
 		var items_name = prefix+"_"+tableId;
@@ -423,8 +422,8 @@ function acme_htmllist_js($tablename = "") {
 				var fieldvalue = fielditems[fieldvalueid];
 				seltext += "<option value='"+fieldvalueid+"'>"+fieldvalue['name']+"<\/option>";
 			}
-			
-			result="<select name='" + tableId + field['name'] + rowId + 
+
+			result="<select name='" + tableId + field['name'] + rowId +
 			"' id='" + tableId + field['name'] + rowId + "' "+
 			"onchange='html_listitem_change(\""+tableId+"\",\""+field['name']+"\",\""+rowId+"\",this);' " +
 			">" + seltext + "<\/select> ";
@@ -438,14 +437,14 @@ function acme_htmllist_js($tablename = "") {
 		}
 		return result;
 	}
-	
+
 	var addRowTo = (function() {
 	return (function (tableId) {
 		var d, tbody, tr, td, bgc, i, ii, j, type, seltext, items;
 		var btable, btbody, btr, btd;
 		var fieldcount;
 		d = document;
-		
+
 		tbody = d.getElementById(tableId).getElementsByTagName("tbody").item(0);
 		totalrows++;
 
@@ -471,13 +470,13 @@ function acme_htmllist_js($tablename = "") {
 		}
 		td = d.createElement("td");
 		td.setAttribute("class","action-icons");
-		
+
 		// Recreate the action icons.
 		var actions = "";
 		actions += '<input name="'+tableId+'_rowindex[]" id="'+tableId+'_rowindex'+totalrows+'" class="hidden" value="'+totalrows+'" />' +
 			'<a onclick="deleteRow(' + totalrows + ", '" + tableId + "'); return false;\" ><?=acmeicon('delete','delete entry')?></a>";
 		actions += '<a onclick=\"dupRow(' + totalrows + ", '" + tableId + "'); return false;\" ><?=acmeicon('clone','duplicate entry')?></a>";
-		
+
 		var tabledefinition = htmllist_get_select_items("tabledefinition", tableId);
 		if (tabledefinition && tabledefinition['keyfield'] === "") {
 			actions += '<a onclick=\"moveRowUp(' + totalrows + ", '" + tableId + "'); return false;\" ><?=acmeicon('moveup','move row up')?></a>";
@@ -486,7 +485,7 @@ function acme_htmllist_js($tablename = "") {
 		td.innerHTML = actions;
 		tr.appendChild(td);
 		tbody.appendChild(tr); // add the edit row to the table
-		
+
 		// create viewdetail row
 		detailitems = htmllist_get_select_items('fields_details',tableId);
 		if (detailitems) {
@@ -543,7 +542,7 @@ function acme_htmllist_js($tablename = "") {
 		if (typeof fn === 'function'){
 			fn(tableId, "toggle_details", totalrows, null);
 		}
-		
+
 		javascript_row_added = tableId + "_row_added";
 		var fn = window[javascript_row_added];
 		if (typeof fn === 'function'){
@@ -609,16 +608,16 @@ function acme_htmllist_js($tablename = "") {
 	}
 
 	function moveRowUp(rowId, tableId) {
-	  moveRow(rowId, tableId, true);
+		moveRow(rowId, tableId, true);
 	}
 	function moveRowDown(rowId, tableId) {
-	  moveRow(rowId, tableId, false);
+		moveRow(rowId, tableId, false);
 	}
 	function moveRow(rowId, tableId, up) {
 		var rowview = document.getElementById("tr_view_" + rowId);
 		var rowedit = document.getElementById("tr_edit_" + rowId);
 		var rowviewdetail = document.getElementById("tr_viewdetail_" + rowId);
-		
+
 		var parent = rowedit.parentNode;
 		var swapid;
 		var swaprowedit;
@@ -681,14 +680,14 @@ function acme_htmllist_js($tablename = "") {
 				parent.insertBefore(prevrowviewdetail, firstrow);
 			}
 		}
-		
+
 		//var id_a = document.getElementById(tableId+'_rowindex' + swapid);
 		//var id_b = document.getElementById(tableId+'_rowindex' + rowId);
 		//temp = id_a.value;
 		//id_a.value = id_b.value;
 		//id_b.value = temp;
 	}
-	
+
 	function htmltable_toggle_details(tableId, rowNr, table_row_detail_id) {
 		tredit = document.getElementById(table_row_detail_id+'_off');
 		treditdetail = document.getElementById(table_row_detail_id+'_edit');
@@ -740,7 +739,7 @@ function acme_htmllist_js($tablename = "") {
 			moveabove = rowedit;
 		}
 		//var parent = moveabove[0].parentNode;
-		
+
 		editcheckboxes.each(function( index ) {
 			var moveid = this.value;
 			console.log( index + ": " + this.id );

@@ -1,22 +1,25 @@
 PORTNAME=	chef
-PORTVERSION=	18.7.10
+PORTVERSION=	18.8.54
+PORTREVISION=	2
 CATEGORIES=	sysutils
 MASTER_SITES=	RG
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Systems integration framework. Client part
-WWW=		https://www.chef.io/
+WWW=		https://www.chef.io/ \
+		https://github.com/chef/chef
 
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-RUN_DEPENDS=	rubygem-addressable>=0:www/rubygem-addressable \
+RUN_DEPENDS=	rubygem-activesupport71>=4.2.7.1<7.1.5.2_99:devel/rubygem-activesupport71 \
+		rubygem-addressable>=0:www/rubygem-addressable \
 		rubygem-aws-sdk-s3>=1.91<2:devel/rubygem-aws-sdk-s3 \
 		rubygem-aws-sdk-secretsmanager>=1.46<2:devel/rubygem-aws-sdk-secretsmanager \
 		rubygem-chef-config>=${PORTVERSION}<${PORTVERSION}_99:sysutils/rubygem-chef-config \
 		rubygem-chef-utils>=${PORTVERSION}<${PORTVERSION}_99:sysutils/rubygem-chef-utils \
 		rubygem-chef-vault>=0:sysutils/rubygem-chef-vault \
-		rubygem-chef-zero>=15.0.17:sysutils/rubygem-chef-zero \
+		rubygem-chef-zero>=15.0.21:sysutils/rubygem-chef-zero \
 		rubygem-corefoundation>=0.3.4<0.4:devel/rubygem-corefoundation \
 		rubygem-diff-lcs>=1.2.4:textproc/rubygem-diff-lcs \
 		rubygem-erubis>=2.7<3:www/rubygem-erubis \
@@ -37,22 +40,20 @@ RUN_DEPENDS=	rubygem-addressable>=0:www/rubygem-addressable \
 		rubygem-plist>=3.2<4:devel/rubygem-plist \
 		rubygem-proxifier2>=1.1<2:net/rubygem-proxifier2 \
 		rubygem-syslog-logger>=1.6<2:sysutils/rubygem-syslog-logger \
-		rubygem-train-core>=3.10<3.12.13_99:net/rubygem-train-core \
+		rubygem-train-core>=3.13.4<4:net/rubygem-train-core \
 		rubygem-train-rest>=0.4.1:net/rubygem-train-rest \
 		rubygem-train-winrm>=0.2.17:net/rubygem-train-winrm \
 		rubygem-unf_ext>=0.0.8.2:textproc/rubygem-unf_ext \
+		rubygem-uri>=1.0.3:net/rubygem-uri \
 		rubygem-uuidtools>=2.1.5:devel/rubygem-uuidtools \
-		rubygem-vault>=0.18.2<0.19:security/rubygem-vault
+		rubygem-vault>=0.18.2<1:security/rubygem-vault
 
-USES=		cpe gem shebangfix
+USES=		cpe gem
 
 NO_ARCH=	yes
 
 SUB_LIST=	RUBY=${RUBY}
 USE_RC_SUBR=	chef_client
-
-SHEBANG_FILES=	spec/functional/assets/chefinittest \
-		spec/functional/assets/testchefsubsys
 
 post-install:
 	${MKDIR} ${STAGEDIR}/var/chef

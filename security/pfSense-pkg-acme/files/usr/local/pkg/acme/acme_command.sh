@@ -50,22 +50,22 @@ if ($command == "importcert") {
 			continue;
 		}
 		if ($action['method'] == "shellcommand") {
-			syslog(LOG_NOTICE, "Acme, Running {$action['command']}");
+			logger(LOG_NOTICE, localize_text("Running %s", $action['command']), LOG_PREFIX_PKG_ACME);
 			mwexec_bg($action['command']);
 		}
 		if ($action['method'] == "php_command") {
-			syslog(LOG_NOTICE, "Acme, Running php {$action['command']}");
+			logger(LOG_NOTICE, localize_text("Running php %s", $action['command']), LOG_PREFIX_PKG_ACME);
 			eval($action['command']);
 		}
 		if ($action['method'] == "servicerestart") {
-			syslog(LOG_NOTICE, "Acme, Restarting service {$action['command']}");
+			logger(LOG_NOTICE, localize_text("Restarting service %s", $action['command']), LOG_PREFIX_PKG_ACME);
 			list($servicename, $extras) = acme_fixup_service_args($action['command']);
 			if (!empty($servicename)) {
 				service_control_restart($servicename, $extras);
 			}
 		}
 		if ($action['method'] == "xmlrpcservicerestart") {
-			syslog(LOG_NOTICE, "Acme, Restarting remote service via XMLRPC {$action['command']}");
+			logger(LOG_NOTICE, localize_text("Restarting remote service via XMLRPC %s", $action['command']), LOG_PREFIX_PKG_ACME);
 			list($servicename, $extras) = acme_fixup_service_args($action['command']);
 			if (!empty($servicename)) {
 				/* Wait a few seconds before triggering the restart in case the

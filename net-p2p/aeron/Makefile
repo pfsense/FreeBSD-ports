@@ -1,5 +1,5 @@
 PORTNAME=	aeron
-DISTVERSION=	1.47.3
+DISTVERSION=	1.49.2
 CATEGORIES=	net-p2p
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -12,7 +12,7 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 
 ONLY_FOR_ARCHS=	aarch64 amd64 # limited in aeron-client/src/main/c/concurrent/aeron_atomic.h
 
-LIB_DEPENDS=	libuuid.so:misc/e2fsprogs-libuuid # only for uuid_generate
+LIB_DEPENDS=	libuuid.so:misc/libuuid # only for uuid_generate
 TEST_DEPENDS=	googletest>0:devel/googletest
 
 USES=		cmake:testing localbase:ldflags
@@ -33,6 +33,6 @@ CMAKE_TESTING_ON=	AERON_TESTS \
 LDFLAGS+=	-lm \
 		-luuid
 
-TESTING_UNSAFE=	tests as of 1.44.6: 89% tests passed, 15 tests failed out of 131, see https://github.com/real-logic/aeron/issues/1696
+TESTING_UNSAFE=	tests as of 1.44.6: 74% tests passed, 35 tests failed out of 136, see https://github.com/real-logic/aeron/issues/1696
 
 .include <bsd.port.mk>

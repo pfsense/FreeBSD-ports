@@ -1,6 +1,6 @@
 PORTNAME=	miniflux
-DISTVERSION=	2.2.9
-PORTREVISION=	1
+DISTVERSION=	2.2.11
+PORTREVISION=	6
 CATEGORIES=	www
 
 MAINTAINER=	krion@FreeBSD.org
@@ -10,7 +10,7 @@ WWW=		https://miniflux.app/
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-USES=		go:1.24,modules
+USES=		go:1.24+,modules
 
 USE_GITHUB=	yes
 GH_PROJECT=	v2

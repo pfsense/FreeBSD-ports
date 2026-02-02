@@ -1,12 +1,12 @@
 PORTNAME=	miller
 DISTVERSIONPREFIX=	v
-DISTVERSION=	6.13.0
-PORTREVISION=	3
+DISTVERSION=	6.15.0
+PORTREVISION=	4
 CATEGORIES=	textproc
 MASTER_SITES=	https://raw.githubusercontent.com/johnkerl/${PORTNAME}/${DISTVERSIONFULL}/:gomod
 DISTFILES=	go.mod:gomod
 
-MAINTAINER=	jungleboogie0+mlr@gmail.com
+MAINTAINER=	adamw@FreeBSD.org
 COMMENT=	Sed/awk/cut/join/sort for name-indexed data such as CSV, TSV and JSON
 WWW=		https://johnkerl.org/miller/doc/
 

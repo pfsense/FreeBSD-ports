@@ -4,6 +4,7 @@ CATEGORIES=	devel kde kde-frameworks
 
 COMMENT=	Extra modules and scripts for CMake
 MAINTAINER=	kde@FreeBSD.org
+WWW=		https://api.kde.org/ecm-index.html
 
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/COPYING-CMAKE-SCRIPTS

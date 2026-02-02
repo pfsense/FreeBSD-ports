@@ -1,6 +1,6 @@
 PORTNAME=	rasterio
 PORTVERSION=	1.3.11
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	graphics python
 MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -28,7 +28,7 @@ RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}affine>=0:math/py-affine@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}snuggs>=1.4.1:math/py-snuggs@${PY_FLAVOR}
 
 USES=		compiler:c++11-lang python
-USE_PYTHON=	autoplist concurrent cython pep517
+USE_PYTHON=	autoplist concurrent cython3 pep517
 
 OPTIONS_DEFINE=	PLOT S3
 PLOT_DESC=	Plotting support
@@ -40,10 +40,4 @@ S3_RUN_DEPENDS=		${PYTHON_PKGNAMEPREFIX}boto3>=1.2.4:www/py-boto3@${PY_FLAVOR}
 post-install:
 	${FIND} ${STAGEDIR}${PYTHON_SITELIBDIR} -name '*.so' -exec ${STRIP_CMD} {} +
 
-.include <bsd.port.pre.mk>
-
-.if ${PYTHON_REL} < 31000
-RUN_DEPENDS+=	${PYTHON_PKGNAMEPREFIX}importlib-metadata>=0:devel/py-importlib-metadata@${PY_FLAVOR}
-.endif
-
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

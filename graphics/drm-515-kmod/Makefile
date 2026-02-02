@@ -1,12 +1,12 @@
 PORTNAME=	drm-515-kmod
 PORTVERSION=	${DRM_KMOD_DISTVERSION}
-PORTREVISION=	6
+PORTREVISION=	8
 CATEGORIES=	graphics kld
 
 .include "Makefile.version"
 
 MAINTAINER=	x11@FreeBSD.org
-COMMENT=	DRM drivers modules
+COMMENT=	Direct Rendering Manager GPU drivers
 WWW=		https://github.com/freebsd/drm-kmod/
 
 LICENSE=	BSD2CLAUSE MIT GPLv2
@@ -31,11 +31,16 @@ GH_TAGNAME=	${DRM_KMOD_GH_TAGNAME}
 SUB_FILES=	pkg-message
 SUB_LIST=	OPSYS=${OPSYS} OSREL=${OSREL}
 
-.if ${OPSYS} == FreeBSD && ${OSVERSION} < 1400081
-IGNORE=		not supported on older than 14.0, no kernel support
+.if ${OPSYS} == FreeBSD && ${OSVERSION} >= 1600000
+IGNORE=		not supported on FreeBSD 16.0 and higher
 .endif
 .if ${OPSYS} != FreeBSD
 IGNORE=		not supported on anything but FreeBSD (missing linuxkpi functionality)
+.endif
+
+.if ${OPSYS} == FreeBSD && ${OSVERSION} >= 1500065
+# LinuxKPI PCI changes. We cannot apply them to drm-kmod yet as it would break 14.x.
+EXTRA_PATCHES+= ${PATCHDIR}/extra-patch-linuxkpi-pci
 .endif
 
 .if ${ARCH} == "amd64"
@@ -53,6 +58,7 @@ PLIST_SUB+=	I915="@comment "
 .endif
 
 MAKE_ENV+=	MAKEOBJDIRPREFIX=${WRKSRC}/obj
+CFLAGS+=	-DWANT_NATIVE_PCI_GET_SLOT=1
 
 pre-build:
 		${MKDIR} ${WRKSRC}/obj

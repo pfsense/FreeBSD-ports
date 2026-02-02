@@ -1,6 +1,6 @@
 PORTNAME=	pynzb
 PORTVERSION=	0.1.0
-PORTREVISION=	3
+PORTREVISION=	5
 CATEGORIES=	news python
 MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -20,7 +20,7 @@ USE_PYTHON=	pep517 autoplist
 NO_ARCH=	yes
 
 OPTIONS_DEFINE=	LXML
-LXML_DESC=	Add support for py-lxml
+LXML_DESC=	Add support for py-lxml5
 LXML_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}lxml>=2.2.1:devel/py-lxml@${PY_FLAVOR}
 
 .include <bsd.port.mk>

@@ -1,6 +1,6 @@
 PORTNAME=	ossia-score # uses -mcx16
 DISTVERSION=	3.4.1
-PORTREVISION=	1
+PORTREVISION=	3
 CATEGORIES=	multimedia
 MASTER_SITES=	https://github.com/ossia/score/releases/download/v${DISTVERSION}/
 DISTFILES=	ossia.score-${DISTVERSION}-src${EXTRACT_SUFX}
@@ -13,7 +13,8 @@ WWW=		https://ossia.io/ \
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/LICENSE.txt
 
-BROKEN_i386=	compilation fails, see https://github.com/ossia/score/issues/1608
+BROKEN=		Fails to build with fmt 12+, error: no member named 'localtime' in namespace 'fmt'
+#BROKEN_i386=	compilation fails, see https://github.com/ossia/score/issues/1608
 
 BUILD_DEPENDS=	rapidfuzz-cpp>0:devel/rapidfuzz-cpp \
 		rapidjson>0:devel/rapidjson \
@@ -21,7 +22,7 @@ BUILD_DEPENDS=	rapidfuzz-cpp>0:devel/rapidfuzz-cpp \
 #BUILD_DEPENDS+=	concurrentqueue>0:devel/concurrentqueue # broken, see https://github.com/ossia/score/issues/1720
 LIB_DEPENDS=	libasound.so:audio/alsa-lib \
 		libavcodec.so:multimedia/ffmpeg \
-		libboost_system.so:devel/boost-libs \
+		libboost_thread.so:devel/boost-libs \
 		libfaust.so:audio/faust \
 		libfftw3.so:math/fftw3 \
 		libfmt.so:devel/libfmt \

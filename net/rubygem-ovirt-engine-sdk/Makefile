@@ -1,5 +1,5 @@
 PORTNAME=	ovirt-engine-sdk
-PORTVERSION=	4.6.0
+PORTVERSION=	4.6.1
 CATEGORIES=	net rubygems
 MASTER_SITES=	RG
 

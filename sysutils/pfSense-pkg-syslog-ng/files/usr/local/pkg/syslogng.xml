@@ -28,6 +28,7 @@
 	</copyright>
 	<name>Syslog-ng</name>
 	<title>Services: Syslog-ng</title>
+	<addedit_string>syslog-ng: changed General settings</addedit_string>
 	<include_file>/usr/local/pkg/syslog-ng.inc</include_file>
 	<menu>
 		<name>Syslog-ng</name>

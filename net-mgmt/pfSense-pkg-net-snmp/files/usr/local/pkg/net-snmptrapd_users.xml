@@ -60,7 +60,7 @@
 		</tab>
 	</tabs>
 	<delete_string>snmptrapd user auth entry deleted</delete_string>
-	<addedit_string>snmptrapd user auth entry created/modified</addedit_string>
+	<addedit_string>NET-SNMP: changed User Auth</addedit_string>
 	<adddeleteeditpagefields>
 		<columnitem>
 			<fielddescr>Username</fielddescr>

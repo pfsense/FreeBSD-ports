@@ -1,6 +1,5 @@
 PORTNAME=	fungw
-DISTVERSION=	1.2.1
-PORTREVISION=	2
+DISTVERSION=	1.2.2
 CATEGORIES=	devel
 MASTER_SITES=	http://www.repo.hu/projects/fungw/releases/
 

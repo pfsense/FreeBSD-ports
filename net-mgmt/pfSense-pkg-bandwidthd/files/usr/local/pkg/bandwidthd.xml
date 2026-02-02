@@ -30,6 +30,7 @@
 	</copyright>
 	<name>bandwidthd</name>
 	<title>Services/BandwidthD</title>
+	<addedit_string>bandwidthd: changed Settings</addedit_string>
 	<include_file>/usr/local/pkg/bandwidthd.inc</include_file>
 	<aftersaveredirect>/pkg_edit.php?xml=bandwidthd.xml</aftersaveredirect>
 	<menu>

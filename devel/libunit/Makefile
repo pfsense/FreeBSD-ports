@@ -4,12 +4,15 @@ MASTER_SITES?=	https://unit.nginx.org/download/
 DISTNAME=	unit-${PORTVERSION}
 DISTINFO_FILE=	${.CURDIR}/../../www/unit/distinfo
 
-MAINTAINER=	osa@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Development kit for dynamic web application server
 WWW=		https://unit.nginx.org
 
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/LICENSE
+
+DEPRECATED=	Upstream repo archived on Oct 8 2025
+EXPIRATION_DATE=2025-12-31
 
 CATEGORIES=	devel www
 

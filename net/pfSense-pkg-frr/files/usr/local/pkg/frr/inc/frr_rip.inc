@@ -115,7 +115,7 @@ function frr_generate_config_rip() {
 	$frr_conf = config_get_path('installedpackages/frr/config/0', []);
 	if (empty($frr_conf)) {
 		/* If FRR is not configured, stop. */
-		frr_package_log("FRR RIPd: No FRR global config data found.");
+		frr_package_log("RIPd: No FRR global config data found.");
 		return null;
 	}
 
@@ -128,14 +128,14 @@ function frr_generate_config_rip() {
 	} else {
 		/* If there is no raw configuration and no GUI configuration, stop. */
 		if (empty($frr_ripd_conf)) {
-			frr_package_log("FRR RIPd: No config data found.");
+			frr_package_log("RIPd: No config data found.");
 			return;
 		} elseif (empty($frr_ripd_conf['enable'])) {
 			/* RIP daemon is not enabled. */
-			frr_package_log("FRR RIPd: RIP disabled.");
+			frr_package_log("RIPd: RIP disabled.");
 			return;
 		} elseif (empty($frr_conf['enable'])) {
-			frr_package_log("FRR RIPd: FRR master disabled.");
+			frr_package_log("RIPd: FRR master disabled.");
 			return;
 		}
 		$frr_integrated_config['ripd'] = "";

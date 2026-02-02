@@ -247,7 +247,7 @@ if ($url) {
 	} elseif ((strpos(strtolower($url), "http://") === 0) or (strpos(strtolower($url), "https://") === 0)) {
 		// Redirect to the specified url
 		header("HTTP/1.0");
-		header("Location: $url", '', 302);
+		header("Location: $url", false, 302);
 	} else {
 		// Output an error
 		echo get_page("sgerror: error arguments " . htmlspecialchars($url));

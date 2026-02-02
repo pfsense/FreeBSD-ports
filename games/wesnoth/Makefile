@@ -1,16 +1,11 @@
 PORTNAME=	wesnoth
-PORTVERSION=	1.18.4
-PORTREVISION=	1
+PORTVERSION=	1.18.5
+PORTREVISION=	3
 PORTEPOCH=	1
 CATEGORIES=	games
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}-${PORTVERSION:R}/${PORTNAME}-${PORTVERSION} \
 		http://files.wesnoth.org/ \
 		http://ports.toco-domains.de/
-
-PATCH_SITES+=	https://github.com/wesnoth/wesnoth/commit/
-PATCHFILES+=	8a91c0c05a037e75f53cdbd07c0a9f83186c69a5.patch:-p1
-PATCHFILES+=	385a153aa02fee7b8674d4f470fddf98a4f57bb3.patch:-p1
-PATCHFILES+=	51f424f5ab516a79691084fa4611fc28867e3171.patch:-p1
 
 MAINTAINER=	fluffy@FreeBSD.org
 COMMENT=	Fantasy turn-based strategy game
@@ -36,7 +31,7 @@ USE_SDL=	image2 mixer2 ttf2
 USE_GNOME=	cairo pango
 USE_XORG=	ice sm x11 xext
 
-LDFLAGS+=	-lboost_system -lpthread
+LDFLAGS+=	-lpthread
 
 PORTSCOUT=	limitw:1,even
 
@@ -126,6 +121,10 @@ NOTIFY_CMAKE_OFF=-DENABLE_NOTIFICATIONS=off
 SERVER_DESC=	Server
 SERVER_CMAKE_OFF=-DENABLE_SERVER=off
 TEST_CMAKE_ON=	-DENABLE_TESTS=on
+
+post-patch:
+#	@${REINPLACE_CMD} -e 's/system thread/process thread/' ${WRKSRC}/CMakeLists.txt
+	@${REINPLACE_CMD} -e '/Boost::system/d' ${WRKSRC}/src/CMakeLists.txt
 
 #post-install:
 #	${FIND} ${STAGEDIR}${PREFIX}/man -type d -empty -delete

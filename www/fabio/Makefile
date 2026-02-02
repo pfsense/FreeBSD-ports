@@ -1,7 +1,7 @@
 PORTNAME=	fabio
 PORTVERSION=	1.6.4
 DISTVERSIONPREFIX=	v
-PORTREVISION=	3
+PORTREVISION=	4
 CATEGORIES=	www
 
 MAINTAINER=	stl@ossuary.net
@@ -11,7 +11,7 @@ WWW=		https://github.com/fabiolb/fabio
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-USES=		go:1.23,modules
+USES=		go:modules
 
 USE_RC_SUBR=	fabio
 

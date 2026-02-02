@@ -1,5 +1,5 @@
 PORTNAME=	django-choices-field
-DISTVERSION=	2.3.0
+DISTVERSION=	3.1.1
 CATEGORIES=	www python
 MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}dj52-
@@ -16,7 +16,7 @@ BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}poetry-core>=1.0.0:devel/py-poetry-core@${
 RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}django52>=3.2:www/py-django52@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}typing-extensions>=4.0.0:devel/py-typing-extensions@${PY_FLAVOR}
 
-USES=		python:3.10+
+USES=		python
 USE_PYTHON=	autoplist pep517
 
 NO_ARCH=	yes

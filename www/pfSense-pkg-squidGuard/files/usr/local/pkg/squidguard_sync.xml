@@ -29,6 +29,7 @@
 	</copyright>
 	<name>squidguardsync</name>
 	<title>SquidGuard Proxy Filter: XMLRPC Sync</title>
+	<addedit_string>SquidGuard: changed XMLRPC Sync</addedit_string>
 	<include_file>/usr/local/pkg/squidguard.inc</include_file>
 	<tabs>
 		<tab>

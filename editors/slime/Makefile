@@ -1,12 +1,12 @@
 PORTNAME=	slime
 DISTVERSIONPREFIX=	v
 DISTVERSION=	2.26.1-9
-PORTREVISION=	14
+PORTREVISION=	15
 DISTVERSIONSUFFIX=	-gf368e22a
 CATEGORIES=	editors elisp
 PKGNAMESUFFIX=	${EMACS_PKGNAMESUFFIX}
 
-MAINTAINER=	joe@thrallingpenguin.com
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Superior Lisp Interaction Mode for Emacs
 WWW=		https://common-lisp.net/project/slime/
 

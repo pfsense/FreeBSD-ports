@@ -1,6 +1,6 @@
 PORTNAME=	cloud-nuke
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.40.0
+DISTVERSION=	0.45.0
 CATEGORIES=	sysutils
 
 MAINTAINER=	dutra@FreeBSD.org
@@ -10,7 +10,7 @@ WWW=		https://github.com/gruntwork-io/cloud-nuke
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE.txt
 
-USES=		cpe go:1.22,modules
+USES=		cpe go:modules
 
 CPE_VENDOR=	gruntwork-io
 GO_MODULE=	github.com/gruntwork-io/cloud-nuke

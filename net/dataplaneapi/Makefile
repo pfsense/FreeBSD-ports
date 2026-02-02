@@ -1,11 +1,11 @@
 PORTNAME=	dataplaneapi
 DISTVERSIONPREFIX=	v
-DISTVERSION=	3.2.1
+DISTVERSION=	3.2.7
 CATEGORIES=	net
 
 MAINTAINER=	dtxdf@FreeBSD.org
 COMMENT=	HAProxy Data Plane API
-WWW=		https://github.com/haproxytech/${PORTNAME}
+WWW=		https://github.com/haproxytech/dataplaneapi
 
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/LICENSE
@@ -34,7 +34,7 @@ OPTIONS_DEFINE=	DOCS
 
 # Run 'git checkout ${DISTVERSIONPREFIX}${DISTVERSION} && git rev-parse --short HEAD'
 # in the Data Plane API repository to get the value of GITID.
-GITID=		32af2b44
+GITID=		3f1e3ef3
 
 BUILD_DATE=	$$(date -u "+%Y-%m-%dT%H:%M:%SZ")
 

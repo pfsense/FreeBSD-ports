@@ -1,6 +1,6 @@
 PORTNAME=	fontaine
 PORTVERSION=	1.4.0
-PORTREVISION=	3
+PORTREVISION=	5
 CATEGORIES=	print python
 MASTER_SITES=	https://www.freedesktop.org/software/fontconfig/release/:fontconfig
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}

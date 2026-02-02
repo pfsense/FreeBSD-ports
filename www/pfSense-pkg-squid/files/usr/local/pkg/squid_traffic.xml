@@ -28,6 +28,7 @@
 	</copyright>
 	<name>squidtraffic</name>
 	<title>Proxy Server: Traffic Management</title>
+	<addedit_string>squid: changed Traffic Management</addedit_string>
 	<include_file>/usr/local/pkg/squid.inc</include_file>
 	<tabs>
 		<tab>

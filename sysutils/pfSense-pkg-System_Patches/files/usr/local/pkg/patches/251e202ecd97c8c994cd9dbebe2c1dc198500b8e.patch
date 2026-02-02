@@ -1,0 +1,37 @@
+commit 251e202ecd97c8c994cd9dbebe2c1dc198500b8e
+Author: R. Christian McDonald <cmcdonald@netgate.com>
+Date:   Fri Dec 5 13:54:16 2025 -0500
+
+    captive portal: fix `allowed IPs` with languages other than English. Fixes #16549
+
+diff --git a/src/usr/local/www/services_captiveportal_ip_edit.php b/src/usr/local/www/services_captiveportal_ip_edit.php
+index b8ce3f88bb..93add1c621 100644
+--- a/src/usr/local/www/services_captiveportal_ip_edit.php
++++ b/src/usr/local/www/services_captiveportal_ip_edit.php
+@@ -157,17 +157,6 @@ if ($_POST['save']) {
+ 	}
+ }
+ 
+-function build_dir_list() {
+-	$dirs = array(gettext("Both"), gettext("From"), gettext("To"));
+-	$dirlist = array();
+-
+-	foreach ($dirs as $dir) {
+-		$dirlist[strtolower($dir)] = $dir;
+-	}
+-
+-	return($dirlist);
+-}
+-
+ include("head.inc");
+ 
+ if ($input_errors) {
+@@ -195,7 +184,7 @@ $section->addInput(new Form_Select(
+ 	'dir',
+ 	'*Direction',
+ 	strtolower($pconfig['dir']),
+-	build_dir_list()
++	['both' => gettext('Both'), 'from' => gettext('From'), 'to' => gettext('To')]
+ ))->setHelp('Use "From" to always allow access to an address through the captive portal (without authentication). ' .
+ 			'Use "To" to allow access from all clients (even non-authenticated ones) behind the portal to this IP.');
+ 

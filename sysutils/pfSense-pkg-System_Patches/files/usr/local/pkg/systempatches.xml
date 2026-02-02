@@ -28,6 +28,7 @@
 	<description>System Patches applies patches to the firewall.</description>
 	<name>System Patches</name>
 	<title>System: Patches</title>
+	<donotsave>true</donotsave>
 	<include_file>/usr/local/pkg/patches.inc</include_file>
 	<menu>
 		<name>Patches</name>

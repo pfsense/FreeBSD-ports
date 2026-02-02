@@ -1,9 +1,9 @@
 PORTNAME=	fort
-DISTVERSION=	1.6.6
+DISTVERSION=	1.6.7
 CATEGORIES=	net
 MASTER_SITES=	https://github.com/NICMx/FORT-validator/releases/download/${DISTVERSION}/
 
-MAINTAINER=	toni@devboks.com
+MAINTAINER=	philip@FreeBSD.org
 COMMENT=	FORT Validator is an open source RPKI validator
 WWW=		https://fortproject.net/en/validator
 
@@ -11,7 +11,8 @@ LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
 LIB_DEPENDS=	libcurl.so:ftp/curl \
-		libjansson.so:devel/jansson
+		libjansson.so:devel/jansson \
+		libmicrohttpd.so:www/libmicrohttpd
 RUN_DEPENDS=	${LOCALBASE}/bin/rsync:net/rsync
 
 USES=		gnome localbase:ldflags pkgconfig ssl

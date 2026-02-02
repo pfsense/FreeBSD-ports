@@ -31,6 +31,7 @@
 ]]>	</copyright>
 	<name>freeradiusauthorizedmacs</name>
 	<title>Services/FreeRADIUS</title>
+	<addedit_string>FreeRADIUS: changed MACs</addedit_string>
 	<include_file>/usr/local/pkg/freeradius.inc</include_file>
 	<menu>
 		<name>FreeRADIUS</name>

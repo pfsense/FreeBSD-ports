@@ -23,6 +23,8 @@
 
 global $g;
 
+define('LOG_PREFIX_PKG_SNORT', 'Snort');
+
 /* Define some useful constants for Snort */
 if (!defined("SNORT_BASEDIR")) {
 	define("SNORT_BASEDIR", "/usr/local/");

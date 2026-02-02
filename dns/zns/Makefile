@@ -1,6 +1,6 @@
 PORTNAME=	zns
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.3.0
+DISTVERSION=	0.4.0
 PORTREVISION=	4
 CATEGORIES=	dns
 
@@ -11,7 +11,7 @@ WWW=		https://github.com/znscli/zns
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-USES=		go:1.24,modules
+USES=		go:modules
 
 GO_MODULE=	github.com/znscli/zns
 

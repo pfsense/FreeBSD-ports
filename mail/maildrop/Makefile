@@ -13,7 +13,7 @@
 # MAILDROP_MBOX_DIR=<dir>	Specify DEFAULT mailbox location
 
 PORTNAME=	maildrop
-PORTVERSION=	3.1.8
+PORTVERSION=	3.2.1
 CATEGORIES=	mail
 MASTER_SITES=	SF/courier/${PORTNAME}/${PORTVERSION}
 
@@ -116,7 +116,7 @@ CONFIGURE_ARGS+=	--disable-authlib
 .endif
 
 post-patch-INOTIFY-on:
-	@${REINPLACE_CMD} -e 's|LIBS = @LIBS@|& ${LOCALBASE}/lib/libinotify.a /usr/lib/libpthread.a|' \
+	@${REINPLACE_CMD} -e 's|LIBS = @LIBS@|& ${LOCALBASE}/lib/libinotify.a -lpthread|' \
 		${WRKSRC}/libs/maildir/Makefile.in
 
 post-configure-INOTIFY-on:

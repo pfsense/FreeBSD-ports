@@ -29,6 +29,7 @@
 	<title>Services/FRR</title>
 	<include_file>/usr/local/pkg/frr.inc</include_file>
 	<aftersaveredirect>pkg_edit.php?xml=frr.xml</aftersaveredirect>
+	<addedit_string>FRR: changed Zebra</addedit_string>
 	<menu>
 		<name>FRR Global/Zebra</name>
 		<section>Services</section>

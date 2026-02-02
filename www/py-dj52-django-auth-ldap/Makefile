@@ -1,5 +1,5 @@
 PORTNAME=	django-auth-ldap
-DISTVERSION=	5.1.0
+DISTVERSION=	5.2.0
 CATEGORIES=	www security python
 MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}dj52-
@@ -18,7 +18,7 @@ BUILD_DEPENDS=	${PY_SETUPTOOLS} \
 RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}django52>=4.2:www/py-django52@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}python-ldap>=3.1:net/py-python-ldap@${PY_FLAVOR}
 
-USES=		python:3.10+
+USES=		python
 USE_PYTHON=	autoplist concurrent pep517
 
 NO_ARCH=	yes

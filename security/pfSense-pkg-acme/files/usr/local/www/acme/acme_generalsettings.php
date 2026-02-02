@@ -1,7 +1,7 @@
 <?php
 /*
  * acme_generalsettings.php
- * 
+ *
  * part of pfSense (https://www.pfsense.org/)
  * Copyright (c) 2016 PiBa-NL
  * All rights reserved.
@@ -30,19 +30,42 @@ require_once("acme/acme_htmllist.inc");
 require_once("acme/pkg_acme_tabs.inc");
 
 $simplefields = array('enable', 'writecerts');
+$customacme = config_get_path('installedpackages/acme/customacme/servers', []);
 
 if ($_POST) {
 	unset($input_errors);
 	$pconfig = $_POST;
-	
+
+	for ($x = 0; $x < 50; $x++) {
+		if (isset($pconfig["intid{$x}"]) &&
+		    !empty($pconfig["intid{$x}"])) {
+			$customacme[$x] = array();
+			$customacme[$x]['intid'] = strtolower($pconfig["intid{$x}"]);
+			$customacme[$x]['name'] = $pconfig["name{$x}"];
+			$customacme[$x]['url'] = $pconfig["url{$x}"];
+			if (!is_string($customacme[$x]['intid']) ||
+			    (strlen($customacme[$x]['intid']) >= 32) ||
+			    preg_match('/(^-.*$|[^a-z0-9-])/i', $customacme[$x]['intid'])) {
+				$input_errors[] = gettext("A valid Internal ID must be entered for each custom ACME server.");
+			}
+			if (!filter_var($customacme[$x]['url'], FILTER_VALIDATE_URL)) {
+				$input_errors[] = gettext("A valid URL must be entered for each custom ACME server.");
+			}
+		} else if (isset($customacme[$x])) {
+			unset($customacme[$x]);
+		}
+	}
+
 	if (!$input_errors) {
 		foreach($simplefields as $stat) {
 			config_set_path("installedpackages/acme/{$stat}", $_POST[$stat]);
 		}
-		
+
+		config_set_path('installedpackages/acme/customacme/servers', $customacme);
+
 		set_cronjob();
 		acme_write_all_certificates();
-		write_config(gettext("Services: Acme: General settings saved."));
+		write_config(gettext("Services: ACME: General Settings saved."));
 	}
 }
 
@@ -50,7 +73,7 @@ foreach($simplefields as $stat) {
 	$pconfig[$stat] = config_get_path("installedpackages/acme/{$stat}");
 }
 
-$pgtitle = array(gettext("Services"), gettext("Acme"), gettext("Settings"));
+$pgtitle = array(gettext("Services"), gettext("ACME"), gettext("General Settings"));
 include("head.inc");
 
 if ($input_errors) {
@@ -65,21 +88,91 @@ $counter = 0; // used by htmllist Draw() function.
 
 $form = new \Form;
 
-$section = new \Form_Section("General settings");
+$section = new \Form_Section("General Settings");
 
 $section->addInput(new \Form_Checkbox(
 	'enable',
 	'Cron Entry',
-	'Enable Acme client renewal job. This will configure cron to renew certificates once a day at 3:16. Keeping track of the last successful renewal and the number of days set after to renew again. When renewal happens a service can be restarted or a shell script run to load the new certificate for services that need it, if needed this needs to be configured as a action under the certificate settings.',
+	'Enable scheduled ACME certificate renewal',
 	$pconfig['enable']
-));
+))->setHelp('Configures a cron job to renew ACME certificates once a day at 03:16.%1$s' .
+	'Renews certificates when they reach their renewal threshhold ' .
+	'(e.g. 2/3 total lifetime, or the configured amount).%1$s' .
+	'Executes Post-Renew Actions configured on certificate entries upon successful renewal.', '<br/>');
 
 $section->addInput(new \Form_Checkbox(
 	'writecerts',
 	'Write Certificates',
-	'Write ACME certificates to /conf/acme/ in various formats for use by other scripts or daemons which do not integrate with the certificate manager.',
+	'Write ACME certificates to /conf/acme/',
 	$pconfig['writecerts']
+))->setHelp('After issue or renew, writes the resulting certificate data to files in %1$s/conf/acme/%2$s ' .
+	'using several common various formats. These files can be used by other scripts or daemons which do not integrate with the Certificate Manager.', '<tt>', '</tt>');
+
+$form->add($section);
+
+$section = new \Form_Section("Custom ACME Servers");
+$section->addInput(new \Form_StaticText(
+	null,
+	sprintf(gettext(
+		'Additional ACME Servers which are not included in ACME package.%1$s%1$s' .
+		'There is no way for this package to know which features are supported by the server.%1$s%1$s' .
+		'Use at own risk. Test before deployment.'), '<br/>')
 ));
+
+if (empty($customacme)) {
+	/* Dummy entry to display at least one empty row */
+	$customacme[] = [
+		'intid' => '',
+		'name' => '',
+		'url' => ''
+	];
+}
+$numca = count($customacme) - 1;
+$counter = 0;
+
+foreach ($customacme as $cas) {
+	$group = new \Form_Group($counter == 0 ? 'ACME Server':'');
+
+	$group->add(new \Form_Input(
+		'intid' . $counter,
+		null,
+		'text',
+		$cas['intid']
+	))->setHelp(($counter == $numca) ? 'Internal ID (lowercase, under 32 chars, letters/numbers/dash only)':null);
+
+	$group->add(new \Form_Input(
+		'name' . $counter,
+		null,
+		'text',
+		$cas['name']
+	))->setHelp(($counter == $numca) ? 'Display Name':null);
+
+	$group->add(new \Form_Input(
+		'url' . $counter,
+		null,
+		'url',
+		$cas['url']
+	))->setHelp(($counter == $numca) ? 'Server URL':null);
+
+	$group->add(new \Form_Button(
+		'deleterow' . $counter,
+		'Delete',
+		null,
+		'fa-solid fa-trash-can'
+	))->addClass('btn-warning');
+
+	$group->addClass('repeatable');
+	$section->add($group);
+
+	$counter++;
+}
+
+$form->addGlobal(new \Form_Button(
+	'addrow',
+	'Add ACME Server',
+	null,
+	'fa-solid fa-plus'
+))->addClass('btn-success');
 
 $form->add($section);
 

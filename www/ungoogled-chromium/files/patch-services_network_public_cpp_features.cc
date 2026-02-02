@@ -1,8 +1,8 @@
---- services/network/public/cpp/features.cc.orig	2025-05-31 17:16:41 UTC
+--- services/network/public/cpp/features.cc.orig	2025-12-06 13:30:52 UTC
 +++ services/network/public/cpp/features.cc
-@@ -380,7 +380,7 @@ BASE_FEATURE(kAvoidResourceRequestCopies,
+@@ -364,7 +364,7 @@ BASE_FEATURE(kAvoidResourceRequestCopies, base::FEATUR
+ // https://github.com/WICG/document-isolation-policy
  BASE_FEATURE(kDocumentIsolationPolicy,
-              "DocumentIsolationPolicy",
  #if BUILDFLAG(IS_MAC) || BUILDFLAG(IS_WIN) || BUILDFLAG(IS_CHROMEOS) || \
 -    BUILDFLAG(IS_LINUX)
 +    BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_BSD)

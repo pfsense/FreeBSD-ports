@@ -1,6 +1,7 @@
 PORTNAME=	aws-iam-authenticator
-PORTVERSION=	0.7.3
+PORTVERSION=	0.7.9
 DISTVERSIONPREFIX=	v
+PORTREVISION=	1
 CATEGORIES=	security
 
 MAINTAINER=	danilo@FreeBSD.org
@@ -9,7 +10,7 @@ WWW=		https://github.com/kubernetes-sigs/aws-iam-authenticator
 
 LICENSE=	APACHE20
 
-USES=		go:1.24,modules
+USES=		go:1.25+,modules
 
 GO_MODULE=	github.com/kubernetes-sigs/${PORTNAME}
 GO_TARGET=	./cmd/${PORTNAME}

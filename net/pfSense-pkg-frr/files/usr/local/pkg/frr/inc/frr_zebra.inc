@@ -791,7 +791,7 @@ function frr_generate_config_zebra() {
 	/* Populate FRR Global Settings */
 	$frr_conf = config_get_path('installedpackages/frr/config/0', []);
 	if (empty($frr_conf)) {
-		frr_package_log("FRR Zebra: No config data found.");
+		frr_package_log("Zebra: No config data found.");
 		return;
 	}
 	if (!array_key_exists('enable', $frr_conf) ||

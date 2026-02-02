@@ -1,6 +1,6 @@
 PORTNAME=	FreeCAD
-DISTVERSION=	1.0.1
-PORTREVISION=	2
+DISTVERSION=	1.0.2
+PORTREVISION=	6
 CATEGORIES=	cad
 
 MAINTAINER=	cmt@FreeBSD.org
@@ -9,6 +9,8 @@ WWW=		https://www.freecadweb.org/
 
 LICENSE=	LGPL20+
 LICENSE_FILE=	${WRKSRC}/LICENSE
+
+CONFLICTS_INSTALL=      freecad-devel # bin/FreeCAD
 
 BUILD_DEPENDS=	doxygen:devel/doxygen \
 		pybind11-config:devel/py-pybind11@${PY_FLAVOR} \
@@ -61,8 +63,6 @@ USE_LDCONFIG=	yes
 
 CPE_VENDOR=	freecad_project
 
-VTK_VER=	9.2
-
 DOS2UNIX_GLOB=	*.txt *.h *.cpp *.py *.qss *.csv *.pov *.stp *.ui *.wrl *.WRL
 SHEBANG_FILES=	src/Tools/freecad-thumbnailer
 
@@ -103,6 +103,8 @@ CMAKE_ARGS+=	-DOCC_INCLUDE_DIR="${LOCALBASE}/include/OpenCASCADE" \
 
 CMAKE_INSTALL_PREFIX=	${PREFIX}/${PORTNAME}
 
+CXXFLAGS+=	-DGetCellLinks=GetLinks # fix for vtk-9.5.0: equivalent of this patch: https://github.com/FreeCAD/FreeCAD/issues/21731#issuecomment-2934487147
+
 OPTIONS_DEFINE=	COLLADA
 
 COLLADA_DESC=		Install pycollada for Collada files import
@@ -132,4 +134,5 @@ post-install:
 	${INSTALL_SCRIPT} ${WRKSRC}/src/Tools/freecad-thumbnailer \
 		${STAGEDIR}${PREFIX}/bin/freecad-thumbnailer
 
+.include <../../math/vtk9/Makefile.version>
 .include <bsd.port.mk>

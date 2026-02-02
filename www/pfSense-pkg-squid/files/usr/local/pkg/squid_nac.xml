@@ -28,6 +28,7 @@
 	</copyright>
 	<name>squidnac</name>
 	<title>Proxy Server: Access Control</title>
+	<addedit_string>squid: changed ACLs</addedit_string>
 	<include_file>/usr/local/pkg/squid.inc</include_file>
 	<tabs>
 		<tab>

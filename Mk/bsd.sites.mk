@@ -40,8 +40,7 @@ MASTER_SITE_PORTS_JP+= \
 
 .if !defined(IGNORE_MASTER_SITE_AFTERSTEP)
 MASTER_SITE_AFTERSTEP+= \
-	ftp://ftp.afterstep.org/%SUBDIR%/ \
-	ftp://ftp.kddlabs.co.jp/X11/AfterStep/%SUBDIR%/
+	ftp://ftp.afterstep.org/%SUBDIR%/
 .endif
 
 .if !defined(IGNORE_MASTER_SITE_APACHE)
@@ -51,7 +50,6 @@ MASTER_SITE_APACHE+= \
 	https://mirror.its.dal.ca/apache/%SUBDIR%/ \
 	http://mirror.cogentco.com/pub/apache/%SUBDIR%/ \
 	http://mirror.navercorp.com/apache/%SUBDIR%/ \
-	http://ftp.kddi-research.jp/infosystems/apache/%SUBDIR%/ \
 	http://miroir.univ-lorraine.fr/apache/%SUBDIR%/
 .endif
 
@@ -591,25 +589,16 @@ _gnome_ver=	${_version_major}.${_version_minor}
 .    endif
 .  endif
 
-.  if !empty(MASTER_SITES:M*/archive/*)
-_GNOME_PATH=	%SUBDIR%
-.  else
 _GNOME_PATH=	%SUBDIR%/${_gnome_ver}
-.  endif
 
 MASTER_SITE_GNOME+= \
-	https://download.gnome.org/${_GNOME_PATH}/ \
-	http://ftp.belnet.be/mirror/ftp.gnome.org/gnomeftp/${_GNOME_PATH}/ \
-	https://ftp.acc.umu.se/pub/GNOME/${_GNOME_PATH}/ \
-	https://fr2.rpmfind.net/linux/gnome.org/${_GNOME_PATH}/ \
-	https://gitlab.gnome.org/GNOME/${PORTNAME}/-/archive/${PORTVERSION}/
-
+	https://download.gnome.org/${_GNOME_PATH}/
 .endif
 
 .if !defined(IGNORE_MASTER_SITE_GIMP)
 MASTER_SITE_GIMP+= \
-	http://gimp.mirrors.hoobly.com/pub/%SUBDIR%/ \
-	http://gimp.afri.cc/pub/%SUBDIR%/ \
+	https://ftp.gwdg.de/pub/misc/grafik/%SUBDIR%/ \
+	https://www.mirrorservice.org/sites/ftp.gimp.org/pub/%SUBDIR%/ \
 	https://download.gimp.org/pub/%SUBDIR%/
 .endif
 
@@ -621,7 +610,6 @@ MASTER_SITE_GNU+= \
 	https://www.nic.funet.fi/pub/gnu/gnu/%SUBDIR%/ \
 	http://mirror.navercorp.com/gnu/%SUBDIR%/ \
 	http://ftp.halifax.rwth-aachen.de/gnu/%SUBDIR%/ \
-	http://ftp.kddilabs.jp/GNU/gnu/%SUBDIR%/ \
 	ftp://mirrors.rit.edu/gnu/%SUBDIR%/ \
 	ftp://ftp.fu-berlin.de/unix/gnu/%SUBDIR%/ \
 	ftp://ftp.mirrorservice.org/sites/ftp.gnu.org/gnu/%SUBDIR%/ \
@@ -722,8 +710,6 @@ MASTER_SITE_MOZILLA_ADDONS+= \
 
 .if !defined(IGNORE_MASTER_SITE_MYSQL)
 MASTER_SITE_MYSQL+= \
-	ftp://ftp.fi.muni.cz/pub/mysql/Downloads/%SUBDIR%/ \
-	ftp://ftp.gwdg.de/pub/misc/mysql/Downloads/%SUBDIR%/ \
 	https://dev.mysql.com/get/Downloads/%SUBDIR%/
 .endif
 
@@ -812,7 +798,6 @@ MASTER_SITE_PERL_CPAN_BY+= \
 	https://cpan.metacpan.org/modules/by-module/%SUBDIRPLUS%/ \
 	https://www.cpan.org/%CPANSORT%/%SUBDIR%/ \
 	ftp://ftp.cpan.org/pub/CPAN/%CPANSORT%/%SUBDIR%/ \
-	ftp://ftp.kddlabs.co.jp/lang/perl/CPAN/%CPANSORT%/%SUBDIR%/ \
 	http://ftp.jaist.ac.jp/pub/CPAN/%CPANSORT%/%SUBDIR%/ \
 	ftp://ftp.mirrorservice.org/sites/cpan.perl.org/CPAN/%CPANSORT%/%SUBDIR%/ \
 	ftp://ftp.auckland.ac.nz/pub/perl/CPAN/%CPANSORT%/%SUBDIR%/ \
@@ -971,7 +956,6 @@ MASTER_SITE_SUNSITE+= \
 .if !defined(IGNORE_MASTER_SITE_TCLTK)
 MASTER_SITE_TCLTK+= \
 	ftp://ftp.tcl.tk/pub/tcl/%SUBDIR%/ \
-	ftp://ftp.kddlabs.co.jp/lang/tcl/ftp.scriptics.com/%SUBDIR%/ \
 	ftp://ftp.mirrorservice.org/sites/ftp.tcl.tk/pub/tcl/%SUBDIR%/ \
 	ftp://ftp.funet.fi/pub/languages/tcl/tcl/%SUBDIR%/
 .endif

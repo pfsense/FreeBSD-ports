@@ -1,6 +1,6 @@
---- ui/views/widget/desktop_aura/desktop_window_tree_host_platform.cc.orig	2025-05-28 14:55:43 UTC
+--- ui/views/widget/desktop_aura/desktop_window_tree_host_platform.cc.orig	2025-12-05 10:12:50 UTC
 +++ ui/views/widget/desktop_aura/desktop_window_tree_host_platform.cc
-@@ -50,7 +50,7 @@
+@@ -51,7 +51,7 @@
  #include "ui/wm/core/window_util.h"
  #include "ui/wm/public/window_move_client.h"
  
@@ -9,7 +9,7 @@
  #include "ui/views/widget/desktop_aura/desktop_drag_drop_client_ozone_linux.h"
  #endif
  
-@@ -356,7 +356,7 @@ std::unique_ptr<aura::client::DragDropClient>
+@@ -357,7 +357,7 @@ std::unique_ptr<aura::client::DragDropClient>
  DesktopWindowTreeHostPlatform::CreateDragDropClient() {
    ui::WmDragHandler* drag_handler = ui::GetWmDragHandler(*(platform_window()));
    std::unique_ptr<DesktopDragDropClientOzone> drag_drop_client =

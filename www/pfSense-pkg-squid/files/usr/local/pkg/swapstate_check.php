@@ -34,7 +34,7 @@ if (isset($settings['harddisk_cache_system']) && $settings['harddisk_cache_syste
 		return;
 	}
 	if (substr($cachedir, 0, 11) !== "/var/squid/") {
-		log_error("[squid] swapstate_check.php will NOT manage Squid cache dir '{$cachedir}' since it is not located under /var/squid.");
+		logger(LOG_INFO, localize_text("%s will NOT manage Squid cache dir '%s' since it is not located under %s.", 'swapstate_check.php', $cachedir, '/var/squid'), LOG_PREFIX_PKG_SQUID);
 		return;
 	}
 
@@ -61,7 +61,7 @@ if (isset($settings['harddisk_cache_system']) && $settings['harddisk_cache_syste
 	}
 	if (($swapstate_pct > 75) || (($diskusedpct > 90) && ($swapstate_size > 1024*1024*1024)) || $argv[1] == "clean") {
 		squid_dash_z('clean');
-		log_error(gettext(sprintf("[squid] $rotate_reason Removing and rotating. File was %d bytes, %d%% of total disk space.", $swapstate_size, $swapstate_pct)));
+		logger(LOG_INFO, localize_text("%s Removing and rotating. File was %d bytes, %d%% of total disk space.", $rotate_reason, $swapstate_size, $swapstate_pct), LOG_PREFIX_PKG_SQUID);
 	}
 }
 ?>

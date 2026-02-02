@@ -11,7 +11,7 @@ WWW=		https://github.com/knqyf263/pet
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-USES=		go:1.21,modules
+USES=		go:modules
 
 GO_MODULE=	github.com/knqyf263/pet
 

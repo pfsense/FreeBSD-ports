@@ -652,7 +652,7 @@ if ($_POST['save']) {
 		/* changes.                                     */
 		$if_real = get_real_interface($a_nat[$id]['interface']);
 		if (snort_is_running($a_nat[$id]['uuid'])) {
-			syslog(LOG_NOTICE, gettext("Snort: restarting on interface " . convert_real_interface_to_friendly_descr($if_real) . " due to Preprocessor configuration change."));
+			logger(LOG_NOTICE, localize_text("restarting on interface %s due to Preprocessor configuration change.", convert_real_interface_to_friendly_descr($if_real)), LOG_PREFIX_PKG_SNORT);
 			snort_stop($a_nat[$id], $if_real);
 			snort_start($a_nat[$id], $if_real, TRUE);
 			$savemsg = gettext("Snort has been restarted on interface " . convert_real_interface_to_friendly_descr($if_real) . " because Preprocessor changes require a restart.");

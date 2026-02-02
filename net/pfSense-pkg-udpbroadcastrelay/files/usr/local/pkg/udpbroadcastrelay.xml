@@ -28,6 +28,7 @@
 	<name>udpbroadcastrelay</name>
 	<version>%%PKGVERSION%%</version>
 	<title>Services/UDP Broadcast Relay</title>
+	<donotsave>true</donotsave>
 	<include_file>/usr/local/pkg/udpbroadcastrelay/udpbroadcastrelay.inc</include_file>
 	<menu>
 		<name>UDP Broadcast Relay</name>

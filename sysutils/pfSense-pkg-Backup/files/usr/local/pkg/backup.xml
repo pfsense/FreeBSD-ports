@@ -29,6 +29,7 @@
 	<description>Backup</description>
 	<name>Backup Settings</name>
 	<title>Settings</title>
+	<donotsave>true</donotsave>
 	<include_file>/usr/local/pkg/backup.inc</include_file>
 	<menu>
 		<name>Backup Files/Dir</name>

@@ -1,11 +1,11 @@
 PORTNAME=	openrct2
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.4.21
+DISTVERSION=	0.4.29
 CATEGORIES=	games
-MASTER_SITES=	https://github.com/OpenRCT2/title-sequences/releases/download/v0.4.14/:sequence \
-		https://github.com/OpenRCT2/objects/releases/download/v1.6.1/:object \
-		https://github.com/OpenRCT2/OpenMusic/releases/download/v1.6/:openmsx \
-		https://github.com/OpenRCT2/OpenSoundEffects/releases/download/v1.0.5/:opensfx
+MASTER_SITES=	https://github.com/OpenRCT2/title-sequences/releases/download/v0.4.26/:sequence \
+		https://github.com/OpenRCT2/objects/releases/download/v1.7.5/:object \
+		https://github.com/OpenRCT2/OpenMusic/releases/download/v1.6.1/:openmsx \
+		https://github.com/OpenRCT2/OpenSoundEffects/releases/download/v1.0.6/:opensfx
 DISTFILES=	title-sequences.zip:sequence \
 		objects.zip:object\
 		openmusic.zip:openmsx \
@@ -32,7 +32,8 @@ LIB_DEPENDS=	libpng.so:graphics/png \
 		libfreetype.so:print/freetype2 \
 		libicuuc.so:devel/icu \
 		libbenchmark.so:devel/benchmark \
-		libogg.so:audio/libogg
+		libogg.so:audio/libogg \
+		libzstd.so:archivers/zstd
 
 USES=		cmake compiler:c++17-lang desktop-file-utils gl \
 		localbase:ldflags pkgconfig sdl shared-mime-info ssl

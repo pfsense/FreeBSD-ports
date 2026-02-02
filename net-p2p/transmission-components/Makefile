@@ -1,6 +1,6 @@
 PORTNAME=	transmission
 DISTVERSION=	4.0.6
-PORTREVISION=	4
+PORTREVISION=	7
 CATEGORIES=	net-p2p
 MASTER_SITES=	https://github.com/${PORTNAME}/${PORTNAME}/releases/download/${DISTVERSION}/
 
@@ -145,7 +145,7 @@ OPTIONS_SUB=	yes
 daemon_DESC=	Build daemon
 docs_DESC=	Install documentation
 gtk_DESC=	Build GTK+ client
-qt_DESC=	Build QT client
+qt_DESC=	Build Qt client
 TESTS_DESC=	Build & run unit tests
 utils_DESC=	Build utilities (create, edit, remote, show)
 cli_DESC=	Build command-line client (deprecated)

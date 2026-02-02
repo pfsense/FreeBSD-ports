@@ -1,5 +1,5 @@
 PORTNAME=	git
-DISTVERSION=	2.50.0
+DISTVERSION=	2.52.0
 CATEGORIES=	devel
 MASTER_SITES=	KERNEL_ORG/software/scm/git
 DISTFILES=	${DISTNAME}${EXTRACT_SUFX} \
@@ -61,7 +61,6 @@ SHEBANG_FILES=	Documentation/*.perl \
 		contrib/*/*/*.pl \
 		contrib/contacts/git-contacts \
 		contrib/fast-import/import-zips.py \
-		contrib/hooks/update-paranoid \
 		git-p4.py \
 		templates/hooks/fsmonitor-watchman.sample
 TEST_TARGET=	test
@@ -71,7 +70,7 @@ CONFIGURE_ARGS=	--enable-pthreads=-pthread ac_cv_header_libcharset_h=no
 .if ${SUBPORT} == core
 
 OPTIONS_DEFINE=	CONTRIB CURL DOCS GITWEB ICONV NLS PCRE2 PERL SEND_EMAIL \
-		SUBTREE SYSINFO
+		SUBTREE
 OPTIONS_DEFAULT=CONTRIB CURL GITWEB ICONV PCRE2 PERL SEND_EMAIL SUBTREE
 
 . if ${FLAVOR:U} == lite
@@ -93,7 +92,6 @@ GITWEB_DESC=	Install gitweb
 PCRE2_DESC=	Use Perl Compatible Regular Expressions (v2)
 SEND_EMAIL_DESC=Enable the git-send-email(1) script
 SUBTREE_DESC=	Install git-subtree
-SYSINFO_DESC=	Use libsysinfo
 
 NLS_USES=		gettext
 NLS_MAKE_ARGS_OFF=	NO_GETTEXT=yes
@@ -126,10 +124,6 @@ DOCS_DISTFILES=	${PORTNAME}-htmldocs-${DISTVERSION}${EXTRACT_SUFX}
 
 SUBTREE_BUILD_DEPENDS=	asciidoctor:textproc/rubygem-asciidoctor \
 			xmlto:textproc/xmlto
-
-SYSINFO_LIB_DEPENDS=	libsysinfo.so:devel/libsysinfo
-SYSINFO_CONFIGURE_ON=	--with-libsysinfo
-SYSINFO_LDFLAGS=	-lsysinfo
 
 .else
 
@@ -225,7 +219,7 @@ post-patch:
 .if ${SUBPORT} == gui
 	@${REINPLACE_CMD} -e "/exec wish/s,wish,${WISH}," \
 		${WRKSRC}/gitk-git/gitk \
-		${WRKSRC}/git-gui/git-gui--askpass
+		${WRKSRC}/git-gui/git-gui--askpass.sh
 .endif
 
 post-patch-CONTRIB-on:
@@ -254,11 +248,6 @@ post-install:
 		${COPYTREE_SHARE} . ${STAGEDIR}${PREFIX}/share/man/man5)
 	(cd ${WRKDIR}/man7/ && \
 		${COPYTREE_SHARE} . ${STAGEDIR}${PREFIX}/share/man/man7)
-	${MKDIR} ${STAGEDIR}${PREFIX}/share/emacs/site-lisp/git
-	${INSTALL_DATA} ${WRKSRC}/contrib/emacs/git.el \
-		${STAGEDIR}${PREFIX}/share/emacs/site-lisp/git/
-	${INSTALL_DATA} ${WRKSRC}/contrib/emacs/git-blame.el \
-		${STAGEDIR}${PREFIX}/share/emacs/site-lisp/git/
 	@${MKDIR} ${STAGEDIR}${PREFIX}/etc/bash_completion.d
 	${INSTALL_SCRIPT} ${WRKSRC}/contrib/completion/git-completion.bash \
 		${STAGEDIR}${PREFIX}/etc/bash_completion.d/
@@ -306,8 +295,8 @@ do-install:
 		${STAGEDIR}${PREFIX}/libexec/git-core/
 	${LN} ${STAGEDIR}${PREFIX}/libexec/git-core/git-gui \
 		${STAGEDIR}${PREFIX}/libexec/git-core/git-citool
-	${INSTALL_SCRIPT} ${WRKSRC}/git-gui/git-gui--askpass \
-		${STAGEDIR}${PREFIX}/libexec/git-core/
+	${INSTALL_SCRIPT} ${WRKSRC}/git-gui/git-gui--askpass.sh \
+		${STAGEDIR}${PREFIX}/libexec/git-core/git-gui--askpass
 	${INSTALL_DATA} ${WRKSRC}/git-gui/lib/tclIndex \
 		${STAGEDIR}${PREFIX}/share/git-gui/lib/
 	${INSTALL_DATA} ${WRKSRC}/git-gui/lib/*.ico \

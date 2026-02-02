@@ -1,5 +1,5 @@
 # Run update.sh to update to the latest nightly
-PORTVERSION=	1.89.0.${NIGHTLY_DATE:C,-,,g}
+PORTVERSION=	1.94.0.${NIGHTLY_DATE:C,-,,g}
 # Always set PORTREVISION explicitly as otherwise it is inherited from lang/rust
 PORTREVISION=	0
 PKGNAMESUFFIX=	-nightly
@@ -8,14 +8,14 @@ DISTNAME=	rustc-nightly-src
 ONLY_FOR_ARCHS=	amd64
 ONLY_FOR_ARCHS_REASON=	upstream does not provide bootstraps for other architectures
 
-CONFLICTS_INSTALL=	rust
+CONFLICTS_INSTALL=	rust rust188
 
 MASTERDIR=	${.CURDIR}/../rust
 PATCHDIR=	${.CURDIR}/files
 DISTINFO_FILE=	${.CURDIR}/distinfo
 
-NIGHTLY_DATE=		2025-06-09
-BOOTSTRAPS_DATE=	2025-05-26
+NIGHTLY_DATE=		2025-12-07
+BOOTSTRAPS_DATE=	2025-10-28
 RUST_BOOTSTRAP_VERSION=	beta
 
 .include "${MASTERDIR}/Makefile"

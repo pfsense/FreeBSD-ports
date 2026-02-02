@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	pfSense-pkg-Netgate_Firmware_Upgrade
-PORTVERSION=	0.47.1
+PORTVERSION=	0.47.2
 CATEGORIES=	sysutils
 MASTER_SITES=	# empty
 
@@ -10,9 +10,9 @@ COMMENT=	pfSense package Netgate Firmware Upgrade
 
 LICENSE=	APACHE20
 
-BUILD_DEPENDS=	e2fsprogs-libuuid>=0:misc/e2fsprogs-libuuid
+BUILD_DEPENDS=	libuuid>=0:misc/libuuid
 RUN_DEPENDS=	flashrom>=1.1:sysutils/flashrom \
-		e2fsprogs-libuuid>=0:misc/e2fsprogs-libuuid
+		libuuid>=0:misc/libuuid
 
 USES=		gmake
 

@@ -4,12 +4,15 @@ CATEGORIES=	ftp
 MASTER_SITES=	https://www.net2ftp.com/download/
 DISTNAME=	net2ftp_v${PORTVERSION}
 
-MAINTAINER=	sunpoet@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Web-based FTP client written in PHP
 WWW=		https://www.net2ftp.com/
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/LICENSE.txt
+
+BROKEN=		Unfetchable
+EXPIRATION_DATE=2025-12-31
 
 USES=		cpe php zip
 .if !defined(WITHOUT_PHP_DEPENDS)

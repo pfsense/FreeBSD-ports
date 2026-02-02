@@ -1,9 +1,9 @@
 PORTNAME=	ringrtc
 DISTVERSIONPREFIX=	v
-DISTVERSION=	2.53.0
+DISTVERSION=	2.60.7
+PORTREVISION=	1
 CATEGORIES=	multimedia
-MASTER_SITES=	LOCAL/mikael/ringrtc/:base \
-		LOCAL/mikael/ringrtc/:boringssl \
+MASTER_SITES=	LOCAL/mikael/ringrtc/:boringssl \
 		LOCAL/mikael/ringrtc/:build \
 		LOCAL/mikael/ringrtc/:buildtools \
 		LOCAL/mikael/ringrtc/:catapult \
@@ -20,8 +20,7 @@ MASTER_SITES=	LOCAL/mikael/ringrtc/:base \
 		LOCAL/mikael/ringrtc/:testing \
 		LOCAL/mikael/ringrtc/:third_party \
 		LOCAL/mikael/ringrtc/:tools
-DISTFILES=	base-${BASE_REV}.tar.gz:base \
-		boringssl-${BORINGSSL_REV}.tar.gz:boringssl \
+DISTFILES=	boringssl-${BORINGSSL_REV}.tar.gz:boringssl \
 		build-${BUILD_REV}.tar.gz:build \
 		buildtools-${BUILDTOOLS_REV}.tar.gz:buildtools \
 		catapult-${CATAPULT_REV}.tar.gz:catapult \
@@ -64,28 +63,27 @@ GH_TUPLE=	signalapp:ringrtc:${DISTVERSIONPREFIX}${DISTVERSION} \
 		signalapp:webrtc:${WEBRTC_REV}:webrtc
 
 # sh net-im/signal-desktop/get_deps.sh
-WEBRTC_REV=	7103d
+WEBRTC_REV=	7339f
 
 # modify webrtc_fetch.sh, then sh webrtc_fetch.sh
-BASE_REV=		1d80e43078965dbe6ded5521fbffb128f59124a6
-BORINGSSL_REV=		a9993612faac4866bc33ca8ff37bfd0659af1c48
-BUILD_REV=		52d62707eaec02b88722a99e335315d166ceda77
-BUILDTOOLS_REV=		6f359296daa889aa726f3d05046b9f37be241169
-CATAPULT_REV=		5bda0fdab9d93ec9963e2cd858c7b49ad7fec7d4
-ICU_REV=		c9fb4b3a6fb54aa8c20a03bbcaa0a4a985ffd34b
-LIBCUBEB_VER=		0.27.0
+BORINGSSL_REV=		ddb2ca4b48fca9a1c468d83dc513b837331843ac
+BUILD_REV=		66d076c7ab192991f67891b062b35404f3cb0739
+BUILDTOOLS_REV=		0c4bbb0f8a874de0a2a15d196031c7303d04fbb3
+CATAPULT_REV=		0fd1415f0cf3219ba097d37336141897fab7c5e9
+ICU_REV=		1b2e3e8a421efae36141a7b932b41e315b089af8
+LIBCUBEB_VER=		0.33.0
 LIBJPEG_TURBO_REV=	e14cbfaa85529d47f9f55b0f104a579c1061f9ad
 LIBSRTP_REV=		a52756acb1c5e133089c798736dd171567df11f5
-LIBVPX_REV=		027bbee30a0103b99d86327b48d29567fed11688
-LIBYUV_REV=		ccdf870348764e4b77fa3b56accb2a896a901bad
-NASM_REV=		767a169c8811b090df222a458b25dfa137fc637e
-OPUS_REV=		0e30966b198ad28943799eaf5b3b08100b6f70c3
-PERFETTO_REV=		40b529923598b739b2892a536a7692eedbed5685
-PROTOBUFJS_REV=		eb785a9363664a402b6336dfe96aad27fb33ffa8
-RE2_REV=		c84a140c93352cdabbfb547c531be34515b12228
-TESTING_REV=		f46b86c7f1fc7a7f52e61c11dbd0573a48cf7a6a
-THIRD_PARTY_REV=	10064104c1f11074312018c3a9c4b66f25584bdd
-TOOLS_REV=		3460fbcdee33353d37800dad5caa6bba327ad8c8
+LIBVPX_REV=		a985e5e847a2fe69bef3e547cf25088132194e39
+LIBYUV_REV=		cdd3bae84818e78466fec1ce954eead8f403d10c
+NASM_REV=		e2c93c34982b286b27ce8b56dd7159e0b90869a2
+OPUS_REV=		55513e81d8f606bd75d0ff773d2144e5f2a732f5
+PERFETTO_REV=		0c893ed6bf6b42e3fee58daf3380d301c72550ed
+PROTOBUFJS_REV=		28bf5df73ef2f345a936d9cc95d64ba8ed426a53
+RE2_REV=		8451125897dd7816a5c118925e8e42309d598ecc
+TESTING_REV=		305de9533d3ee2840af0b3f2c8ed0b32802b0a5d
+THIRD_PARTY_REV=	e30091e8987ee0bb0cd30bc467250a96a7614762
+TOOLS_REV=		ec8f1c6113753a31c55b6d6bddfbe198046029a8
 
 BINARY_ALIAS=	vpython3=${PYTHON_CMD}
 
@@ -110,6 +108,7 @@ GN_ARGS+=	rtc_build_examples=false \
 		use_custom_libcxx=false \
 		use_custom_libunwind=true \
 		use_lld=true \
+		use_llvm_libatomic=false \
 		use_sysroot=false \
 		use_system_freetype=false \
 		use_system_harfbuzz=true \
@@ -133,6 +132,7 @@ PLIST_FILES=	lib/libringrtc.so
 
 RUSTC_VERSION!= rustc -V 2>/dev/null || true
 MAKE_ENV+=	RUSTC_BOOTSTRAP=1
+
 GN_ARGS+=	enable_rust=true \
 		rust_sysroot_absolute="${LOCALBASE}" \
 		rustc_version="${RUSTC_VERSION}"
@@ -140,7 +140,6 @@ GN_ARGS+=	enable_rust=true \
 post-extract:
 	${MKDIR} ${WRKDIR}/${PORTNAME}-${DISTVERSION}/src/webrtc
 	${MV} ${WRKDIR}/webrtc-${WEBRTC_REV} ${WEBRTCDIR}
-	${MV} ${WRKDIR}/base ${WEBRTCDIR}
 	${MV} ${WRKDIR}/build ${WEBRTCDIR}
 	${MV} ${WRKDIR}/buildtools ${WEBRTCDIR}
 	${MV} ${WRKDIR}/testing ${WEBRTCDIR}

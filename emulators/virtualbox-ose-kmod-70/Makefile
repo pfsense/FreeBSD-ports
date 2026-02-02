@@ -12,6 +12,9 @@ WWW=		https://www.virtualbox.org/
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
 
+DEPRECATED=		Upstream EOL reaches on 2025-04-15, use emulators/virtualbox-ose-kmod-72 instead
+EXPIRATION_DATE=	2026-12-31
+
 ONLY_FOR_ARCHS=	amd64
 
 BUILD_DEPENDS=	kmk:devel/kBuild
@@ -35,7 +38,8 @@ CONFIGURE_ARGS+=	--nofatal --with-gcc="${CC}" --with-g++="${CXX}"
 
 CONFLICTS_INSTALL=	virtualbox-ose-kmod-legacy \
 			virtualbox-ose-kmod \
-			virtualbox-ose-kmod-71
+			virtualbox-ose-kmod-71 \
+			virtualbox-ose-kmod-72
 
 PATCHDIR=		${.CURDIR}/../${PORTNAME}-70/files
 PORTSCOUT=		limit:^7\.0\.

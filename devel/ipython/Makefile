@@ -27,7 +27,7 @@ RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}decorator>=0:devel/py-decorator@${PY_FLAVOR}
 		${PYTHON_PKGNAMEPREFIX}traitlets>=5:devel/py-traitlets@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}matplotlib-inline>0:math/py-matplotlib-inline@${PY_FLAVOR}
 
-USES=		cpe python:3.9+
+USES=		cpe python
 USE_PYTHON=	autoplist concurrent pep517
 
 CONFLICTS_INSTALL=	py*-ipython5
@@ -38,13 +38,7 @@ PORTEXAMPLES=	*
 
 OPTIONS_DEFINE=	EXAMPLES
 
-.include <bsd.port.pre.mk>
-
-.if ${PYTHON_REL} < 31000
-RUN_DEPENDS+=	${PYTHON_PKGNAMEPREFIX}typing-extensions>=0:devel/py-typing-extensions@${PY_FLAVOR}
-.endif
-
 post-install-EXAMPLES-on:
 	cd ${WRKSRC}/examples && ${COPYTREE_SHARE} . ${STAGEDIR}${EXAMPLESDIR}
 
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

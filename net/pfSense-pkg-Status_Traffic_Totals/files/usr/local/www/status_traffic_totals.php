@@ -73,25 +73,63 @@ if ($_POST['reset']) {
 
 //save new defaults
 if ($_POST['defaults']) {
-	//TODO clean inputs
-	$timePeriod = $_POST['time-period'];
-	$interfaces = json_encode($_POST['interfaces']);
-	$graphtype = $_POST['graph-type'];
-	$invert = $_POST['invert'];
-	$cumulative = $_POST['cumulative'];
-	$startDay = $_POST['start-day'];
+	unset($input_errors);
 
-	$vnscfg['timeperiod'] = $timePeriod;
-	$vnscfg['interfaces'] = $interfaces;
-	$vnscfg['graphtype'] = $graphtype;
-	$vnscfg['invert'] = $invert;
-	$vnscfg['cumulative'] = $cumulative;
-	$vnscfg['startday'] = $startDay;
+	if (in_array($_POST['time-period'], ['hour', 'day', 'month', 'top'])) {
+		$timePeriod = $_POST['time-period'];
+	} else {
+		$input_errors[] = gettext("Invalid Time Period.");
+	}
 
-	config_set_path('installedpackages/traffictotals/config/0', $vnscfg);
-	write_config('Save default settings for Status > Traffic Totals');
-	vnstat_sync();
-	$savemsg = "The changes have been applied successfully.";
+	if (is_array($_POST['interfaces']) &&
+	    !empty($_POST['interfaces'])) {
+		if (empty(array_diff($_POST['interfaces'], array_column($portlist, 'if')))) {
+			$interfaces = json_encode($_POST['interfaces']);
+		} else {
+			$input_errors[] = gettext("Invalid Interface.");
+		}
+
+	}
+
+	if (in_array($_POST['graph-type'], ['line', 'bar', 'area', 'stacked'])) {
+		$graphtype = $_POST['graph-type'];
+	} else {
+		$input_errors[] = gettext("Invalid Graph Type.");
+	}
+
+	if (in_array($_POST['invert'], ['true', 'false'])) {
+		$invert = $_POST['invert'];
+	} else {
+		$input_errors[] = gettext("Invalid Invert value.");
+	}
+
+	if (in_array($_POST['cumulative'], ['true', 'false'])) {
+		$cumulative = $_POST['cumulative'];
+	} else {
+		$input_errors[] = gettext("Invalid Cumulative value.");
+	}
+
+	if (is_numeric($_POST['start-day']) &&
+	    ($_POST['start-day'] >= 1) &&
+	    ($_POST['start-day'] <= 28)) {
+		$startDay = $_POST['start-day'];
+	} else {
+		$input_errors[] = gettext("Invalid Start Day.");
+	}
+
+	if (empty($input_errors)) {
+		$vnscfg['timeperiod'] = $timePeriod;
+		$vnscfg['interfaces'] = $interfaces;
+		$vnscfg['graphtype'] = $graphtype;
+		$vnscfg['invert'] = $invert;
+		$vnscfg['cumulative'] = $cumulative;
+		$vnscfg['startday'] = $startDay;
+
+		config_set_path('installedpackages/traffictotals/config/0', $vnscfg);
+		write_config('Save default settings for Status > Traffic Totals');
+		vnstat_sync();
+		$savemsg = "The changes have been applied successfully.";
+	}
 }
 
 if (isset($vnscfg['startday'])) {
@@ -127,6 +165,10 @@ $pgtitle = array(gettext("Status"), gettext("Traffic Totals"));
 $shortcut_section = "vnstat";
 
 include("head.inc");
+
+if ($input_errors) {
+	print_input_errors($input_errors);
+}
 
 if ($savemsg) {
 	print_info_box($savemsg, 'success');
@@ -198,7 +240,7 @@ display_top_tabs($tab_array);
 					<span class="help-block">Cumulative</span>
 				</div>
 				<div class="col-sm-2">
-					<input type="number" class="form-control" value="<?=$startDay?>" id="start-day" name="start-day" min="1" max="28" step="1">
+					<input type="number" class="form-control" value="<?= intval($startDay) ?>" id="start-day" name="start-day" min="1" max="28" step="1">
 
 					<span class="help-block">Start Day</span>
 				</div>

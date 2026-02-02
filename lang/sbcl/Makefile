@@ -3,7 +3,7 @@
 # pinned to exact versions of everything used to build them.
 
 PORTNAME=	sbcl
-DISTVERSION=	2.5.5
+DISTVERSION=	2.5.7
 DISTVERSIONSUFFIX=	-source
 PORTEPOCH=	1
 CATEGORIES=	lang lisp
@@ -183,4 +183,10 @@ post-install-DOCS-on:
 check regression-test test: build
 	(cd ${WRKSRC}/tests && ${SH} run-tests.sh)
 
-.include <bsd.port.mk>
+.include <bsd.port.pre.mk>
+
+.if ${OSVERSION} >= 1500000
+BUILD_DEPENDS+=		${LOCALBASE}/lib/compat/libutil.so.9:misc/compat14x
+.endif
+
+.include <bsd.port.post.mk>

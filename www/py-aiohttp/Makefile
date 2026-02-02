@@ -22,7 +22,7 @@ RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}aiohappyeyeballs>=2.3.0:net/py-aiohappyeyeba
 		${PYTHON_PKGNAMEPREFIX}multidict>=4.5<7.0:www/py-multidict@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}propcache>=0.2.0:devel/py-propcache@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}yarl>=1.17.0<2.0:www/py-yarl@${PY_FLAVOR}
-TEST_DEPENDS=	${PYTHON_PKGNAMEPREFIX}aiodns>=1.1:dns/py-aiodns@${PY_FLAVOR} \
+TEST_DEPENDS=	${PYTHON_PKGNAMEPREFIX}aiodns>=3.2.0:dns/py-aiodns@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}brotli>=0:archivers/py-brotli@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}freezegun>=0:devel/py-freezegun@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}gunicorn>=0:www/py-gunicorn@${PY_FLAVOR} \
@@ -30,7 +30,7 @@ TEST_DEPENDS=	${PYTHON_PKGNAMEPREFIX}aiodns>=1.1:dns/py-aiodns@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}pytest-mock>=0:devel/py-pytest-mock@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}pytest-codspeed>=0:devel/py-pytest-codspeed@${PY_FLAVOR}
 
-USES=		cpe python:3.9+
+USES=		cpe python
 USE_PYTHON=	autoplist concurrent cython pep517 pytest
 
 CPE_VENDOR=	aiohttp_project

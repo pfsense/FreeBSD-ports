@@ -2,15 +2,12 @@ PORTNAME=	opencbm
 PORTVERSION=	${OCBM_VERSION}
 CATEGORIES=	comms archivers
 
-MAINTAINER=	zirias@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Commodore CBM serial IEC/IEEE-488 bus utilities
 WWW=		http://opencbm.sourceforge.net/
 
 LICENSE=	GPLv2 BSD3CLAUSE
 LICENSE_COMB=	multi
-
-DEPRECATED=	Depends on expiring devel/cc65
-EXPIRATION_DATE=2025-06-21
 
 BUILD_DEPENDS=	cc65:devel/cc65
 

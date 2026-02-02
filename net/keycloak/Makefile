@@ -1,5 +1,5 @@
 PORTNAME=	keycloak
-DISTVERSION=	26.2.3
+DISTVERSION=	26.4.7
 CATEGORIES=	net java
 MASTER_SITES=	https://github.com/${PORTNAME}/${PORTNAME}/releases/download/${DISTVERSION}/
 
@@ -30,8 +30,7 @@ NO_ARCH=	yes
 NO_BUILD=	yes
 
 SUB_FILES+=	pkg-message
-SUB_LIST+=	GROUP=${KEYCLOAK_GROUP} \
-		JAVA=${JAVA} \
+SUB_LIST+=	JAVA=${JAVA} \
 		JAVA_HOME=${JAVA_HOME} \
 		LOG_DIR=${LOG_DIR} \
 		PORTNAME=${PORTNAME} \
@@ -63,10 +62,10 @@ post-patch:
 	${RM} ${WRKSRC}/bin/kcreg.bat
 
 do-install:
-	${MKDIR} ${STAGEDIR}${JAVASHAREDIR}/${PORTNAME}/bin
-	${MKDIR} ${STAGEDIR}${JAVASHAREDIR}/${PORTNAME}/data
-	${MKDIR} ${STAGEDIR}${LOG_DIR}
-	${MKDIR} ${STAGEDIR}${RUN_DIR}
+	${MKDIR} ${STAGEDIR}${JAVASHAREDIR}/${PORTNAME}/bin \
+		 ${STAGEDIR}${JAVASHAREDIR}/${PORTNAME}/data \
+		 ${STAGEDIR}${LOG_DIR} \
+		 ${STAGEDIR}${RUN_DIR}
 
 	# Install files in bin
 	${INSTALL_SCRIPT} ${WRKSRC}/bin/*.sh ${STAGEDIR}${JAVASHAREDIR}/${PORTNAME}/bin

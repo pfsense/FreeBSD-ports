@@ -1,9 +1,10 @@
 PORTNAME=	zeal
 DISTVERSIONPREFIX=	v
 DISTVERSION=	0.7.2
+PORTREVISION=	1
 CATEGORIES=	devel
 
-MAINTAINER=	rakuco@FreeBSD.org
+MAINTAINER=	jhale@FreeBSD.org
 COMMENT=	Offline documentation browser
 WWW=		https://zealdocs.org
 

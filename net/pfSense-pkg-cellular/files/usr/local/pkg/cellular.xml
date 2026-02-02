@@ -29,6 +29,7 @@
 	<name>Cellular</name>
 	<version>%%PKGVERSION%%</version>
 	<title>Cellular Modem Settings</title>
+	<addedit_string>Cellular: changed settings</addedit_string>
 	<include_file>/usr/local/pkg/cellular.inc</include_file>
 	<menu>
 		<name>Cellular Modem</name>

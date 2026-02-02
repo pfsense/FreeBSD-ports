@@ -61,7 +61,7 @@ MOZILLA_VER?=	${PORTVERSION}
 MOZILLA_BIN?=	${PORTNAME}-bin
 MOZILLA_EXEC_NAME?=${MOZILLA}
 USES+=		compiler:c++17-lang cpe elfctl gl gmake gnome iconv \
-			llvm:min=17,noexport localbase \
+			llvm:min=17,noexport localbase nodejs:24,build,env \
 			pkgconfig python:build desktop-file-utils
 CPE_VENDOR?=mozilla
 USE_GL=		gl
@@ -76,9 +76,8 @@ ELF_FEATURES+=	+wxneeded:dist/bin/${MOZILLA} +wxneeded:dist/bin/${MOZILLA}-bin
 
 BUNDLE_LIBS=	yes
 
-BUILD_DEPENDS+=	rust-cbindgen>=0.28.0:devel/rust-cbindgen \
-				${RUST_DEFAULT}>=1.87.0:lang/${RUST_DEFAULT} \
-				node:www/node
+BUILD_DEPENDS+=	rust-cbindgen>=0.29.1:devel/rust-cbindgen \
+				${RUST_DEFAULT}>=1.92.0:lang/${RUST_DEFAULT}
 LIB_DEPENDS+=	libdrm.so:graphics/libdrm
 RUN_DEPENDS+=	${LOCALBASE}/lib/libpci.so:devel/libpci
 LIB_DEPENDS+=	libepoll-shim.so:devel/libepoll-shim

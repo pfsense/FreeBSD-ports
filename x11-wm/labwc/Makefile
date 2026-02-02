@@ -1,5 +1,5 @@
 PORTNAME=	labwc
-DISTVERSION=	0.8.4
+DISTVERSION=	0.9.2
 CATEGORIES=	x11-wm wayland
 
 MAINTAINER=	jbeich@FreeBSD.org
@@ -9,10 +9,10 @@ WWW=		https://github.com/labwc/labwc
 LICENSE=	GPLv2
 
 BUILD_DEPENDS=	evdev-proto>0:devel/evdev-proto \
-		wayland-protocols>=1.35:graphics/wayland-protocols
+		wayland-protocols>=1.39:graphics/wayland-protocols
 LIB_DEPENDS=	libpng.so:graphics/png \
 		libwayland-server.so:graphics/wayland \
-		libwlroots-0.18.so:x11-toolkits/wlroots018 \
+		libwlroots-0.19.so:x11-toolkits/wlroots019 \
 		libinput.so:x11/libinput \
 		libxkbcommon.so:x11/libxkbcommon
 
@@ -23,11 +23,18 @@ USE_GNOME=	cairo libxml2 pango
 USE_XORG=	pixman
 GL_TUPLE=	https://gitlab.freedesktop.org:vyivel:libsfdo:v0.1.4:libsfdo/subprojects/libsfdo-basedir
 PLIST_FILES=	bin/${PORTNAME} \
+		bin/lab-sensible-terminal \
+		bin/labnag \
 		share/icons/hicolor/scalable/apps/${PORTNAME}-symbolic.svg \
 		share/icons/hicolor/scalable/apps/${PORTNAME}.svg \
 		share/wayland-sessions/${PORTNAME}.desktop \
 		share/xdg-desktop-portal/${PORTNAME}-portals.conf
 PORTEXAMPLES=	*
+
+# https://reviews.freebsd.org/D40791
+.if !exists(/usr/include/sys/signalfd.h)
+LIB_DEPENDS+=	libepoll-shim.so:devel/libepoll-shim
+.endif
 
 OPTIONS_DEFINE=	EXAMPLES LIBRSVG2 MANPAGES NLS X11
 OPTIONS_DEFAULT=EXAMPLES LIBRSVG2 MANPAGES NLS X11
@@ -39,6 +46,7 @@ LIBRSVG2_MESON_ENABLED=	svg
 MANPAGES_BUILD_DEPENDS=	scdoc:textproc/scdoc
 MANPAGES_MESON_ENABLED=	man-pages
 MANPAGES_PLIST_FILES=	share/man/man1/${PORTNAME}.1.gz \
+			share/man/man1/labnag.1.gz \
 			share/man/man5/${PORTNAME}-actions.5.gz \
 			share/man/man5/${PORTNAME}-config.5.gz \
 			share/man/man5/${PORTNAME}-menu.5.gz \
@@ -73,10 +81,12 @@ NLS_PLIST_FILES=	share/locale/ar/LC_MESSAGES/${PORTNAME}.mo \
 			share/locale/pt/LC_MESSAGES/${PORTNAME}.mo \
 			share/locale/pt_BR/LC_MESSAGES/${PORTNAME}.mo \
 			share/locale/ru/LC_MESSAGES/${PORTNAME}.mo \
+			share/locale/sk/LC_MESSAGES/${PORTNAME}.mo \
 			share/locale/sv/LC_MESSAGES/${PORTNAME}.mo \
 			share/locale/tr/LC_MESSAGES/${PORTNAME}.mo \
 			share/locale/uk/LC_MESSAGES/${PORTNAME}.mo \
-			share/locale/zh_CN/LC_MESSAGES/${PORTNAME}.mo
+			share/locale/zh_CN/LC_MESSAGES/${PORTNAME}.mo \
+			share/locale/zh_TW/LC_MESSAGES/${PORTNAME}.mo
 
 X11_LIB_DEPENDS=	libxcb-icccm.so:x11/xcb-util-wm
 X11_USE=		XORG=xcb

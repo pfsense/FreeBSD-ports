@@ -1,13 +1,13 @@
 PORTNAME=	raptor2
 DISTVERSION=	2.0.16
-PORTREVISION=	4
+PORTREVISION=	5
 CATEGORIES=	textproc
 MASTER_SITES=	https://download.librdf.org/source/
 
 PATCH_SITES=	https://github.com/dajobe/raptor/commit/
 PATCHFILES=	4dbc4c1da2a033c497d84a1291c46f416a9cac51.patch:-p1
 
-MAINTAINER=	kde@FreeBSD.org
+MAINTAINER=	office@FreeBSD.org
 COMMENT=	RDF Parser Toolkit for Redland
 WWW=		https://librdf.org/raptor/
 

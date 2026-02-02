@@ -1,6 +1,6 @@
 PORTNAME=	libpst
 PORTVERSION=	0.6.76
-PORTREVISION=	3
+PORTREVISION=	4
 CATEGORIES=	mail converters
 MASTER_SITES=	https://www.five-ten-sg.com/libpst/packages/ \
 		https://fossies.org/unix/privat/ \
@@ -15,7 +15,7 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 
 LIB_DEPENDS=	libgsf-1.so:devel/libgsf
 
-USES=		gmake iconv libtool pathfix pkgconfig
+USES=		gmake iconv libtool pkgconfig
 
 CONFIGURE_ARGS=	--disable-python --enable-libpst-shared
 GNU_CONFIGURE=	yes

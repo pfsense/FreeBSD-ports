@@ -1,8 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	pfSense-pkg-Shellcmd
-PORTVERSION=	1.0.5
-PORTREVISION=	4
+PORTVERSION=	1.0.6
 CATEGORIES=	sysutils
 MASTER_SITES=	# empty
 DISTFILES=	# empty

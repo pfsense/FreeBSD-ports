@@ -147,14 +147,14 @@ RUBY?=			${LOCALBASE}/bin/ruby${RUBY_SUFFIX}
 #
 # Ruby 3.2
 #
-RUBY_DISTVERSION=	3.2.8
+RUBY_DISTVERSION=	3.2.9
 RUBY_PORTREVISION=	0
 
 .      elif ${RUBY_VER} == 3.3
 #
 # Ruby 3.3
 #
-RUBY_DISTVERSION=	3.3.8
+RUBY_DISTVERSION=	3.3.10
 RUBY_PORTREVISION=	0
 
 
@@ -162,15 +162,15 @@ RUBY_PORTREVISION=	0
 #
 # Ruby 3.4
 #
-RUBY_DISTVERSION=	3.4.4
+RUBY_DISTVERSION=	3.4.7
 RUBY_PORTREVISION=	0
 
 
-.      elif ${RUBY_VER} == 3.5
+.      elif ${RUBY_VER} == 4.0
 #
-# Ruby 3.5
+# Ruby 4.0
 #
-RUBY_DISTVERSION=	3.5.0-preview1
+RUBY_DISTVERSION=	4.0.0-preview2
 RUBY_PORTREVISION=	0
 
 # When adding a version, please keep the comment in
@@ -179,7 +179,7 @@ RUBY_PORTREVISION=	0
 #
 # Other versions
 #
-IGNORE=	Only ruby 3,2, 3.3, 3.4 and 3.5 are supported
+IGNORE=	Only ruby 3,2, 3.3, 3.4 and 4.0 are supported
 _INVALID_RUBY_VER=	1
 .      endif
 RUBY_PORTEPOCH=		1
@@ -191,7 +191,7 @@ RUBY_VERSION=	${RUBY_DISTVERSION:C/^([0-9]+\.[0-9]+\.[0-9]+).*/\1/}
 RUBY32?=		"@comment "
 RUBY33?=		"@comment "
 RUBY34?=		"@comment "
-RUBY35?=		"@comment "
+RUBY40?=		"@comment "
 
 .      if defined(BROKEN_RUBY${RUBY_VER:R}${RUBY_VER:E})
 .        if ${BROKEN_RUBY${RUBY_VER:R}${RUBY_VER:E}} == "yes"

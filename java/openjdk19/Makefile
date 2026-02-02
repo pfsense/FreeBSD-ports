@@ -1,7 +1,7 @@
 PORTNAME=	openjdk
 DISTVERSIONPREFIX=	jdk-
 DISTVERSION=	${JDK_MAJOR_VERSION}.${JDK_MINOR_VERSION}.${JDK_PATCH_VERSION}+${JDK_BUILD_NUMBER}-${BSD_JDK_VERSION}
-PORTREVISION=	1
+PORTREVISION=	4
 CATEGORIES=	java devel
 PKGNAMESUFFIX?=	${JDK_MAJOR_VERSION}
 
@@ -10,6 +10,9 @@ COMMENT?=	Java Development Kit ${JDK_MAJOR_VERSION}
 WWW=		https://openjdk.java.net/projects/jdk/19/
 
 LICENSE=	GPLv2
+
+DEPRECATED=	No longer supported by upstream
+EXPIRATION_DATE=	2026-02-12
 
 ONLY_FOR_ARCHS=	aarch64 amd64 i386 powerpc64 powerpc64le
 
@@ -39,6 +42,8 @@ GH_PROJECT=	jdk19u
 
 NO_CCACHE=	yes
 
+# Suppress passing -j to do-build target via Mk/bsd.port.mk
+# In the JDK build the number of parallel jobs is passed in via configure --with-num-cores=N
 _MAKE_JOBS=	#
 MAKE_ENV=	LANG="C" \
 		LC_ALL="C" \
@@ -48,6 +53,7 @@ MAKE_ENV=	LANG="C" \
 		CC=${CC} \
 		CXX=${CXX} \
 		CPP=${CPP} \
+		LOG=cmdlines \
 		MAKEFLAGS=""
 
 JDK_OSARCH=	bsd-${ARCH:S/amd64/x86_64/:S/i386/x86/:S/powerpc64/ppc64/}
@@ -89,6 +95,7 @@ CONFIGURE_ARGS=	--with-boot-jdk=${BOOTSTRAPJDKDIR} \
 		--with-giflib-lib=${LOCALBASE}/lib \
 		--with-harfbuzz=system \
 		--with-libpng=system \
+		--with-num-cores=${MAKE_JOBS_NUMBER} \
 		--with-zlib=system \
 		--with-lcms=system \
 		--x-includes=${LOCALBASE}/include \

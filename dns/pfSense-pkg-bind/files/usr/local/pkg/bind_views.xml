@@ -30,6 +30,7 @@
 	<name>bind_views</name>
 	<version>%%PKGVERSION%%</version>
 	<title>Services/Bind</title>
+	<addedit_string>bind: changed Views</addedit_string>
 	<include_file>/usr/local/pkg/bind.inc</include_file>
 	<tabs>
 		<tab>

@@ -1,7 +1,7 @@
 PORTNAME=	teddycloud
 DISTVERSIONPREFIX=	tc_v
 DISTVERSION=	0.6.4
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	net
 # Get the latest commit hashes here: https://github.com/toniebox-reverse-engineering/tonies-json/commits/release/
 # NOTE: remove the existing tonies.json and tonieboxes.json from DISTDIR before you do a `make makesum`
@@ -65,7 +65,7 @@ ALL_TARGET=	preinstall
 post-extract:
 
 pre-install:
-	@${CP} ${DISTFILES:M*\:toniesjson:C/\:.*//:S,^,${_DISTDIR},} ${WRKSRC}/install/pre/config/
+	@${CP} ${DISTFILES:M*\:toniesjson:C/\:.*//:S,^,${_DISTDIR}/,} ${WRKSRC}/install/pre/config/
 
 do-install:
 	${INSTALL_PROGRAM} ${WRKSRC}/install/pre/teddycloud ${STAGEDIR}${PREFIX}/bin

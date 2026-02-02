@@ -113,7 +113,7 @@ if (isset($_POST['save'])) {
 		<div class="form-group">
 			<label for="<?=htmlspecialchars($widgetkey)?>_refresh_interval" class="col-sm-4 control-label"><?=gettext('Refresh Interval')?></label>
 			<div class="col-sm-8">
-				<input type="number" id="<?=htmlspecialchars($widgetkey)?>_refresh_interval" name="<?=htmlspecialchars($widgetkey)?>_refresh_interval" value="<?=htmlspecialchars($wireguard_refresh_interval)?>" placeholder="<?=$wgg['default_widget_refresh_interval']?>" min="0" max="10" class="form-control" />
+				<input type="number" id="<?=htmlspecialchars($widgetkey)?>_refresh_interval" name="<?=htmlspecialchars($widgetkey)?>_refresh_interval" value="<?=htmlspecialchars($wireguard_refresh_interval)?>" placeholder="<?=$wgg['default_widget_refresh_interval']?>" min="0" max="20" class="form-control" />
 				<span class="help-block">
 					<?=gettext('Widget refresh interval (in ticks).')?>
 					<br />

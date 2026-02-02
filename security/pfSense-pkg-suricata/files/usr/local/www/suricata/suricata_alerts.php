@@ -1089,7 +1089,7 @@ if (file_exists("{$suricatalogdir}suricata_{$if_real}{$suricata_uuid}/alerts.log
 			try {
 				$event_tm = date_create_from_format("m/d/Y-H:i:s.u", $fields['time']);
 			} catch (Exception $e) {
-				syslog(LOG_WARNING, "[suricata] WARNING: found invalid timestamp entry in current alerts.log, the line will be ignored and skipped.");
+				logger(LOG_WARNING, localize_text("found invalid timestamp entry in current alerts.log, the line will be ignored and skipped."), LOG_PREFIX_PKG_SURICATA);
 				continue;
 			}
 

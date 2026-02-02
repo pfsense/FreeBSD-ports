@@ -8,8 +8,8 @@
 	<name>squidguarddest</name>
 	<title>Proxy filter SquidGuard: Target categories</title>
 	<include_file>/usr/local/pkg/squidguard.inc</include_file>
-	<delete_string>A proxy server user has been deleted.</delete_string>
-	<addedit_string>A proxy server user has been created/modified.</addedit_string>
+	<delete_string>SquidGuard: removed Target category</delete_string>
+	<addedit_string>SquidGuard: changed Target categories</addedit_string>
 	<tabs>
 		<tab>
 			<text>General settings</text>

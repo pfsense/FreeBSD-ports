@@ -46,7 +46,7 @@ restart)
 	$RC_SCRIPT restart
 	;;
 zebra)
-	if [ "`pgrep zebra`" = "" ]; then
+	if [ "$(pgrep zebra)" = "" ]; then
 		echo "zebra does not appear to be running"
 		exit 1
 	fi
@@ -72,7 +72,7 @@ zebra)
 		;;
 	esac ;;
 ospf6)
-	if [ "`pgrep ospf6d`" = "" ]; then
+	if [ "$(pgrep ospf6d)" = "" ]; then
 		echo "ospf6d does not appear to be running"
 		exit 1
 	fi
@@ -106,7 +106,7 @@ ospf6)
 		;;
 	esac ;;
 ospf)
-	if [ "`pgrep ospfd`" = "" ]; then
+	if [ "$(pgrep ospfd)" = "" ]; then
 		echo "ospfd does not appear to be running"
 		exit 1
 	fi
@@ -140,7 +140,7 @@ ospf)
 		;;
 	esac ;;
 bgp6*)
-	if [ "`pgrep bgpd`" = "" ]; then
+	if [ "$(pgrep bgpd)" = "" ]; then
 		echo "bgpd does not appear to be running"
 		exit 1
 	fi
@@ -150,7 +150,7 @@ bgp6*)
 		;;
 	esac ;;
 bgp*)
-	if [ "`pgrep bgpd`" = "" ]; then
+	if [ "$(pgrep bgpd)" = "" ]; then
 		echo "bgpd does not appear to be running"
 		exit 1
 	fi
@@ -185,7 +185,7 @@ bgp*)
 		;;
 	esac ;;
 bfd*)
-	if [ "`pgrep bfdd`" = "" ]; then
+	if [ "$(pgrep bfdd)" = "" ]; then
 		echo "bfdd does not appear to be running"
 		exit 1
 	fi
@@ -201,7 +201,7 @@ bfd*)
 		;;
 	esac ;;
 rip*)
-	if [ "`pgrep ripd`" = "" ]; then
+	if [ "$(pgrep ripd)" = "" ]; then
 		echo "ripd does not appear to be running"
 		exit 1
 	fi

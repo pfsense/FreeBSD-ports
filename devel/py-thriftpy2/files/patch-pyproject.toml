@@ -1,11 +1,9 @@
---- pyproject.toml.orig	2024-07-05 11:57:11 UTC
+--- pyproject.toml.orig	2025-07-14 13:08:30 UTC
 +++ pyproject.toml
-@@ -9,7 +9,7 @@ dependencies = [
-     {name = "ThriftPy Organization", email = "gotzehsing@gmail.com"},
- ]
- dependencies = [
--    "Cython>=3.0.10",
-+    "Cython",
-     "ply>=3.4,<4.0",
-     "six~=1.15",
- ]
+@@ -1,5 +1,5 @@
+ [build-system]
+-requires = ["setuptools>=68", "cython>=0.28.4,<4", "toml"]
++requires = ["setuptools>=61", "cython>=0.28.4,<4", "toml"]
+ 
+ [project]
+ name = "thriftpy2"

@@ -1,6 +1,7 @@
 PORTNAME=	syncthing
 DISTVERSIONPREFIX=	v
-DISTVERSION=	1.29.7
+DISTVERSION=	2.0.12
+PORTREVISION=	2
 CATEGORIES=	net
 MASTER_SITES=	https://github.com/${PORTNAME}/${PORTNAME}/releases/download/v${DISTVERSION}/
 DISTNAME=	${PORTNAME}-source-${DISTVERSIONFULL}
@@ -12,7 +13,7 @@ WWW=		https://syncthing.net/
 LICENSE=	MPL20
 LICENSE_FILE=	${WRKSRC}/${PORTNAME}/LICENSE
 
-USES=		cpe go:1.23,modules
+USES=		cpe go:modules
 
 USE_RC_SUBR=	syncthing syncthing-discosrv syncthing-relaysrv \
 		syncthing-relaypoolsrv
@@ -22,6 +23,8 @@ BINS=		syncthing stdiscosrv strelaysrv strelaypoolsrv
 # Anonymize
 MAKE_ENV+=	BUILD_HOST=freebsd \
 		BUILD_USER=ports
+
+CONFLICTS_INSTALL=	syncthing1
 
 NO_CCACHE=	yes
 NO_WRKSUBDIR=	yes

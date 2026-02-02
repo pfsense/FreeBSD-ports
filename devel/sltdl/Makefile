@@ -1,5 +1,5 @@
 PORTNAME=	sltdl
-PORTVERSION=	0.5.1
+PORTVERSION=	0.5.2
 CATEGORIES=	devel
 MASTER_SITES=	http://dl.midipix.org/${PORTNAME}/
 
@@ -14,4 +14,3 @@ HAS_CONFIGURE=	yes
 USES=		tar:xz
 
 .include <bsd.port.mk>
-

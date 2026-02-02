@@ -500,13 +500,13 @@ display_top_tabs($tab_array, true);
 	if ($importalias) {
 
 		print('<form action="suricata_flow_stream.php" method="post" name="iform" id="iform" class="form-horizontal">');
-		print('<input type="hidden" name="eng_id" id="eng_id" value="' . $eng_id . '"/>');
-		print('<input type="hidden" name="id" id="id" value="' . $id . '"/>');
+		print('<input type="hidden" name="eng_id" id="eng_id" value="' . htmlspecialchars($eng_id) . '"/>');
+		print('<input type="hidden" name="id" id="id" value="' . htmlspecialchars($id) . '"/>');
 
 		if ($selectalias) {
-			print('<input type="hidden" name="eng_name" value="' . $eng_name . '"/>');
-			print('<input type="hidden" name="eng_bind" value="' . $eng_bind . '"/>');
-			print('<input type="hidden" name="eng_policy" value="' . $eng_policy . '"/>');
+			print('<input type="hidden" name="eng_name" value="' . htmlspecialchars($eng_name) . '"/>');
+			print('<input type="hidden" name="eng_bind" value="' . htmlspecialchars($eng_bind) . '"/>');
+			print('<input type="hidden" name="eng_policy" value="' . htmlspecialchars($eng_policy) . '"/>');
 		}
 
 		include("/usr/local/www/suricata/suricata_import_aliases.php");
@@ -553,8 +553,8 @@ display_top_tabs($tab_array, true);
 							<tbody>
 								<?php foreach ($pconfig['host_os_policy']['item'] as $f => $v): ?>
 									<tr>
-										<td><?=gettext($v['name'])?></td>
-										<td><?=gettext($v['bind_to'])?></td>
+										<td><?=htmlspecialchars(gettext($v['name']))?></td>
+										<td><?=htmlspecialchars(gettext($v['bind_to']))?></td>
 										<td>
 											<button type="submit" name="edit_os_policy[]" class="btn btn-sm btn-primary" value="Edit" onclick="document.getElementById('eng_id').value='<?=$f?>'" title="<?=gettext("Edit this policy configuration")?>">
 												<i class="fa-solid fa-pencil icon-embed-btn"></i>

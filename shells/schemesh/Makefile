@@ -1,6 +1,6 @@
 PORTNAME=	schemesh
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.9.1
+DISTVERSION=	0.9.2
 CATEGORIES=	shells
 
 MAINTAINER=	ashish@FreeBSD.org
@@ -13,7 +13,7 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 BUILD_DEPENDS=	chez-scheme:lang/chez-scheme
 RUN_DEPENDS=	chez-scheme:lang/chez-scheme
 LIB_DEPENDS=	liblz4.so:archivers/liblz4 \
-		libuuid.so:misc/e2fsprogs-libuuid
+		libuuid.so:misc/libuuid
 
 USES=		gmake ncurses
 

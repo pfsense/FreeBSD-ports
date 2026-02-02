@@ -1,6 +1,6 @@
 PORTNAME=	sshguard
 PORTVERSION=	2.5.1
-PORTREVISION=	0
+PORTREVISION=	1
 PORTEPOCH=	1
 CATEGORIES=	security
 MASTER_SITES=	SF/sshguard/sshguard/${PORTVERSION}
@@ -16,6 +16,9 @@ USE_RC_SUBR=	sshguard
 GNU_CONFIGURE=	yes
 
 SUB_FILES=	pkg-message
+
+PATCHFILES=	2295182adab901c6808182659a3de59dd012d895.patch:-p1
+PATCH_SITES=	https://github.com/SSHGuard/${PORTNAME}/commit/
 
 post-patch:
 	@${REINPLACE_CMD} -e 's|%PREFIX%|${PREFIX}|' \

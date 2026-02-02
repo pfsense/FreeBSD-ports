@@ -1,6 +1,6 @@
 PORTNAME=	virtualbox-ose
 DISTVERSION=	5.2.44
-PORTREVISION?=	8
+PORTREVISION?=	9
 CATEGORIES=	emulators
 MASTER_SITES=	https://download.virtualbox.org/virtualbox/${DISTVERSION}/
 PKGNAMESUFFIX?=	-additions-legacy
@@ -42,7 +42,9 @@ CONFLICTS_INSTALL=	virtualbox-ose-additions \
 			virtualbox-ose-additions-70 \
 			virtualbox-ose-additions-nox11-70 \
 			virtualbox-ose-additions-71 \
-			virtualbox-ose-additions-nox11-71
+			virtualbox-ose-additions-nox11-71 \
+			virtualbox-ose-additions-72 \
+			virtualbox-ose-additions-nox11-72
 
 PATCHDIR=		${.CURDIR}/../${PORTNAME}-legacy/files
 EXTRACT_AFTER_ARGS=	--exclude tools/*.x86 --exclude tools/*.amd64 --exclude Firmware

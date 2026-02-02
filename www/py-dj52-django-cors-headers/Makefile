@@ -1,5 +1,5 @@
 PORTNAME=	django-cors-headers
-DISTVERSION=	4.7.0
+DISTVERSION=	4.9.0
 CATEGORIES=	www python
 MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}dj52-
@@ -17,7 +17,7 @@ BUILD_DEPENDS=	${PY_SETUPTOOLS} \
 RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}django52>=4.2:www/py-django52@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}asgiref>=3.6:www/py-asgiref@${PY_FLAVOR}
 
-USES=		python:3.10+
+USES=		python
 USE_PYTHON=	autoplist pep517
 
 NO_ARCH=		yes

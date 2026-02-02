@@ -1,6 +1,9 @@
 PORTNAME=	libei
-DISTVERSION=	1.4.1
+DISTVERSION=	1.5.0
 CATEGORIES=	x11
+
+PATCH_SITES=	${GL_SITE}/${GL_ACCOUNT}/${GL_PROJECT}/-/commit/
+PATCHFILES+=	4f11112be0c0.patch:-p1 # https://gitlab.freedesktop.org/libinput/libei/-/merge_requests/357
 
 MAINTAINER=	jbeich@FreeBSD.org
 COMMENT=	Library for Emulated Input
@@ -27,7 +30,8 @@ GH_TUPLE=	nemequ:munit:v0.2.0-38-gfbbdf14:munit/subprojects/munit
 GL_SITE=	https://gitlab.freedesktop.org
 GL_ACCOUNT=	libinput
 BINARY_ALIAS=	python3=${PYTHON_CMD}
-MESON_ARGS=	-Dsd-bus-provider=basu -Dtests=disabled
+MESON_DISABLED=	tests
+MESON_ARGS=	-Dsd-bus-provider=basu
 PLIST_SUB=	VERSION=${PORTVERSION}
 
 OPTIONS_DEFINE=	BASU

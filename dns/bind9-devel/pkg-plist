@@ -2,6 +2,7 @@ bin/named-checkconf
 bin/named-checkzone
 bin/named-compilezone
 bin/named-journalprint
+bin/named-makejournal
 %%LMDB%%bin/named-nzd2nzf
 @sample etc/mtree/BIND.chroot.dist.sample
 @sample etc/mtree/BIND.chroot.local.dist.sample
@@ -33,12 +34,11 @@ include/dns/dnssec.h
 include/dns/dnstap.h
 include/dns/ds.h
 include/dns/dsdigest.h
+include/dns/dsync.h
 include/dns/dyndb.h
 include/dns/ecs.h
 include/dns/ede.h
 include/dns/edns.h
-include/dns/enumclass.h
-include/dns/enumtype.h
 include/dns/fixedname.h
 include/dns/forward.h
 include/dns/geoip.h
@@ -59,6 +59,7 @@ include/dns/message.h
 include/dns/name.h
 include/dns/nametree.h
 include/dns/ncache.h
+include/dns/notify.h
 include/dns/nsec.h
 include/dns/nsec3.h
 include/dns/nta.h
@@ -74,7 +75,6 @@ include/dns/rdatalist.h
 include/dns/rdataset.h
 include/dns/rdatasetiter.h
 include/dns/rdataslab.h
-include/dns/rdatastruct.h
 include/dns/rdatatype.h
 include/dns/remote.h
 include/dns/request.h
@@ -104,6 +104,7 @@ include/dns/validator.h
 include/dns/view.h
 include/dns/xfrin.h
 include/dns/zone.h
+include/dns/zonefetch.h
 include/dns/zoneverify.h
 include/dns/zt.h
 include/dst/dst.h
@@ -118,6 +119,7 @@ include/isc/backtrace.h
 include/isc/barrier.h
 include/isc/base32.h
 include/isc/base64.h
+include/isc/bit.h
 include/isc/buffer.h
 include/isc/commandline.h
 include/isc/counter.h
@@ -125,7 +127,6 @@ include/isc/crypto.h
 include/isc/dir.h
 include/isc/dnsstream.h
 include/isc/endian.h
-include/isc/entropy.h
 include/isc/errno.h
 include/isc/error.h
 include/isc/file.h
@@ -235,16 +236,12 @@ include/ns/update.h
 include/ns/xfrout.h
 lib/bind/filter-a.so
 lib/bind/filter-aaaa.so
-lib/libdns-9.21.9.so
-lib/libdns.so
-lib/libisc-9.21.9.so
-lib/libisc.so
-lib/libisccc-9.21.9.so
-lib/libisccc.so
-lib/libisccfg-9.21.9.so
-lib/libisccfg.so
-lib/libns-9.21.9.so
-lib/libns.so
+lib/bind/synthrecord.so
+lib/libdns-9.21.16.so
+lib/libisc-9.21.16.so
+lib/libisccc-9.21.16.so
+lib/libisccfg-9.21.16.so
+lib/libns-9.21.16.so
 @comment share/man/man1/arpaname.1.gz
 @comment share/man/man1/delv.1.gz
 @comment share/man/man1/dig.1.gz
@@ -265,6 +262,7 @@ share/man/man1/named-checkconf.1.gz
 share/man/man1/named-checkzone.1.gz
 share/man/man1/named-compilezone.1.gz
 share/man/man1/named-journalprint.1.gz
+share/man/man1/named-makejournal.1.gz
 %%LMDB%%share/man/man1/named-nzd2nzf.1.gz
 @comment share/man/man1/named-rrchecker.1.gz
 @comment share/man/man1/nsec3hash.1.gz

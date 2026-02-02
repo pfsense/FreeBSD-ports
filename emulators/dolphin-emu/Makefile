@@ -1,5 +1,6 @@
 PORTNAME=	dolphin-emu
-PORTVERSION=	2506
+PORTVERSION=	2509
+PORTREVISION=	3
 CATEGORIES=	emulators
 
 MAINTAINER=	martymac@FreeBSD.org
@@ -60,7 +61,7 @@ GH_TAGNAME=	${PORTVERSION}
 .include "${.CURDIR}/Makefile.tuples"
 
 USE_GL=		egl gl
-USE_SDL=	sdl2
+USE_SDL=	sdl3
 USE_XORG=	ice sm x11 xext xi xrandr
 USE_QT=		base svg
 

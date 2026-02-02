@@ -10,8 +10,8 @@ LIB_DEPENDS=	libassuan.so:security/libassuan \
 		libboost_thread.so:devel/boost-libs \
 		libgpgme.so:security/gpgme \
 		libgpg-error.so:security/libgpg-error \
-		libgpgmepp.so:security/gpgme-cpp \
-		libqgpgmeqt6.so:security/gpgme-qt@qt6
+		libgpgmepp.so:security/gpgmepp \
+		libqgpgmeqt6.so:security/qgpgme@qt6
 
 USES=		cmake compiler:c++11-lang desktop-file-utils gettext kde:6 \
 		qt:6 shared-mime-info tar:xz xorg

@@ -1,9 +1,10 @@
 PORTNAME=	hyprpaper
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.7.5
+DISTVERSION=	0.7.6
+PORTREVISION=	3
 CATEGORIES=	x11 wayland
 
-MAINTAINER=	jbeich@FreeBSD.org
+MAINTAINER=	tagattie@FreeBSD.org
 COMMENT=	Blazing fast Wayland wallpaper utility with IPC controls
 WWW=		https://github.com/hyprwm/hyprpaper
 
@@ -11,7 +12,7 @@ LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
 BUILD_DEPENDS=	hyprwayland-scanner>=0.4.0:devel/hyprwayland-scanner \
-		wayland-protocols>0:graphics/wayland-protocols
+		wayland-protocols>=1.35:graphics/wayland-protocols
 LIB_DEPENDS=	libhyprlang.so:devel/hyprlang \
 		libhyprutils.so:devel/hyprutils \
 		libhyprgraphics.so:graphics/hyprgraphics \
@@ -19,10 +20,16 @@ LIB_DEPENDS=	libhyprlang.so:devel/hyprlang \
 		libwebp.so:graphics/webp
 
 USES=		compiler:c++11-lib cmake gnome jpeg localbase:ldflags pkgconfig
-USE_GNOME=	cairo
+
 USE_GITHUB=	yes
 GH_ACCOUNT=	hyprwm
+
+USE_GNOME=	cairo
+
 PLIST_FILES=	bin/${PORTNAME}
+PORTDOCS=	README.md
+
+OPTIONS_DEFINE=	DOCS
 
 post-patch:
 # Extract (snapshot) version from the port instead of Git
@@ -40,7 +47,11 @@ post-patch:
 		${WRKSRC}/CMakeLists.txt
 	@${REINPLACE_CMD} '/GLES3/d' ${WRKSRC}/src/includes.hpp
 # Respect consolekit2 as XDG_RUNTIME_DIR fallback
-	@${REINPLACE_CMD} 's,/run/user,/var&,' \
+	@${REINPLACE_CMD} 's|/run/user|/var&|' \
 		${WRKSRC}/src/ipc/Socket.cpp
+
+post-install-DOCS-on:
+	@${MKDIR} ${STAGEDIR}${DOCSDIR}
+	${INSTALL_MAN} ${PORTDOCS:S|^|${WRKSRC}/|} ${STAGEDIR}${DOCSDIR}
 
 .include <bsd.port.mk>

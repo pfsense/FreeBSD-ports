@@ -1,10 +1,11 @@
 PORTNAME=	electron
 DISTVERSIONPREFIX=	v
 DISTVERSION=	${ELECTRON_VER}
+PORTREVISION=	3
 PULSEMV=	16
 PULSEV=		${PULSEMV}.1
 CATEGORIES=	devel
-MASTER_SITES=	https://github.com/tagattie/FreeBSD-Electron/releases/download/v36.5.0/:chromium \
+MASTER_SITES=	https://github.com/tagattie/FreeBSD-Electron/releases/download/v36.6.0/:chromium \
 		https://freedesktop.org/software/pulseaudio/releases/:pulseaudio
 PKGNAMESUFFIX=	${ELECTRON_VER_MAJOR}
 DISTFILES=	chromium-${CHROMIUM_VER}${EXTRACT_SUFX}.0:chromium \
@@ -24,6 +25,10 @@ LICENSE=	BSD3CLAUSE LGPL21 MPL11 MIT
 LICENSE_COMB=	multi
 LICENSE_FILE=	${WRKSRC}/electron/LICENSE
 
+DEPRECATED=	EOLed upstream, switch to newer version
+EXPIRATION_DATE=	2025-12-31
+
+BROKEN_i386=	fetch fails: node process stalls during fetch phase and eats up all CPUs
 ONLY_FOR_ARCHS=	aarch64 amd64 i386
 
 FETCH_DEPENDS=	yarn${NODEJS_SUFFIX}>0:www/yarn${NODEJS_SUFFIX}
@@ -221,9 +226,9 @@ SNDIO_VARS=		GN_ARGS+=use_sndio=true
 SNDIO_VARS_OFF=		GN_ARGS+=use_sndio=false
 
 # See ${WRKSRC}/electron/DEPS for CHROMIUM_VER
-CHROMIUM_VER=			136.0.7103.168
+CHROMIUM_VER=			136.0.7103.177
 # See ${WRKSRC}/electron/DEPS for NODE_VER
-NODE_VER=			22.16.0
+NODE_VER=			22.19.0
 # See ${WRKSRC}/electron/DEPS for NAN_VER
 NAN_VER=			e14bdcd1f72d62bca1d541b66da43130384ec213
 # See ${WRKSRC}/electron/DEPS for SQUIRREL_MAC_VER
@@ -244,7 +249,7 @@ YARN_TIMESTAMP=	61171200
 IGNORE=		you have selected HEIMDAL_BASE but do not have Heimdal installed in base
 .endif
 
-LLVM_DEFAULT=		19
+LLVM_DEFAULT=		20
 BUILD_DEPENDS+=		clang${LLVM_DEFAULT}:devel/llvm${LLVM_DEFAULT}
 BINARY_ALIAS+=		cpp=${LOCALBASE}/bin/clang-cpp${LLVM_DEFAULT} \
 			cc=${LOCALBASE}/bin/clang${LLVM_DEFAULT} \
@@ -288,11 +293,9 @@ MAKE_ENV+=	C_INCLUDE_PATH=${LOCALBASE}/include \
 		CPLUS_INCLUDE_PATH=${LOCALBASE}/include
 
 # rust
-RUSTC_VERSION!=	rustc -V 2>/dev/null || true
 MAKE_ENV+=	RUSTC_BOOTSTRAP=1
 GN_ARGS+=	enable_rust=true \
-		rust_sysroot_absolute="${LOCALBASE}" \
-		rustc_version="${RUSTC_VERSION}"
+		rust_sysroot_absolute="${LOCALBASE}"
 
 pre-everything::
 	@${ECHO_MSG}
@@ -377,6 +380,7 @@ pre-configure:
 .endfor
 	touch ${WRKDIR}/${PORTNAME}-${ELECTRON_VER}/pulseaudio-${PULSEV}/src/pulse/version.h
 	@${REINPLACE_CMD} -e 's|$${LOCALBASE}|${LOCALBASE}|;s|$${MODCLANG_VERSION}|${LLVM_DEFAULT}|' \
+		${WRKSRC}/build/config/rust.gni \
 		${WRKSRC}/build/rust/rust_bindgen.gni \
 		${WRKSRC}/build/rust/rust_bindgen_generator.gni
 

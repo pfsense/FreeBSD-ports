@@ -389,8 +389,7 @@ function send_lcd_commands($lcd, $lcd_cmds) {
 	get_lcd_messages($lcd);
 	foreach ($lcd_cmds as $lcd_cmd) {
 		if (! fwrite($lcd, "$lcd_cmd\n")) {
-			lcdproc_warn("Connection to LCDd process lost {$errstr} ({$errno})");
-			$lcdproc_connect_errors++;
+			lcdproc_warn("Connection to LCDd process lost");
 			return false;
 		}
 	}
@@ -400,7 +399,7 @@ function send_lcd_commands($lcd, $lcd_cmds) {
 function get_lcd_messages($lcd) {
 	while (($cmd_output = fgets($lcd, 8000)) !== false) {
 		if (preg_match("/^huh?/", $cmd_output)) {
-			lcdproc_notice("LCDd output: \"{$cmd_output}\". Executed \"{$lcd_cmd}\"");
+			lcdproc_notice("LCDd output: \"{$cmd_output}\"");
 		}
 		if (cmenu_enabled()) {
 			if (preg_match("/^menuevent select cm_ask_enter/", $cmd_output)) {
@@ -769,7 +768,7 @@ function get_top_interfaces_by_bps($interfaceTrafficList, $lcdpanel_width, $lcdp
 	return $result;
 }
 
-function get_top_interfaces_by_bytes_today($interfaceTrafficList, $lcdpanel_width) {
+function get_top_interfaces_by_bytes_today($interfaceTrafficList, $lcdpanel_width, $lcdpanel_height) {
 	$result = [];
 
 	if (count($interfaceTrafficList) < $lcdpanel_height) {
@@ -1500,7 +1499,7 @@ function output_status($lcd, $lcdproc_screens_config, $lcdpanel_width, $lcdpanel
 				$updateSummary = false;
 				break;
 			case "scr_top_interfaces_by_bytes_today":
-				$interfaceTrafficStrings = get_top_interfaces_by_bytes_today($interfaceTrafficList, $lcdpanel_width);
+				$interfaceTrafficStrings = get_top_interfaces_by_bytes_today($interfaceTrafficList, $lcdpanel_width, $lcdpanel_height);
 
 				$title = ($lcdpanel_width >= 20) ? "Total today   IN/OUT" : "Today   IN / OUT";
 				$lcd_cmds[] = "widget_set {$name} title_wdgt 1 1 \"{$title}\"";

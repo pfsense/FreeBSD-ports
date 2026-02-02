@@ -1,6 +1,6 @@
 PORTNAME=	narcissu2
 PORTVERSION=	1.1
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	games
 MASTER_SITES=	http://www.neechin.net/file_download/22/:game \
 		http://www.neechin.net/file_download/27/:script \
@@ -49,7 +49,7 @@ pre-install:
 
 do-install:
 	${INSTALL_SCRIPT} ${WRKSRC}/${PORTNAME} ${STAGEDIR}${PREFIX}/bin
-	${INSTALL_DATA} ${DISTFILES:M*\:icon:C/:.*//:S,^,${_DISTDIR},} \
+	${INSTALL_DATA} ${DISTFILES:M*\:icon:C/:.*//:S,^,${DISTDIR}/,} \
 		${STAGEDIR}${PREFIX}/share/pixmaps
 	(cd ${WRKSRC}/data && ${COPYTREE_SHARE} . ${STAGEDIR}${DATADIR})
 	${INSTALL_DATA} -p ${WRKDIR}/*.utf ${STAGEDIR}${DATADIR}

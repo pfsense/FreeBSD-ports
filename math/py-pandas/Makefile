@@ -1,5 +1,5 @@
 PORTNAME=	pandas
-PORTVERSION=	2.2.3
+PORTVERSION=	2.3.3
 PORTEPOCH=	1
 CATEGORIES=	math devel python
 MASTER_SITES=	PYPI
@@ -14,12 +14,12 @@ WWW=		https://pandas.pydata.org \
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-BUILD_DEPENDS=	meson>=1.2.1:devel/meson@${PY_FLAVOR} \
+BUILD_DEPENDS=	meson>=1.2.1<2:devel/meson@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}meson-python>=0.13.1:devel/meson-python@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}numpy>=1.26.0,1<2,1:math/py-numpy@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}numpy>=1.26.0,1:math/py-numpy@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}versioneer>=0:devel/py-versioneer@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}wheel>=0:devel/py-wheel@${PY_FLAVOR}
-RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}numpy>=1.26.0,1<2,1:math/py-numpy@${PY_FLAVOR} \
+RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}numpy>=1.26.0,1:math/py-numpy@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}python-dateutil>=2.8.2:devel/py-python-dateutil@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}pytz>=2020.1,1:devel/py-pytz@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}sqlite3>=0:databases/py-sqlite3@${PY_FLAVOR} \
@@ -72,7 +72,7 @@ XLWT_DESC=	Write MS Excel with textproc/py-xlwt
 
 ALCHEMY14_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}sqlalchemy14>0:databases/py-sqlalchemy14@${PY_FLAVOR}
 ALCHEMY20_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}sqlalchemy20>0:databases/py-sqlalchemy20@${PY_FLAVOR}
-BOTO_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}boto>0:devel/py-boto@${PY_FLAVOR}
+BOTO_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}boto3>0:www/py-boto3@${PY_FLAVOR}
 BTLNCK_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}bottleneck>=1.2.0:math/py-bottleneck@${PY_FLAVOR}
 HTML5LIB_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}beautifulsoup>=4.2.1:www/py-beautifulsoup@${PY_FLAVOR} \
 			${PYTHON_PKGNAMEPREFIX}html5lib>0:www/py-html5lib@${PY_FLAVOR}

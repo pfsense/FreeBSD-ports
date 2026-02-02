@@ -16,6 +16,9 @@ LICENSE_TEXT=	For any commercial purpose, you must request a license from \
 LICENSE_PERMS=	dist-mirror no-dist-sell pkg-mirror no-pkg-sell no-pkg-mirror \
 		auto-accept
 
+BROKEN=			unfetchable
+EXPIRATION_DATE=	2025-12-31
+
 SUB_FILES=	pkg-message
 
 ALL_TARGET=

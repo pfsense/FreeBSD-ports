@@ -1,5 +1,5 @@
 PORTNAME=	virtualenv
-PORTVERSION=	20.31.2
+PORTVERSION=	20.35.4
 CATEGORIES=	devel python
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
@@ -15,7 +15,7 @@ BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}distlib>=0.3.7:devel/py-distlib@${PY_FLAVO
 RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}distlib>=0.3.7:devel/py-distlib@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}filelock>=3.12.2:sysutils/py-filelock@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}platformdirs>=3.9.1:devel/py-platformdirs@${PY_FLAVOR}
-# tests: 321 passed, 33 skipped
+# tests: 357 passed, 39 skipped, 2 deselected
 TEST_DEPENDS=	${PYTHON_PKGNAMEPREFIX}covdefaults>=2.3:devel/py-covdefaults@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}coverage>=7.3.2:devel/py-coverage@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}coverage_enable_subprocess>=1.0:devel/py-coverage_enable_subprocess@${PY_FLAVOR} \
@@ -35,6 +35,7 @@ USES=		cpe python
 USE_GITHUB=	yes
 GH_ACCOUNT=	pypa
 USE_PYTHON=	autoplist concurrent pep517 pytest
+PYTEST_BROKEN_TESTS=	test_build_c_ext.py #   ERROR: Could not find a version that satisfies the requirement setuptools>=40.8.0
 
 # Fix the LookupError: setuptools-scm was unable to detect version (build target)
 MAKE_ENV=	SETUPTOOLS_SCM_PRETEND_VERSION="${PORTVERSION}"
@@ -48,7 +49,6 @@ NO_ARCH=	yes
 
 OPTIONS_DEFINE=	DOCS
 
-DOCS_BINARY_ALIAS=	towncrier=towncrier-${PYTHON_VER}
 DOCS_BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}click-default-group>=1.2.4:devel/py-click-default-group@${PY_FLAVOR} \
 			${PYTHON_PKGNAMEPREFIX}filelock>=3.12.2:sysutils/py-filelock@${PY_FLAVOR} \
 			${PYTHON_PKGNAMEPREFIX}furo>=2023.7.26:textproc/py-furo@${PY_FLAVOR} \
@@ -58,6 +58,7 @@ DOCS_BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}click-default-group>=1.2.4:devel/py-c
 			${PYTHON_PKGNAMEPREFIX}sphinx>=5.3.0:textproc/py-sphinx@${PY_FLAVOR} \
 			${PYTHON_PKGNAMEPREFIX}sphinxcontrib-towncrier>=0.3.2a0:textproc/py-sphinxcontrib-towncrier@${PY_FLAVOR} \
 			${PYTHON_PKGNAMEPREFIX}towncrier>=22.12.0:textproc/py-towncrier@${PY_FLAVOR}
+DOCS_BINARY_ALIAS=	towncrier=towncrier-${PYTHON_VER}
 DOCS_PLIST_FILES=	share/man/man1/virtualenv.1.gz
 DOCS_PORTDOCS=		* .buildinfo
 

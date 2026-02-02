@@ -1,9 +1,14 @@
 PORTNAME=	mongodb
 DISTVERSIONPREFIX=	r
-DISTVERSION=	7.0.21
+DISTVERSION=	7.0.26
 PORTREVISION=	1
 CATEGORIES=	databases net
 PKGNAMESUFFIX=	${DISTVERSION:R:S/.//}
+
+PATCH_SITES=	https://github.com/${GH_ACCOUNT}/${GH_PROJECT}/commit/
+# https://github.com/mongodb/mongo/pull/1619/
+# "Modernize dynamic module loading to work with Python3.12"
+PATCHFILES+=	0877732109589e441cbf234dce17ec0e7b614902.patch:-p1
 
 MAINTAINER=	ronald@FreeBSD.org
 COMMENT=	MongoDB Community Edition (7.0.x Branch)
@@ -45,7 +50,7 @@ USES+=		gmake pkgconfig
 CPE_PRODUCT=	mongodb
 
 # mozjs tag comes from ${WRKSRC}/src/third_party/mozjs/get-sources.sh
-MOZJS_TAG=	98c8be22bec7bb650156e0d389b425322d8c323c
+MOZJS_TAG=	5acd3be6c9563ad3e7ca6182285c69a38de47bab
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	mongodb mongodb-forks:mozjs
@@ -126,6 +131,7 @@ MOZJS_WRKSRC=	${WRKSRC}/src/third_party/mozjs
 
 .if ${FLAVOR:U} == armv80a
 OPTIONS_SET+=	ARMV80A
+MAKE_JOBS_UNSAFE=	yes
 .endif
 
 .include <bsd.port.pre.mk>

@@ -10,7 +10,7 @@ WWW=		https://github.com/google/pprof
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-USES=		go:1.22,modules
+USES=		go:modules
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	google

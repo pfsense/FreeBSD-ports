@@ -315,9 +315,13 @@ function wg_destroy_rogue_peers($tunnel_name, &$cmds = null) {
 function wg_resolve_endpoints() {
 	// Get the latest info
 	wg_globals();
+	$dns_available = get_dnsavailable();
 
 	// Do we have any peers?
 	foreach (config_get_path('installedpackages/wireguard/peers/item', []) as $peer) {
+		if (!$dns_available && !is_ipaddr($peer['endpoint'])) {
+			continue;
+		}
 		// Strip port if empty
 		$peer['port'] = !empty($peer['port']) ? ":{$peer['port']}" : null;
 

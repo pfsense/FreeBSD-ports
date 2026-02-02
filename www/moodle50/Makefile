@@ -1,5 +1,5 @@
 PORTNAME=	moodle
-PORTVERSION=	5.0.1
+PORTVERSION=	5.0.4
 CATEGORIES=	www education
 MASTER_SITES=	https://packaging.moodle.org/stable500/ \
 		LOCAL/wen
@@ -11,7 +11,7 @@ WWW=		https://www.moodle.org/
 
 LICENSE=	GPLv3
 
-CONFLICTS=	moodle44-4.4.[0-9]* moodle45-4.5.[0-9]*
+CONFLICTS=	moodle44-4.4.[0-9]* moodle45-4.5.[0-9]* moodle51-5.1.[0-9]*
 
 USES=		cpe php:flavors tar:tgz
 USE_PHP=	ctype curl dom exif fileinfo filter gd \
@@ -26,7 +26,6 @@ OPTIONS_SINGLE_BACKEND=	MYSQL PGSQL
 OPTIONS_DEFINE=		LDAP
 OPTIONS_DEFAULT=	MYSQL
 
-MYSQL_USES=	mysql
 MYSQL_USE=	php=mysqli
 PGSQL_USE=	php=pgsql
 LDAP_USE=	php=ldap

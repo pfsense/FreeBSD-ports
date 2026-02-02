@@ -1,6 +1,6 @@
 PORTNAME=	overlord
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.10.0
+DISTVERSION=	0.22.0
 CATEGORIES=	sysutils python
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
@@ -28,6 +28,7 @@ RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}aiofiles>=0:devel/py-aiofiles@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}python-dotenv>=0:www/py-python-dotenv@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}pyyaml>=0:devel/py-pyyaml@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}supervisor>=0:sysutils/py-supervisor@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}sysctl>=0:devel/py-sysctl@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}tornado>=0:www/py-tornado@${PY_FLAVOR} \
 		beanstalkd>=0:net/beanstalkd \
 		memcached>=0:databases/memcached
@@ -54,6 +55,8 @@ post-install:
 		${SETENV} ${MAKE_ENV} ${MAKE_CMD} ${MAKE_ARGS} install-libexec
 	@cd ${WRKSRC} && \
 		${SETENV} ${MAKE_ENV} ${MAKE_CMD} ${MAKE_ARGS} install-manpages
+	@cd ${WRKSRC} && \
+		${SETENV} ${MAKE_ENV} ${MAKE_CMD} ${MAKE_ARGS} install-files
 	@${MKDIR} ${STAGEDIR}/var/log/overlord
 
 post-install-DOCS-on:

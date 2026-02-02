@@ -1,7 +1,8 @@
 PORTNAME=	cdo
-PORTVERSION=	2.5.2
+PORTVERSION=	2.5.4
+PORTREVISION=	1
 CATEGORIES=	science
-MASTER_SITES=	https://code.mpimet.mpg.de/attachments/download/29938/ \
+MASTER_SITES=	https://code.mpimet.mpg.de/attachments/download/30128/ \
 		LOCAL/sunpoet
 
 MAINTAINER=	sunpoet@FreeBSD.org
@@ -11,7 +12,7 @@ WWW=		https://code.mpimet.mpg.de/projects/cdo
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-USES=		compiler:c++20-lang gmake libtool localbase pathfix python:build
+USES=		compiler:c++20-lang gmake libtool localbase python:build
 
 CONFIGURE_ARGS=	--disable-data \
 		--disable-extra \
@@ -59,7 +60,7 @@ SZIP_LIB_DEPENDS=	libsz.so:science/libaec
 UDUNITS_CONFIGURE_WITH=	udunits2
 UDUNITS_LIB_DEPENDS=	libudunits2.so:science/udunits
 UUID_CONFIGURE_OFF=	ac_cv_func_uuid_create=no ac_cv_have_decl_uuid_create=no ac_cv_have_decl_uuid_generate=no ac_cv_lib_uuid_uuid_generate=no
-UUID_LIB_DEPENDS=	libuuid.so:misc/e2fsprogs-libuuid
+UUID_LIB_DEPENDS=	libuuid.so:misc/libuuid
 
 post-patch:
 	@${REINPLACE_CMD} -e '/^SUBDIRS = / s| contrib||' ${WRKSRC}/Makefile.in

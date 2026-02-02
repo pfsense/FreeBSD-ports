@@ -1,11 +1,10 @@
 PORTNAME=	django
-PORTVERSION=	4.2.23
+PORTVERSION=	4.2.27
 CATEGORIES=	www python
 MASTER_SITES=	PYPI \
 		https://media.djangoproject.com/releases/${PORTVERSION:R}/
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 PKGNAMESUFFIX=	42
-#DISTNAME=	Django-${PORTVERSION}
 DIST_SUBDIR=	python
 
 MAINTAINER=	python@FreeBSD.org
@@ -22,7 +21,7 @@ RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}asgiref>=3.6.0:www/py-asgiref@${PY_FLAVOR} \
 TEST_DEPENDS=	${PYTHON_PKGNAMEPREFIX}tblib>0:devel/py-tblib@${PY_FLAVOR}
 
 USES=		cpe python shebangfix
-USE_PYTHON=	autoplist pep517
+USE_PYTHON=	autoplist concurrent pep517
 
 NO_ARCH=	yes
 

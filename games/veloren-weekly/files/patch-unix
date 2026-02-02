@@ -1,10 +1,32 @@
 Relax Linux checks for the code works on any non-Windows platform.
 
---- server-cli/src/main.rs.orig	2024-02-14 21:58:23 UTC
+--- cargo-crates/wgpu-hal-27.0.4/src/vulkan/adapter.rs.orig	2006-07-24 01:21:28 UTC
++++ cargo-crates/wgpu-hal-27.0.4/src/vulkan/adapter.rs
+@@ -1207,7 +1207,7 @@ impl PhysicalDeviceProperties {
+         // don't risk confusing JS by exceeding the range of a double.
+         let is_nvidia = self.properties.vendor_id == crate::auxil::db::nvidia::VENDOR;
+         let max_buffer_size =
+-            if (cfg!(target_os = "linux") || cfg!(target_os = "android")) && !is_nvidia {
++            if (cfg!(all(unix, not(target_vendor = "apple")))) && !is_nvidia {
+                 i32::MAX as u64
+             } else {
+                 1u64 << 52
+--- cargo-crates/wgpu-hal-27.0.4/src/vulkan/instance.rs.orig	2006-07-24 01:21:28 UTC
++++ cargo-crates/wgpu-hal-27.0.4/src/vulkan/instance.rs
+@@ -988,7 +988,7 @@ impl crate::Instance for super::Instance {
+             exposed.info.device_type == wgt::DeviceType::DiscreteGpu
+                 && exposed.info.vendor == db::nvidia::VENDOR
+         });
+-        if cfg!(target_os = "linux") && has_nvidia_dgpu && self.shared.has_nv_optimus {
++        if cfg!(unix) && has_nvidia_dgpu && self.shared.has_nv_optimus {
+             for exposed in exposed_adapters.iter_mut() {
+                 if exposed.info.device_type == wgt::DeviceType::IntegratedGpu
+                     && exposed.info.vendor == db::intel::VENDOR
+--- server-cli/src/main.rs.orig	2025-12-17 17:31:20 UTC
 +++ server-cli/src/main.rs
-@@ -66,14 +66,14 @@ fn main() -> io::Result<()> {
+@@ -74,14 +74,14 @@ fn main() -> io::Result<()> {
      // Load settings
-     let settings = settings::Settings::load();
+     let settings = settings::Settings::load().ok_or(io::ErrorKind::Other)?;
  
 -    #[cfg(any(target_os = "linux", target_os = "macos"))]
 +    #[cfg(not(target_os = "windows"))]
@@ -19,7 +41,7 @@ Relax Linux checks for the code works on any non-Windows platform.
      if !settings.shutdown_signals.is_empty() {
          tracing::warn!(
              "Server configuration contains shutdown signals, but your platform does not support \
---- server-cli/src/settings.rs.orig	2024-03-20 22:12:47 UTC
+--- server-cli/src/settings.rs.orig	2025-12-17 17:31:20 UTC
 +++ server-cli/src/settings.rs
 @@ -15,7 +15,7 @@ impl ShutdownSignal {
  }
@@ -39,9 +61,9 @@ Relax Linux checks for the code works on any non-Windows platform.
                  vec![ShutdownSignal::SIGUSR1]
              } else {
                  Vec::new()
---- voxygen/src/main.rs.orig	2024-02-07 19:13:27 UTC
+--- voxygen/src/main.rs.orig	2025-12-17 17:31:20 UTC
 +++ voxygen/src/main.rs
-@@ -51,7 +51,7 @@ fn main() {
+@@ -47,7 +47,7 @@ fn main() {
              cli::Commands::ListWgpuBackends => {
                  #[cfg(target_os = "windows")]
                  let backends = &["opengl", "dx12", "vulkan"];

@@ -155,7 +155,7 @@ LLDB_BUILD_DEPENDS=	\
 LLDB_DESC=		Install lldb, the LLVM debugger
 LLDB_IMPLIES=		CLANG
 LLDB_PLIST_SUB=		PYTHON_ABIVER=${PYTHON_ABIVER}
-LLDB_USES=		lua:54 libedit
+LLDB_USES=		gnome lua:54 libedit
 LLDB_USE=		GNOME=libxml2
 LLDB_VARS=		_USES_PYTHON=python
 MLIR_DESC=		Multi-Level Intermediate Representation
@@ -208,7 +208,7 @@ EXTRAS_LIBS=	\
 EXTRAS_FILES=	index.js
 EXTRAS_PATTERN=	${EXTRAS_COMMANDS:tW:C/  */|/g}|${EXTRAS_LIBS:tW:C/  */|/g}|${EXTRAS_FILES:tW:C/  */|/g}
 
-FLANG_PATTERN=	${FLANG_COMMANDS:S/^/bin./:tW:C/  */|/g}|flang|libCUF|libFIR|libFlang|libFortran|libHLFIR|ISO_Fortran_binding.h
+FLANG_PATTERN=	${FLANG_COMMANDS:S/^/bin./:tW:C/  */|/g}|flang|libCUF|libFIR|libFlang|libFortran|libHLFIR|libMIFDialect|ISO_Fortran_binding.h
 
 MLIR_PATTERN=	${MLIR_COMMANDS:S/^/bin./:tW:C/  */|/g}|mlir|libMLIR|obj.MLIRCAP
 
@@ -235,7 +235,6 @@ LLVM_ENABLE_PROJECTS+=	clang
 COMMANDS+=	${CLANG_COMMANDS}
 MAN1SRCS+=	${CLANG_MAN1SRCS}
 CLANG_PATTERN=	(amdgpu-arch|c-index-test|clang|diagtool|hmaptool|intercept-|libear|libscanbuild|nvptx-arch|analyze-|scan-|Reporter.py|ScanView.py|scanview.css|sorttable.js|startfile.py|c..-analyzer|AnalyzerPlugin.so)
-USES+=	gnome
 .endif
 
 .if ${PORT_OPTIONS:MCOMPILER_RT}
@@ -254,6 +253,7 @@ PORTDOCS+=	clang-tools
 LLVM_ENABLE_PROJECTS+=	flang
 LLVM_ENABLE_RUNTIMES+=	flang-rt
 COMMANDS+=	${FLANG_COMMANDS}
+MAN1SRCS+=	${FLANG_MAN1SRCS}
 .endif
 
 .if ${PORT_OPTIONS:MLIT}
@@ -426,14 +426,19 @@ post-install-CLANG-on:
 	${RMDIR} ${STAGEDIR}${LLVM_PREFIX}/include/clang/Basic/Target/
 
 post-install-EXTRAS-on:
+	${RMDIR} ${STAGEDIR}${LLVM_PREFIX}/include/clang-tidy/cert
 	${RMDIR} ${STAGEDIR}${LLVM_PREFIX}/include/clang-tidy/misc/ConfusableTable
+	${RMDIR} ${STAGEDIR}${LLVM_PREFIX}/include/clang-tidy/zircon
 
 post-install-FLANG-on:
 	${RMDIR} ${STAGEDIR}${LLVM_PREFIX}/include/flang/Optimizer/CodeGen/CMakeFiles
 	${RMDIR} ${STAGEDIR}${LLVM_PREFIX}/include/flang/Optimizer/Dialect/CMakeFiles
 	${RMDIR} ${STAGEDIR}${LLVM_PREFIX}/include/flang/Optimizer/Dialect/CUF/Attributes/CMakeFiles
 	${RMDIR} ${STAGEDIR}${LLVM_PREFIX}/include/flang/Optimizer/Dialect/CUF/CMakeFiles
+	${RMDIR} ${STAGEDIR}${LLVM_PREFIX}/include/flang/Optimizer/Dialect/FIRCG/CMakeFiles
+	${RMDIR} ${STAGEDIR}${LLVM_PREFIX}/include/flang/Optimizer/Dialect/MIF/CMakeFiles
 	${RMDIR} ${STAGEDIR}${LLVM_PREFIX}/include/flang/Optimizer/HLFIR/CMakeFiles
+	${RMDIR} ${STAGEDIR}${LLVM_PREFIX}/include/flang/Optimizer/OpenACC/CMakeFiles
 	${RMDIR} ${STAGEDIR}${LLVM_PREFIX}/include/flang/Optimizer/OpenMP/CMakeFiles
 	${RMDIR} ${STAGEDIR}${LLVM_PREFIX}/include/flang/Optimizer/Transforms/CMakeFiles
 	${RMDIR} ${STAGEDIR}${LLVM_PREFIX}/include/flang/Optimizer/CMakeFiles
@@ -496,6 +501,7 @@ build-plist:
 	    ${GREP} -v '_ignorelist.txt$$' | \
 	    ${GREP} -v '[/-]lit$$' | ${GREP} -v 'FileCheck$$' | \
 	    ${GREP} -v man/man1 | ${SED} -e 's|${STAGEDIR}${PREFIX}/||' \
+	    -e 's|${LUA_MODLIBDIR:C|${PREFIX}/||}|%%LUA_MODLIBDIR%%|' \
 	    -e 's|${PYTHON_SITELIBDIR:C|${PREFIX}/||}|%%PYTHON_SITELIBDIR%%|' \
 	    -e 's|${PYTHON_TAG:C/\./\\./g}${PYTHON_ABIVER}|%%PYTHON_TAG%%%%PYTHON_ABIVER%%|' \
 	    -e 's|${PORTVERSION}|%%PORTVERSION%%|' \
@@ -521,7 +527,7 @@ build-plist:
 	    if ($$0 ~ /(${EXTRAS_PATTERN})/) {printf "%%%%EXTRAS%%%%"} \
 	    if ($$0 ~ /(${FLANG_PATTERN})/) {printf "%%%%FLANG%%%%"} \
 	    if ($$0 ~ /(bin\/(ld|lld|wasm-ld))|liblld[^b]|\/lld\// && $$0 !~ /lldb/) {printf "%%%%LLD%%%%"} \
-	    if ($$0 ~ /(argdumper|lldb|six.py)/) {printf "%%%%LLDB%%%%"} \
+	    if ($$0 ~ /(argdumper|lldb|six.py|yaml2macho-core)/) {printf "%%%%LLDB%%%%"} \
 	    if ($$0 ~ /(${MLIR_PATTERN})/) {printf "%%%%MLIR%%%%"} \
 	    if ($$0 ~ /(${OPENMP_PATTERN})/) {printf "%%%%OPENMP%%%%"} \
 	    if ($$0 ~ /(${POLLY_PATTERN})/) {printf "%%%%POLLY%%%%"} \

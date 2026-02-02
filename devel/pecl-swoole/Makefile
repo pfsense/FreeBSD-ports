@@ -1,5 +1,6 @@
 PORTNAME=	swoole
-PORTVERSION=	6.0.2
+DISTVERSION=	6.1.5
+PORTREVISION=	0
 CATEGORIES=	devel net
 
 MAINTAINER=	vanilla@FreeBSD.org
@@ -11,12 +12,13 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 
 NOT_FOR_ARCHS=	i386 powerpc
 NOT_FOR_ARCHS_REASON=	upstream drop 32 bits support
+IGNORE_WITH_PHP=	85
 
 USES=		compiler:c11 localbase:ldflags php:build,pecl pkgconfig ssl
 
-CONFIGURE_ARGS+=	--enable-mysqlnd
+CONFIGURE_ARGS+=	--enable-mysqlnd --enable-openssl
 
-OPTIONS_DEFINE=		BROTLI CARES CURL PGSQL SOCKETS ZSTD
+OPTIONS_DEFINE=		BROTLI CARES CURL ODBC PGSQL SOCKETS SQLITE ZSTD
 CARES_LIB_DEPENDS=	libcares.so:dns/c-ares
 CARES_CONFIGURE_ON=	--enable-cares
 SOCKETS_USE=		PHP=sockets:build
@@ -34,5 +36,11 @@ BROTLI_LIB_DEPENDS=	libbrotlicommon.so:archivers/brotli
 ZSTD_CONFIGURE_ON=	--enable-zstd
 ZSTD_CONFIGURE_OFF=	--disable-zstd
 ZSTD_LIB_DEPENDS=	libzstd.so:archivers/zstd
+ODBC_CONFIGURE_ON=	--with-swoole-odbc=unixODBC
+ODBC_CONFIGURE_OFF=	--without-swoole-odbc
+ODBC_USE=		PHP=odbc:build
+SQLITE_CONFIGURE_ON=	--enable-swoole-sqlite
+SQLITE_CONFIGURE_OFF=	--disable-swoole-sqlite
+SQLITE_USE=		PHP=sqlite3
 
 .include <bsd.port.mk>

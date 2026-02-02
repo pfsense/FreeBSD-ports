@@ -29,6 +29,7 @@
 	<title>Services/FRR/Global Settings</title>
 	<include_file>/usr/local/pkg/frr.inc</include_file>
 	<aftersaveredirect>pkg.php?xml=frr/frr_global_acls.xml</aftersaveredirect>
+	<addedit_string>FRR: changed ACLs</addedit_string>
 	<tabs>
 		<tab>
 			<text>Global Settings</text>

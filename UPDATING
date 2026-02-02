@@ -5,6 +5,331 @@ they are unavoidable.
 You should get into the habit of checking this file for changes each time
 you update your ports collection, before attempting any port upgrades.
 
+20251208:
+  AFFECTS: users of net-mgmt/unifi{9,10}
+  AUTHOR: otis@FreeBSD.org
+
+  Version 10 of UniFi controller has been introduced, conflicting with
+  version 9.
+
+  Users are strongly advised to make a fresh backup of UniFi controller
+  database from within the UI, prior to upgrade to unifi10.
+
+20251201:
+  AFFECTS: users of lang/php83
+  AUTHOR: bofh@FreeBSD.org
+
+  The default version of PHP has been switched from 8.3 to 8.4.
+
+  If you use binary packages you should make a list of php packages
+  before running 'pkg upgrade':
+
+  # pkg info \*php83\* > ~/installed-php-ports-list
+
+  After the upgrade, check with such list if all your php extensions
+  are still installed, and reinstall them if needed.
+
+  If you use mod_php83 you need to deinstall it and install mod_php84.
+
+20251201:
+  AFFECTS: users of sysutils/tmux
+  AUTHOR: jrm@FreeBSD.org
+
+  tmux must be restarted after upgrading.  This is particularly
+  important with version 3.6 because one of the libraries that tmux uses
+  has changed its protocol.  If you see the following message when you
+  try to attach, it likely means you forgot to restart tmux:
+
+  open terminal failed: not a terminal
+
+20251130:
+  AFFECTS: users of www/node{22,24,25}
+  AUTHOR: sunpoet@FreeBSD.org
+
+  www/node{22,24,25} now uses databases/sqlite3 instead of the bundled one.
+  It requires SESSION option (enabled by default) in databases/sqlite3.
+  Please update your option configuration. Otherwise, the build fails.
+  See PR 290509 and 290588 for details.
+
+20251113:
+  AFFECTS: users of deskutils/fet
+  AUTHOR: uzsolt@FreeBSD.org
+
+  Remove Qt flavors, only use Qt6.
+
+  You should uninstall the flavored package and install the unflavored package.
+
+20251105:
+  AFFECTS: users of net/unison
+  AUTHOR: madpilot@FreeBSD.org
+
+  With the update to version 2.53.8 the port uses upstream install target.
+  This causes the installed unison binary to always me the command line
+  version, even when the port is compiled with xorg support. The UI binary
+  is installed as unison-gui.
+
+  The unison.desktop file provided with the port is adjusted to launch the
+  new unison-gui binary.
+
+  Please verify any local scripts using the unison binaries are adapted to
+  this change.
+
+20251019:
+  AFFECTS: users of security/clamav
+  AUTHOR: yasu@FreeBSD.org
+
+  After security/clamav is updated to 1.5.0, some users report that build
+  fails as below.
+
+    /usr/ports/security/clamav/work/clamav-1.5.1/libclamav/others.c:623:23: error: use of undeclared identifier 'CERTSDIR'
+      623 |         cvdcertsdir = CERTSDIR;
+          |                       ^
+    1 warning and 1 error generated.
+    ninja: build stopped: subcommand failed.
+    *** Error code 1
+
+  The error seems to happen with following conditions.
+
+  * Non-base SSL stack is used. That is, in /etc/make.conf there is such
+    setting as 'DEFAULT_VERSIONS+=ssl=openssl'.
+  * Previous version (1.4.3) of clamav package is already installed.
+
+  If you face it, you can work around it by uninstalling current clamav
+  package first.
+
+20251016:
+  AFFECTS: users of devel/nexus2-oss
+  AUTHOR: michaelo@FreeBSD.org
+
+  With the upgrade to javaservicewrapper-3.6.3 Nexus won't start unless you
+  remove all properties ending with '.stripquotes' in your
+  %%ETCDIR%%/wrapper.conf.
+
+20251016:
+  AFFECTS: users of sysutils/javaservicewrapper
+  AUTHOR: michaelo@FreeBSD.org
+
+  With the upgrade to version 3.6.0+ support for all properties ending with
+  '.stripquotes' in your wrapper.conf has been dropped and your application
+  won't start again.
+
+  Read the release notes for more details:
+  https://wrapper.tanukisoftware.com/doc/english/release-notes.html#3.6.0
+
+20251015:
+  AFFECTS: users of security/libressl
+  AUTHOR: brnrd@FreeBSD.org
+
+  The port has been updated to the latest stable version 4.2 of LibreSSL.
+  The shared library versions of the libraries have been bumped.
+
+  After upgrading, manually update all packages that depend on any of the
+  libraries provided by LibreSSL (libssl, libcrypto and libtls) since the
+  versions of these libraries have changed. Normally, you can obtain the
+  list of dependent software by running the following command:
+
+  # pkg info -r libressl
+
+  Then you should rebuild all ports depending on libressl to avoid dangling
+  shared library dependencies.
+
+20251011:
+  AFFECTS: users of net-im/gotosocial
+  AUTHOR: dinoex@FreeBSD.org
+
+  The etc/gotosocial/config.yaml file needs to be edited.
+  Also includes breaking changes to prometheus metrics.
+  See release notes for details:
+  https://codeberg.org/superseriousbusiness/gotosocial/releases/tag/v0.20.0
+  Requires a lengthy database migration which must not be interrupted!
+
+20250930:
+  AFFECTS: users of x11/nvidia-driver*
+  AUTHOR: junchoon@dec.sakura.ne.jp
+
+  Because of splitting out kernel modules (kmod) part from x11/nvidia-driver*
+  into newly introduced x11/nvidia-kmod*, you need to deinstall currently
+  installed x11/nvidia-driver* and freshly install it again with new version.
+  This would pull in corresponding x11/nvidia-kmod* because x11/nvidia-driver*
+  explicitly depends on corresponding x11/nvidia-kmod*.
+
+20250918:
+  AFFECTS: users of sysutils/py-mitogen
+  AUTHOR: dch@FreeBSD.org
+
+  Ansible 12 is soft deprecating the ANSIBLE_STRATEGY functionality that
+  mitogen uses to integrate with Ansible. A future version of ansible-core
+  may remove this. See https://github.com/mitogen-hq/mitogen/issues/1278
+
+20250917:
+  AFFECTS: users of mail/pflogsumm
+  AUTHOR: flo@FreeBSD.org
+
+  Some command line arguments were renamed in 1.1.11 and 1.1.12.
+
+  For details, see https://jimsun.linxnet.com/downloads/ChangeLog-1.1.12
+
+20250908:
+  AFFECTS: users of www/mod_wsgi4
+  AUTHOR: michaelo@FreeBSD.org
+
+  This port has been renamed to www/mod_wsgi to be able to upgrade to
+  version 5.
+
+20250828:
+  AFFECTS: users of databases/mongodb70, databases/mongodb80
+  AUTHOR: ronald@FreeBSD.org
+
+  Ports mongodb70 7.0.23 and mongodb80 since 8.0.0 contain a patch to
+  implement waitable atomics for FreeBSD.
+  This patch is developed by me. It did not go through QA of MongoDB Inc.
+  I don't have full QA in place and could only do limited testing. I
+  can't take any responsibility for the quality of the patch.
+  Make backups and test for yourself in your setup before upgrading
+  any critical production environment.
+
+20250817:
+  AFFECTS: users of lang/perl5.*
+  AUTHOR: mat@FreeBSD.org
+
+  The default Perl version has been switched to 5.42.
+
+  See entry 20231017 for updating instructions.
+
+20250815:
+  AFFECTS: users of net/syncthing
+  AUTHOR: dvl@FreeBSD.org
+
+  Old single-dash long options are no longer supported, e.g. -home must be
+  given as --home. Database backend switched from LevelDB to SQLite. No
+  changes to run-time dependencies. There is a migration on first launch
+  which can be lengthy for larger setups.
+
+  More at https://github.com/syncthing/syncthing/releases/tag/v2.0.0
+
+20250804:
+  AFFECTS: users of databases/adminer
+  AUTHOR: pkaipila@gmail.com
+
+  Flavors have been added to the adminer port. Due to the change in PKGNAME,
+  pkg will not notice the update. Replace the package with a flavored one
+  such as php84-adminer.
+
+20250728:
+  AFFECTS: users of www/privatebin
+  AUTHOR: dvl@FreeBSD.org
+
+  This release changes configuration defaults including switching the template
+  and removing legacy features.
+
+  See details at https://github.com/PrivateBin/PrivateBin/releases/tag/2.0.0
+
+20250720:
+  AFFECTS: users of www/phpmyfaq
+  AUTHOR: flo@FreeBSD.org
+
+  Upgrading from 3.2.x is a major upgrade. Your existing templates will not
+  work with phpMyFAQ 4.0. Please make a full backup before you run the
+  upgrade! First, log in as admin into the admin section and enable the
+  maintenance mode. (Configuration >> Edit Configuration >> Set FAQ in
+  maintenance mode) Second, you have to delete all files except:
+
+    in the directory config/
+        keep the file database.php
+        only if using LDAP/ActiveDirectory support also keep the file ldap.php
+        only if using EntraID support also keep the file azure.php
+    the directory attachments/
+    the directory data/
+    the directory images/
+
+  Install the new version then open the following URL in your browser:
+
+  https://www.example.com/faq/update
+
+  Click the button of the update script, your version will automatically be updated.
+
+20250709:
+  AFFECTS: users of sysutils/bastille
+  AUTHOR: jdhurtado@orbiware.com
+
+  Potentially breaking changes since 1.0.20250714
+
+  Network: Bastille now handles all epairs dynamically, allowing both -V and -B
+  VNET jails to coexist. Previous versions only supported one type per system.
+  New naming scheme for network interfaces is e0a_jailname (host side) and
+  e0b_jailname (jail side). Additional interfaces: e1a_jailname, e1b_jailname, etc
+  (incrementing numbers). Long jail names are truncated with xx placeholder due to
+  interface name limitations
+
+  Required action after update:
+  Restart all jails (preferably one at a time) to trigger automatic conversion.
+  Bastille will auto-convert jail.conf and rc.conf files when jails are stopped.
+  Manual intervention required: If you previously used the network sub-command to
+  add interfaces, manually edit jail.conf and rc.conf files to update epair names
+  (increment numbers for additional interfaces).
+
+  Auto-conversion handles most cases, please report bugs if issues occur during the
+  transition.
+
+  Full release announcement: https://github.com/BastilleBSD/bastille/releases/tag/1.0.20250714
+
+20250708:
+  AFFECTS: users of shells/bash
+  AUTHOR: michaelo@FreeBSD.org
+
+  The SYSBASHRC option is now enabled by default. For those who use bash
+  interactively the system-wide RC file shall be sourced automatically
+  giving the user the same experience as invoking it as a login shell.
+
+20250630:
+  AFFECTS: users of mail/bogofilter-bdb
+  AUTHOR: mandree@FreeBSD.org
+
+  The mail/bogofilter-bdb port has expired and will be removed.
+
+  1. BEFORE uninstallation or changing to a different mail/bogofilter*
+  variant, please use bogoutil to export all user data bases (wordlist.db)
+  to text files, bogoutil has a -d option for that.
+  2. ONLY THEN install a different variant. The base port (bogofilter)
+  uses LMDB, the -kc variant uses KyotoCabinet and -sqlite uses SQLite3
+  for their database backends.
+  3. THEN re-import the word list for each user with bogoutil -l.
+
+20250629:
+  AFFECTS: users of japanese/anthy
+  AUTHOR: nobutaka@FreeBSD.org
+
+  japanese/anthy has been removed. Please use japanese/anthy-unicode as the
+  replacement.
+
+  japanese/anthy and japanese/anthy-unicode use different user dictionary
+  file location.
+
+  japanese/anthy: ~/.anthy/private_words_default
+  japanese/anthy-unicode: ~/.config/anthy/private_words_default
+
+  You can migrate your user dictionary for japanese/anthy with
+  anthy-dic-tool-unicode.
+
+  anthy-dic-tool-unicode --migrate
+
+  If you use the japanese-anthy or japanese-anthy-uim input method on Emacs,
+  please change them in your Emacs init file such as ~/.emacs.el and ~/.emacs
+  as follows:
+
+  japanese-anthy -> japanese-anthy-unicode
+  japanese-anthy-uim -> japanese-anthy-utf8-uim
+
+20250627:
+  AFFECTS: users of finance/ktoblzcheck
+  AUTHOR: jhale@FreeBSD.org
+
+  The bank data databases have been moved to finance/ktoblzcheck-data.
+  It may be necessary to remove ktoblzcheck < 1.59 before upgrading to
+  avoid conflicts.
+
+  pkg delete -f ktoblzcheck
+
 20250622:
   AFFECTS: users of net-mgmt/netbox
   AUTHOR: kai@FreeBSD.org

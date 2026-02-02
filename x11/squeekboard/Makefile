@@ -1,7 +1,7 @@
 PORTNAME=	squeekboard
 DISTVERSIONPREFIX=	v
 DISTVERSION=	1.43.1
-PORTREVISION=	6
+PORTREVISION=	11
 CATEGORIES=	x11 wayland
 
 PATCH_SITES=	${GL_SITE}/${GL_ACCOUNT}/${GL_PROJECT}/-/commit/
@@ -32,7 +32,7 @@ MAKE_ENV=	${CARGO_ENV}
 CARGO_BUILD=	no
 CARGO_INSTALL=	no
 CARGO_TEST=	no
-MESON_ARGS=	-Dstrict=false
+MESON_FALSE=	strict
 GLIB_SCHEMAS=	sm.puri.Squeekboard.gschema.xml
 PLIST_FILES=	bin/${PORTNAME} \
 		bin/${PORTNAME}-entry \

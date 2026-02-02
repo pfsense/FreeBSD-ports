@@ -1,6 +1,6 @@
 PORTNAME=	gnome-initial-setup
 PORTVERSION=	47.5
-PORTREVISION=	0
+PORTREVISION=	1
 CATEGORIES=	deskutils gnome
 MASTER_SITES=	GNOME
 DIST_SUBDIR=	gnome
@@ -28,7 +28,7 @@ LIB_DEPENDS=	libaccountsservice.so:sysutils/accountsservice \
 RUN_DEPENDS=	gdm>=3.0.0:x11/gdm \
 		krb5>0:security/krb5
 
-USES=		compiler:c++11-lib gettext gnome meson pathfix pkgconfig tar:xz
+USES=		compiler:c++11-lib gettext gnome meson pkgconfig tar:xz
 #USE_GNOME=	gdkpixbuf gnomedesktop4 intlhack
 USE_GNOME=	gdkpixbuf gnomedesktop4
 

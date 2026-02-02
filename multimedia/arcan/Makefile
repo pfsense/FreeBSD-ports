@@ -1,5 +1,6 @@
 PORTNAME=	arcan
 DISTVERSION=	0.7.0.1
+PORTREVISION=	1
 CATEGORIES=	multimedia
 
 MAINTAINER=	hoanga@gmail.com	
@@ -11,6 +12,8 @@ LICENSE_COMB=	multi
 LICENSE_FILE_BSD3CLAUSE=${WRKSRC:H}/data/distr/LICENSE.BSD
 LICENSE_FILE_GPLv2+ =	${WRKSRC:H}/data/distr/LICENSE.GPL
 LICENSE_FILE_LGPL21+ =	${WRKSRC:H}/data/distr/LICENSE.LGPL
+
+EXTRA_PATCHES=	${FILESDIR}/ffmpeg.patch:-p1
 
 BUILD_DEPENDS=	evdev-proto>0:devel/evdev-proto
 LIB_DEPENDS=	libdrm.so:graphics/libdrm \

@@ -1,6 +1,6 @@
 PORTNAME=	virtualbox-ose
 DISTVERSION=	6.1.50
-PORTREVISION?=	2
+PORTREVISION?=	3
 CATEGORIES=	emulators
 MASTER_SITES=	https://download.virtualbox.org/virtualbox/${DISTVERSION}/
 PKGNAMESUFFIX?=	-additions
@@ -12,6 +12,9 @@ WWW=		https://www.virtualbox.org/
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
+
+DEPRECATED=		Upstream EOL reaches on 2024-01-31, use emulators/virtualbox-ose${PKGNAMESUFFIX}-72 instead
+EXPIRATION_DATE=	2026-12-31
 
 ONLY_FOR_ARCHS=	amd64
 
@@ -42,7 +45,9 @@ CONFLICTS_INSTALL=	virtualbox-ose-additions-legacy \
 			virtualbox-ose-additions-70 \
 			virtualbox-ose-additions-nox11-70 \
 			virtualbox-ose-additions-71 \
-			virtualbox-ose-additions-nox11-71
+			virtualbox-ose-additions-nox11-71 \
+			virtualbox-ose-additions-72 \
+			virtualbox-ose-additions-nox11-72
 
 PATCHDIR=		${.CURDIR}/../${PORTNAME}/files
 EXTRACT_AFTER_ARGS=	--exclude tools/*.x86 --exclude tools/*.amd64 --exclude Firmware

@@ -1,5 +1,5 @@
 PORTNAME=	gromacs
-DISTVERSION=	2025.0
+DISTVERSION=	2025.4
 PORTREVISION=	1
 CATEGORIES=	science
 MASTER_SITES=	https://ftp.gromacs.org/pub/gromacs/
@@ -126,6 +126,7 @@ post-patch:
 	@${REINPLACE_CMD} -e '/CMAKE_REQUIRED_LIBRARIES/d' \
 		${WRKSRC}/cmake/gmxTestdlopen.cmake
 
-# tests fail to compile, see https://gitlab.com/gromacs/gromacs/-/issues/5141
+# tests as of 2025.3: 100% tests passed, 0 tests failed out of 92
+# 2025.4: tests fail to compile: https://gitlab.com/gromacs/gromacs/-/issues?show=eyJpaWQiOiI1NTAxIiwiZnVsbF9wYXRoIjoiZ3JvbWFjcy9ncm9tYWNzIiwiaWQiOjE3NzU1MDUzMn0%3D
 
 .include <bsd.port.mk>

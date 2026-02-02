@@ -1,5 +1,5 @@
 /* This is a generated file, edit the .stub.php file instead.
- * Stub hash: 9254dffb5cf544aea0c9c7fe5175aa6ab33a9e21 */
+ * Stub hash: c7e7885a5f3b0ba3d1de43b8bda28d658269698f */
 
 ZEND_BEGIN_ARG_WITH_RETURN_OBJ_TYPE_MASK_EX(arginfo_radius_auth_open, 0, 0, RadiusHandle, MAY_BE_FALSE)
 ZEND_END_ARG_INFO()
@@ -31,6 +31,7 @@ ZEND_END_ARG_INFO()
 ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_radius_create_request, 0, 2, _IS_BOOL, 0)
 	ZEND_ARG_OBJ_INFO(0, h, RadiusHandle, 0)
 	ZEND_ARG_TYPE_INFO(0, code, IS_LONG, 0)
+	ZEND_ARG_TYPE_INFO_WITH_DEFAULT_VALUE(0, msg_auth, _IS_BOOL, 0, "false")
 ZEND_END_ARG_INFO()
 
 ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_radius_put_string, 0, 3, _IS_BOOL, 0)
@@ -125,7 +126,6 @@ ZEND_END_ARG_INFO()
 
 #define arginfo_radius_demangle_mppe_key arginfo_radius_demangle
 
-
 ZEND_FUNCTION(radius_auth_open);
 ZEND_FUNCTION(radius_acct_open);
 ZEND_FUNCTION(radius_close);
@@ -154,7 +154,6 @@ ZEND_FUNCTION(radius_request_authenticator);
 ZEND_FUNCTION(radius_server_secret);
 ZEND_FUNCTION(radius_demangle);
 ZEND_FUNCTION(radius_demangle_mppe_key);
-
 
 static const zend_function_entry ext_functions[] = {
 	ZEND_FE(radius_auth_open, arginfo_radius_auth_open)
@@ -188,19 +187,12 @@ static const zend_function_entry ext_functions[] = {
 	ZEND_FE_END
 };
 
-
-static const zend_function_entry class_RadiusHandle_methods[] = {
-	ZEND_FE_END
-};
-
 static zend_class_entry *register_class_RadiusHandle(void)
 {
 	zend_class_entry ce, *class_entry;
 
-	INIT_CLASS_ENTRY(ce, "RadiusHandle", class_RadiusHandle_methods);
-	class_entry = zend_register_internal_class_ex(&ce, NULL);
-	class_entry->ce_flags |= ZEND_ACC_FINAL|ZEND_ACC_NO_DYNAMIC_PROPERTIES|ZEND_ACC_NOT_SERIALIZABLE;
+	INIT_CLASS_ENTRY(ce, "RadiusHandle", NULL);
+	class_entry = zend_register_internal_class_with_flags(&ce, NULL, ZEND_ACC_FINAL|ZEND_ACC_NO_DYNAMIC_PROPERTIES|ZEND_ACC_NOT_SERIALIZABLE);
 
 	return class_entry;
 }
-

@@ -1,6 +1,6 @@
 PORTNAME=	abiword
 PORTVERSION=	3.0.5
-PORTREVISION=	13
+PORTREVISION=	15
 CATEGORIES=	editors
 MASTER_SITES=	https://dev.alpinelinux.org/archive/${PORTNAME}/
 DIST_SUBDIR=	AbiWord
@@ -12,7 +12,7 @@ WWW=		https://gitlab.gnome.org/World/AbiWord
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-LIB_DEPENDS=	libboost_system.so:devel/boost-libs \
+LIB_DEPENDS=	libboost_thread.so:devel/boost-libs \
 		libpopt.so:devel/popt \
 		libpng.so:graphics/png \
 		libwv.so:textproc/wv \
@@ -130,11 +130,9 @@ WP_VARS=	ABIWORD_PLUGINS+="wpg wordperfect"
 
 .if ${PORT_OPTIONS:MCOL*}
 ABIWORD_PLUGINS+=	collab
-.if ${PORT_OPTIONS:MCOLFAKE} || ${PORT_OPTIONS:MCOLSERVICE} || ${PORT_OPTIONS:MCOLSIP} || ${PORT_OPTIONS:MCOLTCP} || ${PORT_OPTIONS:MCOLTELEPATHY} || ${PORT_OPTIONS:MCOLXMPP}
 PLIST_SUB+=		COLLAB=""
 .else
 PLIST_SUB+=		COLLAB="@comment "
-.endif
 .endif
 
 post-patch:

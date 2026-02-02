@@ -1,6 +1,6 @@
---- third_party/blink/renderer/core/paint/paint_layer.cc.orig	2025-05-05 10:57:53 UTC
+--- third_party/blink/renderer/core/paint/paint_layer.cc.orig	2025-10-02 04:28:32 UTC
 +++ third_party/blink/renderer/core/paint/paint_layer.cc
-@@ -124,7 +124,7 @@ namespace blink {
+@@ -123,7 +123,7 @@ namespace blink {
  
  namespace {
  

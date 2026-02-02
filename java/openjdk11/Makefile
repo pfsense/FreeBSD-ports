@@ -39,6 +39,8 @@ GH_PROJECT=	jdk11u
 
 NO_CCACHE=	yes
 
+# Suppress passing -j to do-build target via Mk/bsd.port.mk
+# In the JDK build the number of parallel jobs is passed in via configure --with-num-cores=N
 _MAKE_JOBS=	#
 MAKE_ENV=	LANG="C" \
 		LC_ALL="C" \
@@ -48,6 +50,7 @@ MAKE_ENV=	LANG="C" \
 		CC=${CC} \
 		CXX=${CXX} \
 		CPP=${CPP} \
+		LOG=cmdlines \
 		MAKEFLAGS=""
 
 JDK_OSARCH=	bsd-${ARCH:S/amd64/x86_64/:C/armv.*/arm/:S/i386/x86/:S/powerpc/ppc/}
@@ -63,8 +66,8 @@ NOPRECIOUSMAKEVARS=	yes
 
 JDK_MAJOR_VERSION=	11
 JDK_MINOR_VERSION=	0
-JDK_PATCH_VERSION=	27
-JDK_BUILD_NUMBER=	6
+JDK_PATCH_VERSION=	29
+JDK_BUILD_NUMBER=	7
 BSD_JDK_VERSION=	1
 
 JDK_BUG_URL=	https://bugs.freebsd.org/bugzilla/enter_bug.cgi?product=Ports%20%26%20Packages&component=Individual%20Port(s)&short_desc=java/${PORTNAME}${JDK_MAJOR_VERSION}%3A%20
@@ -101,6 +104,7 @@ CONFIGURE_ARGS=	--with-boot-jdk=${BOOTSTRAPJDKDIR} \
 		--with-giflib-include=${LOCALBASE}/include \
 		--with-giflib-lib=${LOCALBASE}/lib \
 		--with-libpng=system \
+		--with-num-cores=${MAKE_JOBS_NUMBER} \
 		--with-zlib=system \
 		--with-lcms=system \
 		--x-includes=${LOCALBASE}/include \
@@ -123,6 +127,11 @@ ALL_TARGET=		images
 JDK_BUILD_TYPE=		release
 
 .include <bsd.port.pre.mk>
+
+# portsfallout.com shows flapping builds on 13.5 and 14.2
+.if ${OPSYS} == FreeBSD && ${OSVERSION} < 1403000
+MAKE_JOBS_UNSAFE=	yes
+.endif
 
 .if !${PORT_OPTIONS:MCUPS}
 MASTER_SITES+=	https://codeload.github.com/OpenPrinting/cups/tar.gz/v${CUPS_INC_VER}?dummy=/:cups
@@ -162,6 +171,8 @@ CFLAGS+=	-Wl,-rpath=${LOCALBASE}/lib/gcc${GCC_DEFAULT}
 CXXFLAGS+=	-Wl,-rpath=${LOCALBASE}/lib/gcc${GCC_DEFAULT}
 CONFIGURE_ARGS+=--disable-precompiled-headers
 .else
+# it is up to upstream project to fix these or not
+CFLAGS+=	-Wno-deprecated-builtins -Wno-inline-asm -Wno-unknown-attributes
 MAKE_ENV+=	USE_CLANG=true
 .if ${ARCH:Mpowerpc64*}
 LLVM_VER=	12

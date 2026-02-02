@@ -81,7 +81,7 @@ function squidguard_log_AJAX_response( $request ) {
 	return $res;
 }
 
-function squidguard_logrep( &$dump ) {
+function squidguard_logrep( $dump ) {
 	$res  = '';
 
 	if (!empty($dump)) {

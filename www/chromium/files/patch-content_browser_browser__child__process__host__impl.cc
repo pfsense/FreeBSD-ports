@@ -1,14 +1,14 @@
---- content/browser/browser_child_process_host_impl.cc.orig	2025-05-28 14:55:43 UTC
+--- content/browser/browser_child_process_host_impl.cc.orig	2025-12-05 10:12:50 UTC
 +++ content/browser/browser_child_process_host_impl.cc
-@@ -327,6 +327,7 @@ void BrowserChildProcessHostImpl::LaunchWithoutExtraCo
+@@ -291,6 +291,7 @@ void BrowserChildProcessHostImpl::LaunchWithoutExtraCo
+       switches::kIPCConnectionTimeout,
        switches::kLogBestEffortTasks,
        switches::kPerfettoDisableInterning,
-       switches::kTraceToConsole,
 +      switches::kDisableUnveil,
    };
    cmd_line->CopySwitchesFrom(browser_command_line, kForwardSwitches);
  
-@@ -697,7 +698,7 @@ void BrowserChildProcessHostImpl::OnProcessLaunched() 
+@@ -648,7 +649,7 @@ void BrowserChildProcessHostImpl::OnProcessLaunched() 
            ->child_process());
  #endif
  

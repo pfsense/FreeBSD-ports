@@ -29,6 +29,7 @@
 	</copyright>
 	<name>acme</name>
 	<title>Acme</title>
+	<donotsave>true</donotsave>
 	<include_file>/usr/local/pkg/acme/acme.inc</include_file>
 	<menu>
 		<name>Acme Certificates</name>

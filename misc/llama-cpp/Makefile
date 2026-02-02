@@ -1,6 +1,6 @@
 PORTNAME=	llama-cpp
 DISTVERSIONPREFIX=	b
-DISTVERSION=	5740
+DISTVERSION=	7134
 CATEGORIES=	misc # machine-learning
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -24,6 +24,7 @@ GH_TUPLE=	nomic-ai:kompute:4565194:kompute/kompute
 SHEBANG_GLOB=	*.py
 
 CMAKE_ON=	BUILD_SHARED_LIBS
+		#LLAMA_USE_SYSTEM_GGML
 CMAKE_OFF=	GGML_NATIVE \
 		FREEBSD_ALLOW_ADVANCED_CPU_FEATURES \
 		LLAMA_BUILD_TESTS
@@ -44,7 +45,6 @@ CURL_LIB_DEPENDS=	libcurl.so:ftp/curl
 
 EXAMPLES_CMAKE_BOOL=	LLAMA_BUILD_EXAMPLES
 
-VULKAN_DESC=		Vulkan GPU offload support
 VULKAN_CMAKE_BOOL=	GGML_VULKAN
 VULKAN_BUILD_DEPENDS=	glslc:graphics/shaderc \
 			vulkan-headers>0:graphics/vulkan-headers

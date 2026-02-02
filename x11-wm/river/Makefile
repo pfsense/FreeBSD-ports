@@ -1,9 +1,9 @@
 PORTNAME=	river
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.3.9
+DISTVERSION=	0.3.12
 CATEGORIES=	x11-wm wayland
 
-MAINTAINER=	jbeich@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Dynamic tiling Wayland compositor
 WWW=		https://isaacfreund.com/software/river/
 
@@ -12,28 +12,28 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 
 BUILD_DEPENDS=	evdev-proto>0:devel/evdev-proto \
 		wayland-protocols>0:graphics/wayland-protocols \
-		zig>=0.14.0:lang/zig
+		zig>=0.15.1:lang/zig
 LIB_DEPENDS=	libevdev.so:devel/libevdev \
 		libwayland-server.so:graphics/wayland \
-		libwlroots-0.18.so:x11-toolkits/wlroots018 \
+		libwlroots-0.19.so:x11-toolkits/wlroots019 \
 		libinput.so:x11/libinput \
 		libxkbcommon.so:x11/libxkbcommon
 
 USES=		pkgconfig xorg
 USE_GITHUB=	yes
-USE_XORG=	pixman
 GH_ACCOUNT=	riverwm
 GH_TUPLE=	ifreund:zig-pixman:v0.3.0:zig_pixman/../.cache/zig/p/pixman-0.3.0-LClMnz2VAAAs7QSCGwLimV5VUYx0JFnX5xWU6HwtMuDX \
-		ifreund:zig-wayland:v0.3.0:zig_wayland/../.cache/zig/p/wayland-0.3.0-lQa1kjPIAQDmhGYpY-zxiRzQJFHQ2VqhJkQLbKKdt5wl \
+		ifreund:zig-wayland:v0.4.0:zig_wayland/../.cache/zig/p/wayland-0.4.0-lQa1khbMAQAsLS2eBR7M5lofyEGPIbu2iFDmoz8lPC27 \
 		ifreund:zig-xkbcommon:v0.3.0:zig_xkbcommon/../.cache/zig/p/xkbcommon-0.3.0-VDqIe3K9AQB2fG5ZeRcMC9i7kfrp5m2rWgLrmdNn9azr \
-		swaywm:zig-wlroots:v0.18.2:zig_wlroots/../.cache/zig/p/wlroots-0.18.2-jmOlchnIAwBq45_cxU1V3OWErxxJjQZlc9PyJfR-l3uk
-MAKE_ENV=	DESTDIR="${STAGEDIR}"
+		swaywm:zig-wlroots:v0.19.3:zig_wlroots/../.cache/zig/p/wlroots-0.19.3-jmOlcuL_AwBHhLCwpFsXbTizE3q9BugFmGX-XIxqcPMc
+USE_XORG=	pixman
 CONFIGURE_ARGS=	--prefix "${PREFIX}" \
 		${WITH_DEBUG:D:U-Doptimize=ReleaseFast} \
 		${WITH_PIE:D-Dpie} \
 		${STRIP:C/.+/-Dstrip/} \
 		-Dcpu=${CPUTYPE:Ubaseline} \
 		--verbose
+MAKE_ENV=	DESTDIR="${STAGEDIR}"
 NO_INSTALL=	yes # strip(1) breaks runtime
 PLIST_FILES=	bin/${PORTNAME} \
 		bin/${PORTNAME}ctl \

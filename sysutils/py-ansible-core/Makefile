@@ -1,5 +1,5 @@
 PORTNAME=	ansible-core
-DISTVERSION=	2.18.6
+DISTVERSION=	2.18.7
 CATEGORIES=	sysutils python
 MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -34,7 +34,7 @@ TEST_DEPENDS=	${PYTHON_PKGNAMEPREFIX}bcrypt>=0:security/py-bcrypt@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}requests>0:www/py-requests@${PY_FLAVOR} \
 		git:devel/git
 
-USES=		ansible:env cpe python:3.10+ shebangfix
+USES=		ansible:env cpe python shebangfix
 CPE_VENDOR=	redhat
 CPE_PRODUCT=	ansible
 USE_PYTHON=	autoplist concurrent cryptography pep517

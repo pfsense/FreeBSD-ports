@@ -1,5 +1,5 @@
 PORTNAME=	mapserver
-DISTVERSION=	8.4.0
+DISTVERSION=	8.6.0
 PORTREVISION=	1
 CATEGORIES=	graphics www geography
 MASTER_SITES=	https://download.osgeo.org/${PORTNAME}/ \

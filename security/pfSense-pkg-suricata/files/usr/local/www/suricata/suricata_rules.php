@@ -163,6 +163,8 @@ elseif ($_POST['openruleset'])
 else
 	$currentruleset = $categories[array_key_first($categories)];
 
+$currentruleset = basename($currentruleset);
+
 // If we don't have any Category to display, then
 // default to showing the Custom Rules text control.
 if (empty($categories) && ($currentruleset != "custom.rules") && ($currentruleset != "Auto-Flowbit Rules")) {

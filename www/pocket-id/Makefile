@@ -1,9 +1,9 @@
 PORTNAME=	pocket-id
 DISTVERSIONPREFIX=	v
-DISTVERSION=	1.4.0
+DISTVERSION=	1.16.0
 CATEGORIES=	www
 MASTER_SITES=	LOCAL/dtxdf/${PORTNAME}/
-DISTFILES=	${PORTNAME}-${DISTVERSION}.frontend${EXTRACT_SUFX}
+DISTFILES=	${PORTNAME}-${DISTVERSIONPREFIX}${DISTVERSION}.frontend${EXTRACT_SUFX}
 
 MAINTAINER=	dtxdf@FreeBSD.org
 COMMENT=	OIDC provider that allows users to authenticate with their passkeys
@@ -11,7 +11,9 @@ WWW=		https://pocket-id.org
 
 LICENSE=	BSD2CLAUSE
 
-USES=		go:modules
+BROKEN_i386=	cannot use int64(off) (value of type int64) as int32 value in assignment
+
+USES=		go:1.25+,modules
 USE_GITHUB=	yes
 USE_RC_SUBR=	${PORTNAME}
 

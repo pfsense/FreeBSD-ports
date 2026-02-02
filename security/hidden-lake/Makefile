@@ -1,9 +1,10 @@
 PORTNAME=	hidden-lake
 DISTVERSIONPREFIX=	v
-DISTVERSION=	1.8.6
+DISTVERSION=	1.9.1
+PORTREVISION=	3
 CATEGORIES=	security net-p2p
 
-MAINTAINER=	alster@vinterdalen.se
+MAINTAINER=	alven@FreeBSD.org
 COMMENT=	F2F Anonymous network based on the QB-problem & GP/12 protocol stack
 WWW=		https://github.com/number571/hidden-lake/
 
@@ -13,13 +14,14 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 USES=		go:modules
 
 GO_MODULE=	github.com/number571/hidden-lake
-GO_TARGET=	./cmd/hla/hla_tcp:hla_tcp \
+GO_TARGET=	./cmd/hla/hla-http:hla-http \
+		./cmd/hla/hla-tcp:hla-tcp \
 		./cmd/hlc:hlc \
-		./cmd/hlf:hlf \
-		./cmd/hlm:hlm \
-		./cmd/hlp:hlp \
-		./cmd/hlr:hlr \
-		./cmd/hls:hls
+		./cmd/hlk:hlk \
+		./cmd/hls/hls-filesharer:hls-filesharer \
+		./cmd/hls/hls-messenger:hls-messenger \
+		./cmd/hls/hls-pinger:hls-pinger \
+		./cmd/hls/hls-remoter:hls-remoter
 
 TEST_TARGET=	test-run
 

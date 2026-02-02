@@ -1,5 +1,5 @@
 PORTNAME=	asterisk
-DISTVERSION=	20.14.1
+DISTVERSION=	20.17.0
 CATEGORIES=	net
 MASTER_SITES=	https://downloads.asterisk.org/pub/telephony/%SUBDIR%/:DEFAULT,g729
 MASTER_SITE_SUBDIR=	asterisk/ \
@@ -20,7 +20,7 @@ LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
 LIB_DEPENDS=	libjansson.so:devel/jansson \
-		libuuid.so:misc/e2fsprogs-libuuid
+		libuuid.so:misc/libuuid
 
 USES=		bison compiler:c11 cpe gmake gnome iconv libedit localbase \
 		ncurses pkgconfig shebangfix sqlite ssl
@@ -63,12 +63,12 @@ GROUPS=	${ASTERISK_GROUP} dahdi
 
 OPTIONS_DEFINE=			ASTVERSION BACKTRACE CURL EXCHANGE FREETDS G729 LDAP LUA MACRO \
 				MP3PLAYER OOH323 OPTIMIZED_CFLAGS PJSIP PORTAUDIO RADIUS SNMP \
-				SIP SPANDSP SRTP SYSINFO URIPARSER XMLDOC XMPP
+				SIP SPANDSP SRTP SYSINFO UNBOUND URIPARSER XMLDOC XMPP
 OPTIONS_DEFINE_aarch64=		GEOLOCATION
 OPTIONS_DEFINE_amd64=		DAHDI GEOLOCATION
 OPTIONS_DEFINE_i386=		DAHDI GEOLOCATION
-OPTIONS_DEFINE_powerpc=		DAHDI
-OPTIONS_DEFINE_powerpc64=	DAHDI
+OPTIONS_DEFINE_powerpc=		DAHDI GEOLOCATION
+OPTIONS_DEFINE_powerpc64=	DAHDI GEOLOCATION
 OPTIONS_DEFINE_powerpc64le=	DAHDI GEOLOCATION
 OPTIONS_DEFAULT=		CURL FREETDS GSM LUA MACRO MP3PLAYER NEWT ODBC OPUS MYSQL PGSQL \
 				PJSIP PORTAUDIO RADIUS SNMP SPANDSP SPEEX SRTP URIPARSER \
@@ -106,6 +106,7 @@ PJSIP_DESC=	Build the PJSIP based SIP channel
 SIP_DESC=	Build the legacy SIP based channel
 SRTP_DESC=	SecureRTP support
 SYSINFO_DESC=	Use devel/libsysinfo to get system information
+UNBOUND_DESC=	Use dns/unbound resolver
 URIPARSER_DESC=	Use RFC 3986 compliant uriparser library
 XMLDOC_DESC=	Build and install XML documentation
 XMPP_DESC=	XMPP/GTALK support
@@ -196,6 +197,9 @@ SRTP_CONFIGURE_WITH=	srtp
 
 SYSINFO_LIB_DEPENDS=	libsysinfo.so:devel/libsysinfo
 
+UNBOUND_LIB_DEPENDS=	libunbound.so:dns/unbound
+UNBOUND_CONFIGURE_WITH=	unbound
+
 URIPARSER_LIB_DEPENDS=	liburiparser.so:net/uriparser
 URIPARSER_CONFIGURE_WITH=	uriparser
 
@@ -256,6 +260,10 @@ LLD_EMULATION=	elf_x86_64
 LLD_EMULATION=	aarch64elf
 .elif ${ARCH} == powerpc64le
 LLD_EMULATION=	elf64lppc
+.elif ${ARCH} == powerpc64
+LLD_EMULATION=	elf64ppc
+.elif ${ARCH} == powerpc
+LLD_EMULATION=	elf32ppc
 .endif
 .endif
 

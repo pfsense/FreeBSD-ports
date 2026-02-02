@@ -19,9 +19,10 @@
 # limitations under the License.
 #
 
+LOG_PREFIX_PKG_SQUID="squid"
 SQUID_ENABLED=$(/usr/local/sbin/read_xml_tag.sh string installedpackages/squid/config/enable_squid)
 if [ "${SQUID_ENABLED}" != "on" ]; then
-	echo "Squid is disabled, exiting." | /usr/bin/logger -p daemon.info -i -t Squid_Alarm
+	echo "INFO [${LOG_PREFIX_PKG_SQUID}] Squid is disabled, exiting." | /usr/bin/logger -p daemon.info -i -t Squid_Alarm
 	exit 0
 fi
 
@@ -46,12 +47,12 @@ while [ /bin/true ]; do
 		NUM_PROCS=`/bin/ps auxw | /usr/bin/grep "[s]quid -f" | /usr/bin/awk '{print $2}' | /usr/bin/wc -l | /usr/bin/awk '{ print $1 }'`
 		if [ $NUM_PROCS -lt 1 ]; then
 			# squid is down
-			echo "Squid has exited. Reconfiguring filter." | \
+			echo "INFO [${LOG_PREFIX_PKG_SQUID}] Squid has exited. Reconfiguring filter." | \
 				/usr/bin/logger -p daemon.info -i -t Squid_Alarm
-			echo "Attempting restart..." | /usr/bin/logger -p daemon.info -i -t Squid_Alarm
+			echo "INFO [${LOG_PREFIX_PKG_SQUID}] Attempting restart..." | /usr/bin/logger -p daemon.info -i -t Squid_Alarm
 			/usr/local/etc/rc.d/squid.sh start
 			sleep 3
-			echo "Reconfiguring filter..." | /usr/bin/logger -p daemon.info -i -t Squid_Alarm
+			echo "INFO [${LOG_PREFIX_PKG_SQUID}] Reconfiguring filter..." | /usr/bin/logger -p daemon.info -i -t Squid_Alarm
 			/etc/rc.filter_configure
 			touch /var/run/squid_alarm
 		fi
@@ -59,7 +60,7 @@ while [ /bin/true ]; do
 	NUM_PROCS=`/bin/ps auxw | /usr/bin/grep "[s]quid -f" | /usr/bin/awk '{print $2}' | /usr/bin/wc -l | /usr/bin/awk '{ print $1 }'`
 	if [ $NUM_PROCS -gt 0 ]; then
 		if [ -f /var/run/squid_alarm ]; then
-			echo "Squid has resumed. Reconfiguring filter." | \
+			echo "INFO [${LOG_PREFIX_PKG_SQUID}] Squid has resumed. Reconfiguring filter." | \
 				/usr/bin/logger -p daemon.info -i -t Squid_Alarm
 			/etc/rc.filter_configure
 			/bin/rm -f /var/run/squid_alarm

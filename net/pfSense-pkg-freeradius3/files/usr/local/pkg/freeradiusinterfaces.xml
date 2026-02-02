@@ -31,6 +31,7 @@
 ]]>	</copyright>
 	<name>freeradiusinterfaces</name>
 	<title>Services/FreeRADIUS</title>
+	<addedit_string>FreeRADIUS: changed Interfaces</addedit_string>
 	<include_file>/usr/local/pkg/freeradius.inc</include_file>
 	<tabs>
 		<tab>

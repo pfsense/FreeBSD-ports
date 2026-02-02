@@ -1,6 +1,6 @@
 PORTNAME?=	libpurple
 PORTVERSION=	2.14.14
-PORTREVISION?=	0
+PORTREVISION?=	1
 CATEGORIES?=	net-im
 MASTER_SITES=	SF/pidgin/Pidgin/${PORTVERSION}
 DISTNAME=	pidgin-${PORTVERSION}
@@ -94,7 +94,7 @@ CFLAGS+=	-Wno-error=incompatible-function-pointer-types
 .endif
 
 .if ${PORT_OPTIONS:MTCLTK}
-USES+=			tk
+USES+=			tk:86
 CFLAGS+=		-I${TK_INCLUDEDIR} -I${TCL_INCLUDEDIR}
 CONFIGURE_ARGS+=	--with-tclconfig=${TCL_LIBDIR} \
 			--with-tkconfig=${TK_LIBDIR}

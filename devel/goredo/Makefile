@@ -1,6 +1,6 @@
 PORTNAME=	goredo
-DISTVERSION=	2.6.4
-PORTREVISION=	4
+DISTVERSION=	2.6.5
+PORTREVISION=	2
 CATEGORIES=	devel
 MASTER_SITES=	http://www.goredo.cypherpunks.su/download/
 

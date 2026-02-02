@@ -29,6 +29,7 @@ define('SUDO_LIBEXEC_DIR', '/usr/local/libexec/sudo');
 define('SUDO_CONFIG_DIR', SUDO_BASE . '/etc');
 define('SUDO_CONF', SUDO_CONFIG_DIR . '/sudo.conf');
 define('SUDO_SUDOERS', SUDO_CONFIG_DIR . '/sudoers');
+define('LOG_PREFIX_PKG_SUDO', 'sudo');
 
 function sudo_install() {
 	global $g;
@@ -72,8 +73,8 @@ function sudo_write_config() {
 	    config_get_path('installedpackages/sudo/config/0/row'))) {
 		/* No config, wipe sudoers file and bail. */
 		unlink(SUDO_SUDOERS);
-		log_error("No sudo configuration found, removing sudoers " .
-		    "file to prevent unpredictable results.");
+		logger(LOG_WARNING, localize_text("No sudo configuration found, removing sudoers " .
+		    "file to prevent unpredictable results."), LOG_PREFIX_PKG_SUDO);
 		return;
 	}
 
@@ -113,7 +114,7 @@ function sudo_write_config() {
 		rename($tmpsudoers, SUDO_SUDOERS);
 		chmod(SUDO_SUDOERS, 0440);
 	} else {
-		log_error("Sudoers file invalid: {$result}");
+		logger(LOG_ERR, localize_text("Sudoers file invalid: %s", $result), LOG_PREFIX_PKG_SUDO);
 		unlink($tmpsudoers);
 	}
 }

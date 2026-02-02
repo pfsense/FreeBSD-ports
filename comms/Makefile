@@ -36,6 +36,7 @@
     SUBDIR += ebook2cw
     SUBDIR += ebusd
     SUBDIR += echolinux
+    SUBDIR += emacs-eat
     SUBDIR += ems-flasher
     SUBDIR += fl_moxgen
     SUBDIR += flamp
@@ -57,12 +58,11 @@
     SUBDIR += gr-osmosdr
     SUBDIR += grig
     SUBDIR += gstreamer1-plugins-spandsp
-    SUBDIR += gtkmmorse
     SUBDIR += hackrf
-    SUBDIR += hackrf-devel
     SUBDIR += hamlib
     SUBDIR += hcidump
     SUBDIR += hidapi
+    SUBDIR += hydrasdr
     SUBDIR += ibp
     SUBDIR += iceoryx
     SUBDIR += inspectrum

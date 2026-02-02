@@ -1,5 +1,6 @@
 PORTNAME=	pfSense-composer-deps
-DISTVERSION=	0.3
+DISTVERSION=	0.4
+PORTREVISION=	1
 CATEGORIES=	devel
 
 MAINTAINER=	coreteam@pfSense.org
@@ -10,10 +11,10 @@ VENDORBASE=	/pfSense/include/vendor
 
 NO_BUILD=	yes
 SHCMD_VER=	1.7.0
-UTILS_VER=	v4.0.5
-SIMPLEPIE_VER=	1.8.1
-CACHE_VER=	v7.2.1
-CONSOLE_VER=	v7.2.1
+UTILS_VER=	v4.1.1
+SIMPLEPIE_VER=	1.9.0
+CACHE_VER=	v8.0.5
+CONSOLE_VER=	v8.0.4
 
 USE_GITHUB=	nodefault
 
@@ -28,15 +29,15 @@ GH_TUPLE=	mikehaertl:php-shellcommand:${SHCMD_VER}:shellcommand \
 PSR_CACHE_VER=	3.0.0
 PSR_CONTA_VER=	2.0.2
 PSR_LOG_VER=	3.0.2
-SYM_CACHE_VER=	v3.5.1
-SYM_DEPRE_VER=	v3.5.1
-SYM_CTYPE_VER=	v1.31.0
-SYM_IGRAP_VER=	v1.31.0
-SYM_INORM_VER=	v1.31.0
+SYM_CACHE_VER=	v3.6.0
+SYM_DEPRE_VER=	v3.6.0
+SYM_CTYPE_VER=	v1.33.0
+SYM_IGRAP_VER=	v1.33.0
+SYM_INORM_VER=	v1.33.0
 SYM_MBSTR_VER=	v1.31.0
-SYM_SERV_VER=	v3.5.1
-SYM_STR_VER=	v7.2.0
-SYM_VAR_VER=	v7.2.0
+SYM_SERV_VER=	v3.6.1
+SYM_STR_VER=	v8.0.4
+SYM_VAR_VER=	v8.0.0
 GH_TUPLE+=	php-fig:cache:${PSR_CACHE_VER}:psrcache \
 		php-fig:container:${PSR_CONTA_VER}:psrcontainer \
 		php-fig:log:${PSR_LOG_VER}:psrlog \

@@ -27,6 +27,7 @@
 	</copyright>
 	<name>netsnmptrapdformats</name>
 	<title>NET-SNMP Trap Daemon</title>
+	<addedit_string>NET-SNMP: changed Formats</addedit_string>
 	<include_file>/usr/local/pkg/net-snmp.inc</include_file>
 	<tabs>
 		<tab>

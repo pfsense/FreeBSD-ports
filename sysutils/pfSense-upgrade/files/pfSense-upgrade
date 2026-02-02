@@ -612,7 +612,11 @@ notice() {
 
 	/usr/local/bin/php -r \
 	    "require_once('notices.inc'); \
-	    file_notice('${product}-Upgrade', '${msg}', 'Upgrade', '', 1, true);"
+		if (is_platform_booting()) { \
+			logger(LOG_WARNING, localize_text('${msg}'), '${product}-upgrade'); \
+		} else { \
+			file_notice('${product}-upgrade', '${msg}', 'Upgrade', '', 1, true); \
+		}"
 }
 
 pkg_with_pb() {
@@ -645,8 +649,11 @@ fetch_upgrade_packages() {
 	# Workaround for pkg bug https://github.com/freebsd/pkg/issues/1613
 	# *ALWAYS* download pkg itself to avoid being bitten by it again
 	pkg_with_pb "fetch -yU pkg" "Downloading pkg"
-	if [ -f /boot/modules/i915kms.ko ]; then
+	if is_amd64 && [ -f /boot/modules/i915kms.ko ]; then
 		pkg_with_pb "fetch -yU ${desired_drm_package}" "Downloading drm"
+	fi
+	if [ -f /boot/modules/if_pppoe.ko ]; then
+		pkg_with_pb "fetch -yU if_pppoe-kmod" "Downloading if_pppoe-kmod"
 	fi
 }
 
@@ -700,6 +707,10 @@ unset_vital_flag() {
 		[ "${_vflag}" = "0" ] && continue
 		_exec "_pkg set -y -v 0 ${_package}" "Removing vital flag from ${_package}" mute
 	done
+}
+
+is_amd64() {
+	[ -n "${ARCH}" ] && [ "${ARCH}" = "amd64" ]
 }
 
 is_ce() {
@@ -1017,7 +1028,15 @@ be_pkg_upgrade()
 
 	# Do the package upgrade in the mounted environment
 	LAST_EXEC_CMD="pkg"
+	if is_amd64; then
+		_exec "_pkg fetch -U ${desired_drm_package}" "Fetching drm package"
+	fi
+	_exec "_pkg fetch -U if_pppoe-kmod" "Fetching if_pppoe package"
 	pkg_with_pb "upgrade" "Upgrading packages in cloned boot environment ${UPGRADE_BE}"
+	if is_amd64; then
+		drm_upgrade
+	fi
+	if_pppoe_upgrade
 	unset LAST_EXEC_CMD
 
 	# Set some ZFS user properties (again)
@@ -1034,7 +1053,7 @@ be_pkg_upgrade()
 
 	# Cleanup caches and unnecessary packages before unmounting
 	_exec "_pkg autoremove" "Removing unnecessary packages" mute ignore_result
-	_exec "_pkg clean" "Cleanup pkg cache" mute ignore_result
+	_exec "_pkg clean -a" "Cleanup pkg cache" mute ignore_result
 
 	# All done working in the chroot
 	unset PKG_OPTS
@@ -1584,14 +1603,10 @@ pkg_upgrade() {
 			    "Upgrading necessary packages"
 			delete_annotation=""
 
-			# Upgrade drm if it is in use
-			if pkg-static info -e drm-510-kmod; then
-				_exec "pkg-static install -r ${product} -y ${desired_drm_package}" \
-				    "Upgrading drm to ${desired_drm_package}"
-			elif kldstat -qm i915kms; then
-				_exec "pkg-static upgrade -r ${product} -f drm-\*" \
-				    "Upgrading drm"
+			if is_amd64; then
+				drm_upgrade
 			fi
+			if_pppoe_upgrade
 
 			# Make sure PHP setup is fine
 			_exec "/etc/rc.d/ldconfig onestart" \
@@ -1664,7 +1679,7 @@ pkg_upgrade() {
 
 		# cleanup caches
 		_exec "_pkg autoremove" "Removing unnecessary packages" mute ignore_result
-		_exec "_pkg clean" "Cleanup pkg cache" mute ignore_result
+		_exec "_pkg clean -a" "Cleanup pkg cache" mute ignore_result
 	fi
 
 	gitsync=$(read_xml_tag.sh boolean system/gitsync/synconupgrade)
@@ -1716,13 +1731,22 @@ get_meta_pkg_name() {
 	# figure out main meta package name
 	if is_pkg_installed ${product}-vmware; then
 		echo "${product}-vmware"
-	elif is_pkg_installed ${product}-php72; then
-		echo "${product}-php72"
 	elif is_pkg_installed ${product}; then
-		echo "${product}-system"
+		echo "${product}"
 	else
 		_echo -o stderr "ERROR: It was not possible to identify which" \
 		    "${product} meta package is installed"
+		_exit 1
+	fi
+}
+
+get_dep_pkg_name() {
+	# figure out main dependency package name
+	if is_pkg_installed ${product}; then
+		echo "${product}-system"
+	else
+		_echo -o stderr "ERROR: It was not possible to identify which" \
+		    "${product} dependency package is installed"
 		_exit 1
 	fi
 }
@@ -1883,7 +1907,6 @@ There are no new releases for the SG-1000."
 			local _pkg_args=""
 			local _pkgs="${_core_pkgs} ${_meta_pkg}"
 			if [ ${_is_configured_repo} -eq 0 ]; then
-				_pkgs="${product}-base"
 				_pkg_args="-C ${_repopath}/pkg.conf"
 				# No repo db files, initialize
 				if [ ! -f "${_db_dir}/${_reponame}/db/repo-pfSense.sqlite" ] ||
@@ -1981,7 +2004,7 @@ compare_pkg_version() {
 		return 1
 	fi
 
-	local _rver=$(_pkg rquery ${_conf_args} -U %v ${_pkg_name})
+	local _rver=$(_pkg ${_conf_args} rquery -U %v ${_pkg_name})
 
 	# Maybe we need fresh metadata, lets try to obtain it respecting
 	# dont_update variable
@@ -2154,13 +2177,43 @@ label_esp() {
     fi
 }
 
+drm_upgrade() {
+	# Upgrade drm if it is in use
+	local _drm _drm_done
+	for _drm in ${legacy_drm_packages}; do
+		if _pkg info -e "${_drm}"; then
+			_exec "_pkg install -U -r ${product} -y ${desired_drm_package}" \
+				"Upgrading drm to ${desired_drm_package}"
+			_drm_done=1
+		fi
+	done
+	if [ -z "${_drm_done}" ] && kldstat -qm i915kms; then
+		_exec "_pkg upgrade -U -r ${product} -f drm-\*" "Upgrading drm"
+	fi
+}
+
+if_pppoe_upgrade() {
+	local _ifpppoe_version
+	if _ifpppoe_version="$(_pkg info -E if_pppoe-kmod)"; then
+		_ifpppoe_version="${_ifpppoe_version%.*}"
+		_ifpppoe_version="${_ifpppoe_version%.*}"
+		_ifpppoe_version="${_ifpppoe_version##*.}"
+
+		if [ "${_ifpppoe_version}" -gt "20250520" ] &&  [ "${_ifpppoe_version}" -lt "20260119" ]; then
+			_exec "_pkg upgrade -U -r ${product} -f if_pppoe-kmod" "Upgrading if_pppoe"
+		fi
+	fi
+}
+
 export LANG=C
 
+ARCH="$(/usr/bin/uname -p)"
 pid_file="/var/run/$(basename $0).pid"
 logfile="/cf/conf/upgrade_log.txt"
 upgrade_logfile="/cf/conf/upgrade_log.latest.txt"
 stdout='/dev/null'
-desired_drm_package='drm-515-kmod'
+desired_drm_package='drm-61-kmod'
+legacy_drm_packages='drm-510-kmod drm-515-kmod'
 
 # Export necessary PATH
 export PATH=/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin
@@ -2431,7 +2484,7 @@ else
 fi
 
 if [ "${action}" = "install" ]; then
-	new_php_pkg=$(_pkg rquery -U %dn $(get_meta_pkg_name) \
+	new_php_pkg=$(_pkg rquery -U %dn $(get_dep_pkg_name) \
 	    | egrep '^php[0-9]{2}$')
 
 	if [ "${cur_php_pkg}" != "${new_php_pkg}" ]; then

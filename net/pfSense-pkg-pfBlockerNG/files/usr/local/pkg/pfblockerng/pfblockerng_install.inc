@@ -30,6 +30,82 @@ pfb_global();
 // Set 'Install flag' to skip sync process during installations.
 $g['pfblockerng_install'] = TRUE;
 
+// Migrate old VIP configuration.
+$pfb_dnsbl_config = config_get_path('installedpackages/pfblockerngdnsblsettings/config/0', []);
+if (
+	isset($pfb_dnsbl_config['pfb_dnsvip']) ||
+	isset($pfb_dnsbl_config['pfb_dnsblv6']) ||
+	isset($pfb_dnsbl_config['pfb_dnsvip_type']) ||
+	isset($pfb_dnsbl_config['pfb_dnsvip_vhid']) ||
+	isset($pfb_dnsbl_config['pfb_dnsvip_base']) ||
+	isset($pfb_dnsbl_config['pfb_dnsvip_skew']) ||
+	isset($pfb_dnsbl_config['pfb_dnsvip_pass'])
+) {
+	// Update existing VIPs.
+	$vips_found = false;
+	$vips_config = config_get_path('virtualip/vip', []);
+	foreach ($vips_config as &$vip) {
+		if (!str_starts_with($vip['descr'], 'pfB DNSBL')) {
+			continue;
+		}
+		$vips_found = true;
+
+		$vip['descr'] = 'pfBlockerNG DNSBL';
+		$vip['uniqid'] = $vip['uniqid'] ?? uniqid();
+
+		$vip_id = "_vip{$vip['uniqid']}";
+		if ($pfb_dnsbl_config['pfb_dnsvip'] == $vip['subnet']) {
+			$pfb_dnsbl_config['pfb_dnsvip4'] = $vip_id;
+		} elseif (empty($pfb_dnsbl_config['pfb_dnsvip4']) && is_ipaddrv4($vip['subnet'])) {
+			$pfb_dnsbl_config['pfb_dnsvip4'] = $vip_id;
+		} elseif (is_ipaddrv6($vip['subnet'])) {
+			$pfb_dnsbl_config['pfb_dnsvip6'] = $vip_id;
+		}
+	}
+	unset($vip);
+	if ($vips_found) {
+		config_set_path('virtualip/vip', $vips_config);
+	} elseif (is_ipaddrv4($pfb_dnsbl_config['pfb_dnsvip'])) {
+		// DNSBL is enabled but a VIP isn't configured.
+		file_notice('pfBlockerNG', gettext('The DNSBL VIP needs to be configured manually'), 'pfBlockerNG', '/pfblockerng/pfblockerng_dnsbl.php', 2);
+	}
+
+	// If DNSBL is not configured, don't set new config.
+	if (
+		isset($pfb_dnsbl_config['pfb_dnsvip4']) &&
+		(!isset($pfb_dnsbl_config['pfb_dnsvip']) || !is_ipaddrv4($pfb_dnsbl_config['pfb_dnsvip']) ||
+			!is_string($pfb_dnsbl_config['pfb_dnsvip4']) ||
+			!str_starts_with($pfb_dnsbl_config['pfb_dnsvip4'], '_vip'))
+	) {
+		unset($pfb_dnsbl_config['pfb_dnsvip4']);
+	}
+	if (
+		isset($pfb_dnsbl_config['pfb_dnsvip6']) &&
+		(($pfb_dnsbl_config['pfb_dnsblv6'] != 'on') ||
+			!is_string($pfb_dnsbl_config['pfb_dnsvip6']) ||
+			!str_starts_with($pfb_dnsbl_config['pfb_dnsvip6'], '_vip'))
+	) {
+		unset($pfb_dnsbl_config['pfb_dnsvip6']);
+	}
+
+	// Remove old configuration.
+	unset(
+		$pfb_dnsbl_config['pfb_dnsvip'],
+		$pfb_dnsbl_config['pfb_dnsblv6'],
+		$pfb_dnsbl_config['pfb_dnsvip_type'],
+		$pfb_dnsbl_config['pfb_dnsvip_vhid'],
+		$pfb_dnsbl_config['pfb_dnsvip_base'],
+		$pfb_dnsbl_config['pfb_dnsvip_skew'],
+		$pfb_dnsbl_config['pfb_dnsvip_pass']
+	);
+	// Reset saved wizard configuration.
+	config_del_path('pfblockerng_wizard');
+
+	config_set_path('installedpackages/pfblockerngdnsblsettings/config/0', $pfb_dnsbl_config);
+	write_config('Migrated old pfBlockerNG VIP configuraiton');
+	pfb_global();
+}
+
 // MaxMind Database is no longer pre-installed during package installation
 if (empty($pfb['maxmind_key'])) {
 	update_status("\nMaxMind GeoIP databases are not pre-installed during installation.\nTo utilize the MaxMind GeoIP functionalities, you will be required to register for a free MaxMind user account and access key. Review the IP tab: MaxMind Settings for more details.\n\n");
@@ -56,8 +132,8 @@ if (strpos($widgets, 'pfblockerng') === FALSE) {
 	} else {
 		config_set_path('widgets/sequence', $widgets . ',pfblockerng:col2:open:0');
 	}
-	write_config('pfBlockerNG: Save widget');
 	update_status(" done.");
+	write_config('Added pfBlockerNG widget to the dashboard');
 }
 
 // Create Firewall filter service and link required executables
@@ -71,11 +147,7 @@ link('/usr/local/bin/php', '/usr/local/bin/php_pfb');
 // clog is not required for pfSense 2.5 and above
 unlink_if_exists('/usr/local/sbin/clog_pfb');
 unlink_if_exists('/usr/bin/tail_pfb');
-if (substr(trim(file_get_contents('/etc/version')), 0, 3) < '2.5' && file_exists('/usr/local/sbin/clog')) {
-	link('/usr/local/sbin/clog', '/usr/local/sbin/clog_pfb');
-} else {
-	link('/usr/bin/tail', '/usr/bin/tail_pfb');
-}
+link('/usr/bin/tail', '/usr/bin/tail_pfb');
 
 // Remove cache databases
 unlink_if_exists("{$pfb['asn_cache']}");
@@ -95,7 +167,7 @@ link('/usr/local/sbin/lighttpd', '/usr/local/sbin/lighttpd_pfb');
 update_status(" done.\n");
 
 // Create DNSBL Lighttpd config file and DNSBL Certificate and restart DNSBL Service
-if (!empty($pfb['dnsbl_port']) && !empty($pfb['dnsbl_port_ssl'])) {
+if (!empty($pfb['dnsbl_port']) && !empty($pfb['dnsbl_port_ssl']) && ($pfb['dnsbl'] == 'on')) {
 
 	update_status("Creating DNSBL web server config ...");
 	pfb_create_lighttpd();
@@ -105,11 +177,11 @@ if (!empty($pfb['dnsbl_port']) && !empty($pfb['dnsbl_port_ssl'])) {
 	update_status("Creating DNSBL Certificate...");
 	pfb_create_dnsbl_cert();
 	update_status(" done.\n");
-}
 
-update_status("Starting DNSBL Service...");
-start_service('pfb_dnsbl');
-update_status(" done.\n\n");
+	update_status("Starting DNSBL Service...");
+	start_service('pfb_dnsbl');
+	update_status(" done.\n\n");
+}
 
 // Replace 'default' DNSBL active blocked webpage
 if (!file_exists('/usr/local/www/pfblockerng/www/dnsbl_active.php') ||
@@ -389,9 +461,10 @@ if (file_exists('/var/db/pfblockerng/dnsbl_info') &&
 	$db_handle = pfb_open_sqlite(1, 'Convert dnsbl_info');
 	if ($db_handle) {
 
-		$dnsbl_info = array_map('str_getcsv', @file('/var/db/pfblockerng/dnsbl_info'));
+		$dnsbl_info = @file('/var/db/pfblockerng/dnsbl_info');
 		if (!empty($dnsbl_info)) {
 			foreach ($dnsbl_info as $group) {
+				$group = str_getcsv($group, ',', '"', "\\");
 				if (substr($group[0], 0, 1) != '#') {
 					$db_update = "INSERT INTO dnsbl ( groupname, timestamp, entries, counter )"
 							. " VALUES ( :group0, :group1, :group2, :group3 );\n";

@@ -54,6 +54,14 @@
  * IS ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+#include <stdint.h>
+#include <sys/socket.h>
+#include <sys/types.h>
+#include <net/if.h>
+#include <netinet/in.h>
+
+#include <netinet6/in6_var.h>
+#include <sys/socket.h>
 #ifdef HAVE_CONFIG_H
 # include "config.h"
 #endif
@@ -1708,6 +1716,60 @@ fill_interface_params(zval *val, struct ifaddrs *mb)
 	}
 }
 
+static void
+fill_interface_tunnel(zval *val, char *ifname, u_short af) {
+	zval tunnel;
+	char src[NI_MAXHOST];
+	char dst[NI_MAXHOST];
+	u_long srccmd;
+	u_long dstcmd;
+	char *zval_key;
+	int sockfd;
+
+	switch (af) {
+	case AF_INET:
+		srccmd = SIOCGIFPSRCADDR;
+		dstcmd = SIOCGIFPDSTADDR;
+		sockfd = PFSENSE_G(inets);
+		zval_key = "tunnel";
+		break;
+	case AF_INET6:
+		srccmd = SIOCGIFPSRCADDR_IN6;
+		dstcmd = SIOCGIFPDSTADDR_IN6;
+		sockfd = PFSENSE_G(inets6);
+		zval_key = "tunnel6";
+		break;
+	default:
+		return;
+	}
+
+	struct ifreq ifr;
+	const struct sockaddr *sa = (const struct sockaddr *)&ifr.ifr_addr;
+
+	strlcpy(ifr.ifr_name, ifname, IFNAMSIZ);
+	if (ioctl(sockfd, srccmd, (caddr_t)&ifr) < 0)
+		return;
+	if (sa->sa_family != af)
+		return;
+	if(getnameinfo(sa, sa->sa_len, src, sizeof(src), 0, 0,
+	    NI_NUMERICHOST) != 0)
+		return;
+
+	if (ioctl(sockfd, dstcmd, (caddr_t)&ifr) < 0)
+		return;
+	if (sa->sa_family != af)
+		return;
+	if(getnameinfo(sa, sa->sa_len, dst, sizeof(dst), 0, 0,
+	    NI_NUMERICHOST) != 0)
+		return;
+
+	array_init(&tunnel);
+	add_assoc_string(&tunnel, "srcaddr", src);
+	add_assoc_string(&tunnel, "dstaddr", dst);
+
+	add_assoc_zval(val, zval_key, &tunnel);
+}
+
 /**
  * Alternate hybrid of pfSense_getall_interface_addresses and
  * pfSense_get_interface_addresses. Return iface information and array of v4 and
@@ -1749,7 +1811,9 @@ PHP_FUNCTION(pfSense_get_ifaddrs)
 	array_init(&addrs6);
 
 	fill_interface_params(return_value, mb);
-	
+	fill_interface_tunnel(return_value, ifname, AF_INET);
+	fill_interface_tunnel(return_value, ifname, AF_INET6);
+
 	/* loop until iface name changes or we exhaust the list */
 	for (; mb != NULL; mb = mb->ifa_next) {
 		zval addr;
@@ -1803,7 +1867,7 @@ PHP_FUNCTION(pfSense_get_ifaddrs)
 					inet_ntop(AF_INET,
 					    (void *)&tmp->sin_addr, outputbuf,
 					    sizeof(outputbuf));
-					add_assoc_string(&addr, "tunnel",
+					add_assoc_string(&addr, "dstaddr",
 					    outputbuf);
 				}
 			}
@@ -1858,7 +1922,7 @@ PHP_FUNCTION(pfSense_get_ifaddrs)
 					inet_ntop(AF_INET6,
 					    (void *)&tmp6->sin6_addr, outputbuf,
 					    sizeof(outputbuf));
-					add_assoc_string(&addr, "tunnel",
+					add_assoc_string(&addr, "dstaddr",
 					    outputbuf);
 				}
 			}
@@ -1956,7 +2020,7 @@ PHP_FUNCTION(pfSense_get_interface_addresses)
 					inet_ntop(AF_INET,
 					    (void *)&tmp->sin_addr, outputbuf,
 					    sizeof(outputbuf));
-					add_assoc_string(return_value, "tunnel",
+					add_assoc_string(return_value, "dstaddr",
 					    outputbuf);
 				}
 			}
@@ -1999,7 +2063,7 @@ PHP_FUNCTION(pfSense_get_interface_addresses)
 					    (void *)&tmp6->sin6_addr, outputbuf,
 					    sizeof(outputbuf));
 					add_assoc_string(return_value,
-					    "tunnel6", outputbuf);
+					    "dstaddr6", outputbuf);
 				}
 			}
 			break;

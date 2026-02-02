@@ -1,10 +1,12 @@
 PORTNAME=	grimoirelab
 DISTVERSION=	1.9.2
+PORTREVISION=	1
 CATEGORIES=	www python
 MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
-MAINTAINER=	bofh@FreeBSD.org
+# Ask clusteradm@ before removal
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Tool set for software development analytics
 WWW=		https://chaoss.github.io/grimoirelab/
 

@@ -22,6 +22,7 @@
  * limitations under the License.
  */
 define('PKG_BANDWIDTHD_BASE', '/usr/local/bandwidthd');
+define('LOG_PREFIX_PKG_BANDWIDTHD', 'bandwidthd');
 
 function bandwidthd_install_deinstall() {
 	mwexec("/bin/rm -rf " . PKG_BANDWIDTHD_BASE . "/htdocs");
@@ -155,7 +156,7 @@ EOF;
 
 	$fd = fopen("{$bandwidthd_config_dir}/bandwidthd.conf", "w");
 	if (!$fd) {
-		log_error("could not open {$bandwidthd_config_dir}/bandwidthd.conf for writing");
+		logger(LOG_ERR, localize_text("could not open %s for writing", "{$bandwidthd_config_dir}/bandwidthd.conf"), LOG_PREFIX_PKG_BANDWIDTHD);
 		exit;
 	}
 	fwrite($fd, $config_file);
@@ -304,7 +305,7 @@ function bandwidthd_validate_input($post, &$input_errors) {
 	// Only support sane characters in Sensor ID
 	if ($post['sensorid']) {
 		if ((!is_hostname($post['sensorid'])) && !preg_match("/^[a-zA-Z0-9\-\=\(\):. ]*$/", $post['sensorid'])) {
-			$input_errors[] .= gettext('Sensor ID must be either a hostname or a string which may only contain characters matching ^[a-zA-Z0-9\-\(\):. ]*$ regexp.');
+			$input_errors[] = gettext('Sensor ID must be either a hostname or a string which may only contain characters matching ^[a-zA-Z0-9\-\(\):. ]*$ regexp.');
 		}
 	}
 	if (($post['meta_refresh']) && (!is_numericint($post['meta_refresh']))) {

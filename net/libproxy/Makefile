@@ -1,5 +1,5 @@
 PORTNAME=	libproxy
-DISTVERSION=	0.5.9
+DISTVERSION=	0.5.10
 PORTREVISION=	1
 CATEGORIES=	net devel
 
@@ -15,6 +15,8 @@ USES=		cpe gnome meson pkgconfig
 CPE_VENDOR=	libproxy_project
 USE_GITHUB=	yes
 
+HAS_SYMBOL_VERSION=	${PREFIX}/lib/libproxy.so.1
+
 USE_GNOME=	glib20 introspection
 
 MESON_ARGS=	-Dtests=true \
@@ -23,8 +25,6 @@ MESON_ARGS=	-Dtests=true \
 		-Dintrospection=true \
 		-Drelease=true
 USE_LDCONFIG=	yes
-# https://github.com/libproxy/libproxy/issues/320
-LLD_UNSAFE=	yes
 
 OPTIONS_DEFINE=	CURL DOCS VAPI
 OPTIONS_GROUP=	CONFIG PACRUNNER

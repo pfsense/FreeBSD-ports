@@ -13,7 +13,7 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 
 RUN_DEPENDS=	ffmpeg:multimedia/ffmpeg
 
-USES=		go:1.21,modules
+USES=		go:modules
 GO_MODULE=	github.com/iawia002/${PORTNAME}
 
 PLIST_FILES=	bin/${PORTNAME}

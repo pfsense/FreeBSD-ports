@@ -1,6 +1,6 @@
 PORTNAME=	icecast
 PORTVERSION=	2.4.4
-PORTREVISION=	2
+PORTREVISION=	3
 PORTEPOCH=	1
 CATEGORIES=	audio net
 MASTER_SITES=	https://downloads.xiph.org/releases/icecast/:source \
@@ -36,6 +36,8 @@ CONFLICTS_INSTALL=	icecast-kh
 SUB_FILES=	pkg-message
 
 CPE_VENDOR=	xiph
+
+PORTSCOUT=	skipv:2.4.99.1,2.4.99.2,2.4.99.3,2.4.999.1
 
 OPTIONS_DEFINE=	DOCS
 

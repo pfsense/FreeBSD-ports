@@ -1,6 +1,6 @@
 PORTNAME=	e2fsprogs
-PORTVERSION=	1.47.2
-PORTREVISION?=	1	# NOTE: when bumping PORTREVISION, also bump ../e2fsprogs/Makefile!
+PORTVERSION=	1.47.3
+PORTREVISION?=	0	# NOTE: when bumping PORTREVISION, also bump ../e2fsprogs/Makefile!
 CATEGORIES?=	filesystems sysutils
 MASTER_SITES=	KERNEL_ORG/linux/kernel/people/tytso/${PORTNAME}/v${PORTVERSION}
 
@@ -14,9 +14,9 @@ LICENSE_FILE?=	${WRKSRC}/NOTICE
 .endif
 LICENSE_DISTFILES_GPLv2+ =	${DISTNAME}${EXTRACT_SUFX}
 
-USES=		cpe gmake makeinfo pkgconfig tar:xz
+USES=		compiler:c11 cpe gmake makeinfo pkgconfig tar:xz
 CPE_VENDOR=	e2fsprogs_project
-USE_CSTD=	gnu99
+USE_CSTD=	gnu11
 # this seems a bit redundant to the --rpath below, but
 # the latter should be more robust in case someone needs
 # to deal with the file systems from a system not yet fully booted.
@@ -26,25 +26,22 @@ USE_LDCONFIG=	${PREFIX}/lib/e2fsprogs
 GNU_CONFIGURE=	yes
 GNU_CONFIGURE_MANPREFIX=	${PREFIX}/share
 
-# while we use the system blkid, we need to --enable-libblkid
-# so that the tools get built:
 CONFIGURE_ARGS?=--disable-fsck \
 		--disable-e2initrd-helper \
 		--disable-libuuid \
 		--disable-uuidd \
-		--enable-libblkid \
+		--disable-libblkid \
 		--enable-elf-shlibs \
 		--libdir='${PREFIX}/lib/e2fsprogs/' \
 		--includedir='${PREFIX}/include/e2fsprogs/' \
 		--with-root-prefix='${PREFIX}' \
 		LDFLAGS='${LDFLAGS} -L${LOCALBASE}/lib -Wl,--rpath -Wl,${LOCALBASE}/lib/e2fsprogs'
 CONFIGURE_ENV?=	LIBS='-Wl,--as-needed ${LIBS} -lexecinfo -lelf'
-CPPFLAGS+=	${_FUSEFS_CFLAGS} -I${WRKSRC}/lib -I${LOCALBASE}/include
-CFLAGS+=	-Wno-unused-command-line-argument # -D_FILE_OFFSET_BITS=64 # the latter for fuse-libs
 MAKE_ARGS+=	pkgconfigdir='${PREFIX}/libdata/pkgconfig'
 MAKE_ENV+=	CHECK_CMD=@true
 
-PIE_UNSAFE=	yes
+CPPFLAGS+=	${_FUSEFS_CFLAGS} -I${WRKSRC}/lib -I${LOCALBASE}/include
+CFLAGS+=	-Wno-unused-command-line-argument
 
 PORTSCOUT=	ignore:1	# cannot handle the version in the directory
 
@@ -53,43 +50,44 @@ CPPFLAGS+=	-D__GNUC_PREREQ\(a,b\)=1
 
 INSTALL_TARGET=		install install-libs
 
-OPTIONS_DEFINE=		DOCS NLS FUSEFS PARALLELTESTS SLOWTESTS BASHTESTS LIBUNWIND
+PORTDOCS=	NOTICE README RELEASE-NOTES SUBMITTING-PATCHES
+
+OPTIONS_DEFINE=		DOCS NLS BASHTESTS FUSEFS PARALLELTESTS SLOWTESTS LIBUNWIND
+OPTIONS_DEFAULT=		FUSEFS ALLTESTS
+OPTIONS_SINGLE=			SELFTEST
+OPTIONS_SINGLE_SELFTEST=	NOTESTS SMALLTESTS ALLTESTS
 OPTIONS_EXCLUDE+=	EXAMPLES
 OPTIONS_SUB=		yes
 
-OPTIONS_SINGLE=			SELFTEST
-OPTIONS_SINGLE_SELFTEST=	NOTESTS SMALLTESTS ALLTESTS
-OPTIONS_DEFAULT=		SMALLTESTS
-FUSEFS_DESC=	Build user-land ext2/3/4 FUSE module (slow!)
-SELFTEST_DESC=	Choose which set of self-tests to run
-NOTESTS_DESC=	Do not run any self-tests (Tier-1, DISCOURAGED)
-SMALLTESTS_DESC=Run tests that need <500 MB disk space (DEFAULT)
 ALLTESTS_DESC=	Run most self-tests (needs more RAM/disk space)
-PARALLELTESTS_DESC=	Parallelize self-tests (needs more disk space)
-SLOWTESTS_DESC=	Enable slow tests that are skipped by default
 BASHTESTS_DESC=	Enable tests that require the GNU bash shell
+FUSEFS_DESC=	Build user-land ext2/3/4 FUSE module (slow!)
 LIBUNWIND_DESC=	Backtrace with libunwind (do set WITH_DEBUG_PORTS+=${PKGORIGIN}!)
-
-FUSEFS_CONFIGURE_ENABLE=	fuse2fs
-FUSEFS_USES=		fuse:3
-# we can't use FUSEFS_CFLAGS, see below for workaround
-FUSEFS_LIBS=		-Wl,--as-needed -lfuse3 -lpthread
-FUSEFS_LDFLAGS=		-L${LOCALBASE}/lib
-
-NLS_USES=		gettext iconv:build
+NOTESTS_DESC=	Do not run any self-tests (Tier-1, DISCOURAGED)
+PARALLELTESTS_DESC=	Parallelize self-tests (needs more disk space)
+SELFTEST_DESC=	Choose which set of self-tests to run
+SLOWTESTS_DESC=	Enable slow tests that are skipped by default
+SMALLTESTS_DESC=Run tests that need <500 MB disk space
 
 BASHTESTS_BUILD_DEPENDS=	${BASH_CMD}:shells/bash
 BASH_CMD=	${LOCALBASE}/bin/bash
 
-LIB_DEPENDS+=	libblkid.so:filesystems/e2fsprogs-libblkid
-LIB_DEPENDS+=	libuuid.so:misc/e2fsprogs-libuuid
+FUSEFS_USES=		fuse:3
+FUSEFS_CONFIGURE_ENABLE=fuse2fs
+# we can't use FUSEFS_CFLAGS, see below for workaround
+FUSEFS_LDFLAGS=		-L${LOCALBASE}/lib
+FUSEFS_LIBS=		-Wl,--as-needed -lfuse3 -lpthread
+
+LIB_DEPENDS+=	libblkid.so:filesystems/libblkid \
+		libuuid.so:misc/libuuid
 
 LIBUNWIND_LIB_DEPENDS=	libunwind.so:devel/libunwind
-LIBUNWIND_LIBS+=	-L${LOCALBASE}/lib -lunwind
 LIBUNWIND_LDFLAGS+=	-rdynamic
+LIBUNWIND_LIBS+=	-L${LOCALBASE}/lib -lunwind
 LIBUNWIND_EXTRA_PATCHES=${FILESDIR}/extrapatch-e2fsck_sigcatcher.c
 
-PORTDOCS=	NOTICE README RELEASE-NOTES SUBMITTING-PATCHES
+NLS_USES=		gettext iconv:build
+
 .endif
 
 # even under DEVELOPER, no REINPLACE_CMD warnings desired
@@ -117,13 +115,6 @@ _FUSEFS_CFLAGS=	-I${LOCALBASE}/include/fuse3
 _FUSEFS_CFLAGS=
 .endif
 
-. if ! empty(ARCH:Mpowerpc*)
-# Fix powerpc64/powerpc SIGSEGV,
-# see https://bugs.freebsd.org/bugzilla/show_bug.cgi?id=231570 (ppc64)
-# see https://bugs.freebsd.org/bugzilla/show_bug.cgi?id=242798 (ppc32 - untested)
-USES+=		compiler:c11
-. endif
-
 .if empty(PORT_OPTIONS:MNOTESTS) && ${MASTERDIR} == ${.CURDIR}
 USES+=		perl5
 USE_PERL5=	build
@@ -146,10 +137,8 @@ libintl=
 EXTRA_PATCHES+=	${FILESDIR}/extrapatch-no-sbrk
 .endif
 
-post-extract: # the symlink RELEASE-NOTES is stale in v1.47.1 and v1.47.2 tarballs, fix:
-	${RLN} ${WRKSRC}/doc/RelNotes/v1.47.2.txt ${WRKSRC}/RELEASE-NOTES
-
 post-patch::
+	${TOUCH} ${WRKSRC}/tests/r_corrupt_fs/is_slow_test
 .if !empty(DISTFILES)
 	@${REINPLACE_CMD} -e 's/<malloc\.h>/<stdlib.h>/' ${WRKSRC}/*/*.c
 	@${REINPLACE_CMD} -e 's,/etc/blkid.tab,${ETCDIR}/blkid.tab,' ${WRKSRC}/misc/blkid* ${WRKSRC}/lib/blkid/blkidP.h
@@ -239,11 +228,11 @@ _checkaddargs+=TMPDIR=${WRKDIR}/tmp
 .endif
 
 .if ${PORT_OPTIONS:MSLOWTESTS}
-_check_target=SKIP_SLOW_TESTS= check
+_check_target=fullcheck
 _check_timeout=7200
 .else
 _check_target=check
-_check_timeout=180
+_check_timeout=600
 .endif
 
 .if ${PORT_OPTIONS:MLIBUNWIND}
@@ -316,10 +305,8 @@ post-install:
 .endfor
 .endif
 	# remove or relocate files installed by other ports already, or shadowing system files:
-	cd ${STAGEDIR}${PREFIX} && \
-		${XARGS} <${FILESDIR}/unwanted ${RM} && \
-		${RMDIR} include/e2fsprogs/blkid
 	${MV} ${STAGEDIR}${PREFIX}/bin/compile_et ${STAGEDIR}${PREFIX}/bin/e2fsprogs-compile_et
+	${RM} ${STAGEDIR}${PREFIX}/sbin/findfs
 	${MV} ${STAGEDIR}${PREFIX}/share/man/man1/compile_et.1 ${STAGEDIR}${PREFIX}/share/man/man1/e2fsprogs-compile_et.1
 	${MKDIR} ${STAGEDIR}${DATADIR}/et/
 	${MV} ${STAGEDIR}${PREFIX}/share/et/* ${STAGEDIR}${DATADIR}/et/
@@ -328,6 +315,7 @@ post-install:
 	${MV} -f ${STAGEDIR}${PREFIX}/share/man/man3/com_err.3 \
 		 ${STAGEDIR}${PREFIX}/share/man/man3/e2fsprogs-com_err.3
 	${RM} ${STAGEDIR}${PREFIX}/share/man/man3/libblkid.3
+	${RM} ${STAGEDIR}${PREFIX}/share/man/man8/findfs.8
 
 #
 # the next line closes .if ${MASTERDIR} == ${.CURDIR}

@@ -1,6 +1,5 @@
 PORTNAME=	gdk-pixbuf
-PORTVERSION=	2.42.12
-PORTREVISION=	1
+PORTVERSION=	2.44.1
 CATEGORIES=	graphics
 MASTER_SITES=	GNOME
 PKGNAMESUFFIX=	2
@@ -21,19 +20,26 @@ SHEBANG_FILES=	build-aux/*.py
 USE_LDCONFIG=	yes
 MESON_ARGS=	-Dbuiltin_loaders="none" \
 		-Dtests=true \
+		-Dandroid=disabled \
+		-Dglycin=disabled \
 		-Dinstalled_tests=false
 TRIGGERS=	gdk-pixbuf-query-loaders
 SUB_LIST=	GTK2_VERSION=${GTK2_VERSION}
 
-LIBVERSION=	0.4200.12
+LIBVERSION=	0.4400.1
 PLIST_SUB+=	LIBVERSION=${LIBVERSION}
 
+TESTING_UNSAFE=	some tests invoke OOM conditions, which may be destructive for the system
+
 OPTIONS_SUB=	yes
-OPTIONS_DEFINE=	DOCS GIF JPEG MANPAGES PNG TIFF
+OPTIONS_DEFINE=	DOCS MANPAGES
 OPTIONS_DEFAULT=GIF JPEG MANPAGES PNG TIFF
+# at least one format has to be selected, otherwise the build fails
+OPTIONS_MULTI=	FORMATS
+OPTIONS_MULTI_FORMATS=	GIF JPEG PNG TIFF
 
 DOCS_BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}gi-docgen>0:textproc/py-gi-docgen@${PY_FLAVOR}
-DOCS_MESON_TRUE=	gtk_doc
+DOCS_MESON_TRUE=	documentation
 
 GIF_MESON_ENABLED=	gif
 

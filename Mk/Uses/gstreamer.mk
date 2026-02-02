@@ -10,7 +10,8 @@
 # version:		1 -- default (this may be omitted since there is
 #			currently only one supported version)
 # _internal:		Only intended for use by multimedia/gstreamer1 to
-#			define specific variables so as not depend on itself
+#			define specific variables like _GST1_VERSION so that
+#			it does not depend on itself
 #
 # MAINTAINER: multimedia@FreeBSD.org
 
@@ -39,16 +40,9 @@ _GST_VER=	${_GST_VER_DEFAULT}
 
 #== Component setup
 
-# When modifying _GST1_VERSION, be sure to also update distinfo for the
-# following ports:
-# - multimedia/gstreamer1
-# - multimedia/gstreamer1-editing-services
-# - multimedia/gstreamer1-libav
-# - multimedia/gstreamer1-plugins (via `make makesum-gst1`)
-# - multimedia/gstreamer1-rtsp-server
-# - multimedia/gstreamer1-vaapi
-# - multimedia/py-gstreamer1
-_GST1_VERSION=		1.26.2
+# When modifying _GST1_VERSION, run `make -C ${PORTSDIR}/multimedia/gstreamer1 makesum-all`
+# to update the distinfo files for the entire suite.
+_GST1_VERSION=		1.26.9
 _GST1_LIB_VER=		1.0
 _GST1_SOVERSION=	0.${_GST1_VERSION:R:E}${${_GST1_VERSION:E} > 9:?:0}${_GST1_VERSION:E}.0
 
@@ -77,7 +71,7 @@ _GST1_PLUGINS_www=	neon srt
 _GST1_PLUGINS_x11=	x ximagesrc
 _GST1_PLUGINS_x11-toolkits=	gtk pango qt5 qt6
 
-# == Unversioned information
+#== Unversioned information
 
 # Gather all available plugins for the chosen version
 _GST_PLUGINS_BASE=	bad core good ugly libgstreamer plugins
@@ -355,7 +349,7 @@ gst-rtsp-server_IMPL=	#
 
 gst-rust_PORT=		multimedia/gstreamer${_GST_VER}-plugins-rust
 gst-rust_IMPL=		#
-gst-rust_GST1_VERSION=	0.13.6
+gst-rust_GST1_VERSION=	0.14.4
 gst-rust_VERSION=	${gst-rust_GST${_GST_VER}_VERSION}
 
 gst-smoothstreaming_PORT=	multimedia/gstreamer${_GST_VER}-plugins-smoothstreaming

@@ -159,6 +159,8 @@
 %%WWWDIR%%/mod/bookmarks/views/default/forms/bookmarks/save.php
 %%WWWDIR%%/mod/bookmarks/views/default/groups/profile/module/bookmarks.php
 %%WWWDIR%%/mod/bookmarks/views/default/object/bookmarks.php
+%%WWWDIR%%/mod/bookmarks/views/default/object/bookmarks/full.php
+%%WWWDIR%%/mod/bookmarks/views/default/object/bookmarks/summary.php
 %%WWWDIR%%/mod/bookmarks/views/default/resources/bookmarks/add.php
 %%WWWDIR%%/mod/bookmarks/views/default/resources/bookmarks/all.php
 %%WWWDIR%%/mod/bookmarks/views/default/resources/bookmarks/bookmarklet.php
@@ -185,6 +187,7 @@
 %%WWWDIR%%/mod/ckeditor/languages/en.php
 %%WWWDIR%%/mod/ckeditor/languages/fr.php
 %%WWWDIR%%/mod/ckeditor/languages/nl.php
+%%WWWDIR%%/mod/ckeditor/languages/pt_br.php
 %%WWWDIR%%/mod/ckeditor/languages/ru.php
 %%WWWDIR%%/mod/ckeditor/vendors/README.md
 %%WWWDIR%%/mod/ckeditor/vendors/ckeditor5/LICENSE.md
@@ -323,6 +326,7 @@
 %%WWWDIR%%/mod/developers/languages/it.php
 %%WWWDIR%%/mod/developers/languages/ja.php
 %%WWWDIR%%/mod/developers/languages/nl.php
+%%WWWDIR%%/mod/developers/languages/pt_br.php
 %%WWWDIR%%/mod/developers/languages/ru.php
 %%WWWDIR%%/mod/developers/views/default/admin/develop_tools/entity_explorer.php
 %%WWWDIR%%/mod/developers/views/default/admin/develop_tools/entity_explorer/acl_memberships.php
@@ -335,6 +339,7 @@
 %%WWWDIR%%/mod/developers/views/default/admin/develop_tools/inspect/actions.php
 %%WWWDIR%%/mod/developers/views/default/admin/develop_tools/inspect/events.php
 %%WWWDIR%%/mod/developers/views/default/admin/develop_tools/inspect/menus.php
+%%WWWDIR%%/mod/developers/views/default/admin/develop_tools/inspect/notifications.php
 %%WWWDIR%%/mod/developers/views/default/admin/develop_tools/inspect/routes.php
 %%WWWDIR%%/mod/developers/views/default/admin/develop_tools/inspect/seeders.php
 %%WWWDIR%%/mod/developers/views/default/admin/develop_tools/inspect/services.php
@@ -370,6 +375,7 @@
 %%WWWDIR%%/mod/discussions/languages/gd.php
 %%WWWDIR%%/mod/discussions/languages/ja.php
 %%WWWDIR%%/mod/discussions/languages/nl.php
+%%WWWDIR%%/mod/discussions/languages/pt_br.php
 %%WWWDIR%%/mod/discussions/languages/ro_ro.php
 %%WWWDIR%%/mod/discussions/languages/ru.php
 %%WWWDIR%%/mod/discussions/languages/sv.php
@@ -405,6 +411,7 @@
 %%WWWDIR%%/mod/externalpages/classes/Elgg/ExternalPages/Menus/ExPages.php
 %%WWWDIR%%/mod/externalpages/classes/Elgg/ExternalPages/Menus/Footer.php
 %%WWWDIR%%/mod/externalpages/classes/Elgg/ExternalPages/Menus/WalledGarden.php
+%%WWWDIR%%/mod/externalpages/classes/ElggExternalPage.php
 %%WWWDIR%%/mod/externalpages/composer.json
 %%WWWDIR%%/mod/externalpages/elgg-plugin.php
 %%WWWDIR%%/mod/externalpages/languages/ca.php
@@ -424,6 +431,7 @@
 %%WWWDIR%%/mod/externalpages/languages/ko.php
 %%WWWDIR%%/mod/externalpages/languages/nl.php
 %%WWWDIR%%/mod/externalpages/languages/pl.php
+%%WWWDIR%%/mod/externalpages/languages/pt_br.php
 %%WWWDIR%%/mod/externalpages/languages/ro_ro.php
 %%WWWDIR%%/mod/externalpages/languages/ru.php
 %%WWWDIR%%/mod/externalpages/languages/sr.php
@@ -461,6 +469,7 @@
 %%WWWDIR%%/mod/file/languages/ko.php
 %%WWWDIR%%/mod/file/languages/nl.php
 %%WWWDIR%%/mod/file/languages/pl.php
+%%WWWDIR%%/mod/file/languages/pt_br.php
 %%WWWDIR%%/mod/file/languages/ro_ro.php
 %%WWWDIR%%/mod/file/languages/ru.php
 %%WWWDIR%%/mod/file/languages/sr.php
@@ -509,6 +518,10 @@
 %%WWWDIR%%/mod/friends/classes/Elgg/Friends/Menus/Topbar.php
 %%WWWDIR%%/mod/friends/classes/Elgg/Friends/Menus/UserHover.php
 %%WWWDIR%%/mod/friends/classes/Elgg/Friends/Notifications.php
+%%WWWDIR%%/mod/friends/classes/Elgg/Friends/Notifications/AcceptFriendRequestHandler.php
+%%WWWDIR%%/mod/friends/classes/Elgg/Friends/Notifications/AddFriendHandler.php
+%%WWWDIR%%/mod/friends/classes/Elgg/Friends/Notifications/DeclineFriendRequestHandler.php
+%%WWWDIR%%/mod/friends/classes/Elgg/Friends/Notifications/FriendRequestHandler.php
 %%WWWDIR%%/mod/friends/classes/Elgg/Friends/Relationships.php
 %%WWWDIR%%/mod/friends/classes/Elgg/Friends/Widgets.php
 %%WWWDIR%%/mod/friends/composer.json
@@ -519,6 +532,7 @@
 %%WWWDIR%%/mod/friends/languages/gd.php
 %%WWWDIR%%/mod/friends/languages/ja.php
 %%WWWDIR%%/mod/friends/languages/nl.php
+%%WWWDIR%%/mod/friends/languages/pt_br.php
 %%WWWDIR%%/mod/friends/languages/ro_ro.php
 %%WWWDIR%%/mod/friends/languages/ru.php
 %%WWWDIR%%/mod/friends/languages/sv.php
@@ -553,6 +567,7 @@
 %%WWWDIR%%/mod/friends_collections/languages/gd.php
 %%WWWDIR%%/mod/friends_collections/languages/it.php
 %%WWWDIR%%/mod/friends_collections/languages/nl.php
+%%WWWDIR%%/mod/friends_collections/languages/pt_br.php
 %%WWWDIR%%/mod/friends_collections/languages/ro_ro.php
 %%WWWDIR%%/mod/friends_collections/languages/ru.php
 %%WWWDIR%%/mod/friends_collections/languages/sv.php
@@ -578,6 +593,7 @@
 %%WWWDIR%%/mod/garbagecollector/languages/ja.php
 %%WWWDIR%%/mod/garbagecollector/languages/ko.php
 %%WWWDIR%%/mod/garbagecollector/languages/nl.php
+%%WWWDIR%%/mod/garbagecollector/languages/pt_br.php
 %%WWWDIR%%/mod/garbagecollector/languages/ru.php
 %%WWWDIR%%/mod/garbagecollector/languages/sv.php
 %%WWWDIR%%/mod/garbagecollector/tests/phpunit/integration/Elgg/GarbageCollector/OptimizeCommandTest.php
@@ -604,6 +620,9 @@
 %%WWWDIR%%/mod/groups/classes/Elgg/Groups/Menus/Title.php
 %%WWWDIR%%/mod/groups/classes/Elgg/Groups/Menus/Topbar.php
 %%WWWDIR%%/mod/groups/classes/Elgg/Groups/Middleware/LimitedGroupCreation.php
+%%WWWDIR%%/mod/groups/classes/Elgg/Groups/Notifications/AddMembershipEventHandler.php
+%%WWWDIR%%/mod/groups/classes/Elgg/Groups/Notifications/InviteMembershipEventHandler.php
+%%WWWDIR%%/mod/groups/classes/Elgg/Groups/Notifications/RequestMembershipEventHandler.php
 %%WWWDIR%%/mod/groups/classes/Elgg/Groups/Relationships.php
 %%WWWDIR%%/mod/groups/classes/Elgg/Groups/Widgets.php
 %%WWWDIR%%/mod/groups/composer.json
@@ -622,6 +641,7 @@
 %%WWWDIR%%/mod/groups/languages/ja.php
 %%WWWDIR%%/mod/groups/languages/nl.php
 %%WWWDIR%%/mod/groups/languages/pl.php
+%%WWWDIR%%/mod/groups/languages/pt_br.php
 %%WWWDIR%%/mod/groups/languages/ro_ro.php
 %%WWWDIR%%/mod/groups/languages/ru.php
 %%WWWDIR%%/mod/groups/languages/sr.php
@@ -719,6 +739,7 @@
 %%WWWDIR%%/mod/invitefriends/languages/ko.php
 %%WWWDIR%%/mod/invitefriends/languages/nl.php
 %%WWWDIR%%/mod/invitefriends/languages/pl.php
+%%WWWDIR%%/mod/invitefriends/languages/pt_br.php
 %%WWWDIR%%/mod/invitefriends/languages/ro_ro.php
 %%WWWDIR%%/mod/invitefriends/languages/ru.php
 %%WWWDIR%%/mod/invitefriends/languages/sv.php
@@ -754,6 +775,7 @@
 %%WWWDIR%%/mod/likes/languages/ko.php
 %%WWWDIR%%/mod/likes/languages/nl.php
 %%WWWDIR%%/mod/likes/languages/pl.php
+%%WWWDIR%%/mod/likes/languages/pt_br.php
 %%WWWDIR%%/mod/likes/languages/ro_ro.php
 %%WWWDIR%%/mod/likes/languages/ru.php
 %%WWWDIR%%/mod/likes/languages/sv.php
@@ -783,6 +805,7 @@
 %%WWWDIR%%/mod/members/languages/ko.php
 %%WWWDIR%%/mod/members/languages/nl.php
 %%WWWDIR%%/mod/members/languages/pl.php
+%%WWWDIR%%/mod/members/languages/pt_br.php
 %%WWWDIR%%/mod/members/languages/ro_ro.php
 %%WWWDIR%%/mod/members/languages/ru.php
 %%WWWDIR%%/mod/members/languages/sr.php
@@ -796,6 +819,7 @@
 %%WWWDIR%%/mod/members/views/default/resources/members/popular.php
 %%WWWDIR%%/mod/members/views/default/resources/members/search.php
 %%WWWDIR%%/mod/messageboard/actions/messageboard/add.php
+%%WWWDIR%%/mod/messageboard/classes/Elgg/MessageBoard/Notifications/CreateMessageboardNotificationHandler.php
 %%WWWDIR%%/mod/messageboard/classes/Elgg/MessageBoard/Widgets.php
 %%WWWDIR%%/mod/messageboard/composer.json
 %%WWWDIR%%/mod/messageboard/elgg-plugin.php
@@ -815,6 +839,7 @@
 %%WWWDIR%%/mod/messageboard/languages/ja.php
 %%WWWDIR%%/mod/messageboard/languages/nl.php
 %%WWWDIR%%/mod/messageboard/languages/pl.php
+%%WWWDIR%%/mod/messageboard/languages/pt_br.php
 %%WWWDIR%%/mod/messageboard/languages/ro_ro.php
 %%WWWDIR%%/mod/messageboard/languages/ru.php
 %%WWWDIR%%/mod/messageboard/languages/sv.php
@@ -833,6 +858,7 @@
 %%WWWDIR%%/mod/messages/classes/Elgg/Messages/Menus/Title.php
 %%WWWDIR%%/mod/messages/classes/Elgg/Messages/Menus/Topbar.php
 %%WWWDIR%%/mod/messages/classes/Elgg/Messages/Menus/UserHover.php
+%%WWWDIR%%/mod/messages/classes/Elgg/Messages/Notifications/SendMessageHandler.php
 %%WWWDIR%%/mod/messages/classes/Elgg/Messages/User.php
 %%WWWDIR%%/mod/messages/classes/ElggMessage.php
 %%WWWDIR%%/mod/messages/composer.json
@@ -852,6 +878,7 @@
 %%WWWDIR%%/mod/messages/languages/ko.php
 %%WWWDIR%%/mod/messages/languages/nl.php
 %%WWWDIR%%/mod/messages/languages/pl.php
+%%WWWDIR%%/mod/messages/languages/pt_br.php
 %%WWWDIR%%/mod/messages/languages/ro_ro.php
 %%WWWDIR%%/mod/messages/languages/ru.php
 %%WWWDIR%%/mod/messages/languages/sv.php
@@ -902,6 +929,7 @@
 %%WWWDIR%%/mod/pages/languages/ko.php
 %%WWWDIR%%/mod/pages/languages/nl.php
 %%WWWDIR%%/mod/pages/languages/pl.php
+%%WWWDIR%%/mod/pages/languages/pt_br.php
 %%WWWDIR%%/mod/pages/languages/ro_ro.php
 %%WWWDIR%%/mod/pages/languages/ru.php
 %%WWWDIR%%/mod/pages/languages/sr.php
@@ -961,6 +989,7 @@
 %%WWWDIR%%/mod/profile/languages/it.php
 %%WWWDIR%%/mod/profile/languages/ja.php
 %%WWWDIR%%/mod/profile/languages/nl.php
+%%WWWDIR%%/mod/profile/languages/pt_br.php
 %%WWWDIR%%/mod/profile/languages/ro_ro.php
 %%WWWDIR%%/mod/profile/languages/ru.php
 %%WWWDIR%%/mod/profile/languages/sv.php
@@ -1009,6 +1038,7 @@
 %%WWWDIR%%/mod/reportedcontent/languages/ko.php
 %%WWWDIR%%/mod/reportedcontent/languages/nl.php
 %%WWWDIR%%/mod/reportedcontent/languages/pl.php
+%%WWWDIR%%/mod/reportedcontent/languages/pt_br.php
 %%WWWDIR%%/mod/reportedcontent/languages/ro_ro.php
 %%WWWDIR%%/mod/reportedcontent/languages/ru.php
 %%WWWDIR%%/mod/reportedcontent/languages/sv.php
@@ -1047,6 +1077,7 @@
 %%WWWDIR%%/mod/search/languages/ko.php
 %%WWWDIR%%/mod/search/languages/nl.php
 %%WWWDIR%%/mod/search/languages/pl.php
+%%WWWDIR%%/mod/search/languages/pt_br.php
 %%WWWDIR%%/mod/search/languages/ro_ro.php
 %%WWWDIR%%/mod/search/languages/ru.php
 %%WWWDIR%%/mod/search/languages/sv.php
@@ -1088,6 +1119,7 @@
 %%WWWDIR%%/mod/site_notifications/languages/en.php
 %%WWWDIR%%/mod/site_notifications/languages/fr.php
 %%WWWDIR%%/mod/site_notifications/languages/nl.php
+%%WWWDIR%%/mod/site_notifications/languages/pt_br.php
 %%WWWDIR%%/mod/site_notifications/languages/ro_ro.php
 %%WWWDIR%%/mod/site_notifications/languages/ru.php
 %%WWWDIR%%/mod/site_notifications/views/default/forms/site_notifications/process.mjs
@@ -1112,6 +1144,7 @@
 %%WWWDIR%%/mod/system_log/languages/en.php
 %%WWWDIR%%/mod/system_log/languages/fr.php
 %%WWWDIR%%/mod/system_log/languages/nl.php
+%%WWWDIR%%/mod/system_log/languages/pt_br.php
 %%WWWDIR%%/mod/system_log/languages/ru.php
 %%WWWDIR%%/mod/system_log/languages/sv.php
 %%WWWDIR%%/mod/system_log/tests/phpunit/integration/Elgg/SystemLog/SystemLogApiTest.php
@@ -1143,6 +1176,7 @@
 %%WWWDIR%%/mod/tagcloud/languages/ko.php
 %%WWWDIR%%/mod/tagcloud/languages/nl.php
 %%WWWDIR%%/mod/tagcloud/languages/pl.php
+%%WWWDIR%%/mod/tagcloud/languages/pt_br.php
 %%WWWDIR%%/mod/tagcloud/languages/ro_ro.php
 %%WWWDIR%%/mod/tagcloud/languages/ru.php
 %%WWWDIR%%/mod/tagcloud/languages/sr.php
@@ -1164,6 +1198,7 @@
 %%WWWDIR%%/mod/theme_sandbox/languages/en.php
 %%WWWDIR%%/mod/theme_sandbox/languages/fr.php
 %%WWWDIR%%/mod/theme_sandbox/languages/nl.php
+%%WWWDIR%%/mod/theme_sandbox/languages/pt_br.php
 %%WWWDIR%%/mod/theme_sandbox/languages/ru.php
 %%WWWDIR%%/mod/theme_sandbox/views/default/forms/theme_sandbox/ajax_demo.php
 %%WWWDIR%%/mod/theme_sandbox/views/default/resources/theme_sandbox/ajax_demo.php
@@ -1257,6 +1292,7 @@
 %%WWWDIR%%/mod/thewire/languages/ko.php
 %%WWWDIR%%/mod/thewire/languages/nl.php
 %%WWWDIR%%/mod/thewire/languages/pl.php
+%%WWWDIR%%/mod/thewire/languages/pt_br.php
 %%WWWDIR%%/mod/thewire/languages/ro_ro.php
 %%WWWDIR%%/mod/thewire/languages/ru.php
 %%WWWDIR%%/mod/thewire/languages/sr.php
@@ -1269,6 +1305,8 @@
 %%WWWDIR%%/mod/thewire/views/default/forms/thewire/add.mjs
 %%WWWDIR%%/mod/thewire/views/default/forms/thewire/add.php
 %%WWWDIR%%/mod/thewire/views/default/object/thewire.php
+%%WWWDIR%%/mod/thewire/views/default/object/thewire/full.php
+%%WWWDIR%%/mod/thewire/views/default/object/thewire/summary.php
 %%WWWDIR%%/mod/thewire/views/default/plugins/thewire/settings.php
 %%WWWDIR%%/mod/thewire/views/default/resources/thewire/all.php
 %%WWWDIR%%/mod/thewire/views/default/resources/thewire/friends.php
@@ -1297,6 +1335,7 @@
 %%WWWDIR%%/mod/uservalidationbyemail/classes/Elgg/UserValidationByEmail/ConfirmController.php
 %%WWWDIR%%/mod/uservalidationbyemail/classes/Elgg/UserValidationByEmail/Menus/AdminUsersBulk.php
 %%WWWDIR%%/mod/uservalidationbyemail/classes/Elgg/UserValidationByEmail/Menus/UserUnvalidated.php
+%%WWWDIR%%/mod/uservalidationbyemail/classes/Elgg/UserValidationByEmail/Notifications/ValidateEmailHandler.php
 %%WWWDIR%%/mod/uservalidationbyemail/classes/Elgg/UserValidationByEmail/Response.php
 %%WWWDIR%%/mod/uservalidationbyemail/classes/Elgg/UserValidationByEmail/User.php
 %%WWWDIR%%/mod/uservalidationbyemail/composer.json
@@ -1411,10 +1450,10 @@
 %%WWWDIR%%/vendor/cakephp/chronos/docs/pt/conf.py
 %%WWWDIR%%/vendor/cakephp/chronos/docs/pt/contents.rst
 %%WWWDIR%%/vendor/cakephp/chronos/docs/pt/index.rst
-%%WWWDIR%%/vendor/cakephp/chronos/psalm-baseline.xml
-%%WWWDIR%%/vendor/cakephp/chronos/psalm.xml
 %%WWWDIR%%/vendor/cakephp/chronos/src/Chronos.php
 %%WWWDIR%%/vendor/cakephp/chronos/src/ChronosDate.php
+%%WWWDIR%%/vendor/cakephp/chronos/src/ChronosDatePeriod.php
+%%WWWDIR%%/vendor/cakephp/chronos/src/ChronosPeriod.php
 %%WWWDIR%%/vendor/cakephp/chronos/src/ChronosTime.php
 %%WWWDIR%%/vendor/cakephp/chronos/src/ClockFactory.php
 %%WWWDIR%%/vendor/cakephp/chronos/src/DifferenceFormatter.php
@@ -1784,7 +1823,9 @@
 %%WWWDIR%%/vendor/css-crush/css-crush/docs/plugins/property-sorter.md
 %%WWWDIR%%/vendor/css-crush/css-crush/docs/plugins/svg-gradients.md
 %%WWWDIR%%/vendor/css-crush/css-crush/docs/plugins/svg.md
-%%WWWDIR%%/vendor/css-crush/css-crush/index.js
+%%WWWDIR%%/vendor/css-crush/css-crush/js/index.d.ts
+%%WWWDIR%%/vendor/css-crush/css-crush/js/index.js
+%%WWWDIR%%/vendor/css-crush/css-crush/jsconfig.json
 %%WWWDIR%%/vendor/css-crush/css-crush/lib/CssCrush/BalancedMatch.php
 %%WWWDIR%%/vendor/css-crush/css-crush/lib/CssCrush/Collection.php
 %%WWWDIR%%/vendor/css-crush/css-crush/lib/CssCrush/Color.php
@@ -1822,6 +1863,7 @@
 %%WWWDIR%%/vendor/css-crush/css-crush/misc/property-sorting.ini
 %%WWWDIR%%/vendor/css-crush/css-crush/package-lock.json
 %%WWWDIR%%/vendor/css-crush/css-crush/package.json
+%%WWWDIR%%/vendor/css-crush/css-crush/phpstan.neon
 %%WWWDIR%%/vendor/css-crush/css-crush/plugins/aria.php
 %%WWWDIR%%/vendor/css-crush/css-crush/plugins/canvas.php
 %%WWWDIR%%/vendor/css-crush/css-crush/plugins/ease.php
@@ -2187,6 +2229,7 @@
 %%WWWDIR%%/vendor/dragonmantank/cron-expression/src/Cron/HoursField.php
 %%WWWDIR%%/vendor/dragonmantank/cron-expression/src/Cron/MinutesField.php
 %%WWWDIR%%/vendor/dragonmantank/cron-expression/src/Cron/MonthField.php
+%%WWWDIR%%/vendor/elgg/elgg/.editorconfig
 %%WWWDIR%%/vendor/elgg/elgg/.github/ISSUE_TEMPLATE/bug_report.yml
 %%WWWDIR%%/vendor/elgg/elgg/.github/ISSUE_TEMPLATE/config.yml
 %%WWWDIR%%/vendor/elgg/elgg/.github/ISSUE_TEMPLATE/feature_request.yml
@@ -2357,6 +2400,7 @@
 %%WWWDIR%%/vendor/elgg/elgg/docs/appendix/upgrade-notes/5.x-to-6.0.rst
 %%WWWDIR%%/vendor/elgg/elgg/docs/appendix/upgrade-notes/6.0-to-6.1.rst
 %%WWWDIR%%/vendor/elgg/elgg/docs/appendix/upgrade-notes/6.1-to-6.2.rst
+%%WWWDIR%%/vendor/elgg/elgg/docs/appendix/upgrade-notes/6.2-to-6.3.rst
 %%WWWDIR%%/vendor/elgg/elgg/docs/conf.py
 %%WWWDIR%%/vendor/elgg/elgg/docs/contribute/code.rst
 %%WWWDIR%%/vendor/elgg/elgg/docs/contribute/core/index.rst
@@ -2552,6 +2596,7 @@
 %%WWWDIR%%/vendor/elgg/elgg/engine/classes/Elgg/Cli/CachePurgeCommand.php
 %%WWWDIR%%/vendor/elgg/elgg/engine/classes/Elgg/Cli/Command.php
 %%WWWDIR%%/vendor/elgg/elgg/engine/classes/Elgg/Cli/CronCommand.php
+%%WWWDIR%%/vendor/elgg/elgg/engine/classes/Elgg/Cli/CronLogHandler.php
 %%WWWDIR%%/vendor/elgg/elgg/engine/classes/Elgg/Cli/DatabaseSeedCommand.php
 %%WWWDIR%%/vendor/elgg/elgg/engine/classes/Elgg/Cli/DatabaseSeedersCommand.php
 %%WWWDIR%%/vendor/elgg/elgg/engine/classes/Elgg/Cli/DatabaseUnseedCommand.php
@@ -2836,11 +2881,21 @@
 %%WWWDIR%%/vendor/elgg/elgg/engine/classes/Elgg/Notifications/CreateCommentEventHandler.php
 %%WWWDIR%%/vendor/elgg/elgg/engine/classes/Elgg/Notifications/CreateContentEventHandler.php
 %%WWWDIR%%/vendor/elgg/elgg/engine/classes/Elgg/Notifications/EnqueueEventHandler.php
+%%WWWDIR%%/vendor/elgg/elgg/engine/classes/Elgg/Notifications/Handlers/AddUser.php
+%%WWWDIR%%/vendor/elgg/elgg/engine/classes/Elgg/Notifications/Handlers/AdminValidation.php
+%%WWWDIR%%/vendor/elgg/elgg/engine/classes/Elgg/Notifications/Handlers/BanUser.php
+%%WWWDIR%%/vendor/elgg/elgg/engine/classes/Elgg/Notifications/Handlers/ChangeUserPassword.php
+%%WWWDIR%%/vendor/elgg/elgg/engine/classes/Elgg/Notifications/Handlers/ConfirmEmailChange.php
+%%WWWDIR%%/vendor/elgg/elgg/engine/classes/Elgg/Notifications/Handlers/ConfirmPasswordChange.php
+%%WWWDIR%%/vendor/elgg/elgg/engine/classes/Elgg/Notifications/Handlers/RequestUserPassword.php
+%%WWWDIR%%/vendor/elgg/elgg/engine/classes/Elgg/Notifications/Handlers/ResetUserPassword.php
+%%WWWDIR%%/vendor/elgg/elgg/engine/classes/Elgg/Notifications/Handlers/ValidateUser.php
 %%WWWDIR%%/vendor/elgg/elgg/engine/classes/Elgg/Notifications/InstantNotificationEvent.php
 %%WWWDIR%%/vendor/elgg/elgg/engine/classes/Elgg/Notifications/InstantNotificationEventHandler.php
 %%WWWDIR%%/vendor/elgg/elgg/engine/classes/Elgg/Notifications/MakeAdminUserEventHandler.php
 %%WWWDIR%%/vendor/elgg/elgg/engine/classes/Elgg/Notifications/MentionsEnqueueEventHandler.php
 %%WWWDIR%%/vendor/elgg/elgg/engine/classes/Elgg/Notifications/MentionsEventHandler.php
+%%WWWDIR%%/vendor/elgg/elgg/engine/classes/Elgg/Notifications/NonConfigurableNotificationEventHandler.php
 %%WWWDIR%%/vendor/elgg/elgg/engine/classes/Elgg/Notifications/Notification.php
 %%WWWDIR%%/vendor/elgg/elgg/engine/classes/Elgg/Notifications/NotificationEvent.php
 %%WWWDIR%%/vendor/elgg/elgg/engine/classes/Elgg/Notifications/NotificationEventHandler.php
@@ -2964,10 +3019,10 @@
 %%WWWDIR%%/vendor/elgg/elgg/engine/classes/Elgg/Upgrades/NotificationsPrefix.php
 %%WWWDIR%%/vendor/elgg/elgg/engine/classes/Elgg/Upgrades/RemoveIcontime.php
 %%WWWDIR%%/vendor/elgg/elgg/engine/classes/Elgg/Upgrades/RemoveOrphanedThreadedComments.php
+%%WWWDIR%%/vendor/elgg/elgg/engine/classes/Elgg/Upgrades/UpdateMetastringBoolDatabaseValue.php
 %%WWWDIR%%/vendor/elgg/elgg/engine/classes/Elgg/UploadService.php
 %%WWWDIR%%/vendor/elgg/elgg/engine/classes/Elgg/UserCapabilities.php
 %%WWWDIR%%/vendor/elgg/elgg/engine/classes/Elgg/Users/Accounts.php
-%%WWWDIR%%/vendor/elgg/elgg/engine/classes/Elgg/Users/BanUserNotificationHandler.php
 %%WWWDIR%%/vendor/elgg/elgg/engine/classes/Elgg/Users/CleanupPersistentLoginHandler.php
 %%WWWDIR%%/vendor/elgg/elgg/engine/classes/Elgg/Users/EmailChangeController.php
 %%WWWDIR%%/vendor/elgg/elgg/engine/classes/Elgg/Users/Settings.php
@@ -3033,6 +3088,7 @@
 %%WWWDIR%%/vendor/elgg/elgg/engine/lib/constants.php
 %%WWWDIR%%/vendor/elgg/elgg/engine/lib/context.php
 %%WWWDIR%%/vendor/elgg/elgg/engine/lib/deprecated-6.1.php
+%%WWWDIR%%/vendor/elgg/elgg/engine/lib/deprecated-6.3.php
 %%WWWDIR%%/vendor/elgg/elgg/engine/lib/elgglib.php
 %%WWWDIR%%/vendor/elgg/elgg/engine/lib/entities.php
 %%WWWDIR%%/vendor/elgg/elgg/engine/lib/events.php
@@ -3121,6 +3177,8 @@
 %%WWWDIR%%/vendor/elgg/elgg/engine/tests/classes/Elgg/BaseIntegrationTestCase.php
 %%WWWDIR%%/vendor/elgg/elgg/engine/tests/classes/Elgg/BaseTestCase.php
 %%WWWDIR%%/vendor/elgg/elgg/engine/tests/classes/Elgg/Cache/BaseCacheUnitTestCase.php
+%%WWWDIR%%/vendor/elgg/elgg/engine/tests/classes/Elgg/Cli/ExecuteCommandIntegrationTestCase.php
+%%WWWDIR%%/vendor/elgg/elgg/engine/tests/classes/Elgg/Cli/ExecuteCommandUnitTestCase.php
 %%WWWDIR%%/vendor/elgg/elgg/engine/tests/classes/Elgg/EventTesting.php
 %%WWWDIR%%/vendor/elgg/elgg/engine/tests/classes/Elgg/Helpers/Actions/Admin/UpgradeTestBatch.php
 %%WWWDIR%%/vendor/elgg/elgg/engine/tests/classes/Elgg/Helpers/Application/FooController.php
@@ -3147,6 +3205,8 @@
 %%WWWDIR%%/vendor/elgg/elgg/engine/tests/classes/Elgg/Helpers/ElggObjectWithExposableAttributes.php
 %%WWWDIR%%/vendor/elgg/elgg/engine/tests/classes/Elgg/Helpers/EventsServiceTestInvokable.php
 %%WWWDIR%%/vendor/elgg/elgg/engine/tests/classes/Elgg/Helpers/MethodMatcherTestObject.php
+%%WWWDIR%%/vendor/elgg/elgg/engine/tests/classes/Elgg/Helpers/Notifications/TestNotificationHandler.php
+%%WWWDIR%%/vendor/elgg/elgg/engine/tests/classes/Elgg/Helpers/SeededElggObject.php
 %%WWWDIR%%/vendor/elgg/elgg/engine/tests/classes/Elgg/Helpers/TestEventHandler.php
 %%WWWDIR%%/vendor/elgg/elgg/engine/tests/classes/Elgg/Helpers/TestEventResultsHandler.php
 %%WWWDIR%%/vendor/elgg/elgg/engine/tests/classes/Elgg/Helpers/Upgrade/InvalidBatch.php
@@ -3623,9 +3683,7 @@
 %%WWWDIR%%/vendor/elgg/elgg/engine/tests/test_files/xxe/request.xml
 %%WWWDIR%%/vendor/elgg/elgg/engine/theme.php
 %%WWWDIR%%/vendor/elgg/elgg/engine/upgrades.php
-%%WWWDIR%%/vendor/elgg/elgg/engine/vendor_classes/CssCrush/BalancedMatch.php
 %%WWWDIR%%/vendor/elgg/elgg/engine/vendor_classes/CssCrush/Process.php
-%%WWWDIR%%/vendor/elgg/elgg/engine/vendor_classes/CssCrush/StringObject.php
 %%WWWDIR%%/vendor/elgg/elgg/engine/vendor_classes/Laminas/Mime/Mime.php
 %%WWWDIR%%/vendor/elgg/elgg/engine/views.php
 %%WWWDIR%%/vendor/elgg/elgg/index.php
@@ -3662,6 +3720,7 @@
 %%WWWDIR%%/vendor/elgg/elgg/languages/ja.php
 %%WWWDIR%%/vendor/elgg/elgg/languages/nl.php
 %%WWWDIR%%/vendor/elgg/elgg/languages/pl.php
+%%WWWDIR%%/vendor/elgg/elgg/languages/pt_br.php
 %%WWWDIR%%/vendor/elgg/elgg/languages/sv.php
 %%WWWDIR%%/vendor/elgg/elgg/languages/zh_hans.php
 %%WWWDIR%%/vendor/elgg/elgg/mod/activity/classes/Elgg/Activity/GroupRiverFilter.php
@@ -3818,6 +3877,8 @@
 %%WWWDIR%%/vendor/elgg/elgg/mod/bookmarks/views/default/forms/bookmarks/save.php
 %%WWWDIR%%/vendor/elgg/elgg/mod/bookmarks/views/default/groups/profile/module/bookmarks.php
 %%WWWDIR%%/vendor/elgg/elgg/mod/bookmarks/views/default/object/bookmarks.php
+%%WWWDIR%%/vendor/elgg/elgg/mod/bookmarks/views/default/object/bookmarks/full.php
+%%WWWDIR%%/vendor/elgg/elgg/mod/bookmarks/views/default/object/bookmarks/summary.php
 %%WWWDIR%%/vendor/elgg/elgg/mod/bookmarks/views/default/resources/bookmarks/add.php
 %%WWWDIR%%/vendor/elgg/elgg/mod/bookmarks/views/default/resources/bookmarks/all.php
 %%WWWDIR%%/vendor/elgg/elgg/mod/bookmarks/views/default/resources/bookmarks/bookmarklet.php
@@ -3844,6 +3905,7 @@
 %%WWWDIR%%/vendor/elgg/elgg/mod/ckeditor/languages/en.php
 %%WWWDIR%%/vendor/elgg/elgg/mod/ckeditor/languages/fr.php
 %%WWWDIR%%/vendor/elgg/elgg/mod/ckeditor/languages/nl.php
+%%WWWDIR%%/vendor/elgg/elgg/mod/ckeditor/languages/pt_br.php
 %%WWWDIR%%/vendor/elgg/elgg/mod/ckeditor/languages/ru.php
 %%WWWDIR%%/vendor/elgg/elgg/mod/ckeditor/vendors/README.md
 %%WWWDIR%%/vendor/elgg/elgg/mod/ckeditor/vendors/ckeditor5/LICENSE.md
@@ -3982,6 +4044,7 @@
 %%WWWDIR%%/vendor/elgg/elgg/mod/developers/languages/it.php
 %%WWWDIR%%/vendor/elgg/elgg/mod/developers/languages/ja.php
 %%WWWDIR%%/vendor/elgg/elgg/mod/developers/languages/nl.php
+%%WWWDIR%%/vendor/elgg/elgg/mod/developers/languages/pt_br.php
 %%WWWDIR%%/vendor/elgg/elgg/mod/developers/languages/ru.php
 %%WWWDIR%%/vendor/elgg/elgg/mod/developers/views/default/admin/develop_tools/entity_explorer.php
 %%WWWDIR%%/vendor/elgg/elgg/mod/developers/views/default/admin/develop_tools/entity_explorer/acl_memberships.php
@@ -3994,6 +4057,7 @@
 %%WWWDIR%%/vendor/elgg/elgg/mod/developers/views/default/admin/develop_tools/inspect/actions.php
 %%WWWDIR%%/vendor/elgg/elgg/mod/developers/views/default/admin/develop_tools/inspect/events.php
 %%WWWDIR%%/vendor/elgg/elgg/mod/developers/views/default/admin/develop_tools/inspect/menus.php
+%%WWWDIR%%/vendor/elgg/elgg/mod/developers/views/default/admin/develop_tools/inspect/notifications.php
 %%WWWDIR%%/vendor/elgg/elgg/mod/developers/views/default/admin/develop_tools/inspect/routes.php
 %%WWWDIR%%/vendor/elgg/elgg/mod/developers/views/default/admin/develop_tools/inspect/seeders.php
 %%WWWDIR%%/vendor/elgg/elgg/mod/developers/views/default/admin/develop_tools/inspect/services.php
@@ -4029,6 +4093,7 @@
 %%WWWDIR%%/vendor/elgg/elgg/mod/discussions/languages/gd.php
 %%WWWDIR%%/vendor/elgg/elgg/mod/discussions/languages/ja.php
 %%WWWDIR%%/vendor/elgg/elgg/mod/discussions/languages/nl.php
+%%WWWDIR%%/vendor/elgg/elgg/mod/discussions/languages/pt_br.php
 %%WWWDIR%%/vendor/elgg/elgg/mod/discussions/languages/ro_ro.php
 %%WWWDIR%%/vendor/elgg/elgg/mod/discussions/languages/ru.php
 %%WWWDIR%%/vendor/elgg/elgg/mod/discussions/languages/sv.php
@@ -4064,6 +4129,7 @@
 %%WWWDIR%%/vendor/elgg/elgg/mod/externalpages/classes/Elgg/ExternalPages/Menus/ExPages.php
 %%WWWDIR%%/vendor/elgg/elgg/mod/externalpages/classes/Elgg/ExternalPages/Menus/Footer.php
 %%WWWDIR%%/vendor/elgg/elgg/mod/externalpages/classes/Elgg/ExternalPages/Menus/WalledGarden.php
+%%WWWDIR%%/vendor/elgg/elgg/mod/externalpages/classes/ElggExternalPage.php
 %%WWWDIR%%/vendor/elgg/elgg/mod/externalpages/composer.json
 %%WWWDIR%%/vendor/elgg/elgg/mod/externalpages/elgg-plugin.php
 %%WWWDIR%%/vendor/elgg/elgg/mod/externalpages/languages/ca.php
@@ -4083,6 +4149,7 @@
 %%WWWDIR%%/vendor/elgg/elgg/mod/externalpages/languages/ko.php
 %%WWWDIR%%/vendor/elgg/elgg/mod/externalpages/languages/nl.php
 %%WWWDIR%%/vendor/elgg/elgg/mod/externalpages/languages/pl.php
+%%WWWDIR%%/vendor/elgg/elgg/mod/externalpages/languages/pt_br.php
 %%WWWDIR%%/vendor/elgg/elgg/mod/externalpages/languages/ro_ro.php
 %%WWWDIR%%/vendor/elgg/elgg/mod/externalpages/languages/ru.php
 %%WWWDIR%%/vendor/elgg/elgg/mod/externalpages/languages/sr.php
@@ -4120,6 +4187,7 @@
 %%WWWDIR%%/vendor/elgg/elgg/mod/file/languages/ko.php
 %%WWWDIR%%/vendor/elgg/elgg/mod/file/languages/nl.php
 %%WWWDIR%%/vendor/elgg/elgg/mod/file/languages/pl.php
+%%WWWDIR%%/vendor/elgg/elgg/mod/file/languages/pt_br.php
 %%WWWDIR%%/vendor/elgg/elgg/mod/file/languages/ro_ro.php
 %%WWWDIR%%/vendor/elgg/elgg/mod/file/languages/ru.php
 %%WWWDIR%%/vendor/elgg/elgg/mod/file/languages/sr.php
@@ -4168,6 +4236,10 @@
 %%WWWDIR%%/vendor/elgg/elgg/mod/friends/classes/Elgg/Friends/Menus/Topbar.php
 %%WWWDIR%%/vendor/elgg/elgg/mod/friends/classes/Elgg/Friends/Menus/UserHover.php
 %%WWWDIR%%/vendor/elgg/elgg/mod/friends/classes/Elgg/Friends/Notifications.php
+%%WWWDIR%%/vendor/elgg/elgg/mod/friends/classes/Elgg/Friends/Notifications/AcceptFriendRequestHandler.php
+%%WWWDIR%%/vendor/elgg/elgg/mod/friends/classes/Elgg/Friends/Notifications/AddFriendHandler.php
+%%WWWDIR%%/vendor/elgg/elgg/mod/friends/classes/Elgg/Friends/Notifications/DeclineFriendRequestHandler.php
+%%WWWDIR%%/vendor/elgg/elgg/mod/friends/classes/Elgg/Friends/Notifications/FriendRequestHandler.php
 %%WWWDIR%%/vendor/elgg/elgg/mod/friends/classes/Elgg/Friends/Relationships.php
 %%WWWDIR%%/vendor/elgg/elgg/mod/friends/classes/Elgg/Friends/Widgets.php
 %%WWWDIR%%/vendor/elgg/elgg/mod/friends/composer.json
@@ -4178,6 +4250,7 @@
 %%WWWDIR%%/vendor/elgg/elgg/mod/friends/languages/gd.php
 %%WWWDIR%%/vendor/elgg/elgg/mod/friends/languages/ja.php
 %%WWWDIR%%/vendor/elgg/elgg/mod/friends/languages/nl.php
+%%WWWDIR%%/vendor/elgg/elgg/mod/friends/languages/pt_br.php
 %%WWWDIR%%/vendor/elgg/elgg/mod/friends/languages/ro_ro.php
 %%WWWDIR%%/vendor/elgg/elgg/mod/friends/languages/ru.php
 %%WWWDIR%%/vendor/elgg/elgg/mod/friends/languages/sv.php
@@ -4212,6 +4285,7 @@
 %%WWWDIR%%/vendor/elgg/elgg/mod/friends_collections/languages/gd.php
 %%WWWDIR%%/vendor/elgg/elgg/mod/friends_collections/languages/it.php
 %%WWWDIR%%/vendor/elgg/elgg/mod/friends_collections/languages/nl.php
+%%WWWDIR%%/vendor/elgg/elgg/mod/friends_collections/languages/pt_br.php
 %%WWWDIR%%/vendor/elgg/elgg/mod/friends_collections/languages/ro_ro.php
 %%WWWDIR%%/vendor/elgg/elgg/mod/friends_collections/languages/ru.php
 %%WWWDIR%%/vendor/elgg/elgg/mod/friends_collections/languages/sv.php
@@ -4237,6 +4311,7 @@
 %%WWWDIR%%/vendor/elgg/elgg/mod/garbagecollector/languages/ja.php
 %%WWWDIR%%/vendor/elgg/elgg/mod/garbagecollector/languages/ko.php
 %%WWWDIR%%/vendor/elgg/elgg/mod/garbagecollector/languages/nl.php
+%%WWWDIR%%/vendor/elgg/elgg/mod/garbagecollector/languages/pt_br.php
 %%WWWDIR%%/vendor/elgg/elgg/mod/garbagecollector/languages/ru.php
 %%WWWDIR%%/vendor/elgg/elgg/mod/garbagecollector/languages/sv.php
 %%WWWDIR%%/vendor/elgg/elgg/mod/garbagecollector/tests/phpunit/integration/Elgg/GarbageCollector/OptimizeCommandTest.php
@@ -4263,6 +4338,9 @@
 %%WWWDIR%%/vendor/elgg/elgg/mod/groups/classes/Elgg/Groups/Menus/Title.php
 %%WWWDIR%%/vendor/elgg/elgg/mod/groups/classes/Elgg/Groups/Menus/Topbar.php
 %%WWWDIR%%/vendor/elgg/elgg/mod/groups/classes/Elgg/Groups/Middleware/LimitedGroupCreation.php
+%%WWWDIR%%/vendor/elgg/elgg/mod/groups/classes/Elgg/Groups/Notifications/AddMembershipEventHandler.php
+%%WWWDIR%%/vendor/elgg/elgg/mod/groups/classes/Elgg/Groups/Notifications/InviteMembershipEventHandler.php
+%%WWWDIR%%/vendor/elgg/elgg/mod/groups/classes/Elgg/Groups/Notifications/RequestMembershipEventHandler.php
 %%WWWDIR%%/vendor/elgg/elgg/mod/groups/classes/Elgg/Groups/Relationships.php
 %%WWWDIR%%/vendor/elgg/elgg/mod/groups/classes/Elgg/Groups/Widgets.php
 %%WWWDIR%%/vendor/elgg/elgg/mod/groups/composer.json
@@ -4281,6 +4359,7 @@
 %%WWWDIR%%/vendor/elgg/elgg/mod/groups/languages/ja.php
 %%WWWDIR%%/vendor/elgg/elgg/mod/groups/languages/nl.php
 %%WWWDIR%%/vendor/elgg/elgg/mod/groups/languages/pl.php
+%%WWWDIR%%/vendor/elgg/elgg/mod/groups/languages/pt_br.php
 %%WWWDIR%%/vendor/elgg/elgg/mod/groups/languages/ro_ro.php
 %%WWWDIR%%/vendor/elgg/elgg/mod/groups/languages/ru.php
 %%WWWDIR%%/vendor/elgg/elgg/mod/groups/languages/sr.php
@@ -4378,6 +4457,7 @@
 %%WWWDIR%%/vendor/elgg/elgg/mod/invitefriends/languages/ko.php
 %%WWWDIR%%/vendor/elgg/elgg/mod/invitefriends/languages/nl.php
 %%WWWDIR%%/vendor/elgg/elgg/mod/invitefriends/languages/pl.php
+%%WWWDIR%%/vendor/elgg/elgg/mod/invitefriends/languages/pt_br.php
 %%WWWDIR%%/vendor/elgg/elgg/mod/invitefriends/languages/ro_ro.php
 %%WWWDIR%%/vendor/elgg/elgg/mod/invitefriends/languages/ru.php
 %%WWWDIR%%/vendor/elgg/elgg/mod/invitefriends/languages/sv.php
@@ -4413,6 +4493,7 @@
 %%WWWDIR%%/vendor/elgg/elgg/mod/likes/languages/ko.php
 %%WWWDIR%%/vendor/elgg/elgg/mod/likes/languages/nl.php
 %%WWWDIR%%/vendor/elgg/elgg/mod/likes/languages/pl.php
+%%WWWDIR%%/vendor/elgg/elgg/mod/likes/languages/pt_br.php
 %%WWWDIR%%/vendor/elgg/elgg/mod/likes/languages/ro_ro.php
 %%WWWDIR%%/vendor/elgg/elgg/mod/likes/languages/ru.php
 %%WWWDIR%%/vendor/elgg/elgg/mod/likes/languages/sv.php
@@ -4442,6 +4523,7 @@
 %%WWWDIR%%/vendor/elgg/elgg/mod/members/languages/ko.php
 %%WWWDIR%%/vendor/elgg/elgg/mod/members/languages/nl.php
 %%WWWDIR%%/vendor/elgg/elgg/mod/members/languages/pl.php
+%%WWWDIR%%/vendor/elgg/elgg/mod/members/languages/pt_br.php
 %%WWWDIR%%/vendor/elgg/elgg/mod/members/languages/ro_ro.php
 %%WWWDIR%%/vendor/elgg/elgg/mod/members/languages/ru.php
 %%WWWDIR%%/vendor/elgg/elgg/mod/members/languages/sr.php
@@ -4455,6 +4537,7 @@
 %%WWWDIR%%/vendor/elgg/elgg/mod/members/views/default/resources/members/popular.php
 %%WWWDIR%%/vendor/elgg/elgg/mod/members/views/default/resources/members/search.php
 %%WWWDIR%%/vendor/elgg/elgg/mod/messageboard/actions/messageboard/add.php
+%%WWWDIR%%/vendor/elgg/elgg/mod/messageboard/classes/Elgg/MessageBoard/Notifications/CreateMessageboardNotificationHandler.php
 %%WWWDIR%%/vendor/elgg/elgg/mod/messageboard/classes/Elgg/MessageBoard/Widgets.php
 %%WWWDIR%%/vendor/elgg/elgg/mod/messageboard/composer.json
 %%WWWDIR%%/vendor/elgg/elgg/mod/messageboard/elgg-plugin.php
@@ -4474,6 +4557,7 @@
 %%WWWDIR%%/vendor/elgg/elgg/mod/messageboard/languages/ja.php
 %%WWWDIR%%/vendor/elgg/elgg/mod/messageboard/languages/nl.php
 %%WWWDIR%%/vendor/elgg/elgg/mod/messageboard/languages/pl.php
+%%WWWDIR%%/vendor/elgg/elgg/mod/messageboard/languages/pt_br.php
 %%WWWDIR%%/vendor/elgg/elgg/mod/messageboard/languages/ro_ro.php
 %%WWWDIR%%/vendor/elgg/elgg/mod/messageboard/languages/ru.php
 %%WWWDIR%%/vendor/elgg/elgg/mod/messageboard/languages/sv.php
@@ -4492,6 +4576,7 @@
 %%WWWDIR%%/vendor/elgg/elgg/mod/messages/classes/Elgg/Messages/Menus/Title.php
 %%WWWDIR%%/vendor/elgg/elgg/mod/messages/classes/Elgg/Messages/Menus/Topbar.php
 %%WWWDIR%%/vendor/elgg/elgg/mod/messages/classes/Elgg/Messages/Menus/UserHover.php
+%%WWWDIR%%/vendor/elgg/elgg/mod/messages/classes/Elgg/Messages/Notifications/SendMessageHandler.php
 %%WWWDIR%%/vendor/elgg/elgg/mod/messages/classes/Elgg/Messages/User.php
 %%WWWDIR%%/vendor/elgg/elgg/mod/messages/classes/ElggMessage.php
 %%WWWDIR%%/vendor/elgg/elgg/mod/messages/composer.json
@@ -4511,6 +4596,7 @@
 %%WWWDIR%%/vendor/elgg/elgg/mod/messages/languages/ko.php
 %%WWWDIR%%/vendor/elgg/elgg/mod/messages/languages/nl.php
 %%WWWDIR%%/vendor/elgg/elgg/mod/messages/languages/pl.php
+%%WWWDIR%%/vendor/elgg/elgg/mod/messages/languages/pt_br.php
 %%WWWDIR%%/vendor/elgg/elgg/mod/messages/languages/ro_ro.php
 %%WWWDIR%%/vendor/elgg/elgg/mod/messages/languages/ru.php
 %%WWWDIR%%/vendor/elgg/elgg/mod/messages/languages/sv.php
@@ -4561,6 +4647,7 @@
 %%WWWDIR%%/vendor/elgg/elgg/mod/pages/languages/ko.php
 %%WWWDIR%%/vendor/elgg/elgg/mod/pages/languages/nl.php
 %%WWWDIR%%/vendor/elgg/elgg/mod/pages/languages/pl.php
+%%WWWDIR%%/vendor/elgg/elgg/mod/pages/languages/pt_br.php
 %%WWWDIR%%/vendor/elgg/elgg/mod/pages/languages/ro_ro.php
 %%WWWDIR%%/vendor/elgg/elgg/mod/pages/languages/ru.php
 %%WWWDIR%%/vendor/elgg/elgg/mod/pages/languages/sr.php
@@ -4620,6 +4707,7 @@
 %%WWWDIR%%/vendor/elgg/elgg/mod/profile/languages/it.php
 %%WWWDIR%%/vendor/elgg/elgg/mod/profile/languages/ja.php
 %%WWWDIR%%/vendor/elgg/elgg/mod/profile/languages/nl.php
+%%WWWDIR%%/vendor/elgg/elgg/mod/profile/languages/pt_br.php
 %%WWWDIR%%/vendor/elgg/elgg/mod/profile/languages/ro_ro.php
 %%WWWDIR%%/vendor/elgg/elgg/mod/profile/languages/ru.php
 %%WWWDIR%%/vendor/elgg/elgg/mod/profile/languages/sv.php
@@ -4668,6 +4756,7 @@
 %%WWWDIR%%/vendor/elgg/elgg/mod/reportedcontent/languages/ko.php
 %%WWWDIR%%/vendor/elgg/elgg/mod/reportedcontent/languages/nl.php
 %%WWWDIR%%/vendor/elgg/elgg/mod/reportedcontent/languages/pl.php
+%%WWWDIR%%/vendor/elgg/elgg/mod/reportedcontent/languages/pt_br.php
 %%WWWDIR%%/vendor/elgg/elgg/mod/reportedcontent/languages/ro_ro.php
 %%WWWDIR%%/vendor/elgg/elgg/mod/reportedcontent/languages/ru.php
 %%WWWDIR%%/vendor/elgg/elgg/mod/reportedcontent/languages/sv.php
@@ -4706,6 +4795,7 @@
 %%WWWDIR%%/vendor/elgg/elgg/mod/search/languages/ko.php
 %%WWWDIR%%/vendor/elgg/elgg/mod/search/languages/nl.php
 %%WWWDIR%%/vendor/elgg/elgg/mod/search/languages/pl.php
+%%WWWDIR%%/vendor/elgg/elgg/mod/search/languages/pt_br.php
 %%WWWDIR%%/vendor/elgg/elgg/mod/search/languages/ro_ro.php
 %%WWWDIR%%/vendor/elgg/elgg/mod/search/languages/ru.php
 %%WWWDIR%%/vendor/elgg/elgg/mod/search/languages/sv.php
@@ -4747,6 +4837,7 @@
 %%WWWDIR%%/vendor/elgg/elgg/mod/site_notifications/languages/en.php
 %%WWWDIR%%/vendor/elgg/elgg/mod/site_notifications/languages/fr.php
 %%WWWDIR%%/vendor/elgg/elgg/mod/site_notifications/languages/nl.php
+%%WWWDIR%%/vendor/elgg/elgg/mod/site_notifications/languages/pt_br.php
 %%WWWDIR%%/vendor/elgg/elgg/mod/site_notifications/languages/ro_ro.php
 %%WWWDIR%%/vendor/elgg/elgg/mod/site_notifications/languages/ru.php
 %%WWWDIR%%/vendor/elgg/elgg/mod/site_notifications/views/default/forms/site_notifications/process.mjs
@@ -4771,6 +4862,7 @@
 %%WWWDIR%%/vendor/elgg/elgg/mod/system_log/languages/en.php
 %%WWWDIR%%/vendor/elgg/elgg/mod/system_log/languages/fr.php
 %%WWWDIR%%/vendor/elgg/elgg/mod/system_log/languages/nl.php
+%%WWWDIR%%/vendor/elgg/elgg/mod/system_log/languages/pt_br.php
 %%WWWDIR%%/vendor/elgg/elgg/mod/system_log/languages/ru.php
 %%WWWDIR%%/vendor/elgg/elgg/mod/system_log/languages/sv.php
 %%WWWDIR%%/vendor/elgg/elgg/mod/system_log/tests/phpunit/integration/Elgg/SystemLog/SystemLogApiTest.php
@@ -4802,6 +4894,7 @@
 %%WWWDIR%%/vendor/elgg/elgg/mod/tagcloud/languages/ko.php
 %%WWWDIR%%/vendor/elgg/elgg/mod/tagcloud/languages/nl.php
 %%WWWDIR%%/vendor/elgg/elgg/mod/tagcloud/languages/pl.php
+%%WWWDIR%%/vendor/elgg/elgg/mod/tagcloud/languages/pt_br.php
 %%WWWDIR%%/vendor/elgg/elgg/mod/tagcloud/languages/ro_ro.php
 %%WWWDIR%%/vendor/elgg/elgg/mod/tagcloud/languages/ru.php
 %%WWWDIR%%/vendor/elgg/elgg/mod/tagcloud/languages/sr.php
@@ -4823,6 +4916,7 @@
 %%WWWDIR%%/vendor/elgg/elgg/mod/theme_sandbox/languages/en.php
 %%WWWDIR%%/vendor/elgg/elgg/mod/theme_sandbox/languages/fr.php
 %%WWWDIR%%/vendor/elgg/elgg/mod/theme_sandbox/languages/nl.php
+%%WWWDIR%%/vendor/elgg/elgg/mod/theme_sandbox/languages/pt_br.php
 %%WWWDIR%%/vendor/elgg/elgg/mod/theme_sandbox/languages/ru.php
 %%WWWDIR%%/vendor/elgg/elgg/mod/theme_sandbox/views/default/forms/theme_sandbox/ajax_demo.php
 %%WWWDIR%%/vendor/elgg/elgg/mod/theme_sandbox/views/default/resources/theme_sandbox/ajax_demo.php
@@ -4916,6 +5010,7 @@
 %%WWWDIR%%/vendor/elgg/elgg/mod/thewire/languages/ko.php
 %%WWWDIR%%/vendor/elgg/elgg/mod/thewire/languages/nl.php
 %%WWWDIR%%/vendor/elgg/elgg/mod/thewire/languages/pl.php
+%%WWWDIR%%/vendor/elgg/elgg/mod/thewire/languages/pt_br.php
 %%WWWDIR%%/vendor/elgg/elgg/mod/thewire/languages/ro_ro.php
 %%WWWDIR%%/vendor/elgg/elgg/mod/thewire/languages/ru.php
 %%WWWDIR%%/vendor/elgg/elgg/mod/thewire/languages/sr.php
@@ -4928,6 +5023,8 @@
 %%WWWDIR%%/vendor/elgg/elgg/mod/thewire/views/default/forms/thewire/add.mjs
 %%WWWDIR%%/vendor/elgg/elgg/mod/thewire/views/default/forms/thewire/add.php
 %%WWWDIR%%/vendor/elgg/elgg/mod/thewire/views/default/object/thewire.php
+%%WWWDIR%%/vendor/elgg/elgg/mod/thewire/views/default/object/thewire/full.php
+%%WWWDIR%%/vendor/elgg/elgg/mod/thewire/views/default/object/thewire/summary.php
 %%WWWDIR%%/vendor/elgg/elgg/mod/thewire/views/default/plugins/thewire/settings.php
 %%WWWDIR%%/vendor/elgg/elgg/mod/thewire/views/default/resources/thewire/all.php
 %%WWWDIR%%/vendor/elgg/elgg/mod/thewire/views/default/resources/thewire/friends.php
@@ -4956,6 +5053,7 @@
 %%WWWDIR%%/vendor/elgg/elgg/mod/uservalidationbyemail/classes/Elgg/UserValidationByEmail/ConfirmController.php
 %%WWWDIR%%/vendor/elgg/elgg/mod/uservalidationbyemail/classes/Elgg/UserValidationByEmail/Menus/AdminUsersBulk.php
 %%WWWDIR%%/vendor/elgg/elgg/mod/uservalidationbyemail/classes/Elgg/UserValidationByEmail/Menus/UserUnvalidated.php
+%%WWWDIR%%/vendor/elgg/elgg/mod/uservalidationbyemail/classes/Elgg/UserValidationByEmail/Notifications/ValidateEmailHandler.php
 %%WWWDIR%%/vendor/elgg/elgg/mod/uservalidationbyemail/classes/Elgg/UserValidationByEmail/Response.php
 %%WWWDIR%%/vendor/elgg/elgg/mod/uservalidationbyemail/classes/Elgg/UserValidationByEmail/User.php
 %%WWWDIR%%/vendor/elgg/elgg/mod/uservalidationbyemail/composer.json
@@ -5265,6 +5363,7 @@
 %%WWWDIR%%/vendor/elgg/elgg/views/default/graphics/favicon-64.png
 %%WWWDIR%%/vendor/elgg/elgg/views/default/graphics/favicon.ico
 %%WWWDIR%%/vendor/elgg/elgg/views/default/graphics/favicon.svg
+%%WWWDIR%%/vendor/elgg/elgg/views/default/graphics/maintenance.jpg
 %%WWWDIR%%/vendor/elgg/elgg/views/default/graphics/walled_garden.jpg
 %%WWWDIR%%/vendor/elgg/elgg/views/default/group/default.php
 %%WWWDIR%%/vendor/elgg/elgg/views/default/group/elements/summary.php
@@ -5477,6 +5576,8 @@
 %%WWWDIR%%/vendor/elgg/elgg/views/default/page/elements/header_logo.php
 %%WWWDIR%%/vendor/elgg/elgg/views/default/page/elements/html.php
 %%WWWDIR%%/vendor/elgg/elgg/views/default/page/elements/importmap.json.php
+%%WWWDIR%%/vendor/elgg/elgg/views/default/page/elements/maintenance/body.php
+%%WWWDIR%%/vendor/elgg/elgg/views/default/page/elements/maintenance/header.php
 %%WWWDIR%%/vendor/elgg/elgg/views/default/page/elements/messages.php
 %%WWWDIR%%/vendor/elgg/elgg/views/default/page/elements/owner_block.php
 %%WWWDIR%%/vendor/elgg/elgg/views/default/page/elements/page_menu.php
@@ -12904,6 +13005,7 @@
 %%WWWDIR%%/vendor/guzzlehttp/guzzle/README.md
 %%WWWDIR%%/vendor/guzzlehttp/guzzle/UPGRADING.md
 %%WWWDIR%%/vendor/guzzlehttp/guzzle/composer.json
+%%WWWDIR%%/vendor/guzzlehttp/guzzle/package-lock.json
 %%WWWDIR%%/vendor/guzzlehttp/guzzle/src/BodySummarizer.php
 %%WWWDIR%%/vendor/guzzlehttp/guzzle/src/BodySummarizerInterface.php
 %%WWWDIR%%/vendor/guzzlehttp/guzzle/src/Client.php
@@ -13017,6 +13119,7 @@
 %%WWWDIR%%/vendor/hackzilla/password-generator/Generator/PasswordGeneratorInterface.php
 %%WWWDIR%%/vendor/hackzilla/password-generator/Generator/PronounceablePasswordGenerator.php
 %%WWWDIR%%/vendor/hackzilla/password-generator/Generator/RequirementPasswordGenerator.php
+%%WWWDIR%%/vendor/hackzilla/password-generator/LICENSE
 %%WWWDIR%%/vendor/hackzilla/password-generator/Makefile
 %%WWWDIR%%/vendor/hackzilla/password-generator/Model/CharacterSet.php
 %%WWWDIR%%/vendor/hackzilla/password-generator/Model/Option/BooleanOption.php
@@ -13054,6 +13157,14 @@
 %%WWWDIR%%/vendor/hackzilla/password-generator/composer.json
 %%WWWDIR%%/vendor/hackzilla/password-generator/phpunit.xml.dist
 %%WWWDIR%%/vendor/hackzilla/password-generator/travis.phpunit.xml
+%%WWWDIR%%/vendor/htmlawed/htmlawed/LICENSE-GPL2
+%%WWWDIR%%/vendor/htmlawed/htmlawed/LICENSE-LGPL3
+%%WWWDIR%%/vendor/htmlawed/htmlawed/README.md
+%%WWWDIR%%/vendor/htmlawed/htmlawed/composer.json
+%%WWWDIR%%/vendor/htmlawed/htmlawed/htmLawed.php
+%%WWWDIR%%/vendor/htmlawed/htmlawed/htmLawed_README.htm
+%%WWWDIR%%/vendor/htmlawed/htmlawed/htmLawed_README.txt
+%%WWWDIR%%/vendor/htmlawed/htmlawed/htmLawed_TESTCASE.txt
 %%WWWDIR%%/vendor/imagine/imagine/CHANGELOG.md
 %%WWWDIR%%/vendor/imagine/imagine/LICENSE
 %%WWWDIR%%/vendor/imagine/imagine/README.md
@@ -13673,12 +13784,12 @@
 %%WWWDIR%%/vendor/matthiasmullie/minify/data/js/operators.txt
 %%WWWDIR%%/vendor/matthiasmullie/minify/data/js/operators_after.txt
 %%WWWDIR%%/vendor/matthiasmullie/minify/data/js/operators_before.txt
-%%WWWDIR%%/vendor/matthiasmullie/minify/ruleset.xml
 %%WWWDIR%%/vendor/matthiasmullie/minify/src/CSS.php
 %%WWWDIR%%/vendor/matthiasmullie/minify/src/Exception.php
 %%WWWDIR%%/vendor/matthiasmullie/minify/src/Exceptions/BasicException.php
 %%WWWDIR%%/vendor/matthiasmullie/minify/src/Exceptions/FileImportException.php
 %%WWWDIR%%/vendor/matthiasmullie/minify/src/Exceptions/IOException.php
+%%WWWDIR%%/vendor/matthiasmullie/minify/src/Exceptions/PatternMatchException.php
 %%WWWDIR%%/vendor/matthiasmullie/minify/src/JS.php
 %%WWWDIR%%/vendor/matthiasmullie/minify/src/Minify.php
 %%WWWDIR%%/vendor/matthiasmullie/path-converter/LICENSE
@@ -13969,6 +14080,7 @@
 %%WWWDIR%%/vendor/monolog/monolog/src/Monolog/Registry.php
 %%WWWDIR%%/vendor/monolog/monolog/src/Monolog/ResettableInterface.php
 %%WWWDIR%%/vendor/monolog/monolog/src/Monolog/SignalHandler.php
+%%WWWDIR%%/vendor/monolog/monolog/src/Monolog/Test/MonologTestCase.php
 %%WWWDIR%%/vendor/monolog/monolog/src/Monolog/Test/TestCase.php
 %%WWWDIR%%/vendor/monolog/monolog/src/Monolog/Utils.php
 %%WWWDIR%%/vendor/npm-asset/cropperjs/LICENSE
@@ -14970,7 +15082,9 @@
 %%WWWDIR%%/vendor/php-di/php-di/src/Invoker/DefinitionParameterResolver.php
 %%WWWDIR%%/vendor/php-di/php-di/src/Invoker/FactoryParameterResolver.php
 %%WWWDIR%%/vendor/php-di/php-di/src/NotFoundException.php
+%%WWWDIR%%/vendor/php-di/php-di/src/Proxy/NativeProxyFactory.php
 %%WWWDIR%%/vendor/php-di/php-di/src/Proxy/ProxyFactory.php
+%%WWWDIR%%/vendor/php-di/php-di/src/Proxy/ProxyFactoryInterface.php
 %%WWWDIR%%/vendor/php-di/php-di/src/functions.php
 %%WWWDIR%%/vendor/php-di/php-di/support.md
 %%WWWDIR%%/vendor/phpfastcache/phpfastcache/CHANGELOG.md
@@ -15320,12 +15434,15 @@
 %%WWWDIR%%/vendor/sabberworm/php-css-parser/LICENSE
 %%WWWDIR%%/vendor/sabberworm/php-css-parser/README.md
 %%WWWDIR%%/vendor/sabberworm/php-css-parser/composer.json
+%%WWWDIR%%/vendor/sabberworm/php-css-parser/src/CSSElement.php
 %%WWWDIR%%/vendor/sabberworm/php-css-parser/src/CSSList/AtRuleBlockList.php
 %%WWWDIR%%/vendor/sabberworm/php-css-parser/src/CSSList/CSSBlockList.php
 %%WWWDIR%%/vendor/sabberworm/php-css-parser/src/CSSList/CSSList.php
+%%WWWDIR%%/vendor/sabberworm/php-css-parser/src/CSSList/CSSListItem.php
 %%WWWDIR%%/vendor/sabberworm/php-css-parser/src/CSSList/Document.php
 %%WWWDIR%%/vendor/sabberworm/php-css-parser/src/CSSList/KeyFrame.php
 %%WWWDIR%%/vendor/sabberworm/php-css-parser/src/Comment/Comment.php
+%%WWWDIR%%/vendor/sabberworm/php-css-parser/src/Comment/CommentContainer.php
 %%WWWDIR%%/vendor/sabberworm/php-css-parser/src/Comment/Commentable.php
 %%WWWDIR%%/vendor/sabberworm/php-css-parser/src/OutputFormat.php
 %%WWWDIR%%/vendor/sabberworm/php-css-parser/src/OutputFormatter.php
@@ -15336,16 +15453,20 @@
 %%WWWDIR%%/vendor/sabberworm/php-css-parser/src/Parsing/SourceException.php
 %%WWWDIR%%/vendor/sabberworm/php-css-parser/src/Parsing/UnexpectedEOFException.php
 %%WWWDIR%%/vendor/sabberworm/php-css-parser/src/Parsing/UnexpectedTokenException.php
+%%WWWDIR%%/vendor/sabberworm/php-css-parser/src/Position/Position.php
+%%WWWDIR%%/vendor/sabberworm/php-css-parser/src/Position/Positionable.php
 %%WWWDIR%%/vendor/sabberworm/php-css-parser/src/Property/AtRule.php
 %%WWWDIR%%/vendor/sabberworm/php-css-parser/src/Property/CSSNamespace.php
 %%WWWDIR%%/vendor/sabberworm/php-css-parser/src/Property/Charset.php
 %%WWWDIR%%/vendor/sabberworm/php-css-parser/src/Property/Import.php
 %%WWWDIR%%/vendor/sabberworm/php-css-parser/src/Property/KeyframeSelector.php
 %%WWWDIR%%/vendor/sabberworm/php-css-parser/src/Property/Selector.php
+%%WWWDIR%%/vendor/sabberworm/php-css-parser/src/Property/Selector/SpecificityCalculator.php
 %%WWWDIR%%/vendor/sabberworm/php-css-parser/src/Renderable.php
 %%WWWDIR%%/vendor/sabberworm/php-css-parser/src/Rule/Rule.php
 %%WWWDIR%%/vendor/sabberworm/php-css-parser/src/RuleSet/AtRuleSet.php
 %%WWWDIR%%/vendor/sabberworm/php-css-parser/src/RuleSet/DeclarationBlock.php
+%%WWWDIR%%/vendor/sabberworm/php-css-parser/src/RuleSet/RuleContainer.php
 %%WWWDIR%%/vendor/sabberworm/php-css-parser/src/RuleSet/RuleSet.php
 %%WWWDIR%%/vendor/sabberworm/php-css-parser/src/Settings.php
 %%WWWDIR%%/vendor/sabberworm/php-css-parser/src/Value/CSSFunction.php
@@ -16083,13 +16204,6 @@
 %%WWWDIR%%/vendor/symfony/var-dumper/Test/VarDumperTestTrait.php
 %%WWWDIR%%/vendor/symfony/var-dumper/VarDumper.php
 %%WWWDIR%%/vendor/symfony/var-dumper/composer.json
-%%WWWDIR%%/vendor/vanilla/htmlawed/.github/workflows/ci.yml
-%%WWWDIR%%/vendor/vanilla/htmlawed/CHANGELOG.md
-%%WWWDIR%%/vendor/vanilla/htmlawed/LICENSE.md
-%%WWWDIR%%/vendor/vanilla/htmlawed/README.md
-%%WWWDIR%%/vendor/vanilla/htmlawed/composer.json
-%%WWWDIR%%/vendor/vanilla/htmlawed/src/Htmlawed.php
-%%WWWDIR%%/vendor/vanilla/htmlawed/src/htmLawed/htmLawed.php
 %%WWWDIR%%/vendor/webmozart/assert/CHANGELOG.md
 %%WWWDIR%%/vendor/webmozart/assert/LICENSE
 %%WWWDIR%%/vendor/webmozart/assert/README.md

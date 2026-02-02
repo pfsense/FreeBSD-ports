@@ -1,6 +1,6 @@
 PORTNAME=	mdbook
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.4.51
+DISTVERSION=	0.5.1
 PORTREVISION=	1
 CATEGORIES=	textproc
 
@@ -18,7 +18,7 @@ GH_ACCOUNT=	rust-lang
 GH_PROJECT=	mdBook
 
 PLIST_FILES=	bin/mdbook
-PORTEXAMPLES=	examples guide test_book
+PORTEXAMPLES=	examples guide
 
 OPTIONS_DEFINE=	EXAMPLES
 

@@ -27,6 +27,7 @@ require_once("util.inc");
 
 define('PKG_FRR_CONFIG_BASE', '/var/etc/frr');
 define('PKG_FRR_LIST_NONE_VALUE', array('name' => 'None', 'value' => 'none'));
+define('LOG_PREFIX_PKG_FRR', 'FRR');
 
 /* Since we need to embed this in strings & HERE Docs, copy to a var. Can't embed constants. */
 global $frr_config_base;
@@ -523,7 +524,7 @@ function frr_service_action($restart_needed) {
 				// Stop the service if the VIP is in BACKUP or INIT state.
 				case "BACKUP":
 				case "INIT":
-					frr_package_log("FRR: Stopping services due to CARP status.");
+					frr_package_log("Stopping services due to CARP status.");
 					mwexec_bg("/usr/local/etc/rc.d/frr.sh stop");
 					unlink_if_exists("/tmp/frr_start_command_last.txt");
 					break;
@@ -532,25 +533,25 @@ function frr_service_action($restart_needed) {
 				// Assume it's up if the status can't be determined.
 				default:
 					if ($restart_needed) {
-						frr_package_log("FRR: Restarting services.");
+						frr_package_log("Restarting services.");
 						mwexec_bg("/usr/local/etc/rc.d/frr.sh restart");
 					} else {
-						frr_package_log("FRR: Reloading configuration.");
+						frr_package_log("Reloading configuration.");
 						mwexec_bg("/usr/local/sbin/frr-reload");
 					}
 					break;
 			}
 		} else {
 			if ($restart_needed) {
-				frr_package_log("FRR: Restarting services.");
+				frr_package_log("Restarting services.");
 				mwexec_bg("/usr/local/etc/rc.d/frr.sh restart");
 			} else {
-				frr_package_log("FRR: Reloading configuration.");
+				frr_package_log("Reloading configuration.");
 				mwexec_bg("/usr/local/sbin/frr-reload");
 			}
 		}
 	} else {
-		frr_package_log("FRR: Stopping services.");
+		frr_package_log("Stopping services.");
 		mwexec_bg("/usr/local/etc/rc.d/frr.sh stop");
 		unlink_if_exists("/usr/local/etc/rc.conf.d/frr");
 	}
@@ -573,7 +574,7 @@ function frr_daemons_running($daemons) {
 		array_push($logarr, "{$daemon}: {$s}");
 	}
 	$logstr = implode(" | ", $logarr);
-	frr_package_log("FRR: Daemon state: {$logstr}");
+	frr_package_log("Daemon state: {$logstr}");
 
 	if (count(array_unique($frr_daemons_running)) === 1) {
 		return current($frr_daemons_running);
@@ -717,7 +718,7 @@ function frr_package_log($string, $priority = LOG_INFO) {
 		return;
 	}
 
-	syslog($priority, "FRR Package: {$string}");
+	logger($priority, $string, LOG_PREFIX_PKG_FRR);
 }
 
 /* Main function to generate all of the configuration files and make general
@@ -762,7 +763,7 @@ function frr_generate_config() {
 	/* Create the rc.d service control script and trigger restart/reload */
 	$restart_needed = frr_generate_config_rcfile();
 	if (!empty($_POST['service_force_restart'])) {
-		frr_package_log("FRR: Service restart forced.");
+		frr_package_log("Service restart forced.");
 		/* If force_restart is set, override restart_needed to force a service restart */
 		$restart_needed = true;
 	}
@@ -783,11 +784,11 @@ function frr_generate_config_vtysh() {
 
 	/* If there is no raw configuration and no GUI configuration, stop. */
 	if (empty($frr_conf)) {
-		frr_package_log("FRR vtysh: No config data found.");
+		frr_package_log("vtysh: No config data found.");
 		return;
 	}
 	if (empty($frr_conf['enable'])) {
-		frr_package_log("FRR vtysh: FRR master switch is off.");
+		frr_package_log("vtysh: FRR master switch is off.");
 		return;
 	}
 
@@ -837,7 +838,7 @@ function frr_generate_config_integrated() {
 	$frr_conf = config_get_path('installedpackages/frr/config/0', []);
 
 	if (empty($frr_conf['enable'])) {
-		frr_package_log("FRR: FRR master switch is off.");
+		frr_package_log("FRR master switch is off.");
 		return;
 	}
 
@@ -847,11 +848,11 @@ function frr_generate_config_integrated() {
 	} else {
 		/* If there is no raw configuration and no GUI configuration, stop. */
 		if (empty($frr_conf)) {
-			frr_package_log("FRR: No config data found.");
+			frr_package_log("No config data found.");
 			return;
 		}
 
-		frr_package_log("FRR: Rebuild configuration.");
+		frr_package_log("Rebuild configuration.");
 
 		$integratedconffile = $frr_auto_config_warning;
 		$integratedconffile .= "frr defaults traditional\n";
@@ -1213,14 +1214,47 @@ function frr_package_config_upgrade() {
 }
 
 function frr_set_tunables() {
+	$sysctl_frr = [
+		// frr10 still warns when kern.ipc.maxsockbuf=16777216
+		'kern.ipc.maxsockbuf' => [
+			'checked' => false,
+			'tunable' => 'kern.ipc.maxsockbuf',
+			'value' => 20971520,
+			'descr' => "Maximum socket buffer size - set by FRR package"
+		]
+	];
 	$sysctl_conf = config_get_path('sysctl/item', []);
-	$sysctl_maxsockbuff = array('tunable' => 'kern.ipc.maxsockbuf', 'value' => 16777216, 'descr' => "Maximum socket buffer size - set by FRR package");
+	$changed = false;
 
-	if (!in_array($sysctl_maxsockbuff, $sysctl_conf)) {
-		update_status("Installing maxsockbuf tunable ... ");
-		$sysctl_conf[] = $sysctl_maxsockbuff;
+	foreach ($sysctl_conf as &$item) {
+		if (!isset($sysctl_frr[$item['tunable']])) {
+			continue;
+		}
+		$sysctl_frr[$item['tunable']]['checked'] = true;
+		if ($item['value'] < $sysctl_frr[$item['tunable']]['value']) {
+			$item['value'] = $sysctl_frr[$item['tunable']]['value'];
+			$item['descr'] = $sysctl_frr[$item['tunable']]['descr'];
+			$changed = true;
+		}
+	}
+	unset($item);
+
+	foreach ($sysctl_frr as $item) {
+		if ($item['checked']) {
+			continue;
+		}
+		$sysctl_conf[] = [
+			'tunable' => $item['tunable'],
+			'value' => $item['value'],
+			'descr' => $item['descr']
+		];
+		$changed = true;
+	}
+
+	if ($changed) {
+		update_status("Adjusting system tunables...");
 		config_set_path('sysctl/item', $sysctl_conf);
-		write_config('FRR: Installed maxsockbuf tunable.');
+		write_config('FRR: Set system tunables');
 		system_setup_sysctl();
 		update_status("Done.\n");
 	}

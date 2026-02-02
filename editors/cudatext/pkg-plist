@@ -2,8 +2,6 @@ bin/cudatext
 share/applications/cudatext.desktop
 %%DATADIR%%/data/autocomplete/Bash script.acp
 %%DATADIR%%/data/autocomplete/Batch files.acp
-%%DATADIR%%/data/autocomplete/C++.acp
-%%DATADIR%%/data/autocomplete/C.acp
 %%DATADIR%%/data/autocompletespec/css_colors.ini
 %%DATADIR%%/data/autocompletespec/css_list.ini
 %%DATADIR%%/data/autocompletespec/css_sel.ini
@@ -34,16 +32,19 @@ share/applications/cudatext.desktop
 %%DATADIR%%/data/filetypeicons/vscode_16x16/file_type_asciidoc.png
 %%DATADIR%%/data/filetypeicons/vscode_16x16/file_type_assembly.png
 %%DATADIR%%/data/filetypeicons/vscode_16x16/file_type_astro.png
+%%DATADIR%%/data/filetypeicons/vscode_16x16/file_type_audio.png
 %%DATADIR%%/data/filetypeicons/vscode_16x16/file_type_autohotkey.png
 %%DATADIR%%/data/filetypeicons/vscode_16x16/file_type_autoit.png
 %%DATADIR%%/data/filetypeicons/vscode_16x16/file_type_awk.png
 %%DATADIR%%/data/filetypeicons/vscode_16x16/file_type_babel.png
 %%DATADIR%%/data/filetypeicons/vscode_16x16/file_type_ballerina.png
 %%DATADIR%%/data/filetypeicons/vscode_16x16/file_type_bat.png
+%%DATADIR%%/data/filetypeicons/vscode_16x16/file_type_bazel.png
 %%DATADIR%%/data/filetypeicons/vscode_16x16/file_type_bicep.png
 %%DATADIR%%/data/filetypeicons/vscode_16x16/file_type_binary.png
 %%DATADIR%%/data/filetypeicons/vscode_16x16/file_type_blade.png
 %%DATADIR%%/data/filetypeicons/vscode_16x16/file_type_c.png
+%%DATADIR%%/data/filetypeicons/vscode_16x16/file_type_c3.png
 %%DATADIR%%/data/filetypeicons/vscode_16x16/file_type_cfm.png
 %%DATADIR%%/data/filetypeicons/vscode_16x16/file_type_cheader.png
 %%DATADIR%%/data/filetypeicons/vscode_16x16/file_type_clojure.png
@@ -77,6 +78,7 @@ share/applications/cudatext.desktop
 %%DATADIR%%/data/filetypeicons/vscode_16x16/file_type_fsproj.png
 %%DATADIR%%/data/filetypeicons/vscode_16x16/file_type_gcode.png
 %%DATADIR%%/data/filetypeicons/vscode_16x16/file_type_gdscript.png
+%%DATADIR%%/data/filetypeicons/vscode_16x16/file_type_gleam.png
 %%DATADIR%%/data/filetypeicons/vscode_16x16/file_type_glsl.png
 %%DATADIR%%/data/filetypeicons/vscode_16x16/file_type_gnuplot.png
 %%DATADIR%%/data/filetypeicons/vscode_16x16/file_type_go.png
@@ -184,6 +186,7 @@ share/applications/cudatext.desktop
 %%DATADIR%%/data/filetypeicons/vscode_16x16/file_type_velocity.png
 %%DATADIR%%/data/filetypeicons/vscode_16x16/file_type_verilog.png
 %%DATADIR%%/data/filetypeicons/vscode_16x16/file_type_vhdl.png
+%%DATADIR%%/data/filetypeicons/vscode_16x16/file_type_video.png
 %%DATADIR%%/data/filetypeicons/vscode_16x16/file_type_vim.png
 %%DATADIR%%/data/filetypeicons/vscode_16x16/file_type_vlang.png
 %%DATADIR%%/data/filetypeicons/vscode_16x16/file_type_vscode.png
@@ -200,18 +203,11 @@ share/applications/cudatext.desktop
 %%DATADIR%%/data/filetypeicons/vscode_16x16/icon_server.png
 %%DATADIR%%/data/filetypeicons/vscode_16x16/icons.json
 %%DATADIR%%/data/lang/history.txt
-%%DATADIR%%/data/lang/ru_RU.ini
 %%DATADIR%%/data/lang/translation template.ini
-%%DATADIR%%/data/lexlib/Assembly.cuda-lexmap
-%%DATADIR%%/data/lexlib/Assembly.lcf
 %%DATADIR%%/data/lexlib/Bash script.cuda-lexmap
 %%DATADIR%%/data/lexlib/Bash script.lcf
 %%DATADIR%%/data/lexlib/Batch files.cuda-lexmap
 %%DATADIR%%/data/lexlib/Batch files.lcf
-%%DATADIR%%/data/lexlib/C++.cuda-lexmap
-%%DATADIR%%/data/lexlib/C++.lcf
-%%DATADIR%%/data/lexlib/C.cuda-lexmap
-%%DATADIR%%/data/lexlib/C.lcf
 %%DATADIR%%/data/lexlib/CSS.cuda-lexmap
 %%DATADIR%%/data/lexlib/CSS.lcf
 %%DATADIR%%/data/lexlib/HTML style.cuda-lexmap
@@ -361,8 +357,6 @@ share/applications/cudatext.desktop
 %%DATADIR%%/data/themes/sub.cuda-theme-ui
 %%DATADIR%%/data/themes/syn.cuda-theme-syntax
 %%DATADIR%%/data/themes/syn.cuda-theme-ui
-%%DATADIR%%/data/themes/white.cuda-theme-syntax
-%%DATADIR%%/data/themes/white.cuda-theme-ui
 %%DATADIR%%/data/toolbaricons/default_24x24/case.png
 %%DATADIR%%/data/toolbaricons/default_24x24/comment.png
 %%DATADIR%%/data/toolbaricons/default_24x24/e_copy.png
@@ -407,7 +401,6 @@ share/applications/cudatext.desktop
 %%DATADIR%%/py/cuda_addonman/work_tempdir.py
 %%DATADIR%%/py/cuda_comments/__init__.py
 %%DATADIR%%/py/cuda_comments/cd_comments.py
-%%DATADIR%%/py/cuda_comments/cd_plug_lib.py
 %%DATADIR%%/py/cuda_comments/install.inf
 %%DATADIR%%/py/cuda_insert_time/__init__.py
 %%DATADIR%%/py/cuda_insert_time/install.inf
@@ -658,6 +651,7 @@ share/applications/cudatext.desktop
 %%DATADIR%%/readme/wiki/cudatext-find-dlg.png
 %%DATADIR%%/readme/wiki/cudatext-find-markers.png
 %%DATADIR%%/readme/wiki/cudatext-findinfiles-intabs.png
+%%DATADIR%%/readme/wiki/cudatext-fmt-menuitems.png
 %%DATADIR%%/readme/wiki/cudatext-fmt-onsave.png
 %%DATADIR%%/readme/wiki/cudatext-fold-comments.png
 %%DATADIR%%/readme/wiki/cudatext-folding-gutter-ctx-menu.png
@@ -712,10 +706,7 @@ share/applications/cudatext.desktop
 %%DATADIR%%/readme/wiki/cudatext_snippets_menu.png
 %%DATADIR%%/readme/wiki/cudatext_vs_other_editors.wiki
 %%DATADIR%%/settings_default/default.json
-%%DATADIR%%/settings_default/lexer Assembly.json
 %%DATADIR%%/settings_default/lexer Bash script.json
-%%DATADIR%%/settings_default/lexer C++.json
-%%DATADIR%%/settings_default/lexer C.json
 %%DATADIR%%/settings_default/lexer CSS.json
 %%DATADIR%%/settings_default/lexer JSON.json
 %%DATADIR%%/settings_default/lexer JavaScript.json

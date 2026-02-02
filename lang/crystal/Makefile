@@ -1,5 +1,6 @@
 PORTNAME=	crystal
-DISTVERSION=	1.16.3
+DISTVERSION=	1.18.2
+PORTREVISION=	1
 CATEGORIES=	lang
 MASTER_SITES=	https://github.com/dmgk/crystal-bootstrap/releases/download/${_BOOTSTRAP_VERSION}/:bootstrap \
 		LOCAL/dmgk/crystal:bootstrap
@@ -52,7 +53,7 @@ TEST_TARGET=	spec
 PORTDOCS=	*
 PORTEXAMPLES=	*
 
-OPTIONS_DEFINE=		DEBUG DOCS EXAMPLES INTERPRETER STATIC
+OPTIONS_DEFINE=		DEBUG DOCS EXAMPLES INTERPRETER
 OPTIONS_DEFAULT=	INTERPRETER
 
 INTERPRETER_DESC=	Enable interpreter (experimental)
@@ -61,21 +62,11 @@ DEBUG_VARS=		OPT_FLAGS+="--debug" \
 			STRIP=
 DEBUG_VARS_OFF=		OPT_FLAGS+="--release --no-debug"
 INTERPRETER_MAKE_ARGS=	interpreter=1
-STATIC_MAKE_ARGS=	static=1
 
 .include <bsd.port.options.mk>
 
 .if ${OPSYS} != FreeBSD
 IGNORE=		not supported on anything but FreeBSD
-.endif
-
-# crystal needs pkgconfig to determine SSL variants but these are not
-# present in FreeBSD base. We splice in the correct info based on
-# FreeBSD version and hope it doesn't change during minor releases.
-# See post-patch for the substitutions of these patches.
-.if ${SSL_DEFAULT} == "base" && ${OSREL:R} < 13
-EXTRA_PATCHES=	${PATCHDIR}/extra-patch-src_openssl_lib__crypto.cr \
-		${PATCHDIR}/extra-patch-src_openssl_lib__ssl.cr
 .endif
 
 post-extract:

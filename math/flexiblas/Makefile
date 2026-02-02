@@ -1,5 +1,5 @@
 PORTNAME=	flexiblas
-PORTVERSION=	3.4.5
+PORTVERSION=	3.5.0
 DISTVERSIONPREFIX=	v
 CATEGORIES=	math
 #MASTER_SITES=	https://csc.mpi-magdeburg.mpg.de/mpcsc/software/flexiblas/

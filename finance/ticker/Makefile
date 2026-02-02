@@ -1,6 +1,6 @@
 PORTNAME=	ticker
 DISTVERSIONPREFIX=	v
-DISTVERSION=	5.0.5
+DISTVERSION=	5.1.0
 PORTREVISION=	1
 CATEGORIES=	finance
 
@@ -11,8 +11,7 @@ WWW=		https://github.com/achannarasappa/ticker
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-USES=		go:1.24,modules
-GH_ACCOUNT=	achannarasappa
+USES=		go:1.24+,modules
 
 GO_BUILDFLAGS=	-ldflags="-X github.com/achannarasappa/ticker/v4/cmd.Version=${DISTVERSIONPREFIX}${PKGVERSION}"
 GO_MODULE=	github.com/achannarasappa/ticker/v5

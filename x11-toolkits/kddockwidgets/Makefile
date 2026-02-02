@@ -1,9 +1,9 @@
 PORTNAME=	kddockwidgets
 DISTVERSIONPREFIX=	v
-DISTVERSION=	2.2.5
+DISTVERSION=	2.4.0
 CATEGORIES=	x11-toolkits
 
-MAINTAINER=	yuri@FreeBSD.org
+MAINTAINER=	kde@FreeBSD.org
 COMMENT=	KDAB's Dock Widget Framework for Qt
 WWW=		https://www.kdab.com/development-resources/qt-tools/kddockwidgets/
 
@@ -13,16 +13,18 @@ BUILD_DEPENDS=	nlohmann-json>0:devel/nlohmann-json
 LIB_DEPENDS=	libfmt.so:devel/libfmt \
 		libspdlog.so:devel/spdlog
 
-USES=		cmake:testing compiler:c++17-lang qt:5
-USE_QT=		core declarative gui network quickcontrols2 widgets x11extras \
-		buildtools:build qmake:build testlib:build
+USES=		cmake:testing compiler:c++17-lang qt:6
+USE_QT=		base declarative
 USE_LDCONFIG=	yes
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	KDAB
 GH_PROJECT=	KDDockWidgets
 
+CMAKE_ON=		KDDockWidgets_QT6
 CMAKE_TESTING_ON=	KDDockWidgets_TESTS KDDockWidgets_DEVELOPER_MODE
+
+PLIST_SUB=	SHLIB_VER=${PORTVERSION}
 
 post-install:
 	@${RM} -r ${STAGEDIR}${PREFIX}/share/doc

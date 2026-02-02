@@ -1,7 +1,6 @@
 PORTNAME=	node
 PORTVERSION=	${NODEJS_PORTVERSION}
 DISTVERSIONPREFIX=	v
-PORTREVISION=	1
 CATEGORIES=	www
 MASTER_SITES=	https://nodejs.org/dist/v${PORTVERSION}/
 PKGNAMESUFFIX=	${PORTVERSION:R:R}
@@ -22,25 +21,31 @@ BUILD_DEPENDS=	objdump:devel/binutils
 LIB_DEPENDS=	libbrotlidec.so:archivers/brotli \
 		libcares.so:dns/c-ares \
 		libicui18n.so:devel/icu \
+		libllhttp.so:www/llhttp \
 		libnghttp2.so:www/libnghttp2 \
 		libnghttp3.so:www/libnghttp3 \
 		libngtcp2.so:net/libngtcp2 \
 		libsimdjson.so:devel/simdjson \
 		libuv.so:devel/libuv \
 		libzstd.so:archivers/zstd
+RUN_DEPENDS=	corepack>=0:www/corepack
 
-USES=		compiler:c++11-lang gmake localbase pkgconfig python:build shebangfix tar:xz
+USES=		compiler:c++11-lang gmake localbase pkgconfig python:build shebangfix sqlite tar:xz
 
 CONFIGURE_ARGS=	--prefix=${PREFIX:S|^${DESTDIR}||} \
 		--shared-brotli \
 		--shared-cares \
+		--shared-http-parser \
+		--shared-http-parser-libname=llhttp \
 		--shared-libuv \
 		--shared-nghttp2 \
 		--shared-nghttp3 \
 		--shared-ngtcp2 \
 		--shared-simdjson \
+		--shared-sqlite \
 		--shared-zlib \
 		--shared-zstd \
+		--without-corepack \
 		--with-intl=system-icu \
 		--without-npm
 CXXFLAGS_powerpc64=	-mpower8-vector
@@ -67,7 +72,6 @@ BUNDLED_SSL_DESC=	Use bundled OpenSSL implementation from node.js
 JIT_DESC=		Use Just In Time compiler
 
 BUNDLED_SSL_CONFIGURE_OFF=	--openssl-use-def-ca-store --shared-openssl
-BUNDLED_SSL_RUN_DEPENDS_OFF=	ca_root_nss>=0:security/ca_root_nss
 BUNDLED_SSL_USES_OFF=	ssl
 JIT_CONFIGURE_OFF=	--v8-lite-mode
 
@@ -83,10 +87,14 @@ post-patch:
 # Clean up bundled libraries
 	@${RM} -r ${WRKSRC}/deps/brotli/
 	@${RM} -r ${WRKSRC}/deps/cares/
+	@${RM} -r ${WRKSRC}/deps/corepack/
+	@${RM} -r ${WRKSRC}/deps/icu-small/
+	@${RM} -r ${WRKSRC}/deps/llhttp/
 	@${RM} -r ${WRKSRC}/deps/nghttp2/
 	@${RM} -r ${WRKSRC}/deps/ngtcp2/
 	@${RM} -r ${WRKSRC}/deps/npm/
 	@${RM} -r ${WRKSRC}/deps/simdjson/
+	@${RM} -r ${WRKSRC}/deps/sqlite/
 	@${RM} -r ${WRKSRC}/deps/uv/
 	@${RM} -r ${WRKSRC}/deps/zlib/
 	@${RM} -r ${WRKSRC}/deps/zstd/
@@ -102,5 +110,8 @@ post-configure:
 
 post-install:
 	${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/node
+
+post-install-BUNDLED_SSL-on:
+	cd ${STAGEDIR}${PREFIX} && ${FIND} include/node/openssl/ -type f >> ${TMPPLIST}
 
 .include <bsd.port.mk>

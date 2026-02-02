@@ -75,7 +75,7 @@
  	PHP_MINIT(radius),
  	PHP_MSHUTDOWN(radius),
  	NULL,
-@@ -129,12 +85,57 @@ zend_module_entry radius_module_entry = {
+@@ -129,12 +85,57 @@ ZEND_GET_MODULE(radius)
  ZEND_GET_MODULE(radius)
  #endif
  
@@ -203,7 +203,7 @@
  	RETURN_TRUE;
  }
  /* }}} */
-@@ -205,511 +208,525 @@ PHP_FUNCTION(radius_close)
+@@ -205,511 +208,528 @@ PHP_FUNCTION(radius_strerror)
  /* {{{ proto string radius_strerror(radh) */
  PHP_FUNCTION(radius_strerror)
  {
@@ -311,7 +311,8 @@
  }
  /* }}} */
  
- /* {{{ proto bool radius_create_request(desc, code) */
+-/* {{{ proto bool radius_create_request(desc, code) */
++/* {{{ proto bool radius_create_request(desc, code, msg_auth) */
  PHP_FUNCTION(radius_create_request)
  {
 -	long code;
@@ -319,14 +320,17 @@
 -	zval *z_radh;
 +	zval *zrad;
 +	zend_long code;
++	zend_bool msg_auth = 0;
 +	php_radius *prad = NULL;
  
 -	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "rl", &z_radh, &code) == FAILURE) {
 -		return;
 -	}
-+	ZEND_PARSE_PARAMETERS_START(2, 2)
++	ZEND_PARSE_PARAMETERS_START(2, 3)
 +		Z_PARAM_OBJECT_OF_CLASS(zrad, radius_ce)
 +		Z_PARAM_LONG(code)
++		Z_PARAM_OPTIONAL
++		Z_PARAM_BOOL(msg_auth)
 +	ZEND_PARSE_PARAMETERS_END();
  
 -	RADIUS_FETCH_RESOURCE(radh, z_radh);
@@ -336,7 +340,7 @@
  		RETURN_FALSE;
 -	} else {
 +
-+	if (rad_create_request(prad->hdl, code) == 0)
++	if (rad_create_request(prad->hdl, code, msg_auth) == 0)
  		RETURN_TRUE;
 -	}
 +
@@ -1015,7 +1019,7 @@
  
  	RETVAL_STRINGL(salted.data, salted.len);
  	efree(salted.data);
-@@ -719,105 +736,110 @@ PHP_FUNCTION(radius_salt_encrypt_attr)
+@@ -719,105 +739,110 @@ PHP_FUNCTION(radius_request_authenticator)
  /* {{{ proto string radius_request_authenticator(radh) */
  PHP_FUNCTION(radius_request_authenticator)
  {
@@ -1184,7 +1188,7 @@
  }
  /* }}} */
  
-@@ -842,21 +864,3 @@ int _init_options(struct rad_attr_options *out, int op
+@@ -842,21 +867,3 @@ int _init_options(struct rad_attr_options *out, int op
  	return 0;
  }
  /* }}} */
@@ -1206,4 +1210,3 @@
 - * vim600: noet sw=8 ts=8 fdm=marker
 - * vim<600: noet sw=8 ts=8
 - */
-

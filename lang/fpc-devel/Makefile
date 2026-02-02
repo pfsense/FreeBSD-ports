@@ -1,5 +1,5 @@
 PORTNAME=	fpc
-PORTVERSION=	3.3.1.20250409
+PORTVERSION=	3.3.1.20250807
 CATEGORIES=	lang
 MASTER_SITES=	LOCAL/acm/freepascal/:bootstrap \
 		LOCAL/acm/freepascal/:man
@@ -28,7 +28,7 @@ USE_GITLAB=	yes
 GL_SITE=	https://gitlab.com/freepascal.org
 GL_ACCOUNT=	fpc
 GL_PROJECT=	source
-GL_TAGNAME=	4cae231a521302a6356875b1d2268323067a321d
+GL_TAGNAME=	574b03bfb99348067f98320e7da2a788005214d4
 
 FPCSRCDIR=	source-${GL_TAGNAME}
 
@@ -170,14 +170,14 @@ post-patch:
 do-build:
 # build fpc compiler
 	@${ECHO_MSG} "##### STARTING COMPILER AND UNITS #####"
-	(cd ${WRKDIR}/${FPCSRCDIR} && ${SETENV} ${MAKE_ENV} \
-		${MAKE_CMD} all ${MAKE_ARGS} ${BOOTPPC})
+	(cd ${WRKDIR}/${FPCSRCDIR} && ${SETENVI} ${WRK_ENV} \
+		${MAKE_ENV} ${MAKE_CMD} all ${MAKE_ARGS} ${BOOTPPC})
 	@${ECHO_MSG} "##### COMPLETE COMPILER AND UNITS #####"
 
 do-install:
 	# Installing fpc compiler
-	(cd ${WRKDIR}/${FPCSRCDIR} && ${SETENV} ${MAKE_ENV} \
-		${MAKE_CMD} install ${MAKE_ARGS} ${BOOTPPC})
+	(cd ${WRKDIR}/${FPCSRCDIR} && ${SETENVI} ${WRK_ENV} \
+		${MAKE_ENV} ${MAKE_CMD} install ${MAKE_ARGS} ${BOOTPPC})
 
 	# Installing manpages
 	${INSTALL_MAN} ${WRKDIR}/man/man1/* ${STAGEDIR}${PREFIX}/share/man/man1

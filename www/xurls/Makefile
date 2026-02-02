@@ -11,7 +11,7 @@ WWW=		https://github.com/mvdan/xurls
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-USES=		go:1.22,modules
+USES=		go:modules
 
 GO_MODULE=	mvdan.cc/xurls/v2
 GO_TARGET=	${WRKSRC}/cmd/${PORTNAME}:${PREFIX}/bin/${PORTNAME}

@@ -21,6 +21,7 @@
  */
 
 require_once("config.inc");
+require("/usr/local/pkg/snort/snort_defs.inc");
 
 //set variables for custom title and link
 $snort_alerts_title = "Snort Alerts";

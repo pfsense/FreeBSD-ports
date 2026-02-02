@@ -1,5 +1,5 @@
 PORTNAME=	scikit-base
-PORTVERSION=	0.12.3
+PORTVERSION=	0.13.0
 CATEGORIES=	devel python
 MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -18,7 +18,7 @@ BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}build>=0:devel/py-build@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}toml>=0:textproc/py-toml@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}wheel>=0:devel/py-wheel@${PY_FLAVOR}
 
-USES=		python:3.9+
+USES=		python
 USE_PYTHON=	autoplist concurrent pep517
 
 NO_ARCH=	yes

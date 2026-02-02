@@ -1,7 +1,6 @@
 PORTNAME=	openmw
 DISTVERSIONPREFIX=	openmw-
-DISTVERSION=	0.48.0
-PORTREVISION=	9
+DISTVERSION=	0.50.0
 CATEGORIES=	games
 
 MAINTAINER=	fluffy@FreeBSD.org
@@ -15,6 +14,7 @@ LIB_DEPENDS=	libavcodec.so.60:multimedia/ffmpeg \
 		libboost_thread.so:devel/boost-libs \
 		libMyGUIEngine.so:x11-toolkits/mygui \
 		libBulletCollision.so:devel/bullet@double \
+		libcollada-dom2.5-dp.so:devel/collada-dom \
 		libosg.so:graphics/osg \
 		libRecast.so:graphics/recastnavigation \
 		libunshield.so:archivers/unshield \
@@ -22,16 +22,16 @@ LIB_DEPENDS=	libavcodec.so.60:multimedia/ffmpeg \
 		libicui18n.so:devel/icu \
 		libyaml-cpp.so:devel/yaml-cpp
 
-USES=		cmake compiler:c++17-lang desktop-file-utils gl luajit openal \
-		pkgconfig qt:5 sdl sqlite xorg
+USES=		cmake compiler:c++20-lang desktop-file-utils gl openal \
+		pkgconfig qt:6 sdl sqlite xorg
 USE_GITHUB=	yes
 GH_ACCOUNT=	OpenMW
 USE_GL=		gl
-USE_QT=		core gui network opengl printsupport widgets buildtools:build \
-		qmake:build
+USE_QT=		base imageformats multimedia svg tools:build
 USE_SDL=	sdl2
+USE_CXXSTD=	c++20
 
-CMAKE_ARGS=	-DDESIRED_QT_VERSION=5 \
+CMAKE_ARGS=	-DDESIRED_QT_VERSION=${_QT_VER} \
 		-DOPENMW_USE_SYSTEM_BULLET=ON \
 		-DOPENMW_USE_SYSTEM_RECASTNAVIGATION=ON \
 		-DGLOBAL_DATA_PATH="${PREFIX}/share" \
@@ -42,13 +42,19 @@ CMAKE_ARGS=	-DDESIRED_QT_VERSION=5 \
 LDFLAGS+=	-Wl,--as-needed
 LDFLAGS_i386=	-Wl,-z,notext
 
-OPTIONS_DEFINE=	DOCS
+OPTIONS_DEFINE=	DOCS LUAJIT
+OPTIONS_DEFAULT=	LUAJIT
 
 DOCS_CMAKE_BOOL=	BUILD_DOCS
 DOCS_BINARY_ALIAS=	sphinx-build=sphinx-build-${PYTHON_VER}
 DOCS_BUILD_DEPENDS=	doxygen>0:devel/doxygen \
 			${PYTHON_PKGNAMEPREFIX}sphinx>=0,1:textproc/py-sphinx@${PY_FLAVOR}
 DOCS_USES=		python:build
+
+LUAJIT_DESC=		Use LuaJIT instead of standard Lua
+LUAJIT_USES=		luajit
+LUAJIT_USES_OFF=	lua
+LUAJIT_CMAKE_BOOL=	USE_LUAJIT
 
 PORTDOCS=	*
 
@@ -61,6 +67,13 @@ PORTDOCS=	*
 # possibly incorrect addend values.
 LDFLAGS_i386+=	-Wl,--no-check-dynamic-relocations
 .endif
+
+post-patch:
+	@${REINPLACE_CMD} -e 's/Qt6 Qt5/Qt6/' \
+	-e 's/program_options system/program_options/' \
+		${WRKSRC}/CMakeLists.txt
+	@${REINPLACE_CMD} -e '/Boost::system/d' \
+		${WRKSRC}/components/CMakeLists.txt
 
 post-install:
 	@${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/*

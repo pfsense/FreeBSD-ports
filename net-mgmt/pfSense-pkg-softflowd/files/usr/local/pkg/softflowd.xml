@@ -27,6 +27,7 @@
 	</copyright>
 	<name>softflowd</name>
 	<title>softflowd: Settings</title>
+	<addedit_string>softflowd: changed settings</addedit_string>
 	<include_file>/usr/local/pkg/softflowd.inc</include_file>
 	<aftersaveredirect>/pkg_edit.php?xml=softflowd.xml</aftersaveredirect>
 	<menu>

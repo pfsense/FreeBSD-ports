@@ -29,6 +29,7 @@
 	<name>ladvd</name>
 	<version>%%PKGVERSION%%</version>
 	<title>Services/LADVD</title>
+	<addedit_string>LADVD: changed settings</addedit_string>
 	<include_file>/usr/local/pkg/ladvd.inc</include_file>
 	<menu>
 		<name>LADVD</name>

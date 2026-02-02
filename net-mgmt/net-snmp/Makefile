@@ -1,7 +1,7 @@
 PORTNAME=	snmp
 PORTVERSION=	5.9.4
-PORTEPOCH=	1
 PORTREVISION=	6
+PORTEPOCH=	1
 CATEGORIES=	net-mgmt
 MASTER_SITES=	SF/net-${PORTNAME}/net-${PORTNAME}/${PORTVERSION} \
 		ZI
@@ -20,7 +20,7 @@ NOT_FOR_ARCHS_REASON=	SSP is currently broken on MIPS
 
 OPTIONS_DEFINE=	MFD_REWRITES PERL PERL_EMBEDDED PYTHON DUMMY TKMIB \
 		MYSQL AX_SOCKONLY UNPRIVILEGED SMUX DOCS AX_DISABLE_TRAP \
-		TLS NEWSYSLOG NOLIBPKG SCTP
+		TLS NEWSYSLOG NOLIBPKG SCTP AES
 OPTIONS_DEFAULT=PERL PERL_EMBEDDED DUMMY SMUX NEWSYSLOG
 OPTIONS_SUB=	yes
 
@@ -35,6 +35,7 @@ SMUX_DESC=		Build with SNMP multiplexing (SMUX) support
 NEWSYSLOG_DESC=		Automatically rotate snmpd.log via newsyslog
 NOLIBPKG_DESC=		Build without libpkg
 SCTP_DESC=		Build with SCTP MIB support
+AES_DESC=		Build with Blumenthal AES support
 
 USERS=		snmpd
 GROUPS=		snmpd
@@ -48,8 +49,11 @@ CPE_PRODUCT=	net-snmp
 USE_PERL5=	build run
 USE_CSTD=	c99
 
+LIB_DEPENDS=	libpkg.so:${PKG_ORIGIN}
+
 CFLAGS+=	-I${LOCALBASE}/include -I${PKG_PREFIX}/include
-LDFLAGS+=	-L${LOCALBASE}/lib
+LDFLAGS+=	-lm -lkvm -ldevstat \
+		-L${PKG_PREFIX}/lib -L${LOCALBASE}/lib ${LCRYPTO}
 CONFIGURE_ENV+=	PERLPROG="${PERL}" PSPROG="${PS_CMD}" SED="${SED}"
 CONFIGURE_ARGS+=--enable-shared --enable-internal-md5 \
 		--with-default-snmp-version="${DEFAULT_SNMP_VERSION}" \
@@ -59,7 +63,7 @@ CONFIGURE_ARGS+=--enable-shared --enable-internal-md5 \
 		--with-persistent-directory="${NET_SNMP_PERSISTENTDIR}" \
 		--with-gnu-ld --without-libwrap --enable-ipv6 \
 		--without-kmem-usage \
-		--with-ldflags="-lm -lkvm -ldevstat -L${PKG_PREFIX}/lib -L${LOCALBASE}/lib ${LCRYPTO}"
+		--with-ldflags=${LDFLAGS:Q}
 SUB_FILES=	pkg-message
 
 .if defined(WITH_SSP)
@@ -93,6 +97,10 @@ CONFIGURE_ARGS+=--with-openssl="${OPENSSLBASE}"
 
 .if ${PORT_OPTIONS:MDUMMY}
 CONFIGURE_ARGS+=--with-dummy-values
+.endif
+
+.if ${PORT_OPTIONS:MAES}
+CONFIGURE_ARGS+=--enable-blumenthal-aes
 .endif
 
 .if ! ${PORT_OPTIONS:MTKMIB}

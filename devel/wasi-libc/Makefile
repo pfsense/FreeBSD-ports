@@ -1,7 +1,6 @@
 PORTNAME=	wasi-libc
 DISTVERSIONPREFIX=	wasi-sdk-
-DISTVERSION=	25-14
-DISTVERSIONSUFFIX=	-ge9524a0
+DISTVERSION=	28
 CATEGORIES=	devel
 PKGNAMESUFFIX=	${FLAVOR}
 
@@ -19,7 +18,7 @@ LICENSE_PERMS_LLVM2=	dist-mirror dist-sell pkg-mirror pkg-sell auto-accept
 
 BUILD_DEPENDS=	bash:shells/bash
 
-FLAVORS=	19 20 18 17
+FLAVORS=	19 20 21 18 17
 FLAVOR?=	${FLAVORS:[1]}
 
 USES=		gmake llvm:${FLAVOR}
@@ -39,11 +38,6 @@ MAKE_ENV=	INSTALL_DIR=${STAGEDIR}${WASI_SYSROOT} \
 		EXTRA_CFLAGS="-O2 -DNDEBUG -isystem ${FILESDIR}" \
 		AR=${LOCALBASE}/bin/llvm-ar${LLVM_VERSION} \
 		NM=${LOCALBASE}/bin/llvm-nm${LLVM_VERSION} \
-
-post-patch:
-# NOTE: phony targets cause make install to rebuild everything
-#       https://github.com/WebAssembly/wasi-libc/issues/156
-	${REINPLACE_CMD} -e 's|install: finish|install:|' ${WRKSRC}/Makefile
 
 post-install:
 # NOTE: our llvm ports don't ship stdarg/stddef clang headers, so

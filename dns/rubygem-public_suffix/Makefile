@@ -1,12 +1,13 @@
 PORTNAME=	public_suffix
-PORTVERSION=	6.0.2
+PORTVERSION=	7.0.0
 PORTREVISION=	1
 CATEGORIES=	dns rubygems
 MASTER_SITES=	RG
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Ruby domain name parser based on the Public Suffix List
-WWW=		https://github.com/weppos/publicsuffix-ruby
+WWW=		https://simonecarletti.com/code/publicsuffix-ruby/ \
+		https://github.com/weppos/publicsuffix-ruby
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE.txt

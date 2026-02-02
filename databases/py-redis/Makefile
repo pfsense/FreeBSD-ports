@@ -1,5 +1,5 @@
 PORTNAME=	redis
-PORTVERSION=	6.2.0
+PORTVERSION=	7.1.0
 CATEGORIES=	databases python
 MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -21,7 +21,8 @@ USE_PYTHON=	autoplist concurrent pep517 pytest
 
 NO_ARCH=	yes
 
-CONFLICTS_INSTALL=	${PYTHON_PKGNAMEPREFIX}redis[0-9]
+CONFLICTS_INSTALL=	${PYTHON_PKGNAMEPREFIX}redis \
+			${PYTHON_PKGNAMEPREFIX}redis[0-9]
 
 OPTIONS_DEFINE=	HIREDIS JWT OCSP
 HIREDIS_DESC=	High performance response parser
@@ -30,7 +31,7 @@ OCSP_DESC=	Online Certificate Status Protocol support
 
 HIREDIS_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}hiredis>=3.2.0:databases/py-hiredis@${PY_FLAVOR}
 JWT_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}pyjwt>=2.9.0:www/py-pyjwt@${PY_FLAVOR}
-OCSP_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}openssl>=20.0.1,1:security/py-openssl@${PY_FLAVOR} \
+OCSP_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}pyopenssl>=20.0.1,1:security/py-pyopenssl@${PY_FLAVOR} \
 			${PYTHON_PKGNAMEPREFIX}requests>=2.31.0:www/py-requests@${PY_FLAVOR}
 OCSP_USE=		PYTHON=cryptography
 

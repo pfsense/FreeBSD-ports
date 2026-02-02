@@ -1,10 +1,10 @@
 PORTNAME=	closql
 DISTVERSIONPREFIX=	v
-DISTVERSION=	2.2.1
+DISTVERSION=	2.3.2
 CATEGORIES=	databases elisp
 PKGNAMESUFFIX=	${EMACS_PKGNAMESUFFIX}
 
-MAINTAINER=	yasu@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Store EIEIO objects using EmacSQL
 WWW=		https://github.com/magit/closql
 
@@ -12,9 +12,9 @@ LICENSE=	GPLv3+
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
 BUILD_DEPENDS=	compat.el${EMACS_PKGNAMESUFFIX}>=30.0.0.0:misc/compat.el@${EMACS_FLAVOR} \
-		emacsql${EMACS_PKGNAMESUFFIX}>=4.2.0:databases/emacsql@${EMACS_FLAVOR}
+		emacsql${EMACS_PKGNAMESUFFIX}>=4.3.1:databases/emacsql@${EMACS_FLAVOR}
 RUN_DEPENDS=	compat.el${EMACS_PKGNAMESUFFIX}>=30.0.0.0:misc/compat.el@${EMACS_FLAVOR} \
-		emacsql${EMACS_PKGNAMESUFFIX}>=4.2.0:databases/emacsql@${EMACS_FLAVOR}
+		emacsql${EMACS_PKGNAMESUFFIX}>=4.3.1:databases/emacsql@${EMACS_FLAVOR}
 
 USES=		emacs gmake
 USE_GITHUB=	yes

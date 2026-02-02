@@ -6,7 +6,7 @@ MASTER_SITES=	LOCAL/obrien \
 		http://sepwww.stanford.edu/sep/prof/
 DISTFILES=	ratfor.shar.2 local.ratfor77.shar
 
-MAINTAINER=	bofh@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Rational FORTRAN compiler
 
 LICENSE=	PD
@@ -14,6 +14,7 @@ LICENSE_FILE=	${WRKSRC}/README
 
 USES=		fortran
 
+CFLAGS=		-Wno-implicit-function-declaration -Wno-implicit-int
 ALL_TARGET=	all tests
 
 EXTRACT_CMD=	${CAT}

@@ -11,7 +11,7 @@ WWW=		https://github.com/TomWright/dasel
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-USES=		go:1.22,modules
+USES=		go:modules
 
 GO_MODULE=	github.com/tomwright/${PORTNAME}/v2
 GO_TARGET=	./cmd/${PORTNAME}

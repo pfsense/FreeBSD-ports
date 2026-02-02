@@ -29,6 +29,7 @@
 	<title>Services/FRR/OSPF6</title>
 	<include_file>/usr/local/pkg/frr.inc</include_file>
 	<aftersaveredirect>pkg.php?xml=frr/frr_ospf6_interfaces.xml</aftersaveredirect>
+	<addedit_string>FRR: changed OSPF6 Interfaces</addedit_string>
 	<tabs>
 		<tab>
 			<text>OSPF6</text>

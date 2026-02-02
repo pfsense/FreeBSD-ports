@@ -1,5 +1,5 @@
-TIMESTAMP = 1750194723
-SHA256 (go/multimedia_supersonic/supersonic-v0.16.0/v0.16.0.mod) = 3f166e3feaff7f35ae4dee785e031fc2415995df8c83bd023f163b9f012a2019
-SIZE (go/multimedia_supersonic/supersonic-v0.16.0/v0.16.0.mod) = 2849
-SHA256 (go/multimedia_supersonic/supersonic-v0.16.0/v0.16.0.zip) = 31ac2bac9797d3347e72adaaaf642ba4be33b61aac8ff9e94f84d4607d91de30
-SIZE (go/multimedia_supersonic/supersonic-v0.16.0/v0.16.0.zip) = 65420655
+TIMESTAMP = 1762902130
+SHA256 (go/multimedia_supersonic/supersonic-v0.19.0/v0.19.0.mod) = 370b344dd2f8565f000eca488cb258c6df72fe70e49fc43f3777fbbf315d53e4
+SIZE (go/multimedia_supersonic/supersonic-v0.19.0/v0.19.0.mod) = 3516
+SHA256 (go/multimedia_supersonic/supersonic-v0.19.0/v0.19.0.zip) = 806861f00159a7f140cc3d40162ed4c6eab9c044312e5c09e4d5c4edd9a4bc98
+SIZE (go/multimedia_supersonic/supersonic-v0.19.0/v0.19.0.zip) = 65472636

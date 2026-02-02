@@ -10,7 +10,7 @@ WWW=		https://github.com/carvel-dev/kapp
 
 LICENSE=	APACHE20
 
-USES=		go:1.22,modules
+USES=		go:modules
 GO_MODULE=	github.com/carvel-dev/${PORTNAME}
 GO_TARGET=	./cmd/${PORTNAME}
 GO_BUILDFLAGS=	-ldflags="-X carvel.dev/kapp/pkg/kapp/version.Version=v${DISTVERSION}"

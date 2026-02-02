@@ -1,6 +1,6 @@
 PORTNAME=	connect
 DISTVERSIONPREFIX=	v
-DISTVERSION=	4.58.2
+DISTVERSION=	4.73.0
 CATEGORIES=	net
 PKGNAMEPREFIX=	redpanda-
 
@@ -37,12 +37,17 @@ PLIST_FILES=	"@dir(,,755) %%ETCDIR%%" \
 OPTIONS_DEFINE=		ENTERPRISE
 ENTERPRISE_DESC=	Enable connectors under the RCL license
 
+.include <bsd.port.options.mk>
+
+.if !${PORT_OPTIONS:MENTERPRISE}
+EXTRA_PATCHES=	${FILESDIR}/extra-patch-public_components_all_package.go
+.endif
+
 .include <bsd.port.pre.mk>
 
 post-patch:
-.if !${PORT_OPTIONS:MENTERPRISE}
-	@${PATCH} -d ${WRKSRC} < ${FILESDIR}/remove-enterprise-connectors.patch
-.endif
+	@${CP} ${WRKSRC}/vendor/github.com/AthenZ/athenz/libs/go/sia/util/os_util_linux.go \
+		${WRKSRC}/vendor/github.com/AthenZ/athenz/libs/go/sia/util/os_util_freebsd.go
 
 post-install:
 	@${MKDIR} ${STAGEDIR}${ETCDIR}

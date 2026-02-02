@@ -1,11 +1,10 @@
 PORTNAME=	yaml.el
 DISTVERSIONPREFIX=	v
-DISTVERSION=	1.2.0
-PORTREVISION=	1
+DISTVERSION=	1.2.1
 CATEGORIES=	textproc elisp
 PKGNAMESUFFIX=	${EMACS_PKGNAMESUFFIX}
 
-MAINTAINER=	yasu@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	YAML parser in Elisp
 WWW=		https://github.com/zkry/yaml.el
 

@@ -1,7 +1,6 @@
 PORTNAME=	step-certificates
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.28.1
-PORTREVISION=	4
+DISTVERSION=	0.29.0
 CATEGORIES=	security
 
 MAINTAINER=	mw@wipp.bayern
@@ -15,7 +14,7 @@ BUILD_DEPENDS=	pcsc-lite>0:devel/pcsc-lite
 LIB_DEPENDS=	libpcsclite.so:devel/pcsc-lite
 RUN_DEPENDS=	step:security/step-cli
 
-USES=		go:1.22,modules
+USES=		go:modules
 
 USE_RC_SUBR=	step_ca
 

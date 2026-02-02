@@ -10,7 +10,7 @@ WWW=		https://github.com/projectdiscovery/httpx
 
 LICENSE=	MIT
 
-USES=		go:1.21,modules
+USES=		go:modules
 GO_MODULE=	github.com/projectdiscovery/httpx
 
 GO_TARGET=	./cmd/${PORTNAME}

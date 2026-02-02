@@ -1,18 +1,18 @@
 PORTNAME=	llama.el
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.6.2
+DISTVERSION=	1.0.2
 CATEGORIES=	devel elisp
 PKGNAMESUFFIX=	${EMACS_PKGNAMESUFFIX}
 
-MAINTAINER=	yasu@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Compact syntax for short lambda in Emacs Lisp
 WWW=		https://github.com/tarsius/llama
 
 LICENSE=	GPLv3+
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-BUILD_DEPENDS=	compat.el${EMACS_PKGNAMESUFFIX}>=30.0.2.0:misc/compat.el@${EMACS_FLAVOR}
-RUN_DEPENDS=	compat.el${EMACS_PKGNAMESUFFIX}>=30.0.2.0:misc/compat.el@${EMACS_FLAVOR}
+BUILD_DEPENDS=	compat.el${EMACS_PKGNAMESUFFIX}>=30.1.0.0:misc/compat.el@${EMACS_FLAVOR}
+RUN_DEPENDS=	compat.el${EMACS_PKGNAMESUFFIX}>=30.1.0.0:misc/compat.el@${EMACS_FLAVOR}
 
 USES=		emacs gmake
 USE_GITHUB=	yes

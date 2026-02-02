@@ -27,6 +27,8 @@ require_once("notices.inc");
 require_once("util.inc");
 require_once("xmlrpc_client.inc");
 
+define('LOG_PREFIX_PKG_FILER', 'Filer');
+
 function filer_text_area_decode($text) {
 	return preg_replace('/\r\n/', "\n", base64_decode($text));
 }
@@ -125,7 +127,7 @@ function filer_sync_on_changes() {
 				if (is_array($filer_sync['row'])) {
 					$rs = $filer_sync['row'];
 				} else {
-					log_error("[filer] XMLRPC sync is enabled but there are no hosts configured as replication targets.");
+					logger(LOG_WARNING, localize_text("XMLRPC sync is enabled but there are no hosts configured as replication targets."), LOG_PREFIX_PKG_FILER);
 					return;
 				}
 				break;
@@ -134,7 +136,7 @@ function filer_sync_on_changes() {
 				break;
 		}
 		if (is_array($rs)) {
-			log_error("[filer] XMLRPC sync is starting.");
+			logger(LOG_INFO, localize_text("XMLRPC sync is starting."), LOG_PREFIX_PKG_FILER);
 			foreach ($rs as $sh) {
 				// Only sync enabled replication targets
 				if ($sh['syncdestinenable']) {
@@ -162,11 +164,11 @@ function filer_sync_on_changes() {
 					if ($valid) {
 						filer_do_xmlrpc_sync($sync_to_ip, $port, $protocol, $username, $password, $synctimeout);
 					} else {
-						log_error("[filer] XMLRPC sync with '{$sync_to_ip}' aborted due to the following error(s): {$error}");
+						logger(LOG_ERR, localize_text("XMLRPC sync with '%s' aborted due to the following error(s): %s", $sync_to_ip, $error), LOG_PREFIX_PKG_FILER);
 					}
 				}
 			}
-			log_error("[filer] XMLRPC sync completed.");
+			logger(LOG_INFO, localize_text("XMLRPC sync completed."), LOG_PREFIX_PKG_FILER);
 		}
  	}
 } 
@@ -181,7 +183,7 @@ if(!function_exists('pf_version')) {
 function filer_do_xmlrpc_sync($sync_to_ip, $port, $protocol, $username, $password, $synctimeout) {
 	global $g;
 	if ($username == "" || $password == "" || $sync_to_ip == "" || $port == "" || $protocol == "") {
-		log_error("[filer] A required XMLRPC sync parameter (username, password, replication target, port or protocol) is empty ... aborting pkg sync");
+		logger(LOG_WARNING, localize_text("A required XMLRPC sync parameter (username, password, replication target, port or protocol) is empty ... aborting pkg sync"), LOG_PREFIX_PKG_FILER);
 		return;
 	}
 	/* XML will hold the sections to sync */

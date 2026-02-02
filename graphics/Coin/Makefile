@@ -1,7 +1,6 @@
 PORTNAME=	Coin
-PORTVERSION=	4.0.3
+PORTVERSION=	4.0.6
 DISTVERSIONPREFIX=	v
-PORTREVISION=	2
 CATEGORIES=	graphics
 
 MAINTAINER=	cmt@FreeBSD.org
@@ -13,7 +12,7 @@ LICENSE=	BSD3CLAUSE
 BUILD_DEPENDS=	boost-libs>0:devel/boost-libs
 LIB_DEPENDS=	libsimage.so:graphics/simage
 
-USES=		cmake gl openal:al libtool pathfix xorg
+USES=		cmake gl openal:al pathfix xorg
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	coin3d
@@ -28,6 +27,8 @@ CMAKE_ARGS+=	-DCOIN_BUILD_SHARED_LIBS="ON" \
 		-DHAVE_3DS_IMPORT_CAPABILITIES="ON" \
 		-DUSE_EXTERNAL_EXPAT="ON"
 USE_LDCONFIG=	yes
+
+PLIST_SUB=	VERSION=${PORTVERSION}
 
 pre-configure:
 	@${REINPLACE_CMD} -e 's|DATA install-data-local|DATA|g' \

@@ -28,6 +28,7 @@
 	<name>ftpclientproxy</name>
 	<version>%%PKGVERSION%%</version>
 	<title>Services/FTP Client Proxy</title>
+	<addedit_string>FTP Proxy: changed settings</addedit_string>
 	<aftersaveredirect>pkg_edit.php?xml=ftpproxy.xml</aftersaveredirect>
 	<include_file>/usr/local/pkg/ftpproxy.inc</include_file>
 	<menu>

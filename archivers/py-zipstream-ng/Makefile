@@ -1,6 +1,5 @@
 PORTNAME=	zipstream-ng
-DISTVERSION=	1.8.0
-PORTREVISION=	1
+DISTVERSION=	1.9.0
 CATEGORIES=	archivers python
 MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -17,5 +16,7 @@ TEST_DEPENDS=	${PYTHON_PKGNAMEPREFIX}pytest-cov>0:devel/py-pytest-cov@${PY_FLAVO
 
 USES=		python
 USE_PYTHON=	autoplist distutils pytest
+
+NO_ARCH=	yes
 
 .include <bsd.port.mk>

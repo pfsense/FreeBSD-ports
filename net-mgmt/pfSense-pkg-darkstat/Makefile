@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	pfSense-pkg-darkstat
-PORTVERSION=	3.1.4
+PORTVERSION=	3.1.5
 CATEGORIES=	net-mgmt
 MASTER_SITES=	# empty
 DISTFILES=	# empty

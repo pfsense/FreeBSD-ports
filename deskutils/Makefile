@@ -1,6 +1,7 @@
     COMMENT = Things that used to be on the desktop before computers were invented
 
     SUBDIR += R-cran-exams
+    SUBDIR += R-cran-exams2forms
     SUBDIR += affiche
     SUBDIR += akonadi-calendar-tools
     SUBDIR += akonadi-import-wizard
@@ -41,6 +42,8 @@
     SUBDIR += copyq
     SUBDIR += coregarage
     SUBDIR += countdown
+    SUBDIR += crengine-ng
+    SUBDIR += crqt-ng
     SUBDIR += dailystrips
     SUBDIR += deforaos-notes
     SUBDIR += deforaos-todo
@@ -88,9 +91,9 @@
     SUBDIR += gnome-shell-extension-lockkeys
     SUBDIR += gnome-shell-extension-manager
     SUBDIR += gnome-shell-extension-mediaplayer
-    SUBDIR += gnome-shell-extension-openweather
     SUBDIR += gnome-shell-extension-panel-osd
     SUBDIR += gnome-shell-extension-recent-items
+    SUBDIR += gnome-shell-extension-simple-weather
     SUBDIR += gnome-shell-extension-trash
     SUBDIR += gnome-shell-extension-weather
     SUBDIR += gnome-shell-extension-windowoverlay-icons
@@ -133,6 +136,7 @@
     SUBDIR += just
     SUBDIR += kaddressbook
     SUBDIR += kalarm
+    SUBDIR += kanbanapp
     SUBDIR += kcharselect
     SUBDIR += kchmviewer
     SUBDIR += kdeconnect-kde
@@ -152,7 +156,6 @@
     SUBDIR += kronometer
     SUBDIR += kruler
     SUBDIR += ktimetracker
-    SUBDIR += kuserfeedback
     SUBDIR += kweather
     SUBDIR += kweathercore
     SUBDIR += latte-dock
@@ -220,6 +223,7 @@
     SUBDIR += plasma6-sddm-kcm
     SUBDIR += plasma6-xdg-desktop-portal-kde
     SUBDIR += plopfolio
+    SUBDIR += podman-desktop
     SUBDIR += preferences
     SUBDIR += presage
     SUBDIR += projectlibre
@@ -238,15 +242,16 @@
     SUBDIR += py-send2trash
     SUBDIR += py-taskw
     SUBDIR += py-term-background
-    SUBDIR += py-todoman
     SUBDIR += py-trash-cli
     SUBDIR += py-vdirsyncer
+    SUBDIR += py-vit
     SUBDIR += py-vobject
     SUBDIR += py-vorta
     SUBDIR += qlipper
     SUBDIR += qmediamanager
     SUBDIR += qownnotes
     SUBDIR += qtfeedback
+    SUBDIR += readur
     SUBDIR += recoll
     SUBDIR += rednotebook
     SUBDIR += remind
@@ -274,6 +279,7 @@
     SUBDIR += tasksh
     SUBDIR += taskwarrior
     SUBDIR += taskwarrior-tui
+    SUBDIR += tatuin
     SUBDIR += teapot
     SUBDIR += terminal-image-viewer
     SUBDIR += thinkingrock
@@ -317,6 +323,7 @@
     SUBDIR += ydotool
     SUBDIR += zanshin
     SUBDIR += zim
+    SUBDIR += zk
     SUBDIR += znotes
     SUBDIR += zorro
 

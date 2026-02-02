@@ -4,12 +4,15 @@ DISTVERSIONPREFIX=	${PORTNAME}-
 PORTREVISION=	8
 CATEGORIES=	graphics geography
 
-MAINTAINER=	zirias@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	C++ terrain rendering toolkit for OpenSceneGraph
 WWW=		http://osgearth.org/
 
 LICENSE=	LGPL3
 LICENSE_FILE=	${WRKSRC}/LICENSE.txt
+
+BROKEN=		Fails to build, error: cannot assign to non-static data member 'length' with const-qualified type 'const SizeType'
+EXPIRATION_DATE=2025-12-31
 
 LIB_DEPENDS=	libcurl.so:ftp/curl \
 		libgdal.so:graphics/gdal \

@@ -1,5 +1,5 @@
 PORTNAME=	django-allauth
-PORTVERSION=	65.9.0
+PORTVERSION=	65.13.1
 CATEGORIES=	www python
 MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}dj51-
@@ -14,7 +14,11 @@ WWW=		https://allauth.org/ \
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}setuptools>=40.8.0:devel/py-setuptools@${PY_FLAVOR} \
+DEPRECATED=	Extended support of Django 5.1 ends December 2025, upgrade to the Django 5.2+ version of this port. See https://www.djangoproject.com/download/
+EXPIRATION_DATE=2025-12-31
+
+BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}setuptools>=63.0.0:devel/py-setuptools@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}setuptools-scm>=8:devel/py-setuptools-scm@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}fido2>=0:security/py-fido2@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}wheel>=0:devel/py-wheel@${PY_FLAVOR}
 RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}django51>=5.1:www/py-django51@${PY_FLAVOR}

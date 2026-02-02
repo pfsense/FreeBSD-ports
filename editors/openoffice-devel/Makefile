@@ -1,6 +1,6 @@
 PORTNAME=	apache-openoffice
 PORTVERSION=	${AOOVERSION1}.${AOOVERSION2}.${TIMESTAMP}
-PORTREVISION=	0
+PORTREVISION=	1
 PORTEPOCH=	4
 CATEGORIES=	editors java
 MASTER_SITES=	https://dist.apache.org/repos/dist/dev/openoffice/${AOOVERSION}-${AOORC}-${TIMESTAMP}/source/ \
@@ -116,6 +116,7 @@ USES=		autoreconf bison compiler:c++11-lib cpe desktop-file-utils \
 USE_GL=		gl glu
 USE_GNOME=	gdkpixbuf gdkpixbuf2xlib gtk20 libxslt glib20
 JAVA_VENDOR=	openjdk
+JAVA_VERSION=	8
 USE_PERL5=	build
 USE_XORG=	ice sm x11 xau xaw xcomposite xcursor xdamage xext xfixes xi \
 		xinerama xrandr xrender xt
@@ -127,8 +128,8 @@ AOOVERSION2=	2
 AOOVERSION3=	0
 # From solenv/inc/minor.mk SOURCEREVISION LAST_MINOR BUILD
 AOOTAG=		AOO420m6\(Build:9825\)
-GITREVISION=	518a110c8f
-TIMESTAMP=	1750013453
+GITREVISION=	adfffba115
+TIMESTAMP=	1758052376
 #AOORC=rc3
 EXTSRC=		ApacheOpenOffice.ext_sources.${AOOVERSION1}.x.x.20150707.tar.gz
 
@@ -225,6 +226,11 @@ WITH=	SDK
 .endif
 
 .include <bsd.port.pre.mk>
+
+.if ${OPSYS} == FreeBSD && ${OSVERSION} < 1500000
+# nm: '../unxfbsdi.pro/slo/b2dcubicbezier.o': Invalid argument
+EXTRA_PATCHES+=         ${FILESDIR}/extra-patch-nm
+.endif
 
 .if defined(WITH_DEBUG)
 CONFIGURE_ARGS+=	--enable-symbols

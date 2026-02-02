@@ -28,6 +28,7 @@
 	<name>filer</name>
 	<version>%%PKGVERSION%%</version>
 	<title>Diagnostics/Filer</title>
+	<addedit_string>Filer: changed settings</addedit_string>
 	<include_file>/usr/local/pkg/filer.inc</include_file>
 	<menu>
 		<name>Filer</name>

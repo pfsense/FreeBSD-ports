@@ -31,6 +31,7 @@
 	<title>Services: %%ZABBIXTITLE%%</title>
 	<category>Monitoring</category>
 	<include_file>/usr/local/pkg/zabbix-proxy.inc</include_file>
+	<ramdisk_dir_names>zabbix-proxy</ramdisk_dir_names>
 	<addedit_string>Zabbix Proxy has been created/modified.</addedit_string>
 	<delete_string>Zabbix Proxy has been deleted.</delete_string>
 	<menu>

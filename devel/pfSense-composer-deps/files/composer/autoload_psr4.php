@@ -24,5 +24,6 @@ return array(
     'Psr\\Log\\' => array($vendorDir . '/psr/log/src'),
     'Psr\\Container\\' => array($vendorDir . '/psr/container/src'),
     'Psr\\Cache\\' => array($vendorDir . '/psr/cache/src'),
+    'Nette\\' => array($vendorDir . '/nette/utils/src'),
     'Netgate\\' => array('//usr/local/pfSense/include/Netgate'),
 );

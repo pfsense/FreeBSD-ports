@@ -1,12 +1,12 @@
 PORTNAME=	ungoogled-chromium
-PORTVERSION=	137.0.7151.103
+PORTVERSION=	143.0.7499.169
 PULSEMV=	16
 PULSEV=		${PULSEMV}.1
 UGVERSION=	${DISTVERSION}-1
 CATEGORIES=	www wayland
 MASTER_SITES=	https://commondatastorage.googleapis.com/chromium-browser-official/:goo \
 		https://freedesktop.org/software/pulseaudio/releases/:pulseaudio
-DISTFILES=	chromium-${DISTVERSION}${EXTRACT_SUFX}:goo \
+DISTFILES=	chromium-${DISTVERSION}-lite${EXTRACT_SUFX}:goo \
 		pulseaudio-${PULSEV}.tar.gz:pulseaudio
 
 USE_GITHUB=	yes
@@ -139,8 +139,6 @@ GN_ARGS+=	build_with_tflite_lib=false \
 		enable_backup_ref_ptr_support=false \
 		enable_hangout_services_extension=false \
 		enable_mdns=false \
-		enable_nacl=false \
-		enable_reading_list=false \
 		enable_remoting=false \
 		enable_reporting=false \
 		enable_service_discovery=false \
@@ -248,7 +246,7 @@ TEST_ALL_TARGET=	${TEST_TARGETS}
 IGNORE=		you have selected HEIMDAL_BASE but do not have Heimdal installed in base
 .endif
 
-LLVM_DEFAULT=		19
+LLVM_DEFAULT=		21
 BUILD_DEPENDS+=		clang${LLVM_DEFAULT}:devel/llvm${LLVM_DEFAULT}
 BINARY_ALIAS+=		cpp=${LOCALBASE}/bin/clang-cpp${LLVM_DEFAULT} \
 			cc=${LOCALBASE}/bin/clang${LLVM_DEFAULT} \
@@ -286,11 +284,9 @@ MAKE_ENV+=	C_INCLUDE_PATH=${LOCALBASE}/include \
 WRKSRC=		${WRKDIR}/chromium-${DISTVERSION}
 
 # rust
-RUSTC_VERSION!= rustc -V 2>/dev/null || true
 MAKE_ENV+=	RUSTC_BOOTSTRAP=1
 GN_ARGS+=	enable_rust=true \
-		rust_sysroot_absolute="${LOCALBASE}" \
-		rustc_version="${RUSTC_VERSION}"
+		rust_sysroot_absolute="${LOCALBASE}"
 
 pre-everything::
 	@${ECHO_MSG}
@@ -329,6 +325,7 @@ pre-configure:
 .endfor
 	touch ${WRKDIR}/pulseaudio-${PULSEV}/src/pulse/version.h
 	@${REINPLACE_CMD} -e 's|$${LOCALBASE}|${LOCALBASE}|;s|$${MODCLANG_VERSION}|${LLVM_DEFAULT}|' \
+		${WRKSRC}/build/linux/strip_binary.gni \
 		${WRKSRC}/build/rust/rust_bindgen.gni \
 		${WRKSRC}/build/rust/rust_bindgen_generator.gni
 

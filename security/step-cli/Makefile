@@ -1,7 +1,6 @@
 PORTNAME=	step-cli
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.28.2
-PORTREVISION=	3
+DISTVERSION=	0.29.0
 CATEGORIES=	security
 
 MAINTAINER=	mw@wipp.bayern
@@ -11,7 +10,7 @@ WWW=		https://smallstep.com/cli/
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-USES=		go:1.22,modules shebangfix
+USES=		go:modules shebangfix
 
 SHEBANG_FILES=	autocomplete/bash_autocomplete
 

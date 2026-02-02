@@ -140,7 +140,7 @@ function frr_bfd_generate_peers() {
 			}
 			if (!empty($peer['local_address']) && ($peer['interface'] <> 'default')) {
 				if (!find_ip_interface($peer['local_address'])) {
-					frr_package_log("FRR BFDd: Source Address not found, skipping peer configuration.");
+					frr_package_log("BFDd: Source Address not found, skipping peer configuration.");
 					continue;
 				}
 				$bfdpeerdefconf .= " local-address {$peer['local_address']}";
@@ -148,7 +148,7 @@ function frr_bfd_generate_peers() {
 			if (!empty($peer['interface']) && ($peer['interface'] <> 'default')) {
 				$realif = get_real_interface($peer['interface']);
 				if (!$realif) {
-					frr_package_log("FRR BFDd: Source Interface not found, skipping peer configuration.");
+					frr_package_log("BFDd: Source Interface not found, skipping peer configuration.");
 					continue;
 				}
 				$bfdpeerdefconf .= " interface {$realif}";
@@ -195,7 +195,7 @@ function frr_generate_config_bfd() {
 	$frr_conf = config_get_path('installedpackages/frr/config/0', []);
 	if (empty($frr_conf)) {
 		/* If FRR is not configured, stop. */
-		frr_package_log("FRR BFDd: No FRR global config data found.");
+		frr_package_log("BFDd: No FRR global config data found.");
 		return null;
 	}
 	/* Populate FRR BFD Settings */
@@ -208,15 +208,15 @@ function frr_generate_config_bfd() {
 	} else {
 		/* If there is no raw configuration and no GUI configuration, stop. */
 		if (empty($frr_bfd_conf)) {
-			frr_package_log("FRR BFDd: No config data found.");
+			frr_package_log("BFDd: No config data found.");
 			return;
 		} elseif (empty($frr_bfd_conf['enable'])) {
 			/* BFD Daemon is not enabled. */
-			frr_package_log("FRR BFDd: BFD disabled.");
+			frr_package_log("BFDd: BFD disabled.");
 			return;
 		} elseif (empty($frr_conf['enable'])) {
 			/* FRR is disabled or BFD Daemon is not enabled. */
-			frr_package_log("FRR BFDd: FRR master disabled.");
+			frr_package_log("BFDd: FRR master disabled.");
 			return;
 		}
 

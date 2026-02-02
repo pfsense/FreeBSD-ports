@@ -1,6 +1,6 @@
 PORTNAME=	virtualbox-ose
 DISTVERSION=	5.2.44
-PORTREVISION?=	32
+PORTREVISION?=	33
 CATEGORIES=	emulators
 MASTER_SITES=	https://download.virtualbox.org/virtualbox/${DISTVERSION}/:src \
 		LOCAL/bofh/emulators/virtualbox-ose-legacy:docs
@@ -44,7 +44,9 @@ CONFLICTS_INSTALL=	virtualbox-ose \
 			virtualbox-ose-70 \
 			virtualbox-ose-nox11-70 \
 			virtualbox-ose-71 \
-			virtualbox-ose-nox11-71
+			virtualbox-ose-nox11-71 \
+			virtualbox-ose-72 \
+			virtualbox-ose-nox11-72
 
 PORTSCOUT=	limit:^5\.
 SUB_LIST=	VBOXDIR=${VBOX_DIR} \
@@ -85,7 +87,7 @@ OPTIONS_SUB=		yes
 DEBUG_DESC=		Debug symbols, additional logs and assertions
 GUESTADDITIONS_DESC=	Build with Guest Additions
 NLS_DESC=		Native language support (requires QT5)
-QT5_DESC=		Build with QT5 frontend (requires X11)
+QT5_DESC=		Build with Qt5 frontend (requires X11)
 R0LOGGING_DESC=		Enable R0 logging (requires DEBUG)
 UDPTUNNEL_DESC=		Build with UDP tunnel support
 VDE_DESC=		Build with VDE support
@@ -312,6 +314,8 @@ post-patch:
 	@${REINPLACE_CMD} \
 	    -e 's|^versions =.*|versions = ["${PYTHON_VER}${PYTHON_ABIVER}"]|' \
 	    ${WRKSRC}/src/libs/xpcom18a4/python/gen_python_deps.py
+	@${REINPLACE_CMD} -e 's|curl_proxytype|long|g' \
+	    ${WRKSRC}/src/VBox/Runtime/generic/http-curl.cpp
 
 do-build:
 	cd ${WRKSRC} && ${SH} -c '. ${WRKSRC}/env.sh && \

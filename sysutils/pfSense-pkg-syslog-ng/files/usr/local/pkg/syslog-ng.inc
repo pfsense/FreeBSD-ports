@@ -33,6 +33,7 @@ if (!function_exists("filter_configure")) {
 
 define("SYSLOGNG_BASEDIR", "/usr/local/");
 define('SYSLOGNG_DIR', "/var/etc/syslog-ng/");
+define('LOG_PREFIX_PKG_SYSLOGNG', 'syslog-ng');
 
 function syslogng_get_real_interface_address($interface) {
 	$interface = convert_friendly_interface_to_real_interface_name($interface);
@@ -380,10 +381,10 @@ function syslogng_resync() {
 		}
 
 		if (!is_service_running('syslog-ng')) {
-			log_error("Starting syslog-ng");
+			logger(LOG_INFO, localize_text("Starting service"), LOG_PREFIX_PKG_SYSLOGNG);
 			start_service("syslog-ng");
 		} else {
-			log_error("Reloading syslog-ng for configuration sync");
+			logger(LOG_INFO, localize_text("Reloading service for configuration sync"), LOG_PREFIX_PKG_SYSLOGNG);
 			restart_service("syslog-ng");
 		}
 
@@ -395,7 +396,7 @@ function syslogng_resync() {
 		}
 	} else {
 		if (is_service_running('syslog-ng')) {
-			log_error("Stopping syslog-ng");
+			logger(LOG_INFO, localize_text("Stopping service"), LOG_PREFIX_PKG_SYSLOGNG);
 			stop_service("syslog-ng");
 		}
 		unlink_if_exists("/usr/local/etc/syslog-ng.conf");

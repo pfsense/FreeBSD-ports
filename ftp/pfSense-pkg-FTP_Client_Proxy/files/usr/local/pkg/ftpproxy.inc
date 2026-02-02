@@ -19,6 +19,8 @@
  * limitations under the License.
  */
 
+define('LOG_PREFIX_PKG_FTPPROXY', 'FTP Proxy');
+
 function sync_package_ftpproxy() {
 	$cf = config_get_path('installedpackages/ftpclientproxy/config/0');
 
@@ -34,7 +36,7 @@ function sync_package_ftpproxy() {
 	$interface_list = explode(",", $cf['localints']);
 	/* Bail if there is nothing to do */
 	if (empty($interface_list)) {
-		log_error("FTP Proxy cannot sync: No interfaces selected.");
+		logger(LOG_ERR, localize_text("Cannot sync: No interfaces selected."), LOG_PREFIX_PKG_FTPPROXY);
 		return;
 	}
 
@@ -128,7 +130,7 @@ function ftpproxy_generate_rules($type) {
 
 	/* Bail if there is nothing to do */
 	if (empty($interface_list)) {
-		log_error("FTP Proxy cannot sync: No interfaces selected.");
+		logger(LOG_ERR, localize_text("Cannot sync: No interfaces selected."), LOG_PREFIX_PKG_FTPPROXY);
 		return;
 	}
 

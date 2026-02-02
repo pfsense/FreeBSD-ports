@@ -54,7 +54,7 @@ if ($_POST) {
 	unset($input_errors);
 	$pconfig = $_POST;
 
-	if (!$input_errors) {
+	if (empty($input_errors)) {
 
 		$ent = array();
 		$ent['name'] = $_POST['name'];

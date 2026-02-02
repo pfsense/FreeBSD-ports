@@ -1,5 +1,5 @@
 PORTNAME=	libimobiledevice-glue
-PORTVERSION=	1.3.1
+PORTVERSION=	1.3.2
 CATEGORIES=	comms
 MASTER_SITES=	https://github.com/libimobiledevice/${PORTNAME}/releases/download/${PORTVERSION}/
 
@@ -12,7 +12,7 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 
 LIB_DEPENDS=	libplist-2.0.so:devel/libplist
 
-USES=		libtool pathfix pkgconfig tar:bzip2
+USES=		libtool pkgconfig tar:bzip2
 USE_LDCONFIG=	yes
 
 GNU_CONFIGURE=	yes

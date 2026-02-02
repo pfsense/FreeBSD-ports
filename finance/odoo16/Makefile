@@ -1,6 +1,6 @@
 PORTNAME=	odoo
-PORTVERSION=	16.0.20250108
-PORTREVISION=	2
+PORTVERSION=	16.0.20250719
+PORTREVISION=	5
 CATEGORIES=	finance www
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 PKGNAMESUFFIX=	16
@@ -12,7 +12,7 @@ WWW=		https://www.odoo.com
 LICENSE=	LGPL3
 
 USE_GITHUB=	yes
-GH_TAGNAME=	f4c41aa2836cd937cd476e50dcd494fc8549476a
+GH_TAGNAME=	f50391ee61af8d986154af948c194fef8067f975
 
 LIB_DEPENDS=	libxslt.so:textproc/libxslt \
 		libevent.so:devel/libevent \
@@ -38,13 +38,13 @@ RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}Babel>=1.3:devel/py-babel@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}mock>=0:devel/py-mock@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}num2words>=0:devel/py-num2words@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}ofxparse>=0.20:finance/py-ofxparse@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}openssl>0:security/py-openssl@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}passlib>0:security/py-passlib@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}pillow>=7.0.0:graphics/py-pillow@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}polib>=0:devel/py-polib@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}psutil>0:sysutils/py-psutil@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}psycopg2>0:databases/py-psycopg2@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}pydot>=0:graphics/py-pydot@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}pyopenssl>0:security/py-pyopenssl@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}pyparsing>=0:devel/py-pyparsing@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}pypdf>0:print/py-pypdf@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}pyserial>=0:comms/py-pyserial@${PY_FLAVOR} \
@@ -56,6 +56,7 @@ RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}Babel>=1.3:devel/py-babel@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}reportlab>0:print/py-reportlab@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}requests>0:www/py-requests@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}secure-cookie>0:www/py-secure-cookie@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}setuptools>=0:devel/py-setuptools@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}stdnum>0:devel/py-stdnum@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}urllib3>0:net/py-urllib3@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}vatnumber>=0:finance/py-vatnumber@${PY_FLAVOR} \
@@ -64,10 +65,13 @@ RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}Babel>=1.3:devel/py-babel@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}xlrd>=1.2.0:textproc/py-xlrd@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}xlwt>=1.3.0:textproc/py-xlwt@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}zeep>=0:net/py-zeep@${PY_FLAVOR} \
+		${PY_SETUPTOOLS}
 
 USES=		cpe gnome ldap python pgsql shebangfix
 USE_GNOME=	libxml2
 USE_PYTHON=	cryptography distutils
+
+NO_ARCH=	yes
 
 SHEBANG_LANG=	python
 SHEBANG_FILES=	${WRKSRC}/${PORTNAME}/addons/point_of_sale/tools/posbox/overwrite_before_init/etc/init.d/odoo \
@@ -83,7 +87,7 @@ GROUPS=		${USERS}
 USE_RC_SUBR=	${PORTNAME}
 SUB_FILES=	pkg-message
 
-CONFLICTS=	odoo odoo14 odoo15 odoo17
+CONFLICTS=	odoo odoo17
 
 ETCDIR=		${PREFIX}/etc/odoo
 
@@ -91,7 +95,19 @@ post-patch:
 	@${REINPLACE_CMD} -i "" -e 's|(index !== |(index == |g' \
 		${WRKSRC}/odoo/addons/web/static/src/legacy/js/libs/content-disposition.js \
 		${WRKSRC}/odoo/addons/web/static/src/core/network/download.js
-	@${RM} ${WRKSRC}/odoo/release.py.orig 
+
+	@${RM} ${WRKSRC}/odoo/release.py.orig \
+		${WRKSRC}/odoo/__init__.py.orig \
+		${WRKSRC}/odoo/addons/account/models/ir_actions_report.py.orig \
+		${WRKSRC}/odoo/addons/account/tests/test_ir_actions_report.py.orig \
+		${WRKSRC}/odoo/addons/account_edi/models/account_edi_format.py.orig \
+		${WRKSRC}/odoo/addons/base/models/ir_actions_report.py.orig \
+		${WRKSRC}/odoo/addons/snailmail/models/snailmail_letter.py.orig \
+		${WRKSRC}/odoo/addons/website_slides/models/slide_slide.py.orig \
+		${WRKSRC}/odoo/addons/website_event/controllers/main.py.orig \
+		${WRKSRC}/odoo/addons/website/models/website.py.orig \
+		${WRKSRC}/odoo/http.py.orig \
+		${WRKSRC}/odoo/tools/pdf.py.orig
 
 post-extract:
 	@cd ${WRKSRC}/addons/ && ${MV} * ${WRKSRC}/odoo/addons/

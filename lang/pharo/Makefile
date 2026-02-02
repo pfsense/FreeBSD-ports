@@ -1,7 +1,7 @@
 PORTNAME=	pharo
 DISTVERSION=	10.2.0
-PORTREVISION=	1
 DISTVERSIONSUFFIX=	f4c5e2a
+PORTREVISION=	2
 CATEGORIES=	lang
 MASTER_SITES=	http://files.pharo.org/vm/pharo-spur64-headless/Linux-x86_64/source/
 DISTNAME=	PharoVM-${DISTVERSION}-${DISTVERSIONSUFFIX}-Linux-x86_64-c-src
@@ -18,7 +18,7 @@ LIB_DEPENDS=	libffi.so:devel/libffi \
 		libfreetype.so:print/freetype2 \
 		libpixman-1.so:x11/pixman \
 		libpng.so:graphics/png \
-		libuuid.so:misc/e2fsprogs-libuuid
+		libuuid.so:misc/libuuid
 
 USES=		cmake ssl
 CMAKE_ARGS=	-DFLAVOUR=CoInterpreter \
@@ -29,7 +29,6 @@ CMAKE_OFF=	GENERATE_SOURCES BUILD_BUNDLE
 
 WRKSRC=		${WRKDIR}/pharo-vm
 
-USE_HCC=	yes
 USE_SDL=	sdl image
 
 do-install:

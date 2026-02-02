@@ -1,7 +1,7 @@
 PORTNAME=	beats
 DISTVERSIONPREFIX=	v
 DISTVERSION=	7.17.11
-PORTREVISION=	14
+PORTREVISION=	17
 CATEGORIES=	sysutils
 PKGNAMESUFFIX?=	7
 
@@ -13,8 +13,11 @@ LICENSE=	APACHE20
 
 BUILD_DEPENDS=	${LOCALBASE}/bin/mage:devel/mage
 
-USES=		go:modules
+USES=		go:1.22,modules
 USE_GITHUB=	yes
+
+DEPRECATED=	Uses old go, but try building without USES=go:someversion
+EXPIRATION_DATE=2026-01-01
 
 GH_ACCOUNT=	elastic
 GH_TUPLE=	Azure:azure-amqp-common-go:v3.2.1:azure_azure_amqp_common_go_v3/vendor/github.com/Azure/azure-amqp-common-go/v3 \

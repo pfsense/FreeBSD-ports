@@ -29,6 +29,7 @@
 	</copyright>
 	<name>squidreversegeneral</name>
 	<title>Reverse Proxy Server: General</title>
+	<addedit_string>squid: changed Reverse Proxy General</addedit_string>
 	<include_file>/usr/local/pkg/squid.inc</include_file>
 	<tabs>
 		<tab>

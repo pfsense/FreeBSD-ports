@@ -207,7 +207,7 @@ if (!$input_errors) {
 
 		// If deprecated rules should be removed, then do it
 		if (config_get_path('installedpackages/suricata/config/0/hide_deprecated_rules') == "on") {
-			syslog(LOG_NOTICE, gettext("[Suricata] Hide Deprecated Rules is enabled.  Removing obsoleted rules categories."));
+			logger(LOG_NOTICE, localize_text("Hide Deprecated Rules is enabled.  Removing obsoleted rules categories."), LOG_PREFIX_PKG_SURICATA);
 			suricata_remove_dead_rules();
 		}
 

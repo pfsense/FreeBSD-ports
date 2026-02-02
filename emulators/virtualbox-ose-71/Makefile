@@ -1,6 +1,6 @@
 PORTNAME=	virtualbox-ose
-DISTVERSION=	7.1.10
-PORTREVISION?=	1
+DISTVERSION=	7.1.14
+PORTREVISION?=	0
 CATEGORIES=	emulators
 MASTER_SITES=	https://download.virtualbox.org/virtualbox/${DISTVERSION}/:src \
 		LOCAL/vvd:docs
@@ -27,12 +27,11 @@ LIB_DEPENDS=	libpng.so:graphics/png \
 		libcurl.so:ftp/curl
 RUN_DEPENDS=	${LOCALBASE}/etc/rc.d/vboxnet:emulators/virtualbox-ose-kmod-71
 
-USES=		compiler:c++17-lang cpe gnome iconv pkgconfig qt:6 ssl tar:bzip2
+USES=		compiler:c++17-lang cpe gnome iconv pkgconfig ssl tar:bzip2
 CPE_VENDOR=	oracle
 CPE_PRODUCT=	vm_virtualbox
 USE_BINUTILS=	yes
 USE_GNOME=	libxml2
-USE_QT=		tools:build
 USE_RC_SUBR=	vboxheadless vboxwatchdog
 
 HAS_CONFIGURE=		yes
@@ -44,7 +43,9 @@ CONFLICTS_INSTALL=	virtualbox-ose-legacy \
 			virtualbox-ose \
 			virtualbox-ose-nox11 \
 			virtualbox-ose-70 \
-			virtualbox-ose-nox11-70
+			virtualbox-ose-nox11-70 \
+			virtualbox-ose-72 \
+			virtualbox-ose-nox11-72
 
 PORTSCOUT=	limit:^7\.1\.
 SUB_FILES=	pkg-message
@@ -76,10 +77,10 @@ PLIST_SUB=	GUEST_VER=${DISTVERSION} \
 
 SLAVE_PORT?=	no
 
-OPTIONS_DEFINE=		AIO ALSA DBUS DEBUG DOCS GUESTADDITIONS NLS OGG PULSEAUDIO \
-			PYTHON QT6 R0LOGGING UDPTUNNEL VBOXIMG VDE VNC VORBIS VPX \
-			WEBSERVICE X11
-OPTIONS_DEFAULT=	AIO DBUS QT6 UDPTUNNEL VNC WEBSERVICE X11
+OPTIONS_DEFINE=		AIO ALSA DBUS DEBUG DOCS GUESTADDITIONS NLS OGG \
+			PULSEAUDIO PYTHON QT6 R0LOGGING TPM UDPTUNNEL VBOXIMG \
+			VDE VNC VORBIS VPX WEBSERVICE X11
+OPTIONS_DEFAULT=	AIO DBUS QT6 TPM UDPTUNNEL VNC WEBSERVICE X11
 .if ${SLAVE_PORT} == no
 OPTIONS_DEFAULT+=	PYTHON
 .endif
@@ -93,8 +94,9 @@ DEBUG_DESC=		Debug symbols, additional logs and assertions
 GUESTADDITIONS_DESC=	Build with Guest Additions
 NLS_DESC=		Native language support (requires QT6)
 OGG_DESC=		Use libogg from audio/libogg instead of bundled one
-QT6_DESC=		Build with QT6 frontend (requires X11)
+QT6_DESC=		Build with Qt6 frontend (requires X11)
 R0LOGGING_DESC=		Enable R0 logging (requires DEBUG)
+TPM_DESC=		Enable TPM device emulation using sysutils/libtpms
 UDPTUNNEL_DESC=		Build with UDP tunnel support
 VBOXIMG_DESC=		Build vboximg-mount (requires fuse-libs)
 VDE_DESC=		Build with VDE support
@@ -124,6 +126,8 @@ QT6_USE=		QT=base,scxml,tools,translations \
 			XORG=xcb GL=gl
 QT6_CONFIGURE_OFF=	--disable-qt
 R0LOGGING_IMPLIES=	DEBUG
+TPM_LIB_DEPENDS=	libtpms.so:sysutils/libtpms
+TPM_CONFIGURE_OFF=	--disable-libtpms
 UDPTUNNEL_CONFIGURE_OFF=	--disable-udptunnel
 VBOXIMG_LIB_DEPENDS=	libfuse.so.2:filesystems/fusefs-libs
 VDE_RUN_DEPENDS=	vde_switch:net/vde2
@@ -315,10 +319,18 @@ post-patch:
 	@${REINPLACE_CMD} \
 	    -e 's|^versions =.*|versions = ["${PYTHON_VER}${PYTHON_ABIVER}"]|' \
 	    ${WRKSRC}/src/libs/xpcom18a4/python/gen_python_deps.py
+	@${REINPLACE_CMD} -e 's|curl_proxytype|long|g' \
+	    ${WRKSRC}/src/VBox/Runtime/generic/http-curl.cpp
 
 post-patch-AIO-off:
 	@${REINPLACE_CMD} 's|r3/freebsd/fileaio-freebsd.cpp|r3/posix/fileaio-posix.cpp|' \
 		${WRKSRC}/src/VBox/Runtime/Makefile.kmk
+
+post-patch-NLS-off:
+	@${ECHO} 'VBOX_WITH_NLS =' >> ${WRKSRC}/LocalConfig.kmk
+	@${ECHO} 'VBOX_WITH_MAIN_NLS =' >> ${WRKSRC}/LocalConfig.kmk
+	@${ECHO} 'VBOX_WITH_PUEL_NLS =' >> ${WRKSRC}/LocalConfig.kmk
+	@${ECHO} 'VBOX_WITH_VBOXMANAGE_NLS =' >> ${WRKSRC}/LocalConfig.kmk
 
 do-build:
 	cd ${WRKSRC} && ${SH} -c '. ${WRKSRC}/env.sh && \

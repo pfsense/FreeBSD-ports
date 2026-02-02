@@ -1,5 +1,5 @@
 PORTNAME=	build
-DISTVERSION=	5.2.1
+DISTVERSION=	5.3.2
 CATEGORIES=	devel
 PKGNAMEPREFIX=	boost-
 
@@ -17,11 +17,13 @@ USES=		compiler:c++11-lang python:test shebangfix tar:bzip2
 USE_GITHUB=	yes
 GH_ACCOUNT=	boostorg
 GH_PROJECT=	build
-GH_TAGNAME=	4a52d8c
+GH_TAGNAME=	be69c44
 
 DATADIR=	${PREFIX}/share/b2
 
 CONFLICTS_INSTALL=	b2
+
+PORTSCOUT=	skipv:2014.10 # a very old version is labeled with YYYY.MM scheme in their repository
 
 SHEBANG_GLOB=	*.py
 

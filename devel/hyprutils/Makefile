@@ -1,25 +1,33 @@
 PORTNAME=	hyprutils
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.7.1
+DISTVERSION=	0.11.0
 CATEGORIES=	devel
 
-MAINTAINER=	jbeich@FreeBSD.org
+MAINTAINER=	tagattie@FreeBSD.org
 COMMENT=	Hyprland utilities library used across the ecosystem
 WWW=		https://github.com/hyprwm/hyprutils
 
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-USES=		compiler:c++11-lib cmake:testing pkgconfig xorg
+BUILD_DEPENDS=	googletest>0:devel/googletest
+
+USES=		cmake:testing compiler:c++11-lib pkgconfig xorg
+
 USE_GITHUB=	yes
+GH_ACCOUNT=	hyprwm
+
 USE_LDCONFIG=	yes
 USE_XORG=	pixman
-GH_ACCOUNT=	hyprwm
-PLIST_SUB=	VERSION=${DISTVERSION:C/-.*//}
+
+LDFLAGS+=	-pthread
+
+PLIST_SUB=	SOVERSION_FULL=${DISTVERSION:C/-.*//} \
+		SOVERSION_MAJOR=10
 
 post-patch:
 # Respect PREFIX for system-wide config
-	@${REINPLACE_CMD} 's,/etc,${PREFIX}&,' \
+	@${REINPLACE_CMD} 's|/etc|${PREFIX}&|' \
 		${WRKSRC}/src/path/Path.cpp
 
 .include <bsd.port.mk>

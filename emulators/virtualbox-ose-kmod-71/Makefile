@@ -1,5 +1,5 @@
 PORTNAME=	virtualbox-ose
-DISTVERSION=	7.1.10
+DISTVERSION=	7.1.14
 CATEGORIES=	emulators
 MASTER_SITES=	https://download.virtualbox.org/virtualbox/${DISTVERSION}/
 PKGNAMESUFFIX=	-kmod-71
@@ -35,7 +35,8 @@ CONFIGURE_ARGS+=	--nofatal --with-gcc="${CC}" --with-g++="${CXX}"
 
 CONFLICTS_INSTALL=	virtualbox-ose-kmod-legacy \
 			virtualbox-ose-kmod \
-			virtualbox-ose-kmod-70
+			virtualbox-ose-kmod-70 \
+			virtualbox-ose-kmod-72
 
 PATCHDIR=		${.CURDIR}/../${PORTNAME}-71/files
 PORTSCOUT=		limit:^7\.1\.

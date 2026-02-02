@@ -1,11 +1,14 @@
 PORTNAME=	arachne-pnr
 PORTVERSION=	g20181021
-PORTREVISION=	3
+PORTREVISION=	4
 CATEGORIES=	devel
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Place and route tool for FPGAs
 WWW=		https://github.com/cseed/arachne-pnr
+
+DEPRECATED=	Superseded by devel/nextpnr
+EXPIRATION_DATE=2025-12-31
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/COPYING

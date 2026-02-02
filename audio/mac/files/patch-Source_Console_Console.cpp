@@ -1,8 +1,8 @@
 Unixify built-in help.
 
---- Source/Console/Console.cpp.orig	2025-05-07 22:12:54 UTC
+--- Source/Console/Console.cpp.orig	2025-08-15 06:11:17 UTC
 +++ Source/Console/Console.cpp
-@@ -136,7 +136,7 @@ static void DisplayProperUsage(FILE * pFile)
+@@ -135,7 +135,7 @@ static void DisplayProperUsage(FILE * pFile)
  **************************************************************************************************/
  static void DisplayProperUsage(FILE * pFile)
  {
@@ -11,7 +11,7 @@ Unixify built-in help.
  
      fwprintf(pFile, L"Modes:\n");
      fwprintf(pFile, L"    Compress (fast): '-c1000'\n");
-@@ -156,18 +156,18 @@ static void DisplayProperUsage(FILE * pFile)
+@@ -155,18 +155,18 @@ static void DisplayProperUsage(FILE * pFile)
      fwprintf(pFile, L"    Set the number of threads when compressing or decompressing: -threads=#'\n\n");
  
      fwprintf(pFile, L"Examples:\n");

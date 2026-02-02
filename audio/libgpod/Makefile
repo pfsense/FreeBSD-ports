@@ -1,6 +1,6 @@
 PORTNAME=	libgpod
 PORTVERSION=	0.8.3
-PORTREVISION=	13
+PORTREVISION=	14
 CATEGORIES=	audio
 MASTER_SITES=	SF/gtkpod/${PORTNAME}/${PORTNAME}-${PORTVERSION:R}
 
@@ -15,7 +15,7 @@ LIB_DEPENDS=	libplist-2.0.so:devel/libplist \
 		libsgutils2.so:sysutils/sg3_utils
 
 USES=		compiler:c++11-lang gettext gmake gnome libtool localbase \
-		pathfix pkgconfig sqlite:3 tar:bzip2
+		pkgconfig sqlite:3 tar:bzip2
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--disable-udev --without-hal \
 		--without-python \

@@ -66,7 +66,9 @@
 	<name>Snort</name>
 	<version>%%PKGVERSION%%</version>
 	<title>Services: Snort IDS</title>
+	<donotsave>true</donotsave>
 	<include_file>/usr/local/pkg/snort/snort.inc</include_file>
+	<ramdisk_dir_names>snort</ramdisk_dir_names>
 	<menu>
 		<name>Snort</name>
 		<tooltiptext>Set up snort specific settings</tooltiptext>

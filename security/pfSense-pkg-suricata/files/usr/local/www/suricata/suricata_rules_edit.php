@@ -47,7 +47,7 @@ $if_real = get_real_interface($a_rule['interface']);
 $suricata_uuid = $a_rule['uuid'];
 $suricatacfgdir = "{$suricatadir}suricata_{$suricata_uuid}_{$if_real}/";
 
-$file = htmlspecialchars($_GET['openruleset'], ENT_QUOTES | ENT_HTML401);
+$file = basename(htmlspecialchars($_GET['openruleset'], ENT_QUOTES | ENT_HTML401));
 $contents = '';
 $wrap_flag = "off";
 

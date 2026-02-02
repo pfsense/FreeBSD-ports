@@ -1,4 +1,4 @@
---- content/browser/gpu/gpu_data_manager_impl_private.h.orig	2025-05-06 12:23:00 UTC
+--- content/browser/gpu/gpu_data_manager_impl_private.h.orig	2025-11-01 06:40:37 UTC
 +++ content/browser/gpu/gpu_data_manager_impl_private.h
 @@ -149,7 +149,7 @@ class CONTENT_EXPORT GpuDataManagerImplPrivate {
    void OnDisplayMetricsChanged(const display::Display& display,
@@ -7,9 +7,9 @@
 -#if BUILDFLAG(IS_LINUX)
 +#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_BSD)
    bool IsGpuMemoryBufferNV12Supported();
-   void SetGpuMemoryBufferNV12Supported(bool supported);
  #endif  // BUILDFLAG(IS_LINUX)
-@@ -313,7 +313,7 @@ class CONTENT_EXPORT GpuDataManagerImplPrivate {
+ 
+@@ -311,7 +311,7 @@ class CONTENT_EXPORT GpuDataManagerImplPrivate {
    bool application_is_visible_ = true;
  
    bool disable_gpu_compositing_ = false;

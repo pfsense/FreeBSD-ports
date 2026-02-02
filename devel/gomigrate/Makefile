@@ -1,6 +1,6 @@
 PORTNAME=	migrate
 DISTVERSIONPREFIX=	v
-DISTVERSION=	4.18.3
+DISTVERSION=	4.19.0
 CATEGORIES=	devel
 PKGNAMEPREFIX=	go
 
@@ -11,7 +11,7 @@ WWW=		https://github.com/golang-migrate/migrate
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-USES=		go:1.23,modules
+USES=		go:modules
 
 CONFLICTS_INSTALL=	migrate
 

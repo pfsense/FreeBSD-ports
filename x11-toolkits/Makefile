@@ -50,6 +50,7 @@
     SUBDIR += gtksourceviewmm3
     SUBDIR += guile-gnome-platform
     SUBDIR += hyprland-qt-support
+    SUBDIR += hyprtoolkit
     SUBDIR += imgui
     SUBDIR += irrlicht
     SUBDIR += itk
@@ -228,6 +229,7 @@
     SUBDIR += rep-gtk2
     SUBDIR += rubygem-gdk3
     SUBDIR += rubygem-gdk4
+    SUBDIR += rubygem-gsk4
     SUBDIR += rubygem-gtk2
     SUBDIR += rubygem-gtk3
     SUBDIR += rubygem-gtk4
@@ -239,7 +241,7 @@
     SUBDIR += rubygem-uh
     SUBDIR += rubygem-vte3
     SUBDIR += rubygem-vte4
-    SUBDIR += scenefx03
+    SUBDIR += scenefx04
     SUBDIR += scintilla
     SUBDIR += sdl2_pango
     SUBDIR += sdl_pango

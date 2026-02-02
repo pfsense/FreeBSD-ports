@@ -1,6 +1,6 @@
 PORTNAME=	libopusenc
 PORTVERSION=	0.2.1
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	audio
 MASTER_SITES=	MOZILLA/opus
 
@@ -13,7 +13,7 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 
 LIB_DEPENDS=	libopus.so:audio/opus
 
-USES=		gmake libtool pathfix pkgconfig
+USES=		gmake libtool pkgconfig
 USE_LDCONFIG=	yes
 
 GNU_CONFIGURE=	yes

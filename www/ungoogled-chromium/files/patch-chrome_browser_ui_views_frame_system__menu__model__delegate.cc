@@ -1,14 +1,14 @@
---- chrome/browser/ui/views/frame/system_menu_model_delegate.cc.orig	2025-05-31 17:16:41 UTC
+--- chrome/browser/ui/views/frame/system_menu_model_delegate.cc.orig	2025-12-06 13:30:52 UTC
 +++ chrome/browser/ui/views/frame/system_menu_model_delegate.cc
-@@ -20,7 +20,7 @@
+@@ -22,7 +22,7 @@
  #include "chromeos/ui/frame/desks/move_to_desks_menu_model.h"
  #endif
  
 -#if BUILDFLAG(IS_LINUX)
 +#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_BSD)
  #include "chrome/common/pref_names.h"
- #include "components/prefs/pref_service.h"
  #endif
+ 
 @@ -39,7 +39,7 @@ SystemMenuModelDelegate::SystemMenuModelDelegate(
  SystemMenuModelDelegate::~SystemMenuModelDelegate() = default;
  

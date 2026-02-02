@@ -1,5 +1,5 @@
 PORTNAME=	logwatch
-DISTVERSION=	7.12
+DISTVERSION=	7.13
 PORTREVISION=	1
 CATEGORIES=	sysutils
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}-${DISTVERSION}
@@ -11,8 +11,6 @@ WWW=		https://www.logwatch.org
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-RUN_DEPENDS=	p5-HTML-HTML5-Entities>=0:textproc/p5-HTML-HTML5-Entities
-
 USES=		perl5 shebangfix
 USE_PERL5=	run
 
@@ -22,6 +20,8 @@ MAKE_ENV+=	SITE_PERL_REL=${SITE_PERL_REL}
 
 NO_ARCH=	yes
 NO_BUILD=	yes
+
+SUB_FILES=	pkg-message
 
 PORTDOCS=	HOWTO-Customize-LogWatch README
 

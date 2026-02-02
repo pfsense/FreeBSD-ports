@@ -73,6 +73,7 @@
     SUBDIR += fastnetmon
     SUBDIR += fence-agents
     SUBDIR += fetchconfig
+    SUBDIR += fli
     SUBDIR += flow-tools
     SUBDIR += flowd
     SUBDIR += flowviewer
@@ -151,7 +152,6 @@
     SUBDIR += mtrace
     SUBDIR += mysql-snmp
     SUBDIR += mysqld_exporter
-    SUBDIR += nagcon
     SUBDIR += nagios
     SUBDIR += nagios-certexp-plugin
     SUBDIR += nagios-check_bacula13
@@ -191,8 +191,6 @@
     SUBDIR += netbox
     SUBDIR += netbox-agent
     SUBDIR += netdata
-    SUBDIR += netdata-go
-    SUBDIR += netdisco
     SUBDIR += netdisco-mibs
     SUBDIR += netleak
     SUBDIR += netmagis-common
@@ -227,6 +225,7 @@
     SUBDIR += ocsinventory-agent
     SUBDIR += ocsinventory-ocsreports
     SUBDIR += ocsinventory-server
+    SUBDIR += omada5
     SUBDIR += omping
     SUBDIR += openbmp
     SUBDIR += openlldp
@@ -297,12 +296,14 @@
     SUBDIR += pandorafms_agent
     SUBDIR += pandorafms_console
     SUBDIR += pandorafms_server
+    SUBDIR += peering-manager
     SUBDIR += pftabled
     SUBDIR += php-fpm_exporter
     SUBDIR += php81-snmp
     SUBDIR += php82-snmp
     SUBDIR += php83-snmp
     SUBDIR += php84-snmp
+    SUBDIR += php85-snmp
     SUBDIR += phpfpm_exporter
     SUBDIR += phpipam
     SUBDIR += ping_exporter
@@ -311,6 +312,7 @@
     SUBDIR += pnp
     SUBDIR += pnp-icinga2
     SUBDIR += portmon
+    SUBDIR += prometheus-bird-exporter
     SUBDIR += prometheus-collectd-exporter
     SUBDIR += prometheus1
     SUBDIR += prometheus2
@@ -342,6 +344,7 @@
     SUBDIR += py-pyIOSXR
     SUBDIR += py-pyang
     SUBDIR += py-pyeapi
+    SUBDIR += py-pyixapi
     SUBDIR += py-pynetbox
     SUBDIR += py-pynxos
     SUBDIR += py-pypowerwall
@@ -386,6 +389,7 @@
     SUBDIR += seafile-server
     SUBDIR += semaphore
     SUBDIR += sendip
+    SUBDIR += simplomon
     SUBDIR += sipcalc
     SUBDIR += sjitter
     SUBDIR += smartctl_exporter
@@ -406,7 +410,7 @@
     SUBDIR += torrus
     SUBDIR += triton-guesttools
     SUBDIR += unbound_exporter
-    SUBDIR += unifi8
+    SUBDIR += unifi10
     SUBDIR += unifi9
     SUBDIR += victoria-logs
     SUBDIR += victoria-metrics
@@ -419,10 +423,6 @@
     SUBDIR += xymon-client
     SUBDIR += xymon-server
     SUBDIR += yaf
-    SUBDIR += zabbix5-agent
-    SUBDIR += zabbix5-java
-    SUBDIR += zabbix5-proxy
-    SUBDIR += zabbix5-server
     SUBDIR += zabbix6-agent
     SUBDIR += zabbix6-frontend
     SUBDIR += zabbix6-java
@@ -438,5 +438,10 @@
     SUBDIR += zabbix72-java
     SUBDIR += zabbix72-proxy
     SUBDIR += zabbix72-server
+    SUBDIR += zabbix74-agent
+    SUBDIR += zabbix74-frontend
+    SUBDIR += zabbix74-java
+    SUBDIR += zabbix74-proxy
+    SUBDIR += zabbix74-server
 
 .include <bsd.port.subdir.mk>

@@ -26,6 +26,8 @@ require_once("service-utils.inc");
 require_once("interfaces.inc");
 require_once("ipsec.inc");
 
+define('LOG_PREFIX_PKG_TRAFFICTOTALS', 'Traffic Totals');
+
 global $vnstat_dbdir, $vnstat_config;
 $vnstat_dbdir = '/var/db/vnstat';
 $vnstat_config = '/usr/local/etc/vnstat.conf';
@@ -64,7 +66,7 @@ CTxD            "-"
 EOF;
 
 	if (file_put_contents($vnstat_config, $vnstat_conf_file) === FALSE) {
-		log_error("ERROR: Could not write {$vnstat_config}");
+		logger(LOG_ERR, localize_text("Could not write %s", $vnstat_config), LOG_PREFIX_PKG_TRAFFICTOTALS);
 		exit;
 	}
 }

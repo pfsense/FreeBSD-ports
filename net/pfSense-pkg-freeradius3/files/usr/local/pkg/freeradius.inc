@@ -48,6 +48,7 @@ define('FREERADIUS_SITESAVAIL', FREERADIUS_RADDB . '/sites-available');
 define('FREERADIUS_SITESENABLED', FREERADIUS_RADDB . '/sites-enabled');
 define('FREERADIUS_POLICYD', FREERADIUS_RADDB . '/policy.d');
 define('FREERADIUS_PKGSOURCE', FREERADIUS_BASE . '/pkg');
+define('LOG_PREFIX_PKG_FREERADIUS', 'FreeRADIUS');
 
 /*
  * List of functions that directly call restart_service("radiusd")
@@ -72,7 +73,7 @@ function freeradius_get_libdir() {
 		}
 	}
 	if ($frlib == "") {
-		log_error("freeRADIUS: No freeradius libs found on " . FREERADIUS_LIB);
+		logger(LOG_ERR, localize_text("No freeradius libs found on " . FREERADIUS_LIB), LOG_PREFIX_PKG_FREERADIUS);
 	}
 	return $frlib;
 }
@@ -103,7 +104,7 @@ function freeradius_deinstall_command() {
 			'installedpackages/freeradiussync'
 		);
 
-		log_error("[freeRADIUS] Removing all FreeRADIUS settings since 'Keep Settings/Data' is disabled...");
+		logger(LOG_INFO, localize_text("Removing all FreeRADIUS settings since 'Keep Settings/Data' is disabled..."), LOG_PREFIX_PKG_FREERADIUS);
 		foreach ($uninstall as $path) {
 			config_del_path($path);
 		}
@@ -115,7 +116,7 @@ function freeradius_deinstall_command() {
 
 function freeradius_chown_recursive($dir, $user = "root", $group = "wheel") {
 	if (empty($dir) || ($dir == '/') || ($dir == '/usr/local') || ($dir == '/usr/local/etc') || ($dir == '/usr/local/lib') || ($dir == '/var/log') || !is_dir($dir)) {
-		log_error(gettext("freeRADIUS: Attempted to recursively chown an invalid directory: '{$dir}'"));
+		logger(LOG_ERR, localize_text("Attempted to recursively chown an invalid directory: '%s'", $dir), LOG_PREFIX_PKG_FREERADIUS);
 		return;
 	}
 	chown($dir, $user);
@@ -132,7 +133,7 @@ function freeradius_chown_recursive($dir, $user = "root", $group = "wheel") {
 			}
 		}
 	} else {
-		log_error(gettext("freeRADIUS: freeradius_chown_recursive() call failed; permissions not set for directory: '{$dir}'"));
+		logger(LOG_ERR, localize_text("%s call failed; permissions not set for directory: '%s'", 'freeradius_chown_recursive()', $dir), LOG_PREFIX_PKG_FREERADIUS);
 	}
 }
 
@@ -153,7 +154,7 @@ function freeradius_upgrade_config() {
 	}
 
 	if ($isremoved) {
-		log_error(gettext("freeRADIUS: Removed deprecated built-in certificate manager configuration."));
+		logger(LOG_INFO, localize_text("Removed deprecated built-in certificate manager configuration."), LOG_PREFIX_PKG_FREERADIUS);
 	}
 }
 
@@ -795,7 +796,7 @@ EOD;
 	freeradius_sync_on_changes();
 	// Do not restart on boot
 	// Will get restarted later by freeradius_clients_resync() if called via XMLRPC sync
-	if ($via_rpc === false && !platform_booting()) {
+	if ($via_rpc === false && !is_platform_booting()) {
 		restart_service("radiusd");
 	}
 }
@@ -841,10 +842,10 @@ function freeradius_authorizedmacs_resync($restart_svc = true, $via_rpc = false)
 			$varmacsmaxbandwidthdown = ($macs['varmacsmaxbandwidthdown'] ? (int) $macs['varmacsmaxbandwidthdown'] * 1024 : '');
 
 			// Accounting-Interim-Interval
-			if (($users['varmacsacctinteriminterval'] >= '0') && ($users['varmacsacctinteriminterval'] < '60')) {
+			if (($macs['varmacsacctinteriminterval'] >= '0') && ($macs['varmacsacctinteriminterval'] < '60')) {
 				$varmacsacctinteriminterval = 60;
 			} else {
-				$varmacsacctinteriminterval = $users['varmacsacctinteriminterval'];
+				$varmacsacctinteriminterval = $macs['varmacsacctinteriminterval'];
 			}
 
 			// Clear variables for next mac foreach additional options TOP
@@ -1297,7 +1298,7 @@ EOD;
 	// generate new DH and RANDOM file if needed
 	// use openvpn_create_dhparams() from openvpn.inc to generate DH params
 	if (!file_exists(FREERADIUS_CERTS . "/dh")) {
-		log_error("freeRADIUS: Creating new DH file in " . FREERADIUS_CERTS);
+		logger(LOG_INFO, localize_text("Creating new DH file in %s", FREERADIUS_CERTS), LOG_PREFIX_PKG_FREERADIUS);
 		file_put_contents(FREERADIUS_ETC . "/dh", openvpn_create_dhparams('1024'), LOCK_EX);
 	}
 
@@ -1378,7 +1379,7 @@ eap {
 			lifetime = {$vareapconfcachelifetime}
 			max_entries = {$vareapconfcachemaxentries}
 			#name = "EAP module"
-			#persist_dir = "${logdir}/tlscache"
+			#persist_dir = "{\$logdir}/tlscache"
 		}
 		verify {
 	#		skip_if_ocsp_ok = no
@@ -2390,7 +2391,7 @@ function freeradius_sync_on_changes() {
 		case "manual":
 			$rs = config_get_path('installedpackages/freeradiussync/config/0/row');
 			if (!is_array($rs)) {
-				log_error("[FreeRADIUS]: XMLRPC sync is enabled but there are no hosts configured as replication targets.");
+				logger(LOG_WARNING, localize_text("XMLRPC sync is enabled but there are no hosts configured as replication targets."), LOG_PREFIX_PKG_FREERADIUS);
 				return;
 			}
 			break;
@@ -2399,7 +2400,7 @@ function freeradius_sync_on_changes() {
 			break;
 	}
 	if (is_array($rs)) {
-		log_error("[FreeRADIUS]: XMLRPC sync is starting with timeout {$varsynctimeout} seconds.");
+		logger(LOG_INFO, localize_text("XMLRPC sync is starting with timeout %s seconds.", $varsynctimeout), LOG_PREFIX_PKG_FREERADIUS);
 		foreach ($rs as $sh) {
 			if ($sh['varsyncdestinenable']) {
 				$sync_to_ip = $sh['varsyncipaddress'];
@@ -2426,13 +2427,13 @@ function freeradius_sync_on_changes() {
 				if ($valid) {
 					freeradius_do_xmlrpc_sync($sync_to_ip, $username, $password, $varsyncport, $varsyncprotocol, $varsynctimeout);
 				} else {
-					log_error("[FreeRADIUS]: XMLRPC Sync with '{$sync_to_ip}' aborted due to the following error(s): {$error}");
+					logger(LOG_ERR, localize_text("XMLRPC Sync with '%s' aborted due to the following error(s): %s", $sync_to_ip, $error), LOG_PREFIX_PKG_FREERADIUS);
 				}
 			} else {
-				log_error("[FreeRADIUS]: XMLRPC Sync with {$sh['varsyncipaddress']} is disabled");
+				logger(LOG_INFO, localize_text("XMLRPC Sync with %s is disabled", $sh['varsyncipaddress']), LOG_PREFIX_PKG_FREERADIUS);
 			}
 		}
-		log_error("[FreeRADIUS]: XMLRPC sync is ending.");
+		logger(LOG_INFO, localize_text("XMLRPC sync is ending."), LOG_PREFIX_PKG_FREERADIUS);
 	}
 }
 
@@ -2509,12 +2510,12 @@ function freeradius_plugin_xmlrpc_recv_done($xmlrpc_recv_result) {
 /* Do the actual XMLRPC sync */
 function freeradius_do_xmlrpc_sync($sync_to_ip, $username, $password, $varsyncport, $varsyncprotocol, $varsynctimeout) {
 	/* Detect boot process, do nothing during boot. */
-	if (platform_booting()) {
+	if (is_platform_booting()) {
 		return;
 	}
 
 	if ($username == "" || $password == "" || $sync_to_ip == "" || $varsyncport == "" || $varsyncprotocol == "") {
-		log_error("[FreeRADIUS]: A required XMLRPC sync parameter (username, password, replication target, port or protocol) is empty ... aborting pkg sync");
+		logger(LOG_WARNING, localize_text("A required XMLRPC sync parameter (username, password, replication target, port or protocol) is empty ... aborting pkg sync"), LOG_PREFIX_PKG_FREERADIUS);
 		return;
 	}
 
@@ -2560,7 +2561,7 @@ function freeradius_all_after_XMLRPC_resync() {
 	// Restart now when XMLRPC sync is completely finished
 	freeradius_clients_resync();
 
-	log_error("[FreeRADIUS]: Finished XMLRPC process. It should be OK. For more information look at the host which started sync.");
+	logger(LOG_INFO, localize_text("Finished XMLRPC process. It should be OK. For more information look at the host which started sync."), LOG_PREFIX_PKG_FREERADIUS);
 }
 
 function freeradius_modulescounter_resync() {
@@ -3241,7 +3242,7 @@ function freeradius_plainmacauth_resync() {
 	if ($varsettings['varsettingsenablemacauth'] == '') {
 		// This is a check - only restore files if they aren't already
 		if (file_exists(FREERADIUS_RADDB . "/plain_macauth_enabled")) {
-			log_error("FreeRADIUS: Plain-MAC-Auth disabled. Restoring the original file {$filemodulesfilesdefault}");
+			logger(LOG_INFO, localize_text("Plain-MAC-Auth disabled. Restoring the original file %s", $filemodulesfilesdefault), LOG_PREFIX_PKG_FREERADIUS);
 			unlink(FREERADIUS_RADDB . "/plain_macauth_enabled");
 		}
 		@unlink_if_exists($filemodulesfiles);
@@ -3250,7 +3251,7 @@ function freeradius_plainmacauth_resync() {
 		// If checked then plain mac auth is enabled
 		// This is a check - only modify files if they aren't already
 		if (!file_exists(FREERADIUS_RADDB . "/plain_macauth_enabled")) {
-			log_error("FreeRADIUS: Plain-MAC-Auth enabled. Modified {$filemodulesfiles}");
+			logger(LOG_INFO, localize_text("Plain-MAC-Auth enabled. Modified %s", $filemodulesfiles), LOG_PREFIX_PKG_FREERADIUS);
 			touch(FREERADIUS_RADDB . "/plain_macauth_enabled");
 		}
 		freeradius_modulesfiles_resync();
@@ -3744,8 +3745,8 @@ function freeradius_validate_users($post, &$input_errors) {
 	if ($post['varusersframedipnetmask']) {
 		if ($post['varusersframedipaddress'] == '') {
 			$input_errors[] = "To specify a 'Subnet Mask', the 'IPv4 Address' field must not be empty.";
-		} elseif (is_ipaddrv4($framedip)) {
-			$ip = long2ip(ip2long($framedip) & ip2long($post['varusersframedipnetmask']));
+		} elseif (is_ipaddrv4($post['varusersframedipaddress'])) {
+			$ip = long2ip(ip2long($post['varusersframedipaddress']) & ip2long($post['varusersframedipnetmask']));
 			$mask = 32 - log((ip2long($post['varusersframedipnetmask']) ^ ip2long('255.255.255.255')) +1, 2);
 			if (!is_subnetv4("{$ip}/{$mask}")) {
 				$input_errors[] = "The 'Subnet Mask' field must contain a valid subnet mask.";
@@ -3910,7 +3911,7 @@ function freeradius_validate_macs($post, &$input_errors) {
 	}
 
 	// IPv4 Address
-	if ($post['varusersframedipaddress'] && !is_ipaddrv4($post['varusersframedipaddress'])) {
+	if ($post['varmacsframedipaddress'] && !is_ipaddrv4($post['varmacsframedipaddress'])) {
 		$input_errors[] = "The 'IPv4 Address' field must contain a valid IPv4 address.";
 	}
 
@@ -3918,8 +3919,8 @@ function freeradius_validate_macs($post, &$input_errors) {
 	if ($post['varmacsframedipnetmask']) {
 		if ($post['varmacsframedipaddress'] == '') {
 			$input_errors[] = "To specify a 'Subnet Mask', the 'IPv4 Address' field must not be empty.";
-		} elseif (is_ipaddrv4($framedip)) {
-			$ip = long2ip(ip2long($framedip) & ip2long($post['varmacsframedipnetmask']));
+		} elseif (is_ipaddrv4($post['varmacsframedipaddress'])) {
+			$ip = long2ip(ip2long($post['varmacsframedipaddress']) & ip2long($post['varmacsframedipnetmask']));
 			$mask = 32 - log((ip2long($post['varmacsframedipnetmask']) ^ ip2long('255.255.255.255')) +1, 2);
 			if (!is_subnetv4("{$ip}/{$mask}")) {
 				$input_errors[] = "The 'Subnet Mask' field must contain a valid subnet mask.";

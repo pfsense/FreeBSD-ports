@@ -1,16 +1,17 @@
 PORTNAME=	votca
 DISTVERSIONPREFIX=	v
-DISTVERSION=	2025
+DISTVERSION=	2025.1
 PORTREVISION=	1
 CATEGORIES=	science
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	CSG and XTP: libraries for atomistic simulations
-WWW=		https://github.com/votca/votca
+WWW=		https://www.votca.org/ \
+		https://github.com/votca/votca
 
 LICENSE=	APACHE20
 
-BROKEN_i386=	undefined reference to `__atomic_load'
+BROKEN_i386=		undefined reference to `__atomic_load' # '
 
 PY_DEPENDS=	\
 		${PYTHON_PKGNAMEPREFIX}ase>0:science/py-ase@${PY_FLAVOR} \
@@ -72,6 +73,6 @@ do-test: # several tests fail, see https://github.com/votca/votca/issues/1098
 		${SETENV} ${MAKE_ENV} ${MAKE_CMD} ${MAKE_ARGS} ${ALL_TARGET} && \
 		${SETENV} ${MAKE_ENV} ${MAKE_CMD} ${MAKE_ARGS} test
 
-# tests as of 2025: 100% tests passed, 0 tests failed out of 250
+# tests as of 2025.1: 100% tests passed, 0 tests failed out of 249
 
 .include <bsd.port.mk>

@@ -28,6 +28,7 @@
 	</copyright>
 	<name>nmap</name>
 	<title>Diagnostics/Nmap</title>
+	<donotsave>true</donotsave>
 	<menu>
 		<name>Nmap</name>
 		<section>Diagnostics</section>

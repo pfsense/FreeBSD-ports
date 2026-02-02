@@ -38,6 +38,8 @@ GH_PROJECT=	jdk21u
 
 NO_CCACHE=	yes
 
+# Suppress passing -j to do-build target via Mk/bsd.port.mk
+# In the JDK build the number of parallel jobs is passed in via configure --with-num-cores=N
 _MAKE_JOBS=	#
 MAKE_ENV=	LANG="C" \
 		LC_ALL="C" \
@@ -47,6 +49,7 @@ MAKE_ENV=	LANG="C" \
 		CC=${CC} \
 		CXX=${CXX} \
 		CPP=${CPP} \
+		LOG=cmdlines \
 		MAKEFLAGS=""
 
 JDK_OSARCH=	bsd-${ARCH:S/amd64/x86_64/:S/i386/x86/:S/powerpc64/ppc64/}
@@ -62,8 +65,8 @@ NOPRECIOUSMAKEVARS=	yes
 
 JDK_MAJOR_VERSION=	21
 JDK_MINOR_VERSION=	0
-JDK_PATCH_VERSION=	7
-JDK_BUILD_NUMBER=	6
+JDK_PATCH_VERSION=	9
+JDK_BUILD_NUMBER=	10
 BSD_JDK_VERSION=	1
 
 JDK_BUG_URL=	https://bugs.freebsd.org/bugzilla/enter_bug.cgi?product=Ports%20%26%20Packages&component=Individual%20Port(s)&short_desc=java/${PORTNAME}${JDK_MAJOR_VERSION}%3A%20
@@ -88,6 +91,7 @@ CONFIGURE_ARGS=	--with-boot-jdk=${BOOTSTRAPJDKDIR} \
 		--with-giflib-lib=${LOCALBASE}/lib \
 		--with-harfbuzz=system \
 		--with-libpng=system \
+		--with-num-cores=${MAKE_JOBS_NUMBER} \
 		--with-zlib=system \
 		--with-lcms=system \
 		--x-includes=${LOCALBASE}/include \

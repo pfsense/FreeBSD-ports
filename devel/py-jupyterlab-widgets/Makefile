@@ -1,5 +1,5 @@
 PORTNAME=	jupyterlab-widgets
-DISTVERSION=	3.0.15
+DISTVERSION=	3.0.16
 CATEGORIES=	devel python
 MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -21,9 +21,5 @@ USES=		python
 USE_PYTHON=	autoplist pep517
 
 NO_ARCH=	yes
-
-PYDISTUTILS_CONFIGUREARGS=	--skip-npm
-PYDISTUTILS_BUILDARGS=		--skip-npm
-PYDISTUTILS_INSTALLARGS=	--skip-npm
 
 .include <bsd.port.mk>

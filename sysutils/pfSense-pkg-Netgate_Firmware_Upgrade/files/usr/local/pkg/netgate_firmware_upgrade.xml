@@ -28,6 +28,7 @@
 	<description>Provide a mechanism to upgrade Firmware of Netgate hardware models</description>
 	<name>Netgate Firmware Upgrade</name>
 	<title>System: Netgate Firmware Upgrade</title>
+	<donotsave>true</donotsave>
 	<include_file>/usr/local/pkg/netgate_firmware_upgrade.inc</include_file>
 	<menu>
 		<name>Netgate Firmware Upgrade</name>

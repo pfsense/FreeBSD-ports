@@ -1,5 +1,5 @@
 PORTNAME=	liblo
-PORTVERSION=	0.32
+PORTVERSION=	0.34
 CATEGORIES=	audio
 MASTER_SITES=	SF
 
@@ -10,7 +10,7 @@ WWW=		https://liblo.sourceforge.net/ \
 
 LICENSE=	LGPL21
 
-USES=		compiler:c++11-lang gmake libtool pathfix
+USES=		compiler:c++11-lang gmake libtool
 
 GNU_CONFIGURE=	yes
 INSTALL_TARGET=	install-strip
@@ -21,6 +21,7 @@ OPTIONS_SUB=	yes
 DOXYGEN_IMPLIES=DOCS
 
 DOXYGEN_BUILD_DEPENDS=	doxygen:devel/doxygen
+DOXYGEN_CONFIGURE_ENABLE=	doc
 
 .include <bsd.port.options.mk>
 

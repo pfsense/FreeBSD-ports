@@ -1,3 +1,3 @@
-TIMESTAMP = 1749455224
-SHA256 (graylog/graylog-6.2.3.tgz) = 472cdf1f69205fb382d586c84f7312e10ed56474b41654a409b8280d7a2879e3
-SIZE (graylog/graylog-6.2.3.tgz) = 300170523
+TIMESTAMP = 1765792752
+SHA256 (graylog/graylog-7.0.2.tgz) = bf4a4f9730113767e9a79a4bd2fd4f8db1e6d828be8187bc47aae48aec3d059f
+SIZE (graylog/graylog-7.0.2.tgz) = 325483336

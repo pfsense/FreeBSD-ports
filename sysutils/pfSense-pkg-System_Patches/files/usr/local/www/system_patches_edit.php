@@ -134,7 +134,7 @@ if ($_POST) {
 			config_set_path("installedpackages/patches/item/{$id}", $thispatch);
 		} else {
 			if (is_numeric($after)) {
-				$a_patches = config_set_path('installedpackages/patches/item');
+				$a_patches = config_get_path('installedpackages/patches/item');
 				array_splice($a_patches, $after+1, 0, array($thispatch));
 				config_set_path('installedpackages/patches/item', $a_patches);
 			} else {

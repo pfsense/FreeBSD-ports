@@ -1,5 +1,5 @@
 PORTNAME=	tig
-DISTVERSION=	2.5.10
+DISTVERSION=	2.6.0
 CATEGORIES=	devel
 MASTER_SITES=	https://github.com/jonas/tig/releases/download/${DISTNAME}/
 
@@ -12,10 +12,8 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 
 TEST_DEPENDS=	git:devel/git
 
-USES=		gmake iconv ncurses readline
+USES=		gmake iconv ncurses pkgconfig readline
 GNU_CONFIGURE=	yes
-GNU_CONFIGURE_MANPREFIX=	${PREFIX}/share
-CONFIGURE_ARGS=	${ICONV_CONFIGURE_BASE}
 MAKE_ARGS=	V=1
 
 INSTALL_TARGET=	install install-doc-man
@@ -37,7 +35,7 @@ OPTIONS_DEFINE=	GIT PCRE
 GIT_DESC=	Install devel/git as runtime dependency
 
 GIT_RUN_DEPENDS=	git:devel/git
-GIT_VARS_OFF=		PKGMESSAGE="${.CURDIR}/pkg-message-git"
+GIT_VARS_OFF=		PKGMESSAGE="${.CURDIR}/pkg-message ${.CURDIR}/pkg-message-git"
 PCRE_LIB_DEPENDS=	libpcre2-posix.so:devel/pcre2
 PCRE_CONFIGURE_WITH=	pcre
 

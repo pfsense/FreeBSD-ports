@@ -1,8 +1,9 @@
 PORTNAME=	RetroArch
 DISTVERSIONPREFIX=	v
-DISTVERSION=	1.19.1
-PORTREVISION=	2
+DISTVERSION=	1.22.2
 CATEGORIES=	games emulators
+MASTER_SITES=	https://github.com/libretro/${PORTNAME}/releases/download/v${DISTVERSION}/
+DISTNAME=	${PORTNAME:tl}-sourceonly-${DISTVERSION}
 
 MAINTAINER=	dmenelkir@gmail.com
 COMMENT=	Cross-platform entertainment system based on libretro API
@@ -18,12 +19,12 @@ LIB_DEPENDS=	libass.so:multimedia/libass \
 		libfontconfig.so:x11-fonts/fontconfig \
 		libfribidi.so:converters/fribidi \
 		libxkbcommon.so:x11/libxkbcommon
-RUN_DEPENDS=	retroarch-assets<=0:games/retroarch-assets
+RUN_DEPENDS=	retroarch-assets>0:games/retroarch-assets \
+		libretro-core-info>0:games/libretro-core-info
 
-USES=		compiler:c++11-lib cpe gmake pkgconfig python shebangfix ssl
+USES=		compiler:c++11-lib cpe gmake pkgconfig python shebangfix ssl \
+		tar:xz
 CPE_VENDOR=	libretro
-USE_GITHUB=	yes
-GH_ACCOUNT=	libretro
 
 SHEBANG_FILES=	libretro-common/glsym/glgen.py libretro-common/glsym/rglgen.py \
 		tools/cg2glsl.py tools/vulkan_loader_generator.py
@@ -40,7 +41,7 @@ DOCSDIR=	${PREFIX}/share/doc/${PORTNAME:tl}
 SUB_FILES=	pkg-message
 
 OPTIONS_DEFINE=		ALSA CACA DOCS FFMPEG FREETYPE JACK OPENAL OPENGL OSS \
-			PULSEAUDIO QT SDL UDEV V4L X11
+			PIPEWIRE PULSEAUDIO QT SDL UDEV V4L X11
 OPTIONS_DEFINE_amd64=	WAYLAND # svgalib is x86 only
 OPTIONS_DEFINE_i386=	WAYLAND
 OPTIONS_DEFAULT=	FFMPEG FREETYPE OPENAL OPENGL OSS QT SDL UDEV V4L X11
@@ -68,10 +69,12 @@ OPENGL_USES=			gl
 OPENGL_USE=			GL=egl,gbm,gl
 OPENGL_CONFIGURE_ENABLE=	opengl
 OSS_CONFIGURE_ENABLE=		oss
+PIPEWIRE_LIB_DEPENDS=		libpipewire-0.3.so:multimedia/pipewire
+PIPEWIRE_CONFIGURE_ENABLE=	pipewire
 PULSEAUDIO_LIB_DEPENDS=		libpulse.so:audio/pulseaudio
 PULSEAUDIO_CONFIGURE_ENABLE=	pulse
-QT_USES=			qt:5
-QT_USE=				QT=concurrent,core,gui,network,widgets
+QT_USES=			qt:6
+QT_USE=				QT=base
 QT_CONFIGURE_ENABLE=		qt
 SDL_USES=			sdl
 SDL_USE=			image2 \
@@ -94,7 +97,7 @@ WAYLAND_BUILD_DEPENDS=		${LOCALBASE}/include/linux/input.h:devel/evdev-proto \
 WAYLAND_LIB_DEPENDS=		libwayland-egl.so:graphics/wayland
 WAYLAND_CONFIGURE_ENABLE=	wayland
 X11_USES=			xorg
-X11_USE=			XORG=x11,xcb,xext,xinerama,xrandr,xv,xxf86vm
+X11_USE=			XORG=x11,xcb,xext,xi,xinerama,xrandr,xscrnsaver,xv,xxf86vm
 X11_CONFIGURE_ENABLE=		x11
 
 post-install:
@@ -109,5 +112,7 @@ post-install:
 		-e 's|# joypad_autoconfig_dir =|joypad_autoconfig_dir = "${PREFIX}/share/retroarch/autoconfig"|' \
 		-e 's|# menu_show_core_updater = true|menu_show_core_updater = false|' \
 		${STAGEDIR}${PREFIX}/etc/retroarch.cfg
+	@${RM} ${STAGEDIR}${PREFIX}/etc/retroarch.cfg.bak
+	@${MV} ${STAGEDIR}${PREFIX}/etc/retroarch.cfg ${STAGEDIR}${PREFIX}/etc/retroarch.cfg.sample
 
 .include <bsd.port.mk>

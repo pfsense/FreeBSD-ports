@@ -1,6 +1,6 @@
---- content/gpu/gpu_child_thread.cc.orig	2025-02-19 07:43:18 UTC
+--- content/gpu/gpu_child_thread.cc.orig	2025-10-30 15:44:36 UTC
 +++ content/gpu/gpu_child_thread.cc
-@@ -57,7 +57,7 @@
+@@ -58,7 +58,7 @@
  #include "third_party/skia/include/ports/SkFontConfigInterface.h"
  #endif
  
@@ -9,7 +9,7 @@
  #include "content/child/sandboxed_process_thread_type_handler.h"
  #endif
  
-@@ -147,7 +147,8 @@ void GpuChildThread::Init(const base::TimeTicks& proce
+@@ -150,7 +150,8 @@ void GpuChildThread::Init(
  
    viz_main_.gpu_service()->set_start_time(process_start_time);
  

@@ -1,5 +1,6 @@
 PORTNAME=	ty
-DISTVERSION=	0.0.1a11
+DISTVERSION=	0.0.1a34
+PORTREVISION=	1
 CATEGORIES=	devel python
 MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -13,6 +14,7 @@ LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
 BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}maturin>=1.0<2.0:devel/py-maturin@${PY_FLAVOR}
+LIB_DEPENDS=	libzstd.so:archivers/zstd
 
 USES=		cargo python
 
@@ -22,5 +24,17 @@ CARGO_CARGOTOML=${WRKSRC}/ruff/Cargo.toml
 CARGO_CARGOLOCK=${WRKSRC}/ruff/Cargo.lock
 CARGO_BUILD=	no
 CARGO_INSTALL=	no
+
+MAKE_ENV=	${CARGO_ENV}
+
+PORTSCOUT=	site:https://files.pythonhosted.org/packages/source/t/ty/
+
+PORTDOCS=	README.md
+
+OPTIONS_DEFINE=	DOCS
+
+post-install-DOCS-on:
+	@${MKDIR} ${STAGEDIR}${DOCSDIR}
+	${INSTALL_MAN} ${PORTDOCS:S|^|${WRKSRC}/|} ${STAGEDIR}${DOCSDIR}
 
 .include <bsd.port.mk>

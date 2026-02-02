@@ -1,5 +1,5 @@
 PORTNAME=	librepo
-DISTVERSION=	1.19.0
+DISTVERSION=	1.20.0
 CATEGORIES=	misc
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -15,7 +15,7 @@ LIB_DEPENDS=	libassuan.so:security/libassuan \
 		libgpgme.so:security/gpgme
 TEST_DEPENDS=	bash:shells/bash \
 		check>0:devel/check \
-		${PYTHON_PKGNAMEPREFIX}gpgme>0:security/py-gpgme@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}gpg>=2.0.0:security/py-gpg@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}xattr>0:devel/py-xattr@${PY_FLAVOR}
 
 USES=		cpe gettext-runtime gnome cmake:testing localbase:ldflags pkgconfig python shebangfix ssl

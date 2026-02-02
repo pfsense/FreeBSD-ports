@@ -106,7 +106,12 @@ if ($savemsg) {
 	print_info_box($savemsg);
 }
 if (file_exists($d_haproxyconfdirty_path)) {
-	print_apply_box(sprintf(gettext("The haproxy configuration has been changed.%sYou must apply the changes in order for them to take effect."), "<br/>"));
+	print_apply_box(sprintf(
+		gettext(
+			"The HAProxy configuration has been changed.%sServer states are preserved between configuration changes - " .
+			"use %sSettings > Force Service Restart%s to apply changes immediately."
+		), "<br/>", '<a href="/haproxy/haproxy_global.php">', '</a>'
+	));
 }
 haproxy_display_top_tabs_active($haproxy_tab_array['haproxy'], "files");
 ?>

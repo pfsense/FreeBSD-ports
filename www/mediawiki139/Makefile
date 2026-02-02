@@ -1,7 +1,8 @@
 PORTNAME=	mediawiki
-PORTVERSION=	1.39.12
+PORTVERSION=	1.39.16
 CATEGORIES=	www
-MASTER_SITES=	https://releases.wikimedia.org/mediawiki/${PORTVERSION:R}/
+MASTER_SITES=	https://releases.wikimedia.org/mediawiki/${PORTVERSION:R}/ \
+		LOCAL/wen
 PKGNAMESUFFIX=	139${PHP_PKGNAMESUFFIX}
 
 MAINTAINER=	wen@FreeBSD.org
@@ -9,6 +10,9 @@ COMMENT=	Wiki engine used by Wikipedia
 WWW=		https://www.mediawiki.org/
 
 LICENSE=	GPLv2
+
+DEPRECATED=		Upstream EOL
+EXPIRATION_DATE=	2025-12-31
 
 CONFLICTS=	mediawiki14[0-9]
 

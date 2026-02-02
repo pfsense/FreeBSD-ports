@@ -1,13 +1,14 @@
 PORTNAME=	mesa
-DISTVERSION=	25.1-branchpoint-2972
-DISTVERSIONSUFFIX=	-gd31b0c9b3b6
+DISTVERSION=	25.3-branchpoint-2585
+PORTREVISION=	1
+DISTVERSIONSUFFIX=	-gf5351afbc8c
 CATEGORIES=	graphics
 PKGNAMESUFFIX=	-devel
 
 PATCH_SITES=	https://github.com/mesa3d/${GL_PROJECT}/commit/:github
 PATCHFILES+=	700efacda59c.patch:-p1:github
 PATCH_SITES+=	${GL_SITE}/${GL_ACCOUNT}/${GL_PROJECT}/-/commit/
-PATCHFILES+=	2930dcbb3329.patch:-p1 # https://gitlab.freedesktop.org/mesa/mesa/-/merge_requests/22246
+PATCHFILES+=	de5cf0a44b50.patch:-p1 # https://gitlab.freedesktop.org/mesa/mesa/-/merge_requests/22246
 
 MAINTAINER=	jbeich@FreeBSD.org
 COMMENT=	Bleeding edge Mesa drivers (OpenCL, OpenGL, Vulkan)
@@ -33,24 +34,19 @@ USE_LDCONFIG=	yes
 GL_SITE=	https://gitlab.freedesktop.org
 BINARY_ALIAS=	python=${PYTHON_CMD}
 SHEBANG_FILES=	src/vulkan/*/*control.py
-MESON_ARGS=	-Dgallium-mediafoundation=disabled \
-		-Dandroid-libbacktrace=disabled \
-		-Dlibunwind=disabled \
-		-Dlmsensors=disabled \
-		-Dmicrosoft-clc=disabled \
-		-Dvalgrind=disabled \
-		-Dplatforms=${PLATFORMS:O:[-1..1]:ts,} \
-		-Dvideo-codecs=all \
-		-Dunversion-libgallium=true \
-		${NULL}
+MESON_DISABLED=	android-libbacktrace gallium-mediafoundation \
+		libunwind lmsensors microsoft-clc valgrind
+MESON_TRUE=	unversion-libgallium
+MESON_ARGS=	-Dplatforms=${PLATFORMS:O:[-1..1]:ts,} -Dvideo-codecs=all
 LDFLAGS+=	-Wl,--undefined-version # https://gitlab.freedesktop.org/mesa/mesa/-/issues/8003
 PLIST_SUB=	ARCH=${ARCH:S/amd/x86_/}
 
-OPTIONS_DEFINE=		LLVM LTO OPENCL VAAPI VDPAU VKLAYERS WAYLAND X11 ZSTD
-OPTIONS_DEFAULT=	LLVM LTO OPENCL VAAPI VDPAU VKLAYERS WAYLAND X11 ZSTD
+OPTIONS_DEFINE=		DRM LLVM LTO OPENCL VAAPI VKLAYERS WAYLAND X11 ZSTD
+OPTIONS_DEFAULT=	DRM LLVM LTO OPENCL VAAPI VKLAYERS WAYLAND X11 ZSTD
 OPTIONS_GROUP=		GALLIUM VULKAN
 OPTIONS_GROUP_GALLIUM=	crocus iris panfrost r600 radeonsi
 OPTIONS_GROUP_VULKAN=	anv hasvk radv
+OPTIONS_EXCLUDE_aarch64=LTO # OPENCL fails to build
 OPTIONS_EXCLUDE_i386=	LTO # anv: vkcube fails on vkCreateSwapchainKHR
 OPTIONS_EXCLUDE+=	${ARCH:Naarch64:C/.+/panfrost/}
 OPTIONS_EXCLUDE+=	${ARCH:Namd64:Ni386:Nx86_64:C/.+/crocus hasvk/}
@@ -81,7 +77,7 @@ VULKAN_DESC=		Vulkan drivers
 anv_DESC=		Skylake and newer (implies OPENCL)
 anv_BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}ply>0:devel/py-ply@${PY_FLAVOR} \
 			glslangValidator:graphics/glslang
-anv_MESON_ON=		${"${ARCH:Mamd64}":?:-Dintel-rt=disabled} # https://gitlab.freedesktop.org/mesa/mesa/-/issues/10629
+anv_MESON_ON=		${"${ARCH:Naarch64:Namd64}":?-Dintel-rt=disabled:} # https://gitlab.freedesktop.org/mesa/mesa/-/issues/10629
 anv_IMPLIES=		OPENCL
 hasvk_DESC=		Ivy Bridge, Haswell, Broadwell
 radv_DESC=		Southern Islands and newer
@@ -94,6 +90,11 @@ COINST_PLIST_SUB=	SUFFIX=${PKGNAMESUFFIX}
 COINST_SUB_FILES=	libmap.conf
 COINST_SUB_LIST=	SUFFIX=${PKGNAMESUFFIX}
 COINST_PLIST_SUB_OFF=	SUFFIX=
+
+DRM_DESC=		KMS console support for Vulkan (KHR_display)
+DRM_LIB_DEPENDS=	libudev.so:devel/libudev-devd \
+			libdisplay-info.so:sysutils/libdisplay-info
+DRM_MESON_ENABLED=	display-info
 
 LLVM_DESC=		Build with LLVM support (see implies)
 LLVM_USES=		llvm:min=18,lib,noexport
@@ -112,6 +113,7 @@ OPENCL_LIB_DEPENDS=	libLLVMSPIRVLib.so.${OPENCL_SOVERSION}:devel/spirv-llvm-tran
 OPENCL_RUN_DEPENDS=	libclc-${LLVM_PORT:T}>0:devel/libclc@${LLVM_PORT:T}
 OPENCL_SOVERSION=	${LLVM_VERSION}${${LLVM_VERSION}>=18:?.1:}
 OPENCL_CONFIGURE_ENV=	PKG_CONFIG_PATH="${LLVM_PREFIX}/libdata/pkgconfig"
+OPENCL_MESON_FALSE=	b_lundef # environ
 OPENCL_MESON_TRUE=	gallium-rusticl
 OPENCL_IMPLIES=		LLVM ${"${PORT_OPTIONS:Miris}":?iris:radeonsi} # any from OPTIONS_GROUP_GALLIUM
 
@@ -119,15 +121,10 @@ VAAPI_DESC=		Hardware encoding/decoding (only r600, radeonsi)
 VAAPI_BUILD_DEPENDS=	libva>0:multimedia/libva
 VAAPI_MESON_ENABLED=	gallium-va
 
-VDPAU_DESC=		Hardware decoding (only r600, radeonsi) (implies X11)
-VDPAU_BUILD_DEPENDS=	libvdpau>0:multimedia/libvdpau
-VDPAU_MESON_ENABLED=	gallium-vdpau
-VDPAU_IMPLIES=		X11
-
 VKLAYERS_DESC=		Vulkan layers: ${VKLAYERS_MESON_ON:C/.*=//} (implies ${VKLAYERS_IMPLIES})
 VKLAYERS_BUILD_DEPENDS=	glslangValidator:graphics/glslang
 VKLAYERS_LIB_DEPENDS=	libpng.so:graphics/png
-VKLAYERS_MESON_ON=	-Dvulkan-layers=device-select,overlay,screenshot,vram-report-limit
+VKLAYERS_MESON_ON=	-Dvulkan-layers=anti-lag,device-select,overlay,screenshot,vram-report-limit
 VKLAYERS_IMPLIES=	${"${PORT_OPTIONS:Manv}":?anv:radv} # any from OPTIONS_GROUP_VULKAN
 
 WAYLAND_BUILD_DEPENDS=	wayland-protocols>0:graphics/wayland-protocols

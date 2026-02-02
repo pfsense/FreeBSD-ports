@@ -1,11 +1,11 @@
 PORTNAME=	azure-cli
 PORTVERSION=	2.55.0
-PORTREVISION=	3
+PORTREVISION=	5
 CATEGORIES=	sysutils python
 MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
-MAINTAINER=	dbaio@FreeBSD.org
+MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Microsoft Azure Command-Line Tools
 WWW=		https://docs.microsoft.com/en-us/cli/azure/?view=azure-cli-latest
 
@@ -97,9 +97,9 @@ RUN_DEPENDS=	bash:shells/bash \
 		${PYTHON_PKGNAMEPREFIX}fabric>=2.4:devel/py-fabric@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}paramiko>=2.0.8:security/py-paramiko@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}pygments>=2.4:textproc/py-pygments@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}openssl>=17.1.0:security/py-openssl@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}pyopenssl>=17.1.0,1:security/py-pyopenssl@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}packaging>=20.9:devel/py-packaging@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}pycomposefile>=0.0.30:devel/pycomposefile@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}pycomposefile>=0.0.30:devel/py-pycomposefile@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}pyyaml>=5.1:devel/py-pyyaml@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}scp>=0.13.2:security/py-scp@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}six>=1.12:devel/py-six@${PY_FLAVOR} \

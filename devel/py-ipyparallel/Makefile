@@ -1,5 +1,5 @@
 PORTNAME=	ipyparallel
-PORTVERSION=	9.0.1
+PORTVERSION=	9.0.2
 CATEGORIES=	devel python
 MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -37,10 +37,4 @@ NO_ARCH=	yes
 
 SHEBANG_GLOB=	*.py
 
-.include <bsd.port.pre.mk>
-
-.if ${PYTHON_REL} < 31000
-RUN_DEPENDS+=	${PYTHON_PKGNAMEPREFIX}importlib-metadata>=3.6:devel/py-importlib-metadata@${PY_FLAVOR}
-.endif
-
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

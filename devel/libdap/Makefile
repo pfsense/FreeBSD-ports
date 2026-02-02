@@ -1,5 +1,6 @@
 PORTNAME=	libdap
 PORTVERSION=	3.21.1
+PORTREVISION=	2
 CATEGORIES=	devel
 MASTER_SITES=	https://www.opendap.org/pub/source/ \
 		LOCAL/sunpoet
@@ -13,9 +14,9 @@ LICENSE=	LGPL21
 LICENSE_FILE=	${WRKSRC}/COPYING
 
 LIB_DEPENDS=	libcurl.so:ftp/curl \
-		libuuid.so:misc/e2fsprogs-libuuid
+		libuuid.so:misc/libuuid
 
-USES=		bison:wrapper charsetfix gmake gnome libtool localbase pathfix ssl
+USES=		bison:wrapper charsetfix gmake gnome libtool localbase ssl
 USE_GNOME=	libxml2
 
 CONFIGURE_ARGS=	ac_cv_lib_crypto_OpenSSL_add_all_algorithms=yes \

@@ -36,6 +36,7 @@
     SUBDIR += assh
     SUBDIR += authenticator
     SUBDIR += authoscope
+    SUBDIR += autofirma
     SUBDIR += autossh
     SUBDIR += aws-c-auth
     SUBDIR += aws-c-cal
@@ -58,7 +59,6 @@
     SUBDIR += bitwarden-cli
     SUBDIR += blst
     SUBDIR += boringssl
-    SUBDIR += botan2
     SUBDIR += botan3
     SUBDIR += bruteblock
     SUBDIR += bsdsfv
@@ -182,6 +182,7 @@
     SUBDIR += git-remote-gcrypt
     SUBDIR += git-secret
     SUBDIR += gitjacker
+    SUBDIR += gitlab-analyzers-secrets
     SUBDIR += globalprotect-openconnect
     SUBDIR += gnome-keyring
     SUBDIR += gnupg
@@ -204,8 +205,7 @@
     SUBDIR += gpg-tui
     SUBDIR += gpgdir
     SUBDIR += gpgme
-    SUBDIR += gpgme-cpp
-    SUBDIR += gpgme-qt
+    SUBDIR += gpgmepp
     SUBDIR += gsa
     SUBDIR += gsad
     SUBDIR += gsasl
@@ -236,11 +236,11 @@
     SUBDIR += hyperhotp
     SUBDIR += i2pd
     SUBDIR += iaikpkcs11wrapper
-    SUBDIR += iddawc
     SUBDIR += idea
     SUBDIR += identify
     SUBDIR += imds-filterd
     SUBDIR += intel-ipsec-mb
+    SUBDIR += interactsh
     SUBDIR += ipfmeta
     SUBDIR += ipguard
     SUBDIR += ipsec-tools
@@ -256,6 +256,7 @@
     SUBDIR += keepass
     SUBDIR += keepass-plugin-keepassrpc
     SUBDIR += keepassxc
+    SUBDIR += keepassxc276
     SUBDIR += keybase
     SUBDIR += keychain
     SUBDIR += keyprint
@@ -274,6 +275,7 @@
     SUBDIR += krb5
     SUBDIR += krb5-120
     SUBDIR += krb5-121
+    SUBDIR += krb5-122
     SUBDIR += krb5-devel
     SUBDIR += kstart
     SUBDIR += ktls_isa-l_crypto-kmod
@@ -283,11 +285,11 @@
     SUBDIR += lasso
     SUBDIR += lastpass-cli
     SUBDIR += lego
+    SUBDIR += lfacme
     SUBDIR += libaegis
     SUBDIR += libargon2
     SUBDIR += libassuan
     SUBDIR += libcaes
-    SUBDIR += libcryptui
     SUBDIR += libdecaf
     SUBDIR += libecc
     SUBDIR += libfcrypto
@@ -324,14 +326,12 @@
     SUBDIR += libscep
     SUBDIR += libscrypt
     SUBDIR += libsecret
-    SUBDIR += libsectok
     SUBDIR += libsodium
     SUBDIR += libssh
     SUBDIR += libssh2
     SUBDIR += libtasn1
     SUBDIR += libtatsu
     SUBDIR += libtomcrypt
-    SUBDIR += libu2f-host
     SUBDIR += libwhisker
     SUBDIR += libxcrypt
     SUBDIR += libyubikey
@@ -443,7 +443,6 @@
     SUBDIR += openfhe
     SUBDIR += openfortivpn
     SUBDIR += openiked
-    SUBDIR += openiked-portable
     SUBDIR += opensaml
     SUBDIR += opensc
     SUBDIR += openssh-askpass
@@ -454,12 +453,11 @@
     SUBDIR += openssl-quictls
     SUBDIR += openssl-unsafe
     SUBDIR += openssl111
-    SUBDIR += openssl31
-    SUBDIR += openssl31-quictls
-    SUBDIR += openssl32
     SUBDIR += openssl33
+    SUBDIR += openssl33-quictls
     SUBDIR += openssl34
     SUBDIR += openssl35
+    SUBDIR += openssl36
     SUBDIR += openvas
     SUBDIR += openvpn
     SUBDIR += openvpn-admin
@@ -470,6 +468,7 @@
     SUBDIR += openvpn-devel
     SUBDIR += ophcrack
     SUBDIR += opie
+    SUBDIR += opkssh
     SUBDIR += ossec-hids
     SUBDIR += ossec-hids-agent
     SUBDIR += ossec-hids-agent-config
@@ -643,6 +642,7 @@
     SUBDIR += p5-Crypt-Twofish2
     SUBDIR += p5-Crypt-Twofish_PP
     SUBDIR += p5-Crypt-URandom
+    SUBDIR += p5-Crypt-URandom-Token
     SUBDIR += p5-Crypt-UnixCrypt
     SUBDIR += p5-Crypt-UnixCrypt_XS
     SUBDIR += p5-Crypt-X509
@@ -651,15 +651,10 @@
     SUBDIR += p5-Crypt-xDBM_File
     SUBDIR += p5-CryptX
     SUBDIR += p5-Dancer-Plugin-Auth-Extensible
-    SUBDIR += p5-Dancer-Plugin-Auth-Extensible-Provider-Usergroup
-    SUBDIR += p5-Dancer-Plugin-Passphrase
     SUBDIR += p5-Dancer2-Plugin-Auth-Extensible
     SUBDIR += p5-Dancer2-Plugin-Auth-Extensible-Provider-DBIC
     SUBDIR += p5-Dancer2-Plugin-Auth-Extensible-Provider-Database
     SUBDIR += p5-Dancer2-Plugin-Auth-Extensible-Provider-IMAP
-    SUBDIR += p5-Dancer2-Plugin-Auth-Extensible-Provider-Usergroup
-    SUBDIR += p5-Dancer2-Plugin-Passphrase
-    SUBDIR += p5-Data-Entropy
     SUBDIR += p5-Data-Password
     SUBDIR += p5-Digest
     SUBDIR += p5-Digest-Adler32
@@ -755,6 +750,7 @@
     SUBDIR += p5-Yahoo-BBAuth
     SUBDIR += p5-dicewaregen
     SUBDIR += p5-openxpki
+    SUBDIR += p5-openxpki-clca
     SUBDIR += p5-openxpki-i18n
     SUBDIR += p5-plog
     SUBDIR += pam-modules
@@ -786,6 +782,7 @@
     SUBDIR += passivedns
     SUBDIR += pcsc-tools
     SUBDIR += pdfcrack
+    SUBDIR += pdfrip
     SUBDIR += pear-Auth
     SUBDIR += pear-Auth_HTTP
     SUBDIR += pear-Auth_PrefManager
@@ -840,6 +837,8 @@
     SUBDIR += php83-sodium
     SUBDIR += php84-filter
     SUBDIR += php84-sodium
+    SUBDIR += php85-filter
+    SUBDIR += php85-sodium
     SUBDIR += picocrypt
     SUBDIR += picosha2
     SUBDIR += pidgin-encryption
@@ -876,6 +875,7 @@
     SUBDIR += putty-nogtk
     SUBDIR += pvk
     SUBDIR += pwauth
+    SUBDIR += pwdsafety
     SUBDIR += pwman
     SUBDIR += pwned-check
     SUBDIR += py-SecretStorage
@@ -898,6 +898,7 @@
     SUBDIR += py-bcrypt
     SUBDIR += py-bitbox02
     SUBDIR += py-btchip-python
+    SUBDIR += py-cart
     SUBDIR += py-cerealizer
     SUBDIR += py-cert-human
     SUBDIR += py-certbot
@@ -921,6 +922,7 @@
     SUBDIR += py-certbot-dns-standalone
     SUBDIR += py-certbot-nginx
     SUBDIR += py-certifi
+    SUBDIR += py-certipy
     SUBDIR += py-certomancer
     SUBDIR += py-certstream
     SUBDIR += py-ckcc-protocol
@@ -936,6 +938,7 @@
     SUBDIR += py-dfdatetime
     SUBDIR += py-dfwinreg
     SUBDIR += py-dirhash
+    SUBDIR += py-distro2sbom
     SUBDIR += py-django-auth-kerberos
     SUBDIR += py-docker-pycreds
     SUBDIR += py-ecdsa
@@ -953,10 +956,12 @@
     SUBDIR += py-google-auth
     SUBDIR += py-google-auth-httplib2
     SUBDIR += py-google-auth-oauthlib
-    SUBDIR += py-gpgme
+    SUBDIR += py-google-cloud-kms
+    SUBDIR += py-gpg
     SUBDIR += py-gpsoauth
     SUBDIR += py-greenbone-feed-sync
     SUBDIR += py-gssapi
+    SUBDIR += py-guardpost
     SUBDIR += py-gvm-tools
     SUBDIR += py-hkdf
     SUBDIR += py-htpasswd
@@ -978,6 +983,7 @@
     SUBDIR += py-keyring
     SUBDIR += py-keyrings.alt
     SUBDIR += py-krb5
+    SUBDIR += py-lib4sbom
     SUBDIR += py-libnacl
     SUBDIR += py-liboqs-python
     SUBDIR += py-m2crypto
@@ -991,15 +997,14 @@
     SUBDIR += py-netbox-secrets
     SUBDIR += py-nethsm
     SUBDIR += py-netmiko
+    SUBDIR += py-nitrokey
     SUBDIR += py-noiseprotocol
     SUBDIR += py-notus-scanner
     SUBDIR += py-ntlm-auth
     SUBDIR += py-nvdlib
     SUBDIR += py-oauthlib
     SUBDIR += py-omemo-dr
-    SUBDIR += py-onlykey
     SUBDIR += py-openssh-wrapper
-    SUBDIR += py-openssl
     SUBDIR += py-oscrypto
     SUBDIR += py-ospd-openvas
     SUBDIR += py-paramiko
@@ -1026,11 +1031,13 @@
     SUBDIR += py-pyelliptic
     SUBDIR += py-pyhanko
     SUBDIR += py-pyhanko-certvalidator
+    SUBDIR += py-pyhanko-cli
     SUBDIR += py-pykeepass
     SUBDIR += py-pykeepass-cache
     SUBDIR += py-pylibacl
     SUBDIR += py-pymacaroons
     SUBDIR += py-pynacl
+    SUBDIR += py-pyopenssl
     SUBDIR += py-pyotp
     SUBDIR += py-pyotp2289
     SUBDIR += py-pysaml2
@@ -1044,6 +1051,7 @@
     SUBDIR += py-python-gnupg
     SUBDIR += py-python-gvm
     SUBDIR += py-python-jose
+    SUBDIR += py-python-nmap
     SUBDIR += py-python-nss
     SUBDIR += py-python-openid
     SUBDIR += py-python-pam
@@ -1066,6 +1074,7 @@
     SUBDIR += py-securesystemslib
     SUBDIR += py-service-identity
     SUBDIR += py-signedjson
+    SUBDIR += py-signxml
     SUBDIR += py-social-auth-core
     SUBDIR += py-spake2
     SUBDIR += py-ssh-audit
@@ -1101,9 +1110,11 @@
     SUBDIR += py-zkg
     SUBDIR += py-zxcvbn
     SUBDIR += pygost
+    SUBDIR += qgpgme
     SUBDIR += qt-sudo
     SUBDIR += qtkeychain
     SUBDIR += quantis-kmod
+    SUBDIR += radamsa
     SUBDIR += rage-encryption
     SUBDIR += ratify
     SUBDIR += ratproxy
@@ -1112,7 +1123,6 @@
     SUBDIR += rekor
     SUBDIR += reop
     SUBDIR += rhash
-    SUBDIR += rhonabwy
     SUBDIR += ridl
     SUBDIR += rifiuti2
     SUBDIR += rkhunter
@@ -1193,6 +1203,7 @@
     SUBDIR += rubygem-omniauth-cas
     SUBDIR += rubygem-omniauth-dingtalk-oauth2
     SUBDIR += rubygem-omniauth-gitlab
+    SUBDIR += rubygem-omniauth-gl
     SUBDIR += rubygem-omniauth-jwt
     SUBDIR += rubygem-omniauth-multipassword
     SUBDIR += rubygem-omniauth-multipassword2
@@ -1204,11 +1215,13 @@
     SUBDIR += rubygem-omniauth-saml1
     SUBDIR += rubygem-omniauth-shibboleth
     SUBDIR += rubygem-omniauth-shibboleth-redux
+    SUBDIR += rubygem-omniauth-shibboleth-redux-gitlab
     SUBDIR += rubygem-omniauth1
     SUBDIR += rubygem-openssl
     SUBDIR += rubygem-openssl-ccm
     SUBDIR += rubygem-openssl-cmac
     SUBDIR += rubygem-openssl-signature_algorithm
+    SUBDIR += rubygem-openssl3
     SUBDIR += rubygem-openvas-omp
     SUBDIR += rubygem-origami
     SUBDIR += rubygem-pbkdf2-ruby
@@ -1281,7 +1294,6 @@
     SUBDIR += seccure
     SUBDIR += seclists
     SUBDIR += secpanel
-    SUBDIR += sectok
     SUBDIR += secure_delete
     SUBDIR += sedutil
     SUBDIR += sequoia
@@ -1329,6 +1341,7 @@
     SUBDIR += sshguard
     SUBDIR += sshpass
     SUBDIR += ssl-admin
+    SUBDIR += ssl-checker
     SUBDIR += ssllabs-scan
     SUBDIR += sslproxy
     SUBDIR += sslscan
@@ -1391,6 +1404,7 @@
     SUBDIR += unix-selfauth-helper
     SUBDIR += vanguards-tor
     SUBDIR += vault
+    SUBDIR += vault-medusa
     SUBDIR += vaultwarden
     SUBDIR += veracrypt
     SUBDIR += vigenere

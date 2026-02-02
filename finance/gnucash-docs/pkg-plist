@@ -529,6 +529,7 @@ share/help/de/gnucash-manual/figures/CSV_Transaction_Import_Assistant.png
 share/help/de/gnucash-manual/figures/Choose_Export_Settings.png
 share/help/de/gnucash-manual/figures/GUI_Business_Invoice.png
 share/help/de/gnucash-manual/figures/GUI_Business_Overview.png
+share/help/de/gnucash-manual/figures/Import_AqB_Profile.png
 share/help/de/gnucash-manual/figures/Import_Map_Editor.png
 share/help/de/gnucash-manual/figures/Import_MatchPicker.png
 share/help/de/gnucash-manual/figures/Import_QIF_Druid.png
@@ -599,7 +600,6 @@ share/help/de/gnucash-manual/index.docbook
 share/help/de/gnucash-manual/legal.docbook
 share/help/de/gnucash-manual/para-assist-buttons.docbook
 share/help/de/gnucash-manual/para-assist-intro.docbook
-share/help/de/gnucash-manual/tips-appendix.docbook
 share/help/de/gnucash-manual/txf-categories.docbook
 share/help/it/gnucash-guide/figures/accts_CreateAssetsAccount.png
 share/help/it/gnucash-guide/figures/accts_DefaultExpenseAccounts.png

@@ -1,5 +1,5 @@
 PORTNAME=	opensearch-dashboards
-DISTVERSION=	2.19.1
+DISTVERSION=	2.19.3
 DISTVERSIONSUFFIX=	-linux-${OPENSEARCH_ARCH}
 CATEGORIES=	textproc www
 MASTER_SITES=	https://artifacts.opensearch.org/releases/bundle/${PORTNAME}/${DISTVERSION}/
@@ -17,9 +17,9 @@ ONLY_FOR_ARCHS=	aarch64 amd64
 CONFLICTS=	opensearch-dashboards opensearch-dashboards210 opensearch-dashboards213 \
 		opensearch-dashboards216
 
-BUILD_DEPENDS=	npm-node18>0:www/npm-node18
+BUILD_DEPENDS=	npm-node20>0:www/npm-node20
 
-USES=		nodejs:18,build,run python:build
+USES=		nodejs:20,build,run python:build
 USE_RC_SUBR=	${PORTNAME}
 
 SUB_FILES=	pkg-deinstall
@@ -29,7 +29,7 @@ SUB_LIST=	PORTNAME="${PORTNAME}" \
 
 WRKSRC=		${WRKDIR}/${PORTNAME}-${PORTVERSION}
 
-NODE_VER=	18.18.0
+NODE_VER=	20.19.2
 NO_BUILD=	yes
 
 _DEVDIR=	${WRKDIR}/.devdir
@@ -43,7 +43,7 @@ OPENSEARCH_ARCH=	x64
 .endif
 
 post-patch:
-	@${REINPLACE_CMD} -e 's|14.20.1|${NODE_VER}|g' ${WRKSRC}/package.json
+	@${REINPLACE_CMD} -e 's|<19|<=${NODE_VER}|g' ${WRKSRC}/package.json
 	${RM} \
 		${WRKSRC}/bin/*.orig \
 		${WRKSRC}/bin/*.bak \

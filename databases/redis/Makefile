@@ -1,9 +1,10 @@
 PORTNAME=	redis
-DISTVERSION=	8.0.1
+DISTVERSION=	8.4.0
+PORTREVISION=	1
 CATEGORIES=	databases
 MASTER_SITES=	https://download.redis.io/releases/
 
-MAINTAINER=	yasu@FreeBSD.org
+MAINTAINER=	bofh@freebsd.org
 COMMENT=	Persistent key-value database with built-in net interface
 WWW=		https://redis.io/
 
@@ -15,17 +16,20 @@ LICENSE_FILE=	${WRKSRC}/LICENSE.txt
 LICENSE_PERMS_RSALv2=	dist-mirror dist-sell pkg-mirror pkg-sell auto-accept
 LICENSE_PERMS_SSPLv1=	dist-mirror dist-sell pkg-mirror pkg-sell auto-accept
 
-USES=		compiler:c11 cpe gmake tcl:test
+USES=		compiler:c11 cpe gmake localbase:ldflags pkgconfig tcl:test
 CPE_VENDOR=	redislabs
 USE_RC_SUBR=	redis sentinel
 
 MAKE_ENV=	OPTIMIZATION= \
 		V=yo
+BINARY_ALIAS=	gmd5sum=md5sum
 
-LDFLAGS+=	-lpthread -lm -lexecinfo
+#PIE_UNSAFE=	ld: error: relocation R_X86_64_32 cannot be used against local \
+#		symbol; recompile with -fPIC
 
-CONFLICTS_INSTALL=	redis-devel redis62 redis72 redis74
+CONFLICTS_INSTALL=	redis-devel redis[0-9]*
 
+PORTSCOUT=	limit:^[0-9\.]*$$
 SUB_FILES=	pkg-message
 SUB_LIST=	PORTNAME=${PORTNAME} \
 		REDIS_DBDIR=${REDIS_DBDIR} \

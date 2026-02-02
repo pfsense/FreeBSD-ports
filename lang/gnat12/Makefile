@@ -1,5 +1,6 @@
 PORTNAME=	gnat12
 DISTVERSION=	12.3.0
+PORTREVISION=	1
 CATEGORIES=	lang
 MASTER_SITES=	http://gcc.gnu.org/pub/gcc/releases/gcc-${DISTVERSION}/:gcc \
 		LOCAL/thierry:gnat
@@ -67,7 +68,7 @@ OPTIONS_DEFINE_powerpc64+=	MULTILIB
 .endif
 OPTIONS_RADIO=			BOOTSTRAP
 OPTIONS_RADIO_BOOTSTRAP=	GCC6AUX PREVASSET
-OPTIONS_DEFAULT=		PREVASSET
+OPTIONS_DEFAULT=		${"${OSVERSION:M1600*}" == "":?PREVASSET:GCC6AUX}
 .if defined(PACKAGE_BUILDING)
 OPTIONS_DEFAULT+=		ASSETS
 .endif
@@ -141,7 +142,7 @@ PLIST_SUB+=	AMD64="@comment " \
 		X86=" " \
 		64BIT="@comment "
 .elif ${ARCH} == aarch64
-EXTRACT_CMD=    ${SETENV} LC_ALL=en_US.UTF-8 /usr/bin/bsdtar
+EXTRACT_CMD=	${SETENV} LC_ALL=en_US.UTF-8 /usr/bin/bsdtar
 PLIST_SUB+=	X86="@comment " \
 		AMD64="@comment " \
 		AARCH64=" " \

@@ -1,5 +1,5 @@
 PORTNAME=	vte
-PORTVERSION=	0.80.2
+PORTVERSION=	0.80.4
 CATEGORIES=	x11-toolkits gnome
 MASTER_SITES=	GNOME
 PKGNAMESUFFIX=	3
@@ -20,7 +20,7 @@ LIB_DEPENDS=	libpcre2-8.so:devel/pcre2 \
 
 PORTSCOUT=	limitw:1,even
 
-USES=		compiler:c++20-lang gettext gnome localbase meson \
+USES=		compiler:c++20-lang gettext-tools gnome localbase meson \
 		pkgconfig python:build tar:xz vala:build
 USE_LDCONFIG=	yes
 USE_GNOME=	cairo gdkpixbuf gtk30 introspection:build
@@ -35,8 +35,8 @@ MESON_ARGS=	-Da11y=true \
 		-Dglade=false \
 		-Dvapi=true
 
-# shlib version numbers come from gtk3/4 meson options, not from PYTHON_VER
-PLIST_SUB=	VERSION=2.91 VER3=3.91
+# VTE API minor version
+PLIST_SUB=	API_VER=91
 
 BINARY_ALIAS=	python3=${PYTHON_CMD}
 

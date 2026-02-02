@@ -91,6 +91,7 @@ if args.add:
 
         dataport = ".0"
         controlport = ".2"
+        gpsport = ".1"
         if args.model == "1e0e9001": #Simcom
             dataport = ".2"
             controlport = ".3"

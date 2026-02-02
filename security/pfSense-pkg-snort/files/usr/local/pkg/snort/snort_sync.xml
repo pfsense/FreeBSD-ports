@@ -31,6 +31,7 @@
 	<name>snortsync</name>
 	<version>4.1.6</version>
 	<title>Snort: XMLRPC Sync</title>
+	<addedit_string>Snort: changed Sync</addedit_string>
 	<include_file>/usr/local/pkg/snort/snort.inc</include_file>
 	<tabs>
 		<tab>

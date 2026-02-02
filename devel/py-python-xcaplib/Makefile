@@ -1,5 +1,6 @@
 PORTNAME=	python-xcaplib
 PORTVERSION=	1.2.2
+PORTREVISION=	2
 CATEGORIES=	devel python
 MASTER_SITES=	http://download.ag-projects.com/XCAP/
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}

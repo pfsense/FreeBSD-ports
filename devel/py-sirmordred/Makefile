@@ -1,10 +1,12 @@
 PORTNAME=	sirmordred
 DISTVERSION=	1.1.6
+PORTREVISION=	1
 CATEGORIES=	devel python
 MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
-MAINTAINER=	bofh@FreeBSD.org
+# Ask clusteradm@ before removal
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Drive GrimoireLab tools to produce a dashboard
 WWW=		https://github.com/chaoss/grimoirelab-sirmordred
 

@@ -1,6 +1,5 @@
 PORTNAME=	poppler
-DISTVERSION=	25.04.0
-PORTREVISION=	1
+DISTVERSION=	25.10.0
 CATEGORIES=	graphics print
 MASTER_SITES=	https://poppler.freedesktop.org/
 
@@ -57,7 +56,7 @@ CMAKE_OFF+=	${_POPPLER_SLAVES:N${_SLAVE_PORT}:tu:S/^/ENABLE_/}
 PORTSCOUT=	limitw:1,even
 USES+=		iconv
 CMAKE_ON+=	ENABLE_CPP
-PLIST_SUB+=	SHLIB_VER=148
+PLIST_SUB+=	SHLIB_VER=154
 
 OPTIONS_DEFINE=		CURL OPENJPEG GNUPG
 OPTIONS_DEFAULT=	OPENJPEG GNUPG
@@ -77,7 +76,7 @@ CMAKE_ARGS+=		-DENABLE_LIBOPENJPEG:STRING="none" \
 
 .  if ${_SLAVE_PORT} == glib
 USES+=			gnome python:build
-USE_GNOME+=		cairo glib20 introspection:Build libxml2
+USE_GNOME+=		cairo glib20 introspection:build libxml2
 BINARY_ALIAS+=		python3=${PYTHON_CMD}
 .  elif ${_SLAVE_PORT} == qt5
 USES+=			qt:5
@@ -103,7 +102,7 @@ OPENJPEG_CMAKE_OFF=	-DENABLE_LIBOPENJPEG:STRING="none"
 
 GNUPG_CMAKE_BOOL=	ENABLE_GPGME
 GNUPG_LIB_DEPENDS=	libgpgme.so:security/gpgme \
-		libgpgmepp.so:security/gpgme-cpp
+		libgpgmepp.so:security/gpgmepp
 
 post-install:
 .if ${_SLAVE_PORT} == glib

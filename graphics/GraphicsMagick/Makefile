@@ -1,6 +1,6 @@
 PORTNAME=	GraphicsMagick
 PORTVERSION=	1.3.43
-PORTREVISION=	2
+PORTREVISION=	3
 PORTEPOCH=	1
 CATEGORIES=	graphics
 MASTER_SITES=	SF
@@ -12,7 +12,7 @@ WWW=		https://graphicsmagick.sourceforge.io/ \
 
 LICENSE=	MIT
 
-USES=		cpe libtool localbase:ldflags pathfix pkgconfig tar:xz
+USES=		cpe libtool localbase:ldflags pkgconfig tar:xz
 
 CONFIGURE_ARGS=	--enable-shared --enable-static \
 		--with-windows-font-dir=${WINDOWS_FONT_DIR} \

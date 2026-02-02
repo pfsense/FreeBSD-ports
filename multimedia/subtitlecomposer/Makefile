@@ -1,8 +1,11 @@
 PORTNAME=	subtitlecomposer
-DISTVERSION=	0.8.1
-PORTREVISION=	2
+DISTVERSION=	0.8.2
+PORTREVISION=	1
 CATEGORIES=	multimedia kde
 MASTER_SITES=	KDE/stable/${PORTNAME}
+
+PATCH_SITES=	https://invent.kde.org/multimedia/subtitlecomposer/-/commit/
+PATCHFILES+=	1e11d53565ab6df3ba8329072e7b4b12f9f88d72.patch:-p1 # Fix configure with Qt 6.10
 
 MAINTAINER=	makc@FreeBSD.org
 COMMENT=	Advanced FFmpeg-based subtitle editor

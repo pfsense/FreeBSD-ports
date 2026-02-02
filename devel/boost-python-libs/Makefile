@@ -7,7 +7,7 @@ WWW=		https://www.boost.org/
 LICENSE=	BSL
 LICENSE_FILE=	${WRKSRC}/LICENSE_1_0.txt
 
-PATCHDIR=	${.CURDIR}/../boost-libs/files
+PATCHDIR=	${.CURDIR:H}/boost-libs/files
 
 BUILD_DEPENDS=	bjam:devel/boost-jam \
 		${PYTHON_PKGNAMEPREFIX}numpy>=1.26:math/py-numpy@${PY_FLAVOR}
@@ -21,9 +21,9 @@ USE_PYTHON=	flavors
 
 OPTIONS_DEFINE=	DEBUG OPTIMIZED_CFLAGS
 
-.include "${.CURDIR}/../boost-all/common.mk"
+.include "${.CURDIR:H}/boost-all/common.mk"
 
-.include "${.CURDIR}/../boost-all/compiled.mk"
+.include "${.CURDIR:H}/boost-all/compiled.mk"
 
 MAKE_ENV+=	PYTHON_ROOT="${LOCALBASE}"\
 		PYTHON_VERSION="${PYTHON_VERSION}"\

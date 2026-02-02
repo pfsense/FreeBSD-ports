@@ -1,6 +1,6 @@
---- php_radius.h.orig	2016-02-15 15:11:50 UTC
+--- php_radius.h.orig	2025-11-11 17:22:20 UTC
 +++ php_radius.h
-@@ -53,6 +53,26 @@ any other GPL-like (LGPL, GPL2) License.
+@@ -53,6 +53,26 @@ extern zend_module_entry radius_module_entry;
  
  extern zend_module_entry radius_module_entry;
  
@@ -42,4 +42,3 @@
 - */
 -
 -/* vim: set ts=8 sw=8 noet: */
-

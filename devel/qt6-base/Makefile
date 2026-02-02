@@ -31,7 +31,6 @@ LIB_DEPENDS=	libatk-1.0.so:accessibility/at-spi2-core \
 		libpng16.so:graphics/png \
 		libudev.so:devel/libudev-devd \
 		libvulkan.so:graphics/vulkan-loader \
-		libwayland-client.so:graphics/wayland \
 		libxkbcommon.so:x11/libxkbcommon \
 		libzstd.so:archivers/zstd
 
@@ -64,18 +63,23 @@ CMAKE_OFF+=	FEATURE_sql_mysql \
 # zstd from base fails to compress files during the build (error 11: unsupported argument)
 BINARY_ALIAS=	zstd=${LOCALBASE}/bin/zstd
 
-OPTIONS_DEFINE=		CUPS X11
-OPTIONS_DEFAULT=	CUPS X11
+OPTIONS_DEFINE=		CUPS WAYLAND X11
+OPTIONS_DEFAULT=	CUPS WAYLAND X11
 OPTIONS_SUB=		yes
 
 CUPS_LIB_DEPENDS=	libcups.so:print/cups
 CUPS_CMAKE_BOOL=	FEATURE_cups
 
+WAYLAND_LIB_DEPENDS=	libwayland-client.so:graphics/wayland
+WAYLAND_CMAKE_BOOL=	FEATURE_qtwaylandscanner \
+			FEATURE_wayland
+
 X11_LIB_DEPENDS=	libxcb-cursor.so:x11/xcb-util-cursor \
 			libxcb-icccm.so:x11/xcb-util-wm \
 			libxcb-image.so:x11/xcb-util-image \
 			libxcb-keysyms.so:x11/xcb-util-keysyms \
-			libxcb-render-util.so:x11/xcb-util-renderutil
+			libxcb-render-util.so:x11/xcb-util-renderutil \
+			libxcb-util.so:x11/xcb-util
 X11_USES=		xorg
 X11_USE=		XORG=ice,pixman,sm,x11,xau,xcb,xcomposite,xcursor,xdamage,xdmcp,xext,xfixes,xi,xinerama,xrandr,xrender
 X11_CMAKE_BOOL=		FEATURE_xcb \
@@ -94,6 +98,13 @@ PLIST_SUB+=	DTLS=""
 .if ${ARCH} == "armv6" || ${ARCH} == "armv7"
 BUILD_DEPENDS+=	as:devel/binutils
 CMAKE_ARGS+=	-DCMAKE_ASM_FLAGS=-no-integrated-as
+.endif
+
+.if exists(/usr/include/sys/inotify.h)
+PLIST_SUB+=	INOTIFY="" KQUEUE="@comment "
+EXTRA_PATCHES+=	${FILESDIR}/extrapatch-inotify
+.else
+PLIST_SUB+=	INOTIFY="@comment " KQUEUE=""
 .endif
 
 post-patch:

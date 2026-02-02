@@ -1,6 +1,5 @@
 PORTNAME=	pybtex
-PORTVERSION=	0.24.0
-PORTREVISION=	3
+PORTVERSION=	0.25.1
 CATEGORIES=	textproc python
 MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -13,11 +12,11 @@ WWW=		https://pybtex.org/ \
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}setuptools>=0:devel/py-setuptools@${PY_FLAVOR} \
+BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}pyyaml>=3.01:devel/py-pyyaml@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}setuptools>=0:devel/py-setuptools@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}wheel>=0:devel/py-wheel@${PY_FLAVOR}
 RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}latexcodec>=1.0.4:textproc/py-latexcodec@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}pyyaml>=3.01:devel/py-pyyaml@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}six>=0:devel/py-six@${PY_FLAVOR}
+		${PYTHON_PKGNAMEPREFIX}pyyaml>=3.01:devel/py-pyyaml@${PY_FLAVOR}
 
 USES=		python
 USE_PYTHON=	autoplist concurrent pep517

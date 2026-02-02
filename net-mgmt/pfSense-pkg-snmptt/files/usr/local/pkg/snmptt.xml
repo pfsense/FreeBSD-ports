@@ -29,8 +29,8 @@
 	<title>Services: SNMPTT</title>
 	<category>Monitoring</category>
 	<include_file>/usr/local/pkg/snmptt.inc</include_file>
-	<addedit_string>SNMPTT has been created/modified.</addedit_string>
-	<delete_string>SNMPTT has been deleted.</delete_string>
+	<delete_string>snmptt: has been deleted.</delete_string>
+	<addedit_string>snmptt: changed settings</addedit_string>
 	<menu>
 		<name>SNMP Trap Translator (SNMPTT)</name>
 		<section>Services</section>

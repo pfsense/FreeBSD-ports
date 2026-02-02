@@ -1,7 +1,6 @@
 PORTNAME=	openscad
 PORTVERSION=	${GIT_SRC_DATE}
 PORTREVISION=	1
-#PORTREVISION=	1
 CATEGORIES=	cad
 PKGNAMESUFFIX=	-devel
 
@@ -10,8 +9,6 @@ PKGNAMESUFFIX=	-devel
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
-
-BROKEN=		Fails to build, error: use of undeclared identifier 'buf'
 
 MAINTAINER=	mr@FreeBSD.org
 COMMENT=	Programmer's solid 3D CAD modeller #'
@@ -33,7 +30,8 @@ LIB_DEPENDS=	libzip.so:archivers/libzip \
 		libharfbuzz.so:print/harfbuzz \
 		libfontconfig.so:x11-fonts/fontconfig \
 		libdouble-conversion.so:devel/double-conversion \
-		libtbb.so:devel/onetbb
+		libtbb.so:devel/onetbb \
+		lib3mf.so:cad/lib3mf
 
 CONFLICTS=	openscad
 
@@ -63,6 +61,10 @@ CMAKE_ARGS+=	-DUSE_QT6="ON" -DUSE_MIMALLOC="OFF" -DENABLE_CGAL="ON" -DUSE_BUILTI
 .include "Makefile.git_rev"
 
 .include <bsd.port.pre.mk>
+
+post-patch:
+	@${REINPLACE_CMD} -e '/find_package/s| system||' \
+		${WRKSRC}/CMakeLists.txt
 
 do-install:
 	${CMAKE_BIN} --install ${BUILD_WRKSRC} --prefix ${STAGEDIR}${PREFIX}

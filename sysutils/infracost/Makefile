@@ -1,7 +1,6 @@
 PORTNAME=	infracost
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.10.41
-PORTREVISION=	1
+DISTVERSION=	0.10.42
 CATEGORIES=	sysutils
 
 MAINTAINER=	dutra@FreeBSD.org
@@ -17,7 +16,7 @@ ONLY_FOR_ARCHS_REASON=	Requires 64-bit processor
 RUN_DEPENDS=	terraform:sysutils/terraform \
 		terragrunt:sysutils/terragrunt
 
-USES=		go:1.23,modules
+USES=		go:modules
 
 GO_MODULE=	github.com/${PORTNAME}/${PORTNAME}
 

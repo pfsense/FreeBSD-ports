@@ -1,6 +1,5 @@
 PORTNAME=	invoke
-PORTVERSION=	2.2.0
-PORTREVISION=	2
+PORTVERSION=	2.2.1
 CATEGORIES=	devel python
 MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -24,6 +23,6 @@ NO_ARCH=	yes
 OPTIONS_DEFINE=	SUDO
 SUDO_DESC=	Run shell commands via sudo
 
-SUDO_RUN_DEPENDS=	sudo:security/sudo
+SUDO_USES=	sudo
 
 .include <bsd.port.mk>

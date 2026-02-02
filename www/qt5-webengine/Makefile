@@ -19,6 +19,7 @@
 
 PORTNAME=	webengine
 PORTVERSION=	${QT5_VERSION}${QT5_KDE_PATCH}
+PORTREVISION=	3
 CATEGORIES=	www
 PKGNAMEPREFIX=	qt5-
 
@@ -74,7 +75,7 @@ SNDIO_VARS_OFF=		QMAKE_CONFIGURE_ARGS+=-no-sndio
 # We pass `norecursive' to USES=qmake because src/plugins/plugins.pro checks
 # whether webenginewidgets is available, which fails when qmake processes all
 # .pro files at once.
-USES=		gl gnome gperf jpeg minizip ninja:build nodejs:build,lts \
+USES=		gl gnome gperf jpeg minizip ninja:build \
 		perl5 pkgconfig python:build qmake:norecursive,outsource \
 		qt-dist:5,webengine shebangfix xorg
 USE_GL=		gl
@@ -116,7 +117,13 @@ MAKE_ENV+=	CC="${CC}" CXX="${CXX}"			\
 
 QT_BINARIES=	yes
 
-.include <bsd.port.pre.mk>
+.include <bsd.port.options.mk>
+
+.if ${ARCH:Mi386}
+USES+=		nodejs:build,20
+.else
+USES+=		nodejs:build,lts
+.endif
 
 .if ${ARCH:Mmips*} || ${ARCH:Mpowerpc*}
 PLIST_SUB+=	BE="" LE="@comment "
@@ -176,4 +183,4 @@ post-install:
 		${BRANDELF} -t FreeBSD $$lib ; \
 	done
 
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

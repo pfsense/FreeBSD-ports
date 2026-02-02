@@ -1,17 +1,17 @@
 PORTNAME=	rmf
 DISTVERSION=	1.7.0
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	science graphics
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Library to support reading and writing of Rich Molecular Format files
 WWW=		https://integrativemodeling.org/rmf/ \
-		https://github.com/open-rmf/rmf
+		https://github.com/salilab/rmf
 
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-LIB_DEPENDS=	libboost_system.so:devel/boost-libs \
+LIB_DEPENDS=	libboost_thread.so:devel/boost-libs \
 		libhdf5.so:science/hdf5
 
 USES=		compiler:c++17-lang cmake:testing localbase:ldflags python:build shebangfix

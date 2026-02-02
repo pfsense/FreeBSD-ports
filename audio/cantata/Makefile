@@ -1,10 +1,11 @@
 PORTNAME=	cantata
 DISTVERSIONPREFIX=	v
-DISTVERSION=	3.3.0
+DISTVERSION=	3.3.1
 CATEGORIES=	audio kde
 
 PATCH_SITES=	https://github.com/nullobsi/cantata/commit/
-PATCHFILES+=	d44b60601896c740b24abc323ef6121bf1c45dbb.patch:-p1 # Fix build with Qt >= 6.9.0
+PATCHFILES+=	52bf771a115b102a00fa09b48c867b6954474a51.patch:-p1 # Fix build with Qt 6.10
+PATCHFILES+=	82ee16e720e6901e7191e64a4e0c0db94c6a10ae.patch:-p1 # Fix build with Qt 6.10
 
 MAINTAINER=	kde@FreeBSD.org
 COMMENT=	Graphical client for MPD using Qt

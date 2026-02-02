@@ -28,13 +28,14 @@ require_once("service-utils.inc");
 define("LLDPD_RCFILE", "/usr/local/etc/rc.d/lldpd.sh");
 define("LLDPD_DAEMON", "/usr/local/sbin/lldpd");
 define("LLDPD_CLIENT", "/usr/local/sbin/lldpcli");
+define('LOG_PREFIX_PKG_LLDPD', 'lldpd');
 
 $shortcut_section = "lldpd";
 
 
 function lldpd_sync_config() {
 	if (is_service_running('lldpd')) {
-		log_error("Stopping service lldpd");
+		logger(LOG_INFO, localize_text("Stopping service"), LOG_PREFIX_PKG_LLDPD);
 		stop_service('lldpd');
 	}
 
@@ -188,14 +189,14 @@ function lldpd_sync_config() {
 		return;
 	}
 
-	log_error("Starting service lldpd");
+	logger(LOG_INFO, localize_text("Starting service"), LOG_PREFIX_PKG_LLDPD);
 	start_service('lldpd');
 }
 
 
 function lldpd_deinstall_command() {
 	if (is_service_running('lldpd')) {
-		log_error("Stopping service lldpd");
+		logger(LOG_INFO, localize_text("Stopping service"), LOG_PREFIX_PKG_LLDPD);
 		stop_service('lldpd');
 	}
 

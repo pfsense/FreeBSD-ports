@@ -1,8 +1,11 @@
 PORTNAME=	partio
-PORTVERSION=	1.14.6
-PORTREVISION=	3
+PORTVERSION=	1.19.2
 DISTVERSIONPREFIX=	v
 CATEGORIES=	graphics math
+
+PATCH_SITES=	https://github.com/${GH_ACCOUNT}/${GH_PROJECT}/commit/
+PATCHFILES=	73b02b28bf19b69756349441a24b97530cd9f06b.patch:-p1 \
+		47c81dbdc37e8dccedad9fd68c0edfc2dc8a73ab.patch:-p1
 
 MAINTAINER=	danfe@FreeBSD.org
 COMMENT=	C++ library for particle I/O and manipulation
@@ -13,7 +16,7 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 
 BUILD_DEPENDS=	swig:devel/swig
 
-USES=		cmake compiler:c++11-lang gl python:run shebangfix xorg
+USES=		cmake compiler:c++14-lang gl python:run,test shebangfix xorg
 SHEBANG_FILES=	src/tools/partedit.py src/tools/partinspect.py \
 		src/tools/partjson.py
 USE_GL=		gl glu glut
@@ -41,6 +44,7 @@ PYQT_USE=		PYQT=pyqt5
 PYQT_PLIST_FILES=	bin/partedit bin/partinspect
 
 TEST_LIB_DEPENDS=	libgtest.so:devel/googletest
+TEST_TEST_DEPENDS=	${PYTHON_PKGNAMEPREFIX}pytest>=0:devel/py-pytest@${PY_FLAVOR}
 TEST_CMAKE_ON=		-DPARTIO_GTEST_ENABLED:BOOL=ON
 TEST_VARS=		SHEBANG_FILES+="src/tests/testpartio.py \
 			src/tests/testpartjson.py"

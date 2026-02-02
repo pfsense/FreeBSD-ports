@@ -1,10 +1,10 @@
 PORTNAME=	matrix-synapse
-DISTVERSION=	1.131.0
-PORTREVISION=	1
+DISTVERSION=	1.138.0
+PORTREVISION=	5
 CATEGORIES=	net-im python
 MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
-DISTFILES=	${PORTNAME:S/-/_/}-${DISTVERSION}.tar.gz
+DISTFILES+=	${PORTNAME:S/-/_/}-${DISTVERSION}${EXTRACT_SUFX}
 
 MAINTAINER=	ports@skyforge.at
 COMMENT=	Matrix protocol reference homeserver
@@ -13,7 +13,7 @@ WWW=		https://element-hq.github.io/synapse
 LICENSE=	AGPLv3
 LICENSE_FILE=	${WRKSRC}/LICENSE-AGPL-3.0
 
-BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}poetry-core>=1.1.0<2.1.3_99:devel/py-poetry-core@${PY_FLAVOR} \
+BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}poetry-core>=1.1.0:devel/py-poetry-core@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}setuptools-rust>=1.3:devel/py-setuptools-rust@${PY_FLAVOR}
 # Keep the RUN_DEPENDS layout similar to the pyproject.toml file
 RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}jsonschema>=3.0.0:devel/py-jsonschema@${PY_FLAVOR} \
@@ -24,7 +24,7 @@ RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}jsonschema>=3.0.0:devel/py-jsonschema@${PY_F
 		${PYTHON_PKGNAMEPREFIX}service-identity>=18.1.0:security/py-service-identity@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}twisted>=18.9.0:devel/py-twisted@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}treq>=15.1:www/py-treq@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}openssl>=16.0.0:security/py-openssl@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}pyopenssl>=16.0.0:security/py-pyopenssl@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}pyyaml>=5.3:devel/py-pyyaml@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}pyasn1>=0.1.9:devel/py-pyasn1@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}pyasn1-modules>=0.0.7:devel/py-pyasn1-modules@${PY_FLAVOR} \
@@ -34,7 +34,7 @@ RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}jsonschema>=3.0.0:devel/py-jsonschema@${PY_F
 		${PYTHON_PKGNAMEPREFIX}pymacaroons>=0.13.0:security/py-pymacaroons@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}msgpack>=0.5.2:devel/py-msgpack@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}phonenumbers>=8.2.0:devel/py-phonenumbers@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}prometheus-client>=0.4.0:net-mgmt/py-prometheus-client@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}prometheus-client>=0.6.0:net-mgmt/py-prometheus-client@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}attrs>=19.2.0:devel/py-attrs@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}netaddr>=0.7.18:net/py-netaddr@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}Jinja2>=3.0.0:devel/py-Jinja2@${PY_FLAVOR} \
@@ -57,16 +57,19 @@ TEST_DEPENDS=	${PYTHON_PKGNAMEPREFIX}virtualenv>=15.0:devel/py-virtualenv@${PY_F
 USES=		cargo python shebangfix
 USE_PYTHON=	autoplist cryptography pep517
 USE_RC_SUBR=	synapse
-WRKSRC=		${WRKDIR}/${PORTNAME:S/-/_/}-${DISTVERSION}
-CARGO_CONFIGURE=	yes
-CARGO_BUILD=	no
-CARGO_TEST=	no
-CARGO_INSTALL=	no
-CARGO_CARGOTOML=	${WRKSRC}/rust/Cargo.toml
 
 SHEBANG_FILES=	synapse/_scripts/*.py
+
+CARGO_CONFIGURE=	yes
+CARGO_CARGOTOML=	${WRKSRC}/rust/Cargo.toml
+CARGO_BUILD=		no
+CARGO_INSTALL=		no
+CARGO_TEST=		no
+
 SUB_FILES=	pkg-message log.config
 SUB_LIST=	PYTHON_CMD=${PYTHON_CMD} DBDIR=${DBDIR} LOGDIR=${LOGDIR} PIDDIR=${PIDDIR} USERS=${USERS}
+
+WRKSRC=		${WRKDIR}/${PORTNAME:S/-/_/}-${DISTVERSION}
 
 USERS=		synapse
 GROUPS=		synapse
@@ -77,7 +80,7 @@ PIDDIR?=	/var/run/${PORTNAME}
 
 PLIST_FILES=	"@sample ${ETCDIR}/log.config.sample"
 
-DOCS=		README.rst UPGRADE.rst CHANGES.md docs/postgres.md
+DOCS=		CHANGES.md README.rst UPGRADE.rst docs/postgres.md
 PORTDOCS=	${DOCS:T}
 
 OPTIONS_DEFINE=		DOCS JWT LDAP OIDC PGSQL REDIS SQLITE URLPREVIEW

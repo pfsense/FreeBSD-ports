@@ -17,6 +17,7 @@
     SUBDIR += R-cran-dichromat
     SUBDIR += R-cran-dygraphs
     SUBDIR += R-cran-farver
+    SUBDIR += R-cran-ggforce
     SUBDIR += R-cran-ggplot2
     SUBDIR += R-cran-ggrepel
     SUBDIR += R-cran-gridBase
@@ -32,9 +33,11 @@
     SUBDIR += R-cran-qcc
     SUBDIR += R-cran-qpdf
     SUBDIR += R-cran-ragg
+    SUBDIR += R-cran-rgl
     SUBDIR += R-cran-s2
     SUBDIR += R-cran-scales
     SUBDIR += R-cran-shape
+    SUBDIR += R-cran-tweenr
     SUBDIR += R-cran-viridis
     SUBDIR += R-cran-viridisLite
     SUBDIR += R-cran-visNetwork
@@ -114,10 +117,10 @@
     SUBDIR += colmap
     SUBDIR += colord
     SUBDIR += colord-gtk
+    SUBDIR += colord-kde
     SUBDIR += compupic
     SUBDIR += converseen
     SUBDIR += corrupter
-    SUBDIR += cosmoplayer
     SUBDIR += cptutils
     SUBDIR += crw
     SUBDIR += ctl
@@ -155,6 +158,7 @@
     SUBDIR += drm-61-kmod
     SUBDIR += drm-66-kmod
     SUBDIR += drm-kmod
+    SUBDIR += drm-latest-kmod
     SUBDIR += drm_info
     SUBDIR += dspdfviewer
     SUBDIR += dssim
@@ -245,6 +249,7 @@
     SUBDIR += geos
     SUBDIR += geoserver
     SUBDIR += gexiv2
+    SUBDIR += gexiv2_016
     SUBDIR += giflib
     SUBDIR += gifmerge
     SUBDIR += gifsicle
@@ -346,7 +351,9 @@
     SUBDIR += hppsmtools
     SUBDIR += hs-tart
     SUBDIR += hugin
+    SUBDIR += hvif-tools
     SUBDIR += hyprgraphics
+    SUBDIR += hyprland-protocols
     SUBDIR += icat
     SUBDIR += icc-profiles-adobe-cs4
     SUBDIR += icc-profiles-basiccolor
@@ -382,6 +389,7 @@
     SUBDIR += jdraw
     SUBDIR += jgraph
     SUBDIR += jhead
+    SUBDIR += jkqtplotter
     SUBDIR += jogamp-jogl
     SUBDIR += jogl
     SUBDIR += jp
@@ -512,6 +520,7 @@
     SUBDIR += libqrencode
     SUBDIR += librasterlite2
     SUBDIR += libraw
+    SUBDIR += libresprite
     SUBDIR += librsvg2
     SUBDIR += librsvg2-rust
     SUBDIR += librtprocess
@@ -581,6 +590,7 @@
     SUBDIR += mapnik
     SUBDIR += mapserver
     SUBDIR += mapyrus
+    SUBDIR += materialx
     SUBDIR += matplotlib-cpp
     SUBDIR += matplotplusplus
     SUBDIR += meh
@@ -629,6 +639,8 @@
     SUBDIR += nvidia-drm-66-kmod-devel
     SUBDIR += nvidia-drm-kmod
     SUBDIR += nvidia-drm-kmod-devel
+    SUBDIR += nvidia-drm-latest-kmod
+    SUBDIR += nvidia-drm-latest-kmod-devel
     SUBDIR += nvidia-texture-tools
     SUBDIR += ocaml-cairo
     SUBDIR += ocaml-images
@@ -673,7 +685,6 @@
     SUBDIR += optar
     SUBDIR += optipng
     SUBDIR += osg
-    SUBDIR += osg34
     SUBDIR += osgearth
     SUBDIR += ospray
     SUBDIR += ospray-studio
@@ -787,6 +798,7 @@
     SUBDIR += p5-VCG
     SUBDIR += p5-Visio
     SUBDIR += p5-feedgnuplot
+    SUBDIR += pagedgeometry
     SUBDIR += panoglview
     SUBDIR += panomatic
     SUBDIR += partio
@@ -829,6 +841,8 @@
     SUBDIR += php83-gd
     SUBDIR += php84-exif
     SUBDIR += php84-gd
+    SUBDIR += php85-exif
+    SUBDIR += php85-gd
     SUBDIR += phplot
     SUBDIR += picpuz
     SUBDIR += piddle
@@ -886,6 +900,7 @@
     SUBDIR += py-PyOpenGL
     SUBDIR += py-PyOpenGL-accelerate
     SUBDIR += py-actdiag
+    SUBDIR += py-agx-emulsion
     SUBDIR += py-albucore
     SUBDIR += py-albumentations
     SUBDIR += py-altair
@@ -908,8 +923,10 @@
     SUBDIR += py-contextily
     SUBDIR += py-descartes
     SUBDIR += py-diplib
+    SUBDIR += py-dj52-sorl-thumbnail
     SUBDIR += py-django-easy-thumbnails
     SUBDIR += py-djvulibre
+    SUBDIR += py-easyocr
     SUBDIR += py-exifread
     SUBDIR += py-f3d
     SUBDIR += py-face_recognition
@@ -964,6 +981,7 @@
     SUBDIR += py-optimize-images
     SUBDIR += py-osmnet
     SUBDIR += py-pandana
+    SUBDIR += py-pandarm
     SUBDIR += py-pdf2image
     SUBDIR += py-photocollage
     SUBDIR += py-piexif
@@ -993,6 +1011,7 @@
     SUBDIR += py-pymaging
     SUBDIR += py-pymaging-png
     SUBDIR += py-pyocr
+    SUBDIR += py-pyogrio
     SUBDIR += py-pypillowfight
     SUBDIR += py-pyproj
     SUBDIR += py-pyqrcode
@@ -1016,6 +1035,7 @@
     SUBDIR += py-rawkit
     SUBDIR += py-rawpy
     SUBDIR += py-rich-pixels
+    SUBDIR += py-rlpycairo
     SUBDIR += py-s2
     SUBDIR += py-scikit-image
     SUBDIR += py-seqdiag
@@ -1092,7 +1112,6 @@
     SUBDIR += resvg-capi
     SUBDIR += rgbpaint
     SUBDIR += rigsofrods-caelum
-    SUBDIR += rigsofrods-pagedgeometry
     SUBDIR += ristretto
     SUBDIR += rlottie
     SUBDIR += ruby-gd
@@ -1114,6 +1133,7 @@
     SUBDIR += rubygem-gemojione32
     SUBDIR += rubygem-geokit
     SUBDIR += rubygem-gitlab_emoji
+    SUBDIR += rubygem-graphene1
     SUBDIR += rubygem-gruff
     SUBDIR += rubygem-histogram
     SUBDIR += rubygem-image_processing
@@ -1176,6 +1196,7 @@
     SUBDIR += simpleviewer
     SUBDIR += skanlite
     SUBDIR += skanpage
+    SUBDIR += skia
     SUBDIR += spirv-cross
     SUBDIR += spirv-tools
     SUBDIR += springgraph
@@ -1244,6 +1265,7 @@
     SUBDIR += waifu2x-converter-cpp
     SUBDIR += waifu2x-ncnn-vulkan
     SUBDIR += wallhaven-cli
+    SUBDIR += wallust
     SUBDIR += wayland
     SUBDIR += wayland-protocols
     SUBDIR += wayland-utils
@@ -1278,6 +1300,7 @@
     SUBDIR += xpdf3
     SUBDIR += xpdf4
     SUBDIR += xpx
+    SUBDIR += xreader
     SUBDIR += xsane
     SUBDIR += xtexcad
     SUBDIR += xv

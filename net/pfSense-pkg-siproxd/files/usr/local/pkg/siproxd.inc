@@ -29,6 +29,7 @@ require_once("service-utils.inc");
 require_once("util.inc");
 
 define('SIPROXD', '/usr/local');
+define('LOG_PREFIX_PKG_SIPROXD', 'SIPROXD');
 
 function install_package_siproxd() {
 	siproxd_create_chroot();
@@ -65,13 +66,13 @@ function siproxd_generate_rules($type) {
 	}
 
 	if (!is_service_running('siproxd')) {
-		log_error("[siproxd] Package is installed but not started. Not installing firewall rules.");
+		logger(LOG_INFO, localize_text("Package is installed but not started. Not installing firewall rules."), LOG_PREFIX_PKG_SIPROXD);
 		return;
 	}
 
 	/* proxy is turned off in package settings */
 	if ($siproxd_conf['sipenable'] != "on") {
-		log_error("[siproxd] WARNING: siproxd proxy has not been enabled. Not installing firewall rules.");
+		logger(LOG_INFO, localize_text("Package has not been enabled. Not installing firewall rules."), LOG_PREFIX_PKG_SIPROXD);
 		return "\n";
 	}
 
@@ -81,6 +82,7 @@ function siproxd_generate_rules($type) {
 	$rtpupper = $siproxd_conf['rtpupper'] ?: '7079';
 	$port = $siproxd_conf['port'] ?: '5060';
 
+	$rules = '';
 	switch($type) {
 		case 'nat':
 			$rules .= "\n# Setup Siproxd proxy redirect\n";

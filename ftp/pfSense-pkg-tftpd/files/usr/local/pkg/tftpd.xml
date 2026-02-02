@@ -29,6 +29,7 @@
 	<name>tftpd</name>
 	<version>%%PKGVERSION%%</version>
 	<title>Services/TFTP Server</title>
+	<addedit_string>tftpd: changed settings</addedit_string>
 	<include_file>/usr/local/pkg/tftpd.inc</include_file>
 	<aftersaveredirect>/pkg_edit.php?xml=tftpd.xml</aftersaveredirect>
 	<menu>

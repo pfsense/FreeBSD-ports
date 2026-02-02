@@ -1,11 +1,11 @@
 PORTNAME=	typer
-PORTVERSION=	0.16.0
+PORTVERSION=	0.20.0
 CATEGORIES=	devel python
 MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
 MAINTAINER=	sunpoet@FreeBSD.org
-COMMENT=	Library for building CLI applications
+COMMENT=	Typer, build great CLIs. Easy to code. Based on Python type hints
 WWW=		https://typer.tiangolo.com/ \
 		https://github.com/fastapi/typer
 

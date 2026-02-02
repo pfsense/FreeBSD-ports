@@ -1,5 +1,5 @@
 PORTNAME=	appjail
-DISTVERSION=	3.9.0.20250603
+DISTVERSION=	4.7.0.20251222
 PORTEPOCH=	1
 CATEGORIES=	sysutils
 PKGNAMESUFFIX=	-devel
@@ -16,7 +16,7 @@ CONFLICTS=	appjail
 USE_GITHUB=	yes
 GH_ACCOUNT=	DtxdF
 GH_PROJECT=	AppJail
-GH_TAGNAME=	99c8d8cd5e1d15c7e74865dae32902a10f5f3c1f
+GH_TAGNAME=	83f350cd4b635d9a582e229ea3d796a95b96fe03
 
 MAKE_ARGS=	APPJAIL_VERSION=${DISTVERSION}+${GH_TAGNAME}
 ALL_TARGET=	utils-strip
@@ -25,17 +25,20 @@ SUB_FILES=	pkg-message
 
 PORTDOCS=	README.md
 
-OPTIONS_DEFINE=			DEBOOTSTRAP DOAS DOCS GIT OCI
+OPTIONS_DEFINE=		DEBOOTSTRAP DOAS DOCS GIT OCI PKGBASE
+OPTIONS_DEFAULT=	PKGBASE
 
-DEBOOTSTRAP_DESC=		Support for Debian and Ubuntu jails
-DOAS_DESC=			Add support for unprivileged users
-OCI_DESC=			Add support for OCI
+DEBOOTSTRAP_DESC=	Support for Debian and Ubuntu jails
+DOAS_DESC=		Add support for unprivileged users
+OCI_DESC=		Add support for OCI
+PKGBASE_DESC=		Add support for pkgbase
 
 DEBOOTSTRAP_RUN_DEPENDS=	debootstrap>0:sysutils/debootstrap
 DOAS_RUN_DEPENDS=		doas>0:security/doas
 GIT_RUN_DEPENDS=		git>0:devel/git
 OCI_RUN_DEPENDS=		buildah>0:sysutils/buildah \
 				jq>0:textproc/jq
+PKGBASE_RUN_DEPENDS=		${LOCALBASE}/sbin/pkg:${PKG_ORIGIN}
 
 post-install:
 	${MKDIR} ${STAGEDIR}/${ETCDIR}

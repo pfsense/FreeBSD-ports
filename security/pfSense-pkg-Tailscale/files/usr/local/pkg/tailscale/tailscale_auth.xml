@@ -28,6 +28,7 @@
 	<name>tailscale_auth</name>
 	<version>%%PKGVERSION%%</version>
 	<title>VPN/Tailscale</title>
+	<addedit_string>tailscale: changed auth settings</addedit_string>
 	<include_file>/usr/local/pkg/tailscale/tailscale_auth.inc</include_file>
 	<aftersaveredirect>/pkg_edit.php?xml=tailscale/tailscale_auth.xml</aftersaveredirect>
 	<tabs>

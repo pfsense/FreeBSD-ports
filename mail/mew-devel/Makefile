@@ -1,12 +1,11 @@
 PORTNAME=	mew
 DISTVERSIONPREFIX=	v
-DISTVERSION=	6.9-96
-PORTREVISION=	1
-DISTVERSIONSUFFIX=	-gc46d8ee
+DISTVERSION=	6.10-49
+DISTVERSIONSUFFIX=	-ge50839a
 CATEGORIES=	mail elisp
 PKGNAMESUFFIX=	-devel${EMACS_PKGNAMESUFFIX}
 
-MAINTAINER=	yasu@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Messaging in the Emacs World for emacs (Development Version)
 WWW=		https://www.Mew.org/
 
@@ -21,8 +20,6 @@ GH_PROJECT=	Mew
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--with-elispdir=${LOCALBASE}/${EMACS_VERSION_SITE_LISPDIR}/mew \
 		--with-etcdir=${LOCALBASE}/${EMACS_VERSION_SITE_LISPDIR}/mew/etc
-
-GNU_CONFIGURE_MANPREFIX=	${PREFIX}/share
 
 # target name for make build and install
 ALL_TARGET=	all info jinfo

@@ -1,18 +1,20 @@
 PORTNAME=	re
 DISTVERSIONPREFIX=	v
-DISTVERSION=	3.23.0
+DISTVERSION=	4.4.0
 CATEGORIES=	audio devel
 
-MAINTAINER=	herbert@gojira.at
+MAINTAINER=	zarychtam@plan-b.pwste.edu.pl
 COMMENT=	Library for real-time comms with async IO support
-WWW=		https://github.com/baresip
+WWW=		https://github.com/baresip/re
 
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-USES=		cmake ssl
+USES=		cmake:testing ssl
 USE_GITHUB=	yes
 GH_ACCOUNT=	baresip
 USE_LDCONFIG=	yes
+
+CMAKE_TESTING_TARGET=	retest
 
 .include <bsd.port.mk>

@@ -1,15 +1,18 @@
 PORTNAME=	openjdk
 DISTVERSIONPREFIX=	jdk-
 DISTVERSION=	${JDK_MAJOR_VERSION}.${JDK_MINOR_VERSION}.${JDK_PATCH_VERSION}+${JDK_BUILD_NUMBER}-${BSD_JDK_VERSION}
+PORTREVISION=	1
 CATEGORIES=	java devel
 PKGNAMESUFFIX?=	${JDK_MAJOR_VERSION}
-PORTREVISION=	1
 
 MAINTAINER=	java@FreeBSD.org
 COMMENT=	Java Development Kit ${JDK_MAJOR_VERSION}
 WWW=		https://openjdk.java.net/projects/jdk/23/
 
 LICENSE=	GPLv2
+
+DEPRECATED=	No longer supported by upstream
+EXPIRATION_DATE=	2026-05-12
 
 ONLY_FOR_ARCHS=	aarch64 amd64 i386 powerpc64 powerpc64le
 
@@ -40,15 +43,19 @@ USE_XORG=	x11 xext xi xrandr xrender xt xtst
 CPE_VENDOR=	oracle
 
 USE_GITHUB=	yes
-GH_ACCOUNT=	battleblow
-GH_PROJECT=	jdk23u
+GH_ACCOUNT=	freebsd
+GH_PROJECT=	openjdk
+GH_TAGNAME=	jdk-23.0.2+7-freebsd-2
 
 NO_CCACHE=	yes
 
-MAKE_JOBS_UNSAFE=	yes
+# Suppress passing -j to do-build target via Mk/bsd.port.mk
+# In the JDK build the number of parallel jobs is passed in via configure --with-num-cores=N
+_MAKE_JOBS=	#
 MAKE_ENV=	CLASSPATH="" \
 		JAVA_HOME="" \
 		LD_LIBRARY_PATH="" \
+		LOG=cmdlines \
 		MAKEFLAGS=""
 
 JDK_OSARCH=	bsd-${ARCH:S/amd64/x86_64/:S/i386/x86/:S/powerpc64/ppc64/}
@@ -66,7 +73,7 @@ JDK_MAJOR_VERSION=	23
 JDK_MINOR_VERSION=	0
 JDK_PATCH_VERSION=	2
 JDK_BUILD_NUMBER=	7
-BSD_JDK_VERSION=	1
+BSD_JDK_VERSION=	2
 
 JDK_BUG_URL=	https://bugs.freebsd.org/bugzilla/enter_bug.cgi?product=Ports%20%26%20Packages&component=Individual%20Port(s)&short_desc=java/${PORTNAME}${JDK_MAJOR_VERSION}%3A%20
 
@@ -85,6 +92,7 @@ CONFIGURE_ARGS=	--with-boot-jdk=${BOOTSTRAPJDKDIR} \
 		--with-giflib-lib=${LOCALBASE}/lib \
 		--with-harfbuzz=system \
 		--with-libpng=system \
+		--with-num-cores=${MAKE_JOBS_NUMBER} \
 		--with-zlib=system \
 		--with-lcms=system \
 		--x-includes=${LOCALBASE}/include \

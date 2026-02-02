@@ -189,6 +189,10 @@ abi_setup() {
 	fi
 
 	OSVERSION="$(echo "${ABI}" | cut -f2 -d:)00000"
+	OSVERSION_FEAT="$(get_repoc_feat | /usr/bin/grep -c "osversion")"
+	[ "${?}" -eq 0 ] && [ "${OSVERSION_FEAT}" = "1" ] && \
+	    [ -r "${_repo_conf_file%%.conf}.osversion" ] && \
+	    OSVERSION="$(/bin/cat "${_repo_conf_file%%.conf}.osversion")"
 
 	/bin/rm -f "${PKG_CONF}" 2> /dev/null
 	/usr/bin/touch "${PKG_CONF}" 2> /dev/null

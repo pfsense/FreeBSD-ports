@@ -1,5 +1,6 @@
 PORTNAME=	wireplumber
 DISTVERSION=	0.5.8
+PORTREVISION=	2
 CATEGORIES=	multimedia
 
 MAINTAINER=	arrowd@FreeBSD.org

@@ -28,6 +28,7 @@
 	</copyright>
 	<name>squidauth</name>
 	<title>Proxy Server: Authentication</title>
+	<addedit_string>squid: changed Authentication</addedit_string>
 	<include_file>/usr/local/pkg/squid.inc</include_file>
 	<tabs>
 		<tab>

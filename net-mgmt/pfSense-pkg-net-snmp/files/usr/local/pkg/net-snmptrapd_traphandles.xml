@@ -59,8 +59,8 @@
 			<url>/pkg_edit.php?xml=netsnmp.xml</url>
 		</tab>
 	</tabs>
-	<delete_string>snmptrapd trap handle deleted</delete_string>
-	<addedit_string>snmptrapd trap handle created/modified</addedit_string>
+	<delete_string>NET-SNMP: trap handle deleted</delete_string>
+	<addedit_string>NET-SNMP: changed Trap Handles</addedit_string>
 	<adddeleteeditpagefields>
 		<columnitem>
 			<fielddescr>Destination</fielddescr>

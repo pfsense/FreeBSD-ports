@@ -1,8 +1,8 @@
---- ui/views/BUILD.gn.orig	2025-05-28 14:55:43 UTC
+--- ui/views/BUILD.gn.orig	2025-12-05 10:12:50 UTC
 +++ ui/views/BUILD.gn
-@@ -833,7 +833,6 @@ component("views") {
-       sources += [ "accessibility/widget_ax_tree_id_map.cc" ]
-     }
+@@ -834,7 +834,6 @@ component("views") {
+       "windows_stationarity_monitor_aura.cc",
+     ]
      deps += [
 -      "//components/crash/core/common:crash_key",
        "//ui/aura",

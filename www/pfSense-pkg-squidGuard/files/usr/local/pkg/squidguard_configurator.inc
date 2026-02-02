@@ -1001,7 +1001,7 @@ function sg_create_config() {
 				$adv_pos = strpos($ent,'_adv');
 				$ads_pos = strpos($ent, '_ads');
 				if (($ads_pos > 0 || $adv_pos > 0) && $squidguard_config[F_ADV_BLANKIMG] == 'on') {
-					$sg_tag->items[] = "redirect " . sg_redirector_base_url($dst[F_REDIRECT], RMOD_INT_BLANKIMG);
+					$sg_tag->items[] = "redirect " . sg_redirector_base_url($ent[F_REDIRECT], RMOD_INT_BLANKIMG);
 				}
 
 				if ($squidguard_config[F_ENABLELOG] == 'on' ) {
@@ -1784,7 +1784,7 @@ function sg_check_redirect($rdr_mode, $rdr_info, &$err_msg)
             if (!$res) $err_msg = "Valid URL expected, but '$rdr_info' found.";
             break;
         case RMOD_INT_SIZELIMIT:
-            $res = is_numeric($rdr_path);
+            $res = is_numeric($rdr_info);
             if (!$res) $err_msg = "Valid number value expected, but '$rdr_info' found.";
             break;
         case RMOD_INT_BLANKPAGE: case RMOD_INT_BLANKIMG: case RMOD_INT_ERRORPAGE:

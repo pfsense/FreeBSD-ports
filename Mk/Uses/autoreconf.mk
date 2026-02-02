@@ -89,10 +89,10 @@ _AUTORECONF=	2.69
 BUILD_DEPENDS+=	autoconf2.69>=2.69:devel/autoconf2.69
 .  else
 _AUTORECONF=	2.72
-BUILD_DEPENDS+=	autoconf>=${_AUTORECONF}:devel/autoconf
+BUILD_DEPENDS+=	autoconf>=2.72_1:devel/autoconf
 .  endif
 
-BUILD_DEPENDS+=	automake>=1.17:devel/automake
+BUILD_DEPENDS+=	automake>=1.18.1:devel/automake
 
 .  if defined(libtool_ARGS) && empty(libtool_ARGS:Mbuild)
 BUILD_DEPENDS+=	libtoolize:devel/libtool

@@ -31,6 +31,7 @@
 	<name>bind</name>
 	<version>%%PKGVERSION%%</version>
 	<title>Services/Bind</title>
+	<addedit_string>bind: changed Settings</addedit_string>
 	<include_file>/usr/local/pkg/bind.inc</include_file>
 	<menu>
 		<name>BIND DNS Server</name>

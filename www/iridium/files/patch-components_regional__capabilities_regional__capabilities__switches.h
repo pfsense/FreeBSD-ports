@@ -1,11 +1,11 @@
---- components/regional_capabilities/regional_capabilities_switches.h.orig	2025-05-07 06:48:23 UTC
+--- components/regional_capabilities/regional_capabilities_switches.h.orig	2025-12-10 15:04:57 UTC
 +++ components/regional_capabilities/regional_capabilities_switches.h
-@@ -25,7 +25,7 @@ inline constexpr char kSearchEngineChoiceCountry[] =
- inline constexpr char kDefaultListCountryOverride[] = "DEFAULT_EEA";
- inline constexpr char kEeaListCountryOverride[] = "EEA_ALL";
+@@ -53,7 +53,7 @@ BASE_DECLARE_FEATURE(kRestrictLegacySearchEnginePromoO
+ BASE_DECLARE_FEATURE(kResolveRegionalCapabilitiesFromDevice);
+ #endif
  
--#if BUILDFLAG(IS_ANDROID) || BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_LINUX)
-+#if BUILDFLAG(IS_ANDROID) || BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_BSD)
- // When an invalid `country_codes::CountryId` is stored in prefs and this
- // feature is enabled the pref will be cleared allowing a valid country to be
- // set again.
+-#if BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_LINUX)
++#if BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_BSD) 
+ // Use finch permanent country instead of finch latest country for fetching
+ // country ID.
+ BASE_DECLARE_FEATURE(kUseFinchPermanentCountryForFetchCountryId);

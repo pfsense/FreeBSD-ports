@@ -1,11 +1,11 @@
---- configure.cmake.orig	2025-02-21 12:29:33 UTC
+--- configure.cmake.orig	2025-10-02 00:36:39 UTC
 +++ configure.cmake
 @@ -292,12 +292,12 @@ qt_webengine_configure_check("supported-platform"
  
  qt_webengine_configure_check("supported-platform"
      MODULES QtWebEngine
--    CONDITION LINUX OR (WIN32 AND NOT (WIN_ARM_64 AND DEFINED ENV{COIN_PLATFORM_ID})) OR MACOS
-+    CONDITION LINUX OR (WIN32 AND NOT (WIN_ARM_64 AND DEFINED ENV{COIN_PLATFORM_ID})) OR MACOS OR FREEBSD
+-    CONDITION LINUX OR WIN32 OR MACOS
++    CONDITION LINUX OR WIN32 OR MACOS OR FREEBSD
      MESSAGE "Build can be done only on Linux, Windows or macOS."
  )
  qt_webengine_configure_check("supported-platform"
@@ -31,7 +31,7 @@
  qt_webengine_configure_check("python3"
      MODULES QtWebEngine QtPdf
      CONDITION Python3_FOUND
-@@ -448,6 +439,8 @@ qt_webengine_configure_check("compiler"
+@@ -456,6 +447,8 @@ qt_webengine_configure_check("compiler"
      CONDITION MSVC OR
          (LINUX AND CMAKE_CXX_COMPILER_ID STREQUAL "GNU") OR
          (LINUX AND CMAKE_CXX_COMPILER_ID STREQUAL "Clang") OR
@@ -40,7 +40,7 @@
          (MACOS AND CMAKE_CXX_COMPILER_ID STREQUAL "AppleClang")
      MESSAGE
          "${CMAKE_CXX_COMPILER_ID} compiler is not supported."
-@@ -457,6 +450,8 @@ qt_webengine_configure_check("compiler"
+@@ -465,6 +458,8 @@ qt_webengine_configure_check("compiler"
      CONDITION MSVC OR
          (LINUX AND CMAKE_CXX_COMPILER_ID STREQUAL "GNU") OR
          (LINUX AND CMAKE_CXX_COMPILER_ID STREQUAL "Clang") OR
@@ -49,7 +49,7 @@
          (APPLE AND CMAKE_CXX_COMPILER_ID STREQUAL "AppleClang") OR
          (ANDROID AND CMAKE_CXX_COMPILER_ID STREQUAL "Clang") OR
          (MINGW AND CMAKE_CXX_COMPILER_ID STREQUAL "GNU") OR
-@@ -709,7 +704,7 @@ qt_feature("webengine-ozone-x11" PRIVATE
+@@ -727,7 +722,7 @@ qt_feature("webengine-ozone-x11" PRIVATE
  
  qt_feature("webengine-ozone-x11" PRIVATE
      LABEL "Support X11 on qpa-xcb"

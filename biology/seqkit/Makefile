@@ -1,7 +1,7 @@
 PORTNAME=	seqkit
 DISTVERSIONPREFIX=	v
-DISTVERSION=	2.10.0
-PORTREVISION=	3
+DISTVERSION=	2.11.0
+PORTREVISION=	1
 CATEGORIES=	biology
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -12,7 +12,7 @@ WWW=		https://bioinf.shenwei.me/seqkit \
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-USES=		go:modules
+USES=		go:1.24+,modules
 USE_GITHUB=	nodefault
 GH_TUPLE=	golang:sys:v0.6.0:sys
 

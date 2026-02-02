@@ -30,6 +30,7 @@
 	</copyright>
 	<name>zeekcontrol</name>
 	<title>Services/Zeek NSM</title>
+	<addedit_string>Zeek: changed ZeekControl</addedit_string>
 	<include_file>/usr/local/pkg/zeek.inc</include_file>
 	<tabs>
 		<tab>

@@ -27,6 +27,7 @@
 	</copyright>
 	<name>siproxdsettings</name>
 	<title>siproxd: Settings</title>
+	<addedit_string>SIPROXD: changed Settings</addedit_string>
 	<include_file>/usr/local/pkg/siproxd.inc</include_file>
 	<aftersaveredirect>/pkg_edit.php?xml=siproxd.xml</aftersaveredirect>
 	<menu>

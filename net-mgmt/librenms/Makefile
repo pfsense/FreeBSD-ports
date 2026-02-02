@@ -1,5 +1,5 @@
 PORTNAME=	librenms
-PORTVERSION=	25.6.0
+PORTVERSION=	25.12.0
 PORTEPOCH=	1
 CATEGORIES=	net-mgmt
 MASTER_SITES=	LOCAL/dvl:vendor
@@ -18,15 +18,14 @@ RUN_DEPENDS+=	${PYTHON_PKGNAMEPREFIX}psutil>0:sysutils/py-psutil@${PY_FLAVOR} \
 		bash:shells/bash \
 		dot:graphics/graphviz \
 		rrdtool:databases/rrdtool \
-		snmpget:net-mgmt/net-snmp \
-		sudo:security/sudo
+		snmpget:net-mgmt/net-snmp
 
-USES=		cpe php python shebangfix
+USES=		cpe php python shebangfix sudo
 USE_GITHUB=	yes
 # php hash/json/openssl extension is required but it's statically linked in default php
 USE_PHP=	ctype curl dom fileinfo filter gd iconv ldap mbstring mysqli \
-		pdo pdo_mysql phar posix session simplexml snmp sockets \
-		tokenizer xml xmlwriter zip zlib
+		pdo pdo_mysql phar posix readline session simplexml snmp \
+		sockets tokenizer xml xmlwriter zip zlib
 USE_RC_SUBR=	librenms
 
 SHEBANG_FILES=	../${PORTNAME}-vendor-${PORTVERSION}/paragonie/random_compat/build-phar.sh \
@@ -46,10 +45,10 @@ SHEBANG_FILES=	../${PORTNAME}-vendor-${PORTVERSION}/paragonie/random_compat/buil
 		../librenms-vendor-${PORTVERSION}/symfony/error-handler/Resources/bin/patch-type-declarations \
 		../librenms-vendor-${PORTVERSION}/symfony/var-dumper/Resources/bin/var-dump-server \
 		../librenms-vendor-${PORTVERSION}/symfony/yaml/Resources/bin/yaml-lint \
-		addhost.php alerts.php artisan billing-calculate.php \
-		check-services.php config_to_json.php cronic daily.php daily.sh \
-		delhost.php discovery-wrapper.py discovery.php dist-pollers.php \
-		irc.php librenms-service.py LibreNMS/command_runner.py \
+		alerts.php artisan billing-calculate.php check-services.php \
+		config_to_json.php cronic daily.php daily.sh delhost.php \
+		discovery-wrapper.py discovery.php irc.php \
+		librenms-service.py LibreNMS/command_runner.py \
 		LibreNMS/wrapper.py lnms misc/lnms-completion.bash \
 		misc/smokeping-debian.example misc/smokeping-rhel.example \
 		ping.php poll-billing.php poller-wrapper.py poller.php \
@@ -71,8 +70,8 @@ SHEBANG_FILES=	../${PORTNAME}-vendor-${PORTVERSION}/paragonie/random_compat/buil
 		scripts/rename-mibs.php scripts/rrdstep.php \
 		scripts/save-test-data.php scripts/syslog-notify-oxidized.php \
 		scripts/test-alert.php scripts/test-template.php \
-		scripts/tune_port.php scripts/watchmaillog/watchmaillog.pl \
-		snmp-scan.py snmptrap.php syslog.php validate.php
+		scripts/watchmaillog/watchmaillog.pl snmp-scan.py snmptrap.php \
+		syslog.php validate.php
 
 NO_ARCH=	yes
 NO_BUILD=	yes
@@ -114,19 +113,19 @@ X11_RUN_DEPENDS_OFF=	mtr:net/mtr@nox11
 X11_USES=		magick:6
 X11_USES_OFF=		magick:6,nox11
 
-_ROOT_FILES=		addhost.php alerts.php artisan billing-calculate.php \
+_ROOT_FILES=		alerts.php artisan billing-calculate.php \
 			check-services.php composer.json composer.lock \
 			config.php.default config_to_json.php cronic daily.php \
 			delhost.php discovery-wrapper.py discovery.php \
-			dist-pollers.php irc.php librenms-service.py mkdocs.yml \
-			phpunit.xml ping.php poll-billing.php \
-			poller.php poller-wrapper.py renamehost.php \
-			snmp-scan.py snmptrap.php syslog.php validate.php
+			irc.php librenms-service.py mkdocs.yml \
+			phpunit.xml ping.php poll-billing.php poller.php \
+			poller-wrapper.py renamehost.php snmp-scan.py \
+			snmptrap.php syslog.php validate.php
 _SCRIPT_FILES=		daily.sh lnms
 # _RELEASE_TIMESTAMP is used for a patch inside the vendor code
 # it represents the release date via: git show --pretty='%H|%ct' -s 1.42.01
 # It sits here so you remember to update it with each release
-_RELEASE_TIMESTAMP=	1750074912
+_RELEASE_TIMESTAMP=	1765807513
 _ROOT_DIRS=		LibreNMS app bootstrap config database doc html \
 			includes lang licenses mibs misc resources routes \
 			scripts tests

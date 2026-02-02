@@ -1,6 +1,5 @@
 PORTNAME=	dav1d
-DISTVERSION=	1.5.1
-PORTREVISION=	1
+DISTVERSION=	1.5.2
 CATEGORIES=	multimedia
 
 MAINTAINER=	jbeich@FreeBSD.org
@@ -49,6 +48,10 @@ MESON_ARGS+=	${MESON_ARGS_${CHOSEN_COMPILER_TYPE}_${ARCH}}
 MESON_ARGS_clang_amd64=	-Dstack_alignment=16
 MESON_ARGS_clang_i386=	-Dstack_alignment=4
 .endif
+
+post-build-TEST-on:
+# Ensure checkasm is built before tests are run
+	@${DO_MAKE_BUILD} -C ${BUILD_WRKSRC} meson-test-prereq
 
 pre-install-TEST-on: do-test
 

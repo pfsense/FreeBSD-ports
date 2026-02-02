@@ -1,9 +1,9 @@
 PORTNAME=	yosys-ghdl-plugin
 PORTVERSION=	g20230930
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	cad
 
-MAINTAINER=	nsonack@outlook.com
+MAINTAINER=	nsonack@herrhotzenplotz.de
 COMMENT=	GHDL synthesis plugin for yosys
 WWW=		https://github.com/ghdl/ghdl-yosys-plugin
 

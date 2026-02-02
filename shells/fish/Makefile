@@ -1,12 +1,8 @@
 PORTNAME=	fish
-DISTVERSION=	4.0.2
+DISTVERSION=	4.2.1
 PORTREVISION=	1
 CATEGORIES=	shells
 MASTER_SITES=	https://github.com/fish-shell/fish-shell/releases/download/${PORTVERSION}/
-
-PATCH_SITES=	https://github.com/fish-shell/fish-shell/pull/
-# https://github.com/fish-shell/fish-shell/pull/11486
-PATCHFILES+=	11486.patch:-p1
 
 MAINTAINER=	asomers@FreeBSD.org
 COMMENT=	User friendly command line shell

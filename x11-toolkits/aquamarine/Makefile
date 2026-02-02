@@ -1,10 +1,10 @@
 PORTNAME=	aquamarine
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.8.0
-PORTREVISION=	2
+DISTVERSION=	0.10.0
+PORTREVISION=	1
 CATEGORIES=	x11-toolkits
 
-MAINTAINER=	jbeich@FreeBSD.org
+MAINTAINER=	tagattie@FreeBSD.org
 COMMENT=	Very light linux rendering backend library
 WWW=		https://github.com/hyprwm/aquamarine
 
@@ -25,13 +25,18 @@ LIB_DEPENDS=	libhyprutils.so:devel/hyprutils \
 RUN_DEPENDS=	mesa-dri>0:graphics/mesa-dri
 
 USES=		cmake:testing compiler:c++11-lib gl pathfix pkgconfig xorg
-USE_GITHUB=	yes
-USE_GL=		egl gbm glesv2
-USE_XORG=	pixman
-GH_ACCOUNT=	hyprwm
-PLIST_SUB=	VERSION=${DISTVERSION:C/-.*//}
 
-# XXX Drop after FreeBSD 13.4 EOL around 2026-01-31
+USE_GITHUB=	yes
+GH_ACCOUNT=	hyprwm
+
+USE_GL=		egl gbm glesv2
+USE_LDCONFIG=	yes
+USE_XORG=	pixman
+
+PLIST_SUB=	SOVERSION_FULL=${DISTVERSION:C/-.*//} \
+		SOVERSION_MAJOR=9
+
+# XXX Drop after FreeBSD 13.5 EOL around 2026-04-30
 # https://cgit.freebsd.org/src/commit/?id=af93fea71038
 .if !exists(/usr/include/sys/timerfd.h)
 LIB_DEPENDS+=	libepoll-shim.so:devel/libepoll-shim

@@ -56,14 +56,14 @@ FPC_DEFAULT?=		3.3.1
 .  else
 FPC_DEFAULT?=		3.2.3
 .  endif
-# Possible values: 11, 12, 13, 14, 15, 16
+# Possible values: 12, 13, 14, 15, 16
 # (Any other version is completely unsupported and not meant for general use.)
-GCC_DEFAULT?=		13
+GCC_DEFAULT?=		14
 # Possible values: 10
 GHOSTSCRIPT_DEFAULT?=	10
 # Possible values: mesa-libs, mesa-devel
 GL_DEFAULT?=		mesa-libs
-# Possible values: 1.20, 1.21, 1.22, 1.23, 1.24, 1.25-devel
+# Possible values: 1.20, 1.21, 1.22, 1.23, 1.24, 1.25, 1.26-devel
 GO_DEFAULT?=		1.24
 # Possible values: 1.8, 2.2, 3.0
 GUILE_DEFAULT?=		2.2
@@ -73,13 +73,13 @@ GUILE_DEFAULT?=		2.2
 # Format:	     version[-flavor]
 # Examples:	     6-nox11, 7
 IMAGEMAGICK_DEFAULT?=	7
-# Possible values: 8, 11, 17, 18, 19, 20, 21, 22, 23, 24
+# Possible values: 8, 11, 17, 18, 19, 20, 21, 22, 23, 24, 25
 JAVA_DEFAULT?=		8
-# Possible values: 4.0, 4.99
+# Possible values: 4.4, 4.99
 .  if (defined(WANT_LAZARUS_DEVEL) && !empty(WANT_LAZARUS_DEVEL)) || ${ARCH:Maarch64}
 LAZARUS_DEFAULT?=	4.99
 .  else
-LAZARUS_DEFAULT?=	4.0
+LAZARUS_DEFAULT?=	4.4
 .  endif
 # Possible values: rust, legacy
 .  if empty(ARCH:Naarch64:Namd64:Narmv7:Ni386:Npowerpc64:Npowerpc64le:Npowerpc:Nriscv64)
@@ -93,32 +93,32 @@ LINUX_DEFAULT?=		c7
 .  else
 LINUX_DEFAULT?=		rl9
 .  endif
-# Possible values: 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, -devel (to be used when non-base compiler is required)
+# Possible values: 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, -devel (to be used when non-base compiler is required)
 LLVM_DEFAULT?=		19
 # Possible values: 5.1, 5.2, 5.3, 5.4
 LUA_DEFAULT?=		5.4
-# Possible values: luajit, luajit-devel, luajit-openresty
+# Possible values: luajit, luajit-openresty
 .  if ${ARCH:Mpowerpc64*}
 LUAJIT_DEFAULT?=	luajit-openresty
 .  else
-LUAJIT_DEFAULT?=	luajit-devel
+LUAJIT_DEFAULT?=	luajit
 .  endif
 # Possible values: 5.10, 5.20, 6.8
 MONO_DEFAULT?=		5.20
-# Possible values: 8.0, 8.4, 9.1, 10.5m, 10.6m, 10.11m, 11.4m
+# Possible values: 8.0, 8.4, 9.1, 9.4, 10.6m, 10.11m, 11.4m, 11.8m
 MYSQL_DEFAULT?=		8.0
 # Possible values: ninja, samurai
 NINJA_DEFAULT?=		ninja
-# Possible value: 18, 20, 22, 23, 24, current, lts (Note: current = 24 and lts = 22)
+# Possible value: 20, 22, 24, 25, current, lts (Note: current = 25 and lts = 24)
 NODEJS_DEFAULT?=	lts
 # Possible value: 25, 26
 OPENLDAP_DEFAULT?=	26
-# Possible values: 5.38, 5.40, devel
+# Possible values: 5.38, 5.40, 5.42, devel
 .  if !exists(${LOCALBASE}/bin/perl) || (!defined(_PORTS_ENV_CHECK) && \
     defined(PACKAGE_BUILDING))
 # When changing the default here, make sure the DEPRECATED/EXPIRATION lines in
 # the older Perl 5 ports are uncommented at the same time.
-PERL5_DEFAULT?=		5.40
+PERL5_DEFAULT?=		5.42
 .  elif !defined(PERL5_DEFAULT)
 # There's no need to replace development versions, like "5.23" with "devel"
 # because 1) nobody is supposed to use it outside of poudriere, and 2) it must
@@ -130,29 +130,30 @@ _PERL5_FROM_BIN!=	${LOCALBASE}/bin/perl -e 'printf "%vd\n", $$^V;'
 _EXPORTED_VARS+=	_PERL5_FROM_BIN
 PERL5_DEFAULT:=		${_PERL5_FROM_BIN:R}
 .  endif
-# Possible values: 13, 14, 15, 16, 17
+# Possible values: 13, 14, 15, 16, 17, 18
 PGSQL_DEFAULT?=		17
-# Possible values: 8.1, 8.2, 8.3, 8.4
-PHP_DEFAULT?=		8.3
+# Possible values: 8.1, 8.2, 8.3, 8.4, 8.5
+PHP_DEFAULT?=		8.4
 # Possible values: rust, legacy
 .  if empty(ARCH:Naarch64:Namd64:Narmv7:Ni386:Npowerpc64:Npowerpc64le:Npowerpc:Nriscv64)
 PYCRYPTOGRAPHY_DEFAULT?=	rust
 .  else
 PYCRYPTOGRAPHY_DEFAULT?=	legacy
 .  endif
-# Possible values: 3.9, 3.10, 3.11, 3.12
+# Possible values: 3.10, 3.11, 3.12, 3.13, 3.13t, 3.14
 PYTHON_DEFAULT?=	3.11
 # Possible values: 2.7
 PYTHON2_DEFAULT?=	2.7
-# Possible values: 3.2, 3.3, 3.4, 3.5
+# Possible values: 3.2, 3.3, 3.4, 4.0
 RUBY_DEFAULT?=		3.3
 # Possible values: rust, rust-nightly
 RUST_DEFAULT?=		rust
-# Possible values: 4.16, 4.19, 4.20
+# Possible values: 4.16, 4.19, 4.20, 4.22, 4.23
 SAMBA_DEFAULT?=		4.16
 # When updating this, please also update the same list in ssl.mk and the checks
 # for USES=ssl in qa.sh!
-# Possible values: base, openssl, openssl111, openssl31, openssl32, openssl33, libressl, libressl-devel
+# Possible values: base, openssl, openssl111, openssl33, openssl34, openssl35,
+# openssl36, libressl, libressl-devel
 .  if !defined(SSL_DEFAULT)
 #	If no preference was set, check for an installed base version
 #	but give an installed port preference over it.
@@ -188,6 +189,8 @@ check-makevars::
 # Make sure we have a default in the end
 SSL_DEFAULT?=	base
 .  endif
+# Possible values: default, sssd
+SUDO_DEFAULT?=		default
 # Possible values: 8.6, 9.0
 TCLTK_DEFAULT?=		8.6
 # Possible values: 6, 7

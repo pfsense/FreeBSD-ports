@@ -1,7 +1,6 @@
 PORTNAME=	openvdb
 DISTVERSIONPREFIX=	v
-DISTVERSION=	12.0.1
-PORTREVISION=	1
+DISTVERSION=	13.0.0
 CATEGORIES=	misc
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -13,7 +12,7 @@ LICENSE=	MPL20
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
 LIB_DEPENDS=	libblosc.so:archivers/c-blosc \
-		libboost_system.so:devel/boost-libs \
+		libboost_iostreams.so:devel/boost-libs \
 		libImath.so:math/Imath \
 		libtbb.so:devel/onetbb
 TEST_DEPENDS=	googletest>0:devel/googletest
@@ -46,6 +45,11 @@ TOOLS_USE=		GL=gl,glu XORG=ice,sm,x11,xcursor,xext,xi,xinerama,xrandr,xxf86vm
 
 #PORTDOCS=	*
 
-# 100% tests passed, 0 tests failed out of 1
+# tests as of 13.0.0:
+# [==========] 732 tests from 118 test suites ran. (50897 ms total)
+# [  PASSED  ] 731 tests.
+# [  FAILED  ] 1 test, listed below:
+# [  FAILED  ] TestStreamCompression.testPagedStreams
+# see https://github.com/AcademySoftwareFoundation/openvdb/issues/2133
 
 .include <bsd.port.mk>

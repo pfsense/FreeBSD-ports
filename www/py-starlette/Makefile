@@ -1,13 +1,13 @@
 PORTNAME=	starlette
-PORTVERSION=	0.47.0
+PORTVERSION=	0.50.0
 CATEGORIES=	www python
 MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Lightweight ASGI framework/toolkit
-WWW=		https://www.starlette.io/ \
-		https://github.com/encode/starlette
+WWW=		https://starlette.dev/ \
+		https://github.com/Kludex/starlette
 
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE.md
@@ -32,8 +32,8 @@ FULL_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}itsdangerous>=0:security/py-itsdangerou
 
 .include <bsd.port.pre.mk>
 
-.if ${PYTHON_REL} < 31000
-RUN_DEPENDS+=	${PYTHON_PKGNAMEPREFIX}typing-extensions>=3.10.0:devel/py-typing-extensions@${PY_FLAVOR}
+.if ${PYTHON_REL} < 31300
+RUN_DEPENDS+=	${PYTHON_PKGNAMEPREFIX}typing-extensions>=4.10.0:devel/py-typing-extensions@${PY_FLAVOR}
 .endif
 
 .include <bsd.port.post.mk>

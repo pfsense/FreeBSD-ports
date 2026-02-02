@@ -1,11 +1,10 @@
 PORTNAME=	fooyin
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.8.1
-PORTREVISION=	1
+DISTVERSION=	0.9.2
 CATEGORIES=	audio multimedia
 
 PATCH_SITES=	https://github.com/fooyin/fooyin/commit/
-PATCHFILES+=	e44e08abb33f01fe85cc896170c55dbf732ffcc9.patch:-p1 # Fix build with Qt >= 6.9.0
+PATCHFILES+=	7b171c0da2b9289468696424fe51f76e1c365bb5.patch:-p1 # Fix build with Qt 6.10
 
 MAINTAINER=	diizzy@FreeBSD.org
 COMMENT=	foobar2000 inspired audio player

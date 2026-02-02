@@ -1,6 +1,6 @@
 PORTNAME=	llvm
 DISTVERSION=	13.0.1
-PORTREVISION=	7
+PORTREVISION=	8
 CATEGORIES=	devel lang
 MASTER_SITES=	https://github.com/llvm/llvm-project/releases/download/llvmorg-${DISTVERSION:S/rc/-rc/}/ \
 		https://${PRE_}releases.llvm.org/${LLVM_RELEASE}/${RCDIR}
@@ -139,8 +139,9 @@ FLANG_IMPLIES=		MLIR
 FLANG_PORTDOCS=		flang
 FLANG_PLIST_DIRS=	${LLVM_DIR}/include/flang/Config
 GOLD_DESC=		Build the LLVM Gold plugin for LTO
-GOLD_CMAKE_ON=		-DLLVM_BINUTILS_INCDIR=${LOCALBASE}/include
 GOLD_BUILD_DEPENDS=	${LOCALBASE}/bin/ld.gold:devel/binutils
+GOLD_CMAKE_ON=		-DLLVM_BINUTILS_INCDIR=${LOCALBASE}/include
+GOLD_EXTRA_PATCHES_OFF=	${PATCHDIR}/gold-off-llvm_tools_CMakeLists.txt
 LIT_DESC=		Install lit and FileCheck test tools
 LIT_VARS=		_USES_PYTHON=python
 LLD_DESC=		Install lld, the LLVM linker

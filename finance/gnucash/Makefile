@@ -1,11 +1,7 @@
 PORTNAME=	gnucash
-PORTVERSION=	5.11
-PORTREVISION=	1
+PORTVERSION=	5.14
 CATEGORIES=	finance gnome
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}%20%28stable%29/${PORTVERSION}
-
-PATCH_SITES=	https://github.com/${PORTNAME}/${PORTNAME}/commit/
-PATCHFILES=	940085a0.patch:-p1 99f86d31.patch:-p1 e00eade7.patch:-p1
 
 MAINTAINER=	madpilot@FreeBSD.org
 COMMENT=	Quicken-like money and finance manager
@@ -88,6 +84,9 @@ OFX_VARS=		GLIB_SCHEMAS+=org.gnucash.GnuCash.dialogs.import.ofx.gschema.xml
 
 PYTHON_CMAKE_BOOL=	WITH_PYTHON
 PYTHON_USES=		python
+
+post-patch:
+	@${REINPLACE_CMD} -e 's/-Werror //' ${WRKSRC}/CMakeLists.txt
 
 post-install-PYTHON-on:
 	@(cd ${STAGEDIR}${PREFIX} \

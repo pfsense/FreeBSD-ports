@@ -3,7 +3,7 @@
  * mdns-bridge.inc
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2024 Denny Page
+ * Copyright (c) 2024-2025 Denny Page
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -23,6 +23,8 @@
 require_once("config.inc");
 require_once("util.inc");
 require_once("service-utils.inc");
+
+define('LOG_PREFIX_PKG_MDNSBRIDGE', 'mDNS Bridge');
 
 const MDNS_BRIDGE_SVC_NAME = 'mdns-bridge';
 const MDNS_BRIDGE_CMD = '/usr/local/bin/mdns-bridge';
@@ -62,8 +64,12 @@ function mdns_bridge_write_files() {
 
 	// Get the real interface names
 	$interfaces = array();
-	foreach (explode(',', array_get_path($current_config, 'active_interfaces', '')) as $interface) {
-		$interfaces[$interface] = get_real_interface($interface);
+	foreach (array_filter(explode(',', array_get_path($current_config, 'active_interfaces', ''))) as $interface) {
+		$interface_name = get_real_interface($interface);
+		if (!isset($interface_name)) {
+			continue;
+		}
+		$interfaces[$interface] = $interface_name;
 	}
 
 	// Global section
@@ -149,11 +155,15 @@ function mdns_bridge_write_files() {
 
 	// Write the config file
 	if (!file_put_contents(MDNS_BRIDGE_CONF_FILE, implode("\n", $file_array))) {
-		log_error('ERROR: Could not write file ' . MDNS_BRIDGE_CONF_FILE);
+		logger(LOG_ERR, localize_text('Could not write file %s', MDNS_BRIDGE_CONF_FILE), LOG_PREFIX_PKG_MDNSBRIDGE);
 	}
 
 	// Write the rc file
-	$start = MDNS_BRIDGE_CMD . ' -s -c ' . MDNS_BRIDGE_CONF_FILE . ' -p ' . MDNS_BRIDGE_PID_FILE;
+	$start = MDNS_BRIDGE_CMD;
+	if (config_get_path('installedpackages/mdns-bridge/decode_warnings', false)) {
+		$start .= ' -w';
+	}
+	$start .= ' -s -c ' . MDNS_BRIDGE_CONF_FILE . ' -p ' . MDNS_BRIDGE_PID_FILE;
 	$stop = '/usr/bin/killall ' . MDNS_BRIDGE_SVC_NAME;
 	write_rcfile(array(
 		"file" => "mdns-bridge.sh",
@@ -166,7 +176,7 @@ function mdns_bridge_write_files() {
 function mdns_bridge_sync_config() {
 	// Stop the service if it is currently running
 	if (is_service_running(MDNS_BRIDGE_SVC_NAME)) {
-		log_error("Stopping service mDNS Bridge");
+		logger(LOG_INFO, localize_text("Stopping service"), LOG_PREFIX_PKG_MDNSBRIDGE);
 		stop_service(MDNS_BRIDGE_SVC_NAME);
 	}
 
@@ -196,18 +206,18 @@ function mdns_bridge_sync_config() {
 			case 'BACKUP':
 			case 'INIT':
 				// If the VHID is still initializing, or in backup, don't start the service.
-				log_error("mDNS Bridge service not started due to CARP status ({$status})");
+				logger(LOG_INFO, localize_text("Service not started due to CARP status (%s)", $status), LOG_PREFIX_PKG_MDNSBRIDGE);
 				return;
 				break;
 
 			default:
-				log_error("mDNS Bridge could not determine CARP status for VHID {$carp_vhid}: status = '{$status}'");
+				logger(LOG_INFO, localize_text("Could not determine CARP status for VHID %s: status = '%s'", $carp_vhid, $status), LOG_PREFIX_PKG_MDNSBRIDGE);
 		}
 
 	}
 
 	// Start the service
-	log_error("Starting service mDNS Bridge");
+	logger(LOG_INFO, localize_text("Starting service"), LOG_PREFIX_PKG_MDNSBRIDGE);
 	start_service(MDNS_BRIDGE_SVC_NAME);
 }
 
@@ -225,7 +235,7 @@ function mdns_bridge_plugin_carp($pluginparams) {
 	// Get my VIP
 	$vip = get_configured_vip($carp_vhid);
 	if (!$vip) {
-		log_error("mDNS Bridge cannot find configured VHID ({$carp_vhid}). Check configuration.");
+		logger(LOG_ERR, localize_text("Cannot find configured VHID (%s). Check configuration.", $carp_vhid), LOG_PREFIX_PKG_MDNSBRIDGE);
 		return null;
 	}
 
@@ -237,11 +247,11 @@ function mdns_bridge_plugin_carp($pluginparams) {
 
 	// Start or stop the service as appropriate
 	if ($pluginparams['event'] == "rc.carpmaster") {
-		log_error('Starting service mDNS Bridge on CARP VHID status change');
+		logger(LOG_INFO, localize_text('Starting service on CARP VHID status change'), LOG_PREFIX_PKG_MDNSBRIDGE);
 		start_service(MDNS_BRIDGE_SVC_NAME);
 	} elseif ($pluginparams['event'] == "rc.carpbackup") {
 		if (is_service_running(MDNS_BRIDGE_SVC_NAME)) {
-			log_error('Stopping service mDNS Bridge on CARP VHID status change');
+			logger(LOG_INFO, localize_text('Stopping service on CARP VHID status change'), LOG_PREFIX_PKG_MDNSBRIDGE);
 			stop_service(MDNS_BRIDGE_SVC_NAME);
 		}
 	}
@@ -250,7 +260,7 @@ function mdns_bridge_plugin_carp($pluginparams) {
 // Clean up on deinstall
 function mdns_bridge_deinstall_command() {
 	if (is_service_running(MDNS_BRIDGE_SVC_NAME)) {
-		log_error("Stopping service mDNS Bridge");
+		logger(LOG_INFO, localize_text("Stopping service"), LOG_PREFIX_PKG_MDNSBRIDGE);
 		stop_service(MDNS_BRIDGE_SVC_NAME);
 	}
 

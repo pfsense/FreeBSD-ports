@@ -1,5 +1,5 @@
 PORTNAME=	cucumber-tag-expressions
-PORTVERSION=	6.1.2
+PORTVERSION=	8.1.0
 CATEGORIES=	devel rubygems
 MASTER_SITES=	RG
 

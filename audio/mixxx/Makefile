@@ -1,10 +1,7 @@
 PORTNAME=	mixxx
-DISTVERSION=	2.5.0
-PORTREVISION=	5
+DISTVERSION=	2.5.3
+PORTREVISION=	1
 CATEGORIES=	audio
-
-PATCH_SITES=	https://github.com/mixxxdj/mixxx/commit/
-PATCHFILES+=	355eb9ce880349ff94759f731bb7ae747bf6677c.patch:-p1 # Fix build with Qt >= 6.9.0
 
 MAINTAINER=	acm@FreeBSD.org
 COMMENT=	DJ mixing application
@@ -37,7 +34,8 @@ LIB_DEPENDS=	libabsl_base.so:devel/abseil \
 		libportmidi.so:audio/portmidi \
 		libupower-glib.so:sysutils/upower \
 		libkeyfinder.so:audio/libkeyfinder \
-		libmp3lame.so:audio/lame
+		libmp3lame.so:audio/lame \
+		libxkbcommon.so:x11/libxkbcommon
 
 USES=		cmake:testing compiler:c++20-lang ebur128 gl iconv ninja pkgconfig \
 		sqlite ssl xorg
@@ -57,8 +55,8 @@ GH_ACCOUNT=	mixxxdj
 PKGNAMESUFFIX=  -qt6
 
 USES+=		qt:6
-USE_QT=		5compat base:run declarative:build tools:build shadertools \
-		sqldriver-sqlite:run svg
+USE_QT=		5compat base declarative shadertools \
+		sqldriver-sqlite:run svg tools:build
 CMAKE_ARGS+=	-DQT6=ON
 
 QTKEYCHAIN_LIB_DEPENDS=	libqt6keychain.so:security/qtkeychain@qt6
@@ -81,17 +79,20 @@ PLIST_SUB+=	QT6="@comment "
 CMAKE_ARGS+=	-DINSTALL_USER_UDEV_RULES:BOOL=OFF \
 		-DOPTIMIZE:STRING=portable \
 		-DBATTERY:BOOL=OFF \
-		-DFAAD:BOOL=OFF \
 		-DMODPLUG:BOOL=ON \
 		-DMAD:BOOL=ON
 
 PORTDOCS=	*
 
-OPTIONS_DEFINE=		BROADCAST DOCS ENGINEPRIME FFMPEG GPERFTOOLS HID OPUS \
+OPTIONS_DEFINE=		AAC BROADCAST DOCS ENGINEPRIME FFMPEG GPERFTOOLS HID OPUS \
 			QTKEYCHAIN WAVPACK
 OPTIONS_DEFAULT=	BROADCAST FFMPEG HID OPUS QTKEYCHAIN WAVPACK
 OPTIONS_SUB=		yes
 
+AAC_DESC=		AAC (m4a and mp4) support
+AAC_CMAKE_BOOL=		FAAD
+AAC_LIB_DEPENDS=	libfaad.so:audio/faad \
+			libmp4v2.so:multimedia/mp4v2
 BROADCAST_DESC=		Live Broadcasting (Shoutcast) support
 #BROADCAST_LIB_DEPENDS=	libshout-idjc.so:audio/shout-idjc
 BROADCAST_CMAKE_BOOL=	BROADCAST
@@ -117,8 +118,6 @@ post-patch:
 		${WRKSRC}/res/linux/org.mixxx.Mixxx.desktop
 	@${REINPLACE_CMD} -e "s,(Q_OS_LINUX),(Q_OS_LINUX) || defined(Q_OS_FREEBSD),g" \
 		${WRKSRC}/src/util/screensaver.h
-	@${REINPLACE_CMD} -e "s|QUIET hidapi-libusb|QUIET hidapi|" \
-		${WRKSRC}/cmake/modules/Findhidapi.cmake
 .for i in midi/midimessage.h
 	@${ECHO_CMD} >> ${WRKSRC}/src/controllers/${i}
 .endfor

@@ -1,12 +1,12 @@
 PORTNAME=	drm-66-kmod
 PORTVERSION=	${DRM_KMOD_DISTVERSION}
-PORTREVISION=	4
+PORTREVISION=	8
 CATEGORIES=	graphics kld
 
 .include "Makefile.version"
 
 MAINTAINER=	x11@FreeBSD.org
-COMMENT=	DRM drivers modules
+COMMENT=	Direct Rendering Manager GPU drivers
 WWW=		https://github.com/freebsd/drm-kmod/
 
 LICENSE=	BSD2CLAUSE MIT GPLv2

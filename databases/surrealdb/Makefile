@@ -1,6 +1,7 @@
 PORTNAME=	surrealdb
 DISTVERSIONPREFIX=	v
-DISTVERSION=	2.3.4
+DISTVERSION=	2.4.0
+PORTREVISION=	1
 CATEGORIES=	databases
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -36,7 +37,7 @@ CARGO_CRATES=	Inflector-0.11.4 \
 		alloc-no-stdlib-2.0.4 \
 		alloc-stdlib-0.2.2 \
 		allocator-api2-0.2.21 \
-		ammonia-4.0.0 \
+		ammonia-4.1.2 \
 		android-tzdata-0.1.1 \
 		android_system_properties-0.1.5 \
 		anes-0.1.6 \
@@ -90,7 +91,7 @@ CARGO_CRATES=	Inflector-0.11.4 \
 		bincode-1.3.3 \
 		bindgen-0.69.5 \
 		bindgen-0.70.1 \
-		bindgen-0.71.1 \
+		bindgen-0.72.1 \
 		bit-set-0.5.3 \
 		bit-vec-0.6.3 \
 		bitcode-0.6.6 \
@@ -152,6 +153,8 @@ CARGO_CRATES=	Inflector-0.11.4 \
 		crossbeam-utils-0.8.21 \
 		crunchy-0.2.3 \
 		crypto-common-0.1.6 \
+		cssparser-0.35.0 \
+		cssparser-macros-0.6.1 \
 		darling-0.20.10 \
 		darling_core-0.20.10 \
 		darling_macro-0.20.10 \
@@ -172,6 +175,8 @@ CARGO_CRATES=	Inflector-0.11.4 \
 		dmp-0.2.0 \
 		doc-comment-0.3.3 \
 		double-ended-peekable-0.1.0 \
+		dtoa-1.0.10 \
+		dtoa-short-0.3.5 \
 		earcutr-0.4.3 \
 		either-1.15.0 \
 		ena-0.14.3 \
@@ -249,7 +254,7 @@ CARGO_CRATES=	Inflector-0.11.4 \
 		hex-0.4.3 \
 		hmac-0.12.1 \
 		home-0.5.11 \
-		html5ever-0.27.0 \
+		html5ever-0.35.0 \
 		http-0.2.12 \
 		http-1.3.1 \
 		http-body-0.4.6 \
@@ -292,7 +297,6 @@ CARGO_CRATES=	Inflector-0.11.4 \
 		itertools-0.10.5 \
 		itertools-0.11.0 \
 		itertools-0.12.1 \
-		itertools-0.13.0 \
 		itertools-0.14.0 \
 		itoa-1.0.15 \
 		jiff-0.2.4 \
@@ -309,9 +313,7 @@ CARGO_CRATES=	Inflector-0.11.4 \
 		libloading-0.7.4 \
 		libloading-0.8.6 \
 		libm-0.2.11 \
-		libmimalloc-sys-0.1.40 \
 		libredox-0.1.3 \
-		librocksdb-sys-0.17.1+9.9.3 \
 		libz-sys-1.1.22 \
 		linfa-linalg-0.1.0 \
 		linux-raw-sys-0.4.15 \
@@ -323,8 +325,9 @@ CARGO_CRATES=	Inflector-0.11.4 \
 		lz4-sys-1.11.1+lz4-1.10.0 \
 		mac-0.1.1 \
 		maplit-1.0.2 \
-		markup5ever-0.12.1 \
-		matchers-0.1.0 \
+		markup5ever-0.35.0 \
+		match_token-0.35.0 \
+		matchers-0.2.0 \
 		matchit-0.7.3 \
 		matrixmultiply-0.3.9 \
 		md-5-0.10.6 \
@@ -332,7 +335,6 @@ CARGO_CRATES=	Inflector-0.11.4 \
 		memmap2-0.9.5 \
 		miette-5.10.0 \
 		miette-derive-5.10.0 \
-		mimalloc-0.1.44 \
 		mime-0.3.17 \
 		mime_guess-2.0.5 \
 		minimal-lexical-0.2.1 \
@@ -353,6 +355,7 @@ CARGO_CRATES=	Inflector-0.11.4 \
 		nom-7.1.3 \
 		ntapi-0.4.1 \
 		nu-ansi-term-0.46.0 \
+		nu-ansi-term-0.50.1 \
 		num-bigint-0.4.6 \
 		num-complex-0.4.6 \
 		num-conv-0.1.0 \
@@ -453,9 +456,7 @@ CARGO_CRATES=	Inflector-0.11.4 \
 		ref-cast-1.0.24 \
 		ref-cast-impl-1.0.24 \
 		regex-1.11.1 \
-		regex-automata-0.1.10 \
 		regex-automata-0.4.9 \
-		regex-syntax-0.6.29 \
 		regex-syntax-0.8.5 \
 		relative-path-1.9.3 \
 		rend-0.4.2 \
@@ -474,7 +475,6 @@ CARGO_CRATES=	Inflector-0.11.4 \
 		rmpv-1.3.0 \
 		roaring-0.10.10 \
 		robust-1.1.0 \
-		rocksdb-0.23.0 \
 		rquickjs-0.9.0 \
 		rquickjs-core-0.9.0 \
 		rquickjs-macro-0.9.0 \
@@ -553,7 +553,9 @@ CARGO_CRATES=	Inflector-0.11.4 \
 		subtle-2.6.1 \
 		surrealcs-0.4.4 \
 		surrealcs-kernel-0.4.4 \
-		surrealdb-tikv-client-0.3.0-surreal.1 \
+		surrealdb-librocksdb-sys-0.17.3+10.6.2 \
+		surrealdb-rocksdb-0.24.0-surreal.1 \
+		surrealdb-tikv-client-0.3.0-surreal.3 \
 		surrealkv-0.9.1 \
 		surrealml-core-0.1.3 \
 		symbolic-common-12.14.1 \
@@ -615,7 +617,8 @@ CARGO_CRATES=	Inflector-0.11.4 \
 		tracing-core-0.1.33 \
 		tracing-log-0.2.0 \
 		tracing-opentelemetry-0.25.0 \
-		tracing-subscriber-0.3.19 \
+		tracing-serde-0.2.0 \
+		tracing-subscriber-0.3.20 \
 		trice-0.4.0 \
 		try-lock-0.2.5 \
 		try_map-0.3.1 \
@@ -664,6 +667,7 @@ CARGO_CRATES=	Inflector-0.11.4 \
 		wasmtimer-0.2.1 \
 		web-sys-0.3.77 \
 		web-time-1.1.0 \
+		web_atoms-0.1.3 \
 		webpki-roots-0.26.8 \
 		which-4.4.2 \
 		winapi-0.3.9 \

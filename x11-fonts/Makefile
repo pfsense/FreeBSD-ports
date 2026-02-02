@@ -119,6 +119,7 @@
     SUBDIR += freefont-ttf
     SUBDIR += freefonts
     SUBDIR += fslsfonts
+    SUBDIR += gallant
     SUBDIR += gbdfed
     SUBDIR += geist-mono
     SUBDIR += geist-sans
@@ -127,7 +128,6 @@
     SUBDIR += genseki
     SUBDIR += gensen
     SUBDIR += gentium
-    SUBDIR += gentium-basic
     SUBDIR += gentium-book
     SUBDIR += gentium-plus-compact
     SUBDIR += genwan
@@ -137,7 +137,6 @@
     SUBDIR += gnu-unifont-otf
     SUBDIR += gofont-ttf
     SUBDIR += gohufont
-    SUBDIR += google-fonts
     SUBDIR += hack-font
     SUBDIR += hanazono-fonts-ttf
     SUBDIR += hermit
@@ -304,6 +303,7 @@
     SUBDIR += py-opentype-sanitizer
     SUBDIR += py-opentypespec
     SUBDIR += py-shaperglot
+    SUBDIR += py-rendercv-fonts
     SUBDIR += py-ufo2ft
     SUBDIR += py-ufoLib
     SUBDIR += py-ufolint

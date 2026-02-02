@@ -1,6 +1,6 @@
---- media/webrtc/helpers_unittests.cc.orig	2025-02-20 09:59:21 UTC
+--- media/webrtc/helpers_unittests.cc.orig	2025-12-06 13:30:52 UTC
 +++ media/webrtc/helpers_unittests.cc
-@@ -39,7 +39,7 @@ TEST(CreateWebRtcAudioProcessingModuleTest, CheckDefau
+@@ -37,7 +37,7 @@ TEST(CreateWebRtcAudioProcessingModuleTest, CheckDefau
    EXPECT_TRUE(config.echo_canceller.enabled);
  
  #if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX) || \
@@ -9,7 +9,7 @@
    EXPECT_FALSE(config.gain_controller1.enabled);
    EXPECT_TRUE(config.gain_controller2.enabled);
  #elif BUILDFLAG(IS_CASTOS) || BUILDFLAG(IS_CAST_ANDROID)
-@@ -66,7 +66,7 @@ TEST(CreateWebRtcAudioProcessingModuleTest,
+@@ -63,7 +63,7 @@ TEST(CreateWebRtcAudioProcessingModuleTest,
  }
  
  #if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX) || \
@@ -18,7 +18,7 @@
  TEST(CreateWebRtcAudioProcessingModuleTest,
       InputVolumeAdjustmentEnabledWithAgc2) {
    ::base::test::ScopedFeatureList feature_list;
-@@ -82,7 +82,7 @@ TEST(CreateWebRtcAudioProcessingModuleTest,
+@@ -79,7 +79,7 @@ TEST(CreateWebRtcAudioProcessingModuleTest,
  #endif  // BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX) ||
          // BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_FUCHSIA)
  
@@ -27,7 +27,7 @@
  TEST(CreateWebRtcAudioProcessingModuleTest,
       CanDisableInputVolumeAdjustmentWithAgc2) {
    ::base::test::ScopedFeatureList feature_list;
-@@ -99,7 +99,7 @@ TEST(CreateWebRtcAudioProcessingModuleTest,
+@@ -96,7 +96,7 @@ TEST(CreateWebRtcAudioProcessingModuleTest,
  #endif  // BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX)
  
  #if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX) || \

@@ -1,11 +1,11 @@
---- components/regional_capabilities/regional_capabilities_switches.cc.orig	2025-05-07 06:48:23 UTC
+--- components/regional_capabilities/regional_capabilities_switches.cc.orig	2025-12-10 15:04:57 UTC
 +++ components/regional_capabilities/regional_capabilities_switches.cc
-@@ -6,7 +6,7 @@
+@@ -23,7 +23,7 @@ BASE_FEATURE(kResolveRegionalCapabilitiesFromDevice,
+              base::FEATURE_ENABLED_BY_DEFAULT);
+ #endif
  
- namespace switches {
- 
--#if BUILDFLAG(IS_ANDROID) || BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_LINUX)
-+#if BUILDFLAG(IS_ANDROID) || BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_BSD)
- BASE_FEATURE(kClearPrefForUnknownCountry,
-              "ClearCountryPrefForStoredUnknownCountry",
+-#if BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_LINUX)
++#if BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_BSD) 
+ BASE_FEATURE(kUseFinchPermanentCountryForFetchCountryId,
+              "UseFinchPermanentCountyForFetchCountryId",
               base::FEATURE_ENABLED_BY_DEFAULT);

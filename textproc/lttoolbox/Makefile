@@ -1,5 +1,6 @@
 PORTNAME=	lttoolbox
 DISTVERSION=	3.8.0
+PORTREVISION=	1
 CATEGORIES=	textproc
 MASTER_SITES=	https://github.com/apertium/${PORTNAME}/releases/download/v${DISTVERSION}/
 
@@ -13,7 +14,7 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 BUILD_DEPENDS=	utf8cpp>=4.0.3:devel/utf8cpp
 LIB_DEPENDS=	libicuio.so:devel/icu
 
-USES=		cmake compiler:c++14-lang gnome libtool localbase pathfix pkgconfig \
+USES=		cmake compiler:c++14-lang gnome localbase pathfix pkgconfig \
 		tar:bz2
 USE_GNOME=	libxml2
 USE_LDCONFIG=	yes

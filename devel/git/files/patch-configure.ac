@@ -12,20 +12,3 @@
  #
  # Define PYTHON_PATH to provide path to Python.
  GIT_ARG_SET_PATH(python, allow-without)
-@@ -1070,6 +1070,8 @@ GIT_CONF_SUBST([CHARSET_LIB])
- #
- # Define HAVE_SYSINFO=YesPlease if sysinfo is available.
- #
-+AC_ARG_WITH(libsysinfo,
-+AS_HELP_STRING([--with-libsysinfo],[support libsysinfo (default is NO)]),
- AC_DEFUN([HAVE_SYSINFO_SRC], [
- AC_LANG_PROGRAM([[
- #include <stdint.h>
-@@ -1091,6 +1093,7 @@ AC_COMPILE_IFELSE([HAVE_SYSINFO_SRC],
- 	HAVE_SYSINFO=YesPlease],
- 	[AC_MSG_RESULT([no])
- 	HAVE_SYSINFO=])
-+)
- GIT_CONF_SUBST([HAVE_SYSINFO])
- 
- #

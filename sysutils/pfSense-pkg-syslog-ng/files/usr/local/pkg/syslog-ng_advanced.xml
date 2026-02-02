@@ -29,8 +29,8 @@
 	<name>Syslog-ng Advanced</name>
 	<title>Services: Syslog-ng Advanced</title>
 	<include_file>/usr/local/pkg/syslog-ng.inc</include_file>
-	<delete_string>An object has been deleted.</delete_string>
-	<addedit_string>An object has been created/modified.</addedit_string>
+	<delete_string>syslog-ng: An object has been deleted.</delete_string>
+	<addedit_string>syslog-ng: An object has been created/modified.</addedit_string>
 	<menu>
 		<name>Syslog-ng</name>
 		<tooltiptext>Setup Syslog-ng</tooltiptext>
