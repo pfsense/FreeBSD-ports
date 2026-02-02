@@ -1,6 +1,6 @@
 --- Makefile.in.orig	2025-12-28 10:02:12 UTC
 +++ Makefile.in
-@@ -34,17 +34,11 @@ LUA_LIB=$(LUA_HOME)/src/liblua.a
+@@ -34,17 +34,8 @@ LUA_LIB=$(LUA_HOME)/src/liblua.a
  LUA_INC=-I$(LUA_HOME)/src
  LUA_LIB=$(LUA_HOME)/src/liblua.a
  
@@ -15,11 +15,8 @@
 -CLICKHOUSE_LIB=$(CLICKHOUSE_HOME)/build/clickhouse/libclickhouse-cpp-lib.a
 -CLICKHOUSE_DEP_LIBS=$(CLICKHOUSE_HOME)/build/contrib/cityhash/cityhash/libcityhash.a $(CLICKHOUSE_HOME)/build/contrib/lz4/lz4/liblz4.a
 -endif
-+HAVE_CLICKHOUSE=1
 +CLICKHOUSE_HOME=$(LOCALBASE)
 +CLICKHOUSE_INC=-I$(CLICKHOUSE_HOME)
-+CLICKHOUSE_LIB=$(CLICKHOUSE_HOME)/lib/libclickhouse-cpp-lib.a
-+CLICKHOUSE_DEP_LIBS=$(CLICKHOUSE_HOME)/lib/libcityhash.a
  
  ifeq ($(OS),Linux)
  	LUA_PLATFORM=linux

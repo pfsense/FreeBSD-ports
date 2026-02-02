@@ -1,6 +1,6 @@
 PORTNAME=	ntopng
 PORTVERSION=	6.6.d20251228
-PORTREVISION=	1
+PORTREVISION=	2
 PORTEPOCH=	1
 CATEGORIES=	net
 
@@ -23,10 +23,9 @@ LIB_DEPENDS=	librrd.so:databases/rrdtool \
 		libgcrypt.so:security/libgcrypt \
 		libgpg-error.so:security/libgpg-error \
 		libhiredis.so:databases/hiredis
-BUILD_DEPENDS=	bash:shells/bash \
-		${LOCALBASE}/include/clickhouse/version.h:databases/clickhouse-cpp
+BUILD_DEPENDS=	bash:shells/bash
 
-USES=		autoreconf compiler:c++11-lang cpe gmake libtool localbase \
+USES=		autoreconf compiler:c++11-lang cmake:indirect cpe gmake libtool localbase \
 		lua:54 pathfix pkgconfig shebangfix sqlite ssl
 
 SUB_FILES=	ntopng-geoip2update.sh pkg-deinstall pkg-message
