@@ -194,7 +194,7 @@
     SUBDIR += py-superqt
     SUBDIR += py-tkinter
     SUBDIR += py-tktreectrl
-    SUBDIR += py-wxPython4
+    SUBDIR += py-wxpython
     SUBDIR += pythonqt
     SUBDIR += qhotkey
     SUBDIR += qml-box2d
@@ -250,6 +250,8 @@
     SUBDIR += swt
     SUBDIR += tepl6
     SUBDIR += termit
+    SUBDIR += thentenaar-motif
+    SUBDIR += thentenaar-motif-devel
     SUBDIR += tix
     SUBDIR += tk-wrapper
     SUBDIR += tk86

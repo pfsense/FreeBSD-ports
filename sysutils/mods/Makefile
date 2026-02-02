@@ -1,6 +1,7 @@
 PORTNAME=	mods
 DISTVERSIONPREFIX=	v
 DISTVERSION=	1.8.1
+PORTREVISION=	1
 CATEGORIES=	sysutils
 
 MAINTAINER=	mopp7@proton.me
@@ -9,6 +10,9 @@ WWW=		https://github.com/charmbracelet/mods
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
+
+ONLY_FOR_ARCHS=	aarch64 amd64
+ONLY_FOR_ARCHS_REASON=	Requires Go module modernc.org/libc, which only supports FreeBSD aarch64 and amd64
 
 USES=		go:modules
 

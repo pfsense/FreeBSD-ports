@@ -23,6 +23,7 @@
     SUBDIR += xf86-video-vesa
     SUBDIR += xf86-video-vmware
     SUBDIR += xlibre-drivers
+    SUBDIR += xlibre-xf86-input-egalax
     SUBDIR += xlibre-xf86-input-elographics
     SUBDIR += xlibre-xf86-input-evdev
     SUBDIR += xlibre-xf86-input-joystick
@@ -41,6 +42,7 @@
     SUBDIR += xlibre-xf86-video-mga
     SUBDIR += xlibre-xf86-video-nv
     SUBDIR += xlibre-xf86-video-qxl
+    SUBDIR += xlibre-xf86-video-scfb
     SUBDIR += xlibre-xf86-video-vesa
     SUBDIR += xlibre-xf86-video-vmware
     SUBDIR += xorg-drivers

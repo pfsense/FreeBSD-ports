@@ -1,5 +1,5 @@
 PORTNAME=	at-spi2-core
-PORTVERSION=	2.56.6
+PORTVERSION=	2.56.7
 CATEGORIES=	accessibility x11-toolkits
 MASTER_SITES=	GNOME
 DIST_SUBDIR=	gnome
@@ -13,7 +13,7 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 
 RUN_DEPENDS=	gsettings-desktop-schemas>0:devel/gsettings-desktop-schemas
 
-USES=		gettext-tools gnome localbase meson pkgconfig tar:xz
+USES=		dbus-testing gettext-tools gnome localbase meson pkgconfig tar:xz
 USE_GNOME=	glib20 introspection:build libxml2:build
 USE_LDCONFIG=	yes
 MESON_ARGS=	-Duse_systemd=false

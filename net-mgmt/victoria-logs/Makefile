@@ -1,6 +1,7 @@
 PORTNAME=	victoria-logs
-PORTVERSION=	1.40.0
+PORTVERSION=	1.43.1
 DISTVERSIONPREFIX=	v
+PORTREVISION=	2
 CATEGORIES=	net-mgmt
 
 MAINTAINER=	samm@FreeBSD.org
@@ -10,7 +11,7 @@ WWW=		https://victoriametrics.com/products/victorialogs/
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-USES=		gmake go:modules,1.25,no_targets
+USES=		gmake go:1.25+,modules,no_targets
 
 GO_MODULE=	github.com/VictoriaMetrics/VictoriaLogs
 USE_RC_SUBR?=	${PORTNAME}

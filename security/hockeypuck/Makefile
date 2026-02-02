@@ -1,9 +1,9 @@
 PORTNAME=	hockeypuck
 DISTVERSION=	2.2.4
-PORTREVISION=	7
+PORTREVISION=	8
 CATEGORIES=	security
 
-MAINTAINER=	me@svmhdvn.name
+MAINTAINER=	siva@FreeBSD.org
 COMMENT=	Synchronizing Key Server, a fast OpenPGP keyserver
 WWW=		https://hockeypuck.github.io
 

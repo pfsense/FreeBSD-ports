@@ -1,5 +1,5 @@
 PORTNAME=	vroom
-DISTVERSION=	1.6.7
+DISTVERSION=	1.7.0
 CATEGORIES=	textproc
 DISTNAME=	${PORTNAME}_${DISTVERSION}
 
@@ -17,8 +17,8 @@ CRAN_DEPENDS=	R-cran-bit64>0:devel/R-cran-bit64 \
 		R-cran-glue>0:devel/R-cran-glue \
 		R-cran-hms>0:devel/R-cran-hms \
 		R-cran-lifecycle>=1.0.3:devel/R-cran-lifecycle \
-		R-cran-progress>=1.2.1:devel/R-cran-progress \
-		R-cran-rlang>=0.4.2:devel/R-cran-rlang \
+		R-cran-progress>=1.2.3:devel/R-cran-progress \
+		R-cran-rlang>=1.1.0:devel/R-cran-rlang \
 		R-cran-tibble>=2.0.0:devel/R-cran-tibble \
 		R-cran-tidyselect>0:devel/R-cran-tidyselect \
 		R-cran-tzdb>=0.1.1:devel/R-cran-tzdb \
@@ -44,5 +44,14 @@ pre-test:
 	@${LOCALBASE}/bin/Rscript -e 'install.packages("${pkg}", \
 		repos = "https://cloud.r-project.org")'
 .endfor
+
+# Tests are supposed to be run with unprivileged user. Running as root, tests fail.
+# See also: https://github.com/tidyverse/vroom/issues/611
+do-test:
+	@${MKDIR} ${WRKDIR}/tmp
+	@${CHMOD} 777 ${WRKDIR}/tmp
+	@cd ${WRKSRC} && \
+		${SETENV} ${TEST_ENV} TMPDIR=${WRKDIR}/tmp _R_CHECK_FORCE_SUGGESTS_=false \
+		su -m nobody -c "${LOCALBASE}/bin/R CMD check --no-manual --no-build-vignettes ."
 
 .include <bsd.port.mk>

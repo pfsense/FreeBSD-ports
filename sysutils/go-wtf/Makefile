@@ -1,10 +1,11 @@
 PORTNAME=	wtf
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.47.1
+DISTVERSION=	0.48.0
+PORTREVISION=	1
 CATEGORIES=	sysutils
 PKGNAMEPREFIX=	go-
 
-MAINTAINER=	hsw@bitmark.com
+MAINTAINER=	bsd.hsw@gmail.com
 COMMENT=	Personal information dashboard for your terminal
 WWW=		https://wtfutil.com
 

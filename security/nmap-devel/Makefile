@@ -16,6 +16,8 @@ LICENSE_NAME=	Nmap Public Source License
 LICENSE_FILE=	${WRKSRC}/LICENSE
 LICENSE_PERMS=	auto-accept dist-mirror pkg-mirror pkg-sell
 
+IGNORE_FreeBSD_13=	 Does not build on FreeBSD 13.x due to OpenSSL 1.1.1
+
 .if !defined(MASTERDIR)
 
 LIB_DEPENDS=	libpcre2-16.so:devel/pcre2
@@ -27,8 +29,8 @@ EXTRACT_AFTER_ARGS=	--exclude ${GH_PROJECT_DEFAULT}-${GH_TAGNAME_EXTRACT}/mswin3
 			--no-same-owner --no-same-permissions
 
 USE_GITHUB=	yes
-GH_TAGNAME=	a74125aef
-NMAP_COMMIT_DATE=	20251101
+GH_TAGNAME=	a5b332ccd
+NMAP_COMMIT_DATE=	20260128
 
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=--without-localdirs \

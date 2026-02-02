@@ -19,6 +19,7 @@
     SUBDIR += aluminum
     SUBDIR += amnezia-kmod
     SUBDIR += amnezia-tools
+    SUBDIR += amneziawg-go
     SUBDIR += amqpcat
     SUBDIR += aoe
     SUBDIR += apache-commons-net
@@ -82,6 +83,7 @@
     SUBDIR += chrony-lite
     SUBDIR += citrix_ica
     SUBDIR += cjdns
+    SUBDIR += claws
     SUBDIR += cloud-init
     SUBDIR += cloud-init-devel
     SUBDIR += cloudflared
@@ -238,7 +240,6 @@
     SUBDIR += gupnp-igd
     SUBDIR += gupnp-tools
     SUBDIR += gutenfetch
-    SUBDIR += gwhois
     SUBDIR += h323plus
     SUBDIR += hanstunnel
     SUBDIR += haproxy
@@ -997,9 +998,6 @@
     SUBDIR += pecl-smbclient
     SUBDIR += pecl-xmlrpc
     SUBDIR += pen
-    SUBDIR += php81-ldap
-    SUBDIR += php81-soap
-    SUBDIR += php81-sockets
     SUBDIR += php82-ldap
     SUBDIR += php82-soap
     SUBDIR += php82-sockets
@@ -1732,6 +1730,7 @@
     SUBDIR += yggdrasil
     SUBDIR += yptransitd
     SUBDIR += zapret
+    SUBDIR += zapret2
     SUBDIR += zebra-server
     SUBDIR += zerotier
     SUBDIR += zmap

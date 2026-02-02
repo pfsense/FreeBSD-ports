@@ -1,6 +1,6 @@
---- components/autofill/core/browser/data_manager/payments/payments_data_manager.h.orig	2025-12-10 15:04:57 UTC
+--- components/autofill/core/browser/data_manager/payments/payments_data_manager.h.orig	2026-01-16 14:21:21 UTC
 +++ components/autofill/core/browser/data_manager/payments/payments_data_manager.h
-@@ -378,7 +378,7 @@ class PaymentsDataManager : public AutofillWebDataServ
+@@ -379,7 +379,7 @@ class PaymentsDataManager : public AutofillWebDataServ
  
    // TODO(crbug.com/430575808): Remove build flags.
  #if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX) || \
@@ -9,7 +9,7 @@
    // Returns the value of the kAutofillHasSeenBnpl pref.
    virtual bool IsAutofillHasSeenBnplPrefEnabled() const;
  
-@@ -726,7 +726,7 @@ class PaymentsDataManager : public AutofillWebDataServ
+@@ -727,7 +727,7 @@ class PaymentsDataManager : public AutofillWebDataServ
    void ClearAllCreditCardBenefits();
  
  #if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX) || \

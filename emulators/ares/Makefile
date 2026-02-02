@@ -1,11 +1,16 @@
 PORTNAME=	ares
 DISTVERSIONPREFIX=	v
-DISTVERSION=	146
+DISTVERSION=	147
 PORTREVISION=	1
 CATEGORIES=	emulators
 MASTER_SITES=	https://github.com/${PORTNAME}-emulator/${PORTNAME}/releases/download/${DISTVERSIONFULL}/
 DISTNAME=	${PORTNAME}-source
-DIST_SUBDIR=	${PORTNAME}-${DISTVERSION}
+DIST_SUBDIR=	${PORTNAME}/${DISTVERSION}
+
+# fixes linker error when building PCE core without MD core, see also
+# https://github.com/ares-emulator/ares/pull/2329
+PATCH_SITES=	https://github.com/${PORTNAME}-emulator/${PORTNAME}/commit/
+PATCHFILES=	adfc78f9523adce9fef1d7ac282e08ab7fc66dd4.patch:-p1
 
 MAINTAINER=	bsdcode@disroot.org
 COMMENT=	Multi-system emulator
@@ -14,9 +19,13 @@ WWW=		https://ares-emu.net
 LICENSE=	ISCL
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
+# Needs resolution by upstream, see also
+# https://github.com/ares-emulator/ares/issues/2350
+BROKEN_i386=	unsigned long long to size_type narrowing conversion issue introduced in version 147
+
 BUILD_DEPENDS=	librashader>0:devel/librashader
 
-USES=		cmake compiler:c++17-lang gl gnome pkgconfig xorg
+USES=		cmake compiler:c++20-lang gl gnome pkgconfig xorg
 USE_GL=		opengl
 USE_GNOME=	gtk30
 USE_XORG=	x11 xext xrandr xrender

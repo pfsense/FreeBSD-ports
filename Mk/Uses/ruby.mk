@@ -47,10 +47,7 @@
 #			  ruby-gdbm, etc.).
 # RUBY_PORTVERSION	- PORTVERSION for the standard ruby ports (ruby,
 #			  ruby-gdbm, etc.).
-# RUBY_PORTREVISION	- PORTREVISION for the standard ruby ports.
 # RUBY_PORTEPOCH	- PORTEPOCH for the standard ruby ports.
-# RUBY_DISTNAME		- DISTNAME for the standard ruby ports, i.e. the
-#			  basename of the ruby distribution tarball.
 # RUBY_PATCHFILES	- PATCHFILES for the standard ruby ports, i.e. the
 #			  basename of the ruby distribution tarball.
 # MASTER_SITE_SUBDIR_RUBY	- MASTER_SITE_SUBDIR for the ruby distfiles.
@@ -148,30 +145,24 @@ RUBY?=			${LOCALBASE}/bin/ruby${RUBY_SUFFIX}
 # Ruby 3.2
 #
 RUBY_DISTVERSION=	3.2.9
-RUBY_PORTREVISION=	0
 
 .      elif ${RUBY_VER} == 3.3
 #
 # Ruby 3.3
 #
 RUBY_DISTVERSION=	3.3.10
-RUBY_PORTREVISION=	0
-
 
 .      elif ${RUBY_VER} == 3.4
 #
 # Ruby 3.4
 #
-RUBY_DISTVERSION=	3.4.7
-RUBY_PORTREVISION=	0
-
+RUBY_DISTVERSION=	3.4.8
 
 .      elif ${RUBY_VER} == 4.0
 #
 # Ruby 4.0
 #
-RUBY_DISTVERSION=	4.0.0-preview2
-RUBY_PORTREVISION=	0
+RUBY_DISTVERSION=	4.0.0
 
 # When adding a version, please keep the comment in
 # Mk/bsd.default-versions.mk in sync.
@@ -223,7 +214,6 @@ RUBY_DEFAULT_SUFFIX?=	${RUBY_DEFAULT_VER:S/.//}
 
 RUBY_PORTVERSION?=	${RUBY_DISTVERSION:tl:C/([a-z])[a-z]+/\1/g:C/([0-9])([a-z])/\1.\2/g:C/:(.)/\1/g:C/[^a-z0-9+]+/./g}
 MASTER_SITE_SUBDIR_RUBY?=	${RUBY_VER}
-RUBY_DISTNAME?=		ruby-${RUBY_DISTVERSION}
 
 RUBY_RELVERSION_CODE?=	${RUBY_RELVERSION:S/.//g}
 RUBY_VERSION_CODE?=	${RUBY_VERSION:S/.//g}

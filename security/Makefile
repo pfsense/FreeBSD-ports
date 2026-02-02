@@ -99,7 +99,6 @@
     SUBDIR += clamav-unofficial-sigs
     SUBDIR += clamd-stream-client
     SUBDIR += clamsmtp
-    SUBDIR += clamtk
     SUBDIR += cloak
     SUBDIR += cops
     SUBDIR += cosign
@@ -224,6 +223,7 @@
     SUBDIR += hexl
     SUBDIR += hidden-lake
     SUBDIR += highwayhash
+    SUBDIR += himitsu
     SUBDIR += hitch
     SUBDIR += hockeypuck
     SUBDIR += honeytrap
@@ -254,6 +254,7 @@
     SUBDIR += kc
     SUBDIR += kdbxviewer
     SUBDIR += keepass
+    SUBDIR += keepass-diff
     SUBDIR += keepass-plugin-keepassrpc
     SUBDIR += keepassxc
     SUBDIR += keepassxc276
@@ -273,7 +274,6 @@
     SUBDIR += kpkpass
     SUBDIR += kpmenu
     SUBDIR += krb5
-    SUBDIR += krb5-120
     SUBDIR += krb5-121
     SUBDIR += krb5-122
     SUBDIR += krb5-devel
@@ -405,7 +405,6 @@
     SUBDIR += netbird
     SUBDIR += nettle
     SUBDIR += nextcloud-end_to_end_encryption
-    SUBDIR += nextcloud-passman
     SUBDIR += nextcloud-twofactor_admin
     SUBDIR += nextcloud-twofactor_webauthn
     SUBDIR += nflib
@@ -690,6 +689,7 @@
     SUBDIR += p5-Digest-SHA1
     SUBDIR += p5-Digest-SHA3
     SUBDIR += p5-Digest-SV1
+    SUBDIR += p5-Digest-SipHash
     SUBDIR += p5-Digest-Tiger
     SUBDIR += p5-Digest-Whirlpool
     SUBDIR += p5-File-KeePass
@@ -775,6 +775,7 @@
     SUBDIR += pam_search_list
     SUBDIR += pam_ssh_agent_auth
     SUBDIR += pam_u2f
+    SUBDIR += pam_worker
     SUBDIR += pam_yubico
     SUBDIR += pamtester
     SUBDIR += paperkey
@@ -829,8 +830,6 @@
     SUBDIR += pgpdump
     SUBDIR += pgpgpg
     SUBDIR += pgpin
-    SUBDIR += php81-filter
-    SUBDIR += php81-sodium
     SUBDIR += php82-filter
     SUBDIR += php82-sodium
     SUBDIR += php83-filter
@@ -978,6 +977,7 @@
     SUBDIR += py-josepy
     SUBDIR += py-joserfc
     SUBDIR += py-jwcrypto
+    SUBDIR += py-k5test
     SUBDIR += py-keepkey
     SUBDIR += py-kerberos
     SUBDIR += py-keyring
@@ -1072,6 +1072,7 @@
     SUBDIR += py-scrypt
     SUBDIR += py-secure
     SUBDIR += py-securesystemslib
+    SUBDIR += py-serpico
     SUBDIR += py-service-identity
     SUBDIR += py-signedjson
     SUBDIR += py-signxml
@@ -1125,7 +1126,6 @@
     SUBDIR += rhash
     SUBDIR += ridl
     SUBDIR += rifiuti2
-    SUBDIR += rkhunter
     SUBDIR += rndpassw
     SUBDIR += rnp
     SUBDIR += rotate
@@ -1377,7 +1377,6 @@
     SUBDIR += tinc
     SUBDIR += tinc-devel
     SUBDIR += tinyca
-    SUBDIR += tls-check
     SUBDIR += tlsc
     SUBDIR += tor
     SUBDIR += totp-cli
@@ -1410,6 +1409,7 @@
     SUBDIR += vigenere
     SUBDIR += vlock
     SUBDIR += vm-to-tor
+    SUBDIR += voa
     SUBDIR += vouch-proxy
     SUBDIR += vpnc
     SUBDIR += vuls

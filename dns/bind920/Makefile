@@ -1,14 +1,14 @@
 # pkg-help formatted with fmt 59 63
 
 PORTNAME=	bind
-DISTVERSION=	9.20.17
+DISTVERSION=	9.20.18
 .if defined(BIND_TOOLS_SLAVE)
 # dns/bind-tools here
-PORTREVISION=	0
+PORTREVISION=	2
 .else
 # XXX: correct version
 # dns/bind920 here
-PORTREVISION=	0
+PORTREVISION=	2
 .endif
 CATEGORIES=	dns net
 MASTER_SITES=	ISC/bind9/${DISTVERSION}
@@ -86,8 +86,8 @@ PORTDOCS=	*
 
 OPTIONS_DEFINE=		DNSTAP DOCS FIXED_RRSET GEOIP IDN LARGE_FILE LMDB \
 			OVERRIDECACHE QUERYTRACE START_LATE TCP_FASTOPEN
-OPTIONS_DEFAULT=	DNSTAP GSSAPI_NONE IDN LMDB STATS_JSON STATS_XML \
-			TCP_FASTOPEN
+OPTIONS_DEFAULT=	DNSTAP ${${OSREL:R} < 15:?GSSAPI_NONE:GSSAPI_BASE} IDN \
+			LMDB STATS_JSON STATS_XML TCP_FASTOPEN
 
 OPTIONS_GROUP=		STATS
 OPTIONS_GROUP_STATS=	STATS_JSON STATS_XML
@@ -104,7 +104,7 @@ OPTIONS_SUB=	yes
 
 DNSTAP_DESC=		Provides fast passive logging of DNS messages
 FIXED_RRSET_DESC=	Enable fixed rrset ordering
-GSSAPI_BASE_DESC=	Using Heimdal in base (nsupdate is broken)
+GSSAPI_BASE_DESC=	Using ${${OSREL:R} < 15:?Heimdal in base (nsupdate is broken):MIT in base}
 GSSAPI_HEIMDAL_DESC=	Using security/heimdal (nsupdate is broken)
 GSSAPI_MIT_DESC=	Using security/krb5
 GSSAPI_NONE_DESC=	Disable
@@ -207,6 +207,20 @@ post-patch:
 .endfor
 
 .if !defined(BIND_TOOLS_SLAVE)
+regen-patches:
+	cd ${.CURDIR} ; \
+		make clean ; \
+		mv files/extrapatch-no-bind-tools files/patch-no-bind-tools ; \
+		mv files/extrapatch-bind-min-override-ttl files/patch-bind-min-override-ttl ; \
+		make extract do-patch makepatch BATCH= NO_IGNORE= PATCH_DEBUG=yes EXTRA_PATCHES= || : ; \
+		mv files/patch-no-bind-tools files/extrapatch-no-bind-tools ; \
+		mv files/patch-bind-min-override-ttl files/extrapatch-bind-min-override-ttl
+	cd ${.CURDIR} ; \
+		mv files/extrapatch-bind-tools files/patch-bind-tools ; \
+		(cd ../bind-tools ; \
+		make clean extract do-patch makepatch BATCH= NO_IGNORE= PATCH_DEBUG=yes EXTRA_PATCHES= MASTERDIR=$$PWD/../bind920 || :) ; \
+		mv files/patch-bind-tools files/extrapatch-bind-tools
+
 post-install:
 	${MKDIR} ${STAGEDIR}${PREFIX}/etc/mtree
 	${MKDIR} ${STAGEDIR}${ETCDIR}

@@ -1,5 +1,6 @@
 PORTNAME=	gomuks
 DISTVERSION=	25.12
+PORTREVISION=	1
 CATEGORIES=	net-im
 
 MAINTAINER=	ports@FreeBSD.org
@@ -12,7 +13,7 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 LIB_DEPENDS=	libolm.so:security/olm
 RUN_DEPENDS=	ffmpeg:multimedia/ffmpeg
 
-USES=		go:1.25,modules
+USES=		go:1.25+,modules
 
 GO_MODULE_VER=	0.${DISTVERSION:C/\.//}.0
 GO_MODULE=	go.mau.fi/gomuks@v${GO_MODULE_VER}

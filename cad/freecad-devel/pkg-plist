@@ -1827,6 +1827,7 @@ FreeCAD/Mod/Sketcher/ProfileLib/RegularPolygon.py
 FreeCAD/Mod/Sketcher/ProfileLib/__init__.py
 FreeCAD/Mod/Sketcher/Profiles.py
 FreeCAD/Mod/Sketcher/SketcherExample.py
+FreeCAD/Mod/Sketcher/SketcherTests/TestPlacementUpdate.py
 FreeCAD/Mod/Sketcher/SketcherTests/TestSketchExpression.py
 FreeCAD/Mod/Sketcher/SketcherTests/TestSketchFillet.py
 FreeCAD/Mod/Sketcher/SketcherTests/TestSketchValidateCoincidents.py
@@ -1917,7 +1918,7 @@ FreeCAD/Mod/Tux/NavigationIndicatorGui.py
 FreeCAD/Mod/Tux/PersistentToolbars.py
 FreeCAD/Mod/Tux/PersistentToolbarsGui.py
 FreeCAD/Mod/Tux/Tux_rc.py
-FreeCAD/Mod/Web/Init.py
+%%WEBENGINE%%FreeCAD/Mod/Web/Init.py
 FreeCAD/bin/FreeCAD
 FreeCAD/bin/FreeCADCmd
 FreeCAD/bin/freecad-thumbnailer
@@ -2316,7 +2317,7 @@ FreeCAD/lib/Surface.so
 FreeCAD/lib/SurfaceGui.so
 FreeCAD/lib/TechDraw.so
 FreeCAD/lib/TechDrawGui.so
-FreeCAD/lib/Web.so
+%%WEBENGINE%%FreeCAD/lib/Web.so
 FreeCAD/lib/_PartDesign.so
 FreeCAD/lib/area.so
 FreeCAD/lib/cmake/E57Format/E57Format-export-%%CMAKE_BUILD_TYPE%%.cmake
@@ -2373,8 +2374,6 @@ FreeCAD/share/Gui/PreferencePacks/FreeCAD Classic/post.FCMacro
 FreeCAD/share/Gui/PreferencePacks/FreeCAD Dark/FreeCAD Dark.cfg
 FreeCAD/share/Gui/PreferencePacks/FreeCAD Light/FreeCAD Light.cfg
 FreeCAD/share/Gui/PreferencePacks/package.xml
-FreeCAD/share/Gui/Stylesheets/FreeCAD Dark.qss
-FreeCAD/share/Gui/Stylesheets/FreeCAD Light.qss
 FreeCAD/share/Gui/Stylesheets/FreeCAD.qss
 FreeCAD/share/Gui/Stylesheets/defaults.qss
 FreeCAD/share/Gui/Stylesheets/images_classic/arrow-double-leftright-black.png
@@ -2849,11 +2848,7 @@ FreeCAD/share/Gui/Stylesheets/images_dark-light/up_arrow_disabled_dark.svg
 FreeCAD/share/Gui/Stylesheets/images_dark-light/up_arrow_disabled_light.svg
 FreeCAD/share/Gui/Stylesheets/images_dark-light/up_arrow_light.svg
 FreeCAD/share/Gui/Stylesheets/images_dark-light/up_arrow_lighter.svg
-FreeCAD/share/Gui/Stylesheets/overlay/Dark Theme + Dark Background.qss
-FreeCAD/share/Gui/Stylesheets/overlay/Dark Theme + Light Background.qss
 FreeCAD/share/Gui/Stylesheets/overlay/Freecad Overlay.qss
-FreeCAD/share/Gui/Stylesheets/overlay/Light Theme + Dark Background.qss
-FreeCAD/share/Gui/Stylesheets/overlay/Light Theme + Light Background.qss
 FreeCAD/share/Gui/Stylesheets/overlay/icons/autohide.svg
 FreeCAD/share/Gui/Stylesheets/overlay/icons/autohide_light.svg
 FreeCAD/share/Gui/Stylesheets/overlay/icons/autohide_lighter.svg

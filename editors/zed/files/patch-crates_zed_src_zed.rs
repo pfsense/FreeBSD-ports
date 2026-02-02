@@ -1,6 +1,6 @@
---- crates/zed/src/zed.rs.orig	2025-12-03 16:43:47 UTC
+--- crates/zed/src/zed.rs.orig	2026-01-14 15:30:09 UTC
 +++ crates/zed/src/zed.rs
-@@ -385,6 +385,7 @@ pub fn initialize_workspace(
+@@ -393,6 +393,7 @@ pub fn initialize_workspace(
          if let Some(specs) = window.gpu_specs() {
              log::info!("Using GPU: {:?}", specs);
              show_software_emulation_warning_if_needed(specs.clone(), window, cx);

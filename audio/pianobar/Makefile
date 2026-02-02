@@ -1,5 +1,6 @@
 PORTNAME=	pianobar
 DISTVERSION=	2024.12.21
+PORTREVISION=	1
 CATEGORIES=	audio
 
 MAINTAINER=	jhixson@FreeBSD.org
@@ -16,7 +17,7 @@ LIB_DEPENDS=	libao.so:audio/libao \
 		libavcodec.so:multimedia/ffmpeg \
 		libcurl.so:ftp/curl
 
-USES=		alias gmake localbase pkgconfig tar:bzip2
+USES=		gmake localbase pkgconfig tar:bzip2
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	PromyLOPh

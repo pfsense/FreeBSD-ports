@@ -1,4 +1,5 @@
 include/quic/QuicConstants.h
+include/quic/QuicEnum.h
 include/quic/QuicException.h
 include/quic/QuicTLSException.h
 include/quic/QuicTypealiases.h
@@ -58,9 +59,11 @@ include/quic/common/CircularDeque.h
 include/quic/common/ContiguousCursor.h
 include/quic/common/EnumArray.h
 include/quic/common/Expected.h
-include/quic/common/FunctionLooper.h
+include/quic/common/FunctionRef.h
 include/quic/common/IntervalSet-inl.h
 include/quic/common/IntervalSet.h
+include/quic/common/MvfstCheck.h
+include/quic/common/MvfstLogging.h
 include/quic/common/NetworkData.h
 include/quic/common/Optional.h
 include/quic/common/QuicBuffer.h
@@ -99,6 +102,7 @@ include/quic/congestion_control/Copa2.h
 include/quic/congestion_control/EcnL4sTracker.h
 include/quic/congestion_control/NewReno.h
 include/quic/congestion_control/Pacer.h
+include/quic/congestion_control/PacerFactory.h
 include/quic/congestion_control/PacketProcessor.h
 include/quic/congestion_control/QuicCubic.h
 include/quic/congestion_control/ServerCongestionControllerFactory.h
@@ -107,6 +111,7 @@ include/quic/congestion_control/StaticCwndCongestionController.h
 include/quic/congestion_control/ThrottlingSignalProvider.h
 include/quic/congestion_control/TokenlessPacer.h
 include/quic/congestion_control/third_party/windowed_filter.h
+include/quic/datagram/DatagramFlowManager.h
 include/quic/dsr/BaseXskContainer.h
 include/quic/dsr/HashingXskContainer.h
 include/quic/dsr/ThreadLocalXskContainer.h
@@ -125,6 +130,7 @@ include/quic/fizz/handshake/FizzRetryIntegrityTagGenerator.h
 include/quic/fizz/handshake/FizzTransportParameters.h
 include/quic/fizz/handshake/QuicFizzFactory.h
 include/quic/flowcontrol/QuicFlowController.h
+include/quic/folly_utils/BufConv.h
 include/quic/folly_utils/Utils.h
 include/quic/handshake/Aead.h
 include/quic/handshake/CryptoFactory.h
@@ -138,11 +144,13 @@ include/quic/logging/QLogSchema.h
 include/quic/logging/QLogger.h
 include/quic/logging/QLoggerCommon.h
 include/quic/logging/QLoggerConstants.h
+include/quic/logging/QLoggerMacros.h
 include/quic/logging/QLoggerTypes.h
 include/quic/loss/QuicLossFunctions.h
 include/quic/mvfst-config.h
 include/quic/observer/SocketObserverContainer.h
 include/quic/observer/SocketObserverInterface.h
+include/quic/observer/SocketObserverMacros.h
 include/quic/observer/SocketObserverTypes.h
 include/quic/priority/HTTPPriorityQueue.h
 include/quic/priority/PriorityQueue.h
@@ -178,6 +186,7 @@ include/quic/state/AckStates.h
 include/quic/state/AckedPacketIterator.h
 include/quic/state/ClonedPacketIdentifier.h
 include/quic/state/DatagramHandlers.h
+include/quic/state/EarlyDataAppParamsHandler.h
 include/quic/state/LossState.h
 include/quic/state/OutstandingPacket.h
 include/quic/state/QuicAckFrequencyFunctions.h
@@ -186,7 +195,6 @@ include/quic/state/QuicPacingFunctions.h
 include/quic/state/QuicPathManager.h
 include/quic/state/QuicStateFunctions.h
 include/quic/state/QuicStreamFunctions.h
-include/quic/state/QuicStreamGroupRetransmissionPolicy.h
 include/quic/state/QuicStreamManager.h
 include/quic/state/QuicStreamUtilities.h
 include/quic/state/QuicTransportStatsCallback.h
@@ -234,6 +242,8 @@ lib/libmvfst_constants.so
 lib/libmvfst_constants.so.0
 lib/libmvfst_contiguous_cursor.so
 lib/libmvfst_contiguous_cursor.so.0
+lib/libmvfst_datagram_flow_manager.so
+lib/libmvfst_datagram_flow_manager.so.0
 lib/libmvfst_events.so
 lib/libmvfst_events.so.0
 lib/libmvfst_exception.so

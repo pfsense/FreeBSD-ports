@@ -1,6 +1,5 @@
 PORTNAME=	simgear
-PORTVERSION=	2024.1.1
-PORTREVISION=	1
+PORTVERSION=	2024.1.4
 CATEGORIES=	devel games
 
 MAINTAINER=	martymac@FreeBSD.org
@@ -18,12 +17,11 @@ LIB_DEPENDS=	libboost_thread.so:devel/boost-libs \
 		libexpat.so:textproc/expat2 \
 		libcurl.so:ftp/curl
 
-USES=		alias cmake compiler:c++17-lang cpe gl jpeg openal:al,alut \
+USES=		cmake compiler:c++17-lang cpe gl jpeg openal:al,alut \
 		tar:bzip2 xorg
 
 USE_GITLAB=	yes
 GL_ACCOUNT=	flightgear
-GL_TAGNAME=	v${PORTVERSION}
 
 USE_XORG=	ice sm x11 xext xi xmu xt
 USE_GL=		gl glu glut

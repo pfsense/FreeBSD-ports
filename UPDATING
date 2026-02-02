@@ -5,6 +5,88 @@ they are unavoidable.
 You should get into the habit of checking this file for changes each time
 you update your ports collection, before attempting any port upgrades.
 
+20260125:
+  AFFECTS: users of dns/ddclient
+  AUTHOR: mjl@luckie.org.nz
+
+  dns/ddclient has been updated to v4.0.0.
+
+  This release moves the default configuration file location from
+  /usr/local/etc/ to /usr/local/etc/ddclient/.  Please move your
+  existing ddclient.conf to the new location before restarting ddclient.
+
+  See details at https://github.com/ddclient/ddclient/releases/tag/v4.0.0
+
+20260115:
+  AFFECTS: users of lang/cython* and USE_PYTHON=cython*
+  AUTHOR: sunpoet@FreeBSD.org
+
+  lang/cython has been updated to 3.2.4.
+
+  To support ports that still require the legacy 0.x branch, lang/cython0
+  has been added (version 0.29.37). lang/cython3 has been removed as it
+  is now redundant with lang/cython.
+
+  Port maintainers should note the following changes:
+  - Ports requiring Cython 0.x now use USE_PYTHON=cython0{,_run}.
+  - Ports previously using cython3{,_run,_test} now use
+    USE_PYTHON=cython{,_run,_test}.
+
+20260109:
+  AFFECTS: users of net-mgmt/librenms
+  AUTHOR: dvl@FreeBSD.org
+
+  mysql-client is no longer a dependency. This allows users to select
+  mysql or mariadb at run time. This was not possible before.
+
+20260103:
+  AFFECTS: users of x11/nvidia-{driver, kmod}-devel variants
+  AUTHOR: junchoon@dec.sakura.ne.jp
+
+  x11/nvidia-driver-devel and x11/nvidia-kmod-devel are upgraded to
+  latest New Feature Branch [NFB] of upstream driver package.
+
+  This version drops support for a bunch of old (pre-Turing generations
+  of architecture) GPUs.
+
+  You can find still supported GPUs below.
+    https://us.download.nvidia.com/XFree86/FreeBSD-x86_64/590.48.01/README/supportedchips.html
+
+  So anyone using -devel variants of related ports
+    x11/nvidia-kmod-devel
+    x11/nvidia-driver-devel
+    graphics/nvidia-drm-{510|515|61|66|latest}-kmod-devel
+    x11/linux-nvidia-libs-devel
+  with dropped GPUs needs to switch to non-devel master ports.
+    x11/nvidia-kmod
+    x11/nvidia-driver
+    graphics/nvidia-drm-{510|515|61|66|latest}-kmod
+    x11/linux-nvidia-libs
+
+  Deinstalling -devel variants above and reinstalling master ports
+  above would do the right things.
+
+  If any of above hesitates to upgrade with version conflicts
+  of graphics/eglexternalplatform, upgrade it first and retrying
+  failed ones should help.
+
+  At the same time, 580.* and 590.* series of drivers for FreeBSD
+  now work with 2 additional libraries installed via graphics/egl-x11.
+  This is now one of the dependencies of x11/nvidia-driver{-devel}.
+  It would be automatically pulled in on upgrades.
+
+  Note that new legacy branch -580 would be created once Production
+  Branch of upstream driver package switches to 590 series or later.
+
+20251228:
+  AFFECTS: users of net/rsync
+  AUTHOR: rodrigo@FreeBSD.org
+
+  Add a new option PYTHON that controls when the Python script
+  sbin/rrsync is installed and adds the necessary dependencies.
+  By default this option is off; updating the package will remove
+  the rrsync script.
+
 20251208:
   AFFECTS: users of net-mgmt/unifi{9,10}
   AUTHOR: otis@FreeBSD.org
@@ -64,7 +146,7 @@ you update your ports collection, before attempting any port upgrades.
   AUTHOR: madpilot@FreeBSD.org
 
   With the update to version 2.53.8 the port uses upstream install target.
-  This causes the installed unison binary to always me the command line
+  This causes the installed unison binary to always be the command line
   version, even when the port is compiled with xorg support. The UI binary
   is installed as unison-gui.
 
@@ -413,7 +495,7 @@ you update your ports collection, before attempting any port upgrades.
   sysutils/screen has been updated to 5.0.1 from 4.9.1. All currently
   running screen sessions must be terminated before upgrading. Failure
   to do so will result in orphaning remaining screen sessions. This is
-  expected when updating from one major version of screen to to another.
+  expected when updating from one major version of screen to another.
 
 20250514:
   AFFECTS: users of lang/perl5.*
@@ -715,7 +797,7 @@ you update your ports collection, before attempting any port upgrades.
   AFFECTS: users of comms/ser2net
   AUTHOR: rodrigo@FreeBSD.org
 
-  ser2net 4.6.4 doesn't support 3.5.1 configuration who has to be
+  ser2net 4.6.4 doesn't support 3.5.1 configuration which has to be
   converted over to use new YAML syntax.
 
   Please see the examples on ser2net.yaml sample configuration and
@@ -771,7 +853,7 @@ you update your ports collection, before attempting any port upgrades.
 
   # pkg remove -f kde[56] && pkg install kde
 
-  If you installed KDE via the plasma5-plasma metapackage, the upgrade path
+  If you installed KDE via the plasma5-plasma metapackage, the upgrade path is
 
   # pkg remove -f plasma5-plasma && pkg install plasma6-plasma
 
@@ -886,7 +968,7 @@ you update your ports collection, before attempting any port upgrades.
   AFFECTS: users of deskutils/treesheets
   AUTHOR: eduardo@FreeBSD.org
 
-  The binary have been renamed from treesheets to TreeSheets
+  The binary has been renamed from treesheets to TreeSheets
 
   - https://github.com/aardappel/treesheets/pull/760
 
@@ -903,7 +985,7 @@ you update your ports collection, before attempting any port upgrades.
   - https://github.com/glotlabs/gdrive/blob/main/docs/basic_usage.md
   - https://github.com/glotlabs/gdrive/blob/main/docs/create_google_api_credentials.md
 
-20241122
+20241122:
   AFFECTS: users of databases/couchdb3
   AUTHOR: dch@FreeBSD.org
 
@@ -921,7 +1003,7 @@ you update your ports collection, before attempting any port upgrades.
   Please read more about this issue here:
   https://bugs.freebsd.org/bugzilla/show_bug.cgi?id=282217
 
-20241115
+20241115:
   AFFECTS: users of filesystems/zrepl-dsh2dsh
   AUTHOR: dsh@bamus.cz
 
@@ -932,7 +1014,7 @@ you update your ports collection, before attempting any port upgrades.
   Please read more about this change here:
   https://github.com/dsh2dsh/zrepl?tab=readme-ov-file#breaking-changes
 
-20241112
+20241112:
   AFFECTS: users of databases/prometheus-postgres-exporter
   AUTHOR: lexi@hemlock.eden.le-fay.org
 
@@ -1066,7 +1148,7 @@ you update your ports collection, before attempting any port upgrades.
   though not explicitly if previously found, elfutils when built manually.
   This behavior has now changed. binutils will now disable any
   auto-dependency on elfutils. Users who build binutils manually and wish
-  to have it depend on elfutls must now explicitly set the option when
+  to have it depend on elfutils must now explicitly set the option when
   building binutils.
 
   There is no change to packages built by poudriere.
@@ -1245,7 +1327,7 @@ you update your ports collection, before attempting any port upgrades.
 
   xrdp has been updated to the releases of the latest stable branch v0.10.
   This version significantly improves performance improvement especially if the
-  client is Windows 11. There are to things to be careful about when updating.
+  client is Windows 11. There are two things to be careful about when updating.
 
   1) Make sure to update both net/xrdp and x11-drivers/xorgxrdp ports
      simultaneously.
@@ -1302,8 +1384,8 @@ you update your ports collection, before attempting any port upgrades.
 
   If you are using the qt6 flavor, you should uninstall it and install
   the unflavored package. If you want to keep using the qt5 version it
-  will be updated automatically to the qt6 version. If you should
-  uninstall the unflavored package and instal the qt5 version.
+  will be updated automatically to the qt6 version. You should
+  uninstall the unflavored package and install the qt5 flavor.
 
 20240606:
   AFFECTS: users of net-mgmt/unifi8
@@ -1432,7 +1514,7 @@ you update your ports collection, before attempting any port upgrades.
   AUTHOR: kbowling@FreeBSD.org
 
   The Foreign Key storage in hypertables has changed in an incompatible way,
-  after runing ALTER EXTENSION, you must run the SQL script here:
+  after running ALTER EXTENSION, you must run the SQL script here:
   https://github.com/timescale/timescaledb-extras/blob/master/utils/2.15.X-fix_hypertable_foreign_keys.sql
 
   For more details, see
@@ -1515,8 +1597,8 @@ you update your ports collection, before attempting any port upgrades.
   AFFECTS: users of net/bird2
   AUTHOR: olivier@FreeBSD.org
 
-  The net/bird2 default flavor has ben switched to netlink on FreeBSD >= 14.0
-  There is not change for FreeBSD < 14.0 (default flavor is still rtsock)
+  The net/bird2 default flavor has been switched to netlink on FreeBSD >= 14.0.
+  There is no change for FreeBSD < 14.0 (default flavor is still rtsock).
 
 20240319:
   AFFECTS: users of net/rdist6
@@ -1639,7 +1721,7 @@ you update your ports collection, before attempting any port upgrades.
   files: ./nfdump -r old-flowfile -y -w new-flowfile
 
   Please note, that only nfdump may read older flow files. All other
-  programs relay on the new file format.
+  programs rely on the new file format.
 
 20231027:
   AFFECTS: users of net-mgmt/librenms
@@ -1665,7 +1747,7 @@ you update your ports collection, before attempting any port upgrades.
   #
   DEFAULT_VERSIONS+=ghostscript=9
 
-  Please note that print/ghostcript9* will be removed in the future since it is
+  Please note that print/ghostscript9* will be removed in the future since it is
   not supported by upstream anymore.
 
 20231026:

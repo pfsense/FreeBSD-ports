@@ -1,5 +1,5 @@
 PORTNAME=	scikit-image
-PORTVERSION=	0.25.2
+PORTVERSION=	0.26.0
 CATEGORIES=	graphics python
 MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -28,7 +28,7 @@ RUN_DEPENDS=	${PYNUMPY} \
 		${PYTHON_PKGNAMEPREFIX}tifffile>=2022.8.12:graphics/py-tifffile@${PY_FLAVOR}
 
 USES=		compiler:c++11-lang python shebangfix
-USE_PYTHON=	autoplist cython3 pep517
+USE_PYTHON=	autoplist cython pep517
 
 BINARY_ALIAS=	python=${PYTHON_CMD} \
 		python3=${PYTHON_CMD}

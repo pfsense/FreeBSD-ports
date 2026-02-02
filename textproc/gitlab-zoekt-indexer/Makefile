@@ -1,7 +1,6 @@
 PORTNAME=	gitlab-zoekt-indexer
-PORTVERSION=	1.7.6
+PORTVERSION=	1.8.0
 DISTVERSIONPREFIX=	v
-PORTREVISION=	1
 CATEGORIES=	textproc
 
 MAINTAINER=	mfechner@FreeBSD.org
@@ -16,7 +15,7 @@ BUILD_DEPENDS=	git>=2.38.1:devel/git
 #		libicuuc.so:devel/icu
 #RUN_DEPENDS=	p5-Image-ExifTool>=0:graphics/p5-Image-ExifTool
 
-USES=		gmake go:modules,no_targets,1.24 pkgconfig
+USES=		gmake go:modules,no_targets pkgconfig
 
 USE_GITLAB=	yes
 GL_ACCOUNT=	gitlab-org
