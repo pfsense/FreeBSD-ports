@@ -132,6 +132,62 @@
             </description>
             <type>checkbox</type>
         </field>
+        <field>
+            <fielddescr>Enable Root Login</fielddescr>
+            <fieldname>enablesshroot</fieldname>
+            <description>
+                <![CDATA[
+                Allow root user login
+                ]]>
+            </description>
+            <type>checkbox</type>
+        </field>
+        <field>
+            <fielddescr>Enable SFTP</fielddescr>
+            <fieldname>enablesshsftp</fieldname>
+            <description>
+                <![CDATA[
+                Enable SFTP subsystem for file transfers
+                ]]>
+            </description>
+            <type>checkbox</type>
+        </field>
+        <field>
+            <fielddescr>Enable Local Port Forwarding</fielddescr>
+            <fieldname>enablesshlocalportfwd</fieldname>
+            <description>
+                <![CDATA[
+                Allow clients to forward local ports through the server
+                ]]>
+            </description>
+            <type>checkbox</type>
+        </field>
+        <field>
+            <fielddescr>Enable Remote Port Forwarding</fielddescr>
+            <fieldname>enablesshremoteportfwd</fieldname>
+            <description>
+                <![CDATA[
+                Allow clients to request remote port forwarding
+                ]]>
+            </description>
+            <type>checkbox</type>
+        </field>
+        <field>
+            <fielddescr>Enable SSH Authentication</fielddescr>
+            <fieldname>enablesshauth</fieldname>
+            <description>
+                <![CDATA[
+                Enable JWT authentication for SSH connections
+                ]]>
+            </description>
+            <sethelp>
+                <![CDATA[
+                When disabled, allows any peer with network access
+                ]]>
+            </sethelp>
+            <type>checkbox</type>
+            <default_value>on</default_value>
+        </field>
 
         <field>
             <name>DNS</name>

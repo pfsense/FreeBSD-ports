@@ -242,8 +242,8 @@ function netbird_get_peers_detail(array $peers, bool $rosenpass_enabled, bool $r
             $networks = implode(', ', $peer_state['networks']);
         }
 
-        $lastStatus_update = (!empty($peer_state['lastStatus_update'])) ? new DateTimeImmutable($peer_state['lastStatus_update']) : new DateTimeImmutable('@0');
-        $last_wireguard_handshake = (!empty($peer_state['lastStatus_update'])) ? new DateTimeImmutable($peer_state['lastStatus_update']) : new DateTimeImmutable('@0');
+        $lastStatus_update = (!empty($peer_state['lastStatusUpdate'])) ? new DateTimeImmutable($peer_state['lastStatusUpdate']) : new DateTimeImmutable('@0');
+        $last_wireguard_handshake = (!empty($peer_state['lastWireguardHandshake'])) ? new DateTimeImmutable($peer_state['lastWireguardHandshake']) : new DateTimeImmutable('@0');
 
         $latency = isset($peer_state['latency']) ? floatval($peer_state['latency']) / 1_000_000 . ' ms' : '-';
 

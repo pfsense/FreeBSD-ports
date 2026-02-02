@@ -37,12 +37,16 @@ if ($_POST) {
 
         $management_url = $_POST['managementurl'];
         $setup_key = $_POST['setupkey'];
+        $hostname = trim($_POST['hostname'] ?? '');
 
         if (!empty($management_url) && !is_URL($management_url)) {
             $input_errors[] = sprintf(gettext('Management URL (%s) is not a valid URL.'), $management_url);
         }
         if (empty($setup_key)) {
             $input_errors[] = gettext('Setup Key is required.');
+        }
+        if (!empty($hostname) && !preg_match('/^[a-zA-Z0-9][a-zA-Z0-9\-]*[a-zA-Z0-9]$/', $hostname)) {
+            $input_errors[] = sprintf(gettext('Hostname (%s) contains invalid characters. Use only letters, numbers and hyphens.'), $hostname);
         }
 
 
@@ -51,17 +55,25 @@ if ($_POST) {
                 $auth_config['setupkey'] = $setup_key;
             }
             $auth_config['managementurl'] = $management_url;
+            $auth_config['hostname'] = $hostname;
 
             if (netbird_is_connected() && !netbird_disconnect()) {
                 return;
             }
 
-            $cmd = sprintf(
-                '%s up -m %s -k %s',
+            $cmd_parts = [
                 NETBIRD_BIN,
-                escapeshellarg($management_url),
-                escapeshellarg($setup_key)
-            );
+                'up',
+                '-m', escapeshellarg($management_url),
+                '-k', escapeshellarg($setup_key)
+            ];
+
+            if (!empty($hostname)) {
+                $cmd_parts[] = '--hostname';
+                $cmd_parts[] = escapeshellarg($hostname);
+            }
+
+            $cmd = implode(' ', $cmd_parts);
             exec($cmd, $out, $return_code);
 
             $joined_output = implode("\n", $out);
@@ -104,6 +116,10 @@ display_top_tabs($tabs);
 
 $management_url = $auth_config['managementurl'] ?? 'https://api.netbird.io:443';
 $setup_key = $auth_config['setupkey'] ?? '';
+$hostname = $auth_config['hostname'] ?? '';
+if (empty($hostname)) {
+    $hostname = $config['system']['hostname'] ?? '';
+}
 
 $masked_key = '';
 if (!empty($setup_key)) {
@@ -128,6 +144,13 @@ $section->addInput(new Form_Input(
     'text',
     $masked_key
 ))->setHelp('Set the authentication setup key');
+
+$section->addInput(new Form_Input(
+    'hostname',
+    'Hostname',
+    'text',
+    $hostname
+))->setHelp('Sets a custom hostname for the device');
 
 if (netbird_is_connected()) {
     $button = new Form_Button(

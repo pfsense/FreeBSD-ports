@@ -45,6 +45,11 @@ function netbird_resync_config()
 
     $config_map = [
         'enablessh' => ['ServerSSHAllowed', true],
+        'enablesshroot' => ['EnableSSHRoot', true],
+        'enablesshsftp' => ['EnableSSHSFTP', true],
+        'enablesshlocalportfwd' => ['EnableSSHLocalPortForwarding', true],
+        'enablesshremoteportfwd' => ['EnableSSHRemotePortForwarding', true],
+        'enablesshauth' => ['DisableSSHAuth', false],
         'blockinboundconn' => ['BlockInbound', true],
         'allowfirewallconfig' => ['DisableFirewall', false],
         'enabledns' => ['DisableDNS', false],
@@ -82,6 +87,7 @@ function netbird_validate_input($post, &$input_errors)
     if (!empty($wireguard_port) && (!ctype_digit($wireguard_port) || !is_port($wireguard_port))){
         $input_errors[] = sprintf(gettext('WireGuard port (%s) is not a valid port.'), $wireguard_port);
     }
+
 }
 
 function netbird_is_connected(): bool
