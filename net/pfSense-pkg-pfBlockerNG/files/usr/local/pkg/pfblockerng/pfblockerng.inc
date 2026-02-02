@@ -3958,7 +3958,7 @@ function pfb_download($list_url, $file_dwn, $pflex=FALSE, $header, $format, $log
 
 				if (isset($pfb['rfc7231'][$http_status])) {
 					if ($logtype < 3) {
-						pfb_logger(". {$pfb['rfc7231'][$http_status]}", 2);
+						pfb_logger(". {$pfb['rfc7231'][$http_status]}", $logtype);
 					} else {
 						pfb_logger(" {$file_dwn}\t\t{$pfb['rfc7231'][$http_status]}\n", $logtype);
 					}
