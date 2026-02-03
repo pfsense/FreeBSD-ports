@@ -417,6 +417,15 @@
  	return 0;
  }
  
+@@ -632,7 +736,7 @@ rad_get_attr(struct rad_handle *h, const void **value,
+ {
+ 	int type;
+ 
+-	if (h->resp_len == 0) {
++	if (h->resp_len <= 0) {
+ 		generr(h, "No response has been received");
+ 		return -1;
+ 	}
 @@ -654,42 +758,92 @@ rad_get_attr(struct rad_handle *h, const void **value,
  }
  
