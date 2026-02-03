@@ -35,8 +35,7 @@ if (is_numericint($_REQUEST['id'])) {
 	if (!config_get_path($service_path . '/' . MCB_CONF_NAME_SERVICE_DISABLED)) {
 		$dirty = 1;
 	}
-}
-else if (is_numericint($_REQUEST['dup'])) {
+} elseif (is_numericint($_REQUEST['dup'])) {
 	$init_path = MCB_CONF_PATH_SERVICE . '/' . $_REQUEST['dup'];
 }
 
@@ -69,10 +68,11 @@ if ($_POST) {
 	}
 
 	// Ensure the port is unique
-	$existing = config_get_path(MCB_CONF_PATH_SERVICE, []);
-	$count = count($existing);
-	for ($i = 0; $i < count($existing); $i++) {
-		if ($i != $id && $pconfig[MCB_CONF_NAME_SERVICE_PORT] === $existing[$i][MCB_CONF_NAME_SERVICE_PORT]) {
+	foreach (config_get_path(MCB_CONF_PATH_SERVICE, []) as $idx => $service) {
+		if (isset($id) && $idx == $id) {
+			continue;
+		}
+		if ($pconfig[MCB_CONF_NAME_SERVICE_PORT] === $service[MCB_CONF_NAME_SERVICE_PORT]) {
 			$input_errors[] = gettext('UDP Port is already in use by another bridge instance.');
 		}
 	}
@@ -82,21 +82,18 @@ if ($_POST) {
 	$pconfig[MCB_CONF_NAME_SERVICE_IPV6] = trim($pconfig[MCB_CONF_NAME_SERVICE_IPV6]);
 	if (empty($pconfig[MCB_CONF_NAME_SERVICE_IPV4]) && empty($pconfig[MCB_CONF_NAME_SERVICE_IPV6])) {
 		$input_errors[] = gettext('At least one Multicast Address must be provided.');
-	}
-	else {
+	} else {
 		if (!empty($pconfig[MCB_CONF_NAME_SERVICE_IPV4])) {
 			if (!is_mcastv4($pconfig[MCB_CONF_NAME_SERVICE_IPV4])) {
 				$input_errors[] = gettext('Invalid IPv4 Multicast Address.');
-			}
-			else if (preg_match('/^224\.0\.0\./', $pconfig[MCB_CONF_NAME_SERVICE_IPV4])) {
+			} elseif (ip_in_subnet($pconfig[MCB_CONF_NAME_SERVICE_IPV4], '224.0.0.0/24')) {
 				$input_errors[] = gettext('IPv4 Multicast Address is link local (non routable).');
 			}
 		}
 		if (!empty($pconfig[MCB_CONF_NAME_SERVICE_IPV6])) {
 			if (!is_mcastv6($pconfig[MCB_CONF_NAME_SERVICE_IPV6])) {
 				$input_errors[] = gettext('Invalid IPv6 Multicast Address.');
-			}
-			else if (preg_match('/^ff02:/', $pconfig[MCB_CONF_NAME_SERVICE_IPV6])) {
+			} elseif (ip_in_subnet($pconfig[MCB_CONF_NAME_SERVICE_IPV6], 'ff02::/16')) {
 				$input_errors[] = gettext('IPv6 Multicast Address is link local (non routable).');
 			}
 		}
@@ -116,8 +113,7 @@ if ($_POST) {
 			if (!empty($pconfig[MCB_CONF_NAME_SERVICE_STATIC_INBOUND])) {
 				$inbound_combined = array_unique(array_merge($inbound_combined, $pconfig[MCB_CONF_NAME_SERVICE_STATIC_INBOUND]));
 			}
-		}
-		else {
+		} else {
 			$inbound_combined = $pconfig[MCB_CONF_NAME_SERVICE_STATIC_INBOUND];
 		}
 
@@ -127,8 +123,7 @@ if ($_POST) {
 			if (!empty($pconfig[MCB_CONF_NAME_SERVICE_STATIC_OUTBOUND])) {
 				$outbound_combined = array_unique(array_merge($outbound_combined, $pconfig[MCB_CONF_NAME_SERVICE_STATIC_OUTBOUND]));
 			}
-		}
-		else {
+		} else {
 			$outbound_combined = $pconfig[MCB_CONF_NAME_SERVICE_STATIC_OUTBOUND];
 		}
 
@@ -146,8 +141,7 @@ if ($_POST) {
 		$write_array = array();
 		if ($pconfig[MCB_CONF_NAME_SERVICE_DISABLED]) {
 			$write_array[MCB_CONF_NAME_SERVICE_DISABLED] = $pconfig[MCB_CONF_NAME_SERVICE_DISABLED];
-		}
-		else {
+		} else {
 			$dirty = 1;
 		}
 
@@ -187,6 +181,7 @@ if ($_POST) {
 
 
 $pgtitle = array(gettext("Services"), gettext("Multicast Bridge"), gettext("Edit Bridge"));
+$pglinks = array("", "mcast_bridge.php", "@self");
 include("head.inc");
 
 if ($input_errors) {

@@ -68,7 +68,7 @@ if ($_REQUEST['act'] == "toggle") {
 }
 
 // Handle a bridge delete
-else if ($_REQUEST['act'] == "delete") {
+elseif ($_REQUEST['act'] == "delete") {
 	$id = $_REQUEST['id'];
 	if (is_numericint($id)) {
 		$service_path = MCB_CONF_NAME_SERVICE . '/' . $id;
@@ -88,9 +88,7 @@ else if ($_REQUEST['act'] == "delete") {
 		}
 
 	}
-}
-
-else if ($_POST['save']) {
+} elseif ($_POST['save']) {
 	$pconfig = $_POST;
 
 	// Update the config
@@ -102,9 +100,7 @@ else if ($_POST['save']) {
 	// Write the config
 	write_config(gettext("Multicast Bridge: general settings changed"));
 	mark_subsystem_dirty('mcast_bridge');
-}
-
-else if ($_POST['apply']) {
+} elseif ($_POST['apply']) {
 	clear_subsystem_dirty('mcast_bridge');
 
 	// Sync the running configuration
@@ -122,7 +118,7 @@ $pgtitle = array(gettext("Services"), gettext("Multicast Bridge"));
 include("head.inc");
 
 if (is_subsystem_dirty('mcast_bridge')) {
-	print_apply_box(gettext('The Mcast Bridge configuration has changed.') . '<br />' .
+	print_apply_box(gettext('The Multicast Bridge configuration has changed.') . '<br />' .
 			gettext('The changes must be applied to take effect.'));
 }
 
@@ -143,7 +139,7 @@ $section->addInput(new Form_Select(
 	'CARP Status VHID',
 	$pconfig[MCB_CONF_NAME_CARP_VHID],
 	mcast_bridge_get_carp_list()
-))->setHelp(gettext('Used for HA MASTER/BACKUP status. Multicast Bridge will be started when the chosen VHID is in MASTER status, and stopped when in BACKUP status.'));
+))->setHelp(gettext('Used for HA MASTER/BACKUP status. Multicast Bridge will be started when the chosen VHID is in MASTER status, and stopped otherwise.'));
 
 // IGMP Querier mode
 $section->addInput(new Form_Select(
@@ -159,26 +155,30 @@ $section->addInput(new Form_Select(
 	'MLD Querier Mode',
 	$pconfig[MCB_CONF_NAME_MLD_QUERIER],
 	$querier_mode_options
-))->setHelp(gettext('When to activate as an Multicast Listener Discovery (IPv6) querier.'));
+))->setHelp(gettext('When to activate as a Multicast Listener Discovery (IPv6) querier.'));
 
 // Additional Information
 $section->addInput(new Form_StaticText(
 	gettext('Additional Information'),
-	'<span class="help-block">'.
-	gettext('By default, mcast-bridge uses the IGMP (IPv4) and MLD (IPv6) protocols to ' .
+	sprintf(gettext('%1$s' .
+		'By default, mcast-bridge uses the IGMP (IPv4) and MLD (IPv6) protocols to ' .
 		'determine if active subscribers are present on outbound interfaces, and only ' .
 		'forwards packets to an interface if an active subscriber is currently present. ' .
 		'If an interface is configured as static (indicated by an asterisk below), then ' .
 		'a subscriber is always assumed to be present and IGMP and MLD are not used ' .
 		'for that bridge interface.' .
-		'<br><br>' .
+		'%2$s%2$s' .
 		'With both the IGMP and MLD protocols, a single "querier" is elected to be ' .
 		'responsible for tracking multicast subscribers in the network. Most often, a ' .
 		'switch or router handles the role of querier, however mcast-bridge is also ' .
 		'capable of acting as the querier if enabled. Additional information on ' .
-		'querier modes is available in the ' .
-		'<a target="_blank" href="https://github.com/dennypage/mcast-bridge/blob/main/README.md#notes-on-querier-modes">' .
-		'mcast-bridge README</a>.')
+		'querier modes is available in the %3$smcast-bridge README%4$s.%5$s'),
+		'<span class="help-block">',
+		'<br/>',
+		'<a target="_blank" href="https://github.com/dennypage/mcast-bridge/blob/main/README.md#notes-on-querier-modes">',
+		'</a>',
+		'</span>'
+	)
 ));
 
 $form->add($section);
@@ -222,8 +222,7 @@ foreach (array_get_path($current_config, MCB_CONF_NAME_SERVICE, []) as $id => $s
 		$friendly = convert_friendly_interface_to_friendly_descr($interface);
 		if (array_search($interface, $static_interface_list) !== false) {
 			$display[] = $friendly . '*';
-		}
-		else {
+		} else {
 			$display[] = $friendly;
 		}
 	}
@@ -243,8 +242,7 @@ foreach (array_get_path($current_config, MCB_CONF_NAME_SERVICE, []) as $id => $s
 		$friendly = convert_friendly_interface_to_friendly_descr($interface);
 		if (array_search($interface, $static_interface_list) !== false) {
 			$display[] = $friendly . '*';
-		}
-		else {
+		} else {
 			$display[] = $friendly;
 		}
 	}
