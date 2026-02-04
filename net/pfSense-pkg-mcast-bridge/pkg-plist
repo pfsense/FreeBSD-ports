@@ -1,0 +1,9 @@
+/etc/inc/priv/mcast_bridge.priv.inc
+pkg/mcast_bridge.xml
+pkg/mcast_bridge.inc
+%%DATADIR%%/info.xml
+www/mcast_bridge.php
+www/mcast_bridge_edit.php
+www/shortcuts/pkg_mcast_bridge.inc
+@dir /etc/inc/priv
+@dir /etc/inc
