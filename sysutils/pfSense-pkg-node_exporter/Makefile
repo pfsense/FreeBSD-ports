@@ -2,7 +2,7 @@
 
 PORTNAME=	pfSense-pkg-node_exporter
 PORTVERSION=	0.18.1
-PORTREVISION=	7
+PORTREVISION=	8
 CATEGORIES=	sysutils
 MASTER_SITES=	# empty
 DISTFILES=	# empty

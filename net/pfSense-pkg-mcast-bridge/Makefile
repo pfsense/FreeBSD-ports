@@ -1,6 +1,6 @@
 
 PORTNAME=	pfSense-pkg-mcast-bridge
-PORTVERSION=	1.3
+PORTVERSION=	1.4
 CATEGORIES=	net
 MASTER_SITES=	# empty
 DISTFILES=	# empty
