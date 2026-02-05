@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	wrapalixresetbutton
-PORTVERSION=	0.0.9
+PORTVERSION=	0.0.15
 CATEGORIES=	sysutils
 MASTER_SITES=	# empty
 DISTFILES=	# none
