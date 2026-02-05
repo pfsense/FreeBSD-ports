@@ -130,7 +130,7 @@ function squid_antivirus_statistics() {
 				$updown = (is_service_running("squid") ? $img['up'] : $img['down']);
 				$rc = pkg_exec("query '%v' squid", $version, $err);
 				$version = (($rc != 0) ? "N/A" : $version);
-				echo "{$updown}&nbsp;&nbsp;${version}";
+				echo "{$updown}&nbsp;&nbsp;{$version}";
 			?>
 			</td>
 		</tr>

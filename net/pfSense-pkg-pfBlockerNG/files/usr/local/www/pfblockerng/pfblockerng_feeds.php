@@ -597,8 +597,8 @@ print ($section);
 										$feed_radio	= "&emsp;<input type=\"radio\" name=\"alt_{$feed['header']}\""
 												. " value=\"alt_{$feed['header']}\" checked=\"checked\" />&emsp;";
 
-										print ("<input type=\"hidden\" name=\"alt_" . "${feed['header']}" . "\" id=\"alt_"
-											. "${feed['header']}" . "\" value=\"\" />");
+										print ("<input type=\"hidden\" name=\"alt_" . "{$feed['header']}" . "\" id=\"alt_"
+											. "{$feed['header']}" . "\" value=\"\" />");
 									}
 									else {
 										if (empty($icon)) {

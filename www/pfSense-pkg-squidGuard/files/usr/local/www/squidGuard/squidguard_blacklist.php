@@ -81,7 +81,7 @@ function squidguard_blacklist_AJAX_response( $request ) {
 	}
 	$res .= "\$('#progress_caption').html('{$pcaption}');\n";
 	$res .= "\$('#progress_text').html('{$sz} %');\n";
-	$res .= "setProgress('progressbar', ${sz}, true);\n";
+	$res .= "setProgress('progressbar', {$sz}, true);\n";
 
 	$status = '';
 	if (file_exists(SGUPD_STATFILE)) {

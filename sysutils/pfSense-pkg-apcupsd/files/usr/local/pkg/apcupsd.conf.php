@@ -216,14 +216,14 @@ NETSERVER {$netserver}
 #  NIS will listen for connections only on that interface. Use the
 #  loopback address (127.0.0.1) to accept connections only from the
 #  local machine.
-NISIP ${nisip}
+NISIP {$nisip}
 
 # NISPORT <port> default is 3551 as registered with the IANA
 #  port to use for sending STATUS and EVENTS data over the network.
 #  It is not used unless NETSERVER is on. If you change this port,
 #  you will need to change the corresponding value in the cgi directory
 #  and rebuild the cgi programs.
-NISPORT ${nisport}
+NISPORT {$nisport}
 
 # If you want the last few EVENTS to be available over the network
 # by the network information server, you must define an EVENTSFILE.

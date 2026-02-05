@@ -43,13 +43,13 @@ function syslogng_get_real_interface_address($interface) {
 
 function syslogng_install_command() {
 	$crontask = "/usr/bin/nice -n20 " . SYSLOGNG_BASEDIR . "sbin/logrotate /usr/local/etc/logrotate.conf";
-	install_cron_job("${crontask}", true, "0");
+	install_cron_job("{$crontask}", true, "0");
 	syslogng_resync();
 }
 
 function syslogng_deinstall_command() {
 	$crontask = "/usr/bin/nice -n20 " . SYSLOGNG_BASEDIR . "sbin/logrotate /usr/local/etc/logrotate.conf";
-	install_cron_job("${crontask}", false);
+	install_cron_job("{$crontask}", false);
 	unlink_if_exists("/usr/local/etc/logrotate.conf");
 	unlink_if_exists("/usr/local/etc/syslog-ng.conf");
 	filter_configure();
@@ -235,7 +235,7 @@ function syslogng_build_conf($objects) {
 function syslogng_build_logrotate_conf($settings, $objects) {
 	if ($settings['enable'] != 'on') {
 		$crontask = "/usr/bin/nice -n20 " . SYSLOGNG_BASEDIR . "sbin/logrotate /usr/local/etc/logrotate.conf";
-		install_cron_job("${crontask}", false);
+		install_cron_job("{$crontask}", false);
 		unlink_if_exists('/usr/local/etc/logrotate.conf');
 		return '';
 	}
@@ -272,7 +272,7 @@ function syslogng_build_logrotate_conf($settings, $objects) {
 
 	file_put_contents('/usr/local/etc/logrotate.conf', $conf);
 	$crontask = "/usr/bin/nice -n20 " . SYSLOGNG_BASEDIR . "sbin/logrotate /usr/local/etc/logrotate.conf";
-	install_cron_job("${crontask}", true, "0");
+	install_cron_job("{$crontask}", true, "0");
 	return $conf;
 }
 
