@@ -1,6 +1,22 @@
 --- Auth/RADIUS.php.orig	2015-02-09 23:26:02 UTC
 +++ Auth/RADIUS.php
-@@ -280,6 +280,11 @@ class Auth_RADIUS {
+@@ -114,8 +114,14 @@ class Auth_RADIUS {
+      * @see  putStandardAttributes()
+      */
+     var $useStandardAttributes = true;
+-    
++
+     /**
++     * Switch whether we should use Message Authenticator support or not
++     * @var bool
++     */
++    var $useMsgAuth = false;
++
++    /**
+      * Constructor
+      *
+      * Loads the RADIUS PECL/extension
+@@ -280,6 +286,11 @@ class Auth_RADIUS {
      {
      }
      
@@ -12,7 +28,7 @@
      /**
       * Puts standard attributes.
       */ 
-@@ -295,11 +300,7 @@ class Auth_RADIUS {
+@@ -295,11 +306,7 @@ class Auth_RADIUS {
              $var = $GLOBALS['HTTP_SERVER_VARS'];
          }
                  
@@ -25,7 +41,16 @@
      }
      
      /**
-@@ -384,13 +385,13 @@ class Auth_RADIUS {
+@@ -369,7 +376,7 @@ class Auth_RADIUS {
+             }
+         }
+         
+-        $this->createRequest();
++        $this->createRequest($this->useMsgAuth);
+         $this->putStandardAttributes();
+         $this->putAuthAttributes();
+         return true;
+@@ -384,13 +391,13 @@ class Auth_RADIUS {
      {
          $req = radius_send_request($this->res);
          if (!$req) {
@@ -41,7 +66,7 @@
              }
              return true;
  
-@@ -399,12 +400,12 @@ class Auth_RADIUS {
+@@ -399,12 +406,12 @@ class Auth_RADIUS {
              
          case RADIUS_ACCOUNTING_RESPONSE:
              if (is_subclass_of($this, 'auth_radius_pap')) {
@@ -56,7 +81,7 @@
          }    
          
      }
-@@ -464,7 +465,10 @@ class Auth_RADIUS {
+@@ -464,7 +471,10 @@ class Auth_RADIUS {
                  break;
  
              case RADIUS_CLASS:
@@ -68,7 +93,7 @@
                  break;
  
              case RADIUS_FRAMED_PROTOCOL:
-@@ -536,9 +540,179 @@ class Auth_RADIUS {
+@@ -536,9 +546,179 @@ class Auth_RADIUS {
                          $this->attributes['ms_primary_dns_server'] = radius_cvt_string($datav);
                          break;
                      }
@@ -249,7 +274,31 @@
              }
          }    
  
-@@ -935,11 +1109,16 @@ class Auth_RADIUS_Acct extends Auth_RADIUS
+@@ -613,9 +793,9 @@ class Auth_RADIUS_PAP extends Auth_RADIUS 
+      *
+      * @return bool   true on success, false on error
+      */
+-    function createRequest()
++    function createRequest(bool $msgAuth = false)
+     {
+-        if (!radius_create_request($this->res, RADIUS_ACCESS_REQUEST)) {
++        if (!radius_create_request($this->res, RADIUS_ACCESS_REQUEST, $msgAuth)) {
+             return false;
+         }
+         return true;
+@@ -918,9 +1098,9 @@ class Auth_RADIUS_Acct extends Auth_RADIUS 
+      *
+      * @return bool   true on success, false on error
+      */
+-    function createRequest()
++    function createRequest(bool $msgAuth = false)
+     {
+-        if (!radius_create_request($this->res, RADIUS_ACCOUNTING_REQUEST)) {
++        if (!radius_create_request($this->res, RADIUS_ACCOUNTING_REQUEST, $msgAuth)) {
+             return false;
+         }
+         return true;
+@@ -935,11 +1115,16 @@ class Auth_RADIUS_Acct extends Auth_RADIUS 
       */ 
      function putAuthAttributes()
      {
@@ -268,7 +317,7 @@
          if (isset($this->authentic)) {
              $this->putAttribute(RADIUS_ACCT_AUTHENTIC, $this->authentic);
          }
-@@ -1003,4 +1182,22 @@ class Auth_RADIUS_Acct_Update extends Auth_RADIUS_Acct
+@@ -1003,4 +1188,22 @@ class Auth_RADIUS_Acct_Update extends Auth_RADIUS_Acct
      var $status_type = RADIUS_UPDATE;
  }
  
