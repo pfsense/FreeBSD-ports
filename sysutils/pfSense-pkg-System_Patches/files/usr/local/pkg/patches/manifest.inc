@@ -26,6 +26,30 @@ global $recommended_patches;
  */
 $recommended_patches = [
 [
+  'uniqid' => '16682',
+  'versions' => ['25.11.1'],
+  'descr' => 'Fix missing system logs from daemon facility',
+  'links' => [
+      [ 'text' => 'Redmine #16682',
+         'url' => 'https://redmine.pfsense.org/issues/16682', ],
+  ],
+  'basedir' => '/',
+  'pathstrip' => 2,
+  'ignorewhitespace' => true,
+],
+[
+  'uniqid' => '16610',
+  'versions' => ['25.11.1', '25.07.1', '2.8.1'],
+  'descr' => 'Fix input validation when saving empty VIP addresses',
+  'links' => [
+      [ 'text' => 'Redmine #16610',
+         'url' => 'https://redmine.pfsense.org/issues/16610', ],
+  ],
+  'basedir' => '/',
+  'pathstrip' => 2,
+  'ignorewhitespace' => true,
+],
+[
   'uniqid' => '16593',
   'versions' => ['25.11', '25.07.1', '2.8.1'],
   'descr' => 'Fix rtsold RCE via DNSSL router advertisement messages',

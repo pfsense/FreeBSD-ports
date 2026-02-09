@@ -1,0 +1,18 @@
+diff --git a/src/etc/inc/syslog.inc b/src/etc/inc/syslog.inc
+index 1a25ebf78e..6a502558d2 100644
+--- a/src/etc/inc/syslog.inc
++++ b/src/etc/inc/syslog.inc
+@@ -410,11 +410,11 @@ EOD;
+ 	}
+ 	if (!config_path_enabled('syslog', 'disablelocallogging')) {
+ 		$syslogconf .= "local5.*							{$g['varlog_path']}/nginx.log\n";
+-		$syslogconf .= "*.notice;kern.debug;lpr.info;mail.crit;news.err;local0.none;local3.none;local4.none;local7.none;security.*;auth.info;authpriv.info;daemon.none	{$g['varlog_path']}/system.log\n";
++		$syslogconf .= "*.notice;kern.debug;lpr.info;mail.crit;news.err;local0.none;local3.none;local4.none;local7.none;security.*;auth.info;authpriv.info;daemon.info	{$g['varlog_path']}/system.log\n";
+ 		$syslogconf .= "*.emerg								*\n";
+ 	}
+ 	if (!$remote_log_all && config_path_enabled('syslog', 'system')) {
+-		$syslogconf .= system_syslogd_get_remote_servers($syslogcfg, "*.emerg;*.notice;kern.debug;lpr.info;mail.crit;news.err;local0.none;local3.none;local4.none;local7.none;security.*;auth.info;authpriv.info;daemon.none");
++		$syslogconf .= system_syslogd_get_remote_servers($syslogcfg, "*.emerg;*.notice;kern.debug;lpr.info;mail.crit;news.err;local0.none;local3.none;local4.none;local7.none;security.*;auth.info;authpriv.info;daemon.info");
+ 	}
+ 
+ 	if ($remote_log_all) {
