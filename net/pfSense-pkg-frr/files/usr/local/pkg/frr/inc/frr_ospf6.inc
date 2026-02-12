@@ -188,7 +188,7 @@ function frr_generate_config_ospf6_interfaces() {
 
 		/* Add area/instance mapping to main OSPFv3 configuration area */
 		$interface_area = (strlen($conf['interfacearea']) > 0) ? $conf['interfacearea'] : $frr_ospf6d_conf['defaultarea'];
-		$frr_integrated_config["ospf6d"] .= " interface {$realif} area {$interface_area}\n";
+		$frr_integrated_config['interfaces'][$realif] .= " ipv6 ospf6 area {$interface_area}\n";
 	}
 }
 
