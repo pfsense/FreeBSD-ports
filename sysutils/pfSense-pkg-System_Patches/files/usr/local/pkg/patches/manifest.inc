@@ -26,6 +26,30 @@ global $recommended_patches;
  */
 $recommended_patches = [
 [
+  'uniqid' => '37884c3039756e3868b7f995a3329793b771a6b0',
+  'versions' => ['25.11.1'],
+  'descr' => 'Fix population of Certificate Manager CA trust store entries',
+  'links' => [
+      [ 'text' => 'Redmine #16688',
+         'url' => 'https://redmine.pfsense.org/issues/16688', ],
+  ],
+  'basedir' => '/',
+  'pathstrip' => 2,
+  'ignorewhitespace' => true,
+],
+[
+  'uniqid' => '96de6fba1edef19dd78b17451a7882f6561371ee',
+  'versions' => ['25.11.1', '2.8.1'],
+  'descr' => 'Fix Dynamic DNS preference for certificate trust in custom entries without a username',
+  'links' => [
+      [ 'text' => 'Redmine #16690',
+         'url' => 'https://redmine.pfsense.org/issues/16690', ],
+  ],
+  'basedir' => '/',
+  'pathstrip' => 2,
+  'ignorewhitespace' => true,
+],
+[
   'uniqid' => '16682',
   'versions' => ['25.11.1'],
   'descr' => 'Fix missing system logs from daemon facility',

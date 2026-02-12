@@ -1,0 +1,52 @@
+commit 96de6fba1edef19dd78b17451a7882f6561371ee
+Author: Marcos Mendoza <mmendoza@netgate.com>
+Date:   Tue Feb 10 11:41:52 2026 -0600
+
+    DDNS: Respect preference for cert verification in custom entries without a username. Fix #16690
+    
+    A username is not be required for the verify preference to work. This
+    change allows for the option to be used regardless and sets the verify
+    option by default for new entries.
+
+diff --git a/src/etc/inc/dyndns.class b/src/etc/inc/dyndns.class
+index 85d54d1786..78671df383 100644
+--- a/src/etc/inc/dyndns.class
++++ b/src/etc/inc/dyndns.class
+@@ -598,16 +598,16 @@
+ 				case 'custom-v6':
+ 					if (strstr($this->_dnsUpdateURL, "%IP%")) {$needsIP = TRUE;} else {$needsIP = FALSE;}
+ 					if ($this->_dnsUser != '') {
+-						if ($this->_curlSslVerifypeer) {
+-							/* required for a local CA
+-							 * see https://redmine.pfsense.org/issues/12589 */
+-							curl_setopt($ch, CURLOPT_CAPATH, "/etc/ssl/certs/");
+-							curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, TRUE);
+-						} else {
+-							curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
+-						}
+ 						curl_setopt($ch, CURLOPT_USERPWD, "{$this->_dnsUser}:{$this->_dnsPass}");
+ 					}
++					if ($this->_curlSslVerifypeer) {
++						/* required for a local CA
++						 * see https://redmine.pfsense.org/issues/12589 */
++						curl_setopt($ch, CURLOPT_CAPATH, "/etc/ssl/certs/");
++						curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, TRUE);
++					} else {
++						curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
++					}
+ 					$server = str_replace("%IP%", $this->_dnsIP, $this->_dnsUpdateURL);
+ 					if ($this->_dnsVerboseLog) {
+ 						logger(LOG_INFO, localize_text("Sending request to: %s", $server), LOG_PREFIX_DDNS);
+diff --git a/src/usr/local/www/services_dyndns_edit.php b/src/usr/local/www/services_dyndns_edit.php
+index 490bb86503..41bdcec5cd 100644
+--- a/src/usr/local/www/services_dyndns_edit.php
++++ b/src/usr/local/www/services_dyndns_edit.php
+@@ -458,7 +458,7 @@ $section->addInput(new Form_Checkbox(
+ 	'curl_ssl_verifypeer',
+ 	'HTTP API SSL/TLS Options',
+ 	'Verify SSL/TLS Certificate Trust',
+-	$pconfig['curl_ssl_verifypeer']
++	$pconfig['curl_ssl_verifypeer'] ?? true
+ ))->setHelp('When set, the server must provide a valid SSL/TLS certificate trust chain which can be verified by this firewall.');
+ 
+ $section->addInput(new Form_Input(
