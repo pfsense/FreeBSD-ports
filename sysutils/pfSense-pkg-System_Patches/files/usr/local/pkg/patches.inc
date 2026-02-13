@@ -180,7 +180,121 @@ function is_github_url($url) {
 	return (substr($urlbits[2], -10) == "github.com");
 }
 
+function is_patch_for_this_system(array $rpatch) {
+	static $platform = system_identify_specific_platform();
+	if (!isset($thisversion)) {
+		$thisversion_temp = explode('-', g_get('product_version'), 2);
+		if (!count($thisversion_temp)) {
+			return false;
+		}
+		static $thisversion = $thisversion_temp[0];
+	}
+
+	// Check for applicable version and model.
+	if ((!in_array($thisversion, $rpatch['versions'])) ||
+	    (array_key_exists('models', $rpatch) &&
+	     !in_array($platform['name'], $rpatch['models']))) {
+		return false;
+	}
+
+	return true;
+}
+
+/**
+ * Filter a list of recommended patch IDs for entries which apply to this
+ * system. Patch IDs are also run through htmlspecialchars_decode().
+ * @param mixed $unique_ids A list of patch ID strings.
+ * @return string[] Validated list.
+ */
+function validate_recommended_patches(mixed $unique_ids): array {
+	$valid_unique_ids = [];
+	if (empty($unique_ids) || !is_array($unique_ids) || !array_is_list($unique_ids)) {
+		return [];
+	}
+
+	$unique_ids = array_unique($unique_ids);
+	foreach ($unique_ids as &$id) {
+		if (!is_string($id)) {
+			continue;
+		}
+		$id = htmlspecialchars_decode($id);
+		$rpatch = get_recommended_patch($id);
+		if (empty($rpatch)) {
+			// Skip recommended patches that don't exist.
+			continue;
+		}
+		if (!is_patch_for_this_system($rpatch)) {
+			// Skip patches that aren't relevant to this system.
+			continue;
+		}
+		$valid_unique_ids[] = &$id;
+	}
+	return $valid_unique_ids;
+}
+
+/**
+ * Updates the list of excluded recommended patches and removes any that
+ * no longer apply to this system.
+ * @param array|null $unique_ids (Optional) A list of patch ID strings.
+ * @return bool True if a configuration change was made. False otherwise.
+ */
+function refresh_excluded_recommended_patches(array|null $unique_ids = null): bool {
+	if (is_null($unique_ids)) {
+		$unique_ids = array_column(config_get_path('installedpackages/patches/excluded/item', []), 'text');
+	}
+	$excluded_patches = validate_recommended_patches($unique_ids);
+
+	$need_save = false;
+	if (empty($unique_ids)) {
+		// Nothing to exclude.
+		$need_save = !is_null(config_del_path('installedpackages/patches/excluded'));
+	} else {
+		// Create the items array for the config.
+		$excluded_patches_items = [];
+		foreach ($excluded_patches as $unique_id) {
+			$excluded_patches_items[] = [
+				'text' => $unique_id
+			];
+		}
+		$need_save = !is_null(config_set_path('installedpackages/patches/excluded/item', $excluded_patches_items));
+	}
+	if ($need_save) {
+		write_config(LOG_PREFIX_PKG_SYSTEMPATCHES . ": " . gettext("refreshed excluded patches."));
+	}
+
+	return $need_save;
+}
+
+function autoapply_recommended_patches() {
+	global $recommended_patches;
+
+	if (!config_path_enabled('installedpackages/patches', 'autoapply_recommended')) {
+		return;
+	}
+
+	$excluded_recommended_patches = validate_recommended_patches(array_column(config_get_path('installedpackages/patches/excluded/item', []), 'text'));
+	foreach ($recommended_patches as $rpatch) {
+		if (in_array($rpatch['uniqid'], $excluded_recommended_patches)) {
+			// Skip excluded patches.
+			continue;
+		}
+		if (!is_patch_for_this_system($rpatch)) {
+			// Skip patches that aren't relevant to this system.
+			continue;
+		}
+
+		// Apply when possible and not already applied.
+		if (patch_test_apply($rpatch) && !patch_test_revert($rpatch)) {
+			$descr = patch_descr($rpatch);
+			$savemsg = patch_apply($rpatch) ? gettext("Recommended patch autoapplied successfully") : gettext("Recommended patch could NOT be autoapplied");
+			patchlog($savemsg . $descr);
+		}
+	}
+}
+
 function bootup_apply_patches() {
+	autoapply_recommended_patches();
+
 	foreach (config_get_path('installedpackages/patches/item', []) as $id => $patch) {
 		/* Skip if it should not be automatically applied;
 		   only attempt to apply if it can be applied;
@@ -238,6 +352,7 @@ function patch_descr($patch) {
 
 function patch_package_install() {
 	patch_add_shellcmd();
+	autoapply_recommended_patches();
 }
 
 function patch_package_deinstall() {

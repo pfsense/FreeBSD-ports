@@ -26,6 +26,7 @@ require_once("patches.inc");
 global $g;
 
 echo "Applying patches...";
+refresh_excluded_recommended_patches();
 bootup_apply_patches();
 echo "Done.\n";
 ?>
