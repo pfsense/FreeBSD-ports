@@ -8,7 +8,8 @@ WWW=		https://www.pfsense.org/
 
 LICENSE=	APACHE20
 
-RUN_DEPENDS=	drm-61-kmod>0:graphics/drm-61-kmod
+RUN_DEPENDS=	drm-61-kmod>0:graphics/drm-61-kmod \
+		pfSense-pkg-System_Patches>0:sysutils/pfSense-pkg-System_Patches
 
 USES=		metaport
 
