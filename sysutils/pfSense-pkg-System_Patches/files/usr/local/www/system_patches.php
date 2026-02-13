@@ -45,7 +45,7 @@ if ($_POST['savemsg']) {
 }
 
 if ($_POST && $_POST['apply']) {
-	write_config(gettext("System: Patches: applied a patch."));
+	write_config(LOG_PREFIX_PKG_SYSTEMPATCHES . ": " . gettext("applied a patch."));
 }
 
 if (in_array($_POST['all'], ['apply', 'revert']) &&
@@ -266,7 +266,7 @@ if (isset($_POST['del'])) {
 }
 
 if ($need_save) {
-	write_config(gettext("System: Patches: saved configuration."));
+	write_config(LOG_PREFIX_PKG_SYSTEMPATCHES . ": " . gettext("saved configuration."));
 	header("Location: system_patches.php");
 	return;
 }
@@ -324,7 +324,7 @@ foreach (config_get_path('installedpackages/patches/item', []) as $thispatch):
 	$can_revert = patch_test_revert($thispatch);
 ?>
 
-	<tr id="fr<?=$i?>" id="frd<?=$i?>" ondblclick="document.location='system_patches_edit.php?id=<?= $i ?>'">
+	<tr id="fr<?=$i?>" ondblclick="document.location='system_patches_edit.php?id=<?= $i ?>'">
 		<td>
 			<input type="checkbox" id="frc<?=$i?>" name="patch[]" value="<?=$i?>" onclick="fr_bgcolor('<?=$i?>')" />
 			<a class="fa-solid fa-anchor" id="Xmove_<?=$i?>" title="<?=gettext("Move checked entries to here")?>"></a>
@@ -458,6 +458,7 @@ foreach ($recommended_patches as $rpatch):
 		}
 	}
 	$linkhtml = implode(', ', $linklist);
+	$rpatch['uniqid'] = htmlspecialchars($rpatch['uniqid']);
 ?>
 	<tr>
 		<td>

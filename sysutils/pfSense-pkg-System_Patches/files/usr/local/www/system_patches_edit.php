@@ -142,7 +142,7 @@ if ($_POST) {
 			}
 		}
 
-		write_config(gettext("System: Patches: edited a patch."));
+		write_config(LOG_PREFIX_PKG_SYSTEMPATCHES . ": " . gettext("edited a patch."));
 		if ($thispatch['autoapply']) {
 			patch_add_shellcmd();
 		}
@@ -239,7 +239,7 @@ $section = new Form_Section('Patch Information');
 
 $section->addInput(new Form_StaticText(
 	'Patch ID',
-	$pconfig['uniqid']
+	htmlspecialchars($pconfig['uniqid'])
 ));
 
 $form->add($section);

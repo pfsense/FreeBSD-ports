@@ -32,14 +32,6 @@ $patch_dir = '/var/patches/';
 $rec_patch_dir = '/usr/local/pkg/patches/';
 $patch_cmd = '/usr/bin/patch';
 
-function patch_package_install() {
-	patch_add_shellcmd();
-}
-
-function patch_package_deinstall() {
-	patch_remove_shellcmd();
-}
-
 function patch_commit($patch, $action, $test=false, $fulldetail=false) {
 	global $patch_dir, $rec_patch_dir, $patch_cmd, $patch_suffix;
 	/* Check if this is a recommended patch so the test does not need to be repeated each time */
@@ -129,7 +121,7 @@ function patch_fetch(& $patch, $id = null) {
 		} else {
 			config_set_path("installedpackages/patches/item/", $patch);
 		}
-		write_config("Fetched patch {$patch['descr']}");
+		write_config(LOG_PREFIX_PKG_SYSTEMPATCHES . ": fetched patch {$patch['descr']}");
 		return true;
 	}
 }
@@ -211,7 +203,7 @@ function patch_add_shellcmd() {
 	if (!$found) {
 		// Implicitly creates array if needed
 		config_set_path('system/earlyshellcmd/', "/usr/local/bin/php-cgi -f /usr/local/bin/apply_patches.php");
-		write_config("System Patches package added an early shellcmd: apply patches");
+		write_config(LOG_PREFIX_PKG_SYSTEMPATCHES . ": added an early shellcmd: apply patches");
 	}
 }
 
@@ -224,7 +216,7 @@ function patch_remove_shellcmd() {
 		}
 	}
 	if ($removed > 0) {
-		write_config("System Patches package removed {$removed} existing early shellcmd(s): apply patches");
+		write_config(LOG_PREFIX_PKG_SYSTEMPATCHES . ": removed {$removed} existing early shellcmd(s): apply patches");
 	}
 }
 
@@ -242,6 +234,14 @@ function patch_descr($patch) {
 	}
 	$descr .= ")";
 	return $descr;
+}
+
+function patch_package_install() {
+	patch_add_shellcmd();
+}
+
+function patch_package_deinstall() {
+	patch_remove_shellcmd();
 }
 
 ?>
