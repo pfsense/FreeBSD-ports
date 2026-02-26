@@ -114,8 +114,6 @@
 @(,,755) /etc/rc.carpmaster
 @(,,755) /etc/rc.checkclock
 /etc/rc.conf
-/etc/rc.d/etcmfs
-/etc/rc.d/varmfs
 @(,,755) /etc/rc.disable_hdd_apm
 @(,,755) /etc/rc.dumpon
 @(,,755) /etc/rc.dyndns.update
