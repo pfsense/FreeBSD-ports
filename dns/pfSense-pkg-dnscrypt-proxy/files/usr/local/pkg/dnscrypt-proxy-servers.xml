@@ -1,0 +1,368 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE packagegui SYSTEM "../schema/packages.dtd">
+<?xml-stylesheet type="text/xsl" href="./xsl/package.xsl"?>
+<packagegui>
+	<copyright>
+	<![CDATA[
+/*
+ * dnscrypt-proxy-servers.xml
+ *
+ * for pfSense
+ * Copyright (c) 2026 nopoz (https://github.com/nopoz)
+ * SPDX-License-Identifier: ISC
+ *
+ * Permission to use, copy, modify, and/or distribute this software for any
+ * purpose with or without fee is hereby granted, provided that the above
+ * copyright notice and this permission notice appear in all copies.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
+ * WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
+ * MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
+ * ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
+ * WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
+ * ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
+ * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
+ */
+	]]>
+	</copyright>
+	<name>dnscryptproxy</name>
+	<title>Services: DNSCrypt Proxy</title>
+	<shortcut_section>dnscrypt-proxy</shortcut_section>
+	<configpath>installedpackages->dnscryptproxy->config</configpath>
+	<addedit_string>[dnscrypt-proxy] Settings saved</addedit_string>
+	<aftersaveredirect>/pkg_edit.php?xml=dnscrypt-proxy-servers.xml</aftersaveredirect>
+	<include_file>/usr/local/pkg/dnscrypt-proxy.inc</include_file>
+	<tabs>
+		<tab>
+			<text>General Settings</text>
+			<url>/pkg_edit.php?xml=dnscrypt-proxy.xml</url>
+		</tab>
+		<tab>
+			<text>Server Selection</text>
+			<url>/pkg_edit.php?xml=dnscrypt-proxy-servers.xml</url>
+			<active/>
+		</tab>
+		<tab>
+			<text>Cache &amp; Filtering</text>
+			<url>/pkg_edit.php?xml=dnscrypt-proxy-cache.xml</url>
+		</tab>
+		<tab>
+			<text>Logging</text>
+			<url>/pkg_edit.php?xml=dnscrypt-proxy-logging.xml</url>
+		</tab>
+		<tab>
+			<text>Lists</text>
+			<url>/pkg_edit.php?xml=dnscrypt-proxy-lists.xml</url>
+		</tab>
+		<tab>
+			<text>Advanced</text>
+			<url>/pkg_edit.php?xml=dnscrypt-proxy-advanced.xml</url>
+		</tab>
+		<tab>
+			<text>Query Log</text>
+			<url>/dnscrypt-proxy-querylog.php</url>
+		</tab>
+		<tab>
+			<text>Config</text>
+			<url>/dnscrypt-proxy-config.php</url>
+		</tab>
+	</tabs>
+	<fields>
+		<field>
+			<name>Protocol Selection</name>
+			<type>listtopic</type>
+		</field>
+		<field>
+			<fielddescr>Use IPv4 Servers</fielddescr>
+			<fieldname>ipv4_servers</fieldname>
+			<description>Use servers reachable via IPv4</description>
+			<type>checkbox</type>
+			<default_value>on</default_value>
+		</field>
+		<field>
+			<fielddescr>Use IPv6 Servers</fielddescr>
+			<fieldname>ipv6_servers</fieldname>
+			<description>Use servers reachable via IPv6 (requires IPv6 connectivity)</description>
+			<type>checkbox</type>
+		</field>
+		<field>
+			<fielddescr>Use DNSCrypt Servers</fielddescr>
+			<fieldname>dnscrypt_servers</fieldname>
+			<description>Use servers supporting the DNSCrypt protocol</description>
+			<type>checkbox</type>
+			<default_value>on</default_value>
+		</field>
+		<field>
+			<fielddescr>Use DoH Servers</fielddescr>
+			<fieldname>doh_servers</fieldname>
+			<description>Use servers supporting DNS-over-HTTPS</description>
+			<type>checkbox</type>
+			<default_value>on</default_value>
+		</field>
+		<field>
+			<name>Server Requirements</name>
+			<type>listtopic</type>
+		</field>
+		<field>
+			<fielddescr>Require DNSSEC</fielddescr>
+			<fieldname>require_dnssec</fieldname>
+			<description>Only use servers that support DNSSEC validation</description>
+			<type>checkbox</type>
+		</field>
+		<field>
+			<fielddescr>Require No Logging</fielddescr>
+			<fieldname>require_nolog</fieldname>
+			<description>Only use servers that claim to not log queries</description>
+			<type>checkbox</type>
+			<default_value>on</default_value>
+		</field>
+		<field>
+			<fielddescr>Require No Filtering</fielddescr>
+			<fieldname>require_nofilter</fieldname>
+			<description>Only use servers that do not filter/block domains</description>
+			<type>checkbox</type>
+			<default_value>on</default_value>
+		</field>
+		<field>
+			<name>Server Selection</name>
+			<type>listtopic</type>
+		</field>
+		<field>
+			<fielddescr>Selection Mode</fielddescr>
+			<fieldname>server_selection_mode</fieldname>
+			<description>
+				<![CDATA[
+				<strong>Auto</strong>: Use any available server matching requirements above<br/>
+				<strong>Manual</strong>: Only use servers selected below
+				]]>
+			</description>
+			<type>select</type>
+			<default_value>auto</default_value>
+			<options>
+				<option><name>Auto - Use any matching server</name><value>auto</value></option>
+				<option><name>Manual - Select specific servers</name><value>manual</value></option>
+			</options>
+		</field>
+		<field>
+			<name>Popular DNS Providers</name>
+			<type>listtopic</type>
+		</field>
+		<field>
+			<fielddescr>Cloudflare</fielddescr>
+			<fieldname>servers_cloudflare</fieldname>
+			<description>Cloudflare DNS (anycast, privacy-focused)</description>
+			<type>select</type>
+			<multiple>true</multiple>
+			<size>4</size>
+			<options>
+				<option><name>cloudflare - DoH, no filtering</name><value>cloudflare</value></option>
+				<option><name>cloudflare-security - DoH, malware blocking</name><value>cloudflare-security</value></option>
+				<option><name>cloudflare-family - DoH, malware + adult content blocking</name><value>cloudflare-family</value></option>
+				<option><name>cloudflare-ipv6 - DoH, no filtering (IPv6)</name><value>cloudflare-ipv6</value></option>
+			</options>
+		</field>
+		<field>
+			<fielddescr>Quad9</fielddescr>
+			<fieldname>servers_quad9</fieldname>
+			<description>Quad9 DNS (security-focused, threat blocking)</description>
+			<type>select</type>
+			<multiple>true</multiple>
+			<size>4</size>
+			<options>
+				<option><name>quad9-dnscrypt-ip4-filter-pri - DNSCrypt, malware blocking</name><value>quad9-dnscrypt-ip4-filter-pri</value></option>
+				<option><name>quad9-dnscrypt-ip4-nofilter-pri - DNSCrypt, no filtering</name><value>quad9-dnscrypt-ip4-nofilter-pri</value></option>
+				<option><name>quad9-doh-ip4-port443-filter-pri - DoH, malware blocking</name><value>quad9-doh-ip4-port443-filter-pri</value></option>
+				<option><name>quad9-doh-ip4-port443-nofilter-pri - DoH, no filtering</name><value>quad9-doh-ip4-port443-nofilter-pri</value></option>
+			</options>
+		</field>
+		<field>
+			<fielddescr>Google</fielddescr>
+			<fieldname>servers_google</fieldname>
+			<description>Google Public DNS (anycast)</description>
+			<type>select</type>
+			<multiple>true</multiple>
+			<size>2</size>
+			<options>
+				<option><name>google - DoH, no filtering</name><value>google</value></option>
+				<option><name>google-ipv6 - DoH, no filtering (IPv6)</name><value>google-ipv6</value></option>
+			</options>
+		</field>
+		<field>
+			<fielddescr>AdGuard</fielddescr>
+			<fieldname>servers_adguard</fieldname>
+			<description>AdGuard DNS (ad and tracker blocking)</description>
+			<type>select</type>
+			<multiple>true</multiple>
+			<size>4</size>
+			<options>
+				<option><name>adguard-dns-doh - DoH, ad + malware blocking</name><value>adguard-dns-doh</value></option>
+				<option><name>adguard-dns-family-doh - DoH, family protection + ad blocking</name><value>adguard-dns-family-doh</value></option>
+				<option><name>adguard-dns-unfiltered-doh - DoH, no filtering</name><value>adguard-dns-unfiltered-doh</value></option>
+				<option><name>adguard-dns - DNSCrypt, ad + malware blocking</name><value>adguard-dns</value></option>
+			</options>
+		</field>
+		<field>
+			<fielddescr>NextDNS</fielddescr>
+			<fieldname>servers_nextdns</fieldname>
+			<description>NextDNS (customizable filtering via nextdns.io)</description>
+			<type>select</type>
+			<multiple>true</multiple>
+			<size>3</size>
+			<options>
+				<option><name>nextdns - DoH, customizable filtering</name><value>nextdns</value></option>
+				<option><name>nextdns-ipv6 - DoH, customizable filtering (IPv6)</name><value>nextdns-ipv6</value></option>
+				<option><name>nextdns-ultralow - DoH, customizable filtering (ultra-low latency)</name><value>nextdns-ultralow</value></option>
+			</options>
+		</field>
+		<field>
+			<fielddescr>Mullvad</fielddescr>
+			<fieldname>servers_mullvad</fieldname>
+			<description>Mullvad DNS (privacy-focused, no logging, audited)</description>
+			<type>select</type>
+			<multiple>true</multiple>
+			<size>4</size>
+			<options>
+				<option><name>mullvad-doh - DoH, no filtering</name><value>mullvad-doh</value></option>
+				<option><name>mullvad-base-doh - DoH, ad, tracker + malware blocking</name><value>mullvad-base-doh</value></option>
+				<option><name>mullvad-family-doh - DoH, family protection</name><value>mullvad-family-doh</value></option>
+				<option><name>mullvad-all-doh - DoH, maximum blocking</name><value>mullvad-all-doh</value></option>
+			</options>
+		</field>
+		<field>
+			<fielddescr>Cisco OpenDNS</fielddescr>
+			<fieldname>servers_cisco</fieldname>
+			<description>Cisco Umbrella / OpenDNS</description>
+			<type>select</type>
+			<multiple>true</multiple>
+			<size>3</size>
+			<options>
+				<option><name>cisco-doh - DoH, no filtering</name><value>cisco-doh</value></option>
+				<option><name>cisco-familyshield - DNSCrypt, family protection</name><value>cisco-familyshield</value></option>
+				<option><name>cisco - DNSCrypt, no filtering</name><value>cisco</value></option>
+			</options>
+		</field>
+		<field>
+			<fielddescr>CleanBrowsing</fielddescr>
+			<fieldname>servers_cleanbrowsing</fieldname>
+			<description>CleanBrowsing DNS (content filtering)</description>
+			<type>select</type>
+			<multiple>true</multiple>
+			<size>3</size>
+			<options>
+				<option><name>cleanbrowsing-security - DNSCrypt, malware + phishing blocking</name><value>cleanbrowsing-security</value></option>
+				<option><name>cleanbrowsing-family - DNSCrypt, family protection</name><value>cleanbrowsing-family</value></option>
+				<option><name>cleanbrowsing-adult - DNSCrypt, adult content blocking</name><value>cleanbrowsing-adult</value></option>
+			</options>
+		</field>
+		<field>
+			<name>Additional Servers</name>
+			<type>listtopic</type>
+		</field>
+		<field>
+			<fielddescr>Other Server Names</fielddescr>
+			<fieldname>additional_servers</fieldname>
+			<description>
+				<![CDATA[
+				Additional server names from the public resolver list (comma-separated).<br/>
+				See <a href="https://github.com/DNSCrypt/dnscrypt-resolvers/blob/master/v3/public-resolvers.md" target="_blank">public-resolvers.md</a> for available servers.<br/>
+				Example: <code>dns0-unfiltered, scaleway-fr, seby-doh</code>
+				]]>
+			</description>
+			<type>input</type>
+			<size>70</size>
+		</field>
+		<field>
+			<name>Custom Static Servers</name>
+			<type>listtopic</type>
+		</field>
+		<field>
+			<fielddescr>Custom Resolvers</fielddescr>
+			<fieldname>custom_servers</fieldname>
+			<description>
+				<![CDATA[
+				Add your own DNS servers not in the public list. One per line.<br/>
+				Format: <code>name = stamp</code><br/>
+				<br/>
+				Generate stamps at: <a href="https://dnscrypt.info/stamps/" target="_blank">dnscrypt.info/stamps</a><br/>
+				<br/>
+				Example:<br/>
+				<code>mycompany-doh = sdns://AgcAAAAAAAAACjEwLjAuMC4xMDAAD2RvaC5jb21wYW55LmNvbQovZG5zLXF1ZXJ5</code><br/>
+				<code>private-dnscrypt = sdns://AQcAAAAAAAAADjEwLjEwLjEwLjEwOjQ0MyBueXN...</code>
+				]]>
+			</description>
+			<type>textarea</type>
+			<cols>80</cols>
+			<rows>6</rows>
+			<encoding>base64</encoding>
+		</field>
+		<field>
+			<name>Anonymized DNS</name>
+			<type>listtopic</type>
+		</field>
+		<field>
+			<fielddescr>Anonymized DNS Info</fielddescr>
+			<fieldname>anon_dns_info</fieldname>
+			<description>
+				<![CDATA[
+				<div class="alert alert-warning" role="alert">
+				<strong>Important:</strong> Anonymized DNS only works with the <strong>DNSCrypt protocol</strong> (not DoH or ODoH).<br/>
+				Relays hide your IP address from DNS resolvers by routing encrypted queries through intermediate servers.<br/>
+				Choose relays operated by <strong>different entities</strong> than your resolvers for maximum privacy.<br/><br/>
+				<a href="https://github.com/DNSCrypt/dnscrypt-resolvers/blob/master/v3/relays.md" target="_blank">Available Relays</a> |
+				<a href="https://github.com/DNSCrypt/dnscrypt-proxy/wiki/Anonymized-DNS" target="_blank">Documentation</a>
+				</div>
+				]]>
+			</description>
+			<type>info</type>
+		</field>
+		<field>
+			<fielddescr>Enable Anonymized DNS</fielddescr>
+			<fieldname>anon_dns_enable</fieldname>
+			<description>Route DNS queries through anonymizing relays to hide your IP from resolvers</description>
+			<type>checkbox</type>
+		</field>
+		<field>
+			<fielddescr>Relay Routes</fielddescr>
+			<fieldname>anon_dns_routes</fieldname>
+			<description>
+				<![CDATA[
+				Define relay routes, one per line. Format: <code>server_name = relay1, relay2</code><br/>
+				Use <code>*</code> as the server name to route all servers through the same relays.<br/>
+				<br/>
+				Relay names are listed at: <a href="https://github.com/DNSCrypt/dnscrypt-resolvers/blob/master/v3/relays.md" target="_blank">relays.md</a><br/>
+				<br/>
+				Examples:<br/>
+				<code>* = anon-cs-austria, anon-cs-tokyo</code> (all servers use these relays)<br/>
+				<code>quad9-dnscrypt-ip4-filter-pri = anon-cs-austria, anon-cs-tokyo</code><br/>
+				<code>adguard-dns = dnscry.pt-anon-newark-ipv4, anon-cs-austria</code>
+				]]>
+			</description>
+			<type>textarea</type>
+			<cols>80</cols>
+			<rows>6</rows>
+			<encoding>base64</encoding>
+		</field>
+		<field>
+			<fielddescr>Skip Incompatible</fielddescr>
+			<fieldname>anon_dns_skip_incompatible</fieldname>
+			<description>Skip resolvers incompatible with anonymization instead of using them directly</description>
+			<type>checkbox</type>
+			<default_value>on</default_value>
+		</field>
+		<field>
+			<fielddescr>Direct Certificate Fallback</fielddescr>
+			<fieldname>anon_dns_direct_cert_fallback</fieldname>
+			<description>If certificates cannot be retrieved via relay, try direct connection. DNS queries will still go through relays.</description>
+			<type>checkbox</type>
+		</field>
+	</fields>
+	<custom_php_resync_config_command>
+		dnscrypt_proxy_sync();
+	</custom_php_resync_config_command>
+	<custom_php_validation_command>
+		dnscrypt_proxy_validate($_POST, $input_errors);
+	</custom_php_validation_command>
+	<custom_add_php_command_late>
+		dnscrypt_proxy_save_config_late();
+	</custom_add_php_command_late>
+</packagegui>

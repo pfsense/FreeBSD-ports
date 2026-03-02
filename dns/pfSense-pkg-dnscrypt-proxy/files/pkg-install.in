@@ -1,0 +1,11 @@
+#!/bin/sh
+
+if [ "${2}" != "POST-INSTALL" ]; then
+	exit 0
+fi
+
+# Register package with pfSense
+/usr/local/bin/php -f /etc/rc.packages %%PORTNAME%% ${2}
+
+# Restart web GUI to pick up new package menu
+/etc/rc.restart_webgui
