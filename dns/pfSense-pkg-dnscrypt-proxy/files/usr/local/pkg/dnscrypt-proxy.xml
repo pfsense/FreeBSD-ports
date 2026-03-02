@@ -1,0 +1,227 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE packagegui SYSTEM "../schema/packages.dtd">
+<?xml-stylesheet type="text/xsl" href="./xsl/package.xsl"?>
+<packagegui>
+	<copyright>
+	<![CDATA[
+/*
+ * dnscrypt-proxy.xml
+ *
+ * for pfSense
+ * Copyright (c) 2026 nopoz (https://github.com/nopoz)
+ * SPDX-License-Identifier: ISC
+ *
+ * Permission to use, copy, modify, and/or distribute this software for any
+ * purpose with or without fee is hereby granted, provided that the above
+ * copyright notice and this permission notice appear in all copies.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
+ * WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
+ * MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
+ * ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
+ * WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
+ * ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
+ * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
+ */
+	]]>
+	</copyright>
+	<name>dnscryptproxy</name>
+	<title>Services: DNSCrypt Proxy</title>
+	<shortcut_section>dnscrypt-proxy</shortcut_section>
+	<menu>
+		<name>DNSCrypt Proxy</name>
+		<tooltiptext>Configure DNSCrypt Proxy encrypted DNS client</tooltiptext>
+		<section>Services</section>
+		<url>/pkg_edit.php?xml=dnscrypt-proxy.xml</url>
+	</menu>
+	<service>
+		<name>dnscrypt_proxy</name>
+		<rcfile>dnscrypt-proxy.sh</rcfile>
+		<executable>dnscrypt-proxy</executable>
+		<description>DNSCrypt Proxy - Encrypted DNS</description>
+		<starts_on_sync/>
+	</service>
+	<configpath>installedpackages->dnscryptproxy->config</configpath>
+	<addedit_string>[dnscrypt-proxy] Settings saved</addedit_string>
+	<aftersaveredirect>/pkg_edit.php?xml=dnscrypt-proxy.xml</aftersaveredirect>
+	<include_file>/usr/local/pkg/dnscrypt-proxy.inc</include_file>
+	<tabs>
+		<tab>
+			<text>General Settings</text>
+			<url>/pkg_edit.php?xml=dnscrypt-proxy.xml</url>
+			<active/>
+		</tab>
+		<tab>
+			<text>Server Selection</text>
+			<url>/pkg_edit.php?xml=dnscrypt-proxy-servers.xml</url>
+		</tab>
+		<tab>
+			<text>Cache &amp; Filtering</text>
+			<url>/pkg_edit.php?xml=dnscrypt-proxy-cache.xml</url>
+		</tab>
+		<tab>
+			<text>Logging</text>
+			<url>/pkg_edit.php?xml=dnscrypt-proxy-logging.xml</url>
+		</tab>
+		<tab>
+			<text>Lists</text>
+			<url>/pkg_edit.php?xml=dnscrypt-proxy-lists.xml</url>
+		</tab>
+		<tab>
+			<text>Advanced</text>
+			<url>/pkg_edit.php?xml=dnscrypt-proxy-advanced.xml</url>
+		</tab>
+		<tab>
+			<text>Query Log</text>
+			<url>/dnscrypt-proxy-querylog.php</url>
+		</tab>
+		<tab>
+			<text>Config</text>
+			<url>/dnscrypt-proxy-config.php</url>
+		</tab>
+	</tabs>
+	<fields>
+		<field>
+			<name>General Settings</name>
+			<type>listtopic</type>
+		</field>
+		<field>
+			<fielddescr>Enable</fielddescr>
+			<fieldname>enable</fieldname>
+			<description>Enable DNSCrypt Proxy service</description>
+			<type>checkbox</type>
+		</field>
+		<field>
+			<fielddescr>Network Interfaces</fielddescr>
+			<fieldname>listen_interfaces</fieldname>
+			<description>
+				<![CDATA[
+				Interfaces to listen on for DNS queries. Use CTRL/CMD+click to select multiple.<br/>
+				<strong>loopback</strong>: Only local services can use DNSCrypt (recommended for forwarding from Unbound)<br/>
+				<strong>All</strong>: Listen on all interfaces (use with caution)<br/>
+				<strong>LAN/WAN/etc</strong>: Listen on specific interface IP addresses
+				]]>
+			</description>
+			<type>interfaces_selection</type>
+			<showlistenall/>
+			<showvirtualips/>
+			<multiple/>
+			<default_value>lo0</default_value>
+		</field>
+		<field>
+			<fielddescr>Listen Port</fielddescr>
+			<fieldname>listen_port</fieldname>
+			<description>
+				<![CDATA[
+				Port to listen on. Use 5300 to avoid conflicts with Unbound (53).<br/>
+				Default: 5300
+				]]>
+			</description>
+			<type>input</type>
+			<size>10</size>
+			<default_value>5300</default_value>
+		</field>
+		<field>
+			<fielddescr>Max Clients</fielddescr>
+			<fieldname>max_clients</fieldname>
+			<description>Maximum number of simultaneous client connections. Default: 250</description>
+			<type>input</type>
+			<size>10</size>
+			<default_value>250</default_value>
+		</field>
+		<field>
+			<name>Network Settings</name>
+			<type>listtopic</type>
+		</field>
+		<field>
+			<fielddescr>Bootstrap Resolvers</fielddescr>
+			<fieldname>bootstrap_resolvers</fieldname>
+			<description>
+				<![CDATA[
+				Initial DNS resolvers used to resolve DoH server hostnames (comma-separated).<br/>
+				Default: 9.9.9.11:53, 8.8.8.8:53
+				]]>
+			</description>
+			<type>input</type>
+			<size>60</size>
+			<default_value>9.9.9.11:53, 8.8.8.8:53</default_value>
+		</field>
+		<field>
+			<fielddescr>Ignore System DNS</fielddescr>
+			<fieldname>ignore_system_dns</fieldname>
+			<description>Do not use DNS servers from /etc/resolv.conf</description>
+			<type>checkbox</type>
+			<default_value>on</default_value>
+		</field>
+		<field>
+			<fielddescr>Query Timeout (ms)</fielddescr>
+			<fieldname>timeout</fieldname>
+			<description>How long to wait for a response from DNS servers (milliseconds). Default: 5000</description>
+			<type>input</type>
+			<size>10</size>
+			<default_value>5000</default_value>
+		</field>
+		<field>
+			<name>Unbound Integration</name>
+			<type>listtopic</type>
+		</field>
+		<field>
+			<fielddescr>Integration Guide</fielddescr>
+			<fieldname>unbound_info</fieldname>
+			<type>info</type>
+			<description>
+				<![CDATA[
+				<div class="alert alert-info">
+				<strong>To forward Unbound queries through DNSCrypt Proxy:</strong><br/><br/>
+				Go to <strong>Services &gt; DNS Resolver &gt; General Settings</strong> and add to Custom options:<br/>
+				<pre>server:
+    do-not-query-localhost: no
+forward-zone:
+    name: "."
+    forward-addr: 127.0.0.1@5300</pre>
+				Adjust the port (5300) if you changed the Listen Port above.
+				</div>
+				]]>
+			</description>
+		</field>
+		<field>
+			<name>Package Info</name>
+			<type>listtopic</type>
+		</field>
+		<field>
+			<fielddescr>Package Version</fielddescr>
+			<fieldname>pkg_version_display</fieldname>
+			<type>info</type>
+			<description><![CDATA[<span id="pkg-version"></span>]]></description>
+		</field>
+		<field>
+			<fielddescr>DNSCrypt Proxy Version</fielddescr>
+			<fieldname>version_display</fieldname>
+			<type>info</type>
+			<description><![CDATA[<span id="dnscrypt-version"></span>]]></description>
+		</field>
+	</fields>
+	<custom_php_after_head_command>
+		$pkg_version = dnscrypt_proxy_get_pkg_version();
+		$binary_version = dnscrypt_proxy_get_version();
+		echo "&lt;script&gt;document.addEventListener('DOMContentLoaded', function() { ";
+		echo "var pkgEl = document.getElementById('pkg-version'); if (pkgEl) pkgEl.textContent = " . json_encode($pkg_version) . "; ";
+		echo "var binEl = document.getElementById('dnscrypt-version'); if (binEl) binEl.textContent = " . json_encode($binary_version) . "; ";
+		echo "});&lt;/script&gt;";
+	</custom_php_after_head_command>
+	<custom_php_install_command>
+		dnscrypt_proxy_install();
+	</custom_php_install_command>
+	<custom_php_deinstall_command>
+		dnscrypt_proxy_deinstall();
+	</custom_php_deinstall_command>
+	<custom_php_resync_config_command>
+		dnscrypt_proxy_sync();
+	</custom_php_resync_config_command>
+	<custom_php_validation_command>
+		dnscrypt_proxy_validate($_POST, $input_errors);
+	</custom_php_validation_command>
+	<custom_add_php_command_late>
+		dnscrypt_proxy_save_config_late();
+	</custom_add_php_command_late>
+</packagegui>
