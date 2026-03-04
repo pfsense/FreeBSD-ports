@@ -60,7 +60,7 @@ do-install:
 	# Explicit deps
 	(cd ${WRKDIR}/php-shellcommand-${SHCMD_VER} && ${COPYTREE_SHARE} . ${STAGEDIR}${PREFIX}${VENDORBASE}/mikehaertl/php-shellcommand)
 	(cd ${WRKDIR}/utils-${UTILS_VER:C/v//} && ${COPYTREE_SHARE} . ${STAGEDIR}${PREFIX}${VENDORBASE}/nette/utils)
-	(cd ${WRKDIR}/simplecache-${SIMPLECACHE_VER} && ${COPYTREE_SHARE} . ${STAGEDIR}${PREFIX}${VENDORBASE}/psr/simple-cache)
+	(cd ${WRKDIR}/simple-cache-${SIMPLECACHE_VER} && ${COPYTREE_SHARE} . ${STAGEDIR}${PREFIX}${VENDORBASE}/psr/simple-cache)
 	(cd ${WRKDIR}/simplepie-${SIMPLEPIE_VER} && ${COPYTREE_SHARE} . ${STAGEDIR}${PREFIX}${VENDORBASE}/simplepie/simplepie)
 	(cd ${WRKDIR}/cache-${CACHE_VER:C/v//} && ${COPYTREE_SHARE} . ${STAGEDIR}${PREFIX}${VENDORBASE}/symfony/cache)
 	(cd ${WRKDIR}/console-${CONSOLE_VER:C/v//} && ${COPYTREE_SHARE} . ${STAGEDIR}${PREFIX}${VENDORBASE}/symfony/console)
