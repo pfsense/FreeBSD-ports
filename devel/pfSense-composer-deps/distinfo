@@ -1,8 +1,10 @@
-TIMESTAMP = 1769717813
+TIMESTAMP = 1772650908
 SHA256 (mikehaertl-php-shellcommand-1.7.0_GH0.tar.gz) = 0823b08747dee89fdd2ed0a00ac80f809c0b7a39911e1c0d80bb7425c471a22b
 SIZE (mikehaertl-php-shellcommand-1.7.0_GH0.tar.gz) = 9609
 SHA256 (nette-utils-v4.1.1_GH0.tar.gz) = 27e740fe8b5ae94f79dd4075e4def5ce4d401a381cfd8c87b4d152dfb5709364
 SIZE (nette-utils-v4.1.1_GH0.tar.gz) = 48512
+SHA256 (php-fig-simple-cache-3.0.0_GH0.tar.gz) = 32629dad42de601ab2e60b9147be7797b8ed6dfcd4bd60a1f3f43679dfc98857
+SIZE (php-fig-simple-cache-3.0.0_GH0.tar.gz) = 3084
 SHA256 (simplepie-simplepie-1.9.0_GH0.tar.gz) = 4d9913c45c3c499b17590c1fa9fd530ae38cd66e93765908021e8ee3977f895f
 SIZE (simplepie-simplepie-1.9.0_GH0.tar.gz) = 139710
 SHA256 (symfony-cache-v8.0.5_GH0.tar.gz) = 46bdcbf2f6104f8a864d1ed58fc20b8cc1ee7f305f6495e23c51afc8eaa992cb

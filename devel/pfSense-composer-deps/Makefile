@@ -1,6 +1,5 @@
 PORTNAME=	pfSense-composer-deps
-DISTVERSION=	0.4
-PORTREVISION=	1
+DISTVERSION=	0.5
 CATEGORIES=	devel
 
 MAINTAINER=	coreteam@pfSense.org
@@ -10,17 +9,19 @@ WWW=
 VENDORBASE=	/pfSense/include/vendor
 
 NO_BUILD=	yes
-SHCMD_VER=	1.7.0
-UTILS_VER=	v4.1.1
-SIMPLEPIE_VER=	1.9.0
-CACHE_VER=	v8.0.5
-CONSOLE_VER=	v8.0.4
+SHCMD_VER=		1.7.0
+UTILS_VER=		v4.1.1
+SIMPLECACHE_VER=	3.0.0
+SIMPLEPIE_VER=		1.9.0
+CACHE_VER=		v8.0.5
+CONSOLE_VER=		v8.0.4
 
 USE_GITHUB=	nodefault
 
 # Explicit deps
 GH_TUPLE=	mikehaertl:php-shellcommand:${SHCMD_VER}:shellcommand \
 		nette:utils:${UTILS_VER}:utils \
+		php-fig:simple-cache:${SIMPLECACHE_VER}:simplecache \
 		simplepie:simplepie:${SIMPLEPIE_VER}:simplepie \
 		symfony:cache:${CACHE_VER}:cache \
 		symfony:console:${CONSOLE_VER}:console
@@ -59,6 +60,7 @@ do-install:
 	# Explicit deps
 	(cd ${WRKDIR}/php-shellcommand-${SHCMD_VER} && ${COPYTREE_SHARE} . ${STAGEDIR}${PREFIX}${VENDORBASE}/mikehaertl/php-shellcommand)
 	(cd ${WRKDIR}/utils-${UTILS_VER:C/v//} && ${COPYTREE_SHARE} . ${STAGEDIR}${PREFIX}${VENDORBASE}/nette/utils)
+	(cd ${WRKDIR}/simplecache-${SIMPLECACHE_VER} && ${COPYTREE_SHARE} . ${STAGEDIR}${PREFIX}${VENDORBASE}/psr/simple-cache)
 	(cd ${WRKDIR}/simplepie-${SIMPLEPIE_VER} && ${COPYTREE_SHARE} . ${STAGEDIR}${PREFIX}${VENDORBASE}/simplepie/simplepie)
 	(cd ${WRKDIR}/cache-${CACHE_VER:C/v//} && ${COPYTREE_SHARE} . ${STAGEDIR}${PREFIX}${VENDORBASE}/symfony/cache)
 	(cd ${WRKDIR}/console-${CONSOLE_VER:C/v//} && ${COPYTREE_SHARE} . ${STAGEDIR}${PREFIX}${VENDORBASE}/symfony/console)

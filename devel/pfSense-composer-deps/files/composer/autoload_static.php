@@ -4,7 +4,7 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInitaba2b16ef20fb2a1401846427e5a3a2a
+class ComposerStaticInitc79a7dac55f2962b16f0419d5f63472d
 {
     public static $files = array (
         '6e3fae29631ef280660b3cdad06f25a8' => __DIR__ . '/..' . '/symfony/deprecation-contracts/function.php',
@@ -45,6 +45,7 @@ class ComposerStaticInitaba2b16ef20fb2a1401846427e5a3a2a
         ),
         'P' =>
         array (
+            'Psr\\SimpleCache\\' => 16,
             'Psr\\Log\\' => 8,
             'Psr\\Container\\' => 14,
             'Psr\\Cache\\' => 10,
@@ -116,6 +117,10 @@ class ComposerStaticInitaba2b16ef20fb2a1401846427e5a3a2a
         'SimplePie\\' =>
         array (
             0 => __DIR__ . '/..' . '/simplepie/simplepie/src',
+        ),
+        'Psr\\SimpleCache\\' =>
+        array (
+            0 => __DIR__ . '/..' . '/psr/simple-cache/src',
         ),
         'Psr\\Log\\' =>
         array (
@@ -217,6 +222,9 @@ class ComposerStaticInitaba2b16ef20fb2a1401846427e5a3a2a
         'Psr\\Log\\LoggerInterface' => __DIR__ . '/..' . '/psr/log/src/LoggerInterface.php',
         'Psr\\Log\\LoggerTrait' => __DIR__ . '/..' . '/psr/log/src/LoggerTrait.php',
         'Psr\\Log\\NullLogger' => __DIR__ . '/..' . '/psr/log/src/NullLogger.php',
+        'Psr\\SimpleCache\\CacheException' => __DIR__ . '/..' . '/psr/simple-cache/src/CacheException.php',
+        'Psr\\SimpleCache\\CacheInterface' => __DIR__ . '/..' . '/psr/simple-cache/src/CacheInterface.php',
+        'Psr\\SimpleCache\\InvalidArgumentException' => __DIR__ . '/..' . '/psr/simple-cache/src/InvalidArgumentException.php',
         'SimplePie' => __DIR__ . '/..' . '/simplepie/simplepie/library/SimplePie.php',
         'SimplePie\\Author' => __DIR__ . '/..' . '/simplepie/simplepie/src/Author.php',
         'SimplePie\\Cache' => __DIR__ . '/..' . '/simplepie/simplepie/src/Cache.php',
@@ -557,10 +565,10 @@ class ComposerStaticInitaba2b16ef20fb2a1401846427e5a3a2a
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->prefixLengthsPsr4 = ComposerStaticInitaba2b16ef20fb2a1401846427e5a3a2a::$prefixLengthsPsr4;
-            $loader->prefixDirsPsr4 = ComposerStaticInitaba2b16ef20fb2a1401846427e5a3a2a::$prefixDirsPsr4;
-            $loader->prefixesPsr0 = ComposerStaticInitaba2b16ef20fb2a1401846427e5a3a2a::$prefixesPsr0;
-            $loader->classMap = ComposerStaticInitaba2b16ef20fb2a1401846427e5a3a2a::$classMap;
+            $loader->prefixLengthsPsr4 = ComposerStaticInitc79a7dac55f2962b16f0419d5f63472d::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInitc79a7dac55f2962b16f0419d5f63472d::$prefixDirsPsr4;
+            $loader->prefixesPsr0 = ComposerStaticInitc79a7dac55f2962b16f0419d5f63472d::$prefixesPsr0;
+            $loader->classMap = ComposerStaticInitc79a7dac55f2962b16f0419d5f63472d::$classMap;
 
         }, null, ClassLoader::class);
     }
