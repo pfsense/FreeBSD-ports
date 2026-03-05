@@ -80,6 +80,13 @@ pfSense/include/vendor/psr/log/src/LoggerAwareTrait.php
 pfSense/include/vendor/psr/log/src/LoggerInterface.php
 pfSense/include/vendor/psr/log/src/LoggerTrait.php
 pfSense/include/vendor/psr/log/src/NullLogger.php
+pfSense/include/vendor/psr/simple-cache/.editorconfig
+pfSense/include/vendor/psr/simple-cache/LICENSE.md
+pfSense/include/vendor/psr/simple-cache/README.md
+pfSense/include/vendor/psr/simple-cache/composer.json
+pfSense/include/vendor/psr/simple-cache/src/CacheException.php
+pfSense/include/vendor/psr/simple-cache/src/CacheInterface.php
+pfSense/include/vendor/psr/simple-cache/src/InvalidArgumentException.php
 pfSense/include/vendor/simplepie/simplepie/CHANGELOG.md
 pfSense/include/vendor/simplepie/simplepie/LICENSES/BSD-3-Clause.txt
 pfSense/include/vendor/simplepie/simplepie/LICENSES/MIT.txt
