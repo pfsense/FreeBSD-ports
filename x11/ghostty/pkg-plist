@@ -1,15 +1,30 @@
 bin/ghostty
+include/ghostty/vt.h
+include/ghostty/vt/allocator.h
+include/ghostty/vt/color.h
+include/ghostty/vt/key.h
+include/ghostty/vt/key/encoder.h
+include/ghostty/vt/key/event.h
+include/ghostty/vt/osc.h
+include/ghostty/vt/paste.h
+include/ghostty/vt/result.h
+include/ghostty/vt/sgr.h
+include/ghostty/vt/wasm.h
+lib/libghostty-vt.so
+lib/libghostty-vt.so.0
+lib/libghostty-vt.so.0.1.0
 share/bash-completion/completions/ghostty.bash
 share/bat/syntaxes/ghostty.sublime-syntax
+%%PORTDOCS%%%%DOCSDIR%%/ghostty.1.html
+%%PORTDOCS%%%%DOCSDIR%%/ghostty.1.md
+%%PORTDOCS%%%%DOCSDIR%%/ghostty.5.html
+%%PORTDOCS%%%%DOCSDIR%%/ghostty.5.md
 share/fish/vendor_completions.d/ghostty.fish
-%%PORTDOCS%%%%DATADIR%%/doc/ghostty.1.html
-%%PORTDOCS%%%%DATADIR%%/doc/ghostty.1.md
-%%PORTDOCS%%%%DATADIR%%/doc/ghostty.5.html
-%%PORTDOCS%%%%DATADIR%%/doc/ghostty.5.md
 %%DATADIR%%/shell-integration/bash/bash-preexec.sh
 %%DATADIR%%/shell-integration/bash/ghostty.bash
 %%DATADIR%%/shell-integration/elvish/lib/ghostty-integration.elv
 %%DATADIR%%/shell-integration/fish/vendor_conf.d/ghostty-shell-integration.fish
+%%DATADIR%%/shell-integration/nushell/vendor/autoload/ghostty.nu
 %%DATADIR%%/shell-integration/zsh/.zshenv
 %%DATADIR%%/shell-integration/zsh/ghostty-integration
 %%DATADIR%%/themes/0x96f
@@ -23,6 +38,8 @@ share/fish/vendor_completions.d/ghostty.fish
 %%DATADIR%%/themes/Adwaita
 %%DATADIR%%/themes/Adwaita Dark
 %%DATADIR%%/themes/Afterglow
+%%DATADIR%%/themes/Aizen Dark
+%%DATADIR%%/themes/Aizen Light
 %%DATADIR%%/themes/Alabaster
 %%DATADIR%%/themes/Alien Blood
 %%DATADIR%%/themes/Andromeda
@@ -74,14 +91,13 @@ share/fish/vendor_completions.d/ghostty.fish
 %%DATADIR%%/themes/Builtin Dark
 %%DATADIR%%/themes/Builtin Light
 %%DATADIR%%/themes/Builtin Pastel Dark
-%%DATADIR%%/themes/Builtin Solarized Dark
-%%DATADIR%%/themes/Builtin Solarized Light
 %%DATADIR%%/themes/Builtin Tango Dark
 %%DATADIR%%/themes/Builtin Tango Light
 %%DATADIR%%/themes/C64
 %%DATADIR%%/themes/CGA
 %%DATADIR%%/themes/CLRS
 %%DATADIR%%/themes/Calamity
+%%DATADIR%%/themes/Carbonfox
 %%DATADIR%%/themes/Catppuccin Frappe
 %%DATADIR%%/themes/Catppuccin Latte
 %%DATADIR%%/themes/Catppuccin Macchiato
@@ -110,6 +126,7 @@ share/fish/vendor_completions.d/ghostty.fish
 %%DATADIR%%/themes/Darkermatrix
 %%DATADIR%%/themes/Darkmatrix
 %%DATADIR%%/themes/Darkside
+%%DATADIR%%/themes/Dawnfox
 %%DATADIR%%/themes/Dayfox
 %%DATADIR%%/themes/Deep
 %%DATADIR%%/themes/Desert
@@ -126,6 +143,7 @@ share/fish/vendor_completions.d/ghostty.fish
 %%DATADIR%%/themes/Dracula+
 %%DATADIR%%/themes/Duckbones
 %%DATADIR%%/themes/Duotone Dark
+%%DATADIR%%/themes/Duskfox
 %%DATADIR%%/themes/ENCOM
 %%DATADIR%%/themes/Earthsong
 %%DATADIR%%/themes/Electron Highlighter
@@ -137,8 +155,8 @@ share/fish/vendor_completions.d/ghostty.fish
 %%DATADIR%%/themes/Espresso
 %%DATADIR%%/themes/Espresso Libre
 %%DATADIR%%/themes/Everblush
-%%DATADIR%%/themes/Everforest Dark   Hard
-%%DATADIR%%/themes/Everforest Light   Med
+%%DATADIR%%/themes/Everforest Dark Hard
+%%DATADIR%%/themes/Everforest Light Med
 %%DATADIR%%/themes/Fahrenheit
 %%DATADIR%%/themes/Fairyfloss
 %%DATADIR%%/themes/Farmhouse Dark
@@ -182,6 +200,8 @@ share/fish/vendor_completions.d/ghostty.fish
 %%DATADIR%%/themes/Gruvbox Light
 %%DATADIR%%/themes/Gruvbox Light Hard
 %%DATADIR%%/themes/Gruvbox Material
+%%DATADIR%%/themes/Gruvbox Material Dark
+%%DATADIR%%/themes/Gruvbox Material Light
 %%DATADIR%%/themes/Guezwhoz
 %%DATADIR%%/themes/HaX0R Blue
 %%DATADIR%%/themes/HaX0R Gr33N
@@ -200,6 +220,8 @@ share/fish/vendor_completions.d/ghostty.fish
 %%DATADIR%%/themes/Hopscotch.256
 %%DATADIR%%/themes/Horizon
 %%DATADIR%%/themes/Horizon Bright
+%%DATADIR%%/themes/Hot Dog Stand
+%%DATADIR%%/themes/Hot Dog Stand (Mustard)
 %%DATADIR%%/themes/Hurtado
 %%DATADIR%%/themes/Hybrid
 %%DATADIR%%/themes/IBM 5153 CGA
@@ -219,8 +241,13 @@ share/fish/vendor_completions.d/ghostty.fish
 %%DATADIR%%/themes/JetBrains Darcula
 %%DATADIR%%/themes/Jubi
 %%DATADIR%%/themes/Kanagawa Dragon
+%%DATADIR%%/themes/Kanagawa Lotus
 %%DATADIR%%/themes/Kanagawa Wave
 %%DATADIR%%/themes/Kanagawabones
+%%DATADIR%%/themes/Kanso Ink
+%%DATADIR%%/themes/Kanso Mist
+%%DATADIR%%/themes/Kanso Pearl
+%%DATADIR%%/themes/Kanso Zen
 %%DATADIR%%/themes/Kibble
 %%DATADIR%%/themes/Kitty Default
 %%DATADIR%%/themes/Kitty Low Contrast
@@ -234,7 +261,6 @@ share/fish/vendor_completions.d/ghostty.fish
 %%DATADIR%%/themes/Light Owl
 %%DATADIR%%/themes/Liquid Carbon
 %%DATADIR%%/themes/Liquid Carbon Transparent
-%%DATADIR%%/themes/Liquid Carbon Transparent Inverse
 %%DATADIR%%/themes/Lovelace
 %%DATADIR%%/themes/Man Page
 %%DATADIR%%/themes/Mariana
@@ -245,6 +271,7 @@ share/fish/vendor_completions.d/ghostty.fish
 %%DATADIR%%/themes/Material Ocean
 %%DATADIR%%/themes/Mathias
 %%DATADIR%%/themes/Matrix
+%%DATADIR%%/themes/Matte Black
 %%DATADIR%%/themes/Medallion
 %%DATADIR%%/themes/Melange Dark
 %%DATADIR%%/themes/Melange Light
@@ -254,6 +281,10 @@ share/fish/vendor_completions.d/ghostty.fish
 %%DATADIR%%/themes/Midnight In Mojave
 %%DATADIR%%/themes/Mirage
 %%DATADIR%%/themes/Misterioso
+%%DATADIR%%/themes/Modus Operandi
+%%DATADIR%%/themes/Modus Operandi Tinted
+%%DATADIR%%/themes/Modus Vivendi
+%%DATADIR%%/themes/Modus Vivendi Tinted
 %%DATADIR%%/themes/Molokai
 %%DATADIR%%/themes/Mona Lisa
 %%DATADIR%%/themes/Monokai Classic
@@ -280,10 +311,13 @@ share/fish/vendor_completions.d/ghostty.fish
 %%DATADIR%%/themes/Night Owlish Light
 %%DATADIR%%/themes/Nightfox
 %%DATADIR%%/themes/Niji
+%%DATADIR%%/themes/No Clown Fiesta
+%%DATADIR%%/themes/No Clown Fiesta Light
 %%DATADIR%%/themes/Nocturnal Winter
 %%DATADIR%%/themes/Nord
 %%DATADIR%%/themes/Nord Light
 %%DATADIR%%/themes/Nord Wave
+%%DATADIR%%/themes/Nordfox
 %%DATADIR%%/themes/Novel
 %%DATADIR%%/themes/Nvim Dark
 %%DATADIR%%/themes/Nvim Light
@@ -292,10 +326,13 @@ share/fish/vendor_completions.d/ghostty.fish
 %%DATADIR%%/themes/Oceanic Material
 %%DATADIR%%/themes/Oceanic Next
 %%DATADIR%%/themes/Ollie
+%%DATADIR%%/themes/One Dark Two
 %%DATADIR%%/themes/One Double Dark
 %%DATADIR%%/themes/One Double Light
 %%DATADIR%%/themes/One Half Dark
 %%DATADIR%%/themes/One Half Light
+%%DATADIR%%/themes/Onenord
+%%DATADIR%%/themes/Onenord Light
 %%DATADIR%%/themes/Operator Mono Dark
 %%DATADIR%%/themes/Overnight Slumber
 %%DATADIR%%/themes/Oxocarbon
@@ -309,6 +346,10 @@ share/fish/vendor_completions.d/ghostty.fish
 %%DATADIR%%/themes/Phala Green Dark
 %%DATADIR%%/themes/Piatto Light
 %%DATADIR%%/themes/Pnevma
+%%DATADIR%%/themes/Poimandres
+%%DATADIR%%/themes/Poimandres Darker
+%%DATADIR%%/themes/Poimandres Storm
+%%DATADIR%%/themes/Poimandres White
 %%DATADIR%%/themes/Popping And Locking
 %%DATADIR%%/themes/Powershell
 %%DATADIR%%/themes/Primary
@@ -337,6 +378,7 @@ share/fish/vendor_completions.d/ghostty.fish
 %%DATADIR%%/themes/Scarlet Protocol
 %%DATADIR%%/themes/Sea Shells
 %%DATADIR%%/themes/Seafoam Pastel
+%%DATADIR%%/themes/Selenized Black
 %%DATADIR%%/themes/Selenized Dark
 %%DATADIR%%/themes/Selenized Light
 %%DATADIR%%/themes/Seoulbones Dark
@@ -370,6 +412,7 @@ share/fish/vendor_completions.d/ghostty.fish
 %%DATADIR%%/themes/Subliminal
 %%DATADIR%%/themes/Sugarplum
 %%DATADIR%%/themes/Sundried
+%%DATADIR%%/themes/Sunset Drive
 %%DATADIR%%/themes/Symfonic
 %%DATADIR%%/themes/Synthwave
 %%DATADIR%%/themes/Synthwave Alpha
@@ -433,6 +476,7 @@ share/fish/vendor_completions.d/ghostty.fish
 %%DATADIR%%/themes/Zenburned
 %%DATADIR%%/themes/Zenwritten Dark
 %%DATADIR%%/themes/Zenwritten Light
+%%DATADIR%%/themes/branch
 %%DATADIR%%/themes/iTerm2 Dark Background
 %%DATADIR%%/themes/iTerm2 Default
 %%DATADIR%%/themes/iTerm2 Light Background
@@ -442,12 +486,17 @@ share/fish/vendor_completions.d/ghostty.fish
 %%DATADIR%%/themes/iTerm2 Solarized Light
 %%DATADIR%%/themes/iTerm2 Tango Dark
 %%DATADIR%%/themes/iTerm2 Tango Light
+%%DATADIR%%/themes/novmbr
+%%DATADIR%%/themes/owl
+%%DATADIR%%/themes/traffic
+%%DATADIR%%/themes/urban
 %%PORTDOCS%%share/man/man1/ghostty.1.gz
 %%PORTDOCS%%share/man/man5/ghostty.5.gz
 share/nvim/site/compiler/ghostty.vim
 share/nvim/site/ftdetect/ghostty.vim
 share/nvim/site/ftplugin/ghostty.vim
 share/nvim/site/syntax/ghostty.vim
+share/pkgconfig/libghostty-vt.pc
 share/site-terminfo/g/ghostty
 share/site-terminfo/x/xterm-ghostty
 share/vim/vimfiles/compiler/ghostty.vim
