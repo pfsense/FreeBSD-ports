@@ -18,4 +18,6 @@ USES=		perl5
 USE_PERL5=	configure
 NO_ARCH=	yes
 
+PORTSCOUT=	limit:^[\d.]+$$ # Stay with stable versions only
+
 .include <bsd.port.mk>
