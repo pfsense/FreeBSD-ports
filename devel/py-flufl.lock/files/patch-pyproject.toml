@@ -1,0 +1,14 @@
+remove after setuptools/python.mk update incorporating the period (.) portion of name normalisation
+
+https://packaging.python.org/en/latest/specifications/name-normalization/
+https://packaging.python.org/en/latest/specifications/binary-distribution-format/#escaping-and-unicode
+
+--- pyproject.toml.orig	2020-02-02 00:00:00 UTC
++++ pyproject.toml
+@@ -1,5 +1,5 @@
+ [project]
+-name = 'flufl.lock'
++name = 'flufl-lock'
+ authors = [
+     {name = 'Barry Warsaw', email = 'barry@python.org'},
+ ]
