@@ -1,7 +1,7 @@
 #!/bin/sh
 
 # PROVIDE: slapd
-# REQUIRE: FILESYSTEMS ldconfig netif
+# REQUIRE: %%SLAPD_REQUIRE%% ldconfig netif
 # BEFORE: SERVERS kdc
 # KEYWORD: shutdown
 
@@ -71,7 +71,7 @@ pidfile="%%LDAP_RUN_DIR%%/slapd.pid"
 if checkyesno slapd_cn_config; then
   required_dirs="%%PREFIX%%/etc/openldap/slapd.d"
   required_files="%%PREFIX%%/etc/openldap/slapd.d/cn=config.ldif"
-  DATABASEDIR=`grep olcDbDirectory %%PREFIX%%/etc/openldap/slapd.d/cn=config/olcDatabase=* | awk '{ print $2 }'`
+  DATABASEDIR=`grep -r olcDbDirectory %%PREFIX%%/etc/openldap/slapd.d/cn=config/olcDatabase=* | awk '{ print $2 }'`
 else
   required_files="%%PREFIX%%/etc/openldap/slapd.conf"
   DATABASEDIR=`awk '$1 == "directory" { print $2 }' "%%PREFIX%%/etc/openldap/slapd.conf" 2>&1 /dev/null`
@@ -113,6 +113,9 @@ start_precmd()
     slapd_ownername="${slapd_owner%:*}"
     slapd_groupname="${slapd_owner#*:}"
 
+    if [ -n "%%NSLCD_VARDIR%%" ]; then
+        install -o "${slapd_ownername}" -g "${slapd_groupname}" -m 0755 -d "%%NSLCD_VARDIR%%"
+    fi
     if [ -n "$slapd_ownername" ]; then
       rc_flags="$rc_flags -u $slapd_ownername"
     fi
