@@ -2,9 +2,9 @@ Partially revert https://git.ffmpeg.org/gitweb/ffmpeg.git/commitdiff/8b78eb312de
 until graphics/lensfun is updated to a version that contains
 https://github.com/lensfun/lensfun/commit/b135e05d729d
 
---- libavfilter/vf_lensfun.c.orig	2021-04-08 21:28:40 UTC
+--- libavfilter/vf_lensfun.c.orig	2025-11-23 02:57:58 UTC
 +++ libavfilter/vf_lensfun.c
-@@ -222,20 +222,39 @@ static int config_props(AVFilterLink *inlink)
+@@ -213,20 +213,39 @@ static int config_props(AVFilterLink *inlink)
  
      if (!lensfun->modifier) {
          if (lensfun->camera && lensfun->lens) {
