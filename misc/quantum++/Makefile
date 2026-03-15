@@ -34,5 +34,6 @@ post-test: # run tests
 # [  PASSED  ] 457 tests.
 
 # tests as of 7.0: fail to compile, see https://github.com/softwareQinc/qpp/issues/196
+# ... tests need Eigen version to 5.0.0, but ports has 3.4.0
 
 .include <bsd.port.mk>
