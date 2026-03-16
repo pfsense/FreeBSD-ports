@@ -1,5 +1,5 @@
 PORTNAME?=	openexr
-PORTVERSION?=	3.4.5 # ALSO update openexr-website-docs! -- verify sigstore: make makesum verify-sigstore
+PORTVERSION?=	3.4.8 # ALSO update openexr-website-docs! -- verify sigstore: make makesum verify-sigstore
 PORTREVISION?=	0
 CATEGORIES=	graphics devel
 .if !defined(MASTERDIR)
@@ -65,11 +65,8 @@ CMAKE_TESTING_ON=	BUILD_TESTING \
 
 TEST_ENV+=	CTEST_OUTPUT_ON_FAILURE=TRUE
 
-# OpenEXR mandates SSE2 on i386
-CFLAGS_i386+=	-msse2
 CPPFLAGS+=	-I.
-# must be linked with -l{thr|pthread} explicitly
-LDFLAGS+=	-lpthread
+LDFLAGS+=	-pthread
 
 _MAJORVER=	3_4
 _VER=		33
