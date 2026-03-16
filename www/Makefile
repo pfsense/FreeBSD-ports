@@ -2033,6 +2033,7 @@
     SUBDIR += reddsaver
     SUBDIR += redmine51
     SUBDIR += redmine60
+    SUBDIR += redmine61
     SUBDIR += rejik
     SUBDIR += remark42
     SUBDIR += reportmagic
