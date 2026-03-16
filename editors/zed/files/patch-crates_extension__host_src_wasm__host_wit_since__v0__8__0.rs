@@ -1,6 +1,6 @@
---- crates/extension_host/src/wasm_host/wit/since_v0_8_0.rs.orig	2026-03-12 22:50:21.117154000 -0600
-+++ crates/extension_host/src/wasm_host/wit/since_v0_8_0.rs	2026-03-12 22:44:47.087476000 -0600
-@@ -835,7 +835,7 @@
+--- crates/extension_host/src/wasm_host/wit/since_v0_8_0.rs.orig	2026-03-11 14:31:09 UTC
++++ crates/extension_host/src/wasm_host/wit/since_v0_8_0.rs
+@@ -835,7 +835,7 @@ impl platform::Host for WasmState {
          Ok((
              match env::consts::OS {
                  "macos" => platform::Os::Mac,

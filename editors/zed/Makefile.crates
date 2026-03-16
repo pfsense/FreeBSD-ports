@@ -26,6 +26,7 @@ CARGO_CRATES=	addr2line-0.24.2 \
 		any_vec-0.14.0 \
 		anyhow-1.0.100 \
 		approx-0.5.1 \
+		ar_archive_writer-0.5.1 \
 		arbitrary-1.4.2 \
 		arg_enum_proc_macro-0.3.4 \
 		arraydeque-0.5.1 \
@@ -116,6 +117,7 @@ CARGO_CRATES=	addr2line-0.24.2 \
 		block-padding-0.3.3 \
 		block2-0.6.2 \
 		blocking-1.6.2 \
+		bmrng-0.5.2 \
 		bon-3.8.2 \
 		bon-macros-3.8.2 \
 		borrow-or-share-0.2.4 \
@@ -161,6 +163,7 @@ CARGO_CRATES=	addr2line-0.24.2 \
 		cesu8-1.1.0 \
 		cexpr-0.6.0 \
 		cfg-expr-0.15.8 \
+		cfg-expr-0.20.6 \
 		cfg-if-1.0.4 \
 		cfg_aliases-0.1.1 \
 		cfg_aliases-0.2.1 \
@@ -195,6 +198,7 @@ CARGO_CRATES=	addr2line-0.24.2 \
 		compression-core-0.4.29 \
 		concurrent-queue-2.5.0 \
 		console-0.15.11 \
+		console_error_panic_hook-0.1.7 \
 		const-oid-0.9.6 \
 		const-random-0.1.18 \
 		const-random-macro-0.1.16 \
@@ -294,7 +298,7 @@ CARGO_CRATES=	addr2line-0.24.2 \
 		dirs-sys-0.4.1 \
 		dirs-sys-0.5.0 \
 		dispatch-0.2.0 \
-		dispatch2-0.3.0 \
+		dispatch2-0.3.1 \
 		displaydoc-0.2.5 \
 		dlib-0.5.2 \
 		document-features-0.2.12 \
@@ -363,6 +367,7 @@ CARGO_CRATES=	addr2line-0.24.2 \
 		filetime-0.2.26 \
 		find-msvc-tools-0.1.5 \
 		fixedbitset-0.4.2 \
+		fixedbitset-0.5.7 \
 		flate2-1.1.8 \
 		float-cmp-0.9.0 \
 		float-ord-0.3.2 \
@@ -397,6 +402,7 @@ CARGO_CRATES=	addr2line-0.24.2 \
 		futures-0.1.31 \
 		futures-0.3.31 \
 		futures-channel-0.3.31 \
+		futures-concurrency-7.7.1 \
 		futures-core-0.3.31 \
 		futures-executor-0.3.31 \
 		futures-intrusive-0.5.0 \
@@ -432,13 +438,18 @@ CARGO_CRATES=	addr2line-0.24.2 \
 		gif-0.13.3 \
 		gimli-0.31.1 \
 		gimli-0.32.3 \
+		gio-sys-0.21.5 \
 		git2-0.20.4 \
 		gl_generator-0.14.0 \
+		glib-0.21.5 \
+		glib-macros-0.21.5 \
+		glib-sys-0.21.5 \
 		glob-0.3.3 \
 		globset-0.4.17 \
 		gloo-timers-0.3.0 \
 		glow-0.16.0 \
 		glutin_wgl_sys-0.6.1 \
+		gobject-sys-0.21.5 \
 		goblin-0.8.2 \
 		gpu-allocator-0.28.0 \
 		gpu-descriptor-0.3.2 \
@@ -542,7 +553,7 @@ CARGO_CRATES=	addr2line-0.24.2 \
 		jni-0.21.1 \
 		jni-sys-0.3.0 \
 		jobserver-0.1.34 \
-		js-sys-0.3.81 \
+		js-sys-0.3.90 \
 		json5-0.4.1 \
 		json_dotpath-1.1.0 \
 		jsonschema-0.37.4 \
@@ -628,7 +639,6 @@ CARGO_CRATES=	addr2line-0.24.2 \
 		moxcms-0.7.7 \
 		msvc_spectre_libs-0.1.3 \
 		multimap-0.8.3 \
-		multimap-0.10.1 \
 		naga-28.0.0 \
 		nanoid-0.4.0 \
 		nanorand-0.7.0 \
@@ -760,6 +770,7 @@ CARGO_CRATES=	addr2line-0.24.2 \
 		png-0.18.0 \
 		polling-3.11.0 \
 		pollster-0.2.5 \
+		pollster-0.4.0 \
 		pori-0.0.0 \
 		portable-atomic-1.11.1 \
 		portable-atomic-util-0.2.4 \
@@ -795,7 +806,7 @@ CARGO_CRATES=	addr2line-0.24.2 \
 		prost-types-0.12.6 \
 		protobuf-3.7.2 \
 		protobuf-support-3.7.2 \
-		psm-0.1.27 \
+		psm-0.1.30 \
 		ptr_meta-0.1.4 \
 		ptr_meta_derive-0.1.4 \
 		pulldown-cmark-0.10.3 \
@@ -995,7 +1006,7 @@ CARGO_CRATES=	addr2line-0.24.2 \
 		sqlx-postgres-0.8.6 \
 		sqlx-sqlite-0.8.6 \
 		stable_deref_trait-1.2.1 \
-		stacker-0.1.22 \
+		stacker-0.1.23 \
 		stacksafe-0.1.4 \
 		stacksafe-macro-0.1.4 \
 		static_assertions-1.1.0 \
@@ -1049,6 +1060,7 @@ CARGO_CRATES=	addr2line-0.24.2 \
 		system-configuration-sys-0.5.0 \
 		system-configuration-sys-0.6.0 \
 		system-deps-6.2.2 \
+		system-deps-7.0.7 \
 		system-interface-0.27.3 \
 		taffy-0.9.0 \
 		tagptr-0.2.0 \
@@ -1088,7 +1100,7 @@ CARGO_CRATES=	addr2line-0.24.2 \
 		tokio-stream-0.1.17 \
 		tokio-tungstenite-0.20.1 \
 		tokio-tungstenite-0.21.0 \
-		tokio-tungstenite-0.26.2 \
+		tokio-tungstenite-0.28.0 \
 		tokio-util-0.7.16 \
 		toml-0.5.11 \
 		toml-0.8.23 \
@@ -1140,8 +1152,8 @@ CARGO_CRATES=	addr2line-0.24.2 \
 		ttf-parser-0.25.1 \
 		tungstenite-0.20.1 \
 		tungstenite-0.21.0 \
-		tungstenite-0.26.2 \
 		tungstenite-0.27.0 \
+		tungstenite-0.28.0 \
 		typed-path-0.11.0 \
 		typeid-1.0.3 \
 		typenum-1.19.0 \
@@ -1198,12 +1210,11 @@ CARGO_CRATES=	addr2line-0.24.2 \
 		wasip2-1.0.1+wasi-0.2.4 \
 		wasip3-0.4.0+wasi-0.3.0-rc-2026-01-06 \
 		wasite-0.1.0 \
-		wasm-bindgen-0.2.104 \
-		wasm-bindgen-backend-0.2.104 \
-		wasm-bindgen-futures-0.4.54 \
-		wasm-bindgen-macro-0.2.104 \
-		wasm-bindgen-macro-support-0.2.104 \
-		wasm-bindgen-shared-0.2.104 \
+		wasm-bindgen-0.2.113 \
+		wasm-bindgen-futures-0.4.63 \
+		wasm-bindgen-macro-0.2.113 \
+		wasm-bindgen-macro-support-0.2.113 \
+		wasm-bindgen-shared-0.2.113 \
 		wasm-encoder-0.201.0 \
 		wasm-encoder-0.221.3 \
 		wasm-encoder-0.227.1 \
@@ -1213,6 +1224,7 @@ CARGO_CRATES=	addr2line-0.24.2 \
 		wasm-metadata-0.227.1 \
 		wasm-metadata-0.244.0 \
 		wasm-streams-0.4.2 \
+		wasm_thread-0.3.3 \
 		wasmparser-0.201.0 \
 		wasmparser-0.221.3 \
 		wasmparser-0.227.1 \
@@ -1246,7 +1258,7 @@ CARGO_CRATES=	addr2line-0.24.2 \
 		wayland-protocols-wlr-0.3.9 \
 		wayland-scanner-0.31.7 \
 		wayland-sys-0.31.7 \
-		web-sys-0.3.81 \
+		web-sys-0.3.90 \
 		web-time-1.1.0 \
 		web_atoms-0.1.3 \
 		webpki-root-certs-0.26.8 \
@@ -1417,7 +1429,6 @@ CARGO_CRATES=	addr2line-0.24.2 \
 		zvariant_utils-3.3.0 \
 		candle-core,candle-nn,candle-onnx@git+https://github.com/zed-industries/candle?branch=9.1-patched\#724d75eb3deebefe83f2a7381a45d4fac6eda383 \
 		tree-sitter-md@git+https://github.com/tree-sitter-grammars/tree-sitter-markdown?rev=9a23c1a96c0513d8fc6520972beedd419a973539\#9a23c1a96c0513d8fc6520972beedd419a973539 \
-		mermaid-rs-renderer@git+https://github.com/zed-industries/mermaid-rs-renderer?rev=9d8360d9cea10dc4bc86d7b8012cc6e9656e6cf2\#9d8360d9cea10dc4bc86d7b8012cc6e9656e6cf2 \
 		async-task@git+https://github.com/smol-rs/async-task.git?rev=b4486cd71e4e94fbda54ce6302444de14f4d190e\#b4486cd71e4e94fbda54ce6302444de14f4d190e \
 		windows-capture@git+https://github.com/zed-industries/windows-capture.git?rev=f0d6c1b6691db75461b732f6d5ff56eed002eeb9\#f0d6c1b6691db75461b732f6d5ff56eed002eeb9 \
 		lsp-types@git+https://github.com/zed-industries/lsp-types?rev=a4f410987660bf560d1e617cb78117c6b6b9f599\#a4f410987660bf560d1e617cb78117c6b6b9f599 \
@@ -1425,7 +1436,7 @@ CARGO_CRATES=	addr2line-0.24.2 \
 		tree-sitter-gomod@git+https://github.com/camdencheek/tree-sitter-go-mod?rev=2e886870578eeba1927a2dc4bd2e2b3f598c5f9a\#2e886870578eeba1927a2dc4bd2e2b3f598c5f9a \
 		notify,notify-types@git+https://github.com/zed-industries/notify.git?rev=ce58c24cad542c28e04ced02e20325a4ec28a31d\#ce58c24cad542c28e04ced02e20325a4ec28a31d \
 		zed-scap@git+https://github.com/zed-industries/scap?rev=4afea48c3b002197176fb19cd0f9b180dd36eaac\#4afea48c3b002197176fb19cd0f9b180dd36eaac \
-		naga,wgpu,wgpu-core,wgpu-core-deps-apple,wgpu-core-deps-emscripten,wgpu-core-deps-windows-linux-android,wgpu-hal,wgpu-types@git+https://github.com/zed-industries/wgpu?rev=e0f83a6cedc5e0b97da1ebe2d638ad103672e0a2\#e0f83a6cedc5e0b97da1ebe2d638ad103672e0a2 \
+		libwebrtc,livekit,livekit-api,livekit-protocol,livekit-runtime,webrtc-sys,webrtc-sys-build@git+https://github.com/zed-industries/livekit-rust-sdks?rev=37835f840d0070d45ac8b31cce6a6ae7aca3f459\#37835f840d0070d45ac8b31cce6a6ae7aca3f459 \
 		alacritty_terminal@git+https://github.com/zed-industries/alacritty?rev=9d9640d4\#9d9640d4e56d67a09d049f9c0a300aae08d4f61e \
 		tree-sitter-gitcommit@git+https://github.com/zed-industries/tree-sitter-git-commit?rev=88309716a69dd13ab83443721ba6e0b491d37ee9\#88309716a69dd13ab83443721ba6e0b491d37ee9 \
 		rodio@git+https://github.com/RustAudio/rodio?rev=e50e726ddd0292f6ef9de0dda6b90af4ed1fb66a\#e50e726ddd0292f6ef9de0dda6b90af4ed1fb66a \
@@ -1434,8 +1445,8 @@ CARGO_CRATES=	addr2line-0.24.2 \
 		xim-ctext,xim-parser,zed-xim@git+https://github.com/zed-industries/xim-rs.git?rev=16f35a2c881b815a2b6cdfd6687988e84f8447d8\#16f35a2c881b815a2b6cdfd6687988e84f8447d8 \
 		tree-sitter-cpp@git+https://github.com/tree-sitter/tree-sitter-cpp?rev=5cb9b693cfd7bfacab1d9ff4acac1a4150700609\#5cb9b693cfd7bfacab1d9ff4acac1a4150700609 \
 		pet,pet-conda,pet-core,pet-env-var-path,pet-fs,pet-global-virtualenvs,pet-homebrew,pet-jsonrpc,pet-linux-global-python,pet-mac-commandlinetools,pet-mac-python-org,pet-mac-xcode,pet-pipenv,pet-pixi,pet-poetry,pet-pyenv,pet-python-utils,pet-reporter,pet-telemetry,pet-uv,pet-venv,pet-virtualenv,pet-virtualenvwrapper,pet-windows-registry,pet-windows-store@git+https://github.com/microsoft/python-environment-tools.git?rev=d5b5bb0c4558a51d8cc76b514bc870fd1c042f16\#d5b5bb0c4558a51d8cc76b514bc870fd1c042f16 \
+		mermaid-rs-renderer@git+https://github.com/zed-industries/mermaid-rs-renderer?rev=374db9ead5426697c6c2111151d9f246899bc638\#374db9ead5426697c6c2111151d9f246899bc638 \
 		tree-sitter-heex@git+https://github.com/zed-industries/tree-sitter-heex?rev=1dd45142fbb05562e35b2040c6129c9bca346592\#1dd45142fbb05562e35b2040c6129c9bca346592 \
-		libwebrtc,livekit,livekit-api,livekit-protocol,livekit-runtime,webrtc-sys,webrtc-sys-build@git+https://github.com/zed-industries/livekit-rust-sdks?rev=5f04705ac3f356350ae31534ffbc476abc9ea83d\#5f04705ac3f356350ae31534ffbc476abc9ea83d \
 		dap-types@git+https://github.com/zed-industries/dap-types?rev=1b461b310481d01e02b2603c16d7144b926339f8\#1b461b310481d01e02b2603c16d7144b926339f8 \
 		gh-workflow,gh-workflow-macros@git+https://github.com/zed-industries/gh-workflow?rev=c9eac0ed361583e1072860d96776fa52775b82ac\#c9eac0ed361583e1072860d96776fa52775b82ac \
 		async-pipe@git+https://github.com/zed-industries/async-pipe-rs?rev=82d00a04211cf4e1236029aa03e6b6ce2a74c553\#82d00a04211cf4e1236029aa03e6b6ce2a74c553 \
@@ -1444,4 +1455,5 @@ CARGO_CRATES=	addr2line-0.24.2 \
 		zed-font-kit@git+https://github.com/zed-industries/font-kit?rev=110523127440aefb11ce0cf280ae7c5071337ec5\#110523127440aefb11ce0cf280ae7c5071337ec5 \
 		tree-sitter-typescript@git+https://github.com/zed-industries/tree-sitter-typescript?rev=e2c53597d6a5d9cf7bbe8dccde576fe1e46c5899\#e2c53597d6a5d9cf7bbe8dccde576fe1e46c5899 \
 		tree-sitter-yaml@git+https://github.com/zed-industries/tree-sitter-yaml?rev=baff0b51c64ef6a1fb1f8390f3ad6015b83ec13a\#baff0b51c64ef6a1fb1f8390f3ad6015b83ec13a \
+		naga,wgpu,wgpu-core,wgpu-core-deps-apple,wgpu-core-deps-emscripten,wgpu-core-deps-windows-linux-android,wgpu-hal,wgpu-types@git+https://github.com/zed-industries/wgpu?rev=6e0c2546d99dad72ce6ffb5b04349e6a4ce96e6d\#6e0c2546d99dad72ce6ffb5b04349e6a4ce96e6d \
 		calloop@git+https://github.com/zed-industries/calloop\#eb6b4fd17b9af5ecc226546bdd04185391b3e265
