@@ -4,7 +4,7 @@ DISTVERSION=	4.0.3
 PORTREVISION=	13
 CATEGORIES=	databases
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	jbo@FreeBSD.org
 COMMENT=	C++ Database Access Library
 WWW=		https://soci.sourceforge.net/
 
