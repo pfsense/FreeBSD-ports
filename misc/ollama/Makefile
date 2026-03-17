@@ -9,6 +9,8 @@ COMMENT=	Run Llama 2, Mistral, and other large language models
 WWW=		https://ollama.com \
 		https://github.com/ollama/ollama
 
+BROKEN_i386=	fails to compile: x/mlxrunner/mlx/memory.go:40:11: 1 << (4 * 10) (untyped int constant 1099511627776) overflows int
+
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
