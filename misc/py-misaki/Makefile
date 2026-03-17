@@ -5,7 +5,7 @@ CATEGORIES=	misc python # machine learning
 MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Grapheme-to-phoneme engine with modular architecture
 WWW=		https://github.com/hexgrad/misaki
 
