@@ -21,4 +21,19 @@ USE_PYTHON=	autoplist pep517 pytest
 
 NO_ARCH=	yes
 
+# remove the following blocks after setuptools/python.mk update
+# incorporating the period (.) portion of name normalisation
+# https://packaging.python.org/en/latest/specifications/name-normalization/
+# https://packaging.python.org/en/latest/specifications/binary-distribution-format/#escaping-and-unicode
+PEP517_INSTALL_CMD=	${PYTHON_CMD} -m installer --destdir ${STAGEDIR} --prefix ${PREFIX} \
+		${BUILD_WRKSRC}/dist/${PORTNAME:tl:C|[-_.]+|_|g}-${DISTVERSION}*.whl && \
+		${CP} ${STAGEDIR}${PYTHONPREFIX_SITELIBDIR}/flufl_i18n-${DISTVERSION}.dist-info/RECORD \
+		${STAGEDIR}${PYTHONPREFIX_SITELIBDIR}/flufl.i18n-${DISTVERSION}.dist-info/RECORD
+
+pre-install:
+	${MKDIR} ${STAGEDIR}${PYTHONPREFIX_SITELIBDIR}/flufl.i18n-${DISTVERSION}.dist-info
+
+post-install:
+	${RM} -r ${STAGEDIR}${PYTHONPREFIX_SITELIBDIR}/flufl.i18n-${DISTVERSION}.dist-info
+
 .include <bsd.port.mk>
