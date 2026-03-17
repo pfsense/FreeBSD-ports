@@ -455,6 +455,7 @@
     SUBDIR += py-einops
     SUBDIR += py-emoji
     SUBDIR += py-equinox
+    SUBDIR += py-evaluate
     SUBDIR += py-ezc3d
     SUBDIR += py-facenet-pytorch
     SUBDIR += py-fast-histogram
