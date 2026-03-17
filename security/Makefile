@@ -1373,6 +1373,7 @@
     SUBDIR += sudoscript
     SUBDIR += super
     SUBDIR += suricata
+    SUBDIR += susshi
     SUBDIR += swatchdog
     SUBDIR += tailscale
     SUBDIR += tang
