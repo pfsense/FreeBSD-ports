@@ -508,6 +508,7 @@
     SUBDIR += py-mcp
     SUBDIR += py-mem0ai
     SUBDIR += py-mffpy
+    SUBDIR += py-misaki
     SUBDIR += py-mixpanel
     SUBDIR += py-ml-collections
     SUBDIR += py-mmcv
