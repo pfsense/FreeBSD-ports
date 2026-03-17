@@ -1,5 +1,6 @@
 PORTNAME=	misaki
 DISTVERSION=	0.9.4
+PORTREVISION=	1
 CATEGORIES=	misc python # machine learning
 MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -30,7 +31,7 @@ KO_DESC=		Korean language support
 
 EN_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}num2words>0:devel/py-num2words@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}spacy>0:textproc/py-spacy@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}en-core-web-sm>0:textproc/en-core-web-sm@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}en-core-web-sm>0:textproc/py-en-core-web-sm@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}phonemizer-fork>0:textproc/py-phonemizer-fork@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}espeakng_loader>0:audio/py-espeakng-loader@${PY_FLAVOR}
 JA_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}fugashi>0:japanese/py-fugashi@${PY_FLAVOR} \

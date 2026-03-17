@@ -183,7 +183,6 @@
     SUBDIR += elasticsearch7
     SUBDIR += elasticsearch8
     SUBDIR += en-aspell
-    SUBDIR += en-core-web-sm
     SUBDIR += en-hunspell
     SUBDIR += en-mythes
     SUBDIR += enchant
@@ -1390,6 +1389,7 @@
     SUBDIR += py-elementpath
     SUBDIR += py-emeraldtree
     SUBDIR += py-empy
+    SUBDIR += py-en-core-web-sm
     SUBDIR += py-enchant
     SUBDIR += py-enrich
     SUBDIR += py-epy-reader
