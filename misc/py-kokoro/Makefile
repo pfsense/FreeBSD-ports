@@ -4,7 +4,7 @@ CATEGORIES=	misc python # machine-learning
 MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Text-to-speech inference library for Kokoro-82M model
 WWW=		https://github.com/hexgrad/kokoro
 
