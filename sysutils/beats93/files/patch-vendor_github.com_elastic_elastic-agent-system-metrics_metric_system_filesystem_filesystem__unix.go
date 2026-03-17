@@ -1,6 +1,6 @@
---- vendor/github.com/elastic/elastic-agent-system-metrics/metric/system/filesystem/filesystem_unix.go.orig	2026-03-16 23:13:36 UTC
+--- vendor/github.com/elastic/elastic-agent-system-metrics/metric/system/filesystem/filesystem_unix.go.orig	2026-03-16 23:39:28 UTC
 +++ vendor/github.com/elastic/elastic-agent-system-metrics/metric/system/filesystem/filesystem_unix.go
-@@ -37,9 +37,9 @@ func (fs *FSStat) GetUsage() error {
+@@ -36,9 +36,9 @@ func (fs *FSStat) GetUsage() error {
  
  	fs.Total = opt.UintWith(stat.Blocks).MultUint64OrNone(uint64(stat.Bsize))
  	fs.Free = opt.UintWith(stat.Bfree).MultUint64OrNone(uint64(stat.Bsize))

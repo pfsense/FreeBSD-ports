@@ -1,4 +1,4 @@
---- packetbeat/packetbeat.reference.yml.orig	2026-02-23 21:59:03 UTC
+--- packetbeat/packetbeat.reference.yml.orig	2026-02-23 21:59:26 UTC
 +++ packetbeat/packetbeat.reference.yml
 @@ -1718,7 +1718,7 @@ output.elasticsearch:
  

@@ -1,4 +1,4 @@
---- auditbeat/auditbeat.yml.orig	2026-02-23 21:59:03 UTC
+--- auditbeat/auditbeat.yml.orig	2026-02-23 21:59:26 UTC
 +++ auditbeat/auditbeat.yml
 @@ -82,6 +82,10 @@ setup.template.settings:
  # website.

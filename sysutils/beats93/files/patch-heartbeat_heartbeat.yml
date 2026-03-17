@@ -1,4 +1,4 @@
---- heartbeat/heartbeat.yml.orig	2026-02-23 21:59:03 UTC
+--- heartbeat/heartbeat.yml.orig	2026-02-23 21:59:26 UTC
 +++ heartbeat/heartbeat.yml
 @@ -13,7 +13,7 @@ heartbeat.config.monitors:
  # of individual yaml files.

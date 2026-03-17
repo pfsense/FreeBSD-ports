@@ -1,4 +1,4 @@
---- vendor/github.com/elastic/elastic-agent-autodiscover/docker/watcher.go.orig	2026-03-16 23:13:35 UTC
+--- vendor/github.com/elastic/elastic-agent-autodiscover/docker/watcher.go.orig	2026-03-16 23:39:27 UTC
 +++ vendor/github.com/elastic/elastic-agent-autodiscover/docker/watcher.go
 @@ -15,8 +15,8 @@
  // specific language governing permissions and limitations
