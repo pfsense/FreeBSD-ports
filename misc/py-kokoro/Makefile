@@ -1,6 +1,6 @@
 PORTNAME=	kokoro
 DISTVERSION=	0.9.4
-CATEGORIES=	misc python
+CATEGORIES=	misc python # machine-learning
 MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
@@ -20,10 +20,18 @@ RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}huggingface-hub>0:misc/py-huggingface-hub@${
 		${PYTHON_PKGNAMEPREFIX}pytorch>0:misc/py-pytorch@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}spacy>0:textproc/py-spacy@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}transformers>=0:misc/py-transformers@${PY_FLAVOR}
+TEST_DEPENDS=	mpv:multimedia/mpv
 
 USES=		python
 USE_PYTHON=	autoplist concurrent pep517
 
 NO_ARCH=	yes
+
+TEST_ENV=	${MAKE_ENV} PYTHONPATH=${STAGEDIR}${PYTHONPREFIX_SITELIBDIR}
+
+do-test:
+	@cd ${WRKSRC} && \
+		${SETENV} ${TEST_ENV} ${PYTHON_CMD} ${FILESDIR}/example.py && \
+		mpv 0.wav
 
 .include <bsd.port.mk>
