@@ -483,6 +483,7 @@
     SUBDIR += py-ipyfastscape
     SUBDIR += py-jiwer
     SUBDIR += py-kartograph
+    SUBDIR += py-kokoro
     SUBDIR += py-langchain
     SUBDIR += py-langchain-anthropic
     SUBDIR += py-langchain-core
