@@ -1,0 +1,20 @@
+--- heartbeat/heartbeat.reference.yml.bak	2026-02-23 21:59:26.000000000 +0000
++++ heartbeat/heartbeat.reference.yml	2026-03-17 13:33:31.029015000 +0000
+@@ -14,7 +14,7 @@
+ # of individual yaml files.
+ heartbeat.config.monitors:
+   # Directory + glob pattern to search for configuration files
+-  path: ${path.config}/monitors.d/*.yml
++  path: ${path.config}/heartbeat.monitors.d/*.yml
+   # If enabled, heartbeat will periodically check the config.monitors path for changes
+   reload.enabled: false
+   # How often to check for changes
+@@ -1333,7 +1333,7 @@
+ 
+ # The directory from where to read the dashboards. The default is the `kibana`
+ # folder in the home path.
+-#setup.dashboards.directory: ${path.home}/kibana
++#setup.dashboards.directory: %%DATADIR%%/hearbeat/kibana
+ 
+ # The URL from where to download the dashboard archive. It is used instead of
+ # the directory if it has a value.

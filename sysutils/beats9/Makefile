@@ -1,14 +1,13 @@
 PORTNAME=	beats
 DISTVERSIONPREFIX=	v
-DISTVERSION=	8.14.3
-PORTREVISION=	17
+DISTVERSION=	9.3.1
 CATEGORIES=	sysutils
 MASTER_SITES=	https://raw.githubusercontent.com/${GH_ACCOUNT}/${GH_PROJECT}/${DISTVERSIONFULL}/:gomod
-PKGNAMESUFFIX?=	8
+PKGNAMESUFFIX?=	9
 DISTFILES=	go.mod:gomod
 
 MAINTAINER=	elastic@FreeBSD.org
-COMMENT=	Send logs, network, metrics and heartbeat to elasticsearch or logstash
+COMMENT=	Send logs, network, metrics and heartbeat to Elasticsearch or Logstash
 WWW=		https://www.elastic.co/products/beats/
 
 LICENSE=	APACHE20
@@ -20,14 +19,14 @@ GH_ACCOUNT=	elastic
 
 USE_RC_SUBR=	${GO_TARGET:C,\./,,g}
 
-GO_MODULE=	github.com/elastic/beats/v8
+GO_MODULE=	github.com/elastic/beats/v9
 CGO_CFLAGS=	-I.
 CGO_LDFLAGS=	-L.
 MAKE_ENV+=	GOBUILD_FLAGS="-mod=vendor"
 
-CONFLICTS=	beats6 beats7 beats9
+CONFLICTS=	beats6 beats7 beats8
 
-PORTSCOUT=	limit:^8
+PORTSCOUT=	limit:^9
 
 SUB_FILES=	pkg-message
 
@@ -63,7 +62,8 @@ PACKETBEAT_VARS=		CGO_CFLAGS+=-I/usr/include \
 post-patch:
 	${REINPLACE_CMD} -e "s|%%BEATSVERSION%%|v${PORTVERSION}|g" ${WRKSRC}/dev-tools/mage/settings.go
 .for BEATMOD in ${GO_TARGET:C,\./,,g}
-	${REINPLACE_CMD} -e "s|%%DATADIR%%|${DATADIR}|g" ${WRKSRC}/${BEATMOD}/*.yml
+	${REINPLACE_CMD} -e "s|%%DATADIR%%|${DATADIR}|g" \
+		${WRKSRC}/${BEATMOD}/${BEATMOD}.yml ${WRKSRC}/${BEATMOD}/${BEATMOD}.reference.yml
 .endfor
 
 do-install:
