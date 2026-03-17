@@ -11,9 +11,9 @@
 # 				Default: NO
 # auditbeat_flags (str):	Extra flags passed to auditbeat
 # auditbeat_config (str):	auditbeat configuration directory
-#				Default: ${PREFIX}/etc/beats
+#				Default: %%ETCDIR%%
 # auditbeat_conffile (str):	auditbeat configuration file
-#				relative to ${auditbeat_conf}
+#				relative to ${auditbeat_config}
 #				Default: auditbeat.yml
 
 . /etc/rc.subr

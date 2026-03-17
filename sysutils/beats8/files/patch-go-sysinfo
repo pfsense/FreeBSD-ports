@@ -1,6 +1,5 @@
-diff -urN vendor.orig/github.com/elastic/go-sysinfo/internal/cgo/disabled.go vendor/github.com/elastic/go-sysinfo/internal/cgo/disabled.go
---- vendor.orig/github.com/elastic/go-sysinfo/internal/cgo/disabled.go	1970-01-01 01:00:00.000000000 +0100
-+++ vendor/github.com/elastic/go-sysinfo/internal/cgo/disabled.go	2024-07-13 20:28:36.060882000 +0200
+--- vendor/github.com/elastic/go-sysinfo/internal/cgo/disabled.go.orig	2025-09-19 18:12:17 UTC
++++ vendor/github.com/elastic/go-sysinfo/internal/cgo/disabled.go
 @@ -0,0 +1,23 @@
 +// Licensed to Elasticsearch B.V. under one or more contributor
 +// license agreements. See the NOTICE file distributed with
@@ -25,9 +24,8 @@ diff -urN vendor.orig/github.com/elastic/go-sysinfo/internal/cgo/disabled.go ven
 +
 +// Enabled is true if cgo was enabled at compile-time.
 +const Enabled = false
-diff -urN vendor.orig/github.com/elastic/go-sysinfo/internal/cgo/enabled.go vendor/github.com/elastic/go-sysinfo/internal/cgo/enabled.go
---- vendor.orig/github.com/elastic/go-sysinfo/internal/cgo/enabled.go	1970-01-01 01:00:00.000000000 +0100
-+++ vendor/github.com/elastic/go-sysinfo/internal/cgo/enabled.go	2024-07-13 20:28:36.060953000 +0200
+--- vendor/github.com/elastic/go-sysinfo/internal/cgo/enabled.go.orig	2025-09-19 18:12:17 UTC
++++ vendor/github.com/elastic/go-sysinfo/internal/cgo/enabled.go
 @@ -0,0 +1,23 @@
 +// Licensed to Elasticsearch B.V. under one or more contributor
 +// license agreements. See the NOTICE file distributed with
@@ -52,9 +50,8 @@ diff -urN vendor.orig/github.com/elastic/go-sysinfo/internal/cgo/enabled.go vend
 +
 +// Enabled is true if cgo was enabled at compile-time.
 +const Enabled = true
-diff -urN vendor.orig/github.com/elastic/go-sysinfo/providers/freebsd/defs_freebsd.go vendor/github.com/elastic/go-sysinfo/providers/freebsd/defs_freebsd.go
---- vendor.orig/github.com/elastic/go-sysinfo/providers/freebsd/defs_freebsd.go	1970-01-01 01:00:00.000000000 +0100
-+++ vendor/github.com/elastic/go-sysinfo/providers/freebsd/defs_freebsd.go	2024-07-13 20:28:36.065106000 +0200
+--- vendor/github.com/elastic/go-sysinfo/providers/freebsd/defs_freebsd.go.orig	2025-09-19 18:12:17 UTC
++++ vendor/github.com/elastic/go-sysinfo/providers/freebsd/defs_freebsd.go
 @@ -0,0 +1,33 @@
 +// Licensed to Elasticsearch B.V. under one or more contributor
 +// license agreements. See the NOTICE file distributed with
@@ -89,9 +86,8 @@ diff -urN vendor.orig/github.com/elastic/go-sysinfo/providers/freebsd/defs_freeb
 +type kvmSwap C.struct_kvm_swap
 +
 +type clockInfo C.struct_clockinfo
-diff -urN vendor.orig/github.com/elastic/go-sysinfo/providers/freebsd/doc.go vendor/github.com/elastic/go-sysinfo/providers/freebsd/doc.go
---- vendor.orig/github.com/elastic/go-sysinfo/providers/freebsd/doc.go	1970-01-01 01:00:00.000000000 +0100
-+++ vendor/github.com/elastic/go-sysinfo/providers/freebsd/doc.go	2024-07-13 20:28:36.065203000 +0200
+--- vendor/github.com/elastic/go-sysinfo/providers/freebsd/doc.go.orig	2025-09-19 18:12:17 UTC
++++ vendor/github.com/elastic/go-sysinfo/providers/freebsd/doc.go
 @@ -0,0 +1,22 @@
 +// Licensed to Elasticsearch B.V. under one or more contributor
 +// license agreements. See the NOTICE file distributed with
@@ -115,9 +111,8 @@ diff -urN vendor.orig/github.com/elastic/go-sysinfo/providers/freebsd/doc.go ven
 +package freebsd
 +
 +//go:generate sh -c "go tool cgo -godefs defs_freebsd.go > ztypes_freebsd.go"
-diff -urN vendor.orig/github.com/elastic/go-sysinfo/providers/freebsd/host_freebsd_cgo.go vendor/github.com/elastic/go-sysinfo/providers/freebsd/host_freebsd_cgo.go
---- vendor.orig/github.com/elastic/go-sysinfo/providers/freebsd/host_freebsd_cgo.go	1970-01-01 01:00:00.000000000 +0100
-+++ vendor/github.com/elastic/go-sysinfo/providers/freebsd/host_freebsd_cgo.go	2024-07-13 20:28:36.065317000 +0200
+--- vendor/github.com/elastic/go-sysinfo/providers/freebsd/host_freebsd_cgo.go.orig	2025-09-19 18:12:17 UTC
++++ vendor/github.com/elastic/go-sysinfo/providers/freebsd/host_freebsd_cgo.go
 @@ -0,0 +1,238 @@
 +// Licensed to Elasticsearch B.V. under one or more contributor
 +// license agreements. See the NOTICE file distributed with
@@ -357,9 +352,8 @@ diff -urN vendor.orig/github.com/elastic/go-sysinfo/providers/freebsd/host_freeb
 +	elem := append([]string{fs.mountPoint}, p...)
 +	return filepath.Join(elem...)
 +}
-diff -urN vendor.orig/github.com/elastic/go-sysinfo/providers/freebsd/host_freebsd_cgo_test.go vendor/github.com/elastic/go-sysinfo/providers/freebsd/host_freebsd_cgo_test.go
---- vendor.orig/github.com/elastic/go-sysinfo/providers/freebsd/host_freebsd_cgo_test.go	1970-01-01 01:00:00.000000000 +0100
-+++ vendor/github.com/elastic/go-sysinfo/providers/freebsd/host_freebsd_cgo_test.go	2024-07-13 20:28:36.065385000 +0200
+--- vendor/github.com/elastic/go-sysinfo/providers/freebsd/host_freebsd_cgo_test.go.orig	2025-09-19 18:12:17 UTC
++++ vendor/github.com/elastic/go-sysinfo/providers/freebsd/host_freebsd_cgo_test.go
 @@ -0,0 +1,53 @@
 +// Licensed to Elasticsearch B.V. under one or more contributor
 +// license agreements. See the NOTICE file distributed with
@@ -414,9 +408,8 @@ diff -urN vendor.orig/github.com/elastic/go-sysinfo/providers/freebsd/host_freeb
 +		t.Log(string(data))
 +	})
 +}
-diff -urN vendor.orig/github.com/elastic/go-sysinfo/providers/freebsd/kvm_freebsd_cgo.go vendor/github.com/elastic/go-sysinfo/providers/freebsd/kvm_freebsd_cgo.go
---- vendor.orig/github.com/elastic/go-sysinfo/providers/freebsd/kvm_freebsd_cgo.go	1970-01-01 01:00:00.000000000 +0100
-+++ vendor/github.com/elastic/go-sysinfo/providers/freebsd/kvm_freebsd_cgo.go	2024-07-13 20:28:36.065498000 +0200
+--- vendor/github.com/elastic/go-sysinfo/providers/freebsd/kvm_freebsd_cgo.go.orig	2025-09-19 18:12:17 UTC
++++ vendor/github.com/elastic/go-sysinfo/providers/freebsd/kvm_freebsd_cgo.go
 @@ -0,0 +1,58 @@
 +// Licensed to Elasticsearch B.V. under one or more contributor
 +// license agreements. See the NOTICE file distributed with
@@ -476,9 +469,8 @@ diff -urN vendor.orig/github.com/elastic/go-sysinfo/providers/freebsd/kvm_freebs
 +
 +	return &swap, nil
 +}
-diff -urN vendor.orig/github.com/elastic/go-sysinfo/providers/freebsd/process_freebsd_cgo.go vendor/github.com/elastic/go-sysinfo/providers/freebsd/process_freebsd_cgo.go
---- vendor.orig/github.com/elastic/go-sysinfo/providers/freebsd/process_freebsd_cgo.go	1970-01-01 01:00:00.000000000 +0100
-+++ vendor/github.com/elastic/go-sysinfo/providers/freebsd/process_freebsd_cgo.go	2024-07-13 20:28:36.065578000 +0200
+--- vendor/github.com/elastic/go-sysinfo/providers/freebsd/process_freebsd_cgo.go.orig	2025-09-19 18:12:17 UTC
++++ vendor/github.com/elastic/go-sysinfo/providers/freebsd/process_freebsd_cgo.go
 @@ -0,0 +1,386 @@
 +// Licensed to Elasticsearch B.V. under one or more contributor
 +// license agreements. See the NOTICE file distributed with
@@ -866,9 +858,8 @@ diff -urN vendor.orig/github.com/elastic/go-sysinfo/providers/freebsd/process_fr
 +
 +	return &proc, nil
 +}
-diff -urN vendor.orig/github.com/elastic/go-sysinfo/providers/freebsd/sysctl_freebsd.go vendor/github.com/elastic/go-sysinfo/providers/freebsd/sysctl_freebsd.go
---- vendor.orig/github.com/elastic/go-sysinfo/providers/freebsd/sysctl_freebsd.go	1970-01-01 01:00:00.000000000 +0100
-+++ vendor/github.com/elastic/go-sysinfo/providers/freebsd/sysctl_freebsd.go	2024-07-13 20:28:36.065700000 +0200
+--- vendor/github.com/elastic/go-sysinfo/providers/freebsd/sysctl_freebsd.go.orig	2025-09-19 18:12:17 UTC
++++ vendor/github.com/elastic/go-sysinfo/providers/freebsd/sysctl_freebsd.go
 @@ -0,0 +1,248 @@
 +// Licensed to Elasticsearch B.V. under one or more contributor
 +// license agreements. See the NOTICE file distributed with
@@ -1118,9 +1109,8 @@ diff -urN vendor.orig/github.com/elastic/go-sysinfo/providers/freebsd/sysctl_fre
 +	}
 +	return uint64(v)
 +}
-diff -urN vendor.orig/github.com/elastic/go-sysinfo/providers/freebsd/sysctl_freebsd_test.go vendor/github.com/elastic/go-sysinfo/providers/freebsd/sysctl_freebsd_test.go
---- vendor.orig/github.com/elastic/go-sysinfo/providers/freebsd/sysctl_freebsd_test.go	1970-01-01 01:00:00.000000000 +0100
-+++ vendor/github.com/elastic/go-sysinfo/providers/freebsd/sysctl_freebsd_test.go	2024-07-13 20:28:36.065808000 +0200
+--- vendor/github.com/elastic/go-sysinfo/providers/freebsd/sysctl_freebsd_test.go.orig	2025-09-19 18:12:17 UTC
++++ vendor/github.com/elastic/go-sysinfo/providers/freebsd/sysctl_freebsd_test.go
 @@ -0,0 +1,137 @@
 +// Licensed to Elasticsearch B.V. under one or more contributor
 +// license agreements. See the NOTICE file distributed with
@@ -1259,9 +1249,8 @@ diff -urN vendor.orig/github.com/elastic/go-sysinfo/providers/freebsd/sysctl_fre
 +		t.Logf("%#v", os)
 +	})
 +}
-diff -urN vendor.orig/github.com/elastic/go-sysinfo/providers/freebsd/ztypes_freebsd.go vendor/github.com/elastic/go-sysinfo/providers/freebsd/ztypes_freebsd.go
---- vendor.orig/github.com/elastic/go-sysinfo/providers/freebsd/ztypes_freebsd.go	1970-01-01 01:00:00.000000000 +0100
-+++ vendor/github.com/elastic/go-sysinfo/providers/freebsd/ztypes_freebsd.go	2024-07-13 20:28:36.065887000 +0200
+--- vendor/github.com/elastic/go-sysinfo/providers/freebsd/ztypes_freebsd.go.orig	2025-09-19 18:12:17 UTC
++++ vendor/github.com/elastic/go-sysinfo/providers/freebsd/ztypes_freebsd.go
 @@ -0,0 +1,39 @@
 +// Licensed to Elasticsearch B.V. under one or more contributor
 +// license agreements. See the NOTICE file distributed with
@@ -1302,9 +1291,8 @@ diff -urN vendor.orig/github.com/elastic/go-sysinfo/providers/freebsd/ztypes_fre
 +	Stathz int32
 +	Profhz int32
 +}
-diff -urN vendor.orig/github.com/elastic/go-sysinfo/providers/shared/fqdn.go vendor/github.com/elastic/go-sysinfo/providers/shared/fqdn.go
---- vendor.orig/github.com/elastic/go-sysinfo/providers/shared/fqdn.go	2024-07-13 21:34:29.109657000 +0200
-+++ vendor/github.com/elastic/go-sysinfo/providers/shared/fqdn.go	2024-07-13 20:28:36.077420000 +0200
+--- vendor/github.com/elastic/go-sysinfo/providers/shared/fqdn.go.orig	2025-09-19 18:12:11 UTC
++++ vendor/github.com/elastic/go-sysinfo/providers/shared/fqdn.go
 @@ -15,7 +15,7 @@
  // specific language governing permissions and limitations
  // under the License.
@@ -1314,10 +1302,9 @@ diff -urN vendor.orig/github.com/elastic/go-sysinfo/providers/shared/fqdn.go ven
  
  package shared
  
-diff -urN vendor.orig/github.com/elastic/go-sysinfo/system.go vendor/github.com/elastic/go-sysinfo/system.go
---- vendor.orig/github.com/elastic/go-sysinfo/system.go	2024-07-13 21:34:29.110051000 +0200
-+++ vendor/github.com/elastic/go-sysinfo/system.go	2024-07-13 20:28:36.079545000 +0200
-@@ -26,6 +26,7 @@
+--- vendor/github.com/elastic/go-sysinfo/system.go.orig	2025-09-19 18:12:11 UTC
++++ vendor/github.com/elastic/go-sysinfo/system.go
+@@ -26,6 +26,7 @@ import (
  	// Register host and process providers.
  	_ "github.com/elastic/go-sysinfo/providers/aix"
  	_ "github.com/elastic/go-sysinfo/providers/darwin"
