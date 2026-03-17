@@ -1,4 +1,4 @@
---- libbeat/scripts/Makefile.orig	2025-09-15 19:57:17 UTC
+--- libbeat/scripts/Makefile.orig	2026-01-07 19:28:13 UTC
 +++ libbeat/scripts/Makefile
 @@ -47,7 +47,7 @@ GOPACKAGES_STRESSTESTS=$(shell find . -type d \( -name
  GOFILES_NOVENDOR = $(shell find . -type f -name '*.go' -not -path "*/vendor/*" 2>/dev/null)
@@ -23,4 +23,4 @@
 +ifneq ($(shell [[ $(BEAT_NAME) = libbeat || $(BEAT_NAME) = metricbeat ]] && echo true ),true)
  	@# Update docs
  	@mkdir -p docs
- 	@${PYTHON_ENV_EXE} ${ES_BEATS}/libbeat/scripts/generate_fields_docs.py $(PWD)/fields.yml ${BEAT_TITLE} ${ES_BEATS}
+ 	@${PYTHON_ENV_EXE} ${ES_BEATS}/libbeat/scripts/generate_fields_docs.py $(PWD)/fields.yml ${BEAT_NAME} ${ES_BEATS} --output_path $(ES_BEATS)/docs/reference/${BEAT_NAME}

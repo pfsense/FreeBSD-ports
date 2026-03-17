@@ -1,6 +1,6 @@
---- heartbeat/heartbeat.yml.orig	2021-07-04 13:59:29 UTC
+--- heartbeat/heartbeat.yml.orig	2026-01-07 19:28:13 UTC
 +++ heartbeat/heartbeat.yml
-@@ -13,7 +13,7 @@
+@@ -13,7 +13,7 @@ heartbeat.config.monitors:
  # of individual yaml files.
  heartbeat.config.monitors:
    # Directory + glob pattern to search for configuration files

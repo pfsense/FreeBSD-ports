@@ -1,4 +1,4 @@
---- vendor/github.com/elastic/elastic-agent-system-metrics/metric/cpu/metrics_procfs_common.go.orig	2025-09-19 18:44:04 UTC
+--- vendor/github.com/elastic/elastic-agent-system-metrics/metric/cpu/metrics_procfs_common.go.orig	2026-03-16 23:17:26 UTC
 +++ vendor/github.com/elastic/elastic-agent-system-metrics/metric/cpu/metrics_procfs_common.go
 @@ -32,7 +32,7 @@ func Get(m *Monitor) (CPUMetrics, error) {
  func Get(m *Monitor) (CPUMetrics, error) {

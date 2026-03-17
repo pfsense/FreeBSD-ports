@@ -1,4 +1,4 @@
---- vendor/github.com/elastic/elastic-agent-system-metrics/metric/cpu/metrics_freebsd.go.orig	2025-09-19 18:38:09 UTC
+--- vendor/github.com/elastic/elastic-agent-system-metrics/metric/cpu/metrics_freebsd.go.orig	2026-03-16 23:17:26 UTC
 +++ vendor/github.com/elastic/elastic-agent-system-metrics/metric/cpu/metrics_freebsd.go
 @@ -56,3 +56,7 @@ func parseCPULine(line string) (CPU, error) {
  

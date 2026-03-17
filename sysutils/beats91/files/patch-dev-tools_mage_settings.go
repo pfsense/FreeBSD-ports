@@ -1,4 +1,4 @@
---- dev-tools/mage/settings.go.orig	2025-09-15 19:57:17 UTC
+--- dev-tools/mage/settings.go.orig	2026-01-07 19:28:13 UTC
 +++ dev-tools/mage/settings.go
 @@ -31,7 +31,6 @@ import (
  	"sync"

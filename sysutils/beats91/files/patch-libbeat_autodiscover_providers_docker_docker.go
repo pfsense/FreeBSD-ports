@@ -1,4 +1,4 @@
---- libbeat/autodiscover/providers/docker/docker.go.orig	2025-09-15 19:57:17 UTC
+--- libbeat/autodiscover/providers/docker/docker.go.orig	2026-01-07 19:28:13 UTC
 +++ libbeat/autodiscover/providers/docker/docker.go
 @@ -15,7 +15,7 @@
  // specific language governing permissions and limitations
