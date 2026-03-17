@@ -1,4 +1,5 @@
 PORTNAME=	protobuf
+# Be sure to bump consumers when updating
 PORTVERSION=	29.6
 PORTEPOCH=	1
 CATEGORIES=	devel
