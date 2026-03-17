@@ -1,7 +1,6 @@
 PORTNAME=	homebox
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.23.1
-PORTREVISION=	1
+DISTVERSION=	0.24.2
 CATEGORIES=	finance
 MASTER_SITES=	LOCAL/dtxdf/${PORTNAME}/:assets
 # For instructions on how to create assets:
@@ -43,7 +42,7 @@ PLIST_FILES=	bin/${PORTNAME} \
 
 # Run 'git checkout ${DISTVERSIONPREFIX}${DISTVERSION} && git rev-parse HEAD'
 # in the Homebox repository to get the value of GITID.
-GITID=		27e9eb2277b90783f6d3a03d4895ce7dec6f0fe9
+GITID=		90b69123f44b9d56f11f88c5282580e660e7ea89
 
 HOMEBOX_USER=	${PORTNAME}
 HOMEBOX_GROUP=	${HOMEBOX_USER}
