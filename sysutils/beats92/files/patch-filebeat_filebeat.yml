@@ -1,4 +1,4 @@
---- filebeat/filebeat.yml.orig	2026-01-07 19:28:13 UTC
+--- filebeat/filebeat.yml.orig	2026-02-23 21:59:03 UTC
 +++ filebeat/filebeat.yml
 @@ -81,7 +81,7 @@ filebeat.config.modules:
  

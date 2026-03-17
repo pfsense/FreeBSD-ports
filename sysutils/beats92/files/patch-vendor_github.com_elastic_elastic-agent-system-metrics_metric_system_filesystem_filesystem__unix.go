@@ -1,4 +1,4 @@
---- vendor/github.com/elastic/elastic-agent-system-metrics/metric/system/filesystem/filesystem_unix.go.orig	2026-03-16 23:17:26 UTC
+--- vendor/github.com/elastic/elastic-agent-system-metrics/metric/system/filesystem/filesystem_unix.go.orig	2026-03-16 23:13:36 UTC
 +++ vendor/github.com/elastic/elastic-agent-system-metrics/metric/system/filesystem/filesystem_unix.go
 @@ -37,9 +37,9 @@ func (fs *FSStat) GetUsage() error {
  

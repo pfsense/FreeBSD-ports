@@ -1,4 +1,4 @@
---- metricbeat/metricbeat.reference.yml.orig	2026-01-07 19:28:13 UTC
+--- metricbeat/metricbeat.reference.yml.orig	2026-02-23 21:59:03 UTC
 +++ metricbeat/metricbeat.reference.yml
 @@ -14,7 +14,7 @@ metricbeat.config.modules:
  metricbeat.config.modules:

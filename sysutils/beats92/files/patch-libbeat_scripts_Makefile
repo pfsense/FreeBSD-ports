@@ -1,4 +1,4 @@
---- libbeat/scripts/Makefile.orig	2026-01-07 19:28:13 UTC
+--- libbeat/scripts/Makefile.orig	2026-02-23 21:59:03 UTC
 +++ libbeat/scripts/Makefile
 @@ -47,7 +47,7 @@ GOPACKAGES_STRESSTESTS=$(shell find . -type d \( -name
  GOFILES_NOVENDOR = $(shell find . -type f -name '*.go' -not -path "*/vendor/*" 2>/dev/null)

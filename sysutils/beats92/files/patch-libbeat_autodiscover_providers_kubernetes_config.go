@@ -1,4 +1,4 @@
---- libbeat/autodiscover/providers/kubernetes/config.go.orig	2026-01-07 19:28:13 UTC
+--- libbeat/autodiscover/providers/kubernetes/config.go.orig	2026-02-23 21:59:03 UTC
 +++ libbeat/autodiscover/providers/kubernetes/config.go
 @@ -15,7 +15,7 @@
  // specific language governing permissions and limitations
