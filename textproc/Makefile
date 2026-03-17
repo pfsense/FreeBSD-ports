@@ -183,6 +183,7 @@
     SUBDIR += elasticsearch7
     SUBDIR += elasticsearch8
     SUBDIR += en-aspell
+    SUBDIR += en-core-web-sm
     SUBDIR += en-hunspell
     SUBDIR += en-mythes
     SUBDIR += enchant
