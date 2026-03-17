@@ -6164,6 +6164,7 @@
     SUBDIR += py-traitlets
     SUBDIR += py-traits
     SUBDIR += py-traittypes
+    SUBDIR += py-trampoline
     SUBDIR += py-transaction
     SUBDIR += py-transitions
     SUBDIR += py-tree-format
