@@ -901,7 +901,9 @@ include/universal/number/unum/exceptions.hpp
 include/universal/number/unum/manipulators.hpp
 include/universal/number/unum/math_functions.hpp
 include/universal/number/unum/numeric_limits.hpp
+include/universal/number/unum/ubound.hpp
 include/universal/number/unum/unum.hpp
+include/universal/number/unum/unum_fwd.hpp
 include/universal/number/unum/unum_impl.hpp
 include/universal/number/unum2/common.hpp
 include/universal/number/unum2/lattice.hpp
