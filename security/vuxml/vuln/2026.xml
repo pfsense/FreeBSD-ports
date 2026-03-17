@@ -1,3 +1,32 @@
+  <vuln vid="db3bdcc6-377f-47d9-9ce8-4bdede4fdafe">
+    <topic>homebox -- multiple vulnerabilities</topic>
+    <affects>
+      <package>
+	<name>homebox</name>
+	<range><lt>0.24.0</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+	<p>Homebox reports:</p>
+	<ul>
+	  <li>[HIGH] CVE-2026-27981: Auth Rate Limit Bypass via IP Spoofing</li>
+	  <li>[MODERATE] CVE-2026-27600: Blind SSRF</li>
+	  <li>[MODERATE] CVE-2026-26272: Stored XSS via HTML/SVG Attachment Upload</li>
+	</ul>
+      </body>
+    </description>
+    <references>
+      <cvename>CVE-2026-27981</cvename>
+      <cvename>CVE-2026-27600</cvename>
+      <cvename>CVE-2026-26272</cvename>
+    </references>
+    <dates>
+      <discovery>2026-03-01</discovery>
+      <entry>2026-03-17</entry>
+    </dates>
+  </vuln>
+
   <vuln vid="73eeb578-fd13-4d79-b50b-ed25c3614528">
     <topic>chromium -- security fix</topic>
     <affects>
