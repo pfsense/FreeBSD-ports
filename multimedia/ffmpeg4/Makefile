@@ -1,19 +1,15 @@
 PORTNAME=	ffmpeg
-PORTVERSION=	4.4.4
-PORTREVISION=	30
+PORTVERSION=	4.4.6
 CATEGORIES=	multimedia audio net
 MASTER_SITES=	https://ffmpeg.org/releases/
 PKGNAMESUFFIX=	4
 
-MAINTAINER=	multimedia@FreeBSD.org
+MAINTAINER=	monwarez@mailoo.org
 COMMENT=	Realtime audio/video encoder/converter and streaming server (legacy 4.* series)
 WWW=		https://ffmpeg.org/
 
 LICENSE=	GPLv2+ LGPL21+
 LICENSE_COMB=	multi
-
-DEPRECATED=	Outdated and unsupported version, consider migrating to multimedia/ffmpeg
-EXPIRATION_DATE=2026-06-30
 
 BUILD_DEPENDS=	${BUILD_DEPENDS_${ARCH}}
 BUILD_DEPENDS_aarch64=	as:devel/binutils
