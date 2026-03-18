@@ -11,6 +11,8 @@ WWW=		https://microbin.eu \
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
+BROKEN_i386=	link fails: ld: error: undefined symbol: __atomic_load
+
 BUILD_DEPENDS=	bash:shells/bash \
 		gmake:devel/gmake
 LIB_DEPENDS=	libonig.so:devel/oniguruma
