@@ -10,6 +10,4 @@ USE_KDE=	config coreaddons i18n \
 		ecm:build
 USE_QT=		base
 
-KDE_FRAMEWORKS_VERSION=	6.23.1
-
 .include <bsd.port.mk>
