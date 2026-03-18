@@ -68,6 +68,7 @@
 %%DATADIR%%/circuits/tests/__init__.py
 %%DATADIR%%/circuits/tests/test_api.py
 %%DATADIR%%/circuits/tests/test_filtersets.py
+%%DATADIR%%/circuits/tests/test_models.py
 %%DATADIR%%/circuits/tests/test_tables.py
 %%DATADIR%%/circuits/tests/test_views.py
 %%DATADIR%%/circuits/urls.py
@@ -678,6 +679,7 @@
 %%DATADIR%%/extras/management/commands/renaturalize.py
 %%DATADIR%%/extras/management/commands/runscript.py
 %%DATADIR%%/extras/management/commands/webhook_receiver.py
+%%DATADIR%%/extras/managers.py
 %%DATADIR%%/extras/migrations/0001_squashed.py
 %%DATADIR%%/extras/migrations/0002_squashed_0059.py
 %%DATADIR%%/extras/migrations/0060_squashed_0086.py
@@ -1137,6 +1139,7 @@
 %%DATADIR%%/project-static/src/search.ts
 %%DATADIR%%/project-static/src/select/classes/dynamicParamsMap.ts
 %%DATADIR%%/project-static/src/select/classes/dynamicTomSelect.ts
+%%DATADIR%%/project-static/src/select/classes/netboxTomSelect.ts
 %%DATADIR%%/project-static/src/select/config.ts
 %%DATADIR%%/project-static/src/select/dynamic.ts
 %%DATADIR%%/project-static/src/select/index.ts
@@ -1280,6 +1283,8 @@
 %%DATADIR%%/templates/dcim/moduletype.html
 %%DATADIR%%/templates/dcim/moduletypeprofile.html
 %%DATADIR%%/templates/dcim/panels/device_rack_elevations.html
+%%DATADIR%%/templates/dcim/panels/module_type.html
+%%DATADIR%%/templates/dcim/panels/module_type_attributes.html
 %%DATADIR%%/templates/dcim/panels/power_utilization.html
 %%DATADIR%%/templates/dcim/panels/rack_elevations.html
 %%DATADIR%%/templates/dcim/panels/rack_reservation_elevations.html
@@ -1472,6 +1477,7 @@
 %%DATADIR%%/templates/ui/attrs/boolean.html
 %%DATADIR%%/templates/ui/attrs/choice.html
 %%DATADIR%%/templates/ui/attrs/color.html
+%%DATADIR%%/templates/ui/attrs/datetime.html
 %%DATADIR%%/templates/ui/attrs/generic_object.html
 %%DATADIR%%/templates/ui/attrs/gps_coordinates.html
 %%DATADIR%%/templates/ui/attrs/image.html
@@ -1489,11 +1495,13 @@
 %%DATADIR%%/templates/ui/panels/object_attributes.html
 %%DATADIR%%/templates/ui/panels/objects_table.html
 %%DATADIR%%/templates/ui/panels/related_objects.html
+%%DATADIR%%/templates/users/attrs/full_name.html
 %%DATADIR%%/templates/users/group.html
 %%DATADIR%%/templates/users/inc/user_activity.html
 %%DATADIR%%/templates/users/objectpermission.html
 %%DATADIR%%/templates/users/owner.html
 %%DATADIR%%/templates/users/ownergroup.html
+%%DATADIR%%/templates/users/panels/object_types.html
 %%DATADIR%%/templates/users/panels/token_example.html
 %%DATADIR%%/templates/users/token.html
 %%DATADIR%%/templates/users/token_edit.html
@@ -1512,6 +1520,7 @@
 %%DATADIR%%/templates/virtualization/virtualmachine/attrs/ipaddress.html
 %%DATADIR%%/templates/virtualization/virtualmachine/base.html
 %%DATADIR%%/templates/virtualization/vminterface.html
+%%DATADIR%%/templates/vpn/attrs/preshared_key.html
 %%DATADIR%%/templates/vpn/ikepolicy.html
 %%DATADIR%%/templates/vpn/ikeproposal.html
 %%DATADIR%%/templates/vpn/ipsecpolicy.html
@@ -1519,11 +1528,13 @@
 %%DATADIR%%/templates/vpn/ipsecproposal.html
 %%DATADIR%%/templates/vpn/l2vpn.html
 %%DATADIR%%/templates/vpn/l2vpntermination.html
+%%DATADIR%%/templates/vpn/panels/ipsecprofile_ike_policy.html
+%%DATADIR%%/templates/vpn/panels/ipsecprofile_ipsec_policy.html
 %%DATADIR%%/templates/vpn/tunnel.html
 %%DATADIR%%/templates/vpn/tunnelgroup.html
 %%DATADIR%%/templates/vpn/tunneltermination.html
-%%DATADIR%%/templates/wireless/inc/authentication_attrs.html
-%%DATADIR%%/templates/wireless/inc/wirelesslink_interface.html
+%%DATADIR%%/templates/wireless/attrs/auth_psk.html
+%%DATADIR%%/templates/wireless/panels/wirelesslink_interface.html
 %%DATADIR%%/templates/wireless/wirelesslan.html
 %%DATADIR%%/templates/wireless/wirelesslangroup.html
 %%DATADIR%%/templates/wireless/wirelesslink.html
@@ -1933,6 +1944,8 @@
 %%DATADIR%%/vpn/tests/test_models.py
 %%DATADIR%%/vpn/tests/test_tables.py
 %%DATADIR%%/vpn/tests/test_views.py
+%%DATADIR%%/vpn/ui/__init__.py
+%%DATADIR%%/vpn/ui/panels.py
 %%DATADIR%%/vpn/urls.py
 %%DATADIR%%/vpn/views.py
 %%DATADIR%%/wireless/__init__.py
@@ -1981,6 +1994,8 @@
 %%DATADIR%%/wireless/tests/test_api.py
 %%DATADIR%%/wireless/tests/test_filtersets.py
 %%DATADIR%%/wireless/tests/test_views.py
+%%DATADIR%%/wireless/ui/__init__.py
+%%DATADIR%%/wireless/ui/panels.py
 %%DATADIR%%/wireless/urls.py
 %%DATADIR%%/wireless/utils.py
 %%DATADIR%%/wireless/views.py
