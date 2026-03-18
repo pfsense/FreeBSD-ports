@@ -46,6 +46,7 @@
 %%WWWDIR%%/app/assets/images/cancel.png
 %%WWWDIR%%/app/assets/images/changeset.png
 %%WWWDIR%%/app/assets/images/chevron-down.svg
+%%WWWDIR%%/app/assets/images/chevron-left-idnt.svg
 %%WWWDIR%%/app/assets/images/chevron-right-idnt.svg
 %%WWWDIR%%/app/assets/images/close.png
 %%WWWDIR%%/app/assets/images/close_hl.png
@@ -2046,6 +2047,7 @@
 %%WWWDIR%%/test/system/my_page_test.rb
 %%WWWDIR%%/test/system/oauth_provider_test.rb
 %%WWWDIR%%/test/system/quick_jump_test.rb
+%%WWWDIR%%/test/system/query_test.rb
 %%WWWDIR%%/test/system/reactions_test.rb
 %%WWWDIR%%/test/system/repositories_test.rb
 %%WWWDIR%%/test/system/sticky_issue_header_test.rb
