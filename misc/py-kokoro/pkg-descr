@@ -6,3 +6,6 @@ and the Hugging Face ecosystem. The library supports multiple languages
 and voices through the Misaki grapheme-to-phoneme engine.
 
 For full English language support, install textproc/py-phonemizer separately.
+
+Kokoro is the fastest production quality English Text-To-Speech convertor
+available as of early 2026.
