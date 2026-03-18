@@ -581,6 +581,7 @@
     SUBDIR += py-sigopt
     SUBDIR += py-smdebug-rulesconfig
     SUBDIR += py-soapy_power
+    SUBDIR += py-spandrel
     SUBDIR += py-spdx-tools
     SUBDIR += py-spinners
     SUBDIR += py-synced-collections
