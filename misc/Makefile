@@ -445,6 +445,7 @@
     SUBDIR += py-colorbrewer
     SUBDIR += py-colored
     SUBDIR += py-colorzero
+    SUBDIR += py-comfy-aimdo
     SUBDIR += py-cppman
     SUBDIR += py-crudini
     SUBDIR += py-csvw
