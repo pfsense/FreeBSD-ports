@@ -15,7 +15,8 @@ WWW=		https://www.tabbyml.com/ \
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-BUILD_DEPENDS=	cmake:devel/cmake-core
+BUILD_DEPENDS=	cmake:devel/cmake-core \
+		rust188>0:lang/rust188
 LIB_DEPENDS=	libgit2.so:devel/libgit2 \
 		libssh2.so:security/libssh2 \
 		libzstd.so:archivers/zstd
@@ -28,6 +29,7 @@ GH_ACCOUNT=	TabbyML
 GH_TUPLE=	ggerganov:llama.cpp:952a47f455fbd92e2659b98b9b6317a2dafeb532:llama_cpp/crates/llama-cpp-server/llama.cpp
 
 CARGO_TARGET_DIR?=	${WRKSRC}/target # fix bug that llama-cpp is copied here instead of the original target dir
+CARGO_BUILDDEP=	no
 
 CARGO_CRATES=	addr2line-0.21.0 \
 		adler-1.0.2 \
