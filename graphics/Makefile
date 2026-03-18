@@ -960,6 +960,7 @@
     SUBDIR += py-imagesize
     SUBDIR += py-img2pdf
     SUBDIR += py-imutils
+    SUBDIR += py-kornia-rs
     SUBDIR += py-leather
     SUBDIR += py-lerc
     SUBDIR += py-mapclassify
