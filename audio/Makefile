@@ -446,6 +446,7 @@
     SUBDIR += madronalib
     SUBDIR += malint
     SUBDIR += mamba
+    SUBDIR += maolan
     SUBDIR += mate-media
     SUBDIR += mclk-lv2
     SUBDIR += mda-lv2
