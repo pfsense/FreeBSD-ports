@@ -140,6 +140,10 @@ LIB_DEPENDS+=		libargon2.so:security/libargon2
 CONFIGURE_ARGS+=	--with-password-argon2=${LOCALBASE}
 .  endif
 
+.  if ${SSL_DEFAULT:Mlibressl*}
+EXTRA_PATCHES+=	${PATCHDIR}/libressl-patch-ext_openssl_openssl.c
+.  endif
+
 CONFIGURE_ENV+=	ac_cv_decimal_fp_supported="no" \
 		lt_cv_path_SED="sed" \
 		OPENSSL_CFLAGS="-I${OPENSSLINC}" \
