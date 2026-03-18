@@ -41,8 +41,7 @@ USE_QT=		base declarative networkauth scxml serialport shadertools svg websocket
 USE_SDL=	sdl2
 
 CMAKE_ON=	SCORE_USE_SYSTEM_LIBRARIES \
-		BUILD_SHARED_LIBS \
-		SCORE_USE_SYSTEM_LIBRARIES
+		BUILD_SHARED_LIBS
 CMAKE_ARGS=	-DSCORE_DISABLED_PLUGINS="score-plugin-pd;score-plugin-vst3" \
 		-DCMAKE_CXX_FLAGS="-fexperimental-library" \
 		-DCMAKE_UNITY_BUILD=1
