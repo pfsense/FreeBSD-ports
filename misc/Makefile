@@ -448,6 +448,7 @@
     SUBDIR += py-comfy-aimdo
     SUBDIR += py-comfyui-embedded-docs
     SUBDIR += py-comfyui-workflow-templates-core
+    SUBDIR += py-comfyui-workflow-templates-media-api
     SUBDIR += py-cppman
     SUBDIR += py-crudini
     SUBDIR += py-csvw
