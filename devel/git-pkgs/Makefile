@@ -11,6 +11,9 @@ WWW=		https://git-pkgs.dev/ \
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
+ONLY_FOR_ARCHS=	aarch64 amd64
+ONLY_FOR_ARCHS_REASON=	module modernc.org/sqlite only supported on aarch64 and amd64
+
 USES=		go:modules
 
 GO_BUILDFLAGS=	-ldflags="-s -w -X github.com/git-pkgs/git-pkgs/cmd.version=${PORTVERSION}"
