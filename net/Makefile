@@ -86,6 +86,7 @@
     SUBDIR += claws
     SUBDIR += cloud-init
     SUBDIR += cloud-init-devel
+    SUBDIR += cloudflare-speed-cli
     SUBDIR += cloudflared
     SUBDIR += cloudquery
     SUBDIR += clusterit
