@@ -447,6 +447,7 @@
     SUBDIR += py-colorzero
     SUBDIR += py-comfy-aimdo
     SUBDIR += py-comfyui-embedded-docs
+    SUBDIR += py-comfyui-workflow-templates-core
     SUBDIR += py-cppman
     SUBDIR += py-crudini
     SUBDIR += py-csvw
