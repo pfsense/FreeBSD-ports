@@ -13,6 +13,9 @@ DISTFILES?=	${NIGHTLY_DATE:D${NIGHTLY_DATE}/}${DISTNAME}${EXTRACT_SUFX}:src \
 		${_CARGO_BOOTSTRAP}${EXTRACT_SUFX}:bootstrap
 DIST_SUBDIR?=	rust
 
+PATCH_SITES=	https://github.com/rust-lang/rust/commit/
+PATCHFILES=	634251cba8edb4ebcd01e330c7241e14d76322a1.patch:-p1
+
 MAINTAINER=	rust@FreeBSD.org
 COMMENT=	Language with a focus on memory safety and concurrency
 WWW=		https://www.rust-lang.org/
