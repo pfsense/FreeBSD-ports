@@ -1,11 +1,13 @@
---- lib/ProxySQL_Admin.cpp.orig	2025-11-05 18:44:48 UTC
+--- lib/ProxySQL_Admin.cpp.orig	2026-03-18 17:48:48 UTC
 +++ lib/ProxySQL_Admin.cpp
-@@ -332,7 +332,7 @@ char rand_del[6];
- char rand_del[6];
- 
- //static int http_handler(void *cls, struct MHD_Connection *connection, const char *url, const char *method, const char *version, const char *upload_data, size_t *upload_data_size, void **ptr) {
--MHD_Result http_handler(void *cls, struct MHD_Connection *connection, const char *url, const char *method, const char *version, const char *upload_data, long unsigned int *upload_data_size, void **ptr) {
-+MHD_Result http_handler(void *cls, struct MHD_Connection *connection, const char *url, const char *method, const char *version, const char *upload_data, size_t *upload_data_size, void **ptr) {
- 	return (MHD_Result) GloAdmin->AdminHTTPServer->handler(cls, connection, url, method, version, upload_data, upload_data_size, ptr);
- }
+@@ -2726,8 +2726,10 @@ ProxySQL_Admin::ProxySQL_Admin() :
+ 	// processlist configuration
+ 	variables.mysql_processlist.show_extended = 0;
+ 	variables.pgsql_processlist.show_extended = 0;
++#ifdef IDLE_THREADS
+ 	variables.mysql_processlist.show_idle_session = true;
+ 	variables.pgsql_processlist.show_idle_session = true;
++#endif
+ 	variables.mysql_processlist.max_query_length = PROCESSLIST_MAX_QUERY_LEN_DEFAULT;
+ 	variables.pgsql_processlist.max_query_length = PROCESSLIST_MAX_QUERY_LEN_DEFAULT;
  
