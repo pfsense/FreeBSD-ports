@@ -1,7 +1,6 @@
 PORTNAME=	librewolf
 DISTVERSION=	148.0.2
-PORTREVISION=	1
-LWPATCH=	-1
+LWPATCH=	-3
 DISTVERSIONSUFFIX=	${LWPATCH}.source
 CATEGORIES=	www wayland
 MASTER_SITES=	https://codeberg.org/api/packages/librewolf/generic/librewolf-source/${DISTVERSION}${LWPATCH}/
