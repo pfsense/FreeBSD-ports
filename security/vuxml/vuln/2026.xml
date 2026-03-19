@@ -1,3 +1,35 @@
+  <vuln vid="c5b93cb5-2363-11f1-81da-8447094a420f">
+    <topic>Roundcube -- Multiple vulnerabilities</topic>
+    <affects>
+<package>
+<name>roundcube</name>
+<range><lt>1.6.14,1</lt></range>
+</package>
+    </affects>
+    <description>
+	<body xmlns="http://www.w3.org/1999/xhtml">
+	<p>The Roundcube project reports:</p>
+	<blockquote cite="https://github.com/roundcube/roundcubemail/releases/tag/1.6.14">
+	  <p>pre-auth arbitrary file write via unsafe deserialization in redis/memcache session handler</p>
+	  <p>password could get changed without providing the old password</p>
+	  <p>IMAP Injection + CSRF bypass in mail search</p>
+	  <p>remote image blocking bypass via various SVG animate attributes</p>
+	  <p>remote image blocking bypass via a crafted body background attribute</p>
+	  <p>fixed position mitigation bypass via use of !important</p>
+	  <p>XSS issue in a HTML attachment preview</p>
+	  <p>SSRF + Information Disclosure via stylesheet links to a local network hosts</p>
+	</blockquote>
+	</body>
+    </description>
+    <references>
+      <url>https://github.com/roundcube/roundcubemail/releases/tag/1.6.14</url>
+    </references>
+    <dates>
+      <discovery>2026-03-18</discovery>
+      <entry>2026-03-19</entry>
+    </dates>
+  </vuln>
+
   <vuln vid="db3bdcc6-377f-47d9-9ce8-4bdede4fdafe">
     <topic>homebox -- multiple vulnerabilities</topic>
     <affects>
