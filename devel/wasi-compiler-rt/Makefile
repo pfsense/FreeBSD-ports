@@ -24,7 +24,6 @@ USES=		cmake tar:xz
 IGNORE=		is a meta-port; there is nothing to build
 PKGNAMESUFFIX=	-master
 .else
-BUILD_DEPENDS=	${WASI_SYSROOT}/include/stdarg.h:devel/wasi-libc@${LLVM_VERSION}
 USES+=		llvm:${LLVM_SUFFIX}
 .endif
 
