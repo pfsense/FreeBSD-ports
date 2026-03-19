@@ -366,6 +366,7 @@
     SUBDIR += envconsul
     SUBDIR += epazote
     SUBDIR += erdtree
+    SUBDIR += erldash
     SUBDIR += etcmerge
     SUBDIR += ethname
     SUBDIR += evhz
