@@ -10,7 +10,7 @@ COMMENT=	Delightful language for reliable webapps
 WWW=		https://elm-lang.org/
 
 DEPRECATED=	Depends on a deprecated compiler's version
-EXPIRATION_DATE=2026-04-31
+EXPIRATION_DATE=2026-04-30
 
 LICENSE=	BSD3CLAUSE
 
