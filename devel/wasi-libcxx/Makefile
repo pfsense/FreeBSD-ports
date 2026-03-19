@@ -24,7 +24,7 @@ USES=		cmake tar:xz
 IGNORE=		is a meta port; there is nothing to build
 PKGNAMESUFFIX=	-master
 .else
-BUILD_DEPENDS=	${WASI_SYSROOT}/include/stdarg.h:devel/wasi-libc@${LLVM_VERSION} \
+BUILD_DEPENDS=	${WASI_SYSROOT}/include/${TRIPLE}/stdlib.h:devel/wasi-libc@${LLVM_VERSION} \
 		wasi-compiler-rt${LLVM_VERSION}>0:devel/wasi-compiler-rt${LLVM_VERSION}
 USES+=		llvm:${LLVM_SUFFIX}
 .endif
@@ -35,6 +35,7 @@ DISTINFO_FILE=	${PORTSDIR}/${LLVM_PORT}/distinfo
 SSP_UNSAFE=	yes
 NO_ARCH=	yes
 PLIST=		${.CURDIR}/pkg-plist
+PLIST_SUB=	TRIPLE=${TRIPLE}
 
 WASI_SYSROOT=	${LOCALBASE}/share/wasi-sysroot
 TRIPLE=		wasm32-wasi
