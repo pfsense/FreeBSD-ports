@@ -1,12 +1,8 @@
 PORTNAME=	redisvl
-DISTVERSION=	0.15.0
-PORTREVISION=	1
+DISTVERSION=	0.16.0
 CATEGORIES=	databases python
 MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
-
-PATCH_SITES=	https://github.com/redis/redis-vl-python/commit/
-PATCHFILES=	817a255df0c97921236ed507a177621a00e18bdf.patch:-p1
 
 MAINTAINER=	tagattie@FreeBSD.org
 COMMENT=	Python client library and CLI for using Redis as a vector database
