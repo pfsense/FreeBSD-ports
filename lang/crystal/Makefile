@@ -43,7 +43,7 @@ _LLVM_VERSION?=			20
 MAKE_ARGS=	CRYSTAL_CACHE_DIR="${WRKDIR}/cache" \
 		CRYSTAL_CONFIG_BUILD_COMMIT="${_COMMIT_ID}" \
 		CRYSTAL_CONFIG_PATH="lib:${PREFIX}/lib/${PORTNAME}" \
-		FLAGS="--progress --stats --threads ${MAKE_JOBS_NUMBER} ${OPT_FLAGS}" \
+		FLAGS="--progress --stats --threads ${MAKE_JOBS_NUMBER} ${_OPT_FLAGS}" \
 		LLVM_CONFIG="${LOCALBASE}/bin/llvm-config${_LLVM_VERSION}"
 
 TEST_ARGS=	${MAKE_ARGS:S/release=1//}
@@ -56,9 +56,8 @@ OPTIONS_DEFAULT=	DOCS INTERPRETER
 
 INTERPRETER_DESC=	Enable interpreter (experimental)
 
-DEBUG_VARS=		OPT_FLAGS+="--debug" \
-			STRIP=
-DEBUG_VARS_OFF=		OPT_FLAGS+="--release --no-debug"
+DEBUG_VARS=		_OPT_FLAGS+="--debug" STRIP=
+DEBUG_VARS_OFF=		_OPT_FLAGS+="--release --no-debug"
 DOCS_MAKE_ARGS=		docs_sanitizer=1
 INTERPRETER_MAKE_ARGS=	interpreter=1
 
