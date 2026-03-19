@@ -446,6 +446,7 @@
     SUBDIR += py-colored
     SUBDIR += py-colorzero
     SUBDIR += py-comfy-aimdo
+    SUBDIR += py-comfy-kitchen
     SUBDIR += py-comfyui-embedded-docs
     SUBDIR += py-comfyui-frontend-package
     SUBDIR += py-comfyui-workflow-templates
