@@ -1,3 +1,43 @@
+  <vuln vid="71b4ce56-23c5-11f1-b865-b42e991fc52e">
+    <topic>UniFi Network Application - Multiple vulnerabilities</topic>
+    <affects>
+    <package>
+	<name>unifi10</name>
+	<range><lt>10.1.89</lt></range>
+    </package>
+    <package>
+	<name>unifi9</name>
+	<range><lt>9.0.114</lt></range>
+    </package>
+    </affects>
+    <description>
+	<body xmlns="http://www.w3.org/1999/xhtml">
+	<p>https://community.ui.com/releases/Security-Advisory-Bulletin-062-062/c29719c0-405e-4d4a-8f26-e343e99f931b reports:</p>
+	<blockquote cite="https://community.ui.com/releases/Security-Advisory-Bulletin-062-062/c29719c0-405e-4d4a-8f26-e343e99f931b">
+	  <p>An Authenticated NoSQL Injection vulnerability found in
+	  UniFi Network Application could allow a malicious actor with
+	  authenticated access to the network to escalate
+	  privileges.</p>
+	  <p>A malicious actor with access to the network could
+	  exploit a Path Traversal vulnerability found in the UniFi
+	  Network Application to access files on the underlying system
+	  that could be manipulated to access an underlying
+	  account.</p>
+	</blockquote>
+	</body>
+    </description>
+    <references>
+      <cvename>CVE-2026-22558</cvename>
+      <url>https://cveawg.mitre.org/api/cve/CVE-2026-22558</url>
+      <cvename>CVE-2026-22557</cvename>
+      <url>https://cveawg.mitre.org/api/cve/CVE-2026-22557</url>
+    </references>
+    <dates>
+      <discovery>2026-03-19</discovery>
+      <entry>2026-03-19</entry>
+    </dates>
+  </vuln>
+
   <vuln vid="c5b93cb5-2363-11f1-81da-8447094a420f">
     <topic>Roundcube -- Multiple vulnerabilities</topic>
     <affects>
