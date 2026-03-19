@@ -29,6 +29,7 @@ GH_TUPLE=	WebAssembly:WASI:59cbe14:wasi/tools/wasi-headers/WASI
 NO_ARCH=	yes
 PLIST=		${PKGDIR}/pkg-plist${LLVM_VERSION}
 CONFLICTS_INSTALL=	wasi-libc[0-9]*
+WITHOUT_CPU_CFLAGS=	yes
 
 # NOTE: matches the https://github.com/WebAssembly/wasi-sdk
 WASI_SYSROOT=	${PREFIX}/share/wasi-sysroot
