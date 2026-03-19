@@ -87,7 +87,7 @@ start_precmd()
 {
   local slapd_ownername slapd_groupname
 
-  mkdir -p %%LDAP_RUN_DIR%%
+  mkdir -p %%LDAP_RUN_DIR%% %%NSLCD_VARDIR%%
 
   case "$slapd_owner" in
   ""|[Nn][Oo][Nn][Ee]|[Dd][Ee][Ff][Aa][Uu][Ll][Tt])
@@ -102,7 +102,7 @@ start_precmd()
        chown -fRL "$slapd_owner" "${DBDIR}"
        chmod 700 "${DBDIR}"
     done
-    chown "$slapd_owner" "%%LDAP_RUN_DIR%%"
+    chown "$slapd_owner" %%LDAP_RUN_DIR%% %%NSLCD_VARDIR%%
 
     if checkyesno slapd_cn_config; then
         chown -fR $slapd_owner "%%PREFIX%%/etc/openldap/slapd.d"
@@ -113,9 +113,6 @@ start_precmd()
     slapd_ownername="${slapd_owner%:*}"
     slapd_groupname="${slapd_owner#*:}"
 
-    if [ -n "%%NSLCD_VARDIR%%" ]; then
-        install -o "${slapd_ownername}" -g "${slapd_groupname}" -m 0755 -d "%%NSLCD_VARDIR%%"
-    fi
     if [ -n "$slapd_ownername" ]; then
       rc_flags="$rc_flags -u $slapd_ownername"
     fi
