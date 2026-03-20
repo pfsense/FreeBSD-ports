@@ -1376,6 +1376,7 @@
     SUBDIR += suricata
     SUBDIR += susshi
     SUBDIR += swatchdog
+    SUBDIR += syft
     SUBDIR += tailscale
     SUBDIR += tang
     SUBDIR += tclsasl
