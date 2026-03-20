@@ -1,7 +1,8 @@
 PORTNAME=	en-core-web-sm
 DISTVERSION=	3.8.0
 CATEGORIES=	textproc python
-MASTER_SITES=	https://github.com/explosion/spacy-models/releases/download/${PORTNAME}-${DISTVERSION}/
+#MASTER_SITES=	https://github.com/explosion/spacy-models/releases/download/${PORTNAME}-${DISTVERSION}/ # the required wheel file has disappeared here
+MASTER_SITES=	LOCAL/yuri/
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 DISTNAME=	en_core_web_sm-${DISTVERSION}-py3-none-any
 EXTRACT_SUFX=	.whl
