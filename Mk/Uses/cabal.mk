@@ -203,6 +203,7 @@ cabal-extract: check-cabal
 	${RM} -r ${CABAL_HOME}
 .  endif
 	@${ECHO_MSG} "===> Fetching Hackage index into ${CABAL_HOME}/.cabal"
+	@${MKDIR} ${CABAL_HOME}
 	cd ${WRKDIR} && \
 		${SETENVI} ${WRK_ENV} ${MAKE_ENV} ${CABAL_HOME_ENV} ${CABAL_CMD} update
 .  if ${_hackage_is_default} == yes
