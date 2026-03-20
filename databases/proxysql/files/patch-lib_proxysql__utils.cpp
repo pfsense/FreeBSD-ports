@@ -1,12 +1,9 @@
---- lib/proxysql_utils.cpp.orig	2026-01-16 09:33:05 UTC
+--- lib/proxysql_utils.cpp.orig	2026-03-20 19:16:36 UTC
 +++ lib/proxysql_utils.cpp
-@@ -19,7 +19,13 @@
- #include <unistd.h>
- #include <dirent.h>
- #include <sys/syscall.h>
-+#ifdef __linux__
+@@ -23,6 +23,10 @@
+ #ifdef __linux__
  #include <linux/close_range.h>
-+#endif
+ #endif
 +#ifdef __FreeBSD__
 +#include <sys/socket.h>
 +#include <netinet/in.h>

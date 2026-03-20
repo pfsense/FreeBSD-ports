@@ -1,5 +1,6 @@
 PORTNAME=	proxysql
 PORTVERSION=	3.0.6
+DISTVERSIONPREFIX=	v
 CATEGORIES=	databases
 
 MAINTAINER=	zi@FreeBSD.org
@@ -25,7 +26,7 @@ RUN_DEPENDS=	libgcrypt>0:security/libgcrypt \
 USES=		bison:build compiler:c++11-lang gmake libtool perl5 pkgconfig python:build ssl
 USE_PERL5=	build
 USE_GCC=	yes
-MAKE_ENV=	GIT_VERSION="${PORTVERSION}" SOURCE_DATE_EPOCH="$$(date +%s)"
+MAKE_ENV=	GIT_VERSION_BASE="${PORTVERSION}" SOURCE_DATE_EPOCH="$$(date +%s)"
 USE_GITHUB=	yes
 ALL_TARGET=	build_deps default
 LDFLAGS+=	-L${LOCALBASE}/lib
@@ -51,6 +52,7 @@ post-patch:
 		-e '7s/^/pidfile="\/var\/run\/${PORTNAME}\/${PORTNAME}.pid"\n/g' \
 		${WRKSRC}/src/proxysql.cfg
 	@${REINPLACE_CMD} \
+		-e '/^GIT_VERSION_BASE := /d' \
 		-e 's,grep -P,g&,' \
 		-e '/ export C/d' \
 		-e 's,PROXYSQLCLICKHOUSE=1 ,,g' \
