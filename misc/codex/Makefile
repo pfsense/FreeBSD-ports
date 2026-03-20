@@ -1,6 +1,6 @@
 PORTNAME=	codex
 DISTVERSIONPREFIX=	rust-v
-DISTVERSION=	0.114.0
+DISTVERSION=	0.116.0
 CATEGORIES=	misc devel
 
 MAINTAINER=	tagattie@FreeBSD.org
@@ -64,25 +64,33 @@ post-patch:
 		${BUILD_WRKSRC}/core/src/environment_context.rs \
 		${BUILD_WRKSRC}/core/src/exec.rs \
 		${BUILD_WRKSRC}/core/src/exec_policy.rs \
+		${BUILD_WRKSRC}/core/src/exec_policy_tests.rs \
+		${BUILD_WRKSRC}/core/src/exec_tests.rs \
 		${BUILD_WRKSRC}/core/src/shell.rs \
 		${BUILD_WRKSRC}/core/src/shell_snapshot.rs \
-		${BUILD_WRKSRC}/core/src/tools/handlers/shell.rs \
-		${BUILD_WRKSRC}/core/src/tools/handlers/unified_exec.rs \
-		${BUILD_WRKSRC}/core/src/tools/runtimes/mod.rs \
+		${BUILD_WRKSRC}/core/src/shell_tests.rs \
+		${BUILD_WRKSRC}/core/src/tools/handlers/shell_tests.rs \
+		${BUILD_WRKSRC}/core/src/tools/handlers/unified_exec_tests.rs \
+		${BUILD_WRKSRC}/core/src/tools/runtimes/mod_tests.rs \
 		${BUILD_WRKSRC}/core/tests/suite/exec.rs \
 		${BUILD_WRKSRC}/core/tests/suite/unified_exec.rs \
 		${BUILD_WRKSRC}/core/tests/suite/user_notification.rs \
 		${BUILD_WRKSRC}/shell-command/src/parse_command.rs \
 		${BUILD_WRKSRC}/shell-escalation/src/unix/escalate_server.rs \
-		${BUILD_WRKSRC}/tui/src/exec_command.rs
+		${BUILD_WRKSRC}/tui/src/exec_command.rs \
+		${BUILD_WRKSRC}/tui_app_server/src/exec_command.rs
 	@${REINPLACE_CMD} -e 's|python3|${PYTHON_VERSION}|' \
+		${BUILD_WRKSRC}/app-server/tests/suite/v2/command_exec.rs \
 		${BUILD_WRKSRC}/app-server/tests/suite/v2/thread_resume.rs \
 		${BUILD_WRKSRC}/app-server/tests/suite/v2/turn_start.rs \
 		${BUILD_WRKSRC}/app-server/tests/suite/v2/turn_start_zsh_fork.rs \
 		${BUILD_WRKSRC}/core/src/command_canonicalization.rs \
 		${BUILD_WRKSRC}/core/src/exec_policy.rs \
+		${BUILD_WRKSRC}/core/src/exec_policy_tests.rs \
+		${BUILD_WRKSRC}/core/src/seatbelt_tests.rs \
 		${BUILD_WRKSRC}/core/src/skills/invocation_utils.rs \
 		${BUILD_WRKSRC}/core/tests/suite/approvals.rs \
+		${BUILD_WRKSRC}/core/tests/suite/hooks.rs \
 		${BUILD_WRKSRC}/core/tests/suite/seatbelt.rs \
 		${BUILD_WRKSRC}/core/tests/suite/tools.rs \
 		${BUILD_WRKSRC}/core/tests/suite/unified_exec.rs \
@@ -90,6 +98,8 @@ post-patch:
 		${BUILD_WRKSRC}/execpolicy/tests/basic.rs \
 		${BUILD_WRKSRC}/shell-command/src/bash.rs \
 		${BUILD_WRKSRC}/shell-command/src/command_safety/is_safe_command.rs \
+		${BUILD_WRKSRC}/tui/src/render/highlight.rs \
+		${BUILD_WRKSRC}/tui_app_server/src/render/highlight.rs \
 		${BUILD_WRKSRC}/utils/pty/src/tests.rs
 
 post-build-COMPLETIONS-on:
