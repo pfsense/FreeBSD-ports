@@ -1,6 +1,6 @@
 PORTNAME=	librenms
 PORTVERSION=	26.3.1
-PORTREVISION=	1
+PORTREVISION=	2
 PORTEPOCH=	1
 CATEGORIES=	net-mgmt
 MASTER_SITES=	LOCAL/dvl:vendor
@@ -108,8 +108,6 @@ NMAP_RUN_DEPENDS=	nmap:security/nmap
 WMIC_RUN_DEPENDS=	wmic:net-mgmt/wmi-client
 X11_RUN_DEPENDS=	mtr:net/mtr
 X11_RUN_DEPENDS_OFF=	mtr:net/mtr@nox11
-X11_USES=		magick:6
-X11_USES_OFF=		magick:6,nox11
 
 _ROOT_FILES=		alerts.php artisan billing-calculate.php \
 			check-services.php composer.json composer.lock \
