@@ -1,11 +1,12 @@
 PORTNAME=	comfyui
 DISTVERSIONPREFIX=	v
 DISTVERSION=	0.17.2
-CATEGORIES=	misc python
+CATEGORIES=	misc python # machine-learning
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Powerful and modular stable diffusion GUI with graph/nodes interface
-WWW=	https://github.com/Comfy-Org/ComfyUI
+WWW=		https://www.comfy.org/ \
+		https://github.com/Comfy-Org/ComfyUI
 
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/LICENSE
