@@ -59,6 +59,7 @@
     SUBDIR += colortail
     SUBDIR += coloursum
     SUBDIR += colwide
+    SUBDIR += comfyui
     SUBDIR += compat.el
     SUBDIR += compat10x
     SUBDIR += compat11x
