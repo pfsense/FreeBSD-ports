@@ -1,5 +1,5 @@
-TIMESTAMP = 1773219000
-SHA256 (go/net_krakend-ce/krakend-ce-v2.13.2/v2.13.2.mod) = dbc1519774226142fe30c81ada8deed186f6bb7992bfaebacf95d72367c5b16d
-SIZE (go/net_krakend-ce/krakend-ce-v2.13.2/v2.13.2.mod) = 15438
-SHA256 (go/net_krakend-ce/krakend-ce-v2.13.2/v2.13.2.zip) = 691f6b64091db700c8fb8a35339c82f8164577e808a4bb74b06153c5bb951d4b
-SIZE (go/net_krakend-ce/krakend-ce-v2.13.2/v2.13.2.zip) = 144967
+TIMESTAMP = 1773993659
+SHA256 (go/net_krakend-ce/krakend-ce-v2.13.3/v2.13.3.mod) = 2ec4798a527428eb3d4f5362f289a0759bed960dafcb9f6ecfcb13facc7f0ea2
+SIZE (go/net_krakend-ce/krakend-ce-v2.13.3/v2.13.3.mod) = 15498
+SHA256 (go/net_krakend-ce/krakend-ce-v2.13.3/v2.13.3.zip) = ebff00fcf2984f6fc21ab4f73f6031d397aa009a7fa243a72099491c91e20858
+SIZE (go/net_krakend-ce/krakend-ce-v2.13.3/v2.13.3.zip) = 145076
