@@ -76,7 +76,7 @@ if ($_POST && isset($_POST['all']) && ($_POST['all'] == 'autoapply')) {
 
 // Save selection of excluded recommended patches.
 if (isset($_POST['save']) && $autoapply_recommended) {
-	refresh_excluded_recommended_patches($_POST['excluded']);
+	refresh_excluded_recommended_patches(is_array($_POST['excluded']) ? $_POST['excluded'] : []);
 	$savemsg = gettext("Saved selection of recommended patches that will not be applied automatically.");
 }
 
