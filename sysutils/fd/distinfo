@@ -1,4 +1,4 @@
-TIMESTAMP = 1773573401
+TIMESTAMP = 1774007508
 SHA256 (rust/crates/aho-corasick-1.1.4.crate) = ddd31a130427c27518df266943a5308ed92d4b226cc639f5a8f1002816174301
 SIZE (rust/crates/aho-corasick-1.1.4.crate) = 184015
 SHA256 (rust/crates/anstream-0.6.21.crate) = 43d5b281e737544384e969a5ccad3f1cdd24b48086a0fc1b2a5262a26b8f4f4a
@@ -249,5 +249,5 @@ SHA256 (rust/crates/wit-parser-0.244.0.crate) = ecc8ac4bc1dc3381b7f59c34f00b67e1
 SIZE (rust/crates/wit-parser-0.244.0.crate) = 159371
 SHA256 (rust/crates/zmij-1.0.21.crate) = b8848ee67ecc8aedbaf3e4122217aff892639231befc6a1b58d29fff4c2cabaa
 SIZE (rust/crates/zmij-1.0.21.crate) = 26665
-SHA256 (sharkdp-fd-v10.4.1_GH0.tar.gz) = 59ab83e56743e28eaa92c5497b3998a35744db6d8d574f389456481f2af1cb00
-SIZE (sharkdp-fd-v10.4.1_GH0.tar.gz) = 145461
+SHA256 (sharkdp-fd-v10.4.2_GH0.tar.gz) = 3a7e027af8c8e91c196ac259c703d78cd55c364706ddafbc66d02c326e57a456
+SIZE (sharkdp-fd-v10.4.2_GH0.tar.gz) = 145560
