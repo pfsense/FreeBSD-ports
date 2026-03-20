@@ -1,6 +1,7 @@
 PORTNAME=	wasi-libc
 DISTVERSIONPREFIX=	wasi-sdk-
 DISTVERSION=	31
+PORTREVISION=	1
 CATEGORIES=	devel
 PKGNAMESUFFIX=	${FLAVOR}
 
@@ -28,19 +29,20 @@ GH_ACCOUNT=	WebAssembly
 GH_TUPLE=	WebAssembly:WASI:59cbe14:wasi/tools/wasi-headers/WASI
 NO_ARCH=	yes
 PLIST=		${PKGDIR}/pkg-plist${LLVM_VERSION}
+PLIST_SUB=	TRIPLE=${TRIPLE}
 CONFLICTS_INSTALL=	wasi-libc[0-9]*
 WITHOUT_CPU_CFLAGS=	yes
 
 # NOTE: matches the https://github.com/WebAssembly/wasi-sdk
 WASI_SYSROOT=	${PREFIX}/share/wasi-sysroot
+TRIPLE=		wasm32-wasip1
 
 CMAKE_INSTALL_PREFIX=	${WASI_SYSROOT}
-CMAKE_ARGS=	-DCMAKE_C_COMPILER=clang${LLVM_VERSION} \
-		-DCMAKE_AR=llvm-ar${LLVM_VERSION} \
+CMAKE_ARGS=	-DCMAKE_AR=llvm-ar${LLVM_VERSION} \
 		-DCMAKE_NM=llvm-nm${LLVM_VERSION} \
 		-DCMAKE_RANLIB=llvm-ranlib${LLVM_VERSION} \
-		-DTARGET_TRIPLE=wasm32-wasi \
-		-DBUILTINS_LIB=${LLVM_PREFIX:S/${PREFIX}/${LOCALBASE}/}/lib/clang/${LLVM_VERSION}/lib/wasi/libclang_rt.builtins-wasm32.a \
+		-DTARGET_TRIPLE=${TRIPLE} \
+		-DBUILTINS_LIB=${LLVM_PREFIX:S|${PREFIX}|${LOCALBASE}|}/lib/clang/${LLVM_VERSION}/lib/${TRIPLE:S|-|-unknown-|}/libclang_rt.builtins.a \
 		-DBUILD_SHARED=OFF
 
 .include <bsd.port.mk>

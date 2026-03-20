@@ -38,7 +38,7 @@ PLIST=		${.CURDIR}/pkg-plist
 PLIST_SUB=	TRIPLE=${TRIPLE}
 
 WASI_SYSROOT=	${LOCALBASE}/share/wasi-sysroot
-TRIPLE=		wasm32-wasi
+TRIPLE=		wasm32-wasip1
 WITHOUT_CPU_CFLAGS=	yes
 # try to sync with https://github.com/WebAssembly/wasi-sdk
 # wasi-sdk.cmake and cmake/wasi-sdk-sysroot.cmake
