@@ -1,6 +1,5 @@
 PORTNAME=	github-copilot-cli
-DISTVERSION=	0.0.394 # do not update until https://github.com/github/copilot-cli/issues/1320 is fixed
-PORTREVISION=	1
+DISTVERSION=	1.0.10
 PORTEPOCH=	1
 CATEGORIES=	misc # machine-learning
 DISTFILES=	${PORTNAME}-${DISTVERSION}${EXTRACT_SUFX} \
