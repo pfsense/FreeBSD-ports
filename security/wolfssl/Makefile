@@ -1,6 +1,5 @@
 PORTNAME=	wolfssl
-PORTVERSION=	5.8.4
-PORTREVISION=	1
+PORTVERSION=	5.9.0
 CATEGORIES=	security devel
 MASTER_SITES=	https://www.wolfssl.com/ \
 		LOCAL/fox
