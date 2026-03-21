@@ -312,6 +312,7 @@
     SUBDIR += ecos
     SUBDIR += edenmath
     SUBDIR += eigen3
+    SUBDIR += eigen5
     SUBDIR += eispack
     SUBDIR += elan
     SUBDIR += elemental
