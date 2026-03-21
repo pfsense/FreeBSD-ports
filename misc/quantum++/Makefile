@@ -1,6 +1,6 @@
 PORTNAME=	quantum++
 DISTVERSIONPREFIX=	v
-DISTVERSION=	7.0.0
+DISTVERSION=	7.0.1
 CATEGORIES=	misc devel
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -10,9 +10,11 @@ WWW=		https://github.com/softwareQinc/qpp
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE.txt
 
+BUILD_DEPENDS=	eigen5>0:math/eigen5
+RUN_DEPENDS=	eigen5>0:math/eigen5
 TEST_DEPENDS=	googletest>0:devel/googletest
 
-USES=		cmake:testing compiler:c++17-lang eigen:3,build,run localbase:ldflags
+USES=		cmake:testing compiler:c++17-lang localbase:ldflags
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	softwareQinc
@@ -33,7 +35,6 @@ post-test: # run tests
 # [==========] 457 tests from 325 test suites ran. (1585 ms total)
 # [  PASSED  ] 457 tests.
 
-# tests as of 7.0: fail to compile, see https://github.com/softwareQinc/qpp/issues/196
-# ... tests need Eigen version to 5.0.0, but ports has 3.4.0
+# tests as of 7.0: fail to compile, see https://github.com/softwareQinc/qpp/issues/197
 
 .include <bsd.port.mk>
