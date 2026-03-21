@@ -12,9 +12,6 @@ WWW=		https://github.com/times-software/OCEAN
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/License
 
-DEPRECATED=	Depends on expired science/atompaw
-EXPIRATION_DATE=2026-40-20
-
 LIB_DEPENDS=	libfftw3.so:math/fftw3 \
 		libopenblas.so:math/openblas
 RUN_DEPENDS=	abinit>0:science/abinit \
