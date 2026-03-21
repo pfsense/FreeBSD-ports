@@ -1,6 +1,7 @@
 PORTNAME=	dbuild
 DISTVERSIONPREFIX=	v
 DISTVERSION=	1.7.0
+PORTREVISION=	1
 CATEGORIES=	sysutils python
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
@@ -24,6 +25,7 @@ GH_ACCOUNT=	daemonless
 USE_PYTHON=	autoplist pep517
 
 NO_ARCH=	yes
+PLIST_FILES=	share/man/man1/dbuild.1.gz
 
 PORTDOCS=	README.md
 
@@ -46,5 +48,8 @@ SCREENSHOT_TESTING_RUN_DEPENDS=		${PYTHON_PKGNAMEPREFIX}scikit-image>=0:graphics
 do-install-DOCS-on:
 	@${MKDIR} ${STAGEDIR}/${DOCSDIR}
 	${INSTALL_DATA} ${WRKSRC}/README.md ${STAGEDIR}/${DOCSDIR}
+
+post-install:
+	${INSTALL_MAN} ${WRKSRC}/docs/dbuild.1 ${STAGEDIR}/${PREFIX}/share/man/man1
 
 .include <bsd.port.mk>
