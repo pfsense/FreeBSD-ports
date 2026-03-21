@@ -5,8 +5,9 @@ MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
 MAINTAINER=	yuri@FreeBSD.org
-COMMENT=	State-of-the-art diffusion in PyTorch and JAX
-WWW=		https://huggingface.co/docs/diffusers/index
+COMMENT=	State-of-the-art diffusion in PyTorch
+WWW=		https://huggingface.co/docs/diffusers/index \
+		https://github.com/huggingface/diffusers
 
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/LICENSE
