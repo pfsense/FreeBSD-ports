@@ -10,9 +10,6 @@ WWW=		https://www.abinit.org \
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-DEPRECATED=	Depends on expired science/atompaw
-EXPIRATION_DATE=2026-40-20
-
 ONLY_FOR_ARCHS=	amd64 powerpc64 powerpc64le
 
 BUILD_DEPENDS=	gm4:devel/m4	\
