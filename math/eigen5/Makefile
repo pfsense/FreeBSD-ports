@@ -25,7 +25,6 @@ TEST_DEPENDS=	suitesparse-cholmod>0:math/suitesparse-cholmod \
 USES=		cmake:testing
 USE_GITLAB=	yes
 GL_ACCOUNT=	libeigen
-GL_TAGNAME=	bc3b39870ecb690a623a3f49149a358b95c5781d
 
 CMAKE_ARGS=	-DPKGCONFIG_INSTALL_DIR:PATH="libdata/pkgconfig"
 CMAKE_ON=	EIGEN_TEST_CXX11 # This is to set the C++ standard to C++11, instead of 03
