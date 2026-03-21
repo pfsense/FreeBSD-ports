@@ -1,5 +1,5 @@
 PORTNAME=	kornia
-DISTVERSION=	0.7.4
+DISTVERSION=	0.8.2
 CATEGORIES=	graphics python # machine-learning
 MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -14,7 +14,7 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 
 BUILD_DEPENDS=	${PY_SETUPTOOLS} \
 		${PYTHON_PKGNAMEPREFIX}wheel>0:devel/py-wheel@${PY_FLAVOR}
-RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}kornia-rs>0:graphics/py-kornia-rs@${PY_FLAVOR} \
+RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}kornia-rs>=0.1.9:graphics/py-kornia-rs@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}pytorch>=1.13.1:misc/py-pytorch@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}packaging>0:devel/py-packaging@${PY_FLAVOR}
 
