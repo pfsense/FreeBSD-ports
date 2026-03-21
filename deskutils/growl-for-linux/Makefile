@@ -35,6 +35,7 @@ PLIST_SUB=	DESKTOPDIR=${DESKTOPDIR:S,^${PREFIX}/,,}
 
 USES=		autoreconf compiler:nestedfct gnome libtool pkgconfig sqlite:3 \
 		ssl
+USE_CSTD=	gnu11
 USE_GITHUB=	yes
 USE_GNOME=	cairo gdkpixbuf gtk20 libxml2
 USE_LDCONFIG=	${PREFIX}/lib/${PORTNAME}/display \

@@ -88,8 +88,8 @@ _INCLUDE_USES_AUTORECONF_POST_MK=	yes
 _AUTORECONF=	2.69
 BUILD_DEPENDS+=	autoconf2.69>=2.69:devel/autoconf2.69
 .  else
-_AUTORECONF=	2.72
-BUILD_DEPENDS+=	autoconf>=2.72_1:devel/autoconf
+_AUTORECONF=	2.73
+BUILD_DEPENDS+=	autoconf>=${_AUTORECONF}:devel/autoconf
 .  endif
 
 BUILD_DEPENDS+=	automake>=1.18.1:devel/automake
