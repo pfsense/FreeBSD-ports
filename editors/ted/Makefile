@@ -1,12 +1,13 @@
 PORTNAME=	ted
-PORTVERSION=	2.23
-PORTREVISION=	8
+DISTVERSION=	2.23
+PORTREVISION=	9
 CATEGORIES=	editors
 MASTER_SITES=	ftp://ftp.nluug.nl/pub/editors/ted/ \
 		https://ftp.nluug.nl/pub/editors/ted/
+PKGNAMESUFFIX=	${${FLAVOR} == motif:?:-${FLAVOR}}
 EXTRACT_SUFX=	.src.tar.gz
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	mce@FreeBSD.org
 COMMENT=	X11 based RTF editor
 WWW=		https://www.nllgg.nl/Ted/
 
@@ -21,9 +22,14 @@ LIB_DEPENDS=	libpcre.so:devel/pcre \
 		libpaper.so:print/libpaper
 RUN_DEPENDS=	gsfonts>0:print/gsfonts
 
+FLAVORS=	motif gtk2
+FLAVOR?=	${FLAVORS:[1]}
+
 WRKSRC=		${WRKDIR}/Ted-${PORTVERSION}
 
-USES=		ghostscript:x11,run iconv jpeg pkgconfig xorg
+USES=		ghostscript:x11,run iconv jpeg pkgconfig xorg \
+		${${FLAVOR} == motif:?motif:gnome}
+USE_GNOME=	${${FLAVOR} == motif:?:gtk20}
 USE_XORG=	ice sm x11 xext xft xmu xorgproto xpm xt
 GNU_CONFIGURE=	yes
 MAKE_ENV=	DEF_AFMDIR="-DAFMDIR=\"\\\"${AFMDIR}/\\\"\"" \
@@ -32,22 +38,15 @@ MAKE_ENV=	DEF_AFMDIR="-DAFMDIR=\"\\\"${AFMDIR}/\\\"\"" \
 		DEF_PSSCRIPT_DIR="-DPSSCRIPT_DIR=\"\\\"${DATADIR}/\\\"\""
 ALL_TARGET=	compile.shared
 CONFIGURE_ARGS=	--datadir=${PREFIX}/share \
-		ac_iconv_includes=${LOCALBASE}/include
+		--with-${${FLAVOR} == motif:?MOTIF:GTK}
+
+CONFLICTS_INSTALL=	${PORTNAME}${${FLAVOR} == motif:?-gtk2:}
 
 DATADIR=	${PREFIX}/share/Ted
 DOCSDIR=	${PREFIX}/share/doc/Ted
 
 AFMDIR=		${DATADIR}/afm
 INDDIR=		${DATADIR}/dfa
-
-OPTIONS_DEFINE=	GTK2 DOCS
-GTK2_DESC=	Use GTK2 instead of MOTIF
-GTK2_USES=	gnome
-GTK2_USE=		GNOME=gtk20
-GTK2_CONFIGURE_ON=	--with-GTK
-GTK2_CPPFLAGS=		`pkg-config --cflags gtk+-2.0 | ${SED} -e 's|-I|-isystem |g'`
-GTK2_USES_OFF=		motif
-GTK2_CONFIGURE_OFF=	--with-MOTIF
 
 .include <bsd.port.pre.mk>
 
@@ -74,8 +73,6 @@ do-install:
 	${INSTALL_DATA} ${WRKSRC}/tedPackage/afm/*.afm ${STAGEDIR}${AFMDIR}
 	@${MKDIR} ${STAGEDIR}${INDDIR}
 	${INSTALL_DATA} ${WRKSRC}/tedPackage/dfa/*.dfa ${STAGEDIR}${INDDIR}
-
-do-install-DOCS-on:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}
 	${INSTALL_DATA} ${WRKSRC}/tedPackage/TedDocument-en_US.rtf ${STAGEDIR}${DOCSDIR}
 
