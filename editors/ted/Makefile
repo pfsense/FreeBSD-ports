@@ -3,7 +3,7 @@ PORTVERSION=	2.23
 PORTREVISION=	8
 CATEGORIES=	editors
 MASTER_SITES=	ftp://ftp.nluug.nl/pub/editors/ted/ \
-		http://fossies.org/linux/misc/
+		https://ftp.nluug.nl/pub/editors/ted/
 EXTRACT_SUFX=	.src.tar.gz
 
 MAINTAINER=	ports@FreeBSD.org
@@ -14,6 +14,8 @@ LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/gpl.txt
 
 LIB_DEPENDS=	libpcre.so:devel/pcre \
+		libfontconfig.so:x11-fonts/fontconfig \
+		libfreetype.so:print/freetype2 \
 		libpng.so:graphics/png \
 		libtiff.so:graphics/tiff \
 		libpaper.so:print/libpaper
@@ -21,8 +23,8 @@ RUN_DEPENDS=	gsfonts>0:print/gsfonts
 
 WRKSRC=		${WRKDIR}/Ted-${PORTVERSION}
 
-USES=		ghostscript:x11,run iconv pkgconfig xorg
-USE_XORG=	xext xft
+USES=		ghostscript:x11,run iconv jpeg pkgconfig xorg
+USE_XORG=	ice sm x11 xext xft xmu xorgproto xpm xt
 GNU_CONFIGURE=	yes
 MAKE_ENV=	DEF_AFMDIR="-DAFMDIR=\"\\\"${AFMDIR}/\\\"\"" \
 		DEF_INDDIR="-DINDDIR=\"\\\"${INDDIR}/\\\"\"" \
@@ -60,10 +62,6 @@ post-patch:
 		 s|/usr/local|${LOCALBASE}|g ; \
 		 /paper.h/s|/usr/include|${LOCALBASE}/include|g ; \
 		 /paper.h/s|/usr/lib|${LOCALBASE}/lib|g'
-.if ! empty(ICONV_LIB)
-	@${REINPLACE_CMD} 's|/iconv\.so|/libiconv.so|' \
-		${WRKSRC}/Ted/configure ${WRKSRC}/textEncoding/configure
-.endif
 
 do-install:
 	${INSTALL_PROGRAM} ${WRKSRC}/Ted/Ted ${STAGEDIR}${PREFIX}/bin
