@@ -10,6 +10,7 @@ bin/comfyui
 %%DATADIR%%/alembic_db/script.py.mako
 %%DATADIR%%/alembic_db/versions/0001_assets.py
 %%DATADIR%%/alembic_db/versions/0002_merge_to_asset_references.py
+%%DATADIR%%/alembic_db/versions/0003_add_metadata_job_id.py
 %%DATADIR%%/api_server/__init__.py
 %%DATADIR%%/api_server/routes/__init__.py
 %%DATADIR%%/api_server/routes/internal/README.md
@@ -367,6 +368,7 @@ bin/comfyui
 %%DATADIR%%/comfy_api/internal/async_to_sync.py
 %%DATADIR%%/comfy_api/internal/singleton.py
 %%DATADIR%%/comfy_api/latest/__init__.py
+%%DATADIR%%/comfy_api/latest/_caching.py
 %%DATADIR%%/comfy_api/latest/_input/__init__.py
 %%DATADIR%%/comfy_api/latest/_input/basic_types.py
 %%DATADIR%%/comfy_api/latest/_input/video_types.py
@@ -410,6 +412,7 @@ bin/comfyui
 %%DATADIR%%/comfy_api_nodes/apis/moonvalley.py
 %%DATADIR%%/comfy_api_nodes/apis/openai.py
 %%DATADIR%%/comfy_api_nodes/apis/pixverse.py
+%%DATADIR%%/comfy_api_nodes/apis/quiver.py
 %%DATADIR%%/comfy_api_nodes/apis/recraft.py
 %%DATADIR%%/comfy_api_nodes/apis/reve.py
 %%DATADIR%%/comfy_api_nodes/apis/rodin.py
@@ -438,6 +441,7 @@ bin/comfyui
 %%DATADIR%%/comfy_api_nodes/nodes_moonvalley.py
 %%DATADIR%%/comfy_api_nodes/nodes_openai.py
 %%DATADIR%%/comfy_api_nodes/nodes_pixverse.py
+%%DATADIR%%/comfy_api_nodes/nodes_quiver.py
 %%DATADIR%%/comfy_api_nodes/nodes_recraft.py
 %%DATADIR%%/comfy_api_nodes/nodes_reve.py
 %%DATADIR%%/comfy_api_nodes/nodes_rodin.py
@@ -461,6 +465,7 @@ bin/comfyui
 %%DATADIR%%/comfy_api_nodes/util/validation_utils.py
 %%DATADIR%%/comfy_config/config_parser.py
 %%DATADIR%%/comfy_config/types.py
+%%DATADIR%%/comfy_execution/cache_provider.py
 %%DATADIR%%/comfy_execution/caching.py
 %%DATADIR%%/comfy_execution/graph.py
 %%DATADIR%%/comfy_execution/graph_utils.py
@@ -628,6 +633,7 @@ bin/comfyui
 %%DATADIR%%/tests-unit/app_test/custom_node_manager_test.py
 %%DATADIR%%/tests-unit/app_test/frontend_manager_test.py
 %%DATADIR%%/tests-unit/app_test/model_manager_test.py
+%%DATADIR%%/tests-unit/app_test/test_migrations.py
 %%DATADIR%%/tests-unit/app_test/user_manager_system_user_test.py
 %%DATADIR%%/tests-unit/assets_test/conftest.py
 %%DATADIR%%/tests-unit/assets_test/helpers.py
@@ -643,6 +649,7 @@ bin/comfyui
 %%DATADIR%%/tests-unit/assets_test/services/test_bulk_ingest.py
 %%DATADIR%%/tests-unit/assets_test/services/test_enrich.py
 %%DATADIR%%/tests-unit/assets_test/services/test_ingest.py
+%%DATADIR%%/tests-unit/assets_test/services/test_tag_histogram.py
 %%DATADIR%%/tests-unit/assets_test/services/test_tagging.py
 %%DATADIR%%/tests-unit/assets_test/test_assets_missing_sync.py
 %%DATADIR%%/tests-unit/assets_test/test_crud.py
@@ -663,6 +670,7 @@ bin/comfyui
 %%DATADIR%%/tests-unit/comfy_test/folder_path_test.py
 %%DATADIR%%/tests-unit/comfy_test/model_detection_test.py
 %%DATADIR%%/tests-unit/execution_test/preview_method_override_test.py
+%%DATADIR%%/tests-unit/execution_test/test_cache_provider.py
 %%DATADIR%%/tests-unit/execution_test/validate_node_input_test.py
 %%DATADIR%%/tests-unit/feature_flags_test.py
 %%DATADIR%%/tests-unit/folder_paths_test/__init__.py
