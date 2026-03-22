@@ -1,5 +1,5 @@
 PORTNAME=	dolphin-emu
-PORTVERSION=	2512
+PORTVERSION=	2603
 CATEGORIES=	emulators
 
 MAINTAINER=	martymac@FreeBSD.org
@@ -49,7 +49,7 @@ LIB_DEPENDS=	libavcodec.so:multimedia/ffmpeg \
 		libudev.so:devel/libudev-devd \
 		libevdev.so:devel/libevdev
 
-USES=		cmake compiler:c++17-lang desktop-file-utils elfctl gl iconv \
+USES=		cmake compiler:c++23-lang desktop-file-utils elfctl gl iconv \
 		pkgconfig python qmake qt:6 sdl xorg
 
 ELF_FEATURES=	+noaslr:Binaries/dolphin-emu*
