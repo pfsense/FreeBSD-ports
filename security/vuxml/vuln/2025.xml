@@ -3150,7 +3150,7 @@ This issue has been patched in version 2.25.2.</p>
 	   vulnerable to CVE-2025-7709. -->
       <package>
 	<name>linux-c7-sqlite</name>
-	<range><lt>3.43.0</lt></range>
+	<range><ge>3.43.0</ge><lt>3.50.3</lt></range>
       </package>
     </affects>
     <description>
