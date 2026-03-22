@@ -1,4 +1,5 @@
 bin/hb-info
+bin/hb-raster
 bin/hb-shape
 bin/hb-subset
 bin/hb-vector
@@ -120,6 +121,7 @@ share/gir-1.0/HarfBuzz-0.0.gir
 %%DOCS%%share/gtk-doc/html/harfbuzz/api-index-11-3-0.html
 %%DOCS%%share/gtk-doc/html/harfbuzz/api-index-12-1-0.html
 %%DOCS%%share/gtk-doc/html/harfbuzz/api-index-13-0-0.html
+%%DOCS%%share/gtk-doc/html/harfbuzz/api-index-13-1-0.html
 %%DOCS%%share/gtk-doc/html/harfbuzz/api-index-2-0-0.html
 %%DOCS%%share/gtk-doc/html/harfbuzz/api-index-2-1-0.html
 %%DOCS%%share/gtk-doc/html/harfbuzz/api-index-2-2-0.html
@@ -232,6 +234,7 @@ share/gir-1.0/HarfBuzz-0.0.gir
 %%DOCS%%share/gtk-doc/html/harfbuzz/opentype-api.html
 %%DOCS%%share/gtk-doc/html/harfbuzz/opentype-shaping-models.html
 %%DOCS%%share/gtk-doc/html/harfbuzz/reference-manual.html
+%%DOCS%%share/gtk-doc/html/harfbuzz/rendering-api.html
 %%DOCS%%share/gtk-doc/html/harfbuzz/reordering-in-levels-0-and-1.html
 %%DOCS%%share/gtk-doc/html/harfbuzz/right-insensitive.png
 %%DOCS%%share/gtk-doc/html/harfbuzz/right.png
@@ -262,6 +265,7 @@ share/gir-1.0/HarfBuzz-0.0.gir
 %%DOCS%%share/gtk-doc/html/harfbuzz/why-is-it-called-harfbuzz.html
 %%DOCS%%share/gtk-doc/html/harfbuzz/working-with-harfbuzz-clusters.html
 %%DOCS%%share/man/man1/hb-info.1.gz
+%%DOCS%%share/man/man1/hb-raster.1.gz
 %%DOCS%%share/man/man1/hb-shape.1.gz
 %%DOCS%%share/man/man1/hb-subset.1.gz
 %%DOCS%%share/man/man1/hb-vector.1.gz

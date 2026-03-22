@@ -1,5 +1,6 @@
 @comment bin/hb-info
 @comment bin/hb-ot-shape-closure
+@comment bin/hb-raster
 @comment bin/hb-shape
 @comment bin/hb-subset
 @comment bin/hb-vector
