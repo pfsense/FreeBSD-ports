@@ -1,6 +1,8 @@
 PORTNAME=	papers
-DISTVERSION=	48.7
+DISTVERSION=	48.8
 CATEGORIES=	graphics print gnome
+MASTER_SITES=	GNOME
+DISTFILES=	${DISTNAME}${EXTRACT_SUFX}
 DIST_SUBDIR=	gnome
 
 MAINTAINER=	gnome@FreeBSD.org
@@ -20,14 +22,10 @@ LIB_DEPENDS=	libpoppler-glib.so:graphics/poppler-glib \
 RUN_DEPENDS=	gsettings-desktop-schemas>0:devel/gsettings-desktop-schemas
 
 USES=		cargo desktop-file-utils gettext-tools gnome libarchive \
-		localbase:ldflags meson pkgconfig tar:bz2
+		localbase:ldflags meson pkgconfig tar:xz
 USE_GNOME=	cairo gdkpixbuf glib20 gtk40 introspection:build libadwaita
 GLIB_SCHEMAS=	org.gnome.Papers.gschema.xml
 USE_LDCONFIG=	yes
-
-USE_GITLAB=	yes
-GL_SITE=	https://gitlab.gnome.org
-GL_ACCOUNT=	GNOME
 
 MESON_ARGS=	-Ddocumentation=false \
 		-Duser_doc=false \
@@ -49,17 +47,18 @@ OPTIONS_DEFAULT=	COMICS KEYRING NAUTILUS
 OPTIONS_SUB=		yes
 
 COMICS_DESC=		Comic book archives support
+DJVU_DESC=		DJVU support
+KEYRING_DESC=		Keyring support
+NAUTILUS_DESC=		Nautilus (file manager) support
+
 COMICS_MESON_ENABLED=	comics
 
-DJVU_DESC=		DJVU support
 DJVU_LIB_DEPENDS=	libdjvulibre.so:graphics/djvulibre
 DJVU_MESON_ENABLED=	djvu
 
-KEYRING_DESC=		Keyring support
 KEYRING_LIB_DEPENDS=	libsecret-1.so:security/libsecret
 KEYRING_MESON_ENABLED=	keyring
 
-NAUTILUS_DESC=		Nautilus (file manager) support
 NAUTILUS_USE=		gnome=nautilus4
 NAUTILUS_MESON_TRUE=	nautilus
 
