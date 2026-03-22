@@ -1,6 +1,5 @@
 PORTNAME=	algol68g
-PORTVERSION=	3.10.9
-PORTREVISION=	1
+PORTVERSION=	3.10.14
 CATEGORIES=	lang
 MASTER_SITES=	https://jmvdveer.home.xs4all.nl/ LOCAL/danfe
 
