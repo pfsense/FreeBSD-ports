@@ -377,8 +377,8 @@ drweb:*:426:426::0:0:Dr.Web Mail Scanner:/nonexistent:/usr/sbin/nologin
 # free: 428
 varnish:*:429:429::0:0:Varnish Cache User:/nonexistent:/usr/sbin/nologin
 varnishlog:*:430:429::0:0:Varnish Log User:/nonexistent:/usr/sbin/nologin
-# free: 431
-# free: 432
+vinyl:*:431:431::0:0:Vinyl Cache User:/nonexistent:/usr/sbin/nologin
+vinyllog:*:432:431::0:0:Vinyl Log User:/nonexistent:/usr/sbin/nologin
 # free: 433
 # free: 434
 # free: 435
