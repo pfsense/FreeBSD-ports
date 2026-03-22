@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE packagegui SYSTEM "../schema/packages.dtd">
+<?xml-stylesheet type="text/xsl" href="./xsl/package.xsl"?>
+<packagegui>
+	<copyright>
+	<![CDATA[
+/*
+ * dnscrypt-proxy-lists.xml
+ *
+ * for pfSense
+ * Copyright (c) 2026 nopoz (https://github.com/nopoz)
+ * SPDX-License-Identifier: ISC
+ *
+ * Permission to use, copy, modify, and/or distribute this software for any
+ * purpose with or without fee is hereby granted, provided that the above
+ * copyright notice and this permission notice appear in all copies.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
+ * WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
+ * MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
+ * ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
+ * WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
+ * ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
+ * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
+ */
+	]]>
+	</copyright>
+	<name>dnscryptproxy</name>
+	<title>Services: DNSCrypt Proxy</title>
+	<shortcut_section>dnscrypt-proxy</shortcut_section>
+	<configpath>installedpackages->dnscryptproxy->config</configpath>
+	<addedit_string>[dnscrypt-proxy] Settings saved</addedit_string>
+	<aftersaveredirect>/pkg_edit.php?xml=dnscrypt-proxy-lists.xml</aftersaveredirect>
+	<include_file>/usr/local/pkg/dnscrypt-proxy.inc</include_file>
+	<tabs>
+		<tab>
+			<text>General Settings</text>
+			<url>/pkg_edit.php?xml=dnscrypt-proxy.xml</url>
+		</tab>
+		<tab>
+			<text>Server Selection</text>
+			<url>/pkg_edit.php?xml=dnscrypt-proxy-servers.xml</url>
+		</tab>
+		<tab>
+			<text>Cache &amp; Filtering</text>
+			<url>/pkg_edit.php?xml=dnscrypt-proxy-cache.xml</url>
+		</tab>
+		<tab>
+			<text>Logging</text>
+			<url>/pkg_edit.php?xml=dnscrypt-proxy-logging.xml</url>
+		</tab>
+		<tab>
+			<text>Lists</text>
+			<url>/pkg_edit.php?xml=dnscrypt-proxy-lists.xml</url>
+			<active/>
+		</tab>
+		<tab>
+			<text>Advanced</text>
+			<url>/pkg_edit.php?xml=dnscrypt-proxy-advanced.xml</url>
+		</tab>
+		<tab>
+			<text>Query Log</text>
+			<url>/dnscrypt-proxy-querylog.php</url>
+		</tab>
+		<tab>
+			<text>Config</text>
+			<url>/dnscrypt-proxy-config.php</url>
+		</tab>
+	</tabs>
+	<fields>
+		<field>
+			<name>Blocked Names</name>
+			<type>listtopic</type>
+		</field>
+		<field>
+			<fielddescr>Blocked Domains</fielddescr>
+			<fieldname>blocked_names</fieldname>
+			<description>
+				<![CDATA[
+				Domains to block (one per line). Supports wildcards.<br/>
+				Example:<br/>
+				<code>ads.example.com</code><br/>
+				<code>*.tracking.com</code>
+				]]>
+			</description>
+			<type>textarea</type>
+			<cols>70</cols>
+			<rows>8</rows>
+			<encoding>base64</encoding>
+		</field>
+		<field>
+			<name>Allowed Names</name>
+			<type>listtopic</type>
+		</field>
+		<field>
+			<fielddescr>Allowed Domains</fielddescr>
+			<fieldname>allowed_names</fieldname>
+			<description>
+				<![CDATA[
+				Domains to always allow (bypass blocking). One per line.<br/>
+				These take priority over blocked domains.
+				]]>
+			</description>
+			<type>textarea</type>
+			<cols>70</cols>
+			<rows>8</rows>
+			<encoding>base64</encoding>
+		</field>
+		<field>
+			<name>Forwarding Rules</name>
+			<type>listtopic</type>
+		</field>
+		<field>
+			<fielddescr>Forwarding Rules</fielddescr>
+			<fieldname>forwarding_rules</fieldname>
+			<description>
+				<![CDATA[
+				Forward specific domains to different DNS servers.<br/>
+				Format: <code>domain server1,server2</code><br/>
+				Example:<br/>
+				<code>internal.company.com 10.0.0.1</code><br/>
+				<code>lan 192.168.1.1</code>
+				]]>
+			</description>
+			<type>textarea</type>
+			<cols>70</cols>
+			<rows>8</rows>
+			<encoding>base64</encoding>
+		</field>
+		<field>
+			<name>Cloaking Rules</name>
+			<type>listtopic</type>
+		</field>
+		<field>
+			<fielddescr>Cloaking Rules</fielddescr>
+			<fieldname>cloaking_rules</fieldname>
+			<description>
+				<![CDATA[
+				Override DNS responses (like /etc/hosts). One entry per line.<br/>
+				Format: <code>hostname target</code><br/>
+				Example:<br/>
+				<code>myserver.local 192.168.1.100</code><br/>
+				<code>www.example.com safe.example.com</code>
+				]]>
+			</description>
+			<type>textarea</type>
+			<cols>70</cols>
+			<rows>8</rows>
+			<encoding>base64</encoding>
+		</field>
+	</fields>
+	<custom_php_resync_config_command>
+		dnscrypt_proxy_sync();
+	</custom_php_resync_config_command>
+	<custom_php_validation_command>
+		dnscrypt_proxy_validate($_POST, $input_errors);
+	</custom_php_validation_command>
+	<custom_add_php_command_late>
+		dnscrypt_proxy_save_config_late();
+	</custom_add_php_command_late>
+</packagegui>
