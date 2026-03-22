@@ -37,6 +37,7 @@ share/man/man3/RTCRayN.%%MANSUFX%%
 share/man/man3/RTC_GEOMETRY_TYPE_CURVE.%%MANSUFX%%
 share/man/man3/RTC_GEOMETRY_TYPE_GRID.%%MANSUFX%%
 share/man/man3/RTC_GEOMETRY_TYPE_INSTANCE.%%MANSUFX%%
+share/man/man3/RTC_GEOMETRY_TYPE_INSTANCE_ARRAY.%%MANSUFX%%
 share/man/man3/RTC_GEOMETRY_TYPE_POINT.%%MANSUFX%%
 share/man/man3/RTC_GEOMETRY_TYPE_QUAD.%%MANSUFX%%
 share/man/man3/RTC_GEOMETRY_TYPE_SUBDIVISION.%%MANSUFX%%
@@ -59,7 +60,9 @@ share/man/man3/rtcForwardOccluded1.%%MANSUFX%%
 share/man/man3/rtcForwardOccluded4.%%MANSUFX%%
 share/man/man3/rtcGetBufferData.%%MANSUFX%%
 share/man/man3/rtcGetDeviceError.%%MANSUFX%%
+share/man/man3/rtcGetDeviceLastErrorMessage.%%MANSUFX%%
 share/man/man3/rtcGetDeviceProperty.%%MANSUFX%%
+share/man/man3/rtcGetErrorString.%%MANSUFX%%
 share/man/man3/rtcGetGeometry.%%MANSUFX%%
 share/man/man3/rtcGetGeometryBufferData.%%MANSUFX%%
 share/man/man3/rtcGetGeometryFace.%%MANSUFX%%
@@ -69,6 +72,8 @@ share/man/man3/rtcGetGeometryOppositeHalfEdge.%%MANSUFX%%
 share/man/man3/rtcGetGeometryPreviousHalfEdge.%%MANSUFX%%
 share/man/man3/rtcGetGeometryThreadSafe.%%MANSUFX%%
 share/man/man3/rtcGetGeometryTransform.%%MANSUFX%%
+share/man/man3/rtcGetGeometryTransformEx.%%MANSUFX%%
+share/man/man3/rtcGetGeometryTransformFromScene.%%MANSUFX%%
 share/man/man3/rtcGetGeometryUserData.%%MANSUFX%%
 share/man/man3/rtcGetGeometryUserDataFromScene.%%MANSUFX%%
 share/man/man3/rtcGetSYCLDeviceFunctionPointer.%%MANSUFX%%
@@ -120,6 +125,7 @@ share/man/man3/rtcSetGeometryBuildQuality.%%MANSUFX%%
 share/man/man3/rtcSetGeometryDisplacementFunction.%%MANSUFX%%
 share/man/man3/rtcSetGeometryEnableFilterFunctionFromArguments.%%MANSUFX%%
 share/man/man3/rtcSetGeometryInstancedScene.%%MANSUFX%%
+share/man/man3/rtcSetGeometryInstancedScenes.%%MANSUFX%%
 share/man/man3/rtcSetGeometryIntersectFilterFunction.%%MANSUFX%%
 share/man/man3/rtcSetGeometryIntersectFunction.%%MANSUFX%%
 share/man/man3/rtcSetGeometryMask.%%MANSUFX%%
@@ -166,10 +172,13 @@ share/man/man3/rtcUpdateGeometryBuffer.%%MANSUFX%%
 %%ISPC%%%%PORTEXAMPLES%%%%EXAMPLESDIR%%/embree_displacement_geometry_ispc
 %%PORTEXAMPLES%%%%EXAMPLESDIR%%/embree_dynamic_scene
 %%ISPC%%%%PORTEXAMPLES%%%%EXAMPLESDIR%%/embree_dynamic_scene_ispc
+%%PORTEXAMPLES%%%%EXAMPLESDIR%%/embree_forest
+%%ISPC%%%%PORTEXAMPLES%%%%EXAMPLESDIR%%/embree_forest_ispc
 %%PORTEXAMPLES%%%%EXAMPLESDIR%%/embree_grid_geometry
 %%ISPC%%%%PORTEXAMPLES%%%%EXAMPLESDIR%%/embree_grid_geometry_ispc
 %%PORTEXAMPLES%%%%EXAMPLESDIR%%/embree_hair_geometry
 %%ISPC%%%%PORTEXAMPLES%%%%EXAMPLESDIR%%/embree_hair_geometry_ispc
+%%PORTEXAMPLES%%%%EXAMPLESDIR%%/embree_host_device_memory
 %%PORTEXAMPLES%%%%EXAMPLESDIR%%/embree_info
 %%PORTEXAMPLES%%%%EXAMPLESDIR%%/embree_instanced_geometry
 %%ISPC%%%%PORTEXAMPLES%%%%EXAMPLESDIR%%/embree_instanced_geometry_ispc
