@@ -6,10 +6,13 @@ PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Open-source SDK for working with quantum computers
-WWW=		https://github.com/Qiskit/qiskit
+WWW=		https://www.ibm.com/quantum/qiskit \
+		https://github.com/Qiskit/qiskit
 
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/LICENSE.txt
+
+BROKEN_i386=	compilation fails: error[E0277]: the trait bound `u64: Index` is not satisfied, see https://codeberg.org/sarah-quinones/faer/issues/283
 
 BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}setuptools-rust>0:devel/py-setuptools-rust@${PY_FLAVOR}
 RUN_DEPENDS=	${PYNUMPY} \
