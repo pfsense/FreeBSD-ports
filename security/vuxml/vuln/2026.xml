@@ -1,3 +1,35 @@
+  <vuln vid="832a823b-25b5-11f1-b6f8-5404a68ad561">
+    <topic>traefik -- Multiple vulnerabilities</topic>
+    <affects>
+    <package>
+	<name>traefik</name>
+	<range><lt>3.6.11</lt></range>
+    </package>
+    </affects>
+    <description>
+	<body xmlns="http://www.w3.org/1999/xhtml">
+	<p>The traefik project releases a new version addressing multiple CVEs:</p>
+	<blockquote cite="https://github.com/traefik/traefik/releases/tag/v3.6.11">
+	  <ul>
+	    <li>CVE-2026-32595 (BasicAuth Middleware Timing Attack)</li>
+	    <li>CVE-2026-32305 (Potential mTLS Bypass via Fragmented TLS ClientHello)</li>
+	    <li>CVE-2026-32695 (Details not yet available)</li>
+	  </ul>
+	</blockquote>
+	</body>
+    </description>
+    <references>
+      <cvename>CVE-2026-32595</cvename>
+      <cvename>CVE-2026-32305</cvename>
+      <cvename>CVE-2026-32695</cvename>
+      <url>https://github.com/traefik/traefik/releases/tag/v3.6.11</url>
+    </references>
+    <dates>
+      <discovery>2026-03-19</discovery>
+      <entry>2026-03-22</entry>
+    </dates>
+  </vuln>
+
   <vuln vid="71b4ce56-23c5-11f1-b865-b42e991fc52e">
     <topic>UniFi Network Application - Multiple vulnerabilities</topic>
     <affects>
