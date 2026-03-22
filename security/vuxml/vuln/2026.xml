@@ -73,10 +73,13 @@
   <vuln vid="c5b93cb5-2363-11f1-81da-8447094a420f">
     <topic>Roundcube -- Multiple vulnerabilities</topic>
     <affects>
-<package>
-<name>roundcube</name>
-<range><lt>1.6.14,1</lt></range>
-</package>
+	<package>
+	<name>roundcube-php82</name>
+	<name>roundcube-php83</name>
+	<name>roundcube-php84</name>
+	<name>roundcube-php85</name>
+	<range><lt>1.6.14,1</lt></range>
+	</package>
     </affects>
     <description>
 	<body xmlns="http://www.w3.org/1999/xhtml">
