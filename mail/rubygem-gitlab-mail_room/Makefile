@@ -1,5 +1,5 @@
 PORTNAME=	gitlab-mail_room
-PORTVERSION=	0.1.0
+PORTVERSION=	1.0.0
 CATEGORIES=	mail rubygems
 MASTER_SITES=	RG
 
