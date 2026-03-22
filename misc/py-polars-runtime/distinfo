@@ -1,4 +1,4 @@
-TIMESTAMP = 1773528402
+TIMESTAMP = 1774198584
 SHA256 (rust/crates/adler2-2.0.1.crate) = 320119579fcad9c21884f5c4861d16174d0e06250625266f50fe6898340abefa
 SIZE (rust/crates/adler2-2.0.1.crate) = 13366
 SHA256 (rust/crates/adler32-1.2.0.crate) = aae1277d39aeec15cb388266ecc24b11c80469deae6067e17a1a7aa9e5c1f234
@@ -1067,5 +1067,5 @@ SHA256 (orlp-color-backtrace-bb62ccf1e9eb1f6b7af5f16acff1fd7151a876dd_GH0.tar.gz
 SIZE (orlp-color-backtrace-bb62ccf1e9eb1f6b7af5f16acff1fd7151a876dd_GH0.tar.gz) = 18409
 SHA256 (pola-rs-jemallocator-c7991e5bb6b3e9f79db6b0f48dcda67c5c3d2936_GH0.tar.gz) = d34f3a2a518f38f84e79f7e6af028811541273ad7f75428adf3591317a1d4867
 SIZE (pola-rs-jemallocator-c7991e5bb6b3e9f79db6b0f48dcda67c5c3d2936_GH0.tar.gz) = 929118
-SHA256 (pola-rs-polars-py-1.39.0_GH0.tar.gz) = 0f7b2f37f75f0eef5e954225bdd53156c43dd1104bee3b51829bd63a86c08014
-SIZE (pola-rs-polars-py-1.39.0_GH0.tar.gz) = 5010599
+SHA256 (pola-rs-polars-py-1.39.3_GH0.tar.gz) = 02e29fd1d514721a6ed563244e2beedf0855c7ff4efcc503f772f83e9ffa71c9
+SIZE (pola-rs-polars-py-1.39.3_GH0.tar.gz) = 5012891
