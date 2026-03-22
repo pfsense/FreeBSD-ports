@@ -1,6 +1,6 @@
 PORTNAME=	gerbera
 DISTVERSIONPREFIX=	v
-DISTVERSION=	3.2.0
+DISTVERSION=	3.2.1
 CATEGORIES=	net multimedia
 
 MAINTAINER=	diizzy@FreeBSD.org
@@ -9,6 +9,8 @@ WWW=		https://gerbera.io/
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/LICENSE.md
+
+BROKEN_i386=	error: non-constant-expression cannot be narrowed from type 'rep' (aka 'long long') to 'time_t' (aka 'int') in initializer list
 
 BUILD_DEPENDS=	cxxopts>0:devel/cxxopts
 LIB_DEPENDS=	libfmt.so:devel/libfmt \
