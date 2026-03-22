@@ -10,6 +10,8 @@ WWW=		https://potassco.org/clingo/
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE.md
 
+BROKEN=		compilation fails: not compatible with the latest re2c, see https://github.com/potassco/clingo/issues/612
+
 BUILD_DEPENDS=	re2c:devel/re2c
 
 USES=		cmake:testing compiler:c++14-lang python:test
