@@ -23,6 +23,7 @@
     SUBDIR += linux-rl9-at-spi2-atk
     SUBDIR += linux-rl9-at-spi2-core
     SUBDIR += linux-rl9-atk
+    SUBDIR += onboard
     SUBDIR += orca
     SUBDIR += py-atspi
     SUBDIR += py-speech-dispatcher
