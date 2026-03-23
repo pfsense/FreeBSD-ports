@@ -13,6 +13,9 @@ WWW=		https://github.com/abseil/abseil-py
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
+DEPRECATED=	Use devel/py-absl-py
+EXPIRATION_DATE=2025-03-31
+
 RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}six>0:devel/py-six@${PY_FLAVOR}
 
 USES=		python
