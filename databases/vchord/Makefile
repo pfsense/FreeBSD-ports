@@ -1,5 +1,6 @@
 PORTNAME=	vchord
 PORTVERSION=	1.1.0
+PORTREVISION=	1
 CATEGORIES=	databases
 PKGNAMEPREFIX=	postgresql${PGSQL_VER:S/.//}-
 

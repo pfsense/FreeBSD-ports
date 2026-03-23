@@ -1,5 +1,6 @@
 PORTNAME=	prometheus-client-mmap
 PORTVERSION=	1.5.0
+PORTREVISION=	1
 CATEGORIES=	devel rubygems
 MASTER_SITES=	RG
 
