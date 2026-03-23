@@ -52,6 +52,8 @@ CMAKE_ON=	OPENMP_BUILD
 LDFLAGS+=	-lomp
 .endif
 
+CONFIGURE_ARGS+=	--without-tensorflow
+
 post-install-DOCS-on:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}
 	cd ${WRKSRC} && ${INSTALL_DATA} ${PORTDOCS} ${STAGEDIR}${DOCSDIR}
