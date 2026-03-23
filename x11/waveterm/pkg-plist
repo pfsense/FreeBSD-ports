@@ -22,8 +22,8 @@ share/icons/hicolor/64x64/apps/waveterm.png
 %%DATADIR%%/resources/tsunamiscaffold/.gitignore
 %%DATADIR%%/resources/tsunamiscaffold/app-init.go.tmpl
 %%DATADIR%%/resources/tsunamiscaffold/app-main.go.tmpl
-%%DATADIR%%/resources/tsunamiscaffold/dist/assets/index-AkiHF-n8.css
-%%DATADIR%%/resources/tsunamiscaffold/dist/assets/index-DyxdK5Z1.js
+%%DATADIR%%/resources/tsunamiscaffold/dist/assets/index-BtX2NSLP.js
+%%DATADIR%%/resources/tsunamiscaffold/dist/assets/index-PAfyoxOH.css
 %%DATADIR%%/resources/tsunamiscaffold/dist/assets/wave-logo-256-C_-lEXjS.png
 %%DATADIR%%/resources/tsunamiscaffold/dist/fonts/hack-bold.woff2
 %%DATADIR%%/resources/tsunamiscaffold/dist/fonts/hack-regular.woff2
@@ -33,6 +33,7 @@ share/icons/hicolor/64x64/apps/waveterm.png
 %%DATADIR%%/resources/tsunamiscaffold/dist/tw/markdown.tsx
 %%DATADIR%%/resources/tsunamiscaffold/dist/tw/modals.tsx
 %%DATADIR%%/resources/tsunamiscaffold/dist/tw/table.go
+%%DATADIR%%/resources/tsunamiscaffold/dist/tw/tsunamiterm.tsx
 %%DATADIR%%/resources/tsunamiscaffold/dist/wave-logo-256.png
 %%DATADIR%%/resources/tsunamiscaffold/go.mod
 %%DATADIR%%/resources/tsunamiscaffold/nm/.bin/jiti
@@ -443,8 +444,8 @@ share/icons/hicolor/64x64/apps/waveterm.png
 %%DATADIR%%/resources/tsunamiscaffold/nm/source-map-js/source-map.js
 %%DATADIR%%/resources/tsunamiscaffold/nm/tailwindcss/LICENSE
 %%DATADIR%%/resources/tsunamiscaffold/nm/tailwindcss/README.md
-%%DATADIR%%/resources/tsunamiscaffold/nm/tailwindcss/dist/chunk-L5IEUH3R.mjs
-%%DATADIR%%/resources/tsunamiscaffold/nm/tailwindcss/dist/chunk-UWKE2Z6N.mjs
+%%DATADIR%%/resources/tsunamiscaffold/nm/tailwindcss/dist/chunk-F4544Y4M.mjs
+%%DATADIR%%/resources/tsunamiscaffold/nm/tailwindcss/dist/chunk-TDNFF6A4.mjs
 %%DATADIR%%/resources/tsunamiscaffold/nm/tailwindcss/dist/chunk-X4GG3EDV.mjs
 %%DATADIR%%/resources/tsunamiscaffold/nm/tailwindcss/dist/colors-C__qRT83.d.ts
 %%DATADIR%%/resources/tsunamiscaffold/nm/tailwindcss/dist/colors.d.mts
