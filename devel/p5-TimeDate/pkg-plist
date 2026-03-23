@@ -24,6 +24,7 @@
 %%SITE_PERL%%/Date/Language/Norwegian.pm
 %%SITE_PERL%%/Date/Language/Occitan.pm
 %%SITE_PERL%%/Date/Language/Oromo.pm
+%%SITE_PERL%%/Date/Language/Portuguese.pm
 %%SITE_PERL%%/Date/Language/Romanian.pm
 %%SITE_PERL%%/Date/Language/Russian.pm
 %%SITE_PERL%%/Date/Language/Russian_cp1251.pm
@@ -65,6 +66,7 @@
 %%PERL5_MAN3%%/Date::Language::Norwegian.3.gz
 %%PERL5_MAN3%%/Date::Language::Occitan.3.gz
 %%PERL5_MAN3%%/Date::Language::Oromo.3.gz
+%%PERL5_MAN3%%/Date::Language::Portuguese.3.gz
 %%PERL5_MAN3%%/Date::Language::Romanian.3.gz
 %%PERL5_MAN3%%/Date::Language::Russian.3.gz
 %%PERL5_MAN3%%/Date::Language::Russian_cp1251.3.gz
