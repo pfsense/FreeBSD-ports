@@ -1,6 +1,6 @@
 PORTNAME=	minecraft-server
 DISTVERSION=	1.21.11
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	games java
 MASTER_SITES=	https://piston-data.mojang.com/v1/objects/64bb6d763bed0a9f1d632ec347938594144943ed/
 DISTNAME=	server
@@ -23,7 +23,7 @@ JAVA_VERSION=	21+
 NO_ARCH=	yes
 NO_BUILD=	yes
 SUB_FILES=	minecraft-server pkg-deinstall pkg-message
-SUB_LIST=	JAVA_VERSION=${JAVA_VERSION} VERSION=${DISTVERSION}
+SUB_LIST=	JAVA_VERSION=${JAVA_PORT_VERSION} VERSION=${DISTVERSION}
 
 USERS=		mcserver
 GROUPS=		${USERS}
