@@ -80,6 +80,11 @@ MTP_MESON_TRUE=		mtp
 NFS_LIB_DEPENDS=	libnfs.so:net/libnfs
 NFS_MESON_TRUE=		nfs
 
+.if !exists(/usr/bin/ssh)
+BUILD_DEPENDS+=		${LOCALBASE}/bin/ssh:security/openssh-portable
+RUN_DEPENDS+=		${LOCALBASE}/bin/ssh:security/openssh-portable
+.endif
+
 ONEDRIVE_IMPLIES=	GOA
 ONEDRIVE_LIB_DEPENDS=	libmsgraph-1.so:net/msgraph
 ONEDRIVE_MESON_TRUE=	onedrive
