@@ -1,9 +1,8 @@
 PORTNAME=	graphviz
-PORTVERSION=	14.1.2
+PORTVERSION=	14.1.4
 PORTREVISION=	0
 CATEGORIES=	graphics tk
 MASTER_SITES=	https://gitlab.com/api/v4/projects/4207231/packages/generic/graphviz-releases/${PORTVERSION}/
-
 MAINTAINER=	dinoex@FreeBSD.org
 COMMENT=	Graph Visualization Software from AT&T and Bell Labs
 WWW=		https://www.graphviz.org/
@@ -39,7 +38,13 @@ MAKE_ENV=	EXPR_COMPAT=yes
 CONFLICTS_INSTALL=	ghmm
 
 INSTALL_TARGET=	install-strip
-PLIST_SUB=	PORTVERSION="${PORTVERSION}"
+PLIST_SUB=	SH_VERSION_SHORT="8" SH_VERSION_FULL="8.0.9" \
+		SH_LIBCDT_SHORT="6" SH_LIBCDT_FULL="6.0.3" \
+		SH_LIBCGRAPH_SHORT="8" SH_LIBCGRAPH_FULL="8.0.7" \
+		SH_LIBGVC_SHORT="7" SH_LIBGVC_FULL="7.0.8" \
+		SH_LIBGVPR_SHORT="2" SH_LIBGVPR_FULL="2.0.9" \
+		SH_LIBPATHPLAN_SHORT="4" SH_LIBPATHPLAN_FULL="4.0.6" \
+		SH_LIBXDOT_SHORT="4" SH_LIBXDOT_FULL="4.0.1"
 SHEBANG_FILES=	cmd/dot/dot_sandbox
 
 FIX_INCLUDE=	lib/cdt/dthdr.h lib/pathplan/tri.h \
@@ -50,10 +55,9 @@ FIX_TCL_SCRIPT=	tclpkg/gdtclft/demo/entities.tcl \
 		tclpkg/tcldot/demo/gcat.tcl
 FIX_TK_SCRIPT=	tclpkg/tcldot/demo/doted.tcl \
 		tclpkg/tclpathplan/demo/pathplan.tcl
-PLIST_SUB=	SH_VERSION_SHORT="8" SH_VERSION_FULL="8.0.7"
 
 OPTIONS_DEFINE=	XPM DIGCOLA IPSEPCOLA ICONV NLS ANN GTS \
-		PANGOCAIRO POPPLER GDK GHOSTSCRIPT DEVIL \
+		PANGOCAIRO POPPLER GDK GHOSTSCRIPT DEVIL ASCII \
 		SMYRNA GVEDIT \
 		PERL PHP PYTHON RUBY LUA TCL TK GUILE GO \
 		NVTHREADS DOCS EXAMPLES
@@ -69,6 +73,7 @@ POPPLER_DESC=	PDF and PS file support via poppler (requires PANGOCAIRO)
 GDK_DESC=	gdk plugin support (requires PANGOCAIRO)
 GHOSTSCRIPT_DESC=ghostscript plugin (requires PANGOCAIRO)
 DEVIL_DESC=	devil plugin
+ASCII_DESC=	ascii plugin
 SMYRNA_DESC=	SMYRNA graph viewer (GTK2)
 GVEDIT_DESC=	GVEDIT graph viewer (QT6)
 PERL_DESC=	Perl bindings (swig)
@@ -111,6 +116,7 @@ ANN_LIB_DEPENDS=	libann.so:math/ann
 GTS_LIB_DEPENDS=	libgts.so:graphics/gts
 POPPLER_LIB_DEPENDS=	libpoppler-glib.so:graphics/poppler-glib
 DEVIL_LIB_DEPENDS=	libIL.so:graphics/devil
+ASCII_LIB_DEPENDS=	libaa.so:graphics/aalib
 SMYRNA_LIB_DEPENDS=	libgtkgl-2.0.so:x11-toolkits/gtkglarea2 \
 			libgtkglext-x11-1.0.so:x11-toolkits/gtkglext \
 			libgts.so:graphics/gts
@@ -135,6 +141,7 @@ GDK_IMPLIES=			PANGOCAIRO
 GHOSTSCRIPT_CONFIGURE_OFF=	--with-ghostscript=no
 GHOSTSCRIPT_IMPLIES=		PANGOCAIRO
 DEVIL_CONFIGURE_WITH=		devil
+ASCII_CONFIGURE_WITH=		aalib
 GVEDIT_CONFIGURE_WITH=		qt
 SMYRNA_CONFIGURE_OFF=		--with-glut=no
 SMYRNA_CONFIGURE_WITH=		smyrna glade gtkgl gtkglext gtk
