@@ -854,6 +854,7 @@
     SUBDIR += pinta
     SUBDIR += pixd
     SUBDIR += pixelize
+    SUBDIR += pixelmosh
     SUBDIR += pixie
     SUBDIR += plantuml
     SUBDIR += plasma-kmod
