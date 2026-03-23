@@ -1,5 +1,5 @@
 PORTNAME=	gtk
-DISTVERSION=	3.24.51 # sync with x11-themes: adwaita-icon-theme, gnome-themes-standard and mate-themes
+DISTVERSION=	3.24.52 # sync with x11-themes: gnome-themes-standard and mate-themes
 CATEGORIES=	x11-toolkits
 MASTER_SITES=	GNOME
 PKGNAMESUFFIX=	3
@@ -35,7 +35,7 @@ SHEBANG_GLOB=	*.py
 
 PORTSCOUT=	limit:1,even
 
-LIBVERSION=	0.2419.32
+LIBVERSION=	0.2420.32
 PLIST_SUB+=	LIBVERSION=${LIBVERSION}
 TEST_ENV=	DISPLAY=:0
 
