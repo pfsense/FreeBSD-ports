@@ -241,6 +241,7 @@
     SUBDIR += aros-sdk
     SUBDIR += art
     SUBDIR += asfml
+    SUBDIR += asdf
     SUBDIR += asl
     SUBDIR += asmjit
     SUBDIR += asmx
@@ -963,6 +964,7 @@
     SUBDIR += gstreamer1-plugins-soup
     SUBDIR += gtgt
     SUBDIR += gtranslator
+    SUBDIR += gtkspellmm
     SUBDIR += guichan
     SUBDIR += guile-lib
     SUBDIR += gum
