@@ -870,6 +870,7 @@ bin/yt-dlp-devel
 %%PYTHON_SITELIBDIR%%/yt_dlp/extractor/testurl.py
 %%PYTHON_SITELIBDIR%%/yt_dlp/extractor/tf1.py
 %%PYTHON_SITELIBDIR%%/yt_dlp/extractor/tfo.py
+%%PYTHON_SITELIBDIR%%/yt_dlp/extractor/thechosen.py
 %%PYTHON_SITELIBDIR%%/yt_dlp/extractor/theguardian.py
 %%PYTHON_SITELIBDIR%%/yt_dlp/extractor/thehighwire.py
 %%PYTHON_SITELIBDIR%%/yt_dlp/extractor/theholetv.py
