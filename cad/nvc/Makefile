@@ -1,5 +1,5 @@
 PORTNAME=	nvc
-DISTVERSION=	1.19.0
+DISTVERSION=	1.19.3
 CATEGORIES=	cad
 MASTER_SITES=	https://www.nickg.me.uk/files/
 
@@ -40,6 +40,8 @@ TEST_TARGET=	check
 
 LDFLAGS+=	-lexecinfo
 
+BINARY_ALIAS=	sed=gsed
+
 # outsource build is required by the project
 BUILD_WRKSRC=		${BUILD_DIR}
 CONFIGURE_WRKSRC=	${BUILD_DIR}
@@ -48,8 +50,6 @@ TEST_WRKSRC=		${WRKSRC}/.build
 
 BUILD_DIR=	${WRKSRC}/.build
 LLVM_VERSION=	${LLVM_DEFAULT}
-
-BINARY_ALIAS=	sed=gsed
 
 post-install:
 	@${FIND} ${STAGEDIR}${PREFIX} -name "*.so" | ${XARGS} ${STRIP_CMD}
