@@ -1,5 +1,6 @@
 PORTNAME=	rJava
 DISTVERSION=	1.0-15
+PORTREVISION=	1
 CATEGORIES=	devel java
 DISTNAME=	${PORTNAME}_${DISTVERSION}
 
@@ -16,20 +17,22 @@ LIB_DEPENDS=	libicuuc.so:devel/icu	\
 
 USES=		cran:compiles java
 # On JDK11+: checking whether JNI programs can be compiled... configure: error: Cannot compile a simple JNI program. See config.log for details.
-JAVA_VERSION=	8
+#JAVA_VERSION=	8
 
-JRE_LIBS=	${JAVA_HOME}/jre/lib/${ARCH:S/armv6/arm/:S/armv7/arm/:S/powerpc/ppc/}/server	# JDK8
-#JRE_LIBS=	${JAVA_HOME}/jre/lib/server	# JDK11
-LDFLAGS=	"-Wl,-rpath=${JRE_LIBS} "
+#JRE_LIBS=	${JAVA_HOME}/jre/lib/${ARCH:S/armv6/arm/:S/armv7/arm/:S/powerpc/ppc/}/server	# JDK8
+JRE_LIBS=	${JAVA_HOME}/lib/server	# JDK21
+CPPFLAGS+=	-I ${JAVA_HOME}/include -I ${JAVA_HOME}/include/${OPSYS:tl}
+LDFLAGS+=	"-Wl,-rpath=${JRE_LIBS} "
 MAKE_ENV+=	JAVA_HOME=${JAVA_HOME}	\
 		JAVA=${JAVA}	\
 		JAVAC=${JAVA_HOME}/bin/javac \
 		JAVAH=${JAVAH}	\
 		JAR=${JAR}	\
+		LDFLAGS="${LDFLAGS}"	\
 		LD_LIBRARY_PATH="${JRE_LIBS}"	\
 		JAVA_LD_LIBRARY_PATH="${JRE_LIBS}"	\
 		JAVA_LIBS="-Wl,-rpath=${JRE_LIBS} -L${JRE_LIBS} -ljvm -lpthread"	\
-		JAVA_CPPFLAGS="-I${JAVA_HOME}/jre/../include -I${JAVA_HOME}/jre/../include/${OPSYS:tl}" \
+		JAVA_CPPFLAGS="-I${JAVA_HOME}/include -I${JAVA_HOME}/include/${OPSYS:tl}" \
 		${TEST_ENV}
 # Mk/Uses/cran.mk does not use TEST_ENV for test but MAKE_ENV
 TEST_ENV=	DISPLAY=${DISPLAY} XAUTHORITY=${XAUTHORITY}
