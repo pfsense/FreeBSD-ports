@@ -1,5 +1,5 @@
 PORTNAME=	yt-dlp-ejs
-DISTVERSION=	0.7.0
+DISTVERSION=	0.8.0
 CATEGORIES=	www
 MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -89,8 +89,9 @@ pre-test:
 	@${CP} ${WRKSRC}/dist/yt.solver.core.min.js ${WRKSRC}/yt_dlp_ejs/yt/solver/core.min.js
 	@${CP} ${WRKSRC}/dist/yt.solver.lib.min.js ${WRKSRC}/yt_dlp_ejs/yt/solver/lib.min.js
 
-# tests as of 0.5.0:
+# tests as of 0.8.0:
 # Results (0.15s):
 #          3 passed
+#          1 warning
 
 .include <bsd.port.mk>
