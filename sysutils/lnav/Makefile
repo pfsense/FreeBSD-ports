@@ -3,7 +3,7 @@ DISTVERSION=	0.13.2
 CATEGORIES=	sysutils
 MASTER_SITES=	https://github.com/tstack/${PORTNAME}/releases/download/v${DISTVERSION}/
 
-MAINTAINER=	tom@hur.st
+MAINTAINER=	marcel@herrbischoff.com
 COMMENT=	Terminal-based log file navigator
 WWW=		https://lnav.org/
 
