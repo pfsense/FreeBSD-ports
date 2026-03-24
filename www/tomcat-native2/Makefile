@@ -1,6 +1,5 @@
 PORTNAME=	tomcat-native
-DISTVERSION=	2.0.12
-PORTREVISION=	1
+DISTVERSION=	2.0.14
 CATEGORIES=	www java
 MASTER_SITES=	https://archive.apache.org/dist/tomcat/tomcat-connectors/native/${PORTVERSION}/source/
 PKGNAMESUFFIX=	2
@@ -22,18 +21,18 @@ USE_LDCONFIG=	yes
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--with-apr=${LOCALBASE} \
 		--with-java-home=${JAVA_HOME} \
-		--with-ssl=${OPENSSLBASE} \
+		--with-ssl=${OPENSSLBASE}
 
 WRKSRC=	${WRKDIR}/${DISTNAME}/native
 
-SOVERSION=	${PORTVERSION:E}
 MAJORVERSION=	${PORTVERSION:R:R}
+SOVERSION=	${PORTVERSION:C/^${MAJORVERSION}\.//}
 PLIST_FILES=	lib/libtcnative-${MAJORVERSION}.so \
 		lib/libtcnative-${MAJORVERSION}.so.0 \
-		lib/libtcnative-${MAJORVERSION}.so.0.0.${SOVERSION}
+		lib/libtcnative-${MAJORVERSION}.so.0.${SOVERSION}
 
 post-install:
 	${RM} ${STAGEDIR}${PREFIX}/lib/libtcnative-${MAJORVERSION}.a
-	${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/libtcnative-${MAJORVERSION}.so.0.0.${SOVERSION}
+	${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/libtcnative-${MAJORVERSION}.so.0.${SOVERSION}
 
 .include <bsd.port.mk>
