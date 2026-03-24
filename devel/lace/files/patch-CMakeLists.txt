@@ -9,34 +9,3 @@
      add_library(lace::${_target} ALIAS ${_target})
  
      target_compile_features(${_target} PUBLIC c_std_11)
-@@ -115,7 +115,7 @@ foreach(_target lace lace32 lace128)
-     if(CMAKE_C_COMPILER_ID MATCHES "GNU")
-         target_compile_options(${_target} PRIVATE
-             -pipe
--            -Wall -Wextra -Wpedantic -Werror
-+            -Wall -Wextra -Wpedantic
-             -Wshadow # avoid potential shadowing bugs
-             -Wnull-dereference # warn when we could null dereference
-             -Wformat=2 # improve format string checking for logging
-@@ -124,12 +124,11 @@ foreach(_target lace lace32 lace128)
-             -Wconversion # catch implicit narrowing conversions
-             -Wsign-conversion # catch implicit changes to signed/unsigned
-             $<$<CONFIG:Debug>:-O0>
--            $<$<BOOL:${LACE_NATIVE_OPT}>:-march=native>
-         )
-     elseif(CMAKE_C_COMPILER_ID MATCHES "Clang")
-         target_compile_options(${_target} PRIVATE
-             -pipe
--            -Wall -Wextra -Wpedantic -Werror
-+            -Wall -Wextra -Wpedantic
-             -Wshadow # avoid potential shadowing bugs
-             -Wnull-dereference # warn when we could null dereference
-             -Wformat=2 # improve format string checking for logging
-@@ -139,7 +138,6 @@ foreach(_target lace lace32 lace128)
-             -Wsign-conversion # catch implicit changes to signed/unsigned
-             -Watomic-implicit-seq-cst # ensure all atomic load/store are explicit
-             $<$<CONFIG:Debug>:-O0>
--            $<$<BOOL:${LACE_NATIVE_OPT}>:-march=native>
-         )
-     elseif(MSVC)
-         target_compile_options(${_target} PUBLIC
