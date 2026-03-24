@@ -1,5 +1,6 @@
 PORTNAME=	groff
 DISTVERSION=	1.24.1
+PORTREVISION=	1
 CATEGORIES=	textproc
 MASTER_SITES=	GNU
 
@@ -36,6 +37,7 @@ MAKE_ARGS=	datasubdir=${DATADIR} \
 		exampledir=${EXAMPLESDIR}
 
 CONFLICTS=	heirloom-doctools ja-groff
+CONFLICTS_INSTALL=	mandoc
 
 INFO=		groff
 PORTDOCS=	*
