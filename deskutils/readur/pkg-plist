@@ -5,9 +5,9 @@ bin/readur
 %%WWWDIR%%/readur.png
 %%WWWDIR%%/index.html
 @dir %%WWWDIR%%/assets
-%%WWWDIR%%/assets/browser-ponyfill-CWDcKquH.js
+%%WWWDIR%%/assets/browser-ponyfill-Ru7C0Wy4.js
 %%WWWDIR%%/assets/index-3PVU0xLR.css
-%%WWWDIR%%/assets/index-DehW_F-f.js
+%%WWWDIR%%/assets/index-DJzRI2do.js
 %%WWWDIR%%/locales/de/translation.json
 %%WWWDIR%%/locales/en/translation.json
 %%WWWDIR%%/locales/es/translation.json
