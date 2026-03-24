@@ -1,4 +1,4 @@
---- benchmarks/cilksort/cilksort-lace.c.orig	2026-03-06 23:32:42 UTC
+--- benchmarks/cilksort/cilksort-lace.c.orig	2026-03-24 09:36:43 UTC
 +++ benchmarks/cilksort/cilksort-lace.c
 @@ -434,7 +434,7 @@ int main(int argc, char *argv[])
      int workers = 1;

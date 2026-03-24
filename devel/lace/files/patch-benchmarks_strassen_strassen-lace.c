@@ -1,4 +1,4 @@
---- benchmarks/strassen/strassen-lace.c.orig	2026-03-06 23:32:42 UTC
+--- benchmarks/strassen/strassen-lace.c.orig	2026-03-24 09:36:43 UTC
 +++ benchmarks/strassen/strassen-lace.c
 @@ -706,7 +706,7 @@ int main(int argc, char *argv[])
      int verify = 0;

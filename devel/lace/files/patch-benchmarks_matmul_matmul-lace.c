@@ -1,4 +1,4 @@
---- benchmarks/matmul/matmul-lace.c.orig	2026-03-06 23:32:42 UTC
+--- benchmarks/matmul/matmul-lace.c.orig	2026-03-24 09:36:43 UTC
 +++ benchmarks/matmul/matmul-lace.c
 @@ -115,7 +115,7 @@ int main(int argc, char *argv[])
      int workers = 1;
