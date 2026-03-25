@@ -6,7 +6,7 @@ DISTVERSIONSUFFIX= -g41dbbba
 CATEGORIES=		sysutils
 PKGNAMESUFFIX=		-devel
 
-MAINTAINER=	driesm@FreeBSD.org
+MAINTAINER=	vm-bhyve@FreeBSD.org
 COMMENT=	Management system for bhyve virtual machines
 WWW=		https://github.com/freebsd/vm-bhyve
 
