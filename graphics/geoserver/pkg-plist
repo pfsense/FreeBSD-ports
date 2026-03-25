@@ -546,12 +546,12 @@
 %%G%%/lib/jetty-util-%%JETTY%%.jar
 %%G%%/lib/jetty-webapp-%%JETTY%%.jar
 %%G%%/lib/jetty-xml-%%JETTY%%.jar
-%%G%%/lib/log4j-1.2-api-2.24.3.jar
-%%G%%/lib/log4j-api-2.24.3.jar
-%%G%%/lib/log4j-core-2.24.3.jar
-%%G%%/lib/log4j-jcl-2.24.3.jar
-%%G%%/lib/log4j-jul-2.24.3.jar
-%%G%%/lib/log4j-slf4j2-impl-2.24.3.jar
+%%G%%/lib/log4j-1.2-api-2.25.3.jar
+%%G%%/lib/log4j-api-2.25.3.jar
+%%G%%/lib/log4j-core-2.25.3.jar
+%%G%%/lib/log4j-jcl-2.25.3.jar
+%%G%%/lib/log4j-jul-2.25.3.jar
+%%G%%/lib/log4j-slf4j2-impl-2.25.3.jar
 %%G%%/lib/slf4j-api-2.0.16.jar
 %%G%%/logs/keepme.txt
 %%G%%/modules/bytebufferpool.mod
@@ -603,7 +603,7 @@
 %%G%%/webapps/%%G%%/WEB-INF/lib/binarize-%%JT%%.jar
 %%G%%/webapps/%%G%%/WEB-INF/lib/border-%%JT%%.jar
 %%G%%/webapps/%%G%%/WEB-INF/lib/buffer-%%JT%%.jar
-%%G%%/webapps/%%G%%/WEB-INF/lib/checker-qual-3.49.5.jar
+%%G%%/webapps/%%G%%/WEB-INF/lib/checker-qual-3.52.0.jar
 %%G%%/webapps/%%G%%/WEB-INF/lib/classbreaks-%%JT%%.jar
 %%G%%/webapps/%%G%%/WEB-INF/lib/classifier-%%JT%%.jar
 %%G%%/webapps/%%G%%/WEB-INF/lib/colorconvert-%%JT%%.jar
@@ -615,7 +615,7 @@
 %%G%%/webapps/%%G%%/WEB-INF/lib/commons-compiler-3.0.8.jar
 %%G%%/webapps/%%G%%/WEB-INF/lib/commons-dbcp-1.4.jar
 %%G%%/webapps/%%G%%/WEB-INF/lib/commons-fileupload-1.6.0.jar
-%%G%%/webapps/%%G%%/WEB-INF/lib/commons-io-2.19.0.jar
+%%G%%/webapps/%%G%%/WEB-INF/lib/commons-io-2.21.0.jar
 %%G%%/webapps/%%G%%/WEB-INF/lib/commons-jxpath-1.4.0.jar
 %%G%%/webapps/%%G%%/WEB-INF/lib/commons-lang-2.6.jar
 %%G%%/webapps/%%G%%/WEB-INF/lib/commons-lang3-3.18.0.jar
@@ -637,7 +637,6 @@
 %%G%%/webapps/%%G%%/WEB-INF/lib/failureaccess-1.0.3.jar
 %%G%%/webapps/%%G%%/WEB-INF/lib/format-%%JT%%.jar
 %%G%%/webapps/%%G%%/WEB-INF/lib/freemarker-2.3.34.jar
-%%G%%/webapps/%%G%%/WEB-INF/lib/geodb-0.9.jar
 %%G%%/webapps/%%G%%/WEB-INF/lib/gs-gwc-%%MVER%%.jar
 %%G%%/webapps/%%G%%/WEB-INF/lib/gs-gwc-rest-%%MVER%%.jar
 %%G%%/webapps/%%G%%/WEB-INF/lib/gs-kml-%%MVER%%.jar
@@ -674,7 +673,6 @@
 %%G%%/webapps/%%G%%/WEB-INF/lib/gt-brewer-%%GT%%.jar
 %%G%%/webapps/%%G%%/WEB-INF/lib/gt-complex-%%GT%%.jar
 %%G%%/webapps/%%G%%/WEB-INF/lib/gt-coverage-%%GT%%.jar
-%%G%%/webapps/%%G%%/WEB-INF/lib/gt-coverage-api-%%GT%%.jar
 %%G%%/webapps/%%G%%/WEB-INF/lib/gt-cql-%%GT%%.jar
 %%G%%/webapps/%%G%%/WEB-INF/lib/gt-epsg-hsql-%%GT%%.jar
 %%G%%/webapps/%%G%%/WEB-INF/lib/gt-geojson-core-%%GT%%.jar
@@ -687,7 +685,6 @@
 %%G%%/webapps/%%G%%/WEB-INF/lib/gt-image-%%GT%%.jar
 %%G%%/webapps/%%G%%/WEB-INF/lib/gt-imagemosaic-%%GT%%.jar
 %%G%%/webapps/%%G%%/WEB-INF/lib/gt-jdbc-%%GT%%.jar
-%%G%%/webapps/%%G%%/WEB-INF/lib/gt-jdbc-h2-%%GT%%.jar
 %%G%%/webapps/%%G%%/WEB-INF/lib/gt-jdbc-postgis-%%GT%%.jar
 %%G%%/webapps/%%G%%/WEB-INF/lib/gt-main-%%GT%%-tests.jar
 %%G%%/webapps/%%G%%/WEB-INF/lib/gt-main-%%GT%%.jar
@@ -728,8 +725,6 @@
 %%G%%/webapps/%%G%%/WEB-INF/lib/gwc-ve-%%GWC%%.jar
 %%G%%/webapps/%%G%%/WEB-INF/lib/gwc-wms-%%GWC%%.jar
 %%G%%/webapps/%%G%%/WEB-INF/lib/gwc-wmts-%%GWC%%.jar
-%%G%%/webapps/%%G%%/WEB-INF/lib/h2-1.1.119.jar
-%%G%%/webapps/%%G%%/WEB-INF/lib/hatbox-1.0.b11.jar
 %%G%%/webapps/%%G%%/WEB-INF/lib/hsqldb-2.7.2.jar
 %%G%%/webapps/%%G%%/WEB-INF/lib/httpclient-4.5.14.jar
 %%G%%/webapps/%%G%%/WEB-INF/lib/httpclient-cache-4.5.14.jar
@@ -778,12 +773,12 @@
 %%G%%/webapps/%%G%%/WEB-INF/lib/jsr305-3.0.2.jar
 %%G%%/webapps/%%G%%/WEB-INF/lib/jts-core-1.20.0.jar
 %%G%%/webapps/%%G%%/WEB-INF/lib/listenablefuture-9999.0-empty-to-avoid-conflict-with-guava.jar
-%%G%%/webapps/%%G%%/WEB-INF/lib/log4j-1.2-api-2.24.3.jar
-%%G%%/webapps/%%G%%/WEB-INF/lib/log4j-api-2.24.3.jar
-%%G%%/webapps/%%G%%/WEB-INF/lib/log4j-core-2.24.3.jar
-%%G%%/webapps/%%G%%/WEB-INF/lib/log4j-jcl-2.24.3.jar
-%%G%%/webapps/%%G%%/WEB-INF/lib/log4j-jul-2.24.3.jar
-%%G%%/webapps/%%G%%/WEB-INF/lib/log4j-slf4j2-impl-2.24.3.jar
+%%G%%/webapps/%%G%%/WEB-INF/lib/log4j-1.2-api-2.25.3.jar
+%%G%%/webapps/%%G%%/WEB-INF/lib/log4j-api-2.25.3.jar
+%%G%%/webapps/%%G%%/WEB-INF/lib/log4j-core-2.25.3.jar
+%%G%%/webapps/%%G%%/WEB-INF/lib/log4j-jcl-2.25.3.jar
+%%G%%/webapps/%%G%%/WEB-INF/lib/log4j-jul-2.25.3.jar
+%%G%%/webapps/%%G%%/WEB-INF/lib/log4j-slf4j2-impl-2.25.3.jar
 %%G%%/webapps/%%G%%/WEB-INF/lib/lookup-%%JT%%.jar
 %%G%%/webapps/%%G%%/WEB-INF/lib/marlin-0.9.4.8.jar
 %%G%%/webapps/%%G%%/WEB-INF/lib/mosaic-%%JT%%.jar
@@ -806,7 +801,7 @@
 %%G%%/webapps/%%G%%/WEB-INF/lib/picocontainer-1.2.jar
 %%G%%/webapps/%%G%%/WEB-INF/lib/piecewise-%%JT%%.jar
 %%G%%/webapps/%%G%%/WEB-INF/lib/pngj-2.0.1.jar
-%%G%%/webapps/%%G%%/WEB-INF/lib/postgresql-42.7.8.jar
+%%G%%/webapps/%%G%%/WEB-INF/lib/postgresql-42.7.10.jar
 %%G%%/webapps/%%G%%/WEB-INF/lib/re2j-1.8.jar
 %%G%%/webapps/%%G%%/WEB-INF/lib/rendered-image-browser-%%JT%%.jar
 %%G%%/webapps/%%G%%/WEB-INF/lib/rescale-%%JT%%.jar
@@ -817,7 +812,6 @@
 %%G%%/webapps/%%G%%/WEB-INF/lib/si-quantity-2.1.jar
 %%G%%/webapps/%%G%%/WEB-INF/lib/si-units-2.1.jar
 %%G%%/webapps/%%G%%/WEB-INF/lib/slf4j-api-2.0.16.jar
-%%G%%/webapps/%%G%%/WEB-INF/lib/spotbugs-annotations-4.0.2.jar
 %%G%%/webapps/%%G%%/WEB-INF/lib/spring-aop-%%SPRING%%.jar
 %%G%%/webapps/%%G%%/WEB-INF/lib/spring-beans-%%SPRING%%.jar
 %%G%%/webapps/%%G%%/WEB-INF/lib/spring-context-%%SPRING%%.jar
