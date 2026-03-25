@@ -1365,6 +1365,7 @@ share/man/man8/ntopng.8.gz
 %%DATADIR%%/scripts/lua/rest/v2/get/pcap/extraction/tasks.lua
 %%DATADIR%%/scripts/lua/rest/v2/get/pcap/live_extraction.lua
 %%DATADIR%%/scripts/lua/rest/v2/get/pcap/live_traffic.lua
+%%DATADIR%%/scripts/lua/rest/v2/get/ping/interfaces.lua
 %%DATADIR%%/scripts/lua/rest/v2/get/pools.lua
 %%DATADIR%%/scripts/lua/rest/v2/get/redis/read_hash_values.lua
 %%DATADIR%%/scripts/lua/rest/v2/get/redis/redis_stats.lua
