@@ -1,5 +1,6 @@
 PORTNAME=	tesseract
 PORTVERSION=	5.5.2
+PORTREVISION=	1
 CATEGORIES=	graphics
 
 MAINTAINER=	pkubaj@FreeBSD.org
@@ -48,6 +49,7 @@ TOOLS_USE=	GNOME=cairo,glib20,pango
 
 .if exists(/usr/include/omp.h)
 CMAKE_ON=	OPENMP_BUILD
+LDFLAGS+=	-lomp
 .endif
 
 post-install-DOCS-on:
