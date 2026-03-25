@@ -1,6 +1,5 @@
 PORTNAME=	pycharm
-DISTVERSION=	2025.3.1
-PORTREVISION=	2
+DISTVERSION=	2025.3.3
 CATEGORIES=	devel java python
 MASTER_SITES=	https://download.jetbrains.com/python/
 DIST_SUBDIR=	jetbrains
