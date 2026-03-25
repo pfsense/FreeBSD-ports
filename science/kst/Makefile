@@ -1,8 +1,5 @@
 PORTNAME=	kst
-DISTVERSIONPREFIX=	v
-DISTVERSION=	${KST_VERSION}
-DISTVERSIONSUFFIX=	-${KST_DATE}
-PORTREVISION=	2
+DISTVERSION=	3.0.0
 CATEGORIES=	science
 
 MAINTAINER=	makc@FreeBSD.org
@@ -18,24 +15,17 @@ LICENSE_FILE_LGPL20=	${WRKSRC}/COPYING.LGPL
 LIB_DEPENDS=	libgsl.so:math/gsl \
 		libtiff.so:graphics/tiff
 
-USES=		cmake compiler:c++11-lang desktop-file-utils kde:5 pkgconfig \
-		qt:5 shared-mime-info
-USE_QT=		concurrent core gui network printsupport svg widgets xml \
-		buildtools:build linguisttools:build qmake:build
-USE_LDCONFIG=	yes
+USES=		cmake compiler:c++20-lang desktop-file-utils gl kde:6 \
+		pkgconfig qt:6 shared-mime-info
+USE_GL=		gl
+USE_QT=		base svg tools
 
-KST_VERSION=	2.1
-KST_DATE=	2024-10-20
 KDE_INVENT=	${DISTVERSIONFULL} graphics kst-plot
 
-CMAKE_ARGS=	-Dkst_install_prefix=${PREFIX} \
-		-Dkst_pch=off \
-		-DCMAKE_DISABLE_FIND_PACKAGE_Getdata=ON
-
-PLIST_SUB=	SHLIB_VER=${KST_VERSION}
+CMAKE_ARGS=	-DCMAKE_DISABLE_FIND_PACKAGE_Getdata=ON
 
 OPTIONS_DEFINE=	FITS HDF5 MATLAB NETCDF
-OPTIONS_DEFAULT=	FITS HDF5 MATLAB
+OPTIONS_DEFAULT=	FITS HDF5 MATLAB NETCDF
 OPTIONS_SUB=	yes
 
 FITS_DESC=	Support for data in FITS format
@@ -50,9 +40,9 @@ MATLAB_DESC=	Support for data in MATLAB format
 MATLAB_LIB_DEPENDS=	libmatio.so:math/matio
 MATLAB_CMAKE_OFF=	-DCMAKE_DISABLE_FIND_PACKAGE_Matio=ON
 
-NETCDF_DESC=	Support for data in NetCDF format (broken)
-NETCDF_LIB_DEPENDS=	libnetcdf.so:science/netcdf
-NETCDF_IGNORE=	does not support NetCDF 4
+NETCDF_DESC=	Support for data in NetCDF format
+NETCDF_LIB_DEPENDS=	libnetcdf.so:science/netcdf \
+			libnetcdf_c++4.so:science/netcdf-cxx
 NETCDF_CMAKE_OFF=	-DCMAKE_DISABLE_FIND_PACKAGE_Netcdf=ON
 
 .include <bsd.port.mk>
