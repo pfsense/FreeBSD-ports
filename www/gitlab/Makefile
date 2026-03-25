@@ -27,9 +27,6 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 # mail/rubygem-net-smtp is required as ruby 3.1 removed it
 # textproc/rubygem-psych3 is required as ruby 3.1 applied an update to psych 4.0 which has breaking changes
 # mail/rubygem-net-pop is required as ruby 3.1 removed it
-#gitlab-zoekt-indexer>=0.16.0:textproc/gitlab-zoekt-indexer
-# Gitlab does not work with nodejs 24, but keep it here for a later upgrade
-# yarn${NODEJS_SUFFIX}>=1.10.0:www/yarn${NODEJS_SUFFIX}
 MY_DEPENDS=	gitaly>=${GITLAB_VERSION}:devel/gitaly \
 	gitlab-elasticsearch-indexer>=5.13.3:textproc/gitlab-elasticsearch-indexer \
 	gitlab-agent>=${GITLAB_VERSION}:net/gitlab-agent \
@@ -38,7 +35,7 @@ MY_DEPENDS=	gitaly>=${GITLAB_VERSION}:devel/gitaly \
 	gitlab-workhorse>=${GITLAB_VERSION}:www/gitlab-workhorse \
 	gitlab-zoekt-indexer>=1.11.0:textproc/gitlab-zoekt-indexer \
 	redis>=6.2.11:databases/redis \
-	yarn-node20>=1.10.0:www/yarn-node20 \
+	yarn${NODEJS_SUFFIX}>=1.10.0:www/yarn${NODEJS_SUFFIX} \
 	gtar>0:archivers/gtar \
 	bash>0:shells/bash \
 	rubygem-parser>=3.3.10.1:devel/rubygem-parser \
