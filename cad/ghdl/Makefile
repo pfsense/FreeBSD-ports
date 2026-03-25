@@ -1,11 +1,12 @@
 PORTNAME=	ghdl
 DISTVERSIONPREFIX=	v
-DISTVERSION=	5.1.1
+DISTVERSION=	6.0.0
 CATEGORIES=	cad
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	GNU VHDL simulator
-WWW=		https://github.com/ghdl/ghdl
+WWW=		http://ghdl.free.fr/ \
+		https://github.com/ghdl/ghdl/
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING.md
@@ -39,23 +40,13 @@ SYNTH_DESC=	Enable Synthesis Features in ghdl
 
 LLVM_USES=		llvm:lib ncurses
 LLVM_CONFIGURE_ON=	--with-llvm-config=${LOCALBASE}/bin/llvm-config${LLVM_VERSION}
-SYNTH_CONFIGURE_ON=	--enable-synth
+SYNTH_CONFIGURE_OFF=	--disable-synth
 
 post-install:
-	@${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/libghdl-${DISTVERSION:S/./_/g}.so
+	cd ${STAGEDIR}${PREFIX} && ${STRIP_CMD} bin/ghdl bin/ghwdump lib/*.so
 
 post-install-LLVM-on:
-	@${STRIP_CMD} \
-		${STAGEDIR}${PREFIX}/bin/ghdl \
-		${STAGEDIR}${PREFIX}/bin/ghwdump \
-		${STAGEDIR}${PREFIX}/bin/ghdl1-llvm \
-		${STAGEDIR}${PREFIX}/lib/libghdlvpi.so \
-		${STAGEDIR}${PREFIX}/lib/libghw.so
-
-post-install-MCODE-on:
-	@${STRIP_CMD} \
-		${STAGEDIR}${PREFIX}/bin/ghdl \
-		${STAGEDIR}${PREFIX}/lib/libghdlvpi.so
+	cd ${STAGEDIR}${PREFIX} && ${STRIP_CMD} bin/ghdl1-llvm
 
 do-test:
 	@cd ${WRKSRC}/testsuite && \
