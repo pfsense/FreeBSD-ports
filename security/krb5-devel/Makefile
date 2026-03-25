@@ -8,8 +8,8 @@ PKGNAME_X=		-${FLAVOR:S/default//}
 .endif
 PKGNAMESUFFIX=		${PKGNAME_X:S/--/-/:C/-$//}
 
-HASH=			4c8ec1637
-MIT_COMMIT_DATE=	2026.02.12
+HASH=			f8a0bee0a
+MIT_COMMIT_DATE=	2026.03.23
 
 PATCH_SITES=		http://web.mit.edu/kerberos/advisories/
 PATCH_DIST_STRIP=	-p2
