@@ -1,6 +1,6 @@
---- headless/lib/browser/headless_content_browser_client.cc.orig	2026-02-16 10:45:29 UTC
+--- headless/lib/browser/headless_content_browser_client.cc.orig	2026-03-24 16:59:08 UTC
 +++ headless/lib/browser/headless_content_browser_client.cc
-@@ -61,7 +61,7 @@
+@@ -59,7 +59,7 @@
  #include "content/public/common/content_descriptors.h"
  #endif  // BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS)
  

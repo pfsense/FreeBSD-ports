@@ -1,11 +1,11 @@
---- chrome/browser/ui/views/frame/layout/browser_view_app_layout_impl.cc.orig	2026-02-16 10:45:29 UTC
+--- chrome/browser/ui/views/frame/layout/browser_view_app_layout_impl.cc.orig	2026-03-24 16:59:08 UTC
 +++ chrome/browser/ui/views/frame/layout/browser_view_app_layout_impl.cc
-@@ -371,7 +371,7 @@ void BrowserViewAppLayoutImpl::DoPostLayoutVisualAdjus
+@@ -386,7 +386,7 @@ void BrowserViewAppLayoutImpl::DoPostLayoutVisualAdjus
+ #elif BUILDFLAG(IS_WIN)
      label.SetSubpixelRenderingEnabled(false);
-     label.SetHorizontalAlignment(gfx::ALIGN_LEFT);
      label.SetAutoColorReadabilityEnabled(false);
 -#elif BUILDFLAG(IS_LINUX)
 +#elif BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_BSD)
      label.SetSubpixelRenderingEnabled(false);
-     label.SetHorizontalAlignment(gfx::ALIGN_LEFT);
  #endif
+   }

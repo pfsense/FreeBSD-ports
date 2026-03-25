@@ -1,4 +1,4 @@
---- chrome/test/chromedriver/key_converter_unittest.cc.orig	2025-12-10 15:04:57 UTC
+--- chrome/test/chromedriver/key_converter_unittest.cc.orig	2026-03-24 16:59:08 UTC
 +++ chrome/test/chromedriver/key_converter_unittest.cc
 @@ -248,7 +248,7 @@ TEST(KeyConverter, ToggleModifiers) {
    CheckEventsReleaseModifiers(keys, key_events);
@@ -6,7 +6,7 @@
  
 -#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS)
 +#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_BSD)
- // Fails on bots: crbug.com/174962
+ // Fails on bots: crbug.com/40301345
  #define MAYBE_AllEnglishKeyboardSymbols DISABLED_AllEnglishKeyboardSymbols
  #else
 @@ -306,7 +306,7 @@ TEST(KeyConverter, AllEnglishKeyboardTextChars) {

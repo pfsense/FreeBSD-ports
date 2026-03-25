@@ -1,8 +1,8 @@
---- media/video/video_encode_accelerator_adapter.cc.orig	2025-12-10 15:04:57 UTC
+--- media/video/video_encode_accelerator_adapter.cc.orig	2026-03-24 16:59:08 UTC
 +++ media/video/video_encode_accelerator_adapter.cc
 @@ -468,7 +468,7 @@ void VideoEncodeAcceleratorAdapter::InitializeOnAccele
+ #endif  // BUILDFLAG(USE_PROPRIETARY_CODECS)
  
-   auto format = PIXEL_FORMAT_I420;
    auto storage_type = VideoEncodeAccelerator::Config::StorageType::kShmem;
 -#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS)
 +#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_BSD)

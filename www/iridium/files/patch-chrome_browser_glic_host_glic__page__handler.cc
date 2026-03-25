@@ -1,6 +1,6 @@
---- chrome/browser/glic/host/glic_page_handler.cc.orig	2026-02-16 10:45:29 UTC
+--- chrome/browser/glic/host/glic_page_handler.cc.orig	2026-03-24 16:59:08 UTC
 +++ chrome/browser/glic/host/glic_page_handler.cc
-@@ -146,7 +146,7 @@ namespace {
+@@ -156,7 +156,7 @@ namespace {
  constexpr mojom::Platform kPlatform = mojom::Platform::kMacOS;
  #elif BUILDFLAG(IS_WIN)
  constexpr mojom::Platform kPlatform = mojom::Platform::kWindows;

@@ -1,6 +1,6 @@
---- chrome/browser/media/webrtc/webrtc_log_uploader.cc.orig	2026-01-16 14:21:21 UTC
+--- chrome/browser/media/webrtc/webrtc_log_uploader.cc.orig	2026-03-24 16:59:08 UTC
 +++ chrome/browser/media/webrtc/webrtc_log_uploader.cc
-@@ -101,7 +101,7 @@ std::string GetLogUploadProduct() {
+@@ -95,7 +95,7 @@ std::string GetLogUploadProduct() {
    const char product[] = "Chrome";
  #elif BUILDFLAG(IS_MAC)
    const char product[] = "Chrome_Mac";

@@ -1,6 +1,6 @@
---- media/video/renderable_gpu_memory_buffer_video_frame_pool.cc.orig	2025-12-10 15:04:57 UTC
-+++ media/video/renderable_gpu_memory_buffer_video_frame_pool.cc
-@@ -196,7 +196,7 @@ bool FrameResources::Initialize(VideoPixelFormat forma
+--- media/video/renderable_mappable_shared_image_video_frame_pool.cc.orig	2026-03-24 16:59:08 UTC
++++ media/video/renderable_mappable_shared_image_video_frame_pool.cc
+@@ -198,7 +198,7 @@ bool FrameResources::Initialize(VideoPixelFormat forma
  
  #if BUILDFLAG(IS_MAC) || BUILDFLAG(IS_CHROMEOS)
    buffer_usage = gfx::BufferUsage::SCANOUT_VEA_CPU_READ;
