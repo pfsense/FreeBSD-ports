@@ -134,6 +134,7 @@
     SUBDIR += qucs-s
     SUBDIR += qucsator
     SUBDIR += repsnapper
+    SUBDIR += route-rnd
     SUBDIR += rubygem-gdsii
     SUBDIR += sch-rnd
     SUBDIR += scotch
