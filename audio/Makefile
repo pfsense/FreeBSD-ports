@@ -61,6 +61,7 @@
     SUBDIR += bjumblr-lv2
     SUBDIR += bliss
     SUBDIR += blop
+    SUBDIR += blucli
     SUBDIR += boca
     SUBDIR += boops-lv2
     SUBDIR += bristol
@@ -445,6 +446,7 @@
     SUBDIR += madronalib
     SUBDIR += malint
     SUBDIR += mamba
+    SUBDIR += maolan
     SUBDIR += mate-media
     SUBDIR += mclk-lv2
     SUBDIR += mda-lv2
@@ -514,6 +516,7 @@
     SUBDIR += ncspot
     SUBDIR += netease-music-tui
     SUBDIR += neuralrack-lv2
+    SUBDIR += noctavox
     SUBDIR += noise-repellent-lv2
     SUBDIR += noise-suppression-for-voice-lv2
     SUBDIR += normalize
@@ -630,6 +633,7 @@
     SUBDIR += py-auditok
     SUBDIR += py-discid
     SUBDIR += py-discogs-client
+    SUBDIR += py-espeakng-loader
     SUBDIR += py-essentia
     SUBDIR += py-eyed3
     SUBDIR += py-fmoo-audiotools
@@ -776,6 +780,7 @@
     SUBDIR += streamtranscoder
     SUBDIR += string-machine-lv2
     SUBDIR += stymulator
+    SUBDIR += subtui
     SUBDIR += suil
     SUBDIR += supercollider
     SUBDIR += surge-synthesizer-lv2
@@ -845,6 +850,7 @@
     SUBDIR += wasabi
     SUBDIR += wavbreaker
     SUBDIR += wavegain
+    SUBDIR += waves
     SUBDIR += wavetral
     SUBDIR += wavpack
     SUBDIR += wavplay

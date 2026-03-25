@@ -1,8 +1,8 @@
 PORTNAME=	xlibre
-PORTVERSION=	0.1
+PORTVERSION=	1.0
 CATEGORIES=	x11
 
-MAINTAINER=	b-aazbsd@proton.me
+MAINTAINER=	xlibre@FreeBSD.org
 COMMENT=	XLibre + X.Org complete distribution metaport
 WWW=		https://github.com/X11Libre/ \
 		https://www.x.org/

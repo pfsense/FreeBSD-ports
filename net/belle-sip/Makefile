@@ -1,5 +1,5 @@
 PORTNAME=	belle-sip
-DISTVERSION=	5.4.72
+DISTVERSION=	5.4.100
 CATEGORIES=	net java
 
 MAINTAINER=	bofh@FreeBSD.org

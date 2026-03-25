@@ -1,5 +1,5 @@
 PORTNAME=	libRmath
-DISTVERSION=	4.5.2
+DISTVERSION=	4.5.3
 CATEGORIES=	math lang
 MASTER_SITES=	CRAN/src/base/R-${DISTVERSION:C|\..*||}
 DISTNAME=	R-${DISTVERSIONPREFIX}${DISTVERSION}${DISTVERSIONSUFFIX}
@@ -36,14 +36,14 @@ CONFIGURE_ENV+=	ac_cv_header_iconv_h=no \
 
 BUILD_WRKSRC=	${WRKSRC}/src/nmath/standalone
 
-PLIST_SUB=	RMATH_SOVERSION="${_RMATH_SOVERSION}"
+PLIST_SUB=	SOVERSION=${SOVERSION}
 
-_RMATH_SOVERSION=	${DISTVERSION:R}
+SOVERSION=	${DISTVERSION:R}
 
 do-install:
 	${INSTALL_DATA} ${WRKSRC}/src/include/Rmath.h ${STAGEDIR}${PREFIX}/include
 	${INSTALL_DATA} ${BUILD_WRKSRC}/libRmath.a ${STAGEDIR}${PREFIX}/lib
-	${INSTALL_LIB} ${BUILD_WRKSRC}/libRmath.so ${STAGEDIR}${PREFIX}/lib
-	(cd ${STAGEDIR}${PREFIX}/lib; ${LN} -sf libRmath.so libRmath.so.${_RMATH_SOVERSION})
+	${INSTALL_LIB} ${BUILD_WRKSRC}/libRmath.so ${STAGEDIR}${PREFIX}/lib/libRmath.so.${SOVERSION}
+	cd ${STAGEDIR}${PREFIX}/lib && ${RLN} libRmath.so.${SOVERSION} libRmath.so
 
 .include <bsd.port.mk>

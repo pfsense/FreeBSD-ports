@@ -104,15 +104,6 @@ bin/minigalaxy
 %%PYTHON_SITELIBDIR%%/minigalaxy/ui/webkit.py
 %%PYTHON_SITELIBDIR%%/minigalaxy/ui/window.py
 %%PYTHON_SITELIBDIR%%/minigalaxy/version.py
-%%PYTHON_SITELIBDIR%%/tests/download/__init__.py
-%%PYTHON_SITELIBDIR%%/tests/download/__pycache__/__init__%%PYTHON_TAG%%.opt-1.pyc
-%%PYTHON_SITELIBDIR%%/tests/download/__pycache__/__init__%%PYTHON_TAG%%.pyc
-%%PYTHON_SITELIBDIR%%/tests/download/__pycache__/test_download%%PYTHON_TAG%%.opt-1.pyc
-%%PYTHON_SITELIBDIR%%/tests/download/__pycache__/test_download%%PYTHON_TAG%%.pyc
-%%PYTHON_SITELIBDIR%%/tests/download/__pycache__/test_helper%%PYTHON_TAG%%.opt-1.pyc
-%%PYTHON_SITELIBDIR%%/tests/download/__pycache__/test_helper%%PYTHON_TAG%%.pyc
-%%PYTHON_SITELIBDIR%%/tests/download/test_download.py
-%%PYTHON_SITELIBDIR%%/tests/download/test_helper.py
 share/applications/io.github.sharkwouter.Minigalaxy.desktop
 share/icons/hicolor/128x128/apps/io.github.sharkwouter.Minigalaxy.png
 share/icons/hicolor/192x192/apps/io.github.sharkwouter.Minigalaxy.png

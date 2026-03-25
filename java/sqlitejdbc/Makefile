@@ -2,7 +2,7 @@ PORTNAME=	sqlitejdbc
 PORTVERSION=	056
 DISTVERSIONPREFIX=	v
 DISTVERSIONSUFFIX=	-src
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	java databases
 MASTER_SITES=	http://files.zentus.com/sqlitejdbc/
 

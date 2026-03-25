@@ -1,5 +1,5 @@
 PORTNAME=	brakeman
-PORTVERSION=	7.1.2
+PORTVERSION=	8.0.2
 CATEGORIES=	security rubygems
 MASTER_SITES=	RG
 

@@ -10,6 +10,9 @@ MAINTAINER=	freebsd@igalic.co
 COMMENT=	Init scripts for use on cloud images, development version
 WWW=		https://cloud-init.io/
 
+DEPRECATED=	Outdated and no longer maintained, consider migrating to net/cloud-init
+EXPIRATION_DATE=2026-03-31
+
 LICENSE=	APACHE20 GPLv3
 LICENSE_COMB=	dual
 LICENSE_FILE_APACHE20=	${WRKSRC}/LICENSE-Apache2.0

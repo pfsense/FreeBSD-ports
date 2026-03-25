@@ -1,10 +1,10 @@
 PORTNAME=	mdbook
 DISTVERSIONPREFIX=	v
 DISTVERSION=	0.5.1
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	textproc
 
-MAINTAINER=	eduardo@FreeBSD.org
+MAINTAINER=	ashish@FreeBSD.org
 COMMENT=	Create book from Markdown files (like GitBook but implemented in Rust)
 WWW=		https://rust-lang.github.io/mdBook/
 

@@ -1,10 +1,10 @@
 PORTNAME=	freerdp
-DISTVERSION=	3.21.0
+DISTVERSION=	3.24.0
 CATEGORIES=	net comms
-MASTER_SITES+=	https://pub.freerdp.com/releases/:freerdp \
+MASTER_SITES=	https://pub.freerdp.com/releases/:freerdp \
 		https://github.com/FreeRDP/FreeRDP/releases/download/${DISTVERSION}/:freerdp
 PKGNAMESUFFIX=	3
-DISTFILES+=	${DISTNAME}${EXTRACT_SUFX}:freerdp
+DISTFILES=	${DISTNAME}${EXTRACT_SUFX}:freerdp
 
 MAINTAINER=	vvd@FreeBSD.org
 COMMENT=	Free implementation of Remote Desktop Protocol
@@ -39,8 +39,8 @@ CMAKE_OFF=	CHANNEL_TSMF WITH_DSP_EXPERIMENTAL WITH_FUSE WITH_GPROF \
 		WITH_SERVER WITH_SERVER_CHANNELS WITH_SERVER_INTERFACE \
 		WITH_SMARTCARD_INSPECT WITH_THIRD_PARTY WITH_VALGRIND_MEMCHECK
 
-PLIST_SUB+=	PATCHVERSION="${DISTVERSION}"
-PLIST_SUB+=	MAJORVERSION="${DISTVERSION:R:R}"
+PLIST_SUB=	PATCHVERSION="${DISTVERSION}" \
+		MAJORVERSION="${DISTVERSION:R:R}"
 
 OPTIONS_DEFINE=			ALSA BROKENFOCUS CUPS FAAC FAAD FDKAAC FFMPEG \
 				GSM ICU JPEG LAME MANPAGES OPENH264 OPUS PCSC \
@@ -246,13 +246,9 @@ CMAKE_OFF+=	WITH_AAD WITH_WINPR_JSON
 PLIST_SUB+=	JSON="@comment "
 .endif
 
-post-patch:
+post-patch-GSM-on:
 	@${REINPLACE_CMD} -e 's|gsm/gsm.h|gsm.h|' \
 		${WRKSRC}/cmake/FindGSM.cmake \
 		${WRKSRC}/libfreerdp/codec/dsp.c
-
-pre-configure:
-	${CP} ${FILESDIR}/mntent.h ${WRKSRC}/winpr/include
-	${CP} ${FILESDIR}/mntent_compat.c ${WRKSRC}/channels/rdpdr/client
 
 .include <bsd.port.mk>

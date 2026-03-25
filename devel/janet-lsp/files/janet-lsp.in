@@ -5,7 +5,6 @@
 @comment | wrong paths that this replaces. It is this small.
 #!%%LOCALBASE%%/bin/janet
 (import janet-lsp)
-(put root-env :syspath "%%LOCALBASE%%/lib")
 
 (defn main [& args]
   (janet-lsp/main ;args))

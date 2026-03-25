@@ -1,12 +1,12 @@
 PORTNAME=	jujutsu
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.37.0
+DISTVERSION=	0.39.0
 PORTREVISION=	1
 CATEGORIES=	devel
 
 MAINTAINER=	se@FreeBSD.org
 COMMENT=	Git-compatible VCS that is both simple and powerful
-WWW=		https://jj-vcs.github.io/jj/latest/
+WWW=		https://docs.jj-vcs.dev/latest/
 
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/LICENSE

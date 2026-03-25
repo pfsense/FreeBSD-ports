@@ -1,4 +1,4 @@
---- chrome/common/webui_url_constants.h.orig	2026-01-16 13:40:34 UTC
+--- chrome/common/webui_url_constants.h.orig	2026-03-15 18:32:51 UTC
 +++ chrome/common/webui_url_constants.h
 @@ -564,12 +564,12 @@ inline constexpr char kChromeUIOsUrlAppURL[] = "chrome
  #endif  // BUILDFLAG(IS_CHROMEOS)
@@ -12,10 +12,10 @@
  
 -#if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX)
 +#if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_BSD)
- inline constexpr char kChromeUIWebAppSettingsHost[] = "app-settings";
- inline constexpr char kChromeUIWebAppSettingsURL[] = "chrome://app-settings/";
- inline constexpr char kChromeUIWhatsNewHost[] = "whats-new";
-@@ -581,11 +581,11 @@ inline constexpr char kChromeUILinuxProxyConfigHost[] 
+ inline constexpr char kChromeUIDefaultBrowserModalURL[] =
+     "chrome://default-browser-modal/";
+ inline constexpr char kChromeUIDefaultBrowserModalHost[] =
+@@ -585,11 +585,11 @@ inline constexpr char kChromeUILinuxProxyConfigHost[] 
  #endif
  
  #if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS) || \
@@ -29,12 +29,12 @@
  inline constexpr char kChromeUIBrowserSwitchHost[] = "browser-switch";
  inline constexpr char kChromeUIBrowserSwitchURL[] = "chrome://browser-switch/";
  inline constexpr char kChromeUIIntroDefaultBrowserSubPage[] = "default-browser";
-@@ -615,7 +615,7 @@ inline constexpr char kChromeUIUpdaterHost[] = "update
+@@ -616,7 +616,7 @@ inline constexpr char kChromeUIUpdaterHost[] = "update
  inline constexpr char kChromeUIUpdaterURL[] = "chrome://updater/";
- #endif  // BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC)
+ #endif
  
 -#if ((BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS)) && \
-+#if ((BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_BSD) || BUILDFLAG(IS_CHROMEOS)) && \
++#if ((BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_BSD)) && \
       defined(TOOLKIT_VIEWS)) ||                         \
      defined(USE_AURA)
  inline constexpr char kChromeUITabModalConfirmDialogHost[] =

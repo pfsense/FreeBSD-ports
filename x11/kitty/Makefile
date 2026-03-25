@@ -1,7 +1,7 @@
 PORTNAME=	kitty
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.45.0
-PORTREVISION=	1
+DISTVERSION=	0.46.2
+PORTREVISION=	0
 CATEGORIES=	x11 wayland
 
 MAINTAINER=	nivit@FreeBSD.org
@@ -17,7 +17,7 @@ BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}furo>0:textproc/py-furo@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}sphinx-copybutton>0:textproc/py-sphinx-copybutton@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}sphinx-inline-tabs>0:textproc/py-sphinx-inline-tabs@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}sphinxext-opengraph>0:textproc/py-sphinxext-opengraph@${PY_FLAVOR} \
-		nerd-fonts>=3.1.1:x11-fonts/nerd-fonts \
+		nerd-fonts-symbols>=3.1.1:x11-fonts/nerd-fonts-symbols \
 		roboto-fonts-ttf>=2.134:x11-fonts/roboto-fonts-ttf \
 		simde>=0.7.6:devel/simde \
 		sphinx-build:textproc/py-sphinx@${PY_FLAVOR} \
@@ -39,7 +39,7 @@ LIB_DEPENDS=	libcairo.so:graphics/cairo \
 		libxxhash.so:devel/xxhash
 
 USES=		compiler:c11 cpe desktop-file-utils gettext-runtime gl gmake \
-		go:modules magick pkgconfig python shebangfix ssl tar:xz \
+		go:modules,1.26 magick pkgconfig python shebangfix ssl tar:xz \
 		terminfo xorg
 CPE_VENDOR=	kitty_project
 

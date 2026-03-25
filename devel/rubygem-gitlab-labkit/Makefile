@@ -1,5 +1,5 @@
 PORTNAME=	gitlab-labkit
-PORTVERSION=	1.0.1
+PORTVERSION=	1.5.1
 CATEGORIES=	devel rubygems
 MASTER_SITES=	RG
 
@@ -15,14 +15,20 @@ RUN_DEPENDS=	rubygem-actionpack-gitlab>=5<8.1:www/rubygem-actionpack-gitlab \
 		rubygem-google-protobuf3>=3.25<5:devel/rubygem-google-protobuf3 \
 		rubygem-grpc-gitlab>=1.75:net/rubygem-grpc-gitlab \
 		rubygem-jaeger-client>=1.1.0<1.2:devel/rubygem-jaeger-client \
-		rubygem-json-schema-gitlab>=5.1<6:devel/rubygem-json-schema-gitlab \
+		rubygem-json_schemer>=2.3.0<3:devel/rubygem-json_schemer \
+		rubygem-openssl3>=3.3.2<3.4:security/rubygem-openssl3 \
+		rubygem-opentelemetry-exporter-otlp-gitlab>=0.31.1<0.32:devel/rubygem-opentelemetry-exporter-otlp-gitlab \
+		rubygem-opentelemetry-instrumentation-all-gitlab>=0.89.1<0.90:devel/rubygem-opentelemetry-instrumentation-all-gitlab \
+		rubygem-opentelemetry-sdk-gitlab>=1.10<2:devel/rubygem-opentelemetry-sdk-gitlab \
 		rubygem-opentracing>=0.4<1:devel/rubygem-opentracing \
 		rubygem-pg_query>=6.1.0<7:databases/rubygem-pg_query \
-		rubygem-prometheus-client-mmap>=1.2.9<1.3:devel/rubygem-prometheus-client-mmap \
+		rubygem-prometheus-client-mmap>=1.2.9<2:devel/rubygem-prometheus-client-mmap \
 		rubygem-redis-gitlab>3.0.0<6.0.0:databases/rubygem-redis-gitlab
 
 USES=		gem
 
 NO_ARCH=	yes
+
+PLIST_FILES=	bin/labkit-logging
 
 .include <bsd.port.mk>

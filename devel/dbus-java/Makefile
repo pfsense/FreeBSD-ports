@@ -1,5 +1,6 @@
 PORTNAME=	dbus-java
 PORTVERSION=	2.7
+PORTREVISION=	1
 CATEGORIES=	devel java
 MASTER_SITES=	https://dbus.freedesktop.org/releases/dbus-java/
 

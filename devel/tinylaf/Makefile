@@ -1,5 +1,6 @@
 PORTNAME=	tinylaf
 DISTVERSION=	1_4_0
+PORTREVISION=	1
 CATEGORIES=	devel java
 MASTER_SITES=	http://www.muntjak.de/hans/java/tinylaf/
 

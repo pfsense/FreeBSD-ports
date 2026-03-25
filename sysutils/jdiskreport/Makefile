@@ -1,5 +1,6 @@
 PORTNAME=	jdiskreport
 DISTVERSION=	1_4_1
+PORTREVISION=	1
 CATEGORIES=	sysutils java
 MASTER_SITES=	http://www.jGoodies.com/download/${PORTNAME}/
 

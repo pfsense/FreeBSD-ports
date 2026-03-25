@@ -1,8 +1,11 @@
 PORTNAME=	openjdk
 DISTVERSIONPREFIX=	jdk-
 DISTVERSION=	${JDK_FULL_VERSION:S/.0.0//}
+PORTREVISION=	1
 CATEGORIES=	java devel
 PKGNAMESUFFIX?=	${JDK_MAJOR_VERSION}
+MASTER_SITES=	LOCAL/openjdk:boot
+DISTFILES=	${BOOTSTRAPJDKFILE}:boot
 
 MAINTAINER=	java@FreeBSD.org
 COMMENT=	${COMMENT_${FLAVOR}} ${JDK_MAJOR_VERSION}
@@ -49,19 +52,14 @@ RUN_DEPENDS=	javavm:java/javavmwrapper
 RUN_DEPENDS+=	xorg-fonts-truetype>0:x11-fonts/xorg-fonts-truetype
 .endif
 
-USES=		autoreconf:build compiler:features cpe gmake iconv jpeg pkgconfig
-.if ${FLAVOR:M*headless} == ""
-USES+=		xorg
-.endif
+USES=		autoreconf:build compiler:features cpe gmake iconv jpeg pkgconfig xorg
 
 CPE_VENDOR=	oracle
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	freebsd
 
-.if ${FLAVOR:M*headless} == ""
 USE_XORG=	x11 xext xi xrandr xrender xt xtst
-.endif
 
 GNU_CONFIGURE=		yes
 CONFIGURE_ARGS=		--disable-ccache \
@@ -113,6 +111,7 @@ ALL_TARGET=	images
 JDK_BUILD_TYPE=	release
 
 JDK_ARCH=	${ARCH:S/amd64/x86_64/:S/i386/x86/:S/powerpc64/ppc64/}
+BOOTSTRAPJDKFILE=	openjdk25-25.0.1+8.f.1.${JDK_ARCH}.tar.xz
 JDK_OSARCH=	bsd-${JDK_ARCH}
 JDK_BUILDDIR=	${WRKSRC}/build/${JDK_OSARCH}-${JDK_BUILD_JVM}-${JDK_BUILD_TYPE}
 .if ${FLAVOR:Mjre*}
@@ -122,14 +121,15 @@ JDK_IMAGEDIR=	${JDK_BUILDDIR}/images/jre
 JDK_IMAGEDIR=	${JDK_BUILDDIR}/images/jdk
 .endif
 INSTALLDIR=	${PREFIX}/${PKGBASE}
+BOOTSTRAPJDKDIR=	${WRKDIR}/boot-jdk
 
 NO_CCACHE=	yes
 NOPRECIOUSMAKEVARS=	yes
 
 JDK_MAJOR_VERSION=	25
 JDK_MINOR_VERSION=	0
-JDK_PATCH_VERSION=	1
-JDK_BUILD_NUMBER=	8
+JDK_PATCH_VERSION=	2
+JDK_BUILD_NUMBER=	10
 BSD_JDK_VERSION=	freebsd-1
 JDK_FULL_VERSION=	${JDK_MAJOR_VERSION}.${JDK_MINOR_VERSION}.${JDK_PATCH_VERSION}+${JDK_BUILD_NUMBER}-${BSD_JDK_VERSION}
 
@@ -140,21 +140,6 @@ JAVAVMS_COMMENT=	OpenJDK${JDK_MAJOR_VERSION}
 .endif
 
 .include <bsd.port.pre.mk>
-
-BOOTSTRAP_JDKS=	${LOCALBASE}/openjdk25 ${LOCALBASE}/openjdk24
-
-# do we have valid native jdk installed?
-.for BJDK in ${BOOTSTRAP_JDKS}
-.  if !defined(BOOTSTRAPJDKDIR) && exists(${BJDK}/bin/javac)
-BOOTSTRAPJDKDIR=	${BJDK}
-.  endif
-.endfor
-
-# if no valid jdk found, set dependency
-.if !defined(BOOTSTRAPJDKDIR)
-BOOTSTRAPJDKDIR?=	${LOCALBASE}/openjdk24
-BUILD_DEPENDS+=		${BOOTSTRAPJDKDIR}/bin/javac:java/openjdk24
-.endif
 
 JDK_BUILD_JVM=	server
 

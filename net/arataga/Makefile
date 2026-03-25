@@ -33,7 +33,7 @@ GH_ACCOUNT=	Stiffstream
 GH_PROJECT=	noexcept-ctcheck:nectc restinio:rinio so5extra:so5e
 GH_TAGNAME=	v.1.0.0:nectc v.0.6.16:rinio v.1.6.2:so5e
 
-_SO5_LIBVER=	5.8.3
+_SO5_LIBVER=	5.8.5
 
 PLIST_FILES=	bin/${PORTNAME}
 PORTDOCS=	*.md

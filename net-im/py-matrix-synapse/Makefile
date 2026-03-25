@@ -1,6 +1,6 @@
 PORTNAME=	matrix-synapse
 DISTVERSION=	1.138.0
-PORTREVISION=	7
+PORTREVISION=	8
 CATEGORIES=	net-im python
 MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -8,7 +8,7 @@ DISTFILES+=	${PORTNAME:S/-/_/}-${DISTVERSION}${EXTRACT_SUFX}
 
 MAINTAINER=	ports@skyforge.at
 COMMENT=	Matrix protocol reference homeserver
-WWW=		https://element-hq.github.io/synapse
+WWW=		https://element-hq.github.io/synapse/latest/
 
 LICENSE=	AGPLv3
 LICENSE_FILE=	${WRKSRC}/LICENSE-AGPL-3.0

@@ -1,6 +1,6 @@
---- chrome/browser/ui/views/tabs/tab.cc.orig	2026-01-14 08:33:23 UTC
+--- chrome/browser/ui/views/tabs/tab.cc.orig	2026-03-13 06:02:14 UTC
 +++ chrome/browser/ui/views/tabs/tab.cc
-@@ -683,7 +683,7 @@ void Tab::MaybeUpdateHoverStatus(const ui::MouseEvent&
+@@ -696,7 +696,7 @@ void Tab::MaybeUpdateHoverStatus(const ui::MouseEvent&
      return;
    }
  

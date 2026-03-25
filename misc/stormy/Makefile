@@ -1,10 +1,10 @@
 PORTNAME=	stormy
 DISTVERSIONPREFIX=	v
 DISTVERSION=	0.3.3
-PORTREVISION=	7
+PORTREVISION=	10
 CATEGORIES=	misc
 
-MAINTAINER=	nxjoseph@protonmail.com
+MAINTAINER=	nxjoseph@FreeBSD.org
 COMMENT=	Minimal, customizable, and neofetch-like weather CLI
 WWW=		https://terminaltrove.com/stormy/ \
 		https://github.com/ashish0kumar/stormy

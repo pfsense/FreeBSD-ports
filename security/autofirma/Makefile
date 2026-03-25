@@ -1,5 +1,6 @@
 PORTNAME=	autofirma
 DISTVERSION=	1.9
+PORTREVISION=	1
 CATEGORIES=	security
 MASTER_SITES=	https://firmaelectronica.gob.es/content/dam/firmaelectronica/descargas-software/autofirma19/
 DISTNAME=	Autofirma_Linux_Debian

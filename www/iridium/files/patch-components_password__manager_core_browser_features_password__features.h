@@ -1,8 +1,8 @@
---- components/password_manager/core/browser/features/password_features.h.orig	2026-01-16 14:21:21 UTC
+--- components/password_manager/core/browser/features/password_features.h.orig	2026-03-24 16:59:08 UTC
 +++ components/password_manager/core/browser/features/password_features.h
-@@ -171,7 +171,7 @@ BASE_DECLARE_FEATURE(kPasswordManualFallbackAvailable)
- // terminal.
- BASE_DECLARE_FEATURE(kPasswordManagerLogToTerminal);
+@@ -164,7 +164,7 @@ BASE_DECLARE_FEATURE(kProactivelyDownloadModelForPassw
+ // control locale/country server side.
+ BASE_DECLARE_FEATURE(kReduceRequirementsForPasswordChange);
  
 -#if BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX)
 +#if BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_BSD)

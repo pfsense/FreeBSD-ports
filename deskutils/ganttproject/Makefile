@@ -1,5 +1,6 @@
 PORTNAME=	ganttproject
 DISTVERSION=	3.2.3240
+PORTREVISION=	1
 CATEGORIES=	deskutils java
 MASTER_SITES=	https://github.com/bardsoftware/ganttproject/releases/download/ganttproject-${DISTVERSION}/ \
 		https://dl.ganttproject.biz/ganttproject-3.2.3240/

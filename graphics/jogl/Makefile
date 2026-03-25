@@ -1,6 +1,6 @@
 PORTNAME=	jogl
 PORTVERSION=	1.1.1
-PORTREVISION=	10
+PORTREVISION=	11
 CATEGORIES=	graphics devel java
 MASTER_SITES=	http://download.java.net/media/jogl/builds/archive/jsr-231-1.1.1/
 EXTRACT_SUFX=	-src.zip

@@ -1,6 +1,7 @@
 PORTNAME=	wlmaker
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.7
+DISTVERSION=	0.7.1
+PORTREVISION=	1
 CATEGORIES=	x11-wm wayland
 
 MAINTAINER=	jbeich@FreeBSD.org
@@ -13,7 +14,7 @@ BUILD_DEPENDS=	evdev-proto>0:devel/evdev-proto \
 		wayland-protocols>=1.32:graphics/wayland-protocols
 LIB_DEPENDS=	libepoll-shim.so:devel/libepoll-shim \
 		libwayland-server.so:graphics/wayland \
-		libwlroots-0.19.so:x11-toolkits/wlroots019 \
+		libwlroots-0.20.so:x11-toolkits/wlroots020 \
 		libxdg-basedir.so:x11/libxdg-basedir \
 		libxkbcommon.so:x11/libxkbcommon
 RUN_DEPENDS=	foot:x11/foot
@@ -23,7 +24,8 @@ USE_GITHUB=	yes
 USE_GNOME=	cairo
 USE_XORG=	xcb
 GH_ACCOUNT=	phkaeser
-GH_TUPLE=	phkaeser:libbase:aa0da7a:libbase/submodules/libbase
+GH_TUPLE=	phkaeser:libbase:a6c6a27:libbase/submodules/libbase \
+		benhoyt:inih:r62:inih/submodules/inih
 CMAKE_OFF=	${WITH_DEBUG:D:Uconfig_DEBUG}
 
 post-patch:
@@ -37,6 +39,10 @@ post-patch:
 		${WRKSRC}/src/config.c \
 		${WRKSRC}/src/launcher.c \
 		${WRKSRC}/src/${PORTNAME}.c
+# Generic nodes are not supported by procfs(5)
+	@${REINPLACE_CMD} -e 's,/proc,${LINUXBASE}&,' \
+		${WRKSRC}/apps/*.c \
+		${WRKSRC}/src/task_list.c
 # Respect LOCALBASE for apps and use open source Chrome
 	@${REINPLACE_CMD} -e 's,/usr/bin,${LOCALBASE}/bin,' \
 		 -e 's/google-chrome/chrome/' \

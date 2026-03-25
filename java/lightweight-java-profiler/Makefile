@@ -1,5 +1,6 @@
 PORTNAME=	lightweight-java-profiler
 PORTVERSION=	g20170308
+PORTREVISION=	1
 CATEGORIES=	java devel
 
 MAINTAINER=	ports@FreeBSD.org

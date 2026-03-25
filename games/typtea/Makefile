@@ -1,10 +1,10 @@
 PORTNAME=	typtea
 DISTVERSIONPREFIX=	v
 DISTVERSION=	0.1.6
-PORTREVISION=	6
+PORTREVISION=	9
 CATEGORIES=	games
 
-MAINTAINER=	nxjoseph@protonmail.com
+MAINTAINER=	nxjoseph@FreeBSD.org
 COMMENT=	Minimal terminal-based typing speed test
 WWW=		https://github.com/ashish0kumar/typtea
 

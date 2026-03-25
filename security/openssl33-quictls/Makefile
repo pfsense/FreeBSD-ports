@@ -11,9 +11,12 @@ WWW=		https://www.github.com/quictls/quictls
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/LICENSE.txt
 
-CONFLICTS_INSTALL=	boringssl libressl libressl-devel openssl openssl111 openssl3* openssl*-quictls
+CONFLICTS_INSTALL=	boringssl libressl libressl-devel openssl openssl[14]* openssl3[3456]
 
 BROKEN_i386=	ld: error: undefined symbol: __atomic_is_lock_free
+
+DEPRECATED=	Upstream project has been archived, use security/quictls
+EXPIRES=	2026-03-31
 
 HAS_CONFIGURE=	yes
 CONFIGURE_SCRIPT=	config
@@ -33,8 +36,6 @@ LDFLAGS_i386=	-Wl,-znotext
 
 MAKE_ARGS+=	WHOLE_ARCHIVE_FLAG=--whole-archive CNF_LDFLAGS="${LDFLAGS}"
 MAKE_ENV+=	LIBRPATH="${PREFIX}/lib" GREP_OPTIONS=
-
-EXTRA_PATCHES+=	${.CURDIR}/../openssl/files/patch-crypto_async_arch_async__posix.h
 
 OPTIONS_GROUP=		CIPHERS HASHES MODULES OPTIMIZE PROTOCOLS
 OPTIONS_GROUP_CIPHERS=	ARIA DES GOST IDEA SM4 RC2 RC4 RC5 WEAK-SSL-CIPHERS

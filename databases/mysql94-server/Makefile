@@ -11,6 +11,9 @@ WWW=		https://www.mysql.com/
 
 LICENSE=		GPLv2
 
+DEPRECATED=	EOLed upstream, switch to newer version
+EXPIRATION_DATE=2026-03-31
+
 # MySQL8.2+ supports only 64-bit platforms
 # Review list after 13.x EoL
 NOT_FOR_ARCHS= armv6 armv7 i386 powerpc
@@ -20,7 +23,7 @@ USES=		bison:build cmake:noninja cpe groff:run libedit localbase \
 
 WRKSRC=		${WRKDIR}/${PORTNAME}-${PORTVERSION}${DISTVERSIONSUFFIX}
 
-SLAVEDIRS=	databases/mysql91-client
+SLAVEDIRS=	databases/mysql94-client
 
 CPE_VENDOR=	oracle
 

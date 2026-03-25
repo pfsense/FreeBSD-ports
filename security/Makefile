@@ -99,6 +99,7 @@
     SUBDIR += clamav-unofficial-sigs
     SUBDIR += clamd-stream-client
     SUBDIR += clamsmtp
+    SUBDIR += clamtk
     SUBDIR += cloak
     SUBDIR += cops
     SUBDIR += cosign
@@ -187,6 +188,7 @@
     SUBDIR += gnupg
     SUBDIR += gnupg-pkcs11-scd
     SUBDIR += gnupg1
+    SUBDIR += gnupg25
     SUBDIR += gnutls
     SUBDIR += go-cve-dictionary
     SUBDIR += go-tuf
@@ -258,6 +260,7 @@
     SUBDIR += keepass-plugin-keepassrpc
     SUBDIR += keepassxc
     SUBDIR += keepassxc276
+    SUBDIR += keepsecret
     SUBDIR += keybase
     SUBDIR += keychain
     SUBDIR += keyprint
@@ -383,6 +386,7 @@
     SUBDIR += masscan
     SUBDIR += mate-pam-helper
     SUBDIR += mbedtls3
+    SUBDIR += mbedtls4
     SUBDIR += mcrypt
     SUBDIR += md5deep
     SUBDIR += medusa
@@ -449,7 +453,7 @@
     SUBDIR += openssl
     SUBDIR += openssl-agent
     SUBDIR += openssl-oqsprovider
-    SUBDIR += openssl-quictls
+    SUBDIR += openssl-pkcs11provider
     SUBDIR += openssl-unsafe
     SUBDIR += openssl111
     SUBDIR += openssl33
@@ -457,6 +461,7 @@
     SUBDIR += openssl34
     SUBDIR += openssl35
     SUBDIR += openssl36
+    SUBDIR += openssl40
     SUBDIR += openvas
     SUBDIR += openvpn
     SUBDIR += openvpn-admin
@@ -478,7 +483,6 @@
     SUBDIR += osslsigncode
     SUBDIR += osv-scanner
     SUBDIR += otpw
-    SUBDIR += owasp-dependency-check
     SUBDIR += p11-kit
     SUBDIR += p5-Alt-Crypt-RSA-BigInt
     SUBDIR += p5-Apache-Htpasswd
@@ -896,6 +900,7 @@
     SUBDIR += py-base58
     SUBDIR += py-bcrypt
     SUBDIR += py-bitbox02
+    SUBDIR += py-blake3
     SUBDIR += py-btchip-python
     SUBDIR += py-cart
     SUBDIR += py-cerealizer
@@ -1074,8 +1079,10 @@
     SUBDIR += py-securesystemslib
     SUBDIR += py-serpico
     SUBDIR += py-service-identity
+    SUBDIR += py-shamir-mnemonic
     SUBDIR += py-signedjson
     SUBDIR += py-signxml
+    SUBDIR += py-slip10
     SUBDIR += py-social-auth-core
     SUBDIR += py-spake2
     SUBDIR += py-ssh-audit
@@ -1095,6 +1102,7 @@
     SUBDIR += py-tuf
     SUBDIR += py-txtorcon
     SUBDIR += py-uhashring
+    SUBDIR += py-unicode-show
     SUBDIR += py-vici
     SUBDIR += py-virustotal-api
     SUBDIR += py-volatility3
@@ -1154,11 +1162,14 @@
     SUBDIR += rubygem-digest-crc
     SUBDIR += rubygem-doorkeeper
     SUBDIR += rubygem-doorkeeper-device_authorization_grant
+    SUBDIR += rubygem-doorkeeper-i18n
+    SUBDIR += rubygem-doorkeeper-i18n-rails72
     SUBDIR += rubygem-doorkeeper-openid_connect
     SUBDIR += rubygem-doorkeeper-rails-gitlab
     SUBDIR += rubygem-doorkeeper-rails5
     SUBDIR += rubygem-doorkeeper-rails50
     SUBDIR += rubygem-doorkeeper-rails70
+    SUBDIR += rubygem-doorkeeper-rails72
     SUBDIR += rubygem-doorkeeper57-rails70
     SUBDIR += rubygem-duo_api
     SUBDIR += rubygem-ed25519
@@ -1364,7 +1375,9 @@
     SUBDIR += sudoscript
     SUBDIR += super
     SUBDIR += suricata
+    SUBDIR += susshi
     SUBDIR += swatchdog
+    SUBDIR += syft
     SUBDIR += tailscale
     SUBDIR += tang
     SUBDIR += tclsasl

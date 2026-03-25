@@ -103,6 +103,7 @@ lib/picolisp/lib/too.l
 lib/picolisp/lib/ulimit.l
 lib/picolisp/lib/user.l
 lib/picolisp/lib/vip.l
+lib/picolisp/lib/vip/cal.rc.l
 lib/picolisp/lib/vip/draw.l
 lib/picolisp/lib/vip/html.l
 lib/picolisp/lib/vip/load.l
@@ -119,6 +120,7 @@ lib/picolisp/lib/xhtml/submit
 lib/picolisp/lib/xhtml/tab
 lib/picolisp/lib/xhtml/table
 lib/picolisp/lib/xm.l
+lib/picolisp/lib/xxhash.l
 lib/picolisp/loc/AE.l
 lib/picolisp/loc/AR.l
 lib/picolisp/loc/CH.l

@@ -777,6 +777,7 @@ lib/R/library/lattice/doc/grid.pdf
 lib/R/library/lattice/doc/index.html
 lib/R/library/lattice/help/AnIndex
 lib/R/library/lattice/help/aliases.rds
+lib/R/library/lattice/help/figures/logo.svg
 lib/R/library/lattice/help/lattice.rdb
 lib/R/library/lattice/help/lattice.rdx
 lib/R/library/lattice/help/paths.rds

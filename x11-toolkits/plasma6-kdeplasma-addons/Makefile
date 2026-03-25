@@ -15,8 +15,8 @@ USE_KDE=	colorscheme completion config configwidgets coreaddons \
 		service solid sonnet unitconversion widgetsaddons windowsystem \
 		xmlgui \
 		ecm:build \
-		itemmodels:run kirigami-addons:run plasma5support:run
-USE_QT=		5compat base declarative webchannel webengine \
+		itemmodels:run kirigami-addons:run
+USE_QT=		base declarative webchannel webengine \
 		quick3d:run
 USE_XORG= x11
 

@@ -1,5 +1,6 @@
 PORTNAME=			samba423
-DISTVERSION=			4.23.4
+DISTVERSION=			4.23.6
+PORTREVISION=			1
 CATEGORIES?=			net
 MASTER_SITES=			SAMBA/samba/stable SAMBA/samba/rc
 DISTNAME=			samba-${DISTVERSION:S|.p|pre|:S|.r|rc|:S|.t|tp|:S|.a|alpha|}
@@ -123,6 +124,7 @@ CFLAGS+=			${_CFLAGS_${CHOSEN_COMPILER_TYPE}}
 _CFLAGS_clang=			-fno-color-diagnostics
 .endif
 CONFIGURE_ENV+=			NOCOLOR=yes WAF_LOG_FORMAT='%(c1)s%(zone)s%(c2)s %(message)s'
+FORTIFY_UNSAFE=			yes
 MAKE_ENV+=			NOCOLOR=yes WAF_LOG_FORMAT='%(c1)s%(zone)s%(c2)s %(message)s'
 # for libexecinfo: (so that __builtin_frame_address() finds the top of the stack)
 CFLAGS_amd64+=			-fno-omit-frame-pointer

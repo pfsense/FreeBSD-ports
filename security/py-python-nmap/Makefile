@@ -5,7 +5,7 @@ CATEGORIES=	security python
 MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
-MAINTAINER=	nxjoseph@protonmail.com
+MAINTAINER=	nxjoseph@FreeBSD.org
 COMMENT=	Use nmap and access scan results from Python3
 WWW=		https://pypi.org/project/python-nmap/ \
 		http://xael.org/pages/python-nmap-en.html

@@ -1,8 +1,7 @@
 PORTNAME=	cif-tools
 DISTVERSIONPREFIX=	v
-DISTVERSION=	1.0.12 # chemistry
-PORTREVISION=	5
-CATEGORIES=	science
+DISTVERSION=	1.0.13
+CATEGORIES=	science # chemistry
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Suite of programs to manipulate and examine mmCIF files

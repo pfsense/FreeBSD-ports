@@ -1,5 +1,6 @@
 PORTNAME=			${SAMBA4_BASENAME}420
 PORTVERSION=			${SAMBA4_VERSION}
+PORTREVISION=			1
 CATEGORIES?=			net
 MASTER_SITES=			SAMBA/samba/stable SAMBA/samba/rc
 DISTNAME=			${SAMBA4_DISTNAME}
@@ -98,6 +99,7 @@ CONFIGURE_ARGS=			--mandir="${PREFIX}/share/man" \
 # XXX: Flags
 CONFIGURE_ENV=			PTHREAD_LDFLAGS="-lpthread" \
 				PYTHONHASHSEED=1
+FORTIFY_UNSAFE=			yes
 MAKE_ENV=			PYTHONHASHSEED=1
 
 USES=				bison compiler:c++11-lang iconv localbase:ldflags \

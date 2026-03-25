@@ -48,6 +48,7 @@
     SUBDIR += fileobj
     SUBDIR += flim
     SUBDIR += focuswriter
+    SUBDIR += fresh
     SUBDIR += fxite
     SUBDIR += gedit
     SUBDIR += gedit-plugins
@@ -66,6 +67,7 @@
     SUBDIR += hexpert
     SUBDIR += hnb
     SUBDIR += hte
+    SUBDIR += hxavi
     SUBDIR += imhex
     SUBDIR += jed
     SUBDIR += jedit

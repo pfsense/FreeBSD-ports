@@ -1,5 +1,5 @@
 PORTNAME=	gitlab_query_language
-PORTVERSION=	0.20.11
+PORTVERSION=	0.23.0
 PORTREVISION=	1
 CATEGORIES=	devel rubygems
 MASTER_SITES=	RG
@@ -35,6 +35,7 @@ GEM_ENV+=	MAKE=gmake \
 
 post-extract:
 	# change the gitlab external cargo (glql) to use already vendored local path
+	# you must manually include the correct line for glql in Makefile.crates, make cargo-creates does not add the required line
 	@${MKDIR} ${WRKSRC}/ext/gitlab_query_language/vendor
 	@${CP} -a ${WRKDIR}/glql-* ${WRKSRC}/ext/gitlab_query_language/vendor/glql
 	@${SED} -i '' \

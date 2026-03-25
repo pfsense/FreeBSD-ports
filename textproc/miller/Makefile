@@ -1,6 +1,6 @@
 PORTNAME=	miller
 DISTVERSIONPREFIX=	v
-DISTVERSION=	6.16.0
+DISTVERSION=	6.17.0
 PORTREVISION=	1
 CATEGORIES=	textproc
 MASTER_SITES=	https://raw.githubusercontent.com/johnkerl/${PORTNAME}/${DISTVERSIONFULL}/:gomod

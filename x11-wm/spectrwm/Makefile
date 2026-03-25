@@ -3,7 +3,7 @@ DISTVERSIONPREFIX=	SPECTRWM_
 DISTVERSION=	3_7_0
 CATEGORIES=	x11-wm
 
-MAINTAINER=	nxjoseph@protonmail.com
+MAINTAINER=	nxjoseph@FreeBSD.org
 COMMENT=	Small, dynamic tiling window manager for X11
 WWW=		https://github.com/conformal/spectrwm
 

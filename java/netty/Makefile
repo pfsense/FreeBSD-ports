@@ -1,5 +1,6 @@
 PORTNAME=	netty
 PORTVERSION=	4.1.53
+PORTREVISION=	1
 DISTVERSIONSUFFIX=	.Final
 CATEGORIES=	java devel
 MASTER_SITES=	http://dl.bintray.com/netty/downloads/

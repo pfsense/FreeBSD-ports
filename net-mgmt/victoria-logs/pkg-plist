@@ -1,5 +1,14 @@
 bin/victoria-logs
 bin/vlogscli
+%%PORTDOCS%%%%DOCSDIR%%/README-components.excalidraw
+%%PORTDOCS%%%%DOCSDIR%%/README-components.webp
+%%PORTDOCS%%%%DOCSDIR%%/cluster-ha.excalidraw
+%%PORTDOCS%%%%DOCSDIR%%/cluster-ha.webp
+%%PORTDOCS%%%%DOCSDIR%%/data-ingestion/openshift.md
+%%PORTDOCS%%%%DOCSDIR%%/security-and-lb-search-auth.excalidraw
+%%PORTDOCS%%%%DOCSDIR%%/security-and-lb-search-auth.webp
+%%PORTDOCS%%%%DOCSDIR%%/security-and-lb-tenants.excalidraw
+%%PORTDOCS%%%%DOCSDIR%%/security-and-lb-tenants.webp
 %%PORTDOCS%%%%DOCSDIR%%/CHANGELOG.md
 %%PORTDOCS%%%%DOCSDIR%%/FAQ.md
 %%PORTDOCS%%%%DOCSDIR%%/QuickStart.md
@@ -47,4 +56,15 @@ bin/vlogscli
 %%PORTDOCS%%%%DOCSDIR%%/integrations/perses-time-panel.webp
 %%PORTDOCS%%%%DOCSDIR%%/integrations/perses-variable.webp
 %%PORTDOCS%%%%DOCSDIR%%/integrations/perses.md
+%%PORTDOCS%%%%DOCSDIR%%/querying/vlogscli_common_flags.md
+%%PORTDOCS%%%%DOCSDIR%%/victoria_logs_common_flags.md
+%%PORTDOCS%%%%DOCSDIR%%/victoria_logs_enterprise_flags.md
+%%PORTDOCS%%%%DOCSDIR%%/vlagent_common_flags.md
+%%PORTDOCS%%%%DOCSDIR%%/vlagent_enterprise_flags.md
+%%PORTDOCS%%%%DOCSDIR%%/integrations/bindplane-configurations.webp
+%%PORTDOCS%%%%DOCSDIR%%/integrations/bindplane-library.webp
+%%PORTDOCS%%%%DOCSDIR%%/integrations/bindplane-pipelines.webp
+%%PORTDOCS%%%%DOCSDIR%%/integrations/bindplane.md
 @dir(%%VICTORIA_USER%%,%%VICTORIA_GROUP%%,750) %%VICTORIA_DATA%%
+@dir(%%VICTORIA_USER%%,%%VICTORIA_GROUP%%,750) %%VICTORIA_LOGS%%
+@dir(%%VICTORIA_USER%%,%%VICTORIA_GROUP%%,750) %%VICTORIA_RUN%%

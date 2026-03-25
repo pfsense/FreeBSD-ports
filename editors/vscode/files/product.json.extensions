@@ -53,6 +53,9 @@
     "GitHub.vscode-pull-request-github"
   ],
   "extensionEnabledApiProposals": {
+    "mrleemurray.theme-2026": [
+      "css"
+    ],
     "ms-azuretools.vscode-containers": [
       "authenticationChallenges"
     ],
@@ -96,7 +99,8 @@
       "portsAttributes",
       "findTextInFiles",
       "workspaceTrust",
-      "tunnels"
+      "tunnels",
+      "browser"
     ],
     "ms-toolsai.vscode-ai-remote": [
       "resolvers",
@@ -117,7 +121,8 @@
     ],
     "ms-python.vscode-python-envs": [
       "terminalShellEnv",
-      "terminalDataWriteEvent"
+      "terminalDataWriteEvent",
+      "taskExecutionTerminal"
     ],
     "ms-dotnettools.dotnet-interactive-vscode": [
       "notebookMessaging"
@@ -197,7 +202,8 @@
       "portsAttributes",
       "findTextInFiles",
       "workspaceTrust",
-      "tunnels"
+      "tunnels",
+      "browser"
     ],
     "ms-vscode.lsif-browser": [
       "documentFiltersExclusive"
@@ -247,6 +253,7 @@
       "devDeviceId"
     ],
     "GitHub.copilot-chat": [
+      "agentSessionsWorkspace",
       "interactive",
       "terminalDataWriteEvent",
       "terminalExecuteCommandEvent",
@@ -255,7 +262,6 @@
       "chatParticipantAdditions",
       "defaultChatParticipant",
       "embeddings",
-      "chatEditing",
       "chatProvider",
       "mappedEditsProvider",
       "aiRelatedInformation",
@@ -271,6 +277,8 @@
       "contribCommentEditorActionsMenu",
       "contribCommentThreadAdditionalMenu",
       "contribCommentsViewThreadMenus",
+      "contribChatEditorInlineGutterMenu",
+      "extensionAffinity",
       "newSymbolNamesProvider",
       "findFiles2",
       "chatReferenceDiagnostic",
@@ -286,6 +294,7 @@
       "languageModelSystem",
       "languageModelCapabilities",
       "languageModelThinkingPart",
+      "languageModelToolSupportsModel",
       "chatStatusItem",
       "taskProblemMatcherStatus",
       "contribLanguageModelToolSets",
@@ -296,7 +305,15 @@
       "chatSessionsProvider",
       "devDeviceId",
       "contribEditorContentMenu",
-      "tokenInformation"
+      "tokenInformation",
+      "chatPromptFiles",
+      "mcpServerDefinitions",
+      "tabInputMultiDiff",
+      "workspaceTrust",
+      "chatHooks",
+      "chatDebug",
+      "environmentPower",
+      "terminalTitle"
     ],
     "GitHub.remotehub": [
       "contribRemoteHelp",
@@ -369,6 +386,10 @@
     "ms-dotnettools.vscodeintellicode-csharp": [
       "inlineCompletionsAdditions"
     ],
+    "ms-dotnettools.vscode-dotnet-modernize": [
+      "chatParticipantAdditions",
+      "chatPromptFiles"
+    ],
     "microsoft-IsvExpTools.powerplatform-vscode": [
       "fileSearchProvider",
       "textSearchProvider"
@@ -379,7 +400,8 @@
     ],
     "TeamsDevApp.ms-teams-vscode-extension": [
       "chatParticipantAdditions",
-      "languageModelSystem"
+      "languageModelSystem",
+      "mcpServerDefinitions"
     ],
     "ms-toolsai.datawrangler": [],
     "ms-vscode.vscode-commander": [],
@@ -407,6 +429,13 @@
     "openai.chatgpt": [
       "languageModelProxy",
       "chatSessionsProvider"
+    ],
+    "TypeScriptTeam.native-preview": [
+      "editorHoverVerbosityLevel",
+      "multiDocumentHighlightProvider"
+    ],
+    "ms-vscode.vscode-eng-codereview": [
+      "chatContextProvider"
     ],
     "jeanp413.open-remote-ssh": [
       "resolvers",

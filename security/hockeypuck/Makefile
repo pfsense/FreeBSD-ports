@@ -1,6 +1,6 @@
 PORTNAME=	hockeypuck
-DISTVERSION=	2.2.4
-PORTREVISION=	8
+DISTVERSION=	2.3.2
+PORTREVISION=	1
 CATEGORIES=	security
 
 MAINTAINER=	siva@FreeBSD.org
@@ -30,5 +30,4 @@ PLIST_FILES=	bin/hockeypuck \
 		bin/hockeypuck-load \
 		bin/hockeypuck-pbuild
 
-.include "Makefile.modules"
 .include <bsd.port.mk>

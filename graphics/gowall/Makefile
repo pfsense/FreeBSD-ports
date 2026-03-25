@@ -1,10 +1,10 @@
 PORTNAME=	gowall
 DISTVERSIONPREFIX=	v
 DISTVERSION=	0.2.3
-PORTREVISION=	5
+PORTREVISION=	8
 CATEGORIES=	graphics
 
-MAINTAINER=	nxjoseph@protonmail.com
+MAINTAINER=	nxjoseph@FreeBSD.org
 COMMENT=	Versatile tool to process images
 WWW=		https://github.com/Achno/gowall
 

@@ -1,6 +1,5 @@
 PORTNAME=	phonopy
-DISTVERSION=	2.42.0
-PORTREVISION=	2
+DISTVERSION=	3.0.1
 CATEGORIES=	science python
 MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -25,8 +24,6 @@ RUN_DEPENDS=	${PYNUMPY} \
 		${PYTHON_PKGNAMEPREFIX}spglib>=2.3:science/py-spglib@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}symfc>=1.1.6:science/py-symfc@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}pyyaml>=5.3:devel/py-pyyaml@${PY_FLAVOR}
-TEST_DEPENDS=	${PYTHON_PKGNAMEPREFIX}nose>0:devel/py-nose@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}hiPhive>0:science/py-hiPive@${PY_FLAVOR}
 
 USES=		python
 USE_PYTHON=	pep517 cython autoplist pytest
@@ -37,6 +34,12 @@ TEST_WRKSRC=	${WRKSRC}/test
 post-install:
 	@${STRIP_CMD} ${STAGEDIR}${PYTHON_SITELIBDIR}/phonopy/_phonopy${PYTHON_TAG}.so
 
-# tests as of 2.41.2: 6 failed, 159 passed, 5 skipped, 21 warnings, 130 errors in 502.46s (0:08:22) (failures are likely in science/py-symfc with -9999 error)
+# tests as of 3.0.1: (see https://github.com/phonopy/phonopy/issues/739)
+# Results (47.21s):
+#         26 failed
+#        183 passed
+#          6 skipped
+#         53 warnings
+#        272 errors
 
 .include <bsd.port.mk>

@@ -1,5 +1,6 @@
 PORTNAME=	execjs
 PORTVERSION=	2.10.0
+PORTREVISION=	1
 CATEGORIES=	devel rubygems
 MASTER_SITES=	RG
 PKGNAMESUFFIX=	-gitlab
@@ -11,7 +12,7 @@ WWW=		https://github.com/rails/execjs
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/MIT-LICENSE
 
-USES=		gem nodejs:run,20
+USES=		gem nodejs:run
 
 NO_ARCH=	yes
 

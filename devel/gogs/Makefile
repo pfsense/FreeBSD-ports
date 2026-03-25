@@ -1,7 +1,6 @@
 PORTNAME=	gogs
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.13.3
-PORTREVISION=	8
+DISTVERSION=	0.14.2
 CATEGORIES=	devel www
 
 MAINTAINER=	siva@FreeBSD.org
@@ -11,13 +10,16 @@ WWW=		https://gogs.io/
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
+ONLY_FOR_ARCHS=	aarch64 amd64
+ONLY_FOR_ARCHS_REASON=	module modernc.org/sqlite only supported on aarch64 and amd64
+
 BUILD_DEPENDS=	go-bindata:devel/go-bindata
 RUN_DEPENDS=	git:devel/git \
 		bash:shells/bash
 
 USES=		cpe go:modules
 
-GO_MODULE=	gogs.io/gogs
+GO_MODULE=	github.com/gogs/gogs
 GO_TARGET=	:${PREFIX}/libexec/${PORTNAME}/${PORTNAME}
 GO_BUILDFLAGS=	-tags "sqlite pam cert"
 

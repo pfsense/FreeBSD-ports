@@ -1,6 +1,6 @@
---- chrome/browser/ui/browser_window/internal/browser_window_features.cc.orig	2026-01-22 10:29:00 UTC
+--- chrome/browser/ui/browser_window/internal/browser_window_features.cc.orig	2026-03-24 16:59:08 UTC
 +++ chrome/browser/ui/browser_window/internal/browser_window_features.cc
-@@ -153,7 +153,7 @@
+@@ -160,7 +160,7 @@
  #include "chrome/browser/ui/startup/default_browser_prompt/pin_infobar/pin_infobar_controller.h"
  #endif
  
@@ -9,9 +9,9 @@
  #include "chrome/browser/ui/views/session_restore_infobar/session_restore_infobar_controller.h"
  #endif
  
-@@ -406,7 +406,7 @@ void BrowserWindowFeatures::Init(BrowserWindowInterfac
-   browser_select_file_dialog_controller_ =
-       std::make_unique<BrowserSelectFileDialogController>(profile);
+@@ -434,7 +434,7 @@ void BrowserWindowFeatures::Init(BrowserWindowInterfac
+   context_highlight_window_feature_ =
+       std::make_unique<ContextHighlightWindowFeature>(*browser);
  
 -#if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX)
 +#if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_BSD)

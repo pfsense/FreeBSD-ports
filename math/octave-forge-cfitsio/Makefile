@@ -1,6 +1,6 @@
 PORTNAME=	octave-forge-cfitsio
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.0.7
+DISTVERSION=	0.0.8
 CATEGORIES=	math
 
 MAINTAINER=	stephen@FreeBSD.org

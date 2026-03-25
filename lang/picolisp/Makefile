@@ -1,5 +1,5 @@
 PORTNAME=	picolisp
-PORTVERSION=	25.9
+PORTVERSION=	25.12
 CATEGORIES=	lang
 MASTER_SITES=	https://software-lab.de/
 DISTNAME=	picoLisp-${PORTVERSION}
@@ -14,7 +14,7 @@ ONLY_FOR_ARCHS=	amd64
 
 LIB_DEPENDS=	libffi.so:devel/libffi
 
-USES=		gmake llvm:min=11,lib pkgconfig readline ssl tar:tgz
+USES=		gmake llvm:lib pkgconfig readline ssl tar:tgz
 
 WRKSRC=		${WRKDIR}/pil21/src
 

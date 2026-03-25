@@ -22,6 +22,7 @@
     SUBDIR += beansdb
     SUBDIR += buzhug
     SUBDIR += c3p0
+    SUBDIR += cargo-pgrx
     SUBDIR += cassandra-cpp-driver
     SUBDIR += cassandra3
     SUBDIR += cassandra4
@@ -43,6 +44,7 @@
     SUBDIR += credis
     SUBDIR += cutelyst-asql
     SUBDIR += dalmp
+    SUBDIR += datafusion-cli
     SUBDIR += db
     SUBDIR += db18
     SUBDIR += db5
@@ -54,6 +56,7 @@
     SUBDIR += dbtool
     SUBDIR += dbview
     SUBDIR += diesel
+    SUBDIR += dlmdb
     SUBDIR += duckdb
     SUBDIR += ejdb
     SUBDIR += emacsql
@@ -196,6 +199,8 @@
     SUBDIR += mysql91-server
     SUBDIR += mysql94-client
     SUBDIR += mysql94-server
+    SUBDIR += mysql96-client
+    SUBDIR += mysql96-server
     SUBDIR += mysqlbackup
     SUBDIR += mysqldump-secure
     SUBDIR += mysqlreport
@@ -539,6 +544,8 @@
     SUBDIR += pg.el
     SUBDIR += pgFormatter
     SUBDIR += pg_activity
+    SUBDIR += pg_auto_failover
+    SUBDIR += pg_auto_failover-devel
     SUBDIR += pg_citus
     SUBDIR += pg_cron
     SUBDIR += pg_dirtyread
@@ -550,6 +557,7 @@
     SUBDIR += pg_partman
     SUBDIR += pg_qualstats
     SUBDIR += pg_repack
+    SUBDIR += pg_search
     SUBDIR += pg_similarity
     SUBDIR += pg_stat_kcache
     SUBDIR += pg_store_plans
@@ -668,14 +676,6 @@
     SUBDIR += postgresql-tds_fdw
     SUBDIR += postgresql-wal2json
     SUBDIR += postgresql-zhparser
-    SUBDIR += postgresql13-client
-    SUBDIR += postgresql13-contrib
-    SUBDIR += postgresql13-docs
-    SUBDIR += postgresql13-pgtcl
-    SUBDIR += postgresql13-plperl
-    SUBDIR += postgresql13-plpython
-    SUBDIR += postgresql13-pltcl
-    SUBDIR += postgresql13-server
     SUBDIR += postgresql14-client
     SUBDIR += postgresql14-contrib
     SUBDIR += postgresql14-docs
@@ -776,6 +776,9 @@
     SUBDIR += py-flask-sqlalchemy30
     SUBDIR += py-gdbm
     SUBDIR += py-geoalchemy2
+    SUBDIR += py-harlequin
+    SUBDIR += py-harlequin-mysql
+    SUBDIR += py-harlequin-postgres
     SUBDIR += py-hiredis
     SUBDIR += py-influxdb
     SUBDIR += py-kyotocabinet
@@ -862,6 +865,7 @@
     SUBDIR += py-sqloxide
     SUBDIR += py-sqlparse
     SUBDIR += py-sqlrelay
+    SUBDIR += py-squall-sql
     SUBDIR += py-tableschema
     SUBDIR += py-tarantool
     SUBDIR += py-tiledb
@@ -887,6 +891,7 @@
     SUBDIR += qt5-sqldrivers-tds
     SUBDIR += qt6-base_sqldriver
     SUBDIR += quake
+    SUBDIR += rainfrog
     SUBDIR += recutils
     SUBDIR += redis
     SUBDIR += redis-devel
@@ -895,6 +900,7 @@
     SUBDIR += redis74
     SUBDIR += redis80
     SUBDIR += redis82
+    SUBDIR += redis84
     SUBDIR += redis_exporter
     SUBDIR += redisjson
     SUBDIR += retcl
@@ -990,7 +996,6 @@
     SUBDIR += rubygem-familia
     SUBDIR += rubygem-flipper-active_record
     SUBDIR += rubygem-flipper-active_record-rails-gitlab
-    SUBDIR += rubygem-flipper-active_record-rails70
     SUBDIR += rubygem-gdbm
     SUBDIR += rubygem-globalid
     SUBDIR += rubygem-globalid-rails-gitlab
@@ -1013,6 +1018,7 @@
     SUBDIR += rubygem-influxdb
     SUBDIR += rubygem-jdbc-mysql
     SUBDIR += rubygem-leo_manager_client
+    SUBDIR += rubygem-lmdb
     SUBDIR += rubygem-marginalia
     SUBDIR += rubygem-mario-redis-lock
     SUBDIR += rubygem-memcache
@@ -1080,6 +1086,7 @@
     SUBDIR += rubygem-state_machines-activerecord08
     SUBDIR += rubygem-tarantool
     SUBDIR += rubygem-trilogy
+    SUBDIR += sabiql
     SUBDIR += sequeler
     SUBDIR += sfcgal
     SUBDIR += sharedance
@@ -1142,6 +1149,7 @@
     SUBDIR += usql
     SUBDIR += valkey
     SUBDIR += valkey8
+    SUBDIR += vchord
     SUBDIR += vfront
     SUBDIR += virtualpg
     SUBDIR += weaviate

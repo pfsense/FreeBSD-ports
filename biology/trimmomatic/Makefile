@@ -1,5 +1,6 @@
 PORTNAME=	trimmomatic
 DISTVERSION=	0.39
+PORTREVISION=	1
 CATEGORIES=	biology java
 MASTER_SITES=	http://www.usadellab.org/cms/uploads/supplementary/Trimmomatic/
 DISTNAME=	Trimmomatic-${PORTVERSION}

@@ -1,5 +1,6 @@
 PORTNAME=	jicmp
 PORTVERSION=	1.4.4
+PORTREVISION=	1
 CATEGORIES=	net java
 MASTER_SITES=	SF/opennms/JICMP/stable-1.4/
 

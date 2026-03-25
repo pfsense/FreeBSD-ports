@@ -1,5 +1,5 @@
 PORTNAME=	libvalkey
-DISTVERSION=	0.2.1
+DISTVERSION=	0.4.0
 CATEGORIES=	databases
 
 MAINTAINER=	dtxdf@FreeBSD.org

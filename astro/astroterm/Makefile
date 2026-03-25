@@ -9,7 +9,7 @@ DISTFILES=	BSC5:DATA \
 DIST_SUBDIR=	${PORTNAME}-${DISTVERSION}
 EXTRACT_ONLY=	${DISTNAME}${EXTRACT_SUFX}
 
-MAINTAINER=	nxjoseph@protonmail.com
+MAINTAINER=	nxjoseph@FreeBSD.org
 COMMENT=	Explore stars, planets, constellations, and more in your terminal!
 WWW=		https://github.com/da-luce/astroterm
 

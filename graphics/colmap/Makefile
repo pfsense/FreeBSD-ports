@@ -1,5 +1,5 @@
 PORTNAME=	colmap
-DISTVERSION=	3.13.0
+DISTVERSION=	4.0.2
 CATEGORIES=	graphics
 
 MAINTAINER=	fuz@FreeBSD.org
@@ -21,18 +21,19 @@ LIB_DEPENDS=	libPoseLib.so:graphics/poselib \
 		libceres.so:math/ceres-solver \
 		libcurl.so:ftp/curl \
 		libfaiss.so:math/faiss \
-		libfreeimage.so:graphics/freeimage \
+		libOpenImageIO.so:graphics/openimageio \
 		libglog.so:devel/glog \
-		libmetis.so:math/metis
+		libmetis.so:math/metis \
+		libcholmod.so:math/suitesparse-cholmod
 TEST_DEPENDS=	${LOCALBASE}/libdata/pkgconfig/gtest.pc:devel/googletest
 
-USES=		cmake:testing compiler:${OPENMP}c++11-lib desktop-file-utils eigen:3 gl \
-		localbase python:env qt:6 sqlite ssl
+USES=		cmake:testing compiler:${OPENMP}c++11-lib desktop-file-utils \
+		display:test eigen:3 gl localbase python:env qt:6 sqlite ssl
 USE_CXXSTD=	c++17
 USE_GITHUB=	yes
 USE_GL=		gl glew
 USE_QT=		base
-CMAKE_OFF=	CUDA_ENABLED FETCH_FAISS FETCH_POSELIB
+CMAKE_OFF=	CUDA_ENABLED FETCH_FAISS FETCH_POSELIB FETCH_ONNX
 CMAKE_TESTING_ON=	TESTS_ENABLED
 .if exists(/usr/include/omp.h)
 CMAKE_ON+=	OPENMP_ENABLED
@@ -42,8 +43,8 @@ CMAKE_OFF+=	OPENMP_ENABLED
 
 LDFLAGS+=	-Wl,--as-needed # gflags, glu, xi, xmu
 
-OPTIONS_DEFINE=		CGAL DOCS SIMD
-OPTIONS_DEFAULT=	CGAL SIMD
+OPTIONS_DEFINE=		CGAL ONNX DOCS SIMD
+OPTIONS_DEFAULT=	CGAL ONNX SIMD
 
 CGAL_DESC=		Graph-cut on Delaunay triangulation based meshing algorithm
 CGAL_BUILD_DEPENDS=	cgal>0:math/cgal
@@ -52,6 +53,10 @@ CGAL_CMAKE_BOOL=	CGAL_ENABLED
 
 DOCS_BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}sphinx_rtd_theme>0:textproc/py-sphinx_rtd_theme@${PY_FLAVOR} \
 			gmake:devel/gmake sphinx-build:textproc/py-sphinx
+
+ONNX_DESC=		Use Open Neural Network Exchange (ONNX)
+ONNX_LIB_DEPENDS=	libonnxruntime.so:misc/onnxruntime
+ONNX_CMAKE_BOOL=	ONNX_ENABLED
 
 SIMD_CMAKE_BOOL=	SIMD_ENABLED
 SIMD_CFLAGS_i386=	-msse2

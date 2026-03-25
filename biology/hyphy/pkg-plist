@@ -180,6 +180,7 @@ bin/hyphy
 %%DATADIR%%/TemplateBatchFiles/Samplers/srs-ErrorEst.ibf
 %%DATADIR%%/TemplateBatchFiles/Samplers/srs.ibf
 %%DATADIR%%/TemplateBatchFiles/SandNSAmbigs.bf
+%%DATADIR%%/TemplateBatchFiles/SelectionAnalyses/B-STILL.bf
 %%DATADIR%%/TemplateBatchFiles/SelectionAnalyses/BUSTED-PH.bf
 %%DATADIR%%/TemplateBatchFiles/SelectionAnalyses/BUSTED.bf
 %%DATADIR%%/TemplateBatchFiles/SelectionAnalyses/BranchSiteREL.bf
@@ -396,6 +397,7 @@ bin/hyphy
 %%DATADIR%%/TemplateBatchFiles/libv3/models/binary/empirical.bf
 %%DATADIR%%/TemplateBatchFiles/libv3/models/codon.bf
 %%DATADIR%%/TemplateBatchFiles/libv3/models/codon/BS_REL.bf
+%%DATADIR%%/TemplateBatchFiles/libv3/models/codon/CORA.bf
 %%DATADIR%%/TemplateBatchFiles/libv3/models/codon/MG_GTR.bf
 %%DATADIR%%/TemplateBatchFiles/libv3/models/codon/MG_REV.bf
 %%DATADIR%%/TemplateBatchFiles/libv3/models/codon/MG_REV_MH.bf

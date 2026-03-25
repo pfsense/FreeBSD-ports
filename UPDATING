@@ -5,6 +5,147 @@ they are unavoidable.
 You should get into the habit of checking this file for changes each time
 you update your ports collection, before attempting any port upgrades.
 
+20260304:
+  AFFECTS: users of net-mgmt/netbox
+  AUTHOR: kai@FreeBSD.org
+
+  1. With the NetBox 4.5 release Python 3.10 and 3.11 are officially no
+     longer supported.  The whole code can still be compiled without any
+     problems using Python 3.11, which is the current default version in
+     the ports tree.
+
+     Therefore, the minimum version for Python doesn't need to be raised
+     for the time being, but this may change at any time as soon as
+     backward-incompatible changes to the code lands into upstream for the
+     next release.
+
+     Thus, no further action is required at this time. However, it's still
+     recommended to switch to Python 3.12 or newer in the near future.
+
+  2. Please also check the pkg-message and the changelogs for further info.
+
+20260325:
+  AFFECTS: Users of net-mgmt/ping_exporter
+  AUTHOR: ivy@FreeBSD.org
+
+  The format of ping_exporter's configuration file has changed.
+  Refer to https://github.com/czerwonk/ping_exporter/releases/tag/v1.2.0
+  for upstream documentation on how to migrate.
+
+20260301:
+  AFFECTS: users of databases/postgresql* and other software using PostgreSQL to run
+  AUTHOR: kbowling@FreeBSD.org
+
+  The default version of PostgreSQL has been switched from 17 to 18.
+  The upgrade procedure can use up twice the space the databases
+  currently needs. If you have a big amount of stored data take a
+  closer look at the manpage of pg_upgrade for avoidance and/or
+  speedup of the upgrade.
+
+  The upgrade instructions consider a basic usage and do not match
+  complex scenarios like replication, sharding, or similar.
+
+  Upgrade instructions:
+
+  First stop your PostgreSQL, create PostgreSQL-binaries and backup your data.
+  If you have another Version of PostgreSQL installed, for example 17, your
+  files are named according to this.
+
+  # service postgresql stop
+  # pkg create postgresql17-server postgresql17-contrib
+  # mkdir /tmp/pg-upgrade
+  # tar xf postgresql17-server-17.9.pkg -C /tmp/pg-upgrade
+  # tar xf postgresql17-contrib-17.9.pkg -C /tmp/pg-upgrade
+  # pkg delete -f databases/postgresql17-server databases/postgresql17-contrib databases/postgresql17-client
+
+  Now update PostgreSQL:
+
+    pkg user:
+    # pkg install databases/postgresql18-server databases/postgresql18-contrib
+    # pkg upgrade
+
+    Portmaster users:
+    # portmaster databases/postgresql18-server databases/postgresql18-contrib
+    # portmaster -a
+
+    Portupgrade users:
+    # portinstall databases/postgresql18-server databases/postgresql18-contrib
+    # portupgrade -a
+
+  After installing the new PostgreSQL version you need to convert
+  all your databases to new version:
+
+  # su -l postgres -c "/usr/local/bin/initdb --encoding=utf-8 --lc-collate=C --no-data-checksums -D /var/db/postgres/data18 -U postgres"
+  # su -l postgres -c "pg_upgrade -b /tmp/pg-upgrade/usr/local/bin/ -d /var/db/postgres/data17/ -B /usr/local/bin/ -D /var/db/postgres/data18/ -U postgres "
+
+  Now the migration is finished. You can start PostgreSQL again with:
+
+  # service postgresql start
+
+  ATTENTION:
+  1) If you use non-default initdb options, you have to adjust the initdb-command accordingly
+  2) The initdb in the upgrade procedure uses '--no-data-checksums' to enable
+  pg_upgrade from before this change.  You should review the documentation and
+  decide whether you want to then enable checksums with pg_checksums.  Future
+  upgrade instructions for PostgreSQL 19 and later will assume a default
+  initdb, and therefore that checksums are enabled.
+
+20260226:
+  AFFECTS: users of sysutils/symon
+  AUTHOR: jamie@catflap.org
+
+  The old WITHOUT_SYMON and WITHOUT_SYMUX knobs have been replaced with the
+  port options SYMON and SYMUX. The legacy "WITHOUT_RRD" knob has been retired.
+
+20260226:
+  AFFECTS: users of java/openjdk*
+  AUTHOR: ronald@FreeBSD.org
+
+  Version JAVA_DEFAULT is updated from 8 to 21.
+  No specific action should be needed, just a heads-up to test before
+  deploying to production as this is quite a big step in versions.
+
+20260225:
+  AFFECTS: users of net-im/gotosocial
+  AUTHOR: tilde@ultros.pro
+
+  net-im/gotosocial has been updated to 0.21.0
+
+  New configuration options have been added and the upgrade involves
+  lengthy database migrations which must not be interrupted.
+
+  Upgrade procedure:
+
+  1. # service gotosocial stop
+  2. Backup database
+  3. # pkg upgrade gotosocial
+  4. Merge new options from etc/gotosocial/config.yaml.sample
+  5. # service gotosocial start (do not interrupt database migrations!)
+
+  See details at https://codeberg.org/superseriousbusiness/gotosocial/releases/tag/v0.21.0
+
+20260206:
+  AFFECTS: users of devel/freebsd-git-devtools
+  AUTHOR: jrm@FreeBSD.org
+
+  To improve discoverability with pkg search, devel/freebsd-git-devtools
+  has been split into devel/freebsd-git-arc and devel/mfc-candidates.
+
+  To remove the old package and install the new ones, use:
+
+  # pkg install freebsd-git-arc mfc-candidates
+
+20260202:
+  AFFECTS: users of www/bluefish
+  AUTHOR: eduardo@FreeBSD.org
+
+  www/bluefish has been updated to 2.4.0.
+
+  Starting from 2.4 Bluefish will place config files no longer in
+  ~/.bluefish. On FreeBSD it will be ~/.config and ~/.local/
+
+  See details at https://sourceforge.net/p/bluefish/code/HEAD/tree/tags/bluefish_2_4_0/ChangeLog
+
 20260125:
   AFFECTS: users of dns/ddclient
   AUTHOR: mjl@luckie.org.nz

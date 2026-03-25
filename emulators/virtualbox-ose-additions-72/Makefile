@@ -1,6 +1,6 @@
 PORTNAME=	virtualbox-ose
-DISTVERSION=	7.2.4
-PORTREVISION?=	1
+DISTVERSION=	7.2.6
+PORTREVISION?=	0
 CATEGORIES=	emulators
 MASTER_SITES=	https://download.virtualbox.org/virtualbox/${DISTVERSION}/
 PKGNAMESUFFIX?=	-additions-72
@@ -13,7 +13,7 @@ WWW=		https://www.virtualbox.org/
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-ONLY_FOR_ARCHS=	amd64
+ONLY_FOR_ARCHS=	amd64 i386
 
 BUILD_DEPENDS=	yasm:devel/yasm \
 		kmk:devel/kBuild \
@@ -47,7 +47,11 @@ CONFLICTS_INSTALL=	virtualbox-ose-additions-legacy \
 			virtualbox-ose-additions-nox11-71
 
 PATCHDIR=		${.CURDIR}/../${PORTNAME}-72/files
-EXTRACT_AFTER_ARGS=	--exclude tools/*.x86 --exclude tools/*.amd64 --exclude Firmware
+EXTRACT_AFTER_ARGS=	--exclude tools/*.x86 \
+			--exclude tools/*.amd64 \
+			--exclude Firmware \
+			--exclude kBuild/bin \
+			--no-same-owner --no-same-permissions
 PORTSCOUT=		limit:^7\.2\.
 
 WRKSRC=			${WRKDIR}/VirtualBox-${DISTVERSION}
@@ -108,6 +112,7 @@ post-patch:
 .if ${COMPILER_TYPE} == clang
 	@${REINPLACE_CMD} -e 's| -finline-limit=8000||' \
 	    -e 's| -fno-merge-constants||' \
+	    -e 's| -mno-align-long-strings||' \
 	    -e 's| -mpreferred-stack-boundary=2||' ${WRKSRC}/Config.kmk
 .endif
 	@${REINPLACE_CMD} -e 's|/usr/local|${LOCALBASE}|g' \

@@ -1,5 +1,5 @@
 PORTNAME=	cbsd
-DISTVERSION=	15.0.0
+DISTVERSION=	15.0.5
 CATEGORIES=	sysutils
 
 MAINTAINER=	fbsd-ports@convectix.com
@@ -10,12 +10,14 @@ LICENSE=	BSD2CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
 LIB_DEPENDS=	libcurl.so:ftp/curl \
+		libjq.so:textproc/jq \
+		libonig.so:devel/oniguruma \
 		libssh2.so:security/libssh2
 RUN_DEPENDS=	curl:ftp/curl \
 		jq:textproc/jq \
 		rsync:net/rsync
 
-USES=		compiler:c++11-lang libedit pkgconfig:both sqlite sudo
+USES=		autoreconf:build compiler:c++11-lang gmake pkgconfig:both sqlite sudo
 USE_GITHUB=	yes
 USE_RC_SUBR=	cbsdd cbsdrsyncd cbsd-statsd-bhyve cbsd-statsd-hoster \
 		cbsd-statsd-jail

@@ -86,6 +86,7 @@
     SUBDIR += claws
     SUBDIR += cloud-init
     SUBDIR += cloud-init-devel
+    SUBDIR += cloudflare-speed-cli
     SUBDIR += cloudflared
     SUBDIR += cloudquery
     SUBDIR += clusterit
@@ -288,6 +289,7 @@
     SUBDIR += ip2location
     SUBDIR += ip2proxy
     SUBDIR += ip6_int
+    SUBDIR += ipaddr
     SUBDIR += ipdecap
     SUBDIR += ipgrab
     SUBDIR += ipinfo-cli
@@ -309,7 +311,6 @@
     SUBDIR += jose
     SUBDIR += jotta-cli
     SUBDIR += jrdesktop
-    SUBDIR += jsch
     SUBDIR += jumpgate
     SUBDIR += jwhois
     SUBDIR += k6
@@ -580,6 +581,7 @@
     SUBDIR += open-isns
     SUBDIR += openbgpd7
     SUBDIR += openbgpd8
+    SUBDIR += openbgpd9
     SUBDIR += openldap25-client
     SUBDIR += openldap25-server
     SUBDIR += openldap26-client
@@ -1197,7 +1199,6 @@
     SUBDIR += py-urlextract
     SUBDIR += py-urllib3
     SUBDIR += py-urllib3-future
-    SUBDIR += py-urllib31
     SUBDIR += py-whois
     SUBDIR += py-wmi-query
     SUBDIR += py-wsdd
@@ -1339,6 +1340,7 @@
     SUBDIR += rubygem-gitaly
     SUBDIR += rubygem-gitaly-proto
     SUBDIR += rubygem-gitlab-fog-azure-rm
+    SUBDIR += rubygem-gitlab-gkg-proto
     SUBDIR += rubygem-gitlab-kas-grpc
     SUBDIR += rubygem-gitlab_omniauth-ldap
     SUBDIR += rubygem-gitlab_omniauth-ldap-gitlab
@@ -1488,6 +1490,7 @@
     SUBDIR += rubygem-x
     SUBDIR += rubygem-xmlrpc
     SUBDIR += rude
+    SUBDIR += rustconn
     SUBDIR += rustdesk-server
     SUBDIR += ryu
     SUBDIR += s3m
@@ -1583,7 +1586,6 @@
     SUBDIR += tcpick
     SUBDIR += tcpillust
     SUBDIR += tcping
-    SUBDIR += tcpkali
     SUBDIR += tcplog_dumper
     SUBDIR += tcpmssd
     SUBDIR += tcpproxy
@@ -1637,6 +1639,7 @@
     SUBDIR += turnserver
     SUBDIR += u6rd
     SUBDIR += ucarp
+    SUBDIR += ucx
     SUBDIR += udp-over-tcp
     SUBDIR += udpbroadcastrelay
     SUBDIR += udptunnel
@@ -1648,7 +1651,6 @@
     SUBDIR += ulxmlrpcpp
     SUBDIR += unfs3
     SUBDIR += unison
-    SUBDIR += unison240
     SUBDIR += unison248
     SUBDIR += unison251
     SUBDIR += unix2tcp

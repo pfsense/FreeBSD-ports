@@ -1,6 +1,6 @@
 PORTNAME=	qrcodegen
 DISTVERSION=	1.14.2
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	textproc java
 MASTER_SITES=	http://bsd-geek.de/FreeBSD/distfiles/
 DISTNAME=	${PORTNAME}_${DISTVERSION}

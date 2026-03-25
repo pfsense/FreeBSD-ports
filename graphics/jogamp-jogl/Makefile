@@ -1,6 +1,6 @@
 PORTNAME=	jogamp-jogl
 PORTVERSION=	2.3.2
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	graphics devel java
 MASTER_SITES=	http://jogamp.org/deployment/jogamp-current/archive/Sources/ \
 		http://jogamp.org/deployment/v${PORTVERSION}/archive/Sources/

@@ -132,6 +132,7 @@
     SUBDIR += itinerary
     SUBDIR += jjclient
     SUBDIR += jlj
+    SUBDIR += joplin-desktop
     SUBDIR += jot
     SUBDIR += just
     SUBDIR += kaddressbook
@@ -306,6 +307,8 @@
     SUBDIR += xdg-desktop-portal
     SUBDIR += xdg-desktop-portal-lxqt
     SUBDIR += xdg-terminal-exec
+    SUBDIR += xdgctl
+    SUBDIR += xdpi
     SUBDIR += xfce4-generic-slider
     SUBDIR += xfce4-notes-plugin
     SUBDIR += xfce4-notifyd

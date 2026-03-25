@@ -1,6 +1,6 @@
 PORTNAME=	jcalendar
 PORTVERSION=	1.3.3
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	java misc
 MASTER_SITES=	http://www.toedter.com/download/
 

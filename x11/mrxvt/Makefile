@@ -1,5 +1,6 @@
 PORTNAME=	mrxvt
 DISTVERSION=	0.5.4
+PORTREVISION=	1
 CATEGORIES=	x11
 MASTER_SITES=	SF/materm/mrxvt%20source/${PORTVERSION}
 
@@ -8,6 +9,9 @@ COMMENT=	Tabbed version of rxvt
 WWW=		https://materm.sourceforge.net/
 
 LICENSE=	GPLv2
+
+DEPRECATED=		Upstream unmaintained and has known vulnerability
+EXPIRATION_DATE=	2026-03-31
 
 LIB_DEPENDS=	libfontconfig.so:x11-fonts/fontconfig
 

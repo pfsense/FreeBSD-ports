@@ -8,5 +8,5 @@ VoIP. The basics you need to know to get up and running are:
     will normally refer to yourself and others using a 3PID: email address,
     phone number, etc rather than manipulating Matrix user IDs)
 
-Synapse is an open-source Matrix homeserver written in Python/Twisted,
-developed and maintained by the Matrix.org Foundation core team.
+Synapse is a Free Software Matrix homeserver written in Python/Twisted,
+developed by the Matrix.org Foundation core team and maintained by Element.

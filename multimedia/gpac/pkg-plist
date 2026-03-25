@@ -92,6 +92,9 @@ lib/libgpac.so
 lib/libgpac.so.12
 lib/libgpac.so.12.14.0
 lib/libgpac_static.a
+%%ALSA%%lib/gpac/gm_alsa.so
+%%JACK%%lib/gpac/gm_jack.so
+%%PULSEAUDIO%%lib/gpac/gm_pulseaudio.so
 libdata/pkgconfig/gpac.pc
 %%CACA%%lib/gpac/gm_caca_out.so
 %%FREETYPE%%lib/gpac/gm_ft_font.so

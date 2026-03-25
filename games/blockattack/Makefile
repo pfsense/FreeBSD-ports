@@ -3,7 +3,7 @@ DISTVERSIONPREFIX=	v
 DISTVERSION=	2.10.0
 CATEGORIES=	games
 
-MAINTAINER=	nxjoseph@protonmail.com
+MAINTAINER=	nxjoseph@FreeBSD.org
 COMMENT=	Puzzle game inspired by Tetris
 WWW=		https://blockattack.net/
 

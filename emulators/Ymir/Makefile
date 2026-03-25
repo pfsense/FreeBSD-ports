@@ -1,6 +1,7 @@
 PORTNAME=	Ymir
 DISTVERSIONPREFIX=	v
 DISTVERSION=	0.2.1
+PORTREVISION=	1
 CATEGORIES=	emulators
 
 MAINTAINER=	bsdcode@disroot.org
@@ -44,8 +45,8 @@ _gtk4_BR_DEPENDS=		zenity:x11/zenity4
 ${FLAVOR}_BUILD_DEPENDS=	${_${FLAVOR}_BR_DEPENDS}
 ${FLAVOR}_RUN_DEPENDS=		${_${FLAVOR}_BR_DEPENDS}
 
-USES=		cmake compiler:c++20-lang desktop-file-utils gl \
-		llvm${_LLVM_${ARCH}} localbase pkgconfig sdl xorg
+USES=		cmake compiler:c++20-lang gl llvm${_LLVM_${ARCH}} localbase \
+		pkgconfig sdl xorg
 _LLVM_aarch64=	:min=21
 USE_GITHUB=	yes
 GH_ACCOUNT=	StrikerX3

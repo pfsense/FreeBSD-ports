@@ -1,6 +1,6 @@
 PORTNAME=	virtualbox-ose
 DISTVERSION=	5.2.44
-PORTREVISION?=	34
+PORTREVISION?=	35
 CATEGORIES=	emulators
 MASTER_SITES=	https://download.virtualbox.org/virtualbox/${DISTVERSION}/:src \
 		LOCAL/bofh/emulators/virtualbox-ose-legacy:docs
@@ -48,6 +48,8 @@ CONFLICTS_INSTALL=	virtualbox-ose \
 			virtualbox-ose-72 \
 			virtualbox-ose-nox11-72
 
+EXTRACT_AFTER_ARGS=	--exclude kBuild/bin \
+			--no-same-owner --no-same-permissions
 PORTSCOUT=	limit:^5\.
 SUB_LIST=	VBOXDIR=${VBOX_DIR} \
 		VBOXGROUP=${VBOXGROUP} \
@@ -318,6 +320,8 @@ post-patch:
 	    ${WRKSRC}/src/VBox/Runtime/generic/http-curl.cpp
 
 do-build:
+	@${ECHO_CMD} 'export PATH_KBUILD="${WRKSRC}/kBuild"' >> ${WRKSRC}/env.sh
+	@${ECHO_CMD} 'export PATH_DEVTOOLS="${WRKSRC}/tools"' >> ${WRKSRC}/env.sh
 	cd ${WRKSRC} && ${SH} -c '. ${WRKSRC}/env.sh && \
 	    ${SETENV} ${MAKE_ENV} ${KMK_CONFIG} ${LOCALBASE}/bin/kmk ${KMK_FLAGS}'
 .if ${PORT_OPTIONS:MPYTHON}
@@ -334,11 +338,13 @@ do-install:
 
 	${MKDIR} ${STAGEDIR}${PREFIX}/include/virtualbox
 	cd ${KMK_BUILDDIR}/bin/sdk/bindings/xpcom/include && \
-	    ${COPYTREE_SHARE} "*" ${STAGEDIR}${PREFIX}/include/virtualbox
+	    ${COPYTREE_SHARE} . ${STAGEDIR}${PREFIX}/include/virtualbox
 
 	${MKDIR} ${STAGEDIR}${VBOX_DIR}
 	cd ${KMK_BUILDDIR}/bin && ${COPYTREE_SHARE} \
-	    "*.fd *.r0 *.rc *.so components" ${STAGEDIR}${VBOX_DIR}
+	    "*.fd *.r0 *.rc *.so components" ${STAGEDIR}${VBOX_DIR} && \
+	    ${COPYTREE_SHARE} UnattendedTemplates ${STAGEDIR}${DATADIR}
+
 .if ${PORT_OPTIONS:MPYTHON} || ${PORT_OPTIONS:MWEBSERVICE}
 	${RLN} ${STAGEDIR}${DATADIR}/sdk ${STAGEDIR}${VBOX_DIR}
 .endif
@@ -381,7 +387,7 @@ do-install:
 
 	@${MKDIR} ${STAGEDIR}${PYTHON_SITELIBDIR}/xpcom
 	cd ${KMK_BUILDDIR}/bin/sdk/bindings/xpcom/python/xpcom && \
-	    ${COPYTREE_SHARE} "*" ${STAGEDIR}${PYTHON_SITELIBDIR}/xpcom
+	    ${COPYTREE_SHARE} . ${STAGEDIR}${PYTHON_SITELIBDIR}/xpcom
 	@${MKDIR} ${STAGEDIR}${DATADIR}/sdk/bindings/xpcom/python
 	${RLN} ${STAGEDIR}${PYTHON_SITELIBDIR}/xpcom \
 	    ${STAGEDIR}${DATADIR}/sdk/bindings/xpcom/python
@@ -393,7 +399,7 @@ do-install:
 	    ${STAGEDIR}${PREFIX}/share/pixmaps/VBox.png
 	${INSTALL_DATA} \
 	    ${WRKSRC}/src/VBox/Installer/freebsd/virtualbox.desktop \
-	    ${STAGEDIR}${PREFIX}/share/applications/virtualbox.desktop
+	    ${STAGEDIR}${DESKTOPDIR}/virtualbox.desktop
 .endif
 
 .if ${PORT_OPTIONS:MVNC}

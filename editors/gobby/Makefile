@@ -4,7 +4,7 @@ PORTREVISION=	1
 CATEGORIES=	editors
 MASTER_SITES=	http://releases.0x539.de/gobby/
 
-MAINTAINER=	nxjoseph@protonmail.com
+MAINTAINER=	nxjoseph@FreeBSD.org
 COMMENT=	Free collaborative editor
 WWW=		http://gobby.0x539.de
 

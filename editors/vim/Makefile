@@ -1,5 +1,5 @@
 PORTNAME=	vim
-PORTVERSION=	9.1.2050
+PORTVERSION=	9.2.0204
 DISTVERSIONPREFIX=	v
 CATEGORIES=	editors
 
@@ -97,6 +97,9 @@ USE_XORG=	ice sm x11 xmu xpm xt
 USES+=		python:build
 CONFIGURE_ARGS+=--enable-python3interp=dynamic \
 		--with-python3-command=${PYTHON_CMD}
+.  if !empty(WITH_DEBUG)
+CFLAGS+=		-DPy_DEBUG -DPy_DEBUG_NO_PYMALLOC
+.  endif
 .endif
 
 # Options {{{1
@@ -162,10 +165,6 @@ TCL_USES=		tcl
 # Targets {{{1
 .include <bsd.port.pre.mk>
 
-.if ${PORT_OPTIONS:MPYTHON} && !empty(WITH_DEBUG)
-CFLAGS+=		-DPy_DEBUG -DPy_DEBUG_NO_PYMALLOC
-.endif
-
 post-extract:
 	${INSTALL_DATA} ${FILESDIR}/vietnamese_viscii.vim ${WRKSRC}/runtime/keymap
 
@@ -179,7 +178,7 @@ post-configure:
 	${REINPLACE_CMD} -e '/^#define HAVE_SYSINFO/ d' ${WRKSRC}/src/auto/config.h
 
 do-test:
-	${DO_MAKE_BUILD} -C ${WRKSRC} test
+	${MAKE_CMD} -C ${WRKSRC} test
 
 .if ${FLAVOR:U} == tiny
 do-install:

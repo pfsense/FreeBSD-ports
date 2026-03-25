@@ -1,5 +1,6 @@
 PORTNAME=	kotlin
 DISTVERSION=	2.2.21
+PORTREVISION=	1
 CATEGORIES=	lang java
 MASTER_SITES=	https://github.com/JetBrains/kotlin/releases/download/v${PORTVERSION}/
 PKGNAMESUFFIX=	22

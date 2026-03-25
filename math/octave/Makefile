@@ -1,7 +1,7 @@
 PORTNAME=	octave
 PORTVERSION=	${OCTAVE_VERSION}
-PORTREVISION=	2
-CATEGORIES=	math
+PORTREVISION=	3
+CATEGORIES=	math java
 MASTER_SITES=	GNU
 
 MAINTAINER=	stephen@FreeBSD.org
@@ -14,12 +14,13 @@ BUILD_DEPENDS=	${LOCALBASE}/bin/gperf:devel/gperf \
 		${LOCALBASE}/bin/makeinfo:print/texinfo \
 		gnuplot:math/gnuplot \
 		gsed:textproc/gsed \
-		${LOCALBASE}/include/rapidjson/rapidjson.h:devel/rapidjson
+		${LOCALBASE}/include/rapidjson/rapidjson.h:devel/rapidjson \
+		${LOCALBASE}/include/fast_float/fast_float.h:math/fast_float
 RUN_DEPENDS=	${LOCALBASE}/bin/makeinfo:print/texinfo \
 		gnuplot:math/gnuplot \
 		gsed:textproc/gsed
 LIB_DEPENDS=	libamd.so:math/suitesparse-amd \
-		libarpack.so:math/arpack-ng \
+		libarpack.so:math/arpack-ng@mpich \
 		libcamd.so:math/suitesparse-camd \
 		libccolamd.so:math/suitesparse-ccolamd \
 		libcholmod.so:math/suitesparse-cholmod \
@@ -106,6 +107,7 @@ DOCS_USES=	tex
 DOCS_USE=	TEX=dvipsk:build,formats:build
 JAVA_USES=	java
 JAVA_CFLAGS=	-I${JAVA_HOME}/include/${OPSYS:tl}
+JAVA_VARS=	JAVA_VERSION=11+
 QT6_USES=	qt:6
 OPENBLAS_USES=	blaslapack:openblas
 NETLIB_USES=	blaslapack:netlib

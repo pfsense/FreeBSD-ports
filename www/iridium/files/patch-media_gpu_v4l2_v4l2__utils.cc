@@ -1,4 +1,4 @@
---- media/gpu/v4l2/v4l2_utils.cc.orig	2025-12-10 15:04:57 UTC
+--- media/gpu/v4l2/v4l2_utils.cc.orig	2026-03-24 16:59:08 UTC
 +++ media/gpu/v4l2/v4l2_utils.cc
 @@ -18,7 +18,7 @@
  #include <map>
@@ -9,7 +9,7 @@
  #include <drm_fourcc.h>
  #endif
  
-@@ -244,7 +244,7 @@ std::optional<VideoFrameLayout> V4L2FormatToVideoFrame
+@@ -243,7 +243,7 @@ std::optional<VideoFrameLayout> V4L2FormatToVideoFrame
    }
    const VideoPixelFormat video_format = video_fourcc->ToVideoPixelFormat();
    uint64_t modifiers = gfx::NativePixmapHandle::kNoModifier;

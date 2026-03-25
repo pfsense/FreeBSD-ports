@@ -1,6 +1,8 @@
 PORTNAME=	duckdb
 DISTVERSIONPREFIX=	v
-DISTVERSION=	1.4.4
+DISTVERSION=	1.5.0
+MASTER_SITES=	https://github.com/postgres/postgres/archive/refs/tags/:postgres_sources
+DISTFILES=	REL_15_13.tar.gz:postgres_sources
 CATEGORIES=	databases
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -16,15 +18,17 @@ LIB_DEPENDS=	libcurl.so:ftp/curl
 USES=		cmake:testing compiler:c++11-lang ssl
 USE_GITHUB=	yes
 GH_TUPLE=	\
-		duckdb:duckdb-encodings:b5a547ec74fad87698ed3142033d7b9cf86e0b2f:encodings/extension/encodings \
+		duckdb:duckdb-encodings:06295e77b13de65842992c82f14289ea679e4730:encodings/extension/encodings \
 		duckdb:duckdb-excel:9421a2d75bd7544336caa73e5f9e6063cc7f6992:excel/extension/excel \
-		duckdb:duckdb-fts:39376623630a968154bef4e6930d12ad0b59d7fb:fts/extension/fts \
-		duckdb:duckdb-httpfs:13f8a814d41a978c3f19eb1dc76069489652ea6f:httpfs/extension/httpfs \
+		duckdb:duckdb-fts:6814ec9a7d5fd63500176507262b0dbf7cea0095:fts/extension/fts \
+		duckdb:duckdb-httpfs:74f954001f3a740c909181b02259de6c7b942632:httpfs/extension/httpfs \
 		duckdb:duckdb-inet:fe7f60bb60245197680fb07ecd1629a1dc3d91c8:inet/extension/inet \
-		duckdb:duckdb-spatial:f129b24b4ddd4d98cfc18f88be5a344a79040e7b:spatial/extension/spatial \
-		duckdb:duckdb-sqlite:0c93d610af1e1f66292559fcf0f01a93597a98b6:sqlite/extension/sqlite_scanner \
+		duckdb:duckdb-postgres:a42c490df0019406658073c003b7d89dd4338466:postgres/extension/postgres_scanner \
+		duckdb:duckdb-mysql:372a86f96f4735ed3a1c3bb2e50594a2d73bc143:mysql/extension/mysql_scanner \
+		duckdb:duckdb-spatial:8734819c1de196ed9c012d0b68319d47faaf1aa3:spatial/extension/spatial \
+		duckdb:duckdb-sqlite:fb7cf51c40af3fe54873d7f9b4cc289fdb73091b:sqlite/extension/sqlite_scanner \
 		duckdb:duckdb-sqlsmith:e6e6750ceb91e1869b2c736abb70d818bac73e9a:sqlsmith/extension/sqlsmith \
-		duckdb:duckdb-vss:9b25336989efdca9598ae90364ce13cc976f2f31:vss/extension/vss
+		duckdb:duckdb-vss:b833341c8737fd3f3558c7720cc575ae8fc82598:vss/extension/vss
 # the list of out-of-tree extensions is here: .github/config/out_of_tree_extensions.cmake
 
 CXXFLAGS+=	-I${WRKSRC}/extension/inet/src/include 
@@ -45,9 +49,12 @@ OPTIONS_GROUP=			EXTENSIONS
 OPTIONS_GROUP_EXTENSIONS=	AUTOCOMPLETE DELTA ICU JSON PARQUET TPCDS TPCH # in-tree extensions (in extension/)
 OPTIONS_GROUP_EXTENSIONS+=	${GH_TUPLE:C/.*extension\///:tu} # out-of-tree extensions (from GH_TUPLE)
 
-DELTA_BROKEN=	Fetches from git during build
-SPATIAL_BROKEN=	Build requires unofficial-sqlite3 dependency
-EXCEL_BROKEN=	https://bugs.freebsd.org/bugzilla/show_bug.cgi?id=292757
+DELTA_BROKEN=			Fetches from git during build
+SPATIAL_BROKEN=			Build requires unofficial-sqlite3 dependency
+EXCEL_BROKEN=			https://bugs.freebsd.org/bugzilla/show_bug.cgi?id=292757
+MYSQL_SCANNER_BROKEN=		https://github.com/duckdb/duckdb-mysql/issues/207
+POSTGRES_SCANNER_BROKEN=	https://github.com/duckdb/duckdb-postgres/issues/401
+SQLSMITH_BROKEN=		https://github.com/duckdb/duckdb-sqlsmith/issues/66
 
 EXTENSIONS_DESC=		Extensions:
 
@@ -70,14 +77,20 @@ CMAKE_ARGS+=	-DSKIP_EXTENSIONS=jemalloc # temporary? see https://github.com/duck
 SQLITE_SCANNER_CXXFLAGS=	-I${WRKSRC}/extension/sqlite_scanner/src/include # workaround for the header not being found
 ENCODINGS_CXXFLAGS=		-I${WRKSRC}/extension/encodings/src/include # workaround for the header not being found
 HTTPFS_CXXFLAGS=		-I${WRKSRC}/extension/httpfs/src/include # workaround for the header not being found
+POSTGRES_SCANNER_USES=		localbase
+POSTGRES_SCANNER_CXXFLAGS=	-I${WRKSRC}/extension/postgres_scanner/src/include # workaround for the header not being found
+MYSQL_SCANNER_USES=		mysql:client
 
 TPCE_DESC=			Enable building of the TPC-E tool
 TPCE_CMAKE_BOOL=		BUILD_TPCE
 
 VSS_CXXFLAGS=			-I${WRKSRC}/extension/vss/src/include # workaround for the header not being found
 
-post-extract: # remove the jemalloc extension directory just in case
+post-extract:
+	# remove the jemalloc extension directory just in case
 	@${RM} -r ${WRKSRC}/extension/jemalloc
+	# create symlink to Postgres sources for the postgres_scanner extension
+	@${LN} -s ${WRKDIR}/postgres-REL_15_13 ${WRKSRC}/extension/postgres_scanner/postgres
 
 post-patch: # remove cmake files of out-of-tree extensions to build them like in-tree extensions (avoid fetching from git)
 	@${RM} ${WRKSRC}/.github/config/extensions/*.cmake
@@ -86,5 +99,9 @@ post-test: # run tests
 	@cd ${TEST_WRKSRC} && test/unittest
 
 # tests as of 1.4.4: All tests passed (28 skipped tests, 365953 assertions in 4014 test cases)
+
+# tests as of 1.5.0, see https://github.com/duckdb/duckdb/issues/21262:
+# test cases:    927 |    926 passed | 1 failed | 3 skipped
+# assertions: 832399 | 832398 passed | 1 failed | 3 skipped
 
 .include <bsd.port.mk>

@@ -38,7 +38,6 @@
     SUBDIR += anacron
     SUBDIR += and
     SUBDIR += android-file-transfer
-    SUBDIR += android-file-transfer-qt5
     SUBDIR += android-ota-payload-extractor
     SUBDIR += angrysearch
     SUBDIR += ansible
@@ -47,6 +46,7 @@
     SUBDIR += ansible-sshjail
     SUBDIR += ansible-sysrc
     SUBDIR += anvil
+    SUBDIR += aoostar-rs
     SUBDIR += apachetop
     SUBDIR += apcctrl
     SUBDIR += apcpwr
@@ -117,6 +117,9 @@
     SUBDIR += bchunk
     SUBDIR += beadm
     SUBDIR += beats8
+    SUBDIR += beats91
+    SUBDIR += beats92
+    SUBDIR += beats93
     SUBDIR += bfs
     SUBDIR += bhyve-firmware
     SUBDIR += bhyve-rc
@@ -153,7 +156,6 @@
     SUBDIR += bulk_extractor
     SUBDIR += bupstash
     SUBDIR += burp
-    SUBDIR += burp-devel
     SUBDIR += busybox
     SUBDIR += bvm
     SUBDIR += byobu
@@ -364,6 +366,7 @@
     SUBDIR += envconsul
     SUBDIR += epazote
     SUBDIR += erdtree
+    SUBDIR += erldash
     SUBDIR += etcmerge
     SUBDIR += ethname
     SUBDIR += evhz
@@ -672,6 +675,7 @@
     SUBDIR += logstash8
     SUBDIR += logstash91
     SUBDIR += logstash92
+    SUBDIR += logstash93
     SUBDIR += logtool
     SUBDIR += logwatch
     SUBDIR += loki
@@ -1052,6 +1056,7 @@
     SUBDIR += py-cron-descriptor
     SUBDIR += py-croniter
     SUBDIR += py-croniter2
+    SUBDIR += py-dbuild
     SUBDIR += py-debian-inspector
     SUBDIR += py-dict-toolbox
     SUBDIR += py-diffoscope
@@ -1084,6 +1089,7 @@
     SUBDIR += py-mitogen
     SUBDIR += py-mqttwarn
     SUBDIR += py-nagiosplugin
+    SUBDIR += py-nvitop
     SUBDIR += py-overlord
     SUBDIR += py-packet-python
     SUBDIR += py-pkginfo
@@ -1100,6 +1106,7 @@
     SUBDIR += py-python-consul
     SUBDIR += py-python-crontab
     SUBDIR += py-python-nomad
+    SUBDIR += py-python-on-whales
     SUBDIR += py-pytsk
     SUBDIR += py-pywatchman
     SUBDIR += py-pyznap
@@ -1182,7 +1189,9 @@
     SUBDIR += rubygem-backup
     SUBDIR += rubygem-bolt
     SUBDIR += rubygem-bosh-gen
+    SUBDIR += rubygem-bundle-audit
     SUBDIR += rubygem-bundler
+    SUBDIR += rubygem-bundler-audit
     SUBDIR += rubygem-bundler_ext
     SUBDIR += rubygem-capistrano
     SUBDIR += rubygem-capistrano-ext
@@ -1191,9 +1200,11 @@
     SUBDIR += rubygem-chef-bin
     SUBDIR += rubygem-chef-cleanroom
     SUBDIR += rubygem-chef-config
+    SUBDIR += rubygem-chef-config18
     SUBDIR += rubygem-chef-licensing
     SUBDIR += rubygem-chef-telemetry
     SUBDIR += rubygem-chef-utils
+    SUBDIR += rubygem-chef-utils18
     SUBDIR += rubygem-chef-vault
     SUBDIR += rubygem-chef-winrm
     SUBDIR += rubygem-chef-winrm-elevated
@@ -1275,6 +1286,7 @@
     SUBDIR += rubygem-winrm-elevated-gitlab
     SUBDIR += rubygem-winrm-gitlab
     SUBDIR += rubygem-yell
+    SUBDIR += rucola
     SUBDIR += runas
     SUBDIR += rundeck
     SUBDIR += runiq
@@ -1285,6 +1297,7 @@
     SUBDIR += rush
     SUBDIR += rust-coreutils
     SUBDIR += rust-findutils
+    SUBDIR += rustic
     SUBDIR += rw
     SUBDIR += rw-tui
     SUBDIR += s-tui
@@ -1368,7 +1381,6 @@
     SUBDIR += stow
     SUBDIR += stowES
     SUBDIR += stress
-    SUBDIR += stressdisk
     SUBDIR += superfile
     SUBDIR += superiotool
     SUBDIR += swapd
@@ -1443,6 +1455,7 @@
     SUBDIR += treetop
     SUBDIR += triton
     SUBDIR += trueos-libqt5
+    SUBDIR += try-rs
     SUBDIR += ts
     SUBDIR += tty-clock
     SUBDIR += ttyd
@@ -1586,8 +1599,8 @@
     SUBDIR += wait_on
     SUBDIR += waitforssh
     SUBDIR += walk
-    SUBDIR += watchfolder
     SUBDIR += watchcat
+    SUBDIR += watchfolder
     SUBDIR += watchman
     SUBDIR += watchmen
     SUBDIR += waynergy
@@ -1596,7 +1609,6 @@
     SUBDIR += wemux
     SUBDIR += whatpix
     SUBDIR += whowatch
-    SUBDIR += wiimms
     SUBDIR += wiper
     SUBDIR += witr
     SUBDIR += wmapmload
@@ -1617,6 +1629,7 @@
     SUBDIR += xbatt
     SUBDIR += xbattbar
     SUBDIR += xcdroast
+    SUBDIR += xclipsync
     SUBDIR += xcp
     SUBDIR += xcpustate
     SUBDIR += xdu

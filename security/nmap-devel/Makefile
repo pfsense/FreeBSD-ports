@@ -1,5 +1,6 @@
 PORTNAME=	nmap
 PORTVERSION=	7.95.${NMAP_COMMIT_DATE}
+PORTREVISION=	1
 CATEGORIES=	security
 PKGNAMESUFFIX=	-devel
 
@@ -18,9 +19,9 @@ LICENSE_PERMS=	auto-accept dist-mirror pkg-mirror pkg-sell
 
 IGNORE_FreeBSD_13=	 Does not build on FreeBSD 13.x due to OpenSSL 1.1.1
 
-.if !defined(MASTERDIR)
-
 LIB_DEPENDS=	libpcre2-16.so:devel/pcre2
+
+.if !defined(MASTERDIR)
 
 USES=		gmake cpe libtool
 
@@ -40,7 +41,6 @@ CONFIGURE_ARGS=--without-localdirs \
 		--with-liblua=included \
 		--without-nmap-update
 MAKE_JOBS_UNSAFE=	yes
-GNU_CONFIGURE_MANPREFIX=${PREFIX}/share
 
 OPTIONS_DEFINE=	DOCS NLS PCAP SSH2 SSL
 OPTIONS_DEFAULT=NLS SSH2 SSL
@@ -51,6 +51,9 @@ SSH2_DESC=		SSH2 protocol support
 
 NLS_CONFIGURE_ENABLE=	nls
 PCAP_CONFIGURE_ON=	--with-libpcap=included
+PCAP_LIB_DEPENDS=	libdbus-1.so:devel/dbus
+PCAP_USES=		localbase:ldflags
+PCAP_LDFLAGS=		-ldbus-1
 SSH2_IMPLIES=		SSL
 SSH2_CONFIGURE_ON=	--with-libssh2=included
 SSH2_CONFIGURE_OFF=	--without-libssh2

@@ -1,10 +1,9 @@
 PORTNAME=	vm-bhyve
 DISTVERSIONPREFIX=	v
-DISTVERSION=	1.7.0
-PORTREVISION=	1
+DISTVERSION=	1.7.2
 CATEGORIES=		sysutils
 
-MAINTAINER=	driesm@FreeBSD.org
+MAINTAINER=	vm-bhyve@FreeBSD.org
 COMMENT=	Management system for bhyve virtual machines
 WWW=		https://github.com/freebsd/vm-bhyve
 

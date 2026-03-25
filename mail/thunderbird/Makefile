@@ -1,9 +1,9 @@
 PORTNAME=	thunderbird
-DISTVERSION=	147.0.1
-PORTREVISION=	3
+DISTVERSION=	149.0
+PORTREVISION=	1
 CATEGORIES=	mail news net-im wayland
 MASTER_SITES=	MOZILLA/${PORTNAME}/releases/${DISTVERSION}${DISTVERSIONSUFFIX}/source \
-		MOZILLA/${PORTNAME}/candidates/${DISTVERSION}${DISTVERSIONSUFFIX}-candidates/build2/source
+		MOZILLA/${PORTNAME}/candidates/${DISTVERSION}${DISTVERSIONSUFFIX}-candidates/build1/source
 DISTFILES=	${DISTNAME}.source${EXTRACT_SUFX}
 
 MAINTAINER=	gecko@FreeBSD.org
@@ -11,7 +11,7 @@ COMMENT=	Mozilla Thunderbird is standalone mail and news that stands above
 WWW=		https://www.thunderbird.net/
 
 BUILD_DEPENDS=	nspr>=4.32:devel/nspr \
-		nss>=3.118:security/nss \
+		nss>=3.121.0:security/nss \
 		libevent>=2.1.8:devel/libevent \
 		harfbuzz>=10.1.0:print/harfbuzz \
 		graphite2>=1.3.14:graphics/graphite2 \
@@ -23,8 +23,8 @@ BUILD_DEPENDS=	nspr>=4.32:devel/nspr \
 		nasm:devel/nasm \
 		yasm:devel/yasm \
 		zip:archivers/zip \
-		${LOCALBASE}/share/wasi-sysroot/lib/wasm32-wasi/libc++abi.a:devel/wasi-libcxx${LLVM_VERSION} \
-		${LOCALBASE}/share/wasi-sysroot/lib/wasm32-wasi/libc.a:devel/wasi-libc@${LLVM_VERSION} \
+		${LOCALBASE}/share/wasi-sysroot/lib/wasm32-wasip1/libc++abi.a:devel/wasi-libcxx${LLVM_VERSION} \
+		${LOCALBASE}/share/wasi-sysroot/lib/wasm32-wasip1/libc.a:devel/wasi-libc@${LLVM_VERSION} \
 		wasi-compiler-rt${LLVM_VERSION}>0:devel/wasi-compiler-rt${LLVM_VERSION}
 LIB_DEPENDS=	libjson-c.so:devel/json-c
 
@@ -61,6 +61,8 @@ post-extract:
 post-patch:
 	@${REINPLACE_CMD} -e 's|%%LOCALBASE%%|${LOCALBASE}|g' \
 		${WRKSRC}/comm/mail/app/nsMailApp.cpp
+	@${REINPLACE_CMD} -e 's|wasm32-wasi|&p1|' \
+		${WRKSRC}/build/moz.configure/toolchain.configure
 
 port-pre-install:
 	${MKDIR} ${STAGEDIR}${PREFIX}/lib/${PORTNAME}/defaults

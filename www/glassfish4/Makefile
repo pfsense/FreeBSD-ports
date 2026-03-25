@@ -1,5 +1,6 @@
 PORTNAME=	glassfish
 DISTVERSION=	4.1.2
+PORTREVISION=	1
 CATEGORIES=	www java
 MASTER_SITES=	https://download.java.net/${PORTNAME}/${DISTVERSION}/release/ \
 		https://download.oracle.com/${PORTNAME}/${DISTVERSION}/release/

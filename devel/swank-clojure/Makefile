@@ -1,5 +1,6 @@
 PORTNAME=	swank-clojure
 PORTVERSION=	1.2.1
+PORTREVISION=	1
 CATEGORIES=	devel lisp java
 MASTER_SITES=	LOCAL/olgeni
 

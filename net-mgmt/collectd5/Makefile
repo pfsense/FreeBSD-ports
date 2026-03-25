@@ -1,6 +1,6 @@
 PORTNAME=	collectd
 DISTVERSION=	5.12.0
-PORTREVISION=	23
+PORTREVISION=	24
 CATEGORIES=	net-mgmt
 MASTER_SITES=	https://storage.googleapis.com/collectd-tarballs/
 PKGNAMESUFFIX=	5
@@ -218,6 +218,7 @@ PROMETHEUS_CONFIGURE_ENABLE=	write_prometheus
 PYTHON_USES=			gettext-runtime python
 PYTHON_CONFIGURE_ENABLE=	python
 PYTHON_CONFIGURE_ENV=		PYTHON_CONFIG=${PYTHON_CMD}-config
+PYTHON_CFLAGS=			-I${LOCALBASE}/include/${PYTHON_VERSION}/cpython
 
 RABBITMQ_LIB_DEPENDS=		librabbitmq.so:net/rabbitmq-c
 RABBITMQ_CONFIGURE_WITH=	librabbitmq=${LOCALBASE}

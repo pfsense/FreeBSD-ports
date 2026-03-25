@@ -1,5 +1,11 @@
-TIMESTAMP = 1769375411
-SHA256 (go/misc_ollama/ollama-v0.15.1/v0.15.1.mod) = 9b668bf140a94f76e18a9f308c715857ee187eb2efb411a51facbd593eeefbac
-SIZE (go/misc_ollama/ollama-v0.15.1/v0.15.1.mod) = 3667
-SHA256 (go/misc_ollama/ollama-v0.15.1/v0.15.1.zip) = 80ebb88ae5e57e81f4060fe5576c4a9a539d3275713615eb5162cc43442f5457
-SIZE (go/misc_ollama/ollama-v0.15.1/v0.15.1.zip) = 23084629
+TIMESTAMP = 1774149327
+SHA256 (go/misc_ollama/ollama-v0.18.2/v0.18.2.mod) = e660ffa37ad33611a4c1248967204e578f07ada9941e63ffe6a6fe3e95ac5039
+SIZE (go/misc_ollama/ollama-v0.18.2/v0.18.2.mod) = 4757
+SHA256 (go/misc_ollama/ollama-v0.18.2/v0.18.2.zip) = 2ad77971884d45d35ba80db3d610cdfb93e7a2f390ea68fe1745085ebf73da4a
+SIZE (go/misc_ollama/ollama-v0.18.2/v0.18.2.zip) = 23468279
+SHA256 (go/misc_ollama/ollama-v0.18.2/v0.30.6.tar.gz) = 04d8e3c5d3c3ae748145ffe51d3ad8b72493e1e8597fc0f9dc631ed620b12618
+SIZE (go/misc_ollama/ollama-v0.18.2/v0.30.6.tar.gz) = 4138686
+SHA256 (go/misc_ollama/ollama-v0.18.2/v0.5.0.tar.gz) = dcfc404d7004e6da70170c669dbc920913cb25a59c9f7dac781caf92e524cc86
+SIZE (go/misc_ollama/ollama-v0.18.2/v0.5.0.tar.gz) = 169957
+SHA256 (go/misc_ollama/ollama-v0.18.2/json.tar.xz) = d6c65aca6b1ed68e7a182f4757257b107ae403032760ed6ef121c9d55e81757d
+SIZE (go/misc_ollama/ollama-v0.18.2/json.tar.xz) = 110988

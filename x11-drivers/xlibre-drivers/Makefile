@@ -1,8 +1,9 @@
 PORTNAME=	xlibre-drivers
 PORTVERSION=	1.0
+PORTREVISION=	1
 CATEGORIES=	x11-drivers
 
-MAINTAINER=	b-aazbsd@proton.me
+MAINTAINER=	xlibre@FreeBSD.org
 COMMENT=	XLibre drivers meta-port
 WWW=		https://github.com/X11Libre/
 
@@ -10,7 +11,7 @@ LICENSE=	none
 
 USES=		metaport
 
-.include "../../x11-servers/xlibre-server/Makefile.version"
+.include 	"${.CURDIR}/../../x11-servers/xlibre-server/Makefile.version"
 MODULEDIR=	${PREFIX}/lib/xorg/modules/xlibre-${XLIBRE_MJR_VER}/
 VIDEODIR=	${MODULEDIR}/drivers
 INPUTDIR=	${MODULEDIR}/input

@@ -1,10 +1,10 @@
 PORTNAME=	addlicense
 DISTVERSIONPREFIX=	v
 DISTVERSION=	1.2.0
-PORTREVISION=	5
+PORTREVISION=	8
 CATEGORIES=	devel
 
-MAINTAINER=	nxjoseph@protonmail.com
+MAINTAINER=	nxjoseph@FreeBSD.org
 COMMENT=	Add license information to source code files
 WWW=		https://github.com/google/addlicense \
 		https://pkg.go.dev/github.com/google/addlicense

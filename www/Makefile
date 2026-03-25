@@ -26,6 +26,7 @@
     SUBDIR += R-cran-webutils
     SUBDIR += SNIP
     SUBDIR += UniversalFeedCreator
+    SUBDIR += access-log-exporter
     SUBDIR += adguardhome
     SUBDIR += adjuster
     SUBDIR += agate
@@ -203,6 +204,7 @@
     SUBDIR += flat-frog
     SUBDIR += flexget
     SUBDIR += flickcurl
+    SUBDIR += fmd-server
     SUBDIR += foreign-cdm
     SUBDIR += forgejo
     SUBDIR += forgejo-lts
@@ -249,6 +251,7 @@
     SUBDIR += gotty
     SUBDIR += gpx2map
     SUBDIR += grafana
+    SUBDIR += grafanactl
     SUBDIR += grails
     SUBDIR += gregarius
     SUBDIR += groupoffice
@@ -473,6 +476,7 @@
     SUBDIR += mythplugin-mythweb
     SUBDIR += nanoblogger
     SUBDIR += nanoblogger-extra
+    SUBDIR += nbytes
     SUBDIR += ncgopher
     SUBDIR += neon
     SUBDIR += netrik
@@ -499,7 +503,6 @@
     SUBDIR += nginx-naxsi
     SUBDIR += nginx-prometheus-exporter
     SUBDIR += nginx-ultimate-bad-bot-blocker
-    SUBDIR += nginx-vts-exporter
     SUBDIR += nift
     SUBDIR += node
     SUBDIR += node20
@@ -1475,6 +1478,7 @@
     SUBDIR += py-Tenjin
     SUBDIR += py-WebError
     SUBDIR += py-WebFlash
+    SUBDIR += py-a2wsgi
     SUBDIR += py-adblock
     SUBDIR += py-advocate
     SUBDIR += py-aiobreaker
@@ -1496,6 +1500,7 @@
     SUBDIR += py-autobahn
     SUBDIR += py-azure-common
     SUBDIR += py-azure-storage
+    SUBDIR += py-baize
     SUBDIR += py-beaker
     SUBDIR += py-beautifulsoup
     SUBDIR += py-betamax
@@ -1575,6 +1580,7 @@
     SUBDIR += py-dj52-laces
     SUBDIR += py-dj52-social-auth-app-django
     SUBDIR += py-dj52-strawberry-graphql-django
+    SUBDIR += py-dj60-django-stubs-ext
     SUBDIR += py-django-admin-rangefilter
     SUBDIR += py-django-advanced-filters
     SUBDIR += py-django-allauth
@@ -1669,7 +1675,6 @@
     SUBDIR += py-django-solo
     SUBDIR += py-django-sortedm2m
     SUBDIR += py-django-star-ratings
-    SUBDIR += py-django-statici18n
     SUBDIR += py-django-staticinline
     SUBDIR += py-django-storages
     SUBDIR += py-django-stubs-ext
@@ -1691,6 +1696,7 @@
     SUBDIR += py-django52
     SUBDIR += py-django60
     SUBDIR += py-django_compressor
+    SUBDIR += py-django_statici18n
     SUBDIR += py-djangocms-admin-style
     SUBDIR += py-djangoql
     SUBDIR += py-djangorestframework
@@ -1715,7 +1721,6 @@
     SUBDIR += py-fastapi-sso
     SUBDIR += py-feedgen
     SUBDIR += py-feedgenerator
-    SUBDIR += py-flatnotes
     SUBDIR += py-flasgger
     SUBDIR += py-flask
     SUBDIR += py-flask-admin
@@ -1756,6 +1761,7 @@
     SUBDIR += py-flask-theme
     SUBDIR += py-flask-uploads
     SUBDIR += py-flask-wtf
+    SUBDIR += py-flatnotes
     SUBDIR += py-flower
     SUBDIR += py-flup6
     SUBDIR += py-folium
@@ -1876,6 +1882,7 @@
     SUBDIR += py-priority
     SUBDIR += py-priority1
     SUBDIR += py-protego
+    SUBDIR += py-proxy.py
     SUBDIR += py-proxy_tools
     SUBDIR += py-puppetboard
     SUBDIR += py-py-restclient
@@ -2003,6 +2010,7 @@
     SUBDIR += py-yarl
     SUBDIR += py-youtube-transcript-api
     SUBDIR += py-yt-dlp
+    SUBDIR += py-yt-dlp-ejs
     SUBDIR += pydio-cells
     SUBDIR += qdecoder
     SUBDIR += qhttpengine
@@ -2025,6 +2033,7 @@
     SUBDIR += reddsaver
     SUBDIR += redmine51
     SUBDIR += redmine60
+    SUBDIR += redmine61
     SUBDIR += rejik
     SUBDIR += remark42
     SUBDIR += reportmagic
@@ -2406,6 +2415,8 @@
     SUBDIR += rubygem-redis-rails-rails52
     SUBDIR += rubygem-redis-rails-rails60
     SUBDIR += rubygem-redis-rails-rails61
+    SUBDIR += rubygem-requestjs-rails
+    SUBDIR += rubygem-requestjs-rails-rails72
     SUBDIR += rubygem-responders
     SUBDIR += rubygem-responders-rails-gitlab
     SUBDIR += rubygem-responders-rails5
@@ -2438,6 +2449,7 @@
     SUBDIR += rubygem-ruby-readability
     SUBDIR += rubygem-savon
     SUBDIR += rubygem-sawyer
+    SUBDIR += rubygem-sawyer-gitlab
     SUBDIR += rubygem-select2-rails
     SUBDIR += rubygem-selenium-webdriver
     SUBDIR += rubygem-semantic-ui-sass
@@ -2661,6 +2673,7 @@
     SUBDIR += vger
     SUBDIR += vigil
     SUBDIR += vimb
+    SUBDIR += vinyl09
     SUBDIR += visitors
     SUBDIR += volta
     SUBDIR += vultr-cli
@@ -2670,6 +2683,7 @@
     SUBDIR += wabt
     SUBDIR += wasm-bindgen-cli
     SUBDIR += wasm-pack
+    SUBDIR += wasmtime
     SUBDIR += waterfox
     SUBDIR += web2ldap
     SUBDIR += webalizer

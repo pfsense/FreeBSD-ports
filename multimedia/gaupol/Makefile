@@ -3,7 +3,7 @@ DISTVERSION=	1.15
 PORTREVISION=	1
 CATEGORIES=	multimedia python
 
-MAINTAINER=	nxjoseph@protonmail.com
+MAINTAINER=	nxjoseph@FreeBSD.org
 COMMENT=	Subtitle editor
 WWW=		https://otsaloma.io/gaupol/
 

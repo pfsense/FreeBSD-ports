@@ -1,8 +1,9 @@
 PORTNAME=	xlibre-xf86-input-void
 PORTVERSION=	25.0.0
+PORTREVISION=	1
 CATEGORIES=	x11-drivers
 
-MAINTAINER=	b-aazbsd@proton.me
+MAINTAINER=	xlibre@FreeBSD.org
 COMMENT=	XLibre void input driver
 WWW=		https://github.com/X11Libre/xf86-input-void/
 
