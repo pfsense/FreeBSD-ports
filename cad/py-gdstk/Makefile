@@ -1,13 +1,14 @@
 PORTNAME=	gdstk
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.9.62
+DISTVERSION=	1.0.0
 CATEGORIES=	cad
 #MASTER_SITES=	PYPI # some test files are missing
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Library for creation and manipulation of GDSII and OASIS files
-WWW=		https://heitzmann.github.io/gdstk/
+WWW=		https://heitzmann.github.io/gdstk/ \
+		https://github.com/heitzmann/gdstk/
 
 LICENSE=	BSL
 LICENSE_FILE=	${WRKSRC}/LICENSE
