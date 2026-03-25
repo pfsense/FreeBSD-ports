@@ -13,6 +13,8 @@ WWW=		https://qh3.readthedocs.io/en/latest/
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
+BROKEN_i386=	compilaton fails: error[E0080]: attempt to compute `16_usize - 20_usize`, which would overflow
+
 BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}maturin>=1.2:devel/py-maturin@${PY_FLAVOR} \
 		bash:shells/bash \
 		cmake:devel/cmake-core
