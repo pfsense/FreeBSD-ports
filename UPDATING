@@ -5,6 +5,20 @@ they are unavoidable.
 You should get into the habit of checking this file for changes each time
 you update your ports collection, before attempting any port upgrades.
 
+20260325:
+  AFFECTS: users of math/coq
+  AUTHOR: jrm@FreeBSD.org
+
+  Upstream no longer installs Emacs lisp, so the Emacs flavors have been
+  removed.  In order for a `pkg upgrade` to install new versions of coq,
+  any installed package for a non-default flavor must be renamed.  Do
+  this by running the commands below under /bin/sh with superuser
+  privileges:
+
+  on=$(pkg query -g %n coq-emacs_*)
+  nn=$(pkg query -g %n g coq-emacs_* | sed -e 's/-emacs_[a-z_]*//')
+  pkg set -n "$on":"$nn"
+
 20260304:
   AFFECTS: users of net-mgmt/netbox
   AUTHOR: kai@FreeBSD.org
