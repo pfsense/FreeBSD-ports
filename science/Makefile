@@ -134,7 +134,7 @@
     SUBDIR += kalzium
     SUBDIR += kim-api
     SUBDIR += kplib
-    SUBDIR += kst2
+    SUBDIR += kst
     SUBDIR += lammps
     SUBDIR += lamprop
     SUBDIR += latte

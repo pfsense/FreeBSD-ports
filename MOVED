@@ -5170,3 +5170,4 @@ devel/py-marshmallow-enum||2026-03-15|Has expired: Upstream repository has been 
 java/openjdk20||2026-03-15|Has expired: No longer supported by upstream
 textproc/py-en-core-web-sm|textproc/py-en-core-web-sm|2026-03-17|Add py- prefix to match Python package name
 sysutils/beats9|sysutils/beats93|2026-03-20|Use Beats port with preferred major.minor number instead
+science/kst2|science/kst|2026-03-25|Rename to match upstream naming
