@@ -30,6 +30,7 @@ include/clickhouse/columns/nothing.h
 include/clickhouse/columns/nullable.h
 include/clickhouse/columns/numeric.h
 include/clickhouse/columns/string.h
+include/clickhouse/columns/time.h
 include/clickhouse/columns/tuple.h
 include/clickhouse/columns/utils.h
 include/clickhouse/columns/uuid.h
