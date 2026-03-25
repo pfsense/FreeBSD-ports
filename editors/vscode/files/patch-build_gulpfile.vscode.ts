@@ -1,6 +1,6 @@
---- build/gulpfile.vscode.ts.orig	2026-03-06 23:06:10 UTC
+--- build/gulpfile.vscode.ts.orig	2026-03-17 18:09:23 UTC
 +++ build/gulpfile.vscode.ts
-@@ -382,7 +382,7 @@ function packageTask(platform: string, arch: string, s
+@@ -384,7 +384,7 @@ function packageTask(platform: string, arch: string, s
  
  		let productJsonContents: string;
  		const productJsonStream = gulp.src(['product.json'], { base: '.' })

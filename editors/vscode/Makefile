@@ -1,6 +1,5 @@
 PORTNAME=	vscode
 DISTVERSION=	${VSCODE_VERSION}
-PORTREVISION=	1
 CATEGORIES=	editors
 MASTER_SITES=	https://github.com/tagattie/FreeBSD-VSCode/releases/download/${DISTVERSION}/:node_modules
 DISTFILES=	vscode-node-modules-${DISTVERSION}${EXTRACT_SUFX}:node_modules \
@@ -19,7 +18,7 @@ ONLY_FOR_ARCHS=	amd64
 EXTRACT_DEPENDS=jq:textproc/jq \
 		node${NODEJS_VERSION}>0:www/node${NODEJS_VERSION}
 BUILD_DEPENDS=	zip:archivers/zip \
-		tsgo:lang/typescript-go \
+		typescript-go>=7.0.0.g20260306:lang/typescript-go \
 		jq:textproc/jq \
 		rg:textproc/ripgrep
 LIB_DEPENDS=	libatk-bridge-2.0.so:accessibility/at-spi2-core \
@@ -257,7 +256,7 @@ pre-test:
 
 do-test:
 # unit tests
-	cd ${WRKSRC} && ${SETENV} ${TEST_ENV} ./scripts/test.sh --build || ${TRUE}
+	cd ${WRKSRC} && ${SETENV} ${TEST_ENV} ./scripts/test.sh || ${TRUE}
 # UI smoke tests
 	cd ${WRKSRC} && ${SETENV} ${TEST_ENV} npm run smoketest
 
