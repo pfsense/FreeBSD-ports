@@ -2,8 +2,7 @@ PORTNAME=	github-copilot-cli
 DISTVERSION=	1.0.10
 PORTEPOCH=	1
 CATEGORIES=	misc # machine-learning
-DISTFILES=	${PORTNAME}-${DISTVERSION}${EXTRACT_SUFX} \
-		${NODE_HEADERS}${EXTRACT_SUFX}
+DISTFILES=	${PORTNAME}-${DISTVERSION}${EXTRACT_SUFX}
 DIST_SUBDIR=	${PORTNAME}
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -13,9 +12,28 @@ WWW=		https://github.com/github/copilot-cli
 ONLY_FOR_ARCHS=		aarch64 amd64
 ONLY_FOR_ARCHS_REASON=	binaries are installed in folders with architecture encoded in them, patches are welcome to fix this limitation
 
+FLAVORS=	script binary
+FLAVOR?=	${FLAVORS:[1]}
+script_PKGNAMESUFFIX=
+binary_PKGNAMESUFFIX=	-bin
+binary_COMMENT=	GitHub Copilot CLI - standalone binary (no npm dependencies)
+binary_PLIST=	${.CURDIR}/pkg-plist.binary
+
 FETCH_DEPENDS=	npm:www/npm \
 		jq:textproc/jq \
 		${LOCALBASE}/share/certs/ca-root-nss.crt:security/ca_root_nss
+
+WRKSRC=		${WRKDIR}/copilot-${DISTVERSION}
+
+PACKAGE_NAME=	@github/copilot
+
+DD=		${DISTDIR}/${DIST_SUBDIR}
+
+FETCH_SCRIPT=	${PORTSDIR}/Tools/scripts/npmjs-fetch-with-dependencies.sh
+
+.if ${FLAVOR} == script
+DISTFILES+=	${NODE_HEADERS}${EXTRACT_SUFX}
+
 BUILD_DEPENDS=	npm:www/npm \
 		libsecret>0:security/libsecret \
 		vips>=8.17.2:graphics/vips
@@ -25,18 +43,43 @@ RUN_DEPENDS=	libsecret>0:security/libsecret \
 
 USES=		nodejs:run pkgconfig python:build
 
-WRKSRC=		${WRKDIR}/copilot-${DISTVERSION}
+.elif ${FLAVOR} == binary
+DISTFILES+=	${NODE_HEADERS}${EXTRACT_SUFX}
 
-PACKAGE_NAME=	@github/copilot
+BUILD_DEPENDS=	npm:www/npm \
+		libsecret>0:security/libsecret \
+		vips>=8.17.2:graphics/vips
+
+# The node binary is bundled inside the port binary; its shared libraries
+# must still be present at runtime so they are listed here.
+LIB_DEPENDS=	libada.so:devel/libada \
+		libbrotlidec.so:archivers/brotli \
+		libcares.so:dns/c-ares \
+		libgtest.so:devel/googletest \
+		libhdr_histogram.so:graphics/hdr_histogram \
+		libicui18n.so:devel/icu \
+		libllhttp.so:www/llhttp \
+		libmerve.so:devel/merve \
+		libnbytes.so:www/nbytes \
+		libnghttp2.so:www/libnghttp2 \
+		libnghttp3.so:www/libnghttp3 \
+		libngtcp2.so:net/libngtcp2 \
+		libsimdjson.so:devel/simdjson \
+		libsimdutf.so:converters/simdutf \
+		libsqlite3.so:databases/sqlite3 \
+		libuv.so:devel/libuv \
+		libuvwasi.so:devel/uvwasi \
+		libzstd.so:archivers/zstd
+RUN_DEPENDS=	libsecret>0:security/libsecret \
+		vips>=8.17.2:graphics/vips
+
+USES=		nodejs:build pkgconfig python:build
+
+.endif	# FLAVOR
 
 NODE_HEADERS=	node-v22.19.0-headers
 
 JS_ARCH=	${ARCH:S/amd64/x64/:S/aarch64/arm64/}
-PLIST_SUB=	JS_ARCH=${JS_ARCH}
-
-DD=		${DISTDIR}/${DIST_SUBDIR}
-
-FETCH_SCRIPT=	${PORTSDIR}/Tools/scripts/npmjs-fetch-with-dependencies.sh
 
 DEP_MODULES=			pty sharp keytar node_addon_api
 dep_pty_npm_name=		@devm33/node-pty
@@ -52,41 +95,49 @@ dep_node_addon_api_version=	8.5.0
 DISTFILES+=	${dep:S/_/-/g}-${dep_${dep}_version}${EXTRACT_SUFX}
 .endfor
 
+PLIST_SUB=	JS_ARCH=${JS_ARCH}
+
 do-fetch:
-	@if ! [ -f ${DD}/${PORTNAME}-${DISTVERSION}${EXTRACT_SUFX} ] || \
-	    ! [ -f ${DD}/${NODE_HEADERS}${EXTRACT_SUFX} ] || \
-	    ! [ -f ${DD}/pty-${dep_pty_version}${EXTRACT_SUFX} ] || \
-	    ! [ -f ${DD}/sharp-${dep_sharp_version}${EXTRACT_SUFX} ] || \
-	    ! [ -f ${DD}/keytar-${dep_keytar_version}${EXTRACT_SUFX} ] || \
-	    ! [ -f ${DD}/node-addon-api-${dep_node_addon_api_version}${EXTRACT_SUFX} ]; then \
-		${MKDIR} ${DD} && \
-		${ECHO} "====> Fetching ${NODE_HEADERS}${EXTRACT_SUFX}" && \
-		${FETCH_CMD} -q https://nodejs.org/download/release/v22.19.0/${NODE_HEADERS}${EXTRACT_SUFX} -o ${DD}/${NODE_HEADERS}${EXTRACT_SUFX} && \
-		${ECHO} "====> Fetching dependency pty" && \
-		${SETENV} TMPDIR=${WRKDIR} LOCALBASE=${LOCALBASE} ${FETCH_SCRIPT} \
-			${dep_pty_npm_name} ${dep_pty_version} \
-			${FILESDIR}/package-lock-pty.json \
-			${DD}/pty-${dep_pty_version}${EXTRACT_SUFX} && \
-		${ECHO} "====> Fetching dependency sharp" && \
-		${SETENV} TMPDIR=${WRKDIR} LOCALBASE=${LOCALBASE} ${FETCH_SCRIPT} \
-			${dep_sharp_npm_name} ${dep_sharp_version} \
-			${FILESDIR}/package-lock-sharp.json \
-			${DD}/sharp-${dep_sharp_version}${EXTRACT_SUFX} && \
-		${ECHO} "====> Fetching dependency keytar" && \
-		${SETENV} TMPDIR=${WRKDIR} LOCALBASE=${LOCALBASE} ${FETCH_SCRIPT} \
-			${dep_keytar_npm_name} ${dep_keytar_version} \
-			${FILESDIR}/package-lock-keytar.json \
-			${DD}/keytar-${dep_keytar_version}${EXTRACT_SUFX} && \
-		${ECHO} "====> Fetching dependency node-addon-api" && \
-		${SETENV} TMPDIR=${WRKDIR} LOCALBASE=${LOCALBASE} ${FETCH_SCRIPT} \
-			${dep_node_addon_api_npm_name} ${dep_node_addon_api_version} \
-			${FILESDIR}/package-lock-node-addon-api.json \
-			${DD}/node-addon-api-${dep_node_addon_api_version}${EXTRACT_SUFX} && \
+	@${MKDIR} ${DD}
+	@if ! [ -f ${DD}/${PORTNAME}-${DISTVERSION}${EXTRACT_SUFX} ]; then \
 		${ECHO} "====> Fetching ${PORTNAME}-${DISTVERSION}${EXTRACT_SUFX}" && \
 		${SETENV} TMPDIR=${WRKDIR} LOCALBASE=${LOCALBASE} ${FETCH_SCRIPT} \
 			${PACKAGE_NAME} ${DISTVERSION} \
 			${FILESDIR}/package-lock.json \
 			${DD}/${PORTNAME}-${DISTVERSION}${EXTRACT_SUFX}; \
+	fi
+	@if ! [ -f ${DD}/${NODE_HEADERS}${EXTRACT_SUFX} ]; then \
+		${ECHO} "====> Fetching ${NODE_HEADERS}${EXTRACT_SUFX}" && \
+		${FETCH_CMD} -q https://nodejs.org/download/release/v22.19.0/${NODE_HEADERS}${EXTRACT_SUFX} \
+			-o ${DD}/${NODE_HEADERS}${EXTRACT_SUFX}; \
+	fi
+	@if ! [ -f ${DD}/pty-${dep_pty_version}${EXTRACT_SUFX} ]; then \
+		${ECHO} "====> Fetching dependency pty" && \
+		${SETENV} TMPDIR=${WRKDIR} LOCALBASE=${LOCALBASE} ${FETCH_SCRIPT} \
+			${dep_pty_npm_name} ${dep_pty_version} \
+			${FILESDIR}/package-lock-pty.json \
+			${DD}/pty-${dep_pty_version}${EXTRACT_SUFX}; \
+	fi
+	@if ! [ -f ${DD}/sharp-${dep_sharp_version}${EXTRACT_SUFX} ]; then \
+		${ECHO} "====> Fetching dependency sharp" && \
+		${SETENV} TMPDIR=${WRKDIR} LOCALBASE=${LOCALBASE} ${FETCH_SCRIPT} \
+			${dep_sharp_npm_name} ${dep_sharp_version} \
+			${FILESDIR}/package-lock-sharp.json \
+			${DD}/sharp-${dep_sharp_version}${EXTRACT_SUFX}; \
+	fi
+	@if ! [ -f ${DD}/keytar-${dep_keytar_version}${EXTRACT_SUFX} ]; then \
+		${ECHO} "====> Fetching dependency keytar" && \
+		${SETENV} TMPDIR=${WRKDIR} LOCALBASE=${LOCALBASE} ${FETCH_SCRIPT} \
+			${dep_keytar_npm_name} ${dep_keytar_version} \
+			${FILESDIR}/package-lock-keytar.json \
+			${DD}/keytar-${dep_keytar_version}${EXTRACT_SUFX}; \
+	fi
+	@if ! [ -f ${DD}/node-addon-api-${dep_node_addon_api_version}${EXTRACT_SUFX} ]; then \
+		${ECHO} "====> Fetching dependency node-addon-api" && \
+		${SETENV} TMPDIR=${WRKDIR} LOCALBASE=${LOCALBASE} ${FETCH_SCRIPT} \
+			${dep_node_addon_api_npm_name} ${dep_node_addon_api_version} \
+			${FILESDIR}/package-lock-node-addon-api.json \
+			${DD}/node-addon-api-${dep_node_addon_api_version}${EXTRACT_SUFX}; \
 	fi
 
 post-extract:
@@ -121,8 +172,33 @@ do-build:
 		${SETENV} HOME=${WRKDIR} CFLAGS="-I${LOCALBASE}/include" CXXFLAGS="-I${LOCALBASE}/include" \
 			npm rebuild --nodedir=${LOCALBASE} && \
 		${CP} build/Release/keytar.node ${WRKSRC}/node_modules/${PACKAGE_NAME}/prebuilds/freebsd-x64/
+.if ${FLAVOR} == binary
+	@${ECHO_MSG} "====> Creating copilot bundle (includes node runtime)..."
+	# Copy @img/sharp-freebsd-x64 into copilot's node_modules so it is findable
+	# after extraction to the cache dir (node resolves it relative to app.js)
+	@${MKDIR} ${WRKSRC}/node_modules/${PACKAGE_NAME}/node_modules/@img
+	@${CP} -r ${WRKSRC}/node_modules/@img/sharp-freebsd-x64 \
+		${WRKSRC}/node_modules/${PACKAGE_NAME}/node_modules/@img/
+	# Embed the node runtime so it runs without a system node installation
+	@${CP} ${LOCALBASE}/bin/node ${WRKSRC}/node_modules/${PACKAGE_NAME}/node
+	@cd ${WRKSRC}/node_modules/${PACKAGE_NAME} && \
+		${TAR} --exclude=./ripgrep --exclude=./sharp \
+			--exclude=./changelog.json --exclude=./npm-loader.js.orig \
+			-cJf ${WRKSRC}/copilot_bundle.txz .
+	@${ECHO_MSG} "====> Building copilot launcher..."
+	@${PRINTF} '\t.global _binary_copilot_bundle_txz_start\n\t.global _binary_copilot_bundle_txz_end\n_binary_copilot_bundle_txz_start:\n\t.incbin "%s"\n_binary_copilot_bundle_txz_end:\n' \
+		"${WRKSRC}/copilot_bundle.txz" > ${WRKSRC}/blob.s
+	@${CC} -c ${WRKSRC}/blob.s -o ${WRKSRC}/blob.o
+	@${CC} ${CFLAGS} \
+		-DPREFIX='"${PREFIX}"' \
+		-DPORTVERSION='"${PORTVERSION}"' \
+		-c ${FILESDIR}/launcher.c -o ${WRKSRC}/launcher.o
+	@${CC} ${LDFLAGS} -o ${WRKSRC}/copilot ${WRKSRC}/launcher.o ${WRKSRC}/blob.o
+	@${STRIP_CMD} ${WRKSRC}/copilot
+.endif	# FLAVOR == binary
 
 do-install:
+.if ${FLAVOR} == script
 	# install files
 	cd ${WRKSRC} && \
 		${COPYTREE_SHARE} . ${STAGEDIR}${PREFIX}/lib
@@ -148,5 +224,8 @@ do-install:
 	@${RLN} -s ${STAGEDIR}${PREFIX}/lib/node_modules/.bin/copilot ${STAGEDIR}${PREFIX}/bin/copilot
 	# strip binaries
 	@${FIND} ${STAGEDIR}${PREFIX}/lib/node_modules/${PACKAGE_NAME} -path "*/build/*" -name *.node | ${XARGS} ${STRIP_CMD}
+.elif ${FLAVOR} == binary
+	${INSTALL_PROGRAM} ${WRKSRC}/copilot ${STAGEDIR}${PREFIX}/bin/copilot
+.endif	# FLAVOR
 
 .include <bsd.port.mk>
