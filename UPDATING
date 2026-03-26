@@ -5,6 +5,28 @@ they are unavoidable.
 You should get into the habit of checking this file for changes each time
 you update your ports collection, before attempting any port upgrades.
 
+20260326:
+  AFFECTS: users of databases/mysql80-(server|client)
+  AUTHOR: joneum@FreeBSD.org
+
+  The default MySQL version has been updated from 8.0 to 8.4.
+
+  If you compile your own ports you may keep 8.0 as the default version by
+  adding the following lines to your /etc/make.conf file:
+
+  #
+  # Keep MySQL 8.0 as default version
+  #
+  DEFAULT_VERSIONS+=mysql=8.0
+
+  If you wish to update to the new default version, you need to first stop any
+  running server instance. Then, you will need to follow these steps, depending
+  on installed packages.
+
+  # pkg set -o databases/mysql80-client:databases/mysql84-client
+  # pkg set -o databases/mysql80-server:databases/mysql84-server
+  # pkg upgrade
+
 20260325:
   AFFECTS: users of math/coq
   AUTHOR: jrm@FreeBSD.org
