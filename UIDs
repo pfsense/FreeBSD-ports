@@ -429,7 +429,7 @@ alertmanager:*:479:479::0:0:Alertmanager Daemon:/var/tmp/alertmanager:/usr/sbin/
 datadog:*:480:480::0:0:DataDog Agent:/var/db/datadog:/usr/sbin/nologin
 promxy:*:481:481::0:0:Promxy Daemon:/nonexistent:/usr/sbin/nologin
 openbao:*:482:482:daemon:0:0:OpenBao Daemon:/nonexistent:/usr/sbin/nologin
-# free: 483
+garage:*:483:483::0:0:Garage Daemon:/var/db/garage:/usr/sbin/nologin
 stalwart:*:484:484::0:0:stalwart Mail Server Daemon:/nonexistent:/usr/sbin/nologin
 # free: 485
 # free: 486

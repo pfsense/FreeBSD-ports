@@ -423,7 +423,7 @@ alertmanager:*:479:
 datadog:*:480:
 promxy:*:481:
 openbao:*:482:
-# free: 483
+garage:*:483:
 stalwart:*:484:
 # free: 485
 # free: 486
