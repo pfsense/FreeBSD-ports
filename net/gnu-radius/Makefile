@@ -71,4 +71,9 @@ post-install:
 		${STAGEDIR}${EXAMPLESDIR}\
 		"! ( -name Makefile -o -name Makefile\.* ) " )
 
+post-install-EMACS-on:
+	@${MKDIR} ${STAGEDIR}${PREFIX}/${EMACS_SITE_LISPDIR}
+	${INSTALL_DATA} ${WRKSRC}/elisp/*.el \
+		${STAGEDIR}${PREFIX}/${EMACS_SITE_LISPDIR}
+
 .include <bsd.port.mk>
