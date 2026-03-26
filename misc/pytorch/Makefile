@@ -13,6 +13,7 @@ WWW=		https://pytorch.org/
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
+BROKEN_aarch64=	compilation fails: clang crashes, see https://bugs.freebsd.org/bugzilla/show_bug.cgi?id=294067
 BROKEN_i386=	compilation fails: error: use of undeclared identifier 'AVX2'
 
 BUILD_DEPENDS=	gmake:devel/gmake \
