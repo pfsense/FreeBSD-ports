@@ -1,5 +1,5 @@
 PORTNAME=	gnupg
-DISTVERSION=	2.5.17
+DISTVERSION=	2.5.18
 CATEGORIES=	security
 MASTER_SITES=	GNUPG
 PKGNAMESUFFIX=	25
@@ -12,8 +12,6 @@ LICENSE=	GPLv3 LGPL3
 LICENSE_COMB=	multi
 LICENSE_FILE_GPLv3=	${WRKSRC}/COPYING
 LICENSE_FILE_LGPL3=	${WRKSRC}/COPYING.LGPL3
-
-CONFLICTS_INSTALL=	gnupg1-* gnupg-2.4*
 
 LIB_DEPENDS=	libassuan.so:security/libassuan \
 		libgcrypt.so:security/libgcrypt \
@@ -33,7 +31,8 @@ CONFIGURE_ARGS=	--disable-ntbtls
 TEST_ARGS=	TESTARGS=--parallel
 TEST_TARGET=	check
 
-CONFLICTS=	dirmngr
+CONFLICTS=		dirmngr
+CONFLICTS_INSTALL=	gnupg1-* gnupg-2.4*
 
 INFO=		gnupg
 
