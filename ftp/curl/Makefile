@@ -1,8 +1,12 @@
 PORTNAME=	curl
-PORTVERSION=	8.17.0
+PORTVERSION=	8.19.0
+PORTREVISION=	1
 CATEGORIES=	ftp net www
 MASTER_SITES=	https://curl.se/download/ \
 		https://github.com/curl/curl/releases/download/curl-${PORTVERSION:S|.|_|g}/
+
+PATCH_SITES=	https://github.com/curl/curl/commit/
+PATCHFILES=	53a3b2114a9b0652bb464437d38f5c8abffc708d.patch:-p1
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Command line tool and library for transferring data with URLs
@@ -28,6 +32,7 @@ CONFIGURE_ARGS=	--disable-unity \
 		--enable-openssl-auto-load-config \
 		--enable-progress-meter \
 		--enable-ssls-export \
+		--enable-typecheck \
 		--with-ca-path=/etc/ssl/certs \
 		--with-zsh-functions-dir=${LOCALBASE}/share/zsh/site-functions \
 		--without-ca-bundle \
@@ -43,7 +48,7 @@ CPE_VENDOR=	haxx
 
 SHEBANG_FILES=	*/*.pl
 
-OPTIONS_DEFINE=	ALTSVC COOKIES CURL_DEBUG DEBUG DOCS EXAMPLES IDN IPV6 LIBUV NTLM PROXY PSL STATIC TLS_SRP
+OPTIONS_DEFINE=	ALTSVC COOKIES DEBUG DOCS EXAMPLES IDN IPV6 LIBUV NTLM PROXY PSL STATIC TLS_SRP
 OPTIONS_GROUP=	COMPRESSION PROTOCOL
 OPTIONS_RADIO=	SSL
 OPTIONS_SINGLE=	GSSAPI RESOLV
@@ -57,7 +62,6 @@ OPTIONS_SUB=	yes
 ALTSVC_DESC=	HTTP Alternative Services support
 COMPRESSION_DESC=	Compression methods
 COOKIES_DESC=	Cookies support
-CURL_DEBUG_DESC=cURL debug memory tracking
 DICT_DESC=	DICT (RFC 2229) support
 HTTP_DESC=	HTTP/HTTPS support
 HTTP2_DESC=	HTTP/2 support (requires HTTP)
@@ -90,7 +94,6 @@ CARES_CONFIGURE_ENABLE=	ares
 CARES_LIB_DEPENDS=	libcares.so:dns/c-ares
 CARES_USES=		pkgconfig
 COOKIES_CONFIGURE_ENABLE=	cookies
-CURL_DEBUG_CONFIGURE_ENABLE=	curldebug
 DEBUG_CONFIGURE_ENABLE=	debug
 DICT_CONFIGURE_ENABLE=	dict
 FTP_CONFIGURE_ENABLE=	ftp
@@ -166,7 +169,7 @@ post-install:
 
 post-install-DOCS-on:
 	${MKDIR} ${STAGEDIR}${DOCSDIR}/ ${STAGEDIR}${DOCSDIR}/internals/ ${STAGEDIR}${DOCSDIR}/libcurl/
-	cd ${WRKSRC}/docs/ && ${INSTALL_DATA} FAQ INSTALL KNOWN_BUGS THANKS TODO options-in-versions *.md ${STAGEDIR}${DOCSDIR}/
+	cd ${WRKSRC}/docs/ && ${INSTALL_DATA} THANKS options-in-versions *.md ${STAGEDIR}${DOCSDIR}/
 	${INSTALL_DATA} ${WRKSRC}/docs/internals/*.md ${STAGEDIR}${DOCSDIR}/internals/
 	cd ${WRKSRC}/docs/libcurl/ && ${INSTALL_DATA} ABI.md libcurl.m4 *.pl symbols-in-versions ${STAGEDIR}${DOCSDIR}/libcurl/
 
