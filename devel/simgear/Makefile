@@ -1,5 +1,5 @@
 PORTNAME=	simgear
-PORTVERSION=	2024.1.4
+PORTVERSION=	2024.1.5
 CATEGORIES=	devel games
 
 MAINTAINER=	martymac@FreeBSD.org
@@ -12,7 +12,13 @@ LICENSE_FILE_LGPL20+ =	${WRKSRC}/COPYING
 
 BUILD_DEPENDS=	${LOCALBASE}/lib/libplibsl.a:x11-toolkits/plib
 RUN_DEPENDS=	${LOCALBASE}/lib/libplibsl.a:x11-toolkits/plib
-LIB_DEPENDS=	libboost_thread.so:devel/boost-libs \
+LIB_DEPENDS=	libavcodec.so:multimedia/ffmpeg \
+		libavdevice.so:multimedia/ffmpeg \
+		libavformat.so:multimedia/ffmpeg \
+		libavutil.so:multimedia/ffmpeg \
+		libswscale.so:multimedia/ffmpeg \
+		libswresample.so:multimedia/ffmpeg \
+		libboost_thread.so:devel/boost-libs \
 		libosg.so:graphics/osg \
 		libexpat.so:textproc/expat2 \
 		libcurl.so:ftp/curl
