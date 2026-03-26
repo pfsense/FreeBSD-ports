@@ -1,6 +1,5 @@
 PORTNAME=	sra-tools
-DISTVERSION=	3.3.0
-PORTREVISION=	3
+DISTVERSION=	3.4.1
 CATEGORIES=	biology java
 
 MAINTAINER=	jwb@FreeBSD.org
@@ -58,8 +57,6 @@ pre-configure:
 post-stage:
 	${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/*.${DISTVERSION}
 	${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib64/*.${DISTVERSION}
-	${MV} ${STAGEDIR}${JAVASHAREDIR}doc/ngs-doc/script-dir/jquery-[0-9]*.min.js \
-		${STAGEDIR}${JAVASHAREDIR}doc/ngs-doc/script-dir/jquery.min.js
 
 post-stage-EXAMPLES-off:
 	${RM} -r ${STAGEDIR}${EXAMPLESDIR}
