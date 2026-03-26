@@ -1,6 +1,5 @@
 PORTNAME=	freeipa-client
-DISTVERSION=	4.13.0
-PORTREVISION=	1
+DISTVERSION=	4.13.1
 CATEGORIES=	net
 MASTER_SITES=	https://releases.pagure.org/freeipa/
 DISTNAME=	freeipa-${DISTVERSION}
