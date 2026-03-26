@@ -1,5 +1,7 @@
 bin/diff-so-fancy
 %%SITE_PERL%%/DiffHighlight.pm
-%%DOCSDIR%%/README.md
-%%DOCSDIR%%/history.md
-%%DOCSDIR%%/pro-tips.md
+%%DOCS%%%%PORTDOCS%%%%DOCSDIR%%/README.md
+%%DOCS%%%%PORTDOCS%%%%DOCSDIR%%/hacking-and-testing.md
+%%DOCS%%%%PORTDOCS%%%%DOCSDIR%%/history.md
+%%DOCS%%%%PORTDOCS%%%%DOCSDIR%%/pro-tips.md
+%%DOCS%%%%PORTDOCS%%%%DOCSDIR%%/reporting-bugs.md
