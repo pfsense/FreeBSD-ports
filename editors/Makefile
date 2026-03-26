@@ -209,6 +209,7 @@
     SUBDIR += marginalia.el
     SUBDIR += marker
     SUBDIR += markmywords
+    SUBDIR += marknote
     SUBDIR += mg
     SUBDIR += mickey
     SUBDIR += micro
