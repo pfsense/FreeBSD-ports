@@ -1,5 +1,4 @@
 bin/fuse
-share/man/man1/fuse.1.gz
 %%ICONS%%share/applications/fuse.desktop
 %%DATADIR%%/128-0.rom
 %%DATADIR%%/128-1.rom
@@ -7,11 +6,10 @@ share/man/man1/fuse.1.gz
 %%DATADIR%%/cassette.bmp
 %%DATADIR%%/disciple.rom
 %%SDL%%%%DATADIR%%/fuse.font
-%%SVGALIB%%%%DATADIR%%/fuse.font
+%%DATADIR%%/keyboard.png
 %%DATADIR%%/keyboard.scr
 %%GTK2%%%%DATADIR%%/menu_data.ui
 %%GTK3%%%%DATADIR%%/menu_data.ui
-%%DATADIR%%/keyboard.png
 %%DATADIR%%/microdrive.bmp
 %%DATADIR%%/plus2-0.rom
 %%DATADIR%%/plus2-1.rom
@@ -43,4 +41,5 @@ share/man/man1/fuse.1.gz
 %%ICONS%%share/icons/hicolor/48x48/mimetypes/application-x-spectrum.png
 %%ICONS%%share/icons/hicolor/64x64/apps/fuse.png
 %%ICONS%%share/icons/hicolor/64x64/mimetypes/application-x-spectrum.png
+share/man/man1/fuse.1.gz
 %%ICONS%%share/mime/packages/fuse.xml
