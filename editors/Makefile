@@ -58,6 +58,7 @@
     SUBDIR += gnome-text-editor
     SUBDIR += gobby
     SUBDIR += gomate
+    SUBDIR += gram
     SUBDIR += gummi
     SUBDIR += helix
     SUBDIR += heme
