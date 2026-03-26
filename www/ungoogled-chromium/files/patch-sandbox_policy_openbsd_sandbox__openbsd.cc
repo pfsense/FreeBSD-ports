@@ -1,6 +1,6 @@
---- sandbox/policy/openbsd/sandbox_openbsd.cc.orig	2025-12-12 07:44:27 UTC
+--- sandbox/policy/openbsd/sandbox_openbsd.cc.orig	2026-03-15 18:32:51 UTC
 +++ sandbox/policy/openbsd/sandbox_openbsd.cc
-@@ -0,0 +1,396 @@
+@@ -0,0 +1,403 @@
 +// Copyright (c) 2012 The Chromium Authors. All rights reserved.
 +// Use of this source code is governed by a BSD-style license that can be
 +// found in the LICENSE file.
@@ -73,6 +73,7 @@
 +#define _UNVEIL_UTILITY_NETWORK	"/etc/ungoogled-chromium/unveil.utility_network";
 +#define _UNVEIL_UTILITY_AUDIO	"/etc/ungoogled-chromium/unveil.utility_audio";
 +#define _UNVEIL_UTILITY_VIDEO	"/etc/ungoogled-chromium/unveil.utility_video";
++#define _UNVEIL_CDM		"/etc/ungoogled-chromium/unveil.cdm";
 +
 +namespace sandbox {
 +namespace policy {
@@ -218,8 +219,11 @@
 +    case sandbox::mojom::Sandbox::kVideoCapture:
 +      ufile = _UNVEIL_UTILITY_VIDEO;
 +      break;
++    case sandbox::mojom::Sandbox::kCdm:
++      ufile = _UNVEIL_CDM;
++      break;
 +    default:
-+      unveil("/dev/null", "r");
++      unveil("/dev/null", "rw");
 +      goto done;
 +  }
 +
@@ -343,7 +347,7 @@
 +      break;
 +    case sandbox::mojom::Sandbox::kGpu:
 +    case sandbox::mojom::Sandbox::kOnDeviceModelExecution:
-+      SetPledge("stdio drm inet rpath flock cpath wpath prot_exec recvfd sendfd tmppath unix", NULL);
++      SetPledge("stdio drm inet rpath flock cpath wpath prot_exec recvfd sendfd unix", NULL);
 +      break;
 +    case sandbox::mojom::Sandbox::kAudio:
 +      SetPledge(NULL, "/etc/ungoogled-chromium/pledge.utility_audio");
@@ -353,6 +357,9 @@
 +      break;
 +    case sandbox::mojom::Sandbox::kVideoCapture:
 +      SetPledge(NULL, "/etc/ungoogled-chromium/pledge.utility_video");
++      break;
++    case sandbox::mojom::Sandbox::kCdm:
++      SetPledge("stdio rpath flock recvfd sendfd", NULL);
 +      break;
 +    case sandbox::mojom::Sandbox::kUtility:
 +    case sandbox::mojom::Sandbox::kService:

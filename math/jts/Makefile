@@ -1,5 +1,6 @@
 PORTNAME=	jts
 DISTVERSION=	1.18.1
+PORTREVISION=	1
 DISTVERSIONPREFIX=	jts-
 CATEGORIES=	math databases java
 
@@ -16,6 +17,8 @@ USES=		java
 JAVA_VERSION=	11+
 USE_GITHUB=	yes
 GH_ACCOUNT=	locationtech
+
+MAKE_ENV+=	JAVA_HOME=${JAVA_HOME}
 
 NO_ARCH=	yes
 

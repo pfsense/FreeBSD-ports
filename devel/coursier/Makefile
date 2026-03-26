@@ -1,6 +1,7 @@
 PORTNAME=	coursier
 DISTVERSIONPREFIX=	v
 DISTVERSION=	2.1.24
+PORTREVISION=	1
 CATEGORIES=	devel java
 MASTER_SITES=	https://github.com/coursier/coursier/releases/download/${DISTVERSIONFULL}/
 DISTNAME=	${PORTNAME}

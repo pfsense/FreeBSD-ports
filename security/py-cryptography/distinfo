@@ -1,6 +1,6 @@
-TIMESTAMP = 1767157665
-SHA256 (cryptography-46.0.3.tar.gz) = a8b17438104fed022ce745b362294d9ce35b4c2e45c1d958ad4a4b019285f4a1
-SIZE (cryptography-46.0.3.tar.gz) = 749258
+TIMESTAMP = 1771421726
+SHA256 (cryptography-46.0.5.tar.gz) = abace499247268e3757271b2f1e244b36b06f8515cf27c4d49468fc9eb16e93d
+SIZE (cryptography-46.0.5.tar.gz) = 750064
 SHA256 (rust/crates/asn1-0.22.0.crate) = df42c2b01c5e1060b8281f67b4e5fb858260694916a667345a7305cd11e5dbfa
 SIZE (rust/crates/asn1-0.22.0.crate) = 47124
 SHA256 (rust/crates/asn1_derive-0.22.0.crate) = cdccf849b54365e3693e9a90ad36e4482b79937e6373ac8e2cf229c985187b21
@@ -73,3 +73,5 @@ SHA256 (rust/crates/unindent-0.2.4.crate) = 7264e107f553ccae879d21fbea1d6724ac78
 SIZE (rust/crates/unindent-0.2.4.crate) = 7422
 SHA256 (rust/crates/vcpkg-0.2.15.crate) = accd4ea62f7bb7a82fe23066fb0957d48ef677f6eeb8215f372f52e48bb32426
 SIZE (rust/crates/vcpkg-0.2.15.crate) = 228735
+SHA256 (43eb178ee3aae8d0060221118437b03c23570a41.patch) = ca4fc4670c8a32400db86a0f7edefd9c68aa2c0f3c8bd661350da3eadabad967
+SIZE (43eb178ee3aae8d0060221118437b03c23570a41.patch) = 1685

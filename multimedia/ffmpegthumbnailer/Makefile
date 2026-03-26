@@ -4,7 +4,7 @@ DISTVERSION=	2.3.0
 PORTREVISION=	1
 CATEGORIES=	multimedia graphics
 
-MAINTAINER=	nxjoseph@protonmail.com
+MAINTAINER=	nxjoseph@FreeBSD.org
 COMMENT=	Lightweight video thumbnailer that can be used by file managers
 WWW=		https://github.com/dirkvdb/ffmpegthumbnailer
 
@@ -15,8 +15,7 @@ LIB_DEPENDS=	libavformat.so:multimedia/ffmpeg \
 		libpng.so:graphics/png
 
 USES=		cmake:testing compiler:c++14-lang gnome jpeg localbase \
-		pkgconfig tar:bz2
-USE_CXXSTD=	c++14
+		pathfix pkgconfig
 USE_GITHUB=	yes
 GH_ACCOUNT=	dirkvdb
 USE_GNOME=	glib20

@@ -1,5 +1,6 @@
 PORTNAME=	commons-dbcp
 PORTVERSION=	2.12.0
+PORTREVISION=	1
 CATEGORIES=	java databases
 MASTER_SITES=	https://archive.apache.org/dist/commons/dbcp/binaries/
 PKGNAMEPREFIX=	apache-

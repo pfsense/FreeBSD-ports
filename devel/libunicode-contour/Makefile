@@ -1,6 +1,6 @@
 PORTNAME=	libunicode
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.7.0
+DISTVERSION=	0.8.0
 CATEGORIES=	devel
 PKGNAMESUFFIX=	-contour
 
@@ -14,7 +14,7 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 BUILD_DEPENDS=	${LOCALBASE}/share/pkgconfig/catch2-with-main.pc:devel/catch2 \
 		UCD>=17.0.0,1:textproc/UCD
 
-USES=		cmake:testing
+USES=		cmake:testing python:build
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	contour-terminal

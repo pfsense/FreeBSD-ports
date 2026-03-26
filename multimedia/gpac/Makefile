@@ -24,13 +24,15 @@ CONFIGURE_ARGS+=	--prefix="${PREFIX}" --cc="${CC}" \
 			--extra-cflags="${CFLAGS}" --extra-ldflags="${LDFLAGS}"
 MAKE_ENV+=		VERSION=${DISTVERSION}
 USE_LDCONFIG=		yes
-OPTIONS_DEFINE=		A52 CACA FAAD FFMPEG FREETYPE JPEG MAD NGHTTP2 OGG \
-			OPENGL PNG SDL2 THEORA VORBIS X11 XVID
+OPTIONS_DEFINE=		ALSA A52 CACA FAAD FFMPEG FREETYPE JACK JPEG MAD NGHTTP2 \
+			OGG OPENGL PULSEAUDIO QUICKJS PNG SDL2 THEORA VORBIS X11 XVID
 OPTIONS_DEFAULT=	JPEG PNG
 OPTIONS_SUB=		yes
 
 A52_LIB_DEPENDS=	liba52.so:audio/liba52
 A52_CONFIGURE_OFF=	--use-a52=no
+ALSA_CONFIGURE_OFF=	--disable-alsa
+ALSA_LIB_DEPENDS=	libasound.so:audio/alsa-lib
 CACA_LIB_DEPENDS=	libcaca.so:graphics/libcaca
 CACA_CONFIGURE_OFF=	--use-libcaca=no
 FAAD_LIB_DEPENDS=	libfaad.so:audio/faad
@@ -38,6 +40,8 @@ FFMPEG_LIB_DEPENDS=	libavcodec.so:multimedia/ffmpeg
 FFMPEG_CONFIGURE_OFF=	--use-ffmpeg=no
 FREETYPE_LIB_DEPENDS=	libfreetype.so:print/freetype2
 FREETYPE_CONFIGURE_OFF=	--use-freetype=no
+JACK_CONFIGURE_ENABLE=	jack
+JACK_LIB_DEPENDS=	libjack.so:audio/jack
 JPEG_USES=		jpeg
 JPEG_CONFIGURE_ON=	--use-jpeg=system --use-openjpeg=no
 JPEG_CONFIGURE_OFF=	--use-jpeg=no
@@ -50,8 +54,12 @@ OGG_LIB_DEPENDS=	libogg.so:audio/libogg
 OGG_CONFIGURE_OFF=	--use-ogg=no
 OPENGL_USES=		gl
 OPENGL_USE=		GL=gl,glu
+PULSEAUDIO_CONFIGURE_OFF=	--disable-pulseaudio
+PULSEAUDIO_LIB_DEPENDS=	libpulse.so:audio/pulseaudio
 PNG_LIB_DEPENDS=	libpng.so:graphics/png
 PNG_CONFIGURE_OFF=	--use-png=no
+QUICKJS_DESC=		QuickJS Support
+QUICKJS_CONFIGURE_ENABLE=	qjs
 SDL2_DESC=		SDL2 support
 SDL2_USES=		sdl
 SDL2_USE=		SDL=sdl2

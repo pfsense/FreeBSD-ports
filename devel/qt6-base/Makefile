@@ -53,7 +53,8 @@ CMAKE_ON=	CMAKE_DISABLE_FIND_PACKAGE_LTTngUST \
 		QT_FIND_ALL_PACKAGES_ALWAYS \
 		QT_FEATURE_openssl_linked
 CMAKE_OFF=	QT_FEATURE_eglfs \
-		QT_FEATURE_gssapi
+		QT_FEATURE_gssapi \
+		QT_FEATURE_reduce_relocations
 # sql drivers are handled in the databases/qt6-base_sqldriver port
 CMAKE_OFF+=	FEATURE_sql_mysql \
 		FEATURE_sql_odbc \

@@ -1,5 +1,6 @@
 PORTNAME=	plantuml
 DISTVERSION=	1.2026.1
+PORTREVISION=	1
 CATEGORIES=	graphics java textproc
 MASTER_SITES=	https://github.com/${PORTNAME}/${PORTNAME}/releases/download/v${DISTVERSION}/
 EXTRACT_SUFX=	.jar

@@ -1,6 +1,6 @@
---- chrome/browser/chrome_browser_interface_binders_webui_parts_desktop.cc.orig	2026-01-16 14:21:21 UTC
+--- chrome/browser/chrome_browser_interface_binders_webui_parts_desktop.cc.orig	2026-03-24 16:59:08 UTC
 +++ chrome/browser/chrome_browser_interface_binders_webui_parts_desktop.cc
-@@ -130,7 +130,7 @@
+@@ -128,7 +128,7 @@
  #include "ui/webui/resources/js/browser_command/browser_command.mojom.h"
  #include "ui/webui/resources/js/tracked_element/tracked_element.mojom.h"  // nogncheck crbug.com/1125897
  
@@ -9,7 +9,7 @@
  #include "chrome/browser/ui/webui/app_home/app_home.mojom.h"
  #include "chrome/browser/ui/webui/app_home/app_home_ui.h"
  #include "chrome/browser/ui/webui/app_settings/web_app_settings_ui.h"
-@@ -328,7 +328,7 @@ void PopulateChromeWebUIFrameBindersPartsDesktop(
+@@ -338,7 +338,7 @@ void PopulateChromeWebUIFrameBindersPartsDesktop(
          HistoryClustersSidePanelUI, NewTabPageUI, BookmarksSidePanelUI>(map);
    }
  
@@ -18,7 +18,7 @@
    RegisterWebUIControllerInterfaceBinder<whats_new::mojom::PageHandlerFactory,
                                           WhatsNewUI>(map);
  #endif  // BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX)
-@@ -340,7 +340,7 @@ void PopulateChromeWebUIFrameBindersPartsDesktop(
+@@ -350,7 +350,7 @@ void PopulateChromeWebUIFrameBindersPartsDesktop(
  
    RegisterWebUIControllerInterfaceBinder<
        browser_command::mojom::CommandHandlerFactory,
@@ -27,7 +27,7 @@
        WhatsNewUI,
  #endif  // BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX)
        NewTabPageUI>(map);
-@@ -541,7 +541,7 @@ void PopulateChromeWebUIFrameBindersPartsDesktop(
+@@ -547,7 +547,7 @@ void PopulateChromeWebUIFrameBindersPartsDesktop(
          OmniboxPopupUI>(map);
    }
  
@@ -36,3 +36,12 @@
    RegisterWebUIControllerInterfaceBinder<
        app_management::mojom::PageHandlerFactory, WebAppSettingsUI>(map);
  
+@@ -581,7 +581,7 @@ void PopulateChromeWebUIFrameBindersPartsDesktop(
+         ContextualTasksUI>(map);
+   }
+ 
+-#if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX)
++#if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_BSD)
+   RegisterWebUIControllerInterfaceBinder<updater_ui::mojom::PageHandlerFactory,
+                                          UpdaterUI>(map);
+ #endif  // BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX)

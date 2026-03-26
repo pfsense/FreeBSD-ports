@@ -1,5 +1,5 @@
-TIMESTAMP = 1757410255
-SHA256 (go/security_interactsh/interactsh-v1.2.4/v1.2.4.mod) = 0b8614481043cb534bd402156cc8d85584da06cb9d16e099af4ba993fa7668ed
-SIZE (go/security_interactsh/interactsh-v1.2.4/v1.2.4.mod) = 6497
-SHA256 (go/security_interactsh/interactsh-v1.2.4/v1.2.4.zip) = 76b5d53f5c1c3ade6c008cdd0a5bf3138dc45b967eeb215513332b6095c7d10d
-SIZE (go/security_interactsh/interactsh-v1.2.4/v1.2.4.zip) = 112911
+TIMESTAMP = 1774189246
+SHA256 (go/security_interactsh/interactsh-v1.3.1/v1.3.1.mod) = 4ec28b73929d2436bb8ab94f3ce0688101bccddd4849aa81ddfc6786025563ca
+SIZE (go/security_interactsh/interactsh-v1.3.1/v1.3.1.mod) = 7234
+SHA256 (go/security_interactsh/interactsh-v1.3.1/v1.3.1.zip) = 64facfb19cc7a381e2595b023999418ec8b0d571cb19b5451e29194de6702551
+SIZE (go/security_interactsh/interactsh-v1.3.1/v1.3.1.zip) = 134971

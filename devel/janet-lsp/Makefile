@@ -1,7 +1,6 @@
 PORTNAME=	janet-lsp
-PORTVERSION=	0.0.11
+PORTVERSION=	0.0.12
 DISTVERSIONPREFIX=	v
-PORTREVISION=	1
 CATEGORIES=	devel
 
 MAINTAINER=	dave@freedave.net
@@ -11,10 +10,8 @@ WWW=		https://github.com/CFiggers/janet-lsp
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-# Technically jpm should depend on janet.
-BUILD_DEPENDS=	janet>=1.17.2:lang/janet \
-		jpm>=1.1.0:lang/jpm
-RUN_DEPENDS=	janet>=1.17.2:lang/janet
+BUILD_DEPENDS=	jpm>=1.2.0:lang/jpm
+RUN_DEPENDS=	janet>=1.38.0:lang/janet
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	CFiggers
@@ -29,8 +26,9 @@ GH_ACCOUNT=	CFiggers
 GH_TUPLE=	CFiggers:cmd:b0a34d6:cmd \
 		CFiggers:jayson:4f54041:jayson \
 		ianthehenry:judge:3b92185:judge \
-		janet-lang:spork:7b780cc:spork
+		janet-lang:spork:3bdcf58:spork
 
+NO_ARCH=	yes
 SUB_FILES=	janet-lsp
 
 PLIST_FILES=	bin/janet-lsp \
@@ -47,12 +45,11 @@ do-build:
 
 do-install:
 	${MKDIR} ${STAGEDIR}${PREFIX}/lib/janet/.manifests
-	${INSTALL_SCRIPT} ${WRKDIR}/janet-lsp \
-		${STAGEDIR}${PREFIX}/bin/${PORTNAME}
+	${INSTALL_SCRIPT} ${WRKDIR}/janet-lsp ${STAGEDIR}${PREFIX}/bin
 	${INSTALL_DATA} ${WRKSRC}/jpm_tree/lib/janet-lsp.jimage \
-		${STAGEDIR}${PREFIX}/lib/janet/janet-lsp.jimage
+		${STAGEDIR}${PREFIX}/lib/janet
 	${INSTALL_DATA} ${WRKSRC}/jpm_tree/lib/.manifests/janet-lsp.jdn \
-		${STAGEDIR}${PREFIX}/lib/janet/.manifests/janet-lsp.jdn
+		${STAGEDIR}${PREFIX}/lib/janet/.manifests
 
 do-test:
 	cd ${WRKSRC} && jpm test -l

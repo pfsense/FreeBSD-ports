@@ -1,5 +1,6 @@
 PORTNAME=	jtiger
 PORTVERSION=	2.1.0376
+PORTREVISION=	1
 CATEGORIES=	java devel
 MASTER_SITES=	http://kaiwitte.org/jtiger/
 

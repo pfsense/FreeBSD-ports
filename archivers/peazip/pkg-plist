@@ -55,8 +55,6 @@ share/icons/hicolor/256x256/apps/peazip_extract.png
 %%DATADIR%%/res/share/lang/by-cr.txt
 %%DATADIR%%/res/share/lang/by-lt.txt
 %%DATADIR%%/res/share/lang/ca.txt
-%%DATADIR%%/res/share/lang/chs.txt
-%%DATADIR%%/res/share/lang/cht.txt
 %%DATADIR%%/res/share/lang/cz.txt
 %%DATADIR%%/res/share/lang/de-uml.txt
 %%DATADIR%%/res/share/lang/default.txt
@@ -102,6 +100,8 @@ share/icons/hicolor/256x256/apps/peazip_extract.png
 %%DATADIR%%/res/share/lang/ur.txt
 %%DATADIR%%/res/share/lang/uz.txt
 %%DATADIR%%/res/share/lang/vn.txt
+%%DATADIR%%/res/share/lang/zh-cn.txt
+%%DATADIR%%/res/share/lang/zh-hant.txt
 %%DATADIR%%/res/share/themes/line-dark.theme.7z
 %%DATADIR%%/res/share/themes/line.theme.7z
 %%DATADIR%%/res/share/themes/mac-dark.theme.7z

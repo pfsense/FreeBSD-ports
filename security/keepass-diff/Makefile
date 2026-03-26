@@ -1,6 +1,6 @@
 PORTNAME=	keepass-diff
 PORTVERSION=	1.1.3
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	security
 
 MAINTAINER=	hiroo.ono+freebsd@gmail.com

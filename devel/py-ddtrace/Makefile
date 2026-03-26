@@ -1,6 +1,6 @@
 PORTNAME=	ddtrace
 PORTVERSION=	2.21.12
-PORTREVISION=	3
+PORTREVISION=	4
 CATEGORIES=	devel python
 MASTER_SITES=	PYPI \
 		https://github.com/abseil/abseil-cpp/releases/download/${ABSEIL_VERSION}/:abseil

@@ -1,5 +1,5 @@
 PORTNAME=	minigalaxy
-DISTVERSION=	1.4.0
+DISTVERSION=	1.4.1
 CATEGORIES=	games
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
@@ -14,7 +14,7 @@ BUILD_DEPENDS=	bash:shells/bash
 RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}requests>=0:www/py-requests@${PY_FLAVOR} \
 		webkit2-gtk_40>0:www/webkit2-gtk@40
 
-USES=		gettext gnome python
+USES=		gettext-tools gnome python
 USE_GITHUB=	yes
 GH_ACCOUNT=	sharkwouter
 USE_GNOME=	pygobject3:run

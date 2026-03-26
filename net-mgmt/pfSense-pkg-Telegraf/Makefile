@@ -12,8 +12,7 @@ COMMENT=	pfSense package Telegraf
 
 LICENSE=	APACHE20
 
-RUN_DEPENDS=	telegraf:net-mgmt/telegraf \
-		lsof:sysutils/lsof
+RUN_DEPENDS=	telegraf:net-mgmt/telegraf
 
 NO_BUILD=	yes
 NO_MTREE=	yes

@@ -1,9 +1,11 @@
 PORTNAME=	gatus
 DISTVERSIONPREFIX=	v
-DISTVERSION=	5.34.0
+DISTVERSION=	5.35.0
 PORTREVISION=	1
 CATEGORIES=	www
 MASTER_SITES=	LOCAL/dtxdf/${PORTNAME}/
+# For instructions on how to create assets:
+#   https://github.com/DtxdF/port-assets-makejails/tree/main/gatus
 DISTFILES=	${PORTNAME}-${DISTVERSIONPREFIX}${DISTVERSION}.vendor${EXTRACT_SUFX}
 
 MAINTAINER=	dtxdf@FreeBSD.org
@@ -13,7 +15,8 @@ WWW=		https://gatus.io
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-BROKEN_i386=	cannot use int64(off) (value of type int64) as int32 value in assignment
+ONLY_FOR_ARCHS=	aarch64 amd64
+ONLY_FOR_ARCHS_REASON=	module modernc.org/sqlite only supported on aarch64 and amd64
 
 USES=		go:modules
 USE_GITHUB=	yes

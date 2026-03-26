@@ -1,15 +1,14 @@
 PORTNAME=	ess
-DISTVERSION=	25.01.0
-PORTREVISION=	2
+DISTVERSION=	26.01.0
 CATEGORIES=	math
-MASTER_SITES=	http://ess.r-project.org/ \
-		http://stat.ethz.ch/ESS/downloads/ess/ \
+MASTER_SITES=	https://ess.r-project.org/ \
+		https://stat.ethz.ch/ESS/downloads/ess/ \
 		https://raw.githubusercontent.com/JuliaEditorSupport/:JULIA
 PKGNAMESUFFIX=	${EMACS_PKGNAMESUFFIX}
-DISTFILES=	ess-25.01.0.tgz \
+DISTFILES=	${PORTNAME}-${DISTVERSION}.tar.gz \
 		julia-emacs/refs/heads/master/julia-mode.el:JULIA \
 		julia-emacs/refs/heads/master/julia-mode-latexsubs.el:JULIA
-EXTRACT_ONLY=	${DISTNAME}.tgz
+EXTRACT_ONLY=	${DISTNAME}.tar.gz
 
 MAINTAINER=	rhurlin@FreeBSD.org
 COMMENT=	R support for Emacsen

@@ -1,8 +1,9 @@
 PORTNAME=	xlibre-ephyr
 PORTVERSION=	${XLIBRE_VER}
+PORTREVISION=	1
 CATEGORIES=	x11-servers
 
-MAINTAINER=	b-aazbsd@proton.me
+MAINTAINER=	xlibre@FreeBSD.org
 COMMENT=	Xlibre Xephyr server
 WWW=		https://github.com/X11Libre/xserver/
 
@@ -22,4 +23,4 @@ LIB_DEPENDS+=	libxcb-render-util.so:x11/xcb-util-renderutil \
 		libxcb-keysyms.so:x11/xcb-util-keysyms \
 		libxcb-util.so:x11/xcb-util
 
-.include "../xlibre-server/Makefile.common"
+.include 	"${.CURDIR}/../xlibre-server/Makefile.common"

@@ -1,7 +1,7 @@
 PORTNAME=	javamail
 DISTVERSIONPREFIX=	${PORTNAME:tu}-
 DISTVERSION=	1_6_2
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	java mail
 MASTER_SITES=	https://github.com/jakartaee/jaf-api/releases/download/1.2.1/:jaf
 DISTFILES=	jakarta.activation.jar:jaf

@@ -1132,6 +1132,7 @@ etc/man.d/perl%%PKGNAMESUFFIX%%.conf
 %%MAN1%%/perl5402delta.1.gz
 %%MAN1%%/perl5403delta.1.gz
 %%MAN1%%/perl5420delta.1.gz
+%%MAN1%%/perl5421delta.1.gz
 %%MAN1%%/perl5430delta.1.gz
 %%MAN1%%/perl5431delta.1.gz
 %%MAN1%%/perl5432delta.1.gz
@@ -1140,6 +1141,8 @@ etc/man.d/perl%%PKGNAMESUFFIX%%.conf
 %%MAN1%%/perl5435delta.1.gz
 %%MAN1%%/perl5436delta.1.gz
 %%MAN1%%/perl5437delta.1.gz
+%%MAN1%%/perl5438delta.1.gz
+%%MAN1%%/perl5439delta.1.gz
 %%MAN1%%/perl561delta.1.gz
 %%MAN1%%/perl56delta.1.gz
 %%MAN1%%/perl581delta.1.gz
@@ -2094,6 +2097,7 @@ etc/man.d/perl%%PKGNAMESUFFIX%%.conf
 %%PRIV_LIB%%/pod/perl5402delta.pod
 %%PRIV_LIB%%/pod/perl5403delta.pod
 %%PRIV_LIB%%/pod/perl5420delta.pod
+%%PRIV_LIB%%/pod/perl5421delta.pod
 %%PRIV_LIB%%/pod/perl5430delta.pod
 %%PRIV_LIB%%/pod/perl5431delta.pod
 %%PRIV_LIB%%/pod/perl5432delta.pod
@@ -2102,6 +2106,8 @@ etc/man.d/perl%%PKGNAMESUFFIX%%.conf
 %%PRIV_LIB%%/pod/perl5435delta.pod
 %%PRIV_LIB%%/pod/perl5436delta.pod
 %%PRIV_LIB%%/pod/perl5437delta.pod
+%%PRIV_LIB%%/pod/perl5438delta.pod
+%%PRIV_LIB%%/pod/perl5439delta.pod
 %%PRIV_LIB%%/pod/perl561delta.pod
 %%PRIV_LIB%%/pod/perl56delta.pod
 %%PRIV_LIB%%/pod/perl581delta.pod
@@ -2708,6 +2714,7 @@ etc/man.d/perl%%PKGNAMESUFFIX%%.conf
 %%PRIV_LIB%%/unicore/lib/Perl/_PerlPr2.pl
 %%PRIV_LIB%%/unicore/lib/Perl/_PerlPro.pl
 %%PRIV_LIB%%/unicore/lib/Perl/_PerlQuo.pl
+%%PRIV_LIB%%/unicore/lib/Perl/_PerlWor.pl
 %%PRIV_LIB%%/unicore/lib/QMark/Y.pl
 %%PRIV_LIB%%/unicore/lib/SB/AT.pl
 %%PRIV_LIB%%/unicore/lib/SB/CL.pl

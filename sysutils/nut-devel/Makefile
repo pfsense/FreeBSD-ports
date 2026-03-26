@@ -18,8 +18,8 @@ CONFLICTS=	nut-[0-9]*
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	networkupstools
-GH_TAGNAME=	3ea9c6511
-NUT_COMMIT_DATE=	2026.01.27
+GH_TAGNAME=	b0b38988e
+NUT_COMMIT_DATE=	2026.02.13
 
 MAKE_JOBS_UNSAFE=	yes
 GNU_CONFIGURE=	yes
@@ -114,6 +114,7 @@ CGI_CONFIGURE_ON=	--with-cgipath=${CGIDIR} \
 SERIAL_CONFIGURE_WITH=	serial
 
 USB_CONFIGURE_WITH=	usb=auto
+USB_LIB_DEPENDS=	libgio-2.0.so:devel/glib20
 
 SNMP_LIB_DEPENDS=	libnetsnmp.so:net-mgmt/net-snmp
 SNMP_CONFIGURE_WITH=	snmp

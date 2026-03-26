@@ -1,5 +1,5 @@
 PORTNAME=	dask
-PORTVERSION=	2025.12.0
+PORTVERSION=	2026.1.2
 CATEGORIES=	devel python
 MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -13,7 +13,7 @@ LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE.txt
 
 BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}setuptools>=62.6:devel/py-setuptools@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}setuptools-scm>=8:devel/py-setuptools-scm@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}setuptools-scm>=9:devel/py-setuptools-scm@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}wheel>=0:devel/py-wheel@${PY_FLAVOR}
 RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}click>=8.1:devel/py-click@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}cloudpickle>=3.0.0:devel/py-cloudpickle@${PY_FLAVOR} \
@@ -44,7 +44,7 @@ DIAGNOSTICS_DESC=	Profile and inspect parallel codes
 
 ARRAY_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}numpy>=1.24,1:math/py-numpy@${PY_FLAVOR}
 DATAFRAME_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}pandas>=2.0,1:math/py-pandas@${PY_FLAVOR} \
-			${PYTHON_PKGNAMEPREFIX}pyarrow>=14.0.1:databases/py-pyarrow@${PY_FLAVOR}
+			${PYTHON_PKGNAMEPREFIX}pyarrow>=16.0:databases/py-pyarrow@${PY_FLAVOR}
 DIAGNOSTICS_RUN_DEPENDS=${PYTHON_PKGNAMEPREFIX}bokeh>=3.1.0:www/py-bokeh@${PY_FLAVOR} \
 			${PYTHON_PKGNAMEPREFIX}Jinja2>=2.10.3:devel/py-Jinja2@${PY_FLAVOR}
 

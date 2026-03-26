@@ -1,8 +1,9 @@
 PORTNAME=	wazuh
 DISTVERSIONPREFIX=	v
-DISTVERSION=	4.14.2
+DISTVERSION=	4.14.3
+PORTREVISION=	1
 CATEGORIES=	security
-MASTER_SITES=	https://packages.wazuh.com/deps/48/libraries/sources/:wazuh_sources \
+MASTER_SITES=	https://packages.wazuh.com/deps/49/libraries/sources/:wazuh_sources \
 		LOCAL/acm/${PORTNAME}/:wazuh_cache
 PKGNAMESUFFIX=	-manager
 DISTFILES=	${EXTERNAL_DISTFILES} \
@@ -37,7 +38,7 @@ USES=		cpe dos2unix gmake perl5 python:3.11 readline shebangfix sqlite:3 uidfix
 USE_GITHUB=	yes
 GH_ACCOUNT=	alonsobsd
 GH_PROJECT=	wazuh-freebsd
-GH_TAGNAME=	e3b7f4ccbb4cf0004ca58b1e56e4fe2d1b7474a7
+GH_TAGNAME=	dd9bd1bb551141e15cde1399a0000c6a392511ad
 
 USE_RC_SUBR=	${PORTNAME}${PKGNAMESUFFIX}
 
@@ -45,8 +46,8 @@ MAKE_ARGS+=	TARGET=server INSTALLDIR=${WAZUHPREFIX} INSTALL_SHARED="${INSTALL_LI
 
 DOS2UNIX_FILES=	${WRKSRC}/api/api/configuration/api.yaml
 
-# WITH_CCACHE_BUILD=	yes
-# CCACHE_DIR=		/zdata/ccache
+#WITH_CCACHE_BUILD=	yes
+#CCACHE_DIR=		/zdata/ccache
 
 WAZUH_CACHEFILE=	${PORTNAME}-cache-any-${DISTVERSION}${EXTRACT_SUFX}
 
@@ -55,7 +56,7 @@ EXTERNAL_DISTFILES=	audit-userspace.tar.gz:wazuh_sources \
 			bzip2.tar.gz:wazuh_sources \
 			cJSON.tar.gz:wazuh_sources \
 			cpp-httplib.tar.gz:wazuh_sources \
-			cpython-3.11.14.tar.gz:wazuh_cache \
+			cpython-3.11.15.tar.gz:wazuh_cache \
 			curl.tar.gz:wazuh_sources \
 			flatbuffers.tar.gz:wazuh_sources \
 			googletest.tar.gz:wazuh_sources \
@@ -83,7 +84,6 @@ OPTIONS_DEFINE=	INOTIFY PRELUDE ZEROMQ
 OPTIONS_GROUP_DATABASE=	MYSQL PGSQL
 OPTIONS_GROUP=		DATABASE
 
-INOTIFY_LIB_DEPENDS=	libinotify.so:devel/libinotify
 PRELUDE_LIB_DEPENDS=	libprelude.so:security/libprelude
 ZEROMQ_LIB_DEPENDS=	libczmq.so:net/czmq
 
@@ -93,8 +93,9 @@ ZEROMQ_DESC=	ZeroMQ support
 
 ZEROMQ_MAKE_ENV=	USE_ZEROMQ=yes
 PRELUDE_MAKE_ENV=	USE_PRELUDE=yes
-INOTIFY_MAKE_ENV=	USE_INOTIFY=yes
-INOTIFY_USES=	pkgconfig
+INOTIFY_MAKE_ENV=	USE_INOTIFY=yes \
+			INOTIFY_LIB=${INOTIFY_LIB}
+INOTIFY_USES=	pkgconfig inotify
 PGSQL_MAKE_ARGS=DATABASE=pgsql
 PGSQL_USES=	pgsql
 MYSQL_MAKE_ARGS=DATABASE=mysql

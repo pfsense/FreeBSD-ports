@@ -1,6 +1,10 @@
 PORTNAME=	prismlauncher
-DISTVERSION=	10.0.2
+DISTVERSION=	10.0.5
+PORTREVISION=	1
 CATEGORIES=	games java
+MASTER_SITES=	https://github.com/PrismLauncher/PrismLauncher/releases/download/${DISTVERSION}/
+DISTNAME=	PrismLauncher-${DISTVERSION}
+DISTFILES=	${DISTNAME}${EXTRACT_SUFX}
 
 MAINTAINER=	Alexander88207@protonmail.com
 COMMENT=	Minecraft launcher with ability to manage multiple instances
@@ -21,9 +25,7 @@ RUN_DEPENDS=	ca_root_nss>=0:security/ca_root_nss \
 
 USES=		cmake compiler:c++17-lang desktop-file-utils gl java kde:6 \
 		pkgconfig qt:6 shared-mime-info
-USE_GITHUB=	yes
-GH_ACCOUNT=	PrismLauncher
-GH_PROJECT=	${GH_ACCOUNT}
+USE_GITHUB=	nodefault
 GH_TUPLE=	gulrak:filesystem:0e72911:filesystem/libraries/filesystem \
 		PrismLauncher:libnbtplusplus:531449b:libnbtplusplus/libraries/libnbtplusplus
 USE_GL=		opengl

@@ -1,5 +1,5 @@
 PORTNAME=	openssl
-DISTVERSION=	3.4.3
+DISTVERSION=	3.4.4
 CATEGORIES=	security devel
 PKGNAMESUFFIX=	34
 MASTER_SITES=	https://github.com/openssl/openssl/releases/download/${DISTNAME}/
@@ -14,7 +14,7 @@ LICENSE_FILE=	${WRKSRC}/LICENSE.txt
 DEPRECATED=		Please use security/openssl35 (LTS)
 EXPIRATION_DATE=	2026-09-30
 
-CONFLICTS_INSTALL=	boringssl libressl libressl-devel openssl openssl111 openssl3[1235] openssl*-quictls
+CONFLICTS_INSTALL=	boringssl libressl libressl-devel openssl openssl[14]* openssl3[1235] openssl*-quictls
 
 HAS_CONFIGURE=	yes
 CONFIGURE_SCRIPT=	config

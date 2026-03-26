@@ -1,13 +1,12 @@
 PORTNAME=	gitea
 DISTVERSIONPREFIX=	v
-DISTVERSION=	1.24.2
-PORTREVISION=	8
+DISTVERSION=	1.25.5
 CATEGORIES=	www
 MASTER_SITES=	https://github.com/go-gitea/gitea/releases/download/${DISTVERSIONPREFIX}${DISTVERSION}/ \
 		https://dl.gitea.io/gitea/${DISTVERSION}/
 DISTNAME=	gitea-src-${DISTVERSION}
 
-MAINTAINER=	stb@lassitu.de
+MAINTAINER=	ports@foss-daily.org
 COMMENT=	Compact self-hosted Git service
 WWW=		https://gitea.com/
 

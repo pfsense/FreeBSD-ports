@@ -1,6 +1,6 @@
 PORTNAME=	tmate
 PORTVERSION=	2.4.0
-PORTREVISION=	4
+PORTREVISION=	5
 CATEGORIES=	sysutils
 
 MAINTAINER=	bofh@FreeBSD.org
@@ -9,6 +9,9 @@ WWW=		https://tmate.io/
 
 LICENSE=	ISCL
 LICENSE_FILE=	${WRKSRC}/COPYING
+
+DEPRECATED=            Upstream unmaintained
+EXPIRATION_DATE=       2026-03-31
 
 LIB_DEPENDS=	libevent.so:devel/libevent \
 		libmsgpackc.so:devel/msgpack-c \
@@ -20,7 +23,6 @@ GH_ACCOUNT=	tmate-io
 USE_LDCONFIG=	yes
 
 GNU_CONFIGURE=	yes
-GNU_CONFIGURE_MANPREFIX=${PREFIX}/share
 
 LDFLAGS+=	-lexecinfo
 

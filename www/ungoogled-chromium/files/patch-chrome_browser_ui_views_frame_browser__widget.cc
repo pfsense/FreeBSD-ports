@@ -1,4 +1,4 @@
---- chrome/browser/ui/views/frame/browser_widget.cc.orig	2026-01-16 13:40:34 UTC
+--- chrome/browser/ui/views/frame/browser_widget.cc.orig	2026-03-15 18:32:51 UTC
 +++ chrome/browser/ui/views/frame/browser_widget.cc
 @@ -52,7 +52,7 @@
  #include "ui/aura/window.h"
@@ -6,19 +6,19 @@
  
 -#if BUILDFLAG(IS_LINUX)
 +#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_BSD)
- #include "ui/display/screen.h"
  #include "ui/linux/linux_ui.h"
  #endif
-@@ -87,7 +87,7 @@ class ThemeChangedObserver : public views::WidgetObser
+ 
+@@ -86,7 +86,7 @@ class ThemeChangedObserver : public views::WidgetObser
  };
  
- bool IsUsingLinuxSystemTheme(Profile* profile) {
+ bool IsUsingLinuxSystemTheme(ThemeService* theme_service) {
 -#if BUILDFLAG(IS_LINUX)
 +#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_BSD)
-   return ThemeServiceFactory::GetForProfile(profile)->UsingSystemTheme();
+   return theme_service->UsingSystemTheme();
  #else
    return false;
-@@ -203,7 +203,7 @@ void BrowserWidget::InitBrowserWidget() {
+@@ -209,7 +209,7 @@ void BrowserWidget::InitBrowserWidget() {
  
    Init(std::move(params));
  
@@ -27,15 +27,6 @@
    SelectNativeTheme();
  #else
    SetNativeTheme(ui::NativeTheme::GetInstanceForNativeUi());
-@@ -342,7 +342,7 @@ void BrowserWidget::OnNativeWidgetWorkspaceChanged() {
-   chrome::SaveWindowWorkspace(browser_view_->browser(), GetWorkspace());
-   chrome::SaveWindowVisibleOnAllWorkspaces(browser_view_->browser(),
-                                            IsVisibleOnAllWorkspaces());
--#if BUILDFLAG(IS_LINUX)
-+#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_BSD)
-   // If the window was sent to a different workspace, prioritize it if
-   // it was sent to the current workspace and deprioritize it
-   // otherwise.  This is done by MoveBrowsersInWorkspaceToFront()
 @@ -535,7 +535,7 @@ void BrowserWidget::OnMenuClosed() {
  }
  

@@ -1,6 +1,5 @@
 PORTNAME=	obs-studio
-DISTVERSION=	32.0.2
-PORTREVISION=	3
+DISTVERSION=	32.1.0
 CATEGORIES=	multimedia
 MASTER_SITES=	https://github.com/obsproject/obs-studio/releases/download/${DISTVERSION}/
 DISTFILES=	OBS-Studio-${DISTVERSION}-Sources${EXTRACT_SUFX}
@@ -65,6 +64,7 @@ USE_LDCONFIG=	yes
 CMAKE_ARGS=	-DOBS_VERSION_OVERRIDE:STRING="${PORTVERSION}" \
 		-DQT_VERSION=6 \
 		-DPython_EXECUTABLE="${PYTHON_CMD}"
+CMAKE_OFF=	CMAKE_COMPILE_WARNING_AS_ERROR # no -Werror
 
 CFLAGS+=	-Wno-error=attribute-warning
 CFLAGS_powerpc64=	-Wno-error=deprecated-altivec-src-compat -Wno-error=pass-failed
@@ -75,8 +75,9 @@ LDFLAGS+=	-fPIC # pending https://github.com/obsproject/obs-studio/issues/3436
 
 WRKSRC=		${WRKDIR}/${PORTNAME}-${PORTVERSION}-sources
 
-OPTIONS_DEFINE=		BROWSER PIPEWIRE VLC VST WAYLAND
+OPTIONS_DEFINE=		BROWSER NVENC PIPEWIRE VLC VST WAYLAND
 OPTIONS_DEFAULT=	PIPEWIRE VLC VST WAYLAND
+OPTIONS_DEFAULT_amd64=	NVENC
 OPTIONS_MULTI=		AUDIO
 OPTIONS_MULTI_AUDIO=	JACK PULSEAUDIO SNDIO
 OPTIONS_DEFAULT+=	${OPTIONS_MULTI_AUDIO}
@@ -90,6 +91,10 @@ BROWSER_BROKEN=		Needs CEF (Chromium Embedded Framework) which isn't yet ported
 JACK_LIB_DEPENDS=	libjack.so:audio/jack
 JACK_CMAKE_ON=		-DENABLE_JACK=TRUE
 JACK_CMAKE_OFF=		-DDISABLE_JACK=TRUE
+
+NVENC_DESC=		NVIDIA Hardware Encoder Plugin
+NVENC_BUILD_DEPENDS=	ffnvcodec-headers>=13.0.19.0:multimedia/ffnvcodec-headers
+NVENC_CMAKE_BOOL=	ENABLE_NVENC
 
 PIPEWIRE_DESC=		Screen capture via PipeWire
 PIPEWIRE_LIB_DEPENDS=	libpipewire-0.3.so:multimedia/pipewire

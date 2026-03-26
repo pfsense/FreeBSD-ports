@@ -1,10 +1,10 @@
 PORTNAME=	tgpt
 DISTVERSIONPREFIX=	v
-DISTVERSION=	2.11.0
-PORTREVISION=	6
+DISTVERSION=	2.11.1
+PORTREVISION=	3
 CATEGORIES=	www
 
-MAINTAINER=	nxjoseph@protonmail.com
+MAINTAINER=	nxjoseph@FreeBSD.org
 COMMENT=	AI Chatbots in terminal without needing API keys
 WWW=		https://github.com/aandrew-me/tgpt
 
@@ -13,6 +13,9 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 
 USES=		go:modules
 GO_MODULE=	github.com/aandrew-me/tgpt/v2
+
+post-patch:
+	${CP} ${FILESDIR}/modules.txt ${WRKSRC}/vendor
 
 PLIST_FILES=	bin/tgpt
 

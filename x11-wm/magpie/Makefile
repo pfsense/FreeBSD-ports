@@ -1,5 +1,6 @@
 PORTNAME=	magpie
 DISTVERSION=	0.9.4
+PORTREVISION=	1
 CATEGORIES=	x11-wm budgie
 MASTER_SITES=	BUDGIE
 
@@ -18,7 +19,6 @@ LIB_DEPENDS=	libcanberra-gtk3.so:audio/libcanberra-gtk3 \
 		libgudev-1.0.so:devel/libgudev \
 		libdrm.so:graphics/libdrm \
 		libinput.so:x11/libinput \
-		libgbm.so:graphics/mesa-libs \
 		libfontconfig.so:x11-fonts/fontconfig \
 		libfribidi.so:converters/fribidi \
 		libgraphene-1.0.so:graphics/graphene \

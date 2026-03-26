@@ -1,6 +1,6 @@
 PORTNAME=	mime4j
 PORTVERSION=	0.7.2
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	mail java
 MASTER_SITES=	https://archive.apache.org/dist/james/${PORTNAME}/${POSTVERSION}/
 DISTNAME=	apache-${PORTNAME}-${PORTVERSION}-bin

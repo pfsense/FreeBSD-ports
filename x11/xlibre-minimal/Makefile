@@ -1,15 +1,16 @@
 PORTNAME=	xlibre-minimal
 PORTVERSION=	1.0
+PORTREVISION=	1
 CATEGORIES=	x11 x11-servers
 
-MAINTAINER=	b-aazbsd@proton.me
+MAINTAINER=	xlibre@FreeBSD.org
 COMMENT=	XLibre + X.Org minimal distribution metaport
 WWW=		https://github.com/X11Libre/xserver/ \
 		https://www.x.org/
 
 USES=		metaport
 
-.include "../../x11-servers/xlibre-server/Makefile.version"
+.include	"${.CURDIR}/../../x11-servers/xlibre-server/Makefile.version"
 MODULEDIR=	${LOCALBASE}/lib/xorg/modules/xlibre-${XLIBRE_MJR_VER}/
 VIDEODIR=	${MODULEDIR}/drivers
 INPUTDIR=	${MODULEDIR}/input

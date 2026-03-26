@@ -1,3 +1,13 @@
 TIMESTAMP = 1722138875
+SHA256 (openjdk22-22.0.2+9.1_2.aarch64.tar.xz) = 887281b7b4fe8f29d3dae1f537e91f52ceda8003aa1c7f36368885c43ae96515
+SIZE (openjdk22-22.0.2+9.1_2.aarch64.tar.xz) = 169326232
+SHA256 (openjdk22-22.0.2+9.1_2.ppc64.tar.xz) = 23873f8e3a82b94c974831a293768ce0c30c3a2ddd366c2287b72cec8975f920
+SIZE (openjdk22-22.0.2+9.1_2.ppc64.tar.xz) = 168129156
+SHA256 (openjdk22-22.0.2+9.1_2.ppc64le.tar.xz) = 5413106ff0906f1cc21d3ca88bf0919b443fc8168364f3e4b803e00757b37777
+SIZE (openjdk22-22.0.2+9.1_2.ppc64le.tar.xz) = 169066748
+SHA256 (openjdk22-22.0.2+9.1_2.x86.tar.xz) = 6c4bd9fd60d21ed0b4c9d13a72391e9a09f0f9654a5ef7cf8443a41562d9e231
+SIZE (openjdk22-22.0.2+9.1_2.x86.tar.xz) = 165259492
+SHA256 (openjdk22-22.0.2+9.1_2.x86_64.tar.xz) = 35df03be023f64176d5f3dc1ff4dfc8b70863f9ae0cd1fd4057b703a837444cf
+SIZE (openjdk22-22.0.2+9.1_2.x86_64.tar.xz) = 171246324
 SHA256 (battleblow-jdk22u-jdk-22.0.2+9-1_GH0.tar.gz) = 5e2731b979cab49d5004cf0aca58c642c94c1808c48278bff6c440945874f24c
 SIZE (battleblow-jdk22u-jdk-22.0.2+9-1_GH0.tar.gz) = 112154344

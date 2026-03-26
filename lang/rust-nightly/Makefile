@@ -1,5 +1,5 @@
 # Run update.sh to update to the latest nightly
-PORTVERSION=	1.95.0.${NIGHTLY_DATE:C,-,,g}
+PORTVERSION=	1.96.0.${NIGHTLY_DATE:C,-,,g}
 # Always set PORTREVISION explicitly as otherwise it is inherited from lang/rust
 PORTREVISION=	0
 PKGNAMESUFFIX=	-nightly
@@ -14,8 +14,11 @@ MASTERDIR=	${.CURDIR}/../rust
 PATCHDIR=	${.CURDIR}/files
 DISTINFO_FILE=	${.CURDIR}/distinfo
 
-NIGHTLY_DATE=		2026-01-26
-BOOTSTRAPS_DATE=	2026-01-20
+NIGHTLY_DATE=		2026-03-09
+BOOTSTRAPS_DATE=	2026-03-05
 RUST_BOOTSTRAP_VERSION=	beta
+
+post-extract:
+	@${FIND} -d ${WRKSRC} -name .github -exec ${RM} -r {} \;
 
 .include "${MASTERDIR}/Makefile"

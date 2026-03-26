@@ -1,10 +1,10 @@
 PORTNAME=	zns
 DISTVERSIONPREFIX=	v
 DISTVERSION=	0.4.0
-PORTREVISION=	5
+PORTREVISION=	8
 CATEGORIES=	dns
 
-MAINTAINER=	nxjoseph@protonmail.com
+MAINTAINER=	nxjoseph@FreeBSD.org
 COMMENT=	CLI tool for querying DNS records with readable and colored output
 WWW=		https://github.com/znscli/zns
 

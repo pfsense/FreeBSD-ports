@@ -1,6 +1,6 @@
---- base/threading/platform_thread_bsd.cc.orig	2026-01-16 14:21:21 UTC
+--- base/threading/platform_thread_bsd.cc.orig	2026-03-24 16:59:08 UTC
 +++ base/threading/platform_thread_bsd.cc
-@@ -0,0 +1,39 @@
+@@ -0,0 +1,40 @@
 +// Copyright 2023 The Chromium Authors
 +// Use of this source code is governed by a BSD-style license that can be
 +// found in the LICENSE file.
@@ -28,9 +28,10 @@
 +  return false;
 +}
 +
-+void RemoveThreadTypeOverrideImpl(
++void RemoveThreadTypeOverride(
++    PlatformThreadHandle thread_handle,
 +    const PlatformPriorityOverride& priority_override_handle,
-+    ThreadType thread_type) {}
++    ThreadType initial_thread_type) {}
 +
 +}  // namespace internal
 +

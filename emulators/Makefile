@@ -31,11 +31,12 @@
     SUBDIR += elliott-803
     SUBDIR += emu64
     SUBDIR += emulationstation
+    SUBDIR += emutos
     SUBDIR += es-de
     SUBDIR += fbneo
     SUBDIR += fbsd-duckstation
     SUBDIR += fceux
-    SUBDIR += firebird-emu
+    SUBDIR += firebird
     SUBDIR += flexemu
     SUBDIR += flycast
     SUBDIR += fmsx
@@ -110,7 +111,6 @@
     SUBDIR += pcsx2
     SUBDIR += playonbsd
     SUBDIR += ppsspp
-    SUBDIR += ppsspp-qt5
     SUBDIR += py-gns3-converter
     SUBDIR += py-m64py
     SUBDIR += py-unicorn
@@ -128,6 +128,7 @@
     SUBDIR += rpcs3
     SUBDIR += rubygem-fission
     SUBDIR += rvvm
+    SUBDIR += rvvm-devel
     SUBDIR += sameboy
     SUBDIR += simh
     SUBDIR += simh-hp2100

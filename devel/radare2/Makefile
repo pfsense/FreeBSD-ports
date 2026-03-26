@@ -1,5 +1,5 @@
 PORTNAME=	radare2
-DISTVERSION=	5.9.6
+DISTVERSION=	5.9.8
 CATEGORIES=	devel
 MASTER_SITES=	https://github.com/radareorg/radare2/releases/download/${DISTVERSION}/
 

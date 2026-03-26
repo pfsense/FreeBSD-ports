@@ -1,7 +1,6 @@
 PORTNAME=	bt
 DISTVERSIONPREFIX=	v
-DISTVERSION=	1.1.2
-PORTREVISION=	1
+DISTVERSION=	1.1.4
 CATEGORIES=	finance python
 #MASTER_SITES=	PYPI # no tests
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -28,6 +27,13 @@ GH_ACCOUNT=	pmorissette
 post-install:
 	@${STRIP_CMD} ${STAGEDIR}${PYTHON_SITELIBDIR}/bt/core${PYTHON_TAG}.so
 
-# tests as of 1.1.2: 157 passed, 1 warning in 24.95s
+do-test: # needed to prevent failures due to -k and -r arguments
+	@cd ${TEST_WRKSRC} && \
+		${SETENVI} ${WRK_ENV} ${TEST_ENV} ${PYTHON_CMD} -m pytest tests/ -rs -v -o addopts= ${TEST_ARGS:NDESTDIR=*}
+
+# tests as of 1.1.4:
+# Results (175.81s):
+#        489 passed
+#        149 warnings
 
 .include <bsd.port.mk>

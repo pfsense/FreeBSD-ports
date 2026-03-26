@@ -37,9 +37,9 @@ include/wasmtime/engine.h
 include/wasmtime/engine.hh
 include/wasmtime/error.h
 include/wasmtime/error.hh
-include/wasmtime/extern_declare.hh
 include/wasmtime/extern.h
 include/wasmtime/extern.hh
+include/wasmtime/extern_declare.hh
 include/wasmtime/func.h
 include/wasmtime/func.hh
 include/wasmtime/global.h

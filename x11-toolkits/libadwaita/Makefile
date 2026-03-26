@@ -1,5 +1,5 @@
 PORTNAME=	libadwaita
-PORTVERSION=	1.7.7
+PORTVERSION=	1.8.4
 CATEGORIES=	x11-toolkits
 MASTER_SITES=	GNOME
 
@@ -18,11 +18,12 @@ LIB_DEPENDS=	libappstream.so:devel/appstream \
 USES=		gettext-tools gnome meson ninja pkgconfig python:build \
 		shebangfix tar:xz vala:build
 USE_GNOME=	cairo gdkpixbuf gtk40 introspection:build
+USE_LDCONFIG=	yes
 SHEBANG_FILES=	src/gen-public-types.py
 
 OPTIONS_DEFINE=	DOCS EXAMPLES
 
 DOCS_BUILD_DEPENDS=	gi-docgen:textproc/py-gi-docgen
-DOCS_MESON_TRUE=	gtk_doc
+DOCS_MESON_TRUE=	documentation
 
 .include <bsd.port.mk>

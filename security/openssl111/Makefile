@@ -17,7 +17,7 @@ DEPRECATED=	End-of-life since 2023-09-11, see https://www.openssl.org/blog/blog/
 		port will be removed when FreeBSD 13 is EoL
 EXPIRATION_DATE=	2026-04-30
 
-CONFLICTS_INSTALL=	boringssl libressl libressl-devel openssl openssl3* openssl*-quictls
+CONFLICTS_INSTALL=	boringssl libressl libressl-devel openssl openssl[34]*
 
 USES=		cpe perl5
 USE_PERL5=	build
@@ -33,8 +33,6 @@ LDFLAGS_i386=	-Wl,-znotext
 
 MAKE_ARGS+=	WHOLE_ARCHIVE_FLAG=--whole-archive CNF_LDFLAGS="${LDFLAGS}"
 MAKE_ENV+=	LIBRPATH="${PREFIX}/lib" GREP_OPTIONS=
-
-EXTRA_PATCHES+=	${.CURDIR}/../openssl/files/patch-crypto_async_arch_async__posix.h
 
 OPTIONS_GROUP=		CIPHERS HASHES OPTIMIZE PROTOCOLS
 OPTIONS_GROUP_CIPHERS=	ARIA DES GOST IDEA SM4 RC2 RC4 RC5 WEAK-SSL-CIPHERS

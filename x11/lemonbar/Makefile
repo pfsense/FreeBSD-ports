@@ -3,7 +3,7 @@ DISTVERSIONPREFIX=v
 DISTVERSION=	1.5
 CATEGORIES=	x11
 
-MAINTAINER=	nxjoseph@protonmail.com
+MAINTAINER=	nxjoseph@FreeBSD.org
 COMMENT=	Lightweight xcb based bar
 WWW=		https://github.com/LemonBoy/bar
 

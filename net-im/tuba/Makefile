@@ -3,7 +3,7 @@ DISTVERSIONPREFIX=	v
 DISTVERSION=	0.10.3
 CATEGORIES=	net-im
 
-MAINTAINER=	nxjoseph@protonmail.com
+MAINTAINER=	nxjoseph@FreeBSD.org
 COMMENT=	Browse the Fediverse
 WWW=		https://github.com/GeopJr/Tuba \
 		https://tuba.geopjr.dev

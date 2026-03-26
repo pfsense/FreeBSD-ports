@@ -1,4 +1,4 @@
---- src/config.h.orig	2025-10-02 19:33:23 UTC
+--- src/config.h.orig	2026-02-10 19:57:51 UTC
 +++ src/config.h
 @@ -44,7 +44,7 @@ inline constexpr std::array<ImageSize, 6> AllowedIconS
  /**

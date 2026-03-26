@@ -97,6 +97,7 @@
     SUBDIR += lrzsz
     SUBDIR += lysdr
     SUBDIR += mbelib
+    SUBDIR += meshcore-cli
     SUBDIR += mgetty+sendfax
     SUBDIR += minicom
     SUBDIR += morse
@@ -134,6 +135,7 @@
     SUBDIR += predict
     SUBDIR += py-ModbusTCP
     SUBDIR += py-adafruit-ampy
+    SUBDIR += py-cayennelpp
     SUBDIR += py-elelabs-zigbee-ezsp-utility
     SUBDIR += py-esptool
     SUBDIR += py-fritzconnection
@@ -142,6 +144,7 @@
     SUBDIR += py-libimobiledevice
     SUBDIR += py-libscrc
     SUBDIR += py-libusbsio
+    SUBDIR += py-meshcore
     SUBDIR += py-nkdfu
     SUBDIR += py-pylink-square
     SUBDIR += py-pymodbus
@@ -150,6 +153,7 @@
     SUBDIR += py-pyocd-pemicro
     SUBDIR += py-pyserial
     SUBDIR += py-pyserial-asyncio
+    SUBDIR += py-pyserial-asyncio-fast
     SUBDIR += py-sdm_modbus
     SUBDIR += py-spsdk
     SUBDIR += py-streamdeck

@@ -1,8 +1,9 @@
 PORTNAME=	xlibre-vfb
 PORTVERSION=	${XLIBRE_VER}
+PORTREVISION=	1
 CATEGORIES=	x11-servers
 
-MAINTAINER=	b-aazbsd@proton.me
+MAINTAINER=	xlibre@FreeBSD.org
 COMMENT=	Xlibre Xvfb server
 WWW=		https://github.com/X11Libre/xserver/
 
@@ -12,4 +13,4 @@ CONFLICTS_INSTALL=	xorg-vfbserver
 
 USES=		xlibre-cat:server
 
-.include "../xlibre-server/Makefile.common"
+.include 	"${.CURDIR}/../xlibre-server/Makefile.common"

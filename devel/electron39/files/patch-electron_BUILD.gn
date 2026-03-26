@@ -1,4 +1,4 @@
---- electron/BUILD.gn.orig	2025-10-27 17:58:27 UTC
+--- electron/BUILD.gn.orig	2026-02-13 02:35:12 UTC
 +++ electron/BUILD.gn
 @@ -548,7 +548,7 @@ source_set("electron_lib") {
      defines += [ "GDK_DISABLE_DEPRECATION_WARNINGS" ]

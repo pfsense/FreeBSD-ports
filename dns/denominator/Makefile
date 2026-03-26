@@ -1,5 +1,6 @@
 PORTNAME=	denominator
 PORTVERSION=	4.7.1
+PORTREVISION=	1
 CATEGORIES=	dns java
 MASTER_SITES=	https://bintray.com/artifact/download/netflixoss/maven/com/netflix/${PORTNAME}/${PORTNAME}-cli/${PORTVERSION}/
 DISTNAME=	${PORTNAME}-cli-${PORTVERSION}-fat.jar

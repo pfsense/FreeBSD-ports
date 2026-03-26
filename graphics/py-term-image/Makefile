@@ -6,7 +6,7 @@ MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 DISTNAME=	term_image-${DISTVERSION}
 
-MAINTAINER=	nxjoseph@protonmail.com
+MAINTAINER=	nxjoseph@FreeBSD.org
 COMMENT=	Display images in the terminal with Python
 WWW=		https://github.com/AnonymouX47/term-image \
 		https://pypi.org/project/term-image

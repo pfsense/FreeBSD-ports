@@ -41,7 +41,7 @@ OPTIONS_DEFINE=	DOCS
 
 .include <bsd.port.pre.mk>
 
-.if ${CHOSEN_COMPILER_TYPE} == clang
+.if ${CHOSEN_COMPILER_TYPE} == clang && ${COMPILER_VERSION} < 211
 CXXFLAGS+=	-Wno-error=enum-constexpr-conversion
 .endif
 

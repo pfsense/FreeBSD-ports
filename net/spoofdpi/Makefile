@@ -1,10 +1,10 @@
 PORTNAME=	spoofdpi
 DISTVERSIONPREFIX=	v
 DISTVERSION=	1.2.1
-PORTREVISION=	1
+PORTREVISION=	4
 CATEGORIES=	net
 
-MAINTAINER=	nxjoseph@protonmail.com
+MAINTAINER=	nxjoseph@FreeBSD.org
 COMMENT=	Simple and fast anti-censorship tool
 WWW=		https://spoofdpi.xvzc.dev/ \
 		https://github.com/xvzc/SpoofDPI/

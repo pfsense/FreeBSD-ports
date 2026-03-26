@@ -1,4 +1,4 @@
---- src/rust/Cargo.toml.orig	2026-01-05 15:05:24 UTC
+--- src/rust/Cargo.toml.orig	2026-02-20 02:08:24 UTC
 +++ src/rust/Cargo.toml
 @@ -14,8 +14,8 @@ palette = "0.7"
  log = "0.4.26"
@@ -10,7 +10,7 @@
 +leptonica-sys = { version = "= 0.4.9", optional = true, default-features = false }
  clap = { version = "4.5.31", features = ["derive"] }
  strum_macros = "0.25.3"
- time = "0.3.39"
+ time = "0.3.47"
 @@ -58,3 +58,8 @@ debug = true
  [profile.release-with-debug]
  inherits = "release"

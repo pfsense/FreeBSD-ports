@@ -1,6 +1,6 @@
 PORTNAME=	caldera
 DISTVERSION=	5.3.0
-PORTREVISION=	13
+PORTREVISION=	17
 CATEGORIES=	security python
 
 MAINTAINER=	acm@FreeBSD.org
@@ -31,7 +31,6 @@ RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}aiohttp>0:www/py-aiohttp@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}dirhash>0:security/py-dirhash@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}docker>0:sysutils/py-docker@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}donut-shellcode>0:devel/py-donut-shellcode@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}marshmallow-enum>0:devel/py-marshmallow-enum@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}ldap3>0:net/py-ldap3@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}lxml>0:devel/py-lxml@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}reportlab>0:print/py-reportlab@${PY_FLAVOR} \

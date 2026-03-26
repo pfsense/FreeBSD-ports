@@ -237,7 +237,7 @@ NAXSI_EXTRA_PATCHES=	${PATCHDIR}/extra-patch-naxsi-libinjection__sqli_c \
 			${PATCHDIR}/extra-patch-naxsi_config
 NAXSI_VARS=		DSO_EXTMODS+=naxsi NAXSI_SUBDIR=/naxsi_src
 
-NJS_GH_TUPLE=		nginx:njs:0.9.5:njs
+NJS_GH_TUPLE=		nginx:njs:0.9.6:njs
 NJS_CFLAGS=		-I ${LOCALBASE}/include/quickjs
 NJS_CONFIGURE_ARGS=	--cc-opt="${CFLAGS}" --ld-opt="${LDFLAGS}" --with-quickjs
 NJS_IMPLIES=		HTTP STREAM
@@ -257,7 +257,7 @@ OTEL_LIB_DEPENDS=	libabsl_base.so:devel/abseil \
 			libre2.so:devel/re2
 OTEL_VARS=		DSO_EXTMODS+=otel OTEL_SUBDIR=/
 
-PASSENGER_NGINX_VER=	6.0.27
+PASSENGER_NGINX_VER=	6.1.2
 PASSENGER_MASTER_SITES=	https://s3.amazonaws.com/phusion-passenger/releases/:passenger
 PASSENGER_DISTFILES=	passenger-${PASSENGER_NGINX_VER}.tar.gz:passenger
 PASSENGER_BUILD_DEPENDS=${LOCALBASE}/bin/rake:devel/rubygem-rake
@@ -277,11 +277,11 @@ POSTGRES_EXTRA_PATCHES=	${PATCHDIR}/extra-patch-ngx_postgres-config
 POSTGRES_USES=		pgsql
 POSTGRES_VARS=		DSO_EXTMODS+=postgres
 
-RDS_CSV_GH_TUPLE=	openresty:rds-csv-nginx-module:6a90686:rdscsv
+RDS_CSV_GH_TUPLE=	openresty:rds-csv-nginx-module:761b0e2:rdscsv
 RDS_CSV_EXTRA_PATCHES=	${PATCHDIR}/extra-patch-rds-csv-nginx-module-config
 RDS_CSV_VARS=		DSO_EXTMODS+=rdscsv
 
-RDS_JSON_GH_TUPLE=	openresty:rds-json-nginx-module:e6517b9:rdsjson
+RDS_JSON_GH_TUPLE=	openresty:rds-json-nginx-module:8af0517:rdsjson
 RDS_JSON_VARS=		DSO_EXTMODS+=rdsjson
 
 REDIS2_GH_TUPLE=	openresty:redis2-nginx-module:454c223:redis2
@@ -318,17 +318,16 @@ VOD_LIB_DEPENDS=	libxml2.so:textproc/libxml2 \
 VOD_USES=		iconv
 VOD_VARS=		DSO_EXTMODS+=vod
 
-VTS_GH_TUPLE=		vozlt:nginx-module-vts:37d319f:vts
+VTS_GH_TUPLE=		vozlt:nginx-module-vts:d421ab0:vts
 VTS_VARS=		DSO_EXTMODS+=vts
 
-XSS_GH_TUPLE=		openresty:xss-nginx-module:de2d87a:xss
-XSS_EXTRA_PATCHES=	${PATCHDIR}/extra-patch-xss-nginx-module-config
+XSS_GH_TUPLE=		openresty:xss-nginx-module:0e77f38:xss
 XSS_VARS=		DSO_EXTMODS+=xss
 
 WEBSOCKIFY_GH_TUPLE=	tg123:websockify-nginx-module:c11bc9a:websockify
 WEBSOCKIFY_VARS=	DSO_EXTMODS+=websockify
 
-ZSTD_GH_TUPLE=		tokers:zstd-nginx-module:f4ba115:zstd
+ZSTD_GH_TUPLE=		tokers:zstd-nginx-module:057a7d3:zstd
 ZSTD_CONFIGURE_ENV=	ZSTD_INC=${LOCALBASE}/include \
 			ZSTD_LIB=${LOCALBASE}/lib
 ZSTD_LIB_DEPENDS=	libzstd.so:archivers/zstd

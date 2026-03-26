@@ -1,6 +1,6 @@
---- ui/base/clipboard/clipboard.cc.orig	2026-01-16 14:21:21 UTC
+--- ui/base/clipboard/clipboard.cc.orig	2026-03-24 16:59:08 UTC
 +++ ui/base/clipboard/clipboard.cc
-@@ -29,7 +29,7 @@
+@@ -28,7 +28,7 @@
  #include "ui/gfx/geometry/size.h"
  #include "url/gurl.h"
  
@@ -9,7 +9,7 @@
  #include "ui/linux/linux_ui.h"
  #endif
  
-@@ -79,7 +79,7 @@ bool Clipboard::IsSupportedClipboardBuffer(ClipboardBu
+@@ -78,7 +78,7 @@ bool Clipboard::IsSupportedClipboardBuffer(ClipboardBu
  
  // static
  bool Clipboard::IsMiddleClickPasteEnabled() {

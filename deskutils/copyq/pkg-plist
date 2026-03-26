@@ -17,6 +17,8 @@ share/bash-completion/completions/copyq
 %%DATADIR%%/themes/main_window.css
 %%DATADIR%%/themes/main_window_simple.css
 %%DATADIR%%/themes/menu.css
+%%DATADIR%%/themes/nord.ini
+%%DATADIR%%/themes/nord_light.ini
 %%DATADIR%%/themes/notification.css
 %%DATADIR%%/themes/paper.ini
 %%DATADIR%%/themes/simple.ini
@@ -31,6 +33,7 @@ share/bash-completion/completions/copyq
 %%DATADIR%%/translations/copyq_de.qm
 %%DATADIR%%/translations/copyq_el.qm
 %%DATADIR%%/translations/copyq_es.qm
+%%DATADIR%%/translations/copyq_et.qm
 %%DATADIR%%/translations/copyq_fa.qm
 %%DATADIR%%/translations/copyq_fi.qm
 %%DATADIR%%/translations/copyq_fr.qm
@@ -57,6 +60,8 @@ share/bash-completion/completions/copyq
 %%DATADIR%%/translations/copyq_vi.qm
 %%DATADIR%%/translations/copyq_zh_CN.qm
 %%DATADIR%%/translations/copyq_zh_TW.qm
+share/gnome-shell/extensions/copyq-clipboard@hluk.github.com/extension.js
+share/gnome-shell/extensions/copyq-clipboard@hluk.github.com/metadata.json
 share/icons/hicolor/128x128/apps/copyq.png
 share/icons/hicolor/16x16/apps/copyq.png
 share/icons/hicolor/22x22/apps/copyq.png
@@ -67,4 +72,4 @@ share/icons/hicolor/64x64/apps/copyq.png
 share/icons/hicolor/scalable/apps/copyq.svg
 share/icons/hicolor/scalable/apps/copyq_mask.svg
 share/man/man1/copyq.1.gz
-share/metainfo/com.github.hluk.copyq.appdata.xml
+share/metainfo/com.github.hluk.copyq.metainfo.xml

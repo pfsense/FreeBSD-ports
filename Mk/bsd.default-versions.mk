@@ -51,7 +51,7 @@ FIREBIRD_DEFAULT?=	3.0
 # Possible values: gfortran
 FORTRAN_DEFAULT?=	gfortran
 # Possible values: 3.2.3, 3.3.1
-.  if (defined(WANT_FPC_DEVEL) && !empty(WANT_FPC_DEVEL)) || ${ARCH:Maarch64}
+.  if (defined(WANT_FPC_DEVEL) && !empty(WANT_FPC_DEVEL)) || ${ARCH:Maarch64} || ${ARCH:Mpowerpc*}
 FPC_DEFAULT?=		3.3.1
 .  else
 FPC_DEFAULT?=		3.2.3
@@ -63,8 +63,8 @@ GCC_DEFAULT?=		14
 GHOSTSCRIPT_DEFAULT?=	10
 # Possible values: mesa-libs, mesa-devel
 GL_DEFAULT?=		mesa-libs
-# Possible values: 1.22, 1.23, 1.24, 1.25, 1.26-devel
-GO_DEFAULT?=		1.24
+# Possible values: 1.24, 1.25, 1.26
+GO_DEFAULT?=		1.25
 # Possible values: 1.8, 2.2, 3.0
 GUILE_DEFAULT?=		2.2
 # Possible versions: 6, 7
@@ -73,13 +73,17 @@ GUILE_DEFAULT?=		2.2
 # Format:	     version[-flavor]
 # Examples:	     6-nox11, 7
 IMAGEMAGICK_DEFAULT?=	7
-# Possible values: 8, 11, 17, 19, 20, 21, 22, 23, 24, 25
-JAVA_DEFAULT?=		8
-# Possible values: 4.4, 4.99
-.  if (defined(WANT_LAZARUS_DEVEL) && !empty(WANT_LAZARUS_DEVEL)) || ${ARCH:Maarch64}
+# Possible values: 8, 11, 17, 21, 22, 23, 24, 25
+.  if ${ARCH:Marmv*}
+JAVA_DEFAULT?=		11
+.  else
+JAVA_DEFAULT?=		21
+.  endif
+# Possible values: 4.6, 4.99
+.  if (defined(WANT_LAZARUS_DEVEL) && !empty(WANT_LAZARUS_DEVEL)) || ${ARCH:Maarch64} || ${ARCH:Mpowerpc*}
 LAZARUS_DEFAULT?=	4.99
 .  else
-LAZARUS_DEFAULT?=	4.4
+LAZARUS_DEFAULT?=	4.6
 .  endif
 # Possible values: rust, legacy
 .  if empty(ARCH:Naarch64:Namd64:Narmv7:Ni386:Npowerpc64:Npowerpc64le:Npowerpc:Nriscv64)
@@ -93,7 +97,7 @@ LINUX_DEFAULT?=		c7
 .  else
 LINUX_DEFAULT?=		rl9
 .  endif
-# Possible values: 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, -devel (to be used when non-base compiler is required)
+# Possible values: 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, -devel (to be used when non-base compiler is required)
 LLVM_DEFAULT?=		19
 # Possible values: 5.1, 5.2, 5.3, 5.4
 LUA_DEFAULT?=		5.4
@@ -105,7 +109,7 @@ LUAJIT_DEFAULT?=	luajit
 .  endif
 # Possible values: 5.10, 5.20, 6.8
 MONO_DEFAULT?=		5.20
-# Possible values: 8.0, 8.4, 9.1, 9.4, 10.6m, 10.11m, 11.4m, 11.8m
+# Possible values: 8.0, 8.4, 9.1, 9.4, 9.6, 10.6m, 10.11m, 11.4m, 11.8m
 MYSQL_DEFAULT?=		8.0
 # Possible values: ninja, samurai
 NINJA_DEFAULT?=		ninja
@@ -131,7 +135,7 @@ _EXPORTED_VARS+=	_PERL5_FROM_BIN
 PERL5_DEFAULT:=		${_PERL5_FROM_BIN:R}
 .  endif
 # Possible values: 13, 14, 15, 16, 17, 18
-PGSQL_DEFAULT?=		17
+PGSQL_DEFAULT?=		18
 # Possible values: 8.2, 8.3, 8.4, 8.5
 PHP_DEFAULT?=		8.4
 # Possible values: rust, legacy

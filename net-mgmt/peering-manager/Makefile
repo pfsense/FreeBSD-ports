@@ -1,7 +1,6 @@
 PORTNAME=	peering-manager
 DISTVERSIONPREFIX=	v
-DISTVERSION=	1.10.2
-PORTREVISION=	1
+DISTVERSION=	1.10.3
 CATEGORIES=	net-mgmt python
 
 MAINTAINER=	bofh@FreeBSD.org
@@ -40,7 +39,7 @@ RUN_DEPENDS=	\
 		${PYTHON_PKGNAMEPREFIX}requests>=2.32:www/py-requests@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}social-auth-core>=4.8:security/py-social-auth-core@${PY_FLAVOR}
 
-USES=		cpe pgsql:13+ python:-3.12
+USES=		cpe pgsql:14+ python:-3.12
 CPE_VENDOR=	${PORTNAME}
 CPE_PRODUCT=	${PORTNAME:S/-/_/}
 USE_GITHUB=	yes

@@ -1,5 +1,6 @@
 PORTNAME=	payara
 DISTVERSION=	7.2025.2
+PORTREVISION=	1
 CATEGORIES=	www java
 MASTER_SITES=	https://repo1.maven.org/maven2/fish/payara/distributions/${PORTNAME}/${DISTVERSION}/
 

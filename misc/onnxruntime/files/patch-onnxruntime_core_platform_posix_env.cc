@@ -24,3 +24,12 @@
                                << ", index: " << p->index
                                << ", mask: " << *p->affinity
                                << ", error code: " << err_no << " error msg: " << err_msg
+@@ -275,7 +276,7 @@ class PosixEnv : public Env {
+ 
+   std::vector<LogicalProcessors> GetDefaultThreadAffinities() const override {
+     std::vector<LogicalProcessors> ret;
+-#ifdef ORT_USE_CPUINFO
++#if defined(ORT_USE_CPUINFO) && defined(__linux__)
+     if (cpuinfo_available_) {
+       auto num_phys_cores = cpuinfo_get_cores_count();
+       ret.reserve(num_phys_cores);

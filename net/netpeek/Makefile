@@ -3,7 +3,7 @@ DISTVERSIONPREFIX=	v
 DISTVERSION=	0.2.6
 CATEGORIES=	net gnome python
 
-MAINTAINER=	nxjoseph@protonmail.com
+MAINTAINER=	nxjoseph@FreeBSD.org
 COMMENT=	Modern local network scanner for GNOME
 WWW=		https://github.com/zingytomato/netpeek \
 		https://flathub.org/apps/io.github.zingytomato.netpeek

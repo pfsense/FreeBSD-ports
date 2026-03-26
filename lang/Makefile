@@ -8,6 +8,7 @@
     SUBDIR += antimony
     SUBDIR += apache-commons-jelly
     SUBDIR += asm-lsp
+    SUBDIR += asmc
     SUBDIR += asn1c
     SUBDIR += atlast
     SUBDIR += awka
@@ -19,6 +20,7 @@
     SUBDIR += c
     SUBDIR += cairo
     SUBDIR += cbmbasic
+    SUBDIR += cbqn
     SUBDIR += ccl
     SUBDIR += ceylon
     SUBDIR += cfortran
@@ -123,9 +125,8 @@
     SUBDIR += gnu-cobol
     SUBDIR += gnustep-base
     SUBDIR += go
-    SUBDIR += go-devel
-    SUBDIR += go124
     SUBDIR += go125
+    SUBDIR += go126
     SUBDIR += gomacro
     SUBDIR += gprolog
     SUBDIR += gptscript
@@ -296,7 +297,6 @@
     SUBDIR += py-textX
     SUBDIR += python
     SUBDIR += python-doc-html
-    SUBDIR += python-doc-pdf-a4
     SUBDIR += python-doc-text
     SUBDIR += python-mode.el
     SUBDIR += python-tools

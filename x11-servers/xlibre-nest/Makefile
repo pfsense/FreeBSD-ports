@@ -1,8 +1,9 @@
 PORTNAME=	xlibre-nest
 PORTVERSION=	${XLIBRE_VER}
+PORTREVISION=	1
 CATEGORIES=	x11-servers
 
-MAINTAINER=	b-aazbsd@proton.me
+MAINTAINER=	xlibre@FreeBSD.org
 COMMENT=	Xlibre Xnest server
 WWW=		https://github.com/X11Libre/xserver/
 
@@ -16,4 +17,4 @@ USE_XORG+=xcb
 LIB_DEPENDS+=	libxcb-util.so:x11/xcb-util \
 		libxcb-icccm.so:x11/xcb-util-wm
 
-.include "../xlibre-server/Makefile.common"
+.include 	"${.CURDIR}/../xlibre-server/Makefile.common"

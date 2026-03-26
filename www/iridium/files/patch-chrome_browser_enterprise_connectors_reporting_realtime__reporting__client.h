@@ -1,4 +1,4 @@
---- chrome/browser/enterprise/connectors/reporting/realtime_reporting_client.h.orig	2025-12-10 15:04:57 UTC
+--- chrome/browser/enterprise/connectors/reporting/realtime_reporting_client.h.orig	2026-03-24 16:59:08 UTC
 +++ chrome/browser/enterprise/connectors/reporting/realtime_reporting_client.h
 @@ -19,7 +19,7 @@
  #include "components/keyed_service/core/keyed_service.h"
@@ -17,7 +17,7 @@
 +#if (BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_BSD)) && defined(notyet)
    // DEPRECATED: Use MaybeCollectDeviceSignalsAndReportEvent(Event, ...).
    void MaybeCollectDeviceSignalsAndReportEventDeprecated(
-       base::Value::Dict event,
+       base::DictValue event,
 @@ -169,7 +169,7 @@ class RealtimeReportingClient : public RealtimeReporti
    base::WeakPtrFactory<RealtimeReportingClient> weak_ptr_factory_{this};
  };

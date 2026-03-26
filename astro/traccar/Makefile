@@ -1,5 +1,5 @@
 PORTNAME=	traccar
-PORTVERSION=	6.11.1
+PORTVERSION=	6.12.2
 CATEGORIES=	astro java
 MASTER_SITES=	https://github.com/traccar/traccar/releases/download/v${DISTVERSION}/
 DISTNAME=	${PORTNAME}-other-${DISTVERSION}
@@ -10,16 +10,21 @@ WWW=		https://www.traccar.org/
 
 LICENSE=	APACHE20
 
-USES=		zip java
+USES=		java zip
 JAVA_VERSION=	17+
 USE_RC_SUBR=	traccar
 
-USERS=		traccar
-GROUPS=		traccar
-
-NO_WRKSUBDIR=	yes
 NO_ARCH=	yes
 NO_BUILD=	yes
+
+SUB_FILES=	pkg-message traccar.xml
+SUB_LIST=	TRACCAR_DATADIR=${TRACCAR_DATADIR} \
+		TRACCAR_LOGDIR=${TRACCAR_LOGDIR}
+
+NO_WRKSUBDIR=	yes
+
+USERS=		traccar
+GROUPS=		traccar
 
 TRACCAR_HOME=		${PREFIX}/${PORTNAME}
 TRACCAR_DATADIR?=	/var/db/${PORTNAME}
@@ -27,9 +32,6 @@ TRACCAR_LOGDIR?=	/var/log/${PORTNAME}
 
 PLIST_SUB=	TRACCAR_DATADIR=${TRACCAR_DATADIR} \
 		TRACCAR_LOGDIR=${TRACCAR_LOGDIR}
-SUB_LIST=	TRACCAR_DATADIR=${TRACCAR_DATADIR} \
-		TRACCAR_LOGDIR=${TRACCAR_LOGDIR}
-SUB_FILES=	traccar.xml pkg-message
 
 do-install:
 		${MKDIR} ${STAGEDIR}${TRACCAR_HOME} \

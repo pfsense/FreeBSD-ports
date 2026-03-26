@@ -1490,11 +1490,13 @@
 @(%%WWWOWN%%,%%WWWGRP%%,750) %%WWWDIR%%/language/hu_HU/help/search.html
 @(%%WWWOWN%%,%%WWWGRP%%,750) %%WWWDIR%%/language/hu_HU/help/synchronize.html
 @(%%WWWOWN%%,%%WWWGRP%%,750) %%WWWDIR%%/language/hu_HU/help/user_list.html
+@(%%WWWOWN%%,%%WWWGRP%%,750) %%WWWDIR%%/language/hu_HU/help_quick_search.lang.php
 @(%%WWWOWN%%,%%WWWGRP%%,750) %%WWWDIR%%/language/hu_HU/hu_HU.jpg
 @(%%WWWOWN%%,%%WWWGRP%%,750) %%WWWDIR%%/language/hu_HU/index.php
 @(%%WWWOWN%%,%%WWWGRP%%,750) %%WWWDIR%%/language/hu_HU/install.lang.php
 @(%%WWWOWN%%,%%WWWGRP%%,750) %%WWWDIR%%/language/hu_HU/iso.txt
 @(%%WWWOWN%%,%%WWWGRP%%,750) %%WWWDIR%%/language/hu_HU/upgrade.lang.php
+@(%%WWWOWN%%,%%WWWGRP%%,750) %%WWWDIR%%/language/hu_HU/whats_new_16.lang.php
 @(%%WWWOWN%%,%%WWWGRP%%,750) %%WWWDIR%%/language/hy_AM/admin.lang.php
 @(%%WWWOWN%%,%%WWWGRP%%,750) %%WWWDIR%%/language/hy_AM/common.lang.php
 @(%%WWWOWN%%,%%WWWGRP%%,750) %%WWWDIR%%/language/hy_AM/hy_AM.jpg
@@ -1629,11 +1631,13 @@
 @(%%WWWOWN%%,%%WWWGRP%%,750) %%WWWDIR%%/language/kn_IN/upgrade.lang.php
 @(%%WWWOWN%%,%%WWWGRP%%,750) %%WWWDIR%%/language/ko_KR/admin.lang.php
 @(%%WWWOWN%%,%%WWWGRP%%,750) %%WWWDIR%%/language/ko_KR/common.lang.php
+@(%%WWWOWN%%,%%WWWGRP%%,750) %%WWWDIR%%/language/ko_KR/help_quick_search.lang.php
 @(%%WWWOWN%%,%%WWWGRP%%,750) %%WWWDIR%%/language/ko_KR/index.php
 @(%%WWWOWN%%,%%WWWGRP%%,750) %%WWWDIR%%/language/ko_KR/install.lang.php
 @(%%WWWOWN%%,%%WWWGRP%%,750) %%WWWDIR%%/language/ko_KR/iso.txt
 @(%%WWWOWN%%,%%WWWGRP%%,750) %%WWWDIR%%/language/ko_KR/ko_KR.jpg
 @(%%WWWOWN%%,%%WWWGRP%%,750) %%WWWDIR%%/language/ko_KR/upgrade.lang.php
+@(%%WWWOWN%%,%%WWWGRP%%,750) %%WWWDIR%%/language/ko_KR/whats_new_16.lang.php
 @(%%WWWOWN%%,%%WWWGRP%%,750) %%WWWDIR%%/language/kok_IN/common.lang.php
 @(%%WWWOWN%%,%%WWWGRP%%,750) %%WWWDIR%%/language/kok_IN/iso.txt
 @(%%WWWOWN%%,%%WWWGRP%%,750) %%WWWDIR%%/language/kok_IN/kok_IN.jpg
@@ -1962,6 +1966,7 @@
 @(%%WWWOWN%%,%%WWWGRP%%,750) %%WWWDIR%%/language/sk_SK/help/search.html
 @(%%WWWOWN%%,%%WWWGRP%%,750) %%WWWDIR%%/language/sk_SK/help/synchronize.html
 @(%%WWWOWN%%,%%WWWGRP%%,750) %%WWWDIR%%/language/sk_SK/help/user_list.html
+@(%%WWWOWN%%,%%WWWGRP%%,750) %%WWWDIR%%/language/sk_SK/help_quick_search.lang.php
 @(%%WWWOWN%%,%%WWWGRP%%,750) %%WWWDIR%%/language/sk_SK/index.php
 @(%%WWWOWN%%,%%WWWGRP%%,750) %%WWWDIR%%/language/sk_SK/install.lang.php
 @(%%WWWOWN%%,%%WWWGRP%%,750) %%WWWDIR%%/language/sk_SK/iso.txt
@@ -2511,6 +2516,9 @@
 @(%%WWWOWN%%,%%WWWGRP%%,750) %%WWWDIR%%/plugins/LocalFilesEditor/language/km_KH/plugin.lang.php
 @(%%WWWOWN%%,%%WWWGRP%%,750) %%WWWDIR%%/plugins/LocalFilesEditor/language/kn_IN/description.txt
 @(%%WWWOWN%%,%%WWWGRP%%,750) %%WWWDIR%%/plugins/LocalFilesEditor/language/kn_IN/plugin.lang.php
+@(%%WWWOWN%%,%%WWWGRP%%,750) %%WWWDIR%%/plugins/LocalFilesEditor/language/ko_KR/description.txt
+@(%%WWWOWN%%,%%WWWGRP%%,750) %%WWWDIR%%/plugins/LocalFilesEditor/language/ko_KR/index.php
+@(%%WWWOWN%%,%%WWWGRP%%,750) %%WWWDIR%%/plugins/LocalFilesEditor/language/ko_KR/plugin.lang.php
 @(%%WWWOWN%%,%%WWWGRP%%,750) %%WWWDIR%%/plugins/LocalFilesEditor/language/lt_LT/description.txt
 @(%%WWWOWN%%,%%WWWGRP%%,750) %%WWWDIR%%/plugins/LocalFilesEditor/language/lt_LT/plugin.lang.php
 @(%%WWWOWN%%,%%WWWGRP%%,750) %%WWWDIR%%/plugins/LocalFilesEditor/language/lv_LV/description.txt
@@ -3941,6 +3949,8 @@
 @(%%WWWOWN%%,%%WWWGRP%%,750) %%WWWDIR%%/themes/smartpocket/language/ja_JP/theme.lang.php
 @(%%WWWOWN%%,%%WWWGRP%%,750) %%WWWDIR%%/themes/smartpocket/language/km_KH/index.php
 @(%%WWWOWN%%,%%WWWGRP%%,750) %%WWWDIR%%/themes/smartpocket/language/km_KH/theme.lang.php
+@(%%WWWOWN%%,%%WWWGRP%%,750) %%WWWDIR%%/themes/smartpocket/language/ko_KR/index.php
+@(%%WWWOWN%%,%%WWWGRP%%,750) %%WWWDIR%%/themes/smartpocket/language/ko_KR/theme.lang.php
 @(%%WWWOWN%%,%%WWWGRP%%,750) %%WWWDIR%%/themes/smartpocket/language/lt_LT/index.php
 @(%%WWWOWN%%,%%WWWGRP%%,750) %%WWWDIR%%/themes/smartpocket/language/lt_LT/theme.lang.php
 @(%%WWWOWN%%,%%WWWGRP%%,750) %%WWWDIR%%/themes/smartpocket/language/lv_LV/index.php
@@ -4067,6 +4077,7 @@
 @(%%WWWOWN%%,%%WWWGRP%%,750) %%WWWDIR%%/themes/standard_pages/skins/silver.css
 @(%%WWWOWN%%,%%WWWGRP%%,750) %%WWWDIR%%/themes/standard_pages/skins/teal.css
 @(%%WWWOWN%%,%%WWWGRP%%,750) %%WWWDIR%%/themes/standard_pages/template/footer.tpl
+@(%%WWWOWN%%,%%WWWGRP%%,750) %%WWWDIR%%/themes/standard_pages/template/header.tpl
 @(%%WWWOWN%%,%%WWWGRP%%,750) %%WWWDIR%%/themes/standard_pages/template/identification.tpl
 @(%%WWWOWN%%,%%WWWGRP%%,750) %%WWWDIR%%/themes/standard_pages/template/password.tpl
 @(%%WWWOWN%%,%%WWWGRP%%,750) %%WWWDIR%%/themes/standard_pages/template/profile.tpl

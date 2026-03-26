@@ -1,5 +1,5 @@
 PORTNAME=	vms-empire
-DISTVERSION=	1.18
+DISTVERSION=	1.19
 CATEGORIES=	games
 MASTER_SITES=	http://www.catb.org/~esr/vms-empire/
 
@@ -19,7 +19,7 @@ PLIST_FILES=	${DESKTOPDIR}/${PORTNAME}.desktop \
 		share/icons/hicolor/48x48/apps/${PORTNAME}.png \
 		share/man/man6/${PORTNAME}.6.gz
 
-PORTDOCS=	AUTHORS BUGS HACKING NEWS README
+PORTDOCS=	AUTHORS BUGS HACKING NEWS
 OPTIONS_DEFINE=	DOCS
 
 post-install:

@@ -1,6 +1,5 @@
 PORTNAME=	nicegui-highcharts
-DISTVERSION=	2.1.0
-PORTREVISION=	1
+DISTVERSION=	3.2.0
 CATEGORIES=	www graphics python
 MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -13,8 +12,7 @@ WWW=		https://github.com/zauberzeug/nicegui-highcharts
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}poetry-core>0:devel/py-poetry-core@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}setuptools>=0:devel/py-setuptools@${PY_FLAVOR}
+BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}hatchling>0:devel/py-hatchling@${PY_FLAVOR}
 
 USES=		python
 USE_PYTHON=	autoplist pep517

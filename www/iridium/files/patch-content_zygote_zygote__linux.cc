@@ -1,4 +1,4 @@
---- content/zygote/zygote_linux.cc.orig	2026-01-16 14:21:21 UTC
+--- content/zygote/zygote_linux.cc.orig	2026-03-24 16:59:08 UTC
 +++ content/zygote/zygote_linux.cc
 @@ -1,6 +1,7 @@
  // Copyright 2012 The Chromium Authors
@@ -8,7 +8,7 @@
  
  #include "content/zygote/zygote_linux.h"
  
-@@ -718,3 +719,4 @@ void Zygote::HandleReinitializeLoggingRequest(base::Pi
+@@ -714,3 +715,4 @@ void Zygote::HandleReinitializeLoggingRequest(base::Pi
  }
  
  }  // namespace content

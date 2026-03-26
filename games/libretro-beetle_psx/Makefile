@@ -1,5 +1,5 @@
 PORTNAME=	libretro-beetle_psx
-DISTVERSION=	0.20250806
+DISTVERSION=	0.20260113
 CATEGORIES=	games
 
 MAINTAINER=	tilde@ultros.pro
@@ -12,7 +12,7 @@ USES=		compiler:c++11-lib gmake
 USE_GITHUB=	yes
 GH_ACCOUNT=	libretro
 GH_PROJECT=	beetle-psx-libretro
-GH_TAGNAME=	1e42a9076ab1ec5756d3f72e6d61923080fb2128
+GH_TAGNAME=	254285de247db71ac25a4392c159dc1114940794
 USE_LDCONFIG=	yes
 
 PLIST_FILES=	lib/libretro/mednafen_psx_libretro.so

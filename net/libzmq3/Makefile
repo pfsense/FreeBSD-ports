@@ -1,6 +1,6 @@
 PORTNAME=	libzmq3
 PORTVERSION=	3.2.5
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	net
 MASTER_SITES=	https://github.com/zeromq/zeromq3-x/releases/download/${DISTVERSIONFULL}/
 DISTNAME=	zeromq-${DISTVERSION}
@@ -12,11 +12,13 @@ WWW=		https://www.zeromq.org/
 LICENSE=	LGPL3+
 LICENSE_FILE=	${WRKSRC}/COPYING.LESSER
 
+DEPRECATED=	Upstream unmaintained version with multiple vulnerabilities
+EXPIRATION_DATE=	2026-03-31
+
 USES=		libtool pathfix
 USE_LDCONFIG=	yes
 
 GNU_CONFIGURE=	yes
-GNU_CONFIGURE_MANPREFIX=${PREFIX}/share
 
 MAKE_ENV=	V=1
 INSTALL_TARGET=	install-strip

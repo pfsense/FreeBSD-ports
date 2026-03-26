@@ -1,5 +1,6 @@
 PORTNAME=	gkl
 DISTVERSION=	0.9.1
+PORTREVISION=	1
 CATEGORIES=	biology devel
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -8,6 +9,8 @@ WWW=		https://github.com/Intel-HLS/GKL
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
+
+BROKEN_aarch64=	/usr/lib/clang/19/include/ia32intrin.h:312:10: error: use of undeclared identifier '__builtin_ia32_readeflags_u32'
 
 BUILD_DEPENDS=	gmake:devel/gmake
 LIB_DEPENDS=	libisal.so:devel/isa-l

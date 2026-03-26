@@ -1,5 +1,5 @@
 PORTNAME=	abinit
-DISTVERSION=	10.4.7
+DISTVERSION=	10.6.5
 CATEGORIES=	science
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -21,6 +21,7 @@ LIB_DEPENDS=	libelpa.so:math/elpa		\
 		libsz.so:science/libaec		\
 		libxc.so:science/libxc		\
 		libfftw3.so:math/fftw3		\
+		libfftw3f.so:math/fftw3-float   \
 		libhdf5.so:science/hdf5		\
 		libnetcdf.so:science/netcdf	\
 		libxmlf90.so:textproc/xmlf90	\

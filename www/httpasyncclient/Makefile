@@ -1,5 +1,6 @@
 PORTNAME=	httpasyncclient
 DISTVERSION=	4.1.5
+PORTREVISION=	1
 CATEGORIES=	www java
 MASTER_SITES=	APACHE/httpcomponents/${PORTNAME}/binary
 DISTNAME=	httpcomponents-asyncclient-${DISTVERSION}-bin

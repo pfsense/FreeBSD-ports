@@ -1,5 +1,6 @@
 PORTNAME=	picard
 DISTVERSION=	2.22.9
+PORTREVISION=	1
 CATEGORIES=	biology java
 MASTER_SITES=	http://github.com/broadinstitute/picard/releases/download/${PORTVERSION}/
 PKGNAMESUFFIX=	-tools

@@ -24,6 +24,7 @@ include/hyprutils/path/Path.hpp
 include/hyprutils/signal/Listener.hpp
 include/hyprutils/signal/Signal.hpp
 include/hyprutils/string/ConstVarList.hpp
+include/hyprutils/string/Numeric.hpp
 include/hyprutils/string/String.hpp
 include/hyprutils/string/VarList.hpp
 include/hyprutils/string/VarList2.hpp

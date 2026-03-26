@@ -3,6 +3,8 @@ lib/node_modules/.bin/copilot-language-server
 lib/node_modules/@github/copilot-language-server/LICENSE
 lib/node_modules/@github/copilot-language-server/README.md
 lib/node_modules/@github/copilot-language-server/dist/api/types.d.ts
+lib/node_modules/@github/copilot-language-server/dist/assets/agents/CVE_Remediator.agent.md
+lib/node_modules/@github/copilot-language-server/dist/assets/agents/Debugger.agent.md
 lib/node_modules/@github/copilot-language-server/dist/assets/agents/Plan.agent.md
 lib/node_modules/@github/copilot-language-server/dist/assets/prompts.contributions.json
 lib/node_modules/@github/copilot-language-server/dist/cl100k_base.tiktoken
@@ -19,12 +21,14 @@ lib/node_modules/@github/copilot-language-server/dist/resources/cl100k_base.tikt
 lib/node_modules/@github/copilot-language-server/dist/resources/o200k_base.tiktoken.noindex
 lib/node_modules/@github/copilot-language-server/dist/tfidfWorker.js
 lib/node_modules/@github/copilot-language-server/dist/tfidfWorker.js.map
+lib/node_modules/@github/copilot-language-server/dist/tree-sitter-bash.wasm
 lib/node_modules/@github/copilot-language-server/dist/tree-sitter-c-sharp.wasm
 lib/node_modules/@github/copilot-language-server/dist/tree-sitter-cpp.wasm
 lib/node_modules/@github/copilot-language-server/dist/tree-sitter-go.wasm
 lib/node_modules/@github/copilot-language-server/dist/tree-sitter-java.wasm
 lib/node_modules/@github/copilot-language-server/dist/tree-sitter-javascript.wasm
 lib/node_modules/@github/copilot-language-server/dist/tree-sitter-php.wasm
+lib/node_modules/@github/copilot-language-server/dist/tree-sitter-powershell.wasm
 lib/node_modules/@github/copilot-language-server/dist/tree-sitter-python.wasm
 lib/node_modules/@github/copilot-language-server/dist/tree-sitter-regex.wasm
 lib/node_modules/@github/copilot-language-server/dist/tree-sitter-ruby.wasm

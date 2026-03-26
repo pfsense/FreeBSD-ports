@@ -1,17 +1,16 @@
 --- package.json.orig	2025-05-28 20:17:57 UTC
 +++ package.json
-@@ -398,7 +398,9 @@
-       "zod@3.23.8": "patches/zod+3.23.8.patch",
-       "app-builder-lib": "patches/app-builder-lib.patch",
+@@ -398,7 +398,8 @@
        "dmg-builder": "patches/dmg-builder.patch",
--      "eslint-plugin-better-tailwindcss": "patches/eslint-plugin-better-tailwindcss.patch"
-+      "eslint-plugin-better-tailwindcss": "patches/eslint-plugin-better-tailwindcss.patch",
+       "eslint-plugin-better-tailwindcss": "patches/eslint-plugin-better-tailwindcss.patch",
+       "framer-motion@6.5.1": "patches/framer-motion@6.5.1.patch",
+-      "fs-xattr": "patches/fs-xattr.patch"
 +      "electron-builder": "patches/electron-builder.patch",
 +      "@signalapp/ringrtc": "patches/signalapp-ringrtc.patch"
      },
      "onlyBuiltDependencies": [
        "@indutny/mac-screen-share",
-@@ -504,20 +506,6 @@
+@@ -502,20 +503,6 @@
        "asarUnpack": [
          "build/icons/win/icon.ico"
        ]
@@ -31,4 +30,4 @@
 -      }
      },
      "linux": {
-       "category": "Network;InstantMessaging;Chat",
+       "executableName": "signal-desktop",

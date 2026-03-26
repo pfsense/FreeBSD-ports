@@ -1,8 +1,9 @@
 PORTNAME=	xlibre-xf86-video-amdgpu
-PORTVERSION=	25.0.1
+PORTVERSION=	25.0.3
+PORTREVISION=	1
 CATEGORIES=	x11-drivers
 
-MAINTAINER=	b-aazbsd@proton.me
+MAINTAINER=	xlibre@FreeBSD.org
 COMMENT=	XLibre amdgpu display driver
 WWW=		https://github.com/X11Libre/xf86-video-amdgpu/
 
@@ -20,7 +21,7 @@ USE_GL=		gbm
 
 CONFIGURE_ARGS+=--disable-udev
 
-PLIST_FILES=	${MODULEDIR}/drivers/amdgpu_drv.so \
+PLIST_FILES=	${MODULEDIR}/drivers/video/amdgpu_drv.so \
 		share/man/man4/amdgpu.4x.gz \
 		share/X11/xorg.conf.d/10-amdgpu.conf
 

@@ -1,6 +1,6 @@
 PORTNAME=	hyprland
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.53.1
+DISTVERSION=	0.54.2
 CATEGORIES=	x11-wm wayland
 MASTER_SITES=	https://github.com/hyprwm/Hyprland/releases/download/${DISTVERSIONFULL}/
 DISTNAME=	source-${DISTVERSIONFULL}
@@ -14,7 +14,7 @@ LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
 BUILD_DEPENDS=	evdev-proto>0:devel/evdev-proto \
-		glaze>0:devel/glaze \
+		glaze>=7.0.0<8.0.0:devel/glaze \
 		hyprwayland-scanner>=0.3.10:devel/hyprwayland-scanner \
 		hyprland-protocols>=0.6.4:graphics/hyprland-protocols \
 		wayland-protocols>=1.45:graphics/wayland-protocols
@@ -67,8 +67,6 @@ X11_LIB_DEPENDS=	libxcb-errors.so:x11/xcb-util-errors \
 			libxcb-icccm.so:x11/xcb-util-wm
 X11_USE=		XORG=xcb
 X11_CMAKE_BOOL_OFF=	NO_XWAYLAND
-
-.include <bsd.port.options.mk>
 
 post-patch:
 # Respect consolekit2 as XDG_RUNTIME_DIR fallback

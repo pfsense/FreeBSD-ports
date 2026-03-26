@@ -1,6 +1,6 @@
 PORTNAME=	nmap
-DISTVERSION=	7.94
-PORTREVISION=	3
+DISTVERSION=	7.98
+PORTREVISION=	1
 CATEGORIES=	security
 MASTER_SITES=	https://nmap.org/dist/ \
 		LOCAL/ohauer
@@ -18,6 +18,8 @@ LICENSE_NAME=	Nmap Public Source License
 LICENSE_PERMS=	auto-accept dist-mirror pkg-mirror pkg-sell
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
+LIB_DEPENDS=	libpcre2-16.so:devel/pcre2
+
 .if !defined(MASTERDIR)
 
 USES=		tar:bzip2 gmake cpe
@@ -26,8 +28,9 @@ USES=		tar:bzip2 gmake cpe
 EXTRACT_AFTER_ARGS=	--exclude ${DISTNAME}/mswin32 \
 			--no-same-owner --no-same-permissions
 
+MAKE_JOBS_UNSAFE=	yes
+
 GNU_CONFIGURE=	yes
-GNU_CONFIGURE_MANPREFIX=${PREFIX}/share
 
 OPTIONS_SUB=	yes
 OPTIONS_DEFINE=	DOCS NLS PCAP SSH2 SSL
@@ -38,6 +41,9 @@ SSH2_DESC=		SSH2 protocol support
 
 NLS_CONFIGURE_ENABLE=	nls
 PCAP_CONFIGURE_ON=	--with-libpcap=included
+PCAP_LIB_DEPENDS=	libdbus-1.so:devel/dbus
+PCAP_USES=		localbase:ldflags
+PCAP_LDFLAGS=		-ldbus-1
 SSH2_CONFIGURE_ON=	--with-libssh2=included
 SSH2_CONFIGURE_OFF=	--without-libssh2
 SSH2_IMPLIES=		SSL
@@ -53,9 +59,10 @@ STRIP_FILES+=	nmap nping
 CONFIGURE_ARGS+=--without-localdirs \
 		--without-zenmap \
 		--without-ndiff \
-		--with-libpcre=included \
 		--with-liblua=included \
 		--without-nmap-update
+
+
 
 .include <bsd.port.options.mk>
 

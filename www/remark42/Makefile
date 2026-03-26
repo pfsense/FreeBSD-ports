@@ -1,7 +1,7 @@
 PORTNAME=	remark42
 DISTVERSIONPREFIX=	v
 DISTVERSION=	1.15.0
-PORTREVISION=	1
+PORTREVISION=	3
 CATEGORIES=	www
 MASTER_SITES=	LOCAL/delphij:npmcache
 DISTFILES=	${PORTNAME}-npm-cache-${DISTVERSION}${EXTRACT_SUFX}:npmcache
@@ -15,7 +15,7 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 
 BUILD_DEPENDS+=	npm-node22>0:www/npm-node22
 
-USES=		cpe go:1.25,modules tar:xz
+USES=		cpe go:1.25+,modules tar:xz
 
 GO_BUILDFLAGS=	-ldflags "-s -w -X main.revision=${DISTVERSION}"
 GO_TARGET=	app:${PREFIX}/libexec/${PORTNAME}

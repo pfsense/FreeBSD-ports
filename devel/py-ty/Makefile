@@ -1,5 +1,5 @@
 PORTNAME=	ty
-DISTVERSION=	0.0.12
+DISTVERSION=	0.0.24
 PORTREVISION=	1
 CATEGORIES=	devel python
 MASTER_SITES=	PYPI
@@ -27,8 +27,6 @@ CARGO_INSTALL=	no
 CARGO_TEST_ARGS=--no-fail-fast
 
 MAKE_ENV=	${CARGO_ENV}
-
-PORTSCOUT=	site:https://files.pythonhosted.org/packages/source/t/ty/
 
 PORTDOCS=	README.md
 

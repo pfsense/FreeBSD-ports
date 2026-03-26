@@ -1,5 +1,6 @@
 PORTNAME=	rlpycairo
 DISTVERSION=	0.4.0
+PORTREVISION=	1
 CATEGORIES=	graphics print python
 MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -13,7 +14,7 @@ LICENSE=	BSD3CLAUSE
 
 BUILD_DEPENDS=	${PY_SETUPTOOLS} \
 		${PYTHON_PKGNAMEPREFIX}wheel>0:devel/py-wheel@${PY_FLAVOR}
-RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}cairo>=1.20:graphics/py-cairo@${PY_FLAVOR} \
+RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}pycairo>=1.20:graphics/py-pycairo@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}freetype-py>=2.3:print/py-freetype-py@${PY_FLAVOR}
 
 USES=		python

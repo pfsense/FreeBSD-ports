@@ -2,7 +2,7 @@ PORTNAME=	clapper
 DISTVERSION=	0.10.0
 CATEGORIES=	multimedia graphics wayland
 
-MAINTAINER=	nxjoseph@protonmail.com
+MAINTAINER=	nxjoseph@FreeBSD.org
 COMMENT=	Simple and modern GNOME media player
 WWW=		https://rafostar.github.io/clapper
 

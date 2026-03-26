@@ -140,6 +140,7 @@
     SUBDIR += hyprls
     SUBDIR += hyprpaper
     SUBDIR += hyprpicker
+    SUBDIR += hyprshutdown
     SUBDIR += hyprviz
     SUBDIR += i3bar-river
     SUBDIR += i3blocks
@@ -342,6 +343,7 @@
     SUBDIR += plasma6-kglobalacceld
     SUBDIR += plasma6-kscreen
     SUBDIR += plasma6-kwayland
+    SUBDIR += plasma6-kwayland-integration
     SUBDIR += plasma6-layer-shell-qt
     SUBDIR += plasma6-libkscreen
     SUBDIR += plasma6-libplasma
@@ -386,7 +388,6 @@
     SUBDIR += rofi-emoji
     SUBDIR += rofi-file-browser-extended
     SUBDIR += rofi-pass
-    SUBDIR += rofi-wayland
     SUBDIR += roxterm
     SUBDIR += rsibreak
     SUBDIR += rubygem-gnome
@@ -470,6 +471,7 @@
     SUBDIR += wallutils
     SUBDIR += wapanel
     SUBDIR += watershot
+    SUBDIR += waveterm
     SUBDIR += way-displays
     SUBDIR += waybar
     SUBDIR += waycheck

@@ -1,5 +1,6 @@
 PORTNAME=	hdf
 DISTVERSION=	4.3.0
+PORTREVISION=	1
 PORTEPOCH=	1
 CATEGORIES=	science archivers graphics
 MASTER_SITES=	https://github.com/HDFGroup/hdf4/releases/download/hdf${DISTVERSION}/

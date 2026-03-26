@@ -1,5 +1,6 @@
 PORTNAME=	squirrel-sql
 DISTVERSION=	4.8.0
+PORTREVISION=	1
 CATEGORIES=	databases java
 MASTER_SITES=	SF/${PORTNAME}/1-stable/${DISTVERSION}-plainzip
 DISTNAME=	squirrelsql-${DISTVERSION}-optional

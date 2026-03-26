@@ -1,5 +1,6 @@
 PORTNAME=	jing
 PORTVERSION=	20241231
+PORTREVISION=	1
 CATEGORIES=	textproc java
 MASTER_SITES=	https://github.com/relaxng/jing-trang/releases/download/V${PORTVERSION}/
 

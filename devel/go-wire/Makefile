@@ -1,11 +1,11 @@
 PORTNAME=	wire
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.6.0
-PORTREVISION=	16
+DISTVERSION=	0.7.0
+PORTREVISION=	2
 CATEGORIES=	devel
 PKGNAMEPREFIX=	go-
 
-MAINTAINER=	drtr0jan@yandex.ru
+MAINTAINER=	jordan@ostreff.info
 COMMENT=	Compile-time Dependency Injection for Go
 WWW=		https://github.com/google/wire
 

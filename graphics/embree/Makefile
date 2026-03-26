@@ -1,10 +1,7 @@
 PORTNAME=	embree
-PORTVERSION=	4.2.0
+PORTVERSION=	4.4.0
 DISTVERSIONPREFIX=	v
 CATEGORIES=	graphics
-
-PATCH_SITES=	https://github.com/RenderKit/${PORTNAME}/commit/
-PATCHFILES+=	cda4cf1919bb2a748e78915fbd6e421a1056638d.patch:-p1 # https://github.com/RenderKit/embree/issues/486
 
 MAINTAINER=	danfe@FreeBSD.org
 COMMENT=	Collection of high-performance ray tracing kernels
@@ -73,6 +70,8 @@ post-patch:
 	    '/DESTINATION "src" COMPONENT examples)/s,^INSTALL,#&,' \
 		${WRKSRC}/tutorials/minimal/CMakeLists.txt \
 		${WRKSRC}/tutorials/CMakeLists.txt
+	@${REINPLACE_CMD} -e '/monitorMemoryFunction/s,int64,intptr_t,' \
+		${WRKSRC}/tutorials/forest/forest_device.ispc
 
 do-test:
 	${TEST_WRKSRC}/${PORTNAME}_verify

@@ -1051,6 +1051,7 @@ lib/afni/plug_zeropad.so
 %%DATADIR%%/funstuff/face_dan_dickstein.jpg
 %%DATADIR%%/funstuff/face_dante.jpg
 %%DATADIR%%/funstuff/face_dario.jpg
+%%DATADIR%%/funstuff/face_darwin.jpg
 %%DATADIR%%/funstuff/face_dave_jangraw.jpg
 %%DATADIR%%/funstuff/face_daveperlman.jpg
 %%DATADIR%%/funstuff/face_davepitcher.jpg
@@ -1208,7 +1209,6 @@ lib/afni/plug_zeropad.so
 %%DATADIR%%/funstuff/face_les_petits_beauchamps.jpg
 %%DATADIR%%/funstuff/face_lfrank.jpg
 %%DATADIR%%/funstuff/face_lin_zhu.jpg
-%%DATADIR%%/funstuff/face_lincoln1.jpg
 %%DATADIR%%/funstuff/face_lincoln2.jpg
 %%DATADIR%%/funstuff/face_lindachao.jpg
 %%DATADIR%%/funstuff/face_lindathede.jpg

@@ -1,4 +1,4 @@
---- third_party/blink/renderer/core/execution_context/navigator_base.cc.orig	2026-01-16 13:40:34 UTC
+--- third_party/blink/renderer/core/execution_context/navigator_base.cc.orig	2026-03-15 18:32:51 UTC
 +++ third_party/blink/renderer/core/execution_context/navigator_base.cc
 @@ -32,7 +32,7 @@ String GetReducedNavigatorPlatform() {
    return "Win32";

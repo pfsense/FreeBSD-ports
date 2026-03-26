@@ -442,7 +442,7 @@ __metadata:
     "@electron/docs-parser": "npm:^2.0.0"
     "@electron/fiddle-core": "npm:^1.3.4"
     "@electron/github-app-auth": "npm:^3.2.0"
-    "@electron/lint-roller": "npm:^3.1.2"
+    "@electron/lint-roller": "npm:^3.2.0"
     "@electron/typescript-definitions": "npm:^9.1.2"
     "@octokit/rest": "npm:^20.1.2"
     "@primer/octicons": "npm:^10.0.0"
@@ -490,6 +490,7 @@ __metadata:
     webpack: "npm:^5.95.0"
     webpack-cli: "npm:^5.1.4"
     wrapper-webpack-plugin: "npm:^2.2.0"
+    yaml: "npm:^2.8.1"
   dependenciesMeta:
     abstract-socket:
       built: true
@@ -656,9 +657,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@electron/lint-roller@npm:^3.1.2":
-  version: 3.1.2
-  resolution: "@electron/lint-roller@npm:3.1.2"
+"@electron/lint-roller@npm:^3.2.0":
+  version: 3.2.0
+  resolution: "@electron/lint-roller@npm:3.2.0"
   dependencies:
     "@dsanders11/vscode-markdown-languageservice": "npm:^0.3.0"
     ajv: "npm:^8.16.0"
@@ -683,7 +684,7 @@ __metadata:
     lint-roller-markdown-links: dist/bin/lint-markdown-links.js
     lint-roller-markdown-standard: dist/bin/lint-markdown-standard.js
     lint-roller-markdown-ts-check: dist/bin/lint-markdown-ts-check.js
-  checksum: 10c0/e98a65d44b99accf44e33d7dfb1e8d85a75580a7efa7b4a570b0f8e7274aad3eb60fc6d285b5d1d78ecd093e902820222cfdf3e193eec65a8a3536d4c75bb060
+  checksum: 10c0/5331163518f41c1ea8ac302891d808891b5570f657587194717e3a8214c0d99e04949cf500ff138b02b77a373e317c3e77042b19c7fbda186d5c970b6b81df80
   languageName: node
   linkType: hard
 
@@ -2006,16 +2007,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/split@npm:^1.0.5":
-  version: 1.0.5
-  resolution: "@types/split@npm:1.0.5"
-  dependencies:
-    "@types/node": "npm:*"
-    "@types/through": "npm:*"
-  checksum: 10c0/eb187a3b07e5064928e49bffd5c45ad1f1109135fee52344bb7623cdb55e2ebb16bd6ca009a30a0a6e2b262f7ebb7bf18030ff873819e80fafd4cbb51dba1a74
-  languageName: node
-  linkType: hard
-
 "@types/stream-chain@npm:*":
   version: 2.0.0
   resolution: "@types/stream-chain@npm:2.0.0"
@@ -2055,15 +2046,6 @@ __metadata:
   version: 0.2.2
   resolution: "@types/text-table@npm:0.2.2"
   checksum: 10c0/83e7a78f8434b8c0f536249c39028624a3ef2c37e0d4acfe839c0cf1a53fda5bb2aa56403455c5c0cc92009d5fcebb24c195f93ea8aced6701577ad5d738c19a
-  languageName: node
-  linkType: hard
-
-"@types/through@npm:*":
-  version: 0.0.33
-  resolution: "@types/through@npm:0.0.33"
-  dependencies:
-    "@types/node": "npm:*"
-  checksum: 10c0/6a8edd7f40cd7e197318e86310a40e568cddd380609dde59b30d5cc6c5f8276ddc698905eac4b3b429eb39f2e8ee326bc20dc6e95a2cdc41c4d3fc9a1ebd4929
   languageName: node
   linkType: hard
 
@@ -4585,7 +4567,6 @@ __metadata:
     "@types/mocha": "npm:^7.0.2"
     "@types/send": "npm:^0.14.5"
     "@types/sinon": "npm:^9.0.4"
-    "@types/split": "npm:^1.0.5"
     "@types/uuid": "npm:^3.4.6"
     "@types/w3c-web-serial": "npm:^1.0.7"
     "@types/ws": "npm:^7.2.0"
@@ -4608,7 +4589,6 @@ __metadata:
     q: "npm:^1.5.1"
     send: "npm:^0.19.0"
     sinon: "npm:^9.0.1"
-    split: "npm:^1.0.1"
     uuid: "npm:^3.3.3"
     winreg: "npm:1.2.4"
     ws: "npm:^7.5.10"
@@ -8725,7 +8705,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"micromark-core-commonmark@npm:2.0.3":
+"micromark-core-commonmark@npm:2.0.3, micromark-core-commonmark@npm:^2.0.0":
   version: 2.0.3
   resolution: "micromark-core-commonmark@npm:2.0.3"
   dependencies:
@@ -8746,30 +8726,6 @@ __metadata:
     micromark-util-symbol: "npm:^2.0.0"
     micromark-util-types: "npm:^2.0.0"
   checksum: 10c0/bd4a794fdc9e88dbdf59eaf1c507ddf26e5f7ddf4e52566c72239c0f1b66adbcd219ba2cd42350debbe24471434d5f5e50099d2b3f4e5762ca222ba8e5b549ee
-  languageName: node
-  linkType: hard
-
-"micromark-core-commonmark@npm:^2.0.0":
-  version: 2.0.1
-  resolution: "micromark-core-commonmark@npm:2.0.1"
-  dependencies:
-    decode-named-character-reference: "npm:^1.0.0"
-    devlop: "npm:^1.0.0"
-    micromark-factory-destination: "npm:^2.0.0"
-    micromark-factory-label: "npm:^2.0.0"
-    micromark-factory-space: "npm:^2.0.0"
-    micromark-factory-title: "npm:^2.0.0"
-    micromark-factory-whitespace: "npm:^2.0.0"
-    micromark-util-character: "npm:^2.0.0"
-    micromark-util-chunked: "npm:^2.0.0"
-    micromark-util-classify-character: "npm:^2.0.0"
-    micromark-util-html-tag-name: "npm:^2.0.0"
-    micromark-util-normalize-identifier: "npm:^2.0.0"
-    micromark-util-resolve-all: "npm:^2.0.0"
-    micromark-util-subtokenize: "npm:^2.0.0"
-    micromark-util-symbol: "npm:^2.0.0"
-    micromark-util-types: "npm:^2.0.0"
-  checksum: 10c0/a0b280b1b6132f600518e72cb29a4dd1b2175b85f5ed5b25d2c5695e42b876b045971370daacbcfc6b4ce8cf7acbf78dd3a0284528fb422b450144f4b3bebe19
   languageName: node
   linkType: hard
 
@@ -14510,6 +14466,15 @@ __metadata:
   bin:
     yaml: bin.mjs
   checksum: 10c0/f6f7310cf7264a8107e72c1376f4de37389945d2fb4656f8060eca83f01d2d703f9d1b925dd8f39852a57034fafefde6225409ddd9f22aebfda16c6141b71858
+  languageName: node
+  linkType: hard
+
+"yaml@npm:^2.8.1":
+  version: 2.8.2
+  resolution: "yaml@npm:2.8.2"
+  bin:
+    yaml: bin.mjs
+  checksum: 10c0/703e4dc1e34b324aa66876d63618dcacb9ed49f7e7fe9b70f1e703645be8d640f68ab84f12b86df8ac960bac37acf5513e115de7c970940617ce0343c8c9cd96
   languageName: node
   linkType: hard
 

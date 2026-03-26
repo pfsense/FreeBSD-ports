@@ -1,5 +1,5 @@
 PORTNAME=	bcmatroska2
-DISTVERSION=	5.4.72
+DISTVERSION=	5.4.94
 CATEGORIES=	multimedia
 
 MAINTAINER=	bofh@FreeBSD.org

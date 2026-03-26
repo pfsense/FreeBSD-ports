@@ -1,5 +1,5 @@
 PORTNAME=	toml-fmt-common
-PORTVERSION=	1.1.0
+PORTVERSION=	1.2.0
 CATEGORIES=	devel python
 MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -7,7 +7,8 @@ DISTNAME=	toml_fmt_common-${PORTVERSION}
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Common logic to the TOML formatter
-WWW=		https://github.com/tox-dev/toml-fmt-common
+WWW=		https://github.com/tox-dev/toml-fmt/tree/main/toml-fmt-common \
+		https://github.com/tox-dev/toml-fmt
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE.txt

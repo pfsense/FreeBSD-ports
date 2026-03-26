@@ -36,7 +36,6 @@
     SUBDIR += cmrtlib
     SUBDIR += cx88
     SUBDIR += dav1d
-    SUBDIR += decord
     SUBDIR += deforaos-camera
     SUBDIR += deforaos-player
     SUBDIR += dovi_tool
@@ -59,6 +58,7 @@
     SUBDIR += ffmpeg
     SUBDIR += ffmpeg3
     SUBDIR += ffmpeg4
+    SUBDIR += ffmpeg6
     SUBDIR += ffmpegthumbnailer
     SUBDIR += ffms2
     SUBDIR += ffnvcodec-headers
@@ -70,6 +70,7 @@
     SUBDIR += get_iplayer
     SUBDIR += gmmlib
     SUBDIR += gmp-api
+    SUBDIR += go2tv
     SUBDIR += gpac
     SUBDIR += gpodder
     SUBDIR += gst123
@@ -118,6 +119,7 @@
     SUBDIR += haruna
     SUBDIR += harvid
     SUBDIR += helvum
+    SUBDIR += hyprpwcenter
     SUBDIR += intel-media-sdk
     SUBDIR += iso2mkv
     SUBDIR += jellyfin
@@ -256,7 +258,6 @@
     SUBDIR += nymphcastlib
     SUBDIR += nymphrpc
     SUBDIR += obs-multi-rtmp
-    SUBDIR += obs-recursion-effect
     SUBDIR += obs-streamfx
     SUBDIR += obs-studio
     SUBDIR += obs-text-pthread
@@ -299,7 +300,6 @@
     SUBDIR += pwcview
     SUBDIR += py-av
     SUBDIR += py-cec
-    SUBDIR += py-decord
     SUBDIR += py-enzyme
     SUBDIR += py-gstreamer1
     SUBDIR += py-guessit

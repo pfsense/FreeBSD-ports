@@ -1,8 +1,9 @@
 PORTNAME=	xlibre-xf86-input-libinput
-PORTVERSION=	25.0.0
+PORTVERSION=	25.0.1
+PORTREVISION=	1
 CATEGORIES=	x11-drivers
 
-MAINTAINER=	b-aazbsd@proton.me
+MAINTAINER=	xlibre@FreeBSD.org
 COMMENT=	XLibre libinput input driver
 WWW=		https://github.com/X11Libre/xf86-input-libinput/
 
