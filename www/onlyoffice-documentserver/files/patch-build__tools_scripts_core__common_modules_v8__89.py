@@ -1,9 +1,11 @@
---- build_tools/scripts/core_common/modules/v8_89.py.orig	2025-10-15 14:25:47 UTC
+--- build_tools/scripts/core_common/modules/v8_89.py.orig	2026-02-22 20:21:43 UTC
 +++ build_tools/scripts/core_common/modules/v8_89.py
-@@ -150,57 +150,6 @@
+@@ -214,62 +214,6 @@
      base.cmd("git", ["config", "--global", "http.postBuffer", "157286400"], True)
  
    os.chdir(base_dir)
+-  base.common_check_version("v8", "1", clean)
+-    
 -  if not base.is_dir("depot_tools"):
 -    base.cmd("git", ["clone", "https://chromium.googlesource.com/chromium/tools/depot_tools.git"])
 -    change_bootstrap()
@@ -27,6 +29,9 @@
 -    base.cmd("./depot_tools/gclient", ["sync", "-r", v8_branch_version], True)
 -    base.cmd("gclient", ["sync", "--force"], True)
 -    base.copy_dir("./v8/third_party_new/ninja", "./v8/third_party/ninja")
+-    if ("linux" == base.host_platform()):
+-      if not base.is_file("./depot_tools/python3_bin_reldir.txt"):
+-        base.cmd_in_dir("./depot_tools", "./ensure_bootstrap", [], True)
 -
 -  if ("windows" == base.host_platform()):
 -    base.replaceInFile("v8/build/config/win/BUILD.gn", ":static_crt", ":dynamic_crt")
@@ -56,9 +61,9 @@
 -    base.replaceInFile("v8/third_party/jinja2/tests.py", "from collections import Mapping", "try:\n    from collections.abc import Mapping\nexcept ImportError:\n    from collections import Mapping")
 -
    os.chdir("v8")
-   
-   gn_args = ["v8_static_library=true",
-@@ -208,6 +157,11 @@
+ 
+   is_ubuntu24 = is_ubuntu_24_or_higher()
+@@ -280,6 +224,11 @@
               "v8_monolithic=true",
               "v8_use_external_startup_data=false",
               "treat_warnings_as_errors=false"]

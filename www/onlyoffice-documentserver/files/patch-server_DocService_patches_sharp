@@ -1,17 +1,32 @@
---- server/DocService/patches/sharp+0.32.6.patch.orig   2025-10-25 03:44:19 UTC
+--- server/DocService/patches/sharp+0.32.6.patch.orig	2026-03-12 00:43:48 UTC
 +++ server/DocService/patches/sharp+0.32.6.patch
-@@ -0,0 +1,13 @@
-+diff --git a/node_modules/sharp/package.json b/node_modules/sharp/package.json
-+index b4d3a28..152b194 100644
-+--- a/node_modules/sharp/package.json
-++++ b/node_modules/sharp/package.json
-+@@ -89,7 +89,7 @@
-+     "Lachlan Newman <lachnewman007@gmail.com>"
-+   ],
-+   "scripts": {
-+-    "install": "(node install/libvips && node install/dll-copy && prebuild-install) || (node install/can-compile && node-gyp rebuild && node install/dll-copy)",
-++    "install": "(node install/libvips && node install/dll-copy && prebuild-install) || (node install/can-compile && node-gyp --nodedir=%%LOCALBASE%% rebuild && node install/dll-copy)",
-+     "clean": "rm -rf node_modules/ build/ vendor/ .nyc_output/ coverage/ test/fixtures/output.*",
-+     "test": "npm run test-lint && npm run test-unit && npm run test-licensing && npm run test-types",
-+     "test-lint": "semistandard && cpplint",
-
+@@ -0,0 +1,29 @@
++diff --git a/node_modules/sharp/lib/sharp.js b/node_modules/sharp/lib/sharp.js
++index a41e83d..80226dc 100644
++--- a/node_modules/sharp/lib/sharp.js
+++++ b/node_modules/sharp/lib/sharp.js
++@@ -2,12 +2,22 @@
++ // SPDX-License-Identifier: Apache-2.0
++ 
++ 'use strict';
++-
+++const path = require('path');
++ const platformAndArch = require('./platform')();
++ 
++ /* istanbul ignore next */
++ try {
++-  module.exports = require(`../build/Release/sharp-${platformAndArch}.node`);
+++  // FreeBSD port: load native binding from fixed path next to pkg binary
+++  const fs = require('fs');
+++  const external = path.join(
+++    path.dirname(process.execPath),
+++    'sharp',
+++    `sharp-${process.platform}-${process.arch}.node`
+++  );
+++  if (fs.existsSync(external)) {
+++    module.exports = require(external);
+++    return;
+++  }
++ } catch (err) {
++   // Bail early if bindings aren't available
++   const help = ['', 'Something went wrong installing the "sharp" module', '', err.message, '', 'Possible solutions:'];
