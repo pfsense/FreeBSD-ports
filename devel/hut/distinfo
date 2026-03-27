@@ -1,5 +1,5 @@
-TIMESTAMP = 1772443065
-SHA256 (go/devel_hut/hut-v0.7.0/v0.7.0.mod) = 28d85354037354ffb4525bf3d1204dcc58164b1c922ae01cd4254264af7bc914
-SIZE (go/devel_hut/hut-v0.7.0/v0.7.0.mod) = 741
-SHA256 (go/devel_hut/hut-v0.7.0/v0.7.0.zip) = b37468967ff7901f27a405ffff18dcfe6a05f8f2108818c712fd03ce3c44beb4
-SIZE (go/devel_hut/hut-v0.7.0/v0.7.0.zip) = 192876
+TIMESTAMP = 1774616269
+SHA256 (go/devel_hut/hut-v0.8.0/v0.8.0.mod) = 718a7b2541d5d19a11a4acfb47667b23c485537b00ab25826667fd421c36a13a
+SIZE (go/devel_hut/hut-v0.8.0/v0.8.0.mod) = 745
+SHA256 (go/devel_hut/hut-v0.8.0/v0.8.0.zip) = ca952e964ffc65505283b55b1c184a88593733cbcf263acecb4fe00beb70ba7a
+SIZE (go/devel_hut/hut-v0.8.0/v0.8.0.zip) = 208409
