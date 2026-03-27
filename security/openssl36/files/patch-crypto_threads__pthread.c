@@ -1,6 +1,6 @@
---- crypto/threads_pthread.c.orig	2022-11-01 14:14:36 UTC
+--- crypto/threads_pthread.c.orig	2026-01-27 13:33:54 UTC
 +++ crypto/threads_pthread.c
-@@ -29,6 +29,10 @@
+@@ -81,6 +81,10 @@
  #define BROKEN_CLANG_ATOMICS
  #endif
  
@@ -10,4 +10,4 @@
 +
  #if defined(OPENSSL_THREADS) && !defined(CRYPTO_TDEBUG) && !defined(OPENSSL_SYS_WINDOWS)
  
- # if defined(OPENSSL_SYS_UNIX)
+ #if defined(OPENSSL_SYS_UNIX)
