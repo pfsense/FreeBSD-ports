@@ -1,0 +1,331 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE packagegui SYSTEM "../schema/packages.dtd">
+<?xml-stylesheet type="text/xsl" href="./xsl/package.xsl"?>
+<packagegui>
+	<copyright>
+	<![CDATA[
+/*
+ * dnscrypt-proxy-advanced.xml
+ *
+ * for pfSense
+ * Copyright (c) 2026 nopoz (https://github.com/nopoz)
+ * SPDX-License-Identifier: ISC
+ *
+ * Permission to use, copy, modify, and/or distribute this software for any
+ * purpose with or without fee is hereby granted, provided that the above
+ * copyright notice and this permission notice appear in all copies.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
+ * WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
+ * MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
+ * ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
+ * WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
+ * ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
+ * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
+ */
+	]]>
+	</copyright>
+	<name>dnscryptproxy</name>
+	<title>Services: DNSCrypt Proxy</title>
+	<shortcut_section>dnscrypt-proxy</shortcut_section>
+	<configpath>installedpackages->dnscryptproxy->config</configpath>
+	<addedit_string>[dnscrypt-proxy] Settings saved</addedit_string>
+	<aftersaveredirect>/pkg_edit.php?xml=dnscrypt-proxy-advanced.xml</aftersaveredirect>
+	<include_file>/usr/local/pkg/dnscrypt-proxy.inc</include_file>
+	<tabs>
+		<tab>
+			<text>General Settings</text>
+			<url>/pkg_edit.php?xml=dnscrypt-proxy.xml</url>
+		</tab>
+		<tab>
+			<text>Server Selection</text>
+			<url>/pkg_edit.php?xml=dnscrypt-proxy-servers.xml</url>
+		</tab>
+		<tab>
+			<text>Cache &amp; Filtering</text>
+			<url>/pkg_edit.php?xml=dnscrypt-proxy-cache.xml</url>
+		</tab>
+		<tab>
+			<text>Logging</text>
+			<url>/pkg_edit.php?xml=dnscrypt-proxy-logging.xml</url>
+		</tab>
+		<tab>
+			<text>Lists</text>
+			<url>/pkg_edit.php?xml=dnscrypt-proxy-lists.xml</url>
+		</tab>
+		<tab>
+			<text>Advanced</text>
+			<url>/pkg_edit.php?xml=dnscrypt-proxy-advanced.xml</url>
+			<active/>
+		</tab>
+		<tab>
+			<text>Query Log</text>
+			<url>/dnscrypt-proxy-querylog.php</url>
+		</tab>
+		<tab>
+			<text>Config</text>
+			<url>/dnscrypt-proxy-config.php</url>
+		</tab>
+	</tabs>
+	<fields>
+		<field>
+			<fielddescr>Advanced Settings Info</fielddescr>
+			<fieldname>advanced_info</fieldname>
+			<type>info</type>
+			<description>
+				<![CDATA[
+				<div class="alert alert-warning">
+				These settings have sensible defaults and most users do not need to change them.
+				Only modify if you understand the implications.
+				</div>
+				]]>
+			</description>
+		</field>
+		<field>
+			<name>Connection Settings</name>
+			<type>listtopic</type>
+		</field>
+		<field>
+			<fielddescr>Force TCP</fielddescr>
+			<fieldname>force_tcp</fieldname>
+			<description>Always use TCP for upstream DNS queries. Enable if your network blocks UDP DNS.</description>
+			<type>checkbox</type>
+		</field>
+		<field>
+			<fielddescr>Enable HTTP/3</fielddescr>
+			<fieldname>http3</fieldname>
+			<description>Use HTTP/3 (QUIC) for DNS-over-HTTPS servers when available. Can improve performance.</description>
+			<type>checkbox</type>
+		</field>
+		<field>
+			<fielddescr>HTTP Keepalive (seconds)</fielddescr>
+			<fieldname>keepalive</fieldname>
+			<description>Keep HTTP connections open for this duration. Default: 30</description>
+			<type>input</type>
+			<size>10</size>
+			<default_value>30</default_value>
+		</field>
+		<field>
+			<fielddescr>Load Balancing Strategy</fielddescr>
+			<fieldname>lb_strategy</fieldname>
+			<description>
+				<![CDATA[
+				Algorithm for selecting servers when multiple are available.<br/>
+				<strong>p2</strong>: Power of Two random selection<br/>
+				<strong>ph</strong>: Power of Two with shuffling<br/>
+				<strong>fastest</strong>: Always use fastest server<br/>
+				<strong>random</strong>: Random selection
+				]]>
+			</description>
+			<type>select</type>
+			<default_value>p2</default_value>
+			<options>
+				<option><name>Power of Two (p2) - Default</name><value>p2</value></option>
+				<option><name>Power of Two + Shuffle (ph)</name><value>ph</value></option>
+				<option><name>Fastest Server</name><value>fastest</value></option>
+				<option><name>Random</name><value>random</value></option>
+			</options>
+		</field>
+		<field>
+			<name>Startup &amp; Network Probing</name>
+			<type>listtopic</type>
+		</field>
+		<field>
+			<fielddescr>Network Probe Timeout (seconds)</fielddescr>
+			<fieldname>netprobe_timeout</fieldname>
+			<description>
+				<![CDATA[
+				Wait this long for network connectivity before starting. Set to -1 to disable.<br/>
+				Important for systems where DNS starts before network is ready. Default: 60
+				]]>
+			</description>
+			<type>input</type>
+			<size>10</size>
+			<default_value>60</default_value>
+		</field>
+		<field>
+			<fielddescr>Network Probe Address</fielddescr>
+			<fieldname>netprobe_address</fieldname>
+			<description>Address used to test network connectivity at startup. Default: 9.9.9.9:53</description>
+			<type>input</type>
+			<size>30</size>
+			<default_value>9.9.9.9:53</default_value>
+		</field>
+		<field>
+			<fielddescr>Offline Mode</fielddescr>
+			<fieldname>offline_mode</fieldname>
+			<description>Run without upstream servers. Only cloaking and forwarding rules will work.</description>
+			<type>checkbox</type>
+		</field>
+		<field>
+			<name>Privacy &amp; Security</name>
+			<type>listtopic</type>
+		</field>
+		<field>
+			<fielddescr>Enable ODoH Servers</fielddescr>
+			<fieldname>odoh_servers</fieldname>
+			<description>
+				<![CDATA[
+				Use Oblivious DNS-over-HTTPS servers for enhanced privacy.
+				ODoH separates the resolver from the query, so no single server sees both your IP and your queries.
+				]]>
+			</description>
+			<type>checkbox</type>
+		</field>
+		<field>
+			<fielddescr>Ephemeral Keys</fielddescr>
+			<fieldname>dnscrypt_ephemeral_keys</fieldname>
+			<description>Create a unique encryption key for each DNSCrypt query. More secure but slightly slower.</description>
+			<type>checkbox</type>
+		</field>
+		<field>
+			<fielddescr>Disable TLS Session Tickets</fielddescr>
+			<fieldname>tls_disable_session_tickets</fieldname>
+			<description>Disable TLS session tickets for improved privacy at the cost of slight performance reduction.</description>
+			<type>checkbox</type>
+		</field>
+		<field>
+			<fielddescr>Disabled Server Names</fielddescr>
+			<fieldname>disabled_server_names</fieldname>
+			<description>
+				<![CDATA[
+				Server names to exclude even if they match other criteria (comma-separated).<br/>
+				Example: <code>google, cloudflare-ipv6</code>
+				]]>
+			</description>
+			<type>input</type>
+			<size>70</size>
+		</field>
+		<field>
+			<name>Certificate Handling</name>
+			<type>listtopic</type>
+		</field>
+		<field>
+			<fielddescr>Certificate Refresh Delay (minutes)</fielddescr>
+			<fieldname>cert_refresh_delay</fieldname>
+			<description>How often to refresh DNSCrypt server certificates. Default: 240 (4 hours)</description>
+			<type>input</type>
+			<size>10</size>
+			<default_value>240</default_value>
+		</field>
+		<field>
+			<name>Negative Cache</name>
+			<type>listtopic</type>
+		</field>
+		<field>
+			<fielddescr>Negative Cache Min TTL (seconds)</fielddescr>
+			<fieldname>cache_neg_min_ttl</fieldname>
+			<description>Minimum TTL for NXDOMAIN (non-existent domain) responses. Default: 60</description>
+			<type>input</type>
+			<size>10</size>
+			<default_value>60</default_value>
+		</field>
+		<field>
+			<fielddescr>Negative Cache Max TTL (seconds)</fielddescr>
+			<fieldname>cache_neg_max_ttl</fieldname>
+			<description>Maximum TTL for NXDOMAIN responses. Default: 600</description>
+			<type>input</type>
+			<size>10</size>
+			<default_value>600</default_value>
+		</field>
+		<field>
+			<name>Blocked Response Handling</name>
+			<type>listtopic</type>
+		</field>
+		<field>
+			<fielddescr>Blocked Query Response</fielddescr>
+			<fieldname>blocked_query_response</fieldname>
+			<description>
+				<![CDATA[
+				Response type for blocked queries.<br/>
+				<strong>hinfo</strong>: Return HINFO record (default, compatible)<br/>
+				<strong>refused</strong>: Return REFUSED status<br/>
+				<strong>empty</strong>: Return empty response
+				]]>
+			</description>
+			<type>select</type>
+			<default_value>hinfo</default_value>
+			<options>
+				<option><name>HINFO Record (default)</name><value>hinfo</value></option>
+				<option><name>REFUSED Status</name><value>refused</value></option>
+				<option><name>Empty Response</name><value>empty</value></option>
+			</options>
+		</field>
+		<field>
+			<fielddescr>Reject TTL (seconds)</fielddescr>
+			<fieldname>reject_ttl</fieldname>
+			<description>TTL for synthetic responses to blocked queries. Default: 10</description>
+			<type>input</type>
+			<size>10</size>
+			<default_value>10</default_value>
+		</field>
+		<field>
+			<name>Log Rotation</name>
+			<type>listtopic</type>
+		</field>
+		<field>
+			<fielddescr>Max Log File Size (MB)</fielddescr>
+			<fieldname>log_files_max_size</fieldname>
+			<description>Rotate log files when they reach this size. Default: 10</description>
+			<type>input</type>
+			<size>10</size>
+			<default_value>10</default_value>
+		</field>
+		<field>
+			<fielddescr>Max Log Age (days)</fielddescr>
+			<fieldname>log_files_max_age</fieldname>
+			<description>Delete log files older than this many days. Default: 7</description>
+			<type>input</type>
+			<size>10</size>
+			<default_value>7</default_value>
+		</field>
+		<field>
+			<fielddescr>Max Log Backups</fielddescr>
+			<fieldname>log_files_max_backups</fieldname>
+			<description>Number of rotated log files to keep. Default: 1</description>
+			<type>input</type>
+			<size>10</size>
+			<default_value>1</default_value>
+		</field>
+		<field>
+			<name>Custom Configuration</name>
+			<type>listtopic</type>
+		</field>
+		<field>
+			<fielddescr>Custom Options Info</fielddescr>
+			<fieldname>custom_toml_info</fieldname>
+			<type>info</type>
+			<description>
+				<![CDATA[
+				<div class="alert alert-info">
+				Enter additional dnscrypt-proxy TOML options not exposed in the UI.<br/>
+				<strong>Format:</strong> One option per line, e.g. <code>http3_probe = true</code><br/>
+				Top-level options add keys not available in the UI. If a custom key duplicates a UI-managed key, the UI value takes precedence.<br/>
+				TOML section blocks (e.g. <code>[monitoring_ui]</code>) are appended after the generated configuration.
+				Top-level options must appear before any <code>[section]</code> headers.<br/>
+				The full merged configuration is validated with <code>dnscrypt-proxy -check</code> before saving.<br/>
+				Use the <a href="/dnscrypt-proxy-config.php">Config</a> tab to view the complete generated TOML file.
+				</div>
+				]]>
+			</description>
+		</field>
+		<field>
+			<fielddescr>Custom TOML Options</fielddescr>
+			<fieldname>custom_toml</fieldname>
+			<description>Raw TOML options, one per line.</description>
+			<type>textarea</type>
+			<encoding>base64</encoding>
+			<rows>5</rows>
+			<cols>70</cols>
+		</field>
+	</fields>
+	<custom_php_resync_config_command>
+		dnscrypt_proxy_sync();
+	</custom_php_resync_config_command>
+	<custom_php_validation_command>
+		dnscrypt_proxy_validate($_POST, $input_errors);
+	</custom_php_validation_command>
+	<custom_add_php_command_late>
+		dnscrypt_proxy_save_config_late();
+	</custom_add_php_command_late>
+</packagegui>

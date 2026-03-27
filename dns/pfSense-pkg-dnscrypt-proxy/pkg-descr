@@ -1,0 +1,3 @@
+pfSense package for DNSCrypt Proxy, supporting encrypted DNS via DNSCrypt v2 and DNS-over-HTTPS protocols.
+
+WWW: https://github.com/DNSCrypt/dnscrypt-proxy
