@@ -1,6 +1,5 @@
 PORTNAME=	difftastic
-DISTVERSION=	0.67.0
-PORTREVISION=	3
+DISTVERSION=	0.68.0
 CATEGORIES=	textproc
 
 MAINTAINER=	amdmi3@FreeBSD.org
@@ -31,7 +30,7 @@ CARGO_CRATES=	ahash-0.8.11 \
 		bitflags-2.5.0 \
 		bstr-1.9.1 \
 		bumpalo-3.16.0 \
-		cc-1.2.39 \
+		cc-1.2.54 \
 		cfg-if-1.0.0 \
 		clap-4.5.23 \
 		clap_builder-4.5.23 \
@@ -50,7 +49,7 @@ CARGO_CRATES=	ahash-0.8.11 \
 		env_logger-0.10.2 \
 		equivalent-1.0.1 \
 		errno-0.3.8 \
-		find-msvc-tools-0.1.2 \
+		find-msvc-tools-0.1.8 \
 		fixedbitset-0.4.2 \
 		float-cmp-0.10.0 \
 		fnv-1.0.7 \
@@ -95,9 +94,9 @@ CARGO_CRATES=	ahash-0.8.11 \
 		rayon-1.10.0 \
 		rayon-core-1.12.1 \
 		redox_syscall-0.4.1 \
-		regex-1.11.1 \
-		regex-automata-0.4.9 \
-		regex-syntax-0.8.5 \
+		regex-1.12.2 \
+		regex-automata-0.4.13 \
+		regex-syntax-0.8.8 \
 		rustc-hash-2.0.0 \
 		rustix-0.38.34 \
 		rustversion-1.0.14 \
@@ -123,10 +122,10 @@ CARGO_CRATES=	ahash-0.8.11 \
 		termtree-0.4.1 \
 		tikv-jemalloc-sys-0.6.0+5.3.0-1-ge13ca993e8ccb9ba9847cc330696e02839f328f7 \
 		tikv-jemallocator-0.6.0 \
-		tree-sitter-0.25.10 \
+		tree-sitter-0.26.3 \
 		tree-sitter-ada-0.1.0 \
-		tree-sitter-bash-0.23.3 \
-		tree-sitter-c-0.23.4 \
+		tree-sitter-bash-0.25.1 \
+		tree-sitter-c-0.24.1 \
 		tree-sitter-c-sharp-0.23.1 \
 		tree-sitter-clojure-orchard-0.2.0 \
 		tree-sitter-cmake-0.7.1 \
@@ -138,43 +137,45 @@ CARGO_CRATES=	ahash-0.8.11 \
 		tree-sitter-elixir-0.3.4 \
 		tree-sitter-elm-5.8.0 \
 		tree-sitter-erlang-0.13.0 \
+		tree-sitter-fortran-0.5.1 \
 		tree-sitter-fsharp-0.1.0 \
 		tree-sitter-gleam-1.0.0 \
-		tree-sitter-go-0.23.4 \
+		tree-sitter-go-0.25.0 \
 		tree-sitter-haskell-0.23.1 \
 		tree-sitter-hcl-1.1.0 \
 		tree-sitter-html-0.23.2 \
 		tree-sitter-java-0.23.4 \
-		tree-sitter-javascript-0.23.1 \
+		tree-sitter-javascript-0.25.0 \
 		tree-sitter-json-0.24.8 \
 		tree-sitter-julia-0.23.1 \
-		tree-sitter-language-0.1.3 \
-		tree-sitter-lua-0.2.0 \
+		tree-sitter-language-0.1.6 \
+		tree-sitter-lua-0.5.0 \
 		tree-sitter-make-1.1.1 \
 		tree-sitter-newick-1.1.0 \
-		tree-sitter-nix-0.0.2 \
+		tree-sitter-nix-0.3.0 \
 		tree-sitter-objc-3.0.2 \
 		tree-sitter-ocaml-0.23.2 \
 		tree-sitter-pascal-0.10.0 \
+		tree-sitter-perl-1.1.2 \
 		tree-sitter-php-0.23.11 \
 		tree-sitter-proto-0.2.0 \
-		tree-sitter-python-0.23.5 \
+		tree-sitter-python-0.23.6 \
 		tree-sitter-qmljs-0.3.0 \
 		tree-sitter-r-1.2.0 \
 		tree-sitter-racket-0.24.7 \
 		tree-sitter-ruby-0.23.1 \
-		tree-sitter-rust-orchard-0.13.0 \
-		tree-sitter-scala-0.23.3 \
+		tree-sitter-rust-orchard-0.16.2 \
+		tree-sitter-scala-0.23.4 \
 		tree-sitter-scheme-0.24.7 \
 		tree-sitter-sequel-0.3.11 \
 		tree-sitter-sfapex-2.4.0 \
 		tree-sitter-solidity-1.2.13 \
-		tree-sitter-swift-0.7.0 \
+		tree-sitter-swift-0.7.1 \
 		tree-sitter-toml-ng-0.7.0 \
 		tree-sitter-typescript-0.23.2 \
 		tree-sitter-verilog-1.0.3 \
 		tree-sitter-xml-0.7.0 \
-		tree-sitter-yaml-0.7.0 \
+		tree-sitter-yaml-0.7.2 \
 		tree-sitter-zig-1.1.2 \
 		tree_magic_mini-3.1.6 \
 		typed-arena-2.0.2 \
