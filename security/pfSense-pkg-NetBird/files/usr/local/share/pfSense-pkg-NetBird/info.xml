@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<pfsensepkgs>
+    <package>
+        <name>NetBird</name>
+        <descr><![CDATA[NetBird is an open-source WireGuard-based overlay network combined with Zero Trust Network Access,
+        providing secure and reliable connectivity to internal resources.]]></descr>
+        <website>https://netbird.io/</website>
+        <pkginfolink>https://github.com/netbirdio/netbird</pkginfolink>
+        <version>%%PKGVERSION%%</version>
+        <configurationfile>netbird.xml</configurationfile>
+    </package>
+</pfsensepkgs>
