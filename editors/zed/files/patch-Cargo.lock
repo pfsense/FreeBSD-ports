@@ -1,6 +1,15 @@
---- Cargo.lock.orig	2026-03-11 14:31:09 UTC
+--- Cargo.lock.orig	2026-03-25 15:03:32 UTC
 +++ Cargo.lock
-@@ -8847,21 +8847,20 @@ name = "ipc-channel"
+@@ -2193,7 +2193,7 @@ dependencies = [
+ source = "registry+https://github.com/rust-lang/crates.io-index"
+ checksum = "89ec27229c38ed0eb3c0feee3d2c1d6a4379ae44f418a29a658890e062d8f365"
+ dependencies = [
+- "darling 0.20.11",
++ "darling 0.21.3",
+  "ident_case",
+  "prettyplease",
+  "proc-macro2",
+@@ -8905,21 +8905,20 @@ name = "ipc-channel"
  
  [[package]]
  name = "ipc-channel"
@@ -26,7 +35,7 @@
  ]
  
  [[package]]
-@@ -20208,16 +20207,6 @@ name = "windows"
+@@ -20351,16 +20350,6 @@ name = "windows"
  
  [[package]]
  name = "windows"
@@ -43,7 +52,7 @@
  version = "0.61.3"
  source = "registry+https://github.com/rust-lang/crates.io-index"
  checksum = "9babd3a767a4c1aef6900409f85f5d53ce2544ccdfaa86dad48c91782c6d6893"
-@@ -20298,19 +20287,6 @@ name = "windows-core"
+@@ -20441,19 +20430,6 @@ name = "windows-core"
  
  [[package]]
  name = "windows-core"
@@ -63,7 +72,7 @@
  version = "0.61.2"
  source = "registry+https://github.com/rust-lang/crates.io-index"
  checksum = "c0fdd3ddb90610c7638aa2b3a3ab2904fb9e5cdbecc643ddb3647212781c4ae3"
-@@ -20370,17 +20346,6 @@ name = "windows-implement"
+@@ -20513,17 +20489,6 @@ name = "windows-implement"
  
  [[package]]
  name = "windows-implement"
@@ -73,7 +82,7 @@
 -dependencies = [
 - "proc-macro2",
 - "quote",
-- "syn 2.0.106",
+- "syn 2.0.117",
 -]
 -
 -[[package]]
@@ -81,7 +90,7 @@
  version = "0.60.2"
  source = "registry+https://github.com/rust-lang/crates.io-index"
  checksum = "053e2e040ab57b9dc951b72c264860db7eb3b0200ba345b4e4c3b14f67855ddf"
-@@ -20403,17 +20368,6 @@ name = "windows-interface"
+@@ -20546,17 +20511,6 @@ name = "windows-interface"
  
  [[package]]
  name = "windows-interface"
@@ -91,7 +100,7 @@
 -dependencies = [
 - "proc-macro2",
 - "quote",
-- "syn 2.0.106",
+- "syn 2.0.117",
 -]
 -
 -[[package]]
@@ -99,7 +108,7 @@
  version = "0.59.3"
  source = "registry+https://github.com/rust-lang/crates.io-index"
  checksum = "3f316c4a2570ba26bbec722032c4099d8c8bc095efccdc15688708623367e358"
-@@ -20499,15 +20453,6 @@ name = "windows-result"
+@@ -20642,15 +20596,6 @@ name = "windows-result"
  
  [[package]]
  name = "windows-result"
@@ -115,7 +124,7 @@
  version = "0.3.4"
  source = "registry+https://github.com/rust-lang/crates.io-index"
  checksum = "56f42bd332cc6c8eac5af113fc0c1fd6a8fd2aa08a0119358686e5160d0586c6"
-@@ -20522,16 +20467,6 @@ dependencies = [
+@@ -20665,16 +20610,6 @@ dependencies = [
  checksum = "7781fa89eaf60850ac3d2da7af8e5242a5ea78d1a11c49bf2910bb5a73853eb5"
  dependencies = [
   "windows-link 0.2.1",

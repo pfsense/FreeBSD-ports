@@ -1,4 +1,4 @@
---- crates/zed/src/main.rs.orig	2026-03-04 15:41:56 UTC
+--- crates/zed/src/main.rs.orig	2026-03-25 15:03:32 UTC
 +++ crates/zed/src/main.rs
 @@ -13,6 +13,7 @@ use collections::HashMap;
  use client::{Client, ProxySettings, UserStore, parse_zed_link};
@@ -24,7 +24,15 @@
      crashes::init(
          InitCrashHandler {
              session_id,
-@@ -606,6 +609,7 @@ fn main() {
+@@ -582,6 +585,7 @@ fn main() {
+         cx.subscribe(&user_store, {
+             let telemetry = telemetry.clone();
+             move |_, evt: &client::user::Event, _| match evt {
++                #[cfg(not(target_os = "freebsd"))]
+                 client::user::Event::PrivateUserInfoUpdated => {
+                     crashes::set_user_info(crashes::UserInfo {
+                         metrics_id: telemetry.metrics_id().map(|s| s.to_string()),
+@@ -625,6 +629,7 @@ fn main() {
          auto_update::init(client.clone(), cx);
          dap_adapters::init(cx);
          auto_update_ui::init(cx);
