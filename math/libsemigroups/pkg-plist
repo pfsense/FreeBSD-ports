@@ -79,6 +79,7 @@ include/libsemigroups/froidure-pin.tpp
 include/libsemigroups/gabow.hpp
 include/libsemigroups/gabow.tpp
 include/libsemigroups/hpcombi.hpp
+include/libsemigroups/hpcombi.mk
 include/libsemigroups/hpcombi.tpp
 include/libsemigroups/hpcombi/arch.hpp
 include/libsemigroups/hpcombi/bmat16.hpp
