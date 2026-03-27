@@ -1,5 +1,5 @@
 PORTNAME=	terra
-DISTVERSION=	1.9-1
+DISTVERSION=	1.9-11
 CATEGORIES=	math
 DISTNAME=	${PORTNAME}_${DISTVERSION}
 
@@ -20,6 +20,6 @@ TEST_DEPENDS=	R-cran-deldir>0:math/R-cran-deldir \
 
 USES=		cran:auto-plist,compiles dos2unix sqlite:3
 
-DOS2UNIX_FILES=	inst/tinytest/test_subst.R src/raster_methods.cpp
+TESTING_UNSAFE=	https://github.com/rspatial/terra/issues/2063
 
 .include <bsd.port.mk>
