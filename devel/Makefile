@@ -8503,6 +8503,7 @@
     SUBDIR += subversion-lts
     SUBDIR += subversive
     SUBDIR += sunpromake
+    SUBDIR += superhtml
     SUBDIR += sv
     SUBDIR += svk
     SUBDIR += svn2git
