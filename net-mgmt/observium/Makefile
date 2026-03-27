@@ -1,5 +1,5 @@
 PORTNAME=	observium
-DISTVERSION=	24.12
+DISTVERSION=	26.1
 CATEGORIES=	net-mgmt
 MASTER_SITES=	https://www.observium.org/
 PKGNAMESUFFIX=	${PHP_PKGNAMESUFFIX}
@@ -58,9 +58,10 @@ SUB_LIST+=	PHP="${PREFIX}/bin/php" PYTHON="${PYTHON_CMD}"
 ROOT_FILES=	add_device.php adduser.php alerter.php \
 		config.php.default config_to_json.php \
 		delete_device.php discovery.php housekeeping.php \
-		irc.php notifications.php observium-wrapper poller-wrapper.py poller.php \
-		rename_device.php snmp.conf.example snmpd.conf.example \
-		snmptrap.php syslog.php test_alert.php test_code.php test_db.php test_geo.php VERSION
+		irc.php notifications.php observium-wrapper phpunit.xml phpunit9.xml \
+		poller-wrapper.py poller.php rename_device.php snmp.conf.example snmpd.conf.example \
+		syslog.php test_alert.php test_code.php test_db.php test_geo.php VERSION \
+		README LICENSE.COMMUNITY INSTALL
 ROOT_DIRS=	html includes libs logs mibs rrd scripts templates tests update
 
 PORTDOCS=	INSTALL README VERSION
