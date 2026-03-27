@@ -1,7 +1,8 @@
 PORTNAME=	gcompris-qt
-DISTVERSION=	26.0
+DISTVERSION=	26.1
 CATEGORIES=	games education kde
-MASTER_SITES=	https://gcompris.net/download/qt/src/
+MASTER_SITES=	KDE/stable/gcompris/qt/src/ \
+		https://gcompris.net/download/qt/src/
 
 MAINTAINER=	kde@FreeBSD.org
 COMMENT=	Educational games and activities for kids ages 2 to 10
@@ -14,10 +15,9 @@ LICENSE_FILE_GPLv3=	${WRKSRC}/LICENSES/GPL-3.0-or-later.txt
 
 IGNORE_FreeBSD_13=	is not supported on systems with OpenSSL 1.1.1
 
-BUILD_DEPENDS=	${LOCALBASE}/include/vulkan/vulkan.h:graphics/vulkan-headers
-
 # libqmlbox2d.so is a QML plugin...don't use LIB_DEPENDS
-BUILD_DEPENDS=	${_BOX2D_PATH}/libqmlbox2d.so:x11-toolkits/qml-box2d
+BUILD_DEPENDS=	${_BOX2D_PATH}/libqmlbox2d.so:x11-toolkits/qml-box2d \
+		${LOCALBASE}/include/vulkan/vulkan.h:graphics/vulkan-headers
 RUN_DEPENDS=	${_BOX2D_PATH}/libqmlbox2d.so:x11-toolkits/qml-box2d
 
 USES=		cmake compiler:c++17-lang gettext-tools gl kde:6 qt:6 tar:xz
