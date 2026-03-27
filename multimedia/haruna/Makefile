@@ -1,6 +1,6 @@
 PORTNAME=	haruna
 DISTVERSION=	1.7.1
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	multimedia kde
 MASTER_SITES=	KDE/stable/${PORTNAME}/${DISTVERSION}
 
@@ -15,8 +15,7 @@ LIB_DEPENDS=	libkdsingleapplication-qt6.so:devel/kdsingleapplication \
 		libavcodec.so:multimedia/ffmpeg \
 		libmpv.so:multimedia/mpv \
 		libMpvQt.so:multimedia/mpvqt
-RUN_DEPENDS=	kio-extras>0:devel/kio-extras \
-		yt-dlp:www/yt-dlp
+RUN_DEPENDS=	kio-extras>0:devel/kio-extras
 
 USES=		cmake desktop-file-utils gettext-tools gl kde:6 pkgconfig \
 		qt:6 tar:xz xorg
@@ -27,5 +26,10 @@ USE_KDE=	breeze colorscheme completion config coreaddons crash \
 		ecm:build
 USE_QT=		5compat base declarative
 USE_XORG=	x11
+
+OPTIONS_DEFINE=		YTDLP
+
+YTDLP_DESC=		Install yt-dlp to play videos from youtube
+YTDLP_RUN_DEPENDS=	yt-dlp:www/yt-dlp
 
 .include <bsd.port.mk>
