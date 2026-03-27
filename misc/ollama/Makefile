@@ -1,7 +1,6 @@
 PORTNAME=	ollama
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.18.2
-PORTREVISION=	1
+DISTVERSION=	0.18.3
 CATEGORIES=	misc # machine-learning
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -34,7 +33,7 @@ PLIST_FILES=	bin/${PORTNAME} \
 
 OPTIONS_GROUP=		BACKENDS
 OPTIONS_GROUP_BACKENDS=	CPU VULKAN MLX
-OPTIONS_DEFAULT=	CPU VULKAN MLX
+OPTIONS_DEFAULT=	CPU VULKAN #MLX
 
 CPU_DESC=		Build CPU backend shared libraries for various SIMD instruction sets
 CPU_PLIST_FILES=	lib/ollama/libggml-base.so \
@@ -57,6 +56,7 @@ MLX_BUILD_DEPENDS=	${LOCALBASE}/lib/cmake/fmt/fmt-config.cmake:devel/libfmt
 MLX_LIB_DEPENDS=	libopenblas.so:math/openblas
 MLX_PLIST_FILES=	lib/ollama/libmlx.so \
 			lib/ollama/libmlxc.so
+MLX_BROKEN=		build fails in 1.18.3
 
 _CMAKE_FLAGS=	-DCMAKE_BUILD_TYPE=Release -DGGML_BACKEND_DL=ON -DGGML_BACKEND_DIR=${PREFIX}/lib/ollama
 

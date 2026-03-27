@@ -1,6 +1,6 @@
---- ml/backend/ggml/ggml/src/ggml-backend-reg.cpp.orig	2025-11-29 00:42:10.354754000 -0800
-+++ ml/backend/ggml/ggml/src/ggml-backend-reg.cpp	2025-11-29 00:42:20.531699000 -0800
-@@ -538,11 +538,13 @@
+--- ml/backend/ggml/ggml/src/ggml-backend-reg.cpp.orig	1979-11-30 08:00:00 UTC
++++ ml/backend/ggml/ggml/src/ggml-backend-reg.cpp
+@@ -545,11 +545,13 @@ static ggml_backend_reg_t ggml_backend_load_best(const
      std::vector<fs::path> search_paths;
      if (user_search_path == nullptr) {
  #ifdef GGML_BACKEND_DIR
