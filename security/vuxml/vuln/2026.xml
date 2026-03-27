@@ -1,3 +1,40 @@
+  <vuln vid="970fd0ec-26f5-11f1-a9b1-0cc47ada5f32">
+    <topic>jenkins -- multiple vulnerabilities</topic>
+    <affects>
+    <package>
+	<name>jenkins</name>
+	<range><lt>2.555</lt></range>
+    </package>
+    <package>
+	<name>jenkins-lts</name>
+	<range><lt>2.541.3</lt></range>
+    </package>
+    </affects>
+    <description>
+	<body xmlns="http://www.w3.org/1999/xhtml">
+	<p>Jenkins Security Advisory 2026-03-18:</p>
+	<blockquote cite="https://www.jenkins.io/security/advisory/2026-03-18/">
+	  <ul>
+	    <li>SECURITY-3657 / CVE-2026-33001: Arbitrary file write
+	    vulnerability through specially crafted archives in Jenkins
+	    (High)</li>
+	    <li>SECURITY-3674 / CVE-2026-33002: DNS rebinding vulnerability
+	    in WebSocket CLI origin validation in Jenkins (High)</li>
+	  </ul>
+	</blockquote>
+	</body>
+    </description>
+    <references>
+      <cvename>CVE-2026-33001</cvename>
+      <cvename>CVE-2026-33002</cvename>
+      <url>https://www.jenkins.io/security/advisory/2026-03-18/</url>
+    </references>
+    <dates>
+      <discovery>2026-03-18</discovery>
+      <entry>2026-03-27</entry>
+    </dates>
+  </vuln>
+
   <vuln vid="26c24872-2943-11f1-8461-b42e991fc52e">
     <topic>Mozilla -- Multiple vulnerabilities</topic>
     <affects>
