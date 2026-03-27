@@ -28,7 +28,7 @@ CARGO_CRATES=	addr2line-0.24.2 \
 		base16ct-0.2.0 \
 		base64-0.22.1 \
 		base64ct-1.6.0 \
-		bindgen-0.70.1 \
+		bindgen-0.72.1 \
 		bit-set-0.5.3 \
 		bit-set-0.8.0 \
 		bit-vec-0.6.3 \
@@ -249,7 +249,7 @@ CARGO_CRATES=	addr2line-0.24.2 \
 		mio-1.0.3 \
 		native-tls-0.2.14 \
 		nettle-7.4.0 \
-		nettle-sys-2.3.1 \
+		nettle-sys-2.3.2 \
 		new_debug_unreachable-1.0.6 \
 		nibble_vec-0.1.0 \
 		nix-0.29.0 \
