@@ -77,10 +77,9 @@ load_rc_config "${name}"
 # Set PID file
 pidfile=$(%%PREFIX%%/sbin/unbound-checkconf -o pidfile ${unbound_config})
 
-procname="%%PREFIX%%/sbin/unbound"
 required_files=${unbound_config}
-command="/usr/sbin/daemon"
-command_args="-S -r -p ${pidfile} -t ${name} -T ${name} -- ${procname} -c ${unbound_config}"
+command="%%PREFIX%%/sbin/${name}"
+command_args="-c ${unbound_config}"
 unbound_anchorflags=${unbound_anchorflags:-""}
 extra_commands="reload"
 start_precmd="start_precmd"
