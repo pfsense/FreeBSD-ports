@@ -610,6 +610,7 @@
     SUBDIR += milton
     SUBDIR += minder
     SUBDIR += mirtk
+    SUBDIR += mmdr
     SUBDIR += movit
     SUBDIR += mozjpeg
     SUBDIR += mscgen
