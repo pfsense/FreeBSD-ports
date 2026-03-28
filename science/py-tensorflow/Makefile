@@ -10,7 +10,7 @@ EXTRACT_ONLY=	${DISTNAME}.tar.gz
 PATCH_SITES=	https://github.com/${GH_ACCOUNT}/${GH_PROJECT}/commit/
 PATCHFILES=	ba7501696cc.patch:-p1 667cf3ed2d7.patch:-p1
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Computation using data flow graphs for scalable machine learning
 WWW=		https://www.tensorflow.org
 
