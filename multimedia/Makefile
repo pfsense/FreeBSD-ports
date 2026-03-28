@@ -368,6 +368,7 @@
     SUBDIR += tautulli
     SUBDIR += tenacity
     SUBDIR += termplay
+    SUBDIR += termusic
     SUBDIR += tinyobjloader
     SUBDIR += tivodecode
     SUBDIR += totem
