@@ -8258,6 +8258,11 @@ lib/lean/Lean/Meta/WHNF.ir
 lib/lean/Lean/Meta/WHNF.olean
 lib/lean/Lean/Meta/WHNF.olean.private
 lib/lean/Lean/Meta/WHNF.olean.server
+lib/lean/Lean/Meta/WrapInstance.ilean
+lib/lean/Lean/Meta/WrapInstance.ir
+lib/lean/Lean/Meta/WrapInstance.olean
+lib/lean/Lean/Meta/WrapInstance.olean.private
+lib/lean/Lean/Meta/WrapInstance.olean.server
 lib/lean/Lean/MetavarContext.ilean
 lib/lean/Lean/MetavarContext.ir
 lib/lean/Lean/MetavarContext.olean
@@ -12546,6 +12551,7 @@ share/lean/lean.mk
 %%DATADIR%%/src/lean/Lean/Meta/TryThis.lean
 %%DATADIR%%/src/lean/Lean/Meta/UnificationHint.lean
 %%DATADIR%%/src/lean/Lean/Meta/WHNF.lean
+%%DATADIR%%/src/lean/Lean/Meta/WrapInstance.lean
 %%DATADIR%%/src/lean/Lean/MetavarContext.lean
 %%DATADIR%%/src/lean/Lean/Modifiers.lean
 %%DATADIR%%/src/lean/Lean/MonadEnv.lean
