@@ -1,7 +1,6 @@
 PORTNAME=	codex
 DISTVERSIONPREFIX=	rust-v
-DISTVERSION=	0.116.0
-PORTREVISION=	1
+DISTVERSION=	0.117.0
 CATEGORIES=	misc devel
 
 MAINTAINER=	tagattie@FreeBSD.org
@@ -14,6 +13,7 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 
 BROKEN_i386=	fails to build: rustc-LLVM ERROR: out of memory
 
+BUILD_DEPENDS=	gn:devel/gn
 LIB_DEPENDS=	libzstd.so:archivers/zstd \
 		libasound.so:audio/alsa-lib \
 		libdbus-1.so:devel/dbus \
@@ -22,12 +22,16 @@ RUN_DEPENDS=	bash:shells/bash \
 		rg:textproc/ripgrep
 TEST_DEPENDS=	bash:shells/bash
 
-USES=		cargo python:test shebangfix ssl
+USES=		cargo gnome llvm:min=19 ninja:build python:test shebangfix ssl
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	openai
 
-SHEBANG_FILES=	codex-rs/skills/src/assets/samples/skill-creator/scripts/generate_openai_yaml.py \
+USE_GNOME=	glib20
+
+SHEBANG_FILES=	codex-rs/skills/src/assets/samples/imagegen/scripts/image_gen.py \
+		codex-rs/skills/src/assets/samples/plugin-creator/scripts/create_basic_plugin.py \
+		codex-rs/skills/src/assets/samples/skill-creator/scripts/generate_openai_yaml.py \
 		codex-rs/skills/src/assets/samples/skill-creator/scripts/init_skill.py \
 		codex-rs/skills/src/assets/samples/skill-creator/scripts/quick_validate.py \
 		codex-rs/skills/src/assets/samples/skill-installer/scripts/github_utils.py \
@@ -42,7 +46,13 @@ CARGO_CARGOLOCK=	${BUILD_WRKSRC}/Cargo.lock
 CARGO_BUILD_ARGS=	--bin ${PORTNAME}
 CARGO_INSTALL_PATH=	codex-rs
 CARGO_TEST_ARGS=	--all-features --no-fail-fast
-CARGO_ENV=		OPENSSL_NO_VENDOR=1
+CARGO_ENV=		OPENSSL_NO_VENDOR=1 \
+			V8_FROM_SOURCE=1 \
+			GN=${LOCALBASE}/bin/gn \
+			NINJA=${NINJA_CMD} \
+			CLANG_BASE_PATH=/usr
+
+BINARY_ALIAS=	python3=${PYTHON_CMD}
 
 BUILD_WRKSRC=	${WRKSRC}/codex-rs
 
@@ -63,7 +73,6 @@ post-patch:
 		${BUILD_WRKSRC}/cli/src/debug_sandbox/pid_tracker.rs \
 		${BUILD_WRKSRC}/core/src/command_canonicalization.rs \
 		${BUILD_WRKSRC}/core/src/environment_context.rs \
-		${BUILD_WRKSRC}/core/src/exec.rs \
 		${BUILD_WRKSRC}/core/src/exec_policy.rs \
 		${BUILD_WRKSRC}/core/src/exec_policy_tests.rs \
 		${BUILD_WRKSRC}/core/src/exec_tests.rs \
@@ -83,23 +92,29 @@ post-patch:
 	@${REINPLACE_CMD} -e 's|python3|${PYTHON_VERSION}|' \
 		${BUILD_WRKSRC}/app-server/tests/suite/v2/command_exec.rs \
 		${BUILD_WRKSRC}/app-server/tests/suite/v2/thread_resume.rs \
+		${BUILD_WRKSRC}/app-server/tests/suite/v2/thread_shell_command.rs \
 		${BUILD_WRKSRC}/app-server/tests/suite/v2/turn_start.rs \
 		${BUILD_WRKSRC}/app-server/tests/suite/v2/turn_start_zsh_fork.rs \
-		${BUILD_WRKSRC}/core/src/command_canonicalization.rs \
+		${BUILD_WRKSRC}/core-skills/src/invocation_utils.rs \
+		${BUILD_WRKSRC}/core-skills/src/invocation_utils_tests.rs \
+		${BUILD_WRKSRC}/core/src/command_canonicalization_tests.rs \
 		${BUILD_WRKSRC}/core/src/exec_policy.rs \
 		${BUILD_WRKSRC}/core/src/exec_policy_tests.rs \
-		${BUILD_WRKSRC}/core/src/seatbelt_tests.rs \
-		${BUILD_WRKSRC}/core/src/skills/invocation_utils.rs \
 		${BUILD_WRKSRC}/core/tests/suite/approvals.rs \
 		${BUILD_WRKSRC}/core/tests/suite/hooks.rs \
 		${BUILD_WRKSRC}/core/tests/suite/seatbelt.rs \
 		${BUILD_WRKSRC}/core/tests/suite/tools.rs \
 		${BUILD_WRKSRC}/core/tests/suite/unified_exec.rs \
+		${BUILD_WRKSRC}/exec-server/tests/exec_process.rs \
 		${BUILD_WRKSRC}/exec/tests/suite/sandbox.rs \
 		${BUILD_WRKSRC}/execpolicy/tests/basic.rs \
+		${BUILD_WRKSRC}/hooks/src/events/post_tool_use.rs \
 		${BUILD_WRKSRC}/shell-command/src/bash.rs \
 		${BUILD_WRKSRC}/shell-command/src/command_safety/is_safe_command.rs \
 		${BUILD_WRKSRC}/tui/src/render/highlight.rs \
+		${BUILD_WRKSRC}/tui_app_server/src/app.rs \
+		${BUILD_WRKSRC}/tui_app_server/src/chatwidget/tests.rs \
+		${BUILD_WRKSRC}/tui_app_server/src/exec_command.rs \
 		${BUILD_WRKSRC}/tui_app_server/src/render/highlight.rs \
 		${BUILD_WRKSRC}/utils/pty/src/tests.rs
 
