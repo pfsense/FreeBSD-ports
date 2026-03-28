@@ -1,7 +1,7 @@
 PORTNAME=	openjdk
 DISTVERSIONPREFIX=	jdk-
 DISTVERSION=	${JDK_FULL_VERSION:S/.0.0//}
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	java devel
 PKGNAMESUFFIX?=	${JDK_MAJOR_VERSION}
 MASTER_SITES=	LOCAL/openjdk:boot
@@ -29,7 +29,7 @@ ONLY_FOR_ARCHS=	aarch64 amd64 powerpc64 powerpc64le
 FLAVORS=	jdk jre headless jre_headless
 
 headless_PKGNAMESUFFIX=	${JDK_MAJOR_VERSION}-headless
-jre_PKGNAMESUFFIX=	-jre
+jre_PKGNAMESUFFIX=	${JDK_MAJOR_VERSION}-jre
 jre_headless_PKGNAMESUFFIX=	${JDK_MAJOR_VERSION}-jre-headless
 
 FLAVOR?=	${BUILD_JRE:?jre:${FLAVORS:[1]}}
