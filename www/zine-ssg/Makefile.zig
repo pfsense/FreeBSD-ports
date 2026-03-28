@@ -4,7 +4,6 @@ ZIG_TUPLE=      AFLplusplus:github.com/AFLplusplus/AFLplusplus/archive/v4.21c.ta
 		afl_kit:github.com/kristoff-it/zig-afl-kit/archive/395c39d5b33d999f6871a90bd731ec112.tar.gz:afl_kit-0.1.0-NdJ3ch8eAABQkd1wk2W-JDCvvX5Jmnu3uJulS3lPepG7 \
 		cbor:github.com/neurocyte/cbor/archive/7d2eeb68c8a2fb3f4d6baad6cc04c521b.tar.gz:cbor-1.0.0-RcQE_AswAQAPlqBCZXYQf9DZXn-0Ubt8Mk03ZcJWcsAG \
 		flow_syntax:github.com/neurocyte/flow-syntax/archive/6992eddeb9a4a013886db0cbca2156686.tar.gz:flow_syntax-0.6.0-X8jOoWgVAQBBTuGGE9r1ECSDFzi8z6_XNCW1oF5B4fL8 \
-		frameworks:github.com/hexops/xcode-frameworks/archive/8a1cfb373587ea4c9bb1468b7c986462d.tar.gz:N-V-__8AALShqgXkvqYU6f__FrA22SMWmi2TXCJjNTO1m8XJ \
 		gfm:github.com/kristoff-it/cmark-gfm/archive/b96c27a5152b9124d657dee7fb1186d0a.tar.gz:cmark_gfm-0.1.0-uQgTK6WZFwCG9y7_Z0IkCINtmMTwvEZTyVh_6nsaMVPq \
 		known_folders:github.com/ziglibs/known-folders/archive/aa24df42183ad415d10bc0a33e6238c43.tar.gz:known_folders-0.0.0-Fy-PJtLDAADGDOwYwMkVydMSTp_aN-nfjCZw6qPQ2ECL \
 		known_folders:github.com/ziglibs/known-folders/archive/ab5cf5feb936fa3b72c95d3ad0c0c6779.tar.gz:known_folders-0.0.0-Fy-PJtTTAADUOhGKM0sxzG4eMkNQxRvx9e5dfHVyaeA3 \
