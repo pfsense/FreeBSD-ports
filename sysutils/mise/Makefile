@@ -1,7 +1,7 @@
 PORTNAME=	mise
 DISTVERSIONPREFIX=	v
-DISTVERSION=	2026.3.7
-PORTREVISION=	1
+DISTVERSION=	2026.3.17
+PORTREVISION=	0
 CATEGORIES=	sysutils
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -71,8 +71,8 @@ CARGO_CRATES=	addr2line-0.25.1 \
 		aws-config-1.8.12 \
 		aws-credential-types-1.2.11 \
 		aws-lc-fips-sys-0.13.11 \
-		aws-lc-rs-1.15.4 \
-		aws-lc-sys-0.37.0 \
+		aws-lc-rs-1.16.2 \
+		aws-lc-sys-0.39.0 \
 		aws-runtime-1.5.18 \
 		aws-sdk-s3-1.121.0 \
 		aws-sdk-sts-1.96.0 \
@@ -695,7 +695,7 @@ CARGO_CRATES=	addr2line-0.25.1 \
 		rustls-platform-verifier-0.6.2 \
 		rustls-platform-verifier-android-0.1.1 \
 		rustls-webpki-0.101.7 \
-		rustls-webpki-0.103.9 \
+		rustls-webpki-0.103.10 \
 		rustversion-1.0.22 \
 		rusty-fork-0.3.1 \
 		ryu-1.0.22 \
@@ -803,7 +803,7 @@ CARGO_CRATES=	addr2line-0.25.1 \
 		tabled_derive-0.11.0 \
 		tap-1.0.1 \
 		taplo-0.14.0 \
-		tar-0.4.44 \
+		tar-0.4.45 \
 		tempfile-3.24.0 \
 		tera-1.20.1 \
 		termcolor-1.4.1 \
@@ -927,7 +927,6 @@ CARGO_CRATES=	addr2line-0.25.1 \
 		windows-link-0.2.1 \
 		windows-numerics-0.2.0 \
 		windows-registry-0.5.3 \
-		windows-registry-0.6.1 \
 		windows-result-0.3.4 \
 		windows-result-0.4.1 \
 		windows-strings-0.4.2 \
