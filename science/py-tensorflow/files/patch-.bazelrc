@@ -1,8 +1,8 @@
---- .bazelrc.orig	2023-09-12 16:46:28 UTC
+--- .bazelrc.orig2025-01-01 00:00:00 UTC
 +++ .bazelrc
-@@ -166,6 +166,19 @@ build:libc++ --linkopt -fuse-ld=lld
- build:libc++ --define force_libcpp=enabled
- build:libc++ --linkopt -fuse-ld=lld
+@@ -178,6 +178,20 @@ common:clang_local --repo_env USE_HERMETIC_CC_TOOLCHAIN=0
+ # Print a stacktrace when a test is killed
+ test --test_env="GTEST_INSTALL_FAILURE_SIGNAL_HANDLER=1"
  
 +# Use our custom-configured c++ toolchain.
 +# Use --cpu as a differentiator.
@@ -16,7 +16,8 @@
 +build:freebsd --define build_with_onednn_v2=true
 +build:freebsd --define force_libcpp=enabled
 +build:freebsd --action_env=CXXFLAGS=-stdlib=libc++
++build:freebsd --noincompatible_enable_cc_toolchain_resolution
 +
- # Android configs. Bazel needs to have --cpu and --fat_apk_cpu both set to the
- # target CPU to build transient dependencies correctly. See
- # https://docs.bazel.build/versions/master/user-manual.html#flag--fat_apk_cpu
+ 
+ # Default options should come above this line.
+ 

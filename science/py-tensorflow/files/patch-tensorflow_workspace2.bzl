@@ -1,32 +1,55 @@
---- tensorflow/workspace2.bzl.orig	2023-09-12 16:46:28 UTC
+--- tensorflow/workspace2.bzl.orig
 +++ tensorflow/workspace2.bzl
-@@ -145,6 +145,7 @@ def _tf_repositories():
+@@ -178,6 +178,7 @@
          name = "XNNPACK",
-         sha256 = "c979b62e8b77af60dfd7567f22ade20d5a9d4d0888f8a2d60d155fc0d31b22ab",
-         strip_prefix = "XNNPACK-b9d4073a6913891ce9cbd8965c8d506075d2a45a",
-+        patch_file=["//third_party:fix-xnnpack.patch"],
-         urls = tf_mirror_urls("https://github.com/google/XNNPACK/archive/b9d4073a6913891ce9cbd8965c8d506075d2a45a.zip"),
+         sha256 = "44bf8a258cfd0d7b500b6058a2bb5c7387c8cebba295cfca985a68d16513f7c8",
+         strip_prefix = "XNNPACK-25b42dfddb0ee22170d73ff0d4b333ea1e6edfeb",
++        patch_file = ["//third_party:fix-xnnpack.patch", "//third_party:xnnpack-posix-c-source.patch", "//third_party:xnnpack-freebsd-x86.patch"],
+         urls = tf_mirror_urls("https://github.com/google/XNNPACK/archive/25b42dfddb0ee22170d73ff0d4b333ea1e6edfeb.zip"),
      )
      # LINT.ThenChange(//tensorflow/lite/tools/cmake/modules/xnnpack.cmake)
-@@ -165,9 +166,9 @@ def _tf_repositories():
- 
+@@ -200,7 +201,8 @@
+     # LINT.IfChange(pthreadpool)
      tf_http_archive(
-         name = "cpuinfo",
--        strip_prefix = "cpuinfo-3dc310302210c1891ffcfb12ae67b11a3ad3a150",
--        sha256 = "ba668f9f8ea5b4890309b7db1ed2e152aaaf98af6f9a8a63dbe1b75c04e52cb9",
--        urls = tf_mirror_urls("https://github.com/pytorch/cpuinfo/archive/3dc310302210c1891ffcfb12ae67b11a3ad3a150.zip"),
-+        strip_prefix = "cpuinfo-fa1c679da8d19e1d87f20175ae1ec10995cd3dd3",
-+        sha256 = "2bf2b62eb86e2d2eaf862d0b9683a6c467a4d69fb2f7f1dc47c799809148608f",
-+        urls = tf_mirror_urls("https://github.com/pytorch/cpuinfo/archive/fa1c679da8d19e1d87f20175ae1ec10995cd3dd3.zip"),
+         name = "pthreadpool",
+         sha256 = "f602ab141bdc5d5872a79d6551e9063b5bfa7ad6ad60cceaa641de5c45c86d70",
+         strip_prefix = "pthreadpool-0e6ca13779b57d397a5ba6bfdcaa8a275bc8ea2e",
++        patch_file = ["//third_party:pthreadpool-alloca.patch"],
+         urls = tf_mirror_urls("https://github.com/google/pthreadpool/archive/0e6ca13779b57d397a5ba6bfdcaa8a275bc8ea2e.zip"),
+     )
+@@ -407,7 +409,10 @@
+     maybe(
+         tf_http_archive,
+         name = "com_google_protobuf",
+-        patch_file = ["@xla//third_party/protobuf:protobuf.patch"],
++        patch_file = [
++            "@xla//third_party/protobuf:protobuf.patch",
++            "//third_party:fix-protobuf-java.patch",
++        ],
+         sha256 = "6e09bbc950ba60c3a7b30280210cd285af8d7d8ed5e0a6ed101c72aff22e8d88",
+         strip_prefix = "protobuf-6.31.1",
+         urls = tf_mirror_urls("https://github.com/protocolbuffers/protobuf/archive/refs/tags/v6.31.1.zip"),
+@@ -471,6 +476,15 @@
+         sha256 = "dd6a2fa311ba8441bbefd2764c55b99136ff10f7ea42954be96006a2723d33fc",
+         strip_prefix = "grpc-1.74.0",
+         system_build_file = "//third_party/systemlibs:grpc.BUILD",
++        system_link_files = {
++            "//third_party/systemlibs:grpc.bazel.BUILD": "bazel/BUILD.bazel",
++            "//third_party/systemlibs:grpc.bazel.cc_grpc_library.bzl": "bazel/cc_grpc_library.bzl",
++            "//third_party/systemlibs:grpc.bazel.generate_cc.bzl": "bazel/generate_cc.bzl",
++            "//third_party/systemlibs:grpc.bazel.grpc_deps.bzl": "bazel/grpc_deps.bzl",
++            "//third_party/systemlibs:grpc.bazel.grpc_extra_deps.bzl": "bazel/grpc_extra_deps.bzl",
++            "//third_party/systemlibs:grpc.bazel.protobuf.bzl": "bazel/protobuf.bzl",
++            "//third_party/systemlibs:grpc.bazel.python_rules.bzl": "bazel/python_rules.bzl",
++        },
+         patch_file = [
+             "@xla//third_party/grpc:grpc.patch",
+         ],
+@@ -895,6 +909,7 @@
+         name = "riegeli",
+         sha256 = "590ec559107fc7082e1a7d70e9c9bfb8624c79dabca0a05fe1bcba1d7a591ec8",
+         strip_prefix = "riegeli-a37c3dbdd5d2a15113d363c7a7c41c30453e482f",
++        patch_file = ["//third_party:riegeli-xopen-source.patch"],
+         urls = tf_mirror_urls("https://github.com/google/riegeli/archive/a37c3dbdd5d2a15113d363c7a7c41c30453e482f.zip"),
      )
  
-     tf_http_archive(
-@@ -875,7 +876,7 @@ def _tf_repositories():
-         urls = tf_mirror_urls("https://github.com/pybind/pybind11_protobuf/archive/80f3440cd8fee124e077e2e47a8a17b78b451363.zip"),
-         sha256 = "c7ab64b1ccf9a678694a89035a8c865a693e4e872803778f91f0965c2f281d78",
-         strip_prefix = "pybind11_protobuf-80f3440cd8fee124e077e2e47a8a17b78b451363",
--        patch_file = ["//third_party/pybind11_protobuf:remove_license.patch"],
-+        patch_file = ["//third_party/pybind11_protobuf:remove_license.patch","//third_party:fix-pybind11_protobuf.patch"],
-     )
- 
-     tf_http_archive(

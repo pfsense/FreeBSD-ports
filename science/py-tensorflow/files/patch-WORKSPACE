@@ -1,0 +1,125 @@
+--- WORKSPACE.orig
++++ WORKSPACE
+@@ -95,6 +95,122 @@
+ install_deps()
+ # End hermetic Python initialization
+ 
++# FreeBSD: Register the rules_python runtime_env py_cc_toolchain so that
++# @@rules_python//python/cc:current_py_cc_headers can be built.
++# This toolchain uses empty headers/libs (system Python) and satisfies
++# the PY_CC_TOOLCHAIN_TYPE requirement without hermetic Python.
++register_toolchains("@rules_python//python/runtime_env_toolchains:runtime_env_py_cc_toolchain")
++
++# FreeBSD: Register protobuf Python toolchain needed for py_proto_library.
++register_toolchains("@com_google_protobuf//bazel/private/toolchains:python_source_toolchain")
++
++# FreeBSD: Register runtime_env_toolchain as fallback for @rules_python//python:toolchain_type.
++# On FreeBSD the exec platform is detected as "freebsd" (not "linux"), so none of the
++# hermetic python_3_11_toolchains match.  This toolchain uses a shell script to locate
++# python3 at action-runtime via PATH, which resolves to /usr/local/bin/python3.11 in
++# both local and poudriere-jail builds.  It is registered after python_init_toolchains()
++# so it only applies when no platform-specific toolchain matches.
++register_toolchains("@rules_python//python/runtime_env_toolchains:runtime_env_toolchain")
++
++# FreeBSD: stub repositories for old-style @pypi_* deps
++# (these are not created by pip_parse on FreeBSD due to missing platform wheels)
++new_local_repository(
++    name = "pypi_keras",
++    path = "bazel_pypi_hub/keras",
++    build_file_content = """package(default_visibility=["//visibility:public"])
++py_library(name="pkg",srcs=[])
++""",
++)
++
++new_local_repository(
++    name = "pypi_setuptools",
++    path = "bazel_pypi_hub/setuptools",
++    build_file_content = """package(default_visibility=["//visibility:public"])
++py_library(name="pkg",srcs=[])
++""",
++)
++
++new_local_repository(
++    name = "pypi_wheel",
++    path = "bazel_pypi_hub/wheel",
++    build_file_content = """package(default_visibility=["//visibility:public"])
++py_library(name="pkg",srcs=[])
++""",
++)
++
++new_local_repository(
++    name = "pypi_packaging",
++    path = "bazel_pypi_hub/packaging",
++    build_file_content = """package(default_visibility=["//visibility:public"])
++py_library(name="pkg",srcs=[])
++""",
++)
++
++new_local_repository(
++    name = "pypi_absl_py",
++    path = "bazel_pypi_hub/absl_py",
++    build_file_content = """package(default_visibility=["//visibility:public"])
++py_library(name="pkg",srcs=[])
++""",
++)
++
++new_local_repository(
++    name = "pypi_protobuf",
++    path = "bazel_pypi_hub/protobuf",
++    build_file_content = """package(default_visibility=["//visibility:public"])
++py_library(name="pkg",srcs=[])
++""",
++)
++
++new_local_repository(
++    name = "pypi_numpy",
++    path = "bazel_pypi_hub/numpy",
++    build_file_content = """package(default_visibility=["//visibility:public"])
++py_library(name="pkg",srcs=[])
++""",
++)
++
++# FreeBSD: Define @system_python for protobuf's proto_api target.
++# The bundled protobuf 6.31.1 uses @system_python//:python_headers in its
++# proto_api cc_library. We provide real Python 3.11 headers here.
++new_local_repository(
++    name = "system_python",
++    path = "%%LOCALBASE%%",
++    build_file_content =
++"""package(default_visibility = ["//visibility:public"])
++
++load("@bazel_skylib//rules:common_settings.bzl", "string_flag")
++
++cc_library(
++    name = "python_headers",
++    includes = ["include/python%%PYTHON_VER%%"],
++    textual_hdrs = [],
++)
++
++string_flag(
++    name = "internal_python_support",
++    build_setting_default = "Supported",
++    values = ["None", "Supported", "Unsupported"],
++)
++
++config_setting(
++    name = "none",
++    flag_values = {":internal_python_support": "None"},
++)
++
++config_setting(
++    name = "supported",
++    flag_values = {":internal_python_support": "Supported"},
++)
++
++config_setting(
++    name = "unsupported",
++    flag_values = {":internal_python_support": "Unsupported"},
++)
++""",
++)
++
++
+ load("@//tensorflow:workspace2.bzl", "tf_workspace2")
+ 
+ tf_workspace2()

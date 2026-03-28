@@ -1,0 +1,26 @@
+--- tensorflow/python/BUILD.orig	2025-01-01 00:00:00 UTC
++++ tensorflow/python/BUILD
+@@ -1573,6 +1573,11 @@
+         "tensorflow/tensorflow_framework": select({
+             "//tensorflow:windows": [],
+             "//tensorflow:macos": [
++                "-lpthread",
++                "-ldl",
++                "-lm",
++            ],
++            "//tensorflow:freebsd": [
+                 "-lpthread",
+                 "-ldl",
+                 "-lm",
+@@ -1597,6 +1602,11 @@
+                 "-ldl",
+                 "-lm",
+             ],
++            "//tensorflow:freebsd": [
++                "-lpthread",
++                "-ldl",
++                "-lm",
++            ],
+             "//conditions:default": [
+                 "-z defs",
+                 "-lpthread",

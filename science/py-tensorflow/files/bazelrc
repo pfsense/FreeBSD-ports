@@ -6,6 +6,11 @@ test --verbose_test_summary --verbose_failures --noshow_loading_progress
 build --spawn_strategy=local --genrule_strategy=local
 test --spawn_strategy=local --genrule_strategy=local
 
+# tensorflow/BUILD:install_headers genrule creates a directory output (outs=["include"]).
+# Bazel 7 enables --incompatible_disallow_unsound_directory_outputs by default, which
+# rejects this old-style pattern.  Disable it to allow the legacy genrule to run.
+build --noincompatible_disallow_unsound_directory_outputs
+
 # make bazel only fetch distfiles from the cache
 fetch --repository_cache="%%BAZEL_DIR%%/bazel-cache/" --distdir="%%BAZEL_DIST%%/bazel-dist/"
 build --repository_cache="%%BAZEL_DIR%%/bazel-cache/" --distdir="%%BAZEL_DIST%%/bazel-dist/"
@@ -15,14 +20,34 @@ build --define=LIBDIR=%%LOCALBASE%%/lib
 build --define=INCLUDEDIR=%%LOCALBASE%%/include
 build --define=PROTOBUF_INCLUDE_PATH=%%LOCALBASE%%/include
 
-build --config=noaws --config=nohdfs
+build --config=nogcp --config=nonccl
 build --define tensorflow_mkldnn_contraction_kernel=0
 
 build --action_env=BAZEL_CXXOPTS="-std=c++17"
-build --incompatible_enable_cc_toolchain_resolution
 
 build --extra_toolchains=//freebsd:cc-toolchain-freebsd
 build --linkopt="-lexecinfo" --toolchain_resolution_debug=//freebsd:freebsd_clang
+# backtrace() is in libexecinfo on FreeBSD; needed for both target and exec builds.
+build --host_linkopt=-L%%LOCALBASE%%/lib
+build --host_linkopt=-lexecinfo
+build --host_linkopt=-lhwloc
+
+# System and Python headers for both target and host (tool) builds.
+# copts in cc_library don't propagate to dependents so we set these globally.
+build --host_copt=-isystem%%LOCALBASE%%/include
+build --host_copt=-isystem%%PYTHON_INCLUDEDIR%%
+build --host_copt=-isystem%%NUMPY_INCLUDEDIR%%
+build --copt=-isystem%%LOCALBASE%%/include
+build --copt=-isystem%%PYTHON_INCLUDEDIR%%
+build --copt=-isystem%%NUMPY_INCLUDEDIR%%
+
+# Bazel's local_execution_config_platform wrongly reports the exec platform as
+# Linux on FreeBSD, so LLVM's config.bzl selects linux_defines for [for tool]
+# builds, adding Linux-only macros that do not exist on FreeBSD.  Undefine them
+# here so the compiler falls back to the portable POSIX paths in LLVM source.
+build --host_copt=-UHAVE_GETAUXVAL
+build --host_copt=-UHAVE_MALLINFO
+build --host_copt=-UHAVE_SBRK
 
 # for python
 build --action_env=PATH=%%PATH%%
@@ -31,4 +56,11 @@ build --host_action_env=PATH=%%PATH%%
 build --action_env=KERAS_HOME="%%BAZEL_DIST%%/.keras"
 build --host_action_env=KERAS_HOME="%%BAZEL_DIST%%/.keras"
 
+build --repo_env=JAVA_HOME=%%JAVA_HOME%%
+build --action_env=JAVA_HOME=%%JAVA_HOME%%
+
 build --config=freebsd
+
+# Limit parallel actions to avoid OOM on large files like LLVMDialect.cpp
+build --local_ram_resources=HOST_RAM*.7
+build --local_cpu_resources=HOST_CPUS-4

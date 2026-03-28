@@ -1,0 +1,14 @@
+--- third_party/flatbuffers/BUILD.system.orig	2025-01-01 00:00:00 UTC
++++ third_party/flatbuffers/BUILD.system
+@@ -4,6 +4,11 @@ filegroup(
+     name = "LICENSE.txt",
+     visibility = ["//visibility:public"],
+ )
++
++filegroup(
++    name = "LICENSE",
++    visibility = ["//visibility:public"],
++)
+ 
+ # Public flatc library to compile flatbuffer files at runtime.
+ cc_library(
