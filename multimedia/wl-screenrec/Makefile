@@ -10,7 +10,8 @@ WWW=		https://github.com/russelltg/wl-screenrec
 
 LICENSE=	APACHE20
 
-BROKEN_i386=	https://github.com/zmwangx/rust-ffmpeg-sys/issues/96
+#BROKEN_i386=	https://github.com/zmwangx/rust-ffmpeg-sys/issues/96
+BROKEN=		Fails to build with FFmpeg 8.1+, non-exhaustive patterns: `sys::AVColorPrimaries::AVCOL_PRI_EXT_BASE` and `sys::AVColorPrimaries::AVCOL_PRI_EXT_NB` not covered
 
 LIB_DEPENDS=	libdrm.so:graphics/libdrm \
 		libavformat.so:multimedia/ffmpeg
