@@ -5,6 +5,38 @@ they are unavoidable.
 You should get into the habit of checking this file for changes each time
 you update your ports collection, before attempting any port upgrades.
 
+20260327:
+  AFFECTS: users of x11/nvidia-{driver, kmod}
+  AUTHOR: junchoon@dec.sakura.ne.jp
+
+  x11/nvidia-driver and x11/nvidia-kmod are upgraded to latest
+  Production Branch [PB] of upstream driver package.
+
+  Just as -devel variant upgraded 20260103, this version drops
+  support for a bunch of old (pre-Turing generations of
+  architecture) GPUs.
+
+  You can find still supported GPUs below.
+    https://us.download.nvidia.com/XFree86/FreeBSD-x86_64/595.58.03/README/supportedchips.html
+
+  So anyone using related ports
+    x11/nvidia-kmod
+    x11/nvidia-driver
+    graphics/nvidia-drm-{510|515|61|66|latest}-kmod
+    x11/linux-nvidia-libs
+  with dropped GPUs needs to switch to newly added legacy 580 ports.
+    x11/nvidia-kmod-580
+    x11/nvidia-driver-580
+    graphics/nvidia-drm-{510|515|61|66|latest}-kmod-580
+    x11/linux-nvidia-libs-580
+
+  Deinstalling master ports above and reinstalling -580 variant of
+  ports above would do the right things.
+
+  If any of above hesitates to upgrade with version conflicts
+  of graphics/eglexternalplatform, upgrade it first and retrying
+  failed ones should help.
+
 20260326:
   AFFECTS: users of databases/mysql80-(server|client)
   AUTHOR: joneum@FreeBSD.org

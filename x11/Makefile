@@ -252,6 +252,7 @@
     SUBDIR += linux-nvidia-libs-340
     SUBDIR += linux-nvidia-libs-390
     SUBDIR += linux-nvidia-libs-470
+    SUBDIR += linux-nvidia-libs-580
     SUBDIR += linux-nvidia-libs-devel
     SUBDIR += linux-rl9-libxkbcommon
     SUBDIR += linux-rl9-pixman
@@ -304,12 +305,14 @@
     SUBDIR += nvidia-driver-340
     SUBDIR += nvidia-driver-390
     SUBDIR += nvidia-driver-470
+    SUBDIR += nvidia-driver-580
     SUBDIR += nvidia-driver-devel
     SUBDIR += nvidia-kmod
     SUBDIR += nvidia-kmod-304
     SUBDIR += nvidia-kmod-340
     SUBDIR += nvidia-kmod-390
     SUBDIR += nvidia-kmod-470
+    SUBDIR += nvidia-kmod-580
     SUBDIR += nvidia-kmod-devel
     SUBDIR += nvidia-settings
     SUBDIR += nvidia-xconfig
