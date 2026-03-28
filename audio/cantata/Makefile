@@ -1,12 +1,9 @@
 PORTNAME=	cantata
 DISTVERSIONPREFIX=	v
-DISTVERSION=	3.3.1
-PORTREVISION=	1
+DISTVERSION=	3.4.0
 CATEGORIES=	audio kde
 
 PATCH_SITES=	https://github.com/nullobsi/cantata/commit/
-PATCHFILES+=	52bf771a115b102a00fa09b48c867b6954474a51.patch:-p1 # Fix build with Qt 6.10
-PATCHFILES+=	82ee16e720e6901e7191e64a4e0c0db94c6a10ae.patch:-p1 # Fix build with Qt 6.10
 
 MAINTAINER=	kde@FreeBSD.org
 COMMENT=	Graphical client for MPD using Qt
@@ -15,11 +12,12 @@ WWW=		https://github.com/nullobsi/cantata
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-USES=		cmake compiler:c++17-lang cpe gl pkgconfig qt:6 shebangfix
+USES=		cmake compiler:c++17-lang cpe gl kde:6 pkgconfig qt:6 shebangfix
 CPE_VENDOR=	craig_drummond
 USE_GITHUB=	yes
 GH_ACCOUNT=	nullobsi
 USE_GL=		opengl
+USE_KDE=	archive itemviews
 USE_QT=		base sqldriver-sqlite:run svg
 
 SHEBANG_FILES=	playlists/cantata-dynamic.cmake cantata-remote.cmake
