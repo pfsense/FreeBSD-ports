@@ -1,6 +1,6 @@
 PORTNAME=	diff-so-fancy
 DISTVERSIONPREFIX=	v
-DISTVERSION=	1.4.6
+DISTVERSION=	1.4.8
 CATEGORIES=	textproc
 
 MAINTAINER=	alven@FreeBSD.org
@@ -28,17 +28,20 @@ NO_ARCH=	yes
 NO_BUILD=	yes
 SUB_FILES=	pkg-message
 
+PORTDOCS=	docs/*.md README.md
+
 OPTIONS_DEFINE=	DOCS
 OPTIONS_SUB=	yes
 
 do-install:
 	${MKDIR} ${STAGEDIR}${PREFIX}/${SITE_PERL_REL}
 	${INSTALL_SCRIPT} ${WRKSRC}/diff-so-fancy ${STAGEDIR}${PREFIX}/bin
+	${INSTALL_MAN} ${WRKSRC}/docs/*.1 ${STAGEDIR}${PREFIX}/share/man/man1
 	${INSTALL_DATA} ${WRKSRC}/lib/DiffHighlight.pm ${STAGEDIR}${PREFIX}/${SITE_PERL_REL}
 
 do-install-DOCS-on:
 	${MKDIR} ${STAGEDIR}${DOCSDIR}
-	${INSTALL_DATA} ${WRKSRC}/*.md ${STAGEDIR}${DOCSDIR}
+	cd ${WRKSRC} && ${COPYTREE_SHARE} "${PORTDOCS}" ${STAGEDIR}${DOCSDIR}
 
 do-test:
 	cd ${WRKSRC} && bats test
