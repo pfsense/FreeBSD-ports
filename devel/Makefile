@@ -299,6 +299,7 @@
     SUBDIR += bazel
     SUBDIR += bazel-buildtools
     SUBDIR += bazel5
+    SUBDIR += bazel7
     SUBDIR += bbparse
     SUBDIR += bcc
     SUBDIR += bcpp
