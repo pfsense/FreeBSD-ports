@@ -350,6 +350,7 @@
     SUBDIR += json-yaml
     SUBDIR += json2yaml
     SUBDIR += jsonfmt
+    SUBDIR += jsongrep
     SUBDIR += jtc
     SUBDIR += kdiff3
     SUBDIR += kepubify
