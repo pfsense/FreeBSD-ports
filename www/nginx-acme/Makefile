@@ -1,6 +1,6 @@
 PORTNAME=	acme
-PORTVERSION=	0.1.1
-PORTREVISION=	12
+PORTVERSION=	0.3.1
+PORTREVISION=	0
 CATEGORIES=	www
 MASTER_SITES=	https://github.com/nginx/nginx-${PORTNAME}/releases/download/v${PORTVERSION}/:acme \
 		https://nginx.org/download/:nginx
@@ -47,7 +47,6 @@ RUN_DEPENDS=	${LOCALBASE}/sbin/nginx:www/nginx
 
 .if ${FLAVOR} == devel
 NGINX_VERSION=  ${NGINX_VERSION_DEVEL}
-EXTRA_PATCHES+=	${FILESDIR}/extra-patch-src_conf_order.rs-devel
 .else
 NGINX_VERSION=  ${NGINX_VERSION_DEFAULT}
 .endif
