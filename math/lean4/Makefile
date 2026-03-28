@@ -80,6 +80,6 @@ post-install:
 
 # tests as of 4.25.2-20251201: 100% tests passed, 0 tests failed out of 3367
 # tests as of 4.29.0-rc2: 99% tests passed, 12 tests failed out of 3584, see https://github.com/leanprover/lean4/issues/12721
-# tests as of 4.29.0: 99% tests passed, 18 tests failed out of 3582
+# tests as of 4.29.0: 99% tests passed, 18 tests failed out of 3582, see https://github.com/leanprover/lean4/issues/13174
 
 .include <bsd.port.mk>
