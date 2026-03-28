@@ -6,7 +6,7 @@ MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 DISTNAME=	absl-py-${PORTVERSION}
 
-MAINTAINER=	amzo1337@gmail.com
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Abseil Python Common Libraries
 WWW=		https://github.com/abseil/abseil-py
 
