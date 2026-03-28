@@ -1,0 +1,9 @@
+#!/bin/sh
+# %%PORTNAME%% post-install script
+
+if [ "$2" = "POST-INSTALL" ]; then
+	/usr/local/bin/php -r "
+		require_once('/usr/local/pkg/nordvpn_routing.inc');
+		nordvpn_routing_install();
+	"
+fi

@@ -1,0 +1,14 @@
+@owner root
+@group wheel
+@mode 0644
+%%PREFIX%%/pkg/nordvpn_routing.xml
+%%PREFIX%%/pkg/nordvpn_routing.inc
+%%PREFIX%%/www/nordvpn/nordvpn_routing.inc
+%%PREFIX%%/www/nordvpn/page_chrome.inc
+%%PREFIX%%/www/nordvpn/tunnels.php
+%%PREFIX%%/www/nordvpn/rules.php
+%%PREFIX%%/www/nordvpn/killswitch.php
+%%PREFIX%%/www/nordvpn/dns.php
+%%PREFIX%%/www/nordvpn/status.php
+%%PREFIX%%/etc/nordvpn_boot.php
+%%PREFIX%%/share/pfSense-pkg-nordvpn_routing/info.xml
