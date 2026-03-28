@@ -1,5 +1,5 @@
 PORTNAME=	zathura
-DISTVERSION=	2026.02.09
+DISTVERSION=	2026.03.27
 CATEGORIES=	graphics print
 MASTER_SITES=	https://pwmt.org/projects/zathura/download/
 
