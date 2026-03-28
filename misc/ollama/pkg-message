@@ -28,6 +28,26 @@ ollama uses many gigabytes of disk space in your home directory,
 because advanced AI models are often very large.
 Please symlink ~/.ollama to a large disk if needed.
 
+Working examples:
+(1) Coding with the model gpt-oss:20b:
+  1. run 'OLLAMA_CONTEXT_LENGTH=65536 ollama serve'
+  2. install claude-code and run:
+     ANTHROPIC_BASE_URL=http://localhost:11434 \
+     ANTHROPIC_AUTH_TOKEN=ollama \
+     ANTHROPIC_MODEL=gpt-oss:20b \
+     ANTHROPIC_DEFAULT_SONNET_MODEL=gpt-oss:20b \
+     ANTHROPIC_DEFAULT_OPUS_MODEL=gpt-oss:20b \
+     ANTHROPIC_DEFAULT_HAIKU_MODEL=gpt-oss:20b \
+     claude
+  3. Ask it to write some program.
+
+(2) Image generation with the model x/z-image-turbo:
+  1. run 'OLLAMA_CONTEXT_LENGTH=65536 ollama serve'
+  2. install claude-code and run:
+     ollama run x/z-image-turbo {textual description of the desired image}
+
+There are also a lot of text-to-text models that you can chat with.
+
 EOM
 }
 ]
