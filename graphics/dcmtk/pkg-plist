@@ -1209,6 +1209,7 @@ lib/libofstd.so
 lib/libofstd.so.20
 lib/libofstd.so.20.%%SOVERSION%%
 libdata/pkgconfig/dcmtk.pc
+share/dcmtk
 %%DATADIR%%/SC.dump
 %%DATADIR%%/VLP.dump
 %%DATADIR%%/acrnema.dic
