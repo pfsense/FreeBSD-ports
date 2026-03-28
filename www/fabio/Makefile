@@ -1,7 +1,6 @@
 PORTNAME=	fabio
-PORTVERSION=	1.6.4
 DISTVERSIONPREFIX=	v
-PORTREVISION=	8
+DISTVERSION=	1.6.11
 CATEGORIES=	www
 
 MAINTAINER=	stl@ossuary.net
@@ -17,7 +16,7 @@ USE_RC_SUBR=	fabio
 
 GO_MODULE=	github.com/fabiolb/fabio
 GO_TARGET=	:${PREFIX}/sbin/fabio
-GO_BUILDFLAGS=	-ldflags "-X main.GitDescribe=v${PORTVERSION}"
+GO_BUILDFLAGS=	-ldflags "-X main.GitDescribe=v${DISTVERSION}"
 
 PLIST_FILES=	"@sample etc/fabio.properties.sample" \
 		sbin/fabio
