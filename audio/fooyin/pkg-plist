@@ -2,6 +2,8 @@ bin/fooyin
 lib/fooyin/libfooyin_core.so.0.0.0
 lib/fooyin/libfooyin_gui.so.0.0.0
 lib/fooyin/libfooyin_utils.so.0.0.0
+lib/fooyin/plugins/fyplugin_discord.so
+lib/fooyin/plugins/fyplugin_equaliser.so
 lib/fooyin/plugins/fyplugin_fileops.so
 lib/fooyin/plugins/fyplugin_filters.so
 lib/fooyin/plugins/fyplugin_gmeinput.so
@@ -13,12 +15,12 @@ lib/fooyin/plugins/fyplugin_rgscanner.so
 lib/fooyin/plugins/fyplugin_scrobbler.so
 lib/fooyin/plugins/fyplugin_sdl.so
 lib/fooyin/plugins/fyplugin_tageditor.so
-lib/fooyin/plugins/fyplugin_vgminput.so
 lib/fooyin/plugins/fyplugin_vumeter.so
 lib/fooyin/plugins/fyplugin_wavebar.so
 share/applications/org.fooyin.fooyin.desktop
 %%DATADIR%%/translations/fooyin_af.qm
 %%DATADIR%%/translations/fooyin_ca.qm
+%%DATADIR%%/translations/fooyin_cs.qm
 %%DATADIR%%/translations/fooyin_de.qm
 %%DATADIR%%/translations/fooyin_en.qm
 %%DATADIR%%/translations/fooyin_en_GB.qm
