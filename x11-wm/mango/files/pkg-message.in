@@ -1,7 +1,7 @@
 [
 { type: install
   message: <<EOM
-Before using MangoWC run the following commands as user:
+Before using Mango run the following commands as user:
 
     mkdir -p ~/.config/mango
     cp %%PREFIX%%/etc/mango/config.conf ~/.config/mango/
