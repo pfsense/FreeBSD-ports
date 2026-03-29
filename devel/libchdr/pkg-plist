@@ -5,6 +5,7 @@ include/libchdr/chdconfig.h
 include/libchdr/coretypes.h
 include/libchdr/flac.h
 include/libchdr/huffman.h
+include/libchdr/macros.h
 lib/libchdr-static.a
 lib/libchdr.a
 lib/libchdr.so

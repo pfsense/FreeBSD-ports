@@ -1,5 +1,5 @@
 PORTNAME=	libchdr
-DISTVERSION=	g20250522
+DISTVERSION=	g20260310
 CATEGORIES=	devel
 
 MAINTAINER=	bsdcode@disroot.org
@@ -12,18 +12,25 @@ LICENSE_FILE=	${WRKSRC}/LICENSE.txt
 LIB_DEPENDS=	libzstd.so:archivers/zstd
 
 USES=		cmake pathfix
+
 USE_GITHUB=	yes
 GH_ACCOUNT=	rtissera
-GH_TAGNAME=	40f96ee322971eedf2a16bdab6727daa861e8626
+GH_TAGNAME=	7715de1
+
 USE_LDCONFIG=	yes
 
-CMAKE_ARGS=	-DBUILD_LTO=${defined(WITH_LTO):?ON:OFF}
 CMAKE_ON=	INSTALL_STATIC_LIBS \
 		WITH_SYSTEM_ZLIB \
 		WITH_SYSTEM_ZSTD
 
-EXTRACT_AFTER_ARGS=	--exclude deps/zlib* --exclude deps/zstd* \
+EXTRACT_AFTER_ARGS=	--exclude ${GH_PROJECT_DEFAULT}-${GH_TAGNAME_EXTRACT}/deps/miniz* \
+			--exclude ${GH_PROJECT_DEFAULT}-${GH_TAGNAME_EXTRACT}/deps/zstd* \
 			--no-same-owner --no-same-permissions
+
+OPTIONS_DEFINE=		LTO
+OPTIONS_DEFAULT=	LTO
+
+LTO_CMAKE_BOOL=	BUILD_LTO
 
 post-install:
 	${RLN} ${STAGEDIR}${PREFIX}/lib/libchdr-static.a ${STAGEDIR}${PREFIX}/lib/libchdr.a
