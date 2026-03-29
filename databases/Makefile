@@ -4,6 +4,7 @@
     SUBDIR += R-cran-RMariaDB
     SUBDIR += R-cran-RMySQL
     SUBDIR += R-cran-RPostgreSQL
+    SUBDIR += R-cran-RPostgres
     SUBDIR += R-cran-RSQLite
     SUBDIR += R-cran-cachem
     SUBDIR += R-cran-dbplyr
