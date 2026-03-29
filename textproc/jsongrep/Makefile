@@ -1,6 +1,6 @@
 PORTNAME=	jsongrep
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.7.0
+DISTVERSION=	0.8.0
 CATEGORIES=	textproc
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -28,6 +28,7 @@ CARGO_CRATES=	aho-corasick-1.1.3 \
 		assert_cmd-2.0.17 \
 		autocfg-1.5.0 \
 		base64-0.22.1 \
+		bitflags-2.11.0 \
 		block-buffer-0.10.4 \
 		bstr-1.12.0 \
 		bumpalo-3.20.2 \
@@ -65,15 +66,20 @@ CARGO_CRATES=	aho-corasick-1.1.3 \
 		env_filter-0.1.3 \
 		env_logger-0.11.8 \
 		equivalent-1.0.2 \
+		errno-0.3.14 \
+		fastrand-2.3.0 \
 		find-msvc-tools-0.1.9 \
 		foldhash-0.1.5 \
 		generic-array-0.14.7 \
+		getrandom-0.4.2 \
 		half-2.7.1 \
+		hashbrown-0.15.5 \
 		hashbrown-0.16.1 \
 		heck-0.5.0 \
 		hifijson-0.2.3 \
 		iana-time-zone-0.1.65 \
 		iana-time-zone-haiku-0.1.2 \
+		id-arena-2.3.0 \
 		indexmap-2.13.0 \
 		is_terminal_polyfill-1.70.1 \
 		itertools-0.13.0 \
@@ -84,12 +90,14 @@ CARGO_CRATES=	aho-corasick-1.1.3 \
 		jiff-0.2.15 \
 		jiff-static-0.2.15 \
 		jmespath-0.5.0 \
-		jql-parser-8.0.7 \
-		jql-runner-8.0.7 \
+		jql-parser-8.1.2 \
+		jql-runner-8.1.2 \
 		js-sys-0.3.88 \
 		jsonpath-rust-1.0.4 \
-		libc-0.2.174 \
+		leb128fmt-0.1.0 \
+		libc-0.2.183 \
 		libm-0.2.16 \
+		linux-raw-sys-0.12.1 \
 		log-0.4.27 \
 		memchr-2.7.5 \
 		memmap2-0.9.9 \
@@ -110,44 +118,65 @@ CARGO_CRATES=	aho-corasick-1.1.3 \
 		predicates-3.1.3 \
 		predicates-core-1.0.9 \
 		predicates-tree-1.0.12 \
+		prettyplease-0.2.37 \
 		proc-macro2-1.0.95 \
 		quote-1.0.40 \
+		r-efi-6.0.0 \
 		rayon-1.11.0 \
 		rayon-core-1.13.0 \
 		regex-1.12.2 \
 		regex-automata-0.4.13 \
 		regex-lite-0.1.9 \
 		regex-syntax-0.8.5 \
+		rmp-0.8.15 \
+		rmp-serde-1.3.1 \
 		roff-0.2.2 \
+		rustix-1.1.4 \
 		rustversion-1.0.22 \
-		ryu-1.0.20 \
+		ryu-1.0.23 \
 		same-file-1.0.6 \
-		serde-1.0.219 \
-		serde_derive-1.0.219 \
-		serde_json-1.0.142 \
+		semver-1.0.27 \
+		serde-1.0.228 \
+		serde_core-1.0.228 \
+		serde_derive-1.0.228 \
+		serde_json-1.0.149 \
 		serde_json_borrow-0.9.0 \
+		serde_spanned-0.6.9 \
+		serde_yaml-0.9.34+deprecated \
 		sha2-0.10.9 \
 		shlex-1.3.0 \
 		slug-0.1.6 \
 		strsim-0.11.1 \
-		syn-2.0.104 \
+		syn-2.0.117 \
+		tempfile-3.27.0 \
 		termtree-0.5.1 \
-		thiserror-2.0.12 \
-		thiserror-impl-2.0.12 \
+		thiserror-2.0.18 \
+		thiserror-impl-2.0.18 \
 		tinytemplate-1.2.1 \
+		toml-0.8.23 \
+		toml_datetime-0.6.11 \
+		toml_edit-0.22.27 \
+		toml_write-0.1.2 \
 		typed-arena-2.0.2 \
 		typenum-1.18.0 \
 		ucd-trie-0.1.7 \
 		unicode-ident-1.0.18 \
+		unicode-xid-0.2.6 \
+		unsafe-libyaml-0.2.11 \
 		urlencoding-2.1.3 \
 		utf8parse-0.2.2 \
 		version_check-0.9.5 \
 		wait-timeout-0.2.1 \
 		walkdir-2.5.0 \
+		wasip2-1.0.2+wasi-0.2.9 \
+		wasip3-0.4.0+wasi-0.3.0-rc-2026-01-06 \
 		wasm-bindgen-0.2.111 \
 		wasm-bindgen-macro-0.2.111 \
 		wasm-bindgen-macro-support-0.2.111 \
 		wasm-bindgen-shared-0.2.111 \
+		wasm-encoder-0.244.0 \
+		wasm-metadata-0.244.0 \
+		wasmparser-0.244.0 \
 		web-sys-0.3.88 \
 		winapi-0.3.9 \
 		winapi-i686-pc-windows-gnu-0.4.0 \
@@ -170,9 +199,17 @@ CARGO_CRATES=	aho-corasick-1.1.3 \
 		windows_x86_64_gnu-0.53.0 \
 		windows_x86_64_gnullvm-0.53.0 \
 		windows_x86_64_msvc-0.53.0 \
-		winnow-0.7.14 \
+		winnow-0.7.15 \
+		winnow-1.0.0 \
+		wit-bindgen-0.51.0 \
+		wit-bindgen-core-0.51.0 \
+		wit-bindgen-rust-0.51.0 \
+		wit-bindgen-rust-macro-0.51.0 \
+		wit-component-0.244.0 \
+		wit-parser-0.244.0 \
 		zerocopy-0.8.39 \
-		zerocopy-derive-0.8.39
+		zerocopy-derive-0.8.39 \
+		zmij-1.0.21
 
 PLIST_FILES=	bin/jg
 
