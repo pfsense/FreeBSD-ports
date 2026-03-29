@@ -1,3 +1,54 @@
+  <vuln vid="b933083e-2b2e-11f1-b60a-2cf05da270f3">
+    <topic>Gitlab -- vulnerabilities</topic>
+    <affects>
+<package>
+<name>gitlab-ce</name>
+<name>gitlab-ee</name>
+<range><ge>18.10.0</ge><lt>18.10.1</lt></range>
+<range><ge>18.9.0</ge><lt>18.9.3</lt></range>
+<range><ge>7.11.0</ge><lt>18.8.7</lt></range>
+</package>
+    </affects>
+    <description>
+	<body xmlns="http://www.w3.org/1999/xhtml">
+	<p>Gitlab reports:</p>
+	<blockquote cite="https://about.gitlab.com/releases/2026/03/25/patch-release-gitlab-18-10-1-released/">
+	  <p>Improper Handling of Parameters issue in Jira Connect installations impacts GitLab CE/EE</p>
+	  <p>Cross-Site Request Forgery issue in GLQL API impacts GitLab CE/EE</p>
+	  <p>HTML Injection in vulnerability report impacts GitLab EE</p>
+	  <p>Denial of Service issue in GraphQL API impacts GitLab CE/EE</p>
+	  <p>Improper Access Control issue in WebAuthn 2FA impacts GitLab CE/EE</p>
+	  <p>Improper Access Control issue in GraphQL query impacts GitLab EE</p>
+	  <p>Denial of Service issue in CI configuration processing impacts GitLab CE/EE</p>
+	  <p>Denial of Service issue in webhook configuration impacts GitLab CE/EE</p>
+	  <p>Cross-site Scripting issue in Mermaid diagram renderer impacts GitLab CE/EE</p>
+	  <p>Improper Access Control issue in Merge Requests impacts GitLab CE/EE</p>
+	  <p>Access Control issue in GraphQL API impacts GitLab EE</p>
+	  <p>Incorrect Authorization issue in authorization caching impacts GitLab EE</p>
+	</blockquote>
+	</body>
+    </description>
+    <references>
+      <cvename>CVE-2026-2370</cvename>
+      <cvename>CVE-2026-3857</cvename>
+      <cvename>CVE-2026-2995</cvename>
+      <cvename>CVE-2026-3988</cvename>
+      <cvename>CVE-2026-2745</cvename>
+      <cvename>CVE-2026-1724</cvename>
+      <cvename>CVE-2025-13436</cvename>
+      <cvename>CVE-2025-13078</cvename>
+      <cvename>CVE-2026-2973</cvename>
+      <cvename>CVE-2026-2726</cvename>
+      <cvename>CVE-2025-14595</cvename>
+      <cvename>CVE-2026-4363</cvename>
+      <url>https://about.gitlab.com/releases/2026/03/25/patch-release-gitlab-18-10-1-released/</url>
+    </references>
+    <dates>
+      <discovery>2026-03-25</discovery>
+      <entry>2026-03-29</entry>
+    </dates>
+  </vuln>
+
   <vuln vid="970fd0ec-26f5-11f1-a9b1-0cc47ada5f32">
     <topic>jenkins -- multiple vulnerabilities</topic>
     <affects>
