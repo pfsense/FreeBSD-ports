@@ -577,7 +577,6 @@
     SUBDIR += linux-rl9-wayland
     SUBDIR += lua-gd
     SUBDIR += lua-qrencode
-    SUBDIR += luminance-qt5
     SUBDIR += lunasvg
     SUBDIR += lux
     SUBDIR += lximage-qt
