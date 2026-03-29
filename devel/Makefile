@@ -1664,6 +1664,7 @@
     SUBDIR += magit
     SUBDIR += makedepend
     SUBDIR += malloy
+    SUBDIR += manuals
     SUBDIR += marisa-trie
     SUBDIR += marl
     SUBDIR += massif-visualizer
