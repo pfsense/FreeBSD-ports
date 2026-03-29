@@ -1,3 +1,31 @@
+  <vuln vid="095e9db2-2b5b-11f1-9839-8447094a420f">
+    <topic>Roundcube -- SVG Attribute Bypass</topic>
+    <affects>
+      <package>
+	<name>roundcube-php82</name>
+	<name>roundcube-php83</name>
+	<name>roundcube-php84</name>
+	<name>roundcube-php85</name>
+	<range><lt>1.6.15,1</lt></range>
+      </package>
+    </affects>
+    <description>
+	<body xmlns="http://www.w3.org/1999/xhtml">
+	<p>The Roundcube project reports:</p>
+	<blockquote cite="https://github.com/roundcube/roundcubemail/releases/tag/1.6.15">
+	  <p>.</p>
+	</blockquote>
+	</body>
+    </description>
+    <references>
+      <url>https://github.com/roundcube/roundcubemail/releases/tag/1.6.15</url>
+    </references>
+    <dates>
+      <discovery>2026-03-29</discovery>
+      <entry>2026-03-29</entry>
+    </dates>
+  </vuln>
+
   <vuln vid="b933083e-2b2e-11f1-b60a-2cf05da270f3">
     <topic>Gitlab -- vulnerabilities</topic>
     <affects>
