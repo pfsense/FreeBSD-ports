@@ -5,6 +5,26 @@ they are unavoidable.
 You should get into the habit of checking this file for changes each time
 you update your ports collection, before attempting any port upgrades.
 
+20260329:
+  AFFECTS: users of java/openjdk25 and java/openjdk26 with the jre flavor
+  AUTHOR: jrm@FreeBSD.org
+
+  The openjdk-jre packages for versions 25 and 26 have been renamed.  Users with
+  the old package names installed should run the following /bin/sh script with
+  superuser privileges before upgrading.
+
+  jre=$(pkg query -g %n-%v "*openjdk-jre-25*" "*openjdk-jre-26*")
+  if echo "$jre" | grep -q "\-25"; then
+      on=$(pkg query -g %n "*openjdk-jre-25*")
+      nn="openjdk25-jre"
+  elif echo "$jre" | grep -q "\-26"; then
+      on=$(pkg query -g %n "*openjdk-jre-26*")
+      nn="openjdk26-jre"
+  fi
+  if [ -n "$nn" ]; then
+      pkg set -yn "$on":"$nn"
+  fi
+
 20260327:
   AFFECTS: users of x11/nvidia-{driver, kmod}
   AUTHOR: junchoon@dec.sakura.ne.jp
