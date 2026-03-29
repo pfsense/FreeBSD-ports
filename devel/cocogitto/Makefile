@@ -1,6 +1,5 @@
 PORTNAME=	cocogitto
-DISTVERSION=	6.5.0
-PORTREVISION=	4
+DISTVERSION=	7.0.0
 CATEGORIES=	devel
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -13,33 +12,36 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 USES=		cargo
 USE_GITHUB=	yes
 
-CARGO_CRATES=	aho-corasick-1.1.3 \
+CARGO_CRATES=	aho-corasick-1.1.4 \
 		android_system_properties-0.1.5 \
 		anstream-0.6.21 \
 		anstyle-1.0.13 \
 		anstyle-parse-0.2.7 \
-		anstyle-query-1.1.4 \
-		anstyle-wincon-3.0.10 \
-		anyhow-1.0.100 \
-		assert_cmd-2.0.17 \
+		anstyle-query-1.1.5 \
+		anstyle-wincon-3.0.11 \
+		anyhow-1.0.102 \
+		assert_cmd-2.1.2 \
 		autocfg-1.5.0 \
 		bitflags-1.3.2 \
-		bitflags-2.9.4 \
+		bitflags-2.11.0 \
 		block-buffer-0.10.4 \
-		bstr-1.12.0 \
-		bumpalo-3.19.0 \
-		cc-1.2.41 \
+		bstr-1.12.1 \
+		bumpalo-3.20.2 \
+		camino-1.2.2 \
+		cargo-platform-0.1.9 \
+		cargo_metadata-0.19.2 \
+		cc-1.2.56 \
 		cfg-if-1.0.4 \
-		chrono-0.4.42 \
+		chrono-0.4.44 \
 		chrono-tz-0.9.0 \
 		chrono-tz-build-0.3.0 \
-		clap-4.5.49 \
-		clap_builder-4.5.49 \
-		clap_complete-4.5.59 \
-		clap_complete_nushell-4.5.9 \
-		clap_derive-4.5.49 \
-		clap_lex-0.7.6 \
-		clap_mangen-0.2.30 \
+		clap-4.5.60 \
+		clap_builder-4.5.60 \
+		clap_complete-4.5.66 \
+		clap_complete_nushell-4.5.10 \
+		clap_derive-4.5.55 \
+		clap_lex-1.0.0 \
+		clap_mangen-0.2.31 \
 		cmd_lib-1.9.6 \
 		cmd_lib_macros-1.9.6 \
 		cog_schemars-0.1.0 \
@@ -53,13 +55,12 @@ CARGO_CRATES=	aho-corasick-1.1.3 \
 		crossbeam-deque-0.8.6 \
 		crossbeam-epoch-0.9.18 \
 		crossbeam-utils-0.8.21 \
-		crypto-common-0.1.6 \
+		crypto-common-0.1.7 \
 		deunicode-1.6.2 \
 		diff-0.1.13 \
 		difflib-0.4.0 \
 		digest-0.10.7 \
 		displaydoc-0.2.5 \
-		doc-comment-0.3.3 \
 		dyn-clone-1.0.20 \
 		edit-0.1.5 \
 		either-1.15.0 \
@@ -68,54 +69,60 @@ CARGO_CRATES=	aho-corasick-1.1.3 \
 		errno-0.3.14 \
 		faccess-0.2.4 \
 		fastrand-2.3.0 \
-		find-msvc-tools-0.1.4 \
+		find-msvc-tools-0.1.9 \
+		fixedbitset-0.5.7 \
 		float-cmp-0.10.0 \
 		fnv-1.0.7 \
+		foldhash-0.1.5 \
 		form_urlencoded-1.2.2 \
 		fs_extra-1.3.0 \
-		generic-array-0.14.9 \
-		getrandom-0.2.16 \
+		generic-array-0.14.7 \
+		getrandom-0.2.17 \
 		getrandom-0.3.4 \
-		git2-0.20.2 \
-		globset-0.4.17 \
+		getrandom-0.4.1 \
+		git2-0.20.4 \
+		globset-0.4.18 \
 		globwalk-0.9.1 \
-		hashbrown-0.16.0 \
+		hashbrown-0.15.5 \
+		hashbrown-0.16.1 \
 		heck-0.5.0 \
 		hermit-abi-0.5.2 \
-		home-0.5.11 \
+		home-0.5.12 \
 		humansize-2.1.3 \
 		humantime-2.3.0 \
-		iana-time-zone-0.1.64 \
+		iana-time-zone-0.1.65 \
 		iana-time-zone-haiku-0.1.2 \
-		icu_collections-2.0.0 \
-		icu_locale_core-2.0.0 \
-		icu_normalizer-2.0.0 \
-		icu_normalizer_data-2.0.0 \
-		icu_properties-2.0.1 \
-		icu_properties_data-2.0.1 \
-		icu_provider-2.0.0 \
+		icu_collections-2.1.1 \
+		icu_locale_core-2.1.1 \
+		icu_normalizer-2.1.1 \
+		icu_normalizer_data-2.1.1 \
+		icu_properties-2.1.2 \
+		icu_properties_data-2.1.2 \
+		icu_provider-2.1.1 \
+		id-arena-2.3.0 \
 		idna-1.1.0 \
 		idna_adapter-1.2.1 \
-		ignore-0.4.24 \
-		indexmap-2.11.4 \
-		indoc-2.0.6 \
-		is-terminal-0.4.16 \
-		is_terminal_polyfill-1.70.1 \
+		ignore-0.4.25 \
+		indexmap-2.13.0 \
+		indoc-2.0.7 \
+		is-terminal-0.4.17 \
+		is_terminal_polyfill-1.70.2 \
 		itertools-0.14.0 \
-		itoa-1.0.15 \
+		itoa-1.0.17 \
 		jobserver-0.1.34 \
-		js-sys-0.3.81 \
+		js-sys-0.3.91 \
 		lazy_static-1.5.0 \
-		libc-0.2.177 \
-		libgit2-sys-0.18.2+1.9.1 \
-		libm-0.2.15 \
-		libz-sys-1.1.22 \
+		leb128fmt-0.1.0 \
+		libc-0.2.182 \
+		libgit2-sys-0.18.3+1.9.2 \
+		libm-0.2.16 \
+		libz-sys-1.1.24 \
 		linux-raw-sys-0.4.15 \
-		linux-raw-sys-0.11.0 \
-		litemap-0.8.0 \
-		log-0.4.28 \
+		linux-raw-sys-0.12.1 \
+		litemap-0.8.1 \
+		log-0.4.29 \
 		maplit-1.0.2 \
-		memchr-2.7.6 \
+		memchr-2.8.0 \
 		minimal-lexical-0.2.1 \
 		nom-7.1.3 \
 		normalize-line-endings-0.3.0 \
@@ -127,88 +134,90 @@ CARGO_CRATES=	aho-corasick-1.1.3 \
 		num-rational-0.4.2 \
 		num-traits-0.2.19 \
 		once_cell-1.21.3 \
-		once_cell_polyfill-1.70.1 \
+		once_cell_polyfill-1.70.2 \
 		os_pipe-1.2.3 \
 		parse-zoneinfo-0.3.1 \
 		pathdiff-0.2.3 \
 		percent-encoding-2.3.2 \
-		pest-2.8.3 \
-		pest_derive-2.8.3 \
-		pest_generator-2.8.3 \
-		pest_meta-2.8.3 \
+		pest-2.8.6 \
+		pest_derive-2.8.6 \
+		pest_generator-2.8.6 \
+		pest_meta-2.8.6 \
+		petgraph-0.7.1 \
 		phf-0.11.3 \
 		phf_codegen-0.11.3 \
 		phf_generator-0.11.3 \
 		phf_shared-0.11.3 \
 		pkg-config-0.3.32 \
-		potential_utf-0.1.3 \
+		potential_utf-0.1.4 \
 		ppv-lite86-0.2.21 \
-		predicates-3.1.3 \
-		predicates-core-1.0.9 \
-		predicates-tree-1.0.12 \
+		predicates-3.1.4 \
+		predicates-core-1.0.10 \
+		predicates-tree-1.0.13 \
 		pretty_assertions-1.4.1 \
+		prettyplease-0.2.37 \
 		proc-macro-error-attr2-2.0.0 \
 		proc-macro-error2-2.0.1 \
-		proc-macro2-1.0.101 \
+		proc-macro2-1.0.106 \
 		quick-error-1.2.3 \
-		quote-1.0.41 \
+		quote-1.0.44 \
 		r-efi-5.3.0 \
 		rand-0.8.5 \
 		rand_chacha-0.3.1 \
 		rand_core-0.6.4 \
 		ref-cast-1.0.25 \
 		ref-cast-impl-1.0.25 \
-		regex-1.12.2 \
-		regex-automata-0.4.13 \
-		regex-syntax-0.8.8 \
+		regex-1.12.3 \
+		regex-automata-0.4.14 \
+		regex-syntax-0.8.10 \
 		roff-0.2.2 \
 		rustix-0.38.44 \
-		rustix-1.1.2 \
+		rustix-1.1.4 \
 		rustversion-1.0.22 \
 		rusty-forkfork-0.4.0 \
-		ryu-1.0.20 \
 		same-file-1.0.6 \
 		sealed_test-1.1.0 \
 		sealed_test_derive-1.1.0 \
 		semver-1.0.27 \
 		serde-1.0.228 \
+		serde-xml-rs-0.6.0 \
 		serde_core-1.0.228 \
 		serde_derive-1.0.228 \
 		serde_derive_internals-0.29.1 \
-		serde_json-1.0.145 \
+		serde_json-1.0.149 \
 		serde_spanned-0.6.9 \
 		sha2-0.10.9 \
-		shell-words-1.1.0 \
+		shell-words-1.1.1 \
 		shlex-1.3.0 \
-		siphasher-1.0.1 \
+		siphasher-1.0.2 \
 		slug-0.1.6 \
 		smallvec-1.15.1 \
 		speculoos-0.12.0 \
 		stable_deref_trait-1.2.1 \
 		stderrlog-0.6.0 \
 		strsim-0.11.1 \
-		syn-2.0.106 \
+		syn-2.0.117 \
 		synstructure-0.13.2 \
-		tempfile-3.23.0 \
-		tera-1.20.0 \
+		tempfile-3.26.0 \
+		tera-1.20.1 \
 		termcolor-1.1.3 \
 		termtree-0.5.1 \
+		thiserror-1.0.69 \
+		thiserror-2.0.18 \
+		thiserror-impl-1.0.69 \
+		thiserror-impl-2.0.18 \
 		thread_local-1.1.9 \
-		tinystr-0.8.1 \
+		tinystr-0.8.2 \
 		toml-0.8.23 \
 		toml_datetime-0.6.11 \
 		toml_edit-0.22.27 \
 		toml_write-0.1.2 \
 		typenum-1.19.0 \
 		ucd-trie-0.1.7 \
-		unic-char-property-0.9.0 \
-		unic-char-range-0.9.0 \
-		unic-common-0.9.0 \
-		unic-segment-0.9.0 \
-		unic-ucd-segment-0.9.0 \
-		unic-ucd-version-0.9.0 \
-		unicode-ident-1.0.19 \
-		url-2.5.7 \
+		unicode-ident-1.0.24 \
+		unicode-segmentation-1.12.0 \
+		unicode-xid-0.2.6 \
+		url-2.5.8 \
 		utf8_iter-1.0.4 \
 		utf8parse-0.2.2 \
 		vcpkg-0.2.15 \
@@ -216,12 +225,15 @@ CARGO_CRATES=	aho-corasick-1.1.3 \
 		wait-timeout-0.2.1 \
 		walkdir-2.5.0 \
 		wasi-0.11.1+wasi-snapshot-preview1 \
-		wasip2-1.0.1+wasi-0.2.4 \
-		wasm-bindgen-0.2.104 \
-		wasm-bindgen-backend-0.2.104 \
-		wasm-bindgen-macro-0.2.104 \
-		wasm-bindgen-macro-support-0.2.104 \
-		wasm-bindgen-shared-0.2.104 \
+		wasip2-1.0.2+wasi-0.2.9 \
+		wasip3-0.4.0+wasi-0.3.0-rc-2026-01-06 \
+		wasm-bindgen-0.2.114 \
+		wasm-bindgen-macro-0.2.114 \
+		wasm-bindgen-macro-support-0.2.114 \
+		wasm-bindgen-shared-0.2.114 \
+		wasm-encoder-0.244.0 \
+		wasm-metadata-0.244.0 \
+		wasmparser-0.244.0 \
 		which-4.4.2 \
 		which-6.0.3 \
 		winapi-0.3.9 \
@@ -235,41 +247,44 @@ CARGO_CRATES=	aho-corasick-1.1.3 \
 		windows-result-0.4.1 \
 		windows-strings-0.5.1 \
 		windows-sys-0.59.0 \
-		windows-sys-0.60.2 \
 		windows-sys-0.61.2 \
 		windows-targets-0.52.6 \
-		windows-targets-0.53.5 \
 		windows_aarch64_gnullvm-0.52.6 \
-		windows_aarch64_gnullvm-0.53.1 \
 		windows_aarch64_msvc-0.52.6 \
-		windows_aarch64_msvc-0.53.1 \
 		windows_i686_gnu-0.52.6 \
-		windows_i686_gnu-0.53.1 \
 		windows_i686_gnullvm-0.52.6 \
-		windows_i686_gnullvm-0.53.1 \
 		windows_i686_msvc-0.52.6 \
-		windows_i686_msvc-0.53.1 \
 		windows_x86_64_gnu-0.52.6 \
-		windows_x86_64_gnu-0.53.1 \
 		windows_x86_64_gnullvm-0.52.6 \
-		windows_x86_64_gnullvm-0.53.1 \
 		windows_x86_64_msvc-0.52.6 \
-		windows_x86_64_msvc-0.53.1 \
-		winnow-0.7.13 \
+		winnow-0.7.14 \
 		winsafe-0.0.19 \
-		wit-bindgen-0.46.0 \
-		writeable-0.6.1 \
+		wit-bindgen-0.51.0 \
+		wit-bindgen-core-0.51.0 \
+		wit-bindgen-rust-0.51.0 \
+		wit-bindgen-rust-macro-0.51.0 \
+		wit-component-0.244.0 \
+		wit-parser-0.244.0 \
+		writeable-0.6.2 \
+		xml-rs-0.8.28 \
 		yansi-1.0.1 \
-		yoke-0.8.0 \
-		yoke-derive-0.8.0 \
-		zerocopy-0.8.27 \
-		zerocopy-derive-0.8.27 \
+		yoke-0.8.1 \
+		yoke-derive-0.8.1 \
+		zerocopy-0.8.40 \
+		zerocopy-derive-0.8.40 \
 		zerofrom-0.1.6 \
 		zerofrom-derive-0.1.6 \
-		zerotrie-0.2.2 \
-		zerovec-0.11.4 \
-		zerovec-derive-0.11.1
+		zerotrie-0.2.3 \
+		zerovec-0.11.5 \
+		zerovec-derive-0.11.2 \
+		zmij-1.0.21
 
 PLIST_FILES=	bin/cog
+
+do-install:
+	# workaround for error: found a virtual manifest at `xx` instead of a package manifest
+	${INSTALL_PROGRAM} \
+		${WRKDIR}/target/release/cog \
+		${STAGEDIR}${PREFIX}/bin
 
 .include <bsd.port.mk>
