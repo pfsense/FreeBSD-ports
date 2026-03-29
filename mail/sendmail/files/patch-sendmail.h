@@ -4,10 +4,10 @@
  #endif
  
  #include "bf.h"
-+#if USE_BLACKLIST
-+#include <blacklist.h>
++#if USE_BLOCKLIST
++#include <blocklist.h>
 +#endif
-+#include "blacklist_client.h"
++#include "blocklist_client.h"
  #include "timers.h"
  #include <sm/exc.h>
  #include <sm/gen.h>
@@ -16,8 +16,8 @@
  
  EXTERN int ConnectionRateWindowSize;
 +
-+#if USE_BLACKLIST
-+EXTERN bool	UseBlacklist;
++#if USE_BLOCKLIST
++EXTERN bool	UseBlocklist;
 +#endif
  
  /*

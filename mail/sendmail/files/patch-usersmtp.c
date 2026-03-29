@@ -5,7 +5,7 @@
  		if (saslresult != SASL_OK && saslresult != SASL_CONTINUE)
  		{
 +			int fd = sm_io_getinfo(mci->mci_in, SM_IO_WHAT_FD, NULL);
-+			BLACKLIST_NOTIFY(BLACKLIST_AUTH_FAIL, fd, "AUTH FAIL");
++			BLOCKLIST_NOTIFY(BLOCKLIST_AUTH_FAIL, fd, "AUTH FAIL");
 +
  			if (tTd(95, 5))
  				sm_dprintf("AUTH FAIL=%s (%d)\n",
@@ -17,7 +17,7 @@
 -		if (result == EX_OK)
 +		if (result == EX_OK) {
 +			int fd = sm_io_getinfo(mci->mci_in, SM_IO_WHAT_FD, NULL);
-+			BLACKLIST_NOTIFY(BLACKLIST_AUTH_OK, fd, "AUTH OK");
++			BLOCKLIST_NOTIFY(BLOCKLIST_AUTH_OK, fd, "AUTH OK");
  			mci->mci_sasl_auth = true;
 -		else if (result == EX_TEMPFAIL || result == EX_NOPERM)
 +		} else if (result == EX_TEMPFAIL || result == EX_NOPERM)

@@ -1,5 +1,5 @@
---- sendmail/blacklist.c.orig	2018-01-02 20:16:44 UTC
-+++ sendmail/blacklist.c
+--- sendmail/blocklist.c.orig	2018-01-02 20:16:44 UTC
++++ sendmail/blocklist.c
 @@ -0,0 +1,57 @@
 +/*-
 + * Copyright (c) 2016 The FreeBSD Foundation
@@ -31,30 +31,30 @@
 +
 +/* $FreeBSD$ */
 +
-+#ifdef USE_BLACKLIST
++#ifdef USE_BLOCKLIST
 +#include <sm/gen.h>
-+#include <sendmail.h>	/* for EXTERN UseBlacklist */
++#include <sendmail.h>	/* for EXTERN UseBlocklist */
 +
-+#include <blacklist.h>
-+#include "blacklist_client.h"
++#include <blocklist.h>
++#include "blocklist_client.h"
 +
-+static struct blacklist *blstate;
++static struct blocklist *blstate;
 +
 +void
-+blacklist_init(void)
++blocklist_init(void)
 +{
 +
-+	if (UseBlacklist)
-+		blstate = blacklist_open();
++	if (UseBlocklist)
++		blstate = blocklist_open();
 +}
 +
 +void
-+blacklist_notify(int action, int fd, const char *msg)
++blocklist_notify(int action, int fd, const char *msg)
 +{
 +
 +	if (blstate == NULL)
 +		return;
-+	(void)blacklist_r(blstate, action, fd, msg);
++	(void)blocklist_r(blstate, action, fd, msg);
 +}
 +
-+#endif /* USE_BLACKLIST */
++#endif /* USE_BLOCKLIST */

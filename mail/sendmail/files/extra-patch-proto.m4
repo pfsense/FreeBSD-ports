@@ -4,8 +4,8 @@
  # Name to use for EHLO (defaults to $j)
  _OPTION(HeloName, `confHELO_NAME')
  
-+# Use Blacklistd
-+_OPTION(UseBlacklist, `confBLACKLIST', `false')
++# Use Blocklistd
++_OPTION(UseBlocklist, `confBLOCKLIST', `false')
 +
  ifdef(`_NEED_SMTPOPMODES_', `dnl
  # SMTP operation modes
