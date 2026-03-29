@@ -1,5 +1,5 @@
 PORTNAME=	mkdocstrings-python
-DISTVERSION=	2.0.2
+DISTVERSION=	2.0.3
 CATEGORIES=	textproc python
 MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -13,7 +13,7 @@ LICENSE=	ISCL
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
 BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}pdm-backend>0:devel/py-pdm-backend@${PY_FLAVOR}
-RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}griffe>=1.13.0:textproc/py-griffe@${PY_FLAVOR} \
+RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}griffelib>=2.0:textproc/py-griffelib@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}mkdocs-autorefs>=1.4:textproc/py-mkdocs-autorefs@${PY_FLAVOR}
 # textproc/py-mkdocstrings belongs to RUN_DEPENDS as well but would cause
 # a circular dependency (via py-mkdocstrings' PYTHON option).  It was therefore
