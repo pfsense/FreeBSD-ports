@@ -731,6 +731,7 @@
     SUBDIR += fortytwo-encore
     SUBDIR += fossil
     SUBDIR += fossology-nomos-standalone
+    SUBDIR += foundry
     SUBDIR += fp16
     SUBDIR += fpp
     SUBDIR += freebsd-gcc12
