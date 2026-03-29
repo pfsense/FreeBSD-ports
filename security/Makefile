@@ -74,6 +74,7 @@
     SUBDIR += cargo-audit
     SUBDIR += ccrypt
     SUBDIR += ccsrch
+    SUBDIR += cdxgen
     SUBDIR += certificate_maker
     SUBDIR += certmgr
     SUBDIR += certmonger
