@@ -1,5 +1,6 @@
 PORTNAME=	nmap
 DISTVERSION=	7.99
+PORTREVISION=	1
 CATEGORIES=	security
 MASTER_SITES=	https://nmap.org/dist/ \
 		LOCAL/ohauer
@@ -59,9 +60,8 @@ CONFIGURE_ARGS+=--without-localdirs \
 		--without-zenmap \
 		--without-ndiff \
 		--with-liblua=included \
-		--without-nmap-update
-
-
+		--without-nmap-update \
+		--with-libpcre=${LOCALBASE}
 
 .include <bsd.port.options.mk>
 

@@ -1,5 +1,6 @@
 PORTNAME=	nmap
 PORTVERSION=	7.100.${NMAP_COMMIT_DATE}
+PORTREVISION=	1
 CATEGORIES=	security
 PKGNAMESUFFIX=	-devel
 
@@ -38,7 +39,9 @@ CONFIGURE_ARGS=--without-localdirs \
 		--without-ndiff \
 		--with-libpcre=${LOCALBASE} \
 		--with-liblua=included \
-		--without-nmap-update
+		--without-nmap-update \
+		--with-libpcre=${LOCALBASE}
+
 MAKE_JOBS_UNSAFE=	yes
 
 OPTIONS_DEFINE=	DOCS NLS PCAP SSH2 SSL
