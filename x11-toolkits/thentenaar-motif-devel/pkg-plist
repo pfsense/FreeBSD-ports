@@ -234,6 +234,7 @@ include/Xm/XmIm.h
 include/Xm/XmP.h
 include/Xm/XmStrDefs.h
 include/Xm/XmStrDefs22.h
+include/Xm/XmStrDefs25.h
 include/Xm/Xmfuncs.h
 include/Xm/XmosP.h
 include/Xm/Xmos_r.h
