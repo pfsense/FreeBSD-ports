@@ -332,7 +332,7 @@ _tlsrpt:*:382:382::0:0:TLSRPT Daemon:/nonexistent:/usr/sbin/nologin
 cascade:*:383:383::0:0:Cascade Daemon:/var/db/cascade:/usr/sbin/nologin
 omada:*:384:384::0:0:Omada Wireless Controller:/nonexistent:/usr/sbin/nologin
 mtail:*:385:385::0:0:mtail:/nonexistent:/usr/sbin/nologin
-# free: 386
+zoraxy:*:386:386::0:0:Zoraxy Service:/nonexistent:/usr/sbin/nologin
 # free: 387
 autopulse:*:388:388::0:0:Autopulse Daemon:/nonexistent:/usr/sbin/nologin
 ldap:*:389:389::0:0:OpenLDAP Server:/nonexistent:/usr/sbin/nologin
