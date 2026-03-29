@@ -11,6 +11,7 @@
     SUBDIR += R-cran-dtplyr
     SUBDIR += R-cran-fastmap
     SUBDIR += R-cran-nanoparquet
+    SUBDIR += R-cran-pool
     SUBDIR += R-cran-sqldf
     SUBDIR += WWWdb
     SUBDIR += adminer
