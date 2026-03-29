@@ -1,6 +1,5 @@
 PORTNAME=	perl
 DISTVERSION=	${PERL_VERSION}
-PORTREVISION=	2
 CATEGORIES=	lang devel perl5
 MASTER_SITES=	https://cpan.metacpan.org/authors/id/S/SH/SHAY/ CPAN/../../src/5.0
 DIST_SUBDIR=	perl
