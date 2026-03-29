@@ -1,5 +1,5 @@
-TIMESTAMP = 1765745082
-SHA256 (go/dns_godns/TimothyYe-godns-v3.3.5_GH0/go.mod) = 40729e5f06cbed8ede7754fd27d4055c8157aa10d240c606a2bc3a531cc7e316
-SIZE (go/dns_godns/TimothyYe-godns-v3.3.5_GH0/go.mod) = 1821
-SHA256 (go/dns_godns/TimothyYe-godns-v3.3.5_GH0/TimothyYe-godns-v3.3.5_GH0.tar.gz) = 308372268b8bc8220286eb3e0a6ddd882591baa9637af8f93036c3659a470a5f
-SIZE (go/dns_godns/TimothyYe-godns-v3.3.5_GH0/TimothyYe-godns-v3.3.5_GH0.tar.gz) = 736761
+TIMESTAMP = 1774798573
+SHA256 (go/dns_godns/TimothyYe-godns-v3.4_GH0/go.mod) = c202891b1e17a62b045b6f8404a6c21ac2a4e8b99a1be557342375e8158ab9e2
+SIZE (go/dns_godns/TimothyYe-godns-v3.4_GH0/go.mod) = 1822
+SHA256 (go/dns_godns/TimothyYe-godns-v3.4_GH0/TimothyYe-godns-v3.4_GH0.tar.gz) = 8e9c4846c16aee9fb36e60fb9ce1a91bf845cc0e01820f2ec2abf05573d6d5cc
+SIZE (go/dns_godns/TimothyYe-godns-v3.4_GH0/TimothyYe-godns-v3.4_GH0.tar.gz) = 873667
