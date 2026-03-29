@@ -1414,6 +1414,7 @@
     SUBDIR += py-graphemeu
     SUBDIR += py-grep-ast
     SUBDIR += py-griffe
+    SUBDIR += py-griffecli
     SUBDIR += py-griffelib
     SUBDIR += py-grimoire-elk
     SUBDIR += py-grimoirelab-panels
