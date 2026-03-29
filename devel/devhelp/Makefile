@@ -1,6 +1,6 @@
 PORTNAME=	devhelp
 PORTVERSION=	41.2
-PORTREVISION=	6
+PORTREVISION=	7
 CATEGORIES=	devel gnome
 MASTER_SITES=	GNOME
 DIST_SUBDIR=	gnome
@@ -11,6 +11,9 @@ PATCHFILES+=	f1c27fd4eaa5.patch:-p1 # https://gitlab.gnome.org/GNOME/devhelp/-/m
 MAINTAINER=	gnome@FreeBSD.org
 COMMENT=	Developer help browser for GNOME
 WWW=		https://wiki.gnome.org/Apps/Devhelp
+
+DEPRECATED=	Discontinued, use devel/manuals
+EXPIRATION_DATE=	2026-05-28
 
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/LICENSES/GPL-3.0-or-later.txt
