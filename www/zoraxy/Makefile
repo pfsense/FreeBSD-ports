@@ -3,7 +3,7 @@ DISTVERSIONPREFIX=	v
 DISTVERSION=	3.3.2
 CATEGORIES=	www
 
-MAINTAINER=	joneum@bsd-mail.org
+MAINTAINER=	joneum@FreeBSD.org
 COMMENT=	General purpose HTTP reverse proxy and forwarding tool
 WWW=		https://github.com/tobychui/zoraxy
 
