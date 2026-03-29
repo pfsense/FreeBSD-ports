@@ -9,5 +9,3 @@ Features:
 - Kill switch to block non-VPN traffic if a tunnel drops
 - DNS leak prevention with configurable DNS modes
 - Fully integrated into the pfSense VPN menu
-
-WWW: https://github.com/Icepick869/pfSense-pkg-nordvpn_routing
