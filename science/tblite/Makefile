@@ -1,6 +1,7 @@
 PORTNAME=	tblite
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.5.0
+DISTVERSION=	0.5.0-10
+DISTVERSIONSUFFIX=	-gb4416c6
 CATEGORIES=	science # chemistry
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -11,7 +12,6 @@ WWW=		https://tblite.readthedocs.io/ \
 LICENSE=	LGPL3+
 LICENSE_FILE=	${WRKSRC}/COPYING.LESSER
 
-BROKEN=		compilation fails after science/dftd4 update, see https://github.com/tblite/tblite/issues/296
 .if !exists(/usr/include/omp.h)
 BROKEN=		requires OpenMP support that is missing on this architecture
 .endif

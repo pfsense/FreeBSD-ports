@@ -57,9 +57,6 @@ include/tblite/tblite_coulomb_thirdorder.mod
 include/tblite/tblite_coulomb_type.mod
 include/tblite/tblite_cutoff.mod
 include/tblite/tblite_data.mod
-include/tblite/tblite_data_atomicrad.mod
-include/tblite/tblite_data_covrad.mod
-include/tblite/tblite_data_paulingen.mod
 include/tblite/tblite_data_spin.mod
 include/tblite/tblite_disp.mod
 include/tblite/tblite_disp_cache.mod
@@ -96,12 +93,6 @@ include/tblite/tblite_lapack_sygst.mod
 include/tblite/tblite_lapack_sygvd.mod
 include/tblite/tblite_lapack_sygvr.mod
 include/tblite/tblite_mesh_lebedev.mod
-include/tblite/tblite_ncoord.mod
-include/tblite/tblite_ncoord_erf.mod
-include/tblite/tblite_ncoord_erf_en.mod
-include/tblite/tblite_ncoord_exp.mod
-include/tblite/tblite_ncoord_gfn.mod
-include/tblite/tblite_ncoord_type.mod
 include/tblite/tblite_os.mod
 include/tblite/tblite_output_ascii.mod
 include/tblite/tblite_output_format.mod
