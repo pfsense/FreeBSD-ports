@@ -19,6 +19,7 @@ lib/node_modules/@github/copilot/copilot-sdk/index.d.ts
 lib/node_modules/@github/copilot/copilot-sdk/index.js
 lib/node_modules/@github/copilot/copilot-sdk/sdkProtocolVersion.d.ts
 lib/node_modules/@github/copilot/copilot-sdk/session.d.ts
+lib/node_modules/@github/copilot/copilot-sdk/telemetry.d.ts
 lib/node_modules/@github/copilot/copilot-sdk/types.d.ts
 lib/node_modules/@github/copilot/definitions/code-review.agent.yaml
 lib/node_modules/@github/copilot/definitions/configure-copilot.agent.yaml
