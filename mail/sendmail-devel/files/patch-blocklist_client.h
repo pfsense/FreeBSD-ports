@@ -1,5 +1,5 @@
---- sendmail/blacklist_client.h.orig	2018-01-02 20:16:44 UTC
-+++ sendmail/blacklist_client.h
+--- sendmail/blocklist_client.h.orig	2018-01-02 20:16:44 UTC
++++ sendmail/blocklist_client.h
 @@ -0,0 +1,57 @@
 +/*-
 + * Copyright (c) 2016 The FreeBSD Foundation
@@ -31,30 +31,30 @@
 +
 +/* $FreeBSD$ */
 +
-+#ifndef BLACKLIST_CLIENT_H
-+#define BLACKLIST_CLIENT_H
++#ifndef BLOCKLIST_CLIENT_H
++#define BLOCKLIST_CLIENT_H
 +
-+#ifndef BLACKLIST_API_ENUM
++#ifndef BLOCKLIST_API_ENUM
 +enum {
-+	BLACKLIST_AUTH_OK = 0,
-+	BLACKLIST_AUTH_FAIL,
-+	BLACKLIST_ABUSIVE_BEHAVIOR,
-+	BLACKLIST_BAD_USER
++	BLOCKLIST_AUTH_OK = 0,
++	BLOCKLIST_AUTH_FAIL,
++	BLOCKLIST_ABUSIVE_BEHAVIOR,
++	BLOCKLIST_BAD_USER
 +};
 +#endif
 +
-+#ifdef USE_BLACKLIST
-+void blacklist_init(void);
-+void blacklist_notify(int, int, const char *);
++#ifdef USE_BLOCKLIST
++void blocklist_init(void);
++void blocklist_notify(int, int, const char *);
 +
-+#define BLACKLIST_INIT() blacklist_init()
-+#define BLACKLIST_NOTIFY(x, y, msg) blacklist_notify(x, y, msg)
++#define BLOCKLIST_INIT() blocklist_init()
++#define BLOCKLIST_NOTIFY(x, y, msg) blocklist_notify(x, y, msg)
 +
 +#else
 +
-+#define BLACKLIST_INIT()
-+#define BLACKLIST_NOTIFY(x, y, msg)
++#define BLOCKLIST_INIT()
++#define BLOCKLIST_NOTIFY(x, y, msg)
 +
 +#endif
 +
-+#endif /* BLACKLIST_CLIENT_H */
++#endif /* BLOCKLIST_CLIENT_H */
