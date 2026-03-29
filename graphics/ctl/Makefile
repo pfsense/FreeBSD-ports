@@ -1,7 +1,6 @@
 PORTNAME=	ctl
 DISTVERSIONPREFIX=	ctl-
-DISTVERSION=	1.5.4
-PORTREVISION=	2
+DISTVERSION=	1.5.5
 CATEGORIES=	graphics lang
 PKGNAMESUFFIX=	-language
 
@@ -34,6 +33,6 @@ DOCSDIR=	share/doc/CTL
 
 OPTIONS_DEFINE=	DOCS
 
-# tests as of 1.5.4: 100% tests passed, 0 tests failed out of 220
+# tests as of 1.5.5: 100% tests passed, 0 tests failed out of 232
 
 .include <bsd.port.mk>
