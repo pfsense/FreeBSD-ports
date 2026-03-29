@@ -1,6 +1,6 @@
---- src/gui/sdl_gui.cpp.orig	2026-01-02 23:34:40 UTC
+--- src/gui/sdl_gui.cpp.orig	2026-03-29 07:39:32 UTC
 +++ src/gui/sdl_gui.cpp
-@@ -3889,6 +3889,7 @@ void GUI_Shortcut(int select) {
+@@ -3992,6 +3992,7 @@ void GUI_Shortcut(int select) {
      shortcutid=select;
      shortcut=true;
      sel = select;
@@ -8,7 +8,7 @@
  #if defined(USE_TTF)
      if (ttf.inUse && !confres) {
          ttf_switch_off();
-@@ -3898,12 +3899,14 @@ void GUI_Shortcut(int select) {
+@@ -4001,12 +4002,14 @@ void GUI_Shortcut(int select) {
      } else
  #endif
      RunCfgTool(0);
@@ -23,7 +23,7 @@
  #if defined(USE_TTF)
      if (ttf.inUse) {
          ttf_switch_off();
-@@ -3913,4 +3916,5 @@ void GUI_Run(bool pressed) {
+@@ -4016,4 +4019,5 @@ void GUI_Run(bool pressed) {
      } else
  #endif
      RunCfgTool(0);

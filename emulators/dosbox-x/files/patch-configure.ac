@@ -1,6 +1,6 @@
---- configure.ac.orig	2026-01-02 23:34:40 UTC
+--- configure.ac.orig	2026-03-29 07:39:32 UTC
 +++ configure.ac
-@@ -798,7 +798,10 @@ dnl LIBRARY TEST: ALSA
+@@ -873,7 +873,10 @@ dnl LIBRARY TEST: ALSA
  dnl TODO: Need GCC to know this code is using C++ lambda functions
  
  dnl LIBRARY TEST: ALSA
