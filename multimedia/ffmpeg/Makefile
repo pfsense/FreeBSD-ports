@@ -1,6 +1,5 @@
 PORTNAME=	ffmpeg
-DISTVERSION=	8.0.1
-PORTREVISION=	5
+DISTVERSION=	8.1
 PORTEPOCH=	1
 CATEGORIES=	multimedia audio net
 MASTER_SITES=	https://ffmpeg.org/releases/
@@ -179,10 +178,12 @@ ZVBI_DESC=	Teletext support via libzvbi
 ###  --enable-libiec61883	enable iec61883 via libiec61883
 ###  --enable-liblc3		enable LC3 de/encoding via liblc3
 ###  --enable-liblcevc-dec	enable LCEVC decoding via liblcevc-dec
+###  --enable-libmpeghdec       enable MPEG-H 3DA decoding via libmpeghdec
 ###  --enable-liboapv		enable APV encoding via liboapv
 ###  --enable-libopencv		enable video filtering via libopencv
 ###  --enable-libqrencode	enable QR encode generation via libqrencode
 ###  --enable-libquirc		enable QR decoding via libquirc
+###  --enable-libsvtjpegxs	enable JPEGXS encoding/decoding via SVT
 ###  --enable-libtls		enable LibreSSL (via libtls), needed for https support
 ###				if openssl, gnutls or mbedtls are not used
 ###  --enable-libtorch		enable Torch as one DNN backend
