@@ -1,0 +1,9 @@
+#!/bin/sh
+# %%PORTNAME%% pre-deinstall script
+
+if [ "$2" = "DEINSTALL" ]; then
+	/usr/local/bin/php -r "
+		require_once('/usr/local/pkg/nordvpn_routing.inc');
+		nordvpn_routing_deinstall();
+	"
+fi

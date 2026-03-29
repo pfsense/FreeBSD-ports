@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE packagegui SYSTEM "../schema/packages.dtd">
+<?xml-stylesheet type="text/xsl" href="../xsl/package.xsl"?>
+<packagegui>
+  <copyright>MIT</copyright>
+  <n>nordvpn_routing</n>
+  <title>NordVPN Selective Routing</title>
+  <description>Route specific VLANs and devices through NordVPN with per-device tunnel assignment and multiple simultaneous tunnels.</description>
+  <version>%%PKGVERSION%%</version>
+  <category>VPN</category>
+  <maintainer>icepick869@github</maintainer>
+  <internalname>nordvpn_routing</internalname>
+  <pkginfolink>https://github.com/Icepick869/pfSense-pkg-nordvpn_routing</pkginfolink>
+
+  <menu>
+    <n>NordVPN Routing</n>
+    <tooltiptext>Manage NordVPN tunnels and per-device routing rules</tooltiptext>
+    <section>VPN</section>
+    <url>/nordvpn/tunnels.php</url>
+  </menu>
+
+  <privileges>
+    <item>
+      <n>page-vpn-nordvpn-tunnels</n>
+      <descr>Allow access to NordVPN Routing - Tunnels page</descr>
+      <match>nordvpn/tunnels.php*</match>
+    </item>
+    <item>
+      <n>page-vpn-nordvpn-rules</n>
+      <descr>Allow access to NordVPN Routing - Rules page</descr>
+      <match>nordvpn/rules.php*</match>
+    </item>
+    <item>
+      <n>page-vpn-nordvpn-status</n>
+      <descr>Allow access to NordVPN Routing - Status page</descr>
+      <match>nordvpn/status.php*</match>
+    </item>
+    <item>
+      <n>page-vpn-nordvpn-killswitch</n>
+      <descr>Allow access to NordVPN Routing - Kill Switch page</descr>
+      <match>nordvpn/killswitch.php*</match>
+    </item>
+    <item>
+      <n>page-vpn-nordvpn-dns</n>
+      <descr>Allow access to NordVPN Routing - DNS page</descr>
+      <match>nordvpn/dns.php*</match>
+    </item>
+  </privileges>
+
+  <include_file>/usr/local/www/nordvpn/nordvpn_routing.inc</include_file>
+
+  <custom_php_install_command>
+    nordvpn_routing_install();
+  </custom_php_install_command>
+
+  <custom_php_deinstall_command>
+    nordvpn_routing_deinstall();
+  </custom_php_deinstall_command>
+
+  <custom_php_resync_config_command>
+    nvpn_apply_rules();
+  </custom_php_resync_config_command>
+
+  <tabs>
+    <tab>
+      <text>Tunnels</text>
+      <url>/nordvpn/tunnels.php</url>
+      <active/>
+    </tab>
+    <tab>
+      <text>Rules</text>
+      <url>/nordvpn/rules.php</url>
+    </tab>
+    <tab>
+      <text>Kill Switch</text>
+      <url>/nordvpn/killswitch.php</url>
+    </tab>
+    <tab>
+      <text>DNS</text>
+      <url>/nordvpn/dns.php</url>
+    </tab>
+    <tab>
+      <text>Status</text>
+      <url>/nordvpn/status.php</url>
+    </tab>
+  </tabs>
+</packagegui>

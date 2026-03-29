@@ -1,0 +1,11 @@
+NordVPN Selective Routing for pfSense allows per-device and per-VLAN
+policy-based routing through NordVPN, with support for multiple
+simultaneous tunnels managed entirely through the pfSense GUI.
+
+Features:
+- Route specific VLANs, subnets, or individual IPs through NordVPN
+- Multiple simultaneous tunnels (different servers per device/VLAN)
+- Easy server switching per tunnel without disrupting other tunnels
+- Kill switch to block non-VPN traffic if a tunnel drops
+- DNS leak prevention with configurable DNS modes
+- Fully integrated into the pfSense VPN menu
