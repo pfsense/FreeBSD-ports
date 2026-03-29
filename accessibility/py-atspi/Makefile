@@ -1,5 +1,5 @@
 PORTNAME=	atspi
-DISTVERSION=	2.58.1
+DISTVERSION=	2.58.2
 CATEGORIES=	accessibility x11-toolkits python
 MASTER_SITES=	GNOME
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -18,7 +18,6 @@ USES=		gnome localbase meson pkgconfig python tar:xz
 USE_GNOME=	pygobject3
 USE_PYTHON=	flavors py3kplist
 BINARY_ALIAS=	python3=${PYTHON_CMD}
-
-PORTSCOUT=	limitw:1,even
+NO_ARCH=	yes
 
 .include <bsd.port.mk>
