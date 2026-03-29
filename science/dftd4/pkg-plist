@@ -3,7 +3,6 @@ include/dftd4.h
 include/dftd4/dftd4.mod
 include/dftd4/dftd4_api.mod
 include/dftd4/dftd4_blas.mod
-include/dftd4/dftd4_charge.mod
 include/dftd4/dftd4_cutoff.mod
 include/dftd4/dftd4_damping.mod
 include/dftd4/dftd4_damping_atm.mod
@@ -38,6 +37,6 @@ lib/cmake/dftd4/dftd4-targets-%%CMAKE_BUILD_TYPE%%.cmake
 lib/cmake/dftd4/dftd4-targets.cmake
 lib/cmake/dftd4/dftd4-utils.cmake
 lib/libdftd4.so
-lib/libdftd4.so.3
-lib/libdftd4.so.3.7.0
+lib/libdftd4.so.4
+lib/libdftd4.so.4.1.0
 libdata/pkgconfig/dftd4.pc
