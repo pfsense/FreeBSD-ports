@@ -1,3 +1,33 @@
+  <vuln vid="09e36f7e-2b5b-11f1-852e-5404a68ad561">
+    <topic>traefik -- Multiple vulnerabilities</topic>
+    <affects>
+<package>
+<name>traefik</name>
+<range><lt>3.6.12</lt></range>
+</package>
+    </affects>
+    <description>
+	<body xmlns="http://www.w3.org/1999/xhtml">
+	<p>The traefik project releases a new version addressing multiple CVEs:</p>
+	<blockquote cite="https://github.com/traefik/traefik/releases/tag/v3.6.12">
+	  <ul>
+	    <li>CVE-2026-33433 (BasicAuth/DigestAuth Identity Spoofing via Non-Canonical headerField)</li>
+	    <li>CVE-2026-33186 (authorization bypass via missing leading slash in :path)</li>
+	  </ul>
+	</blockquote>
+	</body>
+    </description>
+    <references>
+      <cvename>CVE-2026-33433</cvename>
+      <cvename>CVE-2026-33186</cvename>
+      <url>https://github.com/traefik/traefik/releases/tag/v3.6.12</url>
+    </references>
+    <dates>
+      <discovery>2026-03-26</discovery>
+      <entry>2026-03-29</entry>
+    </dates>
+  </vuln>
+
   <vuln vid="095e9db2-2b5b-11f1-9839-8447094a420f">
     <topic>Roundcube -- SVG Attribute Bypass</topic>
     <affects>
