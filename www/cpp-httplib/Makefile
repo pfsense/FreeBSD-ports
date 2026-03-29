@@ -1,6 +1,6 @@
 PORTNAME=	cpp-httplib
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.37.2
+DISTVERSION=	0.40.0
 CATEGORIES=	www devel
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -50,5 +50,11 @@ do-test:
 # tests as of 0.35.0:
 # [==========] 611 tests from 132 test suites ran. (192695 ms total)
 # [  PASSED  ] 611 tests.
+
+# tests as of 0.40.0
+#[  FAILED  ] 1 test, listed below:
+#[  FAILED  ] WebSocketIntegrationTest.SocketSettings
+#
+# 1 FAILED TEST
 
 .include <bsd.port.mk>
