@@ -1,6 +1,6 @@
 PORTNAME=	neovim
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.11.7
+DISTVERSION=	0.12.0
 CATEGORIES=	editors
 
 MAINTAINER=	adamw@FreeBSD.org
@@ -20,7 +20,8 @@ LIB_DEPENDS=	libluv.so:devel/luv \
 		libvterm.so:devel/libvterm
 RUN_DEPENDS=	${LUA_REFMODLIBDIR}/bit.so:devel/lua-bitop@${LUA_FLAVOR} \
 		${LUA_REFMODLIBDIR}/lpeg.so:devel/lua-lpeg@${LUA_FLAVOR}
-TEST_DEPENDS=	gmake:devel/gmake
+TEST_DEPENDS=	gmake:devel/gmake \
+		git:devel/git@tiny
 
 USES=		cmake cpe gettext iconv lua:51,build luajit \
 		pathfix pkgconfig
@@ -76,4 +77,17 @@ post-stage:
 do-test:
 	${GMAKE} -C ${WRKSRC} test
 
+versions:
+	for r in \
+		tree-sitter/tree-sitter-c \
+		tree-sitter-grammars/tree-sitter-lua \
+		tree-sitter-grammars/tree-sitter-markdown \
+		tree-sitter-grammars/tree-sitter-query \
+		tree-sitter-grammars/tree-sitter-vim \
+		neovim/tree-sitter-vimdoc; \
+	do \
+		printf '%-20s %s\n' "$${r##*/}" \
+		"$$(curl -fsSL https://api.github.com/repos/$$r/releases/latest \
+		| perl -MJSON::PP -e 'use v5.38; say decode_json(do {local $$/; <>})->{tag_name}')"; \
+	done
 .include <bsd.port.mk>

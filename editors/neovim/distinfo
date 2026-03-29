@@ -1,6 +1,6 @@
-TIMESTAMP = 1774726980
-SHA256 (neovim-neovim-v0.11.7_GH0.tar.gz) = b550b0e4cd2a0f9558bc6b278d27e47b528f7684efa2a46def438fcd64ee9822
-SIZE (neovim-neovim-v0.11.7_GH0.tar.gz) = 13018335
+TIMESTAMP = 1774820937
+SHA256 (neovim-neovim-v0.12.0_GH0.tar.gz) = 76b4875fc1a4805a807a9fa53ff0c8fb081620137a40fb879b32436e375aeb65
+SIZE (neovim-neovim-v0.12.0_GH0.tar.gz) = 13648075
 SHA256 (tree-sitter-tree-sitter-c-v0.24.1_GH0.tar.gz) = 25dd4bb3dec770769a407e0fc803f424ce02c494a56ce95fedc525316dcf9b48
 SIZE (tree-sitter-tree-sitter-c-v0.24.1_GH0.tar.gz) = 379147
 SHA256 (tree-sitter-grammars-tree-sitter-lua-v0.5.0_GH0.tar.gz) = cf01b93f4b61b96a6d27942cf28eeda4cbce7d503c3bef773a8930b3d778a2d9
