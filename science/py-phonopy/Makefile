@@ -1,5 +1,5 @@
 PORTNAME=	phonopy
-DISTVERSION=	3.0.1
+DISTVERSION=	3.4.0
 CATEGORIES=	science python
 MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -41,5 +41,12 @@ post-install:
 #          6 skipped
 #         53 warnings
 #        272 errors
+
+# tests as of 3.4.0:
+# Results (59.91s):
+#        380 failed
+#       1997 passed
+#         22 skipped
+#         52 warnings
 
 .include <bsd.port.mk>
