@@ -1,4 +1,4 @@
---- content/app/content_main_runner_impl.cc.orig	2026-03-15 18:32:51 UTC
+--- content/app/content_main_runner_impl.cc.orig	2026-03-29 13:33:02 UTC
 +++ content/app/content_main_runner_impl.cc
 @@ -152,18 +152,21 @@
  #include "content/browser/posix_file_descriptor_info_impl.h"
@@ -118,13 +118,7 @@
    // In sandboxed processes and zygotes, certain resource should be pre-warmed
    // as they cannot be initialized under a sandbox. In addition, loading these
    // resources in zygotes (including the unsandboxed zygote) allows them to be
-@@ -1020,10 +1039,22 @@ int ContentMainRunnerImpl::Initialize(ContentMainParam
-       process_type == switches::kZygoteProcess) {
-     PreSandboxInit();
-   }
-+#elif BUILDFLAG(IS_BSD)
-+  PreSandboxInit();
- #elif BUILDFLAG(IS_IOS) && !BUILDFLAG(IS_IOS_TVOS)
+@@ -1024,6 +1043,16 @@ int ContentMainRunnerImpl::Initialize(ContentMainParam
    ChildProcessEnterSandbox();
  #endif
  
@@ -141,7 +135,7 @@
    delegate_->SandboxInitialized(process_type);
  
  #if BUILDFLAG(USE_ZYGOTE)
-@@ -1140,6 +1171,11 @@ NO_STACK_PROTECTOR int ContentMainRunnerImpl::Run() {
+@@ -1140,6 +1169,11 @@ NO_STACK_PROTECTOR int ContentMainRunnerImpl::Run() {
    content_main_params_.reset();
  
    RegisterMainThreadFactories();

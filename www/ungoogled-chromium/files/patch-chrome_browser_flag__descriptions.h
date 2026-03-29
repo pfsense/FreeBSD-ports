@@ -1,6 +1,6 @@
---- chrome/browser/flag_descriptions.h.orig	2026-03-15 18:32:51 UTC
+--- chrome/browser/flag_descriptions.h.orig	2026-03-29 13:33:02 UTC
 +++ chrome/browser/flag_descriptions.h
-@@ -8310,6 +8310,18 @@ inline constexpr char kEnableOktaSSOName[] =
+@@ -8315,6 +8315,18 @@ inline constexpr char kEnableOktaSSOName[] =
  inline constexpr char kEnableOktaSSODescription[] =
      "Enables native support for Okta SSO on managed MacOS devices.";
  
