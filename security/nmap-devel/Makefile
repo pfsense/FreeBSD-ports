@@ -39,8 +39,7 @@ CONFIGURE_ARGS=--without-localdirs \
 		--without-ndiff \
 		--with-libpcre=${LOCALBASE} \
 		--with-liblua=included \
-		--without-nmap-update \
-		--with-libpcre=${LOCALBASE}
+		--without-nmap-update
 
 MAKE_JOBS_UNSAFE=	yes
 
