@@ -1,7 +1,7 @@
 PORTNAME=	ollama
 DISTVERSIONPREFIX=	v
 DISTVERSION=	0.18.3
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	misc # machine-learning
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -21,6 +21,7 @@ BUILD_DEPENDS=	bash:shells/bash \
 		patchelf:sysutils/patchelf
 
 USES=		cmake:indirect go:1.24+,modules localbase pkgconfig
+USE_RC_SUBR=	ollama
 
 GO_MODULE=	github.com/yurivict/${PORTNAME} # fork with FreeBSD patches
 GO_TARGET=	.
@@ -71,6 +72,8 @@ MASTER_SITES+=	https://github.com/ml-explore/mlx/archive/refs/tags/:mlxsrc \
 		https://github.com/ml-explore/mlx-c/archive/refs/tags/:mlxcsrc \
 		https://github.com/nlohmann/json/releases/download/v${JSON_VERSION}/:jsonsrc
 .endif
+
+CONFLICTS_BUILD=	ggml
 
 post-patch:
 	# change import path to the fork
