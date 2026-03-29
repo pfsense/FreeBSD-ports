@@ -32,7 +32,7 @@ lib/girepository-1.0/Vte-2.%%API_VER%%.typelib
 %%GTK4%%lib/libvte-2.%%API_VER%%-gtk4.so.0
 lib/libvte-2.%%API_VER%%.so
 lib/libvte-2.%%API_VER%%.so.0
-lib/libvte-2.%%API_VER%%.so.0.8000.4
+lib/libvte-2.%%API_VER%%.so.0.8000.5
 %%GTK4%%libdata/pkgconfig/vte-2.%%API_VER%%-gtk4.pc
 libdata/pkgconfig/vte-2.%%API_VER%%.pc
 libexec/vte-urlencode-cwd
