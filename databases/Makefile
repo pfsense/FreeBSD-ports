@@ -1,6 +1,7 @@
     COMMENT = Databases and related software
 
     SUBDIR += R-cran-DBI
+    SUBDIR += R-cran-RMariaDB
     SUBDIR += R-cran-RMySQL
     SUBDIR += R-cran-RPostgreSQL
     SUBDIR += R-cran-RSQLite
