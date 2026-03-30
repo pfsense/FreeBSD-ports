@@ -1,6 +1,6 @@
---- chrome/browser/profiles/profile_impl.cc.orig	2026-03-24 16:59:08 UTC
+--- chrome/browser/profiles/profile_impl.cc.orig	2026-03-30 11:37:05 UTC
 +++ chrome/browser/profiles/profile_impl.cc
-@@ -266,6 +266,10 @@
+@@ -265,6 +265,10 @@
  #include "chrome/browser/themes/theme_service_factory.h"
  #endif  // !BUILDFLAG(IS_ANDROID)
  
@@ -11,7 +11,7 @@
  using bookmarks::BookmarkModel;
  using content::BrowserThread;
  using content::DownloadManagerDelegate;
-@@ -603,7 +607,7 @@ void ProfileImpl::LoadPrefsForNormalStartup(bool async
+@@ -602,7 +606,7 @@ void ProfileImpl::LoadPrefsForNormalStartup(bool async
    policy_provider = GetUserCloudPolicyManagerAsh();
  #else  // !BUILDFLAG(IS_CHROMEOS)
    {
@@ -20,7 +20,7 @@
      ProfileManager* profile_manager = g_browser_process->profile_manager();
      ProfileAttributesEntry* entry =
          profile_manager->GetProfileAttributesStorage()
-@@ -874,7 +878,17 @@ void ProfileImpl::DoFinalInit(CreateMode create_mode) 
+@@ -868,7 +872,17 @@ void ProfileImpl::DoFinalInit(CreateMode create_mode) 
  }
  
  base::FilePath ProfileImpl::last_selected_directory() {

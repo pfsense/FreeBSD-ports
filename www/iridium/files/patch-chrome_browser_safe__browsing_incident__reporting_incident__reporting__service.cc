@@ -1,6 +1,6 @@
---- chrome/browser/safe_browsing/incident_reporting/incident_reporting_service.cc.orig	2025-12-10 15:04:57 UTC
+--- chrome/browser/safe_browsing/incident_reporting/incident_reporting_service.cc.orig	2026-03-30 11:37:05 UTC
 +++ chrome/browser/safe_browsing/incident_reporting/incident_reporting_service.cc
-@@ -695,7 +695,7 @@ void IncidentReportingService::OnEnvironmentDataCollec
+@@ -694,7 +694,7 @@ void IncidentReportingService::OnEnvironmentDataCollec
  
  // Process::Current().CreationTime() is missing on some platforms.
  #if BUILDFLAG(IS_MAC) || BUILDFLAG(IS_WIN) || BUILDFLAG(IS_LINUX) || \

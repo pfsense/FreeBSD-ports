@@ -1,6 +1,6 @@
---- chrome/browser/ui/startup/bad_flags_prompt.cc.orig	2025-12-10 15:04:57 UTC
+--- chrome/browser/ui/startup/bad_flags_prompt.cc.orig	2026-03-30 11:37:05 UTC
 +++ chrome/browser/ui/startup/bad_flags_prompt.cc
-@@ -111,7 +111,7 @@ const char* const kBadFlags[] = {
+@@ -110,7 +110,7 @@ const char* const kBadFlags[] = {
      extensions::switches::kExtensionsOnExtensionURLs,
  #endif
  

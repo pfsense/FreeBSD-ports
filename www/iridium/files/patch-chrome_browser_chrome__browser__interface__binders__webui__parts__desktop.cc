@@ -1,4 +1,4 @@
---- chrome/browser/chrome_browser_interface_binders_webui_parts_desktop.cc.orig	2026-03-24 16:59:08 UTC
+--- chrome/browser/chrome_browser_interface_binders_webui_parts_desktop.cc.orig	2026-03-30 11:37:05 UTC
 +++ chrome/browser/chrome_browser_interface_binders_webui_parts_desktop.cc
 @@ -128,7 +128,7 @@
  #include "ui/webui/resources/js/browser_command/browser_command.mojom.h"
@@ -27,7 +27,7 @@
        WhatsNewUI,
  #endif  // BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX)
        NewTabPageUI>(map);
-@@ -547,7 +547,7 @@ void PopulateChromeWebUIFrameBindersPartsDesktop(
+@@ -545,7 +545,7 @@ void PopulateChromeWebUIFrameBindersPartsDesktop(
          OmniboxPopupUI>(map);
    }
  
@@ -36,7 +36,7 @@
    RegisterWebUIControllerInterfaceBinder<
        app_management::mojom::PageHandlerFactory, WebAppSettingsUI>(map);
  
-@@ -581,7 +581,7 @@ void PopulateChromeWebUIFrameBindersPartsDesktop(
+@@ -579,7 +579,7 @@ void PopulateChromeWebUIFrameBindersPartsDesktop(
          ContextualTasksUI>(map);
    }
  

@@ -1,4 +1,4 @@
---- chrome/browser/metrics/chrome_metrics_service_client.cc.orig	2026-03-24 16:59:08 UTC
+--- chrome/browser/metrics/chrome_metrics_service_client.cc.orig	2026-03-30 11:37:05 UTC
 +++ chrome/browser/metrics/chrome_metrics_service_client.cc
 @@ -208,11 +208,11 @@
  #include "chrome/browser/metrics/google_update_metrics_provider_mac.h"
@@ -68,7 +68,7 @@
    metrics_service_->RegisterMetricsProvider(
        std::make_unique<metrics::MotherboardMetricsProvider>());
  #endif
-@@ -909,7 +909,7 @@ void ChromeMetricsServiceClient::RegisterMetricsServic
+@@ -902,7 +902,7 @@ void ChromeMetricsServiceClient::RegisterMetricsServic
        std::make_unique<GoogleUpdateMetricsProviderMac>());
  #endif
  
@@ -77,7 +77,7 @@
    metrics_service_->RegisterMetricsProvider(
        std::make_unique<DesktopPlatformFeaturesMetricsProvider>());
  #endif  // BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX)
-@@ -1008,7 +1008,7 @@ void ChromeMetricsServiceClient::RegisterMetricsServic
+@@ -1001,7 +1001,7 @@ void ChromeMetricsServiceClient::RegisterMetricsServic
        std::make_unique<HttpsEngagementMetricsProvider>());
  
  #if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX) || \
@@ -86,7 +86,7 @@
    metrics_service_->RegisterMetricsProvider(
        std::make_unique<TabMetricsProvider>(
            g_browser_process->profile_manager()));
-@@ -1020,7 +1020,7 @@ void ChromeMetricsServiceClient::RegisterMetricsServic
+@@ -1013,7 +1013,7 @@ void ChromeMetricsServiceClient::RegisterMetricsServic
        std::make_unique<PowerMetricsProvider>());
  #endif
  
@@ -95,7 +95,7 @@
    metrics_service_->RegisterMetricsProvider(
        metrics::CreateDesktopSessionMetricsProvider());
  #endif  // BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || (BUILDFLAG(IS_LINUX)
-@@ -1226,7 +1226,7 @@ bool ChromeMetricsServiceClient::RegisterForProfileEve
+@@ -1219,7 +1219,7 @@ bool ChromeMetricsServiceClient::RegisterForProfileEve
    }
  #endif
  
@@ -104,7 +104,7 @@
    // This creates the DesktopProfileSessionDurationsServices if it didn't exist
    // already.
    metrics::DesktopProfileSessionDurationsServiceFactory::GetForBrowserContext(
-@@ -1577,7 +1577,7 @@ void ChromeMetricsServiceClient::CreateStructuredMetri
+@@ -1570,7 +1570,7 @@ void ChromeMetricsServiceClient::CreateStructuredMetri
    recorder =
        std::make_unique<metrics::structured::AshStructuredMetricsRecorder>(
            cros_system_profile_provider_.get());

@@ -1,6 +1,6 @@
---- content/child/BUILD.gn.orig	2026-03-24 16:59:08 UTC
+--- content/child/BUILD.gn.orig	2026-03-30 11:37:05 UTC
 +++ content/child/BUILD.gn
-@@ -138,6 +138,13 @@ target(link_target_type, "child") {
+@@ -139,6 +139,13 @@ target(link_target_type, "child") {
      ]
    }
  

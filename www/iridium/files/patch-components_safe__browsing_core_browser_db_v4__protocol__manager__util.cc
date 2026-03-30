@@ -1,6 +1,6 @@
---- components/safe_browsing/core/browser/db/v4_protocol_manager_util.cc.orig	2026-01-16 14:21:21 UTC
+--- components/safe_browsing/core/browser/db/v4_protocol_manager_util.cc.orig	2026-03-30 11:37:05 UTC
 +++ components/safe_browsing/core/browser/db/v4_protocol_manager_util.cc
-@@ -112,7 +112,7 @@ std::ostream& operator<<(std::ostream& os, const ListI
+@@ -108,7 +108,7 @@ std::ostream& operator<<(std::ostream& os, const ListI
  PlatformType GetCurrentPlatformType() {
  #if BUILDFLAG(IS_WIN)
    return WINDOWS_PLATFORM;
