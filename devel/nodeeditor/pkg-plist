@@ -17,6 +17,7 @@ include/QtNodes/NodeGeometry
 include/QtNodes/NodeState
 include/QtNodes/NodeStyle
 include/QtNodes/StyleCollection
+include/QtNodes/UndoCommands
 include/QtNodes/internal/AbstractConnectionPainter.hpp
 include/QtNodes/internal/AbstractGraphModel.hpp
 include/QtNodes/internal/AbstractNodeGeometry.hpp

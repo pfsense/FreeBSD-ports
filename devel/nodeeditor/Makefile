@@ -1,5 +1,5 @@
 PORTNAME=	nodeeditor
-DISTVERSION=	3.0.12
+DISTVERSION=	3.0.16
 CATEGORIES=	devel
 
 MAINTAINER=	freebsd@sysctl.cz
