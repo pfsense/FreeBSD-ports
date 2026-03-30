@@ -4,7 +4,8 @@ CATEGORIES=	audio devel
 MASTER_SITES=	https://github.com/grame-cncm/faust/releases/download/${DISTVERSION}/
 
 PATCH_SITES=	https://github.com/${GH_ACCOUNT}/${GH_PROJECT}/commit/
-PATCHFILES=	e4e9e51a1a12ef0806fc7c8439fa817a98ec57ce.patch:-p1 # https://github.com/grame-cncm/faust/pull/1170: Fix compilation flags for generated projects: use c++17 instead of c++14
+PATCHFILES+=	e4e9e51a1a12ef0806fc7c8439fa817a98ec57ce.patch:-p1 # https://github.com/grame-cncm/faust/pull/1170: Fix compilation flags for generated projects: use c++17 instead of c++14
+PATCHFILES+=	cb26e3a4afba8e766611046d5be3075016fe3f1c.patch:-p1 # https://github.com/grame-cncm/faust/pull/1232: Fix build with LLVM 22
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Functional programming language for realtime audio signal processing
