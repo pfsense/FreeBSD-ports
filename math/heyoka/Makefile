@@ -1,18 +1,15 @@
 PORTNAME=	heyoka
 DISTVERSIONPREFIX=	v
-DISTVERSION=	6.0.0
-PORTREVISION=	7
+DISTVERSION=	7.10.0
 CATEGORIES=	math
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	C++ library for ODE integration via Taylor's method and LLVM
-WWW=		https://bluescarni.github.io/heyoka/
+WWW=		https://bluescarni.github.io/heyoka/ \
+		https://github.com/bluescarni/heyoka
 
 LICENSE=	MPL20
 LICENSE_FILE=	${WRKSRC}/COPYING
-
-BROKEN=		Fails to build with fmt 12+, The supported fmt versions are in the range [9, 11], but version 12 was found instead.
-#BROKEN_FreeBSD_13=	compilation fails: no member named 'transform' in namespace 'std::ranges'; did you mean 'llvm::transform' (std::ranges::transform isn't present)
 
 LIB_DEPENDS=	libboost_serialization.so:devel/boost-libs \
 		libfmt.so:devel/libfmt \
@@ -20,24 +17,21 @@ LIB_DEPENDS=	libboost_serialization.so:devel/boost-libs \
 		libmp++.so:math/mppp \
 		libmpc.so:math/mpc \
 		libmpfr.so:math/mpfr \
+		libsqlite3.so:databases/sqlite3 \
 		libtbb.so:devel/onetbb \
 		libsleef.so:math/sleef \
 		libspdlog.so:devel/spdlog
 TEST_DEPENDS=	xtensor>0:math/xtensor \
 		xtensor-blas>0:math/xtensor-blas
 
-USES=		cmake:testing compiler:c++20-lang llvm:min=16,build,run
+USES=		cmake:testing compiler:c++20-lang llvm:min=18,build,run ssl
 USE_LDCONFIG=	yes
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	bluescarni
 
 CMAKE_ON=		HEYOKA_WITH_MPPP HEYOKA_WITH_SLEEF
-CMAKE_TESTING_ON=	HEYOKA_BUILD_TESTS # 1 test fails, see https://github.com/bluescarni/heyoka/issues/338
-
-# 2 tests fail:
-# * https://github.com/bluescarni/heyoka/issues/429
-# * https://github.com/bluescarni/heyoka/issues/430
+CMAKE_TESTING_ON=	HEYOKA_BUILD_TESTS
 
 .include <bsd.port.pre.mk>
 
@@ -51,5 +45,7 @@ LLVM_VERSION_MINOR=     0
 .endif
 
 CMAKE_ARGS+=		-DFREEBSD_LLVM_VERSION=${LLVM_VERSION}.${LLVM_VERSION_MINOR}
+
+# tests as of 7.10.0: 100% tests passed, 0 tests failed out of 162
 
 .include <bsd.port.post.mk>
