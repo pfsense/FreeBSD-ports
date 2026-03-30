@@ -20,7 +20,7 @@
 # ollama_context_length (int): Context length for ollama (OLLAMA_CONTEXT_LENGTH)
 #                          Default: 65536
 # ollama_use_vulkan (int): Use Vulkan (OLLAMA_VULKAN)
-#                          Default: 0
+#                          Default: 1, 0 to disable
 
 . /etc/rc.subr
 
@@ -35,7 +35,7 @@ load_rc_config $name
 : ${ollama_log:="/var/log/ollama-${ollama_user}.log"}
 : ${ollama_pidfile:="/var/run/${name}-${ollama_user}.pid"}
 : ${ollama_context_length:="65536"}
-: ${ollama_use_vulkan:="0"}
+: ${ollama_use_vulkan:="1"}
 
 run_command="%%PREFIX%%/bin/ollama"
 procname="${run_command}"

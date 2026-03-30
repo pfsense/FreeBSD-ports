@@ -1,6 +1,7 @@
 PORTNAME=	ollama
 DISTVERSIONPREFIX=	v
 DISTVERSION=	0.19.0
+PORTREVISION=	1
 CATEGORIES=	misc # machine-learning
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -39,6 +40,7 @@ OPTIONS_DEFAULT=	CPU VULKAN MLX
 
 CPU_DESC=		Build CPU backend shared libraries for various SIMD instruction sets
 CPU_PLIST_FILES=	lib/ollama/libggml-base.so \
+			lib/ollama/libggml-base.so.0 \
 			lib/ollama/libggml-cpu-alderlake.so \
 			lib/ollama/libggml-cpu-haswell.so \
 			lib/ollama/libggml-cpu-icelake.so \
@@ -51,7 +53,7 @@ VULKAN_DESC=		Build Vulkan GPU backend shared library
 VULKAN_BUILD_DEPENDS=	glslc:graphics/shaderc \
 			${LOCALBASE}/include/vulkan/vulkan.h:graphics/vulkan-headers
 VULKAN_LIB_DEPENDS=	libvulkan.so:graphics/vulkan-loader
-VULKAN_PLIST_FILES=	lib/ollama/libggml-vulkan.so
+VULKAN_PLIST_FILES=	lib/ollama/vulkan/libggml-vulkan.so
 
 MLX_DESC=		Build MLX backend for image generation (CPU)
 MLX_BUILD_DEPENDS=	${LOCALBASE}/lib/cmake/fmt/fmt-config.cmake:devel/libfmt
@@ -139,14 +141,17 @@ post-install-CPU-on:
 	@${MKDIR} ${STAGEDIR}${PREFIX}/lib/ollama
 	${INSTALL_LIB} ${WRKSRC}/build/lib/ollama/libggml-base.so \
 		${STAGEDIR}${PREFIX}/lib/ollama/
+	# Create the SONAME symlink so that libggml-vulkan.so and libggml-cpu-*.so
+	# can resolve their NEEDED libggml-base.so.0 dependency via dlopen
+	${LN} -sf libggml-base.so ${STAGEDIR}${PREFIX}/lib/ollama/libggml-base.so.0
 	@for f in ${WRKSRC}/build/lib/ollama/libggml-cpu*.so; do \
 		${INSTALL_LIB} $$f ${STAGEDIR}${PREFIX}/lib/ollama/; \
 	done
 
 post-install-VULKAN-on:
-	@${MKDIR} ${STAGEDIR}${PREFIX}/lib/ollama
+	@${MKDIR} ${STAGEDIR}${PREFIX}/lib/ollama/vulkan
 	${INSTALL_LIB} ${WRKSRC}/build/lib/ollama/libggml-vulkan.so \
-		${STAGEDIR}${PREFIX}/lib/ollama/
+		${STAGEDIR}${PREFIX}/lib/ollama/vulkan/
 
 post-install-MLX-on:
 	@${MKDIR} ${STAGEDIR}${PREFIX}/lib/ollama
