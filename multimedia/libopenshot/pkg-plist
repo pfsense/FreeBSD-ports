@@ -107,7 +107,7 @@ include/libopenshot/sort_filter/Hungarian.h
 include/libopenshot/sort_filter/KalmanTracker.h
 lib/libopenshot.so
 lib/libopenshot.so.%%VERSION%%
-lib/libopenshot.so.28
+lib/libopenshot.so.29
 %%PYTHON_SITELIBDIR%%/_openshot.so
 %%PYTHON_SITELIBDIR%%/openshot.py
 %%RUBY%%%%RUBY_VENDORARCHLIBDIR%%/openshot.so

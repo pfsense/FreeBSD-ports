@@ -1,6 +1,6 @@
---- src/FFmpegReader.cpp.orig	2025-12-16 05:34:48 UTC
+--- src/FFmpegReader.cpp.orig	2026-03-20 19:34:28 UTC
 +++ src/FFmpegReader.cpp
-@@ -137,7 +137,7 @@ static enum AVPixelFormat get_hw_dec_format(AVCodecCon
+@@ -171,7 +171,7 @@ static enum AVPixelFormat get_hw_dec_format(AVCodecCon
  
  	for (p = pix_fmts; *p != AV_PIX_FMT_NONE; p++) {
  		switch (*p) {
@@ -8,8 +8,8 @@
 +#if defined(__unix__)
  			// Linux pix formats
  			case AV_PIX_FMT_VAAPI:
- 				hw_de_av_pix_fmt_global = AV_PIX_FMT_VAAPI;
-@@ -307,7 +307,7 @@ void FFmpegReader::Open() {
+ 				if (selected == 1) {
+@@ -358,7 +358,7 @@ void FFmpegReader::Open() {
  					pCodecCtx->get_format = get_hw_dec_format;
  
  					if (adapter_num < 3 && adapter_num >=0) {
@@ -18,7 +18,7 @@
  						snprintf(adapter,sizeof(adapter),"/dev/dri/renderD%d", adapter_num+128);
  						adapter_ptr = adapter;
  						i_decoder_hw = openshot::Settings::Instance()->HARDWARE_DECODER;
-@@ -370,12 +370,14 @@ void FFmpegReader::Open() {
+@@ -421,12 +421,14 @@ void FFmpegReader::Open() {
  					}
  
  					// Check if it is there and writable
@@ -34,7 +34,7 @@
  #endif
  						ZmqLogger::Instance()->AppendDebugMethod("Decode Device present using device");
  					}
-@@ -566,8 +568,13 @@ void FFmpegReader::Open() {
+@@ -682,8 +684,13 @@ void FFmpegReader::Open() {
  			AVStream* st = pFormatCtx->streams[i];
  			if (st->codecpar->codec_type == AVMEDIA_TYPE_VIDEO) {
  				// Only inspect the first video stream
