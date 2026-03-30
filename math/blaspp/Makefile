@@ -1,12 +1,11 @@
 PORTNAME=	blaspp
-DISTVERSION=	2022.05.00
-PORTREVISION=	4
+DISTVERSION=	2025.05.28
 CATEGORIES=	math
-MASTER_SITES=	https://bitbucket.org/icl/blaspp/downloads/
+MASTER_SITES=	https://github.com/icl-utk-edu/blaspp/releases/download/v${DISTVERSION}/
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	C++ API for the Basic Linear Algebra Subroutines
-WWW=		https://bitbucket.org/icl/blaspp/src/master/
+WWW=		https://github.com/icl-utk-edu/blaspp
 
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE
