@@ -62,6 +62,10 @@ SIMD_CMAKE_BOOL=	SIMD_ENABLED
 SIMD_CFLAGS_i386=	-msse2
 SIMD_CFLAGS=		${SIMD_CFLAGS_${ARCH}}
 
+post-patch:
+	@${REINPLACE_CMD} -e '/find_package/s|Qt5 Qt6|Qt6|' \
+		${WRKSRC}/cmake/FindDependencies.cmake
+
 post-build-DOCS-on:
 	${SETENVI} ${WRK_ENV} ${MAKE_ENV} ${GMAKE} ${_MAKE_JOBS} -C ${WRKSRC}/doc html
 
