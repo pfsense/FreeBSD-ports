@@ -1,0 +1,7 @@
+TIMESTAMP = 1774805985
+SHA256 (go/sysutils_sylve/sylve-v0.2.2/sylve-web-assets.tar.gz) = d8d4dc99723d9352f1af6330ac8a8eb1a8cfddbd91d8e8c0d4b11663a3be5278
+SIZE (go/sysutils_sylve/sylve-v0.2.2/sylve-web-assets.tar.gz) = 2929354
+SHA256 (go/sysutils_sylve/sylve-v0.2.2/v0.2.2.mod) = 5dfaadfaf24023652042afbc41d496ea4d4fcf4972c32b3f760c9f1f291f7587
+SIZE (go/sysutils_sylve/sylve-v0.2.2/v0.2.2.mod) = 5823
+SHA256 (go/sysutils_sylve/sylve-v0.2.2/v0.2.2.zip) = c64813343c99b41b60d68576d9559a934303d1709a49296647a5d746a1f96b40
+SIZE (go/sysutils_sylve/sylve-v0.2.2/v0.2.2.zip) = 34832987
