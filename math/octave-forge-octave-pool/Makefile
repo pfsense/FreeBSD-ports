@@ -1,6 +1,5 @@
 PORTNAME=	octave-forge-octave-pool
-DISTVERSION=	1.2.3
-PORTREVISION=	3
+DISTVERSION=	1.2.4
 CATEGORIES=	math
 
 MAINTAINER=	stephen@FreeBSD.org
