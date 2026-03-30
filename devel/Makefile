@@ -8556,6 +8556,7 @@
     SUBDIR += terminality
     SUBDIR += terraform-ls
     SUBDIR += test-drive
+    SUBDIR += testsweeper
     SUBDIR += tevent
     SUBDIR += tevent016
     SUBDIR += tevent017
