@@ -1,8 +1,7 @@
 PORTNAME=	lapackpp
-DISTVERSION=	2022.05.00
-PORTREVISION=	1
+DISTVERSION=	2025.05.28
 CATEGORIES=	math
-MASTER_SITES=	https://bitbucket.org/icl/${PORTNAME}/downloads/
+MASTER_SITES=	https://github.com/icl-utk-edu/lapackpp/releases/download/v${DISTVERSION}/
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	C++ API for the Linear Algebra PACKage
@@ -10,8 +9,6 @@ WWW=		https://bitbucket.org/icl/lapackpp/src/master/
 
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE
-
-BROKEN=		congifure fails due to cmake scripts convolution, see https://github.com/icl-utk-edu/lapackpp/issues/56#issuecomment-1902763786
 
 BUILD_DEPENDS=	lapacke>0:math/lapacke
 LIB_DEPENDS=	libblaspp.so:math/blaspp \
