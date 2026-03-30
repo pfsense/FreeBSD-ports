@@ -49,7 +49,7 @@ cp -r \
 # commit and tag
 echo "==> committing version v$VERSION"
 git add * .gitattributes .github .gitignore .golangci.yaml
-git commit * .gitattributes .github .gitignore .golangci.yaml -m "Update to version v$VERSION + freebsd patches"
+git commit . -m "Update to version v$VERSION + freebsd patches"
 echo "==> tagging version v$VERSION"
 git tag -a v$VERSION -m "Release version v$VERSION + freebsd patches"
 
@@ -59,7 +59,7 @@ git push --tags
 
 # make GoLang proxy
 echo "==> submitting the new version $VERSION to GoLang proxy"
-GOPROXY=proxy.golang.org go124 list -m github.com/$GH_ACCOUNT_FORK/ollama@v$VERSION
+GOPROXY=proxy.golang.org $(make -C "$(dirname "$0")/.." -V GO_CMD) list -m github.com/$GH_ACCOUNT_FORK/ollama@v$VERSION
 
 # final message
 echo "success: done updating the $GH_ACCOUNT_FORK/$GH_PROJECT to version $VERSION"
