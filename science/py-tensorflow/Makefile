@@ -107,19 +107,13 @@ post-patch:
 	@${CP} ${DISTDIR}/${DIST_SUBDIR}/${file} ${WRKDIR}/bazel-dist
 .endfor
 
-	# Rename distfiles to match Bazel's expected URL basenames
-	@${CP} ${WRKDIR}/bazel-dist/rules_foreign_cc-0.7.1.tar.gz \
-		${WRKDIR}/bazel-dist/0.7.1.tar.gz
-	@${CP} ${WRKDIR}/bazel-dist/libtinfo5-copyright.txt \
-		${WRKDIR}/bazel-dist/copyright.txt
-
 	# Pre-populate repository cache for files fetched via ctx.download()
 	# (these are not served by --distdir; must be in --repository_cache)
 	@${MKDIR} ${WRKDIR}/bazel-cache/content_addressable/sha256/12cffc7274190ca1693a52ccd8303e719407e707c8557ddfb7eef81f208efaab
 	@${CP} ${DISTDIR}/${DIST_SUBDIR}/libtinfo.so.5 \
 		${WRKDIR}/bazel-cache/content_addressable/sha256/12cffc7274190ca1693a52ccd8303e719407e707c8557ddfb7eef81f208efaab/file
 	@${MKDIR} ${WRKDIR}/bazel-cache/content_addressable/sha256/5e8ee902c8906ddb7779fd36dc9979cb08b51fbebf7c0b1a9aeb78af382af590
-	@${CP} ${DISTDIR}/${DIST_SUBDIR}/libtinfo5-copyright.txt \
+	@${CP} ${DISTDIR}/${DIST_SUBDIR}/copyright.txt \
 		${WRKDIR}/bazel-cache/content_addressable/sha256/5e8ee902c8906ddb7779fd36dc9979cb08b51fbebf7c0b1a9aeb78af382af590/file
 
 	@${CP} ${PATCHDIR}/bazelrc ${WRKDIR}/bazelrc

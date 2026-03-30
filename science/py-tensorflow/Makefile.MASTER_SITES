@@ -8,7 +8,7 @@ rules_swift.1.18.0.tar.gz:swift \
 308b05b2419edb5c8ee0471b67a40403df940149.tar.gz:closure \
 4.3.zip:jvm \
 rules_pkg-0.7.1.tar.gz:pkg \
-rules_foreign_cc-0.7.1.tar.gz:foreign_cc \
+0.7.1.tar.gz:foreign_cc \
 rules_java-7.6.1.tar.gz:rules_java \
 rules_license-0.0.7.tar.gz:rlic \
 bazel_features-v1.25.0.tar.gz:bfeatures \
@@ -70,7 +70,7 @@ clang+llvm-18.1.8-x86_64-linux-gnu-ubuntu-18.04.tar.xz:clang18 \
 x86_64_ubuntu18_gcc8.4-0.2.1.tar.xz:gcc_sysroot \
 cpython-3.11.13+20250808-x86_64-unknown-linux-gnu-install_only.tar.gz:cpython311 \
 libtinfo.so.5:libtinfo \
-libtinfo5-copyright.txt:libtinfo_cp
+copyright.txt:libtinfo_cp
 
 MASTER_SITES+=https://github.com/bazelbuild/platforms/releases/download/0.0.11/:platforms \
 https://github.com/bazelbuild/apple_support/releases/download/1.24.5/:apple \
@@ -82,7 +82,7 @@ https://github.com/bazelbuild/rules_swift/releases/download/1.18.0/:swift \
 https://github.com/bazelbuild/rules_closure/archive/:closure \
 https://github.com/bazelbuild/rules_jvm_external/archive/:jvm \
 https://github.com/bazelbuild/rules_pkg/releases/download/0.7.1/:pkg \
-https://github.com/bazelbuild/rules_foreign_cc/archive/:foreign_cc \
+https://github.com/bazel-contrib/rules_foreign_cc/archive/:foreign_cc \
 https://github.com/bazelbuild/rules_java/releases/download/7.6.1/:rules_java \
 https://github.com/bazelbuild/rules_license/releases/download/0.0.7/:rlic \
 https://github.com/bazel-contrib/bazel_features/releases/download/v1.25.0/:bfeatures \
