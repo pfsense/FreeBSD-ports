@@ -1,5 +1,5 @@
 PORTNAME=	whowatch
-DISTVERSION=	1.8.6.2
+DISTVERSION=	1.8.6.3
 CATEGORIES=	sysutils
 
 MAINTAINER=	jishanalam9128@gmail.com
