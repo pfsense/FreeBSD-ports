@@ -1,7 +1,7 @@
-TIMESTAMP = 1768580837
-SHA256 (astroterm-1.0.10/BSC5) = e471d02eaf4eecb61c12f879a1cb6432ba9d7b68a9a8c5654a1eb42a0c8cc340
-SIZE (astroterm-1.0.10/BSC5) = 291548
-SHA256 (astroterm-1.0.10/ybsc5.gz) = 3dc44b1e90be8fbe5bcc7656032560f51275f985c7e3f783c9028e1838ec7bed
-SIZE (astroterm-1.0.10/ybsc5.gz) = 573921
-SHA256 (astroterm-1.0.10/da-luce-astroterm-v1.0.10_GH0.tar.gz) = 6d9d61b818b01bd951d5340f09486bdc66aa107259acf78dfa8c3f875a36ea1f
-SIZE (astroterm-1.0.10/da-luce-astroterm-v1.0.10_GH0.tar.gz) = 20468120
+TIMESTAMP = 1774877143
+SHA256 (astroterm-1.1.0/BSC5) = e471d02eaf4eecb61c12f879a1cb6432ba9d7b68a9a8c5654a1eb42a0c8cc340
+SIZE (astroterm-1.1.0/BSC5) = 291548
+SHA256 (astroterm-1.1.0/ybsc5.gz) = 3dc44b1e90be8fbe5bcc7656032560f51275f985c7e3f783c9028e1838ec7bed
+SIZE (astroterm-1.1.0/ybsc5.gz) = 573921
+SHA256 (astroterm-1.1.0/da-luce-astroterm-v1.1.0_GH0.tar.gz) = 5a5ba9564afb580fb493498b07b7b8eac8f7cdde3b83b180e62e85e4f7a6d6c5
+SIZE (astroterm-1.1.0/da-luce-astroterm-v1.1.0_GH0.tar.gz) = 20469305
