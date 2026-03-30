@@ -1,5 +1,6 @@
 bin/far2l
 bin/far2ledit
+lib/far2l/Plugins/ImageViewer/plug/ImageViewer.far-plug-wide
 %%AWS%%lib/far2l/Plugins/NetRocks/plug/NetRocks-AWS.broker
 lib/far2l/Plugins/NetRocks/plug/NetRocks-FILE.broker
 lib/far2l/Plugins/NetRocks/plug/NetRocks-FTP.broker
@@ -20,12 +21,15 @@ lib/far2l/Plugins/compare/plug/compare.far-plug-wide
 lib/far2l/Plugins/drawline/plug/drawline.far-plug-wide
 lib/far2l/Plugins/editcase/plug/editcase.far-plug-wide
 lib/far2l/Plugins/editorcomp/plug/editorcomp.far-plug-wide
+lib/far2l/Plugins/edsort/plug/edsort.far-plug-wide
 lib/far2l/Plugins/filecase/plug/filecase.far-plug-wide
 lib/far2l/Plugins/hexitor/plug/hexitor.far-plug-wide
 lib/far2l/Plugins/incsrch/plug/incsrch.far-plug-wide
 lib/far2l/Plugins/inside/plug/inside.far-plug-mb
+lib/far2l/Plugins/memo/plug/memo.far-plug-wide
 lib/far2l/Plugins/multiarc/plug/multiarc.far-plug-mb
 lib/far2l/Plugins/tmppanel/plug/tmppanel.far-plug-wide
+lib/far2l/Plugins/truncate/plug/truncate.far-plug-wide
 lib/far2l/far2l_askpass
 %%WXGTK%%lib/far2l/far2l_gui.so
 lib/far2l/far2l_sudoapp
@@ -48,6 +52,10 @@ share/bash-completion/completions/far2l
 %%DATADIR%%/FarSpa.lng
 %%DATADIR%%/FarUkr.hlf
 %%DATADIR%%/FarUkr.lng
+%%DATADIR%%/Plugins/ImageViewer/plug/ImageViewer_en.hlf
+%%DATADIR%%/Plugins/ImageViewer/plug/ImageViewer_en.lng
+%%DATADIR%%/Plugins/ImageViewer/plug/ImageViewer_ru.hlf
+%%DATADIR%%/Plugins/ImageViewer/plug/ImageViewer_ru.lng
 %%DATADIR%%/Plugins/NetRocks/plug/SHELL/remote.sh
 %%DATADIR%%/Plugins/NetRocks/plug/SHELL/ways.ini
 %%DATADIR%%/Plugins/NetRocks/plug/bel.lng
@@ -137,11 +145,13 @@ share/bash-completion/completions/far2l
 %%DATADIR%%/Plugins/colorer/base/hrc/base/perl-vars.pkg.hrc
 %%DATADIR%%/Plugins/colorer/base/hrc/base/perl.hrc
 %%DATADIR%%/Plugins/colorer/base/hrc/base/python.hrc
+%%DATADIR%%/Plugins/colorer/base/hrc/base/qml.hrc
 %%DATADIR%%/Plugins/colorer/base/hrc/base/ruby.hrc
 %%DATADIR%%/Plugins/colorer/base/hrc/base/ruby.kw-class.ent.hrc
 %%DATADIR%%/Plugins/colorer/base/hrc/base/ruby.kw.ent.hrc
 %%DATADIR%%/Plugins/colorer/base/hrc/base/rust.hrc
 %%DATADIR%%/Plugins/colorer/base/hrc/base/scala.hrc
+%%DATADIR%%/Plugins/colorer/base/hrc/base/swift.hrc
 %%DATADIR%%/Plugins/colorer/base/hrc/base/tcltk.hrc
 %%DATADIR%%/Plugins/colorer/base/hrc/base/vb.net.hrc
 %%DATADIR%%/Plugins/colorer/base/hrc/base/vbasic.hrc
@@ -461,6 +471,7 @@ share/bash-completion/completions/far2l
 %%DATADIR%%/Plugins/colorer/base/hrd/console/contrib/gray_pult.hrd
 %%DATADIR%%/Plugins/colorer/base/hrd/console/contrib/ocean.hrd
 %%DATADIR%%/Plugins/colorer/base/hrd/console/contrib/take4.hrd
+%%DATADIR%%/Plugins/colorer/base/hrd/console/contrib/violet.hrd
 %%DATADIR%%/Plugins/colorer/base/hrd/console/contrib/visual.hrd
 %%DATADIR%%/Plugins/colorer/base/hrd/console/default.hrd
 %%DATADIR%%/Plugins/colorer/base/hrd/console/dnlike.hrd
@@ -511,6 +522,12 @@ share/bash-completion/completions/far2l
 %%DATADIR%%/Plugins/editorcomp/plug/editorcomp_be.lng
 %%DATADIR%%/Plugins/editorcomp/plug/editorcomp_en.lng
 %%DATADIR%%/Plugins/editorcomp/plug/editorcomp_ru.lng
+%%DATADIR%%/Plugins/edsort/plug/edsort_en.hlf
+%%DATADIR%%/Plugins/edsort/plug/edsort_en.lng
+%%DATADIR%%/Plugins/edsort/plug/edsort_pl.hlf
+%%DATADIR%%/Plugins/edsort/plug/edsort_pl.lng
+%%DATADIR%%/Plugins/edsort/plug/edsort_ru.hlf
+%%DATADIR%%/Plugins/edsort/plug/edsort_ru.lng
 %%DATADIR%%/Plugins/filecase/plug/CaseBel.lng
 %%DATADIR%%/Plugins/filecase/plug/CaseEng.hlf
 %%DATADIR%%/Plugins/filecase/plug/CaseEng.lng
@@ -527,10 +544,13 @@ share/bash-completion/completions/far2l
 %%DATADIR%%/Plugins/incsrch/plug/isrcbel.lng
 %%DATADIR%%/Plugins/incsrch/plug/isrceng.lng
 %%DATADIR%%/Plugins/incsrch/plug/isrcrus.lng
+%%DATADIR%%/Plugins/incsrch/plug/key_macros.ini
 %%DATADIR%%/Plugins/inside/plug/bel.lng
 %%DATADIR%%/Plugins/inside/plug/config.ini
 %%DATADIR%%/Plugins/inside/plug/eng.lng
 %%DATADIR%%/Plugins/inside/plug/rus.lng
+%%DATADIR%%/Plugins/memo/plug/memoe.lng
+%%DATADIR%%/Plugins/memo/plug/memor.lng
 %%DATADIR%%/Plugins/multiarc/plug/arcbel.lng
 %%DATADIR%%/Plugins/multiarc/plug/arceng.hlf
 %%DATADIR%%/Plugins/multiarc/plug/arceng.lng
@@ -543,11 +563,27 @@ share/bash-completion/completions/far2l
 %%DATADIR%%/Plugins/tmppanel/plug/TmpEng.lng
 %%DATADIR%%/Plugins/tmppanel/plug/TmpRus.hlf
 %%DATADIR%%/Plugins/tmppanel/plug/TmpRus.lng
+%%DATADIR%%/Plugins/truncate/plug/TruncEng.lng
+%%DATADIR%%/Plugins/truncate/plug/TruncRus.lng
 %%DATADIR%%/closewait.sh
 %%DATADIR%%/far2l-cd.sh
 %%DATADIR%%/notify.sh
 %%DATADIR%%/open.sh
 %%DATADIR%%/ps.sh
+%%DATADIR%%/themes/Amber on Black/author.txt
+%%DATADIR%%/themes/Amber on Black/farcolors.ini
+%%DATADIR%%/themes/DOS Navigator/author.txt
+%%DATADIR%%/themes/DOS Navigator/farcolors.ini
+%%DATADIR%%/themes/Dark classic/author.txt
+%%DATADIR%%/themes/Dark classic/farcolors.ini
+%%DATADIR%%/themes/Gold on Blue/author.txt
+%%DATADIR%%/themes/Gold on Blue/farcolors.ini
+%%DATADIR%%/themes/Green on LightGray/author.txt
+%%DATADIR%%/themes/Green on LightGray/farcolors.ini
+%%DATADIR%%/themes/Magenta on Violet/author.txt
+%%DATADIR%%/themes/Magenta on Violet/farcolors.ini
+%%DATADIR%%/themes/Tokyo Night/author.txt
+%%DATADIR%%/themes/Tokyo Night/farcolors.ini
 %%DATADIR%%/trash.sh
 %%DATADIR%%/unmount.sh
 %%DATADIR%%/view.sh
@@ -606,5 +642,4 @@ share/icons/hicolor/96x96/apps/far2ledit-wx.svg
 share/icons/hicolor/96x96/apps/far2ledit.svg
 share/man/man1/far2l.1.gz
 share/man/ru/man1/far2l.1.gz
-@dir lib/far2l/Plugins/calc/plug/units
-@dir %%DATADIR%%/Plugins/SimpleIndent/plug
+@comment share/metainfo/io.github.elfmz.far2l.metainfo.xml

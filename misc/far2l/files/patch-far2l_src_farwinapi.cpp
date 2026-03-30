@@ -3,7 +3,7 @@
 @@ -38,6 +38,7 @@ THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF S
  #include <fcntl.h>
  #include <errno.h>
- #if defined(__APPLE__) || defined(__FreeBSD__) || defined(__DragonFly__) || defined(__CYGWIN__)
+ #if defined(__APPLE__) || defined(__FreeBSD__) || defined(__NetBSD__) || defined(__DragonFly__) || defined(__CYGWIN__)
 +#include <sys/disk.h>
  #include <sys/mount.h>
  #elif !defined(__HAIKU__)

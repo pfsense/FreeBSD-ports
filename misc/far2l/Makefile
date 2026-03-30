@@ -1,6 +1,5 @@
 PORTNAME=	far2l
-PORTVERSION=	2.7.0
-PORTREVISION=	1
+PORTVERSION=	2.8.0
 DISTVERSIONPREFIX=	v_
 CATEGORIES=	misc
 
@@ -39,7 +38,7 @@ SFTP_LIB_DEPENDS=	libssh.so:security/libssh
 
 SMB_USES=	samba:lib
 
-WEBDAV_DESC=	WebDav protocol support via libneon
+WEBDAV_DESC=	WebDAV protocol support via libneon
 WEBDAV_LIB_DEPENDS=	libneon.so:www/neon
 
 WXGTK_CMAKE_OFF=	-DUSEWX:BOOL=OFF
@@ -65,6 +64,11 @@ post-patch:
 
 post-stage:
 	${RMDIR} ${STAGEDIR}${PREFIX}/lib/far2l/Plugins/NetRocks/plug/SHELL
+	${RMDIR} ${STAGEDIR}${PREFIX}/lib/far2l/Plugins/calc/plug/units
+	${RMDIR} ${STAGEDIR}${PREFIX}/lib/far2l/themes/*
+	${RMDIR} ${STAGEDIR}${PREFIX}/lib/far2l/themes
+	${RMDIR} ${STAGEDIR}${DATADIR}/Plugins/SimpleIndent/plug
+	${RMDIR} ${STAGEDIR}${DATADIR}/Plugins/SimpleIndent
 	${RM} ${STAGEDIR}${DATADIR}/wslgclip.*
 
 .include <bsd.port.mk>
