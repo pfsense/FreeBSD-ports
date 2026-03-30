@@ -1,3 +1,5 @@
-TIMESTAMP = 1764882473
-SHA256 (nanocoder-1.17.3.tar.gz) = 0028caa72175facbca14fccfae1931a8437e84e380a48fd9a7b6426fbf90340a
-SIZE (nanocoder-1.17.3.tar.gz) = 24998447
+TIMESTAMP = 1774892335
+SHA256 (nanocoder-1.24.1.tar.gz) = 9bb2b10510942bbc739a43f2f9ace79c928cf5e9c2cdd40d8947ac738b4eb8e7
+SIZE (nanocoder-1.24.1.tar.gz) = 61337816
+SHA256 (b8390.tar.gz) = eb2483c96c4355b1451b023cc46b79b669daa4f04ec6b3bba668ceb8230de507
+SIZE (b8390.tar.gz) = 29559770
