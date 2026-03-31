@@ -4385,7 +4385,6 @@
     SUBDIR += py-QtPy
     SUBDIR += py-RPyC
     SUBDIR += py-about-time
-    SUBDIR += py-absl
     SUBDIR += py-absl-py
     SUBDIR += py-acstore
     SUBDIR += py-adb
