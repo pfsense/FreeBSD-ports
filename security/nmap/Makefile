@@ -18,6 +18,8 @@ LICENSE_NAME=	Nmap Public Source License
 LICENSE_PERMS=	auto-accept dist-mirror pkg-mirror pkg-sell
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
+IGNORE_FreeBSD_13=	Does not build on FreeBSD 13.x due to OpenSSL 1.1.1
+
 LIB_DEPENDS=	libpcre2-16.so:devel/pcre2
 
 .if !defined(MASTERDIR)
@@ -65,8 +67,13 @@ CONFIGURE_ARGS+=--without-localdirs \
 
 .include <bsd.port.options.mk>
 
-.if defined(SSL_DEFAULT) && ${SSL_DEFAULT} == libressl
-BROKEN=	error: OpenSSL-1.1.1 is the minimum supported version. LibreSSL is not supported
+.if defined(SSL_DEFAULT)
+.if ${SSL_DEFAULT} == libressl
+BROKEN=	error: OpenSSL-3.0.0 is the minimum supported version. LibreSSL is not supported
+.endif
+.if ${SSL_DEFAULT} == openssl111
+BROKEN=	error: OpenSSL-3.0.0 is the minimum supported version.
+.endif
 .endif
 
 .if exists(/usr/lib/libibverbs.a)

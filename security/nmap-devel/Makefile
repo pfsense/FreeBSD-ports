@@ -69,8 +69,13 @@ STRIP_FILES+=	nmap nping
 
 .include <bsd.port.options.mk>
 
-.if defined(SSL_DEFAULT) && ${SSL_DEFAULT} == libressl
-BROKEN=	error: OpenSSL-1.1.1 is the minimum supported version. LibreSSLis not supported
+.if defined(SSL_DEFAULT)
+.if ${SSL_DEFAULT} == libressl
+BROKEN=	error: OpenSSL-3.0.0 is the minimum supported version. LibreSSLis not supported
+.endif
+.if ${SSL_DEFAULT} == openssl111
+BROKEN= error: OpenSSL-3.0.0 is the minimum supported version.
+.endif
 .endif
 
 .if exists(/usr/lib/libibverbs.a)
