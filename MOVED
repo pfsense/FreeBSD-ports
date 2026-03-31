@@ -5185,3 +5185,4 @@ devel/loki||2026-03-31|Has expired: dead upstream, sole consumer removed from tr
 mail/missey||2026-03-31|Has expired: mail/missey has been abandoned for many years
 devel/jsl||2026-03-31|Has expired: No more upstream, use JSLint instead
 security/snortsam||2026-03-31|Has expired: dead upstream, broken on FreeBSD 15
+devel/py-graphene-django300|devel/py-graphene-django|2026-03-31|Has expired: Obsolete, was used as temporary solution due compatibility issues. Please use devel/py-graphene-django instead
