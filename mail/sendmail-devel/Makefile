@@ -1,6 +1,6 @@
 PORTNAME=	sendmail
-PORTVERSION=	8.18.1.16
-PORTREVISION=	1
+PORTVERSION=	8.19.0.0
+PORTREVISION=	0
 CATEGORIES=	mail
 MASTER_SITES=	ftp://ftp.sendmail.org/pub/sendmail/snapshots/
 PKGNAMESUFFIX?=	-devel${PKGNAMESUFFIX2}
