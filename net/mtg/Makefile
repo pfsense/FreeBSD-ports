@@ -1,6 +1,6 @@
 PORTNAME=	mtg
 DISTVERSIONPREFIX=	v
-DISTVERSION=	2.1.13
+DISTVERSION=	2.2.6
 CATEGORIES=	net
 
 MAINTAINER=	drtr0jan@yandex.ru
@@ -15,16 +15,30 @@ USES=		go:1.26+,modules
 USE_RC_SUBR=	${PORTNAME}
 
 GO_MODULE=	github.com/9seconds/mtg/v2
-GO_BUILDFLAGS+=	-ldflags "${LD_FLAG_STRING}" -tags netgo
+GO_BUILDFLAGS+=	-ldflags "-s -w -X main.version=${DISTVERSION}" -tags netgo
 
-LD_FLAG_STRING=	-s -w -X main.version=${DISTVERSION}
+MTG_USER?=	${WWWOWN}
+MTG_GROUP?=	${WWWGRP}
+
+SUB_LIST+=	MTG_USER=${MTG_USER} \
+		MTG_GROUP=${MTG_GROUP}
 
 PLIST_FILES=	bin/${PORTNAME} \
-		"@sample ${ETCDIR}/config.toml.sample"
+		"@dir(${MTG_USER},${MTG_GROUP},750) ${ETCDIR}" \
+		"@sample(${MTG_USER},${MTG_GROUP},640) ${ETCDIR}/config.toml.sample"
+
+.include <bsd.port.pre.mk>
+
+.if ${MTG_USER} == ${WWWOWN}
+USERS=		${MTG_USER}
+.endif
+.if ${MTG_GROUP} == ${WWWGRP}
+GROUPS=		${MTG_GROUP}
+.endif
 
 post-install:
-	${MKDIR} ${STAGEDIR}${ETCDIR}
+	@${MKDIR} ${STAGEDIR}${ETCDIR}
 	${INSTALL_DATA} ${WRKSRC}/example.config.toml \
 		${STAGEDIR}${ETCDIR}/config.toml.sample
 
-.include <bsd.port.mk>
+.include <bsd.port.post.mk>

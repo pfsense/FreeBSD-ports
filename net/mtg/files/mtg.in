@@ -31,8 +31,8 @@ rcvar=mtg_enable
 load_rc_config $name
 
 : ${mtg_enable:=no}
-: ${mtg_user:="root"}
-: ${mtg_group:="wheel"}
+: ${mtg_user:="%%MTG_USER%%"}
+: ${mtg_group:="%%MTG_GROUP%%"}
 : ${mtg_syslog_output_enable:="NO"}
 
 start_precmd="mtg_prestart"

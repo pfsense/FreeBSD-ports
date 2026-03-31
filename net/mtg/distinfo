@@ -1,5 +1,5 @@
-TIMESTAMP = 1772437962
-SHA256 (go/net_mtg/mtg-v2.1.13/v2.1.13.mod) = adbb2b5afc127fdff45cf5ef6b23281010f86b43342f7e5a7d934a532cda5d7e
-SIZE (go/net_mtg/mtg-v2.1.13/v2.1.13.mod) = 2127
-SHA256 (go/net_mtg/mtg-v2.1.13/v2.1.13.zip) = ae3678a289276c619b839886c4ac11096c48ef420f4476d00324329a36f46cc8
-SIZE (go/net_mtg/mtg-v2.1.13/v2.1.13.zip) = 200726
+TIMESTAMP = 1774942347
+SHA256 (go/net_mtg/mtg-v2.2.6/v2.2.6.mod) = 33791188bbc3f4dc1a1cdba85d23a418d39ec45d2cf27c3236e5ae0fcf9ea75d
+SIZE (go/net_mtg/mtg-v2.2.6/v2.2.6.mod) = 2157
+SHA256 (go/net_mtg/mtg-v2.2.6/v2.2.6.zip) = 6279e51c042a4fc38eed9dd269c964740c1c56429ee6a153b1c44cdbd3c3ff11
+SIZE (go/net_mtg/mtg-v2.2.6/v2.2.6.zip) = 283688
