@@ -1,0 +1,5 @@
+appscript is a very lightweight script that compresses a directory
+using tar(1), encodes the result with base64(1), and then creates
+a sh(1) script that decompresses that result into a temporary
+location (optionally using tmpfs(4)), and finally executes a script
+named APPSCRIPT from the current working directory.

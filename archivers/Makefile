@@ -8,6 +8,7 @@
     SUBDIR += amigadepacker
     SUBDIR += ancient
     SUBDIR += apache-commons-compress
+    SUBDIR += appscript
     SUBDIR += arc
     SUBDIR += arj
     SUBDIR += ark
