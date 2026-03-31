@@ -22,7 +22,6 @@
     SUBDIR += ftpfind
     SUBDIR += ftplib
     SUBDIR += ftpproxy
-    SUBDIR += ftpsesame
     SUBDIR += ftpsync
     SUBDIR += gftp
     SUBDIR += gnustep-ftp
