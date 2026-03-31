@@ -1,6 +1,6 @@
 PORTNAME=	sylve
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.2.2
+DISTVERSION=	0.2.3
 CATEGORIES=	sysutils
 MASTER_SITES+=	https://github.com/AlchemillaHQ/Sylve/releases/download/${DISTVERSIONPREFIX}${DISTVERSION}/:web_assets
 DISTFILES+=	sylve-web-assets.tar.gz:web_assets
@@ -15,16 +15,17 @@ ONLY_FOR_ARCHS=	aarch64 amd64
 
 RUN_DEPENDS=	dnsmasq>0:dns/dnsmasq \
 		qemu-img:emulators/qemu@tools \
-		samba423>0:net/samba423 \
 		swtpm>0:sysutils/swtpm \
 		virsh:devel/libvirt
+
+.include <bsd.port.options.mk>
 .if ${ARCH} == amd64
 RUN_DEPENDS+=	bhyve-firmware>0:sysutils/bhyve-firmware
 .elif ${ARCH} == aarch64
 RUN_DEPENDS+=	u-boot-bhyve-arm64>0:sysutils/u-boot-bhyve-arm64
 .endif
 
-USES=		go:modules
+USES=		go:modules samba:run
 USE_RC_SUBR=	${PORTNAME}
 
 GO_MODULE=	github.com/alchemillahq/sylve
