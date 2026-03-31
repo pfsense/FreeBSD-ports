@@ -1,6 +1,6 @@
 PORTNAME=	skim
 DISTVERSIONPREFIX=	v
-DISTVERSION=	4.0.1
+DISTVERSION=	4.2.0
 CATEGORIES=	deskutils
 PKGNAMESUFFIX=	-fuzzy-finder
 
@@ -144,7 +144,7 @@ CARGO_CRATES=	addr2line-0.25.1 \
 		indenter-0.3.4 \
 		indexmap-2.13.0 \
 		indoc-2.0.7 \
-		insta-1.47.0 \
+		insta-1.47.1 \
 		instability-0.3.12 \
 		interprocess-2.4.0 \
 		is_terminal_polyfill-1.70.2 \
@@ -355,8 +355,8 @@ CARGO_CRATES=	addr2line-0.25.1 \
 		wit-bindgen-rust-macro-0.51.0 \
 		wit-component-0.244.0 \
 		wit-parser-0.244.0 \
-		zerocopy-0.8.47 \
-		zerocopy-derive-0.8.47 \
+		zerocopy-0.8.48 \
+		zerocopy-derive-0.8.48 \
 		zmij-1.0.21
 
 PLIST_FILES=	bin/sk
