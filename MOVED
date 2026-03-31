@@ -5212,3 +5212,4 @@ databases/mysql94-server||2026-03-31|Has expired: EOLed upstream, switch to newe
 www/obhttpd||2026-03-31|Has expired: Depends on bundled version of LibreSSL which is unsupported upstream
 net/cloud-init-devel|net/cloud-init|2026-03-31|Has expired: Outdated and no longer maintained, consider migrating to net/cloud-init
 net/libzmq3|net/libzmq4|2026-03-31|Has expired: Upstream unmaintained version with multiple vulnerabilities
+sysutils/tmate||2026-03-31|Has expired: Upstream unmaintained
