@@ -1,0 +1,9 @@
+--- DESCRIPTION.orig	2026-03-31 13:58:13 UTC
++++ DESCRIPTION
+@@ -1,5 +1,5 @@ Name: fxp
+ Name: fxp
+-Version: 1.0.1
++Version: 2.0.0
+ Date: 2026-01-26
+ Title: Fixed-Point Arithmetic for GNU Octave
+ Author: Ahmed Shahein

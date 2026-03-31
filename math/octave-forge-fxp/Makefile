@@ -1,5 +1,6 @@
 PORTNAME=	octave-forge-fxp
 DISTVERSION=	2.0.0
+PORTREVISION=	1
 CATEGORIES=	math
 
 MAINTAINER=	stephen@FreeBSD.org
@@ -15,6 +16,7 @@ GH_ACCOUNT=	ahmedshahein
 GH_PROJECT=	pkg-fxp
 
 OCTAVE_SRC=	${GH_PROJECT}-${DISTVERSION}
+WRKSRC=		${WRKDIR}/${OCTAVE_SRC}
 
 NO_ARCH=	yes
 NO_BUILD=	yes
