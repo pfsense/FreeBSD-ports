@@ -5179,7 +5179,6 @@ deskutils/py-paperless|deskutils/py-paperless-ngx|2026-03-31|Has expired: Upstre
 www/py-django-bleach||2026-03-31|Has expired: Upstream has been archived on November 5, 2024
 www/py-django-tagging|www/py-django-taggit|2026-03-31|Has expired: Upstream inactive since 5+ years, not compatible with Django 5+. Please use www/py-django-taggit instead
 www/py-django-star-ratings||2026-03-31|Has expired: Upstream repository has been archived on May 21, 2025
-lang/cython0|lang/cython|2026-03-31|Has expired
 ftp/ftpsesame||2026-03-31|Has expired: dead upstream, broken on FreeBSD 15
 devel/loki||2026-03-31|Has expired: dead upstream, sole consumer removed from tree long ago
 mail/missey||2026-03-31|Has expired: mail/missey has been abandoned for many years
