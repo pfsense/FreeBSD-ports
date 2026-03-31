@@ -5175,3 +5175,4 @@ graphics/luminance-qt5||2026-03-29|Broken for more than a year
 sysutils/tmate-ssh-server||2026-03-31|Has expired: Upstream unmaintained
 editors/wordgrinder||2026-03-31|Has expired: broken since 2023, maintainer AWOL
 www/py-django-cron||2026-03-31|Has expired: Upstream inactive since 3+ years, not compatible with Django 5.2 or newer
+deskutils/py-paperless|deskutils/py-paperless-ngx|2026-03-31|Has expired: Upstream repository archived since 2021 and no compatibility for Django 5+. Please migrate to deskutils/py-paperless-ngx
