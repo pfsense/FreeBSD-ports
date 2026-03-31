@@ -1,5 +1,5 @@
-TIMESTAMP = 1763931529
-SHA256 (go/security_gokey/gokey-v0.2.0/v0.2.0.mod) = 6e5196f915dd9c621fa7095db89ee5ce561310db38f1f8986cb3b48b79cefa22
-SIZE (go/security_gokey/gokey-v0.2.0/v0.2.0.mod) = 161
-SHA256 (go/security_gokey/gokey-v0.2.0/v0.2.0.zip) = e71f61357b2f8c76765f5781a92a57f5c7a4aa24300467adaec335e414cd927b
-SIZE (go/security_gokey/gokey-v0.2.0/v0.2.0.zip) = 27560
+TIMESTAMP = 1774984936
+SHA256 (go/security_gokey/gokey-v0.2.1/v0.2.1.mod) = f3a575db38639ad37d678faee912ff7f9fec1e18e262f9ff72c7625986e04fe4
+SIZE (go/security_gokey/gokey-v0.2.1/v0.2.1.mod) = 161
+SHA256 (go/security_gokey/gokey-v0.2.1/v0.2.1.zip) = 6c07dc73d87cf40976c148699e3859f4b9cbf9a7c2bff18a82d3eb017c10b3b0
+SIZE (go/security_gokey/gokey-v0.2.1/v0.2.1.zip) = 27560
