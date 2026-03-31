@@ -244,7 +244,6 @@
     SUBDIR += mimedefang
     SUBDIR += mini_sendmail
     SUBDIR += minimalist
-    SUBDIR += missey
     SUBDIR += mlmmj
     SUBDIR += mlmmj-archive-mid
     SUBDIR += mlmmj-archiver
