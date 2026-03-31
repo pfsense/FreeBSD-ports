@@ -5173,3 +5173,4 @@ sysutils/beats9|sysutils/beats93|2026-03-20|Use Beats port with preferred major.
 science/kst2|science/kst|2026-03-25|Rename to match upstream naming
 graphics/luminance-qt5||2026-03-29|Broken for more than a year
 sysutils/tmate-ssh-server||2026-03-31|Has expired: Upstream unmaintained
+editors/wordgrinder||2026-03-31|Has expired: broken since 2023, maintainer AWOL

@@ -299,7 +299,6 @@
     SUBDIR += vscode
     SUBDIR += web-mode
     SUBDIR += with-editor
-    SUBDIR += wordgrinder
     SUBDIR += wxhexeditor
     SUBDIR += xcoral
     SUBDIR += xed
