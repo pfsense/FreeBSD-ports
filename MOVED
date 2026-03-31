@@ -5184,3 +5184,4 @@ ftp/ftpsesame||2026-03-31|Has expired: dead upstream, broken on FreeBSD 15
 devel/loki||2026-03-31|Has expired: dead upstream, sole consumer removed from tree long ago
 mail/missey||2026-03-31|Has expired: mail/missey has been abandoned for many years
 devel/jsl||2026-03-31|Has expired: No more upstream, use JSLint instead
+security/snortsam||2026-03-31|Has expired: dead upstream, broken on FreeBSD 15

@@ -1327,7 +1327,6 @@
     SUBDIR += snort-rep
     SUBDIR += snort2pfcd
     SUBDIR += snort3
-    SUBDIR += snortsam
     SUBDIR += snortsnarf
     SUBDIR += snowflake-tor
     SUBDIR += snuffleupagus
