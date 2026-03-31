@@ -27,7 +27,6 @@
     SUBDIR += ah-tty
     SUBDIR += aimage
     SUBDIR += aird
-    SUBDIR += alfio
     SUBDIR += alloy
     SUBDIR += am-utils
     SUBDIR += amazon-ssm-agent
