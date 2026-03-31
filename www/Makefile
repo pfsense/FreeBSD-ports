@@ -1672,7 +1672,6 @@
     SUBDIR += py-django-soft-delete
     SUBDIR += py-django-solo
     SUBDIR += py-django-sortedm2m
-    SUBDIR += py-django-star-ratings
     SUBDIR += py-django-staticinline
     SUBDIR += py-django-storages
     SUBDIR += py-django-stubs-ext

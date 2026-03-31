@@ -5178,3 +5178,4 @@ www/py-django-cron||2026-03-31|Has expired: Upstream inactive since 3+ years, no
 deskutils/py-paperless|deskutils/py-paperless-ngx|2026-03-31|Has expired: Upstream repository archived since 2021 and no compatibility for Django 5+. Please migrate to deskutils/py-paperless-ngx
 www/py-django-bleach||2026-03-31|Has expired: Upstream has been archived on November 5, 2024
 www/py-django-tagging|www/py-django-taggit|2026-03-31|Has expired: Upstream inactive since 5+ years, not compatible with Django 5+. Please use www/py-django-taggit instead
+www/py-django-star-ratings||2026-03-31|Has expired: Upstream repository has been archived on May 21, 2025
