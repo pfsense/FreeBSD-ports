@@ -50,6 +50,7 @@ ollama_precmd()
 {
     # set environment variables for the ollama server
     export OLLAMA_CONTEXT_LENGTH=${ollama_context_length}
+    export HOME=$(eval echo "~${ollama_user}")
     if [ "$ollama_use_vulkan" != "0" ]; then
         export OLLAMA_VULKAN=1
     else
