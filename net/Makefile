@@ -439,7 +439,6 @@
     SUBDIR += libyang
     SUBDIR += libyang2
     SUBDIR += libzapojit
-    SUBDIR += libzmq3
     SUBDIR += libzmq4
     SUBDIR += liferea
     SUBDIR += linphone
