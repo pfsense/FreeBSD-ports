@@ -6428,7 +6428,6 @@
     SUBDIR += qconf
     SUBDIR += qcoro
     SUBDIR += qgit
-    SUBDIR += qjson
     SUBDIR += qlementine
     SUBDIR += qschematic
     SUBDIR += qscintilla2
