@@ -5195,3 +5195,14 @@ filesystems/moosefs2-cli||2026-03-31|Has expired: 2.x reached EoL 2017-12-31, us
 filesystems/moosefs2-client||2026-03-31|Has expired: 2.x reached EoL 2017-12-31, use filesystems/moosefs-* 4.x instead
 multimedia/gstreamer1-plugins-svt-hevc||2026-03-31|Has expired: SVT-HEVC project discontinued by Intel on 2024-07-29
 filesystems/moosefs2-master||2026-03-31|Has expired: 2.x reached EoL 2017-12-31, use filesystems/moosefs-* 4.x instead
+games/xcubes|games/xpuzzles|2026-03-31|Merged into xpuzzles
+games/xdino|games/xpuzzles|2026-03-31|Merged into xpuzzles
+games/xhexagons|games/xpuzzles|2026-03-31|Merged into xpuzzles
+games/xmball|games/xpuzzles|2026-03-31|Merged into xpuzzles
+games/xmlink|games/xpuzzles|2026-03-31|Merged into xpuzzles
+games/xoct|games/xpuzzles|2026-03-31|Merged into xpuzzles
+games/xpanex|games/xpuzzles|2026-03-31|Merged into xpuzzles
+games/xpyraminx|games/xpuzzles|2026-03-31|Merged into xpuzzles
+games/xrubik|games/xpuzzles|2026-03-31|Merged into xpuzzles
+games/xskewb|games/xpuzzles|2026-03-31|Merged into xpuzzles
+games/xtriangles|games/xpuzzles|2026-03-31|Merged into xpuzzles
