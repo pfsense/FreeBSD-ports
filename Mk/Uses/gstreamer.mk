@@ -62,7 +62,7 @@ _GST1_PLUGINS_multimedia=	aom assrender bad dash dts dv dvdread \
 			editing-services good hls libav libde265 \
 			mpeg2dec mpeg2enc mplex mm msdk openh264 resindvd \
 			rtsp-server rust smoothstreaming svtav1 theora ttml \
-			ugly v4l2 vaapi vpx webrtc x264 x265
+			ugly v4l2 vpx webrtc x264 x265
 _GST1_PLUGINS_net=	sctp srtp
 _GST1_PLUGINS_security=	dtls
 _GST1_PLUGINS_sysutils=	cdio
@@ -370,12 +370,6 @@ gst-ttml_IMPL=		bad
 
 gst-v4l2_PORT=		multimedia/gstreamer${_GST_VER}-plugins-v4l2
 gst-v4l2_IMPL=		good
-
-gst-vaapi_PORT=		multimedia/gstreamer${_GST_VER}-vaapi
-gst-vaapi_SUFFIX=	#
-gst-vaapi_IMPL=		#
-gst-vaapi_GST1_VERSION=	1.26.10
-gst-vaapi_VERSION=	${gst-vaapi_GST${_GST_VER}_VERSION}
 
 gst-vpx_PORT=		multimedia/gstreamer${_GST_VER}-plugins-vpx
 gst-vpx_IMPL=		good
