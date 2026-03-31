@@ -5217,3 +5217,4 @@ x11/mrxvt||2026-03-31|Has expired: Upstream unmaintained and has known vulnerabi
 www/glassfish4|www/glassfish|2026-03-31|Has expired: Very old version reached EoL, use www/glassfish instead
 devel/qjson||2026-03-31|Has expired: Deprecated upstream, not used by anything
 multimedia/gstreamer1-vaapi||2026-03-31|Has expired: Project discontinued
+databases/postgresql-cstore_fdw||2026-03-31|Has expired: Columnar storage is now part of databases/pg_citus. Please migrate
