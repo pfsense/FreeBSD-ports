@@ -520,7 +520,6 @@
     SUBDIR += nyxt
     SUBDIR += oatpp
     SUBDIR += oauth2-proxy
-    SUBDIR += obhttpd
     SUBDIR += offpunk
     SUBDIR += oneshot
     SUBDIR += onionbalance
