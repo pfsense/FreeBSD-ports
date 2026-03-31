@@ -74,6 +74,7 @@ include/fluent-bit/flb_input_trace.h
 include/fluent-bit/flb_intermediate_metric.h
 include/fluent-bit/flb_io.h
 include/fluent-bit/flb_jsmn.h
+include/fluent-bit/flb_json.h
 include/fluent-bit/flb_kafka.h
 include/fluent-bit/flb_kernel.h
 include/fluent-bit/flb_kv.h
@@ -104,6 +105,7 @@ include/fluent-bit/flb_net_dns.h
 include/fluent-bit/flb_network.h
 include/fluent-bit/flb_notification.h
 include/fluent-bit/flb_oauth2.h
+include/fluent-bit/flb_oauth2_jwt.h
 include/fluent-bit/flb_opentelemetry.h
 include/fluent-bit/flb_output.h
 include/fluent-bit/flb_output_plugin.h
@@ -164,6 +166,7 @@ include/fluent-bit/flb_utils.h
 include/fluent-bit/flb_version.h
 include/fluent-bit/flb_worker.h
 include/fluent-bit/flb_zstd.h
+include/fluent-bit/ripser/flb_ripser_wrapper.h
 include/fluent-bit/simdutf/flb_simdutf_connector.h
 include/fluent-bit/tls/flb_tls.h
 include/fluent-bit/tls/flb_tls_info.h
