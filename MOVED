@@ -5207,3 +5207,4 @@ games/xskewb|games/xpuzzles|2026-03-31|Merged into xpuzzles
 games/xtriangles|games/xpuzzles|2026-03-31|Merged into xpuzzles
 databases/mysql94-client||2026-03-31|Has expired: EOLed upstream, switch to newer version
 databases/mysql91-client||2026-03-31|Has expired: EOLed upstream, switch to newer version
+databases/mysql91-server||2026-03-31|Has expired: EOLed upstream, switch to newer version
