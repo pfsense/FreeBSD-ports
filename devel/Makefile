@@ -1094,7 +1094,6 @@
     SUBDIR += jline
     SUBDIR += jna
     SUBDIR += jsap
-    SUBDIR += jsl
     SUBDIR += jsmin
     SUBDIR += json-c
     SUBDIR += json-dto
