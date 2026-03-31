@@ -1,8 +1,13 @@
---- doc/CMakeLists.txt.orig	2025-06-26 07:51:35 UTC
+--- doc/CMakeLists.txt.orig	2026-01-09 13:06:10 UTC
 +++ doc/CMakeLists.txt
-@@ -1,5 +1,9 @@
-+if (FREEBSD_INSTALL_DOCS)
+@@ -1,8 +1,14 @@
+ # SPDX-FileCopyrightInfo: Copyright © DUNE Project contributors, see file LICENSE.md in module root
+ # SPDX-License-Identifier: LicenseRef-GPL-2.0-only-with-DUNE-exception
+ 
++# Always include doxygen subdir so Doxystyle/doxygen-macros are installed
++# (referenced by dune-common-config.cmake via set_and_check)
  add_subdirectory("doxygen")
++if (FREEBSD_INSTALL_DOCS)
  add_subdirectory("buildsystem")
  add_subdirectory("comm")
 +endif()
