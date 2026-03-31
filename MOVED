@@ -5188,3 +5188,4 @@ security/snortsam||2026-03-31|Has expired: dead upstream, broken on FreeBSD 15
 devel/py-graphene-django300|devel/py-graphene-django|2026-03-31|Has expired: Obsolete, was used as temporary solution due compatibility issues. Please use devel/py-graphene-django instead
 filesystems/moosefs2-chunkserver||2026-03-31|Has expired: 2.x reached EoL 2017-12-31, use filesystems/moosefs-* 4.x instead
 filesystems/moosefs2-cgiserv||2026-03-31|Has expired: 2.x reached EoL 2017-12-31, use filesystems/moosefs-* 4.x instead
+filesystems/moosefs2-cgi||2026-03-31|Has expired: 2.x reached EoL 2017-12-31, use filesystems/moosefs-* 4.x instead
