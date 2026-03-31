@@ -5221,3 +5221,4 @@ databases/postgresql-cstore_fdw||2026-03-31|Has expired: Columnar storage is now
 sysutils/alfio||2026-03-31|Has expired: Upstream abandoned the project and does not distribute it anymore
 devel/py-absl|devel/py-absl-py|2026-03-31|Has expired: Use devel/py-absl-py
 security/openssl33-quictls||2026-03-31|Removed: Upstream project has been archived
+security/openssl33||2026-03-31|Has expired: Please use security/openssl35 (LTS)
