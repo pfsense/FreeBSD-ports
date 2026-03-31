@@ -1,5 +1,5 @@
 PORTNAME=	spago
-DISTVERSION=	1.0.3
+DISTVERSION=	1.0.4
 CATEGORIES=	devel
 MASTER_SITES=	https://registry.npmjs.org/spago/-/
 
@@ -15,9 +15,10 @@ RUN_DEPENDS=	git:devel/git \
 
 USES=		nodejs:run tar:tgz
 
-WRKSRC=		${WRKDIR}/package
 NO_ARCH=	yes
 NO_BUILD=	yes
+
+WRKSRC=		${WRKDIR}/package
 
 PLIST_FILES=	${PREFIX}/bin/spago \
 		${PREFIX}/bin/docs-search-app.js
