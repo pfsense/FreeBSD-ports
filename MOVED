@@ -5213,3 +5213,4 @@ www/obhttpd||2026-03-31|Has expired: Depends on bundled version of LibreSSL whic
 net/cloud-init-devel|net/cloud-init|2026-03-31|Has expired: Outdated and no longer maintained, consider migrating to net/cloud-init
 net/libzmq3|net/libzmq4|2026-03-31|Has expired: Upstream unmaintained version with multiple vulnerabilities
 sysutils/tmate||2026-03-31|Has expired: Upstream unmaintained
+x11/mrxvt||2026-03-31|Has expired: Upstream unmaintained and has known vulnerability
