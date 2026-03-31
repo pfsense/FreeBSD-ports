@@ -199,7 +199,6 @@
     SUBDIR += mysql80-server
     SUBDIR += mysql84-client
     SUBDIR += mysql84-server
-    SUBDIR += mysql91-client
     SUBDIR += mysql91-server
     SUBDIR += mysql94-server
     SUBDIR += mysql96-client
