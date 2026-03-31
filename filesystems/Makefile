@@ -65,7 +65,6 @@
     SUBDIR += moosefs-master
     SUBDIR += moosefs-metalogger
     SUBDIR += moosefs-netdump
-    SUBDIR += moosefs2-client
     SUBDIR += moosefs2-master
     SUBDIR += moosefs3-cgi
     SUBDIR += moosefs3-cgiserv
