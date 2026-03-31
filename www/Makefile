@@ -237,7 +237,6 @@
     SUBDIR += gitlab-workhorse
     SUBDIR += glance
     SUBDIR += glassfish
-    SUBDIR += glassfish4
     SUBDIR += glpi
     SUBDIR += gnome-user-share
     SUBDIR += go-anubis

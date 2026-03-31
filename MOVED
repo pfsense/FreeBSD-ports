@@ -5214,3 +5214,4 @@ net/cloud-init-devel|net/cloud-init|2026-03-31|Has expired: Outdated and no long
 net/libzmq3|net/libzmq4|2026-03-31|Has expired: Upstream unmaintained version with multiple vulnerabilities
 sysutils/tmate||2026-03-31|Has expired: Upstream unmaintained
 x11/mrxvt||2026-03-31|Has expired: Upstream unmaintained and has known vulnerability
+www/glassfish4|www/glassfish|2026-03-31|Has expired: Very old version reached EoL, use www/glassfish instead
