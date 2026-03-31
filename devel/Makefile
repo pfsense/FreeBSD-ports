@@ -1611,7 +1611,6 @@
     SUBDIR += log4shib
     SUBDIR += loguru
     SUBDIR += lokalize
-    SUBDIR += loki
     SUBDIR += love
     SUBDIR += love07
     SUBDIR += love08
