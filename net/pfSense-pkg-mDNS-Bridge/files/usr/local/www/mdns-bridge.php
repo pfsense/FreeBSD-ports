@@ -86,7 +86,7 @@ if ($_POST) {
 		$filter_list = array();
 		foreach (array_filter(explode(',', $pconfig['global_filter_list'])) as $filter) {
 			$filter = trim($filter);
-			if (!is_domain($filter, false, false)) {
+			if (str_contains($filter, '..')) {
 				$input_errors[] = sprintf(gettext('Invalid domain in Global Filter List: "%1$s"'), $filter);
 			}
 			$filter_list[] = $filter;
@@ -106,7 +106,7 @@ if ($_POST) {
 			$filter_list = array();
 			foreach (array_filter(explode(',', $pconfig['inbound_filter_list_' . $interface])) as $filter) {
 				$filter = trim($filter);
-				if (!is_domain($filter, false, false)) {
+				if (str_contains($filter, '..')) {
 					$input_errors[] = sprintf(gettext('Invalid domain in %1$s Inbound Filter List: "%2$s"'),
 						convert_friendly_interface_to_friendly_descr($interface), $filter);
 				}
@@ -125,7 +125,7 @@ if ($_POST) {
 			$filter_list = array();
 			foreach (array_filter(explode(',', $pconfig['outbound_filter_list_' . $interface])) as $filter) {
 				$filter = trim($filter);
-				if (!is_domain($filter, false, false)) {
+				if (str_contains($filter, '..')) {
 					$input_errors[] = sprintf(gettext('Invalid domain in %1$s Outbound Filter List: "%2$s"'),
 						convert_friendly_interface_to_friendly_descr($interface), $filter);
 				}
