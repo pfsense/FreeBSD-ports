@@ -135,7 +135,9 @@ pfsense_tailscaled_clean() {
 
 # bring up tailscale using the generated up flags from the configuration
 tailscale_up() {
-	logger -s -t tailscale "Bringing up ${tailscale_tun_dev} with ${pfsense_tailscaled_up_flags}"
+	# redact the auth-key value before logging; the real flags still go to tailscale(1)
+	local _loggable_flags=$(echo "${pfsense_tailscaled_up_flags}" | sed 's/--auth-key=[^ ]*/--auth-key=<redacted>/')
+	logger -s -t tailscale "Bringing up ${tailscale_tun_dev} with ${_loggable_flags}"
 	${tailscale_bin} up ${pfsense_tailscaled_up_flags} || {
 		logger -s -t "Unable to bring up ${tailscale_tun_dev}. Check authentication."
 	}
