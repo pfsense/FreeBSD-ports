@@ -26,6 +26,7 @@ require_once("/usr/local/pkg/lcdproc.inc");
 global $lcdproc_log_levels, $mtxorb_backlight_color_list, $comport_list;
 global $size_list, $driver_list, $connection_type_list, $mtxorb_type_list;
 global $port_speed_list, $refresh_frequency_list, $percent_list, $backlight_list;
+global $ezio_key_list;
 
 $lcdproc_config = config_get_path('installedpackages/lcdproc/config/0', []);
 
@@ -48,6 +49,10 @@ if (!isset($pconfig['controlmenu']))                 $pconfig['controlmenu']    
 if (!isset($pconfig['mtxorb_type']))                 $pconfig['mtxorb_type']                 = 'lcd'; // specific to Matrix Orbital driver
 if (!isset($pconfig['mtxorb_adjustable_backlight'])) $pconfig['mtxorb_adjustable_backlight'] = true;  // specific to Matrix Orbital driver
 if (!isset($pconfig['mtxorb_backlight_color']))      $pconfig['mtxorb_backlight_color']      = '';  // specific to Matrix Orbital driver
+if (!isset($pconfig['ezio_key_1']))                  $pconfig['ezio_key_1']                  = 'Enter';  // specific to hd44780 ezio connection type
+if (!isset($pconfig['ezio_key_2']))                  $pconfig['ezio_key_2']                  = 'Up';     // specific to hd44780 ezio connection type
+if (!isset($pconfig['ezio_key_3']))                  $pconfig['ezio_key_3']                  = 'Down';   // specific to hd44780 ezio connection type
+if (!isset($pconfig['ezio_key_4']))                  $pconfig['ezio_key_4']                  = 'Escape'; // specific to hd44780 ezio connection type
 
 
 if ($_POST) {
@@ -68,6 +73,10 @@ if ($_POST) {
 	lcdproc_validate_list($input_errors, 'contrast',               $percent_list,                'Contrast');
 	lcdproc_validate_list($input_errors, 'backlight',              $backlight_list,              'Backlight');
 	lcdproc_validate_list($input_errors, 'offbrightness',          $percent_list,                'Off Brightness');
+	lcdproc_validate_list($input_errors, 'ezio_key_1',             $ezio_key_list,               'Ezio Key 1');
+	lcdproc_validate_list($input_errors, 'ezio_key_2',             $ezio_key_list,               'Ezio Key 2');
+	lcdproc_validate_list($input_errors, 'ezio_key_3',             $ezio_key_list,               'Ezio Key 3');
+	lcdproc_validate_list($input_errors, 'ezio_key_4',             $ezio_key_list,               'Ezio Key 4');
 
 	if (empty($input_errors)) {
 		$lcdproc_config['enable']                      = $pconfig['enable'];
@@ -87,6 +96,10 @@ if ($_POST) {
 		$lcdproc_config['mtxorb_type']                 = $pconfig['mtxorb_type'];
 		$lcdproc_config['mtxorb_adjustable_backlight'] = $pconfig['mtxorb_adjustable_backlight'];
 		$lcdproc_config['mtxorb_backlight_color']      = $pconfig['mtxorb_backlight_color'];
+		$lcdproc_config['ezio_key_1']                  = $pconfig['ezio_key_1'];
+		$lcdproc_config['ezio_key_2']                  = $pconfig['ezio_key_2'];
+		$lcdproc_config['ezio_key_3']                  = $pconfig['ezio_key_3'];
+		$lcdproc_config['ezio_key_4']                  = $pconfig['ezio_key_4'];
 
 		config_set_path('installedpackages/lcdproc/config/0', $lcdproc_config);
 		write_config("lcdproc: Settings saved");
@@ -169,6 +182,25 @@ $section->addInput(
 	)
 )->setHelp('Select the HD44780 connection type');
 
+// The ezio_key_1..4 fields are HD44780 & EZIO specific, so are hidden by javascript (below)
+// when the ezio connection type is not selected.
+$ezio_subsection = new Form_Group('Button Mapping');
+for ($i = 1; $i <= 4; $i++) {
+	$ezio_subsection->add(
+		new Form_Select(
+			"ezio_key_{$i}",
+			"Button {$i}",
+			$pconfig["ezio_key_{$i}"], // Initial value.
+			$ezio_key_list
+		)
+	);
+}
+$ezio_subsection->setHelp(
+	'Map each of the four buttons on the ezio keypad (KeyMatrix_4_1 through KeyMatrix_4_4) ' .
+	'to an LCDproc key function.'
+);
+$section->add($ezio_subsection);
+
 /* The mtxorb_type, mtxorb_adjustable_backlight, and mtxorb_backlight_color are
  * Matrix-Orbital-specific, so are hidden by javascript (below) if the MtxOrb
  * driver is not being used.
@@ -218,6 +250,7 @@ $section->add($subsection);
 	events.push(
 		function() {
 			$('#driver').on('change', updateInputVisibility);
+			$('#connection_type').on('change', updateInputVisibility);
 			updateInputVisibility();
 		}
 	);
@@ -229,6 +262,10 @@ $section->add($subsection);
 		var using_HD44780_driver  = driverName_lowercase.indexOf("hd44780") >= 0;
 		using_HD44780_driver     |= jQuery("#driver option:selected").text().toLowerCase().indexOf("hd44780") >= 0;
 		hideInput('connection_type', !using_HD44780_driver); // Hides the entire section
+
+		// Hide the ezio button mapping group unless HD44780 + ezio connection type is selected
+		var using_ezio_connection = using_HD44780_driver && ($('#connection_type').val() === 'ezio');
+		hideInput('ezio_key_1', !using_ezio_connection); // Hides the entire Button Mapping group
 
 		// Hide the Matrix Orbital specific fields when not using the MtxOrb driver
 		var using_MtxOrb_driver  = driverName_lowercase.indexOf("mtxorb") >= 0;
