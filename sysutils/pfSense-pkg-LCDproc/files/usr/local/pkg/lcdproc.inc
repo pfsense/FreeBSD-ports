@@ -217,6 +217,15 @@ $backlight_list = [
 	'off'     => 'Off'
 ];
 
+/* Allowed key mappings for the ezio connection type's 4-button keypad */
+global $ezio_key_list;
+$ezio_key_list = [
+	'Enter'  => 'Enter',
+	'Up'     => 'Up',
+	'Down'   => 'Down',
+	'Escape' => 'Escape'
+];
+
 /* Functions */
 function lcdproc_validate_list(&$input_errors, $postvar, $list, $name) {
 	if (!empty($_POST[$postvar]) &&
@@ -308,7 +317,7 @@ function sync_package_lcdproc_screens() {
 }
 
 function sync_package_lcdproc() {
-	global $g, $input_errors, $lcdproc_log_levels, $mtxorb_backlight_color_list;
+	global $g, $input_errors, $lcdproc_log_levels, $mtxorb_backlight_color_list, $ezio_key_list;
 
 	# Detect boot process
 	if (platform_booting()) {
@@ -521,10 +530,11 @@ function sync_package_lcdproc() {
 					$config_text .= "Size=16x2\n";
 					$config_text .= "Backlight=no\n";
 					$config_text .= "Keypad=yes\n";
-					$config_text .= "KeyMatrix_4_1=Enter\n";
-					$config_text .= "KeyMatrix_4_2=Up\n";
-					$config_text .= "KeyMatrix_4_3=Down\n";
-					$config_text .= "KeyMatrix_4_4=Escape\n";
+					for ($i = 1; $i <= 4; $i++) {
+						$field = "ezio_key_{$i}";
+						$value = $lcdproc_config[$field];
+						$config_text .= "KeyMatrix_4_{$i}={$value}\n";
+					}
 				}
 				break;
 			case "icp_a106":
