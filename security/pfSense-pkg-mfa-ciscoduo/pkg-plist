@@ -1,0 +1,5 @@
+pkg/ciscoduo.xml
+pkg/ciscoduo_test.xml
+pkg/ciscoduo.inc
+pkg/duo_root_ca.pem
+share/pfSense-pkg-ciscoduo/info.xml

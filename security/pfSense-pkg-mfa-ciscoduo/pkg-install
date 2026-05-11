@@ -1,0 +1,6 @@
+#!/bin/sh
+
+if [ "${2}" = "POST-INSTALL" ]; then
+    echo ">>> Installing Cisco Duo package"
+    /usr/local/bin/php -r 'require_once("/usr/local/pkg/ciscoduo.inc"); ciscoduo_install_command();'
+fi

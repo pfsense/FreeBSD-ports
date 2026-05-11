@@ -1,0 +1,5 @@
+Cisco Duo Multi-Factor Authentication package for pfSense providing secure 2FA for OpenVPN.
+
+This software was developed with the support of the Faculty of Information Technology, Czech Technical University in Prague. For more information, visit fit.cvut.cz.
+
+WWW: https://github.com/krystakadlec/pfSense_2fa

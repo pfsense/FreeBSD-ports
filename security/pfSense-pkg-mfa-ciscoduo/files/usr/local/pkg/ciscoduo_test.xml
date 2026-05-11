@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE packagegui SYSTEM "../schema/packages.dtd">
+<?xml-stylesheet type="text/xsl" href="../xsl/package.xsl"?>
+<packagegui>
+    <name>ciscoduotest</name>
+    <title>Services: Cisco Duo MFA: Test</title>
+    <include_file>/usr/local/pkg/ciscoduo.inc</include_file>
+    
+    <tabs>
+        <tab>
+            <text>General Settings</text>
+            <url>/pkg_edit.php?xml=ciscoduo.xml</url>
+        </tab>
+        <tab>
+            <text>Test Configuration</text>
+            <url>/pkg_edit.php?xml=ciscoduo_test.xml</url>
+            <active/>
+        </tab>
+    </tabs>
+
+    <savetext>Test Authentication</savetext>
+    <saveicon>fa-solid fa-paper-plane</saveicon>
+
+    <fields>
+        <field>
+            <fielddescr>Test Username</fielddescr>
+            <fieldname>test_username</fieldname>
+            <description>Enter a valid username enrolled in Cisco Duo.</description>
+            <type>input</type>
+            <size>40</size>
+            <required>true</required>
+        </field>
+    </fields>
+
+    <custom_php_validation_command>
+        ciscoduo_test($_POST, $input_errors);
+    </custom_php_validation_command>
+
+    <custom_php_after_form_command>
+    <![CDATA[
+        echo "<script type='text/javascript'>
+            events.push(function() {
+                if (window.history.replaceState) {
+                    var cleanUrl = 'pkg_edit.php?xml=ciscoduo_test.xml';
+                    window.history.replaceState({}, document.title, cleanUrl);
+                    $('form').attr('action', cleanUrl);
+                }
+            });
+        </script>";
+    ]]>
+    </custom_php_after_form_command>
+</packagegui>

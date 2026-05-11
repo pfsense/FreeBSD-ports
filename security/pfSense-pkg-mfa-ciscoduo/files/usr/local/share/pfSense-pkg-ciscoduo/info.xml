@@ -1,0 +1,17 @@
+<pfsensepkgs>
+    <package>
+        <name>pfSense-pkg-ciscoduo</name>
+        <descr><![CDATA[Cisco Duo MFA Integration for pfSense.]]></descr>
+        <version>%%PKGVERSION%%</version>
+        <configurationfile>ciscoduo.xml</configurationfile>
+        <logging_name>CiscoDuo</logging_name>
+        <custom_php_install_command>
+            require_once("/usr/local/pkg/ciscoduo.inc");
+            ciscoduo_install_command();
+        </custom_php_install_command>
+        <custom_php_deinstall_command>
+            require_once("/usr/local/pkg/ciscoduo.inc");
+            ciscoduo_uninstall_command();
+        </custom_php_deinstall_command>
+    </package>
+</pfsensepkgs>

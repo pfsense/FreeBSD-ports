@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE packagegui SYSTEM "../schema/packages.dtd">
+<?xml-stylesheet type="text/xsl" href="../xsl/package.xsl"?>
+<packagegui>
+    <name>ciscoduo</name>
+    <title>Services: Cisco Duo MFA</title>
+    <include_file>/usr/local/pkg/ciscoduo.inc</include_file>
+    <addedit_string>Cisco Duo MFA settings modified</addedit_string>
+    <menu>
+        <name>Cisco Duo MFA</name>
+        <section>Services</section>
+        <configfile>ciscoduo.xml</configfile>
+        <tooltiptext>Cisco Duo MFA Settings</tooltiptext>
+        <url>/pkg_edit.php?xml=ciscoduo.xml</url>
+    </menu>
+
+    <tabs>
+        <tab>
+            <text>General Settings</text>
+            <url>/pkg_edit.php?xml=ciscoduo.xml</url>
+            <active/>
+        </tab>
+        <tab>
+            <text>Test Configuration</text>
+            <url>/pkg_edit.php?xml=ciscoduo_test.xml</url>
+        </tab>
+    </tabs>
+
+    <fields>
+        <field>
+            <fielddescr>Integration Key (IKey)</fielddescr>
+            <fieldname>duo_ikey</fieldname>
+            <description>Enter IKey from Cisco Duo administration.</description>
+            <type>input</type>
+            <size>60</size>
+            <required>true</required>
+        </field>
+        <field>
+            <fielddescr>Secret Key (SKey)</fielddescr>
+            <fieldname>duo_skey</fieldname>
+            <description>Enter SKey from Cisco Duo administration.</description>
+            <type>password</type>
+            <size>60</size>
+            <required>true</required>
+            <encoding>base64</encoding>
+        </field>
+        <field>
+            <fielddescr>API Hostname</fielddescr>
+            <fieldname>duo_host</fieldname>
+            <description>Enter API hostname (e.g. api-xxxxxxxx.duosecurity.com)</description>
+            <type>input</type>
+            <size>60</size>
+            <required>true</required>
+        </field>
+        <field>
+            <fielddescr>Push Timeout</fielddescr>
+            <fieldname>duo_timeout</fieldname>
+            <description>Enter a value between 15 and 55 seconds (default: 45).</description>
+            <type>input</type>
+            <size>2</size>
+            <default_value>45</default_value>
+        </field>
+        <field>
+            <fielddescr>Enable Cisco Duo</fielddescr>
+            <fieldname>duo_enable</fieldname>
+            <description>Check this to globally enable the Duo plugin.</description>
+            <type>checkbox</type>
+        </field>
+    </fields>
+
+    <custom_php_install_command>
+        ciscoduo_install_command();
+    </custom_php_install_command>
+
+    <custom_php_validation_command>
+        ciscoduo_validate_input($_POST, $input_errors);
+    </custom_php_validation_command>
+
+    <custom_php_resync_config_command>
+        ciscoduo_sync();
+    </custom_php_resync_config_command>
+</packagegui>
