@@ -200,27 +200,39 @@ EOD;
 EOD;
 	}
 	// Check IPs to listen on
-	if (preg_match("/All/", $bind['listenon'])) {
-		$bind_listenonv6 = "any;";
-		$bind_listenon = "any;";
-	} else {
-		$bind_listenonv6 = "";
-		$bind_listenon = "";
-		foreach (explode(',', $bind['listenon']) as $listenon) {
-			if (is_ipaddrv6($listenon)) {
-				$bind_listenonv6 .= $listenon."; ";
-			} elseif (is_ipaddr($listenon)) {
-				$bind_listenon .= $listenon."; ";
-			} else {
-				$listenon = get_interface_addresses(convert_friendly_interface_to_real_interface_name($listenon));
-				if (is_ipaddr($listenon['ipaddr'])) {
-					$bind_listenon .= $listenon['ipaddr']."; ";
+	$listen_on_all = preg_match("/All/", $bind['listenon']);
+	$bind_listenonv6 = "";
+	$bind_listenon = "";
+	foreach (explode(',', $bind['listenon']) as $listenon) {
+		if (is_ipaddrv6($listenon)) {
+			if ($listen_on_all) {
+				$bind_listenonv6 .= "!";
+			}
+			$bind_listenonv6 .= $listenon."; ";
+		} elseif (is_ipaddr($listenon)) {
+			if ($listen_on_all) {
+				$bind_listenon .= "!";
+			}
+			$bind_listenon .= $listenon."; ";
+		} else {
+			$listenon = get_interface_addresses(convert_friendly_interface_to_real_interface_name($listenon));
+			if (is_ipaddr($listenon['ipaddr'])) {
+				if ($listen_on_all) {
+					$bind_listenon .= "!";
 				}
-				if (is_ipaddrv6($listenon['ipaddr6'])) {
-					$bind_listenonv6 .= $listenon['ipaddr6']."; ";
+				$bind_listenon .= $listenon['ipaddr']."; ";
+			}
+			if (is_ipaddrv6($listenon['ipaddr6'])) {
+				if ($listen_on_all) {
+					$bind_listenonv6 .= "!";
 				}
+				$bind_listenonv6 .= $listenon['ipaddr6']."; ";
 			}
 		}
+	}
+	if ($listen_on_all) {
+		$bind_listenonv6 .= "any;";
+		$bind_listenon .= "any;";
 	}
 	$bind_listenonv6 = $bind_listenonv6 == "" ? "none;" : $bind_listenonv6;
 	$bind_listenon = $bind_listenon == "" ? "none;" : $bind_listenon;

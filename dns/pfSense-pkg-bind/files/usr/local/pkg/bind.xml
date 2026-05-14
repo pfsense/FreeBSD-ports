@@ -104,7 +104,7 @@
 		<field>
 			<fielddescr>Listen on</fielddescr>
 			<fieldname>listenon</fieldname>
-			<description>Choose the interfaces on which to enable BIND.</description>
+			<description>Choose the interfaces on which to enable BIND. If "Listen on All interfaces/ip addresses" is selected, all other selections are excluded.</description>
 			<type>interfaces_selection</type>
 			<showlistenall/>
 			<showvirtualips/>
