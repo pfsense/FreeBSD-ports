@@ -103,7 +103,6 @@
 			<encoding>base64</encoding>
 			<cols>75</cols>
 			<rows>25</rows>
-			<required/>
 		</field>
 		<field>
 			<type>listtopic</type>
