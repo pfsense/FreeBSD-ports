@@ -1,6 +1,8 @@
 pkg/openvpn-client-export.xml
 pkg/openvpn-client-export.inc
 www/vpn_openvpn_export.php
+www/vpn.php
+pfSense/include/www/vpn_portal.inc
 /etc/inc/priv/openvpnexport.inc
 %%DATADIR%%/info.xml
 @dir /etc/inc/priv
