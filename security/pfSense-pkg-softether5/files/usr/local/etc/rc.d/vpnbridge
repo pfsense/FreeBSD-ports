@@ -1,0 +1,68 @@
+#!/bin/sh
+# This file was automatically generated
+# by the pfSense service handler.
+
+name="vpnbridge"
+rcvar="vpnbridge_enable"
+command="/usr/local/bin/vpnbridge"
+other_name="vpnserver"
+
+piddir="/var/run/softether"
+datadir="/cf/conf/softether"
+link_datadir="/var/db/softether"
+
+: ${vpnbridge_enable:="NO"}
+
+precmd() {
+    if [ ! -d "${piddir}" ]; then
+        mkdir -p ${piddir}
+    fi
+    if [ ! -d "${datadir}" ]; then
+        mkdir -p ${datadir}
+    fi
+
+    if [ ! -L "${link_datadir}" ] && [ ! -e "${link_datadir}" ]; then
+        ln -s ${datadir} ${link_datadir}
+    fi
+}
+
+check_conflict() {
+    # Keep behavior explicit: do not auto-stop the opposite service.
+    if pgrep -x "${other_name}" >/dev/null 2>&1; then
+        echo "ERROR: vpnserver is running. Stop vpnserver before starting vpnbridge."
+        return 1
+    fi
+}
+
+rc_start() {
+    check_conflict || return 1
+    precmd
+    ${command} start &
+    # Wait for TAP interfaces to be created
+    sleep 2
+    # Reload pfSense interfaces
+    /etc/rc.reload_interfaces
+}
+
+rc_stop() {
+    ${command} stop &
+    sleep 2
+    /usr/bin/killall ${name} 2>/dev/null || true
+}
+
+case $1 in
+    start)
+        rc_start
+        ;;
+    stop)
+        rc_stop
+        ;;
+    restart)
+        rc_stop
+        rc_start
+        ;;
+    status)
+        pgrep -x ${name} >/dev/null 2>&1
+        ;;
+esac
+

@@ -1,0 +1,46 @@
+#!/bin/sh
+
+ROOTDIR="${PKG_ROOTDIR:-}"
+MARKER="${ROOTDIR}/var/db/%%PORTNAME%%-openssl-compat"
+
+if [ "${2}" = "DEINSTALL" ] || [ "${2}" = "PRE-DEINSTALL" ]; then
+	# Let pfSense deregister services and menu items.
+	/usr/local/bin/php -f /etc/rc.packages %%PORTNAME%% ${2}
+	# rc.packages removes rc.d scripts; recreate empty placeholders
+	# so pkg can delete them cleanly without "missing file" warnings.
+	touch /usr/local/etc/rc.d/vpnserver 2>/dev/null || true
+	touch /usr/local/etc/rc.d/vpnbridge 2>/dev/null || true
+	exit 0
+fi
+
+if [ "${2}" = "POST-DEINSTALL" ]; then
+	# Remove symlinks from marker if it exists
+	if [ -f "${MARKER}" ]; then
+		while IFS='|' read -r dst_rel src_rel; do
+			[ -n "${dst_rel}" ] || continue
+			dst="${ROOTDIR}${dst_rel}"
+			# Remove if it's a symlink (don't care about target)
+			if [ -L "${dst}" ]; then
+				rm -f "${dst}"
+			fi
+		done < "${MARKER}"
+	fi
+
+	# Fallback: remove known hardcoded symlinks even if marker is missing
+	# This handles cases where marker wasn't created or was lost
+	for symlink in \
+		/lib/libssl.so.35 \
+		/lib/libcrypto.so.35 \
+		/usr/local/lib/libssl.so.35 \
+		/usr/local/lib/libcrypto.so.35
+	do
+		if [ -L "${symlink}" ]; then
+			rm -f "${symlink}"
+		fi
+	done
+
+	# Clean up marker
+	rm -f "${MARKER}"
+fi
+
+/usr/local/bin/php -f /etc/rc.packages %%PORTNAME%% ${2}

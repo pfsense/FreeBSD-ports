@@ -1,0 +1,78 @@
+#!/bin/sh
+
+if [ "${2}" != "POST-INSTALL" ]; then
+	exit 0
+fi
+
+ROOTDIR="${PKG_ROOTDIR:-}"
+MARKER="${ROOTDIR}/var/db/%%PORTNAME%%-openssl-compat"
+SOFTETHER_DATA_REL="/cf/conf/softether"
+SOFTETHER_LINK_REL="/var/db/softether"
+
+create_compat_link() {
+	dst_rel="$1"
+	src30_rel="$2"
+
+	dst="${ROOTDIR}${dst_rel}"
+	src30="${ROOTDIR}${src30_rel}"
+
+	if [ -e "${dst}" ] || [ -L "${dst}" ]; then
+		return 0
+	fi
+
+	if [ ! -e "${src30}" ]; then
+		return 0
+	fi
+
+	mkdir -p "$(dirname "${dst}")"
+	ln -s "${src30_rel}" "${dst}" || return 0
+	echo "${dst_rel}|${src30_rel}" >> "${MARKER}"
+}
+
+ensure_softether_datadir() {
+	datadir="${ROOTDIR}${SOFTETHER_DATA_REL}"
+	linkdir="${ROOTDIR}${SOFTETHER_LINK_REL}"
+
+	mkdir -p "${datadir}"
+
+	if [ -L "${linkdir}" ]; then
+		link_target="$(readlink "${linkdir}")"
+		if [ "${link_target}" != "${SOFTETHER_DATA_REL}" ]; then
+			if [ -d "${linkdir}" ]; then
+				cp -Rp "${linkdir}/." "${datadir}/" 2>/dev/null || true
+			fi
+			rm -f "${linkdir}"
+			ln -s "${SOFTETHER_DATA_REL}" "${linkdir}"
+		fi
+	elif [ -d "${linkdir}" ]; then
+		cp -Rp "${linkdir}/." "${datadir}/" 2>/dev/null || true
+		rm -rf "${linkdir}"
+		ln -s "${SOFTETHER_DATA_REL}" "${linkdir}"
+	elif [ ! -e "${linkdir}" ]; then
+		ln -s "${SOFTETHER_DATA_REL}" "${linkdir}"
+	fi
+}
+
+rm -f "${MARKER}"
+
+# pfSense 2.8.x ships OpenSSL 3.0 in base; softether5 currently links to .so.35.
+if [ -e "${ROOTDIR}/usr/lib/libssl.so.30" ]; then
+	create_compat_link "/lib/libssl.so.35" "/usr/lib/libssl.so.30"
+	create_compat_link "/usr/local/lib/libssl.so.35" "/usr/lib/libssl.so.30"
+fi
+
+if [ -e "${ROOTDIR}/lib/libcrypto.so.30" ]; then
+	create_compat_link "/lib/libcrypto.so.35" "/lib/libcrypto.so.30"
+	create_compat_link "/usr/local/lib/libcrypto.so.35" "/lib/libcrypto.so.30"
+elif [ -e "${ROOTDIR}/usr/lib/libcrypto.so.30" ]; then
+	create_compat_link "/lib/libcrypto.so.35" "/usr/lib/libcrypto.so.30"
+	create_compat_link "/usr/local/lib/libcrypto.so.35" "/usr/lib/libcrypto.so.30"
+fi
+
+if [ ! -s "${MARKER}" ]; then
+	rm -f "${MARKER}"
+fi
+
+ensure_softether_datadir
+
+${PKG_ROOTDIR}/usr/local/bin/php -f ${PKG_ROOTDIR}/etc/rc.packages %%PORTNAME%% ${2}

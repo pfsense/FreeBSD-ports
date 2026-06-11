@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE packagegui SYSTEM "../schema/packages.dtd">
+<?xml-stylesheet type="text/xsl" href="../xsl/package.xsl"?>
+<packagegui>
+	<copyright>
+	<![CDATA[
+/*
+ * softether5.xml
+ *
+ * part of pfSense (https://www.pfsense.org)
+ * Copyright (c) 2015-2024 Rubicon Communications, LLC (Netgate)
+ * Copyright (C) 2006 Bill Marquette <bill.marquette@gmail.com>
+ * All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+]]>
+	</copyright>
+	<name>softether5</name>
+	<title>VPN/SoftEther5</title>
+	<menu>
+		<name>SoftEther5</name>
+		<section>VPN</section>
+		<configfile>softether5.xml</configfile>
+		<tooltiptext></tooltiptext>
+		<url>/vpn_softether5.php</url>
+	</menu>
+	<menu>
+		<name>SoftEther5</name>
+		<section>Services</section>
+		<configfile>softether5.xml</configfile>
+		<tooltiptext></tooltiptext>
+		<url>/vpn_softether5.php</url>
+	</menu>
+	<service>
+		<name>vpnserver</name>
+		<rcfile>vpnserver</rcfile>
+		<executable>vpnserver</executable>
+		<description>SoftEther5 VPN Server</description>
+	</service>
+	<service>
+		<name>vpnbridge</name>
+		<rcfile>vpnbridge</rcfile>
+		<executable>vpnbridge</executable>
+		<description>SoftEther5 VPN Bridge</description>
+	</service>
+</packagegui>
+

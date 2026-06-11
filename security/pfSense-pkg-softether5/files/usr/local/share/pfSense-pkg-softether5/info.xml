@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<pfsensepkgs>
+	<package>
+		<name>softether5</name>
+		<descr><![CDATA[SoftEther VPN ("SoftEther" means "Software Ethernet") is an open-source cross-platform multi-protocol VPN program]]></descr>
+		<website>https://www.softether.org/</website>
+		<version>%%PKGVERSION%%</version>
+		<configurationfile>softether5.xml</configurationfile>
+	</package>
+</pfsensepkgs>

@@ -1,0 +1,7 @@
+etc/rc.d/vpnserver
+etc/rc.d/vpnbridge
+pkg/softether5.xml
+www/vpn_softether5.php
+www/vpn_softether5_api_proxy.php
+www/shortcuts/pkg_softether5.inc
+%%DATADIR%%/info.xml
