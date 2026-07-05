@@ -1,7 +1,8 @@
 PORTNAME=	sigi
 DISTVERSIONPREFIX=	v
-DISTVERSION=	3.6.3
-PORTREVISION=	3
+DISTVERSION=	3.7.1
+PORTREVISION=	16
+
 CATEGORIES=	deskutils
 
 MAINTAINER=	hiljusti@so.dang.cool
@@ -22,6 +23,5 @@ PLIST_FILES=	bin/sigi \
 
 post-install:
 	${INSTALL_MAN} ${WRKSRC}/${PORTNAME}.1 ${STAGEDIR}${PREFIX}/share/man/man1/
-	${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/${PORTNAME}
 
 .include <bsd.port.mk>

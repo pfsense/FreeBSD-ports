@@ -1,5 +1,6 @@
 PORTNAME=	jdiskreport
 DISTVERSION=	1_4_1
+PORTREVISION=	1
 CATEGORIES=	sysutils java
 MASTER_SITES=	http://www.jGoodies.com/download/${PORTNAME}/
 
@@ -7,8 +8,7 @@ MAINTAINER=	jon@witchspace.com
 COMMENT=	Java program to graphically display disk usage statistics
 WWW=		http://www.jgoodies.com/freeware/jdiskreport/
 
-USES=		zip
-USE_JAVA=	YES
+USES=		java zip
 
 PLIST_SUB=	JDISKDIR=${JDISKDIR:S,${PREFIX}/,,g}
 PLIST_SUB+=	PORTVERSION=${PORTVERSION}

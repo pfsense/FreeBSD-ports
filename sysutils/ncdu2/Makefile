@@ -1,5 +1,5 @@
 PORTNAME=	ncdu
-PORTVERSION=	2.3
+PORTVERSION=	2.9.2
 CATEGORIES=	sysutils
 MASTER_SITES=	https://dev.yorhel.nl/download/
 PKGNAMESUFFIX=	2
@@ -12,12 +12,13 @@ WWW=		https://dev.yorhel.nl/ncdu \
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSES/MIT.txt
 
-BUILD_DEPENDS=	zig>=0.11<0.11_99:lang/zig
+BUILD_DEPENDS=	zig>=0.14:lang/zig
+LIB_DEPENDS=	libzstd.so:archivers/zstd
 
-USES=		ncurses
+USES=		ncurses pkgconfig
 
-BUILD_ARGS=	--prefix "${PREFIX}" --verbose ${STRIP:C|.+|-Dstrip|}
-MAKE_ENV=	DESTDIR="${STAGEDIR}"
+BUILD_ARGS=	--prefix ${PREFIX} --verbose -Dpie ${STRIP:C|.+|-Dstrip|}
+MAKE_ENV=	DESTDIR=${STAGEDIR}
 
 PLIST_FILES=	bin/ncdu2 \
 		share/man/man1/ncdu2.1.gz

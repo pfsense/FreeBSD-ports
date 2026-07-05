@@ -1,5 +1,6 @@
 PORTNAME=	jlatexmath
 PORTVERSION=	1.0.7
+PORTREVISION=	1
 CATEGORIES=	math java
 MASTER_SITES=	https://repo1.maven.org/maven2/org/scilab/forge/jlatexmath/${PORTVERSION}/:0 \
 		https://repo1.maven.org/maven2/org/scilab/forge/jlatexmath-fop/${PORTVERSION}/:1
@@ -15,7 +16,7 @@ LICENSE=	GPLv2
 
 RUN_DEPENDS=	${JAVALIBDIR}/xmlgraphics-commons.jar:graphics/xmlgraphics-commons
 
-USE_JAVA=	yes
+USES=		java
 
 NO_ARCH=	yes
 NO_BUILD=	yes

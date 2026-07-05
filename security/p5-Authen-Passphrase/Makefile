@@ -1,6 +1,6 @@
 PORTNAME=	Authen-Passphrase
 PORTVERSION=	0.008
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	security perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
@@ -20,7 +20,7 @@ RUN_DEPENDS=	p5-Authen-DecHpwd>=0:security/p5-Authen-DecHpwd \
 		p5-Crypt-MySQL>=0:security/p5-Crypt-MySQL \
 		p5-Crypt-PasswdMD5>=0:security/p5-Crypt-PasswdMD5 \
 		p5-Crypt-UnixCrypt_XS>=0:security/p5-Crypt-UnixCrypt_XS \
-		p5-Data-Entropy>=0:security/p5-Data-Entropy \
+		p5-CryptX>=0:security/p5-CryptX \
 		p5-Digest-MD4>=0:security/p5-Digest-MD4 \
 		p5-Module-Runtime>=0:devel/p5-Module-Runtime \
 		p5-Params-Classify>=0:devel/p5-Params-Classify

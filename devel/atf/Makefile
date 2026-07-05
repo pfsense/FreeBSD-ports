@@ -1,23 +1,20 @@
 PORTNAME=	atf
-PORTVERSION=	0.21
-PORTREVISION=	3
+DISTVERSION=	0.23
 CATEGORIES=	devel
+MASTER_SITES=	https://github.com/freebsd/${PORTNAME}/releases/download/${PORTNAME}-${DISTVERSION}/
 
 MAINTAINER=	bofh@FreeBSD.org
 COMMENT=	C, C++ and shell libraries to write ATF-compliant test programs
-WWW=		https://github.com/jmmv/atf/
+WWW=		https://github.com/freebsd/atf
 
 LICENSE=	BSD3CLAUSE
 
 USES=		autoreconf libtool pathfix
-USE_CXXSTD=	gnu++11
-USE_GITHUB=	yes
-GH_ACCOUNT=	freebsd
-GH_TAGNAME=	55c21b2
+USE_CXXSTD=	gnu++14
 USE_LDCONFIG=	yes
 
 GNU_CONFIGURE=	yes
-GNU_CONFIGURE_MANPREFIX=${PREFIX}/share
+
 INSTALL_TARGET=	install-strip
 
 OPTIONS_DEFINE=	DOCS TEST

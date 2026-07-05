@@ -1,6 +1,5 @@
 PORTNAME=	chef-zero
-PORTVERSION=	15.0.11
-PORTREVISION=	2
+PORTVERSION=	15.1.0
 CATEGORIES=	sysutils
 MASTER_SITES=	RG
 
@@ -11,11 +10,13 @@ WWW=		https://github.com/chef/chef-zero
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-RUN_DEPENDS=	rubygem-ffi-yajl>=2.2<3:devel/rubygem-ffi-yajl \
-		rubygem-hashie4>=2.0<5.0:devel/rubygem-hashie4 \
+RUN_DEPENDS=	rubygem-ffi-yajl>=2.2<4.0:devel/rubygem-ffi-yajl \
+		rubygem-hashie>=2.0<6.0:devel/rubygem-hashie \
 		rubygem-mixlib-log>=2.0<4.0:devel/rubygem-mixlib-log \
-		rubygem-rack22>=2.0.6,3<3,3:www/rubygem-rack22 \
-		rubygem-uuidtools>=2.1<3:devel/rubygem-uuidtools \
+		rubygem-rack>=3.1.16,3<4,3:www/rubygem-rack \
+		rubygem-rackup>=2.2.1<3:www/rubygem-rackup \
+		rubygem-unf_ext>=0.0.8<0.1:textproc/rubygem-unf_ext \
+		rubygem-uuidtools>=2.1:devel/rubygem-uuidtools \
 		rubygem-webrick>=0:www/rubygem-webrick
 
 USES=		gem

@@ -1,6 +1,7 @@
 PORTNAME=	containerd
 DISTVERSIONPREFIX=v
-DISTVERSION=	1.7.15
+DISTVERSION=	2.2.1
+PORTREVISION=	4
 CATEGORIES=	sysutils
 
 MAINTAINER=	decke@FreeBSD.org
@@ -25,7 +26,6 @@ MAKE_ENV=	${GO_ENV} \
 		VERSION="${DISTVERSION}"
 
 PLIST_FILES=	bin/containerd \
-		bin/containerd-shim \
 		bin/containerd-stress \
 		bin/ctr
 

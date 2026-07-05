@@ -1,6 +1,6 @@
 PORTNAME=	faiss
 DISTVERSIONPREFIX=	v
-DISTVERSION=	1.8.0
+DISTVERSION=	1.14.1
 CATEGORIES=	math
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
@@ -13,14 +13,16 @@ LICENSE_FILE=	${WRKSRC}/../../LICENSE
 
 BROKEN_i386=	clang crashes, see bug#261580
 
-PY_DEPENDS=	${PYNUMPY}
+PY_DEPENDS=	${PYNUMPY} \
+		${PYTHON_PKGNAMEPREFIX}packaging>0:devel/py-packaging@${PY_FLAVOR}
 BUILD_DEPENDS=	swig:devel/swig \
 		${PY_DEPENDS}
 LIB_DEPENDS=	libfaiss.so:math/faiss
 RUN_DEPENDS=	${PY_DEPENDS}
+TEST_DEPENDS=	${PYTHON_PKGNAMEPREFIX}pytorch>0:misc/py-pytorch@${PY_FLAVOR}
 
 USES=		cmake compiler:c++11-lang localbase python
-USE_PYTHON=	flavors pytest
+USE_PYTHON=	flavors pytest # tests fail to run, see https://github.com/facebookresearch/faiss/issues/3914
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	facebookresearch
@@ -29,11 +31,11 @@ WRKSRC_SUBDIR=	faiss/python
 
 CMAKE_ARGS=	-DPython_EXECUTABLE:STRING=${PYTHON_CMD}
 
-TEST_WRKSRC=	${WRKSRC}/../..
+TEST_WRKSRC=	${WRKSRC}/../../tests
 TEST_ENV=	${MAKE_ENV} PYTHONPATH=${STAGEDIR}${PYTHONPREFIX_SITELIBDIR}
 
 post-patch: # remove GPU testcases
-	${RM} -r ${WRKSRC}/../../faiss/gpu
+	@${RM} -r ${WRKSRC}/../../faiss/gpu
 
 do-install: # see https://github.com/facebookresearch/faiss/issues/2194
 	${MKDIR} ${STAGEDIR}${PYTHON_SITELIBDIR}/${PORTNAME}
@@ -42,5 +44,7 @@ do-install: # see https://github.com/facebookresearch/faiss/issues/2194
 	${INSTALL_DATA} ${BUILD_WRKSRC}/${f} ${STAGEDIR}${PYTHON_SITELIBDIR}/${PORTNAME}
 .endfor
 	cd ${BUILD_WRKSRC} && ${COPYTREE_SHARE} contrib ${STAGEDIR}${PYTHONPREFIX_SITELIBDIR}/${PORTNAME}
+
+# tests expect the modle common_io to be available, but this module is questionable, see https://github.com/facebookresearch/faiss/issues/4865
 
 .include <bsd.port.mk>

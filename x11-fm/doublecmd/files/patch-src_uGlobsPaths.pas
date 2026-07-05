@@ -1,6 +1,6 @@
---- src/uGlobsPaths.pas.orig	2024-01-04 17:03:35 UTC
+--- src/uGlobsPaths.pas.orig	2025-01-24 23:48:47 UTC
 +++ src/uGlobsPaths.pas
-@@ -3,7 +3,7 @@ unit uGlobsPaths;
+@@ -3,7 +3,7 @@ var
  interface
  
  var
@@ -9,20 +9,20 @@
    gpCfgDir : String = '';  // directory from which configuration files are used
    gpGlobalCfgDir : String = '';  // config dir global for all user
    gpCmdLineCfgDir : String = ''; // config dir passed on the command line
-@@ -11,6 +11,7 @@ var
-   gpPixmapPath : String = '';  // path to pixmaps
+@@ -12,6 +12,7 @@ var
    gpHighPath : String = ''; // editor highlighter directory
+   gpCacheDir : String = ''; // cache directory
    gpThumbCacheDir : String = ''; // thumbnails cache directory
 +  gpDocsDir : String = '%%DOCSDIR%%/'; // directory for help files
  
  //Global Configuration Filename
  const
-@@ -74,7 +75,7 @@ end;
- 
- procedure Initialize;
+@@ -87,7 +88,7 @@ begin
  begin
--  gpExePath := ExtractFilePath(TryReadAllLinks(ParamStr(0)));
-+  //gpExePath := ExtractFilePath(TryReadAllLinks(ParamStr(0)));
+   gpExeFile := ParamStr(0);
+   gpExeFile := TryReadAllLinks(gpExeFile);
+-  gpExePath := ExtractFilePath(gpExeFile);
++  //gpExePath := ExtractFilePath(gpExeFile);
    gpGlobalCfgDir := gpExePath + 'settings' + DirectorySeparator;
  end;
  

@@ -1,5 +1,5 @@
 PORTNAME=	default_value_for
-PORTVERSION=	3.4.0
+PORTVERSION=	4.2.0
 CATEGORIES=	devel rubygems
 MASTER_SITES=	RG
 
@@ -10,7 +10,7 @@ WWW=		https://github.com/FooBarWidget/default_value_for
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE.TXT
 
-RUN_DEPENDS=	rubygem-activerecord60>=3.2.0<7.0:databases/rubygem-activerecord60
+RUN_DEPENDS=	rubygem-activerecord81>=6.1<8.2:databases/rubygem-activerecord81
 
 USES=		gem
 

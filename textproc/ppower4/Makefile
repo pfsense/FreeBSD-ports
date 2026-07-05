@@ -1,6 +1,6 @@
 PORTNAME=	ppower4
 PORTVERSION=	0.9.4
-PORTREVISION=	8
+PORTREVISION=	9
 CATEGORIES=	textproc java
 MASTER_SITES=	TEX/support/${PORTNAME}
 DISTFILES=	pp4sty.zip pp4p.jar manual.pdf leveldemo.zip
@@ -13,8 +13,7 @@ WWW=		https://ctan.org/tex-archive/support/ppower4/
 
 LICENSE=	GPLv2 # version not really specified
 
-USES=		tex zip
-USE_JAVA=	yes
+USES=		java tex zip
 USE_TEX=	latex
 
 NO_ARCH=	yes

@@ -1,6 +1,7 @@
 PORTNAME=	gdu
 DISTVERSIONPREFIX=	v
-DISTVERSION=	5.27.0
+DISTVERSION=	5.32.0
+PORTREVISION=	4
 CATEGORIES=	sysutils
 
 MAINTAINER=	lcook@FreeBSD.org
@@ -12,16 +13,8 @@ LICENSE_FILE=	${WRKSRC}/LICENSE.md
 
 USES=		go:modules
 
-_BUILD_VERSION=	${DISTVERSIONFULL}
-_BUILD_MAJOR=	${_BUILD_VERSION:C/\..*$//}
-_BUILD_DATE=	$$(date +%Y-%m-%d)
-
-GO_MODULE=	github.com/dundee/${PORTNAME}/${_BUILD_MAJOR}
+GO_MODULE=	github.com/dundee/${PORTNAME}/${DISTVERSIONFULL:R:R}
 GO_TARGET=	./cmd/${PORTNAME}
-GO_BUILDFLAGS=	-ldflags "\
-                -s -w \
-		-X ${GO_MODULE}/build.Version=${_BUILD_VERSION} \
-		-X ${GO_MODULE}/build.Time=${_BUILD_DATE}"
 
 CONFLICTS_INSTALL=	coreutils
 
@@ -32,6 +25,13 @@ OPTIONS_DEFINE=		DOCS MANPAGES
 OPTIONS_DEFAULT=	MANPAGES
 
 MANPAGES_PLIST_FILES=	share/man/man1/${PORTNAME}.1.gz
+
+post-patch:
+	@${REINPLACE_CMD} -e '\
+	    s|%%DISTVERSION%%|${DISTVERSION}|g; \
+	    s|%%BUILDTIME%%|${CONFIGURE_TARGET}|g; \
+	    s|%%BUILDUSER%%|portbld|g' \
+	    ${PATCH_WRKSRC}/build/build.go
 
 post-install-DOCS-on:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}

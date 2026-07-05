@@ -4,13 +4,12 @@ include/kiwix/book.h
 include/kiwix/bookmark.h
 include/kiwix/common.h
 include/kiwix/downloader.h
+include/kiwix/i18n.h
 include/kiwix/kiwix_config.h
 include/kiwix/kiwixserve.h
 include/kiwix/library.h
-include/kiwix/libxml_dumper.h
 include/kiwix/manager.h
 include/kiwix/name_mapper.h
-include/kiwix/opds_dumper.h
 include/kiwix/search_renderer.h
 include/kiwix/server.h
 include/kiwix/tools.h
@@ -18,6 +17,6 @@ include/kiwix/version.h
 lib/libkiwix.so
 lib/libkiwix.so.%%PORTMAJ%%
 lib/libkiwix.so.%%PORTVERSION%%
-libdata/pkgconfig/kiwix.pc
+libdata/pkgconfig/libkiwix.pc
 share/man/man1/kiwix-compile-i18n.1.gz
 share/man/man1/kiwix-compile-resources.1.gz

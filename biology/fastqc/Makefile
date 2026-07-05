@@ -1,5 +1,6 @@
 PORTNAME=	fastqc
 DISTVERSION=	0.12.1
+PORTREVISION=	1
 CATEGORIES=	biology java perl5
 MASTER_SITES=	https://www.bioinformatics.babraham.ac.uk/projects/fastqc/
 DISTNAME=	${PORTNAME}_v${DISTVERSIONPREFIX}${DISTVERSION}
@@ -11,8 +12,7 @@ WWW=		https://www.bioinformatics.babraham.ac.uk/projects/fastqc/
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/LICENSE.txt
 
-USES=		zip perl5 shebangfix
-USE_JAVA=	yes
+USES=		java zip perl5 shebangfix
 USE_PERL5=	run
 
 SHEBANG_FILES=	fastqc

@@ -1,5 +1,6 @@
 PORTNAME=	readseq
 DISTVERSION=	2.1.19
+PORTREVISION=	1
 CATEGORIES=	biology java
 # The site used by bioconda for 2.1.30 is down as of 2021-04-13
 # MASTER_SITES=	http://iubio.bio.indiana.edu/soft/molbio/readseq/java/
@@ -13,7 +14,7 @@ WWW=		https://sourceforge.net/projects/readseq
 
 LICENSE=	PD
 
-USE_JAVA=	yes
+USES=	java
 NO_BUILD=	yes
 SUB_FILES=	readseq
 PLIST_FILES=	bin/readseq share/java/classes/readseq.jar

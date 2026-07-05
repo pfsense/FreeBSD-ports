@@ -23,7 +23,6 @@ USE_PERL5=	run
 USE_TEX=	jadetex
 
 GNU_CONFIGURE=	yes
-GNU_CONFIGURE_MANPREFIX=${PREFIX}/share
 MAKE_ARGS+=	docdir="${DOCSDIR}" htmldir="${DOCSDIR}/html"
 NO_ARCH=	yes
 SHEBANG_FILES=	bin/sgmldiff.in

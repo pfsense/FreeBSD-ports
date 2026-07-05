@@ -1,16 +1,16 @@
 PORTNAME=	frr
-PORTVERSION=	9.1
+PORTVERSION=	9.1.3
 DISTVERSIONPREFIX=	frr-
-PORTREVISION=	2
+PORTREVISION=	1
 CATEGORIES=	net
 .if defined(PYTHONTOOLS)
 PKGNAMESUFFIX=	9-pythontools
 .else
 PKGNAMESUFFIX=	9
 .endif
+PORTREVISION= 1
 
 MAINTAINER=	olivier@FreeBSD.org
-
 COMMENT?=	IP routing protocol suite including BGP, IS-IS, OSPF, BABEL and RIP
 WWW=		https://frrouting.org/
 
@@ -47,7 +47,7 @@ USES=		autoreconf bison compiler:c++11-lang gmake libtool makeinfo \
 
 BINARY_ALIAS=	python=${PYTHON_VERSION}
 
-CONFLICTS=	frr8 openbgpd openospfd quagga zebra
+CONFLICTS=	frr8 frr10 openbgpd openospfd quagga zebra
 
 GNU_CONFIGURE=	yes
 GNU_CONFIGURE_MANPREFIX=	${PREFIX}/share
@@ -130,7 +130,7 @@ SNMP_USES=			ssl
 TCMALLOC_CONFIGURE_ENABLE=	tcmalloc
 TCMALLOC_LIB_DEPENDS=		libtcmalloc.so:devel/google-perftools
 
-USE_RC_SUBR=	frr watchfrr
+USE_RC_SUBR=	frr
 
 SHEBANG_FILES=	yang/embedmodel.py
 

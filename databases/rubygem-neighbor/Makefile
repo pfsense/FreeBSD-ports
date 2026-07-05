@@ -1,5 +1,5 @@
 PORTNAME=	neighbor
-PORTVERSION=	0.2.3
+PORTVERSION=	0.3.2
 CATEGORIES=	databases rubygems
 MASTER_SITES=	RG
 
@@ -9,7 +9,7 @@ WWW=		https://github.com/ankane/neighbor
 
 LICENSE=	MIT
 
-RUN_DEPENDS=	rubygem-activerecord61>=5.2:databases/rubygem-activerecord61
+RUN_DEPENDS=	rubygem-activerecord70>=6.1:databases/rubygem-activerecord70
 
 USES=		gem
 

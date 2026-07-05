@@ -1,6 +1,5 @@
 PORTNAME=	par2cmdline-turbo
-PORTVERSION=	1.1.1
-PORTREVISION=	1
+PORTVERSION=	1.4.0
 DISTVERSIONPREFIX=	v
 CATEGORIES=	archivers
 
@@ -23,9 +22,6 @@ GH_ACCOUNT=	animetosho
 
 PORTDOCS=	README.md
 CONFLICTS=	par2cmdline
-
-PLIST_FILES=	bin/par2 bin/par2create bin/par2repair bin/par2verify \
-	share/man/man1/par2.1.gz
 
 OPTIONS_DEFINE=	DOCS
 

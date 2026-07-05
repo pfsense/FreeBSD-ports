@@ -1,6 +1,6 @@
 PORTNAME=		wfa2-lib
 DISTVERSIONPREFIX=	v
-DISTVERSION=		2.3.4
+DISTVERSION=		2.3.6
 CATEGORIES=		biology
 
 MAINTAINER=	jwb@FreeBSD.org
@@ -16,5 +16,9 @@ USE_LDCONFIG=	yes
 
 GH_ACCOUNT=	smarco
 GH_PROJECT=	WFA2-lib
+
+.if !exists(/usr/include/omp.h)
+USES+=	compiler:gcc-c++11-lib
+.endif
 
 .include <bsd.port.mk>

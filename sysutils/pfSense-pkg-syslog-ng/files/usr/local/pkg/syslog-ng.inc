@@ -3,7 +3,7 @@
  * syslog-ng.inc
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2015-2024 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2015-2026 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2012 Lance Leger
  * All rights reserved.
  *
@@ -33,6 +33,7 @@ if (!function_exists("filter_configure")) {
 
 define("SYSLOGNG_BASEDIR", "/usr/local/");
 define('SYSLOGNG_DIR', "/var/etc/syslog-ng/");
+define('LOG_PREFIX_PKG_SYSLOGNG', 'syslog-ng');
 
 function syslogng_get_real_interface_address($interface) {
 	$interface = convert_friendly_interface_to_real_interface_name($interface);
@@ -42,21 +43,19 @@ function syslogng_get_real_interface_address($interface) {
 
 function syslogng_install_command() {
 	$crontask = "/usr/bin/nice -n20 " . SYSLOGNG_BASEDIR . "sbin/logrotate /usr/local/etc/logrotate.conf";
-	install_cron_job("${crontask}", true, "0");
+	install_cron_job("{$crontask}", true, "0");
 	syslogng_resync();
 }
 
 function syslogng_deinstall_command() {
 	$crontask = "/usr/bin/nice -n20 " . SYSLOGNG_BASEDIR . "sbin/logrotate /usr/local/etc/logrotate.conf";
-	install_cron_job("${crontask}", false);
+	install_cron_job("{$crontask}", false);
 	unlink_if_exists("/usr/local/etc/logrotate.conf");
 	unlink_if_exists("/usr/local/etc/syslog-ng.conf");
 	filter_configure();
 }
 
 function syslogng_validate_general($post, &$input_errors) {
-	global $config;
-
 	$objects = config_get_path('installedpackages/syslogngadvanced/config', []);
 
 	if (empty($post['interfaces'])) {
@@ -98,8 +97,6 @@ function syslogng_validate_general($post, &$input_errors) {
 }
 
 function syslogng_validate_advanced($post, &$input_errors) {
-	global $config;
-
 	$objects = config_get_path('installedpackages/syslogngadvanced/config', []);
 
 	if ($post['objectname'] == '_DEFAULT') {
@@ -238,7 +235,7 @@ function syslogng_build_conf($objects) {
 function syslogng_build_logrotate_conf($settings, $objects) {
 	if ($settings['enable'] != 'on') {
 		$crontask = "/usr/bin/nice -n20 " . SYSLOGNG_BASEDIR . "sbin/logrotate /usr/local/etc/logrotate.conf";
-		install_cron_job("${crontask}", false);
+		install_cron_job("{$crontask}", false);
 		unlink_if_exists('/usr/local/etc/logrotate.conf');
 		return '';
 	}
@@ -275,13 +272,11 @@ function syslogng_build_logrotate_conf($settings, $objects) {
 
 	file_put_contents('/usr/local/etc/logrotate.conf', $conf);
 	$crontask = "/usr/bin/nice -n20 " . SYSLOGNG_BASEDIR . "sbin/logrotate /usr/local/etc/logrotate.conf";
-	install_cron_job("${crontask}", true, "0");
+	install_cron_job("{$crontask}", true, "0");
 	return $conf;
 }
 
 function syslogng_generate_rules($type) {
-	global $config;
-
 	$settings = config_get_path('installedpackages/syslogng/config/0', []);
 
 	$interfaces = ($settings['interfaces'] ? $settings['interfaces'] : 'lan');
@@ -301,8 +296,6 @@ function syslogng_generate_rules($type) {
 }
 
 function syslogng_resync() {
-	global $config;
-
 	$settings = config_get_path('installedpackages/syslogng/config/0', []);
 	$objects = config_get_path('installedpackages/syslogngadvanced/config', []);
 
@@ -388,10 +381,10 @@ function syslogng_resync() {
 		}
 
 		if (!is_service_running('syslog-ng')) {
-			log_error("Starting syslog-ng");
+			logger(LOG_INFO, localize_text("Starting service"), LOG_PREFIX_PKG_SYSLOGNG);
 			start_service("syslog-ng");
 		} else {
-			log_error("Reloading syslog-ng for configuration sync");
+			logger(LOG_INFO, localize_text("Reloading service for configuration sync"), LOG_PREFIX_PKG_SYSLOGNG);
 			restart_service("syslog-ng");
 		}
 
@@ -403,7 +396,7 @@ function syslogng_resync() {
 		}
 	} else {
 		if (is_service_running('syslog-ng')) {
-			log_error("Stopping syslog-ng");
+			logger(LOG_INFO, localize_text("Stopping service"), LOG_PREFIX_PKG_SYSLOGNG);
 			stop_service("syslog-ng");
 		}
 		unlink_if_exists("/usr/local/etc/syslog-ng.conf");
@@ -451,24 +444,21 @@ EOD;
 }
 
 function syslogng_get_ca_or_certs($type, $consumer = 'IPsec') {
-	global $config;
 	$c_arr = array();
 	if (function_exists('cert_build_list')) {
 		$list_arr = cert_build_list($type, $consumer, true, false);
 	}
-	if (isset($config[$type]) && is_array($config[$type])) {
-		if (is_array($list_arr)) {
-			foreach ($config[$type] as $c) {
-				if (in_array($c['refid'],array_column($list_arr, 'refid')) &&
-				 (!empty($c['prv']) || $type == 'ca')) {
-					$c_arr[] = $c;
-				}
+	if (is_array($list_arr)) {
+		foreach (config_get_path($type, []) as $c) {
+			if (in_array($c['refid'],array_column($list_arr, 'refid')) &&
+				(!empty($c['prv']) || $type == 'ca')) {
+				$c_arr[] = $c;
 			}
-		} else {
-			foreach ($config[$type] as $c) {
-				if (!empty($c['prv']) || $type == 'ca') {
-					$c_arr[] = $c;
-				}
+		}
+	} else {
+		foreach (config_get_path($type, []) as $c) {
+			if (!empty($c['prv']) || $type == 'ca') {
+				$c_arr[] = $c;
 			}
 		}
 	}
@@ -476,10 +466,10 @@ function syslogng_get_ca_or_certs($type, $consumer = 'IPsec') {
 }
 
 function syslogng_build_cert($settings) {
-	global $config;
-
 	$ca = lookup_ca($settings['dca']);
+	$ca = $ca['item'];
 	$cert = lookup_cert($settings['certificate']);
+	$cert = $cert['item'];
 
 	if ($cert != false) {
 		file_put_contents(SYSLOGNG_DIR . "/syslog-ng.cert", base64_decode($cert['crt']));
@@ -496,7 +486,6 @@ function syslogng_build_cert($settings) {
 }
 
 function syslogng_plugin_certificates($pluginparams) {
-	global $config;
 	$result = array();
 	$conf = config_get_path('installedpackages/syslogng/config/0', []);
 

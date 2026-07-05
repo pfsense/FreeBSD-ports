@@ -1,0 +1,20 @@
+--- pyproject.toml.orig	2026-02-05 18:48:30 UTC
++++ pyproject.toml
+@@ -3,7 +3,7 @@ requires-python = '>=3.10'
+ description = 'The ASDF Standard schemas'
+ readme = 'README.md'
+ requires-python = '>=3.10'
+-license-files = ['LICENSE']
++license = { file = 'LICENSE' }
+ authors = [{ name = 'The ASDF Developers' }]
+ classifiers = [
+     'Programming Language :: Python',
+@@ -41,7 +41,7 @@ requires = [
+ 
+ [build-system]
+ requires = [
+-    "setuptools >=77",
++    "setuptools >=61",
+     "setuptools_scm[toml] >=3.4",
+     "wheel",
+ ]

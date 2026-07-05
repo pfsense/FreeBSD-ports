@@ -1,8 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	pfSense-pkg-sudo
-PORTVERSION=	0.3
-PORTREVISION=	8
+PORTVERSION=	0.3.4
 CATEGORIES=	security
 MASTER_SITES=	# empty
 DISTFILES=	# empty

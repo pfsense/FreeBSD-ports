@@ -1,6 +1,6 @@
 PORTNAME=	kicad
 DISTVERSION=	r${GIT_SRC_DATE}
-PORTREVISION=	8
+PORTREVISION=	3
 #PORTREVISION=	1
 CATEGORIES=	cad
 PKGNAMESUFFIX=	-devel
@@ -29,6 +29,9 @@ LIB_DEPENDS=	libboost_thread.so:devel/boost-libs \
 		libprotobuf.so:devel/protobuf \
 		libcurl.so:ftp/curl \
 		libGLEW-wayland.so:graphics/glew-wayland \
+		libnng.so:net/nng \
+		libpoppler-glib.so:graphics/poppler-glib \
+		libspnav.so:misc/libspnav \
 		libodbc.so:databases/unixODBC
 
 CONFLICTS_INSTALL=	kicad # bin/_cvpcb.kiface
@@ -40,24 +43,24 @@ OPTIONS_DEFINE=	DOCS
 PLIST_SUB=	OPSYS=${OPSYS}	\
 		DESKTOPDIR=${DESKTOPDIR:S|^${PREFIX}/||}
 
-USES=		cmake:noninja compiler:c++11-lib desktop-file-utils gl \
+USES=		cmake:noninja compiler:c++20-lang desktop-file-utils gl \
 		gettext gnome pkgconfig python shared-mime-info shebangfix ssl \
 		tar:bzip2 xorg 
 USE_GITLAB=	yes
 GL_ACCOUNT=	kicad/code
 GL_PROJECT=	kicad
 GL_TAGNAME=	${GIT_SRC_HASH}
-USE_GL=		gl glu glut
+USE_GL=		egl gl glu glut opengl
 USE_WX=		3.2
 WX_COMPS=	wx python:lib
-USE_GNOME=	atk cairo gtk30 gdkpixbuf2 pango
+USE_GNOME=	atk cairo gtk30 gdkpixbuf pango
 USE_XORG+=	ice pixman x11 xext
 BINS=		cvpcb eeschema gerbview kicad pcbnew
 EXTRAS2RM=	linux-non_unicode linux wings3d LINUX.README	\
 		contrib_makefiles.txt running_kicad_under_W98.txt
 SHEBANG_FILES=	pcbnew/python/plugins/touch_slider_wizard.py
 #CXXFLAGS+=	--std=c++14 -I${WRKSRC} -I${WRKSRC}/include -I${LOCALBASE}/include
-CXXFLAGS+=	-g 
+CXXFLAGS+=	-g -DBOOST_STACKTRACE_GNU_SOURCE_NOT_REQUIRED # error: "Boost.Stacktrace requires `_Unwind_Backtrace` function. Define `_GNU_SOURCE` macro or `BOOST_STACKTRACE_GNU_SOURCE_NOT_REQUIRED` if _Unwind_Backtrace is available without `_GNU_SOURCE`."
 # -undefined dynamic_lookup
 CXXFLAGS_powerpc=	-O0
 CMAKE_ARGS=	-DLOCALBASE="${LOCALBASE}" \

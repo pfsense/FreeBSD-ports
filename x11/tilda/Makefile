@@ -1,7 +1,6 @@
 PORTNAME=	tilda
-PORTVERSION=	1.5.0
+PORTVERSION=	2.0.0
 DISTVERSIONPREFIX=	${PORTNAME}-
-PORTREVISION=	3
 CATEGORIES=	x11
 
 MAINTAINER=	rodrigo@FreeBSD.org
@@ -17,7 +16,7 @@ RUN_DEPENDS=	vte3>=0:x11-toolkits/vte3
 USES=		gmake gettext gnome pkgconfig autoreconf pathfix libtool xorg
 USE_GITHUB=	yes
 GH_ACCOUNT=	lanoxx
-USE_GNOME+=	glib20 gtk30 gdkpixbuf2 pango
+USE_GNOME+=	glib20 gtk30 gdkpixbuf pango
 USE_XORG+=	x11
 
 GNU_CONFIGURE=	yes

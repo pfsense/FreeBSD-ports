@@ -3,7 +3,7 @@
  * lightsquid.inc
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2015-2024 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2015-2026 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2006-2012 Sergey Dvoriancev <dv_serg@mail.ru>
  * All rights reserved.
  *
@@ -58,6 +58,8 @@ define('LS_DEF_SKIPURL', 'zzz\.zzz');
 define('LS_DEF_LANG', 'eng');
 define('LS_DEF_TEMPLATE', 'base');
 define('LS_DEF_BARCOLOR', 'orange');
+
+define('LOG_PREFIX_PKG_LIGHTSQUID', 'lightsquid');
 
 /*
  * Package install/uninstall
@@ -259,6 +261,7 @@ EOF;
 	if (!isset($lightsquid_config['lighttpd_ls_ssl']) || ($lightsquid_config['lighttpd_ls_ssl'] == "on")) {
 		// Write out cert
 		$lscert = lookup_cert(config_get_path('system/webgui/ssl-certref', ''));
+		$lscert = $lscert['item'];
 		if (!is_array($lscert) || !$lscert['crt'] || !$lscert['prv'] ||
 		    cert_chain_has_weak_digest($lscert)) {
 			$lscert = cert_create_selfsigned();
@@ -266,7 +269,7 @@ EOF;
 				config_set_path('system/webgui/ssl-certref', $lscert['refid']);
 				write_config(sprintf(gettext("Generated new self-signed SSL/TLS certificate for HTTPS (%s)"), $lscert['refid']));
 			} else {
-				log_error(sprintf(gettext("GUI certificate is not usable and there was an error creating a new self-signed certificate.")));
+				logger(LOG_ERR, localize_text("GUI certificate is not usable and there was an error creating a new self-signed certificate."), LOG_PREFIX_PKG_LIGHTSQUID);
 			}
 		}
 		$cert = trim(unixnewlines(base64_decode($lscert['crt']))) . "\n";
@@ -383,9 +386,9 @@ function lightsquid_resync() {
 	$lsconf_dist_file = LS_CONFIGPATH . "/" . LS_CONFIGFILE_DIST;
 	if (file_exists($lsconf_dist_file)) {
 		$lsconf = file_get_contents($lsconf_dist_file);
-		log_error("[lightsquid] Loaded default '{$lsconf_dist_file}' configuration file.");
+		logger(LOG_INFO, localize_text("Loaded default '%s' configuration file.", $lsconf_dist_file), LOG_PREFIX_PKG_LIGHTSQUID);
 	} else {
-		log_error("[lightsquid] Error: Could not load default '{$lsconf_dist_file}' configuration file.");
+		logger(LOG_ERR, localize_text("Could not load default '%s' configuration file.", $lsconf_dist_file), LOG_PREFIX_PKG_LIGHTSQUID);
 	}
 
 	// Update lightsquid.cfg
@@ -403,12 +406,12 @@ function lightsquid_resync() {
 
 		$lsconf = implode("\n", $lsconf);
 		if (file_put_contents($lsconf_file, $lsconf)) {
-			log_error("[lightsquid] Successfully created '{$lsconf_file}' configuration file.");
+			logger(LOG_INFO, localize_text("Successfully created '%s' configuration file.", $lsconf_file), LOG_PREFIX_PKG_LIGHTSQUID);
 		} else {
-			log_error("[lightsquid] Error: Could not create '{$lsconf_file}' configuration file.");
+			logger(LOG_ERR, localize_text("Could not create '%s' configuration file.", $lsconf_file), LOG_PREFIX_PKG_LIGHTSQUID);
 		}
 	} else {
-		log_error("[lightsquid] Error: Could not create '{$lsconf_file}' configuration file.");
+		logger(LOG_ERR, localize_text("Could not create '%s' configuration file.", $lsconf_file), LOG_PREFIX_PKG_LIGHTSQUID);
 	}
 
 	// Set up scheduled reports updates
@@ -459,19 +462,19 @@ function lightsquid_setup_cron($active=false) {
 		}
 		if ((!$on && $lightsquid_cron_entry) || $update_cron) {
 			// remove old cronjobs first ...
-			log_error("[lightsquid] Removing old cronjobs...");
+			logger(LOG_INFO, localize_text("Removing old cronjobs..."), LOG_PREFIX_PKG_LIGHTSQUID);
 			install_cron_job($lightsquid_parser_today, false);
 			install_cron_job($lightsquid_parser_yesterday, false);
 		}
 		// ... and configure updated cronjobs if needed
 		if ($on && $update_cron) {
-			log_error("[lightsquid] Updating cronjobs...");
+			logger(LOG_INFO, localize_text("Updating cronjobs..."), LOG_PREFIX_PKG_LIGHTSQUID);
 			install_cron_job($lightsquid_parser_today, $on, $opt[0], $opt[1], $opt[2], $opt[3], $opt[4], $opt[5]);
 			// fix possible data lost with 00:00 script start - rescan yesterday
 			install_cron_job($lightsquid_parser_yesterday, true, "15", "0", "*", "*", "*", "root");
 		}
 	} else {
-		log_error("[lightsquid] Removing all cronjobs...");
+		logger(LOG_INFO, localize_text("Removing all cronjobs..."), LOG_PREFIX_PKG_LIGHTSQUID);
 		install_cron_job($lightsquid_parser_today, false);
 		install_cron_job($lightsquid_parser_yesterday, false);
 	}
@@ -484,10 +487,10 @@ function lightsquid_refresh_now() {
 	lightsquid_create_reportdir();
 
 	if (file_exists(LS_SQUIDLOGPATH . "/{$lg}")) {
-		log_error("[lightsquid] Parsing today's entries in access.log using '{$cmd}'");
+		logger(LOG_INFO, localize_text("Parsing today's entries in %s using '%s'", 'access.log', $cmd), LOG_PREFIX_PKG_LIGHTSQUID);
 		mwexec_bg($cmd);
 	} else {
-		log_error("[lightsquid] Could not parse '{$lg}' - log does not exist!");
+		logger(LOG_ERR, localize_text("Could not parse '%s' - log does not exist!", $lg), LOG_PREFIX_PKG_LIGHTSQUID);
 	}
 }
 
@@ -496,20 +499,20 @@ function lightsquid_refresh_full() {
 	$cmd = CRONTAB_LS_TEMPLATE;
 	lightsquid_create_reportdir();
 
-	log_error("[lightsquid] Parsing all access log(s) entries using '{$cmd}'...");
+	logger(LOG_INFO, localize_text("Parsing all access log(s) entries using '%s'...", $cmd), LOG_PREFIX_PKG_LIGHTSQUID);
 	// parse access.log
 	$lg = LS_SQUIDLOG;
 	if (file_exists(LS_SQUIDLOGPATH . "/{$lg}")) {
-		log_error("[lightsquid] Parsing log entries in '{$lg}'...");
+		logger(LOG_INFO, localize_text("Parsing log entries in '%s'...", $lg), LOG_PREFIX_PKG_LIGHTSQUID);
 		mwexec_bg("{$cmd} {$lg}");
 	} else {
-		log_error("[lightsquid] Could not parse '{$lg}' - log does not exist!");
+		logger(LOG_ERR, localize_text("Could not parse '%s' - log does not exist!", $lg), LOG_PREFIX_PKG_LIGHTSQUID);
 	}
 	// parse access.log.x; if user configured some insane amount of rotated logs, only parse the first 100 of them
 	for ($i = 0; $i < 100; $i++) {
 		$lg = LS_SQUIDLOG . ".{$i}";
 		if (file_exists(LS_SQUIDLOGPATH . "/{$lg}")) {
-			log_error("[lightsquid] Parsing log entries in '{$lg}'...");
+			logger(LOG_INFO, localize_text("Parsing log entries in '%s'...", $lg), LOG_PREFIX_PKG_LIGHTSQUID);
 			mwexec_bg("{$cmd} {$lg}");
 		} else {
 			break;
@@ -520,7 +523,7 @@ function lightsquid_refresh_full() {
 /* Helper function to create lightsquid reports directory if needed */
 function lightsquid_create_reportdir() {
 	if (!is_dir(LS_REPORTPATH)) {
-		log_error("[lightsquid] Creating report dir " . LS_REPORTPATH);
+		logger(LOG_INFO, localize_text("Creating report dir %s", LS_REPORTPATH), LOG_PREFIX_PKG_LIGHTSQUID);
 		safe_mkdir(LS_REPORTPATH);
 	}
 }

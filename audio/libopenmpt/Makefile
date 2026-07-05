@@ -1,5 +1,5 @@
 PORTNAME=	libopenmpt
-DISTVERSION=	0.7.6
+DISTVERSION=	0.8.4
 DISTVERSIONSUFFIX=	+release.autotools
 CATEGORIES=	audio
 MASTER_SITES=	https://lib.openmpt.org/files/libopenmpt/src/ \
@@ -15,12 +15,11 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 LIB_DEPENDS=	libmpg123.so:audio/mpg123 \
 		libvorbis.so:audio/libvorbis
 
-USES=		compiler:c++17-lang cpe gmake libtool pathfix pkgconfig
+USES=		compiler:c++17-lang cpe gmake libtool pkgconfig
 CPE_VENDOR=	openmpt
 USE_LDCONFIG=	yes
 
 GNU_CONFIGURE=	yes
-GNU_CONFIGURE_MANPREFIX=     ${PREFIX}/share
 
 CONFIGURE_ARGS=	--disable-doxygen-doc \
 		--with-mpg123 \

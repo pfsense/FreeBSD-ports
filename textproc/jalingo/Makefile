@@ -1,6 +1,6 @@
 PORTNAME=	jalingo
 PORTVERSION=	0.6.0
-PORTREVISION=	3
+PORTREVISION=	5
 CATEGORIES=	textproc java
 MASTER_SITES=	SF/${PORTNAME}/JaLingo/${PORTVERSION}
 DISTNAME=	${PORTNAME}-${PORTVERSION}-src
@@ -11,9 +11,11 @@ WWW=		https://jalingo.sourceforge.net/
 
 LICENSE=	GPLv2
 
-USES=		7z
-USE_ANT=	yes
-USE_JAVA=	yes
+DEPRECATED=	Last release in 2006. Does not compile in Java 9+.
+EXPIRATION_DATE=	2026-04-13
+
+USES=		7z java:ant,run
+JAVA_VERSION=	8
 
 ALL_TARGET=	dist
 

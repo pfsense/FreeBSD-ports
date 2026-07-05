@@ -1,5 +1,5 @@
 PORTNAME=	nemo
-PORTVERSION=	5.4.2
+DISTVERSION=	6.4.5
 PORTREVISION=	4
 CATEGORIES=	x11-fm gnome
 DIST_SUBDIR=	gnome
@@ -13,25 +13,29 @@ LICENSE_COMB=	multi
 LICENSE_FILE_GPLv2=	${WRKSRC}/COPYING
 LICENSE_FILE_LGPL20=	${WRKSRC}/COPYING.LIB
 
-BUILD_DEPENDS=	gnome-icon-theme>=0:misc/gnome-icon-theme \
-		gsettings-desktop-schemas>=0:devel/gsettings-desktop-schemas
 LIB_DEPENDS=	libcinnamon-desktop.so:x11/cinnamon-desktop \
-		libxapp.so:x11/xapp
-RUN_DEPENDS=	gnome-icon-theme>=0:misc/gnome-icon-theme \
-		gsettings-desktop-schemas>=0:devel/gsettings-desktop-schemas \
-		gvfs>0:devel/gvfs
+		libxapp.so:x11/xapp \
+		libjson-glib-1.0.so:devel/json-glib
+RUN_DEPENDS=	gsettings-desktop-schemas>=0:devel/gsettings-desktop-schemas \
+		${PYTHON_PKGNAMEPREFIX}pycairo>=0:graphics/py-pycairo@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}xlrd>=0:textproc/py-xlrd@${PY_FLAVOR} \
+		catdoc:textproc/catdoc \
+		html2text:textproc/html2text \
+		id3:audio/id3mtag \
+		pdftotext:graphics/poppler-utils
 
-USES=		compiler:c11 desktop-file-utils gettext gnome meson pkgconfig \
-		python shared-mime-info shebangfix xorg
+USES=		compiler:c11 desktop-file-utils gettext-runtime ghostscript:run gnome \
+		localbase meson pkgconfig python shared-mime-info shebangfix xorg
 
-SHEBANG_FILES=	generate_additional_file makepot search-helpers/nemo-xls-to-txt
+SHEBANG_FILES=	generate_additional_file makepot search-helpers/nemo-xls-to-txt \
+		search-helpers/nemo-odf-to-txt
 SHEBANG_GLOB=	*.py
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	linuxmint
 
-USE_GNOME=	cairo gdkpixbuf2 gtk30 intlhack introspection libgsf \
-		libxml2 pango pygobject3
+USE_GNOME=	cairo gdkpixbuf gtk30 gvfs:run intltool introspection:build libgsf \
+		pango pygobject3
 
 USE_XORG=	x11
 
@@ -56,7 +60,7 @@ EXEMPI_MESON_TRUE=	xmp
 EXIF_LIB_DEPENDS=	libexif.so:graphics/libexif
 EXIF_MESON_TRUE=	exif
 
-TRACKER_LIB_DEPENDS=	libtracker-sparql-2.0.so:sysutils/tracker
+TRACKER_LIB_DEPENDS=	libtracker-sparql-3.0.so:devel/tinysparql
 TRACKER_MESON_TRUE=	tracker
 
 .include <bsd.port.mk>

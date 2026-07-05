@@ -1,5 +1,6 @@
 PORTNAME=	http-parser
 DISTVERSION=	0.9.0
+PORTREVISION=	1
 CATEGORIES=	www
 MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -12,7 +13,10 @@ LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
 USES=		python
-USE_PYTHON=	autoplist distutils
+USE_PYTHON=	autoplist cython distutils
+
+post-configure:
+	cython-${PYTHON_VER} ${WRKSRC}/http_parser/parser.pyx
 
 post-install:
 	${STRIP_CMD} ${STAGEDIR}${PYTHONPREFIX_SITELIBDIR}/http_parser/parser*.so

@@ -1,5 +1,5 @@
 PORTNAME=	gdk_pixbuf2
-PORTVERSION=	4.2.2
+PORTVERSION=	4.3.5
 CATEGORIES=	graphics rubygems
 MASTER_SITES=	RG
 
@@ -12,10 +12,11 @@ LICENSE=	LGPL21+
 LICENSE_FILE=	${WRKSRC}/COPYING.LIB
 
 BUILD_DEPENDS=	rubygem-rake>=0:devel/rubygem-rake
-RUN_DEPENDS=	rubygem-gio2>=${PORTVERSION}<${PORTVERSION}_99:devel/rubygem-gio2
+RUN_DEPENDS=	rubygem-gio2>=${PORTVERSION}<${PORTVERSION}_99:devel/rubygem-gio2 \
+		rubygem-rake>=0:devel/rubygem-rake
 
 USES=		gem gnome
-USE_GNOME=	gdkpixbuf2
+USE_GNOME=	gdkpixbuf
 
 NO_ARCH=	yes
 

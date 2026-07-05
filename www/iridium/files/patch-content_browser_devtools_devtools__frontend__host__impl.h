@@ -1,4 +1,4 @@
---- content/browser/devtools/devtools_frontend_host_impl.h.orig	2023-11-22 14:00:11 UTC
+--- content/browser/devtools/devtools_frontend_host_impl.h.orig	2025-12-10 15:04:57 UTC
 +++ content/browser/devtools/devtools_frontend_host_impl.h
 @@ -33,7 +33,7 @@ class DevToolsFrontendHostImpl : public DevToolsFronte
  

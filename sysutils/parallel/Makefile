@@ -1,5 +1,5 @@
 PORTNAME=	parallel
-PORTVERSION=	20240322
+PORTVERSION=	20260122
 CATEGORIES=	sysutils
 MASTER_SITES=	GNU
 
@@ -14,7 +14,6 @@ USES=		perl5 shebangfix tar:bzip2
 
 CONFIGURE_ARGS=	--docdir="${DOCSDIR}"
 GNU_CONFIGURE=	yes
-GNU_CONFIGURE_MANPREFIX=${PREFIX}/share
 NO_ARCH=	yes
 
 SHEBANG_FILES=	src/env_parallel src/niceload src/parcat src/parsort src/sql

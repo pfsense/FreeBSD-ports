@@ -1,45 +1,50 @@
 PORTNAME=	gnutls
-DISTVERSION=	3.8.5
+DISTVERSION=	3.8.12
 CATEGORIES=	security net
-MASTER_SITES=	GNUPG/${PORTNAME}/v${DISTVERSION:R}
+MASTER_SITES=	GNUPG/${PORTNAME}/v${DISTVERSION:C/(\.[^.]*).*/\1/}
 
 MAINTAINER=	tijl@FreeBSD.org
 COMMENT=	GNU Transport Layer Security library
 WWW=		https://gnutls.org/
 
-LICENSE=	GPLv3 LGPL21
+LICENSE=	GPLv3+ LGPL21+
 LICENSE_COMB=	multi
-LICENSE_FILE_GPLv3=	${WRKSRC}/doc/COPYING
-LICENSE_FILE_LGPL21=	${WRKSRC}/doc/COPYING.LESSER
+LICENSE_FILE_GPLv3+ =	${WRKSRC}/COPYING
+LICENSE_FILE_LGPL21+ =	${WRKSRC}/COPYING.LESSERv2
 
-LIB_DEPENDS=	libgmp.so:math/gmp \
+LIB_DEPENDS=	libbrotlienc.so:archivers/brotli \
+		libgmp.so:math/gmp \
 		libnettle.so:security/nettle \
 		libtasn1.so:security/libtasn1 \
-		libunistring.so:devel/libunistring
+		libunistring.so:devel/libunistring \
+		libzstd.so:archivers/zstd
 
 USES=		compiler:c11 cpe gmake iconv libtool localbase makeinfo \
 		pkgconfig tar:xz
 CPE_VENDOR=	gnu
-
-GNU_CONFIGURE=	yes
-GNU_CONFIGURE_MANPREFIX=${PREFIX}/share
 USE_LDCONFIG=	yes
 
-INFO=		gnutls
-INSTALL_TARGET=	install-strip
-TEST_TARGET=	check
-LDFLAGS=	-Wl,--undefined-version
-MAKE_ENV=	MAKEINFOFLAGS=--no-split
-
+GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--disable-rpath \
-		--with-system-priority-file=${PREFIX}/etc/gnutls/config \
+		--enable-ld-version-script \
+		--enable-openssl-compatibility \
 		--with-default-trust-store-dir=/etc/ssl/certs \
-		--without-brotli \
+		--with-system-priority-file=${PREFIX}/etc/gnutls/config \
+		--with-brotli \
 		--without-included-libtasn1 \
-		--without-zstd \
 		--without-tpm \
 		--without-tpm2 \
-		--enable-ld-version-script
+		--with-zstd
+
+MAKE_ENV=	MAKEINFOFLAGS=--no-split
+INSTALL_TARGET=	install-strip
+TEST_TARGET=	check
+
+LDFLAGS+=	-Wl,--undefined-version
+
+WRKSRC=		${WRKDIR}/${PORTNAME}-${DISTVERSION:C/(\.[^.]*\.[^.]*).*/\1/}
+
+INFO=		gnutls
 
 OPTIONS_DEFINE=		DANE EXAMPLES IDN KTLS MAN3 NLS P11KIT SRP
 OPTIONS_DEFAULT=	IDN KTLS MAN3 P11KIT
@@ -60,12 +65,12 @@ IDN_CONFIGURE_WITH=	idn
 KTLS_CONFIGURE_ENABLE=	ktls
 
 NLS_USES=		gettext
+NLS_CONFIGURE_OFF=	ac_cv_lib_intl_gettext=no
 NLS_CONFIGURE_ENABLE=	nls
-NLS_CONFIGURE_OFF= 	ac_cv_lib_intl_gettext=no
 
 P11KIT_LIB_DEPENDS=	libp11-kit.so:security/p11-kit
-P11KIT_CONFIGURE_WITH=	p11-kit
 P11KIT_CONFIGURE_ON=	--with-default-trust-store-pkcs11="pkcs11:model=p11-kit-trust;manufacturer=PKCS%2311%20Kit"
+P11KIT_CONFIGURE_WITH=	p11-kit
 
 SRP_CONFIGURE_ENABLE=	srp-authentication
 
@@ -81,13 +86,13 @@ post-patch:
 		${WRKSRC}/doc/invoke-gnutls-serv.texi \
 		${WRKSRC}/doc/invoke-p11tool.texi \
 		${WRKSRC}/doc/invoke-srptool.texi \
+		${WRKSRC}/doc/srptool-examples.texi \
 		${WRKSRC}/doc/manpages/certtool.1 \
 		${WRKSRC}/doc/manpages/gnutls_priority_init2.3 \
 		${WRKSRC}/doc/manpages/gnutls-cli.1 \
 		${WRKSRC}/doc/manpages/gnutls-serv.1 \
 		${WRKSRC}/doc/manpages/p11tool.1 \
 		${WRKSRC}/doc/manpages/srptool.1 \
-		${WRKSRC}/doc/srptool-examples.texi \
 		${WRKSRC}/lib/includes/gnutls/pkcs11.h \
 		${WRKSRC}/lib/pkcs11.c \
 		${WRKSRC}/src/p11tool-options.c \

@@ -1,0 +1,5 @@
+pkg/collectd.xml
+pkg/collectd.inc
+/etc/inc/priv/collectd.priv.inc
+%%DATADIR%%/info.xml
+@dir /etc/inc/priv

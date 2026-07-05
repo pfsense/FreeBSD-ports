@@ -3,7 +3,7 @@
  * bind.inc
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2015-2024 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2015-2026 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2013 Juliano Oliveira
  * Copyright (c) 2013 Adriano Brancher
  * Copyright (c) 2013 Marcello Coutinho
@@ -35,6 +35,7 @@ require_once("xmlrpc_client.inc");
 
 define('BIND_LOCALBASE', '/usr/local');
 define('CHROOT_LOCALBASE', '/var/etc/named');
+define('LOG_PREFIX_PKG_BIND', 'bind');
 
 function bind_zone_validate($post, &$input_errors) {
 
@@ -108,9 +109,7 @@ if (!function_exists('pf_version')) {
 }
 
 function bind_sync() {
-
-	global $config;
-	$bind = $config['installedpackages']['bind']['config'][0];
+	$bind = config_get_path('installedpackages/bind/config/0');
 	// Create rndc
 	$rndc_confgen = "/usr/local/sbin/rndc-confgen";
 	$rndc_port = $bind['controlport'] == "" ? "8953" : $bind['controlport'];
@@ -149,11 +148,7 @@ function bind_sync() {
 		}
 	}
 
-	if (is_array($config['installedpackages']['bindzone'])) {
-		$bindzone = $config['installedpackages']['bindzone']['config'];
-	} else {
-		$bindzone = array();
-	}
+	$bindzone = config_get_path('installedpackages/bindzone/config', []);
 	$bind_enable = $bind['enable_bind'];
 	$bind_dnssec_validation = $bind['bind_dnssec_validation'];
 	$bind_forwarder = $bind['bind_forwarder'];
@@ -217,7 +212,7 @@ EOD;
 			} elseif (is_ipaddr($listenon)) {
 				$bind_listenon .= $listenon."; ";
 			} else {
-				$listenon = pfSense_get_interface_addresses(convert_friendly_interface_to_real_interface_name($listenon));
+				$listenon = get_interface_addresses(convert_friendly_interface_to_real_interface_name($listenon));
 				if (is_ipaddr($listenon['ipaddr'])) {
 					$bind_listenon .= $listenon['ipaddr']."; ";
 				}
@@ -232,7 +227,7 @@ EOD;
 	// Print "<pre>$bind_listenonv6 $bind_listenon";
 
 	$bind_listenport = $bind['listenport'] == "" ? "53" : $bind['listenport'];
-	if (array_key_exists("ipv6allow", $config['system'])) {
+	if (array_key_exists("ipv6allow", config_get_path('system'))) {
 		$bind_conf .= "\tlisten-on-v6 port {$bind_listenport} { {$bind_listenonv6} };\n";
 	}
 	$bind_conf .= "\tlisten-on port {$bind_listenport} { {$bind_listenon} };\n";
@@ -255,24 +250,6 @@ EOD;
 	$bind_conf .= "\n};\n\n";
 
 	if ($bind_logging == 'on') {
-		// See https://redmine.pfsense.org/issues/5524
-		if (pf_version() < "2.3.3") {
-			// Check if bind is included on syslog
-			$syslog_files = array("/etc/inc/system.inc", "/var/etc/syslog.conf");
-			$restart_syslog = 0;
-			foreach ($syslog_files as $syslog_file) {
-				$syslog_file_data = file_get_contents($syslog_file);
-				if (!preg_match("/dnsmasq,named,filterdns/", $syslog_file_data) || !preg_match("/'dnsmasq','named','filterdns'/", $syslog_file_data)) {
-					$syslog_file_data = preg_replace("/dnsmasq,filterdns/", "dnsmasq,named,filterdns", $syslog_file_data);
-					$syslog_file_data = preg_replace("/'dnsmasq','filterdns'/", "'dnsmasq','named','filterdns'", $syslog_file_data);
-					file_put_contents($syslog_file, $syslog_file_data);
-					$restart_syslog++;
-				}
-			}
-			if ($restart_syslog > 0) {
-				system("/usr/bin/killall -HUP syslogd");
-			}
-		}
 		$log_categories = explode(",", $bind['log_options']);
 		$log_severity = $bind['log_severity'] ? $bind['log_severity'] : 'default';
 		if (sizeof($log_categories) > 0 && ($log_categories[0] != "")) {
@@ -302,18 +279,16 @@ EOD;
 	// Config Zone domain
 
 	// Add ACLS
-	if (!is_array($config['installedpackages']['bindacls']) || !is_array($config['installedpackages']['bindacls']['config'])) {
-		$config['installedpackages']['bindacls']['config'][] =
-			array("name" => "none", "description" => "BIND Built-in ACL", "row" => array("value" => "", "description" => ""));
-		$config['installedpackages']['bindacls']['config'][] =
-			array("name" => "any", "description" => "BIND Built-in ACL", "row" => array("value" => "", "description" => ""));
-		$config['installedpackages']['bindacls']['config'][] =
-			array("name" => "localhost", "description" => "BIND Built-in ACL", "row" => array("value" => "", "description" => ""));
-		$config['installedpackages']['bindacls']['config'][] =
-			array("name" => "localnets", "description" => "BIND Built-in ACL", "row" => array("value" => "", "description" => ""));
+	if (!is_array(config_get_path('installedpackages/bindacls/config'))) {
+		config_set_path('installedpackages/bindacls/config', [
+			["name" => "none", "description" => "BIND Built-in ACL", "row" => ["value" => "", "description" => ""]],
+			["name" => "any", "description" => "BIND Built-in ACL", "row" => ["value" => "", "description" => ""]],
+			["name" => "localhost", "description" => "BIND Built-in ACL", "row" => ["value" => "", "description" => ""]],
+			["name" => "localnets", "description" => "BIND Built-in ACL", "row" => ["value" => "", "description" => ""]],
+		]);
 		write_config("Created BIND Built-in ACLs");
 	}
-	$bindacls = $config['installedpackages']['bindacls']['config'];
+	$bindacls = config_get_path('installedpackages/bindacls/config');
 	for ($i = 0; $i < sizeof($bindacls); $i++) {
 		$aclname = $bindacls[$i]['name'];
 		$aclhost = $bindacls[$i]['row'];
@@ -328,14 +303,10 @@ EOD;
 	}
 
 	// Add Views
-	if (is_array($config['installedpackages']['bindviews'])) {
-		$bindview = $config['installedpackages']['bindviews']['config'];
-	} else {
-		$bindview = array();
-	}
+	$bindview = config_get_path('installedpackages/bindviews/config', []);
 
 	for ($i = 0; $i < sizeof($bindview); $i++) {
-		$views = $config['installedpackages']['bindviews']['config'][$i];
+		$views = config_get_path("installedpackages/bindviews/config/{$i}");
 		$viewname = $views['name'];
 		$viewrecursion = $views['recursion'];
 		if ($views['match-clients'] == '') {
@@ -357,8 +328,9 @@ EOD;
 
 		$rpz_zones = array();
 		foreach ($bindzone as $zone) {
+			$zoneviewlist = explode(',', $zone['view']);
 			if (isset($zone['rpz']) && ($zone['rpz'] == "on") &&
-			    ($zone['disabled'] != "on") && ($zone['view'] == $viewname)) {
+			   ($zone['disabled'] != "on") && in_array($viewname, $zoneviewlist)) {
 			    $rpz_zones[] = reverse_zonename($zone['name'], $zone['reverso'], $zone['reversv6o']);
 			}
 		}
@@ -547,9 +519,9 @@ EOD;
 						}
 
 						// Register DHCP static mappings
-						if (($zone['regdhcpstatic'] == 'on') && is_array($config['dhcpd'])) {
+						if (($zone['regdhcpstatic'] == 'on')) {
 							$zoneparts = array_reverse(explode('.', $zonename));
-							foreach ($config['dhcpd'] as $dhcpif => $dhcpifconf) {
+							foreach (config_get_path('dhcpd', []) as $dhcpif => $dhcpifconf) {
 								if (!isset($dhcpifconf['enable']) || !is_array($dhcpifconf['staticmap'])) {
 									continue;
 								}
@@ -558,8 +530,8 @@ EOD;
 										$domain = $host['domain'];
 									} elseif (is_domain($dhcpifconf['domain'])) {
 										$domain = $dhcpifconf['domain'];
-									} elseif (is_domain($config['system']['domain'])) {
-										$domain = $config['system']['domain'];
+									} elseif (is_domain(config_get_path('system/domain'))) {
+										$domain = config_get_path('system/domain');
 									} else {
 										continue;
 									}
@@ -608,7 +580,7 @@ EOD;
 							exec("{$rndc} thaw " . escapeshellarg($zonename) . " IN " . escapeshellarg($zoneview));
 						}
 
-						$config['installedpackages']['bindzone']['config'][$x]['resultconfig'] = base64_encode($zone_conf);
+						config_set_path("installedpackages/bindzone/config/{$x}/resultconfig", base64_encode($zone_conf));
 						$write_config++;
 						// Check DNSSEC keys creation for master zones
 						if ($zone['dnssec'] == "on") {
@@ -626,18 +598,16 @@ EOD;
 							}
 							if ($zone_found == 0) {
 								$key_restored = 0;
-								if (is_array($config['installedpackages']['dnsseckeys']) && is_array($config['installedpackages']['dnsseckeys']['config'])) {
-									foreach ($config['installedpackages']['dnsseckeys']['config'] as $filer) {
-										if (preg_match("/K$zonename\.+/", $filer['fullfile'])) {
-											file_put_contents($filer['fullfile'], base64_decode($filer['filedata']), LOCK_EX);
-											chmod($filer['fullfile'], 0700);
-											chown($filer['fullfile'], "bind");
-											$key_restored++;
-										}
+								foreach (config_get_path('installedpackages/dnsseckeys/config', []) as $filer) {
+									if (preg_match("/K$zonename\.+/", $filer['fullfile'])) {
+										file_put_contents($filer['fullfile'], base64_decode($filer['filedata']), LOCK_EX);
+										chmod($filer['fullfile'], 0700);
+										chown($filer['fullfile'], "bind");
+										$key_restored++;
 									}
 								}
 								if ($key_restored > 0) {
-									log_error("[bind] {$key_restored} DNSSEC keys restored from XML backup for {$zonename} zone.");
+									logger(LOG_INFO, localize_text("%s DNSSEC keys restored from XML backup for %s zone.", $key_restored, $zonename), LOG_PREFIX_PKG_BIND);
 								}
 								$dnssec_bin = "/usr/local/sbin/dnssec-keygen";
 								$z = reverse_zonename($zonename, $zonereverso, $zonereversv6o);
@@ -648,7 +618,7 @@ EOD;
 										chown(CHROOT_LOCALBASE . "/etc/namedb/keys/{$filename}.key", "bind");
 										chown(CHROOT_LOCALBASE . "/etc/namedb/keys/{$filename}.private", "bind");
 									}
-									log_error("[bind] DNSSEC keys for {$zonename} created.");
+									logger(LOG_INFO, localize_text("DNSSEC keys for %s created.", $zonename), LOG_PREFIX_PKG_BIND);
 								}
 							}
 							// Get DS keys
@@ -657,7 +627,7 @@ EOD;
 								$zone_key = file_get_contents($filename);
 								if (preg_match("/IN DNSKEY 257 /", $zone_key) && file_exists($dsfromkey)) {
 									exec("$dsfromkey $filename", $dsset);
-									$config['installedpackages']['bindzone']['config'][$x]['dsset'] = base64_encode(array_pop($dsset)."\n".array_pop($dsset));
+									config_set_path("installedpackages/bindzone/config/{$x}/dsset", base64_encode(array_pop($dsset)."\n".array_pop($dsset)));
 									$write_config++;
 								}
 							}
@@ -667,23 +637,21 @@ EOD;
 								$dnssec_keys = 0;
 								foreach (glob(CHROOT_LOCALBASE . "/etc/namedb/keys/K{$zonename}*", GLOB_NOSORT) as $filename) {
 									$file_found = 0;
-									if (is_array($config['installedpackages']['dnsseckeys']) && is_array($config['installedpackages']['dnsseckeys']['config'])) {
-										foreach ($config['installedpackages']['dnsseckeys']['config'] as $filer) {
-											if ($filer['fullfile'] == $filename) {
-												$file_found++;
-											}
+									foreach (config_get_path('installedpackages/dnsseckeys/config', []) as $filer) {
+										if ($filer['fullfile'] == $filename) {
+											$file_found++;
 										}
 									}
 									if ($file_found == 0) {
-										$config['installedpackages']['dnsseckeys']['config'][] = array('fullfile' => $filename,
+										config_set_path('installedpackages/dnsseckeys/config/', array('fullfile' => $filename,
 											'description' => "bind {$zonename} DNSSEC backup file",
-											'filedata' => base64_encode(file_get_contents($filename)));
+											'filedata' => base64_encode(file_get_contents($filename))));
 										$write_config++;
 										$dnssec_keys++;
 									}
 								}
 								if ($dnssec_keys > 0) {
-									log_error("[bind] {$dnssec_keys} DNSSEC keys for {$zonename} zone saved on XML config.");
+									logger(LOG_INFO, localize_text("%s DNSSEC keys for %s zone saved on XML config.", $dnssec_keys, $zonename), LOG_PREFIX_PKG_BIND);
 								}
 							}
 						}
@@ -709,12 +677,12 @@ EOD;
 								$rsconfig .= $zfile;
 							}
 						}
-						$config['installedpackages']['bindzone']['config'][$x]['resultconfig'] = base64_encode($rsconfig);
+						config_set_path("installedpackages/bindzone/config/{$x}/resultconfig", base64_encode($rsconfig));
 						$write_config++;
 						break;
 					case 'forward':
 						// Forwarder zone does not have a DB file
-						$config['installedpackages']['bindzone']['config'][$x]['resultconfig'] = '';
+						config_set_path("installedpackages/bindzone/config/{$x}/resultconfig", '');
 						$write_config++;
 						break;
 					default:
@@ -914,8 +882,7 @@ JS;
 }
 
 function bind_write_rcfile() {
-	global $config;
-	$bind = $config['installedpackages']['bind']['config'][0];
+	$bind = config_get_path('installedpackages/bind/config/0');
 	$ip_version = ($bind['bind_ip_version'] ? $bind['bind_ip_version'] : "");
 	$rc = array();
 	$BIND_LOCALBASE = "/usr/local";
@@ -953,10 +920,10 @@ EOD;
 
 /* Uses XMLRPC to synchronize the changes to a remote node */
 function bind_sync_on_changes() {
-	global $config, $g;
+	global $g;
 
-	if (is_array($config['installedpackages']['bindsync']['config'])) {
-		$bind_sync = $config['installedpackages']['bindsync']['config'][0];
+	if (is_array(config_get_path('installedpackages/bindsync/config'))) {
+		$bind_sync = config_get_path('installedpackages/bindsync/config/0');
 		$synconchanges = $bind_sync['synconchanges'];
 		$synctimeout = (int)$bind_sync['synctimeout'] ?: 30;
 		$master_zone_ip = $bind_sync['masterip'];
@@ -965,34 +932,7 @@ function bind_sync_on_changes() {
 				if (is_array($bind_sync['row'])) {
 					$rs = $bind_sync['row'];
 				} else {
-					log_error("[bind] XMLRPC sync is enabled but there are no hosts to push on BIND config.");
-					return;
-				}
-				break;
-			case 'auto':
-				if (is_array($config['hasync'])) {
-					$hasync = $config['hasync'];
-					$rs[0]['ipaddress'] = $hasync['synchronizetoip'];
-					$rs[0]['username'] = $hasync['username'];
-					$rs[0]['password'] = $hasync['password'];
-					$rs[0]['syncdestinenable'] = FALSE;
-
-					// XMLRPC sync is currently only supported over connections using the same protocol and port as this system
-					if ($config['system']['webgui']['protocol'] == "http") {
-						$rs[0]['syncprotocol'] = "http";
-						$rs[0]['syncport'] = $config['system']['webgui']['port'] ?: '80';
-					} else {
-						$rs[0]['syncprotocol'] = "https";
-						$rs[0]['syncport'] = $config['system']['webgui']['port'] ?: '443';
-					}
-					if ($hasync['synchronizetoip'] == "") {
-						log_error("[bind] XMLRPC CARP/HA sync is enabled but there are no system backup hosts configured as replication targets.");
-						return;
-					} else {
-						$rs[0]['syncdestinenable'] = TRUE;
-					}
-				} else {
-					log_error("[bind] XMLRPC sync is enabled but there are no system backup hosts to push BIND config.");
+					logger(LOG_WARNING, localize_text("XMLRPC sync is enabled but there are no hosts to push on BIND config."), LOG_PREFIX_PKG_BIND);
 					return;
 				}
 				break;
@@ -1001,7 +941,7 @@ function bind_sync_on_changes() {
 				break;
 		}
 		if (is_array($rs)) {
-			log_error("[bind] XMLRPC sync is starting.");
+			logger(LOG_INFO, localize_text("XMLRPC sync is starting."), LOG_PREFIX_PKG_BIND);
 			foreach ($rs as $sh) {
 				// Only sync enabled replication targets
 				if ($sh['syncdestinenable']) {
@@ -1009,7 +949,7 @@ function bind_sync_on_changes() {
 					$port = $sh['syncport'];
 					/* If port is empty let's rely on the protocol selection */
 					if ($port == "") {
-						if ($config['system']['webgui']['protocol'] == "http") {
+						if (config_get_path('system/webgui/protocol') == "http") {
 							$port = "80";
 						} else {
 							$port = "443";
@@ -1020,7 +960,7 @@ function bind_sync_on_changes() {
 					$protocol = $sh['syncprotocol'];
 					/* If protocol is empty let's rely on the webGUI protocol selection */
 					if ($protocol == "") {
-						if ($config['system']['webgui']['protocol'] == "http") {
+						if (config_get_path('system/webgui/protocol') == "http") {
 							$protocol = "http";
 						} else {
 							$protocol = "https";
@@ -1052,11 +992,11 @@ function bind_sync_on_changes() {
 					if ($valid) {
 						bind_do_xmlrpc_sync($sync_to_ip, $port, $protocol, $username, $password, $synctimeout, $master_zone_ip);
 					} else {
-						log_error("[bind] XMLRPC sync with '{$sync_to_ip}' aborted due to the following error(s): {$error}");
+						logger(LOG_ERR, localize_text("XMLRPC sync with '%s' aborted due to the following error(s): %s", $sync_to_ip, $error), LOG_PREFIX_PKG_BIND);
 					}
 				}
 			}
-			log_error("[bind] XMLRPC sync completed.");
+			logger(LOG_INFO, localize_text("XMLRPC sync completed."), LOG_PREFIX_PKG_BIND);
 		}
 	}
 }
@@ -1067,23 +1007,81 @@ if (!function_exists('pf_version')) {
 	}
 }
 
+function bind_plugin_xmlrpc_send() {
+	if (config_get_path('installedpackages/bindsync/config/0/synconchanges') != 'auto') {
+		return [];
+	}
+
+	return [
+		'installedpackages/bindsync/config/0/synconchanges',
+		'installedpackages/bind',
+		'installedpackages/bindacls',
+		'installedpackages/bindviews',
+		'installedpackages/bindzone',
+		'installedpackages/dnsseckeys'
+	];
+}
+
+function bind_plugin_xmlrpc_recv($new_sections) {
+	if (array_get_path($new_sections, 'installedpackages/bindsync/config/0/synconchanges') != 'auto') {
+		return [];
+	}
+
+	$section_paths = [
+		'installedpackages/bind',
+		'installedpackages/bindacls',
+		'installedpackages/bindviews',
+		'installedpackages/bindzone',
+		'installedpackages/dnsseckeys'
+	];
+
+	$ret = [
+		'xmlrpc_recv_result' => false
+	];
+	foreach ($section_paths as $path) {
+		$old_section = config_get_path($path, []);
+		$new_section = array_get_path($new_sections, $path, []);
+
+		// Don't save empty configuration sections.
+		if (empty($old_section) && empty($new_section)) {
+			continue;
+		}
+		// Ignore unchanged configuration sections.
+		if ($old_section === $new_section) {
+			continue;
+		}
+
+		$ret[$path] = array_merge($old_section, $new_section);
+		$ret['xmlrpc_recv_result'] = true;
+	}
+
+	return $ret;
+}
+
+function bind_plugin_xmlrpc_recv_done($xmlrpc_recv_result) {
+	if (array_get_path($xmlrpc_recv_result, 'bind/xmlrpc_recv_result') !== true) {
+		return;
+	}
+	bind_sync();
+}
+
 /* Do the actual XMLRPC sync */
 function bind_do_xmlrpc_sync($sync_to_ip, $port, $protocol, $username, $password, $synctimeout, $master_zone_ip) {
-	global $config, $g;
+	global $g;
 
 	if (($username == "") || ($password == "") || ($sync_to_ip == "") || ($port == "") || ($protocol == "") || ($master_zone_ip =="")) {
-		log_error("[bind] A required XMLRPC sync parameter (username, password, replication target, port, protocol or zone master IP) is empty ... aborting pkg sync");
+		logger(LOG_WARNING, localize_text("A required XMLRPC sync parameter (username, password, replication target, port, protocol or zone master IP) is empty ... aborting pkg sync"), LOG_PREFIX_PKG_BIND);
 		return;
 	}
 	
 	/* XML will hold the sections to sync */
 	$xml = array();
-	$xml['bind'] = $config['installedpackages']['bind'];
-	$xml['bindacls'] = $config['installedpackages']['bindacls'];
-	$xml['bindviews'] = $config['installedpackages']['bindviews'];
-	$xml['bindzone'] = $config['installedpackages']['bindzone'];
-	if (is_array($config['installedpackages']['dnsseckeys'])) {
-		$xml['dnsseckeys'] = $config['installedpackages']['dnsseckeys'];
+	$xml['bind'] = config_get_path('installedpackages/bind');
+	$xml['bindacls'] = config_get_path('installedpackages/bindacls');
+	$xml['bindviews'] = config_get_path('installedpackages/bindviews');
+	$xml['bindzone'] = config_get_path('installedpackages/bindzone');
+	if (is_array(config_get_path('installedpackages/dnsseckeys'))) {
+		$xml['dnsseckeys'] = config_get_path('installedpackages/dnsseckeys');
 	}
 	// Change master zone to slave on backup servers
 	if (is_array($xml['bindzone']["config"])) {
@@ -1100,86 +1098,16 @@ function bind_do_xmlrpc_sync($sync_to_ip, $port, $protocol, $username, $password
 	$execcmd = "require_once('/usr/local/pkg/bind.inc');\n";
 	$execcmd .= "bind_sync('yes');";
 	
-	if (pf_version() >= "2.4") {
-		// xmlrpc cannot encode NULL objects/arrays..
-		foreach($xml as $xmlkey => $xmlvalue) {
-			if (gettype($xmlvalue) == "NULL") {
-				$xml[$xmlkey] = array();
-			}
-		}
-		$rpc_client = new pfsense_xmlrpc_client();
-		$rpc_client->setConnectionData($sync_to_ip, $port, $username, $password, $protocol);
-		$resp = $rpc_client->xmlrpc_method('merge_installedpackages_section', $xml, $synctimeout);
-		$resp = $rpc_client->xmlrpc_exec_php($execcmd, $synctimeout);
-	} else {
-		// pfSense before 2.4
-		require_once('xmlrpc.inc');
-
-		// Take care of IPv6 literal address
-		if (is_ipaddrv6($sync_to_ip)) {
-			$sync_to_ip = "[{$sync_to_ip}]";
-		}
-
-		$url = "{$protocol}://{$sync_to_ip}";
-
-		/* Assemble XMLRPC payload */
-		$params = array(
-			XML_RPC_encode($password),
-			XML_RPC_encode($xml)
-		);
-
-		/* Set a few variables needed for sync */
-		log_error("[bind] Beginning bind XMLRPC sync to {$url}:{$port}.");
-		$method = 'pfsense.merge_installedpackages_section_xmlrpc';
-		$msg = new XML_RPC_Message($method, $params);
-		$cli = new XML_RPC_Client('/xmlrpc.php', $url, $port);
-		$cli->setCredentials($username, $password);
-		if ($g['debug']) {
-			$cli->setDebug(1);
-		}
-		/* Send our XMLRPC message and timeout after defined sync timeout value */
-		$resp = $cli->send($msg, $synctimeout);
-		if (!$resp) {
-			$error = "A communication error occurred while attempting BIND XMLRPC sync with {$url}:{$port}.";
-			log_error($error);
-			file_notice("sync_settings", $error, "BIND Settings Sync", "");
-		} elseif ($resp->faultCode()) {
-			$cli->setDebug(1);
-			$resp = $cli->send($msg, $synctimeout);
-			$error = "An error code was received while attempting BIND XMLRPC sync with {$url}:{$port} - Code ".$resp->faultCode().": ".$resp->faultString();
-			log_error($error);
-			file_notice("sync_settings", $error, "BIND Settings Sync", "");
-		} else {
-			log_error("[bind] XMLRPC sync successfully completed with {$url}:{$port}.");
-		}
-
-		/* Tell bind to reload our settings on the destination sync host. */
-		$method = 'pfsense.exec_php';
-		/* Assemble XMLRPC payload */
-		$params = array(
-			XML_RPC_encode($password),
-			XML_RPC_encode($execcmd)
-		);
-
-		log_error("[bind] XMLRPC reload data {$url}:{$port}.");
-		$msg = new XML_RPC_Message($method, $params);
-		$cli = new XML_RPC_Client('/xmlrpc.php', $url, $port);
-		$cli->setCredentials($username, $password);
-		$resp = $cli->send($msg, $synctimeout);
-		if (!$resp) {
-			$error = "A communication error occurred while attempting BIND XMLRPC sync with {$url}:{$port} (pfsense.exec_php).";
-			log_error($error);
-			file_notice("sync_settings", $error, "BIND Settings Sync", "");
-		} elseif ($resp->faultCode()) {
-			$cli->setDebug(1);
-			$resp = $cli->send($msg, $synctimeout);
-			$error = "[bind] An error code was received while attempting BIND XMLRPC sync with {$url}:{$port} - Code ".$resp->faultCode().": ".$resp->faultString();
-			log_error($error);
-			file_notice("sync_settings", $error, "BIND Settings Sync", "");
-		} else {
-			log_error("BIND XMLRPC reload data success with {$url}:{$port} (pfsense.exec_php).");
+	// xmlrpc cannot encode NULL objects/arrays..
+	foreach($xml as $xmlkey => $xmlvalue) {
+		if (gettype($xmlvalue) == "NULL") {
+			$xml[$xmlkey] = array();
 		}
 	}
+	$rpc_client = new pfsense_xmlrpc_client();
+	$rpc_client->setConnectionData($sync_to_ip, $port, $username, $password, $protocol);
+	$resp = $rpc_client->xmlrpc_method('merge_installedpackages_section', $xml, $synctimeout);
+	$resp = $rpc_client->xmlrpc_exec_php($execcmd, $synctimeout);
 }
 
 function reverse_zonename($zonename, $zonereverso=false, $zonereversv6o=false) {

@@ -11,9 +11,12 @@ WWW=		https://github.com/libnet/libnet
 LICENSE=	BSD2CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-USES=		cpe libtool pathfix
+USES=		cpe libtool
 
-CONFIGURE_ARGS=	--disable-doxygen-doc --disable-doxygen-dot --disable-doxygen-html --disable-doxygen-man
+CONFIGURE_ARGS=	--disable-doxygen-doc \
+		--disable-doxygen-dot \
+		--disable-doxygen-html \
+		--disable-doxygen-man
 GNU_CONFIGURE=	yes
 INSTALL_TARGET=	install-strip
 USE_LDCONFIG=	yes

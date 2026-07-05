@@ -1,6 +1,6 @@
 PORTNAME=	moc
-PORTVERSION=	2.5.2
-PORTREVISION=	10
+DISTVERSION=	2.5.2
+PORTREVISION=	13
 CATEGORIES=	audio
 MASTER_SITES=	http://ftp.daper.net/pub/soft/moc/stable/
 
@@ -13,24 +13,20 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 
 LIB_DEPENDS=	libltdl.so:devel/libltdl
 
-USES=		bdb gmake libtool ncurses pkgconfig tar:bzip2
+USES=		gmake iconv libtool localbase:ldflags ncurses pkgconfig tar:bzip2
 USE_LDCONFIG=	yes
 GNU_CONFIGURE=	yes
-GNU_CONFIGURE_MANPREFIX=	${PREFIX}/share
 
 INSTALL_TARGET=	install-strip
 
-CPPFLAGS+=	-I${LOCALBASE}/include -I${BDB_INCLUDE_DIR}
-LDFLAGS+=	-L${LOCALBASE}/lib -L${BDB_LIB_DIR}
+CONFIGURE_ARGS=	--disable-cache --without-ffmpeg --without-musepack \
+		--without-sidplay2
 
-CONFIGURE_ARGS=	--without-ffmpeg
-
-OPTIONS_DEFINE=	AAC CURL DEBUG FLAC JACK MODPLUG MP3 MUSEPACK RCC \
-		SAMPLERATE SIDPLAY2 SNDFILE SPEEX VORBIS WAVPACK
-OPTIONS_DEFAULT=	MP3 VORBIS FLAC CURL WAVPACK
+OPTIONS_DEFINE=	AAC CURL DEBUG FLAC JACK MODPLUG MP3 RCC \
+		SAMPLERATE SNDFILE SPEEX VORBIS WAVPACK
+OPTIONS_DEFAULT=MP3 VORBIS FLAC CURL WAVPACK
 CURL_DESC=	curl support (Internet streams)
 RCC_DESC=	RCC support
-SIDPLAY2_DESC=	libsidplay2 support
 
 AAC_LIB_DEPENDS=	libfaad.so:audio/faad
 AAC_PLIST_FILES=	lib/moc/decoder_plugins/libaac_decoder.so
@@ -57,21 +53,12 @@ MP3_LIB_DEPENDS=	libmad.so:audio/libmad \
 MP3_PLIST_FILES=	lib/moc/decoder_plugins/libmp3_decoder.so
 MP3_CONFIGURE_OFF=	--without-mp3
 
-MUSEPACK_LIB_DEPENDS=	libmpcdec.so:audio/musepack \
-			libtag_c.so:audio/taglib
-MUSEPACK_PLIST_FILES=	lib/moc/decoder_plugins/libmusepack_decoder.so
-MUSEPACK_CONFIGURE_OFF=	--without-musepack
-
 RCC_LIB_DEPENDS=	librcc.so:devel/librcc \
 			librcd.so:devel/librcd
 RCC_CONFIGURE_OFF=	--without-rcc
 
 SAMPLERATE_LIB_DEPENDS=	libsamplerate.so:audio/libsamplerate
 SAMPLERATE_CONFIGURE_OFF=	--without-samplerate
-
-SIDPLAY2_LIB_DEPENDS=	libsidplay2.so:audio/libsidplay2
-SIDPLAY2_PLIST_FILES=	lib/moc/decoder_plugins/libsidplay2_decoder.so
-SIDPLAY2_CONFIGURE_OFF=	--without-sidplay2
 
 SNDFILE_LIB_DEPENDS=	libsndfile.so:audio/libsndfile
 SNDFILE_PLIST_FILES=	lib/moc/decoder_plugins/libsndfile_decoder.so
@@ -81,7 +68,8 @@ SPEEX_LIB_DEPENDS=	libspeex.so:audio/speex
 SPEEX_PLIST_FILES=	lib/moc/decoder_plugins/libspeex_decoder.so
 SPEEX_CONFIGURE_OFF=	--without-speex
 
-VORBIS_LIB_DEPENDS=	libvorbis.so:audio/libvorbis
+VORBIS_LIB_DEPENDS=	libogg.so:audio/libogg \
+			libvorbis.so:audio/libvorbis
 VORBIS_PLIST_FILES=	lib/moc/decoder_plugins/libvorbis_decoder.so
 VORBIS_CONFIGURE_OFF=	--without-ogg
 

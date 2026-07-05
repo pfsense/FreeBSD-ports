@@ -1,7 +1,7 @@
 PORTNAME=	erlang
 DISTVERSIONPREFIX=	OTP-
 DISTVERSION=	21.3.8.24
-PORTREVISION=	3
+PORTREVISION=	7
 CATEGORIES=	lang parallel java
 PKGNAMESUFFIX=	-runtime21
 DIST_SUBDIR=	erlang
@@ -13,14 +13,13 @@ WWW=		https://www.erlang.org/
 LICENSE=	APACHE20
 
 USES=		autoreconf:build,2.69 compiler cpe gmake ncurses perl5
+CPE_VENDOR=	erlang
+CPE_PRODUCT=	erlang/otp
 USE_GITHUB=	nodefault
 GH_ACCOUNT=	erlang:otp,corba
 GH_PROJECT=	otp:otp corba:corba
 GH_TAGNAME=	4.5.2:corba
 USE_PERL5=	build
-
-CPE_VENDOR=	erlang
-CPE_PRODUCT=	erlang/otp
 
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--enable-smp-support
@@ -72,14 +71,13 @@ DTRACE_VARS=			STRIP=""
 HIPE_CONFIGURE_ENABLE=		hipe
 JAVA_CONFIGURE_WITH=		javac
 JAVA_CONFIGURE_ENV=		ac_cv_prog_JAVAC="${JAVAC}"
-JAVA_VARS=			USE_JAVA=yes
+JAVA_USES=			java
 KQUEUE_CONFIGURE_ENABLE=	kernel-poll
 NATIVE_IMPLIES=			HIPE
 NATIVE_CONFIGURE_ENABLE=	native-libs
 ODBC_LIB_DEPENDS=		libodbc.so:databases/unixODBC
+ODBC_USES=			localbase:ldflags
 ODBC_CONFIGURE_WITH=		odbc
-ODBC_CFLAGS=			-I/usr/local/include
-ODBC_LDFLAGS=			-L/usr/local/lib
 OPENSSL_USES=			ssl
 OPENSSL_CONFIGURE_WITH=		ssl=${OPENSSLBASE}
 SCTP_CONFIGURE_ENABLE=		sctp
@@ -92,7 +90,7 @@ WX_VARS=			USE_GL="gl glu" \
 
 .include <bsd.port.pre.mk>
 
-.if ${COMPILER_TYPE} == clang && ${COMPILER_VERSION} >= 130
+.if ${COMPILER_TYPE} == clang
 # PR 258494
 CONFIGURE_ARGS+=	--disable-pgo
 .endif

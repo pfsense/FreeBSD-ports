@@ -3,7 +3,7 @@ PORTVERSION=	1.0
 PORTREVISION=	6
 CATEGORIES=	games
 MASTER_SITES=	http://user.ecc.u-tokyo.ac.jp/~g650192/glsfcave/ \
-		http://mirror.amdmi3.ru/distfiles/
+		https://mirror.amdmi3.ru/distfiles/
 
 MAINTAINER=	amdmi3@FreeBSD.org
 COMMENT=	Control a ribbon to avoid hitting walls
@@ -22,7 +22,7 @@ OPTIONS_DEFINE=	DOCS
 .include <bsd.port.options.mk>
 
 do-build:
-.if ${OPSYS} == FreeBSD && ( ${OSVERSION} >= 1400091 || ( ${OSVERSION} >= 1302507 && ${OSVERSION} < 1400000 ))
+.if ${OPSYS} == FreeBSD
 	cd ${WRKSRC} && ${CC} -o glsfcave main.c -I${LOCALBASE}/include \
 		-Wno-error=incompatible-function-pointer-types \
 		-L${LOCALBASE}/lib -lglut -lGL -lGLU

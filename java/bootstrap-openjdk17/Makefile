@@ -1,5 +1,6 @@
 PORTNAME=	openjdk17
 PORTVERSION=	17.0.1.12.1
+PORTREVISION=	3
 CATEGORIES=	java devel
 MASTER_SITES=	LOCAL/glewis/bootstrap-openjdk17 \
 		LOCAL/pkubaj/bootstrap-openjdk17
@@ -12,7 +13,7 @@ WWW=		https://openjdk.java.net/
 
 LICENSE=	GPLv2
 
-ONLY_FOR_ARCHS=	aarch64 amd64 i386 powerpc64 powerpc64le
+ONLY_FOR_ARCHS=	aarch64 amd64 i386 powerpc powerpc64 powerpc64le
 
 USES=		tar:xz
 
@@ -22,12 +23,21 @@ WRKSRC=		${WRKDIR}/${JDK_ROOT}
 
 JDK_PORT=	${PKGNAMEPREFIX}${PORTNAME}
 JDK_ROOT=	${PKGNAMEPREFIX}${PORTNAME}
-JDK_ARCH=	${ARCH:C/armv.*/arm/}${JDK_ARCH_SUFFIX_${ARCH}}
-JDK_ARCH_SUFFIX_powerpc64=	-elfv2
+JDK_ARCH=	${ARCH:C/armv.*/arm/}
 
 INSTALLDIR=	${STAGEDIR}${PREFIX}/${JDK_ROOT}
 
 .include <bsd.port.options.mk>
+
+.if ${OPSYS} == FreeBSD && ${OSVERSION} >= 1500000
+RUN_DEPENDS+=	compat14x-${ARCH}>=0:misc/compat14x
+.endif
+
+.if ${ARCH} == powerpc
+PLIST_SUB+=	NOT_PPC="@comment "
+.else
+PLIST_SUB+=	NOT_PPC=""
+.endif
 
 .if ${ARCH:Mpowerpc64*}
 PLIST_SUB+=	NOT_PPC64="@comment "

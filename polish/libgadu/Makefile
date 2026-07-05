@@ -1,12 +1,12 @@
 PORTNAME=	libgadu
 PORTVERSION=	1.12.2
-PORTREVISION=	1
+PORTREVISION=	2
 PORTEPOCH=	1
 CATEGORIES=	polish net-im
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Instant messaging library for Gadu-Gadu protocol
-WWW=		https://libgadu.net
+WWW=		https://libgadu.github.io/
 
 LICENSE=	LGPL21
 LICENSE_FILE=	${WRKSRC}/COPYING

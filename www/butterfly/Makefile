@@ -1,16 +1,16 @@
 PORTNAME=	butterfly
-PORTVERSION=	2.0.1
-PORTREVISION=	1
+PORTVERSION=	3.2.5
+PORTREVISION=	2
 CATEGORIES=	www
 MASTER_SITES=	PYPI
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Web terminal based on websocket and tornado
-WWW=		https://pypi.org/project/butterfly/
+WWW=		https://github.com/paradoxxxzero/butterfly
 
 LICENSE=	GPLv3
 
-RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}openssl>0:security/py-openssl@${PY_FLAVOR} \
+RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}pyopenssl>0:security/py-pyopenssl@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}tornado>0:www/py-tornado@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}libsass>0:www/py-libsass@${PY_FLAVOR}
 

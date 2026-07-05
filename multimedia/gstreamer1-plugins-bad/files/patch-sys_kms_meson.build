@@ -1,13 +1,13 @@
---- sys/kms/meson.build.orig	2022-09-12 09:58:35 UTC
+--- sys/kms/meson.build.orig	2025-03-11 20:14:44 UTC
 +++ sys/kms/meson.build
-@@ -5,10 +5,6 @@ kmssink_sources = [
-   'gstkmsutils.c',
- ]
+@@ -25,10 +25,6 @@ extra_deps = []
+ 
+ extra_deps = []
  
 -if host_system != 'linux'
 -  subdir_done()
 -endif
 -
- libdrm_dep = dependency('libdrm', version : '>= 2.4.98',
-                         required : get_option('kms'),
-                         fallback: ['libdrm', 'ext_libdrm'])
+ libdrm_dep = dependency('libdrm', version : '>= 2.4.108',
+                         required : get_option('kms'))
+ mathlib = cc.find_library('m', required : false)

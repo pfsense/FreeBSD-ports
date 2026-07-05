@@ -1,5 +1,6 @@
 PORTNAME=	pelican
-DISTVERSION=	4.9.1
+DISTVERSION=	4.11.0
+PORTREVISION=	2
 CATEGORIES=	www textproc python
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
@@ -12,7 +13,7 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 
 BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}pdm-backend>0:devel/py-pdm-backend@${PY_FLAVOR}
 RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}blinker>=1.7:devel/py-blinker@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}dateutil>=2.8.2:devel/py-dateutil@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}python-dateutil>=2.8.2:devel/py-python-dateutil@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}docutils>=0.20.1:textproc/py-docutils@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}feedgenerator>=2.1.0:www/py-feedgenerator@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}Jinja2>=3.1.2:devel/py-Jinja2@${PY_FLAVOR} \
@@ -33,7 +34,7 @@ TEST_DEPENDS=	${PYTHON_PKGNAMEPREFIX}beautifulsoup>=4.9:www/py-beautifulsoup@${P
 		${PYTHON_PKGNAMEPREFIX}lxml>=4.3:devel/py-lxml@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}pytest-cov>0:devel/py-pytest-cov@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}pytest-xdist>2.0:devel/py-pytest-xdist@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}typogrify>=2.0:textproc/py-typogrify@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}typogrify>=2.1:textproc/py-typogrify@${PY_FLAVOR} \
 		git>0:devel/git \
 		hs-pandoc>:textproc/hs-pandoc
 

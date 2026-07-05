@@ -1,18 +1,19 @@
 PORTNAME=	java-getopt
 PORTVERSION=	1.0.14
+PORTREVISION=	2
 CATEGORIES=	java devel
 MASTER_SITES=	http://www.urbanophile.com/arenn/hacking/getopt/
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Java version of GNU getopt family functions
-WWW=		https://www.urbanophile.com/arenn/hacking/download.html #getopt
+WWW=		https://www.urbanophile.com/arenn/hacking/download.html\#getopt
 
 LICENSE=	LGPL20
 
+USES=		java:ant,run
+
 OPTIONS_DEFINE=	DOCS
 
-USE_JAVA=	yes
-USE_ANT=	yes
 ALL_TARGET=	jar
 
 NO_WRKSUBDIR=	yes

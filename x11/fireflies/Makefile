@@ -1,9 +1,10 @@
 PORTNAME=		fireflies
 DISTVERSIONPREFIX=	v
 DISTVERSION=		2.08
+PORTREVISION=	1
 CATEGORIES=		x11
 
-MAINTAINER=	zirias@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Fireflies screensaver, for use with xscreensaver
 
 LICENSE=	GPLv2

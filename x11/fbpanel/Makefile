@@ -11,8 +11,8 @@ WWW=		https://fbpanel.sourceforge.net/
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-USES=		alias gmake gnome pkgconfig tar:tbz2 xorg
-USE_GNOME=	gdkpixbuf2 gdkpixbuf2xlib gtk20
+USES=		gmake gnome pkgconfig tar:tbz2 xorg
+USE_GNOME=	gdkpixbuf gdkpixbuf2xlib gtk20
 USE_XORG=	x11
 HAS_CONFIGURE=	yes
 CONFIGURE_ARGS=	--prefix=${PREFIX}

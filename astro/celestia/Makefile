@@ -1,13 +1,13 @@
 PORTNAME=	celestia
 PORTVERSION=	1.6.1
-PORTREVISION=	14
+PORTREVISION=	15
 CATEGORIES=	astro
 MASTER_SITES=	SF/${PORTNAME}/Celestia-source/${PORTVERSION}
 PKGNAMESUFFIX=	-${CELESTIA_UI}
 
 MAINTAINER=	danfe@FreeBSD.org
 COMMENT=	Scriptable space flight simulator for X11
-WWW=		https://celestia.space
+WWW=		https://celestiaproject.space/
 
 LICENSE=	GPLv2
 

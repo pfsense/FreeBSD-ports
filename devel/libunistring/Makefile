@@ -1,5 +1,5 @@
 PORTNAME=	libunistring
-DISTVERSION=	1.2
+DISTVERSION=	1.4.2
 CATEGORIES=	devel
 MASTER_SITES=	GNU
 
@@ -13,16 +13,17 @@ LICENSE_FILE_GFDL=	${WRKSRC}/doc/libunistring.texi
 LICENSE_FILE_GPLv2=	${WRKSRC}/COPYING
 LICENSE_FILE_LGPL3+ =	${WRKSRC}/COPYING.LIB
 
-USES=		alias charsetfix cpe iconv libtool tar:xz
+USES=		charsetfix cpe iconv libtool tar:xz
 CPE_VENDOR=	gnu
 USE_LDCONFIG=	yes
+
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--disable-static
+
 INSTALL_TARGET=	install-strip
 TEST_TARGET=	check
 INFO=		${PORTNAME}
-OPTIONS_DEFINE=	DOCS
 
-TESTING_UNSAFE=	test-time.c:46: assertion 'tt3 >= tv2.tv_sec' failed
+OPTIONS_DEFINE=	DOCS
 
 .include <bsd.port.mk>

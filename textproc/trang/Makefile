@@ -1,9 +1,10 @@
 PORTNAME=	trang
-PORTVERSION=	20220510
+PORTVERSION=	20241231
+PORTREVISION=	1
 CATEGORIES=	textproc java
 MASTER_SITES=	https://github.com/relaxng/jing-trang/releases/download/V${PORTVERSION}/
 
-MAINTAINER=	yasu@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Multi-format schema converter based on RELAX NG
 WWW=		http://www.thaiopensource.com/relaxng/trang.html
 
@@ -13,10 +14,7 @@ LICENSE_FILE=	${WRKSRC}/copying.txt
 BROKEN_armv6=		fails to build: modbuild.xml: Java returned: 1
 BROKEN_armv7=		fails to build: modbuild.xml: Java returned: 1
 
-USES=		zip
-
-USE_JAVA=	yes
-JAVA_RUN=	yes
+USES=		java zip
 
 OPTIONS_DEFINE=	DOCS
 

@@ -1,6 +1,6 @@
 PORTNAME=	libddoc
 PORTVERSION=	0.8.0
-PORTREVISION=	3
+PORTREVISION=	4
 DISTVERSIONPREFIX=	v
 CATEGORIES=	devel
 
@@ -27,7 +27,8 @@ post-patch:
 	${REINPLACE_CMD} -e '23d' ${WRKSRC}/dub.json
 
 do-build:
-	@cd ${WRKSRC} && DC=${DC} ${DUB_CMD}
+	@cd ${WRKSRC} && \
+		${SETENV} DUB_HOME=${WRKDIR}/dub_home DC=${DC} ${DUB_CMD}
 
 do-install:
 	@${MKDIR} ${STAGEDIR}${D_INCLUDE_DIR}

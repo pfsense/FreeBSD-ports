@@ -1,5 +1,5 @@
 PORTNAME=	hplip
-PORTVERSION=	3.23.12
+PORTVERSION=	3.25.8
 CATEGORIES=	print
 MASTER_SITES=	SF
 
@@ -15,11 +15,11 @@ LIB_DEPENDS=	libcupsimage.so:print/cups \
 		libdbus-1.so:devel/dbus
 RUN_DEPENDS=	cups-filters>=0:print/cups-filters \
 		${PYTHON_PKGNAMEPREFIX}dbus>=0:devel/py-dbus@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}distro>=1.0.1:sysutils/py-distro@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}gobject3>=0:devel/py-gobject3@${PY_FLAVOR}
+		${PYTHON_PKGNAMEPREFIX}distro>=1.0.1:sysutils/py-distro@${PY_FLAVOR}
 
-USES=		dos2unix jpeg libtool localbase pkgconfig python \
+USES=		dos2unix gnome jpeg libtool localbase pkgconfig python \
 		shebangfix
+USE_GNOME=	pygobject3:run
 USE_LDCONFIG=	yes
 
 DOS2UNIX_FILES=	fax/filters/cdmfax/jetlib.cpp \
@@ -97,6 +97,7 @@ post-patch:
 		${WRKSRC}/prnt/hpijs/foomatic-rip-hplip \
 		${WRKSRC}/prnt/filters/hpps \
 		${WRKSRC}/ui5/scandialog.py \
+		${WRKSRC}/ui5/setupdialog.py \
 		${WRKSRC}/ui5/devmgr5.py \
 
 post-install:

@@ -1,18 +1,21 @@
 PORTNAME=	emby-server
-DISTVERSION?=	4.8.3.0
-PORTREVISION?=	2
+DISTVERSION=	4.9.3.0
 CATEGORIES=	multimedia
 MASTER_SITES=	https://github.com/MediaBrowser/Emby.Releases/releases/download/${DISTVERSION}/ \
 		https://mediabrowser.github.io/embytools/
-DISTNAME=	emby-server-freebsd14_${DISTVERSION}_amd64
-DISTFILES=	${DISTNAME}.tar.xz \
-		ffdetect-${FFVERSION}-x64_freebsd13.tar.xz \
-		ffmpeg-${FFVERSION}.tar.gz \
+DISTNAME=	embyserver-netcore_${DISTVERSION}
+DISTFILES=	${DISTNAME}.zip \
+		ffdetect-${FFDETECT_VERSION}.tar.xz \
+		ffmpeg-${FFMPEG_VERSION}.tar.gz \
+		libskiasharp-${SKIASHARP_VERSION}.tar.xz \
+		libvips-${VIPS_VERSION}.tar.xz \
 		license.docx
 DIST_SUBDIR?=	${PORTNAME}
-EXTRACT_ONLY=	${DISTNAME}.tar.xz \
-		ffdetect-${FFVERSION}-x64_freebsd13.tar.xz \
-		ffmpeg-${FFVERSION}.tar.gz
+EXTRACT_ONLY=	${DISTNAME}.zip \
+		ffdetect-${FFDETECT_VERSION}.tar.xz \
+		ffmpeg-${FFMPEG_VERSION}.tar.gz \
+		libskiasharp-${SKIASHARP_VERSION}.tar.xz \
+		libvips-${VIPS_VERSION}.tar.xz
 
 MAINTAINER=	driesm@FreeBSD.org
 COMMENT=	Media server to organize, play & stream audio/video to various devices
@@ -32,10 +35,12 @@ LIB_DEPENDS=	libaribb24.so:multimedia/aribb24 \
 		libchromaprint.so:audio/chromaprint \
 		libdav1d.so:multimedia/dav1d \
 		libdrm.so:graphics/libdrm \
+		libexpat.so:textproc/expat2 \
+		libfftw3.so:math/fftw3 \
 		libfontconfig.so:x11-fonts/fontconfig \
 		libfreetype.so:print/freetype2 \
 		libfribidi.so:converters/fribidi \
-		libmbedtls.so:security/mbedtls \
+		libgnutls.so:security/gnutls \
 		libmfx.so:multimedia/intel-media-sdk \
 		libOpenCL.so:devel/ocl-icd \
 		libogg.so:audio/libogg \
@@ -51,8 +56,7 @@ LIB_DEPENDS=	libaribb24.so:multimedia/aribb24 \
 		libx264.so:multimedia/libx264 \
 		libx265.so:multimedia/x265 \
 		libzvbi.so:devel/libzvbi
-
-RUN_DEPENDS=	dotnet>0:lang/dotnet \
+RUN_DEPENDS=	dotnet8>0:lang/dotnet8 \
 		icu>0:devel/icu \
 		krb5>0:security/krb5 \
 		libexif>0:graphics/libexif \
@@ -67,7 +71,8 @@ RUN_DEPENDS=	dotnet>0:lang/dotnet \
 		pango>0:x11-toolkits/pango \
 		tiff>0:graphics/tiff
 
-USES=		compiler:c11 gmake iconv localbase:ldflags magick:6 pkgconfig sqlite ssl:run
+USES=		compiler:c11 gmake iconv libarchive:run localbase:ldflags pkgconfig sqlite ssl:run
+USE_GNOME=	cairo glib20 librsvg2
 USE_RC_SUBR=	${PORTNAME}
 
 HAS_CONFIGURE=	yes
@@ -86,6 +91,7 @@ CONFIGURE_ARGS=	--cc="${CC}" \
 		--disable-xlib \
 		--enable-chromaprint \
 		--enable-fontconfig \
+		--enable-gnutls \
 		--enable-gpl \
 		--enable-iconv \
 		--enable-libaribb24 \
@@ -104,7 +110,6 @@ CONFIGURE_ARGS=	--cc="${CC}" \
 		--enable-libx264 \
 		--enable-libx265 \
 		--enable-libzvbi \
-		--enable-mbedtls \
 		--enable-opencl \
 		--enable-optimizations \
 		--enable-static \
@@ -113,8 +118,6 @@ CONFIGURE_ARGS=	--cc="${CC}" \
 
 MAKE_ENV=	V=1
 
-CONFLICTS_INSTALL?=	emby-server-devel
-
 NOPRECIOUSMAKEVARS=	yes
 SUB_FILES=	SQLitePCLRaw.provider.sqlite3.dll.config
 SUB_LIST=	GROUP=${GROUPS} \
@@ -122,7 +125,7 @@ SUB_LIST=	GROUP=${GROUPS} \
 		RC_NAME=emby_server \
 		USER=${USERS}
 
-WRKSRC=		${WRKDIR}/ffmpeg-${FFVERSION}_public
+WRKSRC=		${WRKDIR}/ffmpeg-${FFMPEG_VERSION:C/-.*$//}_public
 
 USERS=		emby
 GROUPS=		emby
@@ -133,20 +136,20 @@ OPTIONS_DEFAULT=	LAME
 LAME_LIB_DEPENDS=	libmp3lame.so:audio/lame
 LAME_CONFIGURE_ENABLE=	libmp3lame
 
-FFVERSION=	2022_05_07
+FFMPEG_VERSION=		2023_06_25-u1
+FFDETECT_VERSION=	2023.06.25p4-x64_freebsd15
+SKIASHARP_VERSION=	2.88.7-x64_freebsd15
+VIPS_VERSION=		8.16.0-x64_freebsd15
 
 do-install:
-	@${MKDIR} ${STAGEDIR}${PREFIX}/lib/emby-server/bin
-	(${INSTALL_PROGRAM} ${WRKDIR}/bin/ffdetect ${STAGEDIR}${PREFIX}/lib/emby-server/bin)
+	@${MKDIR} ${STAGEDIR}${PREFIX}/lib/emby-server
+	(cd ${WRKDIR}/bin && ${COPYTREE_BIN} . ${STAGEDIR}${PREFIX}/lib/emby-server/bin)
+	(cd ${WRKDIR}/lib && ${COPYTREE_BIN} . ${STAGEDIR}${PREFIX}/lib/emby-server/lib)
+	(cd ${WRKDIR}/system && ${COPYTREE_SHARE} . ${STAGEDIR}${PREFIX}/lib/emby-server/system)
 	(${INSTALL_PROGRAM} ${WRKSRC}/ffmpeg ${STAGEDIR}${PREFIX}/lib/emby-server/bin)
 	(${INSTALL_PROGRAM} ${WRKSRC}/ffprobe ${STAGEDIR}${PREFIX}/lib/emby-server/bin)
-	@${MKDIR} ${STAGEDIR}${PREFIX}/lib/emby-server/lib
-	(cd ${WRKDIR}/lib && ${COPYTREE_BIN} . ${STAGEDIR}${PREFIX}/lib/emby-server/lib)
-	${RLN} ${LOCALBASE}/lib/libimagequant.so.0.4 ${STAGEDIR}${PREFIX}/lib/emby-server/lib/libimagequant.so.0
-	@${MKDIR} ${STAGEDIR}${PREFIX}/lib/emby-server/system
 	(${INSTALL_DATA} ${WRKDIR}/SQLitePCLRaw.provider.sqlite3.dll.config ${STAGEDIR}${PREFIX}/lib/emby-server/system)
-	(cd ${WRKDIR}/system && ${COPYTREE_SHARE} . ${STAGEDIR}${PREFIX}/lib/emby-server/system "! -name EmbyServer")
-	(${INSTALL_PROGRAM} ${WRKDIR}/system/EmbyServer ${STAGEDIR}${PREFIX}/lib/emby-server/system)
+	${RLN} ${LOCALBASE}/lib/libimagequant.so.0.4 ${STAGEDIR}${PREFIX}/lib/emby-server/lib/libimagequant.so.0
 
 post-install:
 	@${FIND} -s ${STAGEDIR}${PREFIX}/lib -not -type d | ${SORT} | ${SED} -e 's#^${STAGEDIR}${PREFIX}/##' >> ${TMPPLIST}

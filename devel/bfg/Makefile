@@ -1,5 +1,6 @@
 PORTNAME=	bfg
-PORTVERSION=	1.14.0
+PORTVERSION=	1.15.0
+PORTREVISION=	1
 CATEGORIES=	devel java
 MASTER_SITES=	https://repo1.maven.org/maven2/com/madgag/${PORTNAME}/${DISTVERSION}/
 EXTRACT_SUFX=	.jar
@@ -10,8 +11,8 @@ WWW=		https://rtyley.github.io/bfg-repo-cleaner/
 
 LICENSE=	GPLv3
 
-USE_JAVA=	yes
-JAVA_RUN=	jre
+USES=		java
+JAVA_VERSION=	11+
 
 NO_ARCH=	yes
 NO_BUILD=	yes

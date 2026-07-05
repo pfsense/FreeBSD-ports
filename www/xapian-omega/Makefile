@@ -1,5 +1,5 @@
 PORTNAME=	xapian-omega
-PORTVERSION=	1.4.25
+PORTVERSION=	1.4.30
 CATEGORIES=	www
 MASTER_SITES=	https://oligarchy.co.uk/xapian/${PORTVERSION}/ \
 		LOCAL/sunpoet
@@ -21,9 +21,7 @@ CONFIGURE_ARGS=	--datarootdir=${DATADIR} --docdir=${DOCSDIR} \
 		ac_cv_func_snprintf=snprintf
 CONFIGURE_ENV=	XAPIAN_CONFIG=${LOCALBASE}/bin/xapian-config
 GNU_CONFIGURE=	yes
-GNU_CONFIGURE_MANPREFIX=${PREFIX}/share
 USE_CXXSTD=	c++11
-USE_LDCONFIG=	yes
 
 CONFLICTS_INSTALL=	xapian-omega12
 

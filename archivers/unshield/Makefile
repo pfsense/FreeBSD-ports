@@ -1,5 +1,5 @@
 PORTNAME=	unshield
-PORTVERSION=	1.5.1
+PORTVERSION=	1.6.2
 CATEGORIES=	archivers
 
 MAINTAINER=	sunpoet@FreeBSD.org
@@ -9,10 +9,12 @@ WWW=		https://github.com/twogood/unshield
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-USES=		cmake cpe pathfix ssl
+USES=		cmake cpe ssl
 
 CFLAGS+=	-fPIC
 USE_LDCONFIG=	yes
+
+PLIST_SUB=	PORTVERSION=${PORTVERSION}
 
 CPE_VENDOR=	unshield_project
 

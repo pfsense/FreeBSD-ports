@@ -1,4 +1,4 @@
---- chrome/browser/task_manager/sampling/task_group_sampler.cc.orig	2023-03-09 06:31:50 UTC
+--- chrome/browser/task_manager/sampling/task_group_sampler.cc.orig	2025-03-05 08:14:56 UTC
 +++ chrome/browser/task_manager/sampling/task_group_sampler.cc
 @@ -45,7 +45,7 @@ TaskGroupSampler::TaskGroupSampler(
      const OnCpuRefreshCallback& on_cpu_refresh,
@@ -36,7 +36,7 @@
    if (TaskManagerObserver::IsResourceRefreshEnabled(REFRESH_TYPE_FD_COUNT,
                                                      refresh_flags)) {
      blocking_pool_runner_->PostTaskAndReplyWithResult(
-@@ -144,7 +144,7 @@ int TaskGroupSampler::RefreshIdleWakeupsPerSecond() {
+@@ -152,7 +152,7 @@ int TaskGroupSampler::RefreshIdleWakeupsPerSecond() {
    return process_metrics_->GetIdleWakeupsPerSecond();
  }
  

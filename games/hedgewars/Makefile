@@ -1,5 +1,5 @@
 PORTNAME=	hedgewars
-PORTVERSION=	1.0.2
+PORTVERSION=	1.0.3
 PORTREVISION=	3
 CATEGORIES=	games
 MASTER_SITES=	https://www.hedgewars.org/download/releases/
@@ -26,35 +26,19 @@ USE_GL=		gl glu
 USE_LDCONFIG=	yes
 CMAKE_ON=	NOSERVER
 
-PLIST_FILES=	bin/${PORTNAME} bin/hwengine \
-		share/appdata/hedgewars.appdata.xml \
-		share/applications/${PORTNAME}.desktop \
-		share/pixmaps/${PORTNAME}.png \
-		share/pixmaps/${PORTNAME}.xpm \
-		lib/libphyslayer.so \
-		lib/libphyslayer.so.1.0
 PORTDATA=	*
+
+ONLY_FOR_ARCHS=	amd64
+ONLY_FOR_ARCHS_REASON=	FPC and GHC limitations
 
 OPTIONS_DEFINE=	VIDEOREC
 OPTIONS_DEFAULT=VIDEOREC
-OPTIONS_EXCLUDE_i386=	VIDEOREC  # some pascal issues preventing to use it
+OPTIONS_SUB=	yes
 
 VIDEOREC_DESC=	Enable video recording (requires ffmpeg)
 
 VIDEOREC_LIB_DEPENDS=	libavcodec.so.58:multimedia/ffmpeg4
-VIDEOREC_PLIST_FILES=	lib/libavwrapper.so \
-			lib/libavwrapper.so.1.0
 VIDEOREC_CMAKE_OFF=	-DNOVIDEOREC=1
-
-.include <bsd.port.pre.mk>
-
-.if ${ARCH} == i386
-BUILD_DEPENDS+=	ghc:lang/ghc
-.endif
-
-post-extract:
-	# Remove included CMakeFile, which is incompatible with >= cmake-3.24
-	${RM} ${WRKSRC}/cmake_modules/CMakeSystemSpecificInformation.cmake
 
 post-patch:
 	@${REINPLACE_CMD} -e 's|/usr/local|${LOCALBASE}|' ${WRKSRC}/cmake_modules/*.cmake
@@ -70,4 +54,4 @@ post-install:
 	${INSTALL_DATA} ${WRKSRC}/misc/hedgewars.png \
 		${STAGEDIR}${PREFIX}/share/pixmaps/
 
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

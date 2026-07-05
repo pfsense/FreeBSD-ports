@@ -8,7 +8,7 @@
  * freeradius.xml
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2015-2024 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2015-2026 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2013 Alexander Wilke <nachtfalkeaw@web.de>
  * All rights reserved.
  *
@@ -28,6 +28,7 @@
 	</copyright>
 	<name>freeradius</name>
 	<title>Services/FreeRADIUS</title>
+	<addedit_string>FreeRADIUS: changed Users</addedit_string>
 	<include_file>/usr/local/pkg/freeradius.inc</include_file>
 	<menu>
 		<name>FreeRADIUS</name>
@@ -663,6 +664,15 @@
 	<plugins>
 		<item>
 			<type>plugin_certificates</type>
+		</item>
+		<item>
+			<type>plugin_xmlrpc_send</type>
+		</item>
+		<item>
+			<type>plugin_xmlrpc_recv</type>
+		</item>
+		<item>
+			<type>plugin_xmlrpc_recv_done</type>
 		</item>
 	</plugins>
 	<custom_delete_php_command>

@@ -1,6 +1,6 @@
 PORTNAME=	vorta
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.9.1
+DISTVERSION=	0.11.3
 CATEGORIES=	deskutils python
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
@@ -21,10 +21,10 @@ RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}borgbackup>=1.2.7:archivers/py-borgbackup@${
 		${PYTHON_PKGNAMEPREFIX}platformdirs>=3.11.0:devel/py-platformdirs@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}psutil>=5.9.8:sysutils/py-psutil@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}qt6-pyqt>=6.6.1:devel/py-qt6-pyqt@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}SecretStorage>=3.3.1:security/py-SecretStorage@${PY_FLAVOR}
+		${PYTHON_PKGNAMEPREFIX}SecretStorage>=3.3.1:security/py-SecretStorage@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}sqlite3>=3.11.10:databases/py-sqlite3@${PY_FLAVOR}
 
 USES=		python
-
 USE_GITHUB=	yes
 GH_ACCOUNT=	borgbase
 USE_PYTHON=	autoplist pep517
@@ -38,6 +38,10 @@ DESKTOP_FILE=	${REVDOMAIN}.desktop
 ICONDIR=	share/icons/hicolor/scalable/apps
 REVDOMAIN=	com.borgbase.Vorta
 VORTAICON=	${REVDOMAIN}.svg
+
+post-patch:
+	@${REINPLACE_CMD} -e 's/\(license = \)"GPL-3.0-only"/\1{file = "LICENSE"}/1' \
+		${WRKSRC}/pyproject.toml
 
 post-install:
 	${MKDIR} ${STAGEDIR}${PREFIX}/${ICONDIR} && \

@@ -1,0 +1,19 @@
+commit 2adf7b8cde44a8e2f0f0cbb2a7f6c360e3bf4050
+Author: Christopher Cope <ccope@netgate.com>
+Date:   Sat Jan 6 18:25:02 2024 -0500
+
+    Fix packet captures on tailscale. Fixes #15145
+
+diff --git a/src/usr/local/www/diag_packet_capture.php b/src/usr/local/www/diag_packet_capture.php
+index e19ecce0b7..ae2a753f75 100644
+--- a/src/usr/local/www/diag_packet_capture.php
++++ b/src/usr/local/www/diag_packet_capture.php
+@@ -238,7 +238,7 @@ if ($_POST) {
+ 		}
+ 	}
+ 
+-	$vlan_supported = !preg_match('/^(lo\d+|gif\d+|gre\d+|ppp\d+|pppoe\d+|pptp\d+|l2tp\d+|enc\d+|ipsec\d+|ovpn[sc]\d+|tun_wg\d+)/i', $input_interface);
++	$vlan_supported = !preg_match('/^(lo\d+|gif\d+|gre\d+|ppp\d+|pppoe\d+|pptp\d+|l2tp\d+|enc\d+|ipsec\d+|ovpn[sc]\d+|tun_wg\d+|tailscale\d+)/i', $input_interface);
+ 	try {
+ 		$expression_string = get_expression_string($filterattributes, $vlan_supported);
+ 	} catch (Exception $e) {

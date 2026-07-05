@@ -1,7 +1,6 @@
 PORTNAME=	reproxy
-PORTVERSION=	0.11.0
+PORTVERSION=	1.5.0
 DISTVERSIONPREFIX=	v
-PORTREVISION=	18
 CATEGORIES=	www
 
 MAINTAINER=	danfe@FreeBSD.org
@@ -11,17 +10,12 @@ WWW=		https://reproxy.io/
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-USES=		go:modules
+USES=		go:1.25+,modules
 USE_GITHUB=	yes
 GH_ACCOUNT=	umputun
-GH_TUPLE=	golang:sys:v0.6.0:sys
 
 BUILD_WRKSRC=	${WRKSRC}/app
 PLIST_FILES=	bin/reproxy
-
-pre-patch:
-	${RM} -r ${WRKSRC}/vendor/golang.org/x/sys
-	${LN} -s ${WRKDIR}/sys-* ${WRKSRC}/vendor/golang.org/x/sys
 
 post-patch:
 	@${REINPLACE_CMD} -e '/var revision/s,unknown,${PORTVERSION},' \

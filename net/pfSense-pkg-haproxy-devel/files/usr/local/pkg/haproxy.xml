@@ -8,7 +8,7 @@
  * haproxy.xml
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2009-2024 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2009-2026 Rubicon Communications, LLC (Netgate)
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -27,6 +27,7 @@
 	</copyright>
 	<name>haproxy</name>
 	<title>HAProxy</title>
+	<donotsave>true</donotsave>
 	<aftersaveredirect>/pkg_edit.php?xml=haproxy_pools.php</aftersaveredirect>
 	<include_file>/usr/local/pkg/haproxy/haproxy.inc</include_file>
 	<menu>
@@ -53,6 +54,15 @@
 		</item>
 		<item>
 			<type>plugin_certificates</type>
+		</item>
+		<item>
+			<type>plugin_xmlrpc_send</type>
+		</item>
+		<item>
+			<type>plugin_xmlrpc_recv</type>
+		</item>
+		<item>
+			<type>plugin_xmlrpc_recv_done</type>
 		</item>
 	</plugins>
 	<configpath>installedpackages->haproxy->config</configpath>

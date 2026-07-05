@@ -1,6 +1,6 @@
 PORTNAME=	upower
-DISTVERSION=	1.90.2
-PORTREVISION=	1
+DISTVERSIONPREFIX=	v
+DISTVERSION=	1.91.1
 CATEGORIES=	sysutils
 
 MAINTAINER=	desktop@FreeBSD.org
@@ -10,31 +10,40 @@ WWW=		https://upower.freedesktop.org/
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-LIB_DEPENDS=	libdbus-glib-1.so:devel/dbus-glib
+LIB_DEPENDS=	libpolkit-gobject-1.so:sysutils/polkit
 
-USES=		compiler:c11 gettext gnome localbase meson pkgconfig
+USES=		compiler:c11 gettext-tools gnome localbase meson pkgconfig
 USE_GITLAB=	yes
 GL_SITE=	https://gitlab.freedesktop.org/
-GL_TAGNAME=	8dcf54440d7eb58b75d7982bc1c29ee35dccf0c2
 USE_GNOME=	glib20 introspection:build
 USE_LDCONFIG=	yes
 MESON_ARGS=	-Dgtk-doc=false \
+		-Dinstalled_tests=false \
+		-Didevice=disabled \
 		-Dos_backend=freebsd \
-		-Dlocalstatedir=/var \
-		-Dudevrulesdir=no \
-		-Dudevhwdbdir=no \
+		-Dpolkit=enabled \
 		-Dsystemdsystemunitdir=no \
-		-Didevice=disabled
+		-Dudevhwdbdir=no \
+		-Dudevrulesdir=no \
+		-Dzshcompletiondir=no
 LDFLAGS+=	-lkvm
 
-OPTIONS_DEFINE=			MANPAGES
-OPTIONS_DEFAULT=		MANPAGES
-OPTIONS_SUB=			yes
-MANPAGES_BUILD_DEPENDS=		${LOCALBASE}/share/xsl/docbook/manpages/docbook.xsl:textproc/docbook-xsl \
-				docbook-sgml>0:textproc/docbook-sgml \
-				docbook-xml>0:textproc/docbook-xml \
-				gtkdoc-scan:textproc/gtk-doc
-MANPAGES_USE=			GNOME=libxslt:build
-MANPAGES_MESON_TRUE=		man
+OPTIONS_DEFINE=		DOCS MANPAGES NLS
+OPTIONS_DEFAULT=	MANPAGES
+OPTIONS_SUB=		yes
+
+MANPAGES_BUILD_DEPENDS=	${LOCALBASE}/share/xsl/docbook/manpages/docbook.xsl:textproc/docbook-xsl \
+			docbook-sgml>0:textproc/docbook-sgml \
+			docbook-xml>0:textproc/docbook-xml
+MANPAGES_USE=		GNOME=libxslt:build
+MANPAGES_MESON_TRUE=	man
+
+NLS_USES=	gettext-runtime
+
+post-patch-NLS-off:
+	@${REINPLACE_CMD} -e "/^subdir('po')/d" ${WRKSRC}/meson.build
+
+post-install:
+	@${MKDIR} ${STAGEDIR}${PREFIX}/etc/UPower/UPower.conf.d
 
 .include <bsd.port.mk>

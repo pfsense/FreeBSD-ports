@@ -1,5 +1,6 @@
 PORTNAME=	luv
-DISTVERSION=	1.48.0-2
+#DISTVERSIONPREFIX=	v
+DISTVERSION=	1.52.1-0
 CATEGORIES=	devel
 MASTER_SITES=	https://github.com/luvit/${PORTNAME}/releases/download/${DISTVERSION}/
 
@@ -12,7 +13,7 @@ LICENSE_FILE=	${WRKSRC}/LICENSE.txt
 
 LIB_DEPENDS=	libuv.so:devel/libuv
 
-USES=		cmake luajit
+USES=		cmake localbase luajit
 USE_LDCONFIG=	yes
 
 OPTIONS_DEFINE=	DOCS
@@ -25,7 +26,7 @@ CMAKE_ARGS=	-DLUA_BUILD_TYPE=System \
 
 PLIST_FILES=	lib/libluv.so \
 		lib/libluv.so.1 \
-		lib/libluv.so.1.48.0 \
+		lib/libluv.so.1.52.1 \
 		libdata/pkgconfig/libluv.pc \
 		include/luv/util.h \
 		include/luv/luv.h \

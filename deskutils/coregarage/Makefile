@@ -1,6 +1,5 @@
 PORTNAME=	coregarage
-DISTVERSION=	4.3.0
-PORTREVISION=	2
+DISTVERSION=	5.0.0
 CATEGORIES=	deskutils
 
 MAINTAINER=	jwb@FreeBSD.org
@@ -10,28 +9,27 @@ WWW=		https://gitlab.com/cubocore/coregarage
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-LIB_DEPENDS=	libarchiveqt5.so:archivers/libarchive-qt \
-		libcprime-core.so:deskutils/libcprime
+LIB_DEPENDS=	libcprime-core.so:deskutils/libcprime
 
-USES=		cmake localbase:ldflags qt:5
-USE_QT=		buildtools:build core gui network qmake:build widgets
+USES=		cmake desktop-file-utils localbase:ldflags qt:6
+USE_QT=		base tools:build
 USE_GITLAB=	yes
 
 GL_ACCOUNT=	CuboCore
-GL_TAGNAME=	50d4c4f246a50df522c08e4b9af690a00ad96c1b
+GL_TAGNAME=	v5.0.0
 
 PLIST_FILES=	bin/coregarage \
-		share/applications/org.cubocore.CoreGarage.desktop \
-		share/icons/hicolor/scalable/apps/org.cubocore.CoreGarage.svg
+		share/applications/cc.cubocore.CoreGarage.desktop \
+		share/icons/hicolor/scalable/apps/cc.cubocore.CoreGarage.svg
 
 pre-configure:
 	@${REINPLACE_CMD} \
 		-e 's|/usr/bin|${PREFIX}/bin|g' \
 		-e 's|/usr/lib|${PREFIX}/lib|g' \
 		-e 's|/usr/share|${PREFIX}/share|g' \
-		${WRKSRC}/coregarage.cpp \
-		${WRKSRC}/coregarage.h \
-		${WRKSRC}/org.cubocore.CoreGarage.desktop \
-		${WRKSRC}/settings.cpp
+		${WRKSRC}/src/coregarage.cpp \
+		${WRKSRC}/src/settings.cpp \
+		${WRKSRC}/src/coregarage.h \
+		${WRKSRC}/cc.cubocore.CoreGarage.desktop
 
 .include <bsd.port.mk>

@@ -1,0 +1,18 @@
+commit 738f647c453a8995c6b411f91efb66c17a0d6c11
+Author: jim-p <jimp@netgate.com>
+Date:   Tue Dec 3 12:37:49 2024 -0500
+
+    Define PHP request_order. Fixes #15893
+
+diff --git a/src/etc/rc.php_ini_setup b/src/etc/rc.php_ini_setup
+index 6c6d05dd5e..44d92ec807 100755
+--- a/src/etc/rc.php_ini_setup
++++ b/src/etc/rc.php_ini_setup
+@@ -198,6 +198,7 @@ max_input_vars = 5000
+ register_argc_argv = On
+ register_long_arrays = Off
+ variables_order = "GPCS"
++request_order = "GP"
+ file_uploads = On
+ upload_tmp_dir = ${UPLOADTMPDIR}
+ upload_max_filesize = 200M

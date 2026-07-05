@@ -1,11 +1,20 @@
---- chrome/browser/browser_features.h.orig	2024-02-04 14:46:08 UTC
+--- chrome/browser/browser_features.h.orig	2026-03-24 16:59:08 UTC
 +++ chrome/browser/browser_features.h
-@@ -121,7 +121,7 @@ BASE_DECLARE_FEATURE(kAutocompleteActionPredictorConfi
+@@ -41,7 +41,7 @@ BASE_DECLARE_FEATURE(kCertificateTransparencyAskBefore
+ BASE_DECLARE_FEATURE(kCertVerificationNetworkTime);
+ BASE_DECLARE_FEATURE(kClearUserDataUponProfileDestruction);
  
- BASE_DECLARE_FEATURE(kOmniboxTriggerForNoStatePrefetch);
+-#if BUILDFLAG(IS_LINUX)
++#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_BSD)
+ BASE_DECLARE_FEATURE(kDbusSecretPortal);
+ #endif
  
--#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_WIN)
-+#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_WIN) || BUILDFLAG(IS_BSD)
- BASE_DECLARE_FEATURE(kPayloadTestComponent);
+@@ -86,7 +86,7 @@ BASE_DECLARE_FEATURE(kRestartNetworkServiceUnsandboxed
+ BASE_DECLARE_FEATURE(kSandboxExternalProtocolBlocked);
+ BASE_DECLARE_FEATURE(kSandboxExternalProtocolBlockedWarning);
+ 
+-#if BUILDFLAG(IS_LINUX)
++#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_BSD)
+ BASE_DECLARE_FEATURE(kSecretPortalKeyProviderUseForEncryption);
  #endif
  

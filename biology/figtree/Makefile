@@ -1,6 +1,7 @@
 PORTNAME=	figtree
 DISTVERSIONPREFIX=	v
 DISTVERSION=	1.4.4-14
+PORTREVISION=	1
 DISTVERSIONSUFFIX=	-gf9085b6
 CATEGORIES=	biology education java
 
@@ -10,8 +11,7 @@ WWW=		http://tree.bio.ed.ac.uk/software/figtree/
 
 LICENSE=	GPLv2
 
-USE_JAVA=	yes
-USE_ANT=	yes
+USES=		java:ant
 JAVA_VERSION=	17 # Java 8 fails on aarch64: Internal Error (assembler_aarch64.hpp:237) ...
 
 USE_GITHUB=	yes

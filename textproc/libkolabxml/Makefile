@@ -1,5 +1,6 @@
 PORTNAME=	libkolabxml
 DISTVERSION=	1.3.1
+PORTREVISION=	6
 CATEGORIES=	textproc
 MASTER_SITES=	LOCAL/kde/${PORTNAME}
 DIST_SUBDIR=	${PORTNAME}
@@ -15,9 +16,9 @@ LICENSE=	LGPL3+
 
 BUILD_DEPENDS=	libxsd>=4.2.0:devel/libxsd \
 		xsdcxx:devel/xsd
-LIB_DEPENDS=	libboost_system.so:devel/boost-libs \
+LIB_DEPENDS=	libboost_thread.so:devel/boost-libs \
 		libcurl.so:ftp/curl \
-		libxerces-c.so.3:textproc/xerces-c3
+		libxerces-c.so:textproc/xerces-c3
 
 USES=		cmake tar:xz
 USE_LDCONFIG=	yes

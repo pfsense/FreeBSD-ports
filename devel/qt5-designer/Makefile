@@ -10,6 +10,7 @@ USES=		compiler:c++11-lang perl5 qmake qt-dist:5,tools
 USE_PERL5=	build
 USE_QT=		assistant:run core declarative gui network printsupport uiplugin \
 		widgets xml buildtools:build
+USE_LDCONFIG=	${PREFIX}/${QT_LIBDIR_REL}
 
 DESKTOP_ENTRIES="Qt 5 Designer" "" \
 		"${PREFIX}/share/pixmaps/designer-qt5.png" \

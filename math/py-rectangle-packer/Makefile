@@ -1,5 +1,6 @@
 PORTNAME=	rectangle-packer
 DISTVERSION=	2.0.2
+PORTREVISION=	1
 CATEGORIES=	math python
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
@@ -11,7 +12,7 @@ LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE.md
 
 USES=		python
-USE_PYTHON=	distutils cython autoplist unittest
+USE_PYTHON=	autoplist cython0 distutils unittest
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	Penlect
@@ -21,7 +22,7 @@ TEST_WRKSRC=	${WRKSRC}/test
 
 post-install:
 	@${STRIP_CMD} \
-		${STAGEDIR}${PYTHON_SITELIBDIR}/rpack/_core${PYTHON_EXT_SUFFIX}.so \
-		${STAGEDIR}${PYTHON_SITELIBDIR}/rpack/_rpack${PYTHON_EXT_SUFFIX}.so
+		${STAGEDIR}${PYTHON_SITELIBDIR}/rpack/_core${PYTHON_TAG}.so \
+		${STAGEDIR}${PYTHON_SITELIBDIR}/rpack/_rpack${PYTHON_TAG}.so
 
 .include <bsd.port.mk>

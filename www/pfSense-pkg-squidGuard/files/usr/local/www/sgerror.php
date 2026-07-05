@@ -6,7 +6,7 @@ $page_info = <<<EOD
  * sgerror.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2017-2024 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2017-2026 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2006-2011 Serg Dvoriancev
  * All rights reserved.
  *
@@ -247,7 +247,7 @@ if ($url) {
 	} elseif ((strpos(strtolower($url), "http://") === 0) or (strpos(strtolower($url), "https://") === 0)) {
 		// Redirect to the specified url
 		header("HTTP/1.0");
-		header("Location: $url", '', 302);
+		header("Location: $url", false, 302);
 	} else {
 		// Output an error
 		echo get_page("sgerror: error arguments " . htmlspecialchars($url));

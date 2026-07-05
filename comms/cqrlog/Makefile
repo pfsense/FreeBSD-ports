@@ -1,6 +1,6 @@
 PORTNAME=	cqrlog
 PORTVERSION=	2.5.2
-PORTREVISION=	9
+PORTREVISION=	18
 DISTVERSIONPREFIX=	v
 CATEGORIES=	comms hamradio
 PKGNAMESUFFIX=	${LAZARUS_PKGNAMESUFFIX}
@@ -12,6 +12,8 @@ WWW=		https://www.cqrlog.com/
 LICENSE=	GPLv2
 
 LIB_DEPENDS=	libhamlib.so:comms/hamlib
+
+ONLY_FOR_ARCHS=	amd64 i386
 
 USES=		fpc gnome lazarus:flavors shebangfix ssl:run dos2unix \
 		mysql:server xorg
@@ -59,6 +61,8 @@ post-patch:
 		${WRKSRC}/src/dData.pas ${WRKSRC}/src/fGrayline.pas
 	${REINPLACE_CMD} -e 's|ifdef LCLQT5|if defined\(LCLQT5\) or defined\(LCLQT6\)|g' \
 		${WRKSRC}/src/lnet/lib/lclnet.pas
+	${REINPLACE_CMD} -e 's|unixutil|Unix|g' -e 's|UnixUtil|Unix|g' \
+		${WRKSRC}/src/lnet/lib/lcommon.pp
 
 post-build:
 	@${RM} ${WRKSRC}/help/cwd.html.*

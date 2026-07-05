@@ -21,18 +21,17 @@ LIB_DEPENDS=	libexpat.so:textproc/expat2 \
 		libgtkextra-x11-3.0.so:x11-toolkits/gtkextra \
 		libharfbuzz.so:print/harfbuzz \
 		libltdl.so:devel/libltdl \
-		libpcre.so:devel/pcre \
 		libpng.so:graphics/png \
 		libstroke.so:devel/libstroke \
 		libunistring.so:devel/libunistring
 
 USES=		desktop-file-utils gettext-tools gnome groff:build \
 		guile:2.2,3.0,conflicts iconv:wchar_t libtool localbase \
-		makeinfo pathfix perl5 pkgconfig shared-mime-info shebangfix \
+		makeinfo perl5 pkgconfig shared-mime-info shebangfix \
 		xorg
 USE_XORG=	pixman x11 xau xcb xcomposite xcursor xdamage xdmcp xext xfixes \
 		xi xinerama xrandr xrender
-USE_GNOME=	cairo gdkpixbuf2 gtk20
+USE_GNOME=	cairo gdkpixbuf gtk20
 USE_GL=		egl gl
 USE_LDCONFIG=	yes
 

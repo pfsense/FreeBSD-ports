@@ -1,5 +1,5 @@
 PORTNAME=	JSON-Path
-PORTVERSION=	1.0.4
+PORTVERSION=	1.0.6
 CATEGORIES=	devel perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
@@ -24,7 +24,7 @@ RUN_DEPENDS=	p5-Carp-Assert>=0:devel/p5-Carp-Assert \
 TEST_DEPENDS=	p5-JSON>=0:converters/p5-JSON \
 		p5-Test-Deep>=0:devel/p5-Test-Deep \
 		p5-Test-Most>=0:devel/p5-Test-Most \
-		p5-Test2-Suite>=0:devel/p5-Test2-Suite
+		p5-Test-Simple>=1.302200:devel/p5-Test-Simple
 
 USES=		perl5
 USE_PERL5=	configure

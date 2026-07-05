@@ -3,7 +3,7 @@
  * sqstat.class.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2015-2024 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2015-2026 Rubicon Communications, LLC (Netgate)
  * Copyright (C) 2006 Alex Samorukov <samm@os2.kiev.ua>
  * Copyright (c) 2011 Sergey Dvoriancev <dv_serg@mail.ru>
  * All rights reserved.
@@ -387,7 +387,7 @@ class squidstat {
 					    . '<td nowrap align="right">' . ( (round($avg_speed, 2) > 0) ? sprintf("%01.2f KB/s", $avg_speed) : '' ) . '</td>';
 				}
 				$table .= '<td nowrap align="right">' . $this->filesize_format($con["bytes"]) . '</td>'
-				    . '<td nowrap align="right">' . $this->duration($con["seconds"], "short") . '</td>'
+				    . '<td nowrap align="right">' . $this->duration($con["seconds"]) . '</td>'
 				    . '</tr>';
 			}
 			if ($this->use_sessions) {

@@ -1,7 +1,7 @@
 PORTNAME=	metis
 DISTVERSIONPREFIX=	releases/
 DISTVERSION=	1.3.10
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	math
 MASTER_SITES=	http://coin-or-tools.github.io/ThirdParty-Metis/:metis
 PKGNAMEPREFIX=	coin-or-
@@ -24,6 +24,9 @@ GH_PROJECT=	ThirdParty-Metis
 
 GNU_CONFIGURE=	yes
 
+# Adaption of the upstream fix for Clang/Flang
+# https://github.com/coin-or-tools/ThirdParty-Metis/commit/5ace49007591f11b64f70183102549d3a9721d4b
+CFLAGS=		-Wno-implicit-function-declaration
 INSTALL_TARGET=	install-strip
 
 METIS_VERSION=	4.0.3 # from the script get.Metis

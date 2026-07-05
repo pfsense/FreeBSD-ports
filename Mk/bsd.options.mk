@@ -198,6 +198,7 @@ _ALL_OPTIONS_HELPERS=	${_OPTIONS_DEPENDS:S/$/_DEPENDS/} \
 			CONFIGURE_WITH IMPLIES MESON_ARGS MESON_DISABLED \
 			MESON_ENABLED MESON_FALSE MESON_OFF MESON_ON MESON_TRUE \
 			PREVENTS PREVENTS_MSG QMAKE_OFF QMAKE_ON \
+			ZIG_BOOL ZIG_BOOL_OFF \
 			SUBPACKAGES SUBPACKAGES_OFF USE USE_OFF VARS VARS_OFF
 
 # The format here is target_family:priority:target-type
@@ -472,6 +473,7 @@ SUBPACKAGES+=	${${opt}_SUBPACKAGES_OFF}
 .      endif
 .    endif
 .  endfor
+
 .  for opt in ${_REALLY_ALL_POSSIBLE_OPTIONS}
 # PLIST_SUB
 PLIST_SUB?=
@@ -542,6 +544,9 @@ MESON_ARGS+=		${${opt}_MESON_DISABLED:C/.*/-D&=disabled/}
 .      endif
 .      if defined(${opt}_CABAL_FLAGS)
 CABAL_FLAGS+=	${${opt}_CABAL_FLAGS}
+.      endif
+.      if defined(${opt}_ZIG_BOOL)
+ZIG_ARGS+=	${${opt}_ZIG_BOOL:C/.*/-D&=true/}
 .      endif
 .      for configure in CONFIGURE CMAKE MESON QMAKE
 .        if defined(${opt}_${configure}_ON)
@@ -618,6 +623,9 @@ MESON_ARGS+=		${${opt}_MESON_DISABLED:C/.*/-D&=enabled/}
 .      endif
 .      if defined(${opt}_CABAL_FLAGS)
 CABAL_FLAGS+=	-${${opt}_CABAL_FLAGS}
+.      endif
+.      if defined(${opt}_ZIG_BOOL)
+ZIG_ARGS+=	${${opt}_ZIG_BOOL:C/.*/-D&=false/}
 .      endif
 .      for configure in CONFIGURE CMAKE MESON QMAKE
 .        if defined(${opt}_${configure}_OFF)

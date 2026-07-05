@@ -1,6 +1,6 @@
 PORTNAME=	brz
 DISTVERSION=	3.2.2
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	devel
 MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -22,7 +22,7 @@ RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}configobj>=0:devel/py-configobj@${PY_FLAVOR}
 TEST_DEPENDS=	${PYTHON_PKGNAMEPREFIX}testtools>=0:devel/py-testtools@${PY_FLAVOR}
 
 USES=		gettext python shebangfix
-USE_PYTHON=	autoplist concurrent distutils
+USE_PYTHON=	autoplist concurrent cython0 distutils
 
 SHEBANG_FILES=	brz
 MAKE_ENV=	BRZ_LOG=/dev/null
@@ -42,6 +42,7 @@ SFTP_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}paramiko>=0:security/py-paramiko@${PY_F
 
 post-patch:
 	@${REINPLACE_CMD} -e 's|man/man1|share/man/man1|' ${WRKSRC}/setup.py
+	@${RM} ${WRKSRC}/breezy/*_pyx.c ${WRKSRC}/breezy/bzr/*_pyx.c
 
 post-install:
 	${INSTALL_MAN} ${WRKSRC}/brz.1 ${STAGEDIR}${PREFIX}/share/man/man1

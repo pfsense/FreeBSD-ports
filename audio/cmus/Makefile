@@ -1,13 +1,8 @@
 PORTNAME=	cmus
 DISTVERSIONPREFIX=	v
-DISTVERSION=	2.10.0
-PORTREVISION=	8
+DISTVERSION=	2.12.0
+PORTREVISION=	3
 CATEGORIES=	audio
-
-PATCH_SITES=	https://github.com/${GH_ACCOUNT}/${GH_PROJECT}/commit/
-PATCHFILES+=	7d3116962bd8.patch:-p1 # https://github.com/cmus/cmus/pull/1221
-PATCHFILES+=	07ce2dc7082a.patch:-p1 # https://github.com/cmus/cmus/pull/1254
-PATCHFILES+=	0e07ddc14234.patch:-p1 # https://github.com/cmus/cmus/pull/1269
 
 MAINTAINER=	eduardo@FreeBSD.org
 COMMENT=	Console-based music player with really cool features
@@ -53,8 +48,8 @@ OPTIONS_SUB=	yes
 
 OPTIONS_GROUP=	OUT IN
 OPTIONS_GROUP_OUT=	AO JACK OSS PULSEAUDIO SNDIO
-OPTIONS_GROUP_IN=	AAC CDDB CDIO CUE DISCID FFMPEG FLAC MAD MIKMOD	\
-			MODPLUG MP4 MUSEPACK OPUS SAMPLERATE TREMOR	\
+OPTIONS_GROUP_IN=	AAC CDIO CUE DISCID FFMPEG FLAC MAD MIKMOD	\
+			MODPLUG MP4 OPUS SAMPLERATE TREMOR	\
 			VORBIS WAV WAVPACK
 
 BASU_DESC=	MPRIS protocol support via basu
@@ -70,9 +65,6 @@ AO_LIB_DEPENDS=	libao.so:audio/libao
 
 BASU_CONFIGURE_ON=	CONFIG_MPRIS=y
 BASU_LIB_DEPENDS=	libbasu.so:devel/basu
-
-CDDB_CONFIGURE_ON=	CONFIG_CDDB=y
-CDDB_LIB_DEPENDS=	libcddb.so:audio/libcddb
 
 CDIO_CONFIGURE_ON=	CONFIG_CDIO=y
 CDIO_LIB_DEPENDS=	libcdio_cdda.so:sysutils/libcdio-paranoia \
@@ -105,9 +97,6 @@ MODPLUG_LIB_DEPENDS=	libmodplug.so:audio/libmodplug
 MP4_CONFIGURE_ON=	CONFIG_MP4=y
 MP4_LIB_DEPENDS=	libfaad.so:audio/faad \
 			libmp4v2.so:multimedia/mp4v2
-
-MUSEPACK_CONFIGURE_ON=	CONFIG_MPC=y
-MUSEPACK_LIB_DEPENDS=	libmpcdec.so:audio/musepack
 
 OPUS_CONFIGURE_ON=	CONFIG_OPUS=y
 OPUS_LIB_DEPENDS=	libopusfile.so:audio/opusfile
@@ -159,7 +148,8 @@ post-configure:
 
 post-install:
 	@${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/cmus*
-	@${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/cmus/[io]p/*.so
+	@${FIND} ${STAGEDIR}${PREFIX}/lib -path '${STAGEDIR}${PREFIX}/lib/cmus/*' \
+		-name '*.so*' -exec ${STRIP_CMD} {} +
 # Install bash and zsh completion files
 	${MKDIR} ${STAGEDIR}${PREFIX}/etc/bash_completion.d
 	${INSTALL_DATA} ${WRKSRC}/contrib/cmus.bash-completion \

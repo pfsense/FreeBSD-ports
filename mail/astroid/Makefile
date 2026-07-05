@@ -1,7 +1,7 @@
 PORTNAME=	astroid
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.16
-PORTREVISION=	9
+DISTVERSION=	0.17
+PORTREVISION=	3
 CATEGORIES=	mail
 
 MAINTAINER=	mylan.connolly@gmail.com
@@ -15,12 +15,12 @@ LICENSE_FILE_LGPL21+ =	${WRKSRC}/COPYING.LGPL-2.1+
 
 BUILD_DEPENDS=	scdoc:textproc/scdoc \
 		notmuch>0:mail/notmuch
-LIB_DEPENDS=	libboost_system.so:devel/boost-libs \
-		libjavascriptcoregtk-4.0.so:www/webkit2-gtk3 \
+LIB_DEPENDS=	libboost_filesystem.so:devel/boost-libs \
+		libjavascriptcoregtk-4.1.so:www/webkit2-gtk@41 \
 		libgmime-3.0.so:mail/gmime30 \
 		libgnutls.so:security/gnutls \
 		libpcre2-8.so:devel/pcre2 \
-		libpeas-1.0.so:devel/libpeas \
+		libpeas-1.0.so:devel/libpeas1 \
 		libprotobuf.so:devel/protobuf \
 		libsass.so:textproc/libsass \
 		libsoup-2.4.so:devel/libsoup
@@ -30,7 +30,7 @@ USES=		cmake compiler:c++17-lang desktop-file-utils gettext-runtime gnome \
 		pkgconfig
 USE_GITHUB=	yes
 GH_ACCOUNT=	astroidmail
-USE_GNOME=	atk atkmm cairo cairomm gdkpixbuf2 glib20 glibmm gtk30 \
+USE_GNOME=	atk atkmm cairo cairomm gdkpixbuf glib20 glibmm gtk30 \
 		gtkmm30 introspection libsigc++20 pango pangomm vte3
 
 USE_CXXSTD=	c++17

@@ -1,10 +1,10 @@
 PORTNAME=	habak
 DISTVERSION=	0.2.5
-PORTREVISION=	1
+PORTREVISION=	3
 CATEGORIES=	x11
 MASTER_SITES=	SF/fvwm-crystal/habak/${DISTVERSION}
 
-MAINTAINER=	DtxdF@disroot.org
+MAINTAINER=	dtxdf@FreeBSD.org
 COMMENT=	Background changing app
 WWW=		https://sourceforge.net/projects/fvwm-crystal/
 

@@ -1,6 +1,6 @@
---- src/3rdparty/chromium/ipc/ipc_message_utils.cc.orig	2022-05-19 14:06:27 UTC
+--- src/3rdparty/chromium/ipc/ipc_message_utils.cc.orig	2025-08-15 18:30:00 UTC
 +++ src/3rdparty/chromium/ipc/ipc_message_utils.cc
-@@ -359,7 +359,7 @@ void ParamTraits<unsigned int>::Log(const param_type& 
+@@ -399,7 +399,7 @@ void ParamTraits<unsigned int>::Log(const param_type& 
  }
  
  #if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS) || \

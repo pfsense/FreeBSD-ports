@@ -1,10 +1,11 @@
 PORTNAME=	cfengine
-PORTVERSION=	3.${CFENGINE_COMMIT_DATE}
+PORTVERSION=	3.28.${CFENGINE_COMMIT_DATE}
+PORTEPOCH=	1
 CATEGORIES=	sysutils
 PKGNAMESUFFIX=	-devel
-CFENGINE_HASH=		f47517a53
-LIBNTECH_HASH=		58705c5
-CFENGINE_COMMIT_DATE=	2024.03.28
+CFENGINE_HASH=		d1927f38e
+LIBNTECH_HASH=		6ef8025
+CFENGINE_COMMIT_DATE=	20260223
 
 MAINTAINER=	cy@FreeBSD.org
 COMMENT=	Systems administration tool for networks
@@ -54,7 +55,8 @@ LIB_DEPENDS+=	libpcre.so:devel/pcre \
 		libpcre2-posix.so:devel/pcre2 \
 		liblmdb.so:databases/lmdb \
 		libyaml.so:textproc/libyaml \
-		libcurl.so:ftp/curl
+		libcurl.so:ftp/curl \
+		librsync.so:net/librsync
 
 OPTIONS_DEFINE=	PGSQL MYSQL LIBVIRT
 

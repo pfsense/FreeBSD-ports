@@ -1,7 +1,7 @@
 PORTNAME=	vault
-PORTVERSION=	1.14.1
-PORTREVISION=	3
 DISTVERSIONPREFIX=	v
+DISTVERSION=	1.21.2
+PORTREVISION=	2
 CATEGORIES=	security
 MASTER_SITES=	https://raw.githubusercontent.com/hashicorp/vault/${DISTVERSIONFULL}/ \
 		LOCAL/bofh/security/${PORTNAME}/:web_ui
@@ -17,15 +17,18 @@ MAINTAINER=	bofh@FreeBSD.org
 COMMENT=	Tool for securely accessing secrets
 WWW=		https://vaultproject.io/
 
+NOT_FOR_ARCHS=	armv7 i386
+NOT_FOR_ARCHS_REASON=	fatal error: out of memory
+
 LICENSE=	MPL20
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
 .if defined(MAINTAINER_MODE)
-EXTRACT_DEPENDS=npm-node18>0:www/npm-node18 \
-		yarn-node18>0:www/yarn-node18
+EXTRACT_DEPENDS=npm-node20>0:www/npm-node20 \
+		yarn-node20>0:www/yarn-node20
 .endif
 
-USES=		cpe go:modules
+USES=		cpe go:1.25+,modules
 CPE_VENDOR=	hashicorp
 USE_GITHUB=	yes
 GH_ACCOUNT=	hashicorp
@@ -44,7 +47,7 @@ GROUPS=		vault
 
 PLIST_FILES=	bin/${PORTNAME}
 
-GITID=	bf23fe8636b04d554c0fa35a756c75c2f59026c0
+GITID=	781ba452d731fe2d59ccbc1b37ca7c5a18edb998
 
 .include <bsd.port.pre.mk>
 
@@ -57,7 +60,7 @@ post-patch:
 	${CP} -Rf ${WRKDIR}/web_ui ${WRKSRC}/http/
 
 .if defined(MAINTAINER_MODE)
-_make-web_ui: extract
+_make-web_ui: clean extract
 	cd ${WRKSRC}/ui && ${SETENV} ${MAKE_ENV} yarn
 	cd ${WRKSRC}/ui && ${SETENV} ${MAKE_ENV} npm rebuild node-sass
 	cd ${WRKSRC}/ui && ${SETENV} ${MAKE_ENV} yarn run build

@@ -1,5 +1,5 @@
 PORTNAME=	xv
-PORTVERSION=	5.0.0
+PORTVERSION=	6.2.0
 DISTVERSIONPREFIX=	v
 PORTREVISION=	0
 CATEGORIES+=	graphics
@@ -10,12 +10,13 @@ COMMENT?=	X11 program that displays images of various formats
 WWW=		http://www.trilon.com/xv/
 
 LIB_DEPENDS=	libtiff.so:graphics/tiff \
-		libpng.so:graphics/png \
+		libpng16.so:graphics/png \
 		libjasper.so:graphics/jasper \
-		libwebp.so:graphics/webp
+		libwebp.so:graphics/webp \
+		libexif.so:graphics/libexif
 
-USES=		cpe localbase cmake jpeg xorg
-USE_XORG=	xext x11 xt ice sm
+USES=		cpe localbase cmake jpeg xorg desktop-file-utils
+USE_XORG=	xext x11 xt ice sm xrandr
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	jasper-software
@@ -24,6 +25,7 @@ CPE_VENDOR=	xv_project
 
 OPTIONS_DEFINE=	M17N DOCS
 M17N_DESC=	build with Multilingualization support
+LDFLAGS+=	-L ${LOCALBASE}/lib
 
 .include <bsd.port.options.mk>
 
@@ -36,6 +38,9 @@ CONFLICTS_INSTALL=	xv-m17n
 .endif
 
 XV_DOCS=	README.md src/docs/help
+
+post-patch:
+	${REINPLACE_CMD} -e 's|^PNG|#PNG|' ${WRKSRC}/src/xv_mgcsfx.sample
 
 do-install-DOCS-on:
 .for i in ${XV_DOCS}

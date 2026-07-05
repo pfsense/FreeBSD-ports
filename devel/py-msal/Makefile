@@ -1,10 +1,11 @@
 PORTNAME=	msal
 DISTVERSION=	1.24.0b2
+PORTREVISION=	1
 CATEGORIES=	devel python
 MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
-MAINTAINER=	dbaio@FreeBSD.org
+MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Microsoft Authentication Library (MSAL) for Python
 WWW=		https://github.com/AzureAD/microsoft-authentication-library-for-python
 

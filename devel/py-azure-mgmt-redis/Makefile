@@ -1,10 +1,11 @@
 PORTNAME=	azure-mgmt-redis
 DISTVERSION=	14.1.0
+PORTREVISION=	1
 CATEGORIES=	devel python
 MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
-MAINTAINER=	dbaio@FreeBSD.org
+MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Microsoft Azure Redis Cache Management Client Library for Python
 WWW=		https://pypi.org/project/azure-mgmt-redis/
 

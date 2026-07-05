@@ -1,6 +1,8 @@
 /distfiles
 /packages
 /security/vuxml/vuln-flat.xml
+/.vscode
+/.idea
 Makefile.local
 Mk/bsd.local.mk
 Mk/bsd.overlay.mk

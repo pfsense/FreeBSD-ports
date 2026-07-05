@@ -1,5 +1,6 @@
 PORTNAME=	mtime
 PORTVERSION=	2.0.0
+PORTREVISION=	1
 CATEGORIES=	devel
 MASTER_SITES=	https://erratique.ch/software/mtime/releases/
 PKGNAMEPREFIX=	ocaml-
@@ -15,9 +16,7 @@ BUILD_DEPENDS=	${SA_DIR}/topkg/META:devel/ocaml-topkg \
 		ocamlbuild:devel/ocaml-ocamlbuild \
 		opam-installer:devel/ocaml-opam
 
-USES=		tar:tbz
-USE_OCAML=	yes
-USE_OCAML_LDCONFIG=	yes
+USES=		ocaml:ldconfig tar:tbz
 
 DOCSDIR=	${OCAML_DOCSDIR}/${PORTNAME}
 EXAMPLESDIR=	${OCAML_EXAMPLESDIR}/${PORTNAME}

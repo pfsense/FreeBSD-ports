@@ -1,8 +1,7 @@
 PORTNAME=	mswebrtc
-PORTVERSION=	1.1.2
-PORTREVISION=	2
+DISTVERSION=	5.4.0
+PORTREVISION=	1
 CATEGORIES=	multimedia net
-MASTER_SITES=	https://www.linphone.org/releases/sources/plugins/mswebrtc/
 
 MAINTAINER=	bofh@FreeBSD.org
 COMMENT=	Mediastreamer plugin with WebRTC codecs
@@ -11,21 +10,21 @@ WWW=		https://www.linphone.org/technical-corner/mediastreamer2.html
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-#BROKEN=		does not build: incorrect dependency on net/mediastreamer
-
+BUILD_DEPENDS=	v4l_compat>=1.0.20120501:multimedia/v4l_compat
 LIB_DEPENDS=	libbctoolbox.so:net/bctoolbox \
-		libmediastreamer.so:net/mediastreamer \
-		libortp.so:net/ortp
+		libmediastreamer2.so:net/mediastreamer
 
 USES=		cmake compiler:c++11-lib
 USE_GITLAB=	yes
 GL_SITE=	https://gitlab.linphone.org/BC
-GL_ACCOUNT=	public public/external:webrtc
-GL_PROJECT=	webrtc:webrtc
-GL_TAGNAME=	583acd27665cfadef8ab03eb85a768d308bd29dd:webrtc
-GL_SUBDIR=	webrtc:webrtc
+GL_ACCOUNT=	public
+GL_TUPLE=	https://gitlab.linphone.org/BC/public:external:webrtc:583acd27665cfadef8ab03eb85a768d308bd29dd:webrtc/webrtc
 
-CMAKE_ARGS=	-DENABLE_STATIC=NO
+CMAKE_ON=	BUILD_SHARED_LIBS
+
 PLIST_FILES=	lib/mediastreamer/plugins/libmswebrtc.so
+
+#post-patch:
+#	@${REINPLACE_CMD} -e 's|%%LOCALBASE%%|${LOCALBASE}|g' ${WRKSRC}/CMakeLists.txt
 
 .include <bsd.port.mk>

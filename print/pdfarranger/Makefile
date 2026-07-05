@@ -1,6 +1,6 @@
 PORTNAME=	pdfarranger
-DISTVERSION=	1.10.0
-PORTREVISION=	3
+DISTVERSION=	1.12.1
+PORTREVISION=	1
 CATEGORIES=	print
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
@@ -11,15 +11,14 @@ WWW=		https://github.com/pdfarranger/pdfarranger
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}dateutil>0:devel/py-dateutil@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}gobject3>0:devel/py-gobject3@${PY_FLAVOR} \
+RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}python-dateutil>0:devel/py-python-dateutil@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}pikepdf>0:textproc/py-pikepdf@${PY_FLAVOR} \
 		poppler-glib>0:graphics/poppler-glib
 
-USES=		gettext gnome python
-USE_PYTHON=	distutils
-USE_GNOME=	gtk30 intltool:build
+USES=		desktop-file-utils gettext-tools gnome python
 USE_GITHUB=	yes
+#USE_GNOME=	gtk30 pygobject3:run
+USE_PYTHON=	distutils
 
 NO_ARCH=	yes
 

@@ -8,7 +8,7 @@
  * bind_sync.xml
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2015-2024 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2015-2026 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2013 Juliano Oliveira
  * Copyright (c) 2013 Adriano Brancher
  * Copyright (c) 2013 Marcello Coutinho
@@ -31,6 +31,7 @@
 	<name>bind_sync</name>
 	<version>%%PKGVERSION%%</version>
 	<title>Services/Bind</title>
+	<addedit_string>bind: changed Sync</addedit_string>
 	<include_file>/usr/local/pkg/bind.inc</include_file>
 	<tabs>
 		<tab>

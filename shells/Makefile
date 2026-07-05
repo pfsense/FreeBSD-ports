@@ -7,6 +7,8 @@
     SUBDIR += atuin
     SUBDIR += bash
     SUBDIR += bash-completion
+    SUBDIR += bash-completion-freebsd
+    SUBDIR += bash-completion-zfs
     SUBDIR += bash-static
     SUBDIR += bashc
     SUBDIR += bicon
@@ -29,13 +31,20 @@
     SUBDIR += ksh
     SUBDIR += ksh-devel
     SUBDIR += ksh93
+    SUBDIR += libpowershell-native
     SUBDIR += mksh
     SUBDIR += modernish
     SUBDIR += murex
     SUBDIR += nologinmsg
     SUBDIR += nsh
+    SUBDIR += nu_plugin_formats
+    SUBDIR += nu_plugin_gstat
+    SUBDIR += nu_plugin_inc
+    SUBDIR += nu_plugin_polars
+    SUBDIR += nu_plugin_query
     SUBDIR += nushell
     SUBDIR += ohmyzsh
+    SUBDIR += oils
     SUBDIR += oksh
     SUBDIR += p5-Bash-Completion
     SUBDIR += p5-Shell-Perl
@@ -43,11 +52,13 @@
     SUBDIR += p5-Term-ShellUI
     SUBDIR += pdksh
     SUBDIR += pear-PHP_Shell
+    SUBDIR += powershell
     SUBDIR += psh
     SUBDIR += rc
     SUBDIR += rubygem-shellwords
     SUBDIR += rush
     SUBDIR += sash
+    SUBDIR += schemesh
     SUBDIR += scponly
     SUBDIR += sheldon
     SUBDIR += shell-hist
@@ -65,7 +76,9 @@
     SUBDIR += zsh-antigen
     SUBDIR += zsh-autosuggestions
     SUBDIR += zsh-completions
+    SUBDIR += zsh-fast-syntax-highlighting
     SUBDIR += zsh-navigation-tools
     SUBDIR += zsh-syntax-highlighting
+    SUBDIR += zsh-you-should-use
 
 .include <bsd.port.subdir.mk>

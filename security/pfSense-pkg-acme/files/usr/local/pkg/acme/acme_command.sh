@@ -38,44 +38,40 @@ if ($command == "importcert") {
 	storeCertificateCer($certificatename, $CERT_KEY_PATH, $CERT_PATH, $CERT_FULLCHAIN_PATH);
 
 	$id = get_certificate_id($certificatename);
-	$certificate = &$config['installedpackages']['acme']['certificates']['item'][$id];
-	$certificate['lastrenewal'] = time();
+	config_set_path("installedpackages/acme/certificates/item/{$id}/lastrenewal", time());
 
 	$changedesc = "Services: Acme: ";
 	$changedesc .= "Storing signed certificate: " . $certificatename;
 	write_config($changedesc);
 
 	acme_write_all_certificates();
-	if (is_array($certificate['a_actionlist']) &&
-	    is_array($certificate['a_actionlist']['item'])) {
-		foreach($certificate['a_actionlist']['item'] as $action) {
-			if ($action['status'] == "disable") {
-				continue;
+	foreach(config_get_path("installedpackages/acme/certificates/item/{$id}/a_actionlist/item", []) as $action) {
+		if ($action['status'] == "disable") {
+			continue;
+		}
+		if ($action['method'] == "shellcommand") {
+			logger(LOG_NOTICE, localize_text("Running %s", $action['command']), LOG_PREFIX_PKG_ACME);
+			mwexec_bg($action['command']);
+		}
+		if ($action['method'] == "php_command") {
+			logger(LOG_NOTICE, localize_text("Running php %s", $action['command']), LOG_PREFIX_PKG_ACME);
+			eval($action['command']);
+		}
+		if ($action['method'] == "servicerestart") {
+			logger(LOG_NOTICE, localize_text("Restarting service %s", $action['command']), LOG_PREFIX_PKG_ACME);
+			list($servicename, $extras) = acme_fixup_service_args($action['command']);
+			if (!empty($servicename)) {
+				service_control_restart($servicename, $extras);
 			}
-			if ($action['method'] == "shellcommand") {
-				syslog(LOG_NOTICE, "Acme, Running {$action['command']}");
-				mwexec_bg($action['command']);
-			}
-			if ($action['method'] == "php_command") {
-				syslog(LOG_NOTICE, "Acme, Running php {$action['command']}");
-				eval($action['command']);
-			}
-			if ($action['method'] == "servicerestart") {
-				syslog(LOG_NOTICE, "Acme, Restarting service {$action['command']}");
-				list($servicename, $extras) = acme_fixup_service_args($action['command']);
-				if (!empty($servicename)) {
-					service_control_restart($servicename, $extras);
-				}
-			}
-			if ($action['method'] == "xmlrpcservicerestart") {
-				syslog(LOG_NOTICE, "Acme, Restarting remote service via XMLRPC {$action['command']}");
-				list($servicename, $extras) = acme_fixup_service_args($action['command']);
-				if (!empty($servicename)) {
-					/* Wait a few seconds before triggering the restart in case the
-					   secondary node is not yet ready after configuration sync */
-					sleep(10);
-					acme_xmlrpc_restart_service($servicename, $extras);
-				}
+		}
+		if ($action['method'] == "xmlrpcservicerestart") {
+			logger(LOG_NOTICE, localize_text("Restarting remote service via XMLRPC %s", $action['command']), LOG_PREFIX_PKG_ACME);
+			list($servicename, $extras) = acme_fixup_service_args($action['command']);
+			if (!empty($servicename)) {
+				/* Wait a few seconds before triggering the restart in case the
+					secondary node is not yet ready after configuration sync */
+				sleep(10);
+				acme_xmlrpc_restart_service($servicename, $extras);
 			}
 		}
 	}

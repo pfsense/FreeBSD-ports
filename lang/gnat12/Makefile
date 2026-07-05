@@ -1,5 +1,5 @@
 PORTNAME=	gnat12
-DISTVERSION=	12.3.0
+DISTVERSION=	12.4.0
 CATEGORIES=	lang
 MASTER_SITES=	http://gcc.gnu.org/pub/gcc/releases/gcc-${DISTVERSION}/:gcc \
 		LOCAL/thierry:gnat
@@ -58,6 +58,8 @@ PLIST_SUB=	ASSET_FILE=${_ASSET_FILE} \
 		CONFTRGT=${CONFIGURE_TARGET} \
 		VER=${DISTVERSION}
 
+PIE_UNSAFE=	yes
+
 OPTIONS_DEFINE=			ASSETS NLS
 .if exists(/usr/lib32/libc.so)
 OPTIONS_DEFINE_amd64+=	MULTILIB
@@ -87,6 +89,8 @@ GCC6AUX_BUILD_DEPENDS=		gcc6-aux>0:lang/gcc6-aux
 GCC6AUX_VARS=			_GCC6AUX_PATH=${LOCALBASE}/gcc6-aux/bin
 .if exists(/usr/lib32/libc.so)
 MULTILIB_CONFIGURE_ENABLE=	multilib
+.else
+CONFIGURE_ARGS+=		--disable-multilib
 .endif
 NLS_CONFIGURE_ON=		--enable-nls
 NLS_CONFIGURE_OFF=		--disable-nls
@@ -105,33 +109,43 @@ _PLATFORM=		${OPSYS:tl}${OSREL}
 _PREV_ASSET_FILE=	gnat-${_GNAT_ARCH}-${OPSYS:tl}.${_PREV_ASSET_OSREL}-${_PREV_ASSET_VER}${_PREV_ASSET_REV}
 _PREV_ASSET_GCC=	${PREV_ASSET_VER:R:R}
 _PREV_ASSET_OSREL?=	${OSREL:R}
-_PREV_ASSET_VER?=	12.2.0
-_PREV_ASSET_REV?=	_6
+_PREV_ASSET_VER?=	12.3.0
+_PREV_ASSET_REV?=	_1
 _REV_FILE=		${WRKSRC}/gcc/REVISION
 _TARGLIB=		${_PKG_PREFIX}/lib ${_PKG_PREFIX}/lib/gcc${_GCC_VER}
 _TOOLCHAIN_PATHS=	/sbin:/bin:/usr/sbin:/usr/bin:${_GCC6AUX_PATH}:${PREFIX}/bin:${LOCALBASE}/bin
 
 .include <bsd.port.options.mk>
 
-.if ${ARCH} == i386 || ${ARCH} == aarch64
+.if ${ARCH} == i386
 LIB_DIR_32=	""
-PLIST_SUB+=	64BITS="@comment "
+PLIST_SUB+=	LIB32="@comment "
 .else
-PLIST_SUB+=	64BITS=""
 .  if empty(PORT_OPTIONS:MMULTILIB)
 LIB_DIR_32=	""
-PLIST_SUB+=	32BITS="@comment "
+PLIST_SUB+=	LIB32="@comment "
 .  else
 LIB_DIR_32=	"" 32
-PLIST_SUB+=	32BITS=""
+PLIST_SUB+=	LIB32=" "
 .  endif
 .endif
-.if ${ARCH} == aarch64
-PLIST_SUB+=	ARM="" \
-		NOARM="@comment "
-.else
-PLIST_SUB+=	ARM="@comment " \
-		NOARM=""
+
+.if ${ARCH} == amd64
+PLIST_SUB+=	AMD64=" " \
+		AARCH64="@comment " \
+		X86=" " \
+		64BIT=" "
+.elif ${ARCH} == i386
+PLIST_SUB+=	AMD64="@comment " \
+		AARCH64="@comment " \
+		X86=" " \
+		64BIT="@comment "
+.elif ${ARCH} == aarch64
+EXTRACT_CMD=	${SETENV} LC_ALL=en_US.UTF-8 /usr/bin/bsdtar
+PLIST_SUB+=	X86="@comment " \
+		AMD64="@comment " \
+		AARCH64=" " \
+		64BIT=" "
 .endif
 
 pre-configure:

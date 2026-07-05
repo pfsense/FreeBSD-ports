@@ -1,6 +1,6 @@
 PORTNAME=	NetRexx
 PORTVERSION=	2.05
-PORTREVISION=	3
+PORTREVISION=	4
 CATEGORIES=	java lang
 MASTER_SITES=	ftp://ftp.software.ibm.com/software/awdtools/netrexx/
 DISTNAME=	NetRexx
@@ -9,9 +9,9 @@ MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Human-oriented programming language for writing/using Java classes
 WWW=		http://www-306.ibm.com/software/awdtools/netrexx/
 
+USES=		java zip
+
 NO_BUILD=	yes
-USES=		zip
-USE_JAVA=	yes
 
 OPTIONS_DEFINE=	DOCS EXAMPLES
 

@@ -1,0 +1,74 @@
+commit 12cbb18a93c1f78e05806b6d3c90511e8967f43f
+Author: jim-p <jimp@netgate.com>
+Date:   Wed Jan 3 14:25:53 2024 -0500
+
+    Improve validation of DNS Resolver Python script. Fixes #15135
+
+diff --git a/src/etc/inc/services.inc b/src/etc/inc/services.inc
+index b9526e8062..dbd148fa3a 100644
+--- a/src/etc/inc/services.inc
++++ b/src/etc/inc/services.inc
+@@ -4283,7 +4283,7 @@ function services_unbound_configure($restart_dhcp = true, $interface = '') {
+ 		}
+ 
+ 		$python_mode = false;
+-		$python_script = config_get_path('unbound/python_script');
++		$python_script = basename(config_get_path('unbound/python_script'));
+ 		if (config_path_enabled('unbound','python') && !empty($python_script)) {
+ 			$python_mode = true;
+ 		}
+diff --git a/src/usr/local/www/services_unbound.php b/src/usr/local/www/services_unbound.php
+index 729f132fd4..a1ba993f58 100644
+--- a/src/usr/local/www/services_unbound.php
++++ b/src/usr/local/www/services_unbound.php
+@@ -34,6 +34,18 @@ require_once("unbound.inc");
+ require_once("pfsense-utils.inc");
+ require_once("system.inc");
+ 
++$python_files = glob("{$g['unbound_chroot_path']}/*.py");
++$python_scripts = array();
++if (!empty($python_files)) {
++	foreach ($python_files as $file) {
++		$file = pathinfo($file, PATHINFO_FILENAME);
++		$python_scripts[$file] = $file;
++	}
++}
++else {
++	$python_scripts = array('' => 'No Python Module scripts found');
++}
++
+ $pconfig['enable'] = config_path_enabled('unbound');
+ $pconfig['enablessl'] = config_path_enabled('unbound', 'enablessl');
+ $pconfig['strictout'] = config_path_enabled('unbound', 'strictout');
+@@ -140,6 +152,12 @@ if ($_POST['save']) {
+ 		$input_errors[] = gettext('A System Domain Local Zone Type of "redirect" is not compatible with dynamic DHCP Registration.');
+ 	}
+ 
++	if (isset($pconfig['python']) &&
++	    !array_key_exists(array_get_path($pconfig, 'python_script'), $python_scripts)) {
++		array_del_path($pconfig, 'python_script');
++		$input_errors[] = gettext('The submitted Python Module Script does not exist or is invalid.');
++	}
++
+ 	$display_custom_options = $pconfig['custom_options'];
+ 	$pconfig['custom_options'] = base64_encode(str_replace("\r\n", "\n", $pconfig['custom_options']));
+ 
+@@ -365,18 +383,6 @@ $section->addInput(new Form_Checkbox(
+ 	$pconfig['python']
+ ))->setHelp('Enable the Python Module.');
+ 
+-$python_files = glob("{$g['unbound_chroot_path']}/*.py");
+-$python_scripts = array();
+-if (!empty($python_files)) {
+-	foreach ($python_files as $file) {
+-		$file = pathinfo($file, PATHINFO_FILENAME);
+-		$python_scripts[$file] = $file;
+-	}
+-}
+-else {
+-	$python_scripts = array('' => 'No Python Module scripts found');
+-}
+-
+ $section->addInput(new Form_Select(
+ 	'python_order',
+ 	'Python Module Order',

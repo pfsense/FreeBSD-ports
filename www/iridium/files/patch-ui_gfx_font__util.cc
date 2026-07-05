@@ -1,20 +1,20 @@
---- ui/gfx/font_util.cc.orig	2022-03-28 18:11:04 UTC
+--- ui/gfx/font_util.cc.orig	2026-03-24 16:59:08 UTC
 +++ ui/gfx/font_util.cc
-@@ -6,7 +6,7 @@
- 
+@@ -7,7 +7,7 @@
  #include "build/build_config.h"
+ #include "skia/ext/font_utils.h"
  
 -#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS)
 +#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_BSD)
  #include <fontconfig/fontconfig.h>
  #include "ui/gfx/linux/fontconfig_util.h"
  #endif
-@@ -24,7 +24,7 @@ void InitializeFonts() {
+@@ -25,7 +25,7 @@ void InitializeFonts() {
    // background (resources have not yet been granted to cast) since it prevents
    // the long delay the user would have seen on first rendering.
  
 -#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS)
 +#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_BSD)
-   // Ensures the config is created on this thread.
-   FcConfig* config = GetGlobalFontConfig();
-   DCHECK(config);
+   // Early initialize FontConfig.
+   InitializeGlobalFontConfigAsync();
+ #endif  // BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS)

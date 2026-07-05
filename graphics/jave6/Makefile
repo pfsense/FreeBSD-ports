@@ -1,6 +1,6 @@
 PORTNAME=	jave6
 PORTVERSION=	0.1
-PORTREVISION=	5
+PORTREVISION=	6
 CATEGORIES=	graphics java
 MASTER_SITES=	http://www.jave.de/developer/\
 		http://ikaria.informatik.uni-rostock.de/public_bsd/FreeBSD/
@@ -12,8 +12,8 @@ WWW=		http://www.jave.de/
 
 EXTRACT_AFTER_ARGS=	-d ${WRKDIR}/${DISTNAME}
 
-USES=		zip
-USE_JAVA=	yes
+USES=		java zip
+
 NO_BUILD=	yes
 
 SUB_FILES=	jave6 pkg-message

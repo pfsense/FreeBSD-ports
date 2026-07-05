@@ -4,7 +4,7 @@
 
 PORTNAME=	dspam
 PORTVERSION=	3.10.2
-PORTREVISION=	10
+PORTREVISION=	11
 CATEGORIES=	mail
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/${PORTNAME}-${PORTVERSION}
 
@@ -76,7 +76,6 @@ MAKE_JOBS_UNSAFE=	yes
 USES=		perl5 libtool pathfix shebangfix
 USE_LDCONFIG=	yes
 GNU_CONFIGURE=	yes
-GNU_CONFIGURE_MANPREFIX=${PREFIX}/share
 CPPFLAGS+=	-I${LOCALBASE}/include
 LDFLAGS+=	-L${LOCALBASE}/lib
 
@@ -272,7 +271,6 @@ CONFIGURE_ARGS+=	--with-mysql-includes=${LOCALBASE}/include/mysql \
 			--with-mysql-libraries=${LOCALBASE}/lib/mysql
 PLIST_SUB+=	MYSQL=""
 _DBDRV_COUNT:=	${_DBDRV_COUNT}o
-IGNORE_WITH_MYSQL=	105m 106m 1011m
 .	if ${PORT_OPTIONS:MMYSQL_COMPRESS}
 CONFIGURE_ARGS+=	--enable-client-compression
 .	endif

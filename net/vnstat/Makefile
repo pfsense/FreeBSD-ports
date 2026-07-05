@@ -1,5 +1,5 @@
 PORTNAME=	vnstat
-PORTVERSION=	2.12
+PORTVERSION=	2.13
 CATEGORIES=	net
 MASTER_SITES=	https://github.com/vergoh/vnstat/releases/download/v${PORTVERSION}/ \
 		https://humdi.net/vnstat/
@@ -16,7 +16,6 @@ USES=		localbase sqlite
 
 CONFIGURE_ARGS=	--disable-extra-paths
 GNU_CONFIGURE=	yes
-GNU_CONFIGURE_MANPREFIX=${PREFIX}/share
 INSTALL_TARGET=	install-exec install-man
 USE_RC_SUBR=	vnstat
 

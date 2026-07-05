@@ -3,7 +3,7 @@
  * squidguard_blacklist.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2015-2024 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2015-2026 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2006-2011 Serg Dvoriancev
  * All rights reserved.
  *
@@ -81,7 +81,7 @@ function squidguard_blacklist_AJAX_response( $request ) {
 	}
 	$res .= "\$('#progress_caption').html('{$pcaption}');\n";
 	$res .= "\$('#progress_text').html('{$sz} %');\n";
-	$res .= "setProgress('progressbar', ${sz}, true);\n";
+	$res .= "setProgress('progressbar', {$sz}, true);\n";
 
 	$status = '';
 	if (file_exists(SGUPD_STATFILE)) {

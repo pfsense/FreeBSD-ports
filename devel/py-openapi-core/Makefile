@@ -1,5 +1,5 @@
 PORTNAME=	openapi-core
-PORTVERSION=	0.19.0
+PORTVERSION=	0.22.0
 CATEGORIES=	devel python
 MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -15,14 +15,14 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 
 BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}poetry-core>=1.0.0:devel/py-poetry-core@${PY_FLAVOR}
 RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}isodate>=0:devel/py-isodate@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}jsonschema>=4.18.0<5:devel/py-jsonschema@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}jsonschema-path>=0.3.1<0.4:devel/py-jsonschema-path@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}jsonschema>=4.23.0<5:devel/py-jsonschema@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}jsonschema-path>=0.3.4<0.4:devel/py-jsonschema-path@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}jsonschema-spec>=0.2.3<0.3:devel/py-jsonschema-spec@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}more-itertools>=0:devel/py-more-itertools@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}openapi-schema-validator>=0.6.0<0.7:devel/py-openapi-schema-validator@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}openapi-spec-validator>=0.7.1<0.8:devel/py-openapi-spec-validator@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}parse>=0:textproc/py-parse@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}werkzeug>=0:www/py-werkzeug@${PY_FLAVOR}
+		${PYTHON_PKGNAMEPREFIX}typing-extensions>=4.8.0<5:devel/py-typing-extensions@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}werkzeug>=2.1.0:www/py-werkzeug@${PY_FLAVOR}
 
 USES=		python
 USE_PYTHON=	autoplist concurrent pep517
@@ -40,12 +40,12 @@ STARLETTE_DESC=	Starlette support
 
 AIOHTTP_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}aiohttp>=3.0:www/py-aiohttp@${PY_FLAVOR} \
 			${PYTHON_PKGNAMEPREFIX}multidict>=6.0.4<7:www/py-multidict@${PY_FLAVOR}
-DJANGO_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}django32>=3.0:www/py-django32@${PY_FLAVOR}
+DJANGO_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}django42>=3.0:www/py-django42@${PY_FLAVOR}
 FALCON_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}falcon>=3.0:www/py-falcon@${PY_FLAVOR}
-FASTAPI_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}fastapi>=0.108.0<1:www/py-fastapi@${PY_FLAVOR}
+FASTAPI_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}fastapi>=0.111<0.125:www/py-fastapi@${PY_FLAVOR}
 FLASK_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}flask>=0:www/py-flask@${PY_FLAVOR}
 REQUESTS_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}requests>=0:www/py-requests@${PY_FLAVOR}
-STARLETTE_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}aioitertools>=0.11.0<0.12:devel/py-aioitertools@${PY_FLAVOR} \
-			${PYTHON_PKGNAMEPREFIX}starlette>=0.26.1<0.38.0:www/py-starlette@${PY_FLAVOR}
+STARLETTE_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}aioitertools>=0.11<0.14:devel/py-aioitertools@${PY_FLAVOR} \
+			${PYTHON_PKGNAMEPREFIX}starlette>=0.26.1<0.50.0:www/py-starlette@${PY_FLAVOR}
 
 .include <bsd.port.mk>

@@ -1,15 +1,15 @@
 PORTNAME=	io-event
-PORTVERSION=	1.5.1
+PORTVERSION=	1.14.2
 CATEGORIES=	devel rubygems
 MASTER_SITES=	RG
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Event loop
-WWW=		https://github.com/socketry/io-event
+WWW=		https://socketry.github.io/io-event/ \
+		https://github.com/socketry/io-event
 
 LICENSE=	MIT
-
-BROKEN_RUBY30=	yes
+LICENSE_FILE=	${WRKSRC}/license.md
 
 USES=		gem
 

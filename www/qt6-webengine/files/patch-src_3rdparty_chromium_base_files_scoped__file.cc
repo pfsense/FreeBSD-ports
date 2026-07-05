@@ -1,6 +1,6 @@
---- src/3rdparty/chromium/base/files/scoped_file.cc.orig	2022-02-28 16:54:41 UTC
+--- src/3rdparty/chromium/base/files/scoped_file.cc.orig	2025-08-15 18:30:00 UTC
 +++ src/3rdparty/chromium/base/files/scoped_file.cc
-@@ -31,7 +31,7 @@ void ScopedFDCloseTraits::Free(int fd) {
+@@ -32,7 +32,7 @@ void ScopedFDCloseTraits::Free(int fd) {
    int ret = IGNORE_EINTR(close(fd));
  
  #if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_APPLE) || \

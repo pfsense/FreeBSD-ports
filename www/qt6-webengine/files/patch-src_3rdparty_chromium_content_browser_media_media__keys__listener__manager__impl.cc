@@ -1,11 +1,11 @@
---- src/3rdparty/chromium/content/browser/media/media_keys_listener_manager_impl.cc.orig	2022-04-21 18:48:31 UTC
+--- src/3rdparty/chromium/content/browser/media/media_keys_listener_manager_impl.cc.orig	2025-08-15 18:30:00 UTC
 +++ src/3rdparty/chromium/content/browser/media/media_keys_listener_manager_impl.cc
-@@ -233,7 +233,7 @@ void MediaKeysListenerManagerImpl::StartListeningForMe
- // TODO(crbug.com/1052397): Revisit once build flag switch of lacros-chrome is
- // complete.
- #if (BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS_LACROS)) || \
--    BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC)
-+    BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_BSD)
-   system_media_controls_ = system_media_controls::SystemMediaControls::Create(
-       media::AudioManager::GetGlobalAppName());
- #endif
+@@ -332,7 +332,7 @@ void MediaKeysListenerManagerImpl::StartListeningForMe
+     return;
+   }
+ 
+-#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_WIN)
++#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_WIN) || BUILDFLAG(IS_BSD)
+   // Create SystemMediaControls with the SingletonHwnd.
+   browser_system_media_controls_ =
+       system_media_controls::SystemMediaControls::Create(

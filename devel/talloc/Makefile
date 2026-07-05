@@ -1,10 +1,10 @@
 PORTNAME=			talloc
-DISTVERSION=			2.3.4
+DISTVERSION=			2.4.1
 PORTREVISION=			1
 CATEGORIES=			devel
 MASTER_SITES=			SAMBA
 
-MAINTAINER=			timur@FreeBSD.org
+MAINTAINER=			samba@FreeBSD.org
 COMMENT=			Hierarchical pool based memory allocator
 WWW=		https://talloc.samba.org/
 
@@ -27,10 +27,10 @@ CONFIGURE_ARGS+=		--disable-rpath \
 CONFIGURE_ENV=			PYTHONHASHSEED=1
 MAKE_ENV=			PYTHONHASHSEED=1
 
-MANPAGES_DESC=			Build and install manpages (requires textproc/docbook-xsl)
+CONFLICTS_INSTALL=		talloc[0-9]*
 
 OPTIONS_DEFINE=			DEBUG MANPAGES PYTHON
-OPTIONS_DEFAULT=		PYTHON
+OPTIONS_DEFAULT=		MANPAGES PYTHON
 OPTIONS_SUB=			yes
 
 DEBUG_CFLAGS=			-g -ggdb3 -O0
@@ -41,9 +41,10 @@ PYTHON_USES=			gettext-runtime python
 PYTHON_USES_OFF=		python:build,test
 PYTHON_CONFIGURE_OFF=		--disable-python
 
-MANPAGES_CONFIGURE_ENV_OFF+=	XSLTPROC="true"
-MANPAGES_BUILD_DEPENDS+=	${LOCALBASE}/share/xsl/docbook/manpages/docbook.xsl:textproc/docbook-xsl \
+MANPAGES_BUILD_DEPENDS=	${LOCALBASE}/share/xsl/docbook/manpages/docbook.xsl:textproc/docbook-xsl \
 				xsltproc:textproc/libxslt
+MANPAGES_CONFIGURE_ENV_OFF=	XSLTPROC="false"
+
 # No fancy color error messages
 CFLAGS+=			${CFLAGS_${CHOSEN_COMPILER_TYPE}}
 CFLAGS_clang=			-fno-color-diagnostics
@@ -57,10 +58,6 @@ LDFLAGS+=			-Wl,--undefined-version
 post-patch:
 				@${REINPLACE_CMD} -e 's|%%PKGCONFIGDIR%%|${PKGCONFIGDIR}|g' \
 				${BUILD_WRKSRC}/wscript
-
-pre-build-MANPAGES-off:
-				-${MKDIR} ${BUILD_WRKSRC}/bin/default/man
-				${INSTALL_MAN} ${FILESDIR}/talloc.3 ${BUILD_WRKSRC}/bin/default/man
 
 post-install:
 				${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/libtalloc.so.2

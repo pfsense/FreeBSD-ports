@@ -1,9 +1,9 @@
---- src/3rdparty/chromium/v8/src/snapshot/embedded/platform-embedded-file-writer-base.h.orig	2023-02-08 09:03:45 UTC
+--- src/3rdparty/chromium/v8/src/snapshot/embedded/platform-embedded-file-writer-base.h.orig	2025-08-15 18:30:00 UTC
 +++ src/3rdparty/chromium/v8/src/snapshot/embedded/platform-embedded-file-writer-base.h
-@@ -31,6 +31,7 @@ enum class EmbeddedTargetOs {
-   kMac,
+@@ -36,6 +36,7 @@ enum class EmbeddedTargetOs {
    kWin,
    kStarboard,
+   kZOS,
 +  kOpenBSD,
    kGeneric,  // Everything not covered above falls in here.
  };

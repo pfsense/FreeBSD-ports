@@ -1,19 +1,22 @@
 PORTNAME=	ospray
 DISTVERSIONPREFIX=	v
 DISTVERSION=	2.10.0
-PORTREVISION=	7
+PORTREVISION=	11
 CATEGORIES=	graphics
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Ray tracing based rendering engine for high-fidelity visualization
-WWW=		https://www.ospray.org/
+WWW=		https://www.ospray.org/ \
+		https://github.com/RenderKit/ospray
 
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/LICENSE.txt
 
+BROKEN=		expects embree to be compiled with EMBREE_GEOMETRY_INSTANCE=ON
+
 BUILD_DEPENDS=	ispc:devel/ispc
 LIB_DEPENDS=	libbenchmark.so:devel/benchmark \
-		libembree3.so:graphics/embree \
+		libembree3.so:graphics/embree3 \
 		libglfw.so:graphics/glfw \
 		libopenvkl.so:graphics/openvkl \
 		librkcommon.so:devel/rkcommon \

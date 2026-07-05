@@ -1,8 +1,8 @@
---- services/network/public/cpp/features.cc.orig	2024-02-04 14:46:08 UTC
+--- services/network/public/cpp/features.cc.orig	2026-03-24 16:59:08 UTC
 +++ services/network/public/cpp/features.cc
-@@ -98,7 +98,7 @@ BASE_FEATURE(kSplitAuthCacheByNetworkIsolationKey,
+@@ -93,7 +93,7 @@ BASE_FEATURE(kSplitAuthCacheByNetworkIsolationKey,
+ // Enable usage of hardcoded DoH upgrade mapping for use in automatic mode.
  BASE_FEATURE(kDnsOverHttpsUpgrade,
-              "DnsOverHttpsUpgrade",
  #if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_MAC) || \
 -    BUILDFLAG(IS_ANDROID) || BUILDFLAG(IS_LINUX)
 +    BUILDFLAG(IS_ANDROID) || BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_BSD)

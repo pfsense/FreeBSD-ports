@@ -1,6 +1,6 @@
 PORTNAME=	pipe
 PORTVERSION=	2.5
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	misc java
 MASTER_SITES=	SF/${PORTNAME}2/Pipe%202/PIPE2%20V${PORTVERSION}
 DISTNAME=	pipe25_rc5
@@ -9,10 +9,10 @@ MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Tool for creating and analysing Petri nets
 WWW=		https://pipe2.sourceforge.net/
 
-USES=		zip
+USES=		java zip
+
 NO_BUILD=	yes
 NO_ARCH=	yes
-USE_JAVA=	yes
 
 SUB_FILES=	pipe.sh
 

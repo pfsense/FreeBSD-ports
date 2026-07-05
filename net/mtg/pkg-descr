@@ -1,0 +1,7 @@
+Mtg is an implementation of MTProto proxy in golang which is intended to be:
+
+- Lightweight. It has to consume as less resources as possible but not by losing maintainability.
+- Easily deployable. I strongly believe that Telegram proxies should follow the way
+  of ShadowSocks: promoted channels is a strange way of doing business I suppose.
+- Single secret. I think that multiple secrets solves no problems and just complexify software.
+- No management WebUI. This is an implementation of simple lightweight proxy.

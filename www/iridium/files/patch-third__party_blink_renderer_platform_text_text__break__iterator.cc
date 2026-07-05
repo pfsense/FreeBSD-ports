@@ -1,13 +1,13 @@
---- third_party/blink/renderer/platform/text/text_break_iterator.cc.orig	2023-11-04 06:12:25 UTC
+--- third_party/blink/renderer/platform/text/text_break_iterator.cc.orig	2025-12-10 15:04:57 UTC
 +++ third_party/blink/renderer/platform/text/text_break_iterator.cc
-@@ -161,7 +161,9 @@ static const unsigned char kAsciiLineBreakTable[][(kAs
+@@ -102,6 +102,10 @@ static const unsigned char kBreakAllLineBreakClassTabl
+     { B(0, 0, 0, 0, 0, 0, 0, 0), B(0, 0, 0, 0, 0, 0, 0, 0), B(0, 0, 0, 0, 0, 0, 0, 0), B(0, 0, 0, 0, 0, 0, 0, 0), B(0, 0, 0, 0, 0, 0, 0, 0), B(0, 0,  0, 0, 0, 0, 0, 0) }, // VF
+     { B(0, 0, 0, 0, 0, 0, 0, 0), B(0, 0, 0, 0, 0, 0, 0, 0), B(0, 0, 0, 0, 0, 0, 0, 0), B(0, 0, 0, 0, 0, 0, 0, 0), B(0, 0, 0, 0, 0, 0, 0, 0), B(0, 0,  0, 0, 0, 0, 0, 0) }, // VI
+ #endif  // U_ICU_VERSION_MAJOR_NUM >= 74
++#if U_ICU_VERSION_MAJOR_NUM >= 78
++    // Added in ICU 78. https://icu.unicode.org/download/78
++    { B(0, 0, 0, 0, 0, 0, 0, 0), B(0, 0, 0, 0, 0, 0, 0, 0), B(0, 0, 0, 0, 0, 0, 0, 0), B(0, 0, 0, 0, 0, 0, 0, 0), B(0, 0, 0, 0, 0, 0, 0, 0), B(0, 0,  0, 0, 0, 0, 0, 0) }, // UH
++#endif  // U_ICU_VERSION_MAJOR_NUM >= 78
  };
  // clang-format on
  
--#if U_ICU_VERSION_MAJOR_NUM >= 58
-+#if U_ICU_VERSION_MAJOR_NUM >= 74
-+#define BA_LB_COUNT (U_LB_COUNT - 8)
-+#elif U_ICU_VERSION_MAJOR_NUM >= 58
- #define BA_LB_COUNT (U_LB_COUNT - 3)
- #else
- #define BA_LB_COUNT U_LB_COUNT

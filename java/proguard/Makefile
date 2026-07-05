@@ -1,5 +1,6 @@
 PORTNAME=	proguard
 PORTVERSION=	7.0.0
+PORTREVISION=	1
 CATEGORIES=	java devel
 MASTER_SITES=	https://github.com/Guardsquare/proguard/releases/download/v${PORTVERSION}/
 
@@ -9,9 +10,10 @@ WWW=		https://www.guardsquare.com/en/products/proguard
 
 LICENSE=	GPLv2
 
+USES=		java
+
 OPTIONS_DEFINE=	DOCS EXAMPLES
 
-USE_JAVA=	yes
 NO_BUILD=	yes
 NO_ARCH=	yes
 

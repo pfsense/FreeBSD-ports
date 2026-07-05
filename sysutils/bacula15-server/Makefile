@@ -1,6 +1,5 @@
 PORTNAME=	bacula
-DISTVERSION=	15.0.2
-PORTREVISION=	2
+DISTVERSION=	15.0.3
 CATEGORIES?=	sysutils
 MASTER_SITES=	SF/bacula/bacula/${DISTVERSION}
 PKGNAMEPREFIX?=	#
@@ -21,7 +20,8 @@ SHEBANG_FILES=	scripts/get_malware_abuse.ch scripts/key-manager.py.in \
 
 CONFLICTS?=	bacula13-server bacula11-server bacula9-server
 
-LIB_DEPENDS+=	liblzo2.so:archivers/lzo2
+LIB_DEPENDS+=	liblzo2.so:archivers/lzo2 \
+		libzstd.so:archivers/zstd
 
 USERS=		bacula
 GROUPS=		${USERS}
@@ -50,7 +50,7 @@ OPTIONS_SUB=	yes
 
 .if !defined(WITH_CLIENT_ONLY)
 LIB_DEPENDS+=	libbac-${LIB_VERSION}.so:sysutils/bacula15-client
-USE_RC_SUBR?=	bacula-dir bacula-sd
+USE_RC_SUBR?=	bacula_dir bacula_sd
 .endif
 
 .if defined(WITH_CLIENT_ONLY)
@@ -133,10 +133,10 @@ MTX_RUN_DEPENDS=	${LOCALBASE}/sbin/mtx:misc/mtx
 
 .endif
 
-.include <bsd.port.pre.mk>
+S3_CONFIGURE_ARGS=	--enable-s3
+S3_LIB_DEPENDS=		libs3.so:sysutils/bacula-libs3
 
-MS3_CONFIGURE_ARGS=	--enable-s3
-MS3_LIB_DEPENDS=	libs3.so:sysutils/bacula-libs3
+.include <bsd.port.pre.mk>
 
 .if defined(WITH_CLIENT_ONLY)
 MP8+=		bacula.8 bacula-fd.8 bconsole.8

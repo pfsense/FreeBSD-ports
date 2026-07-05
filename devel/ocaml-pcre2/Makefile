@@ -1,5 +1,6 @@
 PORTNAME=	pcre2
 PORTVERSION=	7.5.2
+PORTREVISION=	1
 CATEGORIES=	devel
 PKGNAMEPREFIX=	ocaml-
 
@@ -11,12 +12,10 @@ LICENSE=	LGPL21
 
 LIB_DEPENDS=	libpcre2-8.so:devel/pcre2
 
-USES=		ocaml:dune pkgconfig
+USES=		ocaml:dune,ldconfig pkgconfig
 USE_GITHUB=	yes
 GH_ACCOUNT=	camlp5
 GH_PROJECT=	${PORTNAME}-ocaml
-USE_OCAML=	yes
-USE_OCAML_LDCONFIG=	yes
 
 DOCSDIR=	${OCAML_DOCSDIR}/${PORTNAME}
 EXAMPLESDIR=	${OCAML_EXAMPLESDIR}/${PORTNAME}
@@ -25,6 +24,12 @@ PORTEXAMPLES=	*
 
 OPTIONS_DEFINE=		DOCS EXAMPLES
 DOCS_ALL_TARGET=	examples/ @install
+
+.include <bsd.port.options.mk>
+
+.if ${ARCH} == powerpc
+USE_BINUTILS=	yes
+.endif
 
 post-patch:
 	${REINPLACE_CMD} \

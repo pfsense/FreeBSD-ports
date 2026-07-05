@@ -1,5 +1,6 @@
 PORTNAME=	ibus-typing-booster
-PORTVERSION=	2.25.3
+PORTVERSION=	2.30.4
+PORTREVISION=	1
 CATEGORIES=	textproc
 
 MAINTAINER=	thierry@FreeBSD.org
@@ -9,18 +10,20 @@ WWW=		https://mike-fabian.github.io/ibus-typing-booster/
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}xdg>0:devel/py-xdg@${PY_FLAVOR}		\
+BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}pyxdg>0:devel/py-pyxdg@${PY_FLAVOR}		\
 		${PYTHON_PKGNAMEPREFIX}sqlite3>0:databases/py-sqlite3@${PY_FLAVOR}
 LIB_DEPENDS=	libibus-1.0.so:textproc/ibus	\
 		libm17n.so:devel/m17n-lib
 RUN_DEPENDS=	CLDR>0:textproc/CLDR	\
-		${PYTHON_PKGNAMEPREFIX}xdg>0:devel/py-xdg@${PY_FLAVOR}		\
+		UCD>0:textproc/UCD	\
+		${PYTHON_PKGNAMEPREFIX}pyxdg>0:devel/py-pyxdg@${PY_FLAVOR}		\
 		${PYTHON_PKGNAMEPREFIX}dbus>0:devel/py-dbus@${PY_FLAVOR}		\
+		${PYTHON_PKGNAMEPREFIX}rapidfuzz>0:devel/py-rapidfuzz@${PY_FLAVOR}	\
 		${PYTHON_PKGNAMEPREFIX}hunspell>0:textproc/py-hunspell@${PY_FLAVOR}	\
 		${PYTHON_PKGNAMEPREFIX}pycountry>0:textproc/py-pycountry@${PY_FLAVOR}	\
-		${LOCALBASE}/share/unicode/ucd/Index.txt:textproc/UCD			\
 		${PYTHON_PKGNAMEPREFIX}sqlite3>0:databases/py-sqlite3@${PY_FLAVOR}
-TEST_DEPENDS=	${LOCALBASE}/share/hunspell/cs_CZ.dic:textproc/cs-hunspell	\
+TEST_DEPENDS=	m17n-db:devel/m17n-db	\
+		${LOCALBASE}/share/hunspell/cs_CZ.dic:textproc/cs-hunspell	\
 		${LOCALBASE}/share/hunspell/de_DE.dic:german/hunspell		\
 		${LOCALBASE}/share/hunspell/en_US.aff:textproc/en-hunspell	\
 		${LOCALBASE}/share/hunspell/es_ES.dic:textproc/es-hunspell	\
@@ -28,7 +31,6 @@ TEST_DEPENDS=	${LOCALBASE}/share/hunspell/cs_CZ.dic:textproc/cs-hunspell	\
 		${LOCALBASE}/share/hunspell/ko_KR.aff:korean/hunspell		\
 		${LOCALBASE}/share/hunspell/sv_SE.dic:textproc/sv-hunspell	\
 		${LOCALBASE}/libexec/ibus-engine-m17n:textproc/ibus-m17n	\
-		${LOCALBASE}/share/m17n/hi-inscript2.mim:devel/m17n-inscript2	\
 		${PYTHON_PKGNAMEPREFIX}mock>0:devel/py-mock@${PY_FLAVOR}	\
 		gmake:devel/gmake
 
@@ -42,15 +44,17 @@ SHEBANG_FILES=	engine/emoji-picker.in engine/ibus-engine-typing-booster.in	\
 SHEBANG_LANG=	sh
 sh_OLD_CMD=	/usr/bin/sh
 sh_CMD=		${SH}
-USE_GNOME=	glib20 gtk30 pygobject3
+USE_GNOME=	gtk40
 USE_LOCALE=	en_US.UTF-8
 GNU_CONFIGURE=	yes
+CONFIGURE_ARGS=	--libexecdir=${PREFIX}/libexec
 NO_ARCH=	yes
 GLIB_SCHEMAS=	org.freedesktop.ibus.engine.typing-booster.gschema.xml
 
 TEST_TARGET=	check
-TEST_ENV=	MAKE_CMD=${LOCALBASE}/bin/gmake LC_ALL=en_US.UTF-8	\
+TEST_ENV=	${MAKE_ENV} \
 		IBUS_TYPING_BOOSTER_DEBUG_LEVEL=1
+TESTING_UNSAFE=	yes
 
 OPTIONS_DEFINE=	HUNSPELL
 OPTIONS_DEFAULT=HUNSPELL
@@ -58,14 +62,10 @@ OPTIONS_DEFAULT=HUNSPELL
 HUNSPELL_RUN_DEPENDS=	hunspell:textproc/hunspell
 
 SPELL2FIX=	engine/itb_util.py setup/user_transliteration.py
-PY2FIX=		setup/user_transliteration.py tests/test_m17n_db_info.py	\
-		tests/test_itb.py tests/test_compose_sequences.py		\
-		tests/test_hunspell_suggest.py tests/test_keyvals_to_keycodes.py\
-		tests/test_m17n_translit.py tests/test_emoji_unicode_version.py	\
-		tests/test_emoji_similar.py tests/test_emoji_candidates.py
-SHR2FIX=	engine/itb_util.py engine/itb_emoji.py engine/hunspell_table.py	\
-		tests/test_compose_sequences.py typing-booster.appdata.xml	\
-		setup/user_transliteration.py ${GLIB_SCHEMAS} engine/itb_sound.py
+SHR2FIX=	engine/itb_sound.py ${GLIB_SCHEMAS}
+XML2FIX=	org.freedesktop.ibus.engine.typing_booster.metainfo.xml.in	\
+		org.freedesktop.ibus.engine.typing_booster.emoji_picker.metainfo.xml.in
+X11LOC2FIX=	engine/itb_util.py tests/test_compose_sequences.py tests/test_itb.py
 COMP2DEL=	engine/Makefile setup/Makefile
 
 pre-configure:
@@ -73,14 +73,20 @@ pre-configure:
 	${REINPLACE_CMD} -e 's|/usr/share/myspell|${LOCALBASE}/share/hunspell|'	\
 		${WRKSRC}/${f}
 .endfor
-.for f in ${PY2FIX}
-	${REINPLACE_CMD} -e 's|/usr/bin/python3| ${PYTHON_CMD}|' ${WRKSRC}/${f}
+	${FIND} ${WRKSRC} -name "*.py" | ${XARGS}	\
+	${REINPLACE_CMD} -e 's|/usr/bin/python3| ${PYTHON_CMD}|'
+.for f in ${XML2FIX}
+	${REINPLACE_CMD} -e 's|/usr/libexec|${PREFIX}/libexec|'	${WRKSRC}/${f}
 .endfor
-	${REINPLACE_CMD} -e 's|/usr/libexec|${PREFIX}/libexec|'	\
-		${WRKSRC}/typing-booster.appdata.xml
-.for f in ${SHR2FIX}
+.for f in ${SHR2FIX} ${XML2FIX}
 	${REINPLACE_CMD} -e 's|/usr/share/ibus-typing-booster|${DATADIR}|'	\
 		-e 's|/usr/share|${LOCALBASE}/share|' ${WRKSRC}/${f}
+.endfor
+	${REINPLACE_CMD} -e 's|/usr/share/unicode|${LOCALBASE}/share/unicode|'	\
+		${WRKSRC}/engine/itb_emoji.py
+.for f in ${X11LOC2FIX}
+	${REINPLACE_CMD} -e 's|/usr/share/X11/locale|${LOCALBASE}/lib/X11/locale|'	\
+		${WRKSRC}/${f}
 .endfor
 
 post-configure:

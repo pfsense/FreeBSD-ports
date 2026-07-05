@@ -1,6 +1,6 @@
 PORTNAME=	zim
-DISTVERSION=	0.75.2
-PORTREVISION=	3
+DISTVERSION=	0.76.3
+PORTREVISION=	1
 CATEGORIES=	deskutils python
 MASTER_SITES=	https://www.zim-wiki.org/downloads/
 
@@ -12,10 +12,10 @@ LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
 BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}sqlite3>0:databases/py-sqlite3@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}xdg>0:devel/py-xdg@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}pyxdg>0:devel/py-pyxdg@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}wheel>0:devel/py-wheel@${PY_FLAVOR} \
 		${PY_SETUPTOOLS}
-RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}xdg>0:devel/py-xdg@${PY_FLAVOR} \
+RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}pyxdg>0:devel/py-pyxdg@${PY_FLAVOR} \
 		xdg-open:devel/xdg-utils \
 		${PYTHON_PKGNAMEPREFIX}sqlite3>0:databases/py-sqlite3@${PY_FLAVOR}
 
@@ -43,10 +43,5 @@ MERCURIAL_DESC=		Version control for notebooks using hg
 MERCURIAL_RUN_DEPENDS=	${PY_MERCURIAL}
 SCROT_DESC=		Screenshot taking and inserting support
 SCROT_RUN_DEPENDS=	scrot:graphics/scrot
-
-post-patch:
-	@${REINPLACE_CMD} -e \
-		'/.command.install /s|distutils|setuptools|' \
-		${WRKSRC}/setup.py
 
 .include <bsd.port.mk>

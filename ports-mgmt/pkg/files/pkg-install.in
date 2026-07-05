@@ -28,9 +28,12 @@ _echo() {
 notice() {
 	msg="$@"
 
-	/usr/local/bin/php -r \
+	# bail out if the PHP is not installed
+	[ ! -x "${PKG_ROOTDIR}/usr/local/bin/php" ] && return
+
+	"${PKG_ROOTDIR}/usr/local/bin/php" -r \
 	    "require_once('notices.inc'); \
-	    file_notice('${product}-Upgrade', '${msg}', 'Upgrade', '', 1, true);"
+	    file_notice('pfSense-upgrade', '${msg}', 'Upgrade', '', 1, true);"
 }
 
 
@@ -71,7 +74,8 @@ remove_crontab "root"
 # was committed in 72c441e9e0c0f3d4cd26f554a67aa91e06734b5b.
 # See #14876.
 #
-[ -x /usr/sbin/certctl ] && \
-    /usr/sbin/certctl rehash
+[ -x "${PKG_ROOTDIR}/usr/sbin/certctl" ] &&
+    [ -d "${PKG_ROOTDIR}/usr/share/certs/trusted" ] && \
+	"${PKG_ROOTDIR}/usr/sbin/certctl" rehash
 
 exit 0

@@ -1,5 +1,6 @@
 PORTNAME=	tinylaf
 DISTVERSION=	1_4_0
+PORTREVISION=	1
 CATEGORIES=	devel java
 MASTER_SITES=	http://www.muntjak.de/hans/java/tinylaf/
 
@@ -9,8 +10,8 @@ WWW=		http://www.muntjak.de/hans/java/tinylaf/index.html
 
 OPTIONS_DEFINE=	DOCS
 
-USES=		zip
-USE_JAVA=	yes
+USES=		java zip
+
 NO_BUILD=	yes
 
 JARFILE=	${PORTNAME}.jar tinycp.jar

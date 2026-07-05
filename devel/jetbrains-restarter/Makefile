@@ -1,6 +1,6 @@
 PORTNAME=	restarter
-DISTVERSION=	233.14015.106
-PORTREVISION=	2
+DISTVERSION=	2025.2.2
+PORTREVISION=	5
 CATEGORIES=	devel
 PKGNAMEPREFIX=	jetbrains-
 DIST_SUBDIR=	jetbrains
@@ -19,7 +19,7 @@ USES=		cargo
 USE_GITHUB=	yes
 GH_ACCOUNT=	JetBrains
 GH_PROJECT=	intellij-community
-GH_TAGNAME=	1b8c945fe9801a1129e4bd03f6feda5ceae1804c
+GH_TAGNAME=	idea/2025.2.2
 
 DATADIR=	${PREFIX}/share/jetbrains/${PORTNAME}
 WRKSRC_SUBDIR=	native/restarter
@@ -28,7 +28,7 @@ PLIST_FILES=	share/jetbrains/${PORTNAME}/restarter
 do-install:
 	${MKDIR} ${STAGEDIR}${DATADIR}
 	${INSTALL_PROGRAM} \
-		${CARGO_TARGET_DIR}/${CARGO_BUILD_TARGET}/*/restarter \
+		${CARGO_TARGET_DIR}/*/restarter \
 		${STAGEDIR}${DATADIR}
 
 post-install:

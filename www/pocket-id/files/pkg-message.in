@@ -1,0 +1,25 @@
+[
+{ type: install
+  message: <<EOM
+Pocket ID is installed
+
+1) Configure it in %%PREFIX%%/etc/pocket-id.env
+
+2) Enable it with
+
+     sysrc pocket_id_enable=YES
+
+3) Start it with
+
+     service pocket-id start
+EOM
+},
+{ type: upgrade
+  maximum_version: "2.0.0"
+  message: <<EOM
+This is a major release which includes some breaking changes, please follow the migration guide to upgrade to v2:
+
+  https://pocket-id.org/docs/setup/major-releases/migrate-v2
+EOM
+}
+]

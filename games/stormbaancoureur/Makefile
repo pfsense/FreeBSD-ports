@@ -1,9 +1,9 @@
 PORTNAME=	stormbaancoureur
 PORTVERSION=	2.1.6
-PORTREVISION=	5
+PORTREVISION=	6
 CATEGORIES=	games
 MASTER_SITES=	http://www.stolk.org/stormbaancoureur/download/ \
-		http://mirror.amdmi3.ru/distfiles/
+		https://mirror.amdmi3.ru/distfiles/
 
 MAINTAINER=	amdmi3@FreeBSD.org
 COMMENT=	Simulated obstacle course for automobiles

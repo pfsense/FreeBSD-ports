@@ -1,8 +1,9 @@
 PORTNAME=	ruamel.yaml
-PORTVERSION=	0.18.6
+PORTVERSION=	0.19.1
 CATEGORIES=	devel python
 MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
+DISTNAME=	${PORTNAME:S,.,_,}-${PORTVERSION}
 
 MAINTAINER=	matthew@FreeBSD.org
 COMMENT=	YAML 1.2 loader/dumper package for Python
@@ -16,6 +17,8 @@ USES=		python
 USE_PYTHON=	distutils autoplist
 
 NO_ARCH=	yes
+
+WRKSRC=		${WRKDIR}/${PORTNAME}-${PORTVERSION}
 
 post-extract:
 	@${RM} ${WRKSRC}/LICENSE

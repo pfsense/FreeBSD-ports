@@ -1,6 +1,6 @@
 PORTNAME=	avis
 PORTVERSION=	1.2.0
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	java net
 MASTER_SITES=	SF/${PORTNAME}/Avis%20router/Release%20${PORTVERSION}
 DISTNAME=	${PORTNAME}-src-${PORTVERSION}
@@ -10,7 +10,7 @@ COMMENT=	Elvin Publish/Subscribe Message Bus server based on the Elvin protocol
 WWW=		https://avis.sourceforge.net/
 
 USES=		zip
-USE_JAVA=	yes
+
 WRKSRC=		${WRKDIR}/${PORTNAME}-${PORTVERSION}
 
 .if !defined(WITHOUT_COMPILE)
@@ -18,7 +18,9 @@ BUILD_DEPENDS+=	${ANT_CMD}:devel/apache-ant
 ANT_CMD?=	${LOCALBASE}/bin/ant
 ANT=		${SETENV} JAVA_HOME=${JAVA_HOME} ${ANT_CMD}
 ANT_TARGETS=	jar-server
-JAVA_BUILD=	yes
+USES+=		java:build
+.else
+USES+=		java
 .endif
 
 OPTIONS_DEFINE=	DOCS

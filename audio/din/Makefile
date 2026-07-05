@@ -1,7 +1,7 @@
 PORTNAME=	din
-PORTVERSION=	58.1
+PORTVERSION=	60
 CATEGORIES=	audio
-MASTER_SITES=	https://archive.org/download/dinisnoise_source_code/
+MASTER_SITES=	https://dinisnoise.org/files/
 
 MAINTAINER=	fox@FreeBSD.org
 COMMENT=	Open source, cross-platform sound synthesizer
@@ -11,7 +11,7 @@ LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
 
 LIB_DEPENDS=	libasound.so:audio/alsa-lib \
-		libboost_system.so:devel/boost-libs \
+		libboost_thread.so:devel/boost-libs \
 		libjack.so:audio/jack
 
 USES=		autoreconf gl gnome sdl tcl:86+ xorg

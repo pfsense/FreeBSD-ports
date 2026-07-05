@@ -1,5 +1,6 @@
 PORTNAME=	pasystray
 PORTVERSION=	0.8.2
+PORTREVISION=	1
 CATEGORIES=	audio
 
 MAINTAINER=	julien+freebsdports@delhaye.me
@@ -12,7 +13,7 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 LIB_DEPENDS=	libpulse.so:audio/pulseaudio
 
 USES=		autoreconf gnome pkgconfig
-USE_GNOME=	cairo gdkpixbuf2
+USE_GNOME=	cairo gdkpixbuf
 GNU_CONFIGURE=	yes
 GNU_CONFIGURE_MANPREFIX=	${PREFIX}/share
 USE_GITHUB=	yes

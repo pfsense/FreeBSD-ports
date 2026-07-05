@@ -1,5 +1,6 @@
 PORTNAME=	xerces-j
 PORTVERSION=	2.12.2
+PORTREVISION=	1
 CATEGORIES=	textproc java
 MASTER_SITES=	https://archive.apache.org/dist/xerces/j/binaries/
 DISTNAME=	Xerces-J-bin.${PORTVERSION}
@@ -10,7 +11,8 @@ WWW=		https://xerces.apache.org/xerces2-j/
 
 LICENSE=	APACHE20
 
-USE_JAVA=	yes
+USES=		java
+
 NO_BUILD=	yes
 NO_ARCH=	yes
 

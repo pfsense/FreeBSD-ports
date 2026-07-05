@@ -1,29 +1,25 @@
 PORTNAME=	libedit
-PORTVERSION=	${EDITVERSION}.${EDITDATE}
+DISTVERSION=	3.1-20251016
 PORTREVISION=	1
 PORTEPOCH=	1
 CATEGORIES=	devel
 MASTER_SITES=	https://thrysoee.dk/editline/
-DISTNAME=	${PORTNAME}-${EDITDATE}-${EDITVERSION}
+DISTNAME=	${PORTNAME}-${PORTVERSION:E}-${PORTVERSION:R}
 
-MAINTAINER=	bapt@FreeBSD.org
+MAINTAINER=	osa@FreeBSD.org
 COMMENT=	Command line editor library
 WWW=		https://thrysoee.dk/editline/
 
 LICENSE=	BSD2CLAUSE
+LICENSE_FILE=	${WRKSRC}/COPYING
 
 USES=		cpe libtool localbase ncurses pathfix
-EDITVERSION=	3.1
-EDITDATE=	20230828
-GNU_CONFIGURE=	yes
-GNU_CONFIGURE_MANPREFIX=${PREFIX}/share
-USE_LDCONFIG=	yes
-INSTALL_TARGET=	install-strip
 CPE_VENDOR=	libedit_project
+USE_LDCONFIG=	yes
 
-CONFLICTS_INSTALL=	editline
+GNU_CONFIGURE=	yes
+CONFIGURE_ARGS=	--disable-examples
 
-post-install:
-	${MV} ${STAGEDIR}${PREFIX}/share/man/man3/history.3 ${STAGEDIR}${PREFIX}/share/man/man3/el_history.3
+INSTALL_TARGET=	install-strip
 
 .include <bsd.port.mk>

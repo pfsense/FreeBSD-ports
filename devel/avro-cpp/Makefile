@@ -1,24 +1,27 @@
 PORTNAME=	avro
-PORTVERSION=	1.11.3
+PORTVERSION=	1.12.1
 PORTREVISION=	1
 CATEGORIES=	devel
-MASTER_SITES=	APACHE/avro/stable/cpp
+MASTER_SITES=	APACHE/avro/avro-${PORTVERSION}/cpp
 PKGNAMESUFFIX=	-cpp
 DISTNAME=	avro-cpp-${PORTVERSION}
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	C++ library for Apache Avro
-WWW=		https://avro.apache.org/
+WWW=		https://avro.apache.org/ \
+		https://github.com/apache/avro
 
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
 LIB_DEPENDS=	libboost_regex.so:devel/boost-libs \
-		libsnappy.so:archivers/snappy
+		libfmt.so:devel/libfmt \
+		libsnappy.so:archivers/snappy \
+		libzstd.so:archivers/zstd
 
-USES=		cmake compiler:c++11-lang cpe
+USES=		cmake compiler:c++17-lang cpe
 
-USE_CXXSTD=	c++11
+USE_CXXSTD=	c++17
 USE_LDCONFIG=	yes
 
 PLIST_SUB=	PORTVERSION=${PORTVERSION}

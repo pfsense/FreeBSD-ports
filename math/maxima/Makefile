@@ -1,10 +1,10 @@
 PORTNAME=	maxima
-PORTVERSION=	5.47.0
-PORTREVISION=	10
+DISTVERSION=	5.49.0
+PORTREVISION=	2
 CATEGORIES=	math lisp tk
 MASTER_SITES=	SF/maxima/Maxima-source/${PORTVERSION}-source
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	tiga@FreeBSD.org
 COMMENT=	Symbolic mathematics program
 WWW=		http://maxima.sourceforge.net/
 
@@ -17,6 +17,7 @@ LICENSE_FILE_MAXIMAEXTRACLAUSE=	${FILESDIR}/license-extra-clause.txt
 LICENSE_PERMS_MAXIMAEXTRACLAUSE=	dist-mirror dist-sell pkg-mirror \
 					pkg-sell auto-accept
 
+BUILD_DEPENDS=	coreutils>0:sysutils/coreutils
 RUN_DEPENDS=	gnuplot:math/gnuplot \
 		rlwrap:devel/rlwrap
 
@@ -26,8 +27,10 @@ GNU_CONFIGURE=	yes
 
 TEST_TARGET=	check
 
-INFO=		imaxima maxima xmaxima abs_integrate drawutils kovacicODE logic \
-		nelder_mead symplectic_ode
+BINARY_ALIAS=	expr=gexpr
+
+INFO=		imaxima maxima abs_integrate drawutils guess kovacicODE logic \
+		mathml nelder_mead raddenest symplectic_ode
 
 PLIST_SUB+=	PORTVERSION=${PORTVERSION}
 PORTDATA=	*
@@ -92,6 +95,7 @@ XMAXIMA_IMPLIES=		DOCS TEST
 XMAXIMA_USES=			tk
 XMAXIMA_CONFIGURE_WITH=		wish=${WISH}
 XMAXIMA_EXTRA_PATCHES_OFF=	${PATCHDIR}/extra-patch-interfaces_Makefile.am
+XMAXIMA_INFO=			xmaxima
 
 post-patch:
 	${GREP} -Fe '.core' -l -r ${WRKSRC} | ${XARGS} ${REINPLACE_CMD} 's;\.core;_core;g'
@@ -106,7 +110,6 @@ post-patch-XMAXIMA-on:
 	${WRKSRC}/interfaces/xmaxima/Tkmaxima/Paths.tcl
 
 post-configure:
-	${REINPLACE_CMD} '/ld-flags/s|" |"|' ${WRKSRC}/src/autoconf-variables.lisp
 	${REINPLACE_CMD} '/ld-flags/s| ")|")|' ${WRKSRC}/src/autoconf-variables.lisp
 
 pre-build-CCL-on:
@@ -115,9 +118,13 @@ pre-build-CCL-on:
 post-build-MANPAGES-on:
 	${GZIP_CMD} ${WRKSRC}/doc/man/maxima.1
 
+post-build-XMAXIMA-on:
+	${REINPLACE_CMD} "s;$$::xmaxima_priv(pReferenceToc);::xmaxima_priv(pReferenceToc);g" ${WRKSRC}/interfaces/xmaxima/xmaxima
+
 post-install:
 	for x in "" "-1" "-2" "-3"; do ${INSTALL_MAN} ${WRKSRC}/doc/info/maxima.info$$x ${STAGEDIR}${PREFIX}/${INFO_PATH}; done
 	${INSTALL_MAN} ${WRKSRC}/doc/info/maxima-index.lisp ${STAGEDIR}${PREFIX}/${INFO_PATH}
+	${INSTALL_DATA} ${WRKSRC}/doc/info/maxima-index-html.lisp ${STAGEDIR}${PREFIX}/${INFO_PATH}
 
 post-install-DOCS-on:
 	${MKDIR} ${STAGEDIR}${DOCSDIR}
@@ -134,7 +141,6 @@ post-install-EXAMPLES-on:
 	cd ${WRKSRC}/demo && ${COPYTREE_SHARE} . ${STAGEDIR}${EXAMPLESDIR} '-name *\.dem'
 
 post-install-MANPAGES-on:
-	${MKDIR} ${STAGEDIR}${PREFIX}/man/man1 && \
 	${INSTALL_MAN} ${WRKSRC}/doc/man/maxima.1.gz ${STAGEDIR}${PREFIX}/share/man/man1/maxima.1.gz
 
 .include <bsd.port.mk>

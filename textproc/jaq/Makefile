@@ -1,7 +1,7 @@
 PORTNAME=	jaq
 DISTVERSIONPREFIX=	v
-DISTVERSION=	1.3.0
-PORTREVISION=	2
+DISTVERSION=	2.3.0
+PORTREVISION=	4
 CATEGORIES=	textproc
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -11,81 +11,115 @@ WWW=		https://github.com/01mf02/jaq
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE-MIT
 
+BROKEN_i386=	compilation fails: undefined symbol: __atomic_load_8
+
 USES=		cargo
 USE_GITHUB=	yes
 GH_ACCOUNT=	01mf02
 
 CARGO_BUILD_ARGS=	--package=jaq
 CARGO_INSTALL_PATH=	jaq
-CARGO_CRATES=	ahash-0.8.6 \
-		aho-corasick-1.1.2 \
-		allocator-api2-0.2.16 \
-		ariadne-0.4.0 \
-		atty-0.2.14 \
-		base64-0.21.5 \
-		bincode-1.3.3 \
-		bitflags-1.3.2 \
-		cc-1.0.79 \
-		cfg-if-1.0.0 \
-		chumsky-0.9.3 \
-		clap-4.0.22 \
-		clap_derive-4.0.21 \
-		clap_lex-0.3.2 \
-		colored_json-3.0.1 \
-		dyn-clone-1.0.11 \
-		env_logger-0.10.0 \
-		equivalent-1.0.0 \
-		fastrand-1.9.0 \
-		getrandom-0.2.10 \
-		hashbrown-0.14.2 \
-		heck-0.4.1 \
-		hermit-abi-0.1.19 \
-		hifijson-0.2.0 \
-		indexmap-2.1.0 \
-		instant-0.1.12 \
-		itoa-1.0.9 \
-		libc-0.2.147 \
-		libm-0.2.8 \
-		libmimalloc-sys-0.1.35 \
-		log-0.4.20 \
-		memchr-2.6.4 \
-		memmap2-0.9.0 \
-		mimalloc-0.1.39 \
-		once_cell-1.18.0 \
-		os_str_bytes-6.4.1 \
-		proc-macro-error-1.0.4 \
-		proc-macro-error-attr-1.0.4 \
-		proc-macro2-1.0.69 \
-		quote-1.0.29 \
-		redox_syscall-0.2.16 \
-		regex-1.9.4 \
-		regex-automata-0.3.7 \
-		regex-syntax-0.7.5 \
-		remove_dir_all-0.5.3 \
-		ryu-1.0.14 \
-		serde-1.0.190 \
-		serde_derive-1.0.190 \
-		serde_json-1.0.108 \
-		strsim-0.10.0 \
-		syn-1.0.109 \
-		syn-2.0.38 \
-		tempfile-3.3.0 \
-		termcolor-1.2.0 \
-		time-0.3.20 \
-		time-core-0.1.0 \
-		time-macros-0.2.8 \
-		unicode-ident-1.0.10 \
-		unicode-width-0.1.11 \
+CARGO_CRATES=	aho-corasick-1.1.3 \
+		android-tzdata-0.1.1 \
+		android_system_properties-0.1.5 \
+		arbitrary-1.4.1 \
+		autocfg-1.5.0 \
+		base64-0.22.1 \
+		bitflags-2.9.1 \
+		bumpalo-3.14.0 \
+		cc-1.2.29 \
+		cfg-if-1.0.1 \
+		chrono-0.4.41 \
+		clipboard-win-5.4.0 \
+		codesnake-0.2.1 \
+		console_log-1.0.0 \
+		core-foundation-sys-0.8.7 \
+		dirs-6.0.0 \
+		dirs-sys-0.5.0 \
+		dyn-clone-1.0.19 \
+		env_logger-0.10.2 \
+		equivalent-1.0.2 \
+		errno-0.3.13 \
+		error-code-3.3.2 \
+		fastrand-2.3.0 \
+		fd-lock-4.0.4 \
+		foldhash-0.1.5 \
+		getrandom-0.2.16 \
+		getrandom-0.3.3 \
+		hashbrown-0.15.4 \
+		hermit-abi-0.5.2 \
+		hifijson-0.2.2 \
+		iana-time-zone-0.1.63 \
+		iana-time-zone-haiku-0.1.2 \
+		indexmap-2.10.0 \
+		is-terminal-0.4.16 \
+		itoa-1.0.15 \
+		js-sys-0.3.77 \
+		libc-0.2.174 \
+		libm-0.2.15 \
+		libmimalloc-sys-0.1.43 \
+		libredox-0.1.4 \
+		linux-raw-sys-0.9.4 \
+		log-0.4.27 \
+		memchr-2.7.5 \
+		memmap2-0.9.5 \
+		mimalloc-0.1.47 \
+		nix-0.27.1 \
+		num-traits-0.2.19 \
+		once_cell-1.20.3 \
+		option-ext-0.2.0 \
+		proc-macro2-1.0.95 \
+		quote-1.0.40 \
+		r-efi-5.3.0 \
+		redox_users-0.5.0 \
+		regex-lite-0.1.6 \
+		rustix-1.0.7 \
+		rustversion-1.0.21 \
+		rustyline-13.0.0 \
+		ryu-1.0.20 \
+		serde-1.0.219 \
+		serde_derive-1.0.219 \
+		serde_json-1.0.140 \
+		shlex-1.3.0 \
+		syn-2.0.104 \
+		tempfile-3.20.0 \
+		thiserror-2.0.12 \
+		thiserror-impl-2.0.12 \
+		typed-arena-2.0.2 \
+		unicode-ident-1.0.18 \
+		unicode-segmentation-1.12.0 \
+		unicode-width-0.1.14 \
 		urlencoding-2.1.3 \
-		version_check-0.9.4 \
-		wasi-0.11.0+wasi-snapshot-preview1 \
+		utf8parse-0.2.2 \
+		wasi-0.11.1+wasi-snapshot-preview1 \
+		wasi-0.14.2+wasi-0.2.4 \
+		wasm-bindgen-0.2.100 \
+		wasm-bindgen-backend-0.2.100 \
+		wasm-bindgen-macro-0.2.100 \
+		wasm-bindgen-macro-support-0.2.100 \
+		wasm-bindgen-shared-0.2.100 \
+		web-sys-0.3.77 \
 		winapi-0.3.9 \
 		winapi-i686-pc-windows-gnu-0.4.0 \
-		winapi-util-0.1.5 \
 		winapi-x86_64-pc-windows-gnu-0.4.0 \
-		yansi-0.5.1 \
-		zerocopy-0.7.32 \
-		zerocopy-derive-0.7.32
+		windows-core-0.61.2 \
+		windows-implement-0.60.0 \
+		windows-interface-0.59.1 \
+		windows-link-0.1.3 \
+		windows-result-0.3.4 \
+		windows-strings-0.4.2 \
+		windows-sys-0.59.0 \
+		windows-targets-0.52.6 \
+		windows_aarch64_gnullvm-0.52.6 \
+		windows_aarch64_msvc-0.52.6 \
+		windows_i686_gnu-0.52.6 \
+		windows_i686_gnullvm-0.52.6 \
+		windows_i686_msvc-0.52.6 \
+		windows_x86_64_gnu-0.52.6 \
+		windows_x86_64_gnullvm-0.52.6 \
+		windows_x86_64_msvc-0.52.6 \
+		wit-bindgen-rt-0.39.0 \
+		yansi-1.0.1
 
 PLIST_FILES=	bin/${PORTNAME}
 
@@ -95,8 +129,5 @@ PLIST_FILES=	bin/${PORTNAME}
 LIB_DEPENDS+=	libatomic.so:lang/gcc${GCC_DEFAULT}
 LDFLAGS+=	-L/usr/local/lib/gcc${GCC_DEFAULT} -latomic
 .endif
-
-post-install:
-	@${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/${PORTNAME}
 
 .include <bsd.port.mk>

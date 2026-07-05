@@ -1,6 +1,6 @@
 PORTNAME=	siesta
 DISTVERSION=	4.1.5
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	science # chemistry
 MASTER_SITES=	https://gitlab.com/siesta-project/${PORTNAME}/-/releases/v${DISTVERSION}/downloads/
 
@@ -16,7 +16,7 @@ BROKEN_aarch64=	Lack of IEEE754 support in gcc causes "Cannot find an intrinsic 
 LIB_DEPENDS=	libblas.so:math/blas \
 		liblapack.so:math/lapack
 
-USES=		fortran gmake localbase:ldflags
+USES=		fortran:gfortran gmake localbase:ldflags
 
 ALL_TARGET=	default
 

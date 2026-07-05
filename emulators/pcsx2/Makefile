@@ -1,7 +1,7 @@
 PORTNAME=	pcsx2
-PORTVERSION=	1.7.4970
-DISTVERSIONPREFIX=	v
+PORTVERSION=	2.4.0
 PORTREVISION=	2
+DISTVERSIONPREFIX=	v
 CATEGORIES=	emulators
 
 MAINTAINER=	martymac@FreeBSD.org
@@ -13,37 +13,43 @@ LICENSE_COMB=	multi
 
 ONLY_FOR_ARCHS=	amd64
 
+BUILD_DEPENDS=	vulkan-headers>0:graphics/vulkan-headers
 # Notes on dependencies (see cmake/SearchForStuff.cmake):
 # - glad comes from 3rdparty/ (conflicts with libglvnd)
-# - fmt, rapidyaml, soundtouch, zydis, zstd, libzip
+# - fmt, rapidyaml, soundtouch, zydis, libzip
 #   are always included from 3rdparty/
 LIB_DEPENDS=	libpng.so:graphics/png \
-		libdbus-1.so:devel/dbus \
+		libzstd.so:archivers/zstd \
+		liblz4.so:archivers/liblz4 \
+		libwebp.so:graphics/webp \
+		libfreetype.so:print/freetype2 \
+		libplutovg.so:graphics/plutovg \
+		libplutosvg.so:graphics/plutosvg \
+		libshaderc_shared.so:graphics/shaderc \
+		libcurl.so:ftp/curl \
 		libavcodec.so:multimedia/ffmpeg \
 		libavformat.so:multimedia/ffmpeg \
 		libavutil.so:multimedia/ffmpeg \
 		libswresample.so:multimedia/ffmpeg \
 		libswscale.so:multimedia/ffmpeg \
-		libcurl.so:ftp/curl \
+		libbacktrace.so:devel/libbacktrace \
+		libdbus-1.so:devel/dbus \
 		libpulse.so:audio/pulseaudio \
 		libjack.so:audio/jack \
 		libsndio.so:audio/sndio \
-		libbacktrace.so:devel/libbacktrace
-# XXX Necessary for Qt6/FindWrapVulkanHeaders.cmake
-# then vulkan-haders and glslang are unconditionnaly included from 3rdparty/
-BUILD_DEPENDS=	vulkan-headers>0:graphics/vulkan-headers
+		libkddockwidgets-qt6.so:x11-toolkits/kddockwidgets \
+		libsysinfo.so:devel/libsysinfo
 
 USES=		cmake compiler:c++20-lang \
-		desktop-file-utils elfctl gl pkgconfig qt:6 sdl xorg
+		desktop-file-utils elfctl gl jpeg pkgconfig qt:6 sdl xorg
 
 USE_GITHUB=	yes
 GH_PROJECT=	pcsx2
-.include "${.CURDIR}/Makefile.tuples"
 
 USE_GL=		egl
-USE_SDL=	sdl2
-USE_XORG=	ice x11 xcb xext xpm xrandr
-USE_QT=		base tools
+USE_SDL=	sdl3 ttf3
+USE_XORG=	ice x11 xcb xext xi xpm xrandr xrender
+USE_QT=		base declarative tools
 ELF_FEATURES=	+wxneeded:bin/pcsx2-qt
 
 # SSE 4.1 instructions are a hard requirement, if CPUTYPE is defined
@@ -57,8 +63,10 @@ EXTRA_PATCHES=	${PATCHDIR}/extra-patch-no-march-minimum-req
 .endif
 
 # See: cmake/BuildParameters.cmake
+# XXX Vulkan comes from 3rdparty/
 CMAKE_ARGS+=	\
 		-DCMAKE_REQUIRED_INCLUDES:STRING=${LOCALBASE}/include/ \
+		-DCMAKE_LOCALBASE:STRING=${LOCALBASE} \
 		-DPCSX2_RESOURCES_PATH:STRING=${DATADIR}/resources \
 		-DUSE_VTUNE:BOOL=OFF \
 		-DWAYLAND_API=OFF \
@@ -67,11 +75,15 @@ CMAKE_ARGS+=	\
 OPTIONS_DEFINE=	DOCS
 PORTDOCS=	Debugger.pdf GameIndex.pdf
 
+# Stable releases use an even minor number
+PORTSCOUT=	limit:^v[0-9]+.[02468].
+
 # - Program and resources are copied from target dir ${CONFIGURE_WRKSRC}/bin
 #   because only necessary resources are installed there (e.g. no dx11 stuff)
 do-install:
 	cd ${CONFIGURE_WRKSRC}/bin && \
-		${COPYTREE_SHARE} resources/ ${STAGEDIR}${DATADIR}/
+		${COPYTREE_SHARE} resources/ ${STAGEDIR}${DATADIR}/ && \
+		${RM} -rf ${STAGEDIR}${DATADIR}/resources/docs/
 	${INSTALL_PROGRAM} ${CONFIGURE_WRKSRC}/bin/pcsx2-qt \
 		${STAGEDIR}${PREFIX}/bin/
 	${INSTALL_DATA} ${WRKSRC}/pcsx2-qt/resources/icons/AppIcon64.png \
@@ -81,18 +93,7 @@ do-install:
 
 post-install-DOCS-on:
 	${MKDIR} ${STAGEDIR}${DOCSDIR} && \
-		${INSTALL_DATA} ${PORTDOCS:S|^|${WRKSRC}/bin/docs/|} \
+		${INSTALL_DATA} ${PORTDOCS:S|^|${CONFIGURE_WRKSRC}/bin/resources/docs/|} \
 			${STAGEDIR}${DOCSDIR}
-
-# For maintainer (do not forget to clean up Makefile.tuples afterwards to
-# remove useless submodules)
-Makefile.tuples::
-	@${RM} -f ${.CURDIR}/Makefile.tuples
-	@${RM} -rf ${WRKDIR}/.maintainer.checkout
-	@${MKDIR} ${WRKDIR}/.maintainer.checkout && \
-		cd ${WRKDIR}/.maintainer.checkout && \
-		git clone --recursive --branch=v${PORTVERSION} \
-			https://github.com/${PORTNAME}/${PORTNAME} . && \
-		${SH} ${FILESDIR}/gen_gh_tuple.sh >> ${.CURDIR}/Makefile.tuples
 
 .include <bsd.port.mk>

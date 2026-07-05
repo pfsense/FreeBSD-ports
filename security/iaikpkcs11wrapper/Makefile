@@ -1,5 +1,6 @@
 PORTNAME=	iaikPkcs11Wrapper
 PORTVERSION=	1.2.18
+PORTREVISION=	1
 CATEGORIES=	security java devel
 MASTER_SITES=	LOCAL/ale
 DISTNAME=	${PORTNAME}_${PORTVERSION:S/./_/g}
@@ -12,8 +13,7 @@ BROKEN_aarch64=		fails to link: /tmp/pkcs11wrapper-01d033.o is incompatible with
 
 OPTIONS_DEFINE=	DOCS EXAMPLES
 
-USES=		dos2unix gmake zip
-USE_JAVA=	yes
+USES=		dos2unix gmake java zip
 DOS2UNIX_GLOB=	Makefile *.c
 DOS2UNIX_WRKSRC=	${WRKDIR}/src/native
 JAVA_OS=	native

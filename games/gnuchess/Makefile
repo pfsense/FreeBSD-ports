@@ -1,6 +1,5 @@
 PORTNAME=	gnuchess
-PORTVERSION=	6.2.9
-PORTREVISION=	1
+DISTVERSION=	6.3.0
 CATEGORIES=	games
 MASTER_SITES=	GNU/chess
 # The DISTFILES here is explicitly needed because it can be extended later.
@@ -20,8 +19,9 @@ USE_CXXSTD=	c++14
 SHEBANG_FILES=	doc/quotes.rb
 
 GNU_CONFIGURE=	yes
-GNU_CONFIGURE_MANPREFIX=${PREFIX}/share
 CONFIGURE_ENV=	MKDIR_P="${MKDIR}"
+
+LDFLAGS+=		-lpthread
 
 INFO=		gnuchess
 
@@ -38,8 +38,8 @@ OPENING_BOOK_EXTRACT_ONLY=	${PORTNAME}-${PORTVERSION}${EXTRACT_SUFX}
 
 post-build-OPENING_BOOK-on:
 	zcat ${DISTDIR}/book_1.02.pgn.gz > ${WRKSRC}/src/book.pgn
-	cd ${WRKSRC}/src && ( ${ECHO} book add book.pgn; sleep 1; ${ECHO} quit ) | ./gnuchess
-	@${REINPLACE_CMD} -e '/Book =/s/false/true/' ${WRKSRC}/src/gnuchess.ini
+	cd ${WRKSRC}/src && ( ${ECHO} book add book.pgn; sleep 1; ${ECHO} quit )
+	@${REINPLACE_CMD} -e '/Book =/s/false/true/' ${WRKSRC}/doc/gnuchess.ini.in
 
 post-install:
 	cd ${STAGEDIR}${PREFIX}/bin && ${LN} -f gnuchess gnuchessx
@@ -48,5 +48,7 @@ post-install-DOCS-on:
 	${MKDIR} ${STAGEDIR}${DOCSDIR}
 	${INSTALL_DATA} ${WRKSRC}/NEWS ${WRKSRC}/doc/* ${STAGEDIR}${DOCSDIR}
 	${RM} ${STAGEDIR}${DOCSDIR}/gnuchess.info
+	${RM} ${STAGEDIR}${DOCSDIR}/gnuchess.ini.in
+	${RM} ${STAGEDIR}${DOCSDIR}/pkg.texi.in
 
 .include <bsd.port.mk>

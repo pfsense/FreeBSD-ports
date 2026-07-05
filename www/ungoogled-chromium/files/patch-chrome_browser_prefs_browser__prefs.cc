@@ -1,28 +1,29 @@
---- chrome/browser/prefs/browser_prefs.cc.orig	2024-03-22 14:16:19 UTC
+--- chrome/browser/prefs/browser_prefs.cc.orig	2026-03-15 18:32:51 UTC
 +++ chrome/browser/prefs/browser_prefs.cc
-@@ -486,18 +486,18 @@
+@@ -312,7 +312,7 @@
+ #include "chrome/browser/devtools/devtools_window.h"
+ #endif  // BUILDFLAG(ENABLE_DEVTOOLS_FRONTEND)
+ 
+-#if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX)
++#if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_BSD)
+ #include "chrome/browser/ui/webui/whats_new/whats_new_ui.h"
+ #endif
+ 
+@@ -495,11 +495,11 @@
  #endif
  
  #if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX) || \
--    BUILDFLAG(IS_CHROMEOS_ASH)
-+    BUILDFLAG(IS_CHROMEOS_ASH) || BUILDFLAG(IS_BSD)
+-    BUILDFLAG(IS_CHROMEOS)
++    BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_BSD)
  #include "components/device_signals/core/browser/pref_names.h"  // nogncheck due to crbug.com/1125897
- #endif
- 
- // TODO(crbug.com/1052397): Revisit the macro expression once build flag switch
- // of lacros-chrome is complete.
--#if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || \
-+#if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_BSD) || \
-     (BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS_LACROS))
- #include "chrome/browser/browser_switcher/browser_switcher_prefs.h"
  #endif
  
 -#if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX)
 +#if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_BSD)
+ #include "chrome/browser/browser_switcher/browser_switcher_prefs.h"
  #include "chrome/browser/enterprise/signin/enterprise_signin_prefs.h"
  #endif
- 
-@@ -532,7 +532,7 @@
+@@ -527,7 +527,7 @@
  #include "chrome/browser/sessions/session_service_log.h"
  #endif
  
@@ -31,24 +32,34 @@
  #include "ui/color/system_theme.h"
  #endif
  
-@@ -1681,7 +1681,7 @@ void RegisterLocalState(PrefRegistrySimple* registry) 
-   registry->RegisterBooleanPref(prefs::kOopPrintDriversAllowedByPolicy, true);
+@@ -1492,7 +1492,7 @@ void RegisterLocalState(PrefRegistrySimple* registry) 
+   on_device_translation::RegisterLocalStatePrefs(registry);
+ #endif  // BUILDFLAG(ENABLE_ON_DEVICE_TRANSLATION)
+ 
+-#if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX)
++#if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_BSD)
+   WhatsNewUI::RegisterLocalStatePrefs(registry);
  #endif
  
--#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_WIN)
-+#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_WIN) || BUILDFLAG(IS_BSD)
+@@ -1650,7 +1650,7 @@ void RegisterLocalState(PrefRegistrySimple* registry) 
+ #endif  // BUILDFLAG(ENABLE_PDF_SAVE_TO_DRIVE)
+ 
+ #if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_WIN) || \
+-    BUILDFLAG(IS_ANDROID)
++    BUILDFLAG(IS_ANDROID) || BUILDFLAG(IS_BSD)
    registry->RegisterBooleanPref(prefs::kChromeForTestingAllowed, true);
  #endif
  
-@@ -2024,12 +2024,12 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySync
+@@ -2040,13 +2040,13 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySync
  #endif
  
  #if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX) || \
--    BUILDFLAG(IS_CHROMEOS_ASH)
-+    BUILDFLAG(IS_CHROMEOS_ASH) || BUILDFLAG(IS_BSD)
+-    BUILDFLAG(IS_CHROMEOS)
++    BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_BSD)
    device_signals::RegisterProfilePrefs(registry);
+   ntp_tiles::EnterpriseShortcutsManagerImpl::RegisterProfilePrefs(registry);
  #endif  // BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX) ||
-         // BUILDFLAG(IS_CHROMEOS_ASH)
+         // BUILDFLAG(IS_CHROMEOS)
  
 -#if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX)
 +#if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_BSD)

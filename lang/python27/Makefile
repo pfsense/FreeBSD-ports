@@ -1,6 +1,6 @@
 PORTNAME=	python
 DISTVERSION=	${PYTHON_DISTVERSION}
-PORTREVISION=	3
+PORTREVISION=	4
 CATEGORIES=	lang python
 MASTER_SITES=	PYTHON/ftp/python/${DISTVERSION}
 PKGNAMESUFFIX=	27
@@ -16,11 +16,10 @@ LICENSE=	PSFL
 DEPRECATED=	EOLed upstream
 EXPIRATION_DATE=	2020-12-31
 
-USES=		cpe ncurses pathfix pkgconfig readline shebangfix ssl tar:xz
+USES=		cpe ncurses pathfix pkgconfig readline shebangfix ssl tar:xz tk:86
 PATHFIX_MAKEFILEIN=	Makefile.pre.in
 USE_LDCONFIG=	yes
 GNU_CONFIGURE=	yes
-GNU_CONFIGURE_MANPREFIX=${PREFIX}/share
 python_CMD=	${PREFIX}/bin/python${PYTHON_DISTVERSION:R}
 SHEBANG_FILES=	Lib/lib2to3/pgen2/*.py Lib/lib2to3/tests/*.py Lib/lib2to3/tests/data/*.py \
 		Lib/idlelib/*.py Lib/encodings/*.py Lib/test/*.py Lib/UserString.py \
@@ -121,7 +120,8 @@ post-patch:
 # openssl/opensslv.h so setup.py just detects the string as 00000000
 # However care should be taken for the OSVERSION. If OpenSSL 3.0.9
 # lands later the OSVERSION string should be fixed accordingly
-.if ${OPSYS} == FreeBSD && ${OSVERSION} >= 1400092 && (${SSL_DEFAULT} == base || ${SSL_DEFAULT:Mopenssl3*} )
+.if ${OPSYS} == FreeBSD && ${OSVERSION} >= 1400092 && (${SSL_DEFAULT} == base || \
+	${SSL_DEFAULT} == openssl || ${SSL_DEFAULT:Mopenssl3*} )
 	@${REINPLACE_CMD} -e 's|00907000|00000000|' \
 		${WRKSRC}/setup.py
 .endif

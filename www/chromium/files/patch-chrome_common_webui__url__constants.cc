@@ -1,68 +1,32 @@
---- chrome/common/webui_url_constants.cc.orig	2024-03-22 08:19:40 UTC
+--- chrome/common/webui_url_constants.cc.orig	2026-03-13 06:02:14 UTC
 +++ chrome/common/webui_url_constants.cc
-@@ -512,18 +512,18 @@ const char kOsUISystemURL[] = "os://system";
- const char kOsUIVersionURL[] = "os://version";
+@@ -138,7 +138,7 @@ base::span<const base::cstring_view> ChromeURLHosts() 
+       kChromeUITermsHost,
  #endif
- 
--#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS)
-+#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_BSD)
- const char kChromeUIWebUIJsErrorHost[] = "webuijserror";
- const char kChromeUIWebUIJsErrorURL[] = "chrome://webuijserror/";
+       kChromeUITranslateInternalsHost,
+-#if BUILDFLAG(IS_MAC) || BUILDFLAG(IS_WIN) || BUILDFLAG(IS_LINUX)
++#if BUILDFLAG(IS_MAC) || BUILDFLAG(IS_WIN) || BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_BSD)
+       kChromeUIUpdaterHost,
  #endif
- 
+       kChromeUIUsbInternalsHost,
+@@ -206,17 +206,17 @@ base::span<const base::cstring_view> ChromeURLHosts() 
+       kChromeUIInternetDetailDialogHost,
+ #endif
  #if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX) || \
--    BUILDFLAG(IS_CHROMEOS_ASH)
-+    BUILDFLAG(IS_CHROMEOS_ASH) || BUILDFLAG(IS_BSD)
- const char kChromeUIConnectorsInternalsHost[] = "connectors-internals";
+-    BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_DESKTOP_ANDROID)
++    BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_DESKTOP_ANDROID) || BUILDFLAG(IS_BSD)
+       kChromeUIDiscardsHost,
  #endif
- 
- #if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX) || \
--    BUILDFLAG(IS_CHROMEOS)
-+    BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_BSD)
- const char kChromeUIDiscardsHost[] = "discards";
- const char kChromeUIDiscardsURL[] = "chrome://discards/";
+-#if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX)
++#if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_BSD)
+       kChromeUIWebAppSettingsHost,
  #endif
-@@ -538,14 +538,14 @@ const char kChromeUILinuxProxyConfigHost[] = "linux-pr
+ #if BUILDFLAG(IS_POSIX) && !BUILDFLAG(IS_MAC) && !BUILDFLAG(IS_ANDROID)
+       kChromeUILinuxProxyConfigHost,
  #endif
- 
  #if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS) || \
 -    BUILDFLAG(IS_ANDROID)
 +    BUILDFLAG(IS_ANDROID) || BUILDFLAG(IS_BSD)
- const char kChromeUISandboxHost[] = "sandbox";
+       kChromeUISandboxHost,
  #endif
- 
- // TODO(crbug.com/1052397): Revisit the macro expression once build flag switch
- // of lacros-chrome is complete.
- #if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_FUCHSIA) || \
--    (BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS_LACROS))
-+    (BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS_LACROS)) || BUILDFLAG(IS_BSD)
- const char kChromeUIBrowserSwitchHost[] = "browser-switch";
- const char kChromeUIBrowserSwitchURL[] = "chrome://browser-switch/";
- const char kChromeUIIntroHost[] = "intro";
-@@ -564,7 +564,7 @@ const char kChromeUIProfilePickerUrl[] = "chrome://pro
- const char kChromeUIProfilePickerStartupQuery[] = "startup";
- #endif
- 
--#if ((BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS)) && \
-+#if ((BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_BSD)) && \
-      defined(TOOLKIT_VIEWS)) ||                         \
-     defined(USE_AURA)
- const char kChromeUITabModalConfirmDialogHost[] = "tab-modal-confirm-dialog";
-@@ -644,7 +644,7 @@ const char kCookiesSubPagePath[] = "/cookies";
- #endif
- 
- #if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX) || \
--    BUILDFLAG(IS_FUCHSIA)
-+    BUILDFLAG(IS_FUCHSIA) || BUILDFLAG(IS_BSD)
- const char kChromeUIWebAppSettingsURL[] = "chrome://app-settings/";
- const char kChromeUIWebAppSettingsHost[] = "app-settings";
- #endif
-@@ -875,7 +875,7 @@ const char* const kChromeDebugURLs[] = {
-     blink::kChromeUIGpuJavaCrashURL,
-     kChromeUIJavaCrashURL,
- #endif
--#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS)
-+#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_BSD)
-     kChromeUIWebUIJsErrorURL,
- #endif
-     kChromeUIQuitURL,
+ #if BUILDFLAG(IS_WIN)

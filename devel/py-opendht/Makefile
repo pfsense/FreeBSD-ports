@@ -1,6 +1,6 @@
 PORTNAME=	opendht
 DISTVERSIONPREFIX=	v
-DISTVERSION=	3.1.11
+DISTVERSION=	3.3.1
 CATEGORIES=	devel net
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
@@ -31,5 +31,7 @@ post-extract:
 
 post-stage:
 	@${STRIP_CMD} ${STAGEDIR}${PYTHON_SITELIBDIR}/opendht*.so
+
+# tests as of 3.3.1: Ran 5 tests in 5.433s
 
 .include <bsd.port.mk>

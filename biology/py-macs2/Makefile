@@ -1,6 +1,7 @@
 PORTNAME=		macs2
 DISTVERSIONPREFIX=	v
 DISTVERSION=		2.2.9.1
+PORTREVISION=	1
 CATEGORIES=		biology python
 PKGNAMEPREFIX=		${PYTHON_PKGNAMEPREFIX}
 
@@ -19,7 +20,7 @@ TEST_DEPENDS=	${PYTHON_PKGNAMEPREFIX}pytest>0:devel/py-pytest@${PY_FLAVOR} \
 
 USES=		python shebangfix
 USE_GITHUB=	yes
-USE_PYTHON=	autoplist concurrent cython distutils
+USE_PYTHON=	autoplist concurrent cython0 distutils
 
 GH_ACCOUNT=	taoliu
 GH_PROJECT=	MACS

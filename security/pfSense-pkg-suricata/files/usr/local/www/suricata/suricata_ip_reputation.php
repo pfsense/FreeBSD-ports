@@ -3,7 +3,7 @@
  * suricata_ip_reputation.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2006-2024 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2006-2026 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2003-2004 Manuel Kasper
  * Copyright (c) 2005 Bill Marquette
  * Copyright (c) 2009 Robert Zelaya Sr. Developer
@@ -34,7 +34,7 @@ if (isset($_POST['id']) && is_numericint($_POST['id']))
 elseif (isset($_GET['id']) && is_numericint($_GET['id']))
 	$id = htmlspecialchars($_GET['id']);
 
-if (is_null($id)) {
+if (!is_numericint($id)) {
 	header("Location: /suricata/suricata_interfaces.php");
 	exit;
 }
@@ -53,7 +53,7 @@ if ($_POST['mode'] == 'iprep_catlist_add' && isset($_POST['iplist'])) {
 	$pconfig = $_POST;
 
 	// Test the supplied IP List file to see if it exists
-	if (file_exists($_POST['iplist'])) {
+	if (file_exists($iprep_path . basename($_POST['iplist']))) {
 		if (!$input_errors) {
 			$a_nat['iprep_catlist'] = basename($_POST['iplist']);
 			config_set_path("installedpackages/suricata/rule/{$id}", $a_nat);
@@ -72,7 +72,7 @@ if ($_POST['mode'] == 'iplist_add' && isset($_POST['iplist'])) {
 	$pconfig = $_POST;
 
 	// Test the supplied IP List file to see if it exists
-	if (file_exists($_POST['iplist'])) {
+	if (file_exists($iprep_path . basename($_POST['iplist']))) {
 		// See if the file is already assigned to the interface
 		foreach (array_get_path($a_nat, 'iplist_files/item', []) as $f) {
 			if ($f == basename($_POST['iplist'])) {

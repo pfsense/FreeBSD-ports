@@ -1,6 +1,6 @@
 PORTNAME=	j
 PORTVERSION=	504b
-PORTREVISION=	5
+PORTREVISION=	6
 CATEGORIES=	lang linux java
 MASTER_SITES=	http://www.jsoftware.com/download/
 PKGNAMEPREFIX=	linux-
@@ -16,8 +16,7 @@ LICENSE_NAME=	JSoftware End User License Agreement
 LICENSE_FILE=	${FILESDIR}/license.txt
 LICENSE_PERMS=	auto-accept dist-mirror pkg-mirror
 
-USES=		linux
-USE_JAVA=	yes
+USES=		java linux
 
 CONFLICTS_INSTALL=	docbook-utils # bin/jw
 

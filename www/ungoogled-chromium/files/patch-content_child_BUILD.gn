@@ -1,6 +1,6 @@
---- content/child/BUILD.gn.orig	2024-02-25 20:22:18 UTC
+--- content/child/BUILD.gn.orig	2026-03-15 18:32:51 UTC
 +++ content/child/BUILD.gn
-@@ -132,6 +132,13 @@ target(link_target_type, "child") {
+@@ -139,6 +139,13 @@ target(link_target_type, "child") {
      ]
    }
  
@@ -13,4 +13,4 @@
 +
    if (is_win) {
      sources += [
-       "dwrite_font_proxy/dwrite_font_proxy_init_impl_win.cc",
+       "child_process_sandbox_support_impl_win.cc",

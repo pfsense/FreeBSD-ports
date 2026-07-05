@@ -1,6 +1,6 @@
 PORTNAME=	gnome-shell-extension-filesmenu
 PORTVERSION=	0.0.0.20171125
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	deskutils gnome
 DIST_SUBDIR=	gnome
 
@@ -10,6 +10,8 @@ WWW=		https://github.com/bertoldia/files-menu
 
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/LICENSE
+
+BROKEN=		Does not support recent gnome-shell
 
 BUILD_DEPENDS=	gnome-shell>=0:x11/gnome-shell \
 		gsettings-desktop-schemas>=3.12.0:devel/gsettings-desktop-schemas

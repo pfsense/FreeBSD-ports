@@ -1,22 +1,19 @@
 PORTNAME=	kyua
-DISTVERSION=	0.13
-PORTREVISION=	8
+DISTVERSION=	0.14.1
 PORTEPOCH=	3
 CATEGORIES=	devel
+MASTER_SITES=	https://github.com/freebsd/${PORTNAME}/releases/download/${DISTNAME}/
 
 MAINTAINER=	bofh@FreeBSD.org
 COMMENT=	Testing framework for infrastructure software
-WWW=		https://github.com/jmmv/kyua/
+WWW=		https://github.com/freebsd/kyua/
 
 LICENSE=	BSD3CLAUSE
 
 LIB_DEPENDS=	liblutok.so:devel/lutok
 
-USES=		autoreconf lua pkgconfig sqlite
-USE_GITHUB=	yes
-GH_ACCOUNT=	freebsd
-GH_TAGNAME=	c85354e
-USE_CXXSTD=	gnu++11
+USES=		autoreconf libtool lua pkgconfig sqlite
+USE_CXXSTD=	gnu++14
 
 GNU_CONFIGURE=	yes
 GNU_CONFIGURE_MANPREFIX=${PREFIX}/share
@@ -41,7 +38,12 @@ DOCS_MAKE_ARGS_OFF=	doc_DATA=
 EXAMPLES_MAKE_ARGS_OFF=	dist_examples_DATA=
 TEST_BUILD_DEPENDS=	atf>=0.21:devel/atf
 TEST_RUN_DEPENDS=	atf>=0.21:devel/atf
-TEST_CONFIGURE_WITH=	atf
+TEST_CONFIGURE_ENABLE=	atf
+
+# TODO: Get back to IGNORE after the alignment with the dependent ports
+#.if ${OPSYS} == FreeBSD && ${OSREL:R} >= 14
+#IGNORE=		kyua from base must be used for FreeBSD 14.x and newer
+#.endif
 
 post-install:
 	@${MKDIR} ${STAGEDIR}${PREFIX}/etc/kyua

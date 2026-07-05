@@ -1,7 +1,8 @@
 PORTNAME=	gsettings-desktop-schemas
-DISTVERSION=	42.0
+DISTVERSION=	47.1
+PORTREVISION=	2
 CATEGORIES=	devel gnome
-MASTER_SITES=	GNOME/sources/${PORTNAME}/${DISTVERSION:R:R}
+MASTER_SITES=	GNOME
 DIST_SUBDIR=	gnome
 
 MAINTAINER=	desktop@FreeBSD.org
@@ -10,7 +11,7 @@ COMMENT=	Collection of globally shared GSetting schemas
 LICENSE=	LGPL21
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-PORTSCOUT=	limitw:1,even
+PORTSCOUT=	limitw:^47\.
 
 USES=		gettext gnome localbase meson pkgconfig python:build \
 		tar:xz
@@ -47,7 +48,8 @@ GLIB_SCHEMAS=	org.gnome.desktop.a11y.applications.gschema.xml \
 		org.gnome.desktop.wm.preferences.gschema.xml \
 		org.gnome.system.locale.gschema.xml \
 		org.gnome.system.location.gschema.xml \
-		org.gnome.system.proxy.gschema.xml
+		org.gnome.system.proxy.gschema.xml \
+		org.gnome.desktop.break-reminders.gschema.xml
 
 BINARY_ALIAS=	python3=${PYTHON_CMD}
 

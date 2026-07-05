@@ -1,5 +1,3 @@
-TIMESTAMP = 1712300018
-SHA256 (PixarAnimationStudios-OpenTimelineIO-v0.16.0_GH0.tar.gz) = 8cb9467db25bc34c7ee2db89ea90b7bab88ade999e8e2858b825dfbaa8db0f62
-SIZE (PixarAnimationStudios-OpenTimelineIO-v0.16.0_GH0.tar.gz) = 4750923
-SHA256 (Tencent-rapidjson-06d58b9e848c650114556a23294d0b6440078c61_GH0.tar.gz) = 30d28bbe0bfff9d8dc5d3cf62799b6ee550499cc1520e44bdece81e002480d19
-SIZE (Tencent-rapidjson-06d58b9e848c650114556a23294d0b6440078c61_GH0.tar.gz) = 1107982
+TIMESTAMP = 1762595738
+SHA256 (PixarAnimationStudios-OpenTimelineIO-v0.18.0_GH0.tar.gz) = 746854490ee1d6bfb3071027afac8cdb5c477140011be2473d26e9b724cc6283
+SIZE (PixarAnimationStudios-OpenTimelineIO-v0.18.0_GH0.tar.gz) = 1622822

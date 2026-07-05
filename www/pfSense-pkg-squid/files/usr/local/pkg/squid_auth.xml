@@ -8,7 +8,7 @@
  * squid_auth.xml
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2015-2024 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2015-2026 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2012-2014 Marcello Coutinho
  * All rights reserved.
  *
@@ -28,6 +28,7 @@
 	</copyright>
 	<name>squidauth</name>
 	<title>Proxy Server: Authentication</title>
+	<addedit_string>squid: changed Authentication</addedit_string>
 	<include_file>/usr/local/pkg/squid.inc</include_file>
 	<tabs>
 		<tab>

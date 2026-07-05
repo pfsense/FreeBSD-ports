@@ -1,5 +1,5 @@
 PORTNAME=	ephem
-PORTVERSION=	4.1.5
+PORTVERSION=	4.2.1
 CATEGORIES=	astro math python
 MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -15,7 +15,7 @@ USES=		python
 USE_PYTHON=	autoplist distutils
 
 post-install:
-	@${STRIP_CMD} ${STAGEDIR}${PYTHONPREFIX_SITELIBDIR}/ephem/_libastro${PYTHON_EXT_SUFFIX}.so
+	@${STRIP_CMD} ${STAGEDIR}${PYTHONPREFIX_SITELIBDIR}/ephem/_libastro.cpython-${PYTHON_SUFFIX}.so
 
 do-test:
 	# WARNING: Testing via this command is deprecated and will be

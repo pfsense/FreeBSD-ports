@@ -1,5 +1,6 @@
 PORTNAME=	${_PYPI_NAME:tl}
 PORTVERSION=	2.7.4
+PORTREVISION=	1
 CATEGORIES=	devel python
 MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -18,6 +19,8 @@ RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}ply>=0:devel/py-ply@${PY_FLAVOR}
 USES=		python shebangfix
 USE_PYTHON=	autoplist distutils
 SHEBANG_GLOB=	*.py
+
+NO_ARCH=	yes
 
 _PYPI_NAME=	CppHeaderParser
 

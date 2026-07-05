@@ -1,75 +1,112 @@
 PORTNAME=	resvg-c-api
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.41.0
+DISTVERSION=	0.47.0
+PORTREVISION=	1
 CATEGORIES=	graphics
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	SVG rendering library (C++/Qt API)
-WWW=		https://github.com/RazrFalcon/resvg
+WWW=		https://github.com/linebender/resvg
 
-LICENSE=	MPL20
-LICENSE_FILE=	${WRKSRC}/../../LICENSE.txt
+LICENSE=		MIT APACHE20
+LICENSE_COMB=		dual
+LICENSE_FILE_APACHE20=	${WRKSRC}/../../LICENSE-APACHE
+LICENSE_FILE_MIT=	${WRKSRC}/../../LICENSE-MIT
 
 USES=		cargo
 USE_LDCONFIG=	yes
 
 USE_GITHUB=	yes
-GH_ACCOUNT=	RazrFalcon
+GH_ACCOUNT=	linebender
 GH_PROJECT=	resvg
 
 WRKSRC_SUBDIR=	crates/c-api
 
-CARGO_CRATES=	adler-1.0.2 \
-		arrayref-0.3.7 \
-		arrayvec-0.7.4 \
-		base64-0.22.0 \
+CARGO_CRATES=	adler2-2.0.1 \
+		arrayref-0.3.9 \
+		arrayvec-0.7.6 \
+		autocfg-0.1.8 \
+		autocfg-1.5.0 \
+		base64-0.22.1 \
 		bitflags-1.3.2 \
-		bitflags-2.5.0 \
-		bytemuck-1.15.0 \
-		cfg-if-1.0.0 \
+		bitflags-2.10.0 \
+		bytemuck-1.24.0 \
+		byteorder-lite-0.1.0 \
+		cfg-if-1.0.4 \
+		cloudabi-0.0.3 \
 		color_quant-1.1.0 \
-		crc32fast-1.4.0 \
-		data-url-0.3.1 \
-		fdeflate-0.3.4 \
-		flate2-1.0.28 \
+		core_maths-0.1.1 \
+		crc32fast-1.5.0 \
+		data-url-0.3.2 \
+		either-1.15.0 \
+		euclid-0.22.11 \
+		fdeflate-0.3.7 \
+		flate2-1.1.5 \
 		float-cmp-0.9.0 \
-		fontconfig-parser-0.5.6 \
-		fontdb-0.16.2 \
-		gif-0.13.1 \
-		imagesize-0.12.0 \
-		jpeg-decoder-0.3.1 \
-		kurbo-0.11.0 \
-		libc-0.2.153 \
-		log-0.4.21 \
-		memmap2-0.9.4 \
-		miniz_oxide-0.7.2 \
-		once_cell-1.19.0 \
+		fontconfig-parser-0.5.8 \
+		fontdb-0.23.0 \
+		fuchsia-cprng-0.1.1 \
+		gif-0.14.1 \
+		image-webp-0.2.4 \
+		imagesize-0.14.0 \
+		itertools-0.14.0 \
+		kurbo-0.13.0 \
+		libc-0.2.180 \
+		libm-0.2.15 \
+		log-0.4.29 \
+		memchr-2.7.6 \
+		memmap2-0.9.9 \
+		miniz_oxide-0.8.9 \
+		num-traits-0.2.19 \
+		once_cell-1.21.3 \
+		phf_codegen-0.7.24 \
+		phf_generator-0.7.24 \
+		phf_shared-0.7.24 \
 		pico-args-0.5.0 \
-		png-0.17.13 \
-		rgb-0.8.37 \
-		roxmltree-0.19.0 \
-		rustybuzz-0.13.0 \
-		simd-adler32-0.3.7 \
-		simplecss-0.2.1 \
+		png-0.18.0 \
+		quick-error-2.0.1 \
+		rand-0.6.5 \
+		rand_chacha-0.1.1 \
+		rand_core-0.3.1 \
+		rand_core-0.4.2 \
+		rand_hc-0.1.0 \
+		rand_isaac-0.1.1 \
+		rand_jitter-0.1.4 \
+		rand_os-0.1.3 \
+		rand_pcg-0.1.2 \
+		rand_xorshift-0.1.1 \
+		rdrand-0.4.0 \
+		rgb-0.8.52 \
+		roxmltree-0.20.0 \
+		roxmltree-0.21.1 \
+		rustybuzz-0.20.1 \
+		simd-adler32-0.3.8 \
+		simplecss-0.2.2 \
+		siphasher-0.2.3 \
 		siphasher-1.0.1 \
-		slotmap-1.0.7 \
-		smallvec-1.13.2 \
+		slotmap-1.1.1 \
+		smallvec-1.15.1 \
 		strict-num-0.1.1 \
-		svgtypes-0.15.0 \
-		tiny-skia-0.11.4 \
-		tiny-skia-path-0.11.4 \
-		tinyvec-1.6.0 \
+		svgtypes-0.16.1 \
+		tiny-skia-0.12.0 \
+		tiny-skia-path-0.12.0 \
+		tinyvec-1.10.0 \
 		tinyvec_macros-0.1.1 \
-		ttf-parser-0.20.0 \
-		unicode-bidi-0.3.15 \
-		unicode-bidi-mirroring-0.2.0 \
-		unicode-ccc-0.2.0 \
-		unicode-properties-0.1.1 \
-		unicode-script-0.5.6 \
+		ttf-parser-0.25.1 \
+		unicode-bidi-0.3.18 \
+		unicode-bidi-mirroring-0.4.0 \
+		unicode-ccc-0.4.0 \
+		unicode-properties-0.1.4 \
+		unicode-script-0.5.8 \
 		unicode-vo-0.1.0 \
-		version_check-0.9.4 \
-		weezl-0.1.8 \
-		xmlwriter-0.1.0
+		version_check-0.9.5 \
+		weezl-0.1.12 \
+		winapi-0.3.9 \
+		winapi-i686-pc-windows-gnu-0.4.0 \
+		winapi-x86_64-pc-windows-gnu-0.4.0 \
+		xmlwriter-0.1.0 \
+		zune-core-0.5.0 \
+		zune-jpeg-0.5.8
 
 PLIST_FILES=	include/ResvgQt.h \
 		include/resvg.h \
@@ -80,7 +117,7 @@ do-install:
 	${INSTALL_DATA} ${WRKSRC}/resvg.h ${STAGEDIR}${PREFIX}/include
 	${INSTALL_DATA} ${WRKSRC}/ResvgQt.h ${STAGEDIR}${PREFIX}/include
 	cd ${WRKDIR}/target && \
-		${INSTALL_LIB} */release/libresvg.so ${STAGEDIR}${PREFIX}/lib && \
-		${INSTALL_DATA} */release/libresvg.a ${STAGEDIR}${PREFIX}/lib
+		${INSTALL_LIB} release/libresvg.so ${STAGEDIR}${PREFIX}/lib && \
+		${INSTALL_DATA} release/libresvg.a ${STAGEDIR}${PREFIX}/lib
 
 .include <bsd.port.mk>

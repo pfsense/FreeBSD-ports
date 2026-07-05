@@ -10,6 +10,7 @@ include/KF6/KConfigWidgets/KLanguageButton
 include/KF6/KConfigWidgets/KLanguageName
 include/KF6/KConfigWidgets/KRecentFilesAction
 include/KF6/KConfigWidgets/KStandardAction
+include/KF6/KConfigWidgets/KStyleManager
 include/KF6/KConfigWidgets/KViewStateMaintainer
 include/KF6/KConfigWidgets/kcodecaction.h
 include/KF6/KConfigWidgets/kcolorschememenu.h
@@ -25,6 +26,7 @@ include/KF6/KConfigWidgets/klanguagebutton.h
 include/KF6/KConfigWidgets/klanguagename.h
 include/KF6/KConfigWidgets/krecentfilesaction.h
 include/KF6/KConfigWidgets/kstandardaction.h
+include/KF6/KConfigWidgets/kstylemanager.h
 include/KF6/KConfigWidgets/kviewstatemaintainer.h
 lib/cmake/KF6ConfigWidgets/KF6ConfigWidgetsConfig.cmake
 lib/cmake/KF6ConfigWidgets/KF6ConfigWidgetsConfigVersion.cmake
@@ -144,6 +146,7 @@ share/locale/ku/LC_MESSAGES/kconfigwidgets6.mo
 share/locale/ku/kf6_entry.desktop
 share/locale/lb/LC_MESSAGES/kconfigwidgets6.mo
 share/locale/lb/kf6_entry.desktop
+share/locale/lg/LC_MESSAGES/kconfigwidgets6.mo
 share/locale/lt/LC_MESSAGES/kconfigwidgets6.mo
 share/locale/lt/kf6_entry.desktop
 share/locale/lv/LC_MESSAGES/kconfigwidgets6.mo
@@ -187,6 +190,7 @@ share/locale/ro/LC_MESSAGES/kconfigwidgets6.mo
 share/locale/ro/kf6_entry.desktop
 share/locale/ru/LC_MESSAGES/kconfigwidgets6.mo
 share/locale/ru/kf6_entry.desktop
+share/locale/sa/LC_MESSAGES/kconfigwidgets6.mo
 share/locale/se/LC_MESSAGES/kconfigwidgets6.mo
 share/locale/se/kf6_entry.desktop
 share/locale/si/LC_MESSAGES/kconfigwidgets6.mo

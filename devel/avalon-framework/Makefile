@@ -1,6 +1,6 @@
 PORTNAME=	avalon-framework
 PORTVERSION=	4.2.0
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	devel java
 MASTER_SITES=	https://archive.apache.org/dist/avalon/${PORTNAME}/binaries/
 
@@ -8,7 +8,8 @@ MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Apache Avalon core framework for component programming
 WWW=		https://avalon.apache.org/closed.html
 
-USE_JAVA=	yes
+USES=		java
+
 NO_ARCH=	yes
 NO_BUILD=	yes
 

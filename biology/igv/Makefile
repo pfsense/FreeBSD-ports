@@ -1,7 +1,7 @@
 PORTNAME=	igv
 DISTVERSIONPREFIX=	v
 DISTVERSION=	2.16.0
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	biology java
 MASTER_SITES=	http://software.broadinstitute.org/software/igv/sites/cancerinformatics.org.igv/files/images/:img
 DISTFILES=	tools.png:img
@@ -19,8 +19,7 @@ BUILD_DEPENDS=	openjfx14>0:java/openjfx14 \
 		gradle:devel/gradle6
 RUN_DEPENDS=	openjfx14>0:java/openjfx14
 
-USES=		gettext-runtime
-USE_JAVA=	yes
+USES=		gettext-runtime java
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	igvteam

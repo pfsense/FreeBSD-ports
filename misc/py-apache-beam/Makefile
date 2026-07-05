@@ -1,6 +1,6 @@
 PORTNAME=	apache-beam
 DISTVERSION=	2.43.0
-PORTREVISION=	1
+PORTREVISION=	3
 CATEGORIES=	misc
 MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -13,7 +13,7 @@ LICENSE=	APACHE20
 
 PY_DEPENDS=	${PYTHON_PKGNAMEPREFIX}cloudpickle>=2.2.0:devel/py-cloudpickle@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}crcmod>=1.7:devel/py-crcmod@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}dateutil>=2.8.0:devel/py-dateutil@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}python-dateutil>=2.8.0:devel/py-python-dateutil@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}dill>=0.3.1.1:devel/py-dill@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}fastavro>=0.23.6:textproc/py-fastavro@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}fasteners>=0.3:devel/py-fasteners@${PY_FLAVOR} \
@@ -48,14 +48,14 @@ TEST_DEPENDS=	${PYTHON_PKGNAMEPREFIX}freezegun>=0.3.12:devel/py-freezegun@${PY_F
 		${PYTHON_PKGNAMEPREFIX}tenacity>=5.0.2:devel/py-tenacity@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}scikit-learn>=0.20.0:science/py-scikit-learn@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}sqlalchemy14>=1.3:databases/py-sqlalchemy14@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}yaml>=3.12:devel/py-yaml@${PY_FLAVOR}
+		${PYTHON_PKGNAMEPREFIX}pyyaml>=3.12:devel/py-pyyaml@${PY_FLAVOR}
 		# testcontainers[mysql]>=3.0.3 is also required
 
 USES=		python zip
-USE_PYTHON=	autoplist concurrent cryptography_test cython distutils pytest # 5 tests fail, depending on pyarrow, MySqlContainer, threadpoolctl
+USE_PYTHON=	autoplist concurrent cryptography_test cython0 distutils pytest # 5 tests fail, depending on pyarrow, MySqlContainer, threadpoolctl
 
 post-install:
 	# strip binaries
-	@${FIND} ${STAGEDIR}${PREFIX} -name "*${PYTHON_EXT_SUFFIX}.so" | ${XARGS} ${STRIP_CMD}
+	@${FIND} ${STAGEDIR}${PREFIX} -name "*${PYTHON_TAG}.so" | ${XARGS} ${STRIP_CMD}
 
 .include <bsd.port.mk>

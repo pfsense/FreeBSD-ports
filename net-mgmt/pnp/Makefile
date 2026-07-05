@@ -1,11 +1,11 @@
 PORTNAME=	pnp
 PORTVERSION=	0.6.26
-PORTREVISION=	3
+PORTREVISION=	4
 CATEGORIES=	net-mgmt
 MASTER_SITES=	SF/pnp4nagios/PNP-0.6
 DISTNAME=	pnp4nagios-${DISTVERSIONPREFIX}${DISTVERSION}${DISTVERSIONSUFFIX}
 
-MAINTAINER?=	joneum@FreeBSD.org
+MAINTAINER?=	ports@FreeBSD.org
 COMMENT?=	Nagios / Icinga performance data collector and grapher
 WWW=		https://www.pnp4nagios.org/
 

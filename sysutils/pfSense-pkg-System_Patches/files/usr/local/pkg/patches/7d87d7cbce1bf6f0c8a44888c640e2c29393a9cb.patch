@@ -1,0 +1,24 @@
+commit 7d87d7cbce1bf6f0c8a44888c640e2c29393a9cb
+Author: jim-p <jimp@netgate.com>
+Date:   Wed Mar 6 15:15:47 2024 -0500
+
+    Fix tmpfs RAM disk mount permissions. Fixes #15054
+
+diff --git a/src/etc/rc.ramdisk_functions.sh b/src/etc/rc.ramdisk_functions.sh
+index 09c1c198ca..d3f8dbbf46 100755
+--- a/src/etc/rc.ramdisk_functions.sh
++++ b/src/etc/rc.ramdisk_functions.sh
+@@ -130,7 +130,12 @@ ramdisk_try_mount () {
+ 	NAME=$1
+ 	if [ ramdisk_check_size ]; then
+ 		SIZE=$(eval echo \${${NAME}size})m
+-		/sbin/mount -o rw,size=${SIZE},mode=1777 -t tmpfs tmpfs /${NAME}
++		if [ "${NAME}" = "tmp" ]; then
++			MODE="1777"
++		else
++			MODE="1755"
++		fi
++		/sbin/mount -o rw,size=${SIZE},mode=${MODE} -t tmpfs tmpfs /${NAME}
+ 		return $?
+ 	else
+ 		return 1;

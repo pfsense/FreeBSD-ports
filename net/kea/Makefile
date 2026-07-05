@@ -1,9 +1,12 @@
 PORTNAME=	kea
-PORTVERSION=	${ISCVERSION:S/-P/P/:S/-beta/b/:S/a/.a/:S/rc/.rc/}
+DISTVERSION=	3.0.2
 PORTREVISION=	2
 CATEGORIES=	net
-MASTER_SITES=	ISC/kea/${ISCVERSION}
-DISTNAME=	${PORTNAME}-${ISCVERSION}
+MASTER_SITES=	ISC/kea/${DISTVERSION}
+
+PATCHFILES+=	netgate.diff:-p1
+MASTER_SITE_BACKUP=
+FETCH_DEPENDS=	curl:ftp/curl
 
 MAINTAINER=	apevnev@me.com
 COMMENT=	Alternative DHCP implementation by ISC
@@ -12,51 +15,65 @@ WWW=		https://kea.isc.org/
 LICENSE=	MPL20
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-LIB_DEPENDS=	liblog4cplus.so:devel/log4cplus \
-		libboost_system.so:devel/boost-libs
+BUILD_DEPENDS=	googletest>0:devel/googletest \
+		rst2man:textproc/py-docutils@${PY_FLAVOR}
+LIB_DEPENDS=	libboost_date_time.so:devel/boost-libs \
+		liblog4cplus.so:devel/log4cplus
 
-USES=		autoreconf compiler:c++11-lang iconv libtool pathfix ssl cpe
-
-# ISC releases things like 1.4.0-P1, which our versioning doesn't like
-ISCVERSION=	2.4.1
-
+USES=		cmake:indirect compiler:c++11-lang cpe iconv meson pathfix \
+		pkgconfig python shebangfix ssl tar:xz
 CPE_VENDOR=	isc
-CPE_VERSION=	${ISCVERSION:C/-.*//}
-.if ${ISCVERSION:M*-*}
-CPE_UPDATE=	${ISCVERSION:C/.*-//:tl}
+CPE_VERSION=	${DISTVERSION:C/-.*//}
+.if ${DISTVERSION:M*-*}
+CPE_UPDATE=	${DISTVERSION:C/.*-//:tl}
 .endif
 
 USE_LDCONFIG=	yes
 USE_RC_SUBR=	${PORTNAME}
-GNU_CONFIGURE=	yes
-GNU_CONFIGURE_MANPREFIX=${PREFIX}/share
-CONFIGURE_ARGS=	--with-openssl=${OPENSSLBASE} \
-		--with-log4cplus=${LOCALBASE} \
-		--with-boost-include=${LOCALBASE}/include \
-		--with-boost-lib-dir=${LOCALBASE}/lib \
-		--without-werror
-INSTALL_TARGET=	install-strip
-TEST_TARGET=	check
 
-PORTDOCS=	AUTHORS COPYING ChangeLog README \
-		CONTRIBUTING.md examples code_of_conduct.md \
-		platforms.rst
+SHEBANG_GLOB=	*.py *.in
+python_OLD_CMD+=@PYTHON@
 
-OPTIONS_DEFINE=	DOCS MYSQL PGSQL SHELL
+MESON_ARGS=	--auto-features=disabled \
+		-Dcrypto=openssl \
+		-Dnetconf=disabled
+
+PORTDOCS=	AUTHORS CONTRIBUTING.md COPYING ChangeLog README SECURITY.md \
+		code_of_conduct.md examples platforms.rst
+
+OPTIONS_DEFINE=	DOCS MYSQL PGSQL
 OPTIONS_SUB=	yes
-MYSQL_USES=	mysql
-MYSQL_CONFIGURE_ON=	--with-mysql=${LOCALBASE}/bin/mysql_config
-MYSQL_CONFIGURE_OFF=	--without-mysql
+
+MYSQL_USES=		mysql
+MYSQL_MESON_ENABLED=	mysql
 MYSQL_SUB_LIST=		REQ_MYSQL=mysql
 MYSQL_SUB_LIST_OFF=	REQ_MYSQL=""
-PGSQL_USES=	pgsql
-WANT_PGSQL=	client
-PGSQL_CONFIGURE_ON=	--with-pgsql=${LOCALBASE}/bin/pg_config
-PGSQL_CONFIGURE_OFF=	--without-pgsql
+
+PGSQL_USES=		pgsql
+PGSQL_MESON_ENABLED=	postgresql
 PGSQL_SUB_LIST=		REQ_PGSQL=postgresql
 PGSQL_SUB_LIST_OFF=	REQ_PGSQL=""
-SHELL_DESC=	Install kea-shell(8) (Python)
-SHELL_USES=	python
-SHELL_CONFIGURE_ON=	--enable-shell
+PGSQL_VARS=		WANT_PGSQL=client
+
+post-build:
+	(cd ${WRKSRC}/doc/sphinx/man; \
+	for i in *.8.rst; do \
+		${REINPLACE_CMD} -e 's|iscman::||' \
+			-e 's|:manpage:||g' -e 's|:program:||' $$i; \
+		rst2man $$i > $$(basename $$i .rst); \
+	done)
+
+post-install:
+	@${MKDIR} ${STAGEDIR}${ETCDIR} ${STAGEDIR}/var/db/kea ${STAGEDIR}/var/run/kea
+	${INSTALL_MAN} ${WRKSRC}/doc/sphinx/man/*.8 ${STAGEDIR}${PREFIX}/share/man/man8
+	@(cd ${WRKSRC}/_build/src/bin/keactrl; \
+	for i in *.conf; do \
+		${INSTALL_DATA} $$i ${STAGEDIR}${ETCDIR}/$$i.sample; \
+	done)
+
+pre-fetch:
+	if [ ! -f "${DISTDIR}/${DIST_SUBDIR}/netgate.diff" ] || [ "$$( awk '$$1 == "SHA256" && $$2 == "(netgate.diff)" {print $$4}' "${DISTINFO_FILE}" )" != "$$( sha256 -q "${DISTDIR}/${DIST_SUBDIR}/netgate.diff" )" ]; then \
+		curl -vv --header 'PRIVATE-TOKEN: ${GITLAB_TOKEN}' -o "${DISTDIR}/${DIST_SUBDIR}/netgate.diff" "https://gitlab.netgate.com/api/v4/projects/8/repository/files/net%2Fkea%2Ffiles%2Fnetgate.diff/raw?ref=plus-devel"; \
+	fi
 
 .include <bsd.port.mk>

@@ -1,6 +1,6 @@
 PORTNAME=	eisl
 DISTVERSIONPREFIX=	v
-DISTVERSION=	3.72
+DISTVERSION=	5.59
 CATEGORIES=	lang devel
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -10,6 +10,7 @@ WWW=		https://github.com/sasagawa888/eisl
 LICENSE=	BSD2CLAUSE
 LICENSE_FILE=	${WRKSRC}/license.txt
 
+BROKEN_armv7=	stage breaks: Abort trap (likely due to the memory allocation problem)
 BROKEN_i386=	stage breaks: data segment of more than 500GB is required, see https://github.com/sasagawa888/eisl/issues/218
 
 TEST_DEPENDS=	cppcheck:devel/cppcheck
@@ -37,12 +38,17 @@ EXTRA_PATCHES=	${FILESDIR}/extra-patch-makefile
 
 .include <bsd.port.pre.mk>
 
-.if ${OPSYS} == FreeBSD && ( ${OSVERSION} >= 1400079 || ( ${OSVERSION} >= 1302505 && ${OSVERSION} < 1400000 ))
+.if ${OPSYS} == FreeBSD
 CFLAGS+=	-Wno-error=int-conversion
 .endif
 
-.if ${OPSYS} == FreeBSD && ( ${OSVERSION} >= 1400092 || ( ${OSVERSION} >= 1302507 && ${OSVERSION} < 1400000 ))
+.if ${OPSYS} == FreeBSD
 CFLAGS+=	-Wno-error=incompatible-function-pointer-types
 .endif
+
+post-install:
+	${STRIP_CMD} \
+		${STAGEDIR}${PREFIX}/bin/eisl \
+		${STAGEDIR}${PREFIX}/bin/edlis
 
 .include <bsd.port.post.mk>

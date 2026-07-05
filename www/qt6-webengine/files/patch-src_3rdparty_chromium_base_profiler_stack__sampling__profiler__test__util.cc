@@ -1,6 +1,6 @@
---- src/3rdparty/chromium/base/profiler/stack_sampling_profiler_test_util.cc.orig	2023-02-08 09:03:45 UTC
+--- src/3rdparty/chromium/base/profiler/stack_sampling_profiler_test_util.cc.orig	2025-08-15 18:30:00 UTC
 +++ src/3rdparty/chromium/base/profiler/stack_sampling_profiler_test_util.cc
-@@ -33,7 +33,7 @@
+@@ -50,7 +50,7 @@
  // Fortunately, it provides _alloca, which functions identically.
  #include <malloc.h>
  #define alloca _alloca

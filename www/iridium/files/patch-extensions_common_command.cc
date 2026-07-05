@@ -1,11 +1,11 @@
---- extensions/common/command.cc.orig	2023-10-21 11:51:27 UTC
+--- extensions/common/command.cc.orig	2026-02-16 10:45:29 UTC
 +++ extensions/common/command.cc
-@@ -282,7 +282,7 @@ std::string Command::CommandPlatform() {
-   return values::kKeybindingPlatformMac;
+@@ -117,7 +117,7 @@ std::string Command::CommandPlatform() {
+   return ui::kKeybindingPlatformMac;
  #elif BUILDFLAG(IS_CHROMEOS)
-   return values::kKeybindingPlatformChromeOs;
+   return ui::kKeybindingPlatformChromeOs;
 -#elif BUILDFLAG(IS_LINUX)
 +#elif BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_BSD)
-   return values::kKeybindingPlatformLinux;
- #elif BUILDFLAG(IS_FUCHSIA)
-   // TODO(crbug.com/1312215): Change this once we decide what string should be
+   return ui::kKeybindingPlatformLinux;
+ #elif BUILDFLAG(IS_DESKTOP_ANDROID)
+   // For now, we use linux keybindings on desktop android.

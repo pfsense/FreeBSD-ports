@@ -1,20 +1,22 @@
 PORTNAME=	classifier
-PORTVERSION=	1.3.5
+PORTVERSION=	2.3.2
 CATEGORIES=	devel rubygems
 MASTER_SITES=	RG
 
 MAINTAINER=	ruby@FreeBSD.org
 COMMENT=	Classifier module for Bayesian and other types of classifications
-WWW=		http://classifier.rufy.com/
+WWW=		https://github.com/cardmagic/classifier
 
 LICENSE=	LGPL21
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-RUN_DEPENDS=	rubygem-fast-stemmer>=1.0.0:devel/rubygem-fast-stemmer \
-		rubygem-mathn>=0:math/rubygem-mathn \
+RUN_DEPENDS=	rubygem-fast-stemmer>=1.0<2:devel/rubygem-fast-stemmer \
+		rubygem-matrix>=0:math/rubygem-matrix \
+		rubygem-mutex_m>=0.2<1:devel/rubygem-mutex_m \
 		rubygem-rake>=0:devel/rubygem-rake
 
-NO_ARCH=	yes
 USES=		gem
+
+PLIST_FILES=	bin/classifier
 
 .include <bsd.port.mk>

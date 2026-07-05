@@ -1,6 +1,6 @@
---- Makefile.orig	2023-10-08 13:55:19 UTC
+--- Makefile.orig	2025-07-19 20:40:49 UTC
 +++ Makefile
-@@ -4,7 +4,7 @@ include Makefile.common
+@@ -4,7 +4,7 @@ MVN:=mvn
  $(info OS_NAME:$(OS_NAME), OS_ARCH:$(OS_ARCH))
  
  MVN:=mvn
@@ -9,7 +9,7 @@
  
  all: snappy
  
-@@ -17,7 +17,6 @@ SNAPPY_GIT_REPO_URL:=https://github.com/google/snappy
+@@ -17,7 +17,6 @@ SNAPPY_UNPACKED:=$(TARGET)/snappy-extracted.log
  # Change this variable to use a specific git commit
  SNAPPY_GIT_REV:=$(SNAPPY_VERSION)
  SNAPPY_UNPACKED:=$(TARGET)/snappy-extracted.log
@@ -41,7 +41,7 @@
  
  snappy-header: $(SNAPPY_CMAKE_CACHE)
  
-@@ -104,7 +94,7 @@ $(TARGET)/jni-classes/org/xerial/snappy/BitShuffleNati
+@@ -104,7 +94,7 @@ $(SRC)/org/xerial/snappy/BitShuffleNative.h: $(TARGET)
  
  $(SRC)/org/xerial/snappy/BitShuffleNative.h: $(TARGET)/jni-classes/org/xerial/snappy/BitShuffleNative.class
  

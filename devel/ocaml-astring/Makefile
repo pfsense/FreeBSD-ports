@@ -1,5 +1,6 @@
 PORTNAME=	astring
 PORTVERSION=	0.8.5
+PORTREVISION=	1
 CATEGORIES=	devel
 MASTER_SITES=	https://erratique.ch/software/astring/releases/
 PKGNAMEPREFIX=	ocaml-
@@ -15,8 +16,7 @@ BUILD_DEPENDS=	${SA_DIR}/topkg/META:devel/ocaml-topkg \
 		ocamlbuild:devel/ocaml-ocamlbuild \
 		opam-installer:devel/ocaml-opam
 
-USES=		tar:tbz
-USE_OCAML=	yes
+USES=		ocaml tar:tbz
 
 DOCSDIR=	${OCAML_DOCSDIR}/${PORTNAME}
 EXAMPLESDIR=	${OCAML_EXAMPLESDIR}/${PORTNAME}

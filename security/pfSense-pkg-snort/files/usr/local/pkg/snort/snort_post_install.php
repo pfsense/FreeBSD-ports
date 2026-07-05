@@ -3,7 +3,7 @@
  * snort_post_install.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2006-2024 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2006-2026 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2009-2010 Robert Zelaya
  * Copyright (c) 2013-2022 Bill Meeks
  * All rights reserved.
@@ -93,7 +93,7 @@ safe_mkdir(SNORT_APPID_ODP_PATH);
 /* by removing it as a separately installed package.                 */
 $pkgid = get_package_id("Dashboard Widget: Snort");
 if ($pkgid >= 0) {
-	syslog(LOG_NOTICE, gettext("[Snort] Removing legacy 'Dashboard Widget: Snort' package because the widget is now part of the Snort package."));
+	logger(LOG_NOTICE, localize_text("Removing legacy 'Dashboard Widget: Snort' package because the widget is now part of the Snort package."), LOG_PREFIX_PKG_SNORT);
 	config_del_path("installedpackages/package/{$pkgid}");
 	unlink_if_exists("/usr/local/pkg/widget-snort.xml");
 }
@@ -103,18 +103,20 @@ $snort_widget_container = "snort_alerts:col2:open";
 
 /* Remake saved settings if detected */
 if (config_get_path('installedpackages/snortglobal/forcekeepsettings') == 'on') {
-	syslog(LOG_NOTICE, gettext("[Snort] Saved settings detected... rebuilding installation with saved settings."));
+	logger(LOG_NOTICE, localize_text("Saved settings detected... rebuilding installation with saved settings."), LOG_PREFIX_PKG_SNORT);
 	update_status(gettext("Saved settings detected.") . "\n");
 
 	/* Do any required settings migration for new configurations */
 	update_status(gettext("Migrating settings to new configuration..."));
 	include '/usr/local/pkg/snort/snort_migrate_config.php';
 	update_status(gettext(" done.") . "\n");
-	syslog(LOG_NOTICE, gettext("[Snort] Downloading and updating configured rule sets."));
-	update_status(gettext("Downloading configured rule sets. This may take some time...") . "\n");
-	include '/usr/local/pkg/snort/snort_check_for_rule_updates.php';
-	update_status(gettext("Generating snort.conf configuration file from saved settings.") . "\n");
-	$rebuild_rules = true;
+	if (!is_platform_booting()) {
+		logger(LOG_NOTICE, localize_text("Downloading and updating configured rule sets."), LOG_PREFIX_PKG_SNORT);
+		update_status(gettext("Downloading configured rule sets. This may take some time...") . "\n");
+		include '/usr/local/pkg/snort/snort_check_for_rule_updates.php';
+		update_status(gettext("Generating snort.conf configuration file from saved settings.") . "\n");
+		$rebuild_rules = true;
+	}
 
 	/* Create the snort.conf files for each enabled interface */
 	foreach (config_get_path('installedpackages/snortglobal/rule', []) as $snortcfg) {
@@ -174,7 +176,7 @@ if (config_get_path('installedpackages/snortglobal/forcekeepsettings') == 'on') 
 
 	$rebuild_rules = false;
 	update_status(gettext("Finished rebuilding Snort configuration files.") . "\n");
-	syslog(LOG_NOTICE, gettext("[Snort] Finished rebuilding installation from saved settings."));
+	logger(LOG_NOTICE, localize_text("Finished rebuilding installation from saved settings."), LOG_PREFIX_PKG_SNORT);
 }
 
 /* Default the 'Save settings on deinstall' option to 'on' if not set (as in a green field install) */
@@ -193,7 +195,7 @@ write_config("Snort pkg v" . config_get_path('installedpackages/package/' . get_
 
 /* Done with post-install, so clear flag */
 unset($g['snort_postinstall']);
-syslog(LOG_NOTICE, gettext("[Snort] Package post-installation tasks completed..."));
+logger(LOG_NOTICE, localize_text("Package post-installation tasks completed..."), LOG_PREFIX_PKG_SNORT);
 return true;
 
 ?>

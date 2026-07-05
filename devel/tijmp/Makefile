@@ -1,33 +1,41 @@
 PORTNAME=	tijmp
-PORTVERSION=	0.7
+PORTVERSION=	0.8
 PORTREVISION=	1
 CATEGORIES=	devel java
-MASTER_SITES=	http://www.khelekore.org/jmp/tijmp/ \
-		http://www.klop.ws/distfiles/
+MASTER_SITES=	https://www.khelekore.org/jmp/tijmp/ \
+		https://www.klop.ws/distfiles/
 
 MAINTAINER=	ronald@FreeBSD.org
 COMMENT=	Tools Interface Java Memory Profiler
-WWW=		http://khelekore.org/jmp/tijmp/
+WWW=		https://www.khelekore.org/jmp/tijmp/
 
-OPTIONS_DEFINE=	DOCS OPTIMIZED_CFLAGS
+LICENSE=	GPLv3
+LICENSE_FILE=	${WRKSRC}/COPYING
+
+USES=		gmake java:build libtool
+JAVA_OS=	native
+USE_LDCONFIG=	yes
 
 GNU_CONFIGURE=	yes
 CONFIGURE_ENV=	JAVA_HOME="${JAVA_HOME}"
 INSTALL_TARGET=	install-strip
-USES=		gmake libtool
-USE_JAVA=	yes
-JAVA_OS=	native
-JAVA_BUILD=	jdk
-USE_LDCONFIG=	yes
 
-PLIST_FILES=	lib/lib${PORTNAME}.so lib/lib${PORTNAME}.so.0 \
-		lib/lib${PORTNAME}.so.0.0.1 %%JAVAJARDIR%%/${PORTNAME}.jar
+PLIST_FILES=	${JAVAJARDIR}/${PORTNAME}.jar \
+		lib/lib${PORTNAME}.so \
+		lib/lib${PORTNAME}.so.0 \
+		lib/lib${PORTNAME}.so.0.0.1
 PORTDOCS=	ChangeLog README
+
+OPTIONS_DEFINE=	DOCS OPTIMIZED_CFLAGS
 
 OPTIMIZED_CFLAGS_CFLAGS=	-O3
 
 post-patch:
-	@${REINPLACE_CMD} '/^jardir =/s|=.*|= ${JAVAJARDIR}|' ${WRKSRC}/Makefile.in
+	@${REINPLACE_CMD} \
+		-e '/^jardir =/s|=.*|= ${JAVAJARDIR}|' \
+		-e 's| -source 1.6 | |' \
+		${WRKSRC}/Makefile.in
 	@${SED} -i "" -e 's|/../share/java|${JAVAJARDIR}|' ${WRKSRC}/src/tijmp.c
+
 
 .include <bsd.port.mk>

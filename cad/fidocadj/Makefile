@@ -1,6 +1,6 @@
 PORTNAME=	fidocadj
 PORTVERSION=	0.24.8
-PORTREVISION=	0
+PORTREVISION=	1
 CATEGORIES=	cad java
 # No USE_GITHUB here because GITHUB_EXTRACT_SUFX is hardcoded to .tar.gz
 MASTER_SITES=	https://github.com/DarwinNE/FidoCadJ/releases/download/v${PORTVERSION}/
@@ -14,6 +14,7 @@ WWW=		https://darwinne.github.io/FidoCadJ/index.html
 
 LICENSE=	GPLv3
 
+USES=	java
 DATADIR=	${JAVASHAREDIR}/${PORTNAME}
 
 JAVA_VERSION=	11+
@@ -25,8 +26,6 @@ PLIST_SUB=	PORTVERSION=${PORTVERSION}
 
 SUB_FILES=	${PORTNAME}.sh
 SUB_LIST=	PORTVERSION=${PORTVERSION} JAVA=${JAVA}
-
-USE_JAVA=	yes
 
 OPTIONS_DEFINE=	DOCS
 

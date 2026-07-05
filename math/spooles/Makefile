@@ -1,6 +1,6 @@
 PORTNAME=	spooles
 PORTVERSION=	2.2
-PORTREVISION=	16
+PORTREVISION=	17
 CATEGORIES=	math
 MASTER_SITES=	NETLIB/linalg/spooles
 .ifdef WITH_MPI
@@ -40,7 +40,7 @@ PICFLAG?=	-fpic
 
 .include <bsd.port.pre.mk>
 
-.if ${OPSYS} == FreeBSD && ( ${OSVERSION} >= 1400079 || ( ${OSVERSION} >= 1302505 && ${OSVERSION} < 1400000 ))
+.if ${OPSYS} == FreeBSD
 CFLAGS+=	-Wno-error=int-conversion
 .endif
 

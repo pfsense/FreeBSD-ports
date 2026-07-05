@@ -1,6 +1,6 @@
 PORTNAME=	love
-PORTVERSION=	11.4
-PORTREVISION=	1
+PORTVERSION=	11.5
+PORTREVISION=	3
 CATEGORIES=	devel games
 MASTER_SITES=	https://github.com/love2d/love/releases/download/${PORTVERSION}/
 DISTNAME=	${PORTNAME}-${PORTVERSION}-linux-src
@@ -37,9 +37,10 @@ PORTDOCS=	*
 OPTIONS_DEFINE=		DOCS LUAJIT GME
 OPTIONS_DEFAULT_i386=	LUAJIT
 OPTIONS_DEFAULT_amd64=	LUAJIT
+OPTIONS_DEFAULT_powerpc64le=	LUAJIT
 
 LUAJIT_DESC=		Use luajit
-LUAJIT_LIB_DEPENDS=	libluajit-5.1.so:lang/luajit
+LUAJIT_USES=		luajit
 LUAJIT_CONFIGURE_ON=	--with-lua=luajit
 LUAJIT_USES_OFF=	lua:51  # stay compatible, e.g. games/mari0 crashes with 53..54
 LUAJIT_CONFIGURE_OFF=	--with-lua=lua \

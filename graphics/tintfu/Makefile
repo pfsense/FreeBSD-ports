@@ -1,6 +1,6 @@
 PORTNAME=	tintfu
 PORTVERSION=	0.0.4
-PORTREVISION=	3
+PORTREVISION=	4
 CATEGORIES=	graphics
 MASTER_SITES=	SF
 DISTNAME=	${PORTNAME}_${PORTVERSION:S/./_/g}
@@ -10,12 +10,13 @@ MAINTAINER=	ports@FreeBSD.org
 COMMENT=	GraphViz .dot file editor
 WWW=		https://tintfu.sourceforge.net/
 
+USES=		java
+
 NO_WRKSUBDIR=	yes
 EXTRACT_CMD=	${CP}
 EXTRACT_BEFORE_ARGS=	# empty
 EXTRACT_AFTER_ARGS=	.
 NO_BUILD=	yes
-USE_JAVA=	yes
 
 PLIST_FILES=	%%JAVAJARDIR%%/${DISTNAME}.jar \
 		bin/tintfu

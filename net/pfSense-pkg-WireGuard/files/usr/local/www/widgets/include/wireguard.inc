@@ -71,8 +71,6 @@ function wg_do_widget_settings_post($post, $user_settings) {
 }
 
 function wg_compose_widget_body($widgetkey, $wireguard_activity_threshold) {
-	global $wgg;
-
 	/*
 	 * A simple hack to use functions inside heredoc strings
 	 * This also allows translation scripts to pick up strings normally by scraping gettext() calls
@@ -87,7 +85,7 @@ function wg_compose_widget_body($widgetkey, $wireguard_activity_threshold) {
 
 	$current_time = (new DateTimeImmutable)->getTimestamp();
 
-	if (empty($wgg['tunnels'])) {
+	if (empty(config_get_path('installedpackages/wireguard/tunnels/item', []))) {
 
 		$data_html = 	<<<"ROW"
 				<tr>

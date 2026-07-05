@@ -1,5 +1,6 @@
 PORTNAME=	dict
-PORTVERSION=	1.13.1
+PORTVERSION=	1.13.3
+PORTREVISION=	1
 CATEGORIES=	textproc
 MASTER_SITES=	SF/dict/dictd/dictd-${PORTVERSION}
 DISTNAME=	dictd-${PORTVERSION}
@@ -18,7 +19,6 @@ USES=		bison gmake libtool:build localbase
 
 ALL_TARGET=	dict
 GNU_CONFIGURE=	yes
-GNU_CONFIGURE_MANPREFIX=${PREFIX}/share
 INSTALL_TARGET=	install.dict
 
 CONFLICTS_INSTALL=	irstlm # bin/dict

@@ -1,0 +1,48 @@
+commit 0ff75cd0b9fb14c04c94c3585831a9f669be0a5d
+Author: jim-p <jimp@netgate.com>
+Date:   Tue Apr 1 14:26:41 2025 -0400
+
+    Validation and output encoding of IPsec P1 interface. Fixes #16115
+
+diff --git a/src/usr/local/www/vpn_ipsec.php b/src/usr/local/www/vpn_ipsec.php
+index 90b8fcc9cd..c23d7da19d 100644
+--- a/src/usr/local/www/vpn_ipsec.php
++++ b/src/usr/local/www/vpn_ipsec.php
+@@ -351,7 +351,7 @@ $i = 0; foreach (config_get_path('ipsec/phase1', []) as $ph1ent):
+ <?php
+ 			if ($ph1ent['interface']) {
+ 				if (isset($iflabels[$ph1ent['interface']])) {
+-					$if = htmlspecialchars($iflabels[$ph1ent['interface']]);
++					$if = $iflabels[$ph1ent['interface']];
+ 				} else {
+ 					$if = sprintf("Interface not found: '%s'", $ph1ent['interface']);
+ 				}
+@@ -359,10 +359,11 @@ $i = 0; foreach (config_get_path('ipsec/phase1', []) as $ph1ent):
+ 				$if = "WAN";
+ 			}
+ 
++			echo htmlspecialchars($if)."<br />";
+ 			if (!isset($ph1ent['mobile'])) {
+-				echo $if."<br />".$ph1ent['remote-gateway'];
++				echo $ph1ent['remote-gateway'];
+ 			} else {
+-				echo $if."<br /><strong>" . gettext("Mobile Clients") . "</strong>";
++				echo "<strong>" . gettext("Mobile Clients") . "</strong>";
+ 			}
+ ?>
+ 						</td>
+diff --git a/src/usr/local/www/vpn_ipsec_phase1.php b/src/usr/local/www/vpn_ipsec_phase1.php
+index af1549bbb7..4897369708 100644
+--- a/src/usr/local/www/vpn_ipsec_phase1.php
++++ b/src/usr/local/www/vpn_ipsec_phase1.php
+@@ -216,6 +216,10 @@ if ($_POST['save']) {
+ 
+ 	/* input validation */
+ 
++	if (!array_key_exists($pconfig['interface'], build_interface_list())) {
++		$input_errors[] = gettext("Invalid interface.");
++	}
++
+ 	$method = $pconfig['authentication_method'];
+ 
+ 	// Unset ca and cert if not required to avoid storing in config

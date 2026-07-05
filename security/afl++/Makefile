@@ -1,10 +1,10 @@
 PORTNAME=	afl
 DISTVERSIONPREFIX=	v
-DISTVERSION=	4.10c
+DISTVERSION=	4.35c
 CATEGORIES=	security
 PKGNAMESUFFIX=	++-${FLAVOR}
 
-MAINTAINER=	salvadore@FreeBSD.org
+MAINTAINER=	fk@fabiankeil.de
 COMMENT=	Fast instrumented fuzzer
 WWW=		https://aflplus.plus/
 
@@ -16,30 +16,31 @@ ONLY_FOR_ARCHS_REASON=	uses x86-only instrumentation or requires complete LLVM s
 
 BUILD_DEPENDS=	ginstall:sysutils/coreutils
 
-FLAVORS=	llvm gcc
+FLAVORS=	llvm # gcc
 FLAVOR?=	${FLAVORS:[1]}
 
-_LLVM_VER=		16
-llvm_BUILD_DEPENDS=	clang${_LLVM_VER}:devel/llvm${_LLVM_VER}
-llvm_RUN_DEPENDS=	clang${_LLVM_VER}:devel/llvm${_LLVM_VER}
-
 USES=		gmake shebangfix tar:tgz
+.if ${FLAVOR} == llvm
+USES+=		llvm:build,run
+.endif
+
 .if ${FLAVOR} == gcc
 USE_GCC=	yes
 .endif
 USE_GITHUB=	yes
 GH_ACCOUNT=	AFLplusplus
 GH_PROJECT=	AFLplusplus
-SHEBANG_FILES=	afl-persistent-config
+SHEBANG_FILES=	afl-cmin.py afl-persistent-config
 
 MAKEFILE=	GNUmakefile
-MAKE_ARGS=	${${ARCH} != amd64 && ${ARCH} != i386:?AFL_NO_X86=1:} \
+MAKE_ARGS=	AFL_NO_X86=1 AFL_NO_TEST_BUILD=1 \
+		NO_FRIDA=1 NO_UNICORN=1 NO_QEMU=1 \
 		PREFIX="${PREFIX}/${PKGBASE}"
 .if ${FLAVOR} == llvm
 CFLAGS_riscv64=	-mno-relax
-MAKE_ARGS+=	CC=clang${_LLVM_VER} \
-		CXX=clang++${_LLVM_VER} \
-		LLVM_CONFIG=llvm-config${_LLVM_VER}
+MAKE_ARGS+=	CC=clang${LLVM_VERSION} \
+		CXX=clang++${LLVM_VERSION} \
+		LLVM_CONFIG=llvm-config${LLVM_VERSION}
 .endif
 ALL_TARGET=	distrib
 QA_ENV=		IGNORE_QA_stripped=1 # unstripped to keep it functional

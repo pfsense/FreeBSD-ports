@@ -6,12 +6,13 @@ MASTER_SITES=	SF/htmlcxx/v${PORTVERSION} \
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	HTML and CSS APIs for C++
-WWW=		https://github.com/bonitao/htmlcxx
+WWW=		https://htmlcxx.sourceforge.net/ \
+		https://github.com/bonitao/htmlcxx
 
 LICENSE=	LGPL20
 LICENSE_FILE=	${WRKSRC}/LGPL_V2
 
-USES=		bison:alias compiler:c++14-lang iconv libtool localbase:ldflags pathfix
+USES=		bison:alias compiler:c++14-lang iconv libtool localbase:ldflags
 
 GNU_CONFIGURE=	yes
 INSTALL_TARGET=	install-strip

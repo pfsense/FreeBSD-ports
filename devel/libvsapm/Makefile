@@ -1,6 +1,6 @@
 PORTNAME=	libvsapm
 # If/When moving from experimental to alpha, switch to DISTVERSIONPREFIX to prevent PORTEPOCH
-DISTVERSION=	experimental-20231123
+DISTVERSION=	experimental-20240503
 CATEGORIES=	devel
 MASTER_SITES=	https://github.com/libyal/libvsapm/releases/download/${PORTVERSION:E}/ \
 		LOCAL/antoine
@@ -11,6 +11,8 @@ WWW=		https://github.com/libyal/libvsapm
 
 LICENSE=	LGPL3+
 LICENSE_FILE=	${WRKSRC}/COPYING
+
+BUILD_DEPENDS=	${PY_SETUPTOOLS}
 
 GNU_CONFIGURE=	yes
 GNU_CONFIGURE_MANPREFIX=${PREFIX}/share

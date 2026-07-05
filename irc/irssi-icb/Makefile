@@ -32,7 +32,7 @@ PLIST_FILES=	lib/irssi/modules/libfe_icb.so \
 .include <bsd.port.pre.mk>
 
 # Fixes build failure for Clang 16.0.6
-.if ${OPSYS} == FreeBSD && ${OSVERSION} >= 1400092
+.if ${OPSYS} == FreeBSD
 CFLAGS+=       -Wno-error=incompatible-function-pointer-types
 .endif
 

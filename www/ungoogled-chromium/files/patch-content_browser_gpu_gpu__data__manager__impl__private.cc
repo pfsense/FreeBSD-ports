@@ -1,11 +1,11 @@
---- content/browser/gpu/gpu_data_manager_impl_private.cc.orig	2024-03-22 14:16:19 UTC
+--- content/browser/gpu/gpu_data_manager_impl_private.cc.orig	2026-03-15 18:32:51 UTC
 +++ content/browser/gpu/gpu_data_manager_impl_private.cc
-@@ -1807,7 +1807,7 @@ void GpuDataManagerImplPrivate::RecordCompositingMode(
+@@ -1720,7 +1720,7 @@ void GpuDataManagerImplPrivate::RecordCompositingMode(
    UMA_HISTOGRAM_ENUMERATION("GPU.CompositingMode", compositing_mode);
  }
  
 -#if BUILDFLAG(IS_LINUX)
 +#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_BSD)
  bool GpuDataManagerImplPrivate::IsGpuMemoryBufferNV12Supported() {
-   return is_gpu_memory_buffer_NV12_supported_;
+   return gpu_extra_info_.is_gmb_nv12_supported;
  }

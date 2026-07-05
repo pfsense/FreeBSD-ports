@@ -1,67 +1,54 @@
---- core/scripts/CMakeLists.txt	2023-12-13 17:44:47.000000000 -0500
-+++ core/scripts/CMakeLists.txt	2024-01-10 01:38:45.931532000 -0500
-@@ -18,41 +18,44 @@
- #   02110-1301, USA.
- message("Entering ${CMAKE_CURRENT_SOURCE_DIR}")
+--- core/scripts/CMakeLists.txt	2025-12-04 05:19:30.000000000 -0800
++++ core/scripts/CMakeLists.txt	2025-12-17 23:21:00.429268000 -0800
+@@ -31,37 +31,37 @@
+   mtx-logrotate.in
+ )
  
 -install(
--  FILES bareos btraceback
+-  FILES ${CMAKE_CURRENT_BINARY_DIR}/btraceback
 -  PERMISSIONS OWNER_READ OWNER_WRITE OWNER_EXECUTE GROUP_READ GROUP_EXECUTE
 -              WORLD_READ WORLD_EXECUTE
 -  DESTINATION "${sbindir}"
 -)
+-install(
+-  FILES ${CMAKE_CURRENT_BINARY_DIR}/bareos-config-lib.sh btraceback.gdb
+-  PERMISSIONS OWNER_READ OWNER_WRITE GROUP_READ WORLD_READ
+-  DESTINATION "${scriptdir}"
+-)
+-install(
+-  FILES ${CMAKE_CURRENT_BINARY_DIR}/bareos-config
+-  PERMISSIONS OWNER_READ OWNER_WRITE OWNER_EXECUTE GROUP_READ GROUP_EXECUTE
+-              WORLD_READ WORLD_EXECUTE
+-  DESTINATION "${scriptdir}"
+-)
+-if(NOT client-only)
 +if(client-only)
-+  install(
-+    FILES bareos btraceback
+   install(
+-    FILES btraceback.dbx btraceback.mdb
++    FILES ${CMAKE_CURRENT_BINARY_DIR}/btraceback
 +    PERMISSIONS OWNER_READ OWNER_WRITE OWNER_EXECUTE GROUP_READ GROUP_EXECUTE
 +                WORLD_READ WORLD_EXECUTE
 +    DESTINATION "${sbindir}"
 +  )
- 
--install(
--  FILES bareos-ctl-fd
--  PERMISSIONS OWNER_READ OWNER_WRITE OWNER_EXECUTE GROUP_READ GROUP_EXECUTE
--              WORLD_READ WORLD_EXECUTE
--  DESTINATION "${scriptdir}"
--  COMPONENT filedaemon
--)
 +  install(
-+    FILES bareos-ctl-fd
-+    PERMISSIONS OWNER_READ OWNER_WRITE OWNER_EXECUTE GROUP_READ GROUP_EXECUTE
-+                WORLD_READ WORLD_EXECUTE
-+    DESTINATION "${scriptdir}"
-+    COMPONENT filedaemon
-+  )
- 
--install(
--  FILES bareos bareos-config
--  PERMISSIONS OWNER_READ OWNER_WRITE OWNER_EXECUTE GROUP_READ GROUP_EXECUTE
--              WORLD_READ WORLD_EXECUTE
--  DESTINATION "${scriptdir}"
--)
--
--install(
--  FILES bareos-config-lib.sh bareos-ctl-funcs btraceback.gdb btraceback.dbx
--        btraceback.mdb
--  PERMISSIONS OWNER_READ OWNER_WRITE GROUP_READ WORLD_READ
--  DESTINATION "${scriptdir}"
--)
++    FILES ${CMAKE_CURRENT_BINARY_DIR}/bareos-config-lib.sh btraceback.gdb
+     PERMISSIONS OWNER_READ OWNER_WRITE GROUP_READ WORLD_READ
+     DESTINATION "${scriptdir}"
+   )
+-endif()
 -if(TARGET python3-fd)
    install(
 -    FILES bareos_encode_string.py
-+    FILES bareos bareos-config
++    FILES ${CMAKE_CURRENT_BINARY_DIR}/bareos-config
      PERMISSIONS OWNER_READ OWNER_WRITE OWNER_EXECUTE GROUP_READ GROUP_EXECUTE
                  WORLD_READ WORLD_EXECUTE
      DESTINATION "${scriptdir}"
    )
-+
 +  install(
-+    FILES bareos-config-lib.sh bareos-ctl-funcs btraceback.gdb btraceback.dbx
-+          btraceback.mdb
++    FILES btraceback.dbx btraceback.mdb
 +    PERMISSIONS OWNER_READ OWNER_WRITE GROUP_READ WORLD_READ
 +    DESTINATION "${scriptdir}"
 +  )
-+
 +  if(TARGET python3-fd)
 +    install(
 +      FILES bareos_encode_string.py

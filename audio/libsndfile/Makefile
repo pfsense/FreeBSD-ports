@@ -1,6 +1,6 @@
 PORTNAME=	libsndfile
 DISTVERSION=	1.2.2
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	audio
 MASTER_SITES=	https://github.com/${PORTNAME}/${PORTNAME}/releases/download/${DISTVERSION}/
 
@@ -14,7 +14,7 @@ WWW=		http://www.mega-nerd.com/libsndfile/
 LICENSE=	LGPL21+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-USES=		cmake cpe localbase pathfix pkgconfig python:build,test \
+USES=		cmake cpe localbase pkgconfig python:build,test \
 		shebangfix tar:xz
 SHEBANG_FILES=	programs/test-sndfile-metadata-set.py \
 		src/binheader_writef_check.py \

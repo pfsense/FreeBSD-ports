@@ -1,6 +1,6 @@
 PORTNAME=	cocotb
 DISTVERSIONPREFIX=	v
-DISTVERSION=	1.8.1
+DISTVERSION=	1.9.2
 CATEGORIES=	cad python
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
@@ -41,7 +41,7 @@ VERILATOR_RUN_DEPENDS=	verilator:cad/verilator
 
 post-install:
 	@${STRIP_CMD} \
-		${STAGEDIR}${PYTHON_SITELIBDIR}/cocotb/simulator${PYTHON_EXT_SUFFIX}.so \
+		${STAGEDIR}${PYTHON_SITELIBDIR}/cocotb/simulator${PYTHON_TAG}.so \
 		${STAGEDIR}${PYTHON_SITELIBDIR}/cocotb/libs/lib*.so \
 		${STAGEDIR}${PYTHON_SITELIBDIR}/cocotb/libs/libcocotbvpi_icarus.vpl
 

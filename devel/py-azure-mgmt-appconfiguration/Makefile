@@ -1,10 +1,11 @@
 PORTNAME=	azure-mgmt-appconfiguration
 DISTVERSION=	3.0.0
+PORTREVISION=	1
 CATEGORIES=	devel python
 MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
-MAINTAINER=	dbaio@FreeBSD.org
+MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Microsoft Azure App Configuration Client Library for Python
 WWW=		https://pypi.org/project/azure-mgmt-appconfiguration/
 

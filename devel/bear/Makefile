@@ -1,38 +1,39 @@
 PORTNAME=	bear
-DISTVERSION=	3.1.3
-PORTREVISION=	7
+DISTVERSION=	4.0.3
+PORTREVISION=	1
 CATEGORIES=	devel
 
-MAINTAINER=	jrm@FreeBSD.org
+MAINTAINER=	aokblast@FreeBSD.org
 COMMENT=	Tool that generates a compilation database for clang tooling
 WWW=		https://github.com/rizsotto/Bear
 
 LICENSE=	GPLv3+
+LICENSE_FILE=	${WRKSRC}/COPYING
 
-BUILD_DEPENDS=	nlohmann-json>0:devel/nlohmann-json
-LIB_DEPENDS=	libabsl_hash.so:devel/abseil \
-		libfmt.so:devel/libfmt \
-		libgrpc.so:devel/grpc \
-		libprotobuf.so:devel/protobuf \
-		libspdlog.so:devel/spdlog
-
-USES=		cmake compiler:c++17-lang pkgconfig
+USES=		cargo
 USE_GITHUB=	yes
 GH_ACCOUNT=	rizsotto
 GH_PROJECT=	Bear
 
-CMAKE_ARGS=	-DCMAKE_INSTALL_DOCDIR=${DOCSDIR} \
-		-DENABLE_FUNC_TESTS=OFF \
-		-DENABLE_UNIT_TESTS=OFF
-
 OPTIONS_DEFINE=	DOCS
 
-pre-install:
-	${MV} ${STAGEDIR}/${CONFIGURE_WRKSRC}/stage ${CONFIGURE_WRKSRC}/
-	${RM} -r ${STAGEDIR}/wrkdirs
+do-install:
+	${MKDIR} ${STAGEDIR}${PREFIX}/lib/${PORTNAME}
+	${INSTALL_PROGRAM} ${WRKDIR}/target/release/bear ${STAGEDIR}${PREFIX}/bin
+	${INSTALL_PROGRAM} ${WRKDIR}/target/release/wrapper ${STAGEDIR}${PREFIX}/lib/${PORTNAME}
+	${INSTALL_PROGRAM} ${WRKDIR}/target/release/libexec.so ${STAGEDIR}${PREFIX}/lib/${PORTNAME}
+	${INSTALL_MAN} ${WRKSRC}/man/bear.1 ${STAGEDIR}${PREFIX}/share/man/man1
+
+do-install-DOCS-on:
+	${MKDIR} ${STAGEDIR}${DOCSDIR}
+	${INSTALL_DATA} ${WRKSRC}/AGENTS.md ${STAGEDIR}${DOCSDIR}
+	${INSTALL_DATA} ${WRKSRC}/CODE_OF_CONDUCT.md ${STAGEDIR}${DOCSDIR}
+	${INSTALL_DATA} ${WRKSRC}/CONTRIBUTING.md ${STAGEDIR}${DOCSDIR}
+	${INSTALL_DATA} ${WRKSRC}/INSTALL.md ${STAGEDIR}${DOCSDIR}
+	${INSTALL_DATA} ${WRKSRC}/README.md ${STAGEDIR}${DOCSDIR}
 
 post-install:
-.for l in bin/bear lib/bear/libexec.so lib/bear/wrapper
+.for l in bin/bear lib/${PORTNAME}/libexec.so lib/${PORTNAME}/wrapper
 	@${STRIP_CMD} ${STAGEDIR}${PREFIX}/${l}
 .endfor
 

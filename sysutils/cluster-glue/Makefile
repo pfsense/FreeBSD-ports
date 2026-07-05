@@ -1,6 +1,6 @@
 PORTNAME=	cluster-glue
 PORTVERSION=	1.0.12
-PORTREVISION=	7
+PORTREVISION=	9
 CATEGORIES=	sysutils
 MASTER_SITES=	http://hg.linux-ha.org/glue/archive/
 DISTNAME=	0a7add1d9996
@@ -16,7 +16,7 @@ LICENSE_FILE_GPLv2+ =	${WRKSRC}/COPYING
 LICENSE_FILE_LGPL21+ =	${WRKSRC}/COPYING.LIB
 
 LIB_DEPENDS=	libltdl.so:devel/libltdl \
-		libuuid.so:misc/e2fsprogs-libuuid \
+		libuuid.so:misc/libuuid \
 		libnet.so:net/libnet
 
 USES=		autoreconf gettext gmake gnome libtool localbase perl5 pkgconfig python shebangfix \

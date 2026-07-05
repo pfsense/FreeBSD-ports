@@ -1,5 +1,6 @@
 PORTNAME=	python-dtrace
 PORTVERSION=	0.0.13
+PORTREVISION=	1
 CATEGORIES=	devel python
 MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -14,7 +15,7 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 TEST_DEPENDS=	${PYTHON_PKGNAMEPREFIX}pytest>0:devel/py-pytest@${PY_FLAVOR}
 
 USES=		python
-USE_PYTHON=	autoplist distutils cython cython_run
+USE_PYTHON=	autoplist cython0 cython0_run distutils
 
 .include <bsd.port.pre.mk>
 

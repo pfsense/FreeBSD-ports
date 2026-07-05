@@ -3,7 +3,7 @@
  * snort_preprocessors.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2011-2024 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2011-2026 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2003-2004 Manuel Kasper <mk@neon1.net>.
  * Copyright (c) 2008-2009 Robert Zelaya
  * Copyright (c) 2013-2022 Bill Meeks
@@ -39,12 +39,12 @@ if (is_null($id)) {
 }
 
 // Initialize multiple config engine arrays for supported preprocessors if necessary
-init_config_arr(array('installedpackages', 'snortglobal', 'rule', $id, 'frag3_engine', 'item'));
-init_config_arr(array('installedpackages', 'snortglobal', 'rule', $id, 'stream5_tcp_engine', 'item'));
-init_config_arr(array('installedpackages', 'snortglobal', 'rule', $id, 'http_inspect_engine', 'item'));
-init_config_arr(array('installedpackages', 'snortglobal', 'rule', $id, 'ftp_server_engine', 'item'));
-init_config_arr(array('installedpackages', 'snortglobal', 'rule', $id, 'ftp_client_engine', 'item'));
-init_config_arr(array('installedpackages', 'snortglobal', 'rule', $id, 'arp_spoof_engine', 'item'));
+config_init_path("installedpackages/snortglobal/rule/{$id}/frag3_engine/item");
+config_init_path("installedpackages/snortglobal/rule/{$id}/stream5_tcp_engine/item");
+config_init_path("installedpackages/snortglobal/rule/{$id}/http_inspect_engine/item");
+config_init_path("installedpackages/snortglobal/rule/{$id}/ftp_server_engine/item");
+config_init_path("installedpackages/snortglobal/rule/{$id}/ftp_client_engine/item");
+config_init_path("installedpackages/snortglobal/rule/{$id}/arp_spoof_engine/item");
 
 $a_nat = config_get_path('installedpackages/snortglobal/rule', []);
 
@@ -652,7 +652,7 @@ if ($_POST['save']) {
 		/* changes.                                     */
 		$if_real = get_real_interface($a_nat[$id]['interface']);
 		if (snort_is_running($a_nat[$id]['uuid'])) {
-			syslog(LOG_NOTICE, gettext("Snort: restarting on interface " . convert_real_interface_to_friendly_descr($if_real) . " due to Preprocessor configuration change."));
+			logger(LOG_NOTICE, localize_text("restarting on interface %s due to Preprocessor configuration change.", convert_real_interface_to_friendly_descr($if_real)), LOG_PREFIX_PKG_SNORT);
 			snort_stop($a_nat[$id], $if_real);
 			snort_start($a_nat[$id], $if_real, TRUE);
 			$savemsg = gettext("Snort has been restarted on interface " . convert_real_interface_to_friendly_descr($if_real) . " because Preprocessor changes require a restart.");
@@ -761,7 +761,7 @@ $tab_array = array();
 	$tab_array[] = array($menu_iface . gettext("Logs"), false, "/snort/snort_interface_logs.php?id={$id}");
 display_top_tabs($tab_array, true);
 
-print_callout('<p>' . gettext("Rules may be dependent on enbled preprocessors!  Disabling preprocessors may result in Snort startup failure unless ") . 
+print_callout('<p>' . gettext("Rules may be dependent on enabled preprocessors!  Disabling preprocessors may result in Snort startup failure unless ") . 
 		gettext("all of the corresponding preprocessor-dependent rules are also disabled.  ") . gettext("Do not disable any default-enabled ") . 
 		gettext("preprocessors on this page unless you are very skilled with using Snort.  If you experience Snort start-up errors or failures ") . 
 		gettext("after making changes to preprocessors, trying resetting all preprocessor configurations to their defaults, and then ") . 
@@ -1087,11 +1087,11 @@ print_callout('<p>' . gettext("Rules may be dependent on enbled preprocessors!  
 									<td><?=gettext($v['name'])?></td>
 									<td title="<?=trim(filter_expand_alias($v['bind_to']));?>"><?=gettext($v['bind_to'])?></td>
 									<td>
-										<a href="snort_httpinspect_engine.php?id=<?=$id;?>&eng_id=<?=$f;?>" class="fa-solid fa-pencil icon-primary" title="<?=gettext("Edit this server configuration")?>"></a>
+										<a href="snort_httpinspect_engine.php?id=<?=$id;?>&eng_id=<?=$f;?>" class="fa-solid fa-pencil" title="<?=gettext("Edit this server configuration")?>"></a>
 									<?php if ($v['bind_to'] != "all") : ?>
-										<a href="#" class="fa-solid fa-trash-can icon-primary no-confirm" onclick="del_eng('del_http_inspect', '<?=$f;?>');" title="<?=gettext("Delete this server configuration")?>"></a>
+										<a href="#" class="fa-solid fa-trash-can no-confirm" onclick="del_eng('del_http_inspect', '<?=$f;?>');" title="<?=gettext("Delete this server configuration")?>"></a>
 									<?php else : ?>
-										<i class="fa-regular fa-trash-can icon-primary text-muted" title="<?=gettext("Default server configuration cannot be deleted")?>"></i>
+										<i class="fa-regular fa-trash-can text-muted" title="<?=gettext("Default server configuration cannot be deleted")?>"></i>
 									<?php endif ?>
 									</td>
 								</tr>
@@ -1167,11 +1167,11 @@ print_callout('<p>' . gettext("Rules may be dependent on enbled preprocessors!  
 									<td><?=gettext($v['name'])?></td>
 									<td title="<?=trim(filter_expand_alias($v['bind_to']));?>"><?=gettext($v['bind_to'])?></td>
 									<td>
-										<a href="snort_frag3_engine.php?id=<?=$id;?>&eng_id=<?=$f;?>" class="fa-solid fa-pencil icon-primary" title="<?=gettext("Edit this server configuration")?>"></a>
+										<a href="snort_frag3_engine.php?id=<?=$id;?>&eng_id=<?=$f;?>" class="fa-solid fa-pencil" title="<?=gettext("Edit this server configuration")?>"></a>
 									<?php if ($v['bind_to'] != "all") : ?>
-										<a href="#" class="fa-solid fa-trash-can icon-primary no-confirm" onclick="del_eng('del_frag3', '<?=$f;?>');" title="<?=gettext("Delete this server configuration")?>"></a>
+										<a href="#" class="fa-solid fa-trash-can no-confirm" onclick="del_eng('del_frag3', '<?=$f;?>');" title="<?=gettext("Delete this server configuration")?>"></a>
 									<?php else : ?>
-										<i class="fa-regular fa-trash-can icon-primary text-muted" title="<?=gettext("Default server configuration cannot be deleted")?>"></i>
+										<i class="fa-regular fa-trash-can text-muted" title="<?=gettext("Default server configuration cannot be deleted")?>"></i>
 									<?php endif ?>
 									</td>
 								</tr>
@@ -1320,11 +1320,11 @@ print_callout('<p>' . gettext("Rules may be dependent on enbled preprocessors!  
 									<td><?=gettext($v['name'])?></td>
 									<td title="<?=trim(filter_expand_alias($v['bind_to']));?>"><?=gettext($v['bind_to'])?></td>
 									<td>
-										<a href="snort_stream5_engine.php?id=<?=$id;?>&eng_id=<?=$f;?>" class="fa-solid fa-pencil icon-primary" title="<?=gettext("Edit this server configuration")?>"></a>
+										<a href="snort_stream5_engine.php?id=<?=$id;?>&eng_id=<?=$f;?>" class="fa-solid fa-pencil" title="<?=gettext("Edit this server configuration")?>"></a>
 									<?php if ($v['bind_to'] != "all") : ?>
-										<a href="#" class="fa-solid fa-trash-can icon-primary no-confirm" onclick="del_eng('del_stream5_tcp', '<?=$f;?>');" title="<?=gettext("Delete this server configuration")?>"></a>
+										<a href="#" class="fa-solid fa-trash-can no-confirm" onclick="del_eng('del_stream5_tcp', '<?=$f;?>');" title="<?=gettext("Delete this server configuration")?>"></a>
 									<?php else : ?>
-										<i class="fa-regular fa-trash-can icon-primary text-muted" title="<?=gettext("Default server configuration cannot be deleted")?>"></i>
+										<i class="fa-regular fa-trash-can text-muted" title="<?=gettext("Default server configuration cannot be deleted")?>"></i>
 									<?php endif ?>
 									</td>
 								</tr>
@@ -1579,11 +1579,11 @@ print_callout('<p>' . gettext("Rules may be dependent on enbled preprocessors!  
 									<td><?=gettext($v['name'])?></td>
 									<td title="<?=trim(filter_expand_alias($v['bind_to']));?>"><?=gettext($v['bind_to'])?></td>
 									<td>
-										<a href="snort_ftp_client_engine.php?id=<?=$id;?>&eng_id=<?=$f;?>" class="fa-solid fa-pencil icon-primary" title="<?=gettext("Edit this client configuration")?>"></a>
+										<a href="snort_ftp_client_engine.php?id=<?=$id;?>&eng_id=<?=$f;?>" class="fa-solid fa-pencil" title="<?=gettext("Edit this client configuration")?>"></a>
 									<?php if ($v['bind_to'] != "all") : ?>
-										<a href="#" class="fa-solid fa-trash-can icon-primary no-confirm" onclick="del_eng('del_ftp_client', '<?=$f;?>');" title="<?=gettext("Delete this client configuration")?>"></a>
+										<a href="#" class="fa-solid fa-trash-can no-confirm" onclick="del_eng('del_ftp_client', '<?=$f;?>');" title="<?=gettext("Delete this client configuration")?>"></a>
 									<?php else : ?>
-										<i class="fa-regular fa-trash-can icon-primary text-muted" title="<?=gettext("Default client configuration cannot be deleted")?>"></i>
+										<i class="fa-regular fa-trash-can text-muted" title="<?=gettext("Default client configuration cannot be deleted")?>"></i>
 									<?php endif ?>
 									</td>
 								</tr>
@@ -1622,11 +1622,11 @@ print_callout('<p>' . gettext("Rules may be dependent on enbled preprocessors!  
 									<td><?=gettext($v['name'])?></td>
 									<td title="<?=trim(filter_expand_alias($v['bind_to']));?>"><?=gettext($v['bind_to'])?></td>
 									<td>
-										<a href="snort_ftp_server_engine.php?id=<?=$id;?>&eng_id=<?=$f;?>" class="fa-solid fa-pencil icon-primary" title="<?=gettext("Edit this server configuration")?>"></a>
+										<a href="snort_ftp_server_engine.php?id=<?=$id;?>&eng_id=<?=$f;?>" class="fa-solid fa-pencil" title="<?=gettext("Edit this server configuration")?>"></a>
 									<?php if ($v['bind_to'] != "all") : ?>
-										<a href="#" class="fa-solid fa-trash-can icon-primary no-confirm" onclick="del_eng('del_ftp_server', '<?=$f;?>');" title="<?=gettext("Delete this server configuration")?>"></a>
+										<a href="#" class="fa-solid fa-trash-can no-confirm" onclick="del_eng('del_ftp_server', '<?=$f;?>');" title="<?=gettext("Delete this server configuration")?>"></a>
 									<?php else : ?>
-										<i class="fa-regular fa-trash-can icon-primary text-muted" title="<?=gettext("Default server configuration cannot be deleted")?>"></i>
+										<i class="fa-regular fa-trash-can text-muted" title="<?=gettext("Default server configuration cannot be deleted")?>"></i>
 									<?php endif ?>
 									</td>
 								</tr>
@@ -1733,8 +1733,8 @@ print_callout('<p>' . gettext("Rules may be dependent on enbled preprocessors!  
 									<td><?=gettext($v['mac_addr'])?></td>
 									<td><?=gettext($v['ip_addr'])?></td>
 									<td>
-										<a href="#" data-toggle="modal" data-target="#arp_spoof_addr_pair" data-eng_id="<?=$f;?>" data-arp_spoof_mac="<?=$v['mac_addr'];?>" data-arp_spoof_ip="<?=$v['ip_addr'];?>" class="fa-solid fa-pencil icon-primary" title="<?=gettext("Edit this address pair entry")?>"></a>
-										<a href="#" class="fa-solid fa-trash-can icon-primary no-confirm" onclick="del_eng('del_arp_spoof_engine', '<?=$f;?>');" title="<?=gettext("Delete this adress pair entry")?>"></a>
+										<a href="#" data-toggle="modal" data-target="#arp_spoof_addr_pair" data-eng_id="<?=$f;?>" data-arp_spoof_mac="<?=$v['mac_addr'];?>" data-arp_spoof_ip="<?=$v['ip_addr'];?>" class="fa-solid fa-pencil" title="<?=gettext("Edit this address pair entry")?>"></a>
+										<a href="#" class="fa-solid fa-trash-can no-confirm" onclick="del_eng('del_arp_spoof_engine', '<?=$f;?>');" title="<?=gettext("Delete this adress pair entry")?>"></a>
 									</td>
 								</tr>
 							<?php endforeach; ?>

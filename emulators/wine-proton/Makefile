@@ -1,5 +1,5 @@
 PORTNAME=	wine-proton
-DISTVERSION=	8.0-3
+DISTVERSION=	9.0-3
 PORTREVISION=	0
 CATEGORIES=	emulators
 
@@ -14,25 +14,34 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 ONLY_FOR_ARCHS=	amd64 i386
 
 BUILD_DEPENDS=	${LOCALBASE}/bin/flex:textproc/flex \
-		llvm${_LLVM_VERSION}>=0:devel/llvm${_LLVM_VERSION}
+		${LOCALBASE}/include/linux/input.h:devel/evdev-proto
 
 LIB_DEPENDS=	libfontconfig.so:x11-fonts/fontconfig \
 		libfreetype.so:print/freetype2 \
 		libgnutls.so:security/gnutls \
 		libvulkan.so:graphics/vulkan-loader
 
-USES=		autoreconf bison desktop-file-utils gl gmake gnome gstreamer localbase pkgconfig python:build sdl shebangfix tar:xz xorg
+# amd_ags_x64.so
+LIB_DEPENDS+=	libdrm.so:graphics/libdrm \
+		libdrm_amdgpu.so:graphics/libdrm
+
+# winewayland.so
+LIB_DEPENDS+=	libwayland-client.so:graphics/wayland \
+		libxkbcommon.so:x11/libxkbcommon \
+		libxkbregistry.so:x11/libxkbcommon
+
+USES=		autoreconf bison desktop-file-utils gl gmake gnome gstreamer llvm:${_LLVM_VERSION},build localbase perl5 pkgconfig python:build sdl shebangfix tar:xz xorg
 USE_GCC=	yes
-PIE_UNSAFE=	yes
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	ValveSoftware
 GH_PROJECT=	wine
-GH_TAGNAME=	8a8ec5f86d8ab1e1d4c6bc88dda016b5e8cf479e
+GH_TAGNAME=	488fb296dda334a1e8555a9dd8f5cbe09be2afe5
 
 USE_GL=		gl
 USE_GNOME=	glib20
-USE_GSTREAMER=	gl mpeg2dec x264 # https://github.com/ValveSoftware/wine/commit/8cdd506d7e68c27cd564c317320bfc8d3a999eda
+USE_GSTREAMER=	gl good mpeg2dec x264 # https://github.com/ValveSoftware/wine/commit/8cdd506d7e68c27cd564c317320bfc8d3a999eda
+USE_PERL5=	build
 USE_SDL=	sdl2
 USE_XORG=	x11 xext xcomposite xcursor xi xinerama xrandr xrender
 
@@ -43,6 +52,8 @@ GNU_CONFIGURE=		yes
 GNU_CONFIGURE_PREFIX=	${PREFIX}/${PORTNAME}
 
 CONFIGURE_ARGS=	--verbose \
+		--enable-archs=${ARCH:S|amd64|x86_64|} \
+		--with-mingw CROSSCC="clang" CROSSCFLAGS="-isystem ${FILESDIR}/clang" \
 		--libdir=${PREFIX}/${PORTNAME}/lib \
 		--disable-kerberos \
 		--disable-tests \
@@ -52,16 +63,15 @@ CONFIGURE_ARGS=	--verbose \
 		--with-gstreamer \
 		--with-opengl \
 		--with-oss \
+		--with-pthread \
 		--with-sdl \
 		--with-vulkan \
+		--with-wayland \
 		--with-x \
 		--with-xinerama \
 		--with-xinput2 \
 		--with-xrandr \
 		--with-xrender \
-		--with-pcap \
-		--with-pthread \
-		--with-mingw CROSSCC="clang" CROSSCFLAGS="-isystem ${FILESDIR}/clang" \
 		--without-alsa \
 		--without-capi \
 		--without-coreaudio \
@@ -76,6 +86,7 @@ CONFIGURE_ARGS=	--verbose \
 		--without-netapi \
 		--without-opencl \
 		--without-osmesa \
+		--without-pcap \
 		--without-pcsclite \
 		--without-sane \
 		--without-udev \
@@ -85,7 +96,9 @@ CONFIGURE_ARGS=	--verbose \
 
 CONFIGURE_ENV=	CPPBIN="false" CPPFLAGS="" FLEX="${LOCALBASE}/bin/flex" JXRLIB_CFLAGS="-I${LOCALBASE}/include/jxrlib"
 
-CFLAGS+=	-D__NR_futex="-1" -Werror=implicit-function-declaration
+CFLAGS+=	-D__NR_futex="-1" -Werror=implicit-function-declaration -Wno-int-conversion
+CFLAGS_i386+=	-mpreferred-stack-boundary=4 -mstackrealign
+PIE_UNSAFE=	yes
 
 BINARY_ALIAS+=	clang=${LOCALBASE}/bin/clang${_LLVM_VERSION} \
 		lld-link=${LOCALBASE}/bin/lld-link${_LLVM_VERSION}
@@ -115,12 +128,16 @@ CONFIGURE_ARGS+=--enable-win64
 PLIST_SUB+=	WINE32="" WINE64="@comment " WINEARCH="i386"
 .endif
 
+post-patch:
+	${REINPLACE_CMD} 's/CFLAGS="$$llvm_extra_cflags $$llvm_cflags"/CFLAGS="$$CROSSCFLAGS $$llvm_extra_cflags $$llvm_cflags"/g' ${WRKSRC}/configure.ac
+
 pre-configure:
 	cd ${WRKSRC} && ${PYTHON_CMD} dlls/winevulkan/make_vulkan --xml vk.xml
+	cd ${WRKSRC} && ${PERL5} tools/make_specfiles
 
 pre-build:
 	cd ${WRKSRC} && ${MAKE_CMD} depend
-	cd ${WRKSRC} && tools/make_requests
+	cd ${WRKSRC} && ${PERL5} tools/make_requests
 
 post-install:
 .if ${ARCH} == i386
@@ -131,14 +148,13 @@ post-install:
 .else
 	${INSTALL_SCRIPT} ${FILESDIR}/pkg32.sh                ${STAGEDIR}${PREFIX}/${PORTNAME}/bin/pkg32.sh
 	${MV} ${STAGEDIR}${PREFIX}/${PORTNAME}/bin/wine64     ${STAGEDIR}${PREFIX}/${PORTNAME}/bin/wine64.bin
-	-${ELFCTL} -e +noaslr                                 ${STAGEDIR}${PREFIX}/${PORTNAME}/bin/wine64.bin
 	${INSTALL_SCRIPT} ${FILESDIR}/wine.sh                 ${STAGEDIR}${PREFIX}/${PORTNAME}/bin/wine64
 	${INSTALL_SCRIPT} ${FILESDIR}/wine-wow64.sh           ${STAGEDIR}${PREFIX}/${PORTNAME}/bin/wine
 .endif
 	${RM} -r ${STAGEDIR}${PREFIX}/${PORTNAME}/include
-	${RM} -r ${STAGEDIR}${PREFIX}/man
+	${RM} -r ${STAGEDIR}${PREFIX}/share/man
 	${MKDIR} ${STAGEDIR}${DOCSDIR}
-.for i in README ANNOUNCE AUTHORS
+.for i in README.md ANNOUNCE.md AUTHORS
 	${INSTALL_DATA} ${WRKSRC}/${i} ${STAGEDIR}${DOCSDIR}
 .endfor
 

@@ -1,7 +1,7 @@
 PORTNAME=	jalv-select
 DISTVERSIONPREFIX=	v
 DISTVERSION=	1.3
-PORTREVISION=	6
+PORTREVISION=	7
 CATEGORIES=	audio
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -25,7 +25,7 @@ USES=		compiler:c++11-lang gettext-runtime gmake gnome pkgconfig xorg
 USE_GITHUB=	yes
 GH_ACCOUNT=	brummer10
 GH_PROJECT=	jalv_select
-USE_GNOME=	atk atkmm cairo gdkpixbuf2 glib20 glibmm gtk20 gtkmm24 pango pangomm
+USE_GNOME=	atk atkmm cairo gdkpixbuf glib20 glibmm gtk20 gtkmm24 pango pangomm
 USE_XORG=	x11
 
 MAKE_ARGS=	MAN_DIR=${PREFIX}/share/man/man1

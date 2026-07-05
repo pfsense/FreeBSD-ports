@@ -1,5 +1,5 @@
 PORTNAME=	anope
-PORTVERSION=	2.0.14
+DISTVERSION=	2.0.18
 CATEGORIES=	irc
 
 MAINTAINER=	devnull@apt322.org
@@ -16,6 +16,9 @@ SHEBANG_FILES=	${WRKSRC}/src/tools/*.sh
 
 CMAKE_ARGS=	-DINSTDIR:STRING="${PREFIX}/anope"
 CFLAGS_amd64=	-fPIC
+
+CONFLICTS_INSTALL=	anope-devel
+
 SUB_FILES=	pkg-message
 
 OPTIONS_DEFINE=		GNUTLS LDAP MYSQL NLS OPENSSL PCRE POSIX REDIS SASL \
@@ -31,12 +34,13 @@ GNUTLS_LIB_DEPENDS=	libgnutls.so:security/gnutls
 LDAP_USES=	ldap
 
 MYSQL_USES=	mysql
+MYSQL_CMAKE_ON=	-DEXTRA_LIBS:STRING="${LOCALBASE}/lib/mysql/"
 
 NLS_USES=	gettext
 
 OPENSSL_USES=	ssl
 
-PCRE_LIB_DEPENDS=	libpcre.so:devel/pcre
+PCRE_LIB_DEPENDS=	libpcre2-8.so:devel/pcre2
 
 REDIS_RUN_DEPENDS=	redis>=0:databases/redis
 
@@ -69,7 +73,7 @@ post-patch-OPENSSL-on:
 	${LN} -s ${WRKSRC}/modules/extra/m_ssl_openssl.cpp ${WRKSRC}/modules/
 
 post-patch-PCRE-on:
-	${LN} -s ${WRKSRC}/modules/extra/m_regex_pcre.cpp ${WRKSRC}/modules/
+	${LN} -s ${WRKSRC}/modules/extra/m_regex_pcre2.cpp ${WRKSRC}/modules/
 
 post-patch-POSIX-on:
 	${LN} -s ${WRKSRC}/modules/extra/m_regex_posix.cpp ${WRKSRC}/modules/

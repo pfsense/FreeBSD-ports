@@ -1,14 +1,15 @@
 PORTNAME=	skk-jisyo
 DISTVERSIONPREFIX=	g
 DISTVERSION=	20240130
+PORTREVISION=	2
 CATEGORIES=	japanese
 .if defined(WITH_SKKJISYO_CDB)
 PKGNAMESUFFIX=	-cdb
 .endif
 
-MAINTAINER?=	ports@FreeBSD.org
+MAINTAINER=	mew14930xvi@inbox.lv
 COMMENT?=	Jisyo (dictionary) files for the SKK Japanese-input software
-WWW=		http://openlab.jp/skk/
+WWW=		http://openlab.jp/skk/dic.html
 
 LICENSE=	GPLv2+
 
@@ -21,13 +22,7 @@ GH_ACCOUNT=	skk-dev
 GH_PROJECT=	dict
 GH_TAGNAME=	b798a46
 
-SKKDIR?=	share/skk
-SKK_JISYO_TYPE?=L M S
-
-PLIST_SUB+=		SKKDIR=${SKKDIR}
-.for type in ${SKK_JISYO_TYPE}
-PLIST_FILES+=		${SKKDIR}/SKK-JISYO.${type}${CDBSUFFIX}
-.endfor
+NO_ARCH=	yes
 
 .if defined(WITH_SKKJISYO_CDB)
 CDBSUFFIX=		.cdb
@@ -35,6 +30,14 @@ CDBSUFFIX=		.cdb
 CDBSUFFIX=		#empty
 NO_BUILD=		yes
 .endif
+
+SKKDIR?=	share/skk
+SKK_JISYO_TYPE?=L JIS2 JIS3_4
+
+.for type in ${SKK_JISYO_TYPE}
+PLIST_FILES+=		${SKKDIR}/SKK-JISYO.${type}${CDBSUFFIX}
+.endfor
+PLIST_SUB+=		SKKDIR=${SKKDIR}
 
 .if defined(WITH_SKKJISYO_DELCOMMENTS)
 # Strip comments in transtation candidates list.
@@ -69,10 +72,10 @@ do-build:
 .endif
 
 do-install:
-	${MKDIR} ${STAGEDIR}${PREFIX}/${SKKDIR}
+	@${MKDIR} ${STAGEDIR}${PREFIX}/${SKKDIR}
 .for type in ${SKK_JISYO_TYPE}
 	${INSTALL_DATA} ${WRKSRC}/SKK-JISYO.${type}${CDBSUFFIX} \
-		${STAGEDIR}${PREFIX}/${SKKDIR}/SKK-JISYO.${type}${CDBSUFFIX}
+		${STAGEDIR}${PREFIX}/${SKKDIR}/
 .endfor
 
 .include <bsd.port.mk>

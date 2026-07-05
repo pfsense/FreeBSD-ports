@@ -1,9 +1,9 @@
 PORTNAME=	icewm
-PORTVERSION=	3.4.7
+PORTVERSION=	4.0.0
 CATEGORIES=	x11-wm
 MASTER_SITES=	https://github.com/ice-wm/icewm/releases/download/${PORTVERSION}/
 
-MAINTAINER=	portmaster@bsdforge.com
+MAINTAINER=	danfe@FreeBSD.org
 COMMENT=	Window manager designed for speed and usability
 WWW=		https://ice-wm.org/
 
@@ -19,14 +19,14 @@ USES=		compiler:c++11-lang gmake gnome iconv:translit localbase \
 		perl5 pkgconfig shebangfix tar:lz xorg
 USE_GNOME=	glib20
 USE_PERL5=	build
-USE_XORG=	ice sm x11 xcomposite xdamage xext xfixes xpm xrender
+USE_XORG=	ice sm x11 xcomposite xcursor xdamage xext xfixes xrender
 GNU_CONFIGURE=	yes
-GNU_CONFIGURE_MANPREFIX=	${PREFIX}/share
 CONFIGURE_ARGS=	--with-icesound=oss
 SHEBANG_FILES=	contrib/icewm-menu-xrandr
 
-OPTIONS_DEFINE=		BEASTIE DOCS IMLIB2 LIBRSVG2 NLS XFT XINERAMA XRANDR
-OPTIONS_DEFAULT=	BEASTIE IMLIB2 XFT XINERAMA XRANDR
+OPTIONS_DEFINE=		BEASTIE DOCS IMLIB2 LIBRSVG2 NLS XFT XINERAMA \
+			XRANDR XRES
+OPTIONS_DEFAULT=	BEASTIE IMLIB2 XFT XINERAMA XRANDR XRES
 OPTIONS_SUB=		yes
 
 BEASTIE_DESC=		Use Beastie'fied startup button
@@ -49,10 +49,14 @@ XFT_LIB_DEPENDS=	libXft.so:x11-fonts/libXft
 XFT_CONFIGURE_OFF=	--enable-corefonts --disable-xfreetype
 
 XINERAMA_USE=		XORG=xinerama
-XINERAMA_CONFIGURE_ENABLE=	xinerama
+XINERAMA_CONFIGURE_OFF=	--disable-xinerama
 
 XRANDR_USE=		XORG=xrandr
-XRANDR_CONFIGURE_ENABLE=	xrandr
+XRANDR_CONFIGURE_OFF=	--disable-xrandr
+
+XRES_DESC=		X11 XResource extension support
+XRES_USE=		XORG=xres
+XRES_CONFIGURE_OFF=	--disable-xres
 
 post-extract:
 .for dir in taskbar themes/Infadel2/taskbar

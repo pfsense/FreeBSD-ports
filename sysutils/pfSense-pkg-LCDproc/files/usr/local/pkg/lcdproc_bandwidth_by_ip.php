@@ -3,7 +3,7 @@
  * lcdproc_bandwidth_by_ip.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2004-2024 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2004-2026 Rubicon Communications, LLC (Netgate)
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -90,7 +90,7 @@ if ($hostipformat != "") {
 				} else {
 					$iplookup[$hostent['ipaddr']] = $hostent['hostname'];
 					if ($hostipformat == "fqdn") {
-						$iplookup[$hostent['ipaddr']] .= "." . $config['system']['domain'];
+						$iplookup[$hostent['ipaddr']] .= "." . config_get_path('system/domain');
 					}
 				}
 			}

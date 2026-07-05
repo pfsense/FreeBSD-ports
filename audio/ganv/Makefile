@@ -1,6 +1,6 @@
 PORTNAME=	ganv
 DISTVERSION=	1.8.2
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	audio
 MASTER_SITES=	https://download.drobilla.net/
 
@@ -16,7 +16,7 @@ LIB_DEPENDS=	libcgraph.so:graphics/graphviz \
 		libfreetype.so:print/freetype2
 
 USES=		compiler:c++11-lang gettext gnome localbase:ldflags meson pkgconfig tar:xz
-USE_GNOME=	atk atkmm cairo cairomm gdkpixbuf2 glib20 glibmm gtk20 gtkmm24 introspection:build libsigc++20 pango pangomm
+USE_GNOME=	atk atkmm cairo cairomm gdkpixbuf glib20 glibmm gtk20 gtkmm24 introspection:build libsigc++20 pango pangomm
 USE_LDCONFIG=	yes
 
 .include <bsd.port.mk>

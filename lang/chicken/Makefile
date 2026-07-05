@@ -1,6 +1,5 @@
 PORTNAME=	chicken
-DISTVERSION=	5.3.0
-PORTREVISION=	2
+DISTVERSION=	5.4.0
 PORTEPOCH=	1
 CATEGORIES=	lang scheme
 MASTER_SITES=	https://code.call-cc.org/releases/${DISTVERSION}/

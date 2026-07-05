@@ -1,6 +1,6 @@
 PORTNAME=	result
 PORTVERSION=	1.5
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	devel
 PKGNAMEPREFIX=	ocaml-
 
@@ -13,8 +13,7 @@ LICENSE_FILE=	${WRKSRC}/LICENSE.md
 
 BUILD_DEPENDS=	dune:devel/ocaml-dune
 
-USES=		gmake
-USE_OCAML=	yes
+USES=		gmake ocaml
 USE_GITHUB=	yes
 GH_ACCOUNT=	janestreet
 
@@ -22,5 +21,14 @@ ALL_TARGET=	default
 MAKE_ENV=	LIBDIR=${PREFIX}/${OCAML_SITELIBDIR}
 
 OPTIONS_DEFINE=	DOCS
+
+.include <bsd.port.options.mk>
+
+.if ${ARCH} == powerpc
+USE_BINUTILS=	yes
+.endif
+
+post-install:
+	@${STRIP_CMD} ${STAGEDIR}${PREFIX}/${OCAML_SITELIBDIR}/result/result.cmxs
 
 .include <bsd.port.mk>

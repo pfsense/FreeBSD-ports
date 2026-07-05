@@ -1,7 +1,6 @@
 PORTNAME=	pssh
-PORTVERSION=	2.3.5
-PORTREVISION=	1
 DISTVERSIONPREFIX=	v
+DISTVERSION=	2.3.6
 CATEGORIES=	security net sysutils
 
 MAINTAINER=	timp87@gmail.com
@@ -16,9 +15,10 @@ BUILD_DEPENDS=	${PY_SETUPTOOLS} \
 RUN_DEPENDS=	rsync:net/rsync
 
 USES=		python
-USE_PYTHON=	autoplist pep517
+USE_PYTHON=	autoplist noflavors pep517
 USE_GITHUB=	yes
 GH_ACCOUNT=	lilydjwg
 
 NO_ARCH=	yes
+
 .include <bsd.port.mk>

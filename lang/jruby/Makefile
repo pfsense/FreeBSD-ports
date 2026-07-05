@@ -1,5 +1,6 @@
 PORTNAME=	jruby
 PORTVERSION=	9.2.17.0
+PORTREVISION=	1
 DISTVERSIONPREFIX=	bin-
 CATEGORIES=	lang ruby java
 MASTER_SITES=	http://jruby.org.s3.amazonaws.com/downloads/${PORTVERSION}/
@@ -13,10 +14,8 @@ LICENSE_COMB=	dual
 
 RUN_DEPENDS=	bash:shells/bash
 
-USES=		cpe
-USE_JAVA=	yes
+USES=		java cpe
 
-JAVA_VERSION=	8+
 NO_BUILD=	yes
 
 JRUBY_HOME?=	${PREFIX}/share/${PORTNAME}

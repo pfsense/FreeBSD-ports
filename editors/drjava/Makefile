@@ -1,6 +1,6 @@
 PORTNAME=	drjava
 DISTVERSION=	20140826-r5761
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	editors java
 MASTER_SITES=	SF/${PORTNAME}/1.%20DrJava%20Stable%20Releases/${PORTNAME}-stable-${DISTVERSION}
 DISTNAME=	${PORTNAME}-stable-${PORTVERSION:S|.|-|g}
@@ -11,8 +11,9 @@ MAINTAINER=	nivit@FreeBSD.org
 COMMENT=	Lightweight IDE for writing Java programs
 WWW=		http://www.drjava.org
 
+USES=		java
+
 NO_BUILD=	yes
-USE_JAVA=	yes
 
 SUB_FILES=	${PORTNAME}
 SUB_LIST=	DRJAVAJAR=${DRJAVAJAR}

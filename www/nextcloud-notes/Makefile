@@ -1,9 +1,7 @@
 PORTNAME=	notes
-PORTVERSION=	4.9.4
+PORTVERSION=	4.13.1
 DISTVERSIONPREFIX=	v
 CATEGORIES=	www editors
-MASTER_SITES=	https://github.com/nextcloud/${PORTNAME}/releases/download/${DISTVERSIONPREFIX}${PORTVERSION}/
-DISTNAME=	${PORTNAME}
 
 MAINTAINER=	brnrd@FreeBSD.org
 COMMENT=	Notes app for Nextcloud
@@ -11,7 +9,7 @@ WWW=		https://apps.nextcloud.com/apps/notes
 
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-NEXTCLOUD_RUN_DEPENDS=	25
+NEXTCLOUD_RUN_DEPENDS=	28
 
 USES=		nextcloud php:flavors
 

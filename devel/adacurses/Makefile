@@ -1,8 +1,7 @@
 PORTNAME=	adacurses
-DISTVERSION=	20211021
-PORTREVISION=	1
+DISTVERSION=	20251230
 CATEGORIES=	devel
-MASTER_SITES=	ftp://ftp.invisible-island.net/AdaCurses/
+MASTER_SITES=	https://invisible-island.net/archives/AdaCurses/
 DISTNAME=	AdaCurses-${DISTVERSION}
 
 MAINTAINER=	fluffy@FreeBSD.org
@@ -12,10 +11,11 @@ WWW=		https://invisible-island.net/ncurses/ncurses-Ada95.html
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/README
 
-#BUILD_DEPENDS=	gsed:textproc/gsed
-#BINARY_ALIAS=	sed=${LOCALBASE}/bin/gsed
+BUILD_DEPENDS=	gprbuild>0:devel/gprbuild \
+		gsed:textproc/gsed
+BINARY_ALIAS=	sed=${LOCALBASE}/bin/gsed
 
-USES=		ada autoreconf gmake ncurses pkgconfig tar:tgz
+USES=		ada gmake ncurses pkgconfig tar:tgz
 
 GNU_CONFIGURE=	yes
 GNU_CONFIGURE_MANPREFIX=${PREFIX}/share
@@ -28,6 +28,10 @@ PORTDOCS=	ada Ada95.html
 PLIST_SUB=	atic=adacurses/terminal_interface-curses
 
 OPTIONS_DEFINE=	DOCS
+
+DATADIR=	${PREFIX}/share/AdaCurses
+
+PIE_UNSAFE=	yes
 
 post-patch:
 	@${REINPLACE_CMD} -e '/(INSTALL_PROG)/d' -e 's|@ADAGEN_LDFLAGS@||' \

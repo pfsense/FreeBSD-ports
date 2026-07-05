@@ -1,20 +1,20 @@
---- chrome/test/chromedriver/keycode_text_conversion_unittest.cc.orig	2022-09-24 10:57:32 UTC
+--- chrome/test/chromedriver/keycode_text_conversion_unittest.cc.orig	2026-03-13 06:02:14 UTC
 +++ chrome/test/chromedriver/keycode_text_conversion_unittest.cc
-@@ -67,7 +67,7 @@ std::string ConvertKeyCodeToTextNoError(ui::KeyboardCo
+@@ -64,7 +64,7 @@ std::string ConvertKeyCodeToTextNoError(ui::KeyboardCo
  
- // TODO(crbug.com/1052397): Revisit the macro expression once build flag switch
- // of lacros-chrome is complete.
--#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS_LACROS)
-+#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS_LACROS) || BUILDFLAG(IS_BSD)
- // Fails on bots: crbug.com/174962
+ }  // namespace
+ 
+-#if BUILDFLAG(IS_LINUX)
++#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_BSD)
+ // Fails on bots: crbug.com/40301345
  #define MAYBE_KeyCodeToText DISABLED_KeyCodeToText
  #else
-@@ -104,7 +104,7 @@ TEST(KeycodeTextConversionTest, MAYBE_KeyCodeToText) {
+@@ -98,7 +98,7 @@ TEST(KeycodeTextConversionTest, MAYBE_KeyCodeToText) {
+       ConvertKeyCodeToTextNoError(ui::VKEY_SHIFT, kShiftKeyModifierMask));
+ }
  
- // TODO(crbug.com/1052397): Revisit the macro expression once build flag switch
- // of lacros-chrome is complete.
--#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS_LACROS)
-+#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS_LACROS) || BUILDFLAG(IS_BSD)
- // Fails on bots: crbug.com/174962
+-#if BUILDFLAG(IS_LINUX)
++#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_BSD)
+ // Fails on bots: crbug.com/40301345
  #define MAYBE_CharToKeyCode DISABLED_CharToKeyCode
  #else

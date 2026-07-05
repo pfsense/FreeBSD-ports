@@ -1,6 +1,6 @@
 PORTNAME=	c7
 PORTVERSION=	${LINUX_DIST_VER}
-PORTREVISION=	2
+PORTREVISION=	5
 CATEGORIES=	emulators linux
 PKGNAMEPREFIX=	linux_base-
 EXTRACT_ONLY=	${DISTFILES:N*${SRC_SUFX}*:Nfilesystem-*:C/:[^:]+$//}
@@ -12,9 +12,13 @@ USES=		linux:c7
 USE_LINUX=	# empty
 USE_LINUX_RPM=	yes
 
+# lib64/gconv/ stuff that is loaded dynamically and has rpath
+NO_SHLIB_REQUIRES_GLOB=	libCNS.so* libGB.so* libISOIR165.so* \
+			libJIS.so* libJISX0213.so* libKSC.so*
+
 BIN_DISTNAMES=	bash-4.2.46-35.el7_9 \
 		bzip2-1.0.6-13.el7 \
-		centos-release-7-9.2009.1.el7.centos \
+		centos-release-7-9.2009.2.el7.centos \
 		coreutils-8.22-24.el7_9.2 \
 		diffutils-3.3-6.el7_9 \
 		e2fsprogs-1.42.9-19.el7 \
@@ -25,12 +29,13 @@ BIN_DISTNAMES=	bash-4.2.46-35.el7_9 \
 		grep-2.20-3.el7 \
 		info-5.1-5.el7 \
 		keyutils-1.5.8-3.el7 \
-		less-458-9.el7 \
+		less-458-10.el7_9 \
 		ncurses-5.9-14.20130511.el7_4 \
 		sed-4.2.2-7.el7 \
 		setserial-2.17-33.el7 \
 		which-2.20-7.el7
-LIB_DISTNAMES=	bzip2-libs-1.0.6-13.el7 \
+LIB_DISTNAMES=	audit-libs-2.8.5-4.el7 \
+		bzip2-libs-1.0.6-13.el7 \
 		compat-db47-4.7.25-28.el7 \
 		e2fsprogs-libs-1.42.9-19.el7 \
 		gamin-0.1.10-16.el7 \
@@ -44,6 +49,7 @@ LIB_DISTNAMES=	bzip2-libs-1.0.6-13.el7 \
 		libattr-2.4.46-13.el7 \
 		libblkid-2.23.2-65.el7_9.1 \
 		libcap-2.22-11.el7 \
+		libcap-ng-0.7.5-4.el7 \
 		libcom_err-1.42.9-19.el7 \
 		libdb-5.3.21-25.el7 \
 		libffi-3.0.13-19.el7 \
@@ -54,6 +60,8 @@ LIB_DISTNAMES=	bzip2-libs-1.0.6-13.el7 \
 		libsepol-2.5-10.el7 \
 		libstdc++-4.8.5-44.el7 \
 		libuuid-2.23.2-65.el7_9.1 \
+		libverto-0.2.5-4.el7 \
+		mpfr-3.1.1-4.el7 \
 		ncurses-libs-5.9-14.20130511.el7_4 \
 		nss-softokn-freebl-3.90.0-6.el7_9 \
 		openssl-libs-1.0.2k-26.el7_9 \
@@ -78,10 +86,11 @@ SHARE_DISTNAMES=basesystem-10.0-7.el7.centos \
 		setup-2.8.71-11.el7
 SRC_DISTFILES=	acl-2.2.51-15.el7${SRC_SUFX}:SOURCE \
 		attr-2.4.46-13.el7${SRC_SUFX}:SOURCE \
+		audit-2.8.5-4.el7${SRC_SUFX}:SOURCE \
 		basesystem-10.0-7.el7.centos${SRC_SUFX}:SOURCE \
 		bash-4.2.46-35.el7_9${SRC_SUFX}:SOURCE \
 		bzip2-1.0.6-13.el7${SRC_SUFX}:SOURCE \
-		centos-release-7-9.2009.1.el7.centos${SRC_SUFX}:SOURCE \
+		centos-release-7-9.2009.2.el7.centos${SRC_SUFX}:SOURCE \
 		compat-db-4.7.25-28.el7${SRC_SUFX}:SOURCE \
 		compat-gcc-32-3.2.3-72.el7${SRC_SUFX}:SOURCE \
 		coreutils-8.22-24.el7_9.2${SRC_SUFX}:SOURCE \
@@ -94,18 +103,20 @@ SRC_DISTFILES=	acl-2.2.51-15.el7${SRC_SUFX}:SOURCE \
 		gcc-4.8.5-44.el7${SRC_SUFX}:SOURCE \
 		gdbm-1.10-8.el7${SRC_SUFX}:SOURCE \
 		glib2-2.56.1-9.el7_9${SRC_SUFX}:SOURCE \
-		glibc-${GLIBC_VER}${SRC_SUFX}:SOURCE \
+		glibc-${GLIBC_VER}${SRC_SUFX}:amd64 \
 		gmp-6.0.0-15.el7${SRC_SUFX}:SOURCE \
 		grep-2.20-3.el7${SRC_SUFX}:SOURCE \
 		keyutils-1.5.8-3.el7${SRC_SUFX}:SOURCE \
 		krb5-1.15.1-55.el7_9${SRC_SUFX}:SOURCE \
-		less-458-9.el7${SRC_SUFX}:SOURCE \
+		less-458-10.el7_9${SRC_SUFX}:SOURCE \
 		libcap-2.22-11.el7${SRC_SUFX}:SOURCE \
+		libcap-ng-0.7.5-4.el7${SRC_SUFX}:SOURCE \
 		libdb-5.3.21-25.el7${SRC_SUFX}:SOURCE \
 		libffi-3.0.13-19.el7${SRC_SUFX}:SOURCE \
 		libidn-1.28-4.el7${SRC_SUFX}:SOURCE \
 		libselinux-2.5-15.el7${SRC_SUFX}:SOURCE \
 		libsepol-2.5-10.el7${SRC_SUFX}:SOURCE \
+		mpfr-3.1.1-4.el7${SRC_SUFX}:SOURCE \
 		ncurses-5.9-14.20130511.el7_4${SRC_SUFX}:SOURCE \
 		nss-softokn-3.90.0-6.el7_9${SRC_SUFX}:SOURCE \
 		openssl-1.0.2k-26.el7_9${SRC_SUFX}:SOURCE \
@@ -139,7 +150,7 @@ REMOVE_FILES=	bin/chfn bin/chsh bin/findmnt bin/login bin/lsblk bin/lscpu \
 
 .include <bsd.port.options.mk>
 
-GLIBC_VER=	2.17-326.el7_9
+GLIBC_VER=	2.17-326.el7_9.3
 PLIST_SUB+=	NEWGLIBC=""
 
 .if ${ARCH} == aarch64 || ${ARCH} == amd64

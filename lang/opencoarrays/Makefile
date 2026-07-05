@@ -1,6 +1,6 @@
 PORTNAME=	opencoarrays
 DISTVERSION=	2.10.1
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	lang parallel
 
 MAINTAINER=	miguel@gocobachi.dev
@@ -22,6 +22,8 @@ USE_GITHUB=	yes
 GH_ACCOUNT=	sourceryinstitute
 GH_PROJECT=	OpenCoarrays
 USE_LDCONFIG=	yes
+
+CFLAGS+=	-fpermissive
 
 PLIST_SUB=	GCC_VER=${_GCC_VER} \
 		PORTVERSION=${PORTVERSION} \

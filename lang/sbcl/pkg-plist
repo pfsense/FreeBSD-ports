@@ -131,6 +131,21 @@ lib/sbcl/sb-cover/test-data-5.lisp
 lib/sbcl/sb-cover/test-data-6.lisp
 lib/sbcl/sb-cover/test-data-branching-forms.lisp
 lib/sbcl/sb-cover/tests.lisp
+lib/sbcl/sb-cover/file-info-tests.lisp
+lib/sbcl/sb-cover/genhtml.lisp
+lib/sbcl/sb-cover/save-restore-tests.lisp
+lib/sbcl/sb-cover/test-data-2-only.lisp
+lib/sbcl/sb-cover/test-data-comma.lisp
+lib/sbcl/sb-cover/test-data-if.lisp
+lib/sbcl/sb-cover/test-data-method-walk.lisp
+lib/sbcl/sb-cover/test-data-quote.lisp
+lib/sbcl/sb-cover/test-data-read-eval-cdr.lisp
+lib/sbcl/sb-cover/test-data-read-eval.lisp
+lib/sbcl/sb-cover/test-data-sharp-c.lisp
+lib/sbcl/sb-cover/test-data-sharp-plus-minus.lisp
+lib/sbcl/sb-cover/test-data-sharp-plus-sharp-dot.lisp
+lib/sbcl/sb-cover/test-data-suppressed.lisp
+lib/sbcl/sb-cover/test-data-utf8.lisp
 lib/sbcl/sb-executable/sb-executable.asd
 lib/sbcl/sb-executable/sb-executable.lisp
 lib/sbcl/sb-gmp/bench.lisp
@@ -173,6 +188,7 @@ lib/sbcl/sb-rotate-byte/compiler.lisp
 lib/sbcl/sb-rotate-byte/package.lisp
 lib/sbcl/sb-rotate-byte/ppc-vm.lisp
 lib/sbcl/sb-rotate-byte/ppc64-vm.lisp
+lib/sbcl/sb-rotate-byte/loongarch64-vm.lisp
 lib/sbcl/sb-rotate-byte/riscv-vm.lisp
 lib/sbcl/sb-rotate-byte/rotate-byte-tests.lisp
 lib/sbcl/sb-rotate-byte/rotate-byte.lisp
@@ -208,7 +224,6 @@ lib/sbcl/sb-rt/sb-rt.asd
 %%SIMD%%lib/sbcl/sb-simd/packages.lisp
 %%SIMD%%lib/sbcl/sb-simd/printable.lisp
 %%SIMD%%lib/sbcl/sb-simd/record.lisp
-%%SIMD%%lib/sbcl/sb-simd/sb-simd.asd
 %%SIMD%%lib/sbcl/sb-simd/utilities.lisp
 lib/sbcl/sb-simple-streams/classes.lisp
 lib/sbcl/sb-simple-streams/direct.lisp

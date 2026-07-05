@@ -1,0 +1,19 @@
+commit 6c00e3c78c4119b729aa5ecfe01e2a26d38505a3
+Author: Marcos Mendoza <mmendoza@netgate.com>
+Date:   Sat Dec 6 11:17:26 2025 -0600
+
+    Don't skip empty values when parsing filter logs. Fix #16575
+
+diff --git a/src/etc/inc/syslog.inc b/src/etc/inc/syslog.inc
+index d850571ed4..4b9c8e4fcb 100644
+--- a/src/etc/inc/syslog.inc
++++ b/src/etc/inc/syslog.inc
+@@ -1095,7 +1095,7 @@ function parse_firewall_log_line($line) {
+ 	list($all, $flent['time'], $host, $rule) = $log_split;
+ 	$flent['time'] = str_replace('T', ' ', $flent['time']);
+ 
+-	$rule_data = array_filter(explode(",", $rule));
++	$rule_data = explode(",", $rule);
+ 	$field = 0;
+ 
+ 	$flent['rulenum'] = $rule_data[$field++];

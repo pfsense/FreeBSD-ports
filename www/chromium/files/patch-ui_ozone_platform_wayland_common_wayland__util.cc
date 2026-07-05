@@ -1,11 +1,18 @@
---- ui/ozone/platform/wayland/common/wayland_util.cc.orig	2024-01-30 07:53:34 UTC
+--- ui/ozone/platform/wayland/common/wayland_util.cc.orig	2026-01-14 08:33:23 UTC
 +++ ui/ozone/platform/wayland/common/wayland_util.cc
-@@ -335,7 +335,7 @@ void TransformToWlArray(
- }
+@@ -417,6 +417,7 @@ void RecordConnectionMetrics(wl_display* display) {
+         {"weston", WaylandCompositor::kWeston},
+     };
  
- base::TimeTicks EventMillisecondsToTimeTicks(uint32_t milliseconds) {
--#if BUILDFLAG(IS_LINUX)
-+#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_BSD)
-   // TODO(crbug.com/1499638): `milliseconds` comes from Weston that
-   // uses timestamp from libinput, which is different from TimeTicks.
-   // Use EventTimeForNow(), for now.
++#if !BUILDFLAG(IS_BSD)
+     const int fd = wl_display_get_fd(display);
+     if (fd == -1) {
+       return WaylandCompositor::kUnknown;
+@@ -442,6 +443,7 @@ void RecordConnectionMetrics(wl_display* display) {
+         return compositor;
+       }
+     }
++#endif
+ 
+     return WaylandCompositor::kOther;
+   };

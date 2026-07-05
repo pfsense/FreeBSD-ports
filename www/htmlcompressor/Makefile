@@ -1,6 +1,6 @@
 PORTNAME=	htmlcompressor
 PORTVERSION=	1.5.3
-PORTREVISION=	3
+PORTREVISION=	4
 CATEGORIES=	www java
 MASTER_SITES=	https://github.com/serg472/htmlcompressor/releases/download/${PORTVERSION}/
 EXTRACT_SUFX=	.jar
@@ -12,8 +12,9 @@ WWW=		https://github.com/serg472/htmlcompressor
 
 LICENSE=	APACHE20
 
+USES=		java
+
 NO_WRKSUBDIR=	yes
-USE_JAVA=	yes
 NO_BUILD=	yes
 NO_ARCH=	yes
 

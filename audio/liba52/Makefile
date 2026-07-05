@@ -1,6 +1,6 @@
 PORTNAME=	liba52
 DISTVERSION=	0.8.0
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	audio
 MASTER_SITES=	https://distfiles.adelielinux.org/source/a52dec/
 DISTNAME=	a52dec-${DISTVERSION}
@@ -12,11 +12,12 @@ WWW=		https://git.adelielinux.org/community/a52dec/
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-USES=		autoreconf libtool pathfix
+USES=		autoreconf libtool
+USE_CSTD=	gnu89
 USE_LDCONFIG=	yes
 
 GNU_CONFIGURE=	yes
-GNU_CONFIGURE_MANPREFIX=${PREFIX}/share
+
 INSTALL_TARGET=	install-strip
 TEST_TARGET=	check
 

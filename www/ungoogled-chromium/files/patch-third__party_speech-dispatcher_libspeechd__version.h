@@ -1,4 +1,4 @@
---- third_party/speech-dispatcher/libspeechd_version.h.orig	2024-03-22 14:16:19 UTC
+--- third_party/speech-dispatcher/libspeechd_version.h.orig	2026-03-15 18:32:51 UTC
 +++ third_party/speech-dispatcher/libspeechd_version.h
 @@ -0,0 +1,29 @@
 +/*

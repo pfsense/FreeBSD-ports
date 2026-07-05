@@ -8,7 +8,7 @@
  * nut.xml
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2004-2024 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2004-2026 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2016 Denny Page
  * Copyright (c) 2016 Sander Peterse <sander.peterse88@gmail.com>
  * All rights reserved.
@@ -30,8 +30,9 @@
 	<name>nut</name>
 	<version>%%PKGVERSION%%</version>
 	<title>Services: UPS</title>
-	<savetext>Change</savetext>
+	<donotsave>true</donotsave>
 	<include_file>/usr/local/pkg/nut/nut.inc</include_file>
+	<ramdisk_dir_names>nut</ramdisk_dir_names>
 	<menu>
 		<name>UPS</name>
 		<tooltiptext>Network UPS Tools status</tooltiptext>

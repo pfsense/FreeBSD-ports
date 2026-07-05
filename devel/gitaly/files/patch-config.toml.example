@@ -1,11 +1,11 @@
---- config.toml.example.orig	2024-01-17 10:05:29 UTC
+--- config.toml.example.orig	2025-08-20 06:37:58 UTC
 +++ config.toml.example
 @@ -2,10 +2,10 @@
- # For Gitaly documentation, see https://docs.gitlab.com/ee/administration/gitaly/.
+ # For Gitaly documentation, see https://docs.gitlab.com/administration/gitaly/.
  
  # A path which Gitaly should open a Unix socket.
 -socket_path = "/home/git/gitlab/tmp/sockets/private/gitaly.socket"
-+socket_path = "%%PREFIX%%/www/gitlab-ce/tmp/sockets/private/gitaly.socket"
++socket_path = "%%PREFIX%%/www/gitlab/tmp/sockets/private/gitaly.socket"
  
  # Directory containing Gitaly executables.
 -bin_dir = "/home/git/gitaly/_build/bin"
@@ -13,20 +13,7 @@
  
  # # Optional. The directory where Gitaly can create all files required to
  # # properly operate at runtime. If not set, Gitaly will create a directory in
-@@ -40,9 +40,9 @@ bin_dir = "/home/git/gitaly/_build/bin"
- # key_path = '/home/git/key.pem'
- 
- # # Git settings
--# [git]
--# # Path to Git binary. If not set, is resolved using PATH.
--# bin_path = "/usr/bin/git"
-+[git]
-+# Path to Git binary. If not set, is resolved using PATH.
-+bin_path = "%%PREFIX%%/bin/git"
- # # Maximum number of cached 'cat-file' processes, which constitute a pair of 'git cat-file --batch' and
- # # 'git cat-file --batch-check' processes. Defaults to '100'.
- # catfile_cache_size = 100
-@@ -58,7 +58,7 @@ bin_dir = "/home/git/gitaly/_build/bin"
+@@ -58,7 +58,7 @@ name = "default"
  # # The name of the storage
  name = "default"
  # # The path to the storage.
@@ -35,20 +22,7 @@
  
  # # You can optionally configure more storages for this Gitaly instance to serve up
  #
-@@ -68,9 +68,9 @@ path = "/home/git/repositories"
- #
- 
- # # Optional. Configure Gitaly to output JSON-formatted log messages to stdout.
--# [logging]
--# # Directory where Gitaly stores extra log files.
--dir = "/home/git/gitlab/log"
-+[logging]
-+# Directory where Gitaly stores extra log files.
-+dir = "%%PREFIX%%/www/gitlab-ce/log"
- # # Log format. Either 'text' or 'json'.
- # format = "json"
- # # Optional. Set log level to only log entries with that severity or above.
-@@ -91,18 +91,18 @@ sentry_environment = ""
+@@ -89,18 +89,18 @@ sentry_environment = ""
  # # Custom Git hooks that are used to perform tasks based on changes performed in any repository.
  [hooks]
  # # Directory where custom Git hooks are installed. If left unset, no custom hooks are used.
@@ -59,7 +33,7 @@
  [gitlab]
  # # URL of the GitLab server.
 -url = "http+unix://%2Fhome%2Fgit%2Fgitlab%2Ftmp%2Fsockets%2Fgitlab-workhorse.socket"
-+url = "http+unix://%2Fusr%2Flocal%2Fwww%2Fgitlab-ce%2Ftmp%2Fsockets%2Fgitlab-workhorse.socket"
++url = "http+unix://%2Fusr%2Flocal%2Fwww%2Fgitlab%2Ftmp%2Fsockets%2Fgitlab-workhorse.socket"
  # # 'relative_url_root' is only needed if a UNIX socket is used in 'url' and GitLab is configured to
  # # use a relative path. For example, '/gitlab'.
  # relative_url_root = '/'

@@ -1,9 +1,9 @@
---- chrome/browser/ui/actions/chrome_action_id.h.orig	2024-02-04 14:46:08 UTC
+--- chrome/browser/ui/actions/chrome_action_id.h.orig	2026-03-24 16:59:08 UTC
 +++ chrome/browser/ui/actions/chrome_action_id.h
-@@ -526,7 +526,7 @@
-     IDC_CONTENT_CONTEXT_QUICK_ANSWERS_INLINE_ANSWER) \
-   E(kActionContentContextQuickAnswersInlineQuery, \
-     IDC_CONTENT_CONTEXT_QUICK_ANSWERS_INLINE_QUERY)
+@@ -530,7 +530,7 @@
+ #if BUILDFLAG(IS_CHROMEOS)
+ #define CHROME_PLATFORM_SPECIFIC_ACTION_IDS \
+   E(kToggleMultitaskMenu, IDC_TOGGLE_MULTITASK_MENU)
 -#elif BUILDFLAG(IS_LINUX)
 +#elif BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_BSD)
  #define CHROME_PLATFORM_SPECIFIC_ACTION_IDS \

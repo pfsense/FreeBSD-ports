@@ -2,11 +2,9 @@ pkg/haproxy.xml
 pkg/haproxy/haproxy.inc
 pkg/haproxy/haproxy_gui.inc
 pkg/haproxy/haproxy_socketinfo.inc
-pkg/haproxy/haproxy_xmlrpcsyncclient.inc
 pkg/haproxy/haproxy_htmllist.inc
 pkg/haproxy/haproxy_utils.inc
 pkg/haproxy/haproxy_socket.sh
-pkg/haproxy/haproxy_sync.sh
 pkg/haproxy/pkg_haproxy_tabs.inc
 pkg/haproxy/haproxy_upgrade_config.inc
 www/haproxy/haproxy_listeners.php

@@ -8,7 +8,7 @@
  * cron.xml
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2015-2024 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2015-2026 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2008 Mark J Crane
  * All rights reserved.
  *
@@ -29,6 +29,7 @@
 	<name>cron</name>
 	<version>%%PKGVERSION%%</version>
 	<title>Cron Settings</title>
+	<donotsave>true</donotsave>
 	<include_file>/usr/local/pkg/cron.inc</include_file>
 	<menu>
 		<name>Cron</name>

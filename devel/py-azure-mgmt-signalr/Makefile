@@ -1,10 +1,11 @@
 PORTNAME=	azure-mgmt-signalr
 DISTVERSION=	2.0.0b1
+PORTREVISION=	1
 CATEGORIES=	devel python
 MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
-MAINTAINER=	dbaio@FreeBSD.org
+MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Microsoft Azure SignalR Management Client Library for Python
 WWW=		https://pypi.org/project/azure-mgmt-signalr/
 

@@ -1,5 +1,6 @@
 PORTNAME=	sentry-cli
 DISTVERSION=	2.31.0
+PORTREVISION=	20
 CATEGORIES=	devel
 
 MAINTAINER=	lcook@FreeBSD.org
@@ -25,9 +26,6 @@ OPTIONS_DEFAULT=	REPORTING
 
 REPORTING_DESC=	Enable crash reporting
 REPORTING_VARS=	CARGO_FEATURES+=with_crash_reporting
-
-post-install:
-	${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/${PORTNAME}
 
 post-install-DOCS-on:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}

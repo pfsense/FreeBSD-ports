@@ -4,7 +4,7 @@ DISTVERSION=	0.9.7
 PORTREVISION=	1
 CATEGORIES=	editors ruby
 
-MAINTAINER=	christopher.petrik@usm.edu
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Console editor for the masses
 WWW=		https://github.com/Pistos/diakonos
 

@@ -1,6 +1,6 @@
 PORTNAME=	kitty
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.33.1
+DISTVERSION=	0.46.2
 PORTREVISION=	0
 CATEGORIES=	x11 wayland
 
@@ -13,14 +13,18 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 
 BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}furo>0:textproc/py-furo@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}matplotlib>0:math/py-matplotlib@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}sphinx-autobuild>=2025.8.25:textproc/py-sphinx-autobuild@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}sphinx-copybutton>0:textproc/py-sphinx-copybutton@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}sphinx-inline-tabs>0:textproc/py-sphinx-inline-tabs@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}sphinxext-opengraph>0:textproc/py-sphinxext-opengraph@${PY_FLAVOR} \
-		roboto-fonts-ttf>0:x11-fonts/roboto-fonts-ttf \
-		sphinx-build:textproc/py-sphinx@${PY_FLAVOR} \
+		nerd-fonts-symbols>=3.1.1:x11-fonts/nerd-fonts-symbols \
+		roboto-fonts-ttf>=2.134:x11-fonts/roboto-fonts-ttf \
 		simde>=0.7.6:devel/simde \
+		sphinx-build:textproc/py-sphinx@${PY_FLAVOR} \
+		urw-base35-fonts>=20200910:x11-fonts/urw-base35-fonts \
 		wayland-protocols>=0:graphics/wayland-protocols
-LIB_DEPENDS=	libcanberra.so:audio/libcanberra \
+LIB_DEPENDS=	libcairo.so:graphics/cairo \
+		libcanberra.so:audio/libcanberra \
 		libdbus-1.so:devel/dbus \
 		libepoll-shim-interpose.so:devel/libepoll-shim \
 		libfontconfig.so:x11-fonts/fontconfig \
@@ -35,15 +39,14 @@ LIB_DEPENDS=	libcanberra.so:audio/libcanberra \
 		libxxhash.so:devel/xxhash
 
 USES=		compiler:c11 cpe desktop-file-utils gettext-runtime gl gmake \
-		go:1.22,modules magick pkgconfig python shebangfix ssl tar:xz \
+		go:modules,1.26 magick pkgconfig python shebangfix ssl tar:xz \
 		terminfo xorg
 CPE_VENDOR=	kitty_project
 
 USE_GL=		gl
 USE_XORG=	x11 xcb xcursor xi xinerama xrandr
 
-SHEBANG_FILES=	build-terminfo count-lines-of-code mypy-editor-integration \
-		update-on-ox
+SHEBANG_FILES=	build-terminfo count-lines-of-code update-on-ox
 SHEBANG_GLOB=	*.py
 
 GO_MODULE=	github.com/kovidgoyal/kitty
@@ -54,6 +57,8 @@ TEST_TARGET=	test
 
 CPPFLAGS+=	`pkg-config --cflags epoll-shim-interpose`
 LDFLAGS+=	`pkg-config --libs epoll-shim-interpose`
+
+PIE_UNSAFE=	yes
 
 BINARY_ALIAS=	python3=${PYTHON_CMD} python=${PYTHON_CMD}
 
@@ -71,8 +76,7 @@ DOCS_MAKE_ENV=	BUILD_DOCS=yes
 
 .include <bsd.port.options.mk>
 
-.if ${OPSYS} == FreeBSD && (${OSVERSION} >= 1400079 || (${OSVERSION} >= 1302505 && \
-	${OSVERSION} < 1400000))
+.if ${OPSYS} == FreeBSD
 CFLAGS+=	-Wno-error=invalid-utf8 -Winvalid-utf8
 .endif
 
@@ -85,6 +89,22 @@ MAKE_ENV+=	KITTY_NO_LTO=1
 USES+=		ncurses:port
 .else
 USES+=		ncurses
+.endif
+
+# PR291485
+# Temporarily disable build/installation of docs and man pages on FreeBSD >= 15.0
+# See:
+# https://pkg-status.freebsd.org/beefy23/data/150amd64-default/e05e2042985b/logs/kitty-0.44.0_1.log
+# https://bugs.freebsd.org/bugzilla/show_bug.cgi?id=291485
+.if ${OPSYS} == FreeBSD && ${OSVERSION} < 1500000
+MAKE_ENV+=	BUILD_MANPAGES=yes
+PLIST_SUB+=	PORTMANPAGES=""
+.else
+DOCS_MAKE_ENV=	BUILD_DOCS=no
+MAKE_ENV+=	BUILD_MANPAGES=no
+PLIST_SUB:=	${PLIST_SUB:S/PORTDOCS=""//1}
+PLIST_SUB+=	PORTDOCS="@comment " \
+		PORTMANPAGES="@comment "
 .endif
 
 post-patch:
@@ -117,11 +137,20 @@ do-install:
 	${INSTALL_DATA} ${WRKSRC}/terminfo/kitty.terminfo \
 		${STAGEDIR}${PREFIX}/share/misc/
 	${STRIP_CMD} ${_STRIP_TARGETS:S|^|${STAGEDIR}${DATADIR}/|}
-
-do-install-DOCS-on:
+# PR291485: https://bugs.freebsd.org/bugzilla/show_bug.cgi?id=291485
+.if ${OPSYS} == FreeBSD && ${OSVERSION} < 1500000
 	${INSTALL_MAN} ${BUILD_DIR}/share/man/man1/kitty.1 ${STAGEDIR}${PREFIX}/share/man/man1
 	${INSTALL_MAN} ${BUILD_DIR}/share/man/man5/kitty.conf.5 ${STAGEDIR}${PREFIX}/share/man/man5
+.endif
+
+do-install-DOCS-on:
+# PR291485: https://bugs.freebsd.org/bugzilla/show_bug.cgi?id=291485
+.if ${OPSYS} == FreeBSD && ${OSVERSION} < 1500000
 	cd ${BUILD_DIR}/share/doc/kitty/html && \
-		${COPYTREE_SHARE} . ${STAGEDIR}${DOCSDIR}
+		${COPYTREE_SHARE} . ${STAGEDIR}${DOCSDIR} \
+			"-not ( -name .buildinfo -or -name .nojekyll )"
+.else
+	@${DO_NADA}
+.endif
 
 .include <bsd.port.mk>

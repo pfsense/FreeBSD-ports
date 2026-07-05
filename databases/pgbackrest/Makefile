@@ -1,6 +1,6 @@
 PORTNAME=	pgbackrest
 DISTVERSIONPREFIX=	release/
-DISTVERSION=	2.49
+DISTVERSION=	2.58.0
 CATEGORIES=	databases
 
 MAINTAINER=	schoutm@gmail.com
@@ -8,31 +8,32 @@ COMMENT=	Reliable PostgreSQL Backup & Restore
 WWW=		https://pgbackrest.org/
 
 LICENSE=	MIT
-LICENSE_FILE=	${WRKSRC}/../LICENSE
+LICENSE_FILE=	${WRKSRC}/LICENSE
 
 LIB_DEPENDS=	liblz4.so:archivers/liblz4 \
 		libyaml.so:textproc/libyaml
 
-USES=		gmake gnome pkgconfig pgsql ssl
-USE_GNOME=	libxml2
-GNU_CONFIGURE=	yes
-
+USES=		gnome meson pgsql pkgconfig python ssl
 USE_GITHUB=	yes
+USE_GNOME=	libxml2
 
-WRKSRC_SUBDIR=	src
+MESON_ARGS+=	-Dconfigdir="${ETCDIR}"
 
-ALL_TARGET=
+BINARY_ALIAS=	python3=${PYTHON_CMD}
 
-CONFIGURE_ARGS=	--with-configdir="${LOCALBASE}/etc/pgbackrest"
+OPTIONS_DEFINE=		SFTP ZSTD
 
-OPTIONS_DEFINE=	ZSTD
+SFTP_DESC=		Enable SFTP storage support
+
+SFTP_LIB_DEPENDS=	libssh2.so:security/libssh2
+SFTP_MESON_ON=		-Dlibssh2=enabled
+SFTP_MESON_OFF=		-Dlibssh2=disabled
 
 ZSTD_LIB_DEPENDS=	libzstd.so:archivers/zstd
-ZSTD_CONFIGURE_OFF=	ac_cv_lib_zstd_ZSTD_isError=no
-ZSTD_CONFIGURE_ON=	ac_cv_lib_zstd_ZSTD_isError=yes
+ZSTD_MESON_ON=		-Dlibzstd=enabled
+ZSTD_MESON_OFF=		-Dlibzstd=disabled
 
 post-install:
-	${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/pgbackrest
-	${MKDIR} ${STAGEDIR}${PREFIX}/etc/pgbackrest
+	${MKDIR} ${STAGEDIR}${ETCDIR}
 
 .include <bsd.port.mk>

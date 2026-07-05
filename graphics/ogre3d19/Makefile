@@ -1,10 +1,8 @@
 PORTNAME=	ogre3d
-PORTVERSION=	1.9.0
-PORTREVISION=	21
+DISTVERSIONPREFIX=	v
+DISTVERSION=	1.9.1
 CATEGORIES=	graphics devel
-MASTER_SITES=	https://bitbucket.org/sinbad/ogre/get/
 PKGNAMESUFFIX=	19
-DISTNAME=	v1-9-0
 
 MAINTAINER=	amdmi3@FreeBSD.org
 COMMENT=	Scene-oriented, flexible 3D engine written in C++ (legacy version 1.9)
@@ -23,14 +21,15 @@ LIB_DEPENDS=	libfreeimage.so:graphics/freeimage \
 
 USES=		cmake compiler:c++11-lib gl pkgconfig sdl tar:bzip2 xorg
 USE_CXXSTD=	c++14
+USE_GITHUB=	yes
+GH_ACCOUNT=	OGRECave
+GH_PROJECT=	ogre
 USE_GL=		gl glu
 USE_LDCONFIG=	yes
 USE_SDL=	sdl
 USE_XORG=	ice sm x11 xaw xext xrandr xt
 
 CONFLICTS=	ogre3d
-
-WRKSRC=		${WRKDIR}/sinbad-ogre-dd30349ea667
 
 OPTIONS_DEFINE=	BOOST DOCS
 OPTIONS_SUB=	yes
@@ -60,5 +59,6 @@ post-install-DOCS-on:
 .for docfile in README COPYING AUTHORS
 	${INSTALL_DATA} ${WRKSRC}/${docfile} ${STAGEDIR}${DOCSDIR}
 .endfor
+	cd ${WRKSRC} && ${COPYTREE_SHARE} Docs ${STAGEDIR}${DOCSDIR}
 
 .include <bsd.port.mk>

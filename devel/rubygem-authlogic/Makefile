@@ -1,5 +1,5 @@
 PORTNAME=	authlogic
-PORTVERSION=	6.4.3
+PORTVERSION=	6.6.0
 CATEGORIES=	devel rubygems
 MASTER_SITES=	RG
 
@@ -9,9 +9,9 @@ WWW=		https://github.com/binarylogic/authlogic
 
 LICENSE=	MIT
 
-RUN_DEPENDS=	rubygem-activemodel60>=5.2<7.2:databases/rubygem-activemodel60 \
-		rubygem-activerecord60>=5.2<7.2:databases/rubygem-activerecord60 \
-		rubygem-activesupport60>=5.2<7.1:devel/rubygem-activesupport60 \
+RUN_DEPENDS=	rubygem-activemodel81>=7.2<8.2:databases/rubygem-activemodel81 \
+		rubygem-activerecord81>=7.2<8.2:databases/rubygem-activerecord81 \
+		rubygem-activesupport81>=7.2<8.2:devel/rubygem-activesupport81 \
 		rubygem-request_store>=1.0<2:devel/rubygem-request_store
 
 USES=		gem

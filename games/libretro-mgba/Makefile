@@ -1,20 +1,19 @@
 PORTNAME=	libretro-mgba
-DISTVERSION=	0.20230528
+DISTVERSION=	0.20251013
 CATEGORIES=	games
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	tilde@ultros.pro
 COMMENT=	Game Boy Advance Emulator for libretro
 WWW=		https://github.com/libretro/mgba
 
 LICENSE=	MPL20
 
 USES=		compiler:c++11-lib gmake
-USE_LDCONFIG=	yes
-
 USE_GITHUB=	yes
 GH_ACCOUNT=	libretro
 GH_PROJECT=	mgba
-GH_TAGNAME=	314bf7b676f5b820f396209eb0c7d6fbe8103486
+GH_TAGNAME=	c758314a639aa0066e7b65a8341448181b73c804
+USE_LDCONFIG=	yes
 
 PLIST_FILES=	lib/libretro/mgba_libretro.so
 

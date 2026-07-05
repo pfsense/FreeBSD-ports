@@ -9,8 +9,8 @@ lib/cmake/KScreenLocker/KScreenLockerTargets-%%CMAKE_BUILD_TYPE%%.cmake
 lib/cmake/KScreenLocker/KScreenLockerTargets.cmake
 lib/cmake/ScreenSaverDBusInterface/ScreenSaverDBusInterfaceConfig.cmake
 lib/libKScreenLocker.so
-lib/libKScreenLocker.so.%%KDE_PLASMA_VERSION%%
 lib/libKScreenLocker.so.6
+lib/libKScreenLocker.so.%%KDE_PLASMA_VERSION%%
 lib/libexec/kscreenlocker_greet
 %%QT_PLUGINDIR%%/plasma/kcms/systemsettings/kcm_screenlocker.so
 share/applications/kcm_screenlocker.desktop
@@ -24,7 +24,9 @@ share/locale/ar/LC_MESSAGES/kscreenlocker_greet.mo
 share/locale/ast/LC_MESSAGES/kcm_screenlocker.mo
 share/locale/ast/LC_MESSAGES/kscreenlocker.mo
 share/locale/ast/LC_MESSAGES/kscreenlocker_greet.mo
+share/locale/az/LC_MESSAGES/kcm_screenlocker.mo
 share/locale/az/LC_MESSAGES/kscreenlocker.mo
+share/locale/az/LC_MESSAGES/kscreenlocker_greet.mo
 share/locale/bg/LC_MESSAGES/kcm_screenlocker.mo
 share/locale/bg/LC_MESSAGES/kscreenlocker.mo
 share/locale/bg/LC_MESSAGES/kscreenlocker_greet.mo
@@ -70,6 +72,7 @@ share/locale/fi/LC_MESSAGES/kscreenlocker_greet.mo
 share/locale/fr/LC_MESSAGES/kcm_screenlocker.mo
 share/locale/fr/LC_MESSAGES/kscreenlocker.mo
 share/locale/fr/LC_MESSAGES/kscreenlocker_greet.mo
+share/locale/ga/LC_MESSAGES/kcm_screenlocker.mo
 share/locale/ga/LC_MESSAGES/kscreenlocker.mo
 share/locale/ga/LC_MESSAGES/kscreenlocker_greet.mo
 share/locale/gl/LC_MESSAGES/kcm_screenlocker.mo
@@ -79,6 +82,8 @@ share/locale/he/LC_MESSAGES/kcm_screenlocker.mo
 share/locale/he/LC_MESSAGES/kscreenlocker.mo
 share/locale/he/LC_MESSAGES/kscreenlocker_greet.mo
 share/locale/hi/LC_MESSAGES/kcm_screenlocker.mo
+share/locale/hi/LC_MESSAGES/kscreenlocker.mo
+share/locale/hi/LC_MESSAGES/kscreenlocker_greet.mo
 share/locale/hu/LC_MESSAGES/kcm_screenlocker.mo
 share/locale/hu/LC_MESSAGES/kscreenlocker.mo
 share/locale/hu/LC_MESSAGES/kscreenlocker_greet.mo
@@ -108,6 +113,7 @@ share/locale/ko/LC_MESSAGES/kscreenlocker_greet.mo
 share/locale/lt/LC_MESSAGES/kcm_screenlocker.mo
 share/locale/lt/LC_MESSAGES/kscreenlocker.mo
 share/locale/lt/LC_MESSAGES/kscreenlocker_greet.mo
+share/locale/lv/LC_MESSAGES/kcm_screenlocker.mo
 share/locale/lv/LC_MESSAGES/kscreenlocker.mo
 share/locale/lv/LC_MESSAGES/kscreenlocker_greet.mo
 share/locale/ml/LC_MESSAGES/kcm_screenlocker.mo
@@ -145,6 +151,9 @@ share/locale/ro/LC_MESSAGES/kscreenlocker_greet.mo
 share/locale/ru/LC_MESSAGES/kcm_screenlocker.mo
 share/locale/ru/LC_MESSAGES/kscreenlocker.mo
 share/locale/ru/LC_MESSAGES/kscreenlocker_greet.mo
+share/locale/sa/LC_MESSAGES/kcm_screenlocker.mo
+share/locale/sa/LC_MESSAGES/kscreenlocker.mo
+share/locale/sa/LC_MESSAGES/kscreenlocker_greet.mo
 share/locale/sk/LC_MESSAGES/kcm_screenlocker.mo
 share/locale/sk/LC_MESSAGES/kscreenlocker.mo
 share/locale/sk/LC_MESSAGES/kscreenlocker_greet.mo

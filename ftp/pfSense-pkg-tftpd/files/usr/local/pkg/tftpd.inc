@@ -3,7 +3,7 @@
  * tftpd.inc
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2015-2024 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2015-2026 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2016 Stefan Seidel
  * All rights reserved.
  *
@@ -34,6 +34,7 @@ define('BACKUP_PATH', BACKUP_DIR . '/' . BACKUP_FILENAME);
  * Note: Such modifications are completely unsupported!
  */
 define('FILES_DIR', '/tftpboot');
+define('LOG_PREFIX_PKG_TFTPD', 'tftpd');
 
 /* Create backup of the TFTP server directory */
 function tftp_create_backup($trigger_download = false) {
@@ -59,7 +60,7 @@ function tftp_restore_backup() {
 function tftp_filesdir_bounds_check($filename, $error_msg) {
 	$basedirlength = strlen(FILES_DIR);
 	if (substr($filename, 0, $basedirlength) !== FILES_DIR) {
-		log_error("[tftpd] {$error_msg}");
+		logger(LOG_ERR, $error_msg, LOG_PREFIX_PKG_TFTPD);
 		file_notice("tftpd", "{$error_msg}", "Packages");
 		return false;
 	} else {
@@ -83,26 +84,18 @@ function deinstall_package_tftpd() {
 
 function upgrade_config_tftpd() {
 	// FILES_DIR is not configurable any more
-	if (is_array($config['installedpackages']['tftpd'])) {
-		$tftpd_conf = &$config['installedpackages']['tftpd']['config'][0];
-	} else {
-		$tftpd_conf = array();
-	}
+	$tftpd_conf = config_get_path('installedpackages/tftpd/config/0', []);
 	if (!empty($tftpd_conf['datadir']) && $tftpd_conf['datadir'] !== FILES_DIR) {
 		file_notice("tftpd", "Please, move your TFTP server files from {$tftpd_conf['datadir']} to /tftpboot", "Packages");
-		unset($config['installedpackages']['tftpd']['config'][0]['datadir']);
+		config_del_path('installedpackages/tftpd/config/0/datadir');
 	}
 }
 
 function sync_package_tftpd() {
-	global $g, $config;
+	global $g;
 
 
-	if (is_array($config['installedpackages']['tftpd'])) {
-		$tftpd_conf = &$config['installedpackages']['tftpd']['config'][0];
-	} else {
-		$tftpd_conf = array();
-	}
+	$tftpd_conf = config_get_path('installedpackages/tftpd/config/0', []);
 
 	/* if turned off in package settings, stop service, remove rc script and do nothing else */
 	if ($tftpd_conf['enable'] != "on") {

@@ -1,6 +1,6 @@
 PORTNAME=	janus
 DISTVERSIONPREFIX=	v
-DISTVERSION=	1.2.2
+DISTVERSION=	1.4.0
 PORTREVISION=	0
 CATEGORIES=	www
 
@@ -23,8 +23,8 @@ LIB_DEPENDS=	libconfig.so:devel/libconfig \
 		libusrsctp.so:net/libusrsctp \
 		libwebsockets.so:net/libwebsockets
 
-USES=			autoreconf cpe gmake gnome libtool localbase pkgconfig \
-			ssl
+USES=			autoreconf cpe gmake gnome libtool localbase pathfix \
+			pkgconfig ssl
 USE_GNOME=		glib20
 USE_GITHUB=		yes
 GH_ACCOUNT=		meetecho
@@ -40,9 +40,9 @@ INSTALL_TARGET=		install-strip
 CFLAGS+=		-I${OPENSSLINC} -I${LOCALBASE}/include/nice
 LDFLAGS+=		-L${OPENSSLLIB} -lcrypto -lssl -L${LOCALBASE} -lnice
 GNU_CONFIGURE=		yes
-GNU_CONFIGURE_MANPREFIX=	${PREFIX}/share
 USE_LDCONFIG=		yes
 SUB_FILES=		pkg-message
+PLIST_SUB+= 		SOVERSION=2.0.9
 
 OPTIONS_SUB=				yes
 OPTIONS_DEFINE=				JAVASCRIPT LUA MQTT NANOMSG \

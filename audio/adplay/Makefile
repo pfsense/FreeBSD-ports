@@ -1,7 +1,6 @@
 PORTNAME=	adplay
 DISTVERSIONPREFIX=	v
-DISTVERSION=	1.8.1
-PORTREVISION=	3
+DISTVERSION=	1.9
 CATEGORIES=	audio
 
 MAINTAINER=	ehaupt@FreeBSD.org
@@ -22,7 +21,6 @@ GH_PROJECT=	${PORTNAME}-unix
 GH_TUPLE=	adplug:database:${DBVERSION}:database/database-${DBVERSION}
 
 GNU_CONFIGURE=			yes
-GNU_CONFIGURE_MANPREFIX=	${PREFIX}/share
 CONFIGURE_ARGS+=		--sharedstatedir=${DATADIR}
 
 PLIST_FILES=	${DATADIR}/adplug/adplug.db \
@@ -37,7 +35,7 @@ ALSA_CONFIGURE_WITH=	alsa-prefix=${LOCALBASE}/lib
 ALSA_CFLAGS+=		`pkg-config --cflags alsa`
 
 SDL_USES=		sdl
-SDL_USE=		SDL=mixer,sdl
+SDL_USE=		SDL=mixer2,sdl2
 SDL_CONFIGURE_OFF=	--disable-output-sdl
 
 DBFILE=		adplug.db

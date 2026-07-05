@@ -1,47 +1,38 @@
---- components/supervised_user/core/common/features.cc.orig	2024-03-22 08:19:40 UTC
+--- components/supervised_user/core/common/features.cc.orig	2026-03-13 06:02:14 UTC
 +++ components/supervised_user/core/common/features.cc
-@@ -66,7 +66,7 @@ bool IsLocalWebApprovalsEnabled() {
- BASE_FEATURE(kFilterWebsitesForSupervisedUsersOnDesktopAndIOS,
-              "FilterWebsitesForSupervisedUsersOnDesktopAndIOS",
- #if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_WIN) || \
+@@ -30,7 +30,7 @@ BASE_FEATURE(kAllowSubframeLocalWebApprovals,
+ #endif
+ 
+ #if BUILDFLAG(IS_IOS) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX) || \
+-    BUILDFLAG(IS_WIN)
++    BUILDFLAG(IS_WIN) || BUILDFLAG(IS_BSD) 
+ const int kLocalWebApprovalBottomSheetLoadTimeoutDefaultValueMs = 5000;
+ 
+ const base::FeatureParam<int> kLocalWebApprovalBottomSheetLoadTimeoutMs{
+@@ -39,7 +39,7 @@ const base::FeatureParam<int> kLocalWebApprovalBottomS
+ #endif  // BUILDFLAG(IS_IOS) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX) ||
+         // BUILDFLAG(IS_WIN)
+ 
+-#if BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_WIN)
++#if BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_WIN) || BUILDFLAG(IS_BSD) 
+ BASE_FEATURE(kEnableLocalWebApprovalErrorDialog,
+              base::FEATURE_ENABLED_BY_DEFAULT);
+ #endif  // BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_WIN)
+@@ -51,7 +51,7 @@ BASE_FEATURE(kLocalWebApprovalsWidgetSupportsUrlPayloa
+ // TODO(crbug.com/435635774): Release the interstitial v3 in all platforms.
+ BASE_FEATURE(kSupervisedUserBlockInterstitialV3,
+ #if BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_WIN) || \
 -    BUILDFLAG(IS_IOS)
 +    BUILDFLAG(IS_IOS) || BUILDFLAG(IS_BSD)
               base::FEATURE_ENABLED_BY_DEFAULT);
  #else
               base::FEATURE_DISABLED_BY_DEFAULT);
-@@ -74,7 +74,7 @@ BASE_FEATURE(kFilterWebsitesForSupervisedUsersOnDeskto
+@@ -87,7 +87,7 @@ bool IsLocalWebApprovalsEnabledForSubframes() {
+   return base::FeatureList::IsEnabled(kAllowSubframeLocalWebApprovals);
+ }
  
- BASE_FEATURE(kSupervisedPrefsControlledBySupervisedStore,
-              "SupervisedPrefsControlledBySupervisedStore",
 -#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_WIN)
-+#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_WIN) || BUILDFLAG(IS_BSD)
++#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_WIN) || BUILDFLAG(IS_BSD) 
+ BASE_FEATURE(kEnableSupervisedUserVersionSignOutDialog,
               base::FEATURE_ENABLED_BY_DEFAULT);
- #else
-              base::FEATURE_DISABLED_BY_DEFAULT);
-@@ -84,7 +84,7 @@ BASE_FEATURE(kSupervisedPrefsControlledBySupervisedSto
- // users in various UI surfaces.
- BASE_FEATURE(kEnableManagedByParentUi,
-              "EnableManagedByParentUi",
--#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_WIN)
-+#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_WIN) || BUILDFLAG(IS_BSD)
-              base::FEATURE_ENABLED_BY_DEFAULT);
- #else
-              base::FEATURE_DISABLED_BY_DEFAULT);
-@@ -94,7 +94,7 @@ BASE_FEATURE(kEnableSupervisedUserSkipParentApprovalTo
-              "EnableSupervisedUserSkipParentApprovalToInstallExtensions",
-              base::FEATURE_DISABLED_BY_DEFAULT);
- 
--#if BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_WIN)
-+#if BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_WIN) || BUILDFLAG(IS_BSD)
- BASE_FEATURE(kEnableExtensionsPermissionsForSupervisedUsersOnDesktop,
-              "EnableExtensionsPermissionsForSupervisedUsersOnDesktop",
-              base::FEATURE_DISABLED_BY_DEFAULT);
-@@ -143,7 +143,7 @@ bool IsChildAccountSupervisionEnabled() {
-   return base::FeatureList::IsEnabled(
-              supervised_user::
-                  kFilterWebsitesForSupervisedUsersOnDesktopAndIOS) ||
--#if BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_WIN)
-+#if BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_WIN) || BUILDFLAG(IS_BSD)
-          base::FeatureList::IsEnabled(
-              supervised_user::
-                  kEnableExtensionsPermissionsForSupervisedUsersOnDesktop) ||
+ #endif

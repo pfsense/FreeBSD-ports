@@ -1,8 +1,8 @@
 PORTNAME=	wazuh
-DISTVERSION=	4.7.3
+DISTVERSION=	4.14.3
 DISTVERSIONPREFIX=	v
 CATEGORIES=	security
-MASTER_SITES=	https://packages.wazuh.com/deps/24/libraries/sources/:wazuh_sources
+MASTER_SITES=	https://packages.wazuh.com/deps/49/libraries/sources/:wazuh_sources
 PKGNAMESUFFIX=	-agent
 DISTFILES=	${EXTERNAL_DISTFILES}
 DIST_SUBDIR=	${PORTNAME}-${DISTVERSION}
@@ -15,20 +15,19 @@ WWW=		https://github.com/wazuh/wazuh
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-BUILD_DEPENDS=	cmake:devel/cmake-core
-LIB_DEPENDS=	libnghttp2.so:www/libnghttp2
+LIB_DEPENDS=	libnghttp2.so:www/libnghttp2 \
+		libepoll-shim.so:devel/libepoll-shim
 
-USES=		cpe gmake perl5 readline shebangfix sqlite:3 uidfix
+USES=		cmake:indirect cpe gmake perl5 readline shebangfix sqlite:3 uidfix
 
 USE_GITHUB=	yes
-GH_TUPLE=	alonsobsd:wazuh-freebsd:${WAZUH_EXTRAFILE_TAGNAME}:wazuh
+GH_ACCOUNT=	alonsobsd
+GH_PROJECT=	wazuh-freebsd
+GH_TAGNAME=	dd9bd1bb551141e15cde1399a0000c6a392511ad
 
 USE_RC_SUBR=	${PORTNAME}${PKGNAMESUFFIX}
 
 MAKE_ARGS+=	TARGET=agent
-
-WAZUH_EXTRAFILE=	alonsobsd-${PORTNAME}-freebsd-${WAZUH_EXTRAFILE_TAGNAME}_GH0${EXTRACT_SUFX}
-WAZUH_EXTRAFILE_TAGNAME=cd0051b
 
 EXTERNAL_DISTFILES=	cJSON.tar.gz:wazuh_sources \
 			curl.tar.gz:wazuh_sources \
@@ -52,7 +51,6 @@ EXTERNAL_DISTFILES=	cJSON.tar.gz:wazuh_sources \
 OPTIONS_DEFAULT=	INOTIFY
 OPTIONS_DEFINE=		INOTIFY PRELUDE ZEROMQ
 
-INOTIFY_LIB_DEPENDS=	libinotify.so:devel/libinotify
 PRELUDE_LIB_DEPENDS=	libprelude.so:security/libprelude
 ZEROMQ_LIB_DEPENDS=	libczmq.so:net/czmq
 
@@ -62,8 +60,9 @@ ZEROMQ_DESC=	ZeroMQ support
 
 ZEROMQ_MAKE_ENV=	USE_ZEROMQ=yes
 PRELUDE_MAKE_ENV=	USE_PRELUDE=yes
-INOTIFY_MAKE_ENV=	USE_INOTIFY=yes
-INOTIFY_USES=	pkgconfig
+INOTIFY_MAKE_ENV=	USE_INOTIFY=yes \
+			INOTIFY_LIB=${INOTIFY_LIB}
+INOTIFY_USES=	pkgconfig inotify
 
 WAZUH_USER=	wazuh
 WAZUH_GROUP=	wazuh
@@ -91,19 +90,38 @@ WAZUHMOD770=	/etc/shared/default /logs /queue/alerts /queue/fim \
 
 WAZUHPREFIX=	/var/ossec
 
+.include <bsd.port.options.mk>
+
+.if ${ARCH} == powerpc64
+MAKE_ENV+=	OSSL_TARGET=BSD-ppc64
+.elif ${ARCH} == powerpc64le
+MAKE_ENV+=	OSSL_TARGET=BSD-ppc64le
+.elif ${ARCH} == riscv64
+MAKE_ENV+=	OSSL_TARGET=BSD-riscv64
+.endif
+
 .include <bsd.port.pre.mk>
+
+.if ${OSVERSION} >= 1300139 && ${OSVERSION} < 1400000
+FBSD_MAJOR_VERSION=13
+.elif ${OSVERSION} >= 1400000 && ${OSVERSION} < 1500000
+FBSD_MAJOR_VERSION=14
+.elif ${OSVERSION} >= 1500000 && ${OSVERSION} < 1600000
+FBSD_MAJOR_VERSION=15
+.elif ${OSVERSION} >= 1600000
+FBSD_MAJOR_VERSION=16
+.else
+IGNORE=		FreeBSD ${OSVERSION} ${ARCH} is not supported
+.endif
 
 post-extract:
 .for FILE in ${EXTERNAL_DISTFILES}
 	@cd ${WRKSRC}/src/external && ${EXTRACT_CMD} ${EXTRACT_BEFORE_ARGS} ${_DISTDIR}/${FILE:S/:wazuh_sources//} ${EXTRACT_AFTER_ARGS}
 .endfor
-	@${MKDIR} ${WRKSRC}/ruleset/sca/freebsd
-	@cd ${WRKDIR} && ${EXTRACT_CMD} ${EXTRACT_BEFORE_ARGS} ${_DISTDIR}/${WAZUH_EXTRAFILE} ${EXTRACT_AFTER_ARGS}
-	@${MV} ${WRKDIR}/${PORTNAME}-freebsd-${WAZUH_EXTRAFILE_TAGNAME} ${WRKDIR}/wazuh-freebsd
-	@cd ${WRKDIR}/wazuh-freebsd/var/ossec/ruleset/sca && ${CP} *.yml ${WRKSRC}/ruleset/sca/freebsd/
 
 post-patch:
 	${REINPLACE_CMD} -e 's|CC=|CC?=|g' -e 's|AR=|AR?=|g' ${WRKSRC}/src/external/bzip2/Makefile
+	${REINPLACE_CMD} -e 's|%%FBSD_MAJOR_VERSION%%|${FBSD_MAJOR_VERSION}|g' ${WRKSRC}/etc/ossec-agent.conf
 
 do-build:
 	cd ${WRKSRC}/src/ && ${SETENV} ${MAKE_ENV} STAGEDIR=${STAGEDIR} \
@@ -175,9 +193,8 @@ do-install:
 
 	${INSTALL_SCRIPT} ${WRKSRC}/wodles/azure/azure-logs.py ${STAGEDIR}${WAZUHPREFIX}/wodles/azure/azure-logs.py
 	${INSTALL_SCRIPT} ${WRKSRC}/framework/wrappers/generic_wrapper.sh ${STAGEDIR}${WAZUHPREFIX}/wodles/azure/azure-logs
-	${INSTALL_SCRIPT} ${WRKSRC}/wodles/azure/orm.py ${STAGEDIR}${WAZUHPREFIX}/wodles/azure/orm.py
 
-	${INSTALL_DATA} ${WRKSRC}/ruleset/sca/generic/sca_unix_audit.yml ${STAGEDIR}${WAZUHPREFIX}/ruleset/sca/
+	${INSTALL_DATA} ${WRKSRC}/ruleset/sca/generic/sca_distro_independent_linux.yml ${STAGEDIR}${WAZUHPREFIX}/ruleset/sca/
 
 	${INSTALL_LIB} ${WRKSRC}/src/libwazuhext.so ${STAGEDIR}${WAZUHPREFIX}/lib
 	${INSTALL_LIB} ${WRKSRC}/src/libwazuhshared.so ${STAGEDIR}${WAZUHPREFIX}/lib
@@ -199,5 +216,7 @@ do-install:
 
 	${INSTALL_SCRIPT} ${WRKSRC}/gen_ossec.sh ${STAGEDIR}${WAZUHPREFIX}/packages_files/agent_installation_scripts/
 	${INSTALL_SCRIPT} ${WRKSRC}/add_localfiles.sh ${STAGEDIR}${WAZUHPREFIX}/packages_files/agent_installation_scripts/
+
+	${INSTALL_DATA} ${WRKSRC}/VERSION.json ${STAGEDIR}${WAZUHPREFIX}
 
 .include <bsd.port.post.mk>

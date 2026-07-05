@@ -1,7 +1,8 @@
 PORTNAME=	SoapyUHD
 DISTVERSIONPREFIX=	soapy-uhd-
-DISTVERSION=	0.4.1
-PORTREVISION=	3
+DISTVERSION=	0.4.1-18
+PORTREVISION=	2
+DISTVERSIONSUFFIX=	-g6b52139
 CATEGORIES=	comms hamradio
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -11,7 +12,7 @@ WWW=		https://github.com/pothosware/SoapyUHD/wiki
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-LIB_DEPENDS=	libboost_system.so:devel/boost-libs \
+LIB_DEPENDS=	libboost_thread.so:devel/boost-libs \
 		libSoapySDR.so:misc/soapysdr \
 		libuhd.so:comms/uhd
 

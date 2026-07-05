@@ -47,6 +47,7 @@ include/gstreamer-%%VERSION%%/gst/gstbuffer.h
 include/gstreamer-%%VERSION%%/gst/gstbufferlist.h
 include/gstreamer-%%VERSION%%/gst/gstbufferpool.h
 include/gstreamer-%%VERSION%%/gst/gstbus.h
+include/gstreamer-%%VERSION%%/gst/gstbytearrayinterface.h
 include/gstreamer-%%VERSION%%/gst/gstcaps.h
 include/gstreamer-%%VERSION%%/gst/gstcapsfeatures.h
 include/gstreamer-%%VERSION%%/gst/gstchildproxy.h
@@ -56,6 +57,7 @@ include/gstreamer-%%VERSION%%/gst/gstconfig.h
 include/gstreamer-%%VERSION%%/gst/gstcontext.h
 include/gstreamer-%%VERSION%%/gst/gstcontrolbinding.h
 include/gstreamer-%%VERSION%%/gst/gstcontrolsource.h
+include/gstreamer-%%VERSION%%/gst/gstcpuid.h
 include/gstreamer-%%VERSION%%/gst/gstdatetime.h
 include/gstreamer-%%VERSION%%/gst/gstdebugutils.h
 include/gstreamer-%%VERSION%%/gst/gstdevice.h
@@ -71,12 +73,14 @@ include/gstreamer-%%VERSION%%/gst/gsterror.h
 include/gstreamer-%%VERSION%%/gst/gstevent.h
 include/gstreamer-%%VERSION%%/gst/gstformat.h
 include/gstreamer-%%VERSION%%/gst/gstghostpad.h
+include/gstreamer-%%VERSION%%/gst/gstidstr.h
 include/gstreamer-%%VERSION%%/gst/gstinfo.h
 include/gstreamer-%%VERSION%%/gst/gstiterator.h
 include/gstreamer-%%VERSION%%/gst/gstmacros.h
 include/gstreamer-%%VERSION%%/gst/gstmemory.h
 include/gstreamer-%%VERSION%%/gst/gstmessage.h
 include/gstreamer-%%VERSION%%/gst/gstmeta.h
+include/gstreamer-%%VERSION%%/gst/gstmetafactory.h
 include/gstreamer-%%VERSION%%/gst/gstminiobject.h
 include/gstreamer-%%VERSION%%/gst/gstobject.h
 include/gstreamer-%%VERSION%%/gst/gstpad.h
@@ -112,6 +116,7 @@ include/gstreamer-%%VERSION%%/gst/gsttypefindfactory.h
 include/gstreamer-%%VERSION%%/gst/gsturi.h
 include/gstreamer-%%VERSION%%/gst/gstutils.h
 include/gstreamer-%%VERSION%%/gst/gstvalue.h
+include/gstreamer-%%VERSION%%/gst/gstvecdeque.h
 include/gstreamer-%%VERSION%%/gst/gstversion.h
 include/gstreamer-%%VERSION%%/gst/math-compat.h
 include/gstreamer-%%VERSION%%/gst/net/gstnet.h
@@ -155,15 +160,12 @@ libdata/pkgconfig/gstreamer-net-%%VERSION%%.pc
 libexec/gstreamer-%%VERSION%%/gst-hotdoc-plugins-scanner
 libexec/gstreamer-%%VERSION%%/gst-plugin-scanner
 libexec/gstreamer-%%VERSION%%/gst-plugins-doc-cache-generator
-@(root,wheel,4755) libexec/gstreamer-%%VERSION%%/gst-ptp-helper
-share/man/man1/gst-inspect-%%VERSION%%.1.gz
-share/man/man1/gst-launch-%%VERSION%%.1.gz
-share/man/man1/gst-stats-%%VERSION%%.1.gz
-share/man/man1/gst-typefind-%%VERSION%%.1.gz
+%%PTP%%@(root,wheel,4755) libexec/gstreamer-%%VERSION%%/gst-ptp-helper
 share/aclocal/gst-element-check-%%VERSION%%.m4
 %%BASH%%share/bash-completion/completions/gst-inspect-%%VERSION%%
 %%BASH%%share/bash-completion/completions/gst-launch-%%VERSION%%
 %%BASH%%share/bash-completion/helpers/gst
+share/cmake/FindGStreamer.cmake
 share/gdb/auto-load%%RESETPREFIX%%/lib/libgstreamer-%%VERSION%%.so.%%SOVERSION%%-gdb.py
 %%DATADIR%%-%%VERSION%%/gdb/glib_gobject_helper.py
 %%DATADIR%%-%%VERSION%%/gdb/gst_gdb.py
@@ -173,6 +175,7 @@ share/gir-%%VERSION%%/GstCheck-%%VERSION%%.gir
 share/gir-%%VERSION%%/GstController-%%VERSION%%.gir
 share/gir-%%VERSION%%/GstNet-%%VERSION%%.gir
 %%NLS%%share/locale/af/LC_MESSAGES/gstreamer-%%VERSION%%.mo
+%%NLS%%share/locale/ar/LC_MESSAGES/gstreamer-%%VERSION%%.mo
 %%NLS%%share/locale/ast/LC_MESSAGES/gstreamer-%%VERSION%%.mo
 %%NLS%%share/locale/az/LC_MESSAGES/gstreamer-%%VERSION%%.mo
 %%NLS%%share/locale/be/LC_MESSAGES/gstreamer-%%VERSION%%.mo
@@ -198,6 +201,7 @@ share/gir-%%VERSION%%/GstNet-%%VERSION%%.gir
 %%NLS%%share/locale/ka/LC_MESSAGES/gstreamer-%%VERSION%%.mo
 %%NLS%%share/locale/ko/LC_MESSAGES/gstreamer-%%VERSION%%.mo
 %%NLS%%share/locale/lt/LC_MESSAGES/gstreamer-%%VERSION%%.mo
+%%NLS%%share/locale/lv/LC_MESSAGES/gstreamer-%%VERSION%%.mo
 %%NLS%%share/locale/nb/LC_MESSAGES/gstreamer-%%VERSION%%.mo
 %%NLS%%share/locale/nl/LC_MESSAGES/gstreamer-%%VERSION%%.mo
 %%NLS%%share/locale/pl/LC_MESSAGES/gstreamer-%%VERSION%%.mo
@@ -215,3 +219,7 @@ share/gir-%%VERSION%%/GstNet-%%VERSION%%.gir
 %%NLS%%share/locale/vi/LC_MESSAGES/gstreamer-%%VERSION%%.mo
 %%NLS%%share/locale/zh_CN/LC_MESSAGES/gstreamer-%%VERSION%%.mo
 %%NLS%%share/locale/zh_TW/LC_MESSAGES/gstreamer-%%VERSION%%.mo
+share/man/man1/gst-inspect-%%VERSION%%.1.gz
+share/man/man1/gst-launch-%%VERSION%%.1.gz
+share/man/man1/gst-stats-%%VERSION%%.1.gz
+share/man/man1/gst-typefind-%%VERSION%%.1.gz

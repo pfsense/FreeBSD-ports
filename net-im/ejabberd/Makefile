@@ -1,6 +1,5 @@
 PORTNAME=	ejabberd
-PORTVERSION=	23.10
-PORTREVISION=	1
+PORTVERSION=	26.02
 CATEGORIES=	net-im
 
 MAINTAINER=	ashish@FreeBSD.org
@@ -52,15 +51,16 @@ GH_TUPLE=	processone:p1_utils:${P1_UTILS_VER}:p1_utils/deps/p1_utils \
 		processone:yconf:${YCONF_VER}:yconf/deps/yconf \
 		processone:p1_acme:${P1_ACME_VER}:p1_acme/deps/p1_acme \
 		benoitc:erlang-idna:${IDNA_VER}:idna/deps/idna \
-		benoitc:unicode_util_compat:${UNICODE_UTIL_COMPAT_VER}:unicode_util_compat/deps/unicode_util_compat
+		benoitc:unicode_util_compat:${UNICODE_UTIL_COMPAT_VER}:unicode_util_compat/deps/unicode_util_compat \
+		erlydtl:erlydtl:${ERLYDTL_VER}:erlydtl/deps/erlydtl
 
 OPTIONS_DEFINE=	ODBC PAM DOCS LUA MYSQL PGSQL REDIS SIP SQLITE \
-		STUN TOOLS FULLXML
+		STUN FULLXML
 OPTIONS_DEFAULT=SQLITE STUN
 
 EJABBERD_LIBDIR=lib/erlang/lib
 MAKE_ENV=	PORTVERSION=${PORTVERSION}
-CONFIGURE_ARGS+=--localstatedir=/var --libdir=${PREFIX}/${EJABBERD_LIBDIR}
+CONFIGURE_ARGS+=--localstatedir=/var --libdir=${PREFIX}/${EJABBERD_LIBDIR} --with-rebar=rebar
 MAKE_ARGS=	"CPPFLAGS=${CPPFLAGS}" "CFLAGS=${CFLAGS}" "LDFLAGS=${LDFLAGS}"
 CPPFLAGS+=	-I${LOCALBASE}/include
 CFLAGS+=	-I${LOCALBASE}/include
@@ -86,7 +86,8 @@ SUBS=		PORTNAME=${PORTNAME} PORTVERSION=${PORTVERSION}		\
 		SQLITE3_VER=${SQLITE3_VER}				\
 		STRINGPREP_VER=${STRINGPREP_VER} STUN_VER=${STUN_VER}	\
 		UNICODE_UTIL_COMPAT_VER=${UNICODE_UTIL_COMPAT_VER}	\
-		XMPP_VER=${XMPP_VER} YCONF_VER=${YCONF_VER}
+		XMPP_VER=${XMPP_VER} YCONF_VER=${YCONF_VER}		\
+		ERLYDTL_VER=${ERLYDTL_VER:C/-.*//1}
 
 SUB_FILES=	pkg-message pkg-install
 PLIST_SUB=	${SUBS}
@@ -97,38 +98,37 @@ SUB_LIST=	${SUBS} \
 SHEBANG_FILES=	${WRKSRC}/ejabberdctl.template
 
 BASE64URL_VER=	1.0.1
-CACHE_TAB_VER=	1.0.30
-EIMP_VER=	1.0.22
-EJABBERD_PO_VER=	0.0.0
+CACHE_TAB_VER=	1.0.33
+EIMP_VER=	1.0.26
 EPAM_VER=	1.0.14
 EREDIS_VER=	1.2.0
-ESIP_VER=	1.0.50
-EZLIB_VER=	1.0.12
-FAST_TLS_VER=	1.1.16
-FAST_XML_VER=	1.1.49
-FAST_YAML_VER=	1.0.36
+ESIP_VER=	1.0.59
+EZLIB_VER=	1.0.15
+FAST_TLS_VER=	1.1.25
+FAST_XML_VER=	1.1.57
+FAST_YAML_VER=	1.0.39
 IDNA_VER=	6.0.0
 JIFFY_VER=	1.1.1
-JOSE_VER=	1.11.5
-LUERL_VER=	1.0
-MQTREE_VER=	1.0.15
-P1_ACME_VER=	1.0.22
-P1_MYSQL_VER=	1.0.22
-P1_OAUTH2_VER=	0.6.11
-P1_PGSQL_VER=	1.1.23
-P1_UTILS_VER=	1.0.25
-PKIX_VER=	1.0.9
-SQLITE3_VER=	1.1.14
-STRINGPREP_VER=	1.0.29
-STUN_VER=	1.2.10
+JOSE_VER=	1.11.12
+LUERL_VER=	1.2
+MQTREE_VER=	1.0.19
+P1_ACME_VER=	1.0.30
+P1_MYSQL_VER=	1.0.27
+P1_OAUTH2_VER=	0.6.14
+P1_PGSQL_VER=	1.1.38
+P1_UTILS_VER=	1.0.28
+PKIX_VER=	1.0.10
+SQLITE3_VER=	1.1.15
+STRINGPREP_VER=	1.0.33
+STUN_VER=	1.2.21
 UNICODE_UTIL_COMPAT_VER=	0.4.1
-XMPP_VER=	1.7.0
-YCONF_VER=	1.0.15
+XMPP_VER=	1.12.0
+YCONF_VER=	1.0.22
+ERLYDTL_VER=	0.15.0
 
 OPTIONS_SUB=		yes
 SIP_DESC=	SIP support
 STUN_DESC=	STUN/TURN support
-TOOLS_DESC=	Build development tools
 FULLXML_DESC=	Full XML support
 PAM_CONFIGURE_ENABLE=	pam
 PAM_GH_TUPLE=	processone:epam:${EPAM_VER}:epam/deps/epam
@@ -147,9 +147,6 @@ STUN_CONFIGURE_ENABLE=	stun
 STUN_GH_TUPLE=	processone:stun:${STUN_VER}:stun/deps/stun
 SQLITE_CONFIGURE_ENABLE=sqlite
 SQLITE_GH_TUPLE=	processone:erlang-sqlite3:${SQLITE3_VER}:sqlite3/deps/sqlite3
-TOOLS_CONFIGURE_ENABLE=	tools
-TOOLS_GH_TUPLE=processone:ejabberd-po:e909d88:ejabberdpo/deps/ejabberd_po
-FULLXML_CONFIGURE_ENABLE=	full-xml
 SQLITE_USES=		sqlite
 DOCS_MAKE_ARGS_OFF=	NOPORTDOCS=yes
 LUA_CONFIGURE_ENABLE=	lua
@@ -166,8 +163,11 @@ pre-everything::
 	fi
 
 post-patch:
+	@${REINPLACE_CMD} -e '/vsn/s/0.14.0/${ERLYDTL_VER}/' \
+		${WRKSRC}/deps/erlydtl/src/erlydtl.app.src
 	@${REINPLACE_CMD} -e 's,^convert,${LOCALBASE}/bin/convert,' ${WRKSRC}/tools/captcha.sh
-	@${REINPLACE_CMD} -e 's,%%PORTVERSION%%,${PORTVERSION},' ${WRKSRC}/configure.ac
+	@${REINPLACE_CMD} -e '/^AC_INIT(ejabberd,/s,m4_esyscmd([^)]*),${PORTVERSION},' \
+			${WRKSRC}/configure.ac
 
 pre-configure:
 	cd ${WRKSRC} && ${SH} autogen.sh

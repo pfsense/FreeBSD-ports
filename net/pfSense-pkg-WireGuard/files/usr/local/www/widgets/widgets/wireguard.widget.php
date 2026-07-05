@@ -3,7 +3,7 @@
  * wireguard.widget.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2021-2024 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2021-2026 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2021 R. Christian McDonald (https://github.com/rcmcdonald91)
  * Copyright (c) 2021 Vajonam
  * Copyright (c) 2020 Ascrod
@@ -37,7 +37,23 @@ global $wgg;
 
 wg_globals();
 
-$widgetkey			= (isset($_POST['widgetkey'])) ? $_POST['widgetkey'] : $widgetkey;
+/*
+ * Validate the "widgetkey" value.
+ * When this widget is present on the Dashboard, $widgetkey is defined before
+ * the Dashboard includes the widget. During other types of requests, such as
+ * saving settings or AJAX, the value may be set via $_POST or similar.
+ */
+if ($_POST['widgetkey'] || $_GET['widgetkey']) {
+	$rwidgetkey = isset($_POST['widgetkey']) ? $_POST['widgetkey'] : (isset($_GET['widgetkey']) ? $_GET['widgetkey'] : null);
+	[$wname, $wid] = explode('-', $rwidgetkey, 2);
+	if (($wname == basename(__FILE__, '.widget.php')) &&
+	    is_numericint($wid)) {
+		$widgetkey = $rwidgetkey;
+	} else {
+		print gettext("Invalid Widget Key");
+		exit;
+	}
+}
 
 $widget_config			= $user_settings['widgets'][$widgetkey];
 
@@ -97,7 +113,7 @@ if (isset($_POST['save'])) {
 		<div class="form-group">
 			<label for="<?=htmlspecialchars($widgetkey)?>_refresh_interval" class="col-sm-4 control-label"><?=gettext('Refresh Interval')?></label>
 			<div class="col-sm-8">
-				<input type="number" id="<?=htmlspecialchars($widgetkey)?>_refresh_interval" name="<?=htmlspecialchars($widgetkey)?>_refresh_interval" value="<?=htmlspecialchars($wireguard_refresh_interval)?>" placeholder="<?=$wgg['default_widget_refresh_interval']?>" min="0" max="10" class="form-control" />
+				<input type="number" id="<?=htmlspecialchars($widgetkey)?>_refresh_interval" name="<?=htmlspecialchars($widgetkey)?>_refresh_interval" value="<?=htmlspecialchars($wireguard_refresh_interval)?>" placeholder="<?=$wgg['default_widget_refresh_interval']?>" min="0" max="20" class="form-control" />
 				<span class="help-block">
 					<?=gettext('Widget refresh interval (in ticks).')?>
 					<br />

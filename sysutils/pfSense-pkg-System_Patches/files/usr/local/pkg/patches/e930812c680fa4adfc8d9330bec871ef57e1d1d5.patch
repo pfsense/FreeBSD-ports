@@ -1,0 +1,35 @@
+commit e930812c680fa4adfc8d9330bec871ef57e1d1d5
+Author: Marcos Mendoza <mmendoza@netgate.com>
+Date:   Wed Dec 4 12:16:35 2024 -0600
+
+    Add error handling for config xml parsing exceptions. Fix #15860
+    
+    With this change, exceptions during a config restore will no longer
+    result in an unbootable instance.
+
+diff --git a/src/etc/inc/xmlparse.inc b/src/etc/inc/xmlparse.inc
+index f840c264f4..73cceeca1f 100644
+--- a/src/etc/inc/xmlparse.inc
++++ b/src/etc/inc/xmlparse.inc
+@@ -201,11 +201,16 @@ function parse_xml_config_raw($cffile, $rootobj, $isstring = "false") {
+ 	}
+ 
+ 	while ($data = fread($fp, 4096)) {
+-		if (!xml_parse($xml_parser, $data, feof($fp))) {
+-			log_error(sprintf(gettext('XML error: %1$s at line %2$d in %3$s') . "\n",
+-				xml_error_string(xml_get_error_code($xml_parser)),
+-				xml_get_current_line_number($xml_parser),
+-				$cffile));
++		try {
++			if (!xml_parse($xml_parser, $data, feof($fp))) {
++				log_error(sprintf(gettext('XML error: %1$s at line %2$d in %3$s') . "\n",
++					xml_error_string(xml_get_error_code($xml_parser)),
++					xml_get_current_line_number($xml_parser),
++					$cffile));
++				return -1;
++			}
++		} catch (\Throwable | \Error | \Exception $e) {
++			log_error($e->getMessage());
+ 			return -1;
+ 		}
+ 	}

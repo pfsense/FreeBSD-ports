@@ -1,7 +1,6 @@
 PORTNAME=	phd2
 DISTVERSIONPREFIX=v
-DISTVERSION=	2.6.10
-PORTREVISION=	9
+DISTVERSION=	2.6.14
 CATEGORIES=	astro
 
 MAINTAINER=	acm@FreeBSD.org
@@ -13,10 +12,11 @@ LICENSE=	BSD3CLAUSE
 LIB_DEPENDS=	libcfitsio.so:astro/cfitsio \
 		libgmock.so:devel/googletest \
 		libindidriver.so:devel/indi \
-		libcurl.so:ftp/curl
+		libcurl.so:ftp/curl \
+		libopencv_core.so:graphics/opencv
 RUN_DEPENDS=	indiserver:devel/indi
 
-USES=		cmake eigen:3 gettext ninja pkgconfig xorg
+USES=		cmake desktop-file-utils eigen:3 gettext ninja pkgconfig xorg
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	OpenPHDGuiding
@@ -39,5 +39,11 @@ CMAKE_ARGS+=	-DUSE_SYSTEM_GTEST:BOOL=YES \
 .if ${ARCH} != aarch64 && ${ARCH} != armv6 && ${ARCH} != armv7 && ${ARCH} != amd64 && ${ARCH} != i386
 CMAKE_ARGS+=	-DOPENSOURCE_ONLY:BOOL=YES
 .endif
+
+post-install:
+.for RESO in 16 32 48 64 128 256
+	@${MKDIR} ${STAGEDIR}${PREFIX}/share/icons/hicolor/${RESO}x${RESO}/apps
+	${INSTALL_DATA} ${WRKSRC}/icons/${PORTNAME}_${RESO}.png ${STAGEDIR}${PREFIX}/share/icons/hicolor/${RESO}x${RESO}/apps/${PORTNAME}.png
+.endfor
 
 .include <bsd.port.mk>

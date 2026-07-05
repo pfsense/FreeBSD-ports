@@ -1,8 +1,7 @@
 PORTNAME=	memcached
-PORTVERSION=	1.6.26
+DISTVERSION=	1.6.41
 CATEGORIES=	databases
-MASTER_SITES=	http://www.memcached.org/files/ \
-		GENTOO
+MASTER_SITES=	http://www.memcached.org/files/
 
 MAINTAINER=	bofh@FreeBSD.org
 COMMENT=	High-performance distributed memory object cache system

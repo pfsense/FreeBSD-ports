@@ -1,6 +1,5 @@
 PORTNAME=	clx
-DISTVERSION=	0.7.5-65
-DISTVERSIONSUFFIX=	-g8e07155
+DISTVERSION=	0.7.8
 CATEGORIES=	x11 lisp
 PKGNAMEPREFIX=	cl-
 
@@ -10,10 +9,7 @@ WWW=		https://www.cliki.net/CLX
 
 LICENSE=	MIT
 
-USES=		tar:tgz
-
-USES+=		makeinfo
-USE_ASDF=	yes
+USES=		cl makeinfo tar:tgz
 USE_GITHUB=	yes
 GH_ACCOUNT=	sharplispers
 
@@ -56,5 +52,4 @@ do-install-DOCS-on:
 	${MKDIR} ${STAGEDIR}${DOCSDIR}
 	(cd ${WRKSRC} && ${INSTALL_DATA} ${PORTDOCS} ${STAGEDIR}${DOCSDIR})
 
-.include "${.CURDIR}/../../devel/cl-asdf/bsd.cl-asdf.mk"
 .include <bsd.port.mk>

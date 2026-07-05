@@ -3,7 +3,7 @@
  * lcdproc_screens.php
  *
  * part of pfSense (https://www.pfsense.org/)
- * Copyright (c) 2016-2024 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2016-2026 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2016 Treer
  * Copyright (c) 2008 Mark J Crane
  * All rights reserved.
@@ -68,7 +68,7 @@ if ($_POST) {
 	// in $_POST being added to $input_errors, e.g:
 	//   $input_errors[] = "Descriptive error message for the user.";
 
-	if (!$input_errors) {
+	if (empty($input_errors)) {
 		$lcdproc_screens_config['scr_version']                         = $pconfig['scr_version'];
 		$lcdproc_screens_config['scr_time']                            = $pconfig['scr_time'];
 		$lcdproc_screens_config['scr_uptime']                          = $pconfig['scr_uptime'];

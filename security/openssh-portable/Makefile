@@ -1,6 +1,6 @@
 PORTNAME=	openssh
-DISTVERSION=	9.7p1
-PORTREVISION=	0
+DISTVERSION=	10.2p1
+PORTREVISION=	1
 PORTEPOCH=	1
 CATEGORIES=	security
 MASTER_SITES=	OPENBSD/OpenSSH/portable
@@ -17,7 +17,7 @@ LICENSE_PERMS=	dist-mirror dist-sell pkg-mirror pkg-sell auto-accept
 
 CONFLICTS?=		openssh-3.* ssh-1.* ssh2-3.* openssh-portable-devel
 
-USES=			alias autoreconf compiler:c11 cpe localbase ncurses \
+USES=			autoreconf compiler:c11 cpe localbase ncurses \
 			pkgconfig ssl
 GNU_CONFIGURE=		yes
 GNU_CONFIGURE_MANPREFIX=	${PREFIX}/share
@@ -43,7 +43,7 @@ gssapi_PKGNAMESUFFIX=		-portable-gssapi
 OPTIONS_DEFINE=		DOCS PAM TCP_WRAPPERS LIBEDIT BSM \
 			HPN KERB_GSSAPI \
 			LDNS NONECIPHER XMSS FIDO_U2F BLACKLISTD
-OPTIONS_DEFAULT=	LIBEDIT PAM TCP_WRAPPERS LDNS FIDO_U2F
+OPTIONS_DEFAULT=	BLACKLISTD LIBEDIT PAM TCP_WRAPPERS LDNS FIDO_U2F
 .if ${FLAVOR:U} == hpn
 OPTIONS_DEFAULT+=	HPN NONECIPHER
 .endif
@@ -73,7 +73,6 @@ TCP_WRAPPERS_EXTRA_PATCHES=${FILESDIR}/extra-patch-tcpwrappers
 
 LDNS_CONFIGURE_WITH=	ldns=${LOCALBASE}
 LDNS_LIB_DEPENDS=	libldns.so:dns/ldns
-LDNS_EXTRA_PATCHES=	${FILESDIR}/extra-patch-ldns
 
 HPN_CONFIGURE_WITH=		hpn
 NONECIPHER_CONFIGURE_WITH=	nonecipher
@@ -101,23 +100,30 @@ ETCDIR?=		${PREFIX}/etc/ssh
 PATCH_SITES+=	http://mirror.shatow.net/freebsd/${PORTNAME}/:DEFAULT,hpn,gsskex
 
 # Must add this patch before HPN due to conflicts
+.if !${PORT_OPTIONS:MBLACKLISTD}
+.  if ${PORT_OPTIONS:MHPN} || ${PORT_OPTIONS:MNONECIPHER}
+# Needed glue for applying HPN patch without conflict
+EXTRA_PATCHES+=	${FILESDIR}/extra-patch-no-blocklistd-hpn-glue
+.  endif
+.endif
+
+# Must add this patch before HPN due to conflicts
 .if ${PORT_OPTIONS:MKERB_GSSAPI} || ${FLAVOR:U} == gssapi
-#BROKEN=	KERB_GSSAPI No patch for ${DISTVERSION} yet.
+# BROKEN=	KERB_GSSAPI No patch for ${DISTVERSION} yet.
 .  if ${PORT_OPTIONS:MHPN} || ${PORT_OPTIONS:MNONECIPHER}
 # Needed glue for applying HPN patch without conflict
 EXTRA_PATCHES+=	${FILESDIR}/extra-patch-hpn-gss-glue
 .  endif
 # - See https://sources.debian.org/data/main/o/openssh/ for which subdir to
 # pull from.
-GSSAPI_DEBIAN_VERSION=	9.7p1
-GSSAPI_DEBIAN_SUBDIR=	${GSSAPI_DEBIAN_VERSION:U${DISTVERSION}}-2
+GSSAPI_DEBIAN_VERSION=	10.2p1
+GSSAPI_DEBIAN_SUBDIR=	${GSSAPI_DEBIAN_VERSION:U${DISTVERSION}}-1
 # - Debian does not use a versioned filename so we trick fetch to make one for
 # us with the ?<anything>=/ trick.
 PATCH_SITES+=	https://sources.debian.org/data/main/o/openssh/1:${GSSAPI_DEBIAN_SUBDIR}/debian/patches/gssapi.patch?dummy=/:gsskex
 # Bump this when updating the patch location
-GSSAPI_DISTVERSION=	9.7p1
+GSSAPI_DISTVERSION=	10.2p1
 PATCHFILES+=	openssh-${GSSAPI_DISTVERSION:U${DISTVERSION}}-gsskex-all-debian-rh-${GSSAPI_DISTVERSION}.patch:-p1:gsskex
-EXTRA_PATCHES+=	${FILESDIR}/extra-patch-gssapi-auth2-gss.c
 EXTRA_PATCHES+=	${FILESDIR}/extra-patch-gssapi-kexgssc.c
 EXTRA_PATCHES+=	${FILESDIR}/extra-patch-gssapi-kexgsss.c
 .endif
@@ -158,6 +164,7 @@ IGNORE=		you have selected HEIMDAL_BASE but do not have heimdal installed in bas
 CONFIGURE_LIBS+=	-lgssapi_krb5
 CONFIGURE_ARGS+=	--with-kerberos5=/usr
 .	else
+CONFIGURE_LIBS+=	-lgssapi_krb5
 CONFIGURE_ARGS+=	--with-kerberos5=${LOCALBASE}
 .	endif
 .	if ${OPENSSLBASE} == "/usr"
@@ -223,6 +230,8 @@ post-install:
 	    ${STAGEDIR}${ETCDIR}/ssh_config.sample
 	${MV} ${STAGEDIR}${ETCDIR}/sshd_config \
 	    ${STAGEDIR}${ETCDIR}/sshd_config.sample
+	${MKDIR} ${STAGEDIR}${ETCDIR}/ssh_config.d \
+		 ${STAGEDIR}${ETCDIR}/sshd_config.d
 .if ${PORT_OPTIONS:MHPN} || ${PORT_OPTIONS:MNONECIPHER}
 	${MKDIR} ${STAGEDIR}${DOCSDIR}
 	${INSTALL_DATA} ${WRKSRC}/HPN-README ${STAGEDIR}${DOCSDIR}

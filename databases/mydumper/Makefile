@@ -1,6 +1,6 @@
 PORTNAME=	mydumper
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.16.1-3
+DISTVERSION=	0.21.3-1
 CATEGORIES=	databases
 
 MAINTAINER=	sunpoet@FreeBSD.org
@@ -9,7 +9,7 @@ WWW=		https://github.com/mydumper/mydumper
 
 LICENSE=	GPLv3
 
-LIB_DEPENDS=	libpcre.so:devel/pcre
+LIB_DEPENDS=	libpcre2-8.so:devel/pcre2
 
 USES=		cmake:insource compiler:c11 gnome mysql pkgconfig ssl
 USE_GNOME=	glib20
@@ -23,7 +23,7 @@ PLIST_FILES=	sbin/mydumper sbin/myloader
 
 USE_GITHUB=	yes
 
-PORTSCOUT=	skipv:${DISTVERSION},v${DISTVERSION}
+PORTSCOUT=	ignore:1
 
 do-install:
 	${INSTALL_PROGRAM} ${WRKSRC}/mydumper ${WRKSRC}/myloader ${STAGEDIR}${PREFIX}/sbin/

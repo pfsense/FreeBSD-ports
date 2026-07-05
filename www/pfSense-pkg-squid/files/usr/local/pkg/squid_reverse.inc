@@ -3,7 +3,7 @@
  * squid_reverse.inc
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2015-2024 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2015-2026 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2012 Martin Fuchs
  * Copyright (c) 2012-2014 Marcello Coutinho
  * Copyright (c) 2013-2015 Gekkenhuis
@@ -44,6 +44,7 @@ function squid_resync_reverse() {
 
 	if (isset($settings['reverse_ssl_cert']) && $settings['reverse_ssl_cert'] != "none") {
 		$svr_cert = lookup_cert($settings['reverse_ssl_cert']);
+		$svr_cert = $svr_cert['item'];
 		if ($svr_cert != false) {
 			if (base64_decode($svr_cert['crt'])) {
 				file_put_contents(SQUID_CONFBASE . "/{$settings['reverse_ssl_cert']}.crt", sq_text_area_decode($svr_cert['crt']));
@@ -63,6 +64,7 @@ function squid_resync_reverse() {
 	if (isset($settings['reverse_check_clientca']) && $settings['reverse_check_clientca'] == "on") {
 		if (isset($settings['reverse_ssl_clientca']) && $settings['reverse_ssl_clientca'] != 'none') {
 			$clientca_cert = lookup_ca($settings['reverse_ssl_clientca']);
+			$clientca_cert = $clientca_cert['item'];
 			$clientca_opts = '';
 			if ($clientca_cert != false) {
 				if (base64_decode($clientca_cert['crt'])) {
@@ -75,8 +77,9 @@ function squid_resync_reverse() {
 			}
 		}
 		if (isset($settings['reverse_ssl_clientcrl']) && $settings['reverse_ssl_clientcrl'] != 'none') {
-			$crl = lookup_crl($settings['reverse_ssl_clientcrl']);
-			crl_update($crl);
+			$crl_config = lookup_crl($settings['reverse_ssl_clientcrl']);
+			$crl = &$crl_config['item'];
+			crl_update($crl_config);
 			if ($crl != false) {
 				if (base64_decode($crl['text'])) {
 					file_put_contents(SQUID_CONFBASE . "/{$settings['reverse_ssl_clientcrl']}.crl", sq_text_area_decode($crl['text']));
@@ -106,11 +109,10 @@ function squid_resync_reverse() {
 	}
 
 	// Reverse Proxy HTTPS security settings
-	$options = "NO_SSLv3,CIPHER_SERVER_PREFERENCE";
+	$options = "NO_SSLv3,NO_TLSv1,NO_TLSv1_1,CIPHER_SERVER_PREFERENCE";
 	if (empty($settings['reverse_compatibility_mode']) || ($settings['reverse_compatibility_mode'] == 'modern')) {
 		// Modern
 		$ciphers = "cipher=ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-AES256-GCM-SHA384:DHE-RSA-AES128-GCM-SHA256:DHE-DSS-AES128-GCM-SHA256:kEDH+AESGCM:ECDHE-RSA-AES128-SHA256:ECDHE-ECDSA-AES128-SHA256:ECDHE-RSA-AES128-SHA:ECDHE-ECDSA-AES128-SHA:ECDHE-RSA-AES256-SHA384:ECDHE-ECDSA-AES256-SHA384:ECDHE-RSA-AES256-SHA:ECDHE-ECDSA-AES256-SHA:DHE-RSA-AES128-SHA256:DHE-RSA-AES128-SHA:DHE-DSS-AES128-SHA256:DHE-RSA-AES256-SHA256:DHE-DSS-AES256-SHA:DHE-RSA-AES256-SHA:!aNULL:!eNULL:!EXPORT:!DES:!RC4:!3DES:!SHA1:!MD5:!PSK";
-		$options .= ",NO_TLSv1";
 	} else {
 		// Intermediate
 		$ciphers = "cipher=ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-AES256-GCM-SHA384:DHE-RSA-AES128-GCM-SHA256:DHE-DSS-AES128-GCM-SHA256:kEDH+AESGCM:ECDHE-RSA-AES128-SHA256:ECDHE-ECDSA-AES128-SHA256:ECDHE-RSA-AES128-SHA:ECDHE-ECDSA-AES128-SHA:ECDHE-RSA-AES256-SHA384:ECDHE-ECDSA-AES256-SHA384:ECDHE-RSA-AES256-SHA:ECDHE-ECDSA-AES256-SHA:DHE-RSA-AES128-SHA256:DHE-RSA-AES128-SHA:DHE-DSS-AES128-SHA256:DHE-RSA-AES256-SHA256:DHE-DSS-AES256-SHA:DHE-RSA-AES256-SHA:ECDHE-RSA-DES-CBC3-SHA:ECDHE-ECDSA-DES-CBC3-SHA:AES128-GCM-SHA256:AES256-GCM-SHA384:AES128-SHA256:AES256-SHA256:AES128-SHA:AES256-SHA:AES:CAMELLIA:DES-CBC3-SHA:!aNULL:!eNULL:!EXPORT:!DES:!RC4:!MD5:!PSK:!aECDH:!EDH-DSS-DES-CBC3-SHA:!EDH-RSA-DES-CBC3-SHA:!KRB5-DES-CBC3-SHA";
@@ -372,8 +374,9 @@ function squid_refresh_crl() {
 	$settings = config_get_path('installedpackages/squidreversegeneral/config/0', []);
 
 	if (isset($settings['reverse_check_clientca']) && $settings['reverse_check_clientca'] == "on" && isset($settings['reverse_ssl_clientcrl']) && $settings['reverse_ssl_clientcrl'] != 'none') {
-		$crl = lookup_crl($settings['reverse_ssl_clientcrl']);
-		crl_update($crl);
+		$crl_config = lookup_crl($settings['reverse_ssl_clientcrl']);
+		$crl = &$crl_config['item'];
+		crl_update($crl_config);
 		if ($crl != false) {
 			if (base64_decode($crl['text'])) {
 				file_put_contents(SQUID_CONFBASE . "/{$settings['reverse_ssl_clientcrl']}.crl", sq_text_area_decode($crl['text']));
@@ -460,7 +463,7 @@ function squid_reverse_upgrade_config() {
 function squid_validate_reverse($post, &$input_errors) {
 	/* Manually refresh client CRL */
 	if ($post['refresh_crl'] == 'Refresh CRL') {
-		log_error("[squid] Client Certificate Revocation List refresh forced via GUI. Refreshing now...");
+		logger(LOG_INFO, localize_text("Client Certificate Revocation List refresh forced via GUI. Refreshing now..."), LOG_PREFIX_PKG_SQUID);
 		squid_refresh_crl();
 	}
 

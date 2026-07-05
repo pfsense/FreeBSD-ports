@@ -1,10 +1,11 @@
 PORTNAME=	azure-mgmt-resource
 DISTVERSION=	23.1.0b2
+PORTREVISION=	1
 CATEGORIES=	devel python
 MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
-MAINTAINER=	dbaio@FreeBSD.org
+MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Microsoft Azure Resource Management Client Library for Python
 WWW=		https://pypi.org/project/azure-mgmt-resource/
 

@@ -10,8 +10,7 @@
 
 DISTVERSIONPREFIX=	v
 PORTNAME=	ksh
-PORTVERSION=	1.0.8
-PORTREVISION=	1
+PORTVERSION=	1.0.10
 CATEGORIES=	shells
 
 MAINTAINER=	cy@FreeBSD.org
@@ -25,6 +24,8 @@ USES=		compiler:c11
 USE_GITHUB=	yes
 GH_ACCOUNT=	ksh93
 GH_PROJECT=	ksh
+
+PIE_UNSAFE=	yes
 
 # IMPORTANT:	Disabling conflicts, i.e. -DDISABLE_CONFLICTS will result in
 #		arcane build failures due to already installed ksh/ksh93 in

@@ -1,0 +1,22 @@
+commit aac5bb5d396a1f1b18d59a532ad262a4d1085a40
+Author: Marcos Mendoza <mmendoza@netgate.com>
+Date:   Mon Dec 2 16:27:20 2024 -0600
+
+    Config access regression when saving dnsmasq overrides. Fix #15890
+
+diff --git a/src/usr/local/pfSense/include/www/services_dnsmasq.inc b/src/usr/local/pfSense/include/www/services_dnsmasq.inc
+index 9777298f1b..23659ad9aa 100644
+--- a/src/usr/local/pfSense/include/www/services_dnsmasq.inc
++++ b/src/usr/local/pfSense/include/www/services_dnsmasq.inc
+@@ -457,9 +457,9 @@ function saveDomainOverride($post, $id, $json=false) {
+         $doment['descr'] = $post['descr'];
+ 
+         if (isset($id) && config_get_path("dnsmasq/domainoverrides/{$id}") && ($id != -1)) {
+-            config_get_path("dnsmasq/domainoverrides/{$id}", $doment);
++            config_set_path("dnsmasq/domainoverrides/{$id}", $doment);
+         } else {
+-            config_get_path('dnsmasq/domainoverrides/', $doment);
++            config_set_path('dnsmasq/domainoverrides/', $doment);
+         }
+ 
+         $retval = services_dnsmasq_configure();

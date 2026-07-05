@@ -1,8 +1,8 @@
 PORTNAME=	bitmap2pp
-DISTVERSION=	4.36.1
+DISTVERSION=	4.39.2
 CATEGORIES=	graphics perl5
-MASTER_SITES=	SF/dktools/dktools/dktools-${PORTVERSION}
-DISTNAME=	dktools-${PORTVERSION}
+MASTER_SITES=	SF/dktools/dktools/dktools-${DISTVERSION}
+DISTNAME=	dktools-${DISTVERSION}
 
 MAINTAINER=	takefu@airport.fm
 COMMENT=	Convert PNG/JPEG/TIFF to PDF/EPS

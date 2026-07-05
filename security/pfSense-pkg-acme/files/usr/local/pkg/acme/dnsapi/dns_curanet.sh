@@ -1,15 +1,21 @@
 #!/usr/bin/env sh
-
-#Script to use with curanet.dk, scannet.dk, wannafind.dk, dandomain.dk DNS management.
-#Requires api credentials with scope: dns
-#Author: Peter L. Hansen <peter@r12.dk>
-#Version 1.0
+# shellcheck disable=SC2034
+dns_curanet_info='Curanet.dk
+Domains: scannet.dk wannafind.dk dandomain.dk
+Site: Curanet.dk
+Docs: github.com/acmesh-official/acme.sh/wiki/dnsapi2#dns_curanet
+Options:
+ CURANET_AUTHCLIENTID Auth ClientID. Requires scope dns
+ CURANET_AUTHSECRET Auth Secret
+Issues: github.com/acmesh-official/acme.sh/issues/3933
+Author: Peter L. Hansen <peter@r12.dk>
+'
 
 CURANET_REST_URL="https://api.curanet.dk/dns/v1/Domains"
 CURANET_AUTH_URL="https://apiauth.dk.team.blue/auth/realms/Curanet/protocol/openid-connect/token"
 CURANET_ACCESS_TOKEN=""
 
-########  Public functions #####################
+########  Public functions ####################
 
 #Usage: dns_curanet_add   _acme-challenge.www.domain.com   "XKrxpRBosdIKFzxW_CT3KLZNf6q0HG9i01zxXp5CPBs"
 dns_curanet_add() {
@@ -136,7 +142,7 @@ _get_root() {
   i=1
 
   while true; do
-    h=$(printf "%s" "$domain" | cut -d . -f $i-100)
+    h=$(printf "%s" "$domain" | cut -d . -f "$i"-100)
     _debug h "$h"
     if [ -z "$h" ]; then
       #not valid
@@ -148,7 +154,7 @@ _get_root() {
     export _H3="Authorization: Bearer $CURANET_ACCESS_TOKEN"
     response="$(_get "$CURANET_REST_URL/$h/Records" "" "")"
 
-    if [ ! "$(echo "$response" | _egrep_o "Entity not found")" ]; then
+    if [ ! "$(echo "$response" | _egrep_o "Entity not found|Bad Request")" ]; then
       _domain=$h
       return 0
     fi

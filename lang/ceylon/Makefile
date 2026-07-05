@@ -1,6 +1,6 @@
 PORTNAME=	ceylon
 PORTVERSION=	1.3.3
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	lang java
 MASTER_SITES=	http://downloads.ceylon-lang.org/cli/
 
@@ -11,11 +11,9 @@ WWW=		https://ceylon-lang.org/
 LICENSE=	APACHE20 GPLv2
 LICENSE_COMB=	multi
 
-USES=		zip
-NO_BUILD=	yes
+USES=		java zip
 
-USE_JAVA=	yes
-JAVA_RUN=	yes
+NO_BUILD=	yes
 
 PORTDATA=	*
 

@@ -1,4 +1,4 @@
---- native/arguments.c.orig	2019-09-04 15:44:04 UTC
+--- native/arguments.c.orig	2025-01-06 00:00:00 UTC
 +++ native/arguments.c
 @@ -157,7 +157,7 @@ static arg_data *parse(int argc, char *argv[])
      args->help = false;                /* Don't display help */

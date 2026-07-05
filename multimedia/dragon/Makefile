@@ -1,6 +1,5 @@
 PORTNAME=	dragon
 DISTVERSION=	${KDE_APPLICATIONS_VERSION}
-PORTREVISION=	1
 CATEGORIES=	multimedia kde kde-applications
 PKGNAMESUFFIX=	-player
 
@@ -10,19 +9,22 @@ WWW=		https://www.kde.org/applications/multimedia/dragonplayer/
 
 LICENSE=	GPLv2
 
-USES=		cmake compiler:c++11-lang desktop-file-utils gettext kde:5 qt:5 \
-		tar:xz xorg
-USE_KDE=	auth codecs completion config configwidgets coreaddons crash \
-		dbusaddons doctools kio service sonnet textwidgets i18n \
-		iconthemes jobwidgets notifications parts phonon solid widgetsaddons \
-		windowsystem xmlgui \
-		ecm:build
-USE_QT=		concurrent core dbus gui network widgets xml \
-		buildtools:build qmake:build
+LIB_DEPENDS=	libavcodec.so:multimedia/ffmpeg
+
+USES=		cmake compiler:c++23-lang desktop-file-utils gettext kde:6 \
+		pkgconfig qt:6 tar:xz xorg
+USE_KDE=	config coreaddons crash i18n kio kirigami2 windowsystem \
+		doctools:build ecm:build
+USE_QT=		base multimedia
 USE_XORG=	x11
 
 CONFLICTS_INSTALL=	dragon # bin/dragon
 
 OPTIONS_DEFINE=	DOCS
+
+# Support for 13.5-RELEASE and 14.2-RELEASE
+.if !exists(/usr/bin/clang-scan-deps)
+USES+=		llvm
+.endif
 
 .include <bsd.port.mk>

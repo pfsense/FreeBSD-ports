@@ -387,6 +387,7 @@ share/locale/hi/LC_MESSAGES/kalzium.mo
 share/locale/hne/LC_MESSAGES/kalzium.mo
 share/locale/hr/LC_MESSAGES/kalzium.mo
 share/locale/hu/LC_MESSAGES/kalzium.mo
+share/locale/ia/LC_MESSAGES/kalzium.mo
 share/locale/is/LC_MESSAGES/kalzium.mo
 share/locale/it/LC_MESSAGES/kalzium.mo
 share/locale/ja/LC_MESSAGES/kalzium.mo
@@ -445,4 +446,4 @@ share/man/ru/man1/kalzium.1.gz
 share/man/sv/man1/kalzium.1.gz
 share/man/uk/man1/kalzium.1.gz
 share/metainfo/org.kde.kalzium.appdata.xml
-share/qlogging-categories5/kalzium.categories
+share/qlogging-categories6/kalzium.categories

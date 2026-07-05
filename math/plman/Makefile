@@ -1,6 +1,6 @@
 PORTNAME=	plman
 PORTVERSION=	2.5.1
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	math java
 MASTER_SITES=	http://${PORTNAME}.sourceforge.net/dist/ \
 		http://nivi.interfree.it/distfiles/${PORTNAME}.sourceforge.net/
@@ -12,8 +12,7 @@ WWW=		https://plman.sourceforge.net/
 
 NO_BUILD=	yes
 
-USES=		zip
-USE_JAVA=	yes
+USES=		java zip
 
 DATADIR=	${JAVASHAREDIR}/${PORTNAME}
 REPLACE_FILES=	${WRKSRC}/bin/${PORTNAME}

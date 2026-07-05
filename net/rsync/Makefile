@@ -1,6 +1,6 @@
 PORTNAME=	rsync
-DISTVERSION=	3.2.7
-PORTREVISION=	1
+DISTVERSION=	3.4.1
+PORTREVISION=	6
 CATEGORIES=	net
 MASTER_SITES=	https://www.mirrorservice.org/sites/rsync.samba.org/src/ \
 		http://rsync.mirror.garr.it/src/ \
@@ -19,16 +19,28 @@ LIB_DEPENDS=	liblz4.so:archivers/liblz4 \
 		libxxhash.so:devel/xxhash \
 		libzstd.so:archivers/zstd
 
-USES=		autoreconf:build cpe python shebangfix ssl
-PYTHON_NO_DEPENDS=	yes
+FLAVORS=	default python
+FLAVOR?=	${FLAVORS:[1]}
+FLAVORS_SUB=	yes
+python_PKGNAMESUFFIX=	-python
+
+USES=		autoreconf:build cpe ssl
+.if ${FLAVOR:U} == python
+USES+=	python:run shebangfix
+.endif
+
+CONFLICTS=	rsync rsync-python
+
 CPE_VENDOR=	samba
 CPE_PRODUCT=	rsync
 USE_RC_SUBR=	rsyncd
 
+.if ${FLAVOR:U} == python
 SHEBANG_FILES=	support/rrsync
+.endif
 
 GNU_CONFIGURE=	yes
-GNU_CONFIGURE_MANPREFIX=${PREFIX}/share
+GNU_CONFIGURE_MANPREFIX=	${PREFIX}/share
 CONFIGURE_ARGS=	--disable-debug \
 		--enable-ipv6 \
 		--with-rsyncd-conf=${ETCDIR}/rsyncd.conf
@@ -49,6 +61,7 @@ OPTIONS_DEFINE=		DOCS ICONV POPT_PORT SSH ZLIB_BASE
 OPTIONS_DEFAULT=	FLAGS ICONV SSH ZLIB_BASE
 OPTIONS_RADIO=		PTS
 OPTIONS_RADIO_PTS=	FLAGS RENAMED
+OPTIONS_SUB=		yes
 
 # options provided upstream
 FLAGS_DESC=	File system flags support patch, adds --fileflags
@@ -78,7 +91,7 @@ ZLIB_BASE_CONFIGURE_ON=	--with-included-zlib=no
 
 .include <bsd.port.options.mk>
 
-.if make(makesum) || ${PORT_OPTIONS:MRENAMED} || ${PORT_OPTIONS:MICONV} || ${PORT_OPTIONS:MFLAGS}
+.if ${PORT_OPTIONS:MRENAMED} || ${PORT_OPTIONS:MICONV} || ${PORT_OPTIONS:MFLAGS}
 DISTFILES+=	${PORTNAME}-patches-${DISTVERSION}${EXTRACT_SUFX}
 .endif
 
@@ -86,6 +99,12 @@ DISTFILES+=	${PORTNAME}-patches-${DISTVERSION}${EXTRACT_SUFX}
 
 .if empty(ICONV_LIB) || !${PORT_OPTIONS:MICONV}
 CONFIGURE_ARGS+=	ac_cv_search_libiconv_open=no
+.endif
+
+.if make(makesum) || ${PORT_OPTIONS:MRENAMED} || ${PORT_OPTIONS:MICONV} || \
+	${PORT_OPTIONS:MFLAGS}
+pre-patch:
+	@${REINPLACE_CMD} 's:+int module_dirlen = 0;:+:' ${WRKSRC}/patches/fileflags.diff
 .endif
 
 post-patch:
@@ -100,11 +119,15 @@ pre-configure:
 post-install:
 	@${MKDIR} ${STAGEDIR}${ETCDIR}
 	${INSTALL_DATA} ${FILESDIR}/rsyncd.conf.sample ${STAGEDIR}${ETCDIR}/
+.if ${FLAVOR:U} == python
 	${INSTALL_SCRIPT} ${WRKSRC}/support/rrsync ${STAGEDIR}${PREFIX}/sbin
-	${INSTALL_MAN} ${WRKSRC}/rrsync.1 ${STAGEDIR}${PREFIX}/share/man/man1/
+.endif
 
 post-install-DOCS-on:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}
 	${INSTALL_DATA} ${PORTDOCS:S,^,${WRKSRC}/,} ${STAGEDIR}${DOCSDIR}
+.if ${FLAVOR:U} == python
+	${INSTALL_DATA} ${WRKSRC}/support/rrsync.1.md ${STAGEDIR}${DOCSDIR}
+.endif
 
 .include <bsd.port.post.mk>

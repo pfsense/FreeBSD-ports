@@ -1,5 +1,6 @@
 PORTNAME=	pymssql
 PORTVERSION=	2.1.5
+PORTREVISION=	1
 CATEGORIES=	databases python
 MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -15,7 +16,7 @@ BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}setuptools-git>0:devel/py-setuptools-git@$
 LIB_DEPENDS=	libsybdb.so:databases/freetds
 
 USES=		python
-USE_PYTHON=	autoplist distutils cython
+USE_PYTHON=	autoplist cython0 distutils
 
 post-extract:
 	@${RM} ${WRKSRC}/_mssql.c

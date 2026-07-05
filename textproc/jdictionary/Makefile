@@ -1,6 +1,6 @@
 PORTNAME=	jdictionary
 DISTVERSION=	1_8
-PORTREVISION=	4
+PORTREVISION=	5
 CATEGORIES=	textproc java
 MASTER_SITES=	SF/jdictionary/jDictionary/jDictionary%20version%20${PORTVERSION}
 
@@ -8,9 +8,8 @@ MAINTAINER=	jmohacsi@bsd.hu
 COMMENT=	Platform independent, plugin based dictionary
 WWW=		http://jdictionary.info/
 
-USE_JAVA=	yes
+USES=		java zip
 
-USES=		zip
 WRKSRC=		${WRKDIR}/${PORTNAME}
 NO_BUILD=	yes
 

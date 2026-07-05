@@ -4,8 +4,11 @@
     SUBDIR += x2vnc
     SUBDIR += x2x
     SUBDIR += xarcan
+    SUBDIR += xlibre-ephyr
+    SUBDIR += xlibre-nest
+    SUBDIR += xlibre-server
+    SUBDIR += xlibre-vfb
     SUBDIR += xorg-server
     SUBDIR += xwayland
-    SUBDIR += xwayland-devel
 
 .include <bsd.port.subdir.mk>

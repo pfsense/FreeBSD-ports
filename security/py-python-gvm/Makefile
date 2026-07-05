@@ -1,7 +1,6 @@
 PORTNAME=	python-gvm
-DISTVERSION=	24.1.0
+DISTVERSION=	26.11.0
 DISTVERSIONPREFIX=	v
-PORTREVISION=	1
 CATEGORIES=	security python
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
@@ -27,7 +26,7 @@ post-extract:
 
 post-patch:
 	${REINPLACE_CMD} -i "" -e 's|/run/gvmd/|/var/run/gvmd/|g' \
-		${WRKSRC}/gvm/connections.py
+		${WRKSRC}/gvm/connections/_unix.py
 	${REINPLACE_CMD} -e 's|, { include = "tests", format = "sdist" }||g' \
 		${WRKSRC}/pyproject.toml
 

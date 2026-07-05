@@ -1,14 +1,9 @@
 PORTNAME=	libarchive
-DISTVERSION=	3.7.2
-PORTREVISION=	2
+DISTVERSION=	3.8.5
 PORTEPOCH=	1
 CATEGORIES=	archivers
 MASTER_SITES=	https://github.com/${PORTNAME}/${PORTNAME}/releases/download/v${DISTVERSION}/ \
 		https://libarchive.org/downloads/
-
-PATCH_SITES=	https://github.com/${PORTNAME}/${PORTNAME}/commit/
-PATCHFILES=	3bd918d92f8c34ba12de9c6604d96f9e262a59fc.patch:-p1 \
-		6110e9c82d8ba830c3440f36b990483ceaaea52c.patch:-p1
 
 MAINTAINER=	glewis@FreeBSD.org
 COMMENT=	Library to create and read several streaming archive formats
@@ -23,7 +18,6 @@ USES=		cpe iconv libtool localbase:ldflags pathfix pkgconfig tar:xz
 USE_LDCONFIG=	yes
 
 GNU_CONFIGURE=	yes
-GNU_CONFIGURE_MANPREFIX=${PREFIX}/share
 
 INSTALL_TARGET=	install-strip
 TEST_TARGET=	check
@@ -55,7 +49,7 @@ OPENSSL_USES=		ssl
 OPENSSL_CONFIGURE_WITH=	openssl
 OPENSSL_CONFIGURE_OFF=	--without-openssl
 
-MBEDTLS_LIB_DEPENDS=	libmbedtls.so:security/mbedtls
+MBEDTLS_LIB_DEPENDS=	libmbedtls.so:security/mbedtls2
 MBEDTLS_CONFIGURE_WITH=	mbedtls
 
 .include <bsd.port.pre.mk>

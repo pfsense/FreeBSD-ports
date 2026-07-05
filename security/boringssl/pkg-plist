@@ -19,6 +19,7 @@ include/openssl/cast.h
 include/openssl/chacha.h
 include/openssl/cipher.h
 include/openssl/cmac.h
+include/openssl/cms.h
 include/openssl/conf.h
 include/openssl/cpu.h
 include/openssl/crypto.h
@@ -39,8 +40,6 @@ include/openssl/err.h
 include/openssl/evp.h
 include/openssl/evp_errors.h
 include/openssl/ex_data.h
-include/openssl/experimental/kyber.h
-include/openssl/experimental/spx.h
 include/openssl/hkdf.h
 include/openssl/hmac.h
 include/openssl/hpke.h
@@ -51,6 +50,8 @@ include/openssl/lhash.h
 include/openssl/md4.h
 include/openssl/md5.h
 include/openssl/mem.h
+include/openssl/mldsa.h
+include/openssl/mlkem.h
 include/openssl/nid.h
 include/openssl/obj.h
 include/openssl/obj_mac.h
@@ -63,11 +64,16 @@ include/openssl/pkcs12.h
 include/openssl/pkcs7.h
 include/openssl/pkcs8.h
 include/openssl/pki/certificate.h
+include/openssl/pki/ocsp.h
 include/openssl/pki/signature_verify_cache.h
+include/openssl/pki/verify.h
 include/openssl/pki/verify_error.h
 include/openssl/poly1305.h
 include/openssl/pool.h
 include/openssl/posix_time.h
+include/openssl/prefix_symbols.h
+include/openssl/prefix_symbols_internal_S.h
+include/openssl/prefix_symbols_internal_c.h
 include/openssl/rand.h
 include/openssl/rc4.h
 include/openssl/ripemd.h
@@ -75,7 +81,9 @@ include/openssl/rsa.h
 include/openssl/safestack.h
 include/openssl/service_indicator.h
 include/openssl/sha.h
+include/openssl/sha2.h
 include/openssl/siphash.h
+include/openssl/slhdsa.h
 include/openssl/span.h
 include/openssl/srtp.h
 include/openssl/ssl.h
@@ -85,12 +93,14 @@ include/openssl/target.h
 include/openssl/thread.h
 include/openssl/time.h
 include/openssl/tls1.h
+include/openssl/tls_prf.h
 include/openssl/trust_token.h
 include/openssl/type_check.h
 include/openssl/x509.h
 include/openssl/x509_vfy.h
 include/openssl/x509v3.h
 include/openssl/x509v3_errors.h
+include/openssl/xwing.h
 lib/cmake/OpenSSL/OpenSSLConfig.cmake
 lib/cmake/OpenSSL/OpenSSLTargets-%%CMAKE_BUILD_TYPE%%.cmake
 lib/cmake/OpenSSL/OpenSSLTargets.cmake

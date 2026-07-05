@@ -1,10 +1,8 @@
 PORTNAME=	wayvnc
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.8.0
+DISTVERSION=	0.9.1
+PORTREVISION=	1
 CATEGORIES=	net wayland
-
-PATCH_SITES=	https://github.com/${GH_ACCOUNT}/${GH_PROJECT}/commit/
-PATCHFILES+=	1c75fc18ab9c.patch:-p1 # https://github.com/any1/wayvnc/pull/295
 
 MAINTAINER=	jbeich@FreeBSD.org
 COMMENT=	VNC server for wlroots-based compositors
@@ -28,7 +26,7 @@ USE_LDCONFIG=	yes
 GH_ACCOUNT=	any1
 PLIST_FILES=	bin/${PORTNAME} \
 		bin/${PORTNAME}ctl
-MESON_ARGS=	-Dtests=false
+MESON_FALSE=	tests
 
 OPTIONS_DEFINE=	MANPAGES OPENGL
 OPTIONS_DEFAULT=MANPAGES OPENGL

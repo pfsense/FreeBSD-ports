@@ -1,6 +1,6 @@
---- chrome/common/chrome_paths.cc.orig	2024-02-04 14:46:08 UTC
+--- chrome/common/chrome_paths.cc.orig	2026-03-24 16:59:08 UTC
 +++ chrome/common/chrome_paths.cc
-@@ -30,7 +30,7 @@
+@@ -31,7 +31,7 @@
  #include "base/apple/foundation_util.h"
  #endif
  
@@ -9,9 +9,9 @@
  #include "components/policy/core/common/policy_paths.h"
  #endif
  
-@@ -52,14 +52,14 @@
+@@ -47,14 +47,14 @@ namespace {
  
- namespace {
+ std::optional<bool> g_override_using_default_data_directory_for_testing;
  
 -#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS)
 +#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_BSD)
@@ -20,14 +20,14 @@
  const base::FilePath::CharType kFilepathSinglePrefExtensions[] =
  #if BUILDFLAG(GOOGLE_CHROME_BRANDING)
 -    FILE_PATH_LITERAL("/usr/share/google-chrome/extensions");
-+    FILE_PATH_LITERAL("/usr/local/share/iridium/extensions");
++    FILE_PATH_LITERAL("/usr/local/share/chromium/extensions");
  #else
 -    FILE_PATH_LITERAL("/usr/share/chromium/extensions");
-+    FILE_PATH_LITERAL("/usr/local/share/iridium/extensions");
++    FILE_PATH_LITERAL("/usr/local/share/chromium/extensions");
  #endif  // BUILDFLAG(GOOGLE_CHROME_BRANDING)
  
  #endif  // BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS)
-@@ -220,7 +220,7 @@ bool PathProvider(int key, base::FilePath* result) {
+@@ -175,7 +175,7 @@ bool PathProvider(int key, base::FilePath* result) {
        }
        break;
      case chrome::DIR_DEFAULT_DOWNLOADS_SAFE:
@@ -36,25 +36,23 @@
        if (!GetUserDownloadsDirectorySafe(&cur)) {
          return false;
        }
-@@ -523,7 +523,7 @@ bool PathProvider(int key, base::FilePath* result) {
-         return false;
-       }
+@@ -405,13 +405,13 @@ bool PathProvider(int key, base::FilePath* result) {
        break;
+     }
+ #endif
 -#if BUILDFLAG(IS_POSIX) && !BUILDFLAG(IS_MAC) && !BUILDFLAG(IS_OPENBSD)
 +#if BUILDFLAG(IS_POSIX) && !BUILDFLAG(IS_MAC)
      case chrome::DIR_POLICY_FILES: {
        cur = base::FilePath(policy::kPolicyPath);
        break;
-@@ -534,7 +534,7 @@ bool PathProvider(int key, base::FilePath* result) {
- #if BUILDFLAG(IS_CHROMEOS_ASH) ||                              \
-     ((BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS_LACROS)) && \
-      BUILDFLAG(CHROMIUM_BRANDING)) ||                          \
--    BUILDFLAG(IS_MAC)
-+    BUILDFLAG(IS_MAC) || BUILDFLAG(IS_BSD)
+     }
+ #endif
+-#if BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_MAC) || \
++#if BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_BSD) || \
+     (BUILDFLAG(IS_LINUX) && BUILDFLAG(CHROMIUM_BRANDING))
      case chrome::DIR_USER_EXTERNAL_EXTENSIONS: {
        if (!base::PathService::Get(chrome::DIR_USER_DATA, &cur)) {
-         return false;
-@@ -543,7 +543,7 @@ bool PathProvider(int key, base::FilePath* result) {
+@@ -421,7 +421,7 @@ bool PathProvider(int key, base::FilePath* result) {
        break;
      }
  #endif
@@ -63,36 +61,22 @@
      case chrome::DIR_STANDALONE_EXTERNAL_EXTENSIONS: {
        cur = base::FilePath(kFilepathSinglePrefExtensions);
        break;
-@@ -590,7 +590,7 @@ bool PathProvider(int key, base::FilePath* result) {
-       break;
- #endif
+@@ -460,7 +460,7 @@ bool PathProvider(int key, base::FilePath* result) {
  
--#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_MAC)
-+#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_BSD)
+ #if BUILDFLAG(ENABLE_EXTENSIONS_CORE) &&                                   \
+     (BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_MAC) || \
+-     BUILDFLAG(IS_ANDROID))
++     BUILDFLAG(IS_ANDROID) || BUILDFLAG(IS_BSD))
      case chrome::DIR_NATIVE_MESSAGING:
  #if BUILDFLAG(IS_MAC)
  #if BUILDFLAG(GOOGLE_CHROME_BRANDING)
-@@ -602,11 +602,21 @@ bool PathProvider(int key, base::FilePath* result) {
- #endif
- #else  // BUILDFLAG(IS_MAC)
- #if BUILDFLAG(GOOGLE_CHROME_BRANDING)
-+#if BUILDFLAG(IS_FREEBSD)
-       cur = base::FilePath(
--          FILE_PATH_LITERAL("/etc/iridium-browser/native-messaging-hosts"));
-+          FILE_PATH_LITERAL("/usr/local/etc/iridium/native-messaging-hosts"));
+@@ -480,6 +480,9 @@ bool PathProvider(int key, base::FilePath* result) {
+ #elif BUILDFLAG(GOOGLE_CHROME_FOR_TESTING_BRANDING)
+       cur = base::FilePath(FILE_PATH_LITERAL(
+           "/etc/iridium-browser/native-messaging-hosts"));
++#elif BUILDFLAG(IS_FREEBSD)
++      cur = base::FilePath(FILE_PATH_LITERAL(
++          "/usr/local/etc/iridium-browser/native-messaging-hosts"));
  #else
        cur = base::FilePath(
--          FILE_PATH_LITERAL("/etc/iridium-browser/native-messaging-hosts"));
-+          FILE_PATH_LITERAL("/etc/iridium/native-messaging-hosts"));
-+#endif
-+#else
-+#if BUILDFLAG(IS_FREEBSD)
-+      cur = base::FilePath(
-+          FILE_PATH_LITERAL("/usr/local/etc/iridium/native-messaging-hosts"));
-+#else
-+      cur = base::FilePath(
-+          FILE_PATH_LITERAL("/etc/iridium/native-messaging-hosts"));
-+#endif
- #endif
- #endif  // !BUILDFLAG(IS_MAC)
-       break;
+           FILE_PATH_LITERAL("/etc/iridium-browser/native-messaging-hosts"));

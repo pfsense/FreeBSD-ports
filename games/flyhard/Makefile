@@ -3,7 +3,7 @@ PORTVERSION=	0.42
 PORTREVISION=	21
 CATEGORIES=	games
 MASTER_SITES=	http://www.markboyd.me.uk/games/flyhard/ \
-		http://mirror.amdmi3.ru/distfiles/
+		https://mirror.amdmi3.ru/distfiles/
 
 MAINTAINER=	amdmi3@FreeBSD.org
 COMMENT=	Game resembling Thrust, but with lots of shooting and puzzles
@@ -20,8 +20,9 @@ BUILD_DEPENDS=	${LOCALBASE}/include/boost/shared_ptr.hpp:devel/boost-libs
 
 USES=		gmake localbase sdl
 GNU_CONFIGURE=	yes
-USE_CXXSTD=	c++98
 USE_SDL=	sdl mixer
+
+CXXFLAGS+=	-Wno-c++11-narrowing
 
 PLIST_FILES=	bin/${PORTNAME}
 PORTDOCS=	AUTHORS ChangeLog README

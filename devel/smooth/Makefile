@@ -1,6 +1,6 @@
 PORTNAME=	smooth
 PORTVERSION=	0.9.10
-PORTREVISION=	2
+PORTREVISION=	4
 CATEGORIES=	devel
 MASTER_SITES=	SF
 
@@ -19,7 +19,7 @@ LIB_DEPENDS=	libcpuid.so:sysutils/libcpuid \
 
 USES=		gmake gnome iconv jpeg localbase pkgconfig xorg
 USE_LDCONFIG=	yes
-USE_GNOME=	cairo gdkpixbuf2 gtk30 libxml2
+USE_GNOME=	cairo gdkpixbuf gtk30 libxml2
 USE_XORG=	x11
 MAKE_ARGS=	config="systemlibcpuid systemlibwebp"
 

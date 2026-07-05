@@ -1,5 +1,6 @@
 PORTNAME=	jrdesktop
 PORTVERSION=	0.3.1.0
+PORTREVISION=	1
 CATEGORIES=	net java
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/${PORTNAME}-${PORTVERSION:R:R}/
 EXTRACT_SUFX=	.jar
@@ -11,7 +12,8 @@ WWW=		https://jrdesktop.sourceforge.net/
 
 LICENSE=	GPLv3
 
-USE_JAVA=	yes
+USES=		java
+
 NO_BUILD=	yes
 
 SUB_FILES=	jrdesktop

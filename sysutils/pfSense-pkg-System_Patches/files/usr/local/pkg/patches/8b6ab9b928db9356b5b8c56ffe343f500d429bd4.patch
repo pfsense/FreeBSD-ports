@@ -1,0 +1,54 @@
+commit 8b6ab9b928db9356b5b8c56ffe343f500d429bd4
+Author: Steve Wheeler <stevew@netgate.com>
+Date:   Fri Jun 13 17:37:06 2025 +0000
+
+    Fix thermal sensor threshold values
+
+diff --git a/src/usr/local/www/widgets/javascript/thermal_sensors.js b/src/usr/local/www/widgets/javascript/thermal_sensors.js
+index 62ab87dda2..0278512313 100644
+--- a/src/usr/local/www/widgets/javascript/thermal_sensors.js
++++ b/src/usr/local/www/widgets/javascript/thermal_sensors.js
+@@ -31,10 +31,10 @@ function buildThermalSensorsData(thermalSensorsData, widgetKey, tsParams) {
+ 	} else {
+ 		if (firstTime) {
+ 			buildThermalSensorsDataGraph(thermalSensorsData, tsParams, widgetKey);
+-			updateThermalSensorsDataGraph(thermalSensorsData, widgetKey);
++			updateThermalSensorsDataGraph(thermalSensorsData, tsParams, widgetKey);
+ 			firstTime = false;
+ 		} else {
+-			updateThermalSensorsDataGraph(thermalSensorsData, widgetKey);
++			updateThermalSensorsDataGraph(thermalSensorsData, tsParams, widgetKey);
+ 		}
+ 	}
+ }
+@@ -119,7 +119,7 @@ function buildThermalSensorsDataGraph(thermalSensorsData, tsParams, widgetKey) {
+ 
+ }
+ 
+-function updateThermalSensorsDataGraph(thermalSensorsData, widgetKey) {
++function updateThermalSensorsDataGraph(thermalSensorsData, tsParams, widgetKey) {
+ 	var thermalSensorsArray = new Array();
+ 
+ 	if (thermalSensorsData && thermalSensorsData != "") {
+@@ -130,8 +130,21 @@ function updateThermalSensorsDataGraph(thermalSensorsData, widgetKey) {
+ 	for (var i = 0; i < thermalSensorsArray.length; i++) {
+ 
+ 		var sensorDataArray = thermalSensorsArray[i].split(":");
++		var sensorName = sensorDataArray[0].trim();
+ 		var thermalSensorValue = getThermalSensorValue(sensorDataArray[1]);
+ 
++		//set thresholds every time we update
++		if (sensorName.indexOf("cpu") > -1) { //check CPU Threshold config settings
++			warningTemp = tsParams.coreWarningTempThreshold;
++			criticalTemp = tsParams.coreCriticalTempThreshold;
++		} else if (sensorName.indexOf("pch") > -1) { //check PCH Threshold config settings
++			warningTemp = tsParams.pchWarningTempThreshold;
++			criticalTemp = tsParams.pchCriticalTempThreshold;
++		} else { //assuming sensor is for a zone, check Zone Threshold config settings
++			warningTemp = tsParams.zoneWarningTempThreshold;
++			criticalTemp = tsParams.zoneCriticalTempThreshold;
++		}
++
+ 		setTempProgress(i, thermalSensorValue, widgetKey);
+ 	}
+ }

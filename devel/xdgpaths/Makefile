@@ -1,6 +1,6 @@
 PORTNAME=	xdgpaths
 PORTVERSION=	0.2.5
-PORTREVISION=	5
+PORTREVISION=	6
 DISTVERSIONPREFIX=	v
 CATEGORIES=	devel
 
@@ -23,7 +23,8 @@ D_LIB_DIR=	${PREFIX}/lib/d
 DC=		${PREFIX}/bin/ldmd2
 
 do-build:
-	@cd ${WRKSRC} && DC=${DC} ${DUB_CMD}
+	@cd ${WRKSRC} && \
+		${SETENV} DUB_HOME=${WRKDIR}/dub_home DC=${DC} ${DUB_CMD}
 
 do-install:
 	@${MKDIR} ${STAGEDIR}${D_INCLUDE_DIR}

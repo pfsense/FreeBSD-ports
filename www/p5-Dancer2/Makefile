@@ -1,7 +1,8 @@
 PORTNAME=	Dancer2
-PORTVERSION=	1.1.0
+PORTVERSION=	2.0.1
 CATEGORIES=	www perl5
 MASTER_SITES=	CPAN
+MASTER_SITE_SUBDIR=	CPAN:CROMEDOME
 PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
@@ -19,6 +20,7 @@ RUN_DEPENDS=	p5-CLI-Osprey>=0:devel/p5-CLI-Osprey \
 		p5-Clone>=0:devel/p5-Clone \
 		p5-Crypt-URandom>=0:security/p5-Crypt-URandom \
 		p5-Config-Any>=0:devel/p5-Config-Any \
+		p5-Data-Censor>=0:devel/p5-Data-Censor \
 		p5-File-Share>=0:devel/p5-File-Share \
 		p5-File-Which>=0:sysutils/p5-File-Which \
 		p5-Hash-Merge-Simple>=0:devel/p5-Hash-Merge-Simple \
@@ -28,6 +30,7 @@ RUN_DEPENDS=	p5-CLI-Osprey>=0:devel/p5-CLI-Osprey \
 		p5-Import-Into>=0:devel/p5-Import-Into \
 		p5-JSON>=0:converters/p5-JSON \
 		p5-JSON-MaybeXS>=0:converters/p5-JSON-MaybeXS \
+		p5-Module-Pluggable>=0:devel/p5-Module-Pluggable \
 		p5-Module-Runtime>=0:devel/p5-Module-Runtime \
 		p5-Moo>=2.000000:devel/p5-Moo \
 		p5-Path-Tiny>=0:devel/p5-Path-Tiny \
@@ -52,6 +55,7 @@ TEST_DEPENDS=	p5-AnyEvent>=0:devel/p5-AnyEvent \
 		p5-LWP-Protocol-https>=0:www/p5-LWP-Protocol-https \
 		p5-Test-CPAN-Meta>=0:devel/p5-Test-CPAN-Meta \
 		p5-Test-EOL>=0:devel/p5-Test-EOL \
+		p5-Test-Exception>=0:devel/p5-Test-Exception \
 		p5-Test-Fatal>=0:devel/p5-Test-Fatal \
 		p5-Test-Memory-Cycle>=0:devel/p5-Test-Memory-Cycle \
 		p5-Test-MockTime>=0:devel/p5-Test-MockTime \
@@ -68,7 +72,6 @@ OPTIONS_DEFAULT=XS
 XS_RUN_DEPENDS=	p5-CGI-Deurl-XS>=0:www/p5-CGI-Deurl-XS \
 		p5-Class-Load-XS>=0:devel/p5-Class-Load-XS \
 		p5-JSON-XS>=0:converters/p5-JSON-XS \
-		p5-Scope-Upper>=0:devel/p5-Scope-Upper \
 		p5-URL-Encode-XS>=0:www/p5-URL-Encode-XS \
 		p5-YAML-LibYAML>=0:textproc/p5-YAML-LibYAML
 

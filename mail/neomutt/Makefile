@@ -1,8 +1,8 @@
 PORTNAME=	neomutt
-PORTVERSION=	20240329
+PORTVERSION=	20260105
 CATEGORIES=	mail
 
-MAINTAINER=	bapt@FreeBSD.org
+MAINTAINER=	gahr@FreeBSD.org
 COMMENT=	Bringing together all the Mutt Code
 WWW=		https://neomutt.org
 
@@ -11,7 +11,7 @@ LICENSE_FILE=	${WRKSRC}/LICENSE.md
 
 RUN_DEPENDS=	${LOCALBASE}/etc/mime.types:misc/mime-support \
 		urlview:textproc/urlview
-LIB_DEPENDS=	libpcre2-posix.so:devel/pcre2
+LIB_DEPENDS=	libpcre2-8.so:devel/pcre2
 
 USES=		cpe iconv:translit localbase ncurses perl5 pkgconfig python:env shebangfix ssl
 
@@ -22,12 +22,12 @@ MAKE_JOBS_UNSAFE=	yes
 HAS_CONFIGURE=	yes
 
 OPTIONS_SUB=	yes
-SHEBANG_FILES=	contrib/smime_keys \
+SHEBANG_FILES=	smime/smime_keys \
 		contrib/oauth2/mutt_oauth2.py \
 		data/account-command/macos-keychain/keychain.py
 
 OPTIONS_DEFINE=	NLS DOCS SASL IDN FLOCK GPGME NOTMUCH
-OPTIONS_DEFAULT=SASL TOKYOCABINET NOTMUCH GPGME LMDB NCURSES GSSAPI_BASE
+OPTIONS_DEFAULT=SASL TOKYOCABINET NOTMUCH GPGME LMDB GSSAPI_BASE
 OPTIONS_MULTI=	HCACHE
 OPTIONS_MULTI_HCACHE=	BDB GDBM KYOTOCABINET LMDB QDBM TOKYOCABINET
 OPTIONS_SINGLE=	GSSAPI
@@ -41,7 +41,6 @@ KYOTOCABINET_DESC=	Kyoto Cabinet support
 LMDB_DESC=		Lightning Memory-Mapped Database support
 QDBM_DESC=		Quick DataBase Manager support
 TOKYOCABINET_DESC=	Tokyo Cabinet support
-SCREEN_DESC=	Screen options
 
 CONFIGURE_ARGS=	--with-ssl="${OPENSSLBASE}" \
 		--locales-fix \
@@ -70,7 +69,7 @@ NLS_CONFIGURE_ENABLE=	nls
 NLS_USES=		gettext
 
 IDN_LIB_DEPENDS=	libidn2.so:dns/libidn2
-IDN_CONFIGURE_ON=	--idn2
+IDN_CONFIGURE_OFF=	--disable-idn2
 
 FLOCK_CONFIGURE_ON=	--with-lock=flock
 
@@ -78,7 +77,6 @@ SASL_LIB_DEPENDS=	libsasl2.so:security/cyrus-sasl2
 SASL_CONFIGURE_ON=	--sasl
 
 GPGME_LIB_DEPENDS=	libgpgme.so:security/gpgme \
-			libassuan.so:security/libassuan \
 			libgpg-error.so:security/libgpg-error
 GPGME_CONFIGURE_ENABLE=	gpgme
 

@@ -1,5 +1,5 @@
 PORTNAME=	spotify-qt
-PORTVERSION=	3.11
+DISTVERSION=	4.0.3
 DISTVERSIONPREFIX=	v
 CATEGORIES=	audio
 
@@ -10,12 +10,13 @@ WWW=		https://github.com/kraxarn/spotify-qt
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/license
 
-RUN_DEPENDS=	spotifyd:audio/spotifyd
+RUN_DEPENDS=	librespot:multimedia/librespot
 
-USES=		cmake compiler:c++11-lang qt:5
+USES=		cmake compiler:c++11-lang qt:6
 USE_GITHUB=	yes
 GH_ACCOUNT=	kraxarn
-USE_QT=		core dbus gui network svg widgets buildtools:build qmake:build
+USE_QT=		base svg
+USE_GL=		gl opengl
 
 PLIST_FILES=	bin/spotify-qt \
 		share/applications/spotify-qt.desktop \

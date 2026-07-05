@@ -9,7 +9,7 @@
  *
  * part of pfSense (https://www.pfsense.org)
  * Copyright (c) 2014 Andrea Tuccia
- * Copyright (c) 2014-2024 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2014-2026 Rubicon Communications, LLC (Netgate)
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -29,6 +29,7 @@
 	<name>ladvd</name>
 	<version>%%PKGVERSION%%</version>
 	<title>Services/LADVD</title>
+	<addedit_string>LADVD: changed settings</addedit_string>
 	<include_file>/usr/local/pkg/ladvd.inc</include_file>
 	<menu>
 		<name>LADVD</name>
@@ -37,7 +38,7 @@
 		<url>/pkg_edit.php?xml=ladvd.xml</url>
 	</menu>
 	<menu>
-		<name>LADVD </name>
+		<name>LADVD</name>
 		<tooltiptext>Viwe LADVD status.</tooltiptext>
 		<section>Status</section>
 		<url>/status_ladvd.php</url>

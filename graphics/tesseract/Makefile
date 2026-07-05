@@ -1,5 +1,5 @@
 PORTNAME=	tesseract
-PORTVERSION=	5.3.4
+PORTVERSION=	5.5.2
 PORTREVISION=	1
 CATEGORIES=	graphics
 
@@ -51,6 +51,8 @@ TOOLS_USE=	GNOME=cairo,glib20,pango
 CMAKE_ON=	OPENMP_BUILD
 LDFLAGS+=	-lomp
 .endif
+
+CONFIGURE_ARGS+=	--without-tensorflow
 
 post-install-DOCS-on:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}

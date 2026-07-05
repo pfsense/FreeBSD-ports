@@ -1,29 +1,30 @@
 PORTNAME=	aparapi
 PORTVERSION=	1.0.0
-PORTREVISION=	1
+PORTREVISION=	4
 DISTVERSIONSUFFIX=	-SNAPSHOT
 CATEGORIES=	java lang
 
-MAINTAINER=	jmd@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Open source API for expressing data parallel workflows in Java
 WWW=		https://github.com/aparapi/aparapi
 
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE.TXT
 
+DEPRECATED=	no maintainer, no users in the ports tree, java 8 only, last upstream commit was 10 years ago
+EXPIRATION_DATE=	2026-06-15
+
 BUILD_DEPENDS=	opencl>=0:devel/opencl
 LIB_DEPENDS=	libOpenCL.so:devel/ocl-icd
 RUN_DEPENDS=	opencl>=0:devel/opencl
 
+USES=		dos2unix java:ant,run
+USE_GITHUB=	yes
+JAVA_VERSION=	8 # com.amd.aparapi.jni/build.xml:458: javah does not exist under Java 10 and higher, use the javac task with nativeHeaderDir instead
+
 ONLY_FOR_ARCHS=	amd64 powerpc64 powerpc64le
 
-USE_GITHUB=	yes
-
-USE_JAVA=	yes
-USE_ANT=	yes
 ALL_TARGET=	dist
-
-USES=		dos2unix
 
 do-install:
 		(cd ${WRKSRC}/dist_freebsd && ${INSTALL_DATA} aparapi.jar ${STAGEDIR}${JAVAJARDIR})

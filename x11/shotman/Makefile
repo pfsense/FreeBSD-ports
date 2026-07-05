@@ -1,6 +1,6 @@
 PORTNAME=	shotman
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.4.5
+DISTVERSION=	0.4.10
 PORTREVISION=	6
 CATEGORIES=	x11 wayland
 MASTER_SITES=	https://git.sr.ht/~whynothugo/${PORTNAME}/archive/${DISTVERSIONFULL}${EXTRACT_SUFX}?dummy=/
@@ -46,7 +46,7 @@ do-install-MANPAGES-on:
 post-install:
 .for _shell in bash fish zsh
 	@${ECHO_MSG} "Generating ${STAGEDIR}${PREFIX}/${PLIST_FILES:M*${_shell}*}"
-	${CARGO_TARGET_DIR}/${CARGO_BUILD_TARGET}/*/${PORTNAME}_completions ${_shell} \
+	${CARGO_TARGET_DIR}/*/${PORTNAME}_completions ${_shell} \
 		>${STAGEDIR}${PREFIX}/${PLIST_FILES:M*${_shell}*}
 .endfor
 

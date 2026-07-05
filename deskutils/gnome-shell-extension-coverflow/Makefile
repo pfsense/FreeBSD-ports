@@ -1,6 +1,6 @@
 PORTNAME=	gnome-shell-extension-coverflow
 PORTVERSION=	0.0.0.20180110
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	deskutils gnome
 DIST_SUBDIR=	gnome
 
@@ -10,6 +10,8 @@ WWW=		https://github.com/dmo60/CoverflowAltTab
 
 LICENSE=	GPLv3+
 LICENSE_FILE=	${WRKSRC}/COPYING
+
+BROKEN=		Does not support recent gnome-shell
 
 BUILD_DEPENDS=	gnome-shell>=0:x11/gnome-shell \
 		gsettings-desktop-schemas>=3.12.0:devel/gsettings-desktop-schemas

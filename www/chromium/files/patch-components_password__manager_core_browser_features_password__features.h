@@ -1,8 +1,8 @@
---- components/password_manager/core/browser/features/password_features.h.orig	2024-03-22 08:19:40 UTC
+--- components/password_manager/core/browser/features/password_features.h.orig	2026-03-13 06:02:14 UTC
 +++ components/password_manager/core/browser/features/password_features.h
-@@ -95,7 +95,7 @@ BASE_DECLARE_FEATURE(kPasswordManagerEnableSenderServi
- // terminal.
- BASE_DECLARE_FEATURE(kPasswordManagerLogToTerminal);
+@@ -164,7 +164,7 @@ BASE_DECLARE_FEATURE(kProactivelyDownloadModelForPassw
+ // control locale/country server side.
+ BASE_DECLARE_FEATURE(kReduceRequirementsForPasswordChange);
  
 -#if BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX)
 +#if BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_BSD)

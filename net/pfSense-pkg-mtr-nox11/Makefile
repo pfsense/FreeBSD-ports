@@ -2,7 +2,7 @@
 
 PORTNAME=	pfSense-pkg-mtr-nox11
 PORTVERSION=	0.85.6
-PORTREVISION=	5
+PORTREVISION=	6
 CATEGORIES=	net
 MASTER_SITES=	# empty
 DISTFILES=	# empty
@@ -13,7 +13,7 @@ COMMENT=	pfSense package mtr-nox11
 
 LICENSE=	APACHE20
 
-RUN_DEPENDS=	${LOCALBASE}/sbin/mtr:net/mtr-nox11
+RUN_DEPENDS=	${LOCALBASE}/sbin/mtr:net/mtr@nox11
 
 NO_BUILD=	yes
 NO_MTREE=	yes

@@ -1,5 +1,5 @@
 PORTNAME=	engrampa
-PORTVERSION=	1.28.1
+PORTVERSION=	1.28.2
 CATEGORIES=	archivers mate
 MASTER_SITES=	MATE
 DIST_SUBDIR=	mate
@@ -19,7 +19,7 @@ RUN_DEPENDS=	${LOCALBASE}/bin/gtar:archivers/gtar \
 PORTSCOUT=	limitw:1,even
 
 USES=		desktop-file-utils gettext gmake gnome libtool localbase \
-		mate pathfix pkgconfig tar:xz
+		mate pkgconfig tar:xz
 USE_MATE=	caja
 USE_GNOME=	cairo gtk30 intltool
 USE_LDCONFIG=	yes

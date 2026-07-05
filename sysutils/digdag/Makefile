@@ -1,5 +1,6 @@
 PORTNAME=	digdag
 DISTVERSION=	0.10.5.1
+PORTREVISION=	1
 CATEGORIES=	sysutils java
 MASTER_SITES=	https://github.com/treasure-data/digdag/releases/download/v${DISTVERSION}/ \
 		LOCAL/ehaupt
@@ -11,10 +12,8 @@ WWW=		https://www.digdag.io/
 
 LICENSE=	APACHE20
 
-USE_JAVA=	yes
-JAVA_VERSION=	8+
+USES=		java
 JAVA_VENDOR=	openjdk
-JAVA_RUN=	yes
 USE_RC_SUBR=	${PORTNAME}
 
 NO_ARCH=	yes

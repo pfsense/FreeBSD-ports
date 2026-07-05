@@ -1,20 +1,20 @@
---- components/policy/core/common/cloud/cloud_policy_util.cc.orig	2023-11-22 14:00:11 UTC
+--- components/policy/core/common/cloud/cloud_policy_util.cc.orig	2026-03-24 16:59:08 UTC
 +++ components/policy/core/common/cloud/cloud_policy_util.cc
-@@ -20,7 +20,7 @@
+@@ -24,7 +24,7 @@
+ #include "base/win/wincred_shim.h"
  #endif
  
- #if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS_LACROS) || \
--    BUILDFLAG(IS_APPLE) || BUILDFLAG(IS_FUCHSIA)
-+    BUILDFLAG(IS_APPLE) || BUILDFLAG(IS_FUCHSIA) || BUILDFLAG(IS_BSD)
+-#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_APPLE) || BUILDFLAG(IS_FUCHSIA)
++#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_APPLE) || BUILDFLAG(IS_FUCHSIA) || BUILDFLAG(IS_BSD)
  #include <pwd.h>
  #include <sys/types.h>
  #include <unistd.h>
-@@ -35,10 +35,15 @@
+@@ -39,10 +39,15 @@
  #import <SystemConfiguration/SCDynamicStoreCopySpecific.h>
  #endif
  
--#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS_LACROS)
-+#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS_LACROS) || BUILDFLAG(IS_BSD)
+-#if BUILDFLAG(IS_LINUX)
++#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_BSD)
  #include <limits.h>  // For HOST_NAME_MAX
  #endif
  
@@ -26,16 +26,16 @@
  #include <algorithm>
  #include <utility>
  
-@@ -86,7 +91,7 @@ namespace em = enterprise_management;
+@@ -93,7 +98,7 @@ const int kMinimumVersionForExtensionInstallPolicy = 1
+ }  // namespace
  
  std::string GetMachineName() {
- #if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS_LACROS) || \
--    BUILDFLAG(IS_FUCHSIA)
-+    BUILDFLAG(IS_FUCHSIA) || BUILDFLAG(IS_BSD)
+-#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_FUCHSIA)
++#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_FUCHSIA) || BUILDFLAG(IS_BSD)
    char hostname[HOST_NAME_MAX];
    if (gethostname(hostname, HOST_NAME_MAX) == 0)  // Success.
      return hostname;
-@@ -143,7 +148,7 @@ std::string GetMachineName() {
+@@ -149,7 +154,7 @@ std::string GetMachineName() {
  
  std::string GetOSVersion() {
  #if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_APPLE) || \
@@ -44,7 +44,7 @@
    return base::SysInfo::OperatingSystemVersion();
  #elif BUILDFLAG(IS_WIN)
    base::win::OSInfo::VersionNumber version_number =
-@@ -166,7 +171,7 @@ std::string GetOSArchitecture() {
+@@ -171,7 +176,7 @@ std::string GetOSArchitecture() {
  }
  
  std::string GetOSUsername() {

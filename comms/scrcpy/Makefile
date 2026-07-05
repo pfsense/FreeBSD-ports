@@ -1,6 +1,7 @@
 PORTNAME=	scrcpy
 DISTVERSIONPREFIX=	v
-DISTVERSION=	2.4
+DISTVERSION=	3.3.4
+PORTREVISION=	1
 CATEGORIES=	comms net
 MASTER_SITES=	https://github.com/${GH_ACCOUNT}/${GH_PROJECT}/releases/download/${DISTVERSIONFULL}/:server
 DISTFILES=	${SERVER_FILE}:server
@@ -28,10 +29,10 @@ MESON_ARGS=	-Dportable=false \
 
 PLIST_FILES=	bin/scrcpy \
 		etc/bash_completion.d/scrcpy \
-		share/man/man1/scrcpy.1.gz \
 		share/applications/scrcpy-console.desktop \
 		share/applications/scrcpy.desktop \
 		share/icons/hicolor/256x256/apps/scrcpy.png \
+		share/man/man1/scrcpy.1.gz \
 		${DATADIR}/scrcpy-server \
 		share/zsh/site-functions/_scrcpy
 PORTDOCS=	FAQ.md README.md
@@ -44,7 +45,7 @@ post-extract:
 	${CP} ${DISTDIR}/${SERVER_FILE} ${WRKSRC}
 
 post-install-DOCS-on:
-	${MKDIR} ${STAGEDIR}${DOCSDIR}
+	@${MKDIR} ${STAGEDIR}${DOCSDIR}
 	${INSTALL_MAN} ${PORTDOCS:S|^|${WRKSRC}/|} ${STAGEDIR}${DOCSDIR}
 
 .include <bsd.port.mk>

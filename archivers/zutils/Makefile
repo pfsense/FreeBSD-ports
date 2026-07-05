@@ -1,16 +1,15 @@
 PORTNAME=	zutils
-PORTVERSION=	1.12
-PORTREVISION=	1
+PORTVERSION=	1.16
 CATEGORIES=	archivers
 MASTER_SITES=	SAVANNAH/zutils
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	dutra@FreeBSD.org
 COMMENT=	Utilities for searching in bzip2, gzip, lzip, and xz archives
 WWW=		https://www.nongnu.org/zutils/zutils.html
 
 LICENSE=	GPLv2
 
-USES=		cpe tar:lz
+USES=		cpe tar:lz gmake
 GNU_CONFIGURE=	yes
 GNU_CONFIGURE_MANPREFIX=${PREFIX}/share
 

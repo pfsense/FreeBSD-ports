@@ -1,5 +1,5 @@
 PORTNAME=	smartmontools
-DISTVERSION=	7.4
+DISTVERSION=	7.5
 PORTREVISION=	2
 CATEGORIES=	sysutils
 MASTER_SITES=	SF
@@ -11,12 +11,11 @@ WWW=		https://www.smartmontools.org
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-USES=		compiler:c++11-lib cpe shebangfix
+USES=		compiler:c++11-lib cpe
+
 USE_RC_SUBR=	smartd
 
-SHEBANG_FILES=	examplescripts/Example5
 GNU_CONFIGURE=	yes
-GNU_CONFIGURE_MANPREFIX=${PREFIX}/share
 CONFIGURE_ARGS=	--disable-dependency-tracking \
 		--enable-sample \
 		--with-gnupg=yes \
@@ -24,13 +23,17 @@ CONFIGURE_ARGS=	--disable-dependency-tracking \
 		--with-nvme-devicescan=yes
 
 SUB_FILES=	pkg-message smart
-
 PORTDOCS=	*
 
 OPTIONS_DEFINE=	DOCS
 
 post-patch:
-	@${REINPLACE_CMD} -e 's| install-initdDATA| |' ${WRKSRC}/Makefile.in
+	@${REINPLACE_CMD} -e 's| install-initdDATA| |g' \
+	    ${PATCH_WRKSRC}/Makefile.in
+	@${REINPLACE_CMD} -e 's|install-drivedbinstDATA install-examplesDATA|install-drivedbinstDATA|g' \
+	    ${PATCH_WRKSRC}/Makefile.in
+	@${REINPLACE_CMD} -e 's|install-examplesSCRIPTS  install-man|install-man|g' \
+	    ${PATCH_WRKSRC}/Makefile.in
 
 post-install:
 	@${MKDIR} ${STAGEDIR}${PREFIX}/etc/periodic/daily

@@ -1,5 +1,6 @@
 PORTNAME=	xom
 PORTVERSION=	1.2.11
+PORTREVISION=	1
 PORTEPOCH=	1
 CATEGORIES=	textproc java
 MASTER_SITES=	http://www.cafeconleche.org/XOM/
@@ -11,7 +12,8 @@ WWW=		http://www.xom.nu/
 RUN_DEPENDS=	${JAVALIBDIR}/xml-apis.jar:textproc/xerces-j \
 		${JAVALIBDIR}/xalan.jar:textproc/xalan-j
 
-USE_JAVA=	yes
+USES=		java
+
 NO_BUILD=	yes
 WRKSRC=		${WRKDIR}/XOM
 

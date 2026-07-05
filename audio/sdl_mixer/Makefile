@@ -1,6 +1,6 @@
 PORTNAME=	sdl_mixer
 PORTVERSION=	1.2.12
-PORTREVISION=	14
+PORTREVISION=	15
 CATEGORIES=	audio
 MASTER_SITES=	https://www.libsdl.org/projects/SDL_mixer/release/
 DISTNAME=	SDL_mixer-${PORTVERSION}
@@ -11,7 +11,7 @@ WWW=		https://www.libsdl.org/projects/SDL_mixer/index.html
 
 LICENSE=	ZLIB
 
-USES=		gmake libtool pathfix pkgconfig sdl
+USES=		gmake libtool pkgconfig sdl
 USE_SDL=	sdl
 GNU_CONFIGURE=	yes
 LDFLAGS+=	-L${LOCALBASE}/lib

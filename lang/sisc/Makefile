@@ -1,6 +1,6 @@
 PORTNAME=	sisc
 PORTVERSION=	1.16.6
-PORTREVISION=	3
+PORTREVISION=	4
 CATEGORIES=	lang scheme java
 MASTER_SITES=	SF/${PORTNAME}/SISC/${PORTVERSION}
 
@@ -11,7 +11,8 @@ WWW=		http://sisc.sourceforge.net/
 LICENSE=	MPL11 GPLv2+
 LICENSE_COMB=	dual
 
-USE_JAVA=	yes
+USES=		java
+
 NO_BUILD=	yes
 NO_ARCH=	yes
 

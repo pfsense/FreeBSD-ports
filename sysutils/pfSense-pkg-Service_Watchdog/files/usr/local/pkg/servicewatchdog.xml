@@ -8,7 +8,7 @@
  * servicewatchdog.xml
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2013-2024 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2013-2026 Rubicon Communications, LLC (Netgate)
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -29,6 +29,7 @@
 	<faq>Monitors for stopped services and restarts them.</faq>
 	<name>Service Watchdog</name>
 	<title>Services: Service Watchdog</title>
+	<donotsave>true</donotsave>
 	<include_file>/usr/local/pkg/servicewatchdog.inc</include_file>
 	<menu>
 		<name>Service Watchdog</name>

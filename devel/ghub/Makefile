@@ -1,20 +1,21 @@
 PORTNAME=	ghub
 DISTVERSIONPREFIX=	v
-DISTVERSION=	3.6.0
-PORTREVISION=	3
+DISTVERSION=	5.0.2
 CATEGORIES=	devel elisp
 PKGNAMESUFFIX=	${EMACS_PKGNAMESUFFIX}
 
-MAINTAINER=	yasu@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Client libraries for the APIs of various Git forges
 WWW=		https://github.com/magit/ghub
 
 LICENSE=	GPLv3+
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-BUILD_DEPENDS=	compat.el${EMACS_PKGNAMESUFFIX}>=29.1.4.1:misc/compat.el@${EMACS_FLAVOR} \
+BUILD_DEPENDS=	compat.el${EMACS_PKGNAMESUFFIX}>=30.1.0.0:misc/compat.el@${EMACS_FLAVOR} \
+		llama.el${EMACS_PKGNAMESUFFIX}>=1.0:devel/llama.el@${EMACS_FLAVOR} \
 		treepy.el${EMACS_PKGNAMESUFFIX}>=0.1.2:devel/treepy.el@${EMACS_FLAVOR}
-RUN_DEPENDS=	compat.el${EMACS_PKGNAMESUFFIX}>=29.1.4.1:misc/compat.el@${EMACS_FLAVOR} \
+RUN_DEPENDS=	compat.el${EMACS_PKGNAMESUFFIX}>=30.1.0.0:misc/compat.el@${EMACS_FLAVOR} \
+		llama.el${EMACS_PKGNAMESUFFIX}>=1.0:devel/llama.el@${EMACS_FLAVOR} \
 		treepy.el${EMACS_PKGNAMESUFFIX}>=0.1.2:devel/treepy.el@${EMACS_FLAVOR}
 
 USES=		emacs gmake makeinfo
@@ -45,9 +46,9 @@ PDF_USE=		TEX=dvipdfmx:build
 PDF_ALL_TARGET=		pdf
 PDF_PLIST_FILES=	${DOCSDIR}/ghub.pdf
 
-ELISP_FILES=	buck.el buck.elc ghub-autoloads.el ghub-graphql.el \
-		ghub-graphql.elc ghub.el ghub.elc glab.el glab.elc gogs.el \
-		gogs.elc gsexp.el gsexp.elc gtea.el gtea.elc
+ELISP_FILES=	ghub-autoloads.el ghub-graphql.el ghub-graphql.elc \
+		ghub-legacy.el ghub-legacy.elc ghub.el ghub.elc gsexp.el \
+		gsexp.elc
 
 do-install:
 	@${MKDIR} ${STAGEDIR}${PREFIX}/${EMACS_VERSION_SITE_LISPDIR}/${PORTNAME}

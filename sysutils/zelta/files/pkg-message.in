@@ -1,0 +1,16 @@
+[
+{ type: install
+  message: <<EOM
+To learn how to use Zelta, run:
+
+    zelta help
+
+You can change Zelta's default behavior and set up 'zelta policy'
+at: %%ETCDIR%%/
+
+For detailed documentation and other resources, see:
+
+    https://zelta.space
+EOM
+}
+]

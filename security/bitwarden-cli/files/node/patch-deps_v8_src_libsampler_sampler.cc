@@ -1,6 +1,6 @@
---- deps/v8/src/libsampler/sampler.cc.orig	2023-03-05 06:42:53 UTC
+--- deps/v8/src/libsampler/sampler.cc.orig	2024-10-16 14:36:54 UTC
 +++ deps/v8/src/libsampler/sampler.cc
-@@ -497,6 +497,10 @@ void SignalHandler::FillRegisterState(void* context, R
+@@ -513,6 +513,10 @@ void SignalHandler::FillRegisterState(void* context, R
    state->pc = reinterpret_cast<void*>(mcontext.__gregs[_REG_PC]);
    state->sp = reinterpret_cast<void*>(mcontext.__gregs[_REG_SP]);
    state->fp = reinterpret_cast<void*>(mcontext.__gregs[_REG_FP]);

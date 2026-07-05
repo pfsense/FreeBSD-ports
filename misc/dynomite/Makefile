@@ -1,7 +1,6 @@
 PORTNAME=	dynomite
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.6.22
-PORTREVISION=	1
+DISTVERSION=	0.7.0
 CATEGORIES=	misc
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -26,6 +25,8 @@ GH_ACCOUNT=	Netflix
 CFLAGS+=	-fcommon
 LDFLAGS+=	-lexecinfo
 
+TEST_TARGET=	check
+
 PLIST_FILES=	bin/dynomite-hash-tool \
 		sbin/dynomite \
 		sbin/dynomite-test \
@@ -33,7 +34,7 @@ PLIST_FILES=	bin/dynomite-hash-tool \
 
 .include <bsd.port.pre.mk>
 
-.if ${OPSYS} == FreeBSD && ( ${OSVERSION} >= 1400079 || ( ${OSVERSION} >= 1302505 && ${OSVERSION} < 1400000 ))
+.if ${OPSYS} == FreeBSD
 CFLAGS+=       -Wno-error=int-conversion
 .endif
 

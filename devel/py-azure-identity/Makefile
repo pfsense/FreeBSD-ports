@@ -1,10 +1,11 @@
 PORTNAME=	azure-identity
 DISTVERSION=	1.6.1
+PORTREVISION=	1
 CATEGORIES=	devel python
 MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
-MAINTAINER=	dbaio@FreeBSD.org
+MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Microsoft Azure Identity Library for Python
 WWW=		https://pypi.org/project/azure-identity/
 

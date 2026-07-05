@@ -1,10 +1,10 @@
 PORTNAME=	crowdsec
 DISTVERSIONPREFIX=	v
-DISTVERSION=	1.6.0
+DISTVERSION=	1.7.6
 PORTREVISION=	2
 CATEGORIES=	security
 
-MAINTAINER=	marco@crowdsec.net
+MAINTAINER=	manuel@crowdsec.net
 COMMENT=	CrowdSec lightweight and collaborative security engine
 WWW=		https://github.com/crowdsecurity/crowdsec
 
@@ -14,8 +14,8 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 LIB_DEPENDS=	libabsl_base.so:devel/abseil \
 		libre2.so:devel/re2
 
-USES=		go:1.21,modules pkgconfig
-_COMMIT=	4b8e6cd7
+USES=		go:1.25+,modules pkgconfig
+_COMMIT=	eacc8192
 _BUILD_DATE=	$$(date -u "+%F_%T")
 USE_RC_SUBR=	crowdsec
 
@@ -23,6 +23,7 @@ GO_MODULE=	github.com/crowdsecurity/crowdsec
 GO_TARGET=	./cmd/crowdsec \
 		./cmd/crowdsec-cli \
 		./cmd/notification-email \
+		./cmd/notification-file \
 		./cmd/notification-http \
 		./cmd/notification-sentinel \
 		./cmd/notification-slack \
@@ -30,8 +31,8 @@ GO_TARGET=	./cmd/crowdsec \
 
 GO_BUILDFLAGS=	-v -trimpath -tags netgo,osusergo,sqlite_omit_load_extension,re2_cgo \
 		-ldflags="\
-		-a -s -w \
-		-X github.com/crowdsecurity/go-cs-lib/version.Version=${DISTVERSIONPREFIX}${DISTVERSION}-freebsd \
+		-a -s \
+		-X github.com/crowdsecurity/go-cs-lib/version.Version=${DISTVERSIONPREFIX}${PKGVERSION} \
 		-X github.com/crowdsecurity/go-cs-lib/version.BuildDate=${_BUILD_DATE} \
 		-X github.com/crowdsecurity/go-cs-lib/version.Tag=${_COMMIT} \
 		-X ${GO_MODULE}/pkg/cwversion.Codename=alphaga \
@@ -71,6 +72,7 @@ do-install:
 
 	@${MKDIR} ${STAGE_PLUGINS}
 	${INSTALL_PROGRAM} ${WRKDIR}/bin/notification-email ${STAGE_PLUGINS}/
+	${INSTALL_PROGRAM} ${WRKDIR}/bin/notification-file ${STAGE_PLUGINS}/
 	${INSTALL_PROGRAM} ${WRKDIR}/bin/notification-http ${STAGE_PLUGINS}/
 	${INSTALL_PROGRAM} ${WRKDIR}/bin/notification-sentinel ${STAGE_PLUGINS}/
 	${INSTALL_PROGRAM} ${WRKDIR}/bin/notification-slack ${STAGE_PLUGINS}/
@@ -84,6 +86,9 @@ do-install:
 	@(cd ${WRKSRC}/config && ${COPYTREE_SHARE} . ${STAGEDIR}${ETCDIR})
 
 	@${MV} ${STAGEDIR}${ETCDIR}/acquis.yaml \
+		${STAGEDIR}${ETCDIR}/acquis.yaml.sample
+
+	${INSTALL_DATA} ${FILESDIR}/acquis.yaml.sample \
 		${STAGEDIR}${ETCDIR}/acquis.yaml.sample
 
 	@${MV} ${STAGEDIR}${ETCDIR}/config.yaml \
@@ -108,6 +113,10 @@ do-install:
 	@${MKDIR} ${STAGEDIR}${ETCDIR}/notifications/email
 	@${MV} ${WRKSRC}/cmd/notification-email/email.yaml \
 		${STAGEDIR}${ETCDIR}/notifications/email.yaml.sample
+
+	@${MKDIR} ${STAGEDIR}${ETCDIR}/notifications/file
+	@${MV} ${WRKSRC}/cmd/notification-file/file.yaml \
+		${STAGEDIR}${ETCDIR}/notifications/file.yaml.sample
 
 	@${MKDIR} ${STAGEDIR}${ETCDIR}/notifications/http
 	@${MV} ${WRKSRC}/cmd/notification-http/http.yaml \
@@ -138,7 +147,9 @@ do-install:
 	#
 
 	@${MKDIR} ${STAGEDIR}${ETCDIR}/hub
+	@${MKDIR} ${STAGEDIR}${ETCDIR}/acquis.d
 	@${MKDIR} ${STAGEDIR}/var/db/crowdsec/data
+	@${MKDIR} ${STAGEDIR}/var/db/crowdsec/data/trace
 
 	#
 	# Cron
@@ -160,8 +171,10 @@ do-install:
 	@${RM} ${STAGEDIR}${ETCDIR}/context.yaml
 	@${RM} ${STAGEDIR}${ETCDIR}/detect.yaml
 	@${RM} ${STAGEDIR}${ETCDIR}/dev.yaml
+	@${RM} ${STAGEDIR}${ETCDIR}/windows-dev.yaml
 	@${RM} ${STAGEDIR}${ETCDIR}/user.yaml
 	@${RMDIR} ${STAGEDIR}${ETCDIR}/notifications/email
+	@${RMDIR} ${STAGEDIR}${ETCDIR}/notifications/file
 	@${RMDIR} ${STAGEDIR}${ETCDIR}/notifications/http
 	@${RMDIR} ${STAGEDIR}${ETCDIR}/notifications/sentinel
 	@${RMDIR} ${STAGEDIR}${ETCDIR}/notifications/slack

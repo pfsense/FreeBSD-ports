@@ -1,34 +1,35 @@
 PORTNAME=	libsecret
-PORTVERSION=	0.20.5
-PORTREVISION=	3
+PORTVERSION=	0.21.7
+PORTREVISION=	2
 CATEGORIES=	security gnome
 MASTER_SITES=	GNOME
+DIST_SUBDIR=	gnome
 
 MAINTAINER=	gnome@FreeBSD.org
 COMMENT=	Library to access the secret service API
-WWW=		https://wiki.gnome.org/Projects/Libsecret/
+WWW=		https://gitlab.gnome.org/GNOME/libsecret
 
-LICENSE=	LGPL21
+LICENSE=	APACHE20 GPLv2+ LGPL21+
+LICENSE_COMB=	multi
 
-BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}gi-docgen>0:textproc/py-gi-docgen@${PY_FLAVOR} \
-		docbook-xsl>=0:textproc/docbook-xsl
+BUILD_DEPENDS=	docbook-xsl>=0:textproc/docbook-xsl
 LIB_DEPENDS=	libgcrypt.so:security/libgcrypt \
 		libgpg-error.so:security/libgpg-error
-TEST_DEPENDS=	${PYTHON_PKGNAMEPREFIX}gobject3>0:devel/py-gobject3@${PY_FLAVOR}
 
-USES=		compiler gnome meson pkgconfig python tar:xz vala:build
-USE_GNOME=	glib20 intltool introspection:build libxslt:build
+USES=		compiler gettext-runtime gnome meson pkgconfig python tar:xz vala:build
+USE_GNOME=	glib20 introspection:build libxslt:build
 
-TESTING_UNSAFE=	gi.repository.GLib.GError: g-io-error-quark: Remote closed the output
+MESON_ARGS=	-Dbash_completion=disabled
+# see PR 287429 / https://gitlab.gnome.org/GNOME/libsecret/-/issues/106
+MESON_ARGS+=	-Dc_args="-DHAVE_CMSGCRED"
+PIE_UNSAFE=	yes
 
-pre-test:
-	@${MKDIR} ${BINARY_LINKDIR}
-	@${LN} -s ${PYTHON_CMD} ${BINARY_LINKDIR}/python3
+OPTIONS_DEFINE=	DOCS NLS
+OPTIONS_SUB=	yes
 
-.include <bsd.port.pre.mk>
+DOCS_BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}gi-docgen>0:textproc/py-gi-docgen@${PY_FLAVOR}
+DOCS_MESON_TRUE=	gtk_doc
+NLS_EXTRA_PATCHES_OFF=	${PATCHDIR}/extra-patch-meson.build
+NLS_USES=		gettext-tools
 
-.if ${COMPILER_TYPE} == clang
-CFLAGS+=	-Wno-incompatible-function-pointer-types
-.endif
-
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

@@ -2,7 +2,7 @@ PORTNAME=	ipcalc
 PORTVERSION=	0.51
 CATEGORIES=	net-mgmt
 
-MAINTAINER=	DtxdF@disroot.org
+MAINTAINER=	dtxdf@FreeBSD.org
 COMMENT=	IP Calculator
 WWW=		https://jodies.de/ipcalc
 
@@ -18,6 +18,7 @@ SHEBANG_FILES=	ipcalc
 
 CONFLICTS_INSTALL=	gnu-ipcalc
 
+NO_ARCH=	yes
 NO_BUILD=	yes
 
 PLIST_FILES=	bin/ipcalc

@@ -1,0 +1,22 @@
+commit 921fa4bece49bbf8a8daac68c73fcb7c5e5e5770
+Author: Marcos Mendoza <mmendoza@netgate.com>
+Date:   Tue Dec 9 10:42:07 2025 -0600
+
+    Firewall logs: handle 'short' errors. Fix #16579
+
+diff --git a/src/etc/inc/syslog.inc b/src/etc/inc/syslog.inc
+index 4b9c8e4fcb..27f9780d9c 100644
+--- a/src/etc/inc/syslog.inc
++++ b/src/etc/inc/syslog.inc
+@@ -1110,6 +1110,11 @@ function parse_firewall_log_line($line) {
+ 	$flent['version'] = $rule_data[$field++];
+ 
+ 	if ($flent['version'] == '4' || $flent['version'] == '6') {
++		// Handle short (truncated-ip/truncated-ip6) errors.
++		if (str_starts_with($rule_data[$field], 'error=')) {
++			// Ignore the value.
++			$field++;
++		}
+ 		if ($flent['version'] == '4') {
+ 			$flent['tos'] = $rule_data[$field++];
+ 			$flent['ecn'] = $rule_data[$field++];

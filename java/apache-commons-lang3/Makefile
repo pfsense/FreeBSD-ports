@@ -1,5 +1,6 @@
 PORTNAME=	commons-lang3
-PORTVERSION=	3.14.0
+PORTVERSION=	3.19.0
+PORTREVISION=	1
 CATEGORIES=	java devel
 MASTER_SITES=	APACHE_COMMONS_BINARIES/lang
 PKGNAMEPREFIX=	apache-
@@ -11,9 +12,10 @@ WWW=		https://commons.apache.org/proper/commons-lang/
 
 LICENSE=	APACHE20
 
+USES=		java
+
 WRKSRC=		${WRKDIR}/${PORTNAME}-${PORTVERSION}
 
-USE_JAVA=	yes
 NO_BUILD=	yes
 NO_ARCH=	yes
 

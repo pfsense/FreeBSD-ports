@@ -1,5 +1,5 @@
 PORTNAME=	fotocx
-PORTVERSION=	24.11
+PORTVERSION=	26.1
 CATEGORIES=	graphics
 MASTER_SITES=	https://kornelix.net/downloads/downloads/
 DISTNAME=	${PORTNAME}-${PORTVERSION}-source
@@ -12,7 +12,7 @@ LICENSE=	GPLv3+
 
 LIB_DEPENDS=	libchamplain-gtk-0.12.so:graphics/libchamplain \
 		libclutter-gtk-1.0.so:graphics/clutter-gtk3 \
-		liblcms2.so:graphics/lcms2 \
+		libjxl.so:graphics/libjxl \
 		libpng.so:graphics/png \
 		libtiff.so:graphics/tiff
 RUN_DEPENDS=	xdg-open:devel/xdg-utils \
@@ -20,15 +20,16 @@ RUN_DEPENDS=	xdg-open:devel/xdg-utils \
 		ufraw-batch:graphics/ufraw
 
 USES=		desktop-file-utils gmake gnome jpeg pkgconfig
-USE_GNOME=	cairo glib20 gdkpixbuf2 gtk30
+USE_GNOME=	cairo glib20 gdkpixbuf gtk30
 ALL_TARGET=	${PORTNAME}
 CXXFLAGS+=	-Wno-register -Wno-writable-strings
 
 WRKSRC=		${WRKDIR}/${PORTNAME}
 
-PORTDOCS=	*
-
 OPTIONS_DEFINE=	DOCS
+
+post-patch:
+	@${REINPLACE_CMD} -e '/Uninstall/d' ${WRKSRC}/f.widgets.cc
 
 post-install:
 	${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/${PORTNAME}

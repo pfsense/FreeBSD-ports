@@ -1,6 +1,6 @@
---- sys/v4l2/v4l2_calls.c.orig	2022-09-13 20:56:55 UTC
+--- sys/v4l2/v4l2_calls.c.orig	2025-03-11 20:14:44 UTC
 +++ sys/v4l2/v4l2_calls.c
-@@ -1329,10 +1329,12 @@ gst_v4l2_query_dv_timings (GstV4l2Object * v4l2object,
+@@ -1333,10 +1333,12 @@ gst_v4l2_query_dv_timings (GstV4l2Object * v4l2object,
  
    if (ret < 0) {
      switch (errno) {

@@ -1,12 +1,11 @@
 PORTNAME=	html-xml-utils
-PORTVERSION=	8.6
-PORTREVISION=	1
+DISTVERSION=	8.7
 CATEGORIES=	textproc
 MASTER_SITES=	https://www.w3.org/Tools/HTML-XML-utils/
 
 MAINTAINER=	takefu@airport.fm
 COMMENT=	Utilities for manipulating HTML and XML files
-WWW=		https://www.w3.org/Status.html#HTML-XML-utils
+WWW=		https://www.w3.org/Status.html\#HTML-XML-utils
 
 LICENSE=	W3C
 LICENSE_GROUPS=	FSF GPL OSI
@@ -18,7 +17,6 @@ USES=		gmake iconv localbase shebangfix
 
 SHEBANG_FILES=	${WRKSRC}/hxcite-mkbib
 GNU_CONFIGURE=	yes
-GNU_CONFIGURE_MANPREFIX=${PREFIX}/share
 CONFIGURE_ARGS=	LDFLAGS=${ICONV_LIB}
 
 OPTIONS_DEFINE=		CURL IDN IDN2 DOCS

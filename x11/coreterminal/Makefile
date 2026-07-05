@@ -1,6 +1,5 @@
 PORTNAME=	coreterminal
-DISTVERSION=	4.3.0
-PORTREVISION=	3
+DISTVERSION=	5.0.0
 CATEGORIES=	x11
 
 MAINTAINER=	jwb@FreeBSD.org
@@ -10,24 +9,25 @@ WWW=		https://gitlab.com/cubocore/coreterminal
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-LIB_DEPENDS=	libqtermwidget5.so:x11-toolkits/qtermwidget \
-		libcprime-core.so:deskutils/libcprime
+LIB_DEPENDS=	libqtermwidget6.so:x11-toolkits/qtermwidget \
+		libcprime-widgets.so:deskutils/libcprime
 RUN_DEPENDS=	coregarage:deskutils/coregarage
 
-USES=		cmake desktop-file-utils localbase:ldflags qt:5
-USE_QT=		buildtools:build core gui qmake:build serialport widgets
+USES=		cmake desktop-file-utils gl localbase:ldflags qt:6
+USE_GL=		gl
+USE_QT=		base serialport tools:build
 USE_GITLAB=	yes
 
 GL_ACCOUNT=	CuboCore
-GL_TAGNAME=	679b317d1612dcdd54596ba5bf313d60bebc808e
+GL_TAGNAME=	v5.0.0
 
 PLIST_FILES=	bin/coreterminal \
-		share/applications/org.cubocore.CoreTerminal.desktop \
-		share/icons/hicolor/scalable/apps/org.cubocore.CoreTerminal.svg
+		share/applications/cc.cubocore.CoreTerminal.desktop \
+		share/icons/hicolor/scalable/apps/cc.cubocore.CoreTerminal.svg
 
 pre-configure:
 	@${REINPLACE_CMD} \
 		-e 's|/usr/bin/coreterminal|${PREFIX}/bin/coreterminal|g' \
-		${WRKSRC}/org.cubocore.CoreTerminal.desktop
+		${WRKSRC}/cc.cubocore.CoreTerminal.desktop
 
 .include <bsd.port.mk>

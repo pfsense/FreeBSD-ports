@@ -8,7 +8,7 @@
  * net-snmptrapd.xml
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2017-2024 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2017-2026 Rubicon Communications, LLC (Netgate)
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -60,7 +60,7 @@
 		</tab>
 	</tabs>
 	<delete_string>snmptrapd user auth entry deleted</delete_string>
-	<addedit_string>snmptrapd user auth entry created/modified</addedit_string>
+	<addedit_string>NET-SNMP: changed User Auth</addedit_string>
 	<adddeleteeditpagefields>
 		<columnitem>
 			<fielddescr>Username</fielddescr>

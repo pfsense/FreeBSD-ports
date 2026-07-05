@@ -3,14 +3,14 @@
 # PORTREVISION bumps of depending ports.
 
 PORTNAME=	pulseaudio
-DISTVERSION=	16.1
+DISTVERSION=	17.0
 PORTREVISION=	4
 CATEGORIES=	audio
 MASTER_SITES=	https://freedesktop.org/software/pulseaudio/releases/
 
 MAINTAINER=	desktop@FreeBSD.org
 COMMENT=	Sound server for UNIX
-WWW=		https://pulseaudio.org/
+WWW=		https://www.freedesktop.org/wiki/Software/PulseAudio/
 
 LICENSE=	LGPL21
 LICENSE_FILE=	${WRKSRC}/LGPL
@@ -24,7 +24,7 @@ LIB_DEPENDS=	libsndfile.so:audio/libsndfile \
 		libck-connector.so:sysutils/consolekit2
 
 USES=		compiler:c11 cpe gettext-tools gmake gnome iconv localbase:ldflags \
-		meson pathfix pkgconfig python:run shebangfix ssl tar:xz
+		meson pkgconfig python:run shebangfix ssl tar:xz
 
 USE_GNOME=	glib20
 USE_LDCONFIG=	yes
@@ -72,7 +72,7 @@ SPEEX_DESC=	Speex resampler and AEC support
 SPEEX_MESON_ENABLED=	speex
 SPEEX_LIB_DEPENDS=	libspeexdsp.so:audio/speexdsp
 WEBRTC_AEC_DESC=	WebRTC-based echo canceller
-WEBRTC_AEC_LIB_DEPENDS=	libwebrtc_audio_processing.so:audio/webrtc-audio-processing0
+WEBRTC_AEC_LIB_DEPENDS=	libwebrtc-audio-processing-1.so:audio/webrtc-audio-processing
 WEBRTC_AEC_MESON_ENABLED=	webrtc-aec
 
 OPTIONS_SINGLE=	DATABASE

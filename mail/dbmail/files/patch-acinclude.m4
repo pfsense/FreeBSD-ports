@@ -1,4 +1,4 @@
---- acinclude.m4.orig	2022-10-15 15:02:38 UTC
+--- acinclude.m4.orig	2025-05-31 16:37:09 UTC
 +++ acinclude.m4
 @@ -43,7 +43,7 @@ AC_DEFINE_UNQUOTED([DM_VERSION], "$PACKAGE_VERSION", [
  AC_DEFINE_UNQUOTED([DM_PWD], "$ac_pwd", [Build directory])
@@ -98,15 +98,24 @@
  		[JEMALLOCLIB="no"],
  	[[
  #include <jemalloc.h>
-@@ -288,7 +288,7 @@ AC_DEFUN([DM_CHECK_ZDB], [dnl
- 		CFLAGS="$CFLAGS -I${lookforzdb}/include/zdb"
+@@ -285,13 +285,13 @@ AC_DEFUN([DM_CHECK_ZDB], [dnl
+ 	if test [ "x$lookforzdb" = "xno" ] ; then
+ 		CFLAGS="$CFLAGS -I${ac_default_prefix}/include/zdb -I/usr/include/zdb"
+ 	else
+-		CFLAGS="$CFLAGS -I${lookforzdb}/include/zdb"
++		CFLAGS="$CFLAGS -I${lookforzdb}/include -I${lookforzdb}/include/zdb"
  	fi
- 	AC_CHECK_HEADERS([zdb.h],
+-	AC_CHECK_HEADERS([zdb.h],
 -		[ZDBLIB="-lzdb"], 
++	AC_CHECK_HEADERS([zdb/zdb.h],
 +		[ZDBLIB="-lzdb"],
  		[ZDBLIB="failed"],
  	[[
-          #include <zdb.h>
+-         #include <zdb.h>
++         #include <zdb/zdb.h>
+ 	]])
+ 	if test [ "x$ZDBLIB" = "xfailed" ]; then
+ 		AC_MSG_ERROR([Could not find ZDB library.])
 @@ -334,7 +334,7 @@ AC_DEFUN([DM_CHECK_SSL], [
  
  AC_DEFUN([DM_CHECK_SSL], [
@@ -165,7 +174,7 @@
          )
  	LIBS="$SOCKETLIB $save_LIBS"
  	AC_CHECK_FUNCS(dn_expand dns_lookup)
-@@ -592,19 +592,19 @@ AC_DEFUN([DM_UPGRADE_STEPS], [dnl
+@@ -611,19 +611,19 @@ AC_DEFUN([DM_UPGRADE_STEPS], [dnl
  	PGSQL_32004=`sed -e 's/\"/\\\"/g' -e 's/^/\"/' -e 's/$/\\\n\"/' -e '$!s/$/ \\\\/'  sql/postgresql/upgrades/32004.psql`
  	MYSQL_32004=`sed -e 's/\"/\\\"/g' -e 's/^/\"/' -e 's/$/\\\n\"/' -e '$!s/$/ \\\\/'  sql/mysql/upgrades/32004.mysql`
  	SQLITE_32004=`sed -e 's/\"/\\\"/g' -e 's/^/\"/' -e 's/$/\\\n\"/' -e '$!s/$/ \\\\/'  sql/sqlite/upgrades/32004.sqlite`

@@ -6,16 +6,21 @@ events {
 http {
     include       mime.types;
     default_type  application/octet-stream;
+    types {
+        text/javascript js mjs;
+    }
+
 
     #sendfile        off;
     keepalive_timeout  65;
 
     upstream django {
-      server 127.0.0.1:8000;
+        server 127.0.0.1:8000;
     }
 
     server {
-        listen 443 ssl http2;
+        listen 443 ssl;
+        http2 on;
         server_name example.com;
 
         ssl_certificate selfsigned.crt;

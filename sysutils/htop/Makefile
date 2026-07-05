@@ -1,24 +1,20 @@
 PORTNAME=	htop
-DISTVERSION=	3.3.0
-PORTREVISION=	2
+PORTVERSION=	3.4.1
 CATEGORIES=	sysutils
+MASTER_SITES=	https://github.com/htop-dev/htop/releases/download/${PORTVERSION}/
 
 MAINTAINER=	gaod@hychen.org
 COMMENT=	Better top(1) - interactive process viewer
-WWW=		https://htop.dev/
+WWW=		https://htop.dev/ \
+		https://github.com/htop-dev/htop
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-USES=		autoreconf compiler:c11 cpe libtool localbase \
-		ncurses pkgconfig python:build shebangfix
+USES=		ncurses tar:xz
 
-USE_GITHUB=	yes
-GH_ACCOUNT=	htop-dev
-
-GNU_CONFIGURE=	yes
-GNU_CONFIGURE_MANPREFIX=${PREFIX}/share
 CONFIGURE_ARGS=	--enable-unicode
+GNU_CONFIGURE=	yes
 
 PLIST_FILES=	bin/htop \
 		share/man/man1/htop.1.gz \
@@ -29,5 +25,16 @@ PLIST_FILES=	bin/htop \
 OPTIONS_DEFINE=	LSOF
 
 LSOF_RUN_DEPENDS=	lsof:sysutils/lsof
+
+.include <bsd.port.options.mk>
+
+.if ${ARCH} == aarch64 || ${ARCH} == amd64 || ${ARCH} == armv7 || ${ARCH} == i386 || ${ARCH} == powerpc || ${ARCH} == powerpc64 || ${ARCH} == powerpc64le
+CONFIGURE_ARGS+=--enable-libunwind
+LIB_DEPENDS+=	libunwind.so:devel/libunwind
+USES+=		localbase
+.endif
+
+post-patch:
+	@${REINPLACE_CMD} -e 's|${PORTVERSION}-${PORTVERSION}|${PORTVERSION}|' ${WRKSRC}/configure
 
 .include <bsd.port.mk>

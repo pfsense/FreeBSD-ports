@@ -1,7 +1,8 @@
 PORTNAME=	unifont
-PORTVERSION=	15.1.05
+PORTVERSION=	17.0.03
 CATEGORIES=	x11-fonts
-MASTER_SITES=	GNU/unifont/unifont-${PORTVERSION}
+MASTER_SITES=	GNU/unifont/unifont-${PORTVERSION} \
+		https://unifoundry.com/pub/unifont/unifont-${PORTVERSION}/font-builds/
 PKGNAMEPREFIX=	gnu-
 PKGNAMESUFFIX=	-otf
 DISTFILES=	${FONTFILES:S|$|-${PORTVERSION}${FONTSUFFIX}|}

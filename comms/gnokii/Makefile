@@ -1,6 +1,6 @@
 PORTNAME=	gnokii
 PORTVERSION=	0.6.31
-PORTREVISION=	15
+PORTREVISION=	16
 PORTEPOCH=	1
 CATEGORIES=	comms
 MASTER_SITES=	http://www.gnokii.org/download/gnokii/ \
@@ -16,7 +16,7 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 BUILD_DEPENDS=	p5-XML-Parser>=0:textproc/p5-XML-Parser
 
 GROUPS=		${PORTNAME}
-USES=		gettext gmake gnome iconv libtool localbase pathfix pkgconfig \
+USES=		gettext gmake gnome iconv libtool localbase pkgconfig \
 		readline shebangfix tar:bzip2
 USE_LDCONFIG=	yes
 USE_CSTD=	gnu89
@@ -75,7 +75,7 @@ X11_LIB_DEPENDS=	libfontconfig.so:x11-fonts/fontconfig \
 			libharfbuzz.so:print/harfbuzz
 X11_USES=		xorg
 X11_USE=		XORG=x11 XORG=xpm \
-			GNOME=cairo GNOME=gdkpixbuf2 GNOME=gtk20
+			GNOME=cairo GNOME=gdkpixbuf GNOME=gtk20
 X11_PLIST_SUB=		X11=''
 X11_PLIST_SUB_OFF=	X11='@comment '
 

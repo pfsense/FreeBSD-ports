@@ -13,8 +13,7 @@ WWW=		https://www.softether.org
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-#IGNORE=		no beta version available right now, use security/softether instead
-BROKEN=	unable to open output file 'tmp/objs/Mayaqua/Encrypt.o'
+IGNORE=		no beta version available right now, use security/softether instead
 
 USES=		dos2unix gmake iconv:wchar_t localbase:ldflags ncurses \
 		readline ssl
@@ -26,6 +25,7 @@ DOS2UNIX_FILES=	ChangeLog LICENSE README *.TXT \
 
 OPTIONS_DEFINE=	DOCS
 
+MAKE_JOBS_UNSAFE=	yes
 CONFLICTS_INSTALL=	softether-4.* softether5
 PORTDOCS=	AUTHORS.TXT ChangeLog LICENSE README THIRD_PARTY.TXT WARNING.TXT
 
@@ -43,7 +43,7 @@ ALL_TARGET=	build
 
 .include <bsd.port.options.mk>
 
-.if ${OPSYS} == FreeBSD && ( ${OSVERSION} >= 1400091 || ( ${OSVERSION} >= 1302507 && ${OSVERSION} < 1400000 ))
+.if ${OPSYS} == FreeBSD
 CFLAGS+=	-Wno-error=incompatible-function-pointer-types
 .endif
 

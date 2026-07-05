@@ -1,0 +1,639 @@
+diff --git a/src/etc/inc/util.inc b/src/etc/inc/util.inc
+index 6cd0c821e315cd885e6b4c6483528fdc4f474001..25eec9e8a218d449893a6b6112aaff4b4b9b8148 100644
+--- a/src/etc/inc/util.inc
++++ b/src/etc/inc/util.inc
+@@ -5166,3 +5166,66 @@ function unserialize_data(?string $path, mixed $default = null, ?array $options
+ 	return $data;
+ }
+ 
++/* Get an array of active widgets and metadata from user settings */
++function get_active_widgets($user_settings) {
++	$widgets = [];
++
++	/* Break up the sequence string into an array of widget definitions */
++	$widget_sep = ',';
++	$widget_seq_array = explode($widget_sep, rtrim($user_settings['widgets']['sequence'], $widget_sep));
++
++	foreach ($widget_seq_array as $widget_seq_data) {
++		/* Break each widget definition into its component values */
++		[$name, $column, $display, $instance] = explode(':', $widget_seq_data);
++		if (is_null($instance)) {
++			$instance = 0;
++		}
++		$widgets[] = [
++			'name'     => $name,
++			'column'   => $column,
++			'display'  => $display,
++			'instance' => $instance
++		];
++	}
++	return $widgets;
++}
++
++/* Test the validity of a given widget key based on user settings. */
++function is_valid_widgetkey($widgetkey, $user_settings, $widgetfile = null) {
++	/* Proper form of a widgetkey is <widget-name>-<instance-id>
++	 * Where:
++	 *   widget-name : Name of an active widget, which should be found in
++	 *                 the current sequence list.
++	 *   instance-id : An integer 0 or higher identifying a widget instance
++	 *
++	 * Additionally, for a widget to be valid in this context it must also
++	 * be present on the current Dashboard layout.
++	 */
++
++	/* Break the given widgetkey into its component parts */
++	[$wname, $wid] = explode('-', $widgetkey, 2);
++
++	/* Test for basic validity conditions */
++	if (empty($wname) ||
++	    !is_numericint($wid) ||
++	    empty($user_settings)) {
++		return false;
++	}
++
++	/* Check if this widget also matches a specific widget name */
++	if (!empty($widgetfile) &&
++	    ($wname != basename($widgetfile, '.widget.php'))) {
++		return false;
++	}
++
++	/* Ensure the key is for a widget which is in the Dashboard
++	 * configuration. */
++	$widgets = get_active_widgets($user_settings);
++	foreach ($widgets as $widget) {
++		if (($widget['name'] == $wname) &&
++		    ($widget['instance'] == $wid)) {
++			return true;
++		}
++	}
++	return false;
++}
+diff --git a/src/usr/local/www/guiconfig.inc b/src/usr/local/www/guiconfig.inc
+index 051754b8c47117ccf251bb1002915721f40a19a8..22e876c3c36ce084229e6630c651583ab0fea7fc 100644
+--- a/src/usr/local/www/guiconfig.inc
++++ b/src/usr/local/www/guiconfig.inc
+@@ -599,6 +599,9 @@ function gen_customwidgettitle_div($widgettitle) {
+ }
+ 
+ function set_customwidgettitle(& $user_settings) {
++	if (!is_valid_widgetkey($_POST['widgetkey'], $user_settings)) {
++		return false;
++	}
+ 	if ($_POST['descr']) {
+ 		$user_settings['widgets'][$_POST['widgetkey']]['descr'] = trim($_POST['descr']);
+ 	} else {
+diff --git a/src/usr/local/www/widgets/widgets/disks.widget.php b/src/usr/local/www/widgets/widgets/disks.widget.php
+index 4e1b1116151639b19242082fcbeba433e11d7640..37d8e228a5499b5581f0a2a7540bc8d5117d2c4f 100644
+--- a/src/usr/local/www/widgets/widgets/disks.widget.php
++++ b/src/usr/local/www/widgets/widgets/disks.widget.php
+@@ -25,13 +25,27 @@ require_once('vendor/autoload.php');
+ // pfSense includes
+ require_once('guiconfig.inc');
+ 
++/*
++ * Validate the "widgetkey" value.
++ * When this widget is present on the Dashboard, $widgetkey is defined before
++ * the Dashboard includes the widget. During other types of requests, such as
++ * saving settings or AJAX, the value may be set via $_POST or similar.
++ */
++if ($_POST['widgetkey'] || $_GET['widgetkey']) {
++	$rwidgetkey = isset($_POST['widgetkey']) ? $_POST['widgetkey'] : (isset($_GET['widgetkey']) ? $_GET['widgetkey'] : null);
++	if (is_valid_widgetkey($rwidgetkey, $user_settings, __FILE__)) {
++		$widgetkey = $rwidgetkey;
++	} else {
++		print gettext("Invalid Widget Key");
++		exit;
++	}
++}
++
+ // Widget includes
+ require_once('/usr/local/www/widgets/include/disks.inc');
+ 
+ global $disks_widget_defaults;
+ 
+-$widgetkey = (isset($_POST['widgetkey'])) ? $_POST['widgetkey'] : $widgetkey;
+-
+ // Now override any defaults with user settings
+ $widget_config = array_replace($disks_widget_defaults, (array) $user_settings['widgets'][$widgetkey]);
+ 
+diff --git a/src/usr/local/www/widgets/widgets/dyn_dns_status.widget.php b/src/usr/local/www/widgets/widgets/dyn_dns_status.widget.php
+index fc00426c88bb94eca6640b0ad5839fcc2155458e..a55ce2452e687fd771df7b1bea9bb416b44b55a1 100644
+--- a/src/usr/local/www/widgets/widgets/dyn_dns_status.widget.php
++++ b/src/usr/local/www/widgets/widgets/dyn_dns_status.widget.php
+@@ -29,6 +29,22 @@ require_once("pfsense-utils.inc");
+ require_once("functions.inc");
+ require_once("/usr/local/www/widgets/include/dyn_dns_status.inc");
+ 
++/*
++ * Validate the "widgetkey" value.
++ * When this widget is present on the Dashboard, $widgetkey is defined before
++ * the Dashboard includes the widget. During other types of requests, such as
++ * saving settings or AJAX, the value may be set via $_POST or similar.
++ */
++if ($_POST['widgetkey'] || $_GET['widgetkey']) {
++	$rwidgetkey = isset($_POST['widgetkey']) ? $_POST['widgetkey'] : (isset($_GET['widgetkey']) ? $_GET['widgetkey'] : null);
++	if (is_valid_widgetkey($rwidgetkey, $user_settings, __FILE__)) {
++		$widgetkey = $rwidgetkey;
++	} else {
++		print gettext("Invalid Widget Key");
++		exit;
++	}
++}
++
+ // Constructs a unique key that will identify a Dynamic DNS entry in the filter list.
+ if (!function_exists('get_dyndnsent_key')) {
+ 	function get_dyndnsent_key($dyndns) {
+diff --git a/src/usr/local/www/widgets/widgets/gateways.widget.php b/src/usr/local/www/widgets/widgets/gateways.widget.php
+index f03956b5974f8485c165d0174ee91787703deb57..70ca6e8875b6180e11c7d72941a97b7408d1b757 100644
+--- a/src/usr/local/www/widgets/widgets/gateways.widget.php
++++ b/src/usr/local/www/widgets/widgets/gateways.widget.php
+@@ -31,9 +31,32 @@ require_once("pfsense-utils.inc");
+ require_once("functions.inc");
+ require_once("/usr/local/www/widgets/include/gateways.inc");
+ 
++/*
++ * Validate the "widgetkey" value.
++ * When this widget is present on the Dashboard, $widgetkey is defined before
++ * the Dashboard includes the widget. During other types of requests, such as
++ * saving settings or AJAX, the value may be set via $_POST or similar.
++ */
++if ($_POST['widgetkey'] || $_GET['widgetkey']) {
++	$rwidgetkey = isset($_POST['widgetkey']) ? $_POST['widgetkey'] : (isset($_GET['widgetkey']) ? $_GET['widgetkey'] : null);
++	if (is_valid_widgetkey($rwidgetkey, $user_settings, __FILE__)) {
++		$widgetkey = $rwidgetkey;
++	} else {
++		print gettext("Invalid Widget Key");
++		exit;
++	}
++}
++
++global $display_types;
++$display_types = array(
++	'gw_ip' => gettext('Gateway IP Address'),
++	'monitor_ip' => gettext('Monitor IP Address'),
++	'both_ip' => gettext('Both')
++);
++
+ if (!function_exists('compose_table_body_contents')) {
+ 	function compose_table_body_contents($widgetkey) {
+-		global $user_settings;
++		global $user_settings, $display_types;
+ 
+ 		$rtnstr = '';
+ 
+@@ -41,7 +63,8 @@ if (!function_exists('compose_table_body_contents')) {
+ 		$gateways_status = array();
+ 		$gateways_status = return_gateways_status(true);
+ 
+-		if (isset($user_settings["widgets"][$widgetkey]["display_type"])) {
++		if (isset($user_settings["widgets"][$widgetkey]["display_type"]) &&
++		    array_key_exists($user_settings["widgets"][$widgetkey]["display_type"], $display_types)) {
+ 			$display_type = $user_settings["widgets"][$widgetkey]["display_type"];
+ 		} else {
+ 			$display_type = "gw_ip";
+@@ -211,7 +234,8 @@ if ($_POST['widgetkey']) {
+ 		$user_settings["widgets"][$_POST['widgetkey']] = array();
+ 	}
+ 
+-	if (isset($_POST["display_type"])) {
++	if (isset($_POST["display_type"]) &&
++	    array_key_exists($_POST["display_type"], $display_types)) {
+ 		$user_settings["widgets"][$_POST['widgetkey']]["display_type"] = $_POST["display_type"];
+ 	}
+ 
+diff --git a/src/usr/local/www/widgets/widgets/interface_statistics.widget.php b/src/usr/local/www/widgets/widgets/interface_statistics.widget.php
+index 45b4bbf977b72e5204c7b41e07dec8c7644addf1..2b12a83b57885f1328020d4bc8f557da4c5a0a22 100644
+--- a/src/usr/local/www/widgets/widgets/interface_statistics.widget.php
++++ b/src/usr/local/www/widgets/widgets/interface_statistics.widget.php
+@@ -33,6 +33,27 @@ require_once("pfsense-utils.inc");
+ require_once("functions.inc");
+ require_once("/usr/local/www/widgets/include/interface_statistics.inc");
+ 
++/*
++ * Validate the "widgetkey" value.
++ * When this widget is present on the Dashboard, $widgetkey is defined before
++ * the Dashboard includes the widget. During other types of requests, such as
++ * saving settings or AJAX, the value may be set via $_POST or similar.
++ */
++if ($_POST['widgetkey'] || $_GET['widgetkey']) {
++	$rwidgetkey = isset($_POST['widgetkey']) ? $_POST['widgetkey'] : (isset($_GET['widgetkey']) ? $_GET['widgetkey'] : null);
++	if (is_valid_widgetkey($rwidgetkey, $user_settings, __FILE__)) {
++		$widgetkey = $rwidgetkey;
++	} else {
++		print gettext("Invalid Widget Key");
++		exit;
++	}
++}
++
++$orientations = array(
++	'if_columns' => gettext('Each interface in a column'),
++	'if_rows' => gettext('Each interface in a row')
++);
++
+ $ifdescrs = get_configured_interface_with_descr();
+ $ifstats = array(
+ 	'inpkts' => gettext('Packets In'),
+@@ -53,7 +73,8 @@ if ($_REQUEST && $_REQUEST['ajax']) {
+ 	$an_interface_is_displayed = false; // decide if at least 1 interface is displayed (i.e. not down)
+ 	$an_ifstat_is_displayed = false;
+ 
+-	if (isset($user_settings["widgets"][$_REQUEST['widgetkey']]["orientation_type"])) {
++	if (isset($user_settings["widgets"][$_REQUEST['widgetkey']]["orientation_type"]) &&
++	    array_key_exists($user_settings["widgets"][$_REQUEST['widgetkey']]["orientation_type"], $orientations)) {
+ 		$orientation_type = $user_settings["widgets"][$_REQUEST['widgetkey']]["orientation_type"];
+ 	} else {
+ 		$orientation_type = "if_columns";
+@@ -160,7 +181,8 @@ if ($_REQUEST && $_REQUEST['ajax']) {
+ } else if ($_POST['widgetkey']) {
+ 	set_customwidgettitle($user_settings);
+ 
+-	if (isset($_POST['orientation_type'])) {
++	if (isset($_POST['orientation_type']) &&
++	    array_key_exists($_POST['orientation_type'], $orientations)) {
+ 		$user_settings['widgets'][$_POST['widgetkey']]['orientation_type'] = $_POST['orientation_type'];
+ 	}
+ 
+diff --git a/src/usr/local/www/widgets/widgets/interfaces.widget.php b/src/usr/local/www/widgets/widgets/interfaces.widget.php
+index ad9d713070222c2b6fcaf13a26d05692f24d5b0e..42b7ffa2cefde53bfb733ab39d840492dc8d8bc0 100644
+--- a/src/usr/local/www/widgets/widgets/interfaces.widget.php
++++ b/src/usr/local/www/widgets/widgets/interfaces.widget.php
+@@ -27,6 +27,22 @@ require_once("pfsense-utils.inc");
+ require_once("functions.inc");
+ require_once("/usr/local/www/widgets/include/interfaces.inc");
+ 
++/*
++ * Validate the "widgetkey" value.
++ * When this widget is present on the Dashboard, $widgetkey is defined before
++ * the Dashboard includes the widget. During other types of requests, such as
++ * saving settings or AJAX, the value may be set via $_POST or similar.
++ */
++if ($_POST['widgetkey'] || $_GET['widgetkey']) {
++	$rwidgetkey = isset($_POST['widgetkey']) ? $_POST['widgetkey'] : (isset($_GET['widgetkey']) ? $_GET['widgetkey'] : null);
++	if (is_valid_widgetkey($rwidgetkey, $user_settings, __FILE__)) {
++		$widgetkey = $rwidgetkey;
++	} else {
++		print gettext("Invalid Widget Key");
++		exit;
++	}
++}
++
+ $platform = system_identify_specific_platform();
+ $ifdescrs = get_configured_interface_with_descr();
+ $has_switch = array("1100", "2100", "3100", "7100", "doorkeeper");
+@@ -50,12 +65,6 @@ if ($_POST['widgetkey'] && !$_REQUEST['ajax']) {
+ 	header("Location: /index.php");
+ }
+ 
+-// When this widget is included in the dashboard, $widgetkey is already defined before the widget is included.
+-// When the ajax call is made to refresh the interfaces table, 'widgetkey' comes in $_REQUEST.
+-if ($_REQUEST['widgetkey']) {
+-	$widgetkey = $_REQUEST['widgetkey'];
+-}
+-
+ ?>
+ 
+ <div class="table-responsive" id="ifaces_status_<?=htmlspecialchars($widgetkey)?>">
+diff --git a/src/usr/local/www/widgets/widgets/ipsec.widget.php b/src/usr/local/www/widgets/widgets/ipsec.widget.php
+index 27273963d7ce45dcbd678cd51debf0b3ab8e929b..f7d92f8bc12dd9e29d87ec68000dc2c7f676aae0 100644
+--- a/src/usr/local/www/widgets/widgets/ipsec.widget.php
++++ b/src/usr/local/www/widgets/widgets/ipsec.widget.php
+@@ -33,6 +33,22 @@ require_once("functions.inc");
+ require_once("service-utils.inc");
+ require_once("ipsec.inc");
+ 
++/*
++ * Validate the "widgetkey" value.
++ * When this widget is present on the Dashboard, $widgetkey is defined before
++ * the Dashboard includes the widget. During other types of requests, such as
++ * saving settings or AJAX, the value may be set via $_POST or similar.
++ */
++if ($_POST['widgetkey'] || $_GET['widgetkey']) {
++	$rwidgetkey = isset($_POST['widgetkey']) ? $_POST['widgetkey'] : (isset($_GET['widgetkey']) ? $_GET['widgetkey'] : null);
++	if (is_valid_widgetkey($rwidgetkey, $user_settings, __FILE__)) {
++		$widgetkey = $rwidgetkey;
++	} else {
++		print gettext("Invalid Widget Key");
++		exit;
++	}
++}
++
+ // Should always be initialized
+ $ipsec_widget_tabs = array(
+ 	'overview' => gettext('Overview'),
+diff --git a/src/usr/local/www/widgets/widgets/log.widget.php b/src/usr/local/www/widgets/widgets/log.widget.php
+index c75cc1ae1ba484594ff94238cb7157378aca1903..d3445a35a5fad5c84e06704935a23ba397b5f527 100644
+--- a/src/usr/local/www/widgets/widgets/log.widget.php
++++ b/src/usr/local/www/widgets/widgets/log.widget.php
+@@ -48,6 +48,22 @@ require_once("functions.inc");
+ /* In an effort to reduce duplicate code, many shared functions have been moved here. */
+ require_once("syslog.inc");
+ 
++/*
++ * Validate the "widgetkey" value.
++ * When this widget is present on the Dashboard, $widgetkey is defined before
++ * the Dashboard includes the widget. During other types of requests, such as
++ * saving settings or AJAX, the value may be set via $_POST or similar.
++ */
++if ($_POST['widgetkey'] || $_GET['widgetkey']) {
++	$rwidgetkey = isset($_POST['widgetkey']) ? $_POST['widgetkey'] : (isset($_GET['widgetkey']) ? $_GET['widgetkey'] : null);
++	if (is_valid_widgetkey($rwidgetkey, $user_settings, __FILE__)) {
++		$widgetkey = $rwidgetkey;
++	} else {
++		print gettext("Invalid Widget Key");
++		exit;
++	}
++}
++
+ /* Enable or disable debugging (detail level depending on removed ^//DEBUG^statements */
+ $DebugOn = false;
+ /* Debugging options */
+@@ -84,7 +99,9 @@ if ($_REQUEST['widgetkey'] && !$_REQUEST['ajax']) {
+ 	}
+ 	unset($acts);
+ 
+-	if (($_POST['filterlogentriesinterfaces']) and ($_POST['filterlogentriesinterfaces'] != "All")) {
++	if ($_POST['filterlogentriesinterfaces'] &&
++	    ($_POST['filterlogentriesinterfaces'] != "All") &&
++	    array_key_exists($_POST['filterlogentriesinterfaces'], get_configured_interface_with_descr())) {
+ 		$user_settings['widgets'][$_POST['widgetkey']]['filterlogentriesinterfaces'] = trim($_POST['filterlogentriesinterfaces']);
+ 	} else {
+ 		unset($user_settings['widgets'][$_POST['widgetkey']]['filterlogentriesinterfaces']);
+@@ -106,11 +123,6 @@ $date0 = new DateTime($date);
+ 
+ if ($DebugOn) { $logContent .= date($dateFormat)."_^START^".PHP_EOL; }
+ 
+-// When this widget is included in the dashboard, $widgetkey is already defined before the widget is included.
+-// When the ajax call is made to refresh the firewall log table, 'widgetkey' comes in $_REQUEST.
+-if ($_REQUEST['widgetkey']) {
+-	$widgetkey = $_REQUEST['widgetkey'];
+-}
+ //DEBUG: $logContent .= date($dateFormat)."_After request widgetkey".PHP_EOL;
+ 
+ $iface_descr_arr = get_configured_interface_with_descr();
+@@ -130,7 +142,7 @@ $filterfieldsarray = array(
+ );
+ //DEBUG: $logContent .= date($dateFormat)."_After filling_filter array".PHP_EOL;
+ 
+-$nentriesinterval = isset($user_settings['widgets'][$widgetkey]['filterlogentriesinterval']) ? $user_settings['widgets'][$widgetkey]['filterlogentriesinterval'] : 60;
++$nentriesinterval = is_numeric($user_settings['widgets'][$widgetkey]['filterlogentriesinterval']) ? $user_settings['widgets'][$widgetkey]['filterlogentriesinterval'] : 60;
+ //DEBUG: $logContent .= date($dateFormat)."_After entries_interval".PHP_EOL;
+ 
+ $filter_logfile = "{$g['varlog_path']}/filter.log";
+diff --git a/src/usr/local/www/widgets/widgets/openvpn.widget.php b/src/usr/local/www/widgets/widgets/openvpn.widget.php
+index 12f2d399dd246e533006745e56e2b587e69878a4..514d73ca71f2cb588c115a05f3b89768047d75e0 100644
+--- a/src/usr/local/www/widgets/widgets/openvpn.widget.php
++++ b/src/usr/local/www/widgets/widgets/openvpn.widget.php
+@@ -24,6 +24,22 @@
+ require_once("guiconfig.inc");
+ require_once("openvpn.inc");
+ 
++/*
++ * Validate the "widgetkey" value.
++ * When this widget is present on the Dashboard, $widgetkey is defined before
++ * the Dashboard includes the widget. During other types of requests, such as
++ * saving settings or AJAX, the value may be set via $_POST or similar.
++ */
++if ($_POST['widgetkey'] || $_GET['widgetkey']) {
++	$rwidgetkey = isset($_POST['widgetkey']) ? $_POST['widgetkey'] : (isset($_GET['widgetkey']) ? $_GET['widgetkey'] : null);
++	if (is_valid_widgetkey($rwidgetkey, $user_settings, __FILE__)) {
++		$widgetkey = $rwidgetkey;
++	} else {
++		print gettext("Invalid Widget Key");
++		exit;
++	}
++}
++
+ // Output the widget panel from this function so that it can be called from the AJAX handler as well as
+ // when first rendering the page
+ if (!function_exists('printPanel')) {
+diff --git a/src/usr/local/www/widgets/widgets/picture.widget.php b/src/usr/local/www/widgets/widgets/picture.widget.php
+index 82ac26024cc215caf2bc1507eb61a05db6c7b83e..7f7d609e6e4c97a44f4aa80311dc9d4f04f8e4aa 100644
+--- a/src/usr/local/www/widgets/widgets/picture.widget.php
++++ b/src/usr/local/www/widgets/widgets/picture.widget.php
+@@ -25,6 +25,21 @@ require_once("guiconfig.inc");
+ require_once("pfsense-utils.inc");
+ require_once("functions.inc");
+ 
++/*
++ * Validate the "widgetkey" value.
++ * When this widget is present on the Dashboard, $widgetkey is defined before
++ * the Dashboard includes the widget. During other types of requests, such as
++ * saving settings or AJAX, the value may be set via $_POST or similar.
++ */
++if ($_POST['widgetkey'] || $_GET['widgetkey']) {
++	$rwidgetkey = isset($_POST['widgetkey']) ? $_POST['widgetkey'] : (isset($_GET['widgetkey']) ? $_GET['widgetkey'] : null);
++	if (is_valid_widgetkey($rwidgetkey, $user_settings, __FILE__)) {
++		$widgetkey = $rwidgetkey;
++	} else {
++		print gettext("Invalid Widget Key");
++		exit;
++	}
++}
+ 
+ if ($_GET['getpic']=="true") {
+ 	$wk = basename($_GET['widgetkey']);
+diff --git a/src/usr/local/www/widgets/widgets/rss.widget.php b/src/usr/local/www/widgets/widgets/rss.widget.php
+index 92bf925b76ee87eb8b17ca6a69dc7705f5215f73..cf4f79dcb102d9996fcc89fe947ae08ac3d062b3 100644
+--- a/src/usr/local/www/widgets/widgets/rss.widget.php
++++ b/src/usr/local/www/widgets/widgets/rss.widget.php
+@@ -25,6 +25,22 @@ require_once("guiconfig.inc");
+ require_once("pfsense-utils.inc");
+ require_once("functions.inc");
+ 
++/*
++ * Validate the "widgetkey" value.
++ * When this widget is present on the Dashboard, $widgetkey is defined before
++ * the Dashboard includes the widget. During other types of requests, such as
++ * saving settings or AJAX, the value may be set via $_POST or similar.
++ */
++if ($_POST['widgetkey'] || $_GET['widgetkey']) {
++	$rwidgetkey = isset($_POST['widgetkey']) ? $_POST['widgetkey'] : (isset($_GET['widgetkey']) ? $_GET['widgetkey'] : null);
++	if (is_valid_widgetkey($rwidgetkey, $user_settings, __FILE__)) {
++		$widgetkey = $rwidgetkey;
++	} else {
++		print gettext("Invalid Widget Key");
++		exit;
++	}
++}
++
+ /* bring in the Composer autoloader */
+ require_once('vendor/autoload.php');
+ 
+@@ -32,10 +47,37 @@ use SimplePie\SimplePie;
+ 
+ if ($_POST['widgetkey']) {
+ 	set_customwidgettitle($user_settings);
+-	$user_settings['widgets'][$_POST['widgetkey']]['rssfeed'] = str_replace("\n", ",", htmlspecialchars($_POST['rssfeed'], ENT_QUOTES | ENT_HTML401));
+-	$user_settings['widgets'][$_POST['widgetkey']]['rssmaxitems'] = str_replace("\n", ",", htmlspecialchars($_POST['rssmaxitems'], ENT_QUOTES | ENT_HTML401));
+-	$user_settings['widgets'][$_POST['widgetkey']]['rsswidgetheight'] = htmlspecialchars($_POST['rsswidgetheight'], ENT_QUOTES | ENT_HTML401);
+-	$user_settings['widgets'][$_POST['widgetkey']]['rsswidgettextlength'] = htmlspecialchars($_POST['rsswidgettextlength'], ENT_QUOTES | ENT_HTML401);
++
++	if ($_POST['rssfeed']) {
++		$validfeeds = [];
++		/* Allow feeds separated by comma or newline */
++		$feeds = preg_split('/[,\n]/', $_POST['rssfeed']);
++		foreach ($feeds as $feed) {
++			/* Trim any extra whitespace as the submitted value may have \r at the end. */
++			$feed = trim($feed);
++			if (is_URL($feed)) {
++				$validfeeds[] = $feed;
++			}
++		}
++		$user_settings['widgets'][$_POST['widgetkey']]['rssfeed'] = htmlspecialchars(implode(",", $validfeeds), ENT_QUOTES | ENT_HTML401);
++	}
++
++	if (is_numeric($_POST['rssmaxitems'])) {
++		$user_settings['widgets'][$_POST['widgetkey']]['rssmaxitems'] = $_POST['rssmaxitems'];
++	} else {
++		unset($user_settings['widgets'][$_POST['widgetkey']]['rssmaxitems']);
++	}
++	if (is_numeric($_POST['rsswidgetheight'])) {
++		$user_settings['widgets'][$_POST['widgetkey']]['rsswidgetheight'] = $_POST['rsswidgetheight'];
++	} else {
++		unset($user_settings['widgets'][$_POST['widgetkey']]['rsswidgetheight']);
++	}
++	if (is_numeric($_POST['rsswidgettextlength'])) {
++		$user_settings['widgets'][$_POST['widgetkey']]['rsswidgettextlength'] = $_POST['rsswidgettextlength'];
++	} else {
++		unset($user_settings['widgets'][$_POST['widgetkey']]['rsswidgettextlength']);
++	}
++
+ 	save_widget_settings($_SESSION['Username'], $user_settings["widgets"], gettext("Saved RSS Widget feed via Dashboard."));
+ 	header("Location: /");
+ }
+diff --git a/src/usr/local/www/widgets/widgets/services_status.widget.php b/src/usr/local/www/widgets/widgets/services_status.widget.php
+index 0e316d77f9241f77865d6284d75dabd0034ddba7..04dbaba8686ef39dea6ad90fccf06959a139c97e 100644
+--- a/src/usr/local/www/widgets/widgets/services_status.widget.php
++++ b/src/usr/local/www/widgets/widgets/services_status.widget.php
+@@ -29,6 +29,22 @@ require_once("ipsec.inc");
+ require_once("vpn.inc");
+ require_once("/usr/local/www/widgets/include/services_status.inc");
+ 
++/*
++ * Validate the "widgetkey" value.
++ * When this widget is present on the Dashboard, $widgetkey is defined before
++ * the Dashboard includes the widget. During other types of requests, such as
++ * saving settings or AJAX, the value may be set via $_POST or similar.
++ */
++if ($_POST['widgetkey'] || $_GET['widgetkey']) {
++	$rwidgetkey = isset($_POST['widgetkey']) ? $_POST['widgetkey'] : (isset($_GET['widgetkey']) ? $_GET['widgetkey'] : null);
++	if (is_valid_widgetkey($rwidgetkey, $user_settings, __FILE__)) {
++		$widgetkey = $rwidgetkey;
++	} else {
++		print gettext("Invalid Widget Key");
++		exit;
++	}
++}
++
+ $services = get_services();
+ 
+ $numsvcs = count($services);
+diff --git a/src/usr/local/www/widgets/widgets/smart_status.widget.php b/src/usr/local/www/widgets/widgets/smart_status.widget.php
+index e9e2502df474b2d9e7bb8b94af47f2893e580d9f..d97dde69ec14168be34bb0768bb2887d64929957 100644
+--- a/src/usr/local/www/widgets/widgets/smart_status.widget.php
++++ b/src/usr/local/www/widgets/widgets/smart_status.widget.php
+@@ -30,6 +30,23 @@ require_once("guiconfig.inc");
+ require_once("pfsense-utils.inc");
+ require_once("functions.inc");
+ require_once("/usr/local/www/widgets/include/smart_status.inc");
++
++/*
++ * Validate the "widgetkey" value.
++ * When this widget is present on the Dashboard, $widgetkey is defined before
++ * the Dashboard includes the widget. During other types of requests, such as
++ * saving settings or AJAX, the value may be set via $_POST or similar.
++ */
++if ($_POST['widgetkey'] || $_GET['widgetkey']) {
++	$rwidgetkey = isset($_POST['widgetkey']) ? $_POST['widgetkey'] : (isset($_GET['widgetkey']) ? $_GET['widgetkey'] : null);
++	if (is_valid_widgetkey($rwidgetkey, $user_settings, __FILE__)) {
++		$widgetkey = $rwidgetkey;
++	} else {
++		print gettext("Invalid Widget Key");
++		exit;
++	}
++}
++
+ $specplatform = system_identify_specific_platform();
+ 
+ $devs = array();
+diff --git a/src/usr/local/www/widgets/widgets/system_information.widget.php b/src/usr/local/www/widgets/widgets/system_information.widget.php
+index cf69ee3b7fb57c32e7bce323740832831ec7628a..bee990a8d586888d5c810463a61813781b17bed6 100644
+--- a/src/usr/local/www/widgets/widgets/system_information.widget.php
++++ b/src/usr/local/www/widgets/widgets/system_information.widget.php
+@@ -32,6 +32,22 @@ require_once('notices.inc');
+ require_once('system.inc');
+ include_once("includes/functions.inc.php");
+ 
++/*
++ * Validate the "widgetkey" value.
++ * When this widget is present on the Dashboard, $widgetkey is defined before
++ * the Dashboard includes the widget. During other types of requests, such as
++ * saving settings or AJAX, the value may be set via $_POST or similar.
++ */
++if ($_POST['widgetkey'] || $_GET['widgetkey']) {
++	$rwidgetkey = isset($_POST['widgetkey']) ? $_POST['widgetkey'] : (isset($_GET['widgetkey']) ? $_GET['widgetkey'] : null);
++	if (is_valid_widgetkey($rwidgetkey, $user_settings, __FILE__)) {
++		$widgetkey = $rwidgetkey;
++	} else {
++		print gettext("Invalid Widget Key");
++		exit;
++	}
++}
++
+ $sysinfo_items = array(
+ 	'name' => gettext('Name'),
+ 	'user' => gettext('User'),
+diff --git a/src/usr/local/www/widgets/widgets/thermal_sensors.widget.php b/src/usr/local/www/widgets/widgets/thermal_sensors.widget.php
+index 0f21af304f83ee1d4f48b7a5150af3d39013b66d..17374449cd2ec8e8203d19fd39aaff4f9d07c87a 100644
+--- a/src/usr/local/www/widgets/widgets/thermal_sensors.widget.php
++++ b/src/usr/local/www/widgets/widgets/thermal_sensors.widget.php
+@@ -24,6 +24,21 @@
+ require_once("guiconfig.inc");
+ require_once("system.inc");
+ 
++/*
++ * Validate the "widgetkey" value.
++ * When this widget is present on the Dashboard, $widgetkey is defined before
++ * the Dashboard includes the widget. During other types of requests, such as
++ * saving settings or AJAX, the value may be set via $_POST or similar.
++ */
++if ($_POST['widgetkey'] || $_GET['widgetkey']) {
++	$rwidgetkey = isset($_POST['widgetkey']) ? $_POST['widgetkey'] : (isset($_GET['widgetkey']) ? $_GET['widgetkey'] : null);
++	if (is_valid_widgetkey($rwidgetkey, $user_settings, __FILE__)) {
++		$widgetkey = $rwidgetkey;
++	} else {
++		print gettext("Invalid Widget Key");
++		exit;
++	}
++}
+ 
+ //=========================================================================
+ //called by showThermalSensorsData() (jQuery Ajax call) in thermal_sensors.js
+diff --git a/src/usr/local/www/widgets/widgets/wake_on_lan.widget.php b/src/usr/local/www/widgets/widgets/wake_on_lan.widget.php
+index ef3f5d52283eef933b12ea5e15e22b9ab4302cf6..9f045a153b89512df92edc642b6c789d8dcf8402 100644
+--- a/src/usr/local/www/widgets/widgets/wake_on_lan.widget.php
++++ b/src/usr/local/www/widgets/widgets/wake_on_lan.widget.php
+@@ -26,6 +26,22 @@ require_once("guiconfig.inc");
+ require_once("system.inc");
+ require_once("/usr/local/www/widgets/include/wake_on_lan.inc");
+ 
++/*
++ * Validate the "widgetkey" value.
++ * When this widget is present on the Dashboard, $widgetkey is defined before
++ * the Dashboard includes the widget. During other types of requests, such as
++ * saving settings or AJAX, the value may be set via $_POST or similar.
++ */
++if ($_POST['widgetkey'] || $_GET['widgetkey']) {
++	$rwidgetkey = isset($_POST['widgetkey']) ? $_POST['widgetkey'] : (isset($_GET['widgetkey']) ? $_GET['widgetkey'] : null);
++	if (is_valid_widgetkey($rwidgetkey, $user_settings, __FILE__)) {
++		$widgetkey = $rwidgetkey;
++	} else {
++		print gettext("Invalid Widget Key");
++		exit;
++	}
++}
++
+ $wolcomputers = config_get_path('wol/wolentry', []);
+ 
+ // Constructs a unique key that will identify a WoL entry in the filter list.

@@ -1,5 +1,6 @@
 PORTNAME=	cdt
 PORTVERSION=	9.0.1
+PORTREVISION=	2
 CATEGORIES=	java devel
 MASTER_SITES=	ECLIPSE/tools/${PORTNAME}/releases/9.0/sr1 \
 		ECLIPSE/releases/neon/201606221000:base
@@ -15,11 +16,8 @@ LICENSE=	EPL
 
 RUN_DEPENDS=	eclipse:java/eclipse
 
-USES=		zip
-USE_JAVA=	YES
+USES=		java zip
 JAVA_OS=	native
-JAVA_RUN=	YES
-JAVA_VERSION=	8+
 
 NO_BUILD=	YES
 NO_WRKSUBDIR=	YES

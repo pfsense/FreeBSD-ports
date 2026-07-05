@@ -1,7 +1,6 @@
 PORTNAME=	swaybg
 DISTVERSIONPREFIX=	v
-DISTVERSION=	1.2.0
-PORTREVISION=	1
+DISTVERSION=	1.2.2
 CATEGORIES=	x11 wayland
 
 MAINTAINER=	jbeich@FreeBSD.org
@@ -11,7 +10,7 @@ WWW=		https://github.com/swaywm/swaybg
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-BUILD_DEPENDS=	wayland-protocols>=1.14:graphics/wayland-protocols
+BUILD_DEPENDS=	wayland-protocols>=1.31:graphics/wayland-protocols
 LIB_DEPENDS=	libwayland-client.so:graphics/wayland
 
 USES=		compiler:c11 gnome meson pkgconfig
@@ -27,7 +26,7 @@ MANPAGES_BUILD_DEPENDS=	scdoc:textproc/scdoc
 MANPAGES_MESON_ENABLED=	man-pages
 MANPAGES_PLIST_FILES=	share/man/man1/${PORTNAME}.1.gz
 
-PIXBUF_USE=		GNOME=gdkpixbuf2
+PIXBUF_USE=		GNOME=gdkpixbuf
 PIXBUF_MESON_ENABLED=	gdk-pixbuf
 
 post-patch:

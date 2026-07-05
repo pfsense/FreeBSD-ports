@@ -1,6 +1,6 @@
 PORTNAME=	simple-fb2-reader
 PORTVERSION=	1.1.3
-PORTREVISION=	5
+PORTREVISION=	6
 CATEGORIES=	print
 
 MAINTAINER=	ports@FreeBSD.org
@@ -15,6 +15,6 @@ USES=		cmake desktop-file-utils gettext-runtime gnome pkgconfig \
 		shared-mime-info sqlite
 USE_GITHUB=	yes
 GH_ACCOUNT=	Cactus64k
-USE_GNOME=	cairo gdkpixbuf2 gtk30 libxml2
+USE_GNOME=	cairo gdkpixbuf gtk30 libxml2
 
 .include <bsd.port.mk>

@@ -1,6 +1,7 @@
 PORTNAME=	athens
-DISTVERSION=	0.13.2
 DISTVERSIONPREFIX=	v
+DISTVERSION=	0.16.2
+PORTREVISION=	4
 CATEGORIES=	devel
 
 MAINTAINER=	bofh@FreeBSD.org
@@ -11,18 +12,27 @@ LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
 USES=		go:modules
-
-BUILD_DATE=	2024-03-29-00:00:00-UTC
+USE_RC_SUBR=	${PORTNAME}
 
 GO_MODULE=	github.com/gomods/${PORTNAME}
 GO_TARGET=	./cmd/proxy
 GO_BUILDFLAGS=	-ldflags " \
-		-X github.com/gomods/${PORTNAME}/pkg/build.version=${PORTVERSION} \
+		-X github.com/gomods/${PORTNAME}/pkg/build.version=${DISTVERSION} \
 		-X github.com/gomods/${PORTNAME}/pkg/build.buildDate=${BUILD_DATE}"
 
-PLIST_FILES=	bin/${PORTNAME}
+SUB_LIST=	ATHENS_USER=${USERS} \
+		ATHENS_GROUP=${GROUPS}
+
+USERS=		${PORTNAME}
+GROUPS=		${PORTNAME}
+
+BUILD_DATE=	2026-02-01-00:00:00-UTC
 
 do-install:
 	${INSTALL_PROGRAM} ${WRKDIR}/bin/proxy ${STAGEDIR}${PREFIX}/bin/${PORTNAME}
+
+post-install:
+	${MKDIR} ${STAGEDIR}${ETCDIR}
+	${INSTALL_DATA} ${BUILD_WRKSRC}/config.dev.toml ${STAGEDIR}${ETCDIR}/athens.toml.sample
 
 .include <bsd.port.mk>

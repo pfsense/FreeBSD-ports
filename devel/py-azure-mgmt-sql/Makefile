@@ -1,10 +1,11 @@
 PORTNAME=	azure-mgmt-sql
 DISTVERSION=	4.0.0b13
+PORTREVISION=	1
 CATEGORIES=	devel python
 MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
-MAINTAINER=	dbaio@FreeBSD.org
+MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Microsoft Azure SQL Management Client Library for Python
 WWW=		https://pypi.org/project/azure-mgmt-sql/
 

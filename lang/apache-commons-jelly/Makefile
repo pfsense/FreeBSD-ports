@@ -1,6 +1,6 @@
 PORTNAME=	commons-jelly
 PORTVERSION=	1.0
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	lang devel java
 MASTER_SITES=	APACHE_COMMONS_BINARIES
 PKGNAMEPREFIX=	apache-
@@ -11,7 +11,8 @@ WWW=		https://commons.apache.org/proper/commons-jelly/index.html
 
 LICENSE=	APACHE20
 
-USE_JAVA=	yes
+USES=		java
+
 NO_BUILD=	yes
 
 DATADIR=	${JAVASHAREDIR}/${PORTNAME}

@@ -1,27 +1,31 @@
 PORTNAME=	jujutsu
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.16.0
+DISTVERSION=	0.39.0
+PORTREVISION=	1
 CATEGORIES=	devel
 
 MAINTAINER=	se@FreeBSD.org
 COMMENT=	Git-compatible VCS that is both simple and powerful
-WWW=		https://github.com/martinvonz/jj/README.md
+WWW=		https://docs.jj-vcs.dev/latest/
 
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-LIB_DEPENDS=	libssh2.so:security/libssh2 \
-		libzstd.so:archivers/zstd
-
-USES=		cargo localbase ssl
+USES=		cargo localbase shebangfix
 USE_GITHUB=	yes
-GH_ACCOUNT=	martinvonz
+GH_ACCOUNT=	jj-vcs
 GH_PROJECT=	jj
 
-PLIST_FILES=	bin/jj
+TEST_DEPENDS=	git:devel/git
+
+SHEBANG_FILES=	demos/*.sh
+
+OPTIONS_DEFINE=	DOCS EXAMPLES
 
 do-install:
-		${INSTALL_PROGRAM} ${WRKDIR}/target/*-unknown-freebsd/release/jj \
+		${INSTALL_PROGRAM} ${WRKDIR}/target/release/jj \
 			${STAGEDIR}${PREFIX}/bin/
+		cd ${WRKSRC}/docs && ${COPYTREE_SHARE} . ${STAGEDIR}${DOCSDIR}
+		cd ${WRKSRC}/demos && ${COPYTREE_SHARE} . ${STAGEDIR}${EXAMPLESDIR}
 
 .include <bsd.port.mk>

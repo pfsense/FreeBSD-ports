@@ -1,8 +1,8 @@
---- chrome/browser/profiles/profile_impl.cc.orig	2024-03-22 14:16:19 UTC
+--- chrome/browser/profiles/profile_impl.cc.orig	2026-03-15 18:32:51 UTC
 +++ chrome/browser/profiles/profile_impl.cc
 @@ -265,6 +265,10 @@
- #include "chrome/browser/spellchecker/spellcheck_service.h"
- #endif
+ #include "chrome/browser/themes/theme_service_factory.h"
+ #endif  // !BUILDFLAG(IS_ANDROID)
  
 +#if BUILDFLAG(IS_BSD)
 +#include "sandbox/policy/sandbox.h"
@@ -11,16 +11,16 @@
  using bookmarks::BookmarkModel;
  using content::BrowserThread;
  using content::DownloadManagerDelegate;
-@@ -596,7 +600,7 @@ void ProfileImpl::LoadPrefsForNormalStartup(bool async
- #else
+@@ -602,7 +606,7 @@ void ProfileImpl::LoadPrefsForNormalStartup(bool async
+   policy_provider = GetUserCloudPolicyManagerAsh();
+ #else  // !BUILDFLAG(IS_CHROMEOS)
    {
- #endif  // BUILDFLAG(IS_CHROMEOS_LACROS)
 -#if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX)
 +#if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_BSD)
      ProfileManager* profile_manager = g_browser_process->profile_manager();
      ProfileAttributesEntry* entry =
          profile_manager->GetProfileAttributesStorage()
-@@ -873,7 +877,17 @@ void ProfileImpl::DoFinalInit(CreateMode create_mode) 
+@@ -868,7 +872,17 @@ void ProfileImpl::DoFinalInit(CreateMode create_mode) 
  }
  
  base::FilePath ProfileImpl::last_selected_directory() {

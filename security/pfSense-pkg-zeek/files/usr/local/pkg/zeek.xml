@@ -32,6 +32,7 @@
 	<name>zeek</name>
 	<version>%%PKGVERSION%%</version>
 	<title>Services/Zeek NSM</title>
+	<addedit_string>Zeek: changed NSM</addedit_string>
 	<include_file>/usr/local/pkg/zeek.inc</include_file>
 	<menu>
 		<name>Zeek NSM</name>
@@ -133,6 +134,17 @@
 			<encoding>base64</encoding>
 		</field>
 	</fields>
+	<plugins>
+		<item>
+			<type>plugin_xmlrpc_send</type>
+		</item>
+		<item>
+			<type>plugin_xmlrpc_recv</type>
+		</item>
+		<item>
+			<type>plugin_xmlrpc_recv_done</type>
+		</item>
+	</plugins>
 	<custom_php_install_command>
 	<![CDATA[
 		zeek_install_command();

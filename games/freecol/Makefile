@@ -1,5 +1,6 @@
 PORTNAME=	freecol
-PORTVERSION=	0.11.6
+PORTVERSION=	1.2.0
+PORTREVISION=	1
 CATEGORIES=	games java
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/${PORTNAME}-${PORTVERSION}
 
@@ -9,12 +10,14 @@ WWW=		https://freecol.org/
 
 LICENSE=	GPLv2
 
+USES=		cpe java zip
+JAVA_VERSION=	11+
+
 OPTIONS_DEFINE=	DOCS
 
-USES=		cpe zip
 NO_BUILD=	yes
+NO_ARCH=	yes
 SUB_FILES=	freecol
-USE_JAVA=	yes
 
 PLIST_FILES=	bin/freecol \
 		${DESKTOPDIR:S,^${PREFIX}/,,}/freecol.desktop
@@ -31,10 +34,10 @@ do-install:
 	${INSTALL_SCRIPT} ${WRKDIR}/freecol ${STAGEDIR}${PREFIX}/bin/
 	${INSTALL_DATA} ${WRKSRC}/freecol.desktop ${STAGEDIR}${DESKTOPDIR}/
 	@${MKDIR} ${STAGEDIR}${DATADIR}
-	@${INSTALL_DATA} ${WRKSRC}/FreeCol.jar ${STAGEDIR}${DATADIR}/
+	${INSTALL_DATA} ${WRKSRC}/FreeCol.jar ${STAGEDIR}${DATADIR}/
 	@(cd ${WRKSRC} && ${COPYTREE_SHARE} data ${STAGEDIR}${DATADIR}/)
 	@(cd ${WRKSRC} && ${COPYTREE_SHARE} jars ${STAGEDIR}${DATADIR}/)
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}
-	@${INSTALL_DATA} ${WRKSRC}/FreeCol.pdf ${STAGEDIR}${DOCSDIR}/
+	${INSTALL_DATA} ${WRKSRC}/FreeCol.pdf ${STAGEDIR}${DOCSDIR}/
 
 .include <bsd.port.mk>

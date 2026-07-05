@@ -1,6 +1,5 @@
 PORTNAME=	libtasn1
-PORTVERSION=	4.19.0
-PORTREVISION=	1
+PORTVERSION=	4.21.0
 CATEGORIES=	security
 MASTER_SITES=	GNU \
 		GNUPG/gnutls/${PORTNAME}
@@ -17,7 +16,7 @@ USES=		cpe libtool pathfix pkgconfig
 USE_CSTD=	c99
 USE_LDCONFIG=	yes
 GNU_CONFIGURE=	yes
-GNU_CONFIGURE_MANPREFIX=${PREFIX}/share
+CONFIGURE_ARGS=	--enable-ld-version-script
 INSTALL_TARGET=	install-strip
 CPE_VENDOR=	gnu
 

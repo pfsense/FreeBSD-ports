@@ -1,5 +1,5 @@
 PORTNAME=	s6
-DISTVERSION=	2.11.3.2
+DISTVERSION=	2.14.0.1
 CATEGORIES=	sysutils
 MASTER_SITES=	https://www.skarnet.org/software/${PORTNAME}/
 
@@ -10,7 +10,8 @@ WWW=		https://www.skarnet.org/software/s6/
 LICENSE=	ISCL
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-BUILD_DEPENDS=	execline>=2.9.3.0:lang/execline
+BUILD_DEPENDS=	execline>=2.9.8.1:lang/execline \
+		skalibs>=2.14.5.1:devel/skalibs
 LIB_DEPENDS=	libskarnet.so:devel/skalibs
 RUN_DEPENDS=	execlineb:lang/execline
 
@@ -27,7 +28,7 @@ CONFIGURE_ARGS=	--prefix=${PREFIX} \
 		--with-default-path=${LOCALBASE}/bin:/usr/bin:/bin \
 		--with-include=${LOCALBASE}/include \
 		--with-dynlib=${LOCALBASE}/lib \
-		--with-lib=${LOCALBASE}/lib/skalibs \
+		--with-lib=${LOCALBASE}/lib \
 		--with-lib=${LOCALBASE}/lib/execline \
 		--enable-shared
 
@@ -39,7 +40,6 @@ post-install:
 	@${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/*
 	@${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/libs6.so.${PORTVERSION}
 	@${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/libs6auto.so.${PORTVERSION}
-	@${STRIP_CMD} ${STAGEDIR}${PREFIX}/libexec/s6lockd-helper
 	cd ${WRKDIR} && ${INSTALL_SCRIPT} s6-svscanboot \
 		${STAGEDIR}${PREFIX}/bin
 	@${MKDIR} ${STAGEDIR}${ETCDIR}/s6-svscan/env

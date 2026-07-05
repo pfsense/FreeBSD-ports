@@ -3,7 +3,7 @@
  * servicewatchdog.inc
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2013-2024 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2013-2026 Rubicon Communications, LLC (Netgate)
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -24,6 +24,8 @@ require_once("services.inc");
 require_once("service-utils.inc");
 require_once("util.inc");
 require_once("notices.inc");
+
+define('LOG_PREFIX_PKG_SERVICEWATCHDOG', 'Service Watchdog');
 
 function servicewatchdog_service_matches($svc1, $svc2) {
 	/* If the arrays are equal, it must be the same service. */
@@ -56,16 +58,13 @@ function servicewatchdog_service_matches($svc1, $svc2) {
 }
 
 function servicewatchdog_is_service_watched($svc) {
-	global $config;
-	init_config_arr(array('installedpackages', 'servicewatchdog', 'item'));
-	$a_pwservices = &$config['installedpackages']['servicewatchdog']['item'];
 	$blacklisted_services = array("cron");
 
 	if (empty($svc['name']) || in_array($svc['name'], $blacklisted_services)) {
 		return true;
 	}
 
-	foreach ($a_pwservices as $a_svc) {
+	foreach (config_get_path('installedpackages/servicewatchdog/item', []) as $a_svc) {
 		if (servicewatchdog_service_matches($svc, $a_svc)) {
 			return true;
 		}
@@ -74,11 +73,7 @@ function servicewatchdog_is_service_watched($svc) {
 }
 
 function servicewatchdog_cron_job($force_remove = false) {
-	global $config;
-	init_config_arr(array('installedpackages', 'servicewatchdog', 'item'));
-	$a_pwservices = &$config['installedpackages']['servicewatchdog']['item'];
-
-	if (($force_remove == false) && (count($a_pwservices) > 0)) {
+	if (($force_remove == false) && (count(config_get_path('installedpackages/servicewatchdog/item', [])) > 0)) {
 		// Add the cron job if it doesn't exist.
 		install_cron_job("/usr/local/pkg/servicewatchdog_cron.php", true, "*/1");
 	} else {
@@ -88,19 +83,15 @@ function servicewatchdog_cron_job($force_remove = false) {
 }
 
 function servicewatchdog_check_services() {
-	global $config;
-	init_config_arr(array('installedpackages', 'servicewatchdog', 'item'));
-	$a_pwservices = &$config['installedpackages']['servicewatchdog']['item'];
-
-	foreach ($a_pwservices as $svc) {
+	foreach (config_get_path('installedpackages/servicewatchdog/item', []) as $svc) {
 		// apinger became dpinger in pfSense 2.3
 		if ($svc['name'] == 'apinger') {
 			$svc['name'] = 'dpinger';
 		}
 		if (!get_service_status($svc)) {
 			$descr = strlen($svc['description']) > 50 ? substr($svc['description'], 0, 50) . "..." : $svc['description'];
-			$error_message = "Service Watchdog detected service {$svc['name']} stopped. Restarting {$svc['name']} ({$descr})";
-			log_error($error_message);
+			$error_message = localize_text('Detected service %1$s stopped. Restarting %1$s (%2$s)', $svc['name'], $descr);
+			logger(LOG_NOTICE, $error_message, LOG_PREFIX_PKG_SERVICEWATCHDOG);
 			if (isset($svc['notify'])) {
 				notify_all_remote($error_message);
 			}

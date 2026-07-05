@@ -1,5 +1,5 @@
 PORTNAME=	powder-toy
-DISTVERSION=	snapshot-360
+DISTVERSION=	snapshot-391
 CATEGORIES=	games
 PKGNAMESUFFIX=	-devel
 
@@ -11,21 +11,20 @@ WWW=		https://powdertoy.co.uk/ \
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-NOT_FOR_ARCHS=	i386
-
 LIB_DEPENDS=	libfftw3f.so:math/fftw3-float \
 		libfftw3.so:math/fftw3 \
 		libcurl.so:ftp/curl \
 		libpng.so:graphics/png \
 		libjsoncpp.so:devel/jsoncpp
 
-USES=		compiler:c++17-lang luajit:luajit-openresty meson pkgconfig \
-		python:build sdl
+USES=		compiler:c++17-lang desktop-file-utils luajit \
+		meson pkgconfig python:build sdl
 USE_GITHUB=	yes
 GH_ACCOUNT=	The-Powder-Toy
 GH_PROJECT=	The-Powder-Toy
 USE_SDL=	sdl2
 MESON_ARGS=	-Dapp_exe="${PORTNAME}"
+CXXFLAGS_i386=	-msse
 
 CONFLICTS_INSTALL=powder-toy
 
@@ -41,7 +40,7 @@ SSE_MESON_ON=		-Dx86_sse=auto
 SSE_MESON_OFF=		-Dx86_sse=none
 
 post-patch:
-	@${REINPLACE_CMD} -e 's|python3|${PYTHON_CMD}|' ${WRKSRC}/meson.build
+	@${REINPLACE_CMD} -e "s|'python3'|'${PYTHON_CMD}'|" ${WRKSRC}/meson.build
 
 do-install:
 	${INSTALL_PROGRAM} ${BUILD_WRKSRC}/powder-toy ${STAGEDIR}${PREFIX}/bin/

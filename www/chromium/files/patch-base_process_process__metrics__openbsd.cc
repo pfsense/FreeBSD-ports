@@ -1,6 +1,6 @@
---- base/process/process_metrics_openbsd.cc.orig	2024-02-23 21:04:38 UTC
+--- base/process/process_metrics_openbsd.cc.orig	2025-10-02 04:28:32 UTC
 +++ base/process/process_metrics_openbsd.cc
-@@ -6,14 +6,23 @@
+@@ -6,73 +6,85 @@
  
  #include <stddef.h>
  #include <stdint.h>
@@ -12,127 +12,141 @@
 +#include <kvm.h>
 +
  #include "base/memory/ptr_util.h"
- #include "base/process/process_metrics_iocounters.h"
+ #include "base/types/expected.h"
 +#include "base/values.h"
-+#include "base/notreached.h"
++#include "base/notimplemented.h"
  
  namespace base {
  
-+ProcessMetrics::ProcessMetrics(ProcessHandle process)
-+    : process_(process) {}
-+
- // static
- std::unique_ptr<ProcessMetrics> ProcessMetrics::CreateProcessMetrics(
-     ProcessHandle process) {
-@@ -24,52 +33,26 @@ bool ProcessMetrics::GetIOCounters(IoCounters* io_coun
-   return false;
- }
+-namespace {
++ProcessMetrics::ProcessMetrics(ProcessHandle process) : process_(process) {}
  
--static int GetProcessCPU(pid_t pid) {
-+TimeDelta ProcessMetrics::GetCumulativeCPUUsage() {
+-base::expected<int, ProcessCPUUsageError> GetProcessCPU(pid_t pid) {
++base::expected<ProcessMemoryInfo, ProcessUsageError>
++ProcessMetrics::GetMemoryInfo() const {
++  ProcessMemoryInfo memory_info;
    struct kinfo_proc info;
 -  size_t length;
--  int mib[] = { CTL_KERN, KERN_PROC, KERN_PROC_PID, pid,
--                sizeof(struct kinfo_proc), 0 };
+-  int mib[] = {
+-      CTL_KERN, KERN_PROC, KERN_PROC_PID, pid, sizeof(struct kinfo_proc), 0};
 +  size_t length = sizeof(struct kinfo_proc);
-+  struct timeval tv;
  
--  if (sysctl(mib, std::size(mib), NULL, &length, NULL, 0) < 0)
--    return -1;
+-  if (sysctl(mib, std::size(mib), NULL, &length, NULL, 0) < 0) {
+-    return base::unexpected(ProcessCPUUsageError::kSystemError);
 +  int mib[] = { CTL_KERN, KERN_PROC, KERN_PROC_PID, process_,
 +                sizeof(struct kinfo_proc), 1 };
++
++  if (process_ == 0) {
++    return base::unexpected(ProcessUsageError::kSystemError);
+   }
  
 -  mib[5] = (length / sizeof(struct kinfo_proc));
 -
-   if (sysctl(mib, std::size(mib), &info, &length, NULL, 0) < 0)
--    return 0;
-+    return TimeDelta();
+   if (sysctl(mib, std::size(mib), &info, &length, NULL, 0) < 0) {
+-    return base::unexpected(ProcessCPUUsageError::kSystemError);
++    return base::unexpected(ProcessUsageError::kSystemError);
+   }
  
--  return info.p_pctcpu;
+-  return base::ok(info.p_pctcpu);
 -}
-+  tv.tv_sec = info.p_rtime_sec;
-+  tv.tv_usec = info.p_rtime_usec;
++  if (length == 0) {
++    return base::unexpected(ProcessUsageError::kProcessNotFound);
++  }
  
--double ProcessMetrics::GetPlatformIndependentCPUUsage() {
+-}  // namespace
++  memory_info.resident_set_bytes =
++    checked_cast<uint64_t>(info.p_vm_rssize * getpagesize());
+ 
+-// static
+-std::unique_ptr<ProcessMetrics> ProcessMetrics::CreateProcessMetrics(
+-    ProcessHandle process) {
+-  return WrapUnique(new ProcessMetrics(process));
++  return memory_info;
+ }
+ 
+-base::expected<double, ProcessCPUUsageError>
+-ProcessMetrics::GetPlatformIndependentCPUUsage() {
 -  TimeTicks time = TimeTicks::Now();
--
++base::expected<TimeDelta, ProcessCPUUsageError>
++ProcessMetrics::GetCumulativeCPUUsage() {
++  struct kinfo_proc info;
++  size_t length = sizeof(struct kinfo_proc);
++  struct timeval tv;
+ 
 -  if (last_cpu_time_.is_zero()) {
 -    // First call, just set the last values.
 -    last_cpu_time_ = time;
--    return 0;
--  }
--
--  int cpu = GetProcessCPU(process_);
--
+-    return base::ok(0.0);
++  int mib[] = { CTL_KERN, KERN_PROC, KERN_PROC_PID, process_,
++                sizeof(struct kinfo_proc), 1 };
++
++  if (process_ == 0) {
++    return base::unexpected(ProcessCPUUsageError::kSystemError);
+   }
+ 
+-  const base::expected<int, ProcessCPUUsageError> cpu = GetProcessCPU(process_);
+-  if (!cpu.has_value()) {
+-    return base::unexpected(cpu.error());
++  if (sysctl(mib, std::size(mib), &info, &length, NULL, 0) < 0) {
++    return base::unexpected(ProcessCPUUsageError::kSystemError);
+   }
+ 
 -  last_cpu_time_ = time;
--  double percentage = static_cast<double>((cpu * 100.0) / FSCALE);
--
--  return percentage;
-+  return Microseconds(TimeValToMicroseconds(tv));
+-  return base::ok(double{cpu.value()} / FSCALE * 100.0);
++  if (length == 0) {
++    return base::unexpected(ProcessCPUUsageError::kProcessNotFound);
++  }
++
++  tv.tv_sec = info.p_rtime_sec;
++  tv.tv_usec = info.p_rtime_usec;
++
++  return base::ok(Microseconds(TimeValToMicroseconds(tv)));
  }
  
--TimeDelta ProcessMetrics::GetCumulativeCPUUsage() {
+-base::expected<TimeDelta, ProcessCPUUsageError>
+-ProcessMetrics::GetCumulativeCPUUsage() {
 -  NOTREACHED();
--  return TimeDelta();
--}
--
++// static
++std::unique_ptr<ProcessMetrics> ProcessMetrics::CreateProcessMetrics(
++    ProcessHandle process) {
++  return WrapUnique(new ProcessMetrics(process));
+ }
+ 
 -ProcessMetrics::ProcessMetrics(ProcessHandle process)
--    : process_(process),
--      last_cpu_(0) {}
+-    : process_(process), last_cpu_(0) {}
 -
  size_t GetSystemCommitCharge() {
-   int mib[] = { CTL_VM, VM_METER };
+   int mib[] = {CTL_VM, VM_METER};
 -  int pagesize;
 +  size_t pagesize;
    struct vmtotal vmtotal;
    unsigned long mem_total, mem_free, mem_inactive;
    size_t len = sizeof(vmtotal);
-@@ -81,9 +64,136 @@ size_t GetSystemCommitCharge() {
+@@ -85,9 +97,60 @@ size_t GetSystemCommitCharge() {
    mem_free = vmtotal.t_free;
    mem_inactive = vmtotal.t_vm - vmtotal.t_avm;
  
 -  pagesize = getpagesize();
 +  pagesize = checked_cast<size_t>(getpagesize());
  
-   return mem_total - (mem_free*pagesize) - (mem_inactive*pagesize);
-+}
+   return mem_total - (mem_free * pagesize) - (mem_inactive * pagesize);
+ }
 +
 +int ProcessMetrics::GetOpenFdCount() const {
-+#if 0
-+  struct kinfo_file *files;
-+  kvm_t *kd = NULL;
-+  int total_count = 0;
-+  char errbuf[_POSIX2_LINE_MAX];
-+
-+  if ((kd = kvm_openfiles(NULL, NULL, NULL, KVM_NO_FILES, errbuf)) == NULL)
-+    goto out;
-+  
-+  if ((files = kvm_getfiles(kd, KERN_FILE_BYPID, process_,  
-+        sizeof(struct kinfo_file), &total_count)) == NULL) {
-+	  total_count = 0;
-+	  goto out;
-+  }
-+
-+  kvm_close(kd);
-+
-+out:
-+  return total_count;
-+#endif
-+  return getdtablecount();
++  return (process_ == getpid()) ? getdtablecount() : -1;
 +}
 +
 +int ProcessMetrics::GetOpenFdSoftLimit() const {
 +  return getdtablesize();
-+//  return GetMaxFds();
 +}
 +
-+uint64_t ProcessMetrics::GetVmSwapBytes() const {
++bool ProcessMetrics::GetPageFaultCounts(PageFaultCounts* counts) const {
 +  NOTIMPLEMENTED();
-+  return 0;
++  return false;
 +}
 +
-+bool GetSystemMemoryInfo(SystemMemoryInfoKB* meminfo) {
-+  NOTIMPLEMENTED_LOG_ONCE();
++bool GetSystemMemoryInfo(SystemMemoryInfo* meminfo) {
++  NOTIMPLEMENTED();
 +  return false;
 +}
 +
@@ -151,39 +165,6 @@
 +  return 0;
 +}
 +
-+Value::Dict SystemMemoryInfoKB::ToDict() const {
-+  Value::Dict res;
-+  res.Set("total", total);
-+  res.Set("free", free);
-+  res.Set("available", available);
-+  res.Set("buffers", buffers);
-+  res.Set("cached", cached);
-+  res.Set("active_anon", active_anon);   
-+  res.Set("inactive_anon", inactive_anon);
-+  res.Set("active_file", active_file);
-+  res.Set("inactive_file", inactive_file);
-+  res.Set("swap_total", swap_total);
-+  res.Set("swap_free", swap_free);
-+  res.Set("swap_used", swap_total - swap_free);
-+  res.Set("dirty", dirty);   
-+  res.Set("reclaimable", reclaimable);
-+
-+  NOTIMPLEMENTED();
-+
-+  return res;
-+}
-+
-+Value::Dict VmStatInfo::ToDict() const {
-+  Value::Dict res;
-+  res.Set("pswpin", static_cast<int>(pswpin));
-+  res.Set("pswpout", static_cast<int>(pswpout));
-+  res.Set("pgmajfault", static_cast<int>(pgmajfault));
-+
-+  NOTIMPLEMENTED();
-+
-+  return res;
-+}   
-+
 +SystemDiskInfo::SystemDiskInfo() {
 +  reads = 0;
 +  reads_merged = 0;
@@ -201,27 +182,5 @@
 +SystemDiskInfo::SystemDiskInfo(const SystemDiskInfo&) = default;
 +
 +SystemDiskInfo& SystemDiskInfo::operator=(const SystemDiskInfo&) = default;
-+
-+Value::Dict SystemDiskInfo::ToDict() const {
-+  Value::Dict res;
-+ 
-+  // Write out uint64_t variables as doubles.
-+  // Note: this may discard some precision, but for JS there's no other option.
-+  res.Set("reads", static_cast<double>(reads));
-+  res.Set("reads_merged", static_cast<double>(reads_merged));
-+  res.Set("sectors_read", static_cast<double>(sectors_read));
-+  res.Set("read_time", static_cast<double>(read_time));
-+  res.Set("writes", static_cast<double>(writes));
-+  res.Set("writes_merged", static_cast<double>(writes_merged));
-+  res.Set("sectors_written", static_cast<double>(sectors_written));
-+  res.Set("write_time", static_cast<double>(write_time));
-+  res.Set("io", static_cast<double>(io));
-+  res.Set("io_time", static_cast<double>(io_time));
-+  res.Set("weighted_io_time", static_cast<double>(weighted_io_time));
-+
-+  NOTIMPLEMENTED();
-+
-+  return res;
- }
  
  }  // namespace base

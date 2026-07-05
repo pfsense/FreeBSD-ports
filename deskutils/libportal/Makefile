@@ -1,6 +1,9 @@
 PORTNAME=	libportal
-PORTVERSION=	0.7.1
+PORTVERSION=	0.9.1
 CATEGORIES=	deskutils
+
+PATCH_SITES=	https://github.com/flatpak/libportal/commit/
+PATCHFILES+=	796053d2eebe4532aad6bd3fd80cdf3b197806ec.patch:-p1 # Fix build with Qt >= 6.9.0
 
 MAINTAINER=	arrowd@FreeBSD.org
 COMMENT?=	GIO-styled async APIs for Flatpak
@@ -26,7 +29,8 @@ VAPI_MESON_TRUE=	vapi
 VAPI_USES=		vala:build
 
 MESON_ARGS=	-Ddocs=false \
-		-Dbackend-gtk3=disabled -Dbackend-gtk4=disabled -Dbackend-qt5=disabled
+		-Dbackend-gtk3=disabled -Dbackend-gtk4=disabled \
+		-Dbackend-qt5=disabled -Dbackend-qt6=disabled
 OPTIONS_SUB=	yes
 
 .if defined(BACKEND)

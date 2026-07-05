@@ -2,8 +2,7 @@
 bin/rt
 bin/rt-crontool
 bin/rt-mailgate
-sbin/rt-clean-shorteners
-sbin/rt-email-expiring-auth-tokens
+bin/rt-run-scheduled-processes
 @dir(root,rt,0750) %%RT_ETC_DIR%%
 @dir(root,rt,0750) %%RT_ETC_DIR%%/RT_SiteConfig.d
 @mode 0440
@@ -34,6 +33,7 @@ sbin/rt-email-expiring-auth-tokens
 %%SITE_PERL%%/RT/Action/CreateTickets.pm
 %%SITE_PERL%%/RT/Action/EscalatePriority.pm
 %%SITE_PERL%%/RT/Action/ExtractSubjectTag.pm
+%%SITE_PERL%%/RT/Action/Forward.pm
 %%SITE_PERL%%/RT/Action/LinearEscalate.pm
 %%SITE_PERL%%/RT/Action/Notify.pm
 %%SITE_PERL%%/RT/Action/NotifyAsComment.pm
@@ -170,6 +170,7 @@ sbin/rt-email-expiring-auth-tokens
 %%SITE_PERL%%/RT/Interface/Web/Request.pm
 %%SITE_PERL%%/RT/Interface/Web/Scrubber.pm
 %%SITE_PERL%%/RT/Interface/Web/Scrubber/Permissive.pm
+%%SITE_PERL%%/RT/Interface/Web/Scrubber/Restrictive.pm
 %%SITE_PERL%%/RT/Interface/Web/Session.pm
 %%SITE_PERL%%/RT/LDAPImport.pm
 %%SITE_PERL%%/RT/Lifecycle.pm
@@ -272,8 +273,14 @@ sbin/rt-email-expiring-auth-tokens
 %%SITE_PERL%%/RT/Record/Role/Roles.pm
 %%SITE_PERL%%/RT/Record/Role/Status.pm
 %%SITE_PERL%%/RT/Reminders.pm
+%%SITE_PERL%%/RT/Report.pm
+%%SITE_PERL%%/RT/Report/Assets.pm
+%%SITE_PERL%%/RT/Report/Assets/Entry.pm
+%%SITE_PERL%%/RT/Report/Entry.pm
 %%SITE_PERL%%/RT/Report/Tickets.pm
 %%SITE_PERL%%/RT/Report/Tickets/Entry.pm
+%%SITE_PERL%%/RT/Report/Transactions.pm
+%%SITE_PERL%%/RT/Report/Transactions/Entry.pm
 %%SITE_PERL%%/RT/RightsInspector.pm
 %%SITE_PERL%%/RT/Rule.pm
 %%SITE_PERL%%/RT/Ruleset.pm
@@ -306,15 +313,19 @@ sbin/rt-email-expiring-auth-tokens
 %%SITE_PERL%%/RT/Shredder/Exceptions.pm
 %%SITE_PERL%%/RT/Shredder/POD.pm
 %%SITE_PERL%%/RT/Shredder/Plugin.pm
+%%SITE_PERL%%/RT/Shredder/Plugin/Assets.pm
 %%SITE_PERL%%/RT/Shredder/Plugin/Attachments.pm
 %%SITE_PERL%%/RT/Shredder/Plugin/Base.pm
 %%SITE_PERL%%/RT/Shredder/Plugin/Base/Dump.pm
 %%SITE_PERL%%/RT/Shredder/Plugin/Base/Search.pm
+%%SITE_PERL%%/RT/Shredder/Plugin/ExternalStorageDump.pm
 %%SITE_PERL%%/RT/Shredder/Plugin/Objects.pm
 %%SITE_PERL%%/RT/Shredder/Plugin/SQLDump.pm
 %%SITE_PERL%%/RT/Shredder/Plugin/Summary.pm
 %%SITE_PERL%%/RT/Shredder/Plugin/Tickets.pm
+%%SITE_PERL%%/RT/Shredder/Plugin/Transactions.pm
 %%SITE_PERL%%/RT/Shredder/Plugin/Users.pm
+%%SITE_PERL%%/RT/Shredder/RawRecord.pm
 %%SITE_PERL%%/RT/Squish.pm
 %%SITE_PERL%%/RT/Squish/CSS.pm
 %%SITE_PERL%%/RT/Squish/JS.pm
@@ -329,6 +340,7 @@ sbin/rt-email-expiring-auth-tokens
 %%SITE_PERL%%/RT/Test/Crypt.pm
 %%SITE_PERL%%/RT/Test/Email.pm
 %%SITE_PERL%%/RT/Test/ExternalStorage.pm
+%%SITE_PERL%%/RT/Test/FTS.pm
 %%SITE_PERL%%/RT/Test/GnuPG.pm
 %%SITE_PERL%%/RT/Test/REST2.pm
 %%SITE_PERL%%/RT/Test/SMIME.pm
@@ -357,10 +369,12 @@ sbin/rt-email-expiring-auth-tokens
 sbin/rt-attributes-viewer
 sbin/rt-clean-attributes
 sbin/rt-clean-sessions
+sbin/rt-clean-shorteners
 sbin/rt-dump-initialdata
 sbin/rt-dump-metadata
 sbin/rt-email-dashboards
 sbin/rt-email-digest
+sbin/rt-email-expiring-auth-tokens
 sbin/rt-email-group-admin
 sbin/rt-externalize-attachments
 sbin/rt-fulltext-indexer
@@ -383,7 +397,6 @@ sbin/rt-validator
 sbin/standalone_httpd
 @group wheel
 %%PORTDOCS%%%%DOCSDIR%%/GDPR.pod
-%%PORTDOCS%%%%DOCSDIR%%/README
 %%PORTDOCS%%%%DOCSDIR%%/UPGRADING-2.0
 %%PORTDOCS%%%%DOCSDIR%%/UPGRADING-3.0
 %%PORTDOCS%%%%DOCSDIR%%/UPGRADING-3.2
@@ -426,12 +439,16 @@ sbin/standalone_httpd
 %%PORTDOCS%%%%DOCSDIR%%/images/action-decline.png
 %%PORTDOCS%%%%DOCSDIR%%/images/added-terms.png
 %%PORTDOCS%%%%DOCSDIR%%/images/advanced-search.png
+%%PORTDOCS%%%%DOCSDIR%%/images/approvals.png
 %%PORTDOCS%%%%DOCSDIR%%/images/asset-cfs.png
 %%PORTDOCS%%%%DOCSDIR%%/images/asset-date-details.png
 %%PORTDOCS%%%%DOCSDIR%%/images/asset-search.png
 %%PORTDOCS%%%%DOCSDIR%%/images/asset-ticket-create-selfservice.png
 %%PORTDOCS%%%%DOCSDIR%%/images/asset-ticket-create.png
 %%PORTDOCS%%%%DOCSDIR%%/images/catalog-rights.png
+%%PORTDOCS%%%%DOCSDIR%%/images/chart-limited-to-top-10.png
+%%PORTDOCS%%%%DOCSDIR%%/images/chart-ordered-by-value.png
+%%PORTDOCS%%%%DOCSDIR%%/images/chart-tickets-by-requestor.png
 %%PORTDOCS%%%%DOCSDIR%%/images/complicated-search-arrows.png
 %%PORTDOCS%%%%DOCSDIR%%/images/create-setowner-action.png
 %%PORTDOCS%%%%DOCSDIR%%/images/current-search.png
@@ -466,13 +483,20 @@ sbin/standalone_httpd
 %%PORTDOCS%%%%DOCSDIR%%/images/quote-selection-highlighted.png
 %%PORTDOCS%%%%DOCSDIR%%/images/quote-selection-ticket-update.png
 %%PORTDOCS%%%%DOCSDIR%%/images/saved-dashboard.png
+%%PORTDOCS%%%%DOCSDIR%%/images/scheduled-process-create.png
+%%PORTDOCS%%%%DOCSDIR%%/images/scheduled-process-schedule.png
+%%PORTDOCS%%%%DOCSDIR%%/images/scheduled-processes.png
+%%PORTDOCS%%%%DOCSDIR%%/images/screenshot.png
 %%PORTDOCS%%%%DOCSDIR%%/images/search-arrows.png
 %%PORTDOCS%%%%DOCSDIR%%/images/search-criteria.png
 %%PORTDOCS%%%%DOCSDIR%%/images/search-results.png
 %%PORTDOCS%%%%DOCSDIR%%/images/sorting-display-columns.png
 %%PORTDOCS%%%%DOCSDIR%%/images/status-change-condition.png
 %%PORTDOCS%%%%DOCSDIR%%/images/subscriptions.png
+%%PORTDOCS%%%%DOCSDIR%%/images/support-dashboard.png
 %%PORTDOCS%%%%DOCSDIR%%/images/theme_editor_defaults.png
+%%PORTDOCS%%%%DOCSDIR%%/images/unread-messages-column.png
+%%PORTDOCS%%%%DOCSDIR%%/images/unread-notification.png
 %%PORTDOCS%%%%DOCSDIR%%/images/user-time-worked-report.png
 %%PORTDOCS%%%%DOCSDIR%%/images/with-created-before.png
 %%PORTDOCS%%%%DOCSDIR%%/images/with-newline.png
@@ -493,6 +517,7 @@ sbin/standalone_httpd
 %%PORTDOCS%%%%DOCSDIR%%/system_administration/database.pod
 %%PORTDOCS%%%%DOCSDIR%%/ticket_metadata.pod
 %%PORTDOCS%%%%DOCSDIR%%/tracking-rt-configuration.pod
+%%PORTDOCS%%%%DOCSDIR%%/unread_messages.pod
 %%DOCSDIR%%/upgrade/3.1.0/acl.Oracle
 %%DOCSDIR%%/upgrade/3.1.0/acl.Pg
 %%DOCSDIR%%/upgrade/3.1.0/acl.SQLite
@@ -746,6 +771,11 @@ sbin/standalone_httpd
 %%DOCSDIR%%/upgrade/5.0.5/schema.Pg
 %%DOCSDIR%%/upgrade/5.0.5/schema.SQLite
 %%DOCSDIR%%/upgrade/5.0.5/schema.mysql
+%%DOCSDIR%%/upgrade/5.0.6/indexes
+%%DOCSDIR%%/upgrade/5.0.8/indexes
+%%DOCSDIR%%/upgrade/5.0.8/schema.Oracle
+%%DOCSDIR%%/upgrade/5.0.8/schema.Pg
+%%DOCSDIR%%/upgrade/5.0.8/schema.mysql
 %%DOCSDIR%%/upgrade/generate-rtaddressregexp
 %%DOCSDIR%%/upgrade/reset-sequences
 %%DOCSDIR%%/upgrade/sanity-check-stylesheets
@@ -784,6 +814,7 @@ sbin/standalone_httpd
 %%DATADIR%%/html/Admin/Articles/index.html
 %%DATADIR%%/html/Admin/Assets/Catalogs/Create.html
 %%DATADIR%%/html/Admin/Assets/Catalogs/CustomFields.html
+%%DATADIR%%/html/Admin/Assets/Catalogs/CustomRoles.html
 %%DATADIR%%/html/Admin/Assets/Catalogs/DefaultValues.html
 %%DATADIR%%/html/Admin/Assets/Catalogs/Elements/EditBasics
 %%DATADIR%%/html/Admin/Assets/Catalogs/GroupRights.html
@@ -860,6 +891,7 @@ sbin/standalone_httpd
 %%DATADIR%%/html/Admin/Global/DashboardsInMenu.html
 %%DATADIR%%/html/Admin/Global/GroupRights.html
 %%DATADIR%%/html/Admin/Global/MyRT.html
+%%DATADIR%%/html/Admin/Global/RightsHistory.html
 %%DATADIR%%/html/Admin/Global/Scrips.html
 %%DATADIR%%/html/Admin/Global/SelfServiceHomePage.html
 %%DATADIR%%/html/Admin/Global/Template.html
@@ -916,6 +948,10 @@ sbin/standalone_httpd
 %%DATADIR%%/html/Admin/Tools/GnuPG.html
 %%DATADIR%%/html/Admin/Tools/Queries.html
 %%DATADIR%%/html/Admin/Tools/RightsInspector.html
+%%DATADIR%%/html/Admin/Tools/ScheduledProcesses/Create.html
+%%DATADIR%%/html/Admin/Tools/ScheduledProcesses/Elements/ScheduledProcess
+%%DATADIR%%/html/Admin/Tools/ScheduledProcesses/Modify.html
+%%DATADIR%%/html/Admin/Tools/ScheduledProcesses/index.html
 %%DATADIR%%/html/Admin/Tools/Shortener.html
 %%DATADIR%%/html/Admin/Tools/Shredder/Dumps/dhandler
 %%DATADIR%%/html/Admin/Tools/Shredder/Elements/DumpFileLink
@@ -969,7 +1005,6 @@ sbin/standalone_httpd
 %%DATADIR%%/html/Articles/Article/ExtractIntoClass.html
 %%DATADIR%%/html/Articles/Article/ExtractIntoTopic.html
 %%DATADIR%%/html/Articles/Article/History.html
-%%DATADIR%%/html/Articles/Article/PreCreate.html
 %%DATADIR%%/html/Articles/Article/Search.html
 %%DATADIR%%/html/Articles/Elements/BeforeMessageBox
 %%DATADIR%%/html/Articles/Elements/CheckSkipCreate
@@ -987,7 +1022,6 @@ sbin/standalone_httpd
 %%DATADIR%%/html/Articles/Elements/ShowTopicLink
 %%DATADIR%%/html/Articles/Elements/SubjectOverride
 %%DATADIR%%/html/Articles/Elements/UpdatedArticles
-%%DATADIR%%/html/Articles/Helpers/CreateInClass
 %%DATADIR%%/html/Articles/Topics.html
 %%DATADIR%%/html/Articles/index.html
 %%DATADIR%%/html/Asset/Create.html
@@ -1003,6 +1037,7 @@ sbin/standalone_httpd
 %%DATADIR%%/html/Asset/Elements/EditCatalogPeople
 %%DATADIR%%/html/Asset/Elements/EditDates
 %%DATADIR%%/html/Asset/Elements/EditPeople
+%%DATADIR%%/html/Asset/Elements/EditPeopleInline
 %%DATADIR%%/html/Asset/Elements/EditRoleMembers
 %%DATADIR%%/html/Asset/Elements/Search
 %%DATADIR%%/html/Asset/Elements/SelectCatalog
@@ -1054,6 +1089,10 @@ sbin/standalone_httpd
 %%DATADIR%%/html/Elements/BulkCustomFields
 %%DATADIR%%/html/Elements/BulkLinks
 %%DATADIR%%/html/Elements/CSRF
+%%DATADIR%%/html/Elements/CatalogList
+%%DATADIR%%/html/Elements/CatalogListAllStatuses
+%%DATADIR%%/html/Elements/CatalogSummaryByLifecycle
+%%DATADIR%%/html/Elements/CatalogSummaryByStatus
 %%DATADIR%%/html/Elements/Checkbox
 %%DATADIR%%/html/Elements/CollectionAsTable/Header
 %%DATADIR%%/html/Elements/CollectionAsTable/ParseFormat
@@ -1105,6 +1144,7 @@ sbin/standalone_httpd
 %%DATADIR%%/html/Elements/GotoUser
 %%DATADIR%%/html/Elements/Header
 %%DATADIR%%/html/Elements/HeaderJavascript
+%%DATADIR%%/html/Elements/HttpResponseHeaders
 %%DATADIR%%/html/Elements/JavascriptConfig
 %%DATADIR%%/html/Elements/LabeledValue
 %%DATADIR%%/html/Elements/Lifecycle/Graph
@@ -1151,8 +1191,8 @@ sbin/standalone_httpd
 %%DATADIR%%/html/Elements/RT__User/ColumnMap
 %%DATADIR%%/html/Elements/Refresh
 %%DATADIR%%/html/Elements/RefreshHomepage
-%%DATADIR%%/html/Elements/SavedSearches
 %%DATADIR%%/html/Elements/SavedSearchSelectUser
+%%DATADIR%%/html/Elements/SavedSearches
 %%DATADIR%%/html/Elements/ScrubHTML
 %%DATADIR%%/html/Elements/SearchFilter
 %%DATADIR%%/html/Elements/Section
@@ -1178,6 +1218,7 @@ sbin/standalone_httpd
 %%DATADIR%%/html/Elements/SelectOwner
 %%DATADIR%%/html/Elements/SelectOwnerAutocomplete
 %%DATADIR%%/html/Elements/SelectOwnerDropdown
+%%DATADIR%%/html/Elements/SelectOwnerDropdownDelay
 %%DATADIR%%/html/Elements/SelectPriority
 %%DATADIR%%/html/Elements/SelectPriorityAsString
 %%DATADIR%%/html/Elements/SelectQueue
@@ -1250,10 +1291,12 @@ sbin/standalone_httpd
 %%DATADIR%%/html/Group/Summary.html
 %%DATADIR%%/html/Helpers/AddTimeWorked
 %%DATADIR%%/html/Helpers/Admin/EditCustomFieldValue
+%%DATADIR%%/html/Helpers/AssetUpdate
 %%DATADIR%%/html/Helpers/Autocomplete/Articles
 %%DATADIR%%/html/Helpers/Autocomplete/Assets
 %%DATADIR%%/html/Helpers/Autocomplete/CustomFieldValues
 %%DATADIR%%/html/Helpers/Autocomplete/Groups
+%%DATADIR%%/html/Helpers/Autocomplete/LinkTargets
 %%DATADIR%%/html/Helpers/Autocomplete/Owners
 %%DATADIR%%/html/Helpers/Autocomplete/Principals
 %%DATADIR%%/html/Helpers/Autocomplete/Queues
@@ -1266,6 +1309,7 @@ sbin/standalone_httpd
 %%DATADIR%%/html/Helpers/PreviewScrips
 %%DATADIR%%/html/Helpers/RightsInspector/Revoke
 %%DATADIR%%/html/Helpers/RightsInspector/Search
+%%DATADIR%%/html/Helpers/SelectOwnerDropdown
 %%DATADIR%%/html/Helpers/ShortcutHelp
 %%DATADIR%%/html/Helpers/ShowSimplifiedRecipients
 %%DATADIR%%/html/Helpers/SpawnLinkedTicket
@@ -1310,6 +1354,7 @@ sbin/standalone_httpd
 %%DATADIR%%/html/NoAuth/rss/dhandler
 %%DATADIR%%/html/Prefs/AboutMe.html
 %%DATADIR%%/html/Prefs/AuthTokens.html
+%%DATADIR%%/html/Prefs/CatalogList.html
 %%DATADIR%%/html/Prefs/CustomDateRanges.html
 %%DATADIR%%/html/Prefs/DashboardsInMenu.html
 %%DATADIR%%/html/Prefs/Elements/EditAboutMe
@@ -1366,6 +1411,8 @@ sbin/standalone_httpd
 %%DATADIR%%/html/Search/Elements/EditQuery
 %%DATADIR%%/html/Search/Elements/EditSearches
 %%DATADIR%%/html/Search/Elements/EditSort
+%%DATADIR%%/html/Search/Elements/FilterAssets
+%%DATADIR%%/html/Search/Elements/FilterTickets
 %%DATADIR%%/html/Search/Elements/Graph
 %%DATADIR%%/html/Search/Elements/NewListActions
 %%DATADIR%%/html/Search/Elements/PickAssetCFs
@@ -1417,6 +1464,7 @@ sbin/standalone_httpd
 %%DATADIR%%/html/SelfService/Helpers/Autocomplete/CustomFieldValues
 %%DATADIR%%/html/SelfService/Helpers/Autocomplete/Principals
 %%DATADIR%%/html/SelfService/Helpers/Autocomplete/Users
+%%DATADIR%%/html/SelfService/Helpers/SelectOwnerDropdown
 %%DATADIR%%/html/SelfService/Helpers/ShortcutHelp
 %%DATADIR%%/html/SelfService/Helpers/TextDiff
 %%DATADIR%%/html/SelfService/Helpers/Upload/Add
@@ -1516,6 +1564,7 @@ sbin/standalone_httpd
 %%DATADIR%%/html/Widgets/Form/Integer
 %%DATADIR%%/html/Widgets/Form/JSON
 %%DATADIR%%/html/Widgets/Form/MultilineString
+%%DATADIR%%/html/Widgets/Form/SearchFormat
 %%DATADIR%%/html/Widgets/Form/Select
 %%DATADIR%%/html/Widgets/Form/String
 %%DATADIR%%/html/Widgets/SavedSearch

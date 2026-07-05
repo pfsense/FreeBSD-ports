@@ -1,5 +1,6 @@
 PORTNAME=	jython
 PORTVERSION=	2.7.0
+PORTREVISION=	1
 DISTVERSIONPREFIX=	installer-
 CATEGORIES=	lang python java
 MASTER_SITES=	https://repo1.maven.org/maven2/org/python/jython-installer/${PORTVERSION}/
@@ -21,9 +22,9 @@ RUN_DEPENDS=	bash:shells/bash
 EXTRACT_AFTER_ARGS=	--no-same-owner --no-same-permissions \
 			LICENSE.txt LICENSE_Apache.txt
 
-USES=		cpe
+USES=		cpe java
 CPE_VENDOR=	python
-USE_JAVA=	yes
+
 NO_BUILD=	yes
 NO_ARCH=	yes
 REINPLACE_ARGS=	-i ""

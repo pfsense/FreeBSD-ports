@@ -1,10 +1,10 @@
 PORTNAME=	siren
-PORTVERSION=	0.10
-PORTREVISION=	5
+DISTVERSION=	0.11
+PORTREVISION=	1
 CATEGORIES=	audio
 MASTER_SITES=	http://www.kariliq.nl/${PORTNAME}/dist/
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	eduardo@FreeBSD.org
 COMMENT=	Text-based audio player
 WWW=		https://www.kariliq.nl/siren/
 

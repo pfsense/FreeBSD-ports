@@ -1,6 +1,5 @@
 PORTNAME=	gpodder
-DISTVERSION=	3.11.4
-PORTREVISION=	1
+DISTVERSION=	3.11.5
 CATEGORIES=	multimedia python
 
 MAINTAINER=	rm@FreeBSD.org
@@ -10,7 +9,11 @@ WWW=		https://gpodder.github.io/
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-BUILD_DEPENDS=	intltool-extract:textproc/intltool \
+BUILD_DEPENDS=	${PY_SETUPTOOLS} \
+		${PYTHON_PKGNAMEPREFIX}build>0:devel/py-build@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}installer>0:devel/py-installer@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}wheel>0:devel/py-wheel@${PY_FLAVOR} \
+		intltool-extract:textproc/intltool \
 		help2man:misc/help2man
 RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}sqlite3>=0:databases/py-sqlite3@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}html5lib>0:www/py-html5lib@${PY_FLAVOR} \
@@ -21,7 +24,7 @@ RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}sqlite3>=0:databases/py-sqlite3@${PY_FLAVOR}
 		yt-dlp:www/yt-dlp \
 		${PYTHON_PKGNAMEPREFIX}eyed3>=0:audio/py-eyed3@${PY_FLAVOR}
 
-USES=		gettext gmake gnome python shebangfix
+USES=		gettext gmake gnome python
 
 USE_GITHUB=	yes
 
@@ -35,7 +38,6 @@ MAKE_ENV=	PYTHON=${PYTHON_CMD}
 MAKEFILE=	makefile
 NO_ARCH=	yes
 
-SHEBANG_FILES=	src/gpodder/*.py
 PLIST_SUB+=	PORTVERSION=${PORTVERSION}
 
 GTK3_VARS=	MAKE_ENV+=GPODDER_INSTALL_UIS="cli gtk"

@@ -1,5 +1,5 @@
 PORTNAME=	ruby-readability
-PORTVERSION=	0.7.0
+PORTVERSION=	0.7.3
 CATEGORIES=	www rubygems
 MASTER_SITES=	RG
 

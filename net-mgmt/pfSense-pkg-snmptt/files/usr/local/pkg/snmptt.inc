@@ -3,7 +3,7 @@
  * snmptt.inc
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2017-2024 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2017-2026 Rubicon Communications, LLC (Netgate)
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -23,6 +23,8 @@ require_once("util.inc");
 require_once("functions.inc");
 require_once("pkg-utils.inc");
 require_once("globals.inc");
+
+define('LOG_PREFIX_PKG_SNMPTT', 'snmptt');
 
 function php_deinstall_snmptt() {
 	unlink_if_exists("/usr/local/etc/rc.d/snmptt.sh");
@@ -56,15 +58,15 @@ function validate_input_snmptt($post, &$input_errors) {
 }
 
 function sync_package_snmptt() {
-	global $config, $g;
+	global $g;
 
 	if (is_service_running('snmptt') && !file_exists("{$g['tmp_path']}/.rc.start_packages.running")) {
-		log_error("Stopping service snmptt");
+		logger(LOG_INFO, localize_text("Stopping service"), LOG_PREFIX_PKG_SNMPTT);
 		stop_service('snmptt');
 	}
 
-	if (is_array($config['installedpackages']['snmptt'])) {
-		$snmptt_config = $config['installedpackages']['snmptt']['config'][0];
+	if (is_array(config_get_path('installedpackages/snmptt'))) {
+		$snmptt_config = config_get_path('installedpackages/snmptt/config/0');
 		if ($snmptt_config['snmpttenabled'] == "on") {
 			$strip_domain_list = base64_decode($snmptt_config['strip_domain_list']);
 			$strip_domain_list = preg_replace("~\r\n~", "\n", $strip_domain_list);
@@ -76,8 +78,8 @@ function sync_package_snmptt() {
 			include("/usr/local/pkg/snmptt.ini.php");
 			file_put_contents("/usr/local/etc/snmp/snmptt.ini", $snmpttini, LOCK_EX);
 
-			if (is_array($config['installedpackages']['snmpttconf'])) {
-				$snmpttconf_config = $config['installedpackages']['snmpttconf']['config'][0];
+			if (is_array(config_get_path('installedpackages/snmpttconf'))) {
+				$snmpttconf_config = config_get_path('installedpackages/snmpttconf/config/0');
 				$snmptt_configfile = base64_decode($snmpttconf_config['snmptt_configfile']);
 				$snmptt_configfile = preg_replace("~\r\n~", "\n", $snmptt_configfile);
 				file_put_contents("/usr/local/etc/snmp/snmptt.conf", $snmptt_configfile, LOCK_EX);
@@ -119,7 +121,7 @@ function sync_package_snmptt() {
 		);
 
 		if (!file_exists("{$g['tmp_path']}/.rc.start_packages.running")) {
-			log_error("Starting service snmptt");
+			logger(LOG_INFO, localize_text("Starting service"), LOG_PREFIX_PKG_SNMPTT);
 			start_service("snmptt");
 		}
 	} else {

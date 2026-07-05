@@ -11,9 +11,9 @@
 # 				Default: NO
 # heartbeat_flags (str):	Extra flags passed to heartbeat
 # heartbeat_config (str):	heartbeat configuration directory
-#				Default: ${PREFIX}/etc/beats
+#				Default: %%ETCDIR%%
 # heartbeat_conffile (str):	heartbeat configuration file
-#				relative to ${heartbeat_conf}
+#				relative to ${heartbeat_config}
 #				Default: heartbeat.yml
 
 . /etc/rc.subr
@@ -28,7 +28,6 @@ load_rc_config $name
 : ${heartbeat_home:="%%DATADIR%%/heartbeat"}
 : ${heartbeat_logs:="/var/log/beats"}
 : ${heartbeat_data:="/var/db/beats/heartbeat"}
-
 
 # daemon
 start_precmd=heartbeat_prestart

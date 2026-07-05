@@ -1,7 +1,7 @@
 PORTNAME=	pyqir
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.8.2
-PORTREVISION=	6
+DISTVERSION=	0.10.7
+PORTREVISION=	9
 CATEGORIES=	misc python # quantum-computing
 #MASTER_SITES=	PYPI # no tarballs
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -25,84 +25,55 @@ USE_GITHUB=	yes
 GH_ACCOUNT=	qir-alliance
 
 CARGO_FEATURES=	llvm14-0
-CARGO_CRATES=	aho-corasick-0.7.19 \
+CARGO_CRATES=	aho-corasick-1.1.2 \
 		autocfg-1.1.0 \
-		bitflags-1.3.2 \
 		bitvec-1.0.1 \
-		cc-1.0.76 \
+		cc-1.0.83 \
 		cfg-if-1.0.0 \
-		cmake-0.1.49 \
-		const-str-0.5.3 \
-		dashmap-5.4.0 \
+		cmake-0.1.50 \
+		const-str-0.5.6 \
 		error-chain-0.10.0 \
 		funty-2.0.0 \
-		futures-0.3.25 \
-		futures-channel-0.3.25 \
-		futures-core-0.3.25 \
-		futures-executor-0.3.25 \
-		futures-io-0.3.25 \
-		futures-sink-0.3.25 \
-		futures-task-0.3.25 \
-		futures-util-0.3.25 \
-		hashbrown-0.12.3 \
-		indoc-1.0.7 \
+		heck-0.5.0 \
+		indoc-2.0.5 \
 		lazy_static-1.4.0 \
-		libc-0.2.137 \
+		libc-0.2.153 \
 		llvm-sys-110.0.4 \
-		llvm-sys-120.2.5 \
-		llvm-sys-130.0.5 \
-		llvm-sys-140.0.3 \
-		lock_api-0.4.9 \
-		log-0.4.17 \
-		memchr-2.5.0 \
-		memoffset-0.6.5 \
+		llvm-sys-120.3.2 \
+		llvm-sys-130.1.2 \
+		llvm-sys-140.1.3 \
+		llvm-sys-150.2.1 \
+		log-0.4.20 \
+		memchr-2.7.1 \
+		memoffset-0.9.0 \
 		mut_static-5.0.0 \
 		normalize-line-endings-0.3.0 \
-		once_cell-1.16.0 \
-		parking_lot-0.12.1 \
-		parking_lot_core-0.9.4 \
-		pest-2.4.1 \
-		pin-project-lite-0.2.9 \
-		pin-utils-0.1.0 \
-		proc-macro-error-1.0.4 \
-		proc-macro-error-attr-1.0.4 \
-		proc-macro2-1.0.47 \
-		pyo3-0.17.3 \
-		pyo3-build-config-0.17.3 \
-		pyo3-ffi-0.17.3 \
-		pyo3-macros-0.17.3 \
-		pyo3-macros-backend-0.17.3 \
-		quote-1.0.21 \
+		once_cell-1.19.0 \
+		pest-2.7.6 \
+		portable-atomic-1.10.0 \
+		proc-macro2-1.0.92 \
+		pyo3-0.23.4 \
+		pyo3-build-config-0.23.4 \
+		pyo3-ffi-0.23.4 \
+		pyo3-macros-0.23.4 \
+		pyo3-macros-backend-0.23.4 \
+		quote-1.0.35 \
 		radium-0.7.0 \
-		redox_syscall-0.2.16 \
-		regex-1.7.0 \
-		regex-syntax-0.6.28 \
-		scopeguard-1.1.0 \
+		regex-1.10.3 \
+		regex-automata-0.4.5 \
+		regex-syntax-0.8.2 \
 		semver-0.11.0 \
-		semver-1.0.14 \
+		semver-1.0.21 \
 		semver-parser-0.10.2 \
-		serial_test-0.9.0 \
-		serial_test_derive-0.9.0 \
-		slab-0.4.7 \
-		smallvec-1.10.0 \
-		syn-1.0.103 \
+		syn-2.0.95 \
 		tap-1.0.1 \
-		target-lexicon-0.12.5 \
-		thiserror-1.0.37 \
-		thiserror-impl-1.0.37 \
-		ucd-trie-0.1.5 \
-		unicode-ident-1.0.5 \
-		unindent-0.1.10 \
-		version_check-0.9.4 \
-		windows-sys-0.42.0 \
-		windows_aarch64_gnullvm-0.42.0 \
-		windows_aarch64_msvc-0.42.0 \
-		windows_i686_gnu-0.42.0 \
-		windows_i686_msvc-0.42.0 \
-		windows_x86_64_gnu-0.42.0 \
-		windows_x86_64_gnullvm-0.42.0 \
-		windows_x86_64_msvc-0.42.0 \
-		wyz-0.5.0
+		target-lexicon-0.12.16 \
+		thiserror-1.0.56 \
+		thiserror-impl-1.0.56 \
+		ucd-trie-0.1.6 \
+		unicode-ident-1.0.12 \
+		unindent-0.2.3 \
+		wyz-0.5.1
 
 MAKE_ENV=	LLVM_SYS_140_PREFIX=${LLVM_PREFIX}
 
@@ -110,7 +81,9 @@ TEST_ENV=	${MAKE_ENV} PYTHONPATH=${STAGEDIR}${PYTHONPREFIX_SITELIBDIR}
 
 do-install:
 	${MKDIR} ${STAGEDIR}${PYTHON_SITELIBDIR}/${PORTNAME}
-	${INSTALL_LIB} ${WRKDIR}/target/*-unknown-freebsd/release/libpyqir.so ${STAGEDIR}${PYTHON_SITELIBDIR}/${PORTNAME}/_native.abi3.so
+	${INSTALL_LIB} ${WRKDIR}/target/release/libpyqir.so ${STAGEDIR}${PYTHON_SITELIBDIR}/${PORTNAME}/_native.abi3.so
 	${INSTALL_DATA} ${WRKSRC}/pyqir/pyqir/*.py ${STAGEDIR}${PYTHON_SITELIBDIR}/${PORTNAME}
+
+# tests as of 0.10.7: test result: ok. 51 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
 
 .include <bsd.port.mk>

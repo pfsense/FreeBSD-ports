@@ -1,6 +1,6 @@
 PORTNAME=	xstr
 PORTVERSION=	0.2.1
-PORTREVISION=	4
+PORTREVISION=	5
 CATEGORIES=	devel
 MASTER_SITES=	http://download.camlcity.org/download/
 PKGNAMEPREFIX=	ocaml-
@@ -11,13 +11,16 @@ WWW=		http://projects.camlcity.org/projects/xstr.html
 
 LICENSE=	MIT
 
+USES=		gmake ocaml:findplist
+
 WRKSRC=		${WRKDIR}/${PORTNAME}
 
-USE_OCAML=	yes
-USE_OCAML_FINDLIB=yes
-USE_OCAMLFIND_PLIST=yes
-
-USES=		gmake
 ALL_TARGET=	all opt
+
+.include <bsd.port.options.mk>
+
+.if ${ARCH} == powerpc
+USE_BINUTILS=	yes
+.endif
 
 .include <bsd.port.mk>

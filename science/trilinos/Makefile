@@ -1,11 +1,11 @@
 PORTNAME=	trilinos
-DISTVERSIONPREFIX=	trilinos-release-
-DISTVERSION=	15-1-1
+DISTVERSION=	16.2.0
 CATEGORIES=	science # physics
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Solver for multi-physics engineering and scientific problems
-WWW=		https://trilinos.github.io/
+WWW=		https://trilinos.github.io/ \
+		https://github.com/trilinos/trilinos
 
 LICENSE=	BSD3CLAUSE LGPL20 # Trilinos is licensed on a per-package basis. Most packages are under a BSD license, some are published under the (L)GPL.
 LICENSE_COMB=	multi
@@ -24,7 +24,7 @@ LIB_DEPENDS=	libamd.so:math/suitesparse-amd \
 		libumfpack.so:math/suitesparse-umfpack
 RUN_DEPENDS=	bash:shells/bash
 
-USES=		cmake compiler:c++14-lang fortran perl5 python shebangfix
+USES=		cmake:testing compiler:c++17-lang fortran perl5 python shebangfix
 USE_LDCONFIG=	yes
 
 USE_GITHUB=	yes
@@ -36,6 +36,9 @@ SHEBANG_FILES=	packages/kokkos/bin/kokkos_launch_compiler \
 
 CXXFLAGS+=	-DBOOST_STACKTRACE_GNU_SOURCE_NOT_REQUIRED # fails otherwise with backtrace-related symbol error explicitly printed by Boost
 LDFLAGS+=	-lexecinfo # only for kokkos (?), to prevent missing symbols
+
+CMAKE_OFF=		Trilinos_ENABLE_TESTS
+CMAKE_TESTING_ON=	Trilinos_ENABLE_TESTS # tests fail to compile, see https://github.com/trilinos/Trilinos/issues/13922
 
 CONFLICTS=	kokkos # installs bundled kokkos, need to figure out how to prevent this
 CONFLICTS_INSTALL=	googletest # see https://github.com/trilinos/Trilinos/issues/11271
@@ -53,6 +56,12 @@ CMAKE_ARGS+=	-DTrilinos_ENABLE_ALL_OPTIONAL_PACKAGES:BOOL=ON
 CMAKE_ARGS+=	-DTrilinos_ENABLE_SEACAS:BOOL=OFF # because of pumagon, etc failure (need to retest)
 CMAKE_ARGS+=	-DTrilinos_ENABLE_PyTrilinos:BOOL=OFF # workaround for https://github.com/trilinos/Trilinos/issues/12184
 
+# for Xyce, see https://github.com/Xyce/Xyce/issues/103#issuecomment-2257272140
+CMAKE_ON+=	Trilinos_ENABLE_Ifpack \
+		Trilinos_ENABLE_AztecOO \
+		Trilinos_ENABLE_Amesos \
+		Trilinos_ENABLE_EpetraExt
+
 # parallelism-related
 CMAKE_ARGS+=	-DTrilinos_ENABLE_OpenMP:BOOL=OFF
 #CMAKE_ARGS+=	-DKokkos_ENABLE_Pthread:BOOL=ON
@@ -68,6 +77,7 @@ CMAKE_ON+=	EpetraExt_BUILD_EXPERIMENTAL
 CMAKE_ON+=	EpetraExt_BUILD_GRAPH_REORDERINGS
 #CMAKE_ON+=	Teuchos_ENABLE_COMPLEX # this feature is broken in Trilinos
 CMAKE_ON+=	Trilinos_ENABLE_COMPLEX_DOUBLE
+
 # Enabling the UMFPACK feature required by the above features.
 CMAKE_ON+=	TPL_ENABLE_UMFPACK
 CMAKE_ON+=	TPL_ENABLE_AMD
@@ -77,10 +87,12 @@ CMAKE_ARGS+=	-DAMD_LIBRARY_DIRS=${LOCALBASE}/lib
 
 # users: https://duongdo27.github.io/Trilinos/users.html
 
-CONFLICTS_INSTALL=	googletest # installs files into the same place, problematic file: /usr/local/include/gtest/gtest.h, see https://github.com/trilinos/Trilinos/issues/11184
+CONFLICTS_INSTALL=	googletest # installs files into the same place, problematic file: /usr/local/include/gtest/gtest.h, see https://github.com/trilinos/Trilinos/issues/13929
 
 post-install:
 	# remove MPI headers that it installs
 	@${RM} ${STAGEDIR}${PREFIX}/include/mpi*.h
+
+# Tests fail to compile, see https://github.com/trilinos/Trilinos/issues/14748
 
 .include <bsd.port.mk>

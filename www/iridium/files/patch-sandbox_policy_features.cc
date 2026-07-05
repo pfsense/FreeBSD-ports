@@ -1,23 +1,11 @@
---- sandbox/policy/features.cc.orig	2023-11-22 14:00:11 UTC
+--- sandbox/policy/features.cc.orig	2026-02-16 10:45:29 UTC
 +++ sandbox/policy/features.cc
-@@ -19,7 +19,11 @@ namespace sandbox::policy::features {
- // (Only causes an effect when feature kNetworkServiceInProcess is disabled.)
- BASE_FEATURE(kNetworkServiceSandbox,
-              "NetworkServiceSandbox",
-+#if BUILDFLAG(IS_BSD)
-+             base::FEATURE_ENABLED_BY_DEFAULT);
-+#else
-              base::FEATURE_DISABLED_BY_DEFAULT);
-+#endif
- 
- #if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS)
- // Enables a fine-grained seccomp-BPF syscall filter for the network service.
-@@ -126,7 +130,7 @@ BASE_FEATURE(kForceSpectreVariant2Mitigation,
-              base::FEATURE_DISABLED_BY_DEFAULT);
- #endif  // BUILDFLAG(IS_CHROMEOS_ASH)
+@@ -99,7 +99,7 @@ BASE_FEATURE(kWinSboxStrictHandleChecks, base::FEATURE
+ BASE_FEATURE(kSpectreVariant2Mitigation, base::FEATURE_ENABLED_BY_DEFAULT);
+ #endif  // BUILDFLAG(IS_CHROMEOS)
  
 -#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS)
 +#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_BSD)
- // Enabling the kNetworkServiceSandbox feature automatically enables Spectre
- // variant 2 mitigations in the network service. This can lead to performance
- // regressions, so enabling this feature will turn off the Spectre Variant 2
+ // Increase the renderer sandbox memory limit. As of 2023, there are no limits
+ // on macOS, and a 1TiB limit on Windows. There are reports of users bumping
+ // into the limit. This increases the limit by 2x compared to the default

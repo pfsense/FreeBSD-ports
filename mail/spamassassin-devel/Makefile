@@ -1,5 +1,6 @@
 PORTNAME=	spamassassin
 PORTVERSION=	${SA_COMMIT_DATE}
+PORTREVISION=	1
 CATEGORIES?=	mail perl5
 PKGNAMESUFFIX=	-devel
 
@@ -9,8 +10,8 @@ WWW=		https://spamassassin.apache.org/
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	apache
-GH_TAGNAME=	6e2be8ffc
-SA_COMMIT_DATE=	2024.04.02
+GH_TAGNAME=	afca839db
+SA_COMMIT_DATE=	2026.02.27
 
 LICENSE=	APACHE20
 
@@ -60,7 +61,7 @@ OPTIONS_GROUP_DATABASE=	MYSQL PGSQL
 OPTIONS_GROUP_PLUGINS=	DCC DKIM DMARC PYZOR RAZOR RELAY_COUNTRY RLIMIT SPF_QUERY
 OPTIONS_SINGLE=		GPG
 OPTIONS_SINGLE_GPG=	GNUPG_NONE GNUPG GNUPG2
-OPTIONS_DEFAULT=	AS_ROOT DKIM GNUPG SSL SPF_QUERY
+OPTIONS_DEFAULT=	AS_ROOT DKIM GNUPG2 SSL SPF_QUERY
 
 AS_ROOT_DESC=		Run spamd as root (recommended)
 
@@ -185,6 +186,7 @@ post-patch::
 		-e 's,B_CONFDIR)/v343.pre,B_CONFDIR)/v343.pre.sample,g' \
 		-e 's,B_CONFDIR)/v400.pre,B_CONFDIR)/v400.pre.sample,g' \
 		-e 's,B_CONFDIR)/v401.pre,B_CONFDIR)/v401.pre.sample,g' \
+		-e 's,B_CONFDIR)/v402.pre,B_CONFDIR)/v402.pre.sample,g' \
 		-e 's/require DBI/0/' \
 		${WRKSRC}/Makefile.PL
 	${REINPLACE_CMD} -e '/^CC =/d; \
@@ -210,7 +212,7 @@ pre-su-install:
 
 post-install::
 	${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/spamc
-	@${MKDIR} ${STAGEDIR}/var/lib/spamassassin ${STAGEDIR}${DBDIR}/spamassassin ${STAGEDIR}/var/run/spamd
+	@${MKDIR} ${STAGEDIR}${DBDIR}/spamassassin ${STAGEDIR}/var/run/spamd
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}
 	${INSTALL_DATA} ${DOCS:S|^|${WRKSRC}/|} ${STAGEDIR}${DOCSDIR}
 	(cd ${WRKSRC} && ${COPYTREE_SHARE} "sql ldap" ${STAGEDIR}${DOCSDIR})

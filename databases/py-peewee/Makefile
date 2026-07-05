@@ -1,5 +1,6 @@
 PORTNAME=	peewee
 DISTVERSION=	3.15.0
+PORTREVISION=	1
 CATEGORIES=	databases python
 MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -15,7 +16,7 @@ OPTIONS_DEFINE=		SQLITE PGSQL
 OPTIONS_DEFAULT=	SQLITE
 
 USES=			localbase:ldflags python sqlite
-USE_PYTHON=		distutils cython autoplist concurrent
+USE_PYTHON=		autoplist concurrent cython0 distutils
 
 SQLITE_BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}sqlite3>0:databases/py-sqlite3@${PY_FLAVOR}
 PGSQL_BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}psycopg2>=2.5.1:databases/py-psycopg2@${PY_FLAVOR}

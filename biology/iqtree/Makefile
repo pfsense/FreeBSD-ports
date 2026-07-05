@@ -1,6 +1,6 @@
 PORTNAME=	iqtree
 DISTVERSIONPREFIX=	v
-DISTVERSION=	2.2.2.7
+DISTVERSION=	3.1.0
 CATEGORIES=	biology
 
 MAINTAINER=	jrm@FreeBSD.org
@@ -10,18 +10,16 @@ WWW=		http://www.iqtree.org/
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-BROKEN_aarch64=	fails to compile: unrecognized command line option '-msse3'
-BROKEN_armv6=	fails to compile: unrecognized command line options '-m32' and '-msse3'
-BROKEN_armv7=	fails to compile: unrecognized command line options '-m32' and '-msse3'
-BROKEN_i386=	ld: error: unable to find library -latomic (see bug 230888)
-BROKEN_powerpc64=	fails to build: GCC version must be at least 4.8!
+ONLY_FOR_ARCHS=	aarch64 amd64
+ONLY_FOR_ARCHS_REASON=	requires 64-bit platform with SSE or NEON
 
-LIB_DEPENDS=	libboost_filesystem.so:devel/boost-libs
+BUILD_DEPENDS=	boost-libs>=0:devel/boost-libs
 
 USES=		cmake eigen:3
 USE_GITHUB=	yes
-GH_PROJECT=	iqtree2
-GH_TUPLE=	tothuhien:lsd2:26ba127:iqtree2/lsd2
+GH_PROJECT=	iqtree3
+GH_TUPLE=	tothuhien:lsd2:c61110f3a4fa05325b45c97b2134792ff9d55d4c:tothuhien/lsd2 \
+		iqtree:cmaple:4795b124543c02439722f36cff439bd6517a825b:iqtree/cmaple
 
 PLIST_FILES=	bin/iqtree
 PORTEXAMPLES=	custom_distributions.txt example.cf example.nex example.phy \
@@ -30,7 +28,7 @@ PORTEXAMPLES=	custom_distributions.txt example.cf example.nex example.phy \
 OPTIONS_DEFINE=	EXAMPLES
 
 do-install:
-	${INSTALL_PROGRAM} ${BUILD_WRKSRC}/iqtree2 ${STAGEDIR}${PREFIX}/bin/iqtree
+	${INSTALL_PROGRAM} ${BUILD_WRKSRC}/iqtree3 ${STAGEDIR}${PREFIX}/bin/iqtree
 
 do-install-EXAMPLES-on:
 	@${MKDIR} ${STAGEDIR}${EXAMPLESDIR}

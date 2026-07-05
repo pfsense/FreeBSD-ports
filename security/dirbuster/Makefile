@@ -1,5 +1,6 @@
 PORTNAME=	dirbuster
 PORTVERSION=	1.0r1
+PORTREVISION=	1
 CATEGORIES=	security java
 MASTER_SITES=	SF/${PORTNAME}/DirBuster%20%28jar%20%2B%20lists%29/1.0-RC1/
 DISTNAME=	DirBuster-1.0-RC1
@@ -11,8 +12,8 @@ WWW=		https://www.owasp.org/index.php/Category:OWASP_DirBuster_Project
 LICENSE=	LGPL21+ CC-BY-SA-3.0
 LICENSE_COMB=	multi
 
-USES=		zip
-USE_JAVA=	yes
+USES=		java zip
+
 NO_BUILD=	yes
 NO_ARCH=	yes
 WRKSRC=		${WRKDIR}/${DISTNAME}

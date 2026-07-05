@@ -1,16 +1,18 @@
 PORTNAME=	oj
-PORTVERSION=	3.16.3
+PORTVERSION=	3.16.15
 CATEGORIES=	devel rubygems
 MASTER_SITES=	RG
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Fast JSON parser and serializer
-WWW=		https://www.ohler.com/oj/
+WWW=		https://www.ohler.com/oj/ \
+		https://github.com/ohler55/oj
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-RUN_DEPENDS=	rubygem-bigdecimal>=3.0:math/rubygem-bigdecimal
+RUN_DEPENDS=	rubygem-bigdecimal>=3.0:math/rubygem-bigdecimal \
+		rubygem-ostruct>=0.2:devel/rubygem-ostruct
 
 USES=		gem
 

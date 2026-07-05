@@ -1,11 +1,11 @@
 PORTNAME=	argyllcms
 PORTVERSION=	1.9.2
-PORTREVISION=	6
+PORTREVISION=	7
 CATEGORIES=	graphics
 MASTER_SITES=	https://www.argyllcms.com/
 DISTNAME=	Argyll_V${PORTVERSION}_src
 
-MAINTAINER=	kwm@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	ICC compatible color management system
 WWW=		https://www.argyllcms.com/
 

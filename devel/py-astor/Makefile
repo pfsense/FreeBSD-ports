@@ -1,10 +1,11 @@
 PORTNAME=	astor
 PORTVERSION=	0.8.1
+PORTREVISION=	1
 CATEGORIES=	devel python
 MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
-MAINTAINER=	dave@dal.ca
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Astor allows easy manipulation of Python source via the AST
 WWW=		https://github.com/berkerpeksag/astor
 

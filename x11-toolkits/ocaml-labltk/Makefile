@@ -1,5 +1,6 @@
 PORTNAME=	labltk
 PORTVERSION=	8.06.12
+PORTREVISION=	1
 CATEGORIES=	x11-toolkits
 PKGNAMEPREFIX=	ocaml-
 
@@ -9,11 +10,10 @@ WWW=		https://forge.ocamlcore.org/projects/labltk/
 
 LICENSE=	LGPL20
 
-USES=		gmake tk
+USES=		gmake ocaml:ldconfig tk
 USE_GITHUB=	yes
 GH_ACCOUNT=	garrigue
-USE_OCAML=	yes
-USE_OCAML_LDCONFIG=	yes
+
 HAS_CONFIGURE=	yes
 CONFIGURE_ARGS=	-tkdefs "-I${LOCALBASE}/include -I${TCL_INCLUDEDIR}\
 		-I${TK_INCLUDEDIR}" \
@@ -28,6 +28,12 @@ MAKE_ENV=		RANLIB=/usr/bin/ranlib INSTALLDIR_REL=${OCAML_SITELIBDIR}/${PORTNAME}
 MAKE_JOBS_UNSAFE=	yes
 
 ALL_TARGET=	all opt
+
+.include <bsd.port.options.mk>
+
+.if ${ARCH} == powerpc
+LLD_UNSAFE=	yes
+.endif
 
 post-patch:
 	@${REINPLACE_CMD} \

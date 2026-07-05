@@ -1,5 +1,5 @@
-"login" has "auth sufficient pam_self.so" but a screen locker is
-supposed to ask for password regardless.
+"login" and "su" have "auth sufficient pam_self.so" but a screen
+locker is supposed to ask for password regardless.
 
 pam_unix(8) requires root priveleges to access master.passwd(5),
 so try authenticating via setuid helper first.
@@ -13,4 +13,18 @@ so try authenticating via setuid helper first.
  
 -auth        include     login
 +auth        include     unix-selfauth
+ 
+--- src/auth/Pam.cpp.orig	2025-02-22 22:56:54 UTC
++++ src/auth/Pam.cpp
+@@ -64,11 +64,6 @@ CPam::CPam() {
+     static const auto PAMMODULE = g_pConfigManager->getValue<Hyprlang::STRING>("auth:pam:module");
+     m_sPamModule                = *PAMMODULE;
+ 
+-    if (!std::filesystem::exists(std::filesystem::path("/etc/pam.d/") / m_sPamModule)) {
+-        Debug::log(ERR, R"(Pam module "/etc/pam.d/{}" does not exist! Falling back to "/etc/pam.d/su")", m_sPamModule);
+-        m_sPamModule = "su";
+-    }
+-
+     m_sConversationState.waitForInput = [this]() { this->waitForInput(); };
+ }
  

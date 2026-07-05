@@ -2,10 +2,10 @@
 
 PORTNAME=	zeitgeist
 DISTVERSION=	1.0.4
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	sysutils
 
-MAINTAINER=	kwm@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Event logging framework
 WWW=		https://wiki.gnome.org/Projects/Zeitgeist
 
@@ -16,7 +16,7 @@ BUILD_DEPENDS=	dee-tool:devel/dee \
 		rapper:textproc/raptor2 \
 		${PYTHON_PKGNAMEPREFIX}rdflib>=4.1.1:textproc/py-rdflib@${PY_FLAVOR}
 LIB_DEPENDS=	libharfbuzz.so:print/harfbuzz
-RUN_DEPENDS=	${PYTHON_SITELIBDIR}/xdg/__init__.py:devel/py-xdg@${PY_FLAVOR} \
+RUN_DEPENDS=	${PYTHON_SITELIBDIR}/xdg/__init__.py:devel/py-pyxdg@${PY_FLAVOR} \
 		${PYTHON_SITELIBDIR}/dbus/__init__.py:devel/py-dbus@${PY_FLAVOR}
 
 USES=		autoreconf gettext gmake gnome libtool localbase:ldflags pathfix pkgconfig \
@@ -24,7 +24,7 @@ USES=		autoreconf gettext gmake gnome libtool localbase:ldflags pathfix pkgconfi
 USE_GITLAB=	yes
 GL_SITE=	https://gitlab.freedesktop.org
 GL_TAGNAME=	8b89364c077b46734d193c5b8a80f83b0fc917dd
-USE_GNOME=	cairo gdkpixbuf2 glib20 intlhack \
+USE_GNOME=	cairo gdkpixbuf glib20 intlhack \
 		introspection:build
 USE_LDCONFIG=	yes
 USE_PYTHON=	py3kplist
@@ -48,7 +48,7 @@ DATAHUB_CONFIGURE_ENABLE=	datahub
 
 .include <bsd.port.options.mk>
 
-.if ${OPSYS} == FreeBSD && ( ${OSVERSION} >= 1400091 || ( ${OSVERSION} >= 1302507 && ${OSVERSION} < 1400000 ))
+.if ${OPSYS} == FreeBSD
 CFLAGS+=	-Wno-error=incompatible-function-pointer-types
 .endif
 

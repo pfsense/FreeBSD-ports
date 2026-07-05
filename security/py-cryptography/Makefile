@@ -1,11 +1,14 @@
 PORTNAME=	cryptography
-PORTVERSION=	42.0.5
+PORTVERSION=	46.0.5
 PORTREVISION=	1
 PORTEPOCH=	1
 CATEGORIES=	security python
 MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 DISTFILES=	${DISTNAME}${EXTRACT_SUFX}
+
+PATCH_SITES=	https://github.com/pyca/cryptography/commit/
+PATCHFILES=	43eb178ee3aae8d0060221118437b03c23570a41.patch:-p1
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Cryptographic recipes and primitives for Python developers
@@ -17,26 +20,24 @@ LICENSE_COMB=	dual
 LICENSE_FILE_APACHE20=	${WRKSRC}/LICENSE.APACHE
 LICENSE_FILE_BSD3CLAUSE=${WRKSRC}/LICENSE.BSD
 
-BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}cffi>=1.12:devel/py-cffi@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}setuptools>=61.0.0:devel/py-setuptools@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}setuptools-rust>=1.7.0:devel/py-setuptools-rust@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}wheel>=0:devel/py-wheel@${PY_FLAVOR}
-RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}cffi>=1.12:devel/py-cffi@${PY_FLAVOR}
+BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}cffi>=2.0.0:devel/py-cffi@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}maturin>=1.9.4<2:devel/py-maturin@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}setuptools>=0:devel/py-setuptools@${PY_FLAVOR}
+RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}cffi>=2.0.0:devel/py-cffi@${PY_FLAVOR}
 TEST_DEPENDS=	${PYTHON_PKGNAMEPREFIX}bcrypt>=3.1.5:security/py-bcrypt@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}certifi>=0:security/py-certifi@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}cryptography-vectors>=${PORTVERSION}:security/py-cryptography-vectors@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}pretend>=0:devel/py-pretend@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}pytest-benchmark>=0:devel/py-pytest-benchmark@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}pytest-cov>=0:devel/py-pytest-cov@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}certifi>=2024:security/py-certifi@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}cryptography-vectors>=${PORTVERSION}<${PORTVERSION}_99:security/py-cryptography-vectors@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}pretend>=0.7:devel/py-pretend@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}pytest-benchmark>=4.0:devel/py-pytest-benchmark@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}pytest-cov>=2.10.1:devel/py-pytest-cov@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}pytest-randomly>=0:devel/py-pytest-randomly@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}pytest-xdist>=0,1:devel/py-pytest-xdist@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}pytest-xdist>=3.5.0,1:devel/py-pytest-xdist@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}sqlite3>=0:databases/py-sqlite3@${PY_FLAVOR}
 
 USES=		cargo cpe python ssl
 USE_PYTHON=	autoplist concurrent pep517 pytest
 
 CARGO_BUILD=	no
-CARGO_CARGOLOCK=${WRKSRC}/src/rust/Cargo.lock
 CARGO_CARGOTOML=${WRKSRC}/src/rust/Cargo.toml
 CARGO_INSTALL=	no
 CARGO_TEST=	no
@@ -50,7 +51,10 @@ OPTIONS_DEFINE=	SSH
 
 SSH_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}bcrypt>=3.1.5:security/py-bcrypt@${PY_FLAVOR}
 
-post-install:
-	${FIND} ${STAGEDIR}${PYTHON_SITELIBDIR} -name '*.so' -exec ${STRIP_CMD} {} +
+.include <bsd.port.pre.mk>
 
-.include <bsd.port.mk>
+.if ${PYTHON_REL} < 31100
+RUN_DEPENDS+=	${PYTHON_PKGNAMEPREFIX}typing-extensions>=4.13.2:devel/py-typing-extensions@${PY_FLAVOR}
+.endif
+
+.include <bsd.port.post.mk>

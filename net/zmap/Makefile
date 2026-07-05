@@ -1,41 +1,28 @@
 PORTNAME=	zmap
 DISTVERSIONPREFIX=	v
-DISTVERSION=	3.0.0
-PORTREVISION=	1
+DISTVERSION=	4.3.4
 CATEGORIES=	net
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Internet scanner
-WWW=		https://zmap.io/
+WWW=		https://zmap.io/ \
+		https://github.com/zmap/zmap
 
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
 BUILD_DEPENDS=	gengetopt>0:devel/gengetopt
-LIB_DEPENDS=	libdnet.so:net/libdnet \
-		libgmp.so:math/gmp \
+LIB_DEPENDS=	libgmp.so:math/gmp \
+		libjson-c.so:devel/json-c \
+		libJudy.so:devel/judy \
+		libpcap.so:net/libpcap \
 		libunistring.so:devel/libunistring
+
+USES=		cmake pkgconfig
 
 USE_GITHUB=	yes
 
-USES=		cmake:insource pkgconfig
-
-CFLAGS+=	-D_SYSTYPE_BSD
-
-MANPAGE=	zblacklist.1 zmap.1 ztee.1
-
-OPTIONS_DEFINE=	REDIS MONGO JSON
-OPTIONS_DEFAULT=JSON
-JSON_DESC=	Build with support for JSON
-
-REDIS_LIB_DEPENDS=	libhiredis.so:databases/hiredis
-REDIS_CMAKE_BOOL=	WITH_REDIS
-
-MONGO_LIB_DEPENDS=	libmongoc-1.0.so:devel/mongo-c-driver
-MONGO_CMAKE_BOOL=	WITH_MONGO
-
-JSON_LIB_DEPENDS=	libjson-c.so:devel/json-c
-JSON_CMAKE_BOOL=	WITH_JSON
+CMAKE_ON=	FORCE_CONF_INSTALL
 
 post-patch:
 	@${REINPLACE_CMD} -i '' -e 's|/etc/zmap|${LOCALBASE}/etc/zmap|g' -e 's|/usr/local|${LOCALBASE}|g' \
@@ -43,8 +30,12 @@ post-patch:
 	@${REINPLACE_CMD} -i '' -e 's|/etc/zmap/zmap.conf|${LOCALBASE}/etc/zmap/zmap.conf|g' \
 		${WRKSRC}/src/zopt.ggo.in \
 		${WRKSRC}/src/zmap.c
-	@${REINPLACE_CMD} -i '' -e 's|/etc/zmap/blacklist.conf|${LOCALBASE}/etc/zmap/blacklist.conf|g' \
+	@${REINPLACE_CMD} -i '' -e 's|/etc/zmap/blocklist.conf|${LOCALBASE}/etc/zmap/blocklist.conf|g' \
 		${WRKSRC}/conf/zmap.conf \
 		${WRKSRC}/src/zmap.c
+
+post-install:
+	@${MV} ${STAGEDIR}${ETCDIR}/blocklist.conf ${STAGEDIR}${ETCDIR}/blocklist.conf.sample
+	@${MV} ${STAGEDIR}${ETCDIR}/zmap.conf ${STAGEDIR}${ETCDIR}/zmap.conf.sample
 
 .include <bsd.port.mk>

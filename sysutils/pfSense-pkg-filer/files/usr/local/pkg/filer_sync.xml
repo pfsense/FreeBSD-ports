@@ -8,7 +8,7 @@
  * filer_sync.xml
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2017-2024 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2017-2026 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2012 Marcello Coutinho
  * Copyright (c) 2011 Brian Scholer
  * All rights reserved.
@@ -30,6 +30,7 @@
 	<name>filer_sync</name>
 	<version>%%PKGVERSION%%</version>
 	<title>Diagnostics/Filer</title>
+	<addedit_string>Filer: changed XMLRPC Sync</addedit_string>
 	<include_file>/usr/local/pkg/filer.inc</include_file>
 	<tabs>
 		<tab>

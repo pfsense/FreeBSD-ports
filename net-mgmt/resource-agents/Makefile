@@ -1,10 +1,10 @@
 PORTNAME=	resource-agents
 PORTVERSION=	4.13.0
 DISTVERSIONPREFIX=v
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	net-mgmt
 
-MAINTAINER=	flo@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	OCF Compliant Resource Agents
 WWW=		http://www.linux-ha.org/wiki/Resource_agents
 

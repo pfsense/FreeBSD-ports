@@ -1,5 +1,5 @@
-TIMESTAMP = 1707071765
-SHA256 (go/devel_ghq/ghq-v1.5.0/v1.5.0.mod) = 9e9b9244c077cc323ca37c44eb3fa187922a7e5034a9f5e2645008b8d7a7a7b2
-SIZE (go/devel_ghq/ghq-v1.5.0/v1.5.0.mod) = 932
-SHA256 (go/devel_ghq/ghq-v1.5.0/v1.5.0.zip) = 104e54dfb2b1a68d26f01f700b9f1071045aad4dfdaad816b5a59393f9b6385c
-SIZE (go/devel_ghq/ghq-v1.5.0/v1.5.0.zip) = 71005
+TIMESTAMP = 1771505976
+SHA256 (go/devel_ghq/ghq-v1.9.4/v1.9.4.mod) = 8e434c27902d9f2bc909de906ef4bf812624df87de5756b922c7a55e01ce56ce
+SIZE (go/devel_ghq/ghq-v1.9.4/v1.9.4.mod) = 933
+SHA256 (go/devel_ghq/ghq-v1.9.4/v1.9.4.zip) = 0ecae69e5b688cb6e7d2d38354663c02cddeecb90cdf2fcd26b131a1687302df
+SIZE (go/devel_ghq/ghq-v1.9.4/v1.9.4.zip) = 83816

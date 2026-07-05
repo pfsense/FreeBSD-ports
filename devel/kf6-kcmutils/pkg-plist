@@ -60,6 +60,10 @@ lib/libexec/kf6/kcmdesktopfilegenerator
 %%QT_QMLDIR%%/org/kde/kcmutils/private/AboutPlugin.qml
 %%QT_QMLDIR%%/org/kde/kcmutils/private/GridDelegateMenu.qml
 %%QT_QMLDIR%%/org/kde/kcmutils/private/GridViewInternal.qml
+%%QT_QMLDIR%%/org/kde/kcmutils/private/kcmutilsprivateqmlplugin.qmltypes
+%%QT_QMLDIR%%/org/kde/kcmutils/private/kde-qmlmodule.version
+%%QT_QMLDIR%%/org/kde/kcmutils/private/libkcmutilsprivateqmlplugin.so
+%%QT_QMLDIR%%/org/kde/kcmutils/private/qmldir
 %%QT_QMLDIR%%/org/kde/kcmutils/qmldir
 share/locale/af/LC_MESSAGES/kcmutils6.mo
 share/locale/ar/LC_MESSAGES/kcmshell6.mo
@@ -68,8 +72,10 @@ share/locale/as/LC_MESSAGES/kcmutils6.mo
 share/locale/ast/LC_MESSAGES/kcmshell6.mo
 share/locale/ast/LC_MESSAGES/kcmutils6.mo
 share/locale/az/LC_MESSAGES/kcmutils6.mo
+share/locale/be/LC_MESSAGES/kcmshell6.mo
 share/locale/be/LC_MESSAGES/kcmutils6.mo
 share/locale/be@latin/LC_MESSAGES/kcmutils6.mo
+share/locale/bg/LC_MESSAGES/kcmshell6.mo
 share/locale/bg/LC_MESSAGES/kcmutils6.mo
 share/locale/bn/LC_MESSAGES/kcmutils6.mo
 share/locale/bn_IN/LC_MESSAGES/kcmutils6.mo
@@ -103,6 +109,7 @@ share/locale/fi/LC_MESSAGES/kcmutils6.mo
 share/locale/fr/LC_MESSAGES/kcmshell6.mo
 share/locale/fr/LC_MESSAGES/kcmutils6.mo
 share/locale/fy/LC_MESSAGES/kcmutils6.mo
+share/locale/ga/LC_MESSAGES/kcmshell6.mo
 share/locale/ga/LC_MESSAGES/kcmutils6.mo
 share/locale/gd/LC_MESSAGES/kcmutils6.mo
 share/locale/gl/LC_MESSAGES/kcmshell6.mo
@@ -111,6 +118,7 @@ share/locale/gu/LC_MESSAGES/kcmutils6.mo
 share/locale/ha/LC_MESSAGES/kcmutils6.mo
 share/locale/he/LC_MESSAGES/kcmshell6.mo
 share/locale/he/LC_MESSAGES/kcmutils6.mo
+share/locale/hi/LC_MESSAGES/kcmshell6.mo
 share/locale/hi/LC_MESSAGES/kcmutils6.mo
 share/locale/hne/LC_MESSAGES/kcmutils6.mo
 share/locale/hr/LC_MESSAGES/kcmutils6.mo
@@ -122,6 +130,7 @@ share/locale/ia/LC_MESSAGES/kcmshell6.mo
 share/locale/ia/LC_MESSAGES/kcmutils6.mo
 share/locale/id/LC_MESSAGES/kcmshell6.mo
 share/locale/id/LC_MESSAGES/kcmutils6.mo
+share/locale/is/LC_MESSAGES/kcmshell6.mo
 share/locale/is/LC_MESSAGES/kcmutils6.mo
 share/locale/it/LC_MESSAGES/kcmshell6.mo
 share/locale/it/LC_MESSAGES/kcmutils6.mo
@@ -138,12 +147,14 @@ share/locale/ku/LC_MESSAGES/kcmutils6.mo
 share/locale/lb/LC_MESSAGES/kcmutils6.mo
 share/locale/lt/LC_MESSAGES/kcmshell6.mo
 share/locale/lt/LC_MESSAGES/kcmutils6.mo
+share/locale/lv/LC_MESSAGES/kcmshell6.mo
 share/locale/lv/LC_MESSAGES/kcmutils6.mo
 share/locale/mai/LC_MESSAGES/kcmutils6.mo
 share/locale/mk/LC_MESSAGES/kcmutils6.mo
 share/locale/ml/LC_MESSAGES/kcmutils6.mo
 share/locale/mr/LC_MESSAGES/kcmutils6.mo
 share/locale/ms/LC_MESSAGES/kcmutils6.mo
+share/locale/nb/LC_MESSAGES/kcmshell6.mo
 share/locale/nb/LC_MESSAGES/kcmutils6.mo
 share/locale/nds/LC_MESSAGES/kcmutils6.mo
 share/locale/ne/LC_MESSAGES/kcmutils6.mo
@@ -164,6 +175,8 @@ share/locale/ro/LC_MESSAGES/kcmshell6.mo
 share/locale/ro/LC_MESSAGES/kcmutils6.mo
 share/locale/ru/LC_MESSAGES/kcmshell6.mo
 share/locale/ru/LC_MESSAGES/kcmutils6.mo
+share/locale/sa/LC_MESSAGES/kcmshell6.mo
+share/locale/sa/LC_MESSAGES/kcmutils6.mo
 share/locale/se/LC_MESSAGES/kcmutils6.mo
 share/locale/si/LC_MESSAGES/kcmutils6.mo
 share/locale/sk/LC_MESSAGES/kcmshell6.mo
@@ -175,7 +188,9 @@ share/locale/sr/LC_MESSAGES/kcmutils6.mo
 share/locale/sr@ijekavian/LC_MESSAGES/kcmutils6.mo
 share/locale/sr@ijekavianlatin/LC_MESSAGES/kcmutils6.mo
 share/locale/sr@latin/LC_MESSAGES/kcmutils6.mo
+share/locale/sv/LC_MESSAGES/kcmshell6.mo
 share/locale/sv/LC_MESSAGES/kcmutils6.mo
+share/locale/ta/LC_MESSAGES/kcmshell6.mo
 share/locale/ta/LC_MESSAGES/kcmutils6.mo
 share/locale/te/LC_MESSAGES/kcmutils6.mo
 share/locale/tg/LC_MESSAGES/kcmutils6.mo

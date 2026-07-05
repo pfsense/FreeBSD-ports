@@ -1,6 +1,5 @@
 PORTNAME=	alephone
-DISTVERSION=	20230119
-PORTREVISION=	6
+DISTVERSION=	20250829
 CATEGORIES=	games
 MASTER_SITES=	https://github.com/Aleph-One-Marathon/${PORTNAME}/releases/download/release-${DISTVERSION}/
 DISTNAME=	AlephOne-${DISTVERSION}
@@ -11,26 +10,27 @@ WWW=		http://source.bungie.org/
 
 LICENSE=	GPLv3
 
+BUILD_DEPENDS=	asio>0:net/asio
 LIB_DEPENDS=	libboost_filesystem.so:devel/boost-libs \
-		libavcodec.so:multimedia/ffmpeg \
 		libsndfile.so:audio/libsndfile \
+		libvorbisenc.so:audio/libvorbis \
+		libyuv.so:graphics/libyuv
 
-USES=		compiler:c++17-lang gmake localbase openal \
-		pkgconfig shared-mime-info sdl gl tar:bzip2
-USE_SDL=	sdl2 image2 net2 ttf2
+USES=		compiler:c++17-lang gl gmake localbase openal pkgconfig sdl \
+		shared-mime-info tar:bzip2
 USE_GL=		gl glu
-
+USE_SDL=	image2 net2 sdl2 ttf2
 GNU_CONFIGURE=	yes
-GNU_CONFIGURE_MANPREFIX=${PREFIX}/share
+CONFIGURE_ARGS=	--without-miniupnpc \
+		--without-vorbis
 
-PORTDOCS=	*
+LDFLAGS+=	-lpthread
+
 DATADIR=	${PREFIX}/share/AlephOne
+PORTDOCS=	*
 
-CONFIGURE_ARGS=	--without-alsa --without-mad --without-miniupnpc \
-		--without-smpeg --without-vorbis
-
-OPTIONS_DEFINE=	CURL DOCS PNG SPEEX ZZIP
-OPTIONS_DEFAULT=CURL DOCS PNG SPEEX ZZIP
+OPTIONS_DEFINE=		CURL DOCS PNG ZZIP
+OPTIONS_DEFAULT=	CURL DOCS PNG ZZIP
 
 ZZIP_DESC=	Enable zziplib support
 
@@ -40,16 +40,12 @@ CURL_CONFIGURE_WITH=	curl
 PNG_LIB_DEPENDS=	libpng.so:graphics/png
 PNG_CONFIGURE_WITH=	png
 
-SPEEX_LIB_DEPENDS=	libspeex.so:audio/speex \
-			libspeexdsp.so:audio/speexdsp
-SPEEX_CONFIGURE_WITH=	speex
-
 ZZIP_LIB_DEPENDS=	libzzip.so:devel/zziplib
 ZZIP_CONFIGURE_WITH=	zzip
 
 .include <bsd.port.options.mk>
 
-.if ${OPSYS} == FreeBSD && ( ${OSVERSION} >= 1400079 || ( ${OSVERSION} >= 1302505 && ${OSVERSION} < 1400000 ))
+.if ${OPSYS} == FreeBSD
 CFLAGS+=	-Wno-error=int-conversion
 .endif
 

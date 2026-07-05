@@ -3,7 +3,7 @@
  * suricata_suppress_edit.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2006-2024 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2006-2026 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2003-2004 Manuel Kasper
  * Copyright (c) 2005 Bill Marquette
  * Copyright (c) 2009 Robert Zelaya Sr. Developer
@@ -65,11 +65,7 @@ if ($_POST['save']) {
 	$reqdfields = explode(" ", "name");
 	$reqdfieldsn = array("Name");
 
-	$pf_version=substr(trim(file_get_contents("/etc/version")),0,3);
-	if ($pf_version < 2.1)
-		$input_errors = eval('do_input_validation($_POST, $reqdfields, $reqdfieldsn, &$input_errors); return $input_errors;');
-	else
-		do_input_validation($_POST, $reqdfields, $reqdfieldsn, $input_errors);
+	do_input_validation($_POST, $reqdfields, $reqdfieldsn, $input_errors);
 
 	if(strtolower($_POST['name']) == "defaultwhitelist")
 		$input_errors[] = "Whitelist file names may not be named defaultwhitelist.";

@@ -1,6 +1,6 @@
 PORTNAME=	mayavi
-DISTVERSION=	4.8.1
-PORTREVISION=	7
+DISTVERSION=	4.8.2
+PORTREVISION=	8
 CATEGORIES=	graphics science python
 MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -18,6 +18,9 @@ LICENSE_FILE_EPL=		${WRKSRC}/image_LICENSE_Eclipse.txt
 LICENSE_FILE_LGPL3=		${WRKSRC}/image_LICENSE_OOo.txt
 LICENSE_FILE_BSD2CLAUSE=	${WRKSRC}/LICENSE_YORICK.txt
 LICENSE_FILE_APACHE11=		${WRKSRC}/LICENSE_COLORBREWER.txt
+
+BROKEN=		compilation fails: VTK throws std::runtime_erroe, see https://gitlab.kitware.com/vtk/vtk/-/issues/19994
+BROKEN_i386=	stage fails: Building TVTK classes... Fatal Python error: Illegal instruction
 
 BUILD_DEPENDS=	${PYNUMPY} \
 		${PY_SPHINX} \
@@ -38,7 +41,8 @@ USE_PYTHON=	distutils autoplist
 USE_WX=		3.2
 WX_COMPS=	python:run
 
-SHEBANG_FILES=	mayavi/tests/csv_files/csv_2_py
+SHEBANG_FILES=	mayavi/scripts/mayavi2 \
+		mayavi/tests/csv_files/csv_2_py
 
 POST_PLIST=	fix-plist
 

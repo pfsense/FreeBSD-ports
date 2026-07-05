@@ -1,5 +1,6 @@
 PORTNAME=	pioneer
-DISTVERSION=	20230203
+DISTVERSION=	20250501
+PORTREVISION=	3
 CATEGORIES=	games
 
 MAINTAINER=	amdmi3@FreeBSD.org
@@ -40,9 +41,9 @@ ALL_TARGET=	all build-data
 CMAKE_ARGS=	-DPIONEER_DATA_DIR:PATH="${DATADIR}/data"
 CMAKE_ON=	USE_SYSTEM_LIBGLEW USE_SYSTEM_LIBLUA
 
-PORTDATA=	data
-PORTDOCS=	AUTHORS.txt Changelog.txt Modelviewer.txt Quickstart.txt \
-		README.md
+PORTDATA=	*
+PORTDOCS=	AUTHORS.txt Changelog.txt Quickstart.txt \
+		README.md editor.txt
 
 SUB_FILES=	pkg-message
 
@@ -55,16 +56,11 @@ DOCS_SUB_LIST=		QUICKSTART_PATH="${DOCSDIR}"
 DOCS_SUB_LIST_OFF=	QUICKSTART_PATH="https://raw.githubusercontent.com/${GH_ACCOUNT}/${GH_PROJECT}/${GH_TAGNAME}"
 PROFILER_CMAKE_BOOL=	PROFILER_ENABLED
 
-post-patch:
-	@${REINPLACE_CMD} -e '/^include(FindGit/d ; \
-		/TIMESTAMP PROJECT_VERSION/s|.*|set(PROJECT_VERSION "${GH_TAGNAME}")|' \
-		${WRKSRC}/CMakeLists.txt
+.include <bsd.port.options.mk>
 
-post-install:
-.for f in modelcompiler savegamedump
-	${MV} ${STAGEDIR}${PREFIX}/bin/${f} \
-		${STAGEDIR}${PREFIX}/bin/${PORTNAME}-${f}
-.endfor
+.if ${ARCH} != amd64 && ${ARCH} != i386
+CMAKE_OFF+=	USE_SSE42
+.endif
 
 post-install-DOCS-on:
 	@(cd ${WRKSRC} && ${COPYTREE_SHARE} "${PORTDOCS}" ${STAGEDIR}${DOCSDIR})

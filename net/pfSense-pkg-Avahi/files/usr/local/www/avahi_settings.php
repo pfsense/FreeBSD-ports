@@ -95,6 +95,12 @@ if ($_POST) {
 		$input_errors[] = gettext("Invalid interface action");
 	}
 
+	/* Avoid conflict with mdns-bridge */
+	if ($pconfig['enable'] && $pconfig['reflection'] && 
+		config_get_path('installedpackages/mdns-bridge/enable', false)) {
+		$input_errors[] = gettext("mDNS Bridge must be disabled before enabling Avahi reflection");
+	}
+
 	$filter = array();
 	for ($x = 0; $x < 99; $x++) {
 		if (!empty($_POST["destination{$x}"])) {

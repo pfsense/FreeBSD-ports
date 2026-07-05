@@ -1,16 +1,17 @@
 PORTNAME=	kdegames
 DISTVERSION=	${KDE_APPLICATIONS_VERSION}
-PORTREVISION=	1
 CATEGORIES=	games kde
 
 MAINTAINER=	kde@FreeBSD.org
 COMMENT=	Games for KDE (meta port)
 WWW=		https://www.kde.org/applications/games/
 
-USES=		kde:5 metaport
+USES=		kde:6 metaport
 
 OPTIONS_DEFINE=	ALL ${KDE_GAMES_ALL}
 OPTIONS_DEFAULT=	ALL
+
+ALL_DESC=	Install all games
 
 .include "Makefile.common"
 

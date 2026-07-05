@@ -1,7 +1,6 @@
 PORTNAME=	tools
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.19.0
-PORTREVISION=	1
+DISTVERSION=	0.43.0
 PORTEPOCH=	1
 CATEGORIES=	devel
 PKGNAMEPREFIX=	go-
@@ -13,12 +12,9 @@ WWW=		https://godoc.org/golang.org/x/tools
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-USES=		go:modules
+USES=		go:1.24+,modules
 GO_MODULE=	golang.org/x/tools
-GO_TARGET=	./cmd/auth/cookieauth \
-		./cmd/auth/gitauth \
-		./cmd/auth/netrcauth \
-		./cmd/bisect \
+GO_TARGET=	./cmd/bisect \
 		./cmd/bundle \
 		./cmd/callgraph \
 		./cmd/compilebench \
@@ -29,14 +25,11 @@ GO_TARGET=	./cmd/auth/cookieauth \
 		./cmd/fiximports \
 		./cmd/go-contrib-init \
 		./cmd/godex \
-		./cmd/godoc \
 		./cmd/goimports \
 		./cmd/gomvpkg \
 		./cmd/gonew \
-		./cmd/gorename \
 		./cmd/gotype \
 		./cmd/goyacc \
-		./cmd/guru \
 		./cmd/html2article \
 		./cmd/present \
 		./cmd/present2md \
@@ -55,7 +48,6 @@ PLIST_FILES=	${GO_TARGET:T:S,^,bin/,}
 OPTIONS_DEFINE=	RARE
 RARE_DESC=	install rarely used tools
 RARE_VARS=	GO_TARGET+=" \
-		./cmd/auth/authtest \
 		./cmd/benchcmp
 
 .include <bsd.port.mk>

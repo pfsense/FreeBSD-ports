@@ -1,6 +1,6 @@
 PORTNAME=	libgd
 PORTVERSION=	2.3.3
-PORTREVISION=	11
+PORTREVISION=	13
 PORTEPOCH=	1
 CATEGORIES+=	graphics
 MASTER_SITES=	https://github.com/${PORTNAME}/${PORTNAME}/releases/download/gd-${PORTVERSION}/
@@ -14,10 +14,12 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 
 CONFLICTS_INSTALL=	libgd ??-libgd
 
-USES=		cpe tar:xz pkgconfig pathfix libtool:keepla autoreconf shebangfix
+USES=		autoreconf cpe gettext-tools libtool:keepla pathfix pkgconfig \
+		shebangfix tar:xz
 SHEBANG_FILES=	${WRKSRC}/src/bdftogd
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--enable-gd-formats
+CFLAGS+=	-ffp-contract=off # do not contract to FMA or thereabouts, PR 278105
 TMPDIR?=	/tmp
 MAKE_ENV=	TMPDIR=${TMPDIR}
 SUB_FILES=	gdlib-config
@@ -46,7 +48,6 @@ HEIF_CPPFLAGS=		-I${LOCALBASE}/include
 AVIF_LIB_DEPENDS=	libavif.so:graphics/libavif
 AVIF_CONFIGURE_OFF=	--without-avif
 AVIF_CPPFLAGS=		-I${LOCALBASE}/include
-AVIF_BROKEN=	option AVIF has a circular dependency loop
 LIQ_DESC=	libimagequant color conversion support
 LIQ_LIB_DEPENDS=	libimagequant.so:graphics/libimagequant
 LIQ_CONFIGURE_OFF=	--with-liq=no

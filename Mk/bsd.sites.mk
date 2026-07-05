@@ -40,8 +40,7 @@ MASTER_SITE_PORTS_JP+= \
 
 .if !defined(IGNORE_MASTER_SITE_AFTERSTEP)
 MASTER_SITE_AFTERSTEP+= \
-	ftp://ftp.afterstep.org/%SUBDIR%/ \
-	ftp://ftp.kddlabs.co.jp/X11/AfterStep/%SUBDIR%/
+	ftp://ftp.afterstep.org/%SUBDIR%/
 .endif
 
 .if !defined(IGNORE_MASTER_SITE_APACHE)
@@ -51,7 +50,6 @@ MASTER_SITE_APACHE+= \
 	https://mirror.its.dal.ca/apache/%SUBDIR%/ \
 	http://mirror.cogentco.com/pub/apache/%SUBDIR%/ \
 	http://mirror.navercorp.com/apache/%SUBDIR%/ \
-	http://ftp.kddi-research.jp/infosystems/apache/%SUBDIR%/ \
 	http://miroir.univ-lorraine.fr/apache/%SUBDIR%/
 .endif
 
@@ -105,8 +103,7 @@ MASTER_SITE_CRAN+= \
 	https://cran.csiro.au/%SUBDIR%/ \
 	https://mirrors.tuna.tsinghua.edu.cn/CRAN/%SUBDIR%/ \
 	https://mirror.las.iastate.edu/CRAN/%SUBDIR%/ \
-	https://cran.ma.imperial.ac.uk/%SUBDIR%/ \
-	https://cran.ism.ac.jp/%SUBDIR%/
+	https://cran.ma.imperial.ac.uk/%SUBDIR%/
 .endif
 
 .if !defined(IGNORE_MASTER_SITE_CRAN_ARCHIVE)
@@ -151,18 +148,37 @@ MASTER_SITE_EXIM+= \
 
 .if !defined(IGNORE_MASTER_SITE_CENTOS_LINUX)
 MASTER_SITE_CENTOS_LINUX+= \
-	http://mirror.centos.org/%SUBDIR%/:DEFAULT,aarch64,amd64,i386 \
 	http://vault.centos.org/%SUBDIR%/:DEFAULT,aarch64,amd64,i386,SOURCE
+.endif
+
+.if !defined(IGNORE_MASTER_SITE_ROCKY_LINUX)
+MASTER_SITE_ROCKY_LINUX+= \
+	https://dl.rockylinux.org/pub/rocky/%SUBDIR%/:DEFAULT,aarch64,amd64,SOURCE \
+	https://dl.rockylinux.org/vault/rocky/%SUBDIR%/:DEFAULT,aarch64,amd64,SOURCE
 .endif
 
 .if !defined(IGNORE_MASTER_SITE_EPEL7)
 MASTER_SITE_EPEL7+= \
-	https://dl.fedoraproject.org/pub/epel/7/aarch64/Packages/%SUBDIR%/:DEFAULT,aarch64 \
-	https://dl.fedoraproject.org/pub/epel/7/x86_64/Packages/%SUBDIR%/:DEFAULT,amd64 \
-	https://dl.fedoraproject.org/pub/epel/7/SRPMS/Packages/%SUBDIR%/:SOURCE \
-	http://dl.fedoraproject.org/pub/epel/7/aarch64/Packages/%SUBDIR%/:DEFAULT,aarch64 \
-	http://dl.fedoraproject.org/pub/epel/7/x86_64/Packages/%SUBDIR%/:DEFAULT,amd64 \
-	http://dl.fedoraproject.org/pub/epel/7/SRPMS/Packages/%SUBDIR%/:SOURCE
+	https://archives.fedoraproject.org/pub/archive/epel/7/aarch64/Packages/%SUBDIR%/:DEFAULT,aarch64 \
+	https://archives.fedoraproject.org/pub/archive/epel/7/x86_64/Packages/%SUBDIR%/:DEFAULT,amd64 \
+	https://archives.fedoraproject.org/pub/archive/epel/7/SRPMS/Packages/%SUBDIR%/:SOURCE \
+	http://archives.fedoraproject.org/pub/archive/epel/7/aarch64/Packages/%SUBDIR%/:DEFAULT,aarch64 \
+	http://archives.fedoraproject.org/pub/archive/epel/7/x86_64/Packages/%SUBDIR%/:DEFAULT,amd64 \
+	http://archives.fedoraproject.org/pub/archive/epel/7/SRPMS/Packages/%SUBDIR%/:SOURCE
+.endif
+
+.if !defined(IGNORE_MASTER_SITE_EPEL9)
+MASTER_SITE_EPEL9+= \
+	https://dl.fedoraproject.org/pub/epel/9/Everything/aarch64/Packages/%SUBDIR%/:DEFAULT,aarch64 \
+	https://dl.fedoraproject.org/pub/epel/9/Everything/x86_64/Packages/%SUBDIR%/:DEFAULT,amd64 \
+	https://dl.fedoraproject.org/pub/epel/9/Everything/source/tree/Packages/%SUBDIR%/:SOURCE
+.endif
+
+.if !defined(IGNORE_MASTER_SITE_RPMFUSION9)
+MASTER_SITE_RPMFUSION9+= \
+	https://ftp.icm.edu.pl/pub/Linux/dist/rpmfusion/free/el/updates/9/aarch64/%SUBDIR%/:DEFAULT,aarch64 \
+	https://ftp.icm.edu.pl/pub/Linux/dist/rpmfusion/free/el/updates/9/x86_64/%SUBDIR%/:DEFAULT,amd64 \
+	https://ftp.icm.edu.pl/pub/Linux/dist/rpmfusion/free/el/updates/9/SRPMS/%SUBDIR%/:DEFAULT,SOURCE
 .endif
 
 .if !defined(IGNORE_MASTER_SITE_FARSIGHT)
@@ -281,7 +297,7 @@ GH_SUBDIR+=	${GH_TUPLE:C@^([^:]*):([^:]*):([^:]*)((:[^:/]*)?)((/.*)?)@\6\4@:M/*:
 MASTER_SITE_GITHUB+=		https://codeload.github.com/%SUBDIR%
 MASTER_SITE_GITHUB_CLOUD+=	https://cloud.github.com/downloads/%SUBDIR%
 
-.    if !defined(MASTER_SITES) || !${MASTER_SITES:MGH} && !${MASTER_SITES:MGHC} && !${USE_GITHUB:Mnodefault}
+.    if ( !defined(MASTER_SITES) || !${MASTER_SITES:MGH} && !${MASTER_SITES:MGHC} ) && !${USE_GITHUB:Mnodefault}
 MASTER_SITES+=	GH
 .    endif
 GH_ACCOUNT_DEFAULT=	${PORTNAME}
@@ -562,23 +578,27 @@ WWW?=	https://gitlab.com/${GL_ACCOUNT}/${GL_PROJECT}/
 .endif # !defined(IGNORE_MASTER_SITE_GITLAB)
 
 .if !defined(IGNORE_MASTER_SITE_GNOME)
+.  if defined(DISTVERSION) && ${DISTVERSION:M[0-9]*}
+_version_major=	${DISTVERSION:C|^([0-9]+).*|\1|}
+_version_minor=	${DISTVERSION:C|^([0-9]+)\.([0-9]+).*|\2|}
+
+.    if ${_version_major} >= 10
+_gnome_ver=	${_version_major}
+.    else
+_gnome_ver=	${_version_major}.${_version_minor}
+.    endif
+.  endif
+
+_GNOME_PATH=	%SUBDIR%/${_gnome_ver}
+
 MASTER_SITE_GNOME+= \
-	https://download.gnome.org/%SUBDIR%/ \
-	https://gitlab.gnome.org/GNOME/${PORTNAME}/-/archive/${PORTVERSION}/ \
-	http://ftp.belnet.be/mirror/ftp.gnome.org/gnomeftp/%SUBDIR%/ \
-	ftp://ftp.belnet.be/mirror/ftp.gnome.org/gnomeftp/%SUBDIR%/ \
-	https://ftp.acc.umu.se/pub/GNOME/%SUBDIR%/ \
-	ftp://ftp.cse.buffalo.edu/pub/Gnome/%SUBDIR%/ \
-	https://fr2.rpmfind.net/linux/gnome.org/%SUBDIR%/ \
-	ftp://ftp.kddlabs.co.jp/pub/GNOME/%SUBDIR%/ \
-	ftp://ftp.mirrorservice.org/sites/ftp.gnome.org/pub/GNOME/%SUBDIR%/ \
-	ftp://ftp.nara.wide.ad.jp/pub/X11/GNOME/%SUBDIR%/
+	https://download.gnome.org/${_GNOME_PATH}/
 .endif
 
 .if !defined(IGNORE_MASTER_SITE_GIMP)
 MASTER_SITE_GIMP+= \
-	http://gimp.mirrors.hoobly.com/pub/%SUBDIR%/ \
-	http://gimp.afri.cc/pub/%SUBDIR%/ \
+	https://ftp.gwdg.de/pub/misc/grafik/%SUBDIR%/ \
+	https://www.mirrorservice.org/sites/ftp.gimp.org/pub/%SUBDIR%/ \
 	https://download.gimp.org/pub/%SUBDIR%/
 .endif
 
@@ -590,7 +610,6 @@ MASTER_SITE_GNU+= \
 	https://www.nic.funet.fi/pub/gnu/gnu/%SUBDIR%/ \
 	http://mirror.navercorp.com/gnu/%SUBDIR%/ \
 	http://ftp.halifax.rwth-aachen.de/gnu/%SUBDIR%/ \
-	http://ftp.kddilabs.jp/GNU/gnu/%SUBDIR%/ \
 	ftp://mirrors.rit.edu/gnu/%SUBDIR%/ \
 	ftp://ftp.fu-berlin.de/unix/gnu/%SUBDIR%/ \
 	ftp://ftp.mirrorservice.org/sites/ftp.gnu.org/gnu/%SUBDIR%/ \
@@ -601,7 +620,6 @@ MASTER_SITE_GNU+= \
 .if !defined(IGNORE_MASTER_SITE_GNUPG)
 MASTER_SITE_GNUPG+= \
 	https://mirrors.dotsrc.org/gcrypt/%SUBDIR%/ \
-	https://ftp.heanet.ie/mirrors/ftp.gnupg.org/gcrypt/%SUBDIR%/ \
 	https://www.mirrorservice.org/sites/ftp.gnupg.org/gcrypt/%SUBDIR%/ \
 	http://www.ring.gr.jp/pub/net/gnupg/%SUBDIR%/ \
 	https://gnupg.org/ftp/gcrypt/%SUBDIR%/
@@ -622,7 +640,6 @@ MASTER_SITE_GNU_ALPHA+= \
 	https://www.mirrorservice.org/sites/alpha.gnu.org/gnu/%SUBDIR%/ \
 	http://gnu.c3sl.ufpr.br/alpha/%SUBDIR%/ \
 	https://mirror.cedia.org.ec/gnualpha/%SUBDIR%/ \
-	http://gnu-alpha.mirrors.hostinginnederland.nl/%SUBDIR%/ \
 	https://gnualpha.uib.no/%SUBDIR%/ \
 	https://mirrors.fe.up.pt/pub/gnu-alpha/%SUBDIR%/ \
 	http://mirror.lihnidos.org/GNU/alpha/gnu/%SUBDIR%/ \
@@ -637,23 +654,16 @@ MASTER_SITE_HACKAGE+= \
 
 .if !defined(IGNORE_MASTER_SITE_IDSOFTWARE)
 MASTER_SITE_IDSOFTWARE+= \
-	ftp://ftp.gwdg.de/pub/misc2/ftp.idsoftware.com/idstuff/%SUBDIR%/ \
-	http://ftp4.de.freesbie.org/pub/misc/ftp.idsoftware.com/idstuff/%SUBDIR%/ \
-	ftp://ftp.fu-berlin.de/pc/games/idgames/idstuff/%SUBDIR%/ \
-	ftp://ftp.gamers.org/pub/idgames/idstuff/%SUBDIR%/ \
-	http://ftp.iinet.net.au/games/idstuff/%SUBDIR%/ \
-	ftp://ftp.mirror.nl/disk2/idsoftware/idstuff/%SUBDIR%/ \
-	ftp://freebsd.nsu.ru/mirrors/ftp.idsoftware.com/idstuff/%SUBDIR%/ \
-	ftp://ftp.ntua.gr/pub/vendors/idgames/idstuff/%SUBDIR%/ \
-	ftp://ftp.omen.net.au/games/idstuff/%SUBDIR%/ \
-	ftp://ftp.idsoftware.com/idstuff/%SUBDIR%/
+	https://ftp.gwdg.de/pub/misc/ftp.idsoftware.com/idstuff/%SUBDIR%/ \
+	https://ftp.fu-berlin.de/pc/games/idgames/idstuff/%SUBDIR%/ \
+	https://ftp.gamers.org/pub/idgames/idstuff/%SUBDIR%/ \
+	ftp://ftp.omen.net.au/games/idstuff/%SUBDIR%/
 .endif
 
 .if !defined(IGNORE_MASTER_SITE_ISC)
 MASTER_SITE_ISC+= \
 	https://ftp.isc.org/isc/%SUBDIR%/ \
 	ftp://ftp.isc.org/isc/%SUBDIR%/ \
-	ftp://ftp.ciril.fr/pub/isc/%SUBDIR%/ \
 	ftp://ftp.freenet.de/pub/ftp.isc.org/isc/%SUBDIR%/ \
 	ftp://ftp.iij.ad.jp/pub/network/isc/%SUBDIR%/ \
 	ftp://ftp.u-aizu.ac.jp/pub/net/isc/%SUBDIR%/ \
@@ -698,8 +708,6 @@ MASTER_SITE_MOZILLA_ADDONS+= \
 
 .if !defined(IGNORE_MASTER_SITE_MYSQL)
 MASTER_SITE_MYSQL+= \
-	ftp://ftp.fi.muni.cz/pub/mysql/Downloads/%SUBDIR%/ \
-	ftp://ftp.gwdg.de/pub/misc/mysql/Downloads/%SUBDIR%/ \
 	https://dev.mysql.com/get/Downloads/%SUBDIR%/
 .endif
 
@@ -788,7 +796,6 @@ MASTER_SITE_PERL_CPAN_BY+= \
 	https://cpan.metacpan.org/modules/by-module/%SUBDIRPLUS%/ \
 	https://www.cpan.org/%CPANSORT%/%SUBDIR%/ \
 	ftp://ftp.cpan.org/pub/CPAN/%CPANSORT%/%SUBDIR%/ \
-	ftp://ftp.kddlabs.co.jp/lang/perl/CPAN/%CPANSORT%/%SUBDIR%/ \
 	http://ftp.jaist.ac.jp/pub/CPAN/%CPANSORT%/%SUBDIR%/ \
 	ftp://ftp.mirrorservice.org/sites/cpan.perl.org/CPAN/%CPANSORT%/%SUBDIR%/ \
 	ftp://ftp.auckland.ac.nz/pub/perl/CPAN/%CPANSORT%/%SUBDIR%/ \
@@ -894,8 +901,8 @@ MASTER_SITE_SAVANNAH+= \
 MASTER_SITE_SOURCEFORGE+= ${p}://downloads.sourceforge.net/project/%SUBDIR%/
 .    for m in cfhcable cytranet deac-ams deac-fra deac-riga excellmedia \
 	freefr gigenet ixpeering jaist kumisystems liquidtelecom \
-	nchc netactuate netcologne netix onboardcloud phoenixnap \
-	razaoinfo sinalbr sitsa tenet udomain ufpr versaweb
+	nchc netactuate netcologne onboardcloud phoenixnap \
+	razaoinfo sinalbr sitsa tenet ufpr versaweb
 MASTER_SITE_SOURCEFORGE+= ${p}://${m}.dl.sourceforge.net/project/%SUBDIR%/
 .    endfor
 .  endfor
@@ -916,25 +923,11 @@ MASTER_SITE_SUDO+= \
 	http://sudo.p8ra.de/sudo/dist/ \
 	http://sudo.cybermirror.org/ \
 	http://sudo-ftp.basemirror.de/ \
-	http://core.ring.gr.jp/archives/misc/sudo/ \
-	http://www.ring.gr.jp/archives/misc/sudo/ \
 	http://ftp.twaren.net/Unix/Security/Sudo/ \
 	ftp://ftp.sudo.ws/pub/sudo/ \
-	ftp://plier.ucar.edu/pub/sudo/ \
-	ftp://obsd.isc.org/pub/sudo/ \
 	ftp://ftp.uwsg.indiana.edu/pub/security/sudo/ \
-	ftp://ftp.tuwien.ac.at/utils/admin-tools/sudo/ \
-	ftp://sunsite.ualberta.ca/pub/Mirror/sudo/ \
-	ftp://zoot.tele.dk/pub/sudo/ \
 	ftp://ftp.in2p3.fr/pub/sudo/ \
-	ftp://ftp.arcane-networks.fr/pub/mirrors/sudo/ \
-	ftp://ftp.usbm.de/pub/sudo/ \
-	ftp://ftp.cs.tu-berlin.de/pub/misc/sudo/ \
-	ftp://ftp.informatik.uni-hamburg.de/pub/os/unix/utils/sudo/ \
 	ftp://ftp.st.ryukoku.ac.jp/pub/security/tool/sudo/ \
-	ftp://ftp.cin.nihon-u.ac.jp/pub/misc/sudo/ \
-	ftp://core.ring.gr.jp/pub/misc/sudo/ \
-	ftp://ftp.ring.gr.jp/pub/misc/sudo/ \
 	ftp://sunsite.icm.edu.pl/packages/sudo/ \
 	ftp://mirror.cdmon.com/pub/sudo/ \
 	ftp://ftp.twaren.net/Unix/Security/Sudo/
@@ -951,7 +944,6 @@ MASTER_SITE_SUNSITE+= \
 .if !defined(IGNORE_MASTER_SITE_TCLTK)
 MASTER_SITE_TCLTK+= \
 	ftp://ftp.tcl.tk/pub/tcl/%SUBDIR%/ \
-	ftp://ftp.kddlabs.co.jp/lang/tcl/ftp.scriptics.com/%SUBDIR%/ \
 	ftp://ftp.mirrorservice.org/sites/ftp.tcl.tk/pub/tcl/%SUBDIR%/ \
 	ftp://ftp.funet.fi/pub/languages/tcl/tcl/%SUBDIR%/
 .endif
@@ -979,26 +971,15 @@ MASTER_SITE_TOR+= \
 		ftp://ftp.bit.nl/mirror/tor/%SUBDIR%/ \
 		https://cyberside.net.ee/sibul/dist/%SUBDIR%/ \
 		https://ftp.bit.nl/mirror/tor/%SUBDIR%/ \
-		http://mirror.hessmo.com/tor/dist/%SUBDIR%/ \
-		http://mirror.host4site.co.il/torproject.org/dist/%SUBDIR%/ \
-		http://mirror.open-networx.org/torproject.org/dist/%SUBDIR%/ \
 		http://mirror.tor.hu/dist/%SUBDIR%/ \
-		http://mirrors.chaos-darmstadt.de/tor-mirror/dist/%SUBDIR%/ \
 		http://theonionrouter.com/dist/%SUBDIR%/ \
 		http://tor.amorphis.eu/dist/%SUBDIR%/ \
 		http://tor.askapache.com/dist/%SUBDIR%/ \
-		http://tor.beme-it.de/dist/%SUBDIR%/ \
-		http://tor.borgmann.tv/dist/%SUBDIR%/ \
 		http://tor.cyberarmy.at/dist/%SUBDIR%/ \
 		http://tor.dont-know-me.at/dist/%SUBDIR%/ \
-		http://tor.factor.cc/dist/%SUBDIR%/ \
 		http://tor.idnr.ws/dist/%SUBDIR%/ \
-		http://tor.kamagurka.org/dist/%SUBDIR%/ \
 		http://tor.spline.de/dist/%SUBDIR%/ \
-		http://tor.vesta.nu/dist/%SUBDIR%/ \
 		http://torproj.xpdm.us/dist/%SUBDIR%/ \
-		http://torproject.nwlinux.us/dist/%SUBDIR%/ \
-		https://torproject.ph3x.at/dist/%SUBDIR%/ \
 		http://www.oignon.net/dist/%SUBDIR%/ \
 		http://www.torproject.org.nyud.net/dist/%SUBDIR%/ \
 		http://www.torproject.us/dist/%SUBDIR%/
@@ -1046,7 +1027,6 @@ MASTER_SITE_KERNEL_ORG+= \
 	https://mirrors.mit.edu/kernel/%SUBDIR%/ \
 	http://ftp.nara.wide.ad.jp/pub/kernel.org/%SUBDIR%/ \
 	http://ftp.yandex.ru/pub/%SUBDIR%/ \
-	http://ftp.heanet.ie/pub/kernel.org/pub/%SUBDIR%/ \
 	ftp://ftp.ntu.edu.tw/%SUBDIR%/ \
 	ftp://ftp.riken.jp/Linux/kernel.org/%SUBDIR%/
 .endif
@@ -1081,7 +1061,7 @@ MASTER_SITES_SUBDIRS=	APACHE_COMMONS_BINARIES:${PORTNAME:S,commons-,,} \
 			GIMP:${PORTNAME}/${PORTVERSION:R}/ \
 			GITHUB:${GH_ACCOUNT}/${GH_PROJECT}/tar.gz/${GH_TAGNAME}?dummy=/ \
 			GITHUB_CLOUD:${GH_ACCOUNT}/${GH_PROJECT}/ \
-			GNOME:sources/${PORTNAME}/${PORTVERSION:C/^([0-9]+\.[0-9]+).*/\1/} \
+			GNOME:sources/${DISTNAME:S/-${DISTVERSIONFULL}$//} \
 			GNU:${PORTNAME} \
 			GNUPG:${PORTNAME} \
 			GNU_ALPHA:${PORTNAME} \

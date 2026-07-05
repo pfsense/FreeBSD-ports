@@ -1,5 +1,5 @@
 PORTNAME=	puppetdb-terminus
-PORTVERSION=	8.4.1
+PORTVERSION=	8.8.1
 CATEGORIES=	databases ruby
 MASTER_SITES=	https://downloads.puppetlabs.com/puppetdb/
 PKGNAMESUFFIX=	8
@@ -11,7 +11,10 @@ WWW=		https://docs.puppetlabs.com/puppetdb/latest/
 
 LICENSE=	APACHE20
 
-CONFLICTS_INSTALL=	puppetdb-terminus[0-9]
+DEPRECATED=	Discontinued, use databases/openvoxdb-terminus8
+EXPIRATION_DATE=2026-07-01
+
+CONFLICTS_INSTALL=	openvoxdb-terminus[0-9] puppetdb-terminus[0-9]
 NO_BUILD=	yes
 USES=		gmake ruby
 

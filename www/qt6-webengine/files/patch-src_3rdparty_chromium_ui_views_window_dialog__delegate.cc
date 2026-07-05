@@ -1,11 +1,11 @@
---- src/3rdparty/chromium/ui/views/window/dialog_delegate.cc.orig	2023-03-09 06:31:50 UTC
+--- src/3rdparty/chromium/ui/views/window/dialog_delegate.cc.orig	2025-08-15 18:30:00 UTC
 +++ src/3rdparty/chromium/ui/views/window/dialog_delegate.cc
-@@ -73,7 +73,7 @@ Widget* DialogDelegate::CreateDialogWidget(
+@@ -105,7 +105,7 @@ bool DialogDelegate::CanSupportCustomFrame(gfx::Native
  
  // static
  bool DialogDelegate::CanSupportCustomFrame(gfx::NativeView parent) {
--#if (BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS)) && \
-+#if (BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_BSD)) && \
-     BUILDFLAG(ENABLE_DESKTOP_AURA)
+-#if BUILDFLAG(IS_LINUX) && BUILDFLAG(ENABLE_DESKTOP_AURA)
++#if (BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_BSD)) && BUILDFLAG(ENABLE_DESKTOP_AURA)
    // The new style doesn't support unparented dialogs on Linux desktop.
    return parent != nullptr;
+ #else

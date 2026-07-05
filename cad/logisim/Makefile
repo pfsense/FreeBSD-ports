@@ -1,5 +1,6 @@
 PORTNAME=	logisim
 PORTVERSION=	2.7.1
+PORTREVISION=	1
 CATEGORIES=	cad education java
 MASTER_SITES=	SF/circuit/2.7.x/2.7.1/
 DISTNAME=	${PORTNAME}-generic-${PORTVERSION}
@@ -12,9 +13,9 @@ WWW=		http://ozark.hendrix.edu/~burch/logisim/
 
 LICENSE=	GPLv2
 
+USES=		java
+
 NO_BUILD=	yes
-USE_JAVA=	yes
-JAVA_RUN=	yes
 
 PLIST_FILES=	${DATADIR_REL}/${PORTNAME}-generic-${PORTVERSION}${EXTRACT_SUFX} \
 		bin/${PORTNAME}

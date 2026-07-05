@@ -1,6 +1,6 @@
 PORTNAME=		openldap
-DISTVERSION=		2.5.17
-PORTREVISION=		${OPENLDAP_PORTREVISION}
+DISTVERSION=		2.5.20
+PORTREVISION=	1
 CATEGORIES=		net databases
 MASTER_SITES=		https://www.openldap.org/software/download/OpenLDAP/%SUBDIR%/ \
 			http://gpl.savoirfairelinux.net/pub/mirrors/openldap/%SUBDIR%/ \
@@ -35,6 +35,7 @@ LICENSE_PERMS=		dist-mirror dist-sell pkg-mirror pkg-sell auto-accept
 
 # :keepla because port uses lt_dlopen
 USES=			cpe gmake libtool:keepla localbase ssl tar:tgz
+BUILD_DEPENDS+=		autoconf>0:devel/autoconf
 
 .if defined(CLIENT_ONLY)
 CONFLICTS_INSTALL=	${PORTNAME}2[0-46-9]-client ${PORTNAME}-client
@@ -45,17 +46,16 @@ CONFLICTS_INSTALL=	${PORTNAME}2[0-46-9]-server ${PORTNAME}-server
 GNU_CONFIGURE=		yes
 GNU_CONFIGURE_MANPREFIX=	${PREFIX}/share
 
-PORTREVISION_CLIENT=	1
-PORTREVISION_SERVER=	2
+PORTREVISION_CLIENT=	0
+PORTREVISION_SERVER=	0
 OPENLDAP_SHLIB_MAJOR=	0
-OPENLDAP_SHLIB_MINOR=	1.12
+OPENLDAP_SHLIB_MINOR=	1.15
 OPENLDAP_MAJOR=		${DISTVERSION:R}
 
 OPTIONS_DEFINE=		DEBUG FETCH GSSAPI
 OPTIONS_DEFAULT+=	DEBUG
 
 FETCH_DESC=		Enable fetch(3) support
-FETCH_BUILD_DEPENDS=	autoconf>0:devel/autoconf
 FETCH_CONFIGURE_WITH=	fetch
 
 GSSAPI_DESC=		With GSSAPI support
@@ -114,6 +114,9 @@ OPTIONS_DEFINE+=	PBKDF2
 OPTIONS_DEFINE+=	OUTLOOK
 OPTIONS_DEFINE+=	ARGON2
 OPTIONS_DEFINE+=	LLOADD
+
+OPTIONS_EXCLUDE_FreeBSD_15=	SMBPWD	# Only works with Heimdal
+OPTIONS_EXCLUDE_FreeBSD_16=	SMBPWD	# Only works with Heimdal
 
 OPTIONS_DEFAULT+=	${BKNDS_DEFAULTS}
 OPTIONS_DEFAULT+=	${OPTIONS_GROUP_OVLYS}
@@ -392,18 +395,18 @@ post-patch:
 		${CONFIGURE_WRKSRC}/${CONFIGURE_SCRIPT}
 .endif
 
-pre-configure-FETCH-on:
+pre-configure:
 	@(cd ${WRKSRC} && ${LOCALBASE}/bin/autoconf)
 
 .if !defined(CLIENT_ONLY)
 test: build
-	@(cd ${BUILD_WRKSRC} && ${SETENV} ${MAKE_ENV} \
+	@(cd ${BUILD_WRKSRC} && ${SETENVI} ${WRK_ENV} ${MAKE_ENV} \
 		${MAKE_CMD} ${MAKE_FLAGS} ${MAKEFILE} ${MAKE_ARGS} test)
 
 post-build:
 .for module in ${CONTRIB_MODULES}
 	@(cd ${BUILD_WRKSRC}/contrib/${module} && \
-		${SETENV} ${MAKE_ENV} ${MAKE_CMD} ${MAKE_FLAGS} ${MAKEFILE} \
+		${SETENVI} ${WRK_ENV} ${MAKE_ENV} ${MAKE_CMD} ${MAKE_FLAGS} ${MAKEFILE} \
 		${MAKE_ARGS} prefix="${PREFIX}" all)
 .endfor
 .endif
@@ -431,7 +434,7 @@ post-install:
 	${MKDIR} ${STAGEDIR}${LDAP_RUN_DIR}
 .for module in ${CONTRIB_MODULES}
 	(cd ${WRKSRC}/contrib/${module} && \
-		${SETENV} ${MAKE_ENV} ${MAKE_CMD} ${MAKE_FLAGS} ${MAKEFILE} \
+		${SETENVI} ${WRK_ENV} ${MAKE_ENV} ${MAKE_CMD} ${MAKE_FLAGS} ${MAKEFILE} \
 		${MAKE_ARGS} prefix="${PREFIX}" install)
 .endfor
 .for cleanfile in ${CONTRIB_CLEANFILES}

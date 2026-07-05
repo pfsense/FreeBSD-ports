@@ -18,7 +18,7 @@ LIB_DEPENDS=	libfontconfig.so:x11-fonts/fontconfig \
 
 USES=		gmake gnome pathfix pkgconfig
 USE_CSTD=	gnu89
-USE_GNOME=	cairo gdkpixbuf2 gtk20
+USE_GNOME=	cairo gdkpixbuf gtk20
 GNU_CONFIGURE=	yes
 LDFLAGS+=	-lm
 WRKSRC=		${WRKDIR}/${PORTNAME}-0.4
@@ -31,7 +31,7 @@ NLS_USES=		gettext
 
 .include <bsd.port.options.mk>
 
-.if ${OPSYS} == FreeBSD && ( ${OSVERSION} >= 1400079 || ( ${OSVERSION} >= 1302505 && ${OSVERSION} < 1400000 ))
+.if ${OPSYS} == FreeBSD
 CFLAGS+=	-Wno-error=int-conversion
 .endif
 

@@ -1,5 +1,5 @@
 PORTNAME=	screen
-DISTVERSION=	4.99.0.${SCREEN_COMMIT_DATE}
+DISTVERSION=	5.0.2.${SCREEN_COMMIT_DATE}
 CATEGORIES=	sysutils
 PKGNAMESUFFIX=	-devel
 MASTER_SITES=	#
@@ -10,8 +10,8 @@ WWW=		https://www.gnu.org/software/screen/
 
 CONFLICTS=	screen-[0-9]*
 
-GIT_TAGNAME=	c184c6e
-SCREEN_COMMIT_DATE=	20240327
+GIT_TAGNAME=	dfd4b4b
+SCREEN_COMMIT_DATE=	20260106
 
 WRKSRC=		${WRKDIR}/${PORTNAME}-${GIT_TAGNAME}/src
 
@@ -44,16 +44,12 @@ NCURSES_PORT_USES=	ncurses:port
 OPTIONS_SUB=
 
 USES=		autoreconf:build gmake cpe
+CONFIGURE_ARGS=	--with-system_screenrc=${ETCDIR}/screenrc
 MAKE_ARGS+=	WITH_MAN=1
 
 CPE_VENDOR=	gnu
 
 .include <bsd.port.options.mk>
-
-.if ${ARCH} == armv6 || ${ARCH} == armv7 || ${ARCH} == i386 || \
-    ${ARCH:Mpowerpc*}
-SSP_CFLAGS?=	-fno-stack-protector
-.endif
 
 GNU_CONFIGURE=	yes
 GNU_CONFIGURE_MANPREFIX= ${PREFIX}/share

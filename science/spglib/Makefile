@@ -1,6 +1,6 @@
 PORTNAME=	spglib
 DISTVERSIONPREFIX=	v
-DISTVERSION=	2.3.1
+DISTVERSION=	2.7.0
 CATEGORIES=	science
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -31,5 +31,7 @@ OPTIONS_SUB=		yes
 
 FORTRAN_USES=		fortran
 FORTRAN_CMAKE_BOOL=	SPGLIB_WITH_Fortran
+
+# tests as of 2.7.0: 100% tests passed, 0 tests failed out of 61
 
 .include <bsd.port.mk>

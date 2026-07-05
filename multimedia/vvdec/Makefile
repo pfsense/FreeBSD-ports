@@ -1,6 +1,6 @@
 PORTNAME=	vvdec
 DISTVERSIONPREFIX=	v
-DISTVERSION=	2.2.0
+DISTVERSION=	3.1.0
 CATEGORIES=	multimedia python
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -9,8 +9,6 @@ WWW=		https://github.com/fraunhoferhhi/vvdec
 
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE.txt
-
-ONLY_FOR_ARCHS=		aarch64 armv6 armv7 amd64 powerpc powerpc64 powerpc64le riscv64
 
 USES=		cmake:noninja,testing compiler:c++14-lang
 USE_LDCONFIG=	yes
@@ -22,12 +20,17 @@ CMAKE_ON=	BUILD_SHARED_LIBS \
 		VVDEC_INSTALL_VVDECAPP
 CMAKE_OFF=	FREEBSD_VVDEC_ENABLE_X86_SIMD \
 		VVDEC_ENABLE_WARNINGS_AS_WERROR
-CMAKE_TESTING_TARGET=	test enable-bitstream-download=1 # tests fail to download bitstreams, see https://github.com/fraunhoferhhi/vvdec/issues/125
+CMAKE_TESTING_ON=	BUILD_TESTING VVDEC_ENABLE_BITSTREAM_DOWNLOAD
+CMAKE_TESTING_TARGET=	test
+
+CXXFLAGS+=	-Wno-error=pass-failed
 
 .include <bsd.port.options.mk>
 
 .if ${ARCH} == riscv64
 CMAKE_ARGS+=	-DVVDEC_ENABLE_LINK_TIME_OPT:BOOL=OFF
 .endif
+
+# tests as of 3.1.0: 100% tests passed, 0 tests failed out of 239
 
 .include <bsd.port.mk>

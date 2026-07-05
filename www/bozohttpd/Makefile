@@ -1,13 +1,11 @@
 PORTNAME=	bozohttpd
-PORTVERSION=	20210227
-PORTREVISION=	1
+DISTVERSION=	20240126
 CATEGORIES=	www
-MASTER_SITES=	http://www.eterna.com.au/bozohttpd/ \
-		NETBSD
+MASTER_SITES=	http://eterna23.net/bozohttpd/
 
-MAINTAINER=	jmohacsi@bsd.hu
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Bozotic HTTP server from NetBSD
-WWW=		http://www.eterna.com.au/bozohttpd/
+WWW=		http://eterna23.net/bozohttpd/
 
 LICENSE=	BSD2CLAUSE
 
@@ -59,7 +57,7 @@ USER_CFLAGS_OFF=	-DNO_USER_SUPPORT
 
 .include <bsd.port.options.mk>
 
-.if ${OPSYS} == FreeBSD && ( ${OSVERSION} >= 1400091 || ( ${OSVERSION} >= 1302507 && ${OSVERSION} < 1400000 ))
+.if ${OPSYS} == FreeBSD
 CFLAGS+=	-Wno-error=unused-but-set-variable
 .endif
 

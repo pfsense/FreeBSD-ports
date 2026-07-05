@@ -1,5 +1,5 @@
 PORTNAME=	libmsiecf
-DISTVERSION=	alpha-20231203
+DISTVERSION=	alpha-20240425
 CATEGORIES=	devel
 MASTER_SITES=	https://github.com/libyal/libmsiecf/releases/download/${PORTVERSION:E}/ \
 		LOCAL/antoine
@@ -10,6 +10,8 @@ WWW=		https://github.com/libyal/libmsiecf
 
 LICENSE=	LGPL3+
 LICENSE_FILE=	${WRKSRC}/COPYING
+
+BUILD_DEPENDS=	${PY_SETUPTOOLS}
 
 GNU_CONFIGURE=	yes
 GNU_CONFIGURE_MANPREFIX=${PREFIX}/share

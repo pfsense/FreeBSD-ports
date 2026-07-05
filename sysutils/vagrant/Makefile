@@ -1,9 +1,9 @@
 PORTNAME=	vagrant
-PORTVERSION=	2.3.7
+PORTVERSION=	2.4.9
 DISTVERSIONPREFIX=	v
 CATEGORIES=	sysutils rubygems devel
 
-MAINTAINER=	joe@thrallingpenguin.com
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Vagrant Virtual Machine Manager
 WWW=		https://www.vagrantup.com/
 
@@ -15,33 +15,35 @@ BUILD_DEPENDS=	rubygem-builder>=2.1.2:devel/rubygem-builder \
 		rubygem-main>=1.0:devel/rubygem-main
 RUN_DEPENDS=	ca_root_nss>=0:security/ca_root_nss \
 		curl:ftp/curl \
-		rubygem-bcrypt_pbkdf>=1.1:security/rubygem-bcrypt_pbkdf \
-		rubygem-childprocess>=4.1.0:devel/rubygem-childprocess \
-		rubygem-ed25519>=1.3.0:security/rubygem-ed25519 \
+		rubygem-base64>=0.2.0<1:converters/rubygem-base64 \
+		rubygem-bcrypt_pbkdf>=1.1<2:security/rubygem-bcrypt_pbkdf \
+		rubygem-childprocess>=5.1<6:devel/rubygem-childprocess \
+		rubygem-csv>=3.3<4:devel/rubygem-csv \
+		rubygem-ed25519>=1.3.0<2:security/rubygem-ed25519 \
 		rubygem-erubi>=0:www/rubygem-erubi \
-		rubygem-googleapis-common-protos-types>=1.3.0:devel/rubygem-googleapis-common-protos-types \
-		rubygem-grpc>=1.48.0:net/rubygem-grpc \
 		rubygem-hashicorp-checkpoint>=0.1.5<0.2:www/rubygem-hashicorp-checkpoint \
-		rubygem-i18n>=1.12,2:devel/rubygem-i18n \
+		rubygem-i18n>=1.12,2<2,2:devel/rubygem-i18n \
 		rubygem-ipaddr>=1.2.4:net/rubygem-ipaddr \
-		rubygem-listen>=3.7:devel/rubygem-listen \
+		rubygem-listen>=3.7<4:devel/rubygem-listen \
 		rubygem-log4r>=1.1.9<1.1.11:sysutils/rubygem-log4r \
-		rubygem-mime-types>=3.3:misc/rubygem-mime-types \
-		rubygem-net-ftp>=0.2:ftp/rubygem-net-ftp \
-		rubygem-net-scp>=4.0.0:security/rubygem-net-scp \
-		rubygem-net-sftp>=4.0:security/rubygem-net-sftp \
-		rubygem-net-ssh>=7.0.0:security/rubygem-net-ssh \
-		rubygem-rb-kqueue>=0.2.0:devel/rubygem-rb-kqueue \
-		rubygem-rexml>=3.2:textproc/rubygem-rexml \
-		rubygem-rgl>=0.5.10:devel/rubygem-rgl \
+		rubygem-logger>=1.0<2:devel/rubygem-logger \
+		rubygem-mime-types>=3.3<4:misc/rubygem-mime-types \
+		rubygem-net-ftp>=0.2<1:ftp/rubygem-net-ftp \
+		rubygem-net-scp>=4.0<5:security/rubygem-net-scp \
+		rubygem-net-sftp>=4.0<5:security/rubygem-net-sftp \
+		rubygem-net-ssh>=7.0,2<8,2:security/rubygem-net-ssh \
+		rubygem-ostruct>=0.6.0<0.7:devel/rubygem-ostruct \
+		rubygem-rb-kqueue>=0.2.0<0.3:devel/rubygem-rb-kqueue \
+		rubygem-rexml>=3.2<4:textproc/rubygem-rexml \
 		rubygem-rubyzip>=2.3.2:archivers/rubygem-rubyzip \
-		rubygem-vagrant_cloud>=3.0.5:sysutils/rubygem-vagrant_cloud \
-		rubygem-wdm>=0.1.1:devel/rubygem-wdm \
-		rubygem-winrm-elevated>=1.2.3<2:sysutils/rubygem-winrm-elevated \
-		rubygem-winrm-fs>=1.3.5<2:sysutils/rubygem-winrm-fs \
-		rubygem-winrm>=2.3.6<3:sysutils/rubygem-winrm
+		rubygem-vagrant_cloud>=3.1.2<3.2:sysutils/rubygem-vagrant_cloud \
+		rubygem-wdm>=0.2.0<0.3:devel/rubygem-wdm \
+		rubygem-winrm-elevated>=1.2.3<2.0:sysutils/rubygem-winrm-elevated \
+		rubygem-winrm-fs>=1.3.5<2.0:filesystems/rubygem-winrm-fs \
+		rubygem-winrm>=2.3.9<3.0:sysutils/rubygem-winrm
 
 USES=		cpe ruby shebangfix
+
 CPE_VENDOR=	hashicorp
 USE_GITHUB=	yes
 GH_ACCOUNT=	hashicorp
@@ -77,6 +79,8 @@ REMOVE_TARGETS=	.envrc .runner.sh .vimrc .yardopts flake.lock flake.nix Gemfile 
 
 REMOVE_TARGETS_EXT=	gem_make.out mkmf.log
 
+.include <bsd.port.pre.mk>
+
 post-patch:
 	@${REINPLACE_CMD} -e 's|@PREFIX@|${PREFIX}|g' \
 		${WRKSRC}/bin/vagrant \
@@ -96,6 +100,7 @@ do-build:
 		${STAGEDIR}${DATADIR}/embedded/rgloader/loader.rb
 
 post-install:
+	${FIND} ${STAGEDIR}${PREFIX}/lib/ruby/gems/${RUBY_VER} -name '*.so' -exec ${STRIP_CMD} {} +
 	${RMDIR} ${STAGEDIR}${PREFIX}/lib/ruby/gems/${RUBY_VER}/doc
 	${RM} -r ${STAGEDIR}${PREFIX}/lib/ruby/gems/${RUBY_VER}/gems/${PORTNAME}-${PORTVERSION}/ext
 	${RM} -r ${STAGEDIR}${PREFIX}/lib/ruby/gems/${RUBY_VER}/gems/${PORTNAME}-${PORTVERSION}/nix
@@ -114,4 +119,4 @@ post-install-ZSH-on:
 	${MKDIR} ${STAGEDIR}${PREFIX}/share/share/zsh/site-functions
 	${RLN} ${STAGEDIR}${PREFIX}/lib/ruby/gems/${RUBY_VER}/gems/${PORTNAME}-${PORTVERSION}/contrib/zsh/_vagrant ${STAGEDIR}${PREFIX}/share/share/zsh/site-functions
 
-.include <bsd.port.mk>
+.include <bsd.port.post.mk>

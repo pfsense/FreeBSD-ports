@@ -1,6 +1,6 @@
 PORTNAME=	psindustrializer
 DISTVERSION=	0.2.7
-PORTREVISION=	8
+PORTREVISION=	10
 CATEGORIES=	audio
 MASTER_SITES=	SF/industrializer/
 
@@ -18,7 +18,7 @@ LIB_DEPENDS=	libaudiofile.so:audio/libaudiofile \
 		libharfbuzz.so:print/harfbuzz
 
 USES=		gettext-runtime gl gmake gnome libtool pkgconfig tar:xz xorg
-USE_GNOME=	atk cairo gdkpixbuf2 gtk20 libxml2 pango pangox-compat
+USE_GNOME=	atk cairo gdkpixbuf gtk20 libxml2 pango pangox-compat
 USE_GL=		gl glu
 USE_XORG=	x11
 USE_LDCONFIG=	yes
@@ -43,7 +43,7 @@ PULSE_LIB_DEPENDS=	libpulse.so:audio/pulseaudio
 
 .include <bsd.port.options.mk>
 
-.if ${OPSYS} == FreeBSD && ( ${OSVERSION} >= 1400091 || ( ${OSVERSION} >= 1302507 && ${OSVERSION} < 1400000 ))
+.if ${OPSYS} == FreeBSD
 CFLAGS+=	-Wno-error=incompatible-function-pointer-types
 .endif
 

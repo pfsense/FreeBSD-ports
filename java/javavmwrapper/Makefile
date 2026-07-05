@@ -1,5 +1,6 @@
 PORTNAME=	javavmwrapper
 PORTVERSION=	2.7.10
+PORTREVISION=	1
 CATEGORIES=	java
 MASTER_SITES=	# none
 DISTFILES=	# none
@@ -21,7 +22,7 @@ PKGINSTALL=	${WRKDIR}/pkg-install
 
 SRC=		${.CURDIR}/src
 SCRIPTS=	classpath javavmwrapper
-# This is normally defined by bsd.java.mk when USE_JAVA is defined, but
+# This is normally defined by bsd.java.mk when USES=java is defined, but
 # we can't do that here since it would result in a circular dependency
 JAVALIBDIR=	${LOCALBASE}/share/java/classes
 

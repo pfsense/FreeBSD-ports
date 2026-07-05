@@ -1,11 +1,11 @@
---- chrome/browser/web_applications/os_integration/run_on_os_login_sub_manager.cc.orig	2023-10-21 11:51:27 UTC
+--- chrome/browser/web_applications/os_integration/run_on_os_login_sub_manager.cc.orig	2026-03-24 16:59:08 UTC
 +++ chrome/browser/web_applications/os_integration/run_on_os_login_sub_manager.cc
-@@ -54,7 +54,7 @@ proto::RunOnOsLoginMode ConvertWebAppRunOnOsLoginModeT
+@@ -55,7 +55,7 @@ proto::os_state::RunOnOsLogin::Mode ConvertWebAppRunOn
  // different from other platforms, see web_app_run_on_os_login_manager.h for
  // more info.
  bool DoesRunOnOsLoginRequireExecution() {
 -#if BUILDFLAG(IS_MAC) || BUILDFLAG(IS_WIN) || BUILDFLAG(IS_LINUX)
 +#if BUILDFLAG(IS_MAC) || BUILDFLAG(IS_WIN) || BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_BSD)
-   return base::FeatureList::IsEnabled(features::kDesktopPWAsRunOnOsLogin);
+   return true;
  #else
    return false;

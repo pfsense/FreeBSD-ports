@@ -1,11 +1,10 @@
 PORTNAME=	mediastreamer
-DISTVERSION=	5.2.94
-PORTREVISION=	1
+DISTVERSION=	5.4.100
 CATEGORIES=	net
 
 MAINTAINER=	bofh@FreeBSD.org
 COMMENT=	Real-time audio and video streaming and processing
-WWW=		https://www.linphone.org/technical-corner/mediastreamer2
+WWW=		https://gitlab.linphone.org/BC/public/mediastreamer2
 
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/LICENSE.txt
@@ -13,7 +12,6 @@ LICENSE_FILE=	${WRKSRC}/LICENSE.txt
 LIB_DEPENDS=	libbctoolbox.so:net/bctoolbox \
 		libbzrtp.so:security/bzrtp \
 		libortp.so:net/ortp \
-		libspeexdsp.so:audio/speexdsp \
 		libsrtp2.so:net/libsrtp2
 
 USES=		cmake compiler gnome python:build sqlite
@@ -24,8 +22,7 @@ GL_PROJECT=	${PORTNAME}2
 USE_GNOME=	libxml2
 USE_LDCONFIG=	yes
 
-CMAKE_ARGS=	-DCMAKE_PREFIX_PATH=${LOCALBASE} \
-		-DENABLE_ALSA=NO \
+CMAKE_ARGS=	-DENABLE_ALSA=NO \
 		-DENABLE_BV16=NO \
 		-DENABLE_DOC=NO \
 		-DENABLE_JPEG=NO \
@@ -33,8 +30,9 @@ CMAKE_ARGS=	-DCMAKE_PREFIX_PATH=${LOCALBASE} \
 		-DENABLE_PULSEAUDIO=NO \
 		-DENABLE_STATIC=NO \
 		-DENABLE_STRICT=NO \
-		-DENABLE_TOOLS=NO \
-		-DENABLE_UNIT_TESTS=NO
+		-DENABLE_TOOLS=NO
+CMAKE_ON=		BUILD_SHARED_LIBS
+CMAKE_OFF=		ENABLE_UNIT_TESTS
 
 LDFLAGS+=	-pthread
 
@@ -49,8 +47,8 @@ OPTIONS_SUB=		yes
 AUDIOOPT_DESC=	Audio options
 G726_DESC=		G.726 codec support
 G729_DESC=		G.729 codec support
-VIDEOOPT_DESC=	Video options
 QTGL_DESC=		Qt OpenGL rendering support
+VIDEOOPT_DESC=	Video options
 
 FFMPEG_IMPLIES=		VIDEO
 FFMPEG_LIB_DEPENDS=	libavcodec.so.58:multimedia/ffmpeg4
@@ -73,7 +71,8 @@ QTGL_IMPLIES=	VIDEO
 QTGL_USES=	qt:5
 QTGL_USE=	QT=core,declarative,gui,network,buildtools:build,qmake:build
 QTGL_CMAKE_BOOL=	ENABLE_QT_GL
-SPEEX_LIB_DEPENDS=	libspeex.so:audio/speex
+SPEEX_LIB_DEPENDS=	libspeex.so:audio/speex \
+			libspeexdsp.so:audio/speexdsp
 SPEEX_CMAKE_BOOL=	ENABLE_SPEEX_CODEC
 THEORA_IMPLIES=		VIDEO
 THEORA_LIB_DEPENDS=	libtheora.so:multimedia/libtheora
@@ -88,7 +87,7 @@ VPX_LIB_DEPENDS=	libvpx.so:multimedia/libvpx
 VPX_CMAKE_BOOL=		ENABLE_VPX
 XVIDEO_IMPLIES=		VIDEO
 XVIDEO_USES=		xorg
-XVIDEO_USE=		XORG=x11,xorgproto,xv
+XVIDEO_USE=		XORG=x11,xext,xfixes,xorgproto,xv
 XVIDEO_CMAKE_BOOL=	ENABLE_X11 ENABLE_XV
 XVIDEO_LDFLAGS=		-L${LOCALBASE}/lib -lX11
 

@@ -1,6 +1,6 @@
 PORTNAME=	mysql
 PORTVERSION=	1.2.4
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	databases
 MASTER_SITES=	http://ygrek.org.ua/p/release/ocaml-mysql/
 PKGNAMEPREFIX=	ocaml-
@@ -12,13 +12,8 @@ WWW=		http://ygrek.org.ua/p/ocaml-mysql/
 
 LICENSE=	LGPL21
 
-USES=		gmake mysql
-IGNORE_WITH_MYSQL=	80 81
-USE_OCAML=		yes
-USE_OCAML_FINDLIB=	yes
-USE_OCAML_CAMLP4=	yes
-USE_OCAMLFIND_PLIST=	yes
-USE_OCAML_LDCONFIG=	yes
+USES=		gmake ocaml:camlp4,findplist,ldconfig mysql
+IGNORE_WITH_MYSQL=	80 81 84
 
 GNU_CONFIGURE=		yes
 

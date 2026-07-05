@@ -1,5 +1,5 @@
 PORTNAME=	at-spi2-core
-PORTVERSION=	2.50.2
+PORTVERSION=	2.56.8
 CATEGORIES=	accessibility x11-toolkits
 MASTER_SITES=	GNOME
 DIST_SUBDIR=	gnome
@@ -11,25 +11,27 @@ WWW=		https://gitlab.gnome.org/GNOME/at-spi2-core
 LICENSE=	LGPL21+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-PORTSCOUT=	limitw:1,even
+RUN_DEPENDS=	gsettings-desktop-schemas>0:devel/gsettings-desktop-schemas
 
-USES=		gettext gnome localbase meson pkgconfig tar:xz
+USES=		dbus-testing gettext-tools gnome localbase meson pkgconfig tar:xz
 USE_GNOME=	glib20 introspection:build libxml2:build
 USE_LDCONFIG=	yes
 MESON_ARGS=	-Duse_systemd=false
 
-OPTIONS_DEFINE=	ATKONLY X11
-OPTIONS_DEFAULT=X11
-OPTIONS_SUB=	yes
+PORTSCOUT=	limitw:1,even
 
-ATKONLY_DESC=	Build only ATK (no atspi or at-spi2-atk, unsupported by upstream)
+OPTIONS_DEFINE=		ATKONLY X11
+OPTIONS_DEFAULT=	X11
+OPTIONS_SUB=		yes
+
+ATKONLY_DESC=			Build only ATK (no atspi or at-spi2-atk, unsupported by upstream)
 ATKONLY_LIB_DEPENDS_OFF=	libdbus-1.so:devel/dbus
-ATKONLY_MESON_TRUE= atk_only
+ATKONLY_MESON_TRUE=		atk_only
 
 X11_USES=		xorg
 X11_USE=		XORG=x11,xi,xtst
 X11_MESON_ENABLED=	x11
 
-TESTING_UNSAFE=	some tests fail
+TESTING_UNSAFE=	some tests fail on i386
 
 .include <bsd.port.mk>

@@ -1,6 +1,6 @@
 PORTNAME=	zsh
 DISTVERSION=	5.9
-PORTREVISION=	4
+PORTREVISION=	5
 CATEGORIES=	shells
 MASTER_SITES=	https://www.zsh.org/pub/ \
 		SF \
@@ -25,7 +25,8 @@ USE_PERL5=	build
 SHEBANG_LANG=	zsh
 zsh_OLD_CMD=	zsh	# shebang appears as /bin/zsh and just zsh
 SHEBANG_FILES=	Functions/Calendar/* \
-		Functions/Misc/*
+		Functions/Misc/* \
+		Functions/VCS_Info/*
 
 CONFIGURE_ARGS=	--with-tcsetpgrp \
 		--enable-function-subdirs \
@@ -107,6 +108,8 @@ post-build:
 		${WRKSRC}/Doc/zshall.1)
 
 post-install:
+	${INSTALL_DATA} ${FILESDIR}/_mdo \
+		${STAGEDIR}/${DATADIR}/${ZSH_VER}/functions/Completion/Unix/
 	${MKDIR} ${STAGEDIR}${DATADIR}/site-functions
 	${LN} -f ${STAGEDIR}${PREFIX}/bin/zsh ${STAGEDIR}${PREFIX}/bin/rzsh
 # Precompile completions and functions

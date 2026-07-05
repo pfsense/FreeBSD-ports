@@ -1,6 +1,6 @@
 PORTNAME=	taucs
 PORTVERSION=	2.2
-PORTREVISION=	25
+PORTREVISION=	26
 CATEGORIES=	math
 MASTER_SITES=	http://www.tau.ac.il/~stoledo/taucs/${PORTVERSION}/ \
 		LOCAL/bf
@@ -55,7 +55,7 @@ archives: configure
 lib: archives
 	@${PRINTF} "\n\n%s\n\n\n" "Building shared library:"
 	(cd ${WRKSRC}_SHARED/lib/FreeBSD && \
-		${FC} ${CFLAGS} ${PICFLAG} ${LDFLAGS} -shared \
+		${CC} ${CFLAGS} ${PICFLAG} ${LDFLAGS} -shared \
 		-o libtaucs.so.1 -Wl,-x -Wl,-soname,libtaucs.so.1 \
 		-Wl,--whole-archive libtaucs.a -Wl,--no-whole-archive)
 	${STRIP_CMD} ${WRKSRC}_SHARED/lib/FreeBSD/libtaucs.so.1

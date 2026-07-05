@@ -1,6 +1,5 @@
 PORTNAME=	nano
-DISTVERSION=	7.2
-PORTREVISION=	1
+DISTVERSION=	8.7.1
 CATEGORIES=	editors
 MASTER_SITES=	https://www.nano-editor.org/dist/v${DISTVERSION:R:R}/ GNU
 
@@ -14,7 +13,7 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 USES=		charsetfix ncurses pkgconfig tar:xz
 GNU_CONFIGURE=	yes
 GNU_CONFIGURE_MANPREFIX=	${PREFIX}/share
-CONFIGURE_ARGS=	--docdir=${DOCSDIR} --enable-utf8 --mandir=${PREFIX}/share
+CONFIGURE_ARGS=	--docdir=${DOCSDIR} --enable-utf8
 MAKE_ARGS+=	install_htmlmanDATA=install-htmlmanDATA
 PORTSCOUT=	limitw:1,even
 INFO=		nano

@@ -1,0 +1,28 @@
+commit 80a490e4d8f2c5973e63e2f54e92500a5bc29799
+Author: jim-p <jimp@netgate.com>
+Date:   Wed Jun 11 14:59:39 2025 -0400
+
+    Encode OpenVPN names in widget. Fixes #16258
+
+diff --git a/src/usr/local/www/widgets/widgets/openvpn.widget.php b/src/usr/local/www/widgets/widgets/openvpn.widget.php
+index ccc913b406..b83eab7930 100644
+--- a/src/usr/local/www/widgets/widgets/openvpn.widget.php
++++ b/src/usr/local/www/widgets/widgets/openvpn.widget.php
+@@ -165,7 +165,7 @@ if (!function_exists('printPanel')) {
+ 
+ 		$opstring .=				"<tr name=\"r:" . $sk_server['port'] . ":" . $sk_server['remote_host'] . "\">";
+ 		$opstring .=					"<td>";
+-		$opstring .=						$sk_server['name'];
++		$opstring .=						htmlspecialchars($sk_server['name']);
+ 		$opstring .=					"</td>";
+ 		$opstring .=					"<td>";
+ 		$opstring .=						$sk_server['remote_host'];
+@@ -242,7 +242,7 @@ if (!function_exists('printPanel')) {
+ 
+ 		$opstring .=				"<tr name=\"r:" . $client['port'] . ":" . $client['remote_host'] . "\">";
+ 		$opstring .=					"<td>";
+-		$opstring .=						$client['name'];
++		$opstring .=						htmlspecialchars($client['name']);
+ 		$opstring .=					"</td>";
+ 		$opstring .=					"<td>";
+ 		$opstring .=						$client['remote_host'];

@@ -1,13 +1,28 @@
---- Makefile.orig	2024-02-20 07:14:00 UTC
+--- Makefile.orig	2024-08-28 08:21:22 UTC
 +++ Makefile
-@@ -24,10 +24,6 @@ OBJS = trurl.o
- 
- TARGET = trurl
- OBJS = trurl.o
--ifndef TRURL_IGNORE_CURL_CONFIG
--LDLIBS += $$(curl-config --libs)
--CFLAGS += $$(curl-config --cflags)
--endif
- CFLAGS += -W -Wall -Wshadow -Werror -pedantic
- CFLAGS += -Wconversion -Wmissing-prototypes -Wwrite-strings -Wsign-compare -Wno-sign-conversion
+@@ -33,7 +33,7 @@ endif
  ifndef NDEBUG
+ CFLAGS += -Werror -g
+ endif
+-MANUAL = trurl.1
++MANUAL = trurl.md
+ 
+ PREFIX ?= /usr/local
+ BINDIR ?= $(PREFIX)/bin
+@@ -47,10 +47,14 @@ trurl.o: trurl.c version.h
+ 
+ trurl.o: trurl.c version.h
+ 
+-.PHONY: install
+-install:
++.PHONY: install install-bin install-man
++install: install-bin install-man
++
++install-bin:
+ 	$(INSTALL) -d $(DESTDIR)$(BINDIR)
+ 	$(INSTALL) -m 0755 $(TARGET) $(DESTDIR)$(BINDIR)
++
++install-man:
+ 	$(INSTALL) -d $(DESTDIR)$(MANDIR)
+ 	$(INSTALL) -m 0644 $(MANUAL) $(DESTDIR)$(MANDIR)
+ 

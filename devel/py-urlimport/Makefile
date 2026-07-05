@@ -1,8 +1,8 @@
 PORTNAME=	urlimport
 PORTVERSION=	0.42b
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	devel python
-MASTER_SITES=	http://www.cs.nctu.edu.tw/~lwhsu/ports/distfiles/
+MASTER_SITES=	http://people.cs.nycu.edu.tw/~lwhsu/ports/distfiles/
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 EXTRACT_SUFX=	.py
 

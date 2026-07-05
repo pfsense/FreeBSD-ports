@@ -1,12 +1,11 @@
 <?xml version="1.0"?>
 <pfsense>
-	<version>23.2</version>
+	<version>24.3</version>
 	<lastchange></lastchange>
 	<system>
 		<optimization>normal</optimization>
 		<hostname>pfSense</hostname>
 		<domain>home.arpa</domain>
-		<dnsserver></dnsserver>
 		<dnsallowoverride></dnsallowoverride>
 		<group>
 			<name>all</name>
@@ -50,7 +49,7 @@
 		<bogons>
 			<interval>monthly</interval>
 		</bogons>
-		<hn_altq_enable/>
+		<hn_altq_enable></hn_altq_enable>
 	</system>
 	<interfaces>
 		<wan>
@@ -151,8 +150,7 @@
 	</filter>
 	<shaper></shaper>
 	<ipsec></ipsec>
-	<aliases>
-	</aliases>
+	<aliases></aliases>
 	<proxyarp></proxyarp>
 	<cron>
 		<item>
@@ -265,9 +263,8 @@
 		<hideidentity></hideidentity>
 		<hideversion></hideversion>
 		<dnssecstripped></dnssecstripped>
+		<qname-minimisation></qname-minimisation>
 	</unbound>
-	<vlans>
-	</vlans>
-	<qinqs>
-	</qinqs>
+	<vlans></vlans>
+	<qinqs></qinqs>
 </pfsense>

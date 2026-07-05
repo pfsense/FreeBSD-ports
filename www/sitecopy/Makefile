@@ -1,9 +1,8 @@
 PORTNAME=	sitecopy
-PORTVERSION=	0.16.6
-PORTREVISION=	9
+DISTVERSION=	0.16.6
+PORTREVISION=	10
 CATEGORIES=	www
-MASTER_SITES=	http://www.manyfish.co.uk/${PORTNAME}/ \
-		GENTOO
+MASTER_SITES=	http://www.manyfish.co.uk/${PORTNAME}/
 
 MAINTAINER=	sitecopy@oldach.net
 COMMENT=	Maintains remote websites, uses FTP or WebDAV to sync up w/ local copy
@@ -13,36 +12,32 @@ LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
 
 LIB_DEPENDS=	libneon.so:www/neon
+# Depending on www/neon, this port may be linked against the following
+# libraries: libexpat.so:textproc/expat2, libxml2.so:textproc/libxml2,
+# libproxy.so:net/libproxy.
+# Bump this port if the SONAME of the using library has been bumped.
 
-USES=		gmake gnome localbase
-USE_GNOME=	libxml2
+USES=		gettext-runtime gmake localbase
+
 GNU_CONFIGURE=	yes
-GNU_CONFIGURE_MANPREFIX=	${PREFIX}/share
 
-CONFIGURE_ARGS=	--with-neon --with-libxml2
+CONFIGURE_ARGS=	--with-neon
 
-OPTIONS_DEFINE=	NLS
+OPTIONS_DEFINE=		NLS
+OPTIONS_SUB=		yes
+
+NLS_USES=		gettext-tools
+NLS_CONFIGURE_OFF=	--disable-nls
 
 .include <bsd.port.options.mk>
 
-.if ${PORT_OPTIONS:MNLS}
-LIBS+=		-lintl
-USES+=		gettext
-PLIST_SUB+=	NLS=""
-.else
-CONFIGURE_ARGS+=--disable-nls
-PLIST_SUB+=	NLS="@comment "
-.endif
-
 .ifndef WITHOUT_SSL
-USES+=	ssl
+USES+=			ssl
 CONFIGURE_ARGS+=	--with-ssl
 .endif
 
 post-patch:
-	@${REINPLACE_CMD} -e 's|;;|;|g' \
-		${WRKSRC}/src/sitestore.c
-	@${REINPLACE_CMD} -e 's|25 26 27 28|& 29 30 31 32|g' \
+	@${REINPLACE_CMD} -e 's|25 26 27 28|& 29 [3-][0-9]|g' \
 		${WRKSRC}/configure
 .if ${OPSYS} == FreeBSD
 	@${REINPLACE_CMD} -e '/#define ksize_t /d' \

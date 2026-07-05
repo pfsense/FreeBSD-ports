@@ -1,8 +1,7 @@
 PORTNAME=	gtkwave
-DISTVERSION=	3.3.117
-PORTREVISION=	3
+DISTVERSION=	3.3.126
 CATEGORIES=	cad
-MASTER_SITES=	http://gtkwave.sourceforge.net/
+MASTER_SITES=	SF/${PORTNAME}/${DISTNAME}
 DISTNAME=	${PORTNAME}-gtk3-${DISTVERSION}
 
 MAINTAINER=	eduardo@FreeBSD.org
@@ -13,13 +12,13 @@ LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
 
 LIB_DEPENDS=	libharfbuzz.so:print/harfbuzz
+RUN_DEPENDS=	gdk-pixbuf-extra>0:graphics/gdk-pixbuf-extra
 
-USES=		compiler:c++11-lang desktop-file-utils gettext gmake gnome \
-		gperf pkgconfig shared-mime-info
-USE_GNOME=	cairo gdkpixbuf2 gtk30
+USES=		desktop-file-utils gettext-runtime gmake gnome gperf pkgconfig \
+		shared-mime-info
+USE_GNOME=	cairo gdkpixbuf gtk30
 
 GNU_CONFIGURE=	yes
-GNU_CONFIGURE_MANPREFIX=	${PREFIX}/share
 CONFIGURE_ARGS=	--disable-mime-update \
 		--enable-gtk3 \
 		--without-gconf

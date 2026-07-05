@@ -1,6 +1,6 @@
 PORTNAME=	tclX
 PORTVERSION=	8.4.1
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	lang tcl devel
 MASTER_SITES=	SF/${PORTNAME:tl}/TclX/${PORTVERSION}:tclx \
     		http://core.tcl.tk/tclconfig/raw/:tclm4
@@ -9,7 +9,7 @@ DISTFILES=	tclx${PORTVERSION}${EXTRACT_SUFX}:tclx \
 EXTRACT_ONLY=	tclx${PORTVERSION}${EXTRACT_SUFX}
 DIST_SUBDIR=	${PORTNAME}
 
-MAINTAINER=	mi@aldan.algebra.com
+MAINTAINER=	ports@virtual-estates.net
 COMMENT=	Extended TCL
 WWW=		https://tclx.sourceforge.net/
 
@@ -20,7 +20,7 @@ LICENSE_PERMS=	dist-mirror dist-sell pkg-mirror pkg-sell auto-accept
 
 WRKSRC=		${WRKDIR}/${PORTNAME:tl}${PORTVERSION:R}
 
-USES=		autoreconf alias tcl:tea tar:bzip2
+USES=		autoreconf tcl:tea tar:bzip2
 USE_LDCONFIG=	${PREFIX}/lib/tclx${PORTVERSION:R}
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS+=--enable-shared \
@@ -33,12 +33,7 @@ TCLM4=		tcl.m4?name=2e84c8
 
 .include <bsd.port.pre.mk>
 
-.if ${TCL_VER} > 8.4
-EXTRA_PATCHES+=	${FILESDIR}/tcl85-test-patch
-.endif
-.if ${TCL_VER} > 8.5
 EXTRA_PATCHES+=	${FILESDIR}/tcl86-test-patch
-.endif
 
 post-extract:
 	${CP} ${DISTDIR}/${DIST_SUBDIR}/${TCLM4} ${WRKSRC}/tclconfig/tcl.m4

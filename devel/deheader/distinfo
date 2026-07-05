@@ -1,3 +1,3 @@
-TIMESTAMP = 1617890487
-SHA256 (esr-deheader-b408c9013f4e1d917cc12f06edda4e1782e64888_GL0.tar.gz) = f6777dd4383c9e96dc113d2e6a7650daa818b308e34266bce23cad2ca9a47313
-SIZE (esr-deheader-b408c9013f4e1d917cc12f06edda4e1782e64888_GL0.tar.gz) = 27838
+TIMESTAMP = 1773737567
+SHA256 (deheader-1.12.tar.gz) = ff2705100b48db32c15cffc5e1bf1b0627bbaa9efe8645807623fee81edbbacd
+SIZE (deheader-1.12.tar.gz) = 28635

@@ -1,5 +1,5 @@
 PORTNAME=	stonesoup
-DISTVERSION=	0.31.0
+DISTVERSION=	0.34.1
 CATEGORIES=	games
 
 MAINTAINER=	fuz@FreeBSD.org
@@ -9,13 +9,13 @@ WWW=		https://crawl.develz.org/
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/../../LICENSE
 
-BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}yaml>0:devel/py-yaml@${PY_FLAVOR}
+BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}pyyaml>=0:devel/py-pyyaml@${PY_FLAVOR}
 
 FLAVORS=	console sdl
 FLAVOR?=	${FLAVORS[1]}
 sdl_PKGNAMESUFFIX=	-sdl
 
-USES=		bison compiler:c++11-lib gmake lua:51 perl5 pkgconfig \
+USES=		bison compiler:c++11-lib gmake lua:54 perl5 pkgconfig \
 		python:build shebangfix sqlite tar:xz
 
 USE_GITHUB=	yes
@@ -43,7 +43,7 @@ MAKE_ARGS=	prefix=${PREFIX} \
 		FORCE_CXX=${CXX} \
 		GAME=${GAME} \
 		INSTALL_UGRP=root:games \
-		LUA_PACKAGE=lua-5.1 \
+		LUA_PACKAGE=lua-5.4 \
 		NO_AUTO_OPT=YesPlease \
 		NO_OPTIMIZE=YesPlease \
 		NO_TRY_GOLD=YesPlease \
@@ -84,11 +84,11 @@ SOUND_RUN_DEPENDS=	sox:audio/sox
 NOWIZARD_MAKE_ARGS=	NOWIZARD=y
 LUA_MAKE_ARGS_OFF=	NO_LUA_BINDINGS=yes
 
-post-patch-SOUND-on:
+pre-configure-SOUND-on:
 	@${REINPLACE_CMD} -e "s,%%LOCALBASE%%,${LOCALBASE}," ${WRKSRC}/sound.h
 	@${REINPLACE_CMD} -e "s,%%SOUND%%,," ${WRKSRC}/sound.h
 
-post-patch-SOUND-off:
+pre-configure-SOUND-off:
 	@${REINPLACE_CMD} -e "s,%%SOUND%%,// ," ${WRKSRC}/sound.h
 
 pre-build:

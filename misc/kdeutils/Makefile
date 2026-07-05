@@ -1,19 +1,21 @@
 PORTNAME=	kdeutils
 DISTVERSION=	${KDE_APPLICATIONS_VERSION}
-PORTREVISION=	2
 CATEGORIES=	misc kde
 
 MAINTAINER=	kde@FreeBSD.org
-COMMENT=	Collection of utilities for KDE
+COMMENT=	Collection of utilities for KDE (meta port)
 WWW=		https://www.kde.org/applications/utilities/
 
-USES=		kde:5 metaport
+USES=		kde:6 metaport
 
 OPTIONS_DEFINE=	ARK FILELIGHT KCALC KCHARSELECT KDEBUGSETTINGS \
 		KDF KGPG KTEATIME KTIMER KWALLETMANAGER \
 		PRINTMANAGER
 
-OPTIONS_DEFAULT=${OPTIONS_DEFINE}
+OPTIONS_DEFAULT=${OPTIONS_DEFINE:NKGPG}
+OPTIONS_DEFAULT_aarch64=	KGPG
+OPTIONS_DEFAULT_amd64=	KGPG
+OPTIONS_DEFAULT_i386=	KGPG
 
 ARK_DESC=			Archiving tool
 ARK_RUN_DEPENDS=		ark>=${KDE_APPLICATIONS_VERSION}:archivers/ark
@@ -44,8 +46,5 @@ KTIMER_RUN_DEPENDS=		ktimer>=${KDE_APPLICATIONS_VERSION}:x11-clocks/ktimer
 
 KWALLETMANAGER_DESC=		Password manager for KDE
 KWALLETMANAGER_RUN_DEPENDS=	kwalletmanager>=${KDE_APPLICATIONS_VERSION}:security/kwalletmanager
-
-PRINTMANAGER_DESC=		Printer manager for KDE
-PRINTMANAGER_RUN_DEPENDS=	print-manager>=${KDE_APPLICATIONS_VERSION}:print/print-manager
 
 .include <bsd.port.mk>

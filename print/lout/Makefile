@@ -1,11 +1,10 @@
 PORTNAME=	lout
-PORTVERSION=	3.42.2
-PORTREVISION=	3
+PORTVERSION=	3.43.3
 CATEGORIES=	print
 
 MAINTAINER=	kbowling@FreeBSD.org
 COMMENT=	LaTeX like document creation system with PostScript/PDF output
-WWW=		https://savannah.nongnu.org/projects/lout/
+WWW=		https://github.com/william8000/lout
 
 LICENSE=	GPLv3+
 

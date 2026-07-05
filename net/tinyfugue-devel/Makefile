@@ -1,6 +1,6 @@
 PORTNAME=	tinyfugue
-PORTVERSION=	5.1.5
-PORTREVISION=	1
+PORTVERSION=	5.2.2
+PORTREVISION=	0
 CATEGORIES=	net games
 PKGNAMESUFFIX=	-devel${PKGNAMESUFFIX2}
 
@@ -11,7 +11,7 @@ WWW=		https://github.com/ingwarsw/tinyfugue
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-LIB_DEPENDS=	libpcre.so:devel/pcre
+LIB_DEPENDS=	libpcre2-8.so:devel/pcre2
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	ingwarsw
@@ -35,7 +35,7 @@ GMCP_DESC=	telnet GMCP support
 GMCP_CONFIGURE_ENABLE=	gmcp
 WIDECHAR_CONFIGURE_ENABLE=	widechar
 WIDECHAR_LIB_DEPENDS=	libicuuc.so:devel/icu
-LUA_USES=		lua:53
+LUA_USES=		lua
 LUA_CONFIGURE_ENABLE=	lua
 PYTHON_USES=		python gettext-runtime
 PYTHON_CONFIGURE_ENABLE=	python

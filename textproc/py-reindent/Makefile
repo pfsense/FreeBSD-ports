@@ -1,10 +1,11 @@
 PORTNAME=	reindent
 DISTVERSION=	3.5.1
+PORTREVISION=	1
 CATEGORIES=	textproc python
 MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
-MAINTAINER=	DtxdF@disroot.org
+MAINTAINER=	dtxdf@FreeBSD.org
 COMMENT=	Reindent python scripts
 WWW=		https://pypi.org/project/reindent/
 

@@ -1,5 +1,6 @@
 PORTNAME=	simian
 PORTVERSION=	2.5.10
+PORTREVISION=	2
 CATEGORIES=	devel java
 MASTER_SITES=	http://www.harukizaemon.com/simian/
 
@@ -12,6 +13,10 @@ LICENSE_NAME=	SIMIAN SOFTWARE LICENSE
 LICENSE_FILE=	${WRKSRC}/license.pdf
 # Have to agree to license before download
 LICENSE_PERMS=	no-dist-mirror no-dist-sell no-pkg-mirror no-pkg-sell no-auto-accept
+
+DEPRECATED=	does not fetch
+EXPIRATION_DATE=	2026-06-13
+BROKEN=		does not fetch
 
 NO_BUILD=	yes
 NO_WRKSUBDIR=	yes
@@ -29,28 +34,14 @@ PORTDOCS=	changes.html features.html \
 OPTIONS_DEFINE=	DOCS
 OPTIONS_SINGLE=	LANG
 OPTIONS_SINGLE_LANG=	JAVA MONO
+OPTIONS_SUB=	yes
 
 OPTIONS_DEFAULT=	JAVA
 
+JAVA_USES=	java
+MONO_RUN_DEPENDS=	mono:lang/mono${MONO_DEFAULT}
+
 .include <bsd.port.pre.mk>
-
-.if ${PORT_OPTIONS:MJAVA}
-USE_JAVA=	yes
-PLIST_SUB+=	JAVA=""
-SUB_LIST+=	JAVA=""
-.else
-PLIST_SUB+=	JAVA="@comment "
-SUB_LIST+=	JAVA="@comment "
-.endif
-
-.if ${PORT_OPTIONS:MMONO}
-RUN_DEPENDS+=	mono:lang/mono${MONO_DEFAULT}
-PLIST_SUB+=	MONO=""
-SUB_LIST+=	MONO=""
-.else
-PLIST_SUB+=	MONO="@comment "
-SUB_LIST+=	MONO="@comment "
-.endif
 
 pre-fetch:
 .if !exists(${DISTDIR}/${DISTNAME}${EXTRACT_SUFX})

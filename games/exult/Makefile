@@ -1,8 +1,8 @@
 PORTNAME=	exult
-DISTVERSION?=	1.8
-PORTREVISION?=	6
+DISTVERSION=	1.12.1
 PORTEPOCH=	1
 CATEGORIES=	games
+MASTER_SITES=	SF/exult/exult-all-versions/${DISTVERSION}/
 
 MAINTAINER=	eduardo@FreeBSD.org
 COMMENT=	Engine for Ultima VII (BG, FOV, SI, SS)
@@ -11,33 +11,24 @@ WWW=		http://exult.info
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
+BUILD_DEPENDS=	autoconf-archive>=0:devel/autoconf-archive
 LIB_DEPENDS=	libogg.so:audio/libogg \
 		libpng16.so:graphics/png \
 		libvorbis.so:audio/libvorbis
 
 USES=		autoreconf compiler:c++17-lang gmake libtool localbase \
 		pkgconfig sdl xorg
-USE_GNOME=	cairo gdkpixbuf2
+USE_GNOME=	cairo gdkpixbuf
 USE_SDL=	sdl2
 USE_XORG=	x11 xext
 
 GNU_CONFIGURE=	yes
-GNU_CONFIGURE_MANPREFIX=	${PREFIX}/share
 CONFIGURE_ARGS=	--disable-static \
 		--enable-shared \
 		--with-icondir=${PREFIX}/share/pixmaps
 
-CONFLICTS_INSTALL=	exult-devel
-SUB_FILES=		pkg-message
-PLIST?=			${.CURDIR}/pkg-plist
-
-.if !defined(MASTERDIR)
-MASTER_SITES=	http://prdownloads.sourceforge.net/exult/
-EXTRA_PATCHES=	${PATCHDIR}/extra-patch-version.cc \
-		${PATCHDIR}/extra-patch-configure.ac
-.else
-USE_GITHUB=	yes
-.endif
+SUB_FILES=	pkg-message
+PORTDOCS=	*
 
 OPTIONS_DEFINE=		ALSA DEBUG DOCS FLUIDSYNTH GIMP STUDIO
 OPTIONS_DEFAULT=	STUDIO
@@ -57,19 +48,20 @@ FLUIDSYNTH_LIB_DEPENDS=		libfluidsynth.so:audio/fluidsynth
 FLUIDSYNTH_CONFIGURE_ENABLE=	fluidsynth
 
 GIMP_LIB_DEPENDS=	libbabl-0.1.so:x11/babl \
-			libfontconfig.so:x11-fonts/fontconfig \
-			libfreetype.so:print/freetype2 \
 			libgegl-0.4.so:graphics/gegl \
 			libgegl-npd-0.4.so:graphics/gegl \
-			libgimp-2.0.so:graphics/gimp-app \
+			libgexiv2.so:graphics/gexiv2 \
+			libgimp-3.0.so:graphics/gimp3-app \
 			libharfbuzz.so:print/harfbuzz \
 			libjson-glib-1.0.so:devel/json-glib
 GIMP_USES=		gnome
-GIMP_USE=		GNOME=gtk20,pango
+GIMP_USE=		GNOME=gtk30,pango
 
 GIMP_CONFIGURE_ENABLE=	gimp-plugin
 
-STUDIO_LIB_DEPENDS?=		libharfbuzz.so:print/harfbuzz
+STUDIO_LIB_DEPENDS=	libfreetype.so:print/freetype2 \
+			libharfbuzz.so:print/harfbuzz \
+			libicuuc.so:devel/icu
 STUDIO_USES=			gnome
 STUDIO_USE=			GNOME=gtk30
 STUDIO_CONFIGURE_ENABLE=	exult-studio exult-studio-support
@@ -79,13 +71,5 @@ post-install-DOCS-on:
 .for i in FAQ NEWS README
 	${INSTALL_DATA} ${WRKSRC}/${i} ${STAGEDIR}${DOCSDIR}
 .endfor
-
-.include <bsd.port.options.mk>
-
-# Silence cast warnings from GTK callbacks in clang >=16
-# https://github.com/exult/exult/issues/416
-.if !defined(PKGNAMESUFFIX) && ( ${OPSYS} == FreeBSD && ( ${OSVERSION} >= 1400091 || ( ${OSVERSION} >= 1302507 && ${OSVERSION} < 1400000 )))
-CFLAGS+=	-Wno-cast-function-type-strict
-.endif
 
 .include <bsd.port.mk>

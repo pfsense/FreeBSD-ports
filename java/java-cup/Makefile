@@ -1,5 +1,6 @@
 PORTNAME=	cup
 PORTVERSION=	11b.20160615
+PORTREVISION=	1
 CATEGORIES=	java devel
 MASTER_SITES=	http://www2.cs.tum.edu/projects/cup/releases/
 PKGNAMEPREFIX=	java-
@@ -15,7 +16,8 @@ LICENSE_TEXT=	The text of the license can be obtained from the following URL:\
 		http://www2.cs.tum.edu/projects/cup/licence.php
 LICENSE_PERMS=	dist-mirror dist-sell pkg-mirror pkg-sell auto-accept
 
-USE_JAVA=	yes
+USES=		java
+
 NO_BUILD=	yes
 
 SUB_FILES=	java-cup.sh

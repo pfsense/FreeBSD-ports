@@ -1,5 +1,6 @@
 PORTNAME=	gdal
-PORTVERSION=	3.8.5
+PORTVERSION=	3.11.5
+PORTREVISION=	2
 CATEGORIES=	graphics geography
 MASTER_SITES=	https://download.osgeo.org/gdal/${PORTVERSION}/ \
 		LOCAL/sunpoet
@@ -12,7 +13,9 @@ WWW=		https://gdal.org/ \
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE.TXT
 
-BUILD_DEPENDS=	libgeotiff>=1.5.0:graphics/libgeotiff \
+BUILD_DEPENDS=	fast_float>=0:math/fast_float \
+		libertiff>=0:graphics/libertiff \
+		libgeotiff>=1.5.0:graphics/libgeotiff \
 		proj>=6,1:graphics/proj
 LIB_DEPENDS=	libgeotiff.so:graphics/libgeotiff \
 		libgif.so:graphics/giflib \
@@ -54,8 +57,11 @@ CMAKE_OFF=	BUILD_CSHARP_BINDINGS \
 		GDAL_USE_TIFF_INTERNAL \
 		GDAL_USE_ZLIB_INTERNAL \
 		HDFS_ENABLED \
-		SWIG_REGENERATE_PYTHON
-CMAKE_ON=	BUILD_APPS \
+		SWIG_REGENERATE_PYTHON \
+		${CMAKE_OFF_${ARCH}}
+CMAKE_OFF_armv7=GDAL_ENABLE_ARM_NEON_OPTIMIZATIONS
+CMAKE_ON=	AVIF_VERSION_CHECK \
+		BUILD_APPS \
 		BUILD_SHARED_LIBS \
 		BUILD_STATIC_LIBS \
 		ENABLE_GNM \
@@ -93,8 +99,7 @@ PLIST_SUB=	PORTVERSION=${PORTVERSION}
 
 CPE_VENDOR=	osgeo
 
-HEADER_FILES=	alg/gdalwarpkernel_opencl.h \
-		alg/gvgcpfit.h \
+HEADER_FILES=	alg/gvgcpfit.h \
 		alg/internal_qhull_headers.h \
 		alg/thinplatespline.h\
 		gcore/gdalexif.h \
@@ -110,7 +115,7 @@ HEADER_FILES=	alg/gdalwarpkernel_opencl.h \
 		port/cpl_vsil_curl_priv.h \
 		port/cpl_worker_thread_pool.h
 
-OPTIONS_DEFINE=	AEC ARMADILLO BRUNSLI CFITSIO CRYPTOPP CURL DEFLATE ECW EXPAT EXR FREEXL GEOS GTA HDF5 HEIF JXL KML LERC LIBXML2 LZ4 MYSQL NETCDF ODBC OPENJPEG PCRE2 PGSQL RASTERLITE2 SFCGAL SPATIALITE SQLITE TILEDB WEBP XERCES ZSTD
+OPTIONS_DEFINE=	AEC ARMADILLO BLOSC BRUNSLI CFITSIO CRYPTOPP CURL DEFLATE ECW EXPAT FREEXL GEOS GTA HDF5 HEIF JXL KEA KML LERC LIBXML2 LZ4 MYSQL NETCDF ODBC OPENDRIVE OPENEXR OPENJPEG PCRE2 PGSQL QB3 RASTERLITE2 SFCGAL SPATIALITE SQLITE TILEDB WEBP XERCES ZSTD
 OPTIONS_RADIO=	PDF
 OPTIONS_RADIO_PDF=	PODOFO POPPLER
 OPTIONS_DEFAULT=AEC CURL DEFLATE EXPAT FREEXL GEOS LERC LIBXML2 LZ4 OPENJPEG PCRE2 PGSQL POPPLER WEBP ZSTD \
@@ -119,12 +124,15 @@ OPTIONS_EXCLUDE_powerpc=	LERC
 OPTIONS_EXCLUDE_powerpc64=	LERC
 OPTIONS_SUB=	yes
 AEC_DESC=	Adaptive entropy coding library
+BLOSC_DESC=	Blosc support in Zarr driver
 BRUNSLI_DESC=	Brunsli support via libbrunsli library
 CRYPTOPP_DESC=	Cryptopp support
 DEFLATE_DESC=	Faster deflate support via libdeflate library
-EXR_DESC=	EXR support via OpenEXR library
+KEA_DESC=	KEA format support
 LERC_DESC=	LERC (Limited Error Raster Compression) support
+OPENDRIVE_DESC=	OpenDRIVE format support
 PCRE2_DESC=	Regular expression support for SQLite
+QB3_DESC=	QB3 compression in MRF driver
 RASTERLITE2_DESC=	RasterLite2 support
 TILEDB_DESC=	TileDB support
 
@@ -132,6 +140,8 @@ AEC_CMAKE_BOOL=		GDAL_USE_LIBAEC
 AEC_LIB_DEPENDS=	libaec.so:science/libaec
 ARMADILLO_CMAKE_BOOL=	GDAL_USE_ARMADILLO
 ARMADILLO_LIB_DEPENDS=	libarmadillo.so:math/armadillo
+BLOSC_CMAKE_BOOL=	GDAL_USE_BLOSC
+BLOSC_LIB_DEPENDS=	libblosc.so:archivers/c-blosc
 BRUNSLI_CMAKE_BOOL=	GDAL_USE_BRUNSLI
 BRUNSLI_LIB_DEPENDS=	libbrunslidec-c.so:graphics/brunsli
 CFITSIO_CMAKE_BOOL=	GDAL_USE_CFITSIO
@@ -146,10 +156,6 @@ ECW_CMAKE_BOOL=		GDAL_USE_ECW
 ECW_LIB_DEPENDS=	libNCSEcw.so:graphics/libecwj2
 EXPAT_CMAKE_BOOL=	GDAL_USE_EXPAT
 EXPAT_LIB_DEPENDS=	libexpat.so:textproc/expat2
-EXR_CFLAGS=		-DInt64=uint64_t
-EXR_CMAKE_BOOL=		GDAL_USE_EXR
-EXR_LIB_DEPENDS=	libImath.so:math/Imath \
-			libOpenEXR.so:graphics/openexr
 FREEXL_CMAKE_BOOL=	GDAL_USE_FREEXL
 FREEXL_LIB_DEPENDS=	libfreexl.so:textproc/freexl
 GEOS_CMAKE_BOOL=	GDAL_USE_GEOS
@@ -162,6 +168,8 @@ HEIF_CMAKE_BOOL=	GDAL_USE_HEIF
 HEIF_LIB_DEPENDS=	libheif.so:graphics/libheif
 JXL_CMAKE_BOOL=		GDAL_USE_JXL GDAL_USE_JXL_THREADS
 JXL_LIB_DEPENDS=	libjxl.so:graphics/libjxl
+KEA_CMAKE_BOOL=		GDAL_USE_KEA
+KEA_LIB_DEPENDS=	libkea.so:graphics/kealib
 KML_CMAKE_BOOL=		GDAL_USE_LIBKML
 KML_LIB_DEPENDS=	libkmlbase.so:science/libkml \
 			liburiparser.so:net/uriparser
@@ -178,6 +186,14 @@ NETCDF_CMAKE_BOOL=	GDAL_USE_NETCDF
 NETCDF_LIB_DEPENDS=	libnetcdf.so:science/netcdf
 ODBC_CMAKE_BOOL=	GDAL_USE_ODBC
 ODBC_LIB_DEPENDS=	libodbc.so:databases/unixODBC
+OPENDRIVE_CMAKE_BOOL=	GDAL_USE_OPENDRIVE
+OPENDRIVE_LDFLAGS=	-lpugixml
+OPENDRIVE_LIB_DEPENDS=	libOpenDrive.so:graphics/libopendrive \
+			libpugixml.so:textproc/pugixml
+OPENEXR_CFLAGS=		-DInt64=uint64_t
+OPENEXR_CMAKE_BOOL=	GDAL_USE_EXR
+OPENEXR_LIB_DEPENDS=	libImath.so:math/Imath \
+			libOpenEXR.so:graphics/openexr
 OPENJPEG_BUILD_DEPENDS=	openjpeg>=2.1.0:graphics/openjpeg
 OPENJPEG_CMAKE_BOOL=	GDAL_USE_OPENJPEG
 OPENJPEG_LIB_DEPENDS=	libopenjp2.so:graphics/openjpeg
@@ -189,6 +205,8 @@ PODOFO_CMAKE_BOOL=	GDAL_USE_PODOFO
 PODOFO_LIB_DEPENDS=	libpodofo.so:graphics/podofo
 POPPLER_CMAKE_BOOL=	GDAL_USE_POPPLER
 POPPLER_LIB_DEPENDS=	libpoppler.so:graphics/poppler
+QB3_CMAKE_BOOL=		GDAL_USE_LIBQB3
+QB3_LIB_DEPENDS=	libQB3.so:graphics/qb3
 RASTERLITE2_CMAKE_BOOL=	GDAL_USE_RASTERLITE2
 RASTERLITE2_LIB_DEPENDS=librasterlite2.so:graphics/librasterlite2
 SFCGAL_CMAKE_BOOL=	GDAL_USE_SFCGAL
@@ -201,23 +219,48 @@ TILEDB_CMAKE_BOOL=	GDAL_USE_TILEDB
 TILEDB_LIB_DEPENDS=	libtiledb.so:databases/tiledb
 WEBP_CMAKE_BOOL=	GDAL_USE_WEBP
 WEBP_LIB_DEPENDS=	libwebp.so:graphics/webp
-XERCES_CMAKE_BOOL=	GDAL_USE_XERCES
+XERCES_CMAKE_BOOL=	GDAL_USE_XERCESC
 XERCES_LIB_DEPENDS=	libxerces-c.so:textproc/xerces-c3
 ZSTD_CMAKE_BOOL=	GDAL_USE_ZSTD
 ZSTD_LIB_DEPENDS=	libzstd.so:archivers/zstd
 
-post-patch:
+.include <bsd.port.options.mk>
+
+.if ${ARCH} == powerpc || ${ARCH} == powerpc64
+PLIST_SUB+=	BIGENDIAN="@comment "
+.else
+PLIST_SUB+=	BIGENDIAN=""
+.endif
+
 # Clean up bundled libraries
+.if !defined(MAINTAINER_MODE)
+EXTRACT_AFTER_ARGS=	--exclude ${DISTNAME}/alg/internal_libqhull \
+			--exclude ${DISTNAME}/frmts/gif/giflib \
+			--exclude ${DISTNAME}/frmts/gtiff/libgeotiff \
+			--exclude ${DISTNAME}/frmts/jpeg/libjpeg \
+			--exclude ${DISTNAME}/frmts/jpeg/libjpeg12 \
+			--exclude ${DISTNAME}/frmts/png/libpng \
+			--exclude ${DISTNAME}/frmts/zlib \
+			--exclude ${DISTNAME}/ogr/ogrsf_frmts/geojson/libjson \
+			--exclude ${DISTNAME}/third_party/fast_float \
+			--exclude ${DISTNAME}/third_party/LercLib \
+			--exclude ${DISTNAME}/third_party/libertiff \
+			--no-same-owner --no-same-permissions
+.else
+post-patch:
 	@${RM} -r ${WRKSRC}/alg/internal_libqhull/
 	@${RM} -r ${WRKSRC}/frmts/gif/giflib/
 	@${RM} -r ${WRKSRC}/frmts/gtiff/libgeotiff/
-	@${RM} -r ${WRKSRC}/frmts/gtiff/libtiff/
+#	@${RM} -r ${WRKSRC}/frmts/gtiff/libtiff/ # tif_lerc.c, tif_lzw.c, tif_packbits.c
 	@${RM} -r ${WRKSRC}/frmts/jpeg/libjpeg/
 	@${RM} -r ${WRKSRC}/frmts/jpeg/libjpeg12/
 	@${RM} -r ${WRKSRC}/frmts/png/libpng/
 	@${RM} -r ${WRKSRC}/frmts/zlib/
 	@${RM} -r ${WRKSRC}/ogr/ogrsf_frmts/geojson/libjson/
+	@${RM} -r ${WRKSRC}/third_party/fast_float/
 	@${RM} -r ${WRKSRC}/third_party/LercLib/
+	@${RM} -r ${WRKSRC}/third_party/libertiff/
+.endif
 
 post-install:
 	${MKDIR} ${STAGEDIR}${PREFIX}/etc/bash_completion.d

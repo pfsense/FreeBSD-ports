@@ -1,5 +1,5 @@
 PORTNAME=	mediainfo
-PORTVERSION=	24.03
+PORTVERSION=	26.01
 CATEGORIES=	multimedia
 MASTER_SITES=	https://mediaarea.net/download/binary/mediainfo/${PORTVERSION}/ \
 		LOCAL/sunpoet
@@ -16,10 +16,9 @@ LICENSE_FILE=	${WRKSRC}/../../../License.html
 LIB_DEPENDS=	libmediainfo.so:multimedia/libmediainfo \
 		libzen.so:multimedia/libzen
 
-USES=		compiler:c++11-lang cpe libtool pathfix pkgconfig tar:xz
+USES=		compiler:c++11-lang cpe libtool pkgconfig tar:xz
 
 GNU_CONFIGURE=	yes
-USE_LDCONFIG=	yes
 
 PLIST_FILES=	bin/mediainfo
 WRKSRC=		${WRKDIR}/MediaInfo_CLI_GNU_FromSource/MediaInfo/Project/GNU/CLI

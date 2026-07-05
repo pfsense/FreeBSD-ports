@@ -1,5 +1,6 @@
 PORTNAME=	jftp
 PORTVERSION=	1.60
+PORTREVISION=	1
 CATEGORIES=	ftp java
 MASTER_SITES=	SF/j-ftp/${PORTNAME}/${PORTVERSION}
 DISTNAME=	j-ftp-${PORTVERSION}
@@ -10,9 +11,10 @@ WWW=		https://j-ftp.sourceforge.net/
 
 LICENSE=	GPLv2
 
+USES=		java
+
 NO_BUILD=	yes
 NO_ARCH=	yes
-USE_JAVA=	yes
 WRKSRC=		${WRKDIR}/j-ftp
 
 DATADIR=	${JAVASHAREDIR}/${PORTNAME}

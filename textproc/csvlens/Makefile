@@ -1,6 +1,7 @@
 PORTNAME=	csvlens
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.8.1
+DISTVERSION=	0.15.1
+PORTREVISION=	2
 CATEGORIES=	textproc
 
 MAINTAINER=	tagattie@FreeBSD.org
@@ -15,14 +16,11 @@ USES=		cargo
 USE_GITHUB=	yes
 GH_ACCOUNT=	YS-L
 
-PLIST_FILES=	bin/csvlens
+PLIST_FILES=	bin/${PORTNAME}
 
 PORTDOCS=	CHANGELOG.md README.md
 
 OPTIONS_DEFINE=	DOCS
-
-post-install:
-	@${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/csvlens
 
 post-install-DOCS-on:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}

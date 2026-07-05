@@ -6,9 +6,7 @@
 %%WWWDIR%%/application/clicommands/ListCommand.php
 %%WWWDIR%%/application/clicommands/ScheduleCommand.php
 %%WWWDIR%%/application/controllers/ConfigController.php
-%%WWWDIR%%/application/controllers/PlugController.php.disabled
 %%WWWDIR%%/application/controllers/ReportController.php
-%%WWWDIR%%/application/controllers/ReportController.php.modal
 %%WWWDIR%%/application/controllers/ReportsController.php
 %%WWWDIR%%/application/controllers/TemplateController.php
 %%WWWDIR%%/application/controllers/TemplatesController.php
@@ -75,8 +73,10 @@
 %%WWWDIR%%/public/img/textarea-corner.png
 %%WWWDIR%%/run.php
 %%WWWDIR%%/schema/mysql-upgrades/0.10.0.sql
+%%WWWDIR%%/schema/mysql-upgrades/1.0.3.sql
 %%WWWDIR%%/schema/mysql-upgrades/0.9.1.sql
 %%WWWDIR%%/schema/mysql-upgrades/1.0.0.sql
+%%WWWDIR%%/schema/pgsql-upgrades/1.0.3.sql
 %%WWWDIR%%/schema/mysql.schema.sql
 %%WWWDIR%%/schema/pgsql-upgrades/1.0.0.sql
 %%WWWDIR%%/schema/pgsql.schema.sql

@@ -1,5 +1,5 @@
 PORTNAME=	x16-emulator
-DISTVERSION=	r46
+DISTVERSION=	r49
 CATEGORIES=	emulators
 
 MAINTAINER=	makc@FreeBSD.org
@@ -30,11 +30,7 @@ PLIST_FILES=	bin/x16emu
 
 post-patch:
 	${REINPLACE_CMD} -e "s,%%PREFIX%%,${PREFIX}," ${WRKSRC}/src/main.c
-.if ${OPSYS} == FreeBSD && ( ${OSVERSION} >= 1400079 || ( ${OSVERSION} >= 1302505 && ${OSVERSION} < 1400000 ))
-	${REINPLACE_CMD} -e 's|^CFLAGS=|CFLAGS=-Wno-error=deprecated-non-prototype |g' \
-		${WRKSRC}/Makefile
-.endif
-
+	${REINPLACE_CMD} "/^GIT_REV/s,.*,GIT_REV=0000000," ${WRKSRC}/Makefile
 
 do-install:
 	${INSTALL_PROGRAM} ${WRKSRC}/x16emu ${STAGEDIR}${PREFIX}/bin

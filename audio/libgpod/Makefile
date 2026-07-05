@@ -1,6 +1,6 @@
 PORTNAME=	libgpod
 PORTVERSION=	0.8.3
-PORTREVISION=	11
+PORTREVISION=	14
 CATEGORIES=	audio
 MASTER_SITES=	SF/gtkpod/${PORTNAME}/${PORTNAME}-${PORTVERSION:R}
 
@@ -15,13 +15,13 @@ LIB_DEPENDS=	libplist-2.0.so:devel/libplist \
 		libsgutils2.so:sysutils/sg3_utils
 
 USES=		compiler:c++11-lang gettext gmake gnome libtool localbase \
-		pathfix pkgconfig sqlite:3 tar:bzip2
+		pkgconfig sqlite:3 tar:bzip2
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--disable-udev --without-hal \
 		--without-python \
 		--with-html-dir="${DOCSDIR:H}"
 USE_CSTD=	gnu89
-USE_GNOME=	gdkpixbuf2 intltool libxml2
+USE_GNOME=	gdkpixbuf intltool libxml2
 INSTALL_TARGET=	install-strip
 USE_LDCONFIG=	yes
 

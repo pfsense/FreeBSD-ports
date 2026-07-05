@@ -1,6 +1,9 @@
 PORTNAME=	libei
-DISTVERSION=	1.2.1
+DISTVERSION=	1.5.0
 CATEGORIES=	x11
+
+PATCH_SITES=	${GL_SITE}/${GL_ACCOUNT}/${GL_PROJECT}/-/commit/
+PATCHFILES+=	4f11112be0c0.patch:-p1 # https://gitlab.freedesktop.org/libinput/libei/-/merge_requests/357
 
 MAINTAINER=	jbeich@FreeBSD.org
 COMMENT=	Library for Emulated Input
@@ -17,7 +20,7 @@ LIB_DEPENDS=	libepoll-shim.so:devel/libepoll-shim \
 TEST_DEPENDS=	${PYTHON_PKGNAMEPREFIX}pytest>0:devel/py-pytest@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}python-dbusmock>0:devel/py-python-dbusmock@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}structlog>0:devel/py-structlog@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}yaml>0:devel/py-yaml@${PY_FLAVOR}
+		${PYTHON_PKGNAMEPREFIX}pyyaml>=0:devel/py-pyyaml@${PY_FLAVOR}
 
 USES=		compiler:c11 localbase meson pkgconfig python:build
 USE_GITHUB=	nodefault
@@ -27,7 +30,9 @@ GH_TUPLE=	nemequ:munit:v0.2.0-38-gfbbdf14:munit/subprojects/munit
 GL_SITE=	https://gitlab.freedesktop.org
 GL_ACCOUNT=	libinput
 BINARY_ALIAS=	python3=${PYTHON_CMD}
-MESON_ARGS=	-Dsd-bus-provider=basu -Dtests=disabled
+MESON_DISABLED=	tests
+MESON_ARGS=	-Dsd-bus-provider=basu
+PLIST_SUB=	VERSION=${PORTVERSION}
 
 OPTIONS_DEFINE=	BASU
 OPTIONS_DEFAULT=BASU

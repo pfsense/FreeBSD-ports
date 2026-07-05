@@ -1,7 +1,8 @@
 PORTNAME=	nextcloud
-PORTVERSION=	28.0.4
+PORTVERSION=	33.0.0
 CATEGORIES=	www
-MASTER_SITES=	https://download.nextcloud.com/server/releases/
+MASTER_SITES=	https://github.com/nextcloud-releases/server/releases/download/v${PORTVERSION}/ \
+		https://download.nextcloud.com/server/releases/
 PKGNAMESUFFIX=	${PHP_PKGNAMESUFFIX}
 DIST_SUBDIR=	${PORTNAME}
 
@@ -71,7 +72,6 @@ post-patch:
 		${WRKSRC}/config/config.documented.php
 	@${RM} ${WRKSRC}/config/config.documented.php.* \
 		 ${WRKSRC}/updater/updater.phar
-	@${RMDIR} ${WRKSRC}/apps/suspicious_login/vendor/amphp/*/docs/.shared
 	@${MV} ${WRKSRC}/apps ${WRKSRC}/apps-pkg
 
 do-install:
@@ -81,7 +81,7 @@ do-install:
 		${STAGEDIR}${WWWDIR}/config/config.sample.php
 	@${MKDIR} ${STAGEDIR}${WWWDIR}/data ${STAGEDIR}${WWWDIR}/apps \
 		${STAGEDIR}/var/log/${PORTNAME}
-	(cd ${WRKSRC}; ${FIND} . -type f) | ${SORT} | \
+	(cd ${WRKSRC}; ${FIND} . -type f -or -type l) | ${SORT} | \
 		${SED} -Ee '/^\.\/\.(htaccess\.dist|user\.ini)/d' \
 			-e '/^\.\/config\/config\.sample\.php/d' \
 			-e 's,^\.,${WWWDIR_REL},' >> ${TMPPLIST}

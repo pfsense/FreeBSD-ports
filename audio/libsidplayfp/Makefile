@@ -1,5 +1,5 @@
 PORTNAME=	libsidplayfp
-DISTVERSION=	2.5.0
+DISTVERSION=	2.16.0
 CATEGORIES=	audio
 MASTER_SITES=	https://github.com/${PORTNAME}/${PORTNAME}/releases/download/v${DISTVERSION}/
 
@@ -10,19 +10,21 @@ WWW=		https://github.com/libsidplayfp/libsidplayfp
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-BUILD_DEPENDS=	libgcrypt-config:security/libgcrypt
-LIB_DEPENDS=	libgcrypt.so:security/libgcrypt \
-		libgpg-error.so:security/libgpg-error
+LIB_DEPENDS=	libgcrypt.so:security/libgcrypt
 
-USES=		compiler:c++14-lang libtool pathfix pkgconfig
+USES=		compiler:c++23-lang libtool pkgconfig
 USE_LDCONFIG=	yes
 
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--disable-static \
 		--with-exsid=no \
-		--with-gcrypt
+		--with-gcrypt \
+		--with-usbsid=no
 
 INSTALL_TARGET=	install-strip
+
+SIDPLAYFP_SHLIB_VERSION=        6.7.44
+STILVIEW_SHLIB_VERSION=         0.0.7
 
 PLIST_SUB+=	SIDPLAYFP_SHLIB_VER=${SIDPLAYFP_SHLIB_VERSION:C/\.[[:digit:].]+//} \
 		SIDPLAYFP_SHLIB_VERSION=${SIDPLAYFP_SHLIB_VERSION} \
@@ -39,19 +41,6 @@ DEBUG_CONFIGURE_ON=	--enable-debug=full
 
 DOXYGEN_BUILD_DEPENDS=		doxygen:devel/doxygen
 DOXYGEN_CONFIGURE_ENV_OFF=	ac_cv_prog_HAVE_DOXYGEN=false
-
-.include <bsd.port.options.mk>
-
-.if ${ARCH} == "aarch64"
-CONFIGURE_ARGS+=	--with-simd=neon
-.endif
-
-.if ${ARCH} == "amd64"
-CONFIGURE_ARGS+=	--with-simd=sse2
-.endif
-
-SIDPLAYFP_SHLIB_VERSION=	6.3.27
-STILVIEW_SHLIB_VERSION=		0.0.4
 
 post-build-DOXYGEN-on:
 	${MAKE_CMD} doc -C ${WRKSRC}

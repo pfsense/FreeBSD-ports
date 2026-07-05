@@ -13,7 +13,6 @@ USES+=		gmake
 USE_LDCONFIG=	yes
 USES+=		ssl
 GNU_CONFIGURE=	yes
-GNU_CONFIGURE_MANPREFIX=	${PREFIX}/share
 
 CONFIGURE_ARGS+=--sysconfdir=${PREFIX}/etc \
 		--with-configdir=${PREFIX}/lib/sasl2:${PREFIX}/etc/sasl2 \
@@ -38,7 +37,7 @@ CONFIGURE_ARGS+=--disable-anon \
 		--disable-srp \
 		--with-dblib=none
 CONFIGURE_ARGS+=${CYRUS_CONFIGURE_ARGS}
-CONFIGURE_ENV=	CC_FOR_BUILD="${CC}"
+CONFIGURE_ENV+=	CC_FOR_BUILD="${CC}"
 MAKE_ENV+=	INSTALL_STRIP_FLAG=${STRIP}
 
 DOCSDIR=	${PREFIX}/share/doc/cyrus-sasl2

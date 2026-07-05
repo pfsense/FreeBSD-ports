@@ -3,7 +3,7 @@
  * frr_ospf.inc
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2017-2024 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2017-2026 Rubicon Communications, LLC (Netgate)
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -268,7 +268,7 @@ function frr_generate_config_ospf() {
 	$frr_conf = config_get_path('installedpackages/frr/config/0', []);
 	if (empty($frr_conf)) {
 		/* If FRR is not configured, stop. */
-		frr_package_log("FRR OSPFd: No FRR global config data found.");
+		frr_package_log("OSPFd: No FRR global config data found.");
 		return null;
 	}
 
@@ -281,15 +281,15 @@ function frr_generate_config_ospf() {
 	} else {
 		/* If there is no raw configuration and no GUI configuration, stop. */
 		if (empty($frr_ospfd_conf)) {
-			frr_package_log("FRR OSPFd: No config data found.");
+			frr_package_log("OSPFd: No config data found.");
 			return;
 		} elseif (empty($frr_ospfd_conf['enable'])) {
 			/* OSPF daemon is not enabled. */
-			frr_package_log("FRR OSPFd: OSPF disabled.");
+			frr_package_log("OSPFd: OSPF disabled.");
 			return;
 		} elseif (empty($frr_conf['enable'])) {
 			/* FRR is disabled or BFD Daemon is not enabled. */
-			frr_package_log("FRR OSPFd: FRR master disabled.");
+			frr_package_log("OSPFd: FRR master disabled.");
 			return;
 		}
 

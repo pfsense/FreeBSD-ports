@@ -1,5 +1,5 @@
 PORTNAME=	pdf-reader
-PORTVERSION=	2.12.0
+PORTVERSION=	2.15.1
 CATEGORIES=	print rubygems
 MASTER_SITES=	RG
 
@@ -10,8 +10,8 @@ WWW=		https://github.com/yob/pdf-reader
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/MIT-LICENSE
 
-RUN_DEPENDS=	rubygem-afm>=0.2.1<0.3:print/rubygem-afm \
-		rubygem-ascii85>=1.0<2:devel/rubygem-ascii85 \
+RUN_DEPENDS=	rubygem-afm>=0.2.1<2:print/rubygem-afm \
+		rubygem-ascii85>=1.0<3.0:devel/rubygem-ascii85 \
 		rubygem-hashery>=2.0<3:devel/rubygem-hashery \
 		rubygem-ruby-rc4>=0:security/rubygem-ruby-rc4 \
 		rubygem-ttfunk>=0:print/rubygem-ttfunk

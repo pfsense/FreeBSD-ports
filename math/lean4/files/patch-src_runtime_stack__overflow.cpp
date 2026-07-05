@@ -1,11 +1,13 @@
---- src/runtime/stack_overflow.cpp.orig	2023-12-21 22:11:33 UTC
+--- src/runtime/stack_overflow.cpp.orig	2025-11-18 02:29:21 UTC
 +++ src/runtime/stack_overflow.cpp
-@@ -20,6 +20,9 @@ Port of the corresponding Rust code (see links below).
- #include <lean/lean.h>
+@@ -21,6 +21,11 @@ Port of the corresponding Rust code (see links below).
+ #include <initializer_list>
  #include "runtime/stack_overflow.h"
  
++#if defined(__FreeBSD__)
 +#include <pthread_np.h>
 +#define pthread_getattr_np pthread_attr_get_np
++#endif
 +
  namespace lean {
  // stack guard of the main thread

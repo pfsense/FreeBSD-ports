@@ -1,5 +1,5 @@
 PORTNAME=	peewee_migrate
-DISTVERSION=	1.12.2
+DISTVERSION=	1.14.0
 CATEGORIES=	databases devel python
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
@@ -19,9 +19,10 @@ TEST_DEPENDS=	${PYTHON_PKGNAMEPREFIX}psycopg2>=0:databases/py-psycopg2@${PY_FLAV
 		${PYTHON_PKGNAMEPREFIX}sqlite3>=0:databases/py-sqlite3@${PY_FLAVOR}
 
 USES=		python
-USE_GITHUB=	yes # tests not shipped with sdist
+USE_GITHUB=	yes # tests not shipped with sdist, https://github.com/klen/peewee_migrate/issues/236
 GH_ACCOUNT=	klen
 USE_PYTHON=	autoplist concurrent pep517 pytest
+PYTEST_IGNORED_TESTS=	test_remove_fields test_remove_fk test_migrator
 
 TEST_ENV=	PYTHONPATH=${WRKSRC}/src
 

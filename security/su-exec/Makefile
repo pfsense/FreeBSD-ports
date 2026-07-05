@@ -1,9 +1,9 @@
 PORTNAME=	su-exec
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.2
+DISTVERSION=	0.3
 CATEGORIES=	security
 
-MAINTAINER=	DtxdF@disroot.org
+MAINTAINER=	dtxdf@FreeBSD.org
 COMMENT=	Switch user and group id and exec
 WWW=		https://github.com/ncopa/su-exec
 

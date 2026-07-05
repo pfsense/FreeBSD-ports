@@ -1,5 +1,5 @@
 PORTNAME=	oksh
-DISTVERSION=	7.4
+DISTVERSION=	7.8
 PORTEPOCH=	1
 CATEGORIES=	shells
 MASTER_SITES=	https://github.com/ibara/oksh/releases/download/oksh-${DISTVERSION}/
@@ -24,6 +24,8 @@ CONFIGURE_ARGS+=	--enable-static
 PLIST=			/dev/null
 PLIST_FILES=		"@shell /rescue/oksh"
 .endif
+
+PIE_UNSAFE=	yes
 
 OPTIONS_DEFINE=		CURSES SMALL
 OPTIONS_DEFAULT=	CURSES

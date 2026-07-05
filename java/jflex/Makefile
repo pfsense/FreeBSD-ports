@@ -1,5 +1,6 @@
 PORTNAME=	jflex
 PORTVERSION=	1.8.1
+PORTREVISION=	1
 CATEGORIES=	java devel
 MASTER_SITES=	https://github.com/jflex-de/jflex/releases/download/v${PORTVERSION}/
 
@@ -9,7 +10,7 @@ WWW=		https://www.jflex.de/
 
 LICENSE=	BSD3CLAUSE
 
-USE_JAVA=	yes
+USES=		java
 
 #
 # JFlex has two build options --- Maven and Bazel --- and neither of

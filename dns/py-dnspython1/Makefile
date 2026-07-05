@@ -1,5 +1,6 @@
 PORTNAME=	dnspython
 PORTVERSION=	1.16.0
+PORTREVISION=	1
 CATEGORIES=	dns python
 MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -13,7 +14,7 @@ LICENSE=	ISCL
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
 USES=		python:2.7 zip
-USE_PYTHON=	autoplist concurrent cython distutils
+USE_PYTHON=	autoplist concurrent cython0 distutils
 
 NO_ARCH=	yes
 

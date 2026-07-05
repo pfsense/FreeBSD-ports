@@ -1,5 +1,5 @@
 PORTNAME=	selene
-DISTVERSION=	0.26.1
+DISTVERSION=	0.29.0
 PORTREVISION=	3
 CATEGORIES=	devel
 
@@ -9,8 +9,6 @@ WWW=		https://kampfkarren.github.io/selene/
 
 LICENSE=	MPL20
 LICENSE_FILE=	${WRKSRC}/LICENSE.md
-
-BROKEN_powerpc64le=	compilation failure: called `Option::unwrap()` on a `None` value in ring-0.16.20/build.rs: # next release should fix this
 
 USES=		cargo
 USE_GITHUB=	yes
@@ -27,21 +25,21 @@ CARGO_CRATES=	addr2line-0.19.0 \
 		atty-0.2.14 \
 		autocfg-1.1.0 \
 		backtrace-0.3.67 \
-		base64-0.13.1 \
-		beef-0.5.2 \
+		base64-0.21.7 \
 		bitflags-1.3.2 \
+		borsh-1.5.1 \
 		bstr-1.1.0 \
 		bumpalo-3.12.0 \
 		bytecount-0.6.3 \
 		cc-1.0.78 \
 		cfg-if-1.0.0 \
+		cfg_aliases-0.2.1 \
 		chrono-0.4.23 \
 		clap-2.34.0 \
 		codespan-0.11.1 \
 		codespan-reporting-0.11.1 \
 		color-eyre-0.6.2 \
 		color-spantrace-0.2.0 \
-		convert_case-0.4.0 \
 		core-foundation-sys-0.8.3 \
 		crc32fast-1.3.2 \
 		ctor-0.1.26 \
@@ -49,7 +47,8 @@ CARGO_CRATES=	addr2line-0.19.0 \
 		cxx-build-1.0.86 \
 		cxxbridge-flags-1.0.86 \
 		cxxbridge-macro-1.0.86 \
-		derive_more-0.99.17 \
+		derive_more-1.0.0 \
+		derive_more-impl-1.0.0 \
 		diff-0.1.13 \
 		dirs-4.0.0 \
 		dirs-sys-0.3.7 \
@@ -57,7 +56,7 @@ CARGO_CRATES=	addr2line-0.19.0 \
 		flate2-1.0.25 \
 		fnv-1.0.7 \
 		form_urlencoded-1.1.0 \
-		full_moon-0.19.0 \
+		full_moon-1.2.0 \
 		full_moon_derive-0.11.0 \
 		generator-0.7.2 \
 		getrandom-0.2.8 \
@@ -81,8 +80,6 @@ CARGO_CRATES=	addr2line-0.19.0 \
 		libc-0.2.139 \
 		link-cplusplus-1.0.8 \
 		log-0.4.17 \
-		logos-0.12.1 \
-		logos-derive-0.12.1 \
 		loom-0.5.6 \
 		matchers-0.1.0 \
 		memchr-2.5.0 \
@@ -103,40 +100,38 @@ CARGO_CRATES=	addr2line-0.19.0 \
 		pretty_assertions-1.3.0 \
 		proc-macro-error-1.0.4 \
 		proc-macro-error-attr-1.0.4 \
-		proc-macro2-1.0.66 \
+		proc-macro2-1.0.87 \
 		profiling-1.0.7 \
 		profiling-procmacros-1.0.7 \
-		quote-1.0.23 \
+		quote-1.0.37 \
 		redox_syscall-0.2.16 \
 		redox_users-0.4.3 \
 		regex-1.7.1 \
 		regex-automata-0.1.10 \
 		regex-syntax-0.6.28 \
-		ring-0.16.20 \
 		ring-0.17.3 \
 		rustc-demangle-0.1.21 \
-		rustc_version-0.4.0 \
-		rustls-0.20.8 \
+		rustls-0.21.10 \
+		rustls-webpki-0.101.7 \
 		rustversion-1.0.11 \
 		ryu-1.0.12 \
 		scoped-tls-1.0.1 \
 		scratch-1.0.3 \
-		sct-0.7.0 \
-		semver-1.0.16 \
+		sct-0.7.1 \
 		serde-1.0.152 \
 		serde_derive-1.0.152 \
-		serde_json-1.0.91 \
+		serde_json-1.0.99 \
 		serde_spanned-0.6.1 \
 		serde_yaml-0.9.16 \
 		sharded-slab-0.1.4 \
 		smallvec-1.10.0 \
-		smol_str-0.1.23 \
-		spin-0.5.2 \
+		smol_str-0.3.1 \
 		spin-0.9.8 \
 		strsim-0.8.0 \
 		structopt-0.3.26 \
 		structopt-derive-0.4.18 \
 		syn-1.0.107 \
+		syn-2.0.79 \
 		termcolor-1.2.0 \
 		textwrap-0.11.0 \
 		thiserror-1.0.38 \
@@ -162,10 +157,10 @@ CARGO_CRATES=	addr2line-0.19.0 \
 		unicode-normalization-0.1.22 \
 		unicode-segmentation-1.10.0 \
 		unicode-width-0.1.10 \
+		unicode-xid-0.2.6 \
 		unsafe-libyaml-0.2.5 \
-		untrusted-0.7.1 \
 		untrusted-0.9.0 \
-		ureq-2.6.2 \
+		ureq-2.9.1 \
 		url-2.3.1 \
 		valuable-0.1.0 \
 		vec_map-0.8.2 \
@@ -177,9 +172,7 @@ CARGO_CRATES=	addr2line-0.19.0 \
 		wasm-bindgen-macro-0.2.83 \
 		wasm-bindgen-macro-support-0.2.83 \
 		wasm-bindgen-shared-0.2.83 \
-		web-sys-0.3.60 \
-		webpki-0.22.4 \
-		webpki-roots-0.22.6 \
+		webpki-roots-0.25.3 \
 		winapi-0.3.9 \
 		winapi-i686-pc-windows-gnu-0.4.0 \
 		winapi-util-0.1.5 \
@@ -202,8 +195,5 @@ CARGO_CRATES=	addr2line-0.19.0 \
 		yansi-0.5.1
 
 PLIST_FILES=	bin/${PORTNAME}
-
-post-install:
-	@${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/${PORTNAME}
 
 .include <bsd.port.mk>

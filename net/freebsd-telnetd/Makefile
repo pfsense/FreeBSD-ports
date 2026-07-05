@@ -1,6 +1,6 @@
 PORTNAME=	freebsd-telnetd
 DISTVERSIONPREFIX=	v
-DISTVERSION=	14.0.5
+DISTVERSION=	15.0
 PORTREVISION=	2
 CATEGORIES=	net
 
@@ -21,6 +21,8 @@ MAKE_ENV+=		MAKESYSPATH=/usr/src/share/mk \
 			BINDIR=${PREFIX}/libexec \
 			MANDIR=${PREFIX}/share/man/man \
 			TELNETDIR=${WRKSRC}/contrib/telnet \
+			MK_KERBEROS_SUPPORT=no \
+			MK_OPENSSL=no \
 			MK_WERROR=no
 
 OPTIONS_DEFINE=		IPV6

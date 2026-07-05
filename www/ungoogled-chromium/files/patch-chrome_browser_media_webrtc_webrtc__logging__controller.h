@@ -1,20 +1,20 @@
---- chrome/browser/media/webrtc/webrtc_logging_controller.h.orig	2024-02-03 15:42:55 UTC
+--- chrome/browser/media/webrtc/webrtc_logging_controller.h.orig	2026-03-15 18:32:51 UTC
 +++ chrome/browser/media/webrtc/webrtc_logging_controller.h
-@@ -133,7 +133,7 @@ class WebRtcLoggingController
-                          size_t web_app_id,
-                          const StartEventLoggingCallback& callback);
+@@ -131,7 +131,7 @@ class WebRtcLoggingController
  
--#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS)
-+#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_BSD)
+   base::RepeatingCallback<void(const std::string&)> GetLogMessageCallback();
+ 
+-#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_ANDROID)
++#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_ANDROID) || BUILDFLAG(IS_BSD)
    // Ensures that the WebRTC Logs directory exists and then grants render
    // process access to the 'WebRTC Logs' directory, and invokes |callback| with
    // the ids necessary to create a DirectoryEntry object.
-@@ -197,7 +197,7 @@ class WebRtcLoggingController
+@@ -195,7 +195,7 @@ class WebRtcLoggingController
  
-   content::BrowserContext* GetBrowserContext() const;
+   webrtc_logging::ApiType GetApiType() const;
  
--#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS)
-+#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_BSD)
+-#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_ANDROID)
++#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_ANDROID) || BUILDFLAG(IS_BSD)
    // Grants the render process access to the 'WebRTC Logs' directory, and
    // invokes |callback| with the ids necessary to create a DirectoryEntry
    // object. If the |logs_path| couldn't be created or found, |error_callback|

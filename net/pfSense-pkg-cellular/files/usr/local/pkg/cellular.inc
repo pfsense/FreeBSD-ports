@@ -3,7 +3,7 @@
  * cellular.inc
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2017-2024 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2017-2026 Rubicon Communications, LLC (Netgate)
  * Copyright (C) 2016 Voleatech GmbH, Fabian Schweinfurth
  * All rights reserved.
  *
@@ -32,8 +32,6 @@ define('INTERFACE_BIN', '/usr/local/sbin/cellular');
 
 
 function cellular_sync() {
-	global $config;
-
 	$cellular = config_get_path('installedpackages/cellular/config/0', []);
 	if (empty($cellular)) {
 		return null;
@@ -133,15 +131,13 @@ function get_baudrates() {
 function cellular_before_everything() {
 
 	global $pkg;
-	global $config;
-
 	$cellular = config_get_path('installedpackages/cellular/config/0', []);
 
 	// little workaround for dynamic field (content) generation
 	array_init_path($pkg, 'fields');
 	if (!empty($pkg['fields'])) {
 
-		$custom_str = $cellular["statuscmd"] ?: "I; +CSQ; +COPS?; +CGPADDR";
+		$custom_str = $cellular["statuscmd"] ?: "I; +CSQ; +COPS?; +CGPADDR=1";
 
 		exec(PYTHON_BIN . ' ' . INTERFACE_BIN . " custom " . escapeshellarg($custom_str) . " -v", $sig);
 

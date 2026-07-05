@@ -1,4 +1,3 @@
-PORTREVISION?=	1
 PKGNAMESUFFIX?=	-${OSSEC_TYPE}
 COMMENT?=	Security tool to monitor and check logs and intrusions - local (standalone) installation
 WWW=		https://ossec.github.io
@@ -190,8 +189,8 @@ PKGMSG_FILES=	message-header
 
 PKG_CONFIG=	${CONFIGURE_ENV:MPKG_CONFIG=*:S/PKG_CONFIG=//}
 CFLAGS+=	-I${LOCALBASE}/include
-INOTIFY_CFLAGS=	$$(${PKG_CONFIG} --cflags libinotify)
-INOTIFY_LDFLAGS=$$(${PKG_CONFIG} --libs libinotify)
+INOTIFY_CFLAGS=	 `${PKG_CONFIG} --cflags libinotify`
+INOTIFY_LDFLAGS= `${PKG_CONFIG} --libs libinotify`
 
 OSSEC_ARGS+=	TARGET=${OSSEC_TYPE} PCRE2_SYSTEM=yes INSTALL_LOCALTIME=no INSTALL_RESOLVCONF=no
 .if defined(OSSEC_MAX_AGENTS)

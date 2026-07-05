@@ -1,6 +1,5 @@
 PORTNAME=	supertuxkart
-DISTVERSION=	1.4
-PORTREVISION=	1
+DISTVERSION=	1.5
 CATEGORIES=	games
 MASTER_SITES=	https://github.com/supertuxkart/stk-code/releases/download/${DISTVERSION}/
 DISTNAME=	SuperTuxKart-${DISTVERSION}-src
@@ -14,12 +13,11 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 
 BROKEN_i386=	ld: error: cannot preempt symbol: alcOpenDevice
 
-LIB_DEPENDS=	libsqlite3.so:databases/sqlite3 \
-		libcurl.so:ftp/curl \
+LIB_DEPENDS=	libcurl.so:ftp/curl \
 		libangelscript.so:lang/angelscript \
 		libmcpp.so:devel/mcpp
 
-USES=		alias cmake compiler:c++11-lib pkgconfig ssl tar:xz
+USES=		cmake compiler:c++11-lib pkgconfig sqlite ssl
 CMAKE_OFF=	USE_WIIUSE
 CMAKE_OFF+=	BUILD_RECORDER
 CMAKE_OFF+=	USE_SYSTEM_ENET  # bundled enet is required for IPv6 support
@@ -31,33 +29,25 @@ PORTDATA=	*
 CXXFLAGS+=	-DNO_IRR_COMPILE_WITH_JOYSTICK_EVENTS_ \
 		-D__FREE_BSD_
 
-OPTIONS_DEFINE=	NETTLE SERVER_ONLY
-OPTIONS_DEFAULT=NETTLE
+OPTIONS_DEFINE=	CLIENT
+OPTIONS_DEFAULT=CLIENT
 
-NETTLE_DESC=		Use Nettle instead of OpenSSL for cryptography
-NETTLE_LIB_DEPENDS=	libnettle.so:security/nettle
-NETTLE_USES_OFF=	ssl
-NETTLE_CMAKE_BOOL_OFF=	USE_CRYPTO_OPENSSL
-
-SERVER_ONLY_DESC=	Build server only
-SERVER_ONLY_CMAKE_BOOL=	SERVER_ONLY
-SERVER_ONLY_LIB_DEPENDS_OFF= \
-			libvorbisfile.so:audio/libvorbis \
-			libogg.so:audio/libogg \
-			libpng.so:graphics/png \
-			libfreetype.so:print/freetype2 \
-			libharfbuzz.so:print/harfbuzz
-SERVER_ONLY_USES_OFF=	gettext gl jpeg openal:al sdl xorg
-SERVER_ONLY_USE_OFF=	GL=gl,glu SDL=sdl2 XORG=x11,xrandr
+CLIENT_DESC=	Build game client
+CLIENT_CMAKE_BOOL_OFF=	SERVER_ONLY
+CLIENT_LIB_DEPENDS= \
+		libvorbisfile.so:audio/libvorbis \
+		libogg.so:audio/libogg \
+		libpng.so:graphics/png \
+		libfreetype.so:print/freetype2 \
+		libharfbuzz.so:print/harfbuzz \
+		libshaderc_shared.so:graphics/shaderc
+CLIENT_USES=	jpeg openal:al sdl xorg
+CLIENT_USE=	SDL=sdl2 XORG=x11,xrandr
 
 # make sure that bundled libraries are not used
 post-extract:
-.for bundled in wiiuse angelscipt mcpp
+.for bundled in wiiuse angelscript mcpp
 	@${RM} -rf ${WRKSRC}/lib/${bundled}
 .endfor
-
-post-patch:
-	@${REINPLACE_CMD} -e 's|Icon=.*|Icon=${PREFIX}/share/icons/hicolor/128x128/apps/supertuxkart.png|' \
-		${WRKSRC}/data/${PORTNAME}.desktop
 
 .include <bsd.port.mk>

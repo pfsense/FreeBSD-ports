@@ -1,31 +1,34 @@
 PORTNAME=	crow-translate
-PORTVERSION=	2.11.1
+DISTVERSION=	4.0.2
 CATEGORIES=	textproc
+MASTER_SITES=	KDE/stable/${PORTNAME}/${PORTVERSION}
 
-MAINTAINER=	ehaupt@FreeBSD.org
+MAINTAINER=	kde@FreeBSD.org
 COMMENT=	Translator using Google, Yandex Bing, LibreTranslate and Lingva
-WWW=		https://crow-translate.github.io/
+WWW=		https://apps.kde.org/crowtranslate/
 
-LICENSE=	GPLv3
-LICENSE_FILE=	${WRKSRC}/COPYING
+LICENSE=	CC-BY-SA-4.0 CC0-1.0 GPLv3+
+LICENSE_COMB=	multi
+LICENSE_FILE_CC-BY-SA-4.0=	${WRKSRC}/LICENSES/CC-BY-SA-4.0.txt
+LICENSE_FILE_CC0-1.0=	${WRKSRC}/LICENSES/CC0-1.0.txt
+LICENSE_FILE_GPLv3+ =	${WRKSRC}/LICENSES/GPL-3.0-or-later.txt
 
-BUILD_DEPENDS=	${LOCALBASE}/share/ECM/cmake/ECMConfig.cmake:devel/kf5-extra-cmake-modules
 LIB_DEPENDS=	libleptonica.so:graphics/leptonica \
 		libtesseract.so:graphics/tesseract
 
-USES=		cmake desktop-file-utils gstreamer kde:5 qt:5 xorg
-USE_GITHUB=	yes
-GH_TUPLE=	HatScripts:circle-flags:1c186db:circleflags/data/icons/third-party/circle-flags \
-		vinceliuice:Fluent-icon-theme:2a80a5d:fluenticontheme/data/icons/third-party/fluent-icon-theme \
-		crow-translate:QGitTag:3763898:qgittag/src/qgittag \
-		crow-translate:QOnlineTranslator:148de2b:qonlinetranslator/src/qonlinetranslator \
-		Skycoder42:QHotkey:eb7ddab:qhotkey/src/third-party/qhotkey \
-		crow-translate:QTaskbarControl:d1b07c0:qtaskbarcontrol/src/third-party/qtaskbarcontrol \
-		itay-grudev:SingleApplication:aede311:singleapplication/src/third-party/singleapplication
-USE_KDE=	wayland
-USE_QT=		concurrent core dbus gui multimedia network svg widgets \
-		x11extras buildtools:build qmake:build
+USES=		cmake desktop-file-utils gl kde:6 qt:6 xorg
+USE_GL=		opengl
+USE_KDE=	wayland \
+		ecm:build
+USE_QT=		base multimedia scxml speech \
+		tools:build svg:run
 USE_XORG=	ice sm x11 xcb xext
+
+# This feature isn't ready for FreeBSD, since it relies on a broken
+# bundled version of audio/espeak-ng (as of v4.0.2)
+CMAKE_OFF=	WITH_PIPER_TTS
+
+WRKSRC=		${WRKDIR}/${PORTNAME}
 
 post-patch:
 	@${REINPLACE_CMD} -e 's|/usr/share|${PREFIX}/share|g' \

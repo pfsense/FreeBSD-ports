@@ -3,7 +3,7 @@
  * system_patches.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2012-2024 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2012-2026 Rubicon Communications, LLC (Netgate)
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -34,8 +34,6 @@ require_once("patches.inc");
 require_once("pkg-utils.inc");
 require_once('classes/Form.class.php');
 
-init_config_arr(array('installedpackages', 'patches', 'item'));
-$a_patches = &$config['installedpackages']['patches']['item'];
 $savemsgtype = 'success';
 
 list($thisversion, $thisversiontype) = explode('-', $g['product_version'], 2);
@@ -47,14 +45,49 @@ if ($_POST['savemsg']) {
 }
 
 if ($_POST && $_POST['apply']) {
-	write_config(gettext("System: Patches: applied a patch."));
+	write_config(LOG_PREFIX_PKG_SYSTEMPATCHES . ": " . gettext("applied a patch."));
 }
+
+// Get recommended patches configuration.
+$autoapply_recommended = config_path_enabled('installedpackages/patches', 'autoapply_recommended');
+
+// Save preference of recommended patches auto-apply.
+if ($_POST && isset($_POST['all']) && ($_POST['all'] == 'autoapply')) {
+	$need_save = false;
+	if ($_POST['type'] == 'recommended') {
+		$savemsg = gettext("Automatic application of recommended system patches has been enabled.");
+		if (!$autoapply_recommended) {
+			config_set_path('installedpackages/patches/autoapply_recommended', true);
+			$need_save = true;
+			$autoapply_recommended = true;
+		}
+	} elseif ($_POST['type'] == 'none') {
+		$savemsg = gettext("Automatic application of recommended system patches has been disabled.");
+		if ($autoapply_recommended) {
+			config_del_path('installedpackages/patches/autoapply_recommended');
+			$need_save = true;
+			$autoapply_recommended = false;
+		}
+	}
+	if ($need_save) {
+		write_config(LOG_PREFIX_PKG_SYSTEMPATCHES . ": " . gettext("saved configuration."));
+	}
+}
+
+// Save selection of excluded recommended patches.
+if (isset($_POST['save']) && $autoapply_recommended) {
+	refresh_excluded_recommended_patches(is_array($_POST['excluded']) ? $_POST['excluded'] : []);
+	$savemsg = gettext("Saved selection of recommended patches that will not be applied automatically.");
+}
+
+// Get latest changes to patch selection.
+$excluded_recommended_patches = validate_recommended_patches(array_column(config_get_path('installedpackages/patches/excluded/item', []), 'text'));
 
 if (in_array($_POST['all'], ['apply', 'revert']) &&
     in_array($_POST['type'], ['custom', 'recommended'])) {
 	$typestr = "";
 	if ($_POST['type'] == 'custom') {
-		$patchlist = $a_patches;
+		$patchlist = config_get_path('installedpackages/patches/item', []);
 		$typestr = gettext('custom');
 	} elseif ($_POST['type'] == 'recommended') {
 		$patchlist = $recommended_patches;
@@ -95,14 +128,14 @@ if (in_array($_POST['all'], ['apply', 'revert']) &&
 	$savemsg .= '<br/><br/>' . gettext('Changes may not fully activate until the next reboot or restart of patched functions.');
 }
 
-if ((($_POST['type'] == 'custom') && ($a_patches[$_POST['id']])) ||
+if ((($_POST['type'] == 'custom') && is_numericint($_POST['id']) && (config_get_path("installedpackages/patches/item/{$_POST['id']}"))) ||
     (($_POST['type'] == 'recommended') && !empty(get_recommended_patch($_POST['id'])))) {
 	$savemsg = "";
 
 	if ($_POST['type'] == 'recommended') {
 		$thispatch = get_recommended_patch($_POST['id']);
 	} else {
-		$thispatch = & $a_patches[$_POST['id']];
+		$thispatch = config_get_path("installedpackages/patches/item/{$_POST['id']}");
 	}
 	$descr = patch_descr($thispatch);
 
@@ -111,7 +144,7 @@ if ((($_POST['type'] == 'custom') && ($a_patches[$_POST['id']])) ||
 			if ($_POST['type'] == 'recommended') {
 				break;
 			}
-			if (patch_fetch($thispatch)) {
+			if (patch_fetch($thispatch, $_POST['id'])) {
 				$savemsg .= gettext("Patch fetched successfully");
 			} else {
 				$savemsgtype = 'danger';
@@ -205,14 +238,13 @@ if ((($_POST['type'] == 'custom') && ($a_patches[$_POST['id']])) ||
 		default:
 	}
 }
-unset($thispatch);
 
 $need_save = false;
 if (isset($_POST['del'])) {
 	/* delete selected patches */
 	if (is_array($_POST['patch']) && count($_POST['patch'])) {
 		foreach ($_POST['patch'] as $patchi) {
-			unset($a_patches[$patchi]);
+			config_del_path("installedpackages/patches/item/{$patchi}");
 		}
 		$need_save = true;
 	}
@@ -229,6 +261,7 @@ if (isset($_POST['del'])) {
 
 	/* move selected patches before this patch */
 	if (isset($movebtn) && is_array($_POST['patch']) && count($_POST['patch'])) {
+		$a_patches = config_get_path('installedpackages/patches/item', []);
 		$a_patches_new = array();
 
 		/* copy all patches < $movebtn and not selected */
@@ -259,16 +292,16 @@ if (isset($_POST['del'])) {
 				$a_patches_new[] = $a_patches[$i];
 			}
 		}
-		$a_patches = $a_patches_new;
+		config_set_path('installedpackages/patches/item', $a_patches_new);
 		$need_save = true;
 	} else if (isset($delbtn)) {
-		unset($a_patches[$delbtn]);
+		config_del_path("installedpackages/patches/item/{$delbtn}");
 		$need_save = true;
 	}
 }
 
 if ($need_save) {
-	write_config(gettext("System: Patches: saved configuration."));
+	write_config(LOG_PREFIX_PKG_SYSTEMPATCHES . ": " . gettext("saved configuration."));
 	header("Location: system_patches.php");
 	return;
 }
@@ -321,12 +354,12 @@ if ($savemsg) {
 $i = 0;
 $cus_can_apply=0;
 $cus_can_revert=0;
-foreach ($a_patches as $thispatch):
+foreach (config_get_path('installedpackages/patches/item', []) as $thispatch):
 	$can_apply = patch_test_apply($thispatch);
 	$can_revert = patch_test_revert($thispatch);
 ?>
 
-	<tr id="fr<?=$i?>" id="frd<?=$i?>" ondblclick="document.location='system_patches_edit.php?id=<?= $i ?>'">
+	<tr id="fr<?=$i?>" ondblclick="document.location='system_patches_edit.php?id=<?= $i ?>'">
 		<td>
 			<input type="checkbox" id="frc<?=$i?>" name="patch[]" value="<?=$i?>" onclick="fr_bgcolor('<?=$i?>')" />
 			<a class="fa-solid fa-anchor" id="Xmove_<?=$i?>" title="<?=gettext("Move checked entries to here")?>"></a>
@@ -426,27 +459,28 @@ endforeach;
 				<thead>
 					<tr>
 						<th width="60%"><?=gettext("Description")?></th>
-						<th width="10%"><?=gettext("Apply")?></th>
-						<th width="10%"><?=gettext("Revert")?></th>
-						<th width="10%"><?=gettext("View")?></th>
-						<th width="10%"><?=gettext("Debug")?></th>
+						<th width="8%"><?=gettext("Apply")?></th>
+						<th width="8%"><?=gettext("Revert")?></th>
+						<th width="8%"><?=gettext("View")?></th>
+						<th width="8%"><?=gettext("Debug")?></th>
+						<th width="8%"><?=gettext("Ignore Auto-Apply")?></th>
 					</tr>
 				</thead>
 				<tbody class="rpatchentries">
 <?php
+$i = 0;
 $num_rpatches=0;
 $rec_can_apply=0;
 $rec_can_revert=0;
 foreach ($recommended_patches as $rpatch):
-	if ((!in_array($thisversion, $rpatch['versions'])) ||
-	    (array_key_exists('models', $rpatch) &&
-	     !in_array($platform['name'], $rpatch['models']))) {
+	if (!is_patch_for_this_system($rpatch)) {
 		/* This patch is not relevant to the running version, skip it */
 		continue;
 	} else {
 		/* Patch is relevant, increase the count of relevant patches. */
 		$num_rpatches++;
 	}
+	$excluded =  in_array($rpatch['uniqid'], $excluded_recommended_patches);
 	$can_apply = patch_test_apply($rpatch);
 	$can_revert = patch_test_revert($rpatch);
 	$linklist = array();
@@ -460,6 +494,7 @@ foreach ($recommended_patches as $rpatch):
 		}
 	}
 	$linkhtml = implode(', ', $linklist);
+	$rpatch['uniqid'] = htmlspecialchars($rpatch['uniqid']);
 ?>
 	<tr>
 		<td>
@@ -490,13 +525,18 @@ foreach ($recommended_patches as $rpatch):
 		<td>
 			<a href="system_patches.php?id=<?=$rpatch['uniqid']?>&amp;type=recommended&amp;act=debug" class="btn btn-sm btn-primary" usepost><i class="fa-solid fa-bug"></i> <?=gettext("Debug"); ?></a>
 		</td>
+
+		<td>
+			<input type="checkbox" id="rpatch<?=$i?>" name="excluded[]" value="<?=$rpatch['uniqid']?>" <?=($excluded ? 'checked="checked"' : '')?> <?=($autoapply_recommended ? '' : 'disabled=""')?> />
+		</td>
 	</tr>
 <?php
+	$i++;
 endforeach;
 ?>
 <?php if ($num_rpatches == 0): ?>
 	<tr>
-		<td colspan="5">
+		<td colspan="6">
 			<?= gettext("No recommended patches for this version.") ?>
 		</td>
 	</tr>
@@ -517,6 +557,23 @@ endforeach;
 			<i class="fa-solid fa-minus-circle icon-embed-btn"></i>
 			<?=gettext("Revert All Recommended")?>
 		</a>
+<?php endif; ?>
+<?php if ($autoapply_recommended): ?>
+		<a href="system_patches.php?all=autoapply&type=none" class="btn btn-warning btn-sm do-confirm" title="<?=gettext("Disable automatic application of recommended system patches")?>" usepost>
+			<i class="fa-solid fa-toggle-off icon-embed-btn"></i>
+			<?=gettext("Disable Auto-Apply")?>
+		</a>
+<?php elseif (!$autoapply_recommended): ?>
+		<a href="system_patches.php?all=autoapply&type=recommended" class="btn btn-primary btn-sm" title="<?=gettext("Automatically apply recommended system patches")?>" usepost>
+			<i class="fa-solid fa-toggle-on icon-embed-btn"></i>
+			<?=gettext("Enable Auto-Apply")?>
+		</a>
+<?php endif; ?>
+<?php if ($autoapply_recommended): ?>
+		<button type="submit" name="save" class="btn btn-success btn-sm no-confirm" value="save" title="<?=gettext("Save selection of excluded patches")?>">
+			<i class="fa-solid fa-save icon-embed-btn"></i>
+			<?=gettext("Save")?>
+		</button>
 <?php endif; ?>
 	</nav>
 </form>

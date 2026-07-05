@@ -4,11 +4,11 @@ CATEGORIES=	misc kde kde-applications
 
 MAINTAINER=	kde@FreeBSD.org
 COMMENT=	KDE edu data files
-WWW=		https://edu.kde.org/applications/all/parley
+WWW=		https://invent.kde.org/education/kdeedu-data
 
-USES=		cmake kde:5 qt:5 tar:xz
+USES=		cmake kde:6 qt:6 tar:xz
 USE_KDE=	ecm:build
-USE_QT=		buildtools:build qmake:build
+USE_QT=		tools:build
 
 OPTIONS_DEFINE=	DOCS
 

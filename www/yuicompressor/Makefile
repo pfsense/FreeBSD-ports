@@ -1,6 +1,6 @@
 PORTNAME=	yuicompressor
 PORTVERSION=	2.4.8
-PORTREVISION=	3
+PORTREVISION=	4
 CATEGORIES=	www java
 #MASTER_SITES=	http://tml.github.io/yui/
 MASTER_SITES+=	LOCAL/az
@@ -14,9 +14,10 @@ WWW=		https://yui.github.io/yuicompressor/
 LICENSE=	BSD3CLAUSE MPL20
 LICENSE_COMB=	multi
 
+USES=		java
+
 NO_WRKSUBDIR=	yes
 
-USE_JAVA=	yes
 NO_BUILD=	yes
 NO_ARCH=	yes
 

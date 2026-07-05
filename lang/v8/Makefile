@@ -3,7 +3,7 @@
 
 PORTNAME=	v8
 PORTVERSION=	10.4.132.20
-PORTREVISION=	3
+PORTREVISION=	4
 CATEGORIES=	lang
 MASTER_SITES=	LOCAL/sunpoet/v8/${PORTVERSION:R:R}:local
 DISTFILES=	build-${BUILD_REV}.tar.gz:local \
@@ -16,7 +16,7 @@ DISTFILES=	build-${BUILD_REV}.tar.gz:local \
 DIST_SUBDIR=	v8/${PORTVERSION:R:R}
 EXTRACT_ONLY=	${DISTNAME}.tar.gz
 
-MAINTAINER=	sunpoet@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Open source JavaScript engine by Google
 WWW=		https://v8.dev/
 

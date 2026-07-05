@@ -11,9 +11,9 @@
 # 				Default: NO
 # filebeat_flags (str):		Extra flags passed to filebeat
 # filebeat_config (str):	filebeat configuration directory
-#				Default: ${PREFIX}/etc/beats
+#				Default: %%ETCDIR%%
 # filebeat_conffile (str):	filebeat configuration file
-#				relative to ${filebeat_conf}
+#				relative to ${filebeat_config}
 #				Default: filebeat.yml
 
 . /etc/rc.subr

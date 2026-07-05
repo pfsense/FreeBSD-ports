@@ -1,9 +1,9 @@
 PORTNAME=	crmsh
 DISTVERSION=	4.6.0
-PORTREVISION=	1
+PORTREVISION=	6
 CATEGORIES=	net-mgmt python
 
-MAINTAINER=	flo@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Command-line interface for High-Availability cluster management
 WWW=		https://crmsh.github.io
 
@@ -14,10 +14,10 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 # because the crmsh build uses autotools which then calls setup.py.
 BUILD_DEPENDS=	${PY_SETUPTOOLS}
 RUN_DEPENDS=	${PY_SETUPTOOLS} \
-		${PYTHON_PKGNAMEPREFIX}dateutil>0:devel/py-dateutil@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}python-dateutil>0:devel/py-python-dateutil@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}lxml>0:devel/py-lxml@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}parallax>0:devel/py-parallax@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}yaml>0:devel/py-yaml@${PY_FLAVOR}
+		${PYTHON_PKGNAMEPREFIX}pyyaml>=0:devel/py-pyyaml@${PY_FLAVOR}
 
 USES=		autoreconf cpe gmake python shebangfix
 CPE_VENDOR=	clusterlabs

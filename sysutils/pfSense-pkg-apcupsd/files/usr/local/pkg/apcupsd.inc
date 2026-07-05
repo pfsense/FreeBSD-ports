@@ -3,7 +3,7 @@
  * apcupsd.inc
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2015-2024 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2015-2026 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2013-2016 Danilo G. Baio <dbaio@bsd.com.br>
  * All rights reserved.
  *
@@ -25,13 +25,15 @@ require_once("functions.inc");
 require_once("pkg-utils.inc");
 require_once("globals.inc");
 
+define('LOG_PREFIX_PKG_APCUPSD', 'apcupsd');
+
 function php_install_apcupsd() {
 	sync_package_apcupsd();
 	apccontrol_scripts_install("","");
 }
 
 function php_deinstall_apcupsd() {
-	global $config, $g;
+	global $g;
 
 	define('APCUPSD_BASE', '/usr/local');
 
@@ -113,19 +115,19 @@ function validate_input_apcupsd($post, &$input_errors) {
 }
 
 function sync_package_apcupsd() {
-	global $config, $g;
+	global $g;
 
 
 	if (is_service_running('apcupsd') && !file_exists("{$g['tmp_path']}/.rc.start_packages.running")) {
-		log_error("Stopping service apcupsd");
+		logger(LOG_INFO, localize_text("Stopping service"), LOG_PREFIX_PKG_APCUPSD);
 		stop_service('apcupsd');
 	}
 
 	define('APCUPSD_BASE', '/usr/local');
 
 	// check apcupsd settings
-	if (is_array($config['installedpackages']['apcupsd'])) {
-		$apcupsd_config = $config['installedpackages']['apcupsd']['config'][0];
+	if (is_array(config_get_path('installedpackages/apcupsd'))) {
+		$apcupsd_config = config_get_path('installedpackages/apcupsd/config/0');
 		if ($apcupsd_config['apcupsdenabled'] == "on") {
 			$upsname = $apcupsd_config['upsname'];
 			$upscable = $apcupsd_config['upscable'];
@@ -187,7 +189,7 @@ function sync_package_apcupsd() {
 		apccontrol_scripts_install($emailnotification,$shutdownbehavior);
 
 		if (!file_exists("{$g['tmp_path']}/.rc.start_packages.running")) {
-			log_error("Starting service apcupsd");
+			logger(LOG_INFO, localize_text("Starting service"), LOG_PREFIX_PKG_APCUPSD);
 			start_service("apcupsd");
 		}
 	}
@@ -195,7 +197,7 @@ function sync_package_apcupsd() {
 }
 
 function apccontrol_scripts_install($emailnotification,$shutdownbehavior) {
-	global $config, $g;
+	global $g;
 
 	define('APCUPSD_BASE', '/usr/local');
 
@@ -210,8 +212,8 @@ function apccontrol_scripts_install($emailnotification,$shutdownbehavior) {
 
 		if ($emailnotification == "smtpbuiltin") {
 
-			if (is_array($config['installedpackages']['apcupsd'])) {
-				$apcupsd_config = $config['installedpackages']['apcupsd']['config'][0];
+			if (is_array(config_get_path('installedpackages/apcupsd'))) {
+				$apcupsd_config = config_get_path('installedpackages/apcupsd/config/0');
 				if ($apcupsd_config['apcupsdenabled'] == "on") {
 					$smtphost = $apcupsd_config['smtphost'] ?: "0.0.0.0";
 					$smtpport = $apcupsd_config['smtpport'] ?: "25";
@@ -278,10 +280,10 @@ EOF;
 }
 
 function check_nis_running_apcupsd() {
-	global $config, $g;
+	global $g;
 
-	if (is_array($config['installedpackages']['apcupsd'])) {
-		$apcupsd_config = $config['installedpackages']['apcupsd']['config'][0];
+	if (is_array(config_get_path('installedpackages/apcupsd'))) {
+		$apcupsd_config = config_get_path('installedpackages/apcupsd/config/0');
 		if ($apcupsd_config['apcupsdenabled'] == "on" && $apcupsd_config['netserver'] == "on" ) {
 			return(true);
 		}
@@ -291,9 +293,9 @@ function check_nis_running_apcupsd() {
 }
 
 function check_nis_ip_apcupsd() {
-	global $config, $g;
-	if (is_array($config['installedpackages']['apcupsd'])) {
-		$apcupsd_config = $config['installedpackages']['apcupsd']['config'][0];
+	global $g;
+	if (is_array(config_get_path('installedpackages/apcupsd'))) {
+		$apcupsd_config = config_get_path('installedpackages/apcupsd/config/0');
 		if ($apcupsd_config['apcupsdenabled']=="on" && $apcupsd_config['netserver']=="on" ) {
 			return($apcupsd_config['nisip']);
 		}
@@ -303,9 +305,9 @@ function check_nis_ip_apcupsd() {
 }
 
 function check_nis_port_apcupsd() {
-	global $config, $g;
-	if (is_array($config['installedpackages']['apcupsd'])) {
-		$apcupsd_config = $config['installedpackages']['apcupsd']['config'][0];
+	global $g;
+	if (is_array(config_get_path('installedpackages/apcupsd'))) {
+		$apcupsd_config = config_get_path('installedpackages/apcupsd/config/0');
 		if ($apcupsd_config['apcupsdenabled']=="on" && $apcupsd_config['netserver']=="on" ) {
 			return($apcupsd_config['nisport']);
 		}

@@ -1,6 +1,6 @@
---- src/3rdparty/chromium/v8/src/base/sys-info.cc.orig	2022-02-07 13:39:41 UTC
+--- src/3rdparty/chromium/v8/src/base/sys-info.cc.orig	2025-08-15 18:30:00 UTC
 +++ src/3rdparty/chromium/v8/src/base/sys-info.cc
-@@ -38,7 +38,7 @@ namespace base {
+@@ -36,7 +36,7 @@ int SysInfo::NumberOfProcessors() {
  // static
  int SysInfo::NumberOfProcessors() {
  #if V8_OS_OPENBSD

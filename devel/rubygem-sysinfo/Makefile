@@ -1,5 +1,5 @@
 PORTNAME=	sysinfo
-PORTVERSION=	0.8.1
+PORTVERSION=	0.10.0
 PORTREVISION=	1
 CATEGORIES=	devel rubygems
 MASTER_SITES=	RG
@@ -12,7 +12,7 @@ LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE.txt
 
 RUN_DEPENDS=	rubygem-drydock>=0:devel/rubygem-drydock \
-		rubygem-storable>=0:devel/rubygem-storable
+		rubygem-storable>=0.10<1:devel/rubygem-storable
 
 USES=		gem shebangfix
 

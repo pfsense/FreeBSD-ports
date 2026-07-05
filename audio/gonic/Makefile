@@ -1,6 +1,7 @@
 PORTNAME=	gonic
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.16.4
+DISTVERSION=	0.20.1
+PORTREVISION=	2
 CATEGORIES=	audio net
 
 MAINTAINER=	tagattie@FreeBSD.org
@@ -10,11 +11,10 @@ WWW=		https://github.com/sentriz/gonic
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-LIB_DEPENDS=	libtag.so:audio/taglib
 RUN_DEPENDS=	ffmpeg:multimedia/ffmpeg \
 		mpv:multimedia/mpv
 
-USES=		go:modules,1.21 pkgconfig sqlite
+USES=		go:1.25+,modules
 
 USE_RC_SUBR=	${PORTNAME}
 
@@ -24,6 +24,13 @@ GO_TARGET=	./cmd/gonic
 USERS=		${PORTNAME}
 GROUPS=		${PORTNAME}
 
-PLIST_FILES=	bin/gonic
+PLIST_FILES=	bin/${PORTNAME}
+PORTDOCS=	CHANGELOG.md README.md
+
+OPTIONS_DEFINE=	DOCS
+
+post-install-DOCS-on:
+	@${MKDIR} ${STAGEDIR}${DOCSDIR}
+	${INSTALL_MAN} ${PORTDOCS:S|^|${WRKSRC}/|} ${STAGEDIR}${DOCSDIR}
 
 .include <bsd.port.mk>

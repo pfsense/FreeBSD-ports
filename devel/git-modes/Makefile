@@ -1,19 +1,19 @@
 PORTNAME=	git-modes
-DISTVERSION=	1.4.2
-PORTREVISION=	2
+DISTVERSIONPREFIX=	v
+DISTVERSION=	1.4.8
 PORTEPOCH=	1
 CATEGORIES=	devel elisp
 PKGNAMESUFFIX=	${EMACS_PKGNAMESUFFIX}
 
-MAINTAINER=	yasu@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	GNU Emacs modes for Git-related files
 WWW=		https://github.com/magit/git-modes
 
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-BUILD_DEPENDS=	compat.el${EMACS_PKGNAMESUFFIX}>=29.1.4.1:misc/compat.el@${EMACS_FLAVOR}
-RUN_DEPENDS=	compat.el${EMACS_PKGNAMESUFFIX}>=29.1.4.1:misc/compat.el@${EMACS_FLAVOR} \
+BUILD_DEPENDS=	compat.el${EMACS_PKGNAMESUFFIX}>=30.1.0.0:misc/compat.el@${EMACS_FLAVOR}
+RUN_DEPENDS=	compat.el${EMACS_PKGNAMESUFFIX}>=30.1.0.0:misc/compat.el@${EMACS_FLAVOR} \
 		git:devel/git
 
 USES=		emacs gmake

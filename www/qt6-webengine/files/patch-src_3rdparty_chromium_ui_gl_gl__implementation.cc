@@ -1,7 +1,7 @@
---- src/3rdparty/chromium/ui/gl/gl_implementation.cc.orig	2023-08-16 19:50:41 UTC
+--- src/3rdparty/chromium/ui/gl/gl_implementation.cc.orig	2025-08-15 18:30:00 UTC
 +++ src/3rdparty/chromium/ui/gl/gl_implementation.cc
-@@ -288,7 +288,7 @@ GetRequestedGLImplementationFromCommandLine(
-   *fallback_to_software_gl = false;
+@@ -252,7 +252,7 @@ GetRequestedGLImplementationFromCommandLine(
+     const base::CommandLine* command_line) {
    bool overrideUseSoftwareGL =
        command_line->HasSwitch(switches::kOverrideUseSoftwareGLForTests);
 -#if BUILDFLAG(IS_LINUX) || \

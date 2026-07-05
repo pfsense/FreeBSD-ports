@@ -1,5 +1,6 @@
 PORTNAME=	typometer
 PORTVERSION=	1.0.1
+PORTREVISION=	1
 DISTVERSIONSUFFIX=	-bin
 CATEGORIES=	benchmarks java
 # Not USE_GITHUB because we want to grab the binary release (it's Java)
@@ -11,9 +12,7 @@ WWW=		https://pavelfatin.com/typometer/
 
 LICENSE=	APACHE20
 
-USES=		zip
-USE_JAVA=	yes
-JAVA_VERSION=	8+
+USES=		java zip
 NO_BUILD=	yes
 
 WRKSRC=		${WRKDIR}/${PORTNAME}-${PORTVERSION}

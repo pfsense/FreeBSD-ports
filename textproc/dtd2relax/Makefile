@@ -1,6 +1,6 @@
 PORTNAME=	dtd2relax
 PORTVERSION=	1.1.1
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	textproc java
 MASTER_SITES=	http://www.horobi.com/Projects/RELAX/Archive/
 DISTNAME=	${PORTNAME:tu}_${PORTVERSION:S/./_/g}
@@ -11,8 +11,8 @@ MAINTAINER=	ports@FreeBSD.org
 COMMENT=	DTD to RELAX converter for Java
 WWW=		https://www.horobi.com/Projects/RELAX/Archive/DTD2RELAX.html
 
-USES=		zip
-USE_JAVA=	yes
+USES=		java zip
+
 NO_BUILD=	yes
 NO_ARCH=	yes
 

@@ -1,5 +1,5 @@
 PORTNAME=	gbsddialog
-DISTVERSION=	0.9.0
+DISTVERSION=	0.9.1
 CATEGORIES=	x11
 MASTER_SITES=	${WWW}/releases/download/${PORTNAME}_${DISTVERSION:S/./-/g}/
 
@@ -13,7 +13,7 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 LIB_DEPENDS=	libharfbuzz.so:print/harfbuzz
 
 USES=		desktop-file-utils gettext-runtime gnome pkgconfig
-USE_GNOME=	cairo gdkpixbuf2 glib20 gtk30 pango
+USE_GNOME=	cairo gdkpixbuf glib20 gtk30 pango
 
 CONFLICTS_INSTALL=	xdialog-*
 

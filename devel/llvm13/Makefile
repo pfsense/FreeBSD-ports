@@ -1,6 +1,6 @@
 PORTNAME=	llvm
 DISTVERSION=	13.0.1
-PORTREVISION=	7
+PORTREVISION=	8
 CATEGORIES=	devel lang
 MASTER_SITES=	https://github.com/llvm/llvm-project/releases/download/llvmorg-${DISTVERSION:S/rc/-rc/}/ \
 		https://${PRE_}releases.llvm.org/${LLVM_RELEASE}/${RCDIR}
@@ -12,13 +12,10 @@ MAINTAINER=	brooks@FreeBSD.org
 COMMENT=	LLVM and Clang
 WWW=		https://llvm.org/
 
-LICENSE_DIR=	${WRKSRC}/llvm
+LICENSE_FILE_BSD3CLAUSE=${LICENSE_DIR}/utils/unittest/googletest/LICENSE.TXT
 .include "${.CURDIR}/../llvm-devel/Makefile.LICENSE"
-LICENSE+=	LLVM2
-LICENSE_FILE_LLVM2=	${LICENSE_DIR}/LICENSE.TXT
-LICENSE_NAME_LLVM2=	Apache License 2.0 with LLVM Exceptions
-LICENSE_PERMS_LLVM2=	dist-mirror dist-sell pkg-mirror pkg-sell auto-accept
-LICENSE:=	${LICENSE:NARM}
+
+BUILD_DEPENDS=	${PY_SETUPTOOLS}
 
 LLVM_RELEASE=	${DISTVERSION:C/rc.*//}
 LLVM_MAJOR=	${LLVM_RELEASE:C/\.[0-9]\.[0-9]$//}
@@ -72,11 +69,6 @@ CMAKE_ARGS+=	-DLLVM_ENABLE_Z3_SOLVER=OFF
 CMAKE_ARGS+=	-DLLVM_ENABLE_LIBEDIT=OFF
 # LLVM likes to pick up ${LOCALBASE}/lib/libtinfo.so.*
 CMAKE_ARGS+=	-DLLVM_ENABLE_TERMINFO=OFF
-
-# Disable assertions.  They should be disabled by cmake, but USES=cmake
-# overrides -DCMAKE_*_FLAGS_RELEASE.
-CFLAGS+=	-DNDEBUG
-CXXFLAGS+=	-DNDEBUG
 
 OPTIONS_DEFINE=	BE_AMDGPU BE_WASM CLANG DOCS EXTRAS FLANG LIT LLD LLDB MLIR PYCLANG
 OPTIONS_DEFINE_aarch64=	OPENMP
@@ -134,7 +126,6 @@ COMPILER_RT_PLIST_FILES=${_COMPILER_RT_LIBS:S|^|${_CRTLIBDIR}/|} \
 DOCS_BUILD_DEPENDS= \
 	${PYTHON_PKGNAMEPREFIX}sphinx-markdown-tables>=0:textproc/py-sphinx-markdown-tables@${PY_FLAVOR} \
 	${PYTHON_PKGNAMEPREFIX}recommonmark>=0.0.20180530:textproc/py-recommonmark@${PY_FLAVOR}
-DOCS_CONFLICTS_BUILD=	cmark
 DOCS_PORTDOCS=		llvm
 DOCS_CMAKE_ON= \
 	-DLLVM_ENABLE_SPHINX=ON \
@@ -150,8 +141,9 @@ FLANG_IMPLIES=		MLIR
 FLANG_PORTDOCS=		flang
 FLANG_PLIST_DIRS=	${LLVM_DIR}/include/flang/Config
 GOLD_DESC=		Build the LLVM Gold plugin for LTO
-GOLD_CMAKE_ON=		-DLLVM_BINUTILS_INCDIR=${LOCALBASE}/include
 GOLD_BUILD_DEPENDS=	${LOCALBASE}/bin/ld.gold:devel/binutils
+GOLD_CMAKE_ON=		-DLLVM_BINUTILS_INCDIR=${LOCALBASE}/include
+GOLD_EXTRA_PATCHES_OFF=	${PATCHDIR}/gold-off-llvm_tools_CMakeLists.txt
 LIT_DESC=		Install lit and FileCheck test tools
 LIT_VARS=		_USES_PYTHON=python
 LLD_DESC=		Install lld, the LLVM linker

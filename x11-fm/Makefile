@@ -1,15 +1,12 @@
     COMMENT = X11 file managers
 
     SUBDIR += 4pane
-    SUBDIR += arqiver
     SUBDIR += caja
     SUBDIR += catseye-fm
     SUBDIR += deforaos-browser
     SUBDIR += dolphin
-    SUBDIR += dolphin-devel
     SUBDIR += doublecmd
     SUBDIR += filerunner
-    SUBDIR += fsv2
     SUBDIR += gentoo
     SUBDIR += gprename
     SUBDIR += konqueror
@@ -27,11 +24,11 @@
     SUBDIR += rodent
     SUBDIR += rox-filer
     SUBDIR += sushi
-    SUBDIR += tdfsb
     SUBDIR += thunar
     SUBDIR += worker
     SUBDIR += xcruise
     SUBDIR += xdiskusage
     SUBDIR += xfe
+    SUBDIR += xfile
 
 .include <bsd.port.subdir.mk>

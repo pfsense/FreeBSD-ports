@@ -1,6 +1,5 @@
 PORTNAME=	vorbis-tools
-DISTVERSION=	1.4.2
-PORTREVISION=	5
+DISTVERSION=	1.4.3
 PORTEPOCH=	3
 CATEGORIES=	audio
 MASTER_SITES=	https://downloads.xiph.org/releases/vorbis/
@@ -23,9 +22,10 @@ LIB_DEPENDS=	libao.so:audio/libao \
 USES=		cpe iconv localbase:ldflags pkgconfig
 CPE_VENDOR=	xiph
 GNU_CONFIGURE=	yes
-GNU_CONFIGURE_MANPREFIX=	${PREFIX}/share
 CONFIGURE_ENV=	PTHREAD_LIBS="-lpthread"
 CONFIGURE_ARGS=	--without-kate
+
+TEST_TARGET=	check
 
 OPTIONS_DEFINE=	NLS
 OPTIONS_SUB=	yes

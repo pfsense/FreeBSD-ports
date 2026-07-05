@@ -1,6 +1,6 @@
 PORTNAME=	freemind
 PORTVERSION=	1.0.1
-PORTREVISION=	1
+PORTREVISION=	2
 PORTEPOCH=	1
 CATEGORIES=	deskutils editors java
 MASTER_SITES=	SF
@@ -15,8 +15,7 @@ LICENSE_FILE=	${WRKSRC}/license
 
 BUILD_DEPENDS=	zip:archivers/zip
 
-USES=		cpe zip:infozip
-USE_JAVA=	yes
+USES=		cpe java zip:infozip
 
 DATADIR=	${JAVASHAREDIR}/${PORTNAME}-${PORTVERSION}
 DATAFILES=	accessories browser doc lib plugins patterns.xml

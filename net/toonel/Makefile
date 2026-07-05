@@ -1,6 +1,6 @@
 PORTNAME=	toonel
 PORTVERSION=	0.0.50.50
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	net java
 MASTER_SITES=	http://www.toonel.net/generic/005050/
 DISTNAME=	${PORTNAME}
@@ -11,10 +11,10 @@ MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Tunneling with data compression
 WWW=		https://toonel.net
 
+USES=		java
+
 NO_BUILD=	yes
 NO_WRKSUBDIR=	yes
-
-USE_JAVA=	yes
 
 SUB_FILES=	${PORTNAME}.sh
 SUB_LIST=	JARNAME=${DISTNAME}${EXTRACT_SUFX}

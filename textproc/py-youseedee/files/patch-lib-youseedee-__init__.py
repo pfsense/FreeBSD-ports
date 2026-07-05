@@ -1,11 +1,11 @@
---- lib/youseedee/__init__.py.orig	2023-12-13 13:22:08 UTC
+--- lib/youseedee/__init__.py.orig	2025-07-24 11:24:42 UTC
 +++ lib/youseedee/__init__.py
-@@ -23,7 +23,7 @@ UCD_URL = "https://unicode.org/Public/UCD/latest/ucd/U
- 
+@@ -38,7 +38,7 @@ def ucd_dir():
  
  def ucd_dir():
--    ucddir = os.path.expanduser("~/.youseedee")
-+    ucddir = "%%UCDDIR%%"
-     if not os.path.isdir(ucddir):
-         os.mkdir(ucddir)
-     return ucddir
+     """Return the directory where Unicode data is stored"""
+-    return Path(platformdirs.user_cache_dir("youseedee", ensure_exists=True))
++    return "%%UCDDIR%%"
+ 
+ 
+ def ensure_files():

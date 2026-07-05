@@ -8,7 +8,7 @@
  * tailscale.xml
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2022-2024 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2022-2026 Rubicon Communications, LLC (Netgate)
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -28,7 +28,9 @@
 	<name>tailscale</name>
 	<version>%%PKGVERSION%%</version>
 	<title>VPN/Tailscale</title>
+	<addedit_string>tailscale: changed settings</addedit_string>
 	<include_file>/usr/local/pkg/tailscale/tailscale.inc</include_file>
+	<ramdisk_dir_names>tailscale</ramdisk_dir_names>
 	<aftersaveredirect>/pkg_edit.php?xml=tailscale.xml</aftersaveredirect>
 	<service>
 		<name>tailscale</name>
@@ -43,7 +45,7 @@
 		<url>/pkg_edit.php?xml=tailscale.xml</url>
 	</menu>
 	<menu>
-		<name>Tailscale </name>
+		<name>Tailscale</name>
 		<section>Status</section>
 		<configfile>tailscale.xml</configfile>
 		<url>/status_tailscale.php</url>

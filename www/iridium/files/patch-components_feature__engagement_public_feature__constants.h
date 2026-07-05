@@ -1,20 +1,29 @@
---- components/feature_engagement/public/feature_constants.h.orig	2024-02-04 14:46:08 UTC
+--- components/feature_engagement/public/feature_constants.h.orig	2026-03-24 16:59:08 UTC
 +++ components/feature_engagement/public/feature_constants.h
-@@ -24,7 +24,7 @@ BASE_DECLARE_FEATURE(kUseClientConfigIPH);
- BASE_DECLARE_FEATURE(kIPHDummyFeature);
+@@ -31,7 +31,7 @@ FEATURE_CONSTANTS_DECLARE_FEATURE(kIPHDemoMode);
+ FEATURE_CONSTANTS_DECLARE_FEATURE(kIPHDummyFeature);
  
  #if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_APPLE) || BUILDFLAG(IS_LINUX) || \
 -    BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_FUCHSIA)
 +    BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_FUCHSIA) || BUILDFLAG(IS_BSD)
- BASE_DECLARE_FEATURE(kIPHBatterySaverModeFeature);
- BASE_DECLARE_FEATURE(kIPHCompanionSidePanelFeature);
- BASE_DECLARE_FEATURE(kIPHCompanionSidePanelRegionSearchFeature);
-@@ -233,7 +233,7 @@ extern const base::FeatureParam<int>
-     kDefaultBrowserEligibilitySlidingWindowParam;
+ #if BUILDFLAG(GOOGLE_CHROME_BRANDING)
+ FEATURE_CONSTANTS_DECLARE_FEATURE(kEsbDownloadRowPromoFeature);
+ #endif
+@@ -404,7 +404,7 @@ FEATURE_CONSTANTS_DECLARE_FEATURE(kIPHiOSActiveDaysTra
+ 
  #endif  // BUILDFLAG(IS_IOS)
  
 -#if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_APPLE) || BUILDFLAG(IS_LINUX) || \
 +#if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_APPLE) || BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_BSD) || \
      BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_ANDROID) || BUILDFLAG(IS_FUCHSIA)
- BASE_DECLARE_FEATURE(kIPHAutofillExternalAccountProfileSuggestionFeature);
- BASE_DECLARE_FEATURE(kIPHAutofillVirtualCardCVCSuggestionFeature);
+ FEATURE_CONSTANTS_DECLARE_FEATURE(kIPHAutofillBnplAffirmOrZipSuggestionFeature);
+ FEATURE_CONSTANTS_DECLARE_FEATURE(
+@@ -437,7 +437,7 @@ FEATURE_CONSTANTS_DECLARE_FEATURE(kIPHGoogleOneOfferNo
+ FEATURE_CONSTANTS_DECLARE_FEATURE(kIPHLauncherSearchHelpUiFeature);
+ #endif
+ 
+-#if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX)
++#if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_BSD)
+ FEATURE_CONSTANTS_DECLARE_FEATURE(kIPHDesktopPWAsLinkCapturingLaunch);
+ FEATURE_CONSTANTS_DECLARE_FEATURE(kIPHDesktopPWAsLinkCapturingLaunchAppInTab);
+ FEATURE_CONSTANTS_DECLARE_FEATURE(kIPHSignInBenefitsFeature);

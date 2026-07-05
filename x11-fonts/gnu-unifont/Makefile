@@ -1,15 +1,17 @@
 PORTNAME=	unifont
-PORTVERSION=	15.1.05
+PORTVERSION=	17.0.03
 PORTEPOCH=	1
 CATEGORIES=	x11-fonts
-MASTER_SITES=	GNU/unifont/unifont-${PORTVERSION}
+MASTER_SITES=	GNU/unifont/unifont-${PORTVERSION} \
+		https://unifoundry.com/pub/unifont/unifont-${PORTVERSION}/font-builds/
 PKGNAMEPREFIX=	gnu-
 DISTFILES=	${FONTFILES:S|$|-${PORTVERSION}${FONTSUFFIX}|}
 EXTRACT_ONLY=	# empty
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	GNU Unicode font
-WWW=		https://unifoundry.com/unifont/index.html
+WWW=		https://unifoundry.com/unifont/index.html \
+		https://savannah.gnu.org/projects/unifont
 
 LICENSE=	GPLv2+
 

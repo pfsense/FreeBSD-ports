@@ -1,5 +1,6 @@
 PORTNAME=	pika
-DISTVERSION=	0.23.0
+DISTVERSION=	0.34.0
+PORTREVISION=	3
 CATEGORIES=	devel
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -9,11 +10,10 @@ WWW=		https://github.com/pika-org/pika
 LICENSE=	BSL
 LICENSE_FILE=	${WRKSRC}/LICENSE_1_0.txt
 
-BROKEN_aarch64=		compilation error: error: 'regparm' is not valid on this platform
-
 BUILD_DEPENDS=	boost-libs>=0:devel/boost-libs
 LIB_DEPENDS=	libfmt.so:devel/libfmt \
-		libhwloc.so:devel/hwloc2
+		libhwloc.so:devel/hwloc2 \
+		libspdlog.so:devel/spdlog
 
 USES=		cmake:testing compiler:c++17-lang
 USE_LDCONFIG=	yes
@@ -32,8 +32,9 @@ post-install:
 	@${RM} -r ${STAGEDIR}${DATADIR} # remove copy of license
 
 post-test: # run the tests according to https://pikacpp.org/usage.html#testing (make tests test doesn't work)
-	# some tests fail, see https://github.com/pika-org/pika/issues/895
 	@cd ${BUILD_WRKSRC} && \
 		${MAKE_CMD} test
+
+# tests as of 0.34.0: 99% tests passed, 1 tests failed out of 530, see https://github.com/pika-org/pika/issues/1437
 
 .include <bsd.port.mk>

@@ -1,6 +1,5 @@
 PORTNAME=	liberasurecode
-PORTVERSION=	1.6.3
-PORTREVISION=	1
+DISTVERSION=	1.7.1
 CATEGORIES=	devel
 
 MAINTAINER=	fuz@FreeBSD.org
@@ -24,6 +23,8 @@ CFLAGS_amd64=	-DINTEL_SSE2
 
 # documentation file names vary depending on architecture
 PORTDOCS=	html
+
+PLIST_SUB=	DISTVERSION=${DISTVERSION}
 
 OPTIONS_DEFINE=	DOCS SIMD
 DOCS_CONFIGURE_ENABLE=	doxygen

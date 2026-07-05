@@ -1,50 +1,34 @@
 PORTNAME=	z3
-DISTVERSIONPREFIX=	z3-
-DISTVERSION=	4.12.4
+DISTVERSION=	4.16.0.0
 CATEGORIES=	math
+MASTER_SITES=	https://github.com/Z3Prover/z3/releases/download/${PORTNAME}-${DISTVERSION:R}/
+DISTNAME=	${PORTNAME}_solver-${DISTVERSION}
 
 MAINTAINER=	arrowd@FreeBSD.org
 COMMENT=	Z3 Theorem Prover
-WWW=		https://github.com/Z3Prover/z3
+WWW=		https://z3prover.github.io/ \
+		https://github.com/Z3Prover/z3/
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE.txt
 
-BROKEN_i386=	unknown flag -msimd128
+USES=		cmake:testing compiler:c++20-lang localbase:ldflags
 
-USES=		compiler:c++11-lang python:build
-USE_GITHUB=	yes
-GH_ACCOUNT=	Z3Prover
+CMAKE_ARGS=	-DCMAKE_INSTALL_PKGCONFIGDIR=${PREFIX}/libdata/pkgconfig
+CMAKE_OFF=	Z3_ENABLE_EXAMPLE_TARGETS
+CMAKE_TESTING_TARGET=	test-z3
 
-HAS_CONFIGURE=		yes
-CONFIGURE_ARGS=		--prefix=${PREFIX}
-USE_LDCONFIG=		yes
+WRKSRC_SUBDIR=	core
 
-OPTIONS_DEFINE=		DEBUG STATIC GMP
+PLIST_SUB=	SOVERSION=${DISTVERSION}
 
-OPTIONS_SUB=		yes
+OPTIONS_DEFINE=	GMP
+OPTIONS_SUB=	yes
 
-DEBUG_CONFIGURE_ON=	--debug
-DEBUG_VARS=		with_debug=yes
-
-STATIC_DESC=		Build static z3 library
-STATIC_CONFIGURE_ON=	--staticlib
-
-GMP_DESC=		Use GMP library for AP arithmetic
-GMP_CONFIGURE_ON=	--gmp
-GMP_USES=		localbase:ldflags
 GMP_LIB_DEPENDS=	libgmp.so:math/gmp
+GMP_CMAKE_BOOL=		Z3_USE_LIB_GMP
 
-CXXFLAGS_i386=	-fPIC
-CXXFLAGS_armv7=	-fPIC
-CXXFLAGS_powerpc=	-fPIC
-LDFLAGS_i386=		-Wl,-znotext
-BUILD_WRKSRC=		${WRKSRC}/build
-INSTALL_WRKSRC=		${WRKSRC}/build
-
-post-install:
-	${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/z3
-	${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/libz3.so
-	${LN} -s libz3.so ${STAGEDIR}${PREFIX}/lib/libz3.so.0
+post-test:
+	cd ${BUILD_WRKSRC} && ./test-z3 /a
 
 .include <bsd.port.mk>

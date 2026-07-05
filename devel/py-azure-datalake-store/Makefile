@@ -1,10 +1,11 @@
 PORTNAME=	azure-datalake-store
 PORTVERSION=	0.0.53
+PORTREVISION=	1
 CATEGORIES=	devel python
 MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
-MAINTAINER=	dbaio@FreeBSD.org
+MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Microsoft Azure Data Lake Store Filesystem Client Library for Python
 WWW=		https://pypi.org/project/azure-datalake-store/
 

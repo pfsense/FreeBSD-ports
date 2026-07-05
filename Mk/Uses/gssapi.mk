@@ -2,13 +2,13 @@
 #
 # Feature:	gssapi
 # Usage:	USES=gssapi or USES=gssapi:ARGS
-# Valid ARGS:	base (default, implicit), heimdal, mit.
-#		"bootstrap" is a special prefix only for krb5 or heimdal ports.
-#		("bootstrap,mit")
-#		flags is a special suffix to define CFLAGS, LDFLAGS, and LDADD.
-#		("base,flags")
+# Valid ARGS:	base (default, implicit), heimdal, mit, mit-devel.
+#		"bootstrap" is a special prefix only for krb5 or heimdal ports,
+#		i.e. "bootstrap,mit".
+#		flags is a special suffix to define CFLAGS, LDFLAGS, and LDADD,
+#		i.e. "base,flags".
 #
-# MAINTAINER:	hrs@FreeBSD.org
+# MAINTAINER:	hrs@FreeBSD.org, cy@FreeBSD.org
 #
 # User defined variables:
 #  HEIMDAL_HOME (default: ${LOCALBASE})
@@ -39,7 +39,7 @@
 #  A typical example:
 #
 #   OPTIONS_SINGLE= GSSAPI
-#   OPTIONS_SINGLE_GSSAPI= GSSAPI_BASE GSSAPI_HEIMDAL GSSAPI_MIT GSSAPI_NONE
+#   OPTIONS_SINGLE_GSSAPI= GSSAPI_BASE GSSAPI_HEIMDAL GSSAPI_MIT GSSAPI_MIT_DEVEL GSSAPI_NONE
 #
 #   GSSAPI_BASE_USES=	gssapi
 #   GSSAPI_BASE_CONFIGURE_ON= \
@@ -51,6 +51,10 @@
 #
 #   GSSAPI_MIT_USES=	gssapi:mit
 #   GSSAPI_MIT_CONFIGURE_ON= \
+#	--with-gssapi=${GSSAPIBASEDIR} ${GSSAPI_CONFIGURE_ARGS}
+#
+#   GSSAPI_MIT_DEVEL_USES=	gssapi:mit-devel
+#   GSSAPI_MIT_DEVEL_CONFIGURE_ON= \
 #	--with-gssapi=${GSSAPIBASEDIR} ${GSSAPI_CONFIGURE_ARGS}
 #
 #   GSSAPI_NONE_CONFIGURE_ON= --without-gssapi
@@ -86,6 +90,18 @@ _local:=	${_A}
 .      if ${SSL_DEFAULT} != base
 IGNORE=	You are using OpenSSL from ports and have selected GSSAPI from base, please select another GSSAPI value
 .      endif
+.      if exists(/usr/libdata/pkgconfig/mit-krb5.pc)
+         # Base has MIT KRB5 installed
+KRB5_HOME?=	/usr
+GSSAPIBASEDIR=	${KRB5_HOME}
+GSSAPILIBDIR=	${GSSAPIBASEDIR}/lib
+GSSAPIINCDIR=	${GSSAPIBASEDIR}/include
+_HEADERS+=	gssapi/gssapi.h gssapi/gssapi_krb5.h krb5/krb5.h
+GSSAPICPPFLAGS=	-I"${GSSAPIINCDIR}"
+GSSAPILIBS=	-lkrb5 -lgssapi_krb5
+GSSAPILDFLAGS=
+.      else
+         # Base has Heimdal KRB5 installed
 HEIMDAL_HOME=	/usr
 GSSAPIBASEDIR=	${HEIMDAL_HOME}
 GSSAPILIBDIR=	${GSSAPIBASEDIR}/lib
@@ -94,7 +110,9 @@ _HEADERS+=	gssapi/gssapi.h gssapi/gssapi_krb5.h krb5.h
 GSSAPICPPFLAGS=	-I"${GSSAPIINCDIR}"
 GSSAPILIBS=	-lkrb5 -lgssapi -lgssapi_krb5
 GSSAPILDFLAGS=
+.      endif
 .    elif ${_local} == "heimdal"
+	# Heimdal port selected
 HEIMDAL_HOME?=	${LOCALBASE}
 GSSAPIBASEDIR=	${HEIMDAL_HOME}
 GSSAPILIBDIR=	${GSSAPIBASEDIR}/lib/heimdal
@@ -110,13 +128,17 @@ GSSAPICPPFLAGS=	-I"${GSSAPIINCDIR}"
 GSSAPILIBS=	-lkrb5 -lgssapi
 GSSAPILDFLAGS=	-L"${GSSAPILIBDIR}"
 _RPATH=		${GSSAPILIBDIR}
-.    elif ${_local} == "mit"
+.    elif ${_local} == "mit" || ${_local} == "mit-devel"
+	# MIT KRB5 port selected
 KRB5_HOME?=	${LOCALBASE}
 GSSAPIBASEDIR=	${KRB5_HOME}
 GSSAPILIBDIR=	${GSSAPIBASEDIR}/lib
 GSSAPIINCDIR=	${GSSAPIBASEDIR}/include
-_HEADERS+=	gssapi/gssapi.h gssapi/gssapi_krb5.h krb5.h
+_HEADERS+=	gssapi/gssapi.h gssapi/gssapi_krb5.h krb5/krb5.h
 .      if !defined(_KRB_BOOTSTRAP)
+.        if ${_local} == "mit-devel"
+_MITKRB5_DEPENDS=${_MITKRB5_DEPENDS}-devel
+.        endif
 BUILD_DEPENDS+=	${_MITKRB5_DEPENDS}
 RUN_DEPENDS+=	${_MITKRB5_DEPENDS}
 .      else

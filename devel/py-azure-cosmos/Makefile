@@ -1,10 +1,11 @@
 PORTNAME=	azure-cosmos
 PORTVERSION=	3.2.0
+PORTREVISION=	1
 CATEGORIES=	devel python
 MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
-MAINTAINER=	dbaio@FreeBSD.org
+MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Azure Cosmos Python SDK
 WWW=		https://pypi.org/project/azure-cosmos/
 

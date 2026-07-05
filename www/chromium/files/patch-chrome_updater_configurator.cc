@@ -1,6 +1,6 @@
---- chrome/updater/configurator.cc.orig	2024-02-23 21:04:38 UTC
+--- chrome/updater/configurator.cc.orig	2026-02-11 09:05:39 UTC
 +++ chrome/updater/configurator.cc
-@@ -67,7 +67,7 @@ Configurator::Configurator(scoped_refptr<UpdaterPrefs>
+@@ -91,7 +91,7 @@ Configurator::Configurator(scoped_refptr<UpdaterPrefs>
          return std::nullopt;
  #endif  // BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC)
        }()) {

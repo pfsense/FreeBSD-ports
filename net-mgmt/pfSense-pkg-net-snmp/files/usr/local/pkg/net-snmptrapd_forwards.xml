@@ -8,7 +8,7 @@
  * net-snmptrapd_forwards.xml
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2017-2024 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2017-2026 Rubicon Communications, LLC (Netgate)
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -59,8 +59,8 @@
 			<url>/pkg_edit.php?xml=netsnmp.xml</url>
 		</tab>
 	</tabs>
-	<delete_string>snmptrapd forward deleted</delete_string>
-	<addedit_string>snmptrapd forward created/modified</addedit_string>
+	<delete_string>NET-SNMP: forward deleted</delete_string>
+	<addedit_string>NET-SNMP: changed Trap Forwards</addedit_string>
 	<adddeleteeditpagefields>
 		<columnitem>
 			<fielddescr>Destination</fielddescr>

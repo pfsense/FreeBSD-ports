@@ -8,7 +8,7 @@
  * ntopng.xml
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2014-2024 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2014-2026 Rubicon Communications, LLC (Netgate)
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -27,7 +27,9 @@
 	</copyright>
 	<name>ntopng</name>
 	<title>Diagnostics: ntopng Settings</title>
+	<addedit_string>ntopng: changed settings</addedit_string>
 	<include_file>/usr/local/pkg/ntopng.inc</include_file>
+	<ramdisk_dir_names>ntopng</ramdisk_dir_names>
 	<aftersaveredirect>pkg_edit.php?xml=ntopng.xml</aftersaveredirect>
 	<menu>
 		<name>ntopng Settings</name>
@@ -127,7 +129,7 @@
 			<default_value>on</default_value>
 			<description>
 				<![CDATA[
-				Enable listening on IPv4.
+				Enable listening on IPv4. Note that ntopng currently allows IPv4 or IPv6, but not both.
 				]]>
 			</description>
 		</field>
@@ -137,7 +139,7 @@
 			<type>checkbox</type>
 			<description>
 				<![CDATA[
-				Enable listening on IPv6.
+				Enable listening on IPv6. This setting is currently ignored if IPv4 is enabled.
 				]]>
 			</description>
 		</field>

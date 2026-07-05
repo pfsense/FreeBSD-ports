@@ -1,8 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	pfSense-pkg-Telegraf
-PORTVERSION=	0.9
-PORTREVISION=	6
+PORTVERSION=	0.9.3
 CATEGORIES=	net-mgmt
 MASTER_SITES=	# empty
 DISTFILES=	# empty
@@ -13,8 +12,7 @@ COMMENT=	pfSense package Telegraf
 
 LICENSE=	APACHE20
 
-RUN_DEPENDS=	telegraf:net-mgmt/telegraf \
-		lsof:sysutils/lsof
+RUN_DEPENDS=	telegraf:net-mgmt/telegraf
 
 NO_BUILD=	yes
 NO_MTREE=	yes

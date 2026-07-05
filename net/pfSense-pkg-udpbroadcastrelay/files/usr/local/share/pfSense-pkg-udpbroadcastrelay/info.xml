@@ -7,5 +7,10 @@
 		<pkginfolink>https://www.freshports.org/net/udpbroadcastrelay/</pkginfolink>
 		<version>%%PKGVERSION%%</version>
 		<configurationfile>udpbroadcastrelay.xml</configurationfile>
+		<logging>
+			<facilityname>udpbroadcastrelay</facilityname>
+			<logfilename>udpbroadcastrelay.log</logfilename>
+			<rotateflags>BEN</rotateflags>
+		</logging>
 	</package>
 </pfsensepkgs>

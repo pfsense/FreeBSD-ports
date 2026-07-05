@@ -1,6 +1,6 @@
 PORTNAME=	InsightToolkit
 PORTVERSION=	5.0.1
-PORTREVISION=	2
+PORTREVISION=	3
 DISTVERSIONPREFIX=v
 CATEGORIES=	science biology
 MASTER_SITES=	https://github.com/InsightSoftwareConsortium/ITK/releases/download/v5.0.1/:data
@@ -12,6 +12,9 @@ COMMENT=	Insight Toolkit
 WWW=		https://www.itk.org
 
 LICENSE=	APACHE20
+
+BROKEN=		Fails to build, error: no template named 'binary_function' in namespace 'std'
+EXPIRATION_DATE=2026-04-30
 
 BUILD_DEPENDS=	googletest>=0:devel/googletest
 LIB_DEPENDS=	libgdcmCommon.so:devel/gdcm \
@@ -42,6 +45,7 @@ CMAKE_ARGS+=	-DBUILD_SHARED_LIBS:BOOL=ON \
 		-DModule_ITKIOMIC:BOOL=ON \
 		-DModule_ITKIOTransformMINC:BOOL=ON \
 		-DModule_ITKReview:BOOL=ON
+CMAKE_ON=	-PIE
 USE_LDCONFIG=	${PREFIX}/lib/InsightToolkit
 ITK_VER=	${PORTVERSION:R}
 PLIST_SUB+=	ITK_VER=${ITK_VER}

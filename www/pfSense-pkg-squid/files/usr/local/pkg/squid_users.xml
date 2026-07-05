@@ -8,7 +8,7 @@
  * squid_users.xml
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2015-2024 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2015-2026 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2012-2014 Marcello Coutinho
  * All rights reserved.
  *
@@ -29,8 +29,8 @@
 	<name>squidusers</name>
 	<title>Proxy Server: Local Users</title>
 	<include_file>/usr/local/pkg/squid.inc</include_file>
-	<delete_string>A proxy server user has been deleted.</delete_string>
-	<addedit_string>A proxy server user has been created/modified.</addedit_string>
+	<delete_string>squid: A proxy server user has been deleted.</delete_string>
+	<addedit_string>squid: A proxy server user has been created/modified.</addedit_string>
 	<tabs>
 		<tab>
 			<text>General</text>

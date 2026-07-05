@@ -1,8 +1,8 @@
 PORTNAME=	mame
-DISTVERSION=	0.264
+DISTVERSION=	0.286
 CATEGORIES=	emulators games
 
-MAINTAINER=	agh@riseup.net
+MAINTAINER=	laurent.chardon@gmail.com
 COMMENT=	MAME: a multi-purpose emulation framework
 WWW=		https://mamedev.org/
 
@@ -21,7 +21,8 @@ ONLY_FOR_ARCHS=	aarch64 amd64 armv7 i386 powerpc powerpc64 powerpc64le
 ONLY_FOR_ARCHS_REASON=	not yet ported to any architecture other than armv7, arm64, x86, and powerpc*
 
 BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}sphinxcontrib-svg2pdfconverter>0:textproc/py-sphinxcontrib-svg2pdfconverter@${PY_FLAVOR} \
-		asio>0:net/asio \
+		${PYTHON_PKGNAMEPREFIX}sphinx>0:textproc/py-sphinx@${PY_FLAVOR} \
+		asio130>0:net/asio130 \
 		genie:devel/genie \
 		glm>0:math/glm \
 		rapidjson>0:devel/rapidjson
@@ -31,19 +32,19 @@ LIB_DEPENDS=	libexpat.so:textproc/expat2 \
 		libutf8proc.so:textproc/utf8proc \
 		libzstd.so:archivers/zstd
 
-USES=		compiler:c++17-lang gmake jpeg llvm:min=16 localbase pkgconfig \
-		python:build sdl shebangfix sqlite:3 xorg
-
+USES=		compiler:c++17-lang gmake jpeg llvm:min=16 localbase \
+		pkgconfig python:build sdl sqlite:3 xorg
 USE_GITHUB=	yes
 GH_ACCOUNT=	mamedev
-GH_TAGNAME=	mame${DISTVERSION:S/.//}
-USE_SDL=	sdl2
+GH_TAGNAME=	${PORTNAME}${DISTVERSION:S/.//}
+USE_SDL=	sdl2 ttf2
 USE_XORG=	x11 xext xi xinerama xrender
 
 MAKEFILE=	makefile
 MAKE_ARGS=	SILENT= \
 		verbose=yes
-MAKE_ENV=	NO_USE_PORTAUDIO=1 \
+MAKE_ENV=	FORCE_DRC_C_BACKEND=1 \
+		NO_USE_PORTAUDIO=1 \
 		NO_USE_PULSEAUDIO=1 \
 		NOWERROR=1 \
 		OVERRIDE_AR="llvm-ar${LLVM_VERSION}" \
@@ -77,6 +78,7 @@ PORTDOCS=	*
 
 OPTIONS_DEFINE=			DOCS
 OPTIONS_DEFAULT=		MAME
+OPTIONS_DEFAULT+=		${ARCH:Mamd64:C/.+/SSE2/}
 OPTIONS_GROUP=			EMULATORS EXTRATOOLS HARDWARE
 OPTIONS_GROUP_EMULATORS=	MAME MAMENL MAMEVIRTUAL NLS QTDEBUGGER
 OPTIONS_GROUP_EXTRATOOLS=	TOOLS
@@ -84,9 +86,7 @@ OPTIONS_GROUP_HARDWARE=		OPENMP SSE2
 OPTIONS_RADIO=			BUILDTYPE
 OPTIONS_RADIO_BUILDTYPE=	DEBUG SIZE_OPTIMIZED_CFLAGS \
 				SPEED_OPTIMIZED_CFLAGS
-.if !exists(/usr/include/omp.h)
-OPTIONS_EXCLUDE=		OPENMP
-.endif
+OPTIONS_EXCLUDE+=		${ARCH:Namd64:Ni386:C/.+/SSE2/}
 OPTIONS_SUB=			yes
 
 BUILDTYPE_DESC=			Application production type
@@ -134,6 +134,7 @@ MAME_MAKE_ENV=				${_EMULATORS_MAKE_ENV}
 MAME_PLIST_SUB=				MAMEDATA=""
 MAME_PLIST_SUB_OFF=			MAMEDATA="@comment "
 NLS_USES=				gettext-runtime
+OPENMP_USES=				compiler:openmp
 OPENMP_MAKE_ENV=			OPENMP=1
 OPENMP_MAKE_ENV_OFF=			OPENMP=0
 QTDEBUGGER_USES=			qt:6
@@ -177,8 +178,7 @@ _EMULATORS_MAKE_ENV=	EMULATOR=1 \
 			USE_SYSTEM_LIB_PORTMIDI=1
 _EMULATORS_RUN_DEPENDS=	liberation-fonts-ttf>=0:x11-fonts/liberation-fonts-ttf
 _EMULATORS_USES=	gl
-_EMULATORS_USE=		GL=gl \
-			SDL=ttf2
+_EMULATORS_USE=		GL=gl
 _TOOLS_COMMANDS=	-depth 1 -type f -and -not -type d -and -not -name \
 			${PORTNAME}* -perm -o=+x
 _TOOLS_MANUALS=		-name *.1 -depth 1 -type f -and -not -type d -and -not \
@@ -187,21 +187,25 @@ _TOOLS_MANUALS=		-name *.1 -depth 1 -type f -and -not -type d -and -not \
 .include <bsd.port.options.mk>
 
 .if ${ARCH:Maarch64} || ${ARCH:Mamd64} || ${ARCH:Mpowerpc64*}
-MAKE_ENV+=	PTR64=1
+MAKE_ENV+=		PTR64=1
+.endif
+
+.if ${ARCH} == aarch64 || ${ARCH} == armv7
+EXTRA_PATCHES+=		${PATCHDIR}/extra-patch-3rdparty_lzma_C_AesOpt.c
 .endif
 
 # Compiling with -pg (PROFILE) causes the linker to run out of memory on i386,
 # build with less profiling data:
 .if ${ARCH:Mi386}
-DEBUG_MAKE_ENV=	PROFILER=1
+DEBUG_MAKE_ENV=		PROFILER=1
 .else
-DEBUG_MAKE_ENV=	PROFILE=1
+DEBUG_MAKE_ENV=		PROFILE=1
 .endif
 
 .if empty(PORT_OPTIONS:MMAME) && empty(PORT_OPTIONS:MMAMENL) && \
 	empty(PORT_OPTIONS:MMAMEVIRTUAL)
-MAKE_ENV+=	EMULATOR=0
-PLIST_SUB+=	MAMEDATA="@comment "
+MAKE_ENV+=		EMULATOR=0
+PLIST_SUB+=		MAMEDATA="@comment "
 .endif
 
 post-extract:
@@ -238,16 +242,15 @@ post-build:
 do-install:
 . if ${PORT_OPTIONS:MMAME} || ${PORT_OPTIONS:MMAMENL} || \
 	${PORT_OPTIONS:MMAMEVIRTUAL}
-.  for DATA in artwork bgfx ctrlr ini hash plugins samples
 	(cd ${WRKSRC} && \
-		${COPYTREE_SHARE} ${DATA} ${STAGEDIR}${DATADIR})
-.  endfor
-	${MKDIR} ${STAGEDIR}${ETCDIR}
+		${COPYTREE_SHARE} "artwork bgfx ctrlr ini hash plugins samples" \
+			${STAGEDIR}${DATADIR})
+	${MKDIR} ${STAGEDIR}${ETCDIR} \
+		 ${STAGEDIR}${DATADIR}/keymaps
 .  for INI in mame plugin ui
 	${INSTALL_DATA} ${WRKDIR}/${INI}.ini \
 		${STAGEDIR}${ETCDIR}/${INI}.ini.sample
 .  endfor
-	${MKDIR} ${STAGEDIR}${DATADIR}/keymaps
 .  for KEYMAP in be br ch de es fr gb it pt se
 	${INSTALL_DATA} ${WRKSRC}/keymaps/km_${KEYMAP}_LINUX.map \
 		${STAGEDIR}${DATADIR}/keymaps/km_${KEYMAP}.map
@@ -283,5 +286,8 @@ do-install-TOOLS-on:
 		${STAGEDIR}${PREFIX}/bin/ \;
 	${FIND} ${WRKSRC}/docs/man ${_TOOLS_MANUALS} -exec ${INSTALL_MAN} \
 		{} ${STAGEDIR}${PREFIX}/share/man/man1/ \;
+
+do-test:
+	${WRKSRC}/${PORTNAME} -validate
 
 .include <bsd.port.mk>

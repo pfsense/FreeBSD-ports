@@ -1,11 +1,11 @@
 PORTNAME=	check_ssl_cert
-DISTVERSION=	2.81.0
+DISTVERSION=	2.97.0
 CATEGORIES=	net-mgmt
 MASTER_SITES=	https://github.com/matteocorti/${PORTNAME}/releases/download/v${DISTVERSION}/
 
 MAINTAINER=	cmt@FreeBSD.org
 COMMENT=	Nagios/Icinga plugin for checking SSL/TLS certificates
-WWW=		https://matteocorti.github.io/check_ssl_cert/
+WWW=		https://github.com/matteocorti/check_ssl_cert/
 
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/COPYING.md

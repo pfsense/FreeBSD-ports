@@ -1,4 +1,5 @@
 bin/dspac
+bin/edge_evaluator
 bin/edge_list_to_metis_graph
 bin/edge_partitioning
 bin/evaluator
@@ -23,3 +24,5 @@ lib/libkahip.so
 lib/libkahip_static.a
 lib/libparhip_interface.so
 lib/libparhip_interface_static.a
+libdata/pkgconfig/kahip.pc
+libdata/pkgconfig/parhip_interface.pc

@@ -1,5 +1,6 @@
 PORTNAME=	colord
-PORTVERSION=	1.4.7
+PORTVERSION=	1.4.8
+PORTREVISION=	1
 CATEGORIES=	graphics
 MASTER_SITES=	https://www.freedesktop.org/software/colord/releases/
 
@@ -19,19 +20,15 @@ RUN_DEPENDS=	hwdata>0:misc/hwdata
 USERS=		colord
 GROUPS=		colord
 
-USES=		gettext gnome libtool localbase meson pathfix pkgconfig sqlite \
-		tar:xz
-USE_GNOME=	glib20 intlhack introspection:build
+USES=		gettext gnome localbase meson pathfix pkgconfig sqlite tar:xz
+USE_GNOME=	glib20 introspection:build
 
 USE_LDCONFIG=	yes
 MAKE_JOBS_UNSAFE=	yes
 MAKE_ENV=	PYTHONDONTWRITEBYTECODE=1
 MESON_ARGS=	-Dsystemd=false -Dudev_rules=false \
 		-Ddaemon_user=colord -Dlibcolordcompat=true \
-		-Dpnp_ids=${LOCALBASE}/share/hwdata/hwdata/pnp.ids \
-		--localstatedir=/var \
-
-INSTALL_TARGET=	install-strip
+		-Dpnp_ids=${LOCALBASE}/share/hwdata/pnp.ids
 
 GLIB_SCHEMAS=	org.freedesktop.ColorHelper.gschema.xml
 

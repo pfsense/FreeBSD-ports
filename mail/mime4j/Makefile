@@ -1,6 +1,6 @@
 PORTNAME=	mime4j
 PORTVERSION=	0.7.2
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	mail java
 MASTER_SITES=	https://archive.apache.org/dist/james/${PORTNAME}/${POSTVERSION}/
 DISTNAME=	apache-${PORTNAME}-${PORTVERSION}-bin
@@ -13,9 +13,10 @@ LICENSE=	APACHE20
 
 RUN_DEPENDS=	${JAVALIBDIR}/commons-logging.jar:java/apache-commons-logging
 
+USES=		java
+
 OPTIONS_DEFINE=	DOCS
 
-USE_JAVA=	yes
 NO_BUILD=	yes
 WRKSRC=		${WRKDIR}/apache-${PORTNAME}-${PORTVERSION}
 

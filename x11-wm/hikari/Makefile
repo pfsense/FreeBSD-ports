@@ -1,6 +1,6 @@
 PORTNAME=	hikari
 DISTVERSION=	2.3.3
-PORTREVISION=	4
+PORTREVISION=	5
 CATEGORIES=	x11-wm wayland
 MASTER_SITES=	https://hikari.acmelabs.space/releases/
 
@@ -16,7 +16,7 @@ BUILD_DEPENDS=	evdev-proto>0:devel/evdev-proto \
 LIB_DEPENDS=	libinput.so:x11/libinput \
 		libucl.so:textproc/libucl \
 		libwayland-server.so:graphics/wayland \
-		libwlroots.so:x11-toolkits/wlroots \
+		libwlroots-0.15.so:x11-toolkits/wlroots015 \
 		libxkbcommon.so:x11/libxkbcommon
 RUN_DEPENDS=	unix-selfauth-helper>0:security/unix-selfauth-helper
 
@@ -32,7 +32,7 @@ OPTIONS_DEFAULT=	GAMMA LAYERSHELL SCREENCOPY VIRTUALINPUT X11
 GAMMA_DESC=		Include gammacontrol protocol (required by, e.g., Redshift)
 LAYERSHELL_DESC=	Include layer_shell protocol (required by, e.g., waybar)
 SCREENCOPY_DESC=	Include screenshot protocol (required by, e.g., grim)
-VIRTUALINPUT_DESC=	needed for VNC support (requiered by e.g. wayvnc)
+VIRTUALINPUT_DESC=	needed for VNC support (required by e.g. wayvnc)
 
 GAMMA_MAKE_ARGS=	WITH_GAMMACONTROL=YES
 LAYERSHELL_MAKE_ARGS=	WITH_LAYERSHELL=YES
@@ -48,5 +48,4 @@ post-install:
 	${MV} ${STAGEDIR}${ETCDIR}/hikari.conf \
 		${STAGEDIR}${ETCDIR}/hikari.conf.sample
 
-.include "${.CURDIR:H:H}/x11-toolkits/wlroots015/override.mk"
 .include <bsd.port.mk>

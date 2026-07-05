@@ -1,11 +1,11 @@
---- src/slic3r/GUI/GLCanvas3D.cpp.orig	2023-12-12 14:21:21 UTC
+--- src/slic3r/GUI/GLCanvas3D.cpp.orig	2025-04-10 11:26:51 UTC
 +++ src/slic3r/GUI/GLCanvas3D.cpp
-@@ -108,7 +108,7 @@ float RetinaHelper::get_scale_factor() { return float(
- #endif // __WXGTK3__
+@@ -18,7 +18,7 @@
  
- // Fixed the collision between BuildVolume::Type::Convex and macro Convex defined inside /usr/include/X11/X.h that is included by WxWidgets 3.0.
--#if defined(__linux__) && defined(Convex)
-+#if (defined(__linux__) || defined(__FreeBSD__)) && defined(Convex)
- #undef Convex
- #endif
+ #include <igl/unproject.h> // IWYU pragma: keep
+ #include <LocalesUtils.hpp>
+-#include <nanosvgrast.h>
++#include <libnanosvg/nanosvgrast.h>
  
+ #include "libslic3r/BuildVolume.hpp"
+ #include "libslic3r/ClipperUtils.hpp"

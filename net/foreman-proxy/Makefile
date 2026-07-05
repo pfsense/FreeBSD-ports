@@ -1,5 +1,5 @@
 PORTNAME=	foreman-proxy
-PORTVERSION=	3.4.0
+DISTVERSION=	3.13.0
 CATEGORIES=	net
 MASTER_SITES=	https://downloads.theforeman.org/foreman-proxy/
 
@@ -14,19 +14,18 @@ RUN_DEPENDS=	rubygem-bundler_ext>=0.4:sysutils/rubygem-bundler_ext \
 		rubygem-concurrent-ruby>=1.0:devel/rubygem-concurrent-ruby \
 		rubygem-json>=1.8.1:devel/rubygem-json \
 		rubygem-logging>=0:devel/rubygem-logging \
-		rubygem-rack>=2.0:www/rubygem-rack \
+		rubygem-rack22>=2.0:www/rubygem-rack22 \
 		rubygem-rb-kqueue>=0.2.2:devel/rubygem-rb-kqueue \
 		rubygem-rsec>=0.4.3:devel/rubygem-rsec \
 		rubygem-sd_notify>=0.1.1:devel/rubygem-sd_notify \
-		rubygem-sinatra>=2.0:www/rubygem-sinatra \
+		rubygem-sinatra2>=2.0:www/rubygem-sinatra2 \
 		rubygem-webrick>=1.7:www/rubygem-webrick \
 		curl:ftp/curl
 
 USES=		ruby shebangfix tar:bzip2
 
-OPTIONS_DEFINE=	BMC PUPPET7
+OPTIONS_DEFINE=	BMC
 BMC_DESC=	Depend on rubyipmi and redfish_client for BMC support
-PUPPET7_DESC=	Depend on Puppet 7
 
 NO_ARCH=	yes
 NO_BUILD=	yes
@@ -52,8 +51,6 @@ SHEBANG_FILES=	extra/foreman-debug-proxy
 
 BMC_RUN_DEPENDS=	rubygem-rubyipmi>=0.10.0:sysutils/rubygem-rubyipmi \
 			rubygem-redfish_client>=0.5.1:sysutils/rubygem-redfish_client
-PUPPET7_RUN_DEPENDS=	puppet:sysutils/puppet7 \
-			rubygem-ruby-augeas>=0.5:textproc/rubygem-ruby-augeas
 
 post-patch:
 	@${REINPLACE_CMD} \

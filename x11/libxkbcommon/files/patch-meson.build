@@ -1,11 +1,11 @@
---- meson.build.orig	2023-10-08 20:46:48 UTC
+--- meson.build.orig	2025-03-11 23:24:11 UTC
 +++ meson.build
-@@ -145,7 +145,7 @@ have_version_script = cc.links(
- # Supports -Wl,--version-script?
+@@ -168,7 +168,7 @@ have_version_script = cc.links(
+ meson_test_map = meson.current_source_dir() / 'test/meson_test.map'
  have_version_script = cc.links(
-     'int main(){}',
--    args: '-Wl,--version-script=' + meson.current_source_dir()/'xkbcommon.map',
-+    args: '-Wl,--undefined-version,--version-script=' + meson.current_source_dir()/'xkbcommon.map',
+     'int main() { return 0; }',
+-    args: f'-Wl,--version-script=@meson_test_map@',
++    args: ['-shared', f'-Wl,--version-script=@meson_test_map@'],
      name: '-Wl,--version-script',
  )
  

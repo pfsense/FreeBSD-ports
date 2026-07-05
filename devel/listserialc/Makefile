@@ -1,5 +1,6 @@
 PORTNAME=	listserialc
 PORTVERSION=	1.1.0
+PORTREVISION=	1
 CATEGORIES=	devel java
 
 MAINTAINER=	kevans@FreeBSD.org
@@ -10,11 +11,11 @@ LICENSE=	LGPL3+
 
 LIB_DEPENDS=	libserialport.so:devel/libserialport
 
+USES=		java
 USE_GITHUB=	yes
 GH_ACCOUNT=	arduino
 GH_PROJECT=	listSerialPortsC
 
-USE_JAVA=	yes
 USE_LDCONFIG=	yes
 MAKE_ARGS+=	JAVA_HOME=${JAVA_HOME}
 

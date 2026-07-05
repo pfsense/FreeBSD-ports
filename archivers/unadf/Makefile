@@ -1,7 +1,6 @@
 PORTNAME=	unadf
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.8.0
-PORTREVISION=	1
+DISTVERSION=	0.10.6
 CATEGORIES=	archivers
 
 MAINTAINER=	eduardo@FreeBSD.org
@@ -11,17 +10,16 @@ WWW=		http://lclevy.free.fr/adflib/unadf.html
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-USES=		autoreconf cpe libtool pathfix pkgconfig
+USES=		autoreconf cpe libtool pkgconfig
 CPE_VENDOR=	unadf_project
 USE_GITHUB=	yes
-GH_ACCOUNT=	lclevy
+GH_ACCOUNT=	adflib
 GH_PROJECT=	ADFlib
-
 USE_LDCONFIG=	yes
 
 GNU_CONFIGURE=	yes
-GNU_CONFIGURE_MANPREFIX=	${PREFIX}/share
 INSTALL_TARGET=	install-strip
+TEST_TARGET=	check
 
 DOCSDIR=	${PREFIX}/share/doc/adflib
 

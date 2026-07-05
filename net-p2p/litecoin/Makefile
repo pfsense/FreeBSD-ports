@@ -1,7 +1,7 @@
 PORTNAME=	litecoin
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.21.2.1
-PORTREVISION=	10
+DISTVERSION=	0.21.4
+PORTREVISION=	12
 CATEGORIES=	net-p2p finance
 
 MAINTAINER=	hsw@bitmark.com
@@ -108,6 +108,9 @@ post-install:
 		${STAGEDIR}${PREFIX}/share/pixmaps/litecoin.png
 
 .endif
+
+post-patch:
+	@${REINPLACE_CMD} -e '/AX_BOOST_SYSTEM/d' ${WRKSRC}/configure.ac
 
 regression-test: build
 	# To use this sucessfully, remove --without-daemon and --without-utils

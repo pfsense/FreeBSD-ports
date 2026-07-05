@@ -1,6 +1,6 @@
 PORTNAME=	spicetrade
 PORTVERSION=	1.2
-PORTREVISION=	4
+PORTREVISION=	5
 CATEGORIES=	games java
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/Spice%20Trade%20v${PORTVERSION}
 DISTNAME=	Spicetrade-${PORTVERSION}
@@ -11,7 +11,8 @@ MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Colourful 14th century Arab spice trading game
 WWW=		http://www.spicetrade.org/
 
-USE_JAVA=	yes
+USES=		java
+
 DATADIR=	${JAVASHAREDIR}/${PORTNAME}
 NO_BUILD=	yes
 NO_ARCH=	yes

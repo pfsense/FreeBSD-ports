@@ -1,12 +1,14 @@
 PORTNAME=	gnome-shell-extension-weather
 PORTVERSION=	0.0.0.20180411
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	deskutils gnome
 DIST_SUBDIR=	gnome
 
 MAINTAINER=	gnome@FreeBSD.org
 COMMENT=	Weather extension for the GNOME3 shell
 WWW=		https://github.com/Neroth/gnome-shell-extension-weather
+
+BROKEN=		Does not support recent gnome-shell
 
 RUN_DEPENDS=	gnome-shell>=0:x11/gnome-shell
 

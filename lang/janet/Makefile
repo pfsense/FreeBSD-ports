@@ -1,10 +1,9 @@
 PORTNAME=	janet
 DISTVERSIONPREFIX=	v
-DISTVERSION=	1.32.0
-PORTREVISION=	1
+DISTVERSION=	1.41.2
 CATEGORIES=	lang
 
-MAINTAINER=	hsw@bitmark.com
+MAINTAINER=	bsd.hsw@gmail.com
 COMMENT=	Functional embeddable lisp with C interop, & performant data types
 WWW=		https://janet-lang.org/
 

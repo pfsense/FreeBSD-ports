@@ -1,6 +1,6 @@
 PORTNAME=	jmf
 PORTVERSION=	2.1.1e
-PORTREVISION=	3
+PORTREVISION=	4
 CATEGORIES=	java multimedia
 DISTNAME=	${PORTNAME}-${PORTVERSION:S/./_/g}-alljava
 
@@ -14,8 +14,8 @@ LICENSE_NAME=	jmf
 LICENSE_TEXT=	Redistribution of pre-compiled binaries is not permitted
 LICENSE_PERMS=	auto-accept
 
-USES=		zip
-USE_JAVA=	yes
+USES=		java zip
+
 NO_BUILD=	YES
 
 WRKSRC=		${WRKDIR}/JMF-${PORTVERSION}

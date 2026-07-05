@@ -1,5 +1,5 @@
 PORTNAME=	pylsqpack
-PORTVERSION=	0.3.18
+PORTVERSION=	0.3.23
 CATEGORIES=	www python
 MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -16,6 +16,8 @@ BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}setuptools>=0:devel/py-setuptools@${PY_FLA
 
 USES=		compiler:c++11-lang python
 USE_PYTHON=	autoplist concurrent pep517 unittest
+
+TEST_ENV=	PYTHONPATH=${STAGEDIR}${PYTHON_SITELIBDIR}
 
 post-install:
 	${FIND} ${STAGEDIR}${PYTHON_SITELIBDIR} -name '*.so' -exec ${STRIP_CMD} {} +

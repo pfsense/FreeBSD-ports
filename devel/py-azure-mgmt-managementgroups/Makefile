@@ -1,10 +1,11 @@
 PORTNAME=	azure-mgmt-managementgroups
 PORTVERSION=	1.0.0
+PORTREVISION=	1
 CATEGORIES=	devel python
 MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
-MAINTAINER=	dbaio@FreeBSD.org
+MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Microsoft Azure Management Groups Client Library for Python
 WWW=		https://pypi.org/project/azure-mgmt-managementgroups/
 

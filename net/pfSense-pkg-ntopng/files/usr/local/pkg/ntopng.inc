@@ -3,7 +3,7 @@
  * ntopng.inc
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2015-2024 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2015-2026 Rubicon Communications, LLC (Netgate)
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -27,6 +27,7 @@ require_once("service-utils.inc");
 require_once("util.inc");
 require_once("certs.inc");
 
+define('LOG_PREFIX_PKG_NTOPNG', 'ntopng');
 
 const DATA_DIR = "/var/db/ntopng/";
 const RC_FILE = "/usr/local/etc/rc.d/ntopng.sh";
@@ -60,7 +61,7 @@ function ntopng_php_deinstall_command() {
 		config_del_path('installedpackages/ntopng');
 		write_config("[ntopng] Removed package settings on uninstall.");
 
-		log_error(gettext("[ntopng] Removed package data and settings since 'Keep Data/Settings' is disabled."));
+		logger(LOG_INFO, localize_text("Removed package data and settings since 'Keep Data/Settings' is disabled."), LOG_PREFIX_PKG_NTOPNG);
 	}
 }
 
@@ -90,7 +91,7 @@ function ntopng_migrate_settings() {
 		if ($local_networks == "rfc1918") {
 			$rows = array(array('cidr'=>'192.168.0.0/16'), array('cidr'=>'172.16.0.0/12'), array('cidr'=>'10.0.0.0/8'));
 			config_set_path('installedpackages/ntopng/config/0/row', $rows);
-			log_error(gettext("[ntopng] Migrated rfc1918 local_networks setting."));
+			logger(LOG_INFO, localize_text("Migrated rfc1918 local_networks setting."), LOG_PREFIX_PKG_NTOPNG);
 		}
 		config_del_path('installedpackages/ntopng/config/0/local_networks');
 
@@ -110,7 +111,7 @@ function ntopng_create_datadir() {
 function ntopng_write_cert_file($file, $cert) {
 	$fd = fopen($file, "w");
 	if (!$fd) {
-		log_error("ERROR: Could not open {$file} for writing");
+		logger(LOG_ERR, localize_text("Could not open %s for writing", $file), LOG_PREFIX_PKG_NTOPNG);
 		return;
 	}
 	chmod($file, 0600);
@@ -123,7 +124,7 @@ function ntopng_write_cert_file($file, $cert) {
 function ntopng_write_conf_file($file, $array) {
 	$fd = fopen($file, "w");
 	if (!$fd) {
-		log_error("ERROR: Could not open {$file} for writing");
+		logger(LOG_ERR, localize_text("Could not open %s for writing", $file), LOG_PREFIX_PKG_NTOPNG);
 		return;
 	}
 	chmod($file, 0600);
@@ -171,13 +172,13 @@ function ntopng_sync_package() {
 			}
 		}
 	}
-	if (config_get_path('installedpackages/ntopng/config/0/server_ipv6') == "on") {
+	elseif (config_get_path('installedpackages/ntopng/config/0/server_ipv6') == "on") {
 		if ($iface == "All") {
 			$listen_array[] = "[::]:" . HTTP_PORT;
 		} else {
 			$addr = get_interface_ipv6($iface);
 			if (is_ipaddrv6($addr)) {
-				$listen_array[] = "{$addr}:" . HTTP_PORT;
+				$listen_array[] = "[{$addr}]:" . HTTP_PORT;
 			}
 		}
 	}
@@ -186,6 +187,7 @@ function ntopng_sync_package() {
 	/* HTTP/HTTPS */
 	if (config_get_path('system/webgui/protocol') == "https") {
 		$cert = lookup_cert(config_get_path('system/webgui/ssl-certref'));
+		$cert = $cert['item'];
 		ntopng_write_cert_file(CERT_FILE, $cert);
 		$config_lines .= "--http-port=0\n--https-port=$listen_string\n";
 	} else {
@@ -199,7 +201,7 @@ function ntopng_sync_package() {
 	}
 
 	/* Monitor interfaces */
-	foreach (config_get_path('installedpackages/ntopng/config/0/interface_array') as $iface) {
+	foreach (config_get_path('installedpackages/ntopng/config/0/interface_array', []) as $iface) {
 		$if = convert_friendly_interface_to_real_interface_name($iface);
 		if ($if) {
 			$config_lines .= "--interface={$if}\n";
@@ -214,7 +216,7 @@ function ntopng_sync_package() {
 
 	/* Additional local networks */
 	$nets = array();
-	foreach (config_get_path('installedpackages/ntopng/config/0/row') as $net) {
+	foreach (config_get_path('installedpackages/ntopng/config/0/row', []) as $net) {
 		$cidr = trim($net['cidr']);
 		if (is_subnet($cidr)) {
 			$cidr_name = trim($net['cidr_name']);
@@ -245,6 +247,7 @@ function ntopng_sync_package() {
 	$redis_cli = REDIS_CLI;
 	$ntopng_cmd = NTOPNG_CMD;
 
+	$LOG_PREFIX_PKG_NTOPNG = LOG_PREFIX_PKG_NTOPNG;
 	$start = <<<EOD
 
 	# Make sure library path cache is updated
@@ -252,12 +255,12 @@ function ntopng_sync_package() {
 
 	if [ ! -f {$conf_file} ]
 	then
-		/usr/bin/logger -t ntopng "Configuration file missing. Re-save ntopng settings."
+		/usr/bin/logger -p user.notice -t ntopng "NOTICE [{$LOG_PREFIX_PKG_NTOPNG}] Configuration file missing. Re-save ntopng settings."
 		exit 1
 	fi
 	if [ ! -f {$db_file} ]
 	then
-		/usr/bin/logger -t ntopng "Redis database file missing. Re-save ntopng settings."
+		/usr/bin/logger -p user.notice -t ntopng "NOTICE [{$LOG_PREFIX_PKG_NTOPNG}] Redis database file missing. Re-save ntopng settings."
 		exit 1
 	fi
 
@@ -300,7 +303,7 @@ EOD;
 			mwexec(REDIS_CLI . " SET ntopng.prefs.admin_password_changed 1");
 			mwexec(REDIS_CLI . " save");
 		} else {
-			log_error(gettext("[ntopng] Cannot set admin password - redis-server is not running."));
+			logger(LOG_ERR, localize_text("Cannot set admin password - redis-server is not running."), LOG_PREFIX_PKG_NTOPNG);
 		}
 	}
 
@@ -328,7 +331,7 @@ function ntopng_start_redis() {
 	}
 
 	if ($redis_started == false) {
-		log_error(gettext("[ntopng] Failed to start redis-server."));
+		logger(LOG_ERR, localize_text("Failed to start redis-server."), LOG_PREFIX_PKG_NTOPNG);
 	}
 
 	return $redis_started;
@@ -347,7 +350,7 @@ function ntopng_stop_redis() {
 			sleep(2);
 		}
 
-		log_error(gettext("[ntopng] redis-server failed to stop."));
+		logger(LOG_ERR, localize_text("redis-server failed to stop."), LOG_PREFIX_PKG_NTOPNG);
 		mwexec("/usr/bin/killall -q -9 redis-server", true);
 	}
 }
@@ -365,7 +368,7 @@ function ntopng_stop_ntopng() {
 			sleep(2);
 		}
 
-		log_error(gettext("[ntopng] ntopng failed to stop."));
+		logger(LOG_ERR, localize_text("ntopng failed to stop."), LOG_PREFIX_PKG_NTOPNG);
 		mwexec("/usr/bin/killall -q -9 ntopng", true);
 	}
 }
@@ -395,7 +398,7 @@ function ntopng_update_geolite2_db_file(&$ch, $db_name) {
 	/* Set up the tar file */
 	$fp = fopen($tarfile, "wb");
 	if (!$fp) {
-		log_error(gettext("[ntopng] Could not open {$tarfile} for writing."));
+		logger(LOG_ERR, localize_text("Could not open %s for writing.", $tarfile), LOG_PREFIX_PKG_NTOPNG);
 		return (FALSE);
 	}
 	curl_setopt($ch, CURLOPT_FILE, $fp);
@@ -408,7 +411,7 @@ function ntopng_update_geolite2_db_file(&$ch, $db_name) {
 	/* Error? */
 	$rc = curl_getinfo($ch, CURLINFO_HTTP_CODE);
 	if ($rc != 200) {
-		log_error(gettext("[ntopng] Download of {$db_name} ({$url}) failed: response code {$rc}."));
+		logger(LOG_ERR, localize_text("Download of %s (%s) failed: response code %s.", $db_name, $url, $rc), LOG_PREFIX_PKG_NTOPNG);
 		return (FALSE);
 	}
 
@@ -455,10 +458,10 @@ function ntopng_update_geolite2_db($account, $key) {
 	}
 	curl_close($ch);
 	if (!$status) {
-		log_error(gettext("[ntopng] Failed to update geolocation databases."));
+		logger(LOG_ERR, localize_text("Failed to update geolocation databases."), LOG_PREFIX_PKG_NTOPNG);
 		return (FALSE);
 	}
-	log_error(gettext("[ntopng] Updated geolocation databases."));
+	logger(LOG_INFO, localize_text("Updated geolocation databases."), LOG_PREFIX_PKG_NTOPNG);
 
 	/* Do not (re)start service on package (re)install, only on manual GeoIP updates via the GUI */
 	if ($_POST['Submit'] == "Update GeoIP Data") {
@@ -469,7 +472,7 @@ function ntopng_update_geolite2_db($account, $key) {
 }
 
 function ntopng_delete_data() {
-	log_error(gettext("[ntopng] Request to delete data."));
+	logger(LOG_INFO, localize_text("Request to delete data."), LOG_PREFIX_PKG_NTOPNG);
 
 	/* Shut down ntopng */
 	ntopng_stop_ntopng();
@@ -478,7 +481,7 @@ function ntopng_delete_data() {
 	if (ntopng_start_redis()) {
 		/* Delete redis cache entries */
 		mwexec(REDIS_CLI . " --scan --pattern '*.cache.*' | xargs -L 100 " . REDIS_CLI . " DEL");
-		log_error(gettext("[ntopng] Deleted cache entries in Redis DB."));
+		logger(LOG_INFO, localize_text("Deleted cache entries in Redis DB."), LOG_PREFIX_PKG_NTOPNG);
 
 		/* Stop redis */
 		ntopng_stop_redis();
@@ -487,34 +490,34 @@ function ntopng_delete_data() {
 		if (is_dir(DATA_DIR)) {
 			mwexec("/usr/bin/find " . DATA_DIR . " -name '*.db' -o -name '*.rrd' | /usr/bin/xargs /bin/rm");
 			mwexec("/usr/bin/find " . DATA_DIR . " -depth -type d | /usr/bin/xargs /bin/rmdir", true);
-			log_error(gettext("[ntopng] Deleted ntopng traffic data and alerts."));
+			logger(LOG_INFO, localize_text("Deleted ntopng traffic data and alerts."), LOG_PREFIX_PKG_NTOPNG);
 		} else {
-			log_error(gettext("[ntopng] Nothing to delete; directory " . DATA_DIR . " not found."));
+			logger(LOG_INFO, localize_text("Nothing to delete; directory %s not found.", DATA_DIR), LOG_PREFIX_PKG_NTOPNG);
 		}
 
 		/* Resync settings and restart service if enabled */
 		unset($_POST['Delete']);
 		ntopng_sync_package();
-		log_error(gettext("[ntopng] Resynced ntopng settings."));
+		logger(LOG_INFO, localize_text("Resynced ntopng settings."), LOG_PREFIX_PKG_NTOPNG);
 	} else {
-		log_error(gettext("[ntopng] Cannot delete data - redis-server is not running."));
+		logger(LOG_ERR, localize_text("Cannot delete data - redis-server is not running."), LOG_PREFIX_PKG_NTOPNG);
 	}
 }
 
 function ntopng_reset() {
-	log_error(gettext("[ntopng] Request to perform a full reset."));
+	logger(LOG_INFO, localize_text("Request to perform a full reset."), LOG_PREFIX_PKG_NTOPNG);
 
 	/* Shut everything down */
 	ntopng_stop_service();
 
 	/* Remove the entire data directory */
 	mwexec("/bin/rm -rf " . DATA_DIR);
-	log_error(gettext("[ntopng] All traffic data, alerts, preferences and customization deleted."));
+	logger(LOG_INFO, localize_text("All traffic data, alerts, preferences and customization deleted."), LOG_PREFIX_PKG_NTOPNG);
 
 	/* Resync settings and restart service if enabled */
 	unset($_POST['Delete']);
 	ntopng_sync_package();
-	log_error(gettext("[ntopng] Resynced ntopng settings."));
+	logger(LOG_INFO, localize_text("Resynced ntopng settings."), LOG_PREFIX_PKG_NTOPNG);
 }
 
 function ntopng_validate_input($post, &$input_errors) {

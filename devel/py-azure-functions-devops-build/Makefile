@@ -1,10 +1,11 @@
 PORTNAME=	azure-functions-devops-build
 PORTVERSION=	0.0.22
+PORTREVISION=	1
 CATEGORIES=	devel python
 MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
-MAINTAINER=	dbaio@FreeBSD.org
+MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Azure Devops Build Manager For Azure Functions
 WWW=		https://pypi.org/project/azure-functions-devops-build/
 

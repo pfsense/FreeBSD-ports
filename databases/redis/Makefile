@@ -1,27 +1,35 @@
 PORTNAME=	redis
-DISTVERSION=	7.2.4
+DISTVERSION=	8.6.1
 PORTREVISION=	1
 CATEGORIES=	databases
 MASTER_SITES=	https://download.redis.io/releases/
 
-MAINTAINER=	yasu@FreeBSD.org
+MAINTAINER=	bofh@freebsd.org
 COMMENT=	Persistent key-value database with built-in net interface
 WWW=		https://redis.io/
 
-LICENSE=	BSD3CLAUSE
-LICENSE_FILE=	${WRKSRC}/COPYING
+LICENSE=	AGPLv3 RSALv2 SSPLv1
+LICENSE_COMB=	dual
+LICENSE_NAME_RSALv2=	Redis Source Available License v2
+LICENSE_NAME_SSPLv1=	Server Side Public License v1
+LICENSE_FILE=	${WRKSRC}/LICENSE.txt
+LICENSE_PERMS_RSALv2=	dist-mirror dist-sell pkg-mirror pkg-sell auto-accept
+LICENSE_PERMS_SSPLv1=	dist-mirror dist-sell pkg-mirror pkg-sell auto-accept
 
-USES=		compiler:c11 cpe gmake tcl:test
+USES=		compiler:c11 cpe gmake localbase:ldflags pkgconfig tcl:test
 CPE_VENDOR=	redislabs
 USE_RC_SUBR=	redis sentinel
 
 MAKE_ENV=	OPTIMIZATION= \
 		V=yo
+BINARY_ALIAS=	gmd5sum=md5sum
 
-LDFLAGS+=	-lpthread -lm -lexecinfo
+#PIE_UNSAFE=	ld: error: relocation R_X86_64_32 cannot be used against local \
+#		symbol; recompile with -fPIC
 
-CONFLICTS_INSTALL=	redis-devel redis6 redis62 redis70 # etc/rc.d/redis
+CONFLICTS_INSTALL=	redis-devel redis[0-9]*
 
+PORTSCOUT=	limit:^[0-9\.]*$$
 SUB_FILES=	pkg-message
 SUB_LIST=	PORTNAME=${PORTNAME} \
 		REDIS_DBDIR=${REDIS_DBDIR} \
@@ -40,7 +48,14 @@ PLIST_SUB=	REDIS_DBDIR=${REDIS_DBDIR} \
 
 OPTIONS_DEFINE=		JEMALLOC TLS
 OPTIONS_DEFAULT=	TLS
+OPTIONS_GROUP=		MODULES
 OPTIONS_SUB=		yes
+
+OPTIONS_GROUP_MODULES=		REDISJSON
+
+REDISJSON_DESC=		RedisJSON module
+
+REDISJSON_RUN_DEPENDS=		redisjson>=0:databases/redisjson
 
 JEMALLOC_DESC=	Use jemalloc
 TLS_DESC=	Use TLS (openssl req.)
@@ -57,7 +72,7 @@ REDIS_RUNDIR?=	/var/run/redis
 REDIS_LOGDIR?=	/var/log/redis
 
 post-patch-JEMALLOC-on:
-	@${REINPLACE_CMD} '69s!Linux!FreeBSD!g' ${WRKSRC}/src/Makefile
+	@${REINPLACE_CMD} '78s!Linux!FreeBSD!g' ${WRKSRC}/src/Makefile
 
 post-build:
 	${SED} ${SUB_LIST:S/$/!g/:S/^/ -e s!%%/:S/=/%%!/} \

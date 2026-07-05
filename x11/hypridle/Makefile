@@ -1,32 +1,34 @@
 PORTNAME=	hypridle
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.1.1
-PORTREVISION=	1
+DISTVERSION=	0.1.7
+PORTREVISION=	2
 CATEGORIES=	x11 wayland
 
-MAINTAINER=	jbeich@FreeBSD.org
+MAINTAINER=	tagattie@FreeBSD.org
 COMMENT=	Hyprland's idle daemon #'
 WWW=		https://github.com/hyprwm/hypridle
 
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-BUILD_DEPENDS=	wayland-protocols>0:graphics/wayland-protocols
+BUILD_DEPENDS=	hyprland-protocols>=0.6.0:graphics/hyprland-protocols \
+		hyprwayland-scanner>=0.4.4:devel/hyprwayland-scanner \
+		wayland-protocols>0:graphics/wayland-protocols
 LIB_DEPENDS=	libhyprlang.so:devel/hyprlang \
+		libhyprutils.so:devel/hyprutils \
 		libsdbus-c++.so:devel/sdbus-cpp \
 		libwayland-client.so:graphics/wayland
 
 USES=		compiler:c++11-lib cmake pkgconfig
+
 USE_GITHUB=	yes
 GH_ACCOUNT=	hyprwm
-LDFLAGS+=	-Wl,--as-needed # sdbus-cpp deps
-PLIST_FILES=	bin/${PORTNAME}
 
-# XXX Drop after FreeBSD 14.0 EOL around 2025-03-01
-.if exists(/usr/include/c++/v1/__format/format_functions.h) && \
-   !exists(/usr/include/c++/v1/__format/write_escaped.h)
-CXXFLAGS+=	-fexperimental-library
-.endif
+LDFLAGS+=	-Wl,--as-needed # sdbus-cpp deps
+
+PLIST_FILES=	bin/${PORTNAME} \
+		lib/systemd/user/${PORTNAME}.service \
+		share/hypr/${PORTNAME}.conf
 
 post-patch:
 # https://github.com/ConsoleKit2/ConsoleKit2/issues/150
@@ -35,7 +37,7 @@ post-patch:
 		-e 's,login1,ConsoleKit,' \
 		-e 's,logind,consolekit2,' \
 		-e 's,GetSession,&ByPID,' \
-		-e 's,"auto",uint32_t{getpid()},' \
+		-e 's,string{"auto"},to_string(getpid()),' \
 		${WRKSRC}/src/core/Hypridle.cpp
 
 .include <bsd.port.mk>

@@ -1,7 +1,6 @@
 PORTNAME=	dosbox-x
 DISTVERSIONPREFIX=	${PORTNAME}-v
-DISTVERSION=	2024.03.01
-PORTREVISION=	1
+DISTVERSION=	2026.01.02
 CATEGORIES=	emulators
 
 MAINTAINER=	eduardo@FreeBSD.org
@@ -25,7 +24,6 @@ USE_GNOME=	glib20
 USE_SDL=	net2 sdl2
 USE_XORG=	x11 xkbfile xrandr
 GNU_CONFIGURE=	yes
-GNU_CONFIGURE_MANPREFIX=	${PREFIX}/share
 CONFIGURE_ARGS=	--disable-emscripten --enable-hx-dos --enable-libslirp --enable-mt32 \
 		--enable-opengl --enable-printer --disable-sdl --enable-sdl2 --enable-x11
 INSTALL_TARGET=	install_strip

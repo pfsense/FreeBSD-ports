@@ -1,5 +1,6 @@
 PORTNAME=	errbot
 PORTVERSION=	6.2.0
+PORTREVISION=	2
 CATEGORIES=	net python
 MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -12,21 +13,23 @@ WWW=		https://errbot.readthedocs.io/en/latest/ \
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/COPYING
 
+BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}setuptools>=0:devel/py-setuptools@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}wheel>=0:devel/py-wheel@${PY_FLAVOR}
 RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}ansi>=0.3.6:devel/py-ansi@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}colorlog>=6.7.0:devel/py-colorlog@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}daemonize>=2.5.0:devel/py-daemonize@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}deepmerge>=1.1.0:devel/py-deepmerge@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}dulwich>=0.21.2:devel/py-dulwich@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}dulwich>=0.21.5:devel/py-dulwich@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}flask>=2.3.3:www/py-flask@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}Jinja2>=3.1.2:devel/py-Jinja2@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}markdown>=3.4.4:textproc/py-markdown@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}pygments>=2.16.1:textproc/py-pygments@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}openssl>=23.2.0,1:security/py-openssl@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}pyopenssl>=23.2.0,1:security/py-pyopenssl@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}requests>=2.31.0:www/py-requests@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}webtest>=3.0.0:www/py-webtest@${PY_FLAVOR}
 
 USES=		python
-USE_PYTHON=	autoplist concurrent distutils
+USE_PYTHON=	autoplist concurrent pep517
 
 NO_ARCH=	yes
 
@@ -47,10 +50,4 @@ XMPP_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}pyasn1>=0.5.0:devel/py-pyasn1@${PY_FLAV
 			${PYTHON_PKGNAMEPREFIX}pyasn1-modules>=0.3.0:devel/py-pyasn1-modules@${PY_FLAVOR} \
 			${PYTHON_PKGNAMEPREFIX}slixmpp>=1.8.4:net-im/py-slixmpp@${PY_FLAVOR}
 
-.include <bsd.port.pre.mk>
-
-.if ${PYTHON_REL} < 30900
-RUN_DEPENDS+=	${PYTHON_PKGNAMEPREFIX}graphlib-backport>=1.0.3:graphics/py-graphlib-backport@${PY_FLAVOR}
-.endif
-
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

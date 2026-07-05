@@ -28,6 +28,8 @@ use IPC::Open2;
 use File::Basename;
 use Term::ANSIColor qw(:constants);
 use POSIX qw(strftime);
+use open qw(:std :utf8);
+use utf8;
 
 sub perror($$$$);
 our ($opt_a, $opt_A, $opt_b, $opt_C, $opt_c, $opt_g, $opt_h, $opt_m, $opt_t, $opt_v, $opt_M, $opt_N, $opt_B, $opt_V, @ALLOWED_FULL_PATHS);
@@ -51,7 +53,7 @@ $portdir = '.';
 
 # version variables
 my $major = 2;
-my $minor = 22;
+my $minor = 23;
 my $micro = 0;
 
 # default setting - for FreeBSD
@@ -171,7 +173,7 @@ my @varlist =  qw(
 	ALLFILES CHECKSUM_ALGORITHMS INSTALLS_ICONS GNU_CONFIGURE
 	CONFIGURE_ARGS MASTER_SITE_SUBDIR LICENSE LICENSE_COMB NO_STAGE
 	DEVELOPER SUB_FILES SHEBANG_LANG MASTER_SITES_SUBDIRS FLAVORS
-	USE_PYTHON LICENSE_PERMS USE_PYQT USE_GITHUB USE_GITLAB
+	USE_PYTHON LICENSE_PERMS USE_PYQT USE_GITHUB USE_GITLAB PREFIX
 );
 
 my %makevar;
@@ -364,6 +366,9 @@ if ($committer) {
 				"git files before committing the port.");
 
 			$File::Find::prune = 1;
+		} elsif (-f && -x) {
+			&perror("WARN", $fullname, -1, "this file is executable and likely ".
+				"does not need to be.");
 		} elsif (-f) {
 			my $fullpath = $makevar{'.CURDIR'}.'/'.$fullname;
 			my $result = `type git >/dev/null 2>&1 && git status --porcelain $fullpath`;
@@ -544,36 +549,6 @@ sub checkdescr {
 			"other local characters.  files should be in ".
 			"plain 7-bit ASCII");
 	}
-	if ($file =~ /\bpkg-descr/ && $tmp =~ m,https?://,) {
-		my $has_url = 0;
-		my $has_www = 0;
-		my $cpan_url = 0;
-		my $has_endslash = 0;
-		foreach my $line (grep($_ =~ "https?://", split(/\n+/, $tmp))) {
-			$has_url = 1;
-			if ($line =~ m,WWW:[ \t]+https?://,) {
-				$has_www = 1;
-				if ($line =~ m,search.cpan.org,) {
-					$cpan_url = 1;
-					if ($line =~ m,/$,) {
-						$has_endslash = 1;
-					}
-				}
-			}
-		}
-
-		if (!$has_url) {
-			&perror("WARN", $file, -1, "add \"WWW: URL:\" for this port if possible");
-		}
-
-		if ($cpan_url && !$has_endslash) {
-			&perror("WARN", $file, -1, "end WWW CPAN URL with a \"/\"");
-		}
-
-		if ($has_url && ! $has_www) {
-			&perror("FATAL", $file, -1, "contains a URL but no \"WWW:\"");
-		}
-	}
 	close(IN);
 }
 
@@ -589,6 +564,7 @@ sub checkplist {
 	my $owner_seen = 0;
 	my $group_seen = 0;
 	my $found_so = 0;
+	my $found_prefix_so = 0;
 
 	# Variables that are allowed to be out-of-sync in the XXXDIR check.
 	# E.g., %%PORTDOCS%%%%RUBY_MODDOCDIR%% will be OK because there is
@@ -804,6 +780,8 @@ sub checkplist {
 			$makevar{USE_LDCONFIG} eq '') {
 			&perror("WARN", $file, $., "installing shared libraries, ".
 				"please define USE_LDCONFIG as appropriate");
+		} elsif ($_ =~ m|^lib/lib[^\/]+\.so[.\d]*$|) {
+			$found_prefix_so++;
 		} elsif ($_ =~ m|lib[^\/]+\.so[.\d]*$|) {
 			$found_so++;
 		}
@@ -938,9 +916,14 @@ sub checkplist {
 		&perror("WARN", $file, -1, "There are only $item_count items in the plist.  Consider using PLIST_FILES instead of pkg-plist when installing less than $numpitems items.");
 	}
 
-	if ($makevar{USE_LDCONFIG} ne '' && !$found_so) {
-		&perror("WARN", $file, -1, "You have defined USE_LDCONFIG, but this ".
-			"port does not install any shared objects.");
+	if ($makevar{USE_LDCONFIG}) {
+		if ($makevar{USE_LDCONFIG} && $makevar{USE_LDCONFIG} ne "$makevar{PREFIX}/lib" && !$found_so) {
+			&perror("WARN", $file, -1, "You have defined USE_LDCONFIG, but this ".
+				"port does not install any shared objects.");
+		} elsif ($makevar{USE_LDCONFIG} eq "$makevar{PREFIX}/lib" && !$found_prefix_so) {
+			&perror("WARN", $file, -1, "You have defined USE_LDCONFIG, but this ".
+				"port does not install any shared objects into \${PREFIX}/lib.");
+		}
 	}
 
 	close(IN);
@@ -1376,6 +1359,7 @@ sub checkmakefile {
 	my $optused = 0;
 	my $desktop_entries = '';
 	my $conflicts = "";
+	my %targ_hashes = ();
 
 	my $masterdir = $makevar{MASTERDIR};
 	if ($masterdir ne '' && $masterdir ne $makevar{'.CURDIR'}) {
@@ -1576,10 +1560,10 @@ sub checkmakefile {
 					"%%FOO%% variables.  Use make variables and logic instead");
 			}
 			if ($plist_file =~ m|\.desktop$| && $makevar{USES} !~ /\bdesktop-file-utils\b/) {
-				&perror("FATAL", "", -1, "PLIST_FILES: this port installs .desktop files. ".
-					"please add `desktop-file-utils` to USES.");
-			}
-
+            	&perror("WARN", "", -1, "this port installs .desktop files. ".
+                	"If the .desktop file(s) installed contain ``MimeType='', ".
+                	"you must add `desktop-file-utils` to USES.");
+            }
 		}
 	}
 
@@ -2387,10 +2371,10 @@ xargs xmkmf
 	# whole file: USE_KDE check
 	#
 	if ($whole =~ /^USE_KDE[?:]?=\s*(.*)$/m) {
-		if ($makevar{USES} !~ /\bkde:[45]/) {
+		if ($makevar{USES} !~ /\bkde:[56]/) {
 			my $lineno = &linenumber($`);
 			&perror("WARN", $file, $lineno, "USE_KDE is defined without ".
-				"defining USES=kde:[45]");
+				"defining USES=kde:[56]");
 		}
 	}
 
@@ -2408,27 +2392,27 @@ xargs xmkmf
 	if ($whole =~ /^USE_GCC[?:]?=\s*([^\s#]*).*$/m) {
 		my $lineno = &linenumber($`);
 		my $gcc_val = $1;
-		if ($gcc_val eq 'any' || $gcc_val eq 'yes') {
-			# Just accept these two.
+		if ($gcc_val eq 'yes') {
+			# Just accept this one.
 		} elsif ($gcc_val !~ /\+/) {
 			&perror("WARN", $file, $lineno, "Setting a specific version for ".
 				"USE_GCC should only be done as a last resort.  Unless you ".
-				"have confirmed this port does not build with later ".
-				"versions of GCC, please use USE_GCC=$gcc_val+.");
+				"are unable to get this port to build with current ".
+				"versions of GCC, please use USE_GCC=yes.");
 		}
 	}
 
 	#
 	# whole file: USE_JAVA check
 	#
-	if ($whole =~ /^USE_JAVA[?:]?=\s*(.*)$/m) {
+	if ($makevar{USES} =~ /\bjava(:(build|run))?\b/) {
 		$use_java = 1;
 	}
 
 	#
 	# whole file: USE_ANT check
 	#
-	if ($whole =~ /^USE_ANT[?:]?=\s*(.*)$/m) {
+	if ($makevar{USES} =~ /\bjava:ant/) {
 		$use_ant = 1;
 	}
 
@@ -2448,7 +2432,7 @@ xargs xmkmf
 	# whole file: check for USE_ANT and USES=gmake both defined
 	#
 	if ($use_ant && $makevar{USES} =~ /\bgmake\b/) {
-		&perror("WARN", $file, -1, "a port shall not define both USE_ANT ".
+		&perror("WARN", $file, -1, "a port shall not define both USES=java:ant ".
 			"and USES[+]=gmake");
 	}
 
@@ -2633,7 +2617,8 @@ xargs xmkmf
 		if (! -e "$masterdir/Makefile") {
 			&perror("WARN", "", -1, "unable to locate master port in $masterdir");
 		}
-		if ($whole !~ /^MASTERDIR=\s*\$\{\.CURDIR\}(?:\/\.\.){1,2}(?:\/[\w\@.+-]+){1,2}\s*$/m) {
+		if ($whole !~ /^MASTERDIR=\s*\$\{\.CURDIR\}(?:\/\.\.){1,2}(?:\/[\w\@.+-]+){1,2}\s*$/m &&
+			$whole !~ /^MASTERDIR=\s*\$\{\.CURDIR(:H){1,2}\}(?:\/[\w\@.+-]+){1,2}\s*$/m) {
 			&perror("WARN", $file, -1, "slave ports must define MASTERDIR=".
 				'${.CURDIR}/..(/../<category>)/<port>');
 		}
@@ -3151,7 +3136,7 @@ DIST_SUBDIR EXTRACT_ONLY
 	#
 	print "OK: checking second section of $file (PATCH*: optional).\n"
 		if ($verbose);
-	$tmp = $sections[$idx] // '';
+	$tmp = "\n" . $sections[$idx] // '';
 
 	if ($tmp =~ /(PATCH_SITES|PATCH_SITE_SUBDIR|PATCHFILES|PATCH_DIST_STRIP)/) {
 		&checkearlier($file, $tmp, @varnames);
@@ -3239,6 +3224,9 @@ MAINTAINER COMMENT WWW
 		if (length($makevar{COMMENT}) > 70) {
 			&perror("WARN", $file, -1, "COMMENT exceeds 70 characters limit.");
 		}
+		if ($makevar{COMMENT} =~ /([^[:ascii:]])/) {
+			&perror("WARN", $file, -1, "COMMENT contains non-ASCII characters (e.g., $1).");
+		}
 	}
 
 	# check WWW
@@ -3312,6 +3300,15 @@ MAINTAINER COMMENT WWW
 			}
 		}
 
+		# Check for dups in LICENSE_PERMS
+		my @lic_perms = split(/\s+/, $makevar{LICENSE_PERMS});
+		my %lperm_seen;
+		foreach my $lic (@lic_perms) {
+    		if ($lperm_seen{$lic}++) {
+				&perror("WARN", $file, -1, "license permission $lic is duplicated in LICENSE_PERMS.");
+    		}
+		}
+
 		# Last-ditch check to make sure the license is sanely defined.
 		my $lic_check = system("make check-license 2>&1 >/dev/null");
 		if ($lic_check) {
@@ -3345,21 +3342,22 @@ NOT_FOR_ARCHS NOT_FOR_ARCHS_REASON(_\w+)? LEGAL_TEXT
 
 	if ($tmp =~ /$brokenpattern/) {
 		$idx++;
-	}
+		$tmp = "\n" . $tmp;
 
-	foreach my $i (@linestocheck) {
-		$tmp =~ s/$i[?+:]?=[^\n]+\n//g;
-	}
+		foreach my $i (@linestocheck) {
+			$tmp =~ s/$i[?+:]?=[^\n]+\n//g;
+		}
 
-	push(@varnames, @linestocheck);
-	&checkearlier($file, $tmp, @varnames);
+		push(@varnames, @linestocheck);
+		&checkearlier($file, $tmp, @varnames);
+	}
 
 	#
 	# section 7: *_DEPENDS (may not be there)
 	#
 	print "OK: checking seventh section of $file (*_DEPENDS).\n"
 		if ($verbose);
-	$tmp = $sections[$idx] // '';
+	$tmp = "\n" . $sections[$idx] // '';
 
 	# Check for direct assignment of BUILD_DEPENDS to RUN_DEPENDS.
 	if ($tmp =~ /\nRUN_DEPENDS=[ \t]*\$\{BUILD_DEPENDS}/) {
@@ -3402,7 +3400,7 @@ TEST_DEPENDS FETCH_DEPENDS DEPENDS_TARGET
 	#
 	print "OK: check eighth section of $file (FLAVORS: optional).\n"
 		if ($verbose);
-	$tmp = $sections[$idx] // '';
+	$tmp = "\n" . $sections[$idx] // '';
 
 	if ($tmp =~ /(FLAVORS|FLAVOR)/) {
 		&checkearlier($file, $tmp, @varnames);
@@ -3469,7 +3467,7 @@ TEST_DEPENDS FETCH_DEPENDS DEPENDS_TARGET
 	# Makefile 10: check the rest of file
 	#
 	print "OK: checking the rest of the $file.\n" if ($verbose);
-	$tmp = join("\n\n", @sections[$idx .. scalar(@sections)-1]);
+	$tmp = join("\n\n", @sections[$idx+1 .. scalar(@sections)-1]);
 
 	$tmp = "\n" . $tmp;	# to make the begin-of-line check easier
 
@@ -3602,6 +3600,40 @@ TEST_DEPENDS FETCH_DEPENDS DEPENDS_TARGET
 		&perror("WARN", $file, -1, "USE_ANT is intended only for ports that ".
 			"build with Ant.  It is recommended not to override the default ".
 			"'do-build:' target when defining USE_ANT");
+	}
+
+	# Check the right sequence of pre-, do-, post-.
+	foreach my $targ_prefix ("pre", "do", "post") {
+		if ($tmp =~ /^${targ_prefix}-([^:]+):/m) {
+			my $targ_lineno = &linenumber($`);
+			my $targ = $1;
+			my $targ_hash;
+			if (!$targ_hashes{$targ}) {
+				$targ_hash = {};
+			} else {
+				$targ_hash = $targ_hashes{$targ};
+			}
+
+			if ($targ_hash->{$targ_prefix}) {
+				# Duplicate target!
+				&perror("FATAL", $file, -1, "Target ${targ_prefix}-${targ} is duplicated!");
+			} else {
+				$targ_hash->{$targ_prefix} = $targ_lineno;
+			}
+
+			$targ_hashes{$targ} = $targ_hash;
+		}
+	}
+
+	foreach my $targ (keys %targ_hashes) {
+		my $tpre = $targ_hashes{$targ}->{'pre'} // "-inf";
+		my $tdo = $targ_hashes{$targ}->{'do'} // $tpre + 1;
+		my $tpost = $targ_hashes{$targ}->{'post'} // $tdo + 1;
+
+		if ($tpre > $tdo || $tpre > $tpost || $tdo > $tpost) {
+			&perror("FATAL", $file, -1, "Target ``$targ'' violates the pre-${targ}, do-${targ}, ".
+				"post-${targ} order.")
+		}
 	}
 
 	#

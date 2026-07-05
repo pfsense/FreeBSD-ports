@@ -1,12 +1,12 @@
---- base/allocator/partition_allocator/src/partition_alloc/page_allocator_internals_posix.h.orig	2024-02-04 14:46:08 UTC
+--- base/allocator/partition_allocator/src/partition_alloc/page_allocator_internals_posix.h.orig	2026-02-16 10:45:29 UTC
 +++ base/allocator/partition_allocator/src/partition_alloc/page_allocator_internals_posix.h
-@@ -403,8 +403,12 @@ bool TryRecommitSystemPagesInternal(
+@@ -318,8 +318,12 @@ bool TryRecommitSystemPagesInternal(
  
  void DiscardSystemPagesInternal(uintptr_t address, size_t length) {
    void* ptr = reinterpret_cast<void*>(address);
--#if BUILDFLAG(IS_APPLE)
-+#if BUILDFLAG(IS_APPLE) || BUILDFLAG(IS_BSD)
-+#if BUILDFLAG(IS_BSD)
+-#if PA_BUILDFLAG(IS_APPLE)
++#if PA_BUILDFLAG(IS_APPLE) || PA_BUILDFLAG(IS_BSD)
++#if PA_BUILDFLAG(IS_BSD)
 +  int ret = madvise(ptr, length, MADV_FREE);
 +#else
    int ret = madvise(ptr, length, MADV_FREE_REUSABLE);

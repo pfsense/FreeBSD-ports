@@ -1,8 +1,10 @@
 PORTNAME=	subprocess-tee
-PORTVERSION=	0.4.1
+PORTVERSION=	0.4.2
+PORTREVISION=	1
 CATEGORIES=	devel python
 MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
+DISTNAME=	${PORTNAME:S/-/_/}-${DISTVERSIONFULL}
 
 MAINTAINER=	matthew@FreeBSD.org
 COMMENT=	Captures output while still printing it in real-time

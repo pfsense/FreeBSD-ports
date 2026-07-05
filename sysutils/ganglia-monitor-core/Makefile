@@ -1,6 +1,6 @@
 PORTNAME=	monitor-core
 PORTVERSION=	3.7.2
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	sysutils net
 MASTER_SITES=	SF/ganglia/ganglia%20monitoring%20core/${PORTVERSION}
 PKGNAMEPREFIX=	ganglia-
@@ -53,7 +53,7 @@ GMETAD_SUB_LIST_OFF=	GMETAD="\#"
 
 .include <bsd.port.options.mk>
 
-.if ${OPSYS} == FreeBSD && ( ${OSVERSION} >= 1400091 || ( ${OSVERSION} >= 1302507 && ${OSVERSION} < 1400000 ))
+.if ${OPSYS} == FreeBSD
 CFLAGS+=	-Wno-error=incompatible-function-pointer-types
 .endif
 

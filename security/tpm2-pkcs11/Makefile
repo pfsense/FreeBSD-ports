@@ -1,5 +1,5 @@
 PORTNAME=	tpm2-pkcs11
-PORTVERSION=	1.9.0
+PORTVERSION=	1.9.1
 CATEGORIES=	security
 MASTER_SITES=	https://github.com/tpm2-software/tpm2-pkcs11/releases/download/${PORTVERSION}/
 
@@ -21,7 +21,7 @@ TEST_TARGET=	check-TESTS
 
 OPTIONS_DEFINE=	TEST
 
-TEST_USES=		python:3.9+
+TEST_USES=		python
 TEST_CONFIGURE_ENABLE=	ptool-checks unit
 TEST_LIB_DEPENDS=	libcmocka.so:sysutils/cmocka
 TEST_RUN_DEPENDS=	dbus-run-session:devel/dbus

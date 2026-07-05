@@ -1,7 +1,7 @@
 PORTNAME=		sonata
 DISTVERSION=		1.7b1-22
 DISTVERSIONSUFFIX=	-gcee3555
-PORTREVISION=	1
+PORTREVISION=	3
 CATEGORIES=		audio python
 PKGNAMEPREFIX=		${PYTHON_PKGNAMEPREFIX}
 
@@ -29,6 +29,7 @@ OPTIONS_SUB=	yes
 
 MPD_RUN_DEPENDS+=	musicpd:audio/musicpd
 MMKEYS_RUN_DEPENDS=${PYTHON_PKGNAMEPREFIX}dbus>=0.82.4:devel/py-dbus@${FLAVOR}
+TAGLIB_BROKEN=		audio/py-tagpy does not build with audio/taglib 2.x
 TAGLIB_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}tagpy>=0.94.5:audio/py-tagpy@${FLAVOR}
 
 .include <bsd.port.mk>

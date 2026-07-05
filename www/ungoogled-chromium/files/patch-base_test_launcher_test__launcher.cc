@@ -1,7 +1,7 @@
---- base/test/launcher/test_launcher.cc.orig	2024-02-03 15:42:55 UTC
+--- base/test/launcher/test_launcher.cc.orig	2026-02-15 10:01:45 UTC
 +++ base/test/launcher/test_launcher.cc
-@@ -69,6 +69,7 @@
- #include "testing/gtest/include/gtest/gtest.h"
+@@ -66,6 +66,7 @@
+ #include "third_party/abseil-cpp/absl/container/flat_hash_set.h"
  
  #if BUILDFLAG(IS_POSIX)
 +#include <signal.h>

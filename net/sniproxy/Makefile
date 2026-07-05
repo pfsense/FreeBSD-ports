@@ -1,6 +1,5 @@
 PORTNAME=	sniproxy
-DISTVERSION=	0.6.1
-PORTREVISION=	1
+DISTVERSION=	0.7.0
 CATEGORIES=	net
 
 MAINTAINER=	krion@FreeBSD.org
@@ -11,10 +10,10 @@ LICENSE=	BSD2CLAUSE
 LICENSE_FILE=	${WRKSRC}/COPYING
 
 LIB_DEPENDS=	libev.so:devel/libev \
-		libpcre.so:devel/pcre \
+		libpcre2-8.so:devel/pcre2 \
 		libudns.so:dns/udns
 
-USES=		autoreconf:build gettext pkgconfig
+USES=		autoreconf localbase pkgconfig
 
 SUB_FILES=	pkg-message
 USE_RC_SUBR=	sniproxy
@@ -23,16 +22,12 @@ USE_GITHUB=	yes
 GH_ACCOUNT=	dlundquist
 
 GNU_CONFIGURE=	yes
-GNU_CONFIGURE_MANPREFIX=	${PREFIX}/share
 USE_LDCONFIG=	yes
 
 PLIST_FILES=	share/man/man5/sniproxy.conf.5.gz \
 		share/man/man8/sniproxy.8.gz \
 		sbin/sniproxy \
 		"@sample etc/sniproxy.conf.sample"
-
-pre-configure:
-	cd ${WRKSRC} && ${SH} autogen.sh
 
 post-patch:
 	@${REINPLACE_CMD} -e 's|/var/tmp/|/var/run/|' ${WRKSRC}/${PORTNAME}.conf

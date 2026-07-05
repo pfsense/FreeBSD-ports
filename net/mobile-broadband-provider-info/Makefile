@@ -1,7 +1,6 @@
 PORTNAME=	mobile-broadband-provider-info
-PORTVERSION=	20230416
+PORTVERSION=	20251101
 CATEGORIES=	net gnome
-MASTER_SITES=	GNOME
 
 MAINTAINER=	garga@FreeBSD.org
 COMMENT=	Service mobile broadband provider database
@@ -10,10 +9,12 @@ WWW=		https://wiki.gnome.org/Projects/NetworkManager/MobileBroadband/ServiceProv
 LICENSE=	PD
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-USES=		autoreconf gmake gnome pathfix tar:xz
+USES=		gnome meson
+
+USE_GITHUB=	yes
+GH_ACCOUNT=	gnome
 
 USE_GNOME=	libxslt
-GNU_CONFIGURE=	yes
 NO_ARCH=	yes
 
 PLIST_FILES=	${DATADIR}/apns-conf.xml \

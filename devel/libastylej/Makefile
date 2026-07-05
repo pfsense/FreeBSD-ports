@@ -1,6 +1,6 @@
 PORTNAME=	libastylej
 PORTVERSION=	3.0.1
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	devel java textproc
 MASTER_SITES=	SF/astyle/astyle/astyle%20${PORTVERSION}
 PKGNAMESUFFIX?=	# for slave port
@@ -12,10 +12,10 @@ WWW=		https://astyle.sourceforge.net/
 
 LICENSE=	LGPL3
 
+USES=		compiler:c++11-lang gmake java
+
 ALL_TARGET=	java
 LDFLAGS+=	-s
-USES=		compiler:c++11-lang gmake
-USE_JAVA=	yes
 USE_LDCONFIG=	yes
 MAKE_ARGS+=	JAVA_HOME=${JAVA_HOME}
 

@@ -1,6 +1,7 @@
 PORTNAME=	dwl
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.5
+DISTVERSION=	0.7
+PORTREVISION=	2
 CATEGORIES=	x11-wm wayland
 MASTER_SITES=	https://codeberg.org/${PORTNAME}/${PORTNAME}/archive/${DISTVERSIONFULL}${EXTRACT_SUFX}?dummy=/
 
@@ -17,14 +18,14 @@ LICENSE_FILE_MIT=	${WRKSRC}/LICENSE.dwm
 BUILD_DEPENDS=	evdev-proto>0:devel/evdev-proto \
 		wayland-protocols>0:graphics/wayland-protocols
 LIB_DEPENDS=	libwayland-server.so:graphics/wayland \
-		libwlroots.so:x11-toolkits/wlroots \
+		libwlroots-0.18.so:x11-toolkits/wlroots018 \
 		libinput.so:x11/libinput \
 		libxkbcommon.so:x11/libxkbcommon
 
 USES=		compiler:c11 gmake pkgconfig
 WRKSRC=		${WRKDIR}/${PORTNAME}
 EXTRA_PATCHES=	${${PORTNAME:tu}_PATCHES}
-MAKE_ARGS=	VERSION="${DISTVERSIONFULL}"
+MAKE_ARGS=	CC="${CC}" VERSION="${DISTVERSIONFULL}"
 PLIST_FILES=	bin/${PORTNAME} \
 		share/man/man1/${PORTNAME}.1.gz \
 		share/wayland-sessions/${PORTNAME}.desktop
@@ -35,7 +36,7 @@ OPTIONS_DEFAULT=ADDONS X11
 
 ADDONS_DESC=		Install extra applications: ${ADDONS_RUN_DEPENDS:C/\:.*//}
 ADDONS_RUN_DEPENDS?=	foot:x11/foot \
-			bemenu-run:x11/bemenu
+			wmenu-run:x11/wmenu
 
 X11_LIB_DEPENDS=	libxcb-icccm.so:x11/xcb-util-wm
 X11_USES=		xorg

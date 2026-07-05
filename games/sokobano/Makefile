@@ -1,5 +1,6 @@
 PORTNAME=	sokobano
 DISTVERSION=	1.0.3
+PORTREVISION=	1
 CATEGORIES=	games java
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/${PORTNAME}%20${PORTVERSION}
 DISTFILES=	Sokobano.zip
@@ -14,8 +15,9 @@ BUILD_DEPENDS=	${LOCALBASE}/share/java/classes/lwjgl/lwjgl.jar:games/lwjgl
 RUN_DEPENDS:=	${LOCALBASE}/share/java/classes/jmf.jar:java/jmf \
 		${BUILD_DEPENDS}
 
-USES=		gmake
-USE_JAVA=	8
+USES=		gmake java
+JAVA_VERSION=	8
+
 MAKEFILE=	${FILESDIR}/makefile
 MAKE_ENV=	JAVA_VERSION=${JAVA_VERSION}
 WRKSRC=		${WRKDIR}/Sokobano

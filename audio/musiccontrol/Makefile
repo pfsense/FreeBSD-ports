@@ -1,6 +1,6 @@
 PORTNAME=	musiccontrol
 PORTVERSION=	0.3
-PORTREVISION=	3
+PORTREVISION=	4
 CATEGORIES=	audio java
 MASTER_SITES=	http://borderworlds.dk/projects/mc/
 DISTNAME=	MusicControl-0.3
@@ -9,13 +9,13 @@ EXTRACT_ONLY=
 
 MAINTAINER=	xi@borderworlds.dk
 COMMENT=	Advanced music player
-WWW=		https://borderworlds.dk/projects/ #mc
+WWW=		https://borderworlds.dk/projects/\#mc
 
 RUN_DEPENDS=	${LOCALBASE}/bin/mpg123:audio/mpg123 \
 		${LOCALBASE}/bin/ogg123:audio/vorbis-tools \
 		${LOCALBASE}/bin/simplemod:audio/simplemod
 
-USE_JAVA=	yes
+USES=		java
 NO_BUILD=	yes
 PLIST_FILES=	share/java/classes/MusicControl-${PORTVERSION}.jar bin/musiccontrol
 

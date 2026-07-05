@@ -1,10 +1,11 @@
 PORTNAME=	ssh-import-id
 DISTVERSION=	5.11
+PORTREVISION=	1
 CATEGORIES=	security python
 MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
-MAINTAINER=	p.mousavizadeh@protonmail.com
+MAINTAINER=	pouria@FreeBSD.org
 COMMENT=	Authorize SSH public keys from trusted online identities
 WWW=		https://git.launchpad.net/ssh-import-id
 

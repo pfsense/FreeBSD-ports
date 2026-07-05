@@ -3,7 +3,7 @@
  * status_mail_report_edit.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2011-2024 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2011-2026 Rubicon Communications, LLC (Netgate)
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -34,16 +34,12 @@ $cmdid = $_REQUEST['cmdid'];
 $logid = $_REQUEST['logid'];
 $id = $_REQUEST['id'];
 
-init_config_arr(array('mailreports', 'schedule'));
-$a_mailreports = &$config['mailreports']['schedule'];
+$a_mailreports = isset($id) ? config_get_path("mailreports/schedule/{$id}") : null;
 
-if (isset($id) && $a_mailreports[$id]) {
-	init_config_arr(array('mailreports', 'schedule', $id, 'cmd', 'row'));
-	init_config_arr(array('mailreports', 'schedule', $id, 'log', 'row'));
-
-	$pconfig = $a_mailreports[$id];
-	$a_cmds = $a_mailreports[$id]['cmd']['row'];
-	$a_logs = $a_mailreports[$id]['log']['row'];
+if ($a_mailreports) {
+	$a_cmds = array_get_path($a_mailreports, 'cmd/row', []);
+	$a_logs = array_get_path($a_mailreports, 'log/row', []);
+	$pconfig = $a_mailreports;
 }
 
 $frequencies = array("daily", "weekly", "monthly", "quarterly", "yearly");
@@ -83,14 +79,14 @@ if (isset($_POST['del'])) {
 	if (is_array($_POST['commands']) && count($_POST['commands'])) {
 		foreach ($_POST['commands'] as $commandsi) {
 			unset($a_cmds[$commandsi]);
-			$a_mailreports[$id]['cmd']['row'] = $a_cmds;
+			config_set_path("mailreports/schedule/{$id}/cmd/row", $a_cmds);
 			$need_save = true;
 		}
 	}
 	if (is_array($_POST['logs']) && count($_POST['logs'])) {
 		foreach ($_POST['logs'] as $logsi) {
 			unset($a_logs[$logsi]);
-			$a_mailreports[$id]['log']['row'] = $a_logs;
+			config_set_path("mailreports/schedule/{$id}/log/row", $a_logs);
 			$need_save = true;
 		}
 	}
@@ -112,12 +108,12 @@ if (isset($_POST['del'])) {
 	$need_save = false;
 	if (is_numeric($delbtn_cmd) && $a_cmds[$delbtn_cmd]) {
 		unset($a_cmds[$delbtn_cmd]);
-		$a_mailreports[$id]['cmd']['row'] = $a_cmds;
+		config_set_path("mailreports/schedule/{$id}/cmd/row", $a_cmds);
 		$need_save = true;
 	}
 	if (is_numeric($delbtn_log) && $a_logs[$delbtn_log]) {
 		unset($a_logs[$delbtn_log]);
-		$a_mailreports[$id]['log']['row'] = $a_logs;
+		config_set_path("mailreports/schedule/{$id}/log/row", $a_logs);
 		$need_save = true;
 	}
 	if ($need_save) {
@@ -205,14 +201,14 @@ if ($_POST) {
 
 	$pconfig['text'] = $friendly;
 
-	if (isset($id) && $a_mailreports[$id]) {
-		$a_mailreports[$id] = $pconfig;
+	if ($a_mailreports) {
+		config_set_path("mailreports/schedule/{$id}", $pconfig);
 	} else {
-		$a_mailreports[] = $pconfig;
+		config_set_path("mailreports/schedule/", $pconfig);
 	}
 
 	// Fix up cron job(s)
-	set_mail_report_cron_jobs($a_mailreports);
+	set_mail_report_cron_jobs(config_get_path('mailreports/schedule', []));
 	write_config("mailreport: Settings updated");
 	configure_cron();
 	header("Location: status_mail_report.php");
@@ -320,7 +316,7 @@ $group->add(new Form_Button(
 	'submit',
 	'Save'
 ));
-if (isset($id) && $a_mailreports[$id]) {
+if ($a_mailreports) {
 	$group->add(new Form_Button(
 		'sendnow',
 		'Send Now'
@@ -330,7 +326,7 @@ $section->add($group);
 
 $form->add($section);
 
-if (isset($id) && $a_mailreports[$id]) {
+if ($a_mailreports) {
 	$form->addGlobal(new Form_Input(
 		'id',
 		null,
@@ -343,7 +339,7 @@ print($form);
 $allcount = 0;
 ?>
 
-<?php if (isset($id) && $a_mailreports[$id]): ?>
+<?php if ($a_mailreports): ?>
 <form name="itemsform" method="post">
 	<div class="panel panel-default" id="commandentries">
 		<div class="panel-heading"><h2 class="panel-title"><?=gettext('Included Commands')?></h2></div>

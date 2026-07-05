@@ -1,5 +1,5 @@
 PORTNAME=	snmp
-PORTVERSION=	5.9.4
+PORTVERSION=	5.9.5.2
 PORTEPOCH=	1
 CATEGORIES=	net-mgmt
 MASTER_SITES=	SF/net-${PORTNAME}/net-${PORTNAME}/${PORTVERSION} \
@@ -17,9 +17,9 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 NOT_FOR_ARCHS=		mips mips64
 NOT_FOR_ARCHS_REASON=	SSP is currently broken on MIPS
 
-OPTIONS_DEFINE=	IPV6 MFD_REWRITES PERL PERL_EMBEDDED PYTHON DUMMY TKMIB \
-		MYSQL AX_SOCKONLY UNPRIVILEGED SMUX DOCS JAIL AX_DISABLE_TRAP \
-		TLS NEWSYSLOG NOLIBPKG SCTP
+OPTIONS_DEFINE=	MFD_REWRITES PERL PERL_EMBEDDED PYTHON DUMMY TKMIB \
+		MYSQL AX_SOCKONLY UNPRIVILEGED SMUX DOCS AX_DISABLE_TRAP \
+		TLS NEWSYSLOG NOLIBPKG SCTP AES
 OPTIONS_DEFAULT=PERL PERL_EMBEDDED DUMMY SMUX NEWSYSLOG
 OPTIONS_SUB=	yes
 
@@ -31,10 +31,13 @@ AX_SOCKONLY_DESC=	Disable UDP/TCP transports for agentx
 AX_DISABLE_TRAP_DESC=	Disable agentx subagent code in snmptrapd
 UNPRIVILEGED_DESC=	Allow unprivileged users to execute net-snmp
 SMUX_DESC=		Build with SNMP multiplexing (SMUX) support
-JAIL_DESC=		Options for running snmpd within a jail(8)
 NEWSYSLOG_DESC=		Automatically rotate snmpd.log via newsyslog
 NOLIBPKG_DESC=		Build without libpkg
 SCTP_DESC=		Build with SCTP MIB support
+AES_DESC=		Build with Blumenthal AES support
+
+USERS=		snmpd
+GROUPS=		snmpd
 
 GNU_CONFIGURE=	yes
 GNU_CONFIGURE_MANPREFIX=${PREFIX}/share
@@ -45,8 +48,11 @@ CPE_PRODUCT=	net-snmp
 USE_PERL5=	build run
 USE_CSTD=	c99
 
+LIB_DEPENDS=	libpkg.so:${PKG_ORIGIN}
+
 CFLAGS+=	-I${LOCALBASE}/include -I${PKG_PREFIX}/include
-LDFLAGS+=	-L${LOCALBASE}/lib
+LDFLAGS+=	-lm -lkvm -ldevstat \
+		-L${PKG_PREFIX}/lib -L${LOCALBASE}/lib ${LCRYPTO}
 CONFIGURE_ENV+=	PERLPROG="${PERL}" PSPROG="${PS_CMD}" SED="${SED}"
 CONFIGURE_ARGS+=--enable-shared --enable-internal-md5 \
 		--with-default-snmp-version="${DEFAULT_SNMP_VERSION}" \
@@ -54,11 +60,12 @@ CONFIGURE_ARGS+=--enable-shared --enable-internal-md5 \
 		--with-sys-location="${NET_SNMP_SYS_LOCATION}" \
 		--with-logfile="${NET_SNMP_LOGFILE}" \
 		--with-persistent-directory="${NET_SNMP_PERSISTENTDIR}" \
-		--with-gnu-ld --without-libwrap \
-		--with-ldflags="-lm -lkvm -ldevstat -L${PKG_PREFIX}/lib -L${LOCALBASE}/lib ${LCRYPTO}"
+		--with-gnu-ld --without-libwrap --enable-ipv6 \
+		--without-kmem-usage \
+		--with-ldflags=${LDFLAGS:Q}
 SUB_FILES=	pkg-message
 
-.if !defined(WITHOUT_SSP)
+.if defined(WITH_SSP)
 CONFIGURE_ARGS+=--with-libs="-lssp_nonshared"
 .endif
 
@@ -67,6 +74,7 @@ CONFIGURE_ARGS+=--with-defaults
 .endif
 
 TLS_CONFIGURE_ON=	--with-security-modules=tsm --with-transports=TLSTCP,DTLSUDP
+MYSQL_BROKEN=		ISO C99 and later do not support implicit int
 
 .include <bsd.port.options.mk>
 
@@ -89,6 +97,10 @@ CONFIGURE_ARGS+=--with-openssl="${OPENSSLBASE}"
 
 .if ${PORT_OPTIONS:MDUMMY}
 CONFIGURE_ARGS+=--with-dummy-values
+.endif
+
+.if ${PORT_OPTIONS:MAES}
+CONFIGURE_ARGS+=--enable-blumenthal-aes
 .endif
 
 .if ! ${PORT_OPTIONS:MTKMIB}
@@ -129,20 +141,12 @@ CONFIGURE_ARGS+=--disable-snmptrapd-subagent
 CONFIGURE_ARGS+=--enable-agentx-dom-sock-only
 .endif
 
-.if ${PORT_OPTIONS:MIPV6}
-CONFIGURE_ARGS+=--enable-ipv6
-# --with-transport="UDPIPv6 TCPIPv6" --with-modules=mibII/ipv6"
-PLIST_SUB+=	WITH_IPV6=""
-.else
-PLIST_SUB+=	WITH_IPV6="@comment "
-.endif
-
 .if ${PORT_OPTIONS:MUNPRIVILEGED}
 CONFIGURE_ARGS+=--without-root-access
 .endif
 
-SHLIB_VERSION=	40
-SHLIB_VERSION2=	.2.1
+SHLIB_VERSION=	45
+SHLIB_VERSION2=	.0.0
 PLIST_SUB+=	SHLIB_VERSION=${SHLIB_VERSION} SHLIB_VERSION2=${SHLIB_VERSION2}
 SCRIPTS_SUB=	PREFIX=${PREFIX} PERL=${PERL}
 
@@ -153,10 +157,6 @@ NET_SNMP_LOGFILE?=	/var/log/snmpd.log
 NET_SNMP_PERSISTENTDIR?=/var/net-snmp
 NET_SNMP_WITH_MIB_MODULE_LIST+=	host disman/event-mib mibII/mta_sendmail mibII/tcpTable ucd-snmp/diskio
 
-.if ${OPSYS} == FreeBSD
-NET_SNMP_WITHOUT_MIB_MODULE_LIST+=	mibII/ipv6
-.endif
-
 .if ${PORT_OPTIONS:MSCTP}
 NET_SNMP_WITH_MIB_MODULE_LIST+=	sctp-mib
 .endif
@@ -164,12 +164,6 @@ NET_SNMP_WITH_MIB_MODULE_LIST+=	sctp-mib
 .if ${PORT_OPTIONS:MMFD_REWRITES}
 CONFIGURE_ARGS+=--enable-mfd-rewrites
 NET_SNMP_WITH_MIB_MODULE_LIST+=	if-mib
-.endif
-
-.if ${PORT_OPTIONS:MJAIL}
-NET_SNMP_WITHOUT_MIB_MODULE_LIST+=	host
-NET_SNMP_WITHOUT_MIB_MODULE_LIST+=	ucd-snmp/memory
-CONFIGURE_ARGS+=			--without-kmem-usage
 .endif
 
 .if ${PORT_OPTIONS:MSMUX}
@@ -244,10 +238,6 @@ post-patch:
 	@${REINPLACE_CMD} -E -e 's|SSL_library_init|OPENSSL_init_ssl|g' \
 		${WRKSRC}/configure
 .endif
-	@${CP} ${WRKSRC}/include/net-snmp/system/freebsd12.h \
-		${WRKSRC}/include/net-snmp/system/freebsd13.h
-	@${CP} ${WRKSRC}/include/net-snmp/system/freebsd14.h \
-		${WRKSRC}/include/net-snmp/system/freebsd15.h
 .for header in darwin7.h darwin8.h darwin9.h darwin10.h darwin11.h darwin12.h \
 	darwin13.h darwin14.h darwin15.h darwin16.h darwin17.h
 	@${CP} ${WRKSRC}/include/net-snmp/system/darwin.h \

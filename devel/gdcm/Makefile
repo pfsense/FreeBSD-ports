@@ -1,5 +1,6 @@
 PORTNAME=	gdcm
 PORTVERSION=	${GDCM_MAJOR}.${GDCM_MINOR}.${GDCM_PATCH}
+PORTREVISION=	1
 CATEGORIES=	devel
 MASTER_SITES=	SF/gdcm/gdcm%20${GDCM_MAJOR}.x/GDCM%20${PORTVERSION}
 
@@ -12,7 +13,7 @@ LICENSE=	BSD3CLAUSE
 LIB_DEPENDS=	libopenjp2.so:graphics/openjpeg \
 		libexpat.so:textproc/expat2
 
-USES=		alias cmake compiler:c++11-lang pkgconfig python:build tar:bzip2 ssl
+USES=		cmake compiler:c++11-lang pkgconfig python:build tar:bzip2 ssl
 USE_LDCONFIG=	yes
 
 OPTIONS_DEFINE=		VTK
@@ -30,7 +31,7 @@ VTK_BROKEN=		Fails to compile with VTK-9.1, see https://sourceforge.net/p/gdcm/b
 # Change this when updating the port
 GDCM_MAJOR=	3
 GDCM_MINOR=	0
-GDCM_PATCH=	23
+GDCM_PATCH=	24
 
 # Change this whenever VTK is updated
 VTK_VERSION=	9.1

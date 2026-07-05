@@ -1,19 +1,23 @@
 PORTNAME=	markupsafe
-PORTVERSION=	2.1.5
+PORTVERSION=	3.0.3
 CATEGORIES=	textproc python
-MASTER_SITES=	PYPI
+MASTER_SITES=	PYPI \
+		https://github.com/pallets/markupsafe/releases/download/${PORTVERSION}/
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
-DISTNAME=	MarkupSafe-${PORTVERSION}
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Implements XML/HTML/XHTML Markup safe string for Python
-WWW=		https://github.com/pallets/markupsafe
+WWW=		https://markupsafe.palletsprojects.com/en/stable/ \
+		https://github.com/pallets/markupsafe
 
 LICENSE=	BSD3CLAUSE
-LICENSE_FILE=	${WRKSRC}/LICENSE.rst
+LICENSE_FILE=	${WRKSRC}/LICENSE.txt
+
+BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}setuptools>=61:devel/py-setuptools@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}wheel>=0:devel/py-wheel@${PY_FLAVOR}
 
 USES=		python
-USE_PYTHON=	autoplist concurrent distutils
+USE_PYTHON=	autoplist concurrent pep517
 
 post-install:
 	${FIND} ${STAGEDIR}${PYTHON_SITELIBDIR} -name '*.so' -exec ${STRIP_CMD} {} +

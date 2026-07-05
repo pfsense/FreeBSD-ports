@@ -1,12 +1,12 @@
 PORTNAME=	mlpack
-DISTVERSION=	4.3.0
-PORTREVISION=	1
+DISTVERSION=	4.7.0
 CATEGORIES=	math # machine-learning
 MASTER_SITES=	https://mlpack.org/files/
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Fast, flexible machine learning library
-WWW=		https://www.mlpack.org/
+WWW=		https://www.mlpack.org/ \
+		https://github.com/mlpack/mlpack
 
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE.txt
@@ -20,7 +20,10 @@ HPP_DEPENDS=	armadillo>0:math/armadillo \
 BUILD_DEPENDS=	${HPP_DEPENDS}
 RUN_DEPENDS=	${HPP_DEPENDS}
 
-USES=		cmake:testing compiler:c++14-lang pkgconfig
+USES=		cmake:testing compiler:c++17-lang pkgconfig
+USE_CXXSTD=	c++17
+
+CXXFLAGS+=	-Wno-missing-template-arg-list-after-template-kw # workaround for https://github.com/mlpack/mlpack/issues/4016
 
 CMAKE_ARGS=	-DSTB_IMAGE_INCLUDE_DIR=${LOCALBASE}/include/stb
 CMAKE_OFF=	BUILD_PYTHON_BINDINGS BUILD_TESTS

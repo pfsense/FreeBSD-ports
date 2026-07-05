@@ -12,4 +12,7 @@ USE_KDE=	archive auth colorscheme config configwidgets coreaddons i18n \
 USE_GL=		gl opengl
 USE_QT=		base declarative
 
+CMAKE_ARGS=	-DSDDM_CONFIG_FILE:FILEPATH=${LOCALBASE}/etc/sddm.conf \
+		-DSDDM_CONFIG_DIR:PATH=${LOCALBASE}/etc/sddm.conf.d
+
 .include <bsd.port.mk>

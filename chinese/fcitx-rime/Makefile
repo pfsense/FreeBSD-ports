@@ -8,11 +8,13 @@ DIST_SUBDIR=	fcitx
 PATCH_SITES=	https://github.com/fcitx/${PORTNAME}/commit/
 PATCHFILES=	a3a9fffb6ee89adc327ad8a7dec05d5f35414f9d.patch:-p1
 
-MAINTAINER=	khng300@gmail.com
+MAINTAINER=	eric@camachat.org
 COMMENT=	RIME support for Fcitx
 WWW=		https://fcitx-im.org/wiki/Fcitx
 
 LICENSE=	GPLv2
+
+BROKEN=		does not compile against currect chinese/librime
 
 BUILD_DEPENDS=	bash:shells/bash \
 		${_SCHEMA_DEPENDS}

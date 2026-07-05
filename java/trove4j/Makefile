@@ -1,5 +1,6 @@
 PORTNAME=	trove4j
 PORTVERSION=	3.1a1
+PORTREVISION=	1
 CATEGORIES=	java devel
 MASTER_SITES=	https://bitbucket.org/${PORTNAME}/trove/downloads/
 DISTNAME=	trove-${PORTVERSION}
@@ -11,7 +12,8 @@ WWW=		https://bitbucket.org/robeden/trove/
 LICENSE=	LGPL21
 LICENSE_FILE=	${WRKSRC}/LICENSE.txt
 
-USE_JAVA=	yes
+USES=		java
+
 NO_BUILD=	yes
 
 PORTDOCS=	javadocs AUTHORS.txt CHANGES.txt LICENSE.txt README-idea-devel.txt \

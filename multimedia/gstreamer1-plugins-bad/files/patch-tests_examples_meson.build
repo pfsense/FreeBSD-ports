@@ -1,14 +1,17 @@
---- tests/examples/meson.build.orig	2023-01-23 19:29:34 UTC
+--- tests/examples/meson.build.orig	2026-01-27 17:02:33 UTC
 +++ tests/examples/meson.build
-@@ -1,24 +1,66 @@
+@@ -1,29 +1,81 @@
 -subdir('audiomixmatrix')
 -subdir('avsamplesink')
 -subdir('camerabin2')
 -subdir('codecparsers')
 -subdir('codecs')
+-subdir('cuda')
 -subdir('d3d11')
+-subdir('d3d12')
 -subdir('directfb')
 -subdir('gtk')
+-subdir('inter')
 -subdir('ipcpipeline')
 -subdir('mediafoundation')
 -subdir('mpegts')
@@ -17,8 +20,10 @@
 -subdir('nvcodec')
 -subdir('opencv', if_found: opencv_dep)
 -subdir('qsv')
+-subdir('qt6d3d11')
 -subdir('uvch264')
 -subdir('va')
+-subdir('vulkan')
 -subdir('waylandsink')
 -subdir('webrtc')
 -subdir('wpe')
@@ -28,8 +33,8 @@
 +if get_option('applemedia').enabled()
 +  subdir('avsamplesink')
 +endif
-+if get_option('camerabin2').enabled()
-+  subdir('camerabin2')
++if get_option('camerabin2').enabled() and use_wayland
++  subdir('camerabin2', if_found: gtk_dep)
 +endif
 +if get_option('codecparsers').enabled()
 +  subdir('codecparsers')
@@ -37,8 +42,14 @@
 +if get_option('codecs').enabled()
 +  subdir('codecs')
 +endif
++if get_option('cuda').enabled()
++  subdir('cuda')
++endif
 +if get_option('d3d11').enabled()
 +  subdir('d3d11')
++endif
++if get_option('d3d12').enabled()
++  subdir('d3d12')
 +endif
 +if get_option('directfb').enabled()
 +  subdir('directfb')
@@ -49,6 +60,9 @@
 +if get_option('ipcpipeline').enabled()
 +  subdir('ipcpipeline')
 +endif
++if get_option('inter').enabled()
++  subdir('inter')
++endif
 +if get_option('mediafoundation').enabled()
 +  subdir('mediafoundation')
 +endif
@@ -58,8 +72,8 @@
 +if get_option('msdk').enabled()
 +  subdir('msdk')
 +endif
-+if get_option('mxf').enabled()
-+  subdir('mxf')
++if get_option('mxf').enabled() and use_wayland
++  subdir('mxf', if_found: gtk_dep)
 +endif
 +if get_option('nvcodec').enabled()
 +  subdir('nvcodec')
@@ -70,11 +84,17 @@
 +if get_option('qsv').enabled()
 +  subdir('qsv')
 +endif
++if get_option('qt6d3d11').enabled()
++  subdir('qt6d3d11')
++endif
 +if get_option('uvch264').enabled()
 +  subdir('uvch264')
 +endif
 +if get_option('va').enabled()
 +  subdir('va')
++endif
++if get_option('vulkan').enabled()
++  subdir('vulkan')
 +endif
 +if get_option('wayland').enabled()
 +  subdir('waylandsink')

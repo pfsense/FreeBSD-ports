@@ -2,8 +2,7 @@
 # being overriden by devel/appstream-qt slave port
 
 PORTNAME?=	AppStream
-DISTVERSION=	1.0.1
-PORTREVISION?=	0
+DISTVERSION=	1.1.2
 CATEGORIES=	devel
 MASTER_SITES=	https://www.freedesktop.org/software/${PORTNAME:tl}/releases/
 
@@ -14,23 +13,23 @@ WWW=		https://www.freedesktop.org/wiki/Distributions/AppStream/
 LICENSE=	GPLv2+ LGPL21+
 LICENSE_COMB=	multi
 
-BUILD_DEPENDS=	docbook-xsl>=0:textproc/docbook-xsl \
+BUILD_DEPENDS=	bash-completion>0:shells/bash-completion \
+		docbook-xsl>=0:textproc/docbook-xsl \
 		gperf>0:devel/gperf \
 		itstool:textproc/itstool \
 		lmdb>0:databases/lmdb
 LIB_DEPENDS?=	libcurl.so:ftp/curl \
 		libstemmer.so:textproc/snowballstemmer \
 		libxmlb.so:textproc/libxmlb \
-		libyaml.so:textproc/libyaml \
+		libfyaml.so:textproc/libfyaml \
 		libzstd.so:archivers/zstd
 
 USES+=		gettext gnome localbase:ldflags meson pkgconfig \
 		python:build tar:xz vala:build
 
-USE_GNOME+=	glib20 introspection:build libxml2 libxslt:build
+USE_GNOME+=	glib20 libxml2 introspection:build libxslt:build
 USE_LDCONFIG=	yes
 
-#CFLAGS+=	-D__BSD_VISIBLE=1
 MESON_ARGS+=	-Dstemming=true \
 		-Dvapi=true \
 		-Dapidocs=false \

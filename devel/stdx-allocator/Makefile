@@ -1,6 +1,6 @@
 PORTNAME=	stdx-allocator
 PORTVERSION=	3.0.2
-PORTREVISION=	4
+PORTREVISION=	5
 DISTVERSIONPREFIX=	v
 CATEGORIES=	devel
 
@@ -26,7 +26,8 @@ post-patch:
 	${REINPLACE_CMD} '6d' ${WRKSRC}/dub.sdl
 
 do-build:
-	@cd ${WRKSRC} && DC=${DC} ${DUB_CMD}
+	@cd ${WRKSRC} && \
+		${SETENV} DUB_HOME=${WRKDIR}/dub_home DC=${DC} ${DUB_CMD}
 
 do-install:
 	@${MKDIR} ${STAGEDIR}${D_INCLUDE_DIR}

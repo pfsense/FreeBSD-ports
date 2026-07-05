@@ -1,6 +1,5 @@
 PORTNAME=	picolisp
-PORTVERSION=	23.12
-PORTREVISION=	1
+PORTVERSION=	25.12
 CATEGORIES=	lang
 MASTER_SITES=	https://software-lab.de/
 DISTNAME=	picoLisp-${PORTVERSION}
@@ -11,11 +10,11 @@ WWW=		https://picolisp.com
 
 LICENSE=	MIT
 
-LIB_DEPENDS=	libffi.so:devel/libffi
-
 ONLY_FOR_ARCHS=	amd64
 
-USES=		gmake llvm:17,lib pkgconfig readline ssl tar:tgz
+LIB_DEPENDS=	libffi.so:devel/libffi
+
+USES=		gmake llvm:lib pkgconfig readline ssl tar:tgz
 
 WRKSRC=		${WRKDIR}/pil21/src
 
@@ -26,8 +25,8 @@ post-patch:
 		-e 's|llc|llc${LLVM_VERSION}|' \
 		-e 's|llvm-link|llvm-link${LLVM_VERSION}|' \
 		-e 's|llvm-config|${LLVM_CONFIG}|' \
-		-e '/^MAIN/s|$$| -L${LOCALBASE}/lib|' \
 		-e '/^.SILENT:/d' \
+		-e '52s|$$| `pkg-config --cflags readline libffi`|' \
 		${WRKSRC}/Makefile
 	${REINPLACE_CMD} -i '' -e 's|/usr|${PREFIX}|g' ${WRKSRC}/../bin/*
 
@@ -36,8 +35,9 @@ post-build:
 
 do-install:
 	${MKDIR} ${STAGEDIR}${PREFIX}/lib/picolisp
+	${RM} ${WRKSRC}/../soTest.c
 	cd ${WRKSRC}/.. && ${COPYTREE_SHARE} . ${STAGEDIR}${PREFIX}/lib/picolisp "! -name '*.bak'"
-	${RM} -r ${STAGEDIR}${PREFIX}/lib/picolisp/src ${STAGEDIR}${PREFIX}/lib/picolisp/test
+	${RM} -r ${STAGEDIR}${PREFIX}/lib/picolisp/src
 	${FIND} ${STAGEDIR}${PREFIX}/lib/picolisp/bin -exec ${CHMOD} a+x {} \;
 	${LN} -s ../lib/picolisp/bin/picolisp ${STAGEDIR}${PREFIX}/bin/
 	${LN} -s ../lib/picolisp/bin/pil ${STAGEDIR}${PREFIX}/bin/

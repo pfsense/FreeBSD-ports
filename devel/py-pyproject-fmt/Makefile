@@ -1,26 +1,28 @@
 PORTNAME=	pyproject-fmt
-PORTVERSION=	0.13.1
+PORTVERSION=	2.16.0
+PORTREVISION=	1
 CATEGORIES=	devel python
 MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
-DISTNAME=	pyproject_fmt-${PORTVERSION}
+DISTFILES=	pyproject_fmt-${PORTVERSION}${EXTRACT_SUFX}
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Format your pyproject.toml file
-WWW=		https://github.com/tox-dev/pyproject-fmt
+WWW=		https://pyproject-fmt.readthedocs.io/en/latest/ \
+		https://github.com/tox-dev/toml-fmt/tree/main/pyproject-fmt \
+		https://github.com/tox-dev/toml-fmt
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE.txt
 
-BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}hatch-vcs>=0.3:devel/py-hatch-vcs@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}hatchling>=1.17.1:devel/py-hatchling@${PY_FLAVOR}
-RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}natsort>=8.4:devel/py-natsort@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}packaging>=23.1:devel/py-packaging@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}tomlkit>=0.11.8:textproc/py-tomlkit@${PY_FLAVOR}
+BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}maturin>=1.11.5:devel/py-maturin@${PY_FLAVOR}
+RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}toml-fmt-common>=0:devel/py-toml-fmt-common@${PY_FLAVOR}
 
-USES=		python
+USES=		cargo python
 USE_PYTHON=	autoplist concurrent pep517
 
-NO_ARCH=	yes
+CARGO_BUILD=	no
+CARGO_INSTALL=	no
+WRKSRC=		${WRKDIR}/pyproject_fmt-${PORTVERSION}
 
 .include <bsd.port.mk>

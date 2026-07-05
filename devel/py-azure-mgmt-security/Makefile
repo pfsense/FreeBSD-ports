@@ -1,10 +1,11 @@
 PORTNAME=	azure-mgmt-security
 DISTVERSION=	5.0.0
+PORTREVISION=	1
 CATEGORIES=	devel python
 MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
-MAINTAINER=	dbaio@FreeBSD.org
+MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Microsoft Azure Secutiry Center Management Client Library for Python
 WWW=		https://pypi.org/project/azure-mgmt-security/
 

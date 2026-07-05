@@ -8,7 +8,7 @@
  * frr.xml
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2012-2024 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2012-2026 Rubicon Communications, LLC (Netgate)
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -29,6 +29,7 @@
 	<title>Services/FRR</title>
 	<include_file>/usr/local/pkg/frr.inc</include_file>
 	<aftersaveredirect>pkg_edit.php?xml=frr.xml</aftersaveredirect>
+	<addedit_string>FRR: changed Zebra</addedit_string>
 	<menu>
 		<name>FRR Global/Zebra</name>
 		<section>Services</section>

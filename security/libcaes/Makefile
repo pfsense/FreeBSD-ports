@@ -1,6 +1,5 @@
 PORTNAME=	libcaes
-DISTVERSION=	alpha-20231120
-PORTREVISION=	1
+DISTVERSION=	alpha-20240413
 CATEGORIES=	security
 MASTER_SITES=	https://github.com/libyal/libcaes/releases/download/${PORTVERSION:E}/ \
 		LOCAL/antoine
@@ -11,6 +10,8 @@ WWW=		https://github.com/libyal/libcaes
 
 LICENSE=	LGPL3+
 LICENSE_FILE=	${WRKSRC}/COPYING
+
+BUILD_DEPENDS=	${PY_SETUPTOOLS}
 
 GNU_CONFIGURE=	yes
 GNU_CONFIGURE_MANPREFIX=${PREFIX}/share

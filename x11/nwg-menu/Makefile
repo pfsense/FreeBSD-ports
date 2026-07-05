@@ -1,10 +1,10 @@
 PORTNAME=	nwg-menu
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.1.3
-PORTREVISION=	1
+DISTVERSION=	0.1.9
+PORTREVISION=	10
 CATEGORIES=	x11 wayland
 
-MAINTAINER=	jbeich@FreeBSD.org
+MAINTAINER=	tagattie@FreeBSD.org
 COMMENT=	MenuStart plugin to nwg-panel, also capable of working standalone
 WWW=		https://github.com/nwg-piotr/nwg-menu
 
@@ -15,23 +15,18 @@ LIB_DEPENDS=	libfontconfig.so:x11-fonts/fontconfig \
 		libgtk-layer-shell.so:x11-toolkits/gtk-layer-shell
 
 USES=		gnome go:modules pkgconfig
-USE_GITHUB=	yes
-USE_GNOME=	cairo gdkpixbuf2 gtk30
-GH_ACCOUNT=	nwg-piotr
-GH_TUPLE=	allan-simon:go-singleinstance:d0997106ab37:allan_simon_go_singleinstance/vendor/github.com/allan-simon/go-singleinstance \
-		dlasky:gotk3-layershell:b0c42cd8474f:dlasky_gotk3_layershell/vendor/github.com/dlasky/gotk3-layershell \
-		golang:sync:v0.6.0:golang_sync/vendor/golang.org/x/sync \
-		gotk3:gotk3:v0.6.3:gotk3_gotk3/vendor/github.com/gotk3/gotk3 \
-		joshuarubin:go-sway:v1.2.0:joshuarubin_go_sway/vendor/github.com/joshuarubin/go-sway \
-		joshuarubin:lifecycle:v1.1.4:joshuarubin_lifecycle/vendor/github.com/joshuarubin/lifecycle \
-		uber-go:multierr:v1.11.0:uber_go_multierr/vendor/go.uber.org/multierr
+
+USE_GNOME=	cairo gdkpixbuf gtk30
+
+GO_MODULE=	github.com/nwg-piotr/nwg-menu
 CGO_LDFLAGS+=	-Wl,--as-needed # harfbuzz, freetype2
+
 PLIST_FILES=	bin/${PORTNAME}
 PORTDATA=	desktop-directories *.css
 
 post-patch:
 # Respect PREFIX for *.desktop and system configs
-	@${REINPLACE_CMD} 's,/usr/share,${DATADIR:H},' \
+	@${REINPLACE_CMD} -e 's|/usr/share|${DATADIR:H}|' \
 		${WRKSRC}/main.go \
 		${WRKSRC}/tools.go
 

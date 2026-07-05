@@ -1,10 +1,11 @@
 PORTNAME=	azure-common
 PORTVERSION=	1.1.27
+PORTREVISION=	1
 CATEGORIES=	www python
 MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
-MAINTAINER=	dbaio@FreeBSD.org
+MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Microsoft Azure common code
 WWW=		https://pypi.org/project/azure-common/
 

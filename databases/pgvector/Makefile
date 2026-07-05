@@ -1,5 +1,5 @@
 PORTNAME=	pgvector
-PORTVERSION=	0.6.2
+PORTVERSION=	0.8.2
 DISTVERSIONPREFIX=	v
 CATEGORIES=	databases
 PKGNAMEPREFIX=	postgresql${PGSQL_VER:S/.//}-
@@ -9,7 +9,9 @@ COMMENT=	PostgreSQL extension for vector similarity search
 
 LICENSE=	PostgreSQL
 
-USES=		gmake pgsql:12+
+NOT_FOR_ARCHS=		i386
+
+USES=		gmake pgsql
 WANT_PGSQL=	server
 
 USE_GITHUB=	yes

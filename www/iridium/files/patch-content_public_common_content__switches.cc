@@ -1,6 +1,6 @@
---- content/public/common/content_switches.cc.orig	2024-02-04 14:46:08 UTC
+--- content/public/common/content_switches.cc.orig	2026-03-24 16:59:08 UTC
 +++ content/public/common/content_switches.cc
-@@ -364,6 +364,10 @@ const char kEnableIsolatedWebAppsInRenderer[] =
+@@ -355,6 +355,10 @@ const char kEnableIsolatedWebAppsInRenderer[] =
  // builds.
  const char kEnableLogging[]                 = "enable-logging";
  
@@ -11,12 +11,12 @@
  // Enables the type, downlinkMax attributes of the NetInfo API. Also, enables
  // triggering of change attribute of the NetInfo API when there is a change in
  // the connection type.
-@@ -994,7 +998,7 @@ const char kEnableAutomation[] = "enable-automation";
+@@ -942,7 +946,7 @@ const char kPreventResizingContentsForTesting[] =
+     "prevent-resizing-contents-for-testing";
+ #endif
  
- // TODO(crbug.com/1052397): Revisit the macro expression once build flag switch
- // of lacros-chrome is complete.
--#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS_LACROS)
-+#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS_LACROS) || BUILDFLAG(IS_BSD)
+-#if BUILDFLAG(IS_LINUX)
++#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_BSD)
  // Allows sending text-to-speech requests to speech-dispatcher, a common
  // Linux speech service. Because it's buggy, the user must explicitly
  // enable it so that visiting a random webpage can't cause instability.

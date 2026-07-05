@@ -1,7 +1,7 @@
---- src/3rdparty/chromium/ui/gfx/gpu_memory_buffer.cc.orig	2023-04-05 11:05:06 UTC
+--- src/3rdparty/chromium/ui/gfx/gpu_memory_buffer.cc.orig	2025-08-15 18:30:00 UTC
 +++ src/3rdparty/chromium/ui/gfx/gpu_memory_buffer.cc
-@@ -54,7 +54,7 @@ GpuMemoryBufferHandle GpuMemoryBufferHandle::Clone() c
-   handle.region = region.Duplicate();
+@@ -108,7 +108,7 @@ GpuMemoryBufferHandle GpuMemoryBufferHandle::Clone() c
+   handle.id = id;
    handle.offset = offset;
    handle.stride = stride;
 -#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_FUCHSIA)

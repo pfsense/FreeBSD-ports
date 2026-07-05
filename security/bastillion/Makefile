@@ -3,7 +3,7 @@ DISTVERSIONPREFIX=	jetty-v
 DISTVERSION=		3.14_00
 DISTFILES=		${DISTNAME}${EXTRACT_SUFX} \
 			${PORTNAME}-upgrade-4.00.01.jar
-PORTREVISION=		0
+PORTREVISION=		1
 CATEGORIES=		security www java
 #MASTER_SITES=		https://github.com/${GH_ACCOUNT}/${GH_PROJECT}/releases/download/v${PORTVERSION}/
 MASTER_SITES=		https://github.com/${GH_ACCOUNT}/${GH_PROJECT}/releases/download/v3.14.0/
@@ -17,8 +17,7 @@ LICENSE_FILE=	${WRKSRC}/LICENSE.md
 
 RUN_DEPENDS=	bash:shells/bash
 
-USES=		shebangfix
-USE_JAVA=	yes
+USES=		java shebangfix
 USE_GITHUB=	nodefault
 
 SHEBANG_FILES=	jetty_bastillion/bin/jetty.sh

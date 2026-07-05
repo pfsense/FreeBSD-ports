@@ -1,10 +1,9 @@
 PORTNAME=	sword
-PORTVERSION=	1.8.1
-PORTREVISION=	17
+PORTVERSION=	1.9.0
 CATEGORIES=	misc
 MASTER_SITES=	http://crosswire.org/ftpmirror/pub/sword/source/v${PORTVERSION:R}/
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	wen@FreeBSD.org
 COMMENT=	Framework for manipulating Bible texts
 WWW=		https://crosswire.org/sword/index.jsp
 

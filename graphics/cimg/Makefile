@@ -1,6 +1,6 @@
 PORTNAME=	cimg
 DISTVERSIONPREFIX=	v.
-DISTVERSION=	3.3.5
+DISTVERSION=	3.7.3
 PORTEPOCH=	3
 CATEGORIES=	graphics devel
 
@@ -33,16 +33,7 @@ USES+=		compiler:c11 gmake pkgconfig:build xorg
 
 .if ${PORT_OPTIONS:MDOCS}
 
-.if !defined(WITHOUT_LAPACK)
-. if defined(WITH_ATLAS)
-USES+=		blaslapack:atlas
-. else
-USES+=		blaslapack
-. endif
-.endif
-
 REINPLACE_ARGS=	-i ""
-#LIB_DEPENDS+=	libboard.so:graphics/libboard
 
 . if !defined(WITH_DEBUG)
 LIB_DEPENDS+=	libcurl.so:ftp/curl			\
@@ -52,16 +43,16 @@ LIB_DEPENDS+=	libcurl.so:ftp/curl			\
 		libheif.so:graphics/libheif		\
 		libOpenEXR.so:graphics/openexr		\
 		libfftw3.so:math/fftw3			\
+		libwebp.so:graphics/webp		\
 		libopencv_core.so:graphics/opencv	\
 		libGraphicsMagick.so:graphics/GraphicsMagick
 RUN_DEPENDS+=	dcraw:graphics/dcraw
-USES+=		jpeg
+USES+=		jpeg magick:7
 ALL_TARGET=	Mlinux
 . else
 ALL_TARGET=	dlinux
 WITHOUT_MEDCON=	yes
 WITHOUT_FFMPEG=	yes
-WITHOUT_LAPACK=	yes
 . endif
 
 . if !defined(WITHOUT_MEDCON)
@@ -69,11 +60,6 @@ RUN_DEPENDS+=	medcon:graphics/xmedcon
 . endif
 . if !defined(WITHOUT_FFMPEG)
 LIB_DEPENDS+=	libavformat.so:multimedia/ffmpeg
-. endif
-
-. if !defined(WITHOUT_LAPACK)
-# Don't really need Fortran, but required to link with blas/lapack
-USES+=	fortran
 . endif
 
 USE_XORG+=	x11 xrandr
@@ -84,6 +70,9 @@ USE_XORG+=	xext
 DOCBASE=	README.txt
 CFLAGS+=	-I${LOCALBASE}/include/Imath -I${LOCALBASE}/include/OpenEXR
 MAKE_ARGS+=	CPPFLAGS="${CFLAGS}" FREEBSD_LDFLAGS="${LDFLAGS}"
+. if !exists(/usr/include/omp.h)
+MAKE_ARGS+=	OPENMP_CFLAGS=
+. endif
 PROGS=		CImg_demo captcha curve_editor2d dtmri_view3d			\
 	edge_explorer2d fade_images gaussian_fit1d generate_loop_macros		\
 	hough_transform2d image2ascii image_registration2d image_surface3d	\
@@ -109,13 +98,6 @@ pre-configure:
 	${REINPLACE_CMD} -e 's|#FFMPEG_CFLAGS|FFMPEG_CFLAGS|'	\
 		-e 's|#FFMPEG_DEFINE|FFMPEG_DEFINE|'		\
 		-e 's|#FFMPEG_LIBS|FFMPEG_LIBS|'		\
-		${BUILD_WRKSRC}/Makefile
-. endif
-. if !defined(WITHOUT_LAPACK)
-	${REINPLACE_CMD} -e 's|#LAPACK_CFLAGS|LAPACK_CFLAGS|'			\
-		-e 's|#LAPACK_DEFINE|LAPACK_DEFINE|'				\
-		-e 's|#LAPACK_LIBS|LAPACK_LIBS|'				\
-		-e 's|-lblas -llapack|-L${LOCALBASE}/lib ${BLASLIB} ${LAPACKLIB}|'	\
 		${BUILD_WRKSRC}/Makefile
 . endif
 . if defined(WITH_XSHM)

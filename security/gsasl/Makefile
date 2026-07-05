@@ -1,5 +1,5 @@
 PORTNAME=	gsasl
-PORTVERSION=	2.2.1
+PORTVERSION=	2.2.2
 CATEGORIES=	security
 MASTER_SITES=	GNU
 
@@ -11,12 +11,11 @@ LICENSE=	LGPL21
 
 LIB_DEPENDS=	libgsasl.so:security/libgsasl
 
-USES=		charsetfix libtool localbase pathfix pkgconfig readline
+USES=		charsetfix libtool localbase pkgconfig readline
 
 CONFIGURE_ARGS=	--disable-rpath \
 		--without-gssapi-impl
 GNU_CONFIGURE=	yes
-GNU_CONFIGURE_MANPREFIX=${PREFIX}/share
 
 INFO=		gsasl
 

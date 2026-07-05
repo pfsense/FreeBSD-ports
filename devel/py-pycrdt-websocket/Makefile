@@ -1,5 +1,5 @@
 PORTNAME=	pycrdt-websocket
-PORTVERSION=	0.12.7
+PORTVERSION=	0.16.0
 CATEGORIES=	devel python
 MASTER_SITES=	PYPI \
 		https://github.com/jupyter-server/pycrdt-websocket/releases/download/v${PORTVERSION}/
@@ -8,15 +8,16 @@ DISTNAME=	pycrdt_websocket-${PORTVERSION}
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	WebSocket connector for pycrdt
-WWW=		https://github.com/jupyter-server/pycrdt-websocket
+WWW=		https://y-crdt.github.io/pycrdt-websocket/ \
+		https://github.com/y-crdt/pycrdt-websocket
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
 BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}hatchling>=0:devel/py-hatchling@${PY_FLAVOR}
-RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}aiosqlite>=0.18.0<1:databases/py-aiosqlite@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}anyio>=3.6.2<5:devel/py-anyio@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}pycrdt>=0.8.7<0.9.0:devel/py-pycrdt@${PY_FLAVOR}
+RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}anyio>=3.6.2<5:devel/py-anyio@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}pycrdt>=0.12.16<0.13.0:devel/py-pycrdt@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}pycrdt-store>=0.1.0<0.2.0:devel/py-pycrdt-store@${PY_FLAVOR}
 
 USES=		python
 USE_PYTHON=	autoplist concurrent pep517

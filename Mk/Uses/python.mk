@@ -17,19 +17,19 @@
 #		Examples:
 #
 #			USES=python:2.7		# Supports Python 2.7 Only
-#			USES=python:3.8+	# Supports Python 3.8 or later
-#			USES=python:3.8-3.10	# Supports Python 3.8 to 3.10
-#			USES=python:-3.8	# Supports Python up to 3.8
-#			USES=python		# Supports 3.8+
+#			USES=python:3.11+	# Supports Python 3.11 or later
+#			USES=python:3.11-3.12	# Supports Python 3.11 to 3.12
+#			USES=python:-3.11	# Supports Python up to 3.11
+#			USES=python		# Supports 3.10+
 #
 # NOTE:	<version-spec> should be as specific as possible, matching the versions
 #	upstream declares support for, without being incorrect. In particular,
-#	USES=python *without* a <version-spec> means 3.8+,
+#	USES=python *without* a <version-spec> means 3.11+,
 #	including unreleased versions, which is probably incorrect.
 #
 #	Not specifying a <version-spec> should only be used when a more specific
 #	<version-spec> cannot be specified due to syntax limitations, for
-#	example: 2.7,3.8-3.9, but even in this case, X.Y+ (2.7+), or -X.Y (-3.8)
+#	example: 2.7,3.11-3.12, but even in this case, X.Y+ (2.7+), or -X.Y (-3.11)
 #	is preferred and likely more correct.
 #
 # patch		Python is needed at patch time. Adds dependency to PATCH_DEPENDS.
@@ -50,7 +50,7 @@
 # Exported variables:
 #
 # PYTHON_VERSION	- The chosen Python interpreter including the version,
-#			  e.g. python2.7, python3.8, etc.
+#			  e.g. python2.7, python3.11, etc.
 #
 # Variables, which can be set by the port:
 #
@@ -96,6 +96,10 @@
 #
 #	cython_test	- Depend on lang/cython for tests.
 #
+#	cython0		- Depend on lang/cython0 at build-time.
+#
+#	cython0_run	- Depend on lang/cython0 at run-time.
+#
 #	flavors		- Force creation of flavors for Python 2 and 3 default
 #			  versions, where applicable.
 #
@@ -137,8 +141,6 @@
 #	nose2		- Run tests with nose2 (devel/py-nose2)
 #
 #	pytest		- Run tests with latest pytest (devel/py-pytest)
-#
-#	pytest4		- Run tests with pytest 4.x (devel/py-pytest4)
 #
 #	unittest	- Run tests with unittest
 #
@@ -223,17 +225,34 @@
 # PYTHON_PORTSDIR	- The port directory of the chosen Python interpreter
 #
 # PYTHON_REL		- The release number of the chosen Python interpreter
-#			  without dots, e.g. 20706, 30801, ...
+#			  without dots, e.g. 20706, 31114, ...
 #
 # PYTHON_SUFFIX		- The major-minor release number of the chosen Python
-#			  interpreter without dots, e.g. 27, 38, ...
+#			  interpreter without dots, e.g. 27, 310, ...
 #			  Used for prefixes and suffixes.
+#
+# PYTHON_BASESUFFIX	- PYTHON_SUFFIX without the threaded ABI flag.
+#
+# PYTHON_TAG		- Defined by PEP 3147, magic tag containing
+#			  implementation name and shorthand version,
+#			  primarily for bytecode files. Includes
+#			  preceding dot, e.g. .cpython-312,
+#			  .cpython-313, ...
+#
+# PYTHON_SOABI		- Defined by PEP 3149, tag containing
+#			  implementation name, shorthand version
+#			  and ABI tags, primarily for compiled
+#			  extension modules. Includes preceding
+#			  dot, e.g. .cpython-313, .cpython-313t,
+#			  .cpython-313td, ...
 #
 # PYTHON_MAJOR_VER	- The major release version of the chosen Python
 #			  interpreter, e.g. 2, 3, ...
 #
 # PYTHON_VER		- The major-minor release version of the chosen Python
-#			  interpreter, e.g. 2.7, 3.8, ...
+#			  interpreter, e.g. 2.7, 3.12, ...
+#
+# PYTHON_BASEVER	- PYTHON_VER without the threaded ABI flag.
 #
 # PYTHON_ABIVER		- Additional ABI flags set by the chosen Python
 #			  interpreter, e.g. md
@@ -278,7 +297,9 @@
 #	PYTHON_PLATFORM=${PYTHON_PLATFORM}
 #	PYTHON_SITELIBDIR=${PYTHONPREFIX_SITELIBDIR}
 #	PYTHON_SUFFIX=${PYTHON_SUFFIX}
+#	PYTHON_BASESUFFIX=${PYTHON_BASESUFFIX}
 #	PYTHON_VER=${PYTHON_VER}
+#	PYTHON_BASEVER=${PYTHON_BASEVER}
 #	PYTHON_VERSION=${PYTHON_VERSION}
 #
 # where PYTHON_INCLUDEDIR, PYTHON_LIBDIR and PYTHON_SITELIBDIR have their PREFIX
@@ -313,11 +334,13 @@
 .if !defined(_INCLUDE_USES_PYTHON_MK)
 _INCLUDE_USES_PYTHON_MK=	yes
 
+ZEROREGS_UNSAFE=	yes
+
 # What Python version and what Python interpreters are currently supported?
 # When adding a version, please keep the comment in
 # Mk/bsd.default-versions.mk in sync.
-_PYTHON_VERSIONS=		3.9 3.8 3.10 3.11 2.7 # preferred first
-_PYTHON_PORTBRANCH=		3.9		# ${_PYTHON_VERSIONS:[1]}
+_PYTHON_VERSIONS=		3.11 3.12 3.13 3.13t 3.14 3.10 2.7 # preferred first
+_PYTHON_PORTBRANCH=		3.11		# ${_PYTHON_VERSIONS:[1]}
 _PYTHON_BASECMD=		${LOCALBASE}/bin/python
 _PYTHON_RELPORTDIR=		lang/python
 
@@ -331,6 +354,8 @@ _VALID_PYTHON_FEATURES=	allflavors \
 			cython \
 			cython_run \
 			cython_test \
+			cython0 \
+			cython0_run \
 			distutils \
 			flavors \
 			noegginfo \
@@ -341,7 +366,6 @@ _VALID_PYTHON_FEATURES=	allflavors \
 			pep517 \
 			py3kplist \
 			pytest \
-			pytest4 \
 			pythonprefix \
 			unittest \
 			unittest2
@@ -359,9 +383,6 @@ IGNORE=	uses unknown USE_PYTHON features: ${_INVALID_PYTHON_FEATURES}
 .  for var in ${USE_PYTHON}
 _PYTHON_FEATURE_${var:C/=.*$//:tu}=	${var:C/.*=//:S/,/ /g}
 .  endfor
-.  if defined(_PYTHON_FEATURE_PYTEST) && defined(_PYTHON_FEATURE_PYTEST4)
-IGNORE=		uses either USE_PYTHON=pytest or USE_PYTHON=pytest4, not both of them
-.  endif
 
 # distutils automatically generates flavors depending on the supported
 # versions.
@@ -420,13 +441,13 @@ DEV_WARNING+=		"lang/python27 reached End of Life and will be removed somewhere 
 .  elif ${_PYTHON_ARGS} == 2
 DEV_ERROR+=		"USES=python:2 is no longer supported, use USES=python:2.7"
 .  elif ${_PYTHON_ARGS} == 3
-DEV_ERROR+=		"USES=python:3 is no longer supported, use USES=python:3.8+ or an appropriate version range"
+DEV_ERROR+=		"USES=python:3 is no longer supported, use USES=python:3.11+ or an appropriate version range"
 .  endif  # ${_PYTHON_ARGS} == 2.7
 
 _PYTHON_VERSION:=	${PYTHON_DEFAULT}
 
 .  if empty(_PYTHON_ARGS)
-_PYTHON_ARGS=	3.8+
+_PYTHON_ARGS=	3.10+
 .  endif
 
 # Validate Python version whether it meets the version restriction.
@@ -449,9 +470,9 @@ IGNORE=	uses unknown USES=python arguments: ${_PYTHON_ARGS}
 _VC=		C/^([1-9]\.)([0-9])$$/\10\2/
 
 .undef _PYTHON_VERSION_NONSUPPORTED
-.  if !empty(_PYTHON_VERSION_MINIMUM) && (${_PYTHON_VERSION:${_VC}} < ${_PYTHON_VERSION_MINIMUM:${_VC}})
+.  if !empty(_PYTHON_VERSION_MINIMUM) && (${_PYTHON_VERSION:${_VC}:S/t$//} < ${_PYTHON_VERSION_MINIMUM:${_VC}:S/t$//})
 _PYTHON_VERSION_NONSUPPORTED=	${_PYTHON_VERSION_MINIMUM} at least
-.  elif !empty(_PYTHON_VERSION_MAXIMUM) && (${_PYTHON_VERSION:${_VC}} > ${_PYTHON_VERSION_MAXIMUM:${_VC}})
+.  elif !empty(_PYTHON_VERSION_MAXIMUM) && (${_PYTHON_VERSION:${_VC}:S/t$//} > ${_PYTHON_VERSION_MAXIMUM:${_VC}:S/t$//})
 _PYTHON_VERSION_NONSUPPORTED=	${_PYTHON_VERSION_MAXIMUM} at most
 .  endif
 
@@ -462,9 +483,9 @@ _PYTHON_VERSION_NONSUPPORTED=	${_PYTHON_VERSION_MAXIMUM} at most
 __VER=		${ver}
 .      if !defined(_PYTHON_VERSION) && \
 	!(!empty(_PYTHON_VERSION_MINIMUM) && ( \
-		${__VER:${_VC}} < ${_PYTHON_VERSION_MINIMUM:${_VC}})) && \
+		${__VER:${_VC}:S/t$//} < ${_PYTHON_VERSION_MINIMUM:${_VC}:S/t$//})) && \
 	!(!empty(_PYTHON_VERSION_MAXIMUM) && ( \
-		${__VER:${_VC}} > ${_PYTHON_VERSION_MAXIMUM:${_VC}}))
+		${__VER:${_VC}:S/t$//} > ${_PYTHON_VERSION_MAXIMUM:${_VC}:S/t$//}))
 _PYTHON_VERSION=	${ver}
 .      endif
 .    endfor
@@ -479,9 +500,9 @@ IGNORE=		needs an unsupported version of Python
 .    for ver in ${PYTHON_DEFAULT} ${PYTHON2_DEFAULT} ${_PYTHON_VERSIONS}
 __VER=		${ver}
 .      if !(!empty(_PYTHON_VERSION_MINIMUM) && ( \
-		${__VER:${_VC}} < ${_PYTHON_VERSION_MINIMUM:${_VC}})) && \
+		${__VER:${_VC}:S/t$//} < ${_PYTHON_VERSION_MINIMUM:${_VC}:S/t$//})) && \
 	!(!empty(_PYTHON_VERSION_MAXIMUM) && ( \
-		${__VER:${_VC}} > ${_PYTHON_VERSION_MAXIMUM:${_VC}}))
+		${__VER:${_VC}:S/t$//} > ${_PYTHON_VERSION_MAXIMUM:${_VC}:S/t$//}))
 .        if empty(_VALID_PYTHON_VERSIONS:M${ver})
 _VALID_PYTHON_VERSIONS+=	${ver}
 .        endif
@@ -514,7 +535,7 @@ FLAVOR=	${FLAVORS:[1]}
 .    endif
 .  endif
 
-.  if ${FLAVOR:Mpy[23][0-9]}${FLAVOR:Mpy[23][1-9][0-9]}
+.  if ${FLAVOR:Mpy[23][0-9]}${FLAVOR:Mpy[23][1-9][0-9]}${FLAVOR:Mpy31[3-9]t}
 _PYTHON_VERSION=	${FLAVOR:S/py//:C/(.)/\1./}
 .  endif
 
@@ -528,7 +549,7 @@ PKGNAMESUFFIX=	${PYTHON_PKGNAMESUFFIX}
 # To avoid having dependencies with @ and empty flavor:
 # _PYTHON_VERSION is either set by (first that matches):
 # - If using Python flavors, from the current Python flavor
-# - If using a version restriction (USES=python:3.8+), from the first
+# - If using a version restriction (USES=python:3.11+), from the first
 #   acceptable default Python version.
 # - From PYTHON_DEFAULT
 PY_FLAVOR=	py${_PYTHON_VERSION:S/.//}
@@ -537,7 +558,9 @@ PYTHON_VERSION=	python${_PYTHON_VERSION}
 
 # Got the correct python version, set some publicly accessible variables
 PYTHON_VER=		${_PYTHON_VERSION}
+PYTHON_BASEVER=		${PYTHON_VER:S/t$//}
 PYTHON_SUFFIX=		${_PYTHON_VERSION:S/.//g}
+PYTHON_BASESUFFIX=	${PYTHON_SUFFIX:S/t$//}
 PYTHON_MAJOR_VER=	${PYTHON_VER:R}
 PYTHON_REL=		# empty
 PYTHON_ABIVER=		# empty
@@ -545,12 +568,11 @@ PYTHON_PORTSDIR=	${_PYTHON_RELPORTDIR}${PYTHON_SUFFIX}
 
 # Protect partial checkouts from Mk/Scripts/functions.sh:export_ports_env().
 .  if !defined(_PORTS_ENV_CHECK) || exists(${PORTSDIR}/${PYTHON_PORTSDIR})
-.include "${PORTSDIR}/${PYTHON_PORTSDIR}/Makefile.version"
+.include "${PORTSDIR}/${PYTHON_PORTSDIR:S/t$//}/Makefile.version"
 .  endif
 # Create a 5 integer version string, prefixing 0 to the minor and patch
 # tokens if it's a single character. Only use the first 3 tokens of
-# PORTVERSION to support pre-release versions (rc3, alpha4, etc) of
-# any Python port (lang/pythonXY)
+# DISTVERSION to stay consistent regardless of pre-release or ABI flags
 PYTHON_REL=	${PYTHON_DISTVERSION:C/^([0-9]+\.[0-9]+\.[0-9]+).*/\1/:C/\.([0-9])$/.0\1/:C/\.([0-9]\.[0-9]+)/.0\1/:S/.//g}
 
 # Might be overridden by calling ports
@@ -562,9 +584,11 @@ PYTHON_ABIVER!=		${PYTHON_CMD}-config --abiflags
 .  endif
 
 .  if ${PYTHON_REL} >= 30807
-PYTHON_EXT_SUFFIX=	.cpython-${PYTHON_SUFFIX}
+PYTHON_TAG=	.cpython-${PYTHON_BASESUFFIX}
+PYTHON_SOABI=	.cpython-${PYTHON_SUFFIX}
 .  else
-PYTHON_EXT_SUFFIX=	# empty
+PYTHON_TAG=	# empty
+PYTHON_SOABI=	# empty
 .  endif
 
 .  if ${PYTHON_MAJOR_VER} < 3
@@ -606,9 +630,9 @@ _PYTHONPKGLIST=	${WRKDIR}/.PLIST.pymodtmp
 
 # cryptography* support
 .  if ${PYCRYPTOGRAPHY_DEFAULT} == rust
-CRYPTOGRAPHY_DEPENDS=	${PYTHON_PKGNAMEPREFIX}cryptography>=42.0.5,1:security/py-cryptography@${PY_FLAVOR}
+CRYPTOGRAPHY_DEPENDS=	${PYTHON_PKGNAMEPREFIX}cryptography>=46.0.5,1<47,1:security/py-cryptography@${PY_FLAVOR}
 .  else
-CRYPTOGRAPHY_DEPENDS=	${PYTHON_PKGNAMEPREFIX}cryptography-legacy>=3.4.8_1,1:security/py-cryptography-legacy@${PY_FLAVOR}
+CRYPTOGRAPHY_DEPENDS=	${PYTHON_PKGNAMEPREFIX}cryptography-legacy>=3.4.8_3,1:security/py-cryptography-legacy@${PY_FLAVOR}
 .  endif
 
 .  if defined(_PYTHON_FEATURE_CRYPTOGRAPHY_BUILD)
@@ -624,16 +648,27 @@ TEST_DEPENDS+=	${CRYPTOGRAPHY_DEPENDS}
 .  endif
 
 # cython* support
+CYTHON_DEPENDS=	${PYTHON_PKGNAMEPREFIX}cython>=3.2.4:lang/cython@${PY_FLAVOR}
+CYTHON0_DEPENDS=${PYTHON_PKGNAMEPREFIX}cython0>=0.29.37<3:lang/cython0@${PY_FLAVOR}
+
 .  if defined(_PYTHON_FEATURE_CYTHON)
-BUILD_DEPENDS+=	cython-${PYTHON_VER}:lang/cython@${PY_FLAVOR}
+BUILD_DEPENDS+=	${CYTHON_DEPENDS}
 .  endif
 
 .  if defined(_PYTHON_FEATURE_CYTHON_RUN)
-RUN_DEPENDS+=	cython-${PYTHON_VER}:lang/cython@${PY_FLAVOR}
+RUN_DEPENDS+=	${CYTHON_DEPENDS}
 .  endif
 
 .  if defined(_PYTHON_FEATURE_CYTHON_TEST)
-TEST_DEPENDS+=	cython-${PYTHON_VER}:lang/cython@${PY_FLAVOR}
+TEST_DEPENDS+=	${CYTHON_DEPENDS}
+.  endif
+
+.  if defined(_PYTHON_FEATURE_CYTHON0)
+BUILD_DEPENDS+=	${CYTHON0_DEPENDS}
+.  endif
+
+.  if defined(_PYTHON_FEATURE_CYTHON0_RUN)
+RUN_DEPENDS+=	${CYTHON0_DEPENDS}
 .  endif
 
 .  if defined(_PYTHON_FEATURE_CONCURRENT)
@@ -675,7 +710,6 @@ BUILD_DEPENDS+=		${PYTHON_PKGNAMEPREFIX}setuptools44>0:devel/py-setuptools44@${P
 RUN_DEPENDS+=		${PYTHON_PKGNAMEPREFIX}setuptools44>0:devel/py-setuptools44@${PY_FLAVOR}
 .    else
 BUILD_DEPENDS+=		${PYTHON_PKGNAMEPREFIX}setuptools>=63.1.0:devel/py-setuptools@${PY_FLAVOR}
-RUN_DEPENDS+=		${PYTHON_PKGNAMEPREFIX}setuptools>=63.1.0:devel/py-setuptools@${PY_FLAVOR}
 .    endif
 .  endif
 
@@ -736,10 +770,6 @@ TEST_DEPENDS+=	${PYTHON_PKGNAMEPREFIX}nose2>=0:devel/py-nose2@${PY_FLAVOR}
 # pytest support
 .  if defined(_PYTHON_FEATURE_PYTEST)
 TEST_DEPENDS+=	${PYTHON_PKGNAMEPREFIX}pytest>=7,1:devel/py-pytest@${PY_FLAVOR}
-.  elif defined(_PYTHON_FEATURE_PYTEST4)
-TEST_DEPENDS+=	${PYTHON_PKGNAMEPREFIX}pytest4>=4.6,1:devel/py-pytest4@${PY_FLAVOR}
-.  endif
-.  if defined(_PYTHON_FEATURE_PYTEST) || defined(_PYTHON_FEATURE_PYTEST4)
 PYTEST_BROKEN_TESTS?=	# empty
 PYTEST_IGNORED_TESTS?=	# empty
 _PYTEST_SKIPPED_TESTS?=	# empty
@@ -752,7 +782,7 @@ _PYTEST_SKIPPED_TESTS+=	${PYTEST_IGNORED_TESTS}
 .      endif
 .    endif # !defined(PYTEST_ENABLE_ALL_TESTS)
 _PYTEST_FILTER_EXPRESSION=	${_PYTEST_SKIPPED_TESTS:C/^(.)/and not \1/:tW:C/^and //}
-.  endif # defined(_PYTHON_FEATURE_PYTEST) || defined(_PYTHON_FEATURE_PYTEST4)
+.  endif # defined(_PYTHON_FEATURE_PYTEST)
 
 # unittest2 support
 .  if defined(_PYTHON_FEATURE_UNITTEST2)
@@ -793,7 +823,7 @@ add-plist-pymod:
 # When Python version is 3.2+ we rewrite all the filenames
 # of TMPPLIST that end with .py[co], so that they conform
 # to PEP 3147 (see https://www.python.org/dev/peps/pep-3147/)
-PYMAGICTAG=		${PYTHON_CMD} -c 'import sys; print(sys.implementation.cache_tag)'
+_PYMAGICTAG=		${PYTHON_CMD} -c 'import sys; print(sys.implementation.cache_tag)'
 _USES_stage+=	935:add-plist-python
 add-plist-python:
 	@${AWK} '\
@@ -802,7 +832,7 @@ add-plist-python:
 		/^@dirrmtry / {d = substr($$0, 11); if (d in dirs) {print $$0 "/" pc}; print $$0; next} \
 		{print} \
 		' \
-		pc="__pycache__" mt="$$(${PYMAGICTAG})" pyo="opt-1.pyc" \
+		pc="__pycache__" mt="$$(${_PYMAGICTAG})" pyo="opt-1.pyc" \
 		${TMPPLIST} > ${TMPPLIST}.pyc_tmp
 	@${MV} ${TMPPLIST}.pyc_tmp ${TMPPLIST}
 .    endif # ${PYTHON_REL} >= 30200 && defined(_PYTHON_FEATURE_PY3KPLIST)
@@ -819,7 +849,7 @@ CMAKE_ARGS+=	-DPython${PYTHON_MAJOR_VER}_EXECUTABLE:FILEPATH="${PYTHON_CMD}"
 
 # Python 3rd-party modules
 PYGAME=		${PYTHON_PKGNAMEPREFIX}game>0:devel/py-game@${PY_FLAVOR}
-PYNUMPY=	${PYTHON_PKGNAMEPREFIX}numpy>=1.16,1<1.26,1:math/py-numpy@${PY_FLAVOR}
+PYNUMPY=	${PYTHON_PKGNAMEPREFIX}numpy>=1.16,1<1.27,1:math/py-numpy@${PY_FLAVOR}
 
 .  if defined(_PYTHON_FEATURE_DISTUTILS)
 .    if ${PYTHON_MAJOR_VER} < 3
@@ -833,6 +863,16 @@ PY_SETUPTOOLS=	${PYTHON_PKGNAMEPREFIX}setuptools>0:devel/py-setuptools@${PY_FLAV
 .  endif
 
 # Common Python modules that can be needed but only for some versions of Python.
+.  if ${PYTHON_REL} < 31400
+PY_BACKPORTS.ZSTD=	${PYTHON_PKGNAMEPREFIX}backports.zstd>=1.0.0:devel/py-backports.zstd@${PY_FLAVOR}
+.  endif
+
+.  if ${PYTHON_REL} < 31100
+PY_EXCEPTIONGROUP=	${PYTHON_PKGNAMEPREFIX}exceptiongroup>=1.1.1:devel/py-exceptiongroup@${PY_FLAVOR}
+PY_TOMLI=		${PYTHON_PKGNAMEPREFIX}tomli>=2.3<3:textproc/py-tomli@${PY_FLAVOR}
+PY_TYPING_EXTENSIONS=	${PYTHON_PKGNAMEPREFIX}typing-extensions>0:devel/py-typing-extensions@${PY_FLAVOR}
+.  endif
+
 .  if ${PYTHON_REL} >= 30000
 PY_PILLOW=	${PYTHON_PKGNAMEPREFIX}pillow>=7.0.0:graphics/py-pillow@${PY_FLAVOR}
 .  endif
@@ -865,8 +905,11 @@ SUB_LIST+=	PYTHON_INCLUDEDIR=${PYTHONPREFIX_INCLUDEDIR} \
 		PYTHON_PLATFORM=${PYTHON_PLATFORM} \
 		PYTHON_SITELIBDIR=${PYTHONPREFIX_SITELIBDIR} \
 		PYTHON_SUFFIX=${PYTHON_SUFFIX} \
-		PYTHON_EXT_SUFFIX=${PYTHON_EXT_SUFFIX} \
+		PYTHON_BASESUFFIX=${PYTHON_BASESUFFIX} \
+		PYTHON_TAG=${PYTHON_TAG} \
+		PYTHON_SOABI=${PYTHON_SOABI} \
 		PYTHON_VER=${PYTHON_VER} \
+		PYTHON_BASEVER=${PYTHON_BASEVER} \
 		PYTHON_VERSION=${PYTHON_VERSION}
 
 # Substitutions for pkg-plist
@@ -877,8 +920,11 @@ PLIST_SUB+=	PYTHON_INCLUDEDIR=${PYTHONPREFIX_INCLUDEDIR:S;${PREFIX}/;;} \
 		PYTHON_PLATFORM=${PYTHON_PLATFORM} \
 		PYTHON_SITELIBDIR=${PYTHONPREFIX_SITELIBDIR:S;${PREFIX}/;;} \
 		PYTHON_SUFFIX=${PYTHON_SUFFIX} \
-		PYTHON_EXT_SUFFIX=${PYTHON_EXT_SUFFIX} \
+		PYTHON_BASESUFFIX=${PYTHON_BASESUFFIX} \
+		PYTHON_TAG=${PYTHON_TAG} \
+		PYTHON_SOABI=${PYTHON_SOABI} \
 		PYTHON_VER=${PYTHON_VER} \
+		PYTHON_BASEVER=${PYTHON_BASEVER} \
 		PYTHON_VERSION=${PYTHON_VERSION}
 .  if ${PYTHON_MAJOR_VER} < 3
 SUB_LIST+=	PYTHON2="" PYTHON3="@comment "
@@ -927,7 +973,7 @@ BUILD_DEPENDS+=	${PEP517_BUILD_DEPEND}
 BUILD_DEPENDS+=	${PEP517_INSTALL_DEPEND}
 .    endif
 
-.    if !target(do-configure)
+.    if !target(do-configure) && !defined(HAS_CONFIGURE) && !defined(GNU_CONFIGURE)
 do-configure:
 	@${DO_NADA}
 .    endif
@@ -974,12 +1020,12 @@ do-test:
 .    endif
 .  endif # defined(_PYTHON_FEATURE_NOSE2)
 
-.  if defined(_PYTHON_FEATURE_PYTEST) || defined(_PYTHON_FEATURE_PYTEST4)
+.  if defined(_PYTHON_FEATURE_PYTEST)
 .    if !target(do-test)
 do-test:
 	cd ${TEST_WRKSRC} && ${SETENVI} ${WRK_ENV} ${TEST_ENV} ${PYTHON_CMD} -m pytest -k '${_PYTEST_FILTER_EXPRESSION}' -rs -v -o addopts= ${TEST_ARGS:NDESTDIR=*}
 .    endif
-.  endif # defined(_PYTHON_FEATURE_PYTEST) || defined(_PYTHON_FEATURE_PYTEST4)
+.  endif # defined(_PYTHON_FEATURE_PYTEST)
 
 .  if defined(_PYTHON_FEATURE_UNITTEST)
 .    if !target(do-test)

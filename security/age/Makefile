@@ -1,10 +1,10 @@
 PORTNAME=	age
 DISTVERSIONPREFIX=	v
-DISTVERSION=	1.1.1
-PORTREVISION=	11
+DISTVERSION=	1.3.1
+PORTREVISION=	4
 CATEGORIES=	security
 
-MAINTAINER=	dmgk@FreeBSD.org
+MAINTAINER=	bofh@FreeBSD.org
 COMMENT=	Simple, modern and secure file encryption tool
 WWW=		https://github.com/FiloSottile/age
 
@@ -19,7 +19,9 @@ GO_TARGET=	./cmd/age \
 
 PLIST_FILES=	bin/age \
 		bin/age-keygen \
+		share/man/man1/age-inspect.1.gz \
 		share/man/man1/age-keygen.1.gz \
+		share/man/man1/age-plugin-batchpass.1.gz \
 		share/man/man1/age.1.gz
 
 post-install:

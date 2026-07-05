@@ -1,6 +1,6 @@
 PORTNAME=	libint
 DISTVERSIONPREFIX=	v
-DISTVERSION=	2.9.0
+DISTVERSION=	2.12.0
 CATEGORIES=	science
 PKGNAMESUFFIX=	2
 
@@ -11,7 +11,7 @@ WWW=		https://github.com/evaleev/libint
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-LIB_DEPENDS=	libboost_system.so:devel/boost-libs \
+LIB_DEPENDS=	libboost_thread.so:devel/boost-libs \
 		libgmpxx.so:math/gmp
 
 USES=		autoreconf:build compiler:c++11-lang gmake libtool localbase:ldflags
@@ -26,6 +26,7 @@ CONFIGURE_ARGS=	--enable-shared \
 		--with-cc-optflags="${CFLAGS}" --with-cxx-optflags="${CXXFLAGS}"
 
 ALL_TARGET=	default
+TEST_TARGET=	check # tests fail to compile, see https://github.com/evaleev/libint/issues/362
 
 PLIST_SUB=	VER=${DISTVERSION}
 

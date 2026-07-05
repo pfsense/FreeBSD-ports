@@ -1,10 +1,11 @@
 PORTNAME=	azure-mgmt-servicelinker
 DISTVERSION=	1.2.0b1
+PORTREVISION=	1
 CATEGORIES=	devel python
 MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
-MAINTAINER=	dbaio@FreeBSD.org
+MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Microsoft Azure Servicelinker Management Client Library for Python
 WWW=		https://pypi.org/project/azure-mgmt-servicelinker/
 

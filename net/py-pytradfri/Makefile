@@ -1,10 +1,11 @@
 PORTNAME=	pytradfri
 DISTVERSION=	13.0.0
+PORTREVISION=	1
 CATEGORIES=	net
 MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
-MAINTAINER=	tcberner@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Python IKEA Tradfri API controller
 WWW=		https://github.com/ggravlingen/pytradfri
 

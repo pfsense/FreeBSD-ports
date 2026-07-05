@@ -1,5 +1,5 @@
 PORTNAME=	Archive-Libarchive
-PORTVERSION=	0.08
+PORTVERSION=	0.09
 CATEGORIES=	archivers perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
@@ -10,7 +10,7 @@ WWW=		https://metacpan.org/dist/Archive-Libarchive
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual
-LICENSE_FILE=	${WRKSRC}/LICENSE
+LICENSE_FILE_GPLv1+ =	${WRKSRC}/LICENSE
 
 BUILD_DEPENDS=	${RUN_DEPENDS}
 RUN_DEPENDS=	p5-FFI-C-Stat>=0:devel/p5-FFI-C-Stat \
@@ -26,7 +26,7 @@ TEST_DEPENDS=	p5-FFI-C>=0:devel/p5-FFI-C \
 		p5-Term-Table>=0:devel/p5-Term-Table \
 		p5-Test-Archive-Libarchive>=0:devel/p5-Test-Archive-Libarchive \
 		p5-Test-Script>=1.09:devel/p5-Test-Script \
-		p5-Test2-Suite>=0.000121:devel/p5-Test2-Suite \
+		p5-Test-Simple>=1.302200:devel/p5-Test-Simple \
 		p5-Test2-Tools-MemoryCycle>=0:devel/p5-Test2-Tools-MemoryCycle
 
 USES=		perl5

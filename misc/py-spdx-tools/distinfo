@@ -1,3 +1,3 @@
-TIMESTAMP = 1683647611
-SHA256 (spdx-tools-0.7.1.tar.gz) = 975e6dbba88f105a8acb22abf53fe90f0e9d5635a2b9b1fe487781e969623b17
-SIZE (spdx-tools-0.7.1.tar.gz) = 200475
+TIMESTAMP = 1773749793
+SHA256 (spdx_tools-0.8.5.tar.gz) = be600beb2f762f0116025e05490d399e724f668bef84025a7c421bb266688bdb
+SIZE (spdx_tools-0.8.5.tar.gz) = 696323

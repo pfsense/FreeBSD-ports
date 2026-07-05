@@ -1,7 +1,7 @@
 PORTNAME=	polo
 DISTVERSIONPREFIX=	v
 DISTVERSION=	18.8-beta
-PORTREVISION=	4
+PORTREVISION=	5
 CATEGORIES=	x11-fm
 
 MAINTAINER=	gnome@FreeBSD.org
@@ -18,7 +18,7 @@ USES=		desktop-file-utils gettext-tools gmake gnome pkgconfig \
 		vala:build
 USE_GITHUB=	yes
 GH_ACCOUNT=	teejee2008
-USE_GNOME=	cairo gdkpixbuf2 gtk30 libxml2 vte3
+USE_GNOME=	cairo gdkpixbuf gtk30 libxml2 vte3
 
 MAKEFILE=	makefile
 WRKSRC_SUBDIR=	src

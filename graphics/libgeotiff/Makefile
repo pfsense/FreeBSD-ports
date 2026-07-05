@@ -1,9 +1,9 @@
 PORTNAME=	libgeotiff
-PORTVERSION=	1.7.1
-PORTREVISION=	6
+PORTVERSION=	1.7.4
+PORTREVISION=	1
 CATEGORIES=	graphics
-MASTER_SITES=	https://download.osgeo.org/geotiff/libgeotiff/ \
-		LOCAL/sunpoet
+MASTER_SITES=	https://github.com/OSGeo/libgeotiff/releases/download/${PORTVERSION}/ \
+		https://download.osgeo.org/geotiff/libgeotiff/
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Library for reading and writing GeoTIFF information tags
@@ -36,7 +36,6 @@ CONFIGURE_ARGS=	--datadir=${DATADIR} \
 		--with-zip=/usr
 CPPFLAGS+=	-fPIC
 GNU_CONFIGURE=	yes
-GNU_CONFIGURE_MANPREFIX=${PREFIX}/share
 INSTALL_TARGET=	install-strip
 USE_LDCONFIG=	yes
 

@@ -1,39 +1,11 @@
---- configure.orig	2023-02-27 20:43:45 UTC
+--- configure.orig	2025-12-24 07:09:43 UTC
 +++ configure
-@@ -3888,13 +3888,7 @@ target_os_default=$(tolower $(uname -s))
- host_os=$target_os_default
+@@ -7667,7 +7667,7 @@ if enabled proper_dce; then
+ EOF
  
- # machine
--if test "$target_os_default" = aix; then
--    arch_default=$(uname -p)
--    strip_default="strip -X32_64"
--    nm_default="nm -g -X32_64"
--else
--    arch_default=$(uname -m)
--fi
-+arch_default=$(uname -p)
- cpu="generic"
- intrinsics="none"
- 
-@@ -6705,10 +6699,10 @@ enabled libglslang && { check_lib spirv_compiler glsla
- enabled libfribidi        && require_pkg_config libfribidi fribidi fribidi.h fribidi_version_info
- enabled libharfbuzz       && require_pkg_config libharfbuzz harfbuzz hb.h hb_buffer_create
- enabled libglslang && { check_lib spirv_compiler glslang/Include/glslang_c_interface.h glslang_initialize_process \
--                            -lglslang -lMachineIndependent -lOSDependent -lHLSL -lOGLCompiler -lGenericCodeGen \
-+                            -lglslang -lMachineIndependent -lOSDependent -lGenericCodeGen \
-                             -lSPVRemapper -lSPIRV -lSPIRV-Tools-opt -lSPIRV-Tools -lpthread -lstdc++ -lm ||
-                         require spirv_compiler glslang/Include/glslang_c_interface.h glslang_initialize_process \
--                            -lglslang -lOSDependent -lHLSL -lOGLCompiler \
-+                            -lglslang -lOSDependent \
-                             -lSPVRemapper -lSPIRV -lSPIRV-Tools-opt -lSPIRV-Tools -lpthread -lstdc++ -lm; }
- enabled libgme            && { check_pkg_config libgme libgme gme/gme.h gme_new_emu ||
-                                require libgme gme/gme.h gme_new_emu -lgme -lstdc++; }
-@@ -7018,7 +7013,7 @@ fi
- 
- if enabled x86; then
-     case $target_os in
--        mingw32*|mingw64*|win32|win64|linux|cygwin*)
-+        freebsd|mingw32*|mingw64*|win32|win64|linux|cygwin*)
-             ;;
-         *)
-             disable ffnvcodec cuvid nvdec nvenc
+ if enabled proper_dce; then
+-    echo "X { local: *; };" > $TMPV
++    echo "X { global: environ; __progname; local: *; };" > $TMPV
+     if test_ldflags -Wl,${version_script},$TMPV; then
+         append SHFLAGS '-Wl,${version_script},\$(SUBDIR)lib\$(NAME).ver'
+         quotes='""'

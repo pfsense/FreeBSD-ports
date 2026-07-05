@@ -1,7 +1,7 @@
 PORTNAME=	actiona
 DISTVERSIONPREFIX=	v
 DISTVERSION=	3.10.1
-PORTREVISION=	7
+PORTREVISION=	8
 CATEGORIES=	misc
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -21,7 +21,7 @@ USE_GITHUB=	yes
 GH_ACCOUNT=	Jmgr
 USE_QT=		concurrent core dbus gui multimedia network script scripttools speech sql widgets x11extras xml xmlpatterns \
 		buildtools:build uitools:build
-USE_GNOME=	gdkpixbuf2 glib20
+USE_GNOME=	gdkpixbuf glib20
 USE_GL=		gl
 USE_XORG=	x11 xtst
 

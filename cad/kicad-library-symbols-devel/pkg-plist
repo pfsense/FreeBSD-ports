@@ -15,6 +15,7 @@
 %%DATADIR%%/symbols/Analog_DAC.kicad_sym
 %%DATADIR%%/symbols/Analog_Switch.kicad_sym
 %%DATADIR%%/symbols/Audio.kicad_sym
+%%DATADIR%%/symbols/Auxiliary_Items.kicad_sym
 %%DATADIR%%/symbols/Battery_Management.kicad_sym
 %%DATADIR%%/symbols/Buffer.kicad_sym
 %%DATADIR%%/symbols/CPLD_Altera.kicad_sym
@@ -119,6 +120,7 @@
 %%DATADIR%%/symbols/MCU_NXP_S08.kicad_sym
 %%DATADIR%%/symbols/MCU_Nordic.kicad_sym
 %%DATADIR%%/symbols/MCU_Parallax.kicad_sym
+%%DATADIR%%/symbols/MCU_Puya.kicad_sym
 %%DATADIR%%/symbols/MCU_RaspberryPi.kicad_sym
 %%DATADIR%%/symbols/MCU_Renesas_Synergy_S1.kicad_sym
 %%DATADIR%%/symbols/MCU_STC.kicad_sym
@@ -138,9 +140,9 @@
 %%DATADIR%%/symbols/MCU_ST_STM32L4.kicad_sym
 %%DATADIR%%/symbols/MCU_ST_STM32L5.kicad_sym
 %%DATADIR%%/symbols/MCU_ST_STM32MP1.kicad_sym
+%%DATADIR%%/symbols/MCU_ST_STM32U0.kicad_sym
 %%DATADIR%%/symbols/MCU_ST_STM32U5.kicad_sym
 %%DATADIR%%/symbols/MCU_ST_STM32WB.kicad_sym
-%%DATADIR%%/symbols/MCU_ST_STM32WBA.kicad_sym
 %%DATADIR%%/symbols/MCU_ST_STM32WL.kicad_sym
 %%DATADIR%%/symbols/MCU_ST_STM8.kicad_sym
 %%DATADIR%%/symbols/MCU_SiFive.kicad_sym
@@ -148,8 +150,8 @@
 %%DATADIR%%/symbols/MCU_Texas.kicad_sym
 %%DATADIR%%/symbols/MCU_Texas_MSP430.kicad_sym
 %%DATADIR%%/symbols/MCU_Texas_SimpleLink.kicad_sym
-%%DATADIR%%/symbols/MCU_WCH_CH32V0.kicad_sym
-%%DATADIR%%/symbols/MCU_WCH_CH32V3.kicad_sym
+%%DATADIR%%/symbols/MCU_Trident.kicad_sym
+%%DATADIR%%/symbols/MCU_WCH_RiscV.kicad_sym
 %%DATADIR%%/symbols/Mechanical.kicad_sym
 %%DATADIR%%/symbols/Memory_EEPROM.kicad_sym
 %%DATADIR%%/symbols/Memory_EPROM.kicad_sym

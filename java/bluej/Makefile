@@ -1,6 +1,6 @@
 PORTNAME=	bluej
 PORTVERSION=	4.2.2
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	java editors
 MASTER_SITES=	http://www.bluej.org/download/files/
 DISTNAME=	BlueJ-generic-${PORTVERSION:S/.//g}
@@ -15,10 +15,11 @@ LICENSE_FILE=	${WRKSRC}/LICENSE.txt
 
 RUN_DEPENDS=	openjfx14>0:java/openjfx14
 
+USES=		java
+
 NO_ARCH=	yes
 NO_BUILD=	yes
 
-USE_JAVA=	yes
 JAVA_VERSION=	11+
 SUB_FILES=	bluej
 SUB_LIST=	JAVA_HOME=${JAVA_HOME}

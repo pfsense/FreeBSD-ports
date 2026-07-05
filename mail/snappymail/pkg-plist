@@ -127,6 +127,14 @@
 %%WWWDIR%%/snappymail/v/%%VER%%/app/libraries/MailSo/Smtp/Exceptions/ResponseException.php
 %%WWWDIR%%/snappymail/v/%%VER%%/app/libraries/MailSo/Smtp/Settings.php
 %%WWWDIR%%/snappymail/v/%%VER%%/app/libraries/MailSo/Smtp/SmtpClient.php
+%%WWWDIR%%/snappymail/v/%%VER%%/app/libraries/OAuth2/Client.php
+%%WWWDIR%%/snappymail/v/%%VER%%/app/libraries/OAuth2/GrantType/AuthorizationCode.php
+%%WWWDIR%%/snappymail/v/%%VER%%/app/libraries/OAuth2/GrantType/ClientCredentials.php
+%%WWWDIR%%/snappymail/v/%%VER%%/app/libraries/OAuth2/GrantType/IGrantType.php
+%%WWWDIR%%/snappymail/v/%%VER%%/app/libraries/OAuth2/GrantType/Password.php
+%%WWWDIR%%/snappymail/v/%%VER%%/app/libraries/OAuth2/GrantType/RefreshToken.php
+%%WWWDIR%%/snappymail/v/%%VER%%/app/libraries/OAuth2/LICENSE
+%%WWWDIR%%/snappymail/v/%%VER%%/app/libraries/OAuth2/README.md
 %%WWWDIR%%/snappymail/v/%%VER%%/app/libraries/RainLoop/Actions.php
 %%WWWDIR%%/snappymail/v/%%VER%%/app/libraries/RainLoop/Actions/Accounts.php
 %%WWWDIR%%/snappymail/v/%%VER%%/app/libraries/RainLoop/Actions/Admin.php
@@ -341,6 +349,7 @@
 %%WWWDIR%%/snappymail/v/%%VER%%/app/libraries/snappymail/gpg/pgpkeysettings.php
 %%WWWDIR%%/snappymail/v/%%VER%%/app/libraries/snappymail/gpg/procpipes.php
 %%WWWDIR%%/snappymail/v/%%VER%%/app/libraries/snappymail/gpg/smime.php
+%%WWWDIR%%/snappymail/v/%%VER%%/app/libraries/snappymail/hibp.php
 %%WWWDIR%%/snappymail/v/%%VER%%/app/libraries/snappymail/http/csp.php
 %%WWWDIR%%/snappymail/v/%%VER%%/app/libraries/snappymail/http/exception.php
 %%WWWDIR%%/snappymail/v/%%VER%%/app/libraries/snappymail/http/request.php
@@ -554,6 +563,7 @@
 %%WWWDIR%%/snappymail/v/%%VER%%/app/localization/vi/relativetimeformat.js
 %%WWWDIR%%/snappymail/v/%%VER%%/app/localization/vi/static.json
 %%WWWDIR%%/snappymail/v/%%VER%%/app/localization/vi/user.json
+%%WWWDIR%%/snappymail/v/%%VER%%/app/localization/zh-TW/admin.json
 %%WWWDIR%%/snappymail/v/%%VER%%/app/localization/zh-TW/relativetimeformat.js
 %%WWWDIR%%/snappymail/v/%%VER%%/app/localization/zh-TW/static.json
 %%WWWDIR%%/snappymail/v/%%VER%%/app/localization/zh-TW/user.json
@@ -596,6 +606,7 @@
 %%WWWDIR%%/snappymail/v/%%VER%%/app/templates/Views/User/PopupsContacts.html
 %%WWWDIR%%/snappymail/v/%%VER%%/app/templates/Views/User/PopupsFilter.html
 %%WWWDIR%%/snappymail/v/%%VER%%/app/templates/Views/User/PopupsFolder.html
+%%WWWDIR%%/snappymail/v/%%VER%%/app/templates/Views/User/PopupsFolderACL.html
 %%WWWDIR%%/snappymail/v/%%VER%%/app/templates/Views/User/PopupsFolderClear.html
 %%WWWDIR%%/snappymail/v/%%VER%%/app/templates/Views/User/PopupsFolderCreate.html
 %%WWWDIR%%/snappymail/v/%%VER%%/app/templates/Views/User/PopupsFolderSystem.html
@@ -736,6 +747,9 @@
 %%WWWDIR%%/snappymail/v/%%VER%%/themes/LoveDark/images/background.jpg
 %%WWWDIR%%/snappymail/v/%%VER%%/themes/LoveDark/images/preview.png
 %%WWWDIR%%/snappymail/v/%%VER%%/themes/LoveDark/styles.css
+%%WWWDIR%%/snappymail/v/%%VER%%/themes/Magnetic/images/background.png
+%%WWWDIR%%/snappymail/v/%%VER%%/themes/Magnetic/images/preview.png
+%%WWWDIR%%/snappymail/v/%%VER%%/themes/Magnetic/styles.css
 %%WWWDIR%%/snappymail/v/%%VER%%/themes/NextcloudV25+/images/preview.png
 %%WWWDIR%%/snappymail/v/%%VER%%/themes/NextcloudV25+/styles.css
 %%WWWDIR%%/snappymail/v/%%VER%%/themes/NightShine/images/background.jpg

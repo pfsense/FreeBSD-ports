@@ -1,11 +1,20 @@
---- src/3rdparty/chromium/gpu/command_buffer/service/webgpu_decoder_impl.cc.orig	2023-04-05 11:05:06 UTC
+--- src/3rdparty/chromium/gpu/command_buffer/service/webgpu_decoder_impl.cc.orig	2025-08-15 18:30:00 UTC
 +++ src/3rdparty/chromium/gpu/command_buffer/service/webgpu_decoder_impl.cc
-@@ -1225,7 +1225,7 @@ void WebGPUDecoderImpl::RequestAdapterImpl(
+@@ -1752,7 +1752,7 @@ wgpu::Adapter WebGPUDecoderImpl::CreatePreferredAdapte
+       backend_types = {wgpu::BackendType::D3D12};
+ #elif BUILDFLAG(IS_MAC)
+       backend_types = {wgpu::BackendType::Metal};
+-#elif BUILDFLAG(IS_LINUX)
++#elif BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_BSD)
+       if (shared_context_state_->GrContextIsVulkan() ||
+           shared_context_state_->IsGraphiteDawnVulkan()) {
+         backend_types = {wgpu::BackendType::Vulkan};
+@@ -1994,7 +1994,7 @@ WebGPUDecoderImpl::AssociateMailboxDawn(
+   }
  
-   if (gr_context_type_ != GrContextType::kVulkan &&
-       use_webgpu_adapter_ != WebGPUAdapterName::kCompat) {
--#if BUILDFLAG(IS_LINUX)
-+#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_BSD)
-     callback(WGPURequestAdapterStatus_Unavailable, nullptr,
-              "WebGPU on Linux requires command-line flag "
-              "--enable-features=Vulkan",
+ #if !BUILDFLAG(IS_WIN) && !BUILDFLAG(IS_CHROMEOS) && !BUILDFLAG(IS_APPLE) && \
+-    !BUILDFLAG(IS_ANDROID) && !BUILDFLAG(IS_LINUX)
++    !BUILDFLAG(IS_ANDROID) && !BUILDFLAG(IS_LINUX) && !BUILDFLAG(IS_BSD)
+   if (usage & wgpu::TextureUsage::StorageBinding) {
+     LOG(ERROR) << "AssociateMailbox: wgpu::TextureUsage::StorageBinding is NOT "
+                   "supported yet on this platform.";

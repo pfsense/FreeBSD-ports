@@ -1,5 +1,6 @@
 bin/spirv-as
 bin/spirv-cfg
+bin/spirv-diff
 bin/spirv-dis
 bin/spirv-lesspipe.sh
 bin/spirv-link
@@ -8,7 +9,6 @@ bin/spirv-objdump
 bin/spirv-opt
 bin/spirv-reduce
 bin/spirv-val
-include/spirv-tools/instrument.hpp
 include/spirv-tools/libspirv.h
 include/spirv-tools/libspirv.hpp
 include/spirv-tools/linker.hpp

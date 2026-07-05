@@ -1,10 +1,14 @@
 PORTNAME=	snuffleupagus
 DISTVERSIONPREFIX=	v
 DISTVERSION=	0.10.0
+PORTREVISION=	1
 CATEGORIES=	security
 PKGNAMEPREFIX=	${PHP_PKGNAMEPREFIX}
 
-MAINTAINER=	franco@opnsense.org
+PATCH_SITES=	https://github.com/${GH_ACCOUNT}/${PORTNAME}/commit/
+PATCHFILES=	b005df2.patch:-p2
+
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Security module for PHP
 WWW=		https://snuffleupagus.readthedocs.io/
 
@@ -17,6 +21,7 @@ USES=		localbase:ldflags php:build,ext
 USE_GITHUB=	yes
 GH_ACCOUNT=	jvoisin
 USE_PHP=	session:build
+IGNORE_WITH_PHP=	84 85
 
 CONFIGURE_ARGS=	--enable-snuffleupagus
 

@@ -1,7 +1,7 @@
 PORTNAME=	octosql
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.12.2
-PORTREVISION=	5
+DISTVERSION=	0.13.0
+PORTREVISION=	17
 CATEGORIES=	databases
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -13,7 +13,7 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 
 USES=		go:modules
 USE_GITHUB=	nodefault
-GH_TUPLE=	golang:sys:v0.6.0:sys
+GH_TUPLE=	golang:sys:v0.21.0:sys
 
 GO_MODULE=	github.com/cube2222/octosql
 

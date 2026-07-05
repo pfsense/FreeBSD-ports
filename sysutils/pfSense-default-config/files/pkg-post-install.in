@@ -5,7 +5,7 @@ if [ ! -f "${PKG_ROOTDIR}/cf/conf/config.xml" ]; then
 fi
 
 if [ ! -L "${PKG_ROOTDIR}/conf" ]; then
-	ln -sf "${PKG_ROOTDIR}/cf/conf" "${PKG_ROOTDIR}/conf"
+	ln -sf /cf/conf "${PKG_ROOTDIR}/conf"
 fi
 
 if [ ! -d "${PKG_ROOTDIR}/cf/conf/backup" ]; then

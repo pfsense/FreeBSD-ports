@@ -1,35 +1,16 @@
---- chrome/app/settings_strings.grdp.orig	2023-11-22 14:00:11 UTC
+--- chrome/app/settings_strings.grdp.orig	2025-12-10 15:04:57 UTC
 +++ chrome/app/settings_strings.grdp
-@@ -183,12 +183,12 @@
-       Manage accessibility features
-     </message>
-   </if>
--  <if expr="is_win or is_linux or is_macosx">
-+  <if expr="is_win or is_posix or is_macosx">
-     <message name="IDS_SETTINGS_OVERSCROLL_HISTORY_NAVIGATION_TITLE" desc="Title for the overscroll history navigation setting, which allows you to navigate back and forward by swiping left or right with a touch device.">
-       Swipe between pages
-     </message>
-   </if>
--  <if expr="is_win or is_linux">
-+  <if expr="is_win or is_posix">
-     <message name="IDS_SETTINGS_OVERSCROLL_HISTORY_NAVIGATION_SUBTITLE" desc="Subtitle for the overscroll history navigation setting, which allows you to navigate back and forward by swiping left or right with a touch device.">
-       Navigate back and forward with a swipe gesture
-     </message>
-@@ -222,7 +222,7 @@
-       Theme
-     </message>
-   </if>
--  <if expr="is_linux">
-+  <if expr="is_posix">
-     <message name="IDS_SETTINGS_GTK_THEME" desc="Text of the label describing the system (GTK) browser theme on Linux">
-       GTK
-     </message>
-@@ -242,7 +242,7 @@
-       Use Classic
-     </message>
-   </if>
--  <if expr="not is_linux or is_chromeos or is_fuchsia">
-+  <if expr="not is_posix or is_chromeos or is_fuchsia">
-     <message name="IDS_SETTINGS_RESET_TO_DEFAULT_THEME" desc="Name of the control which resets the browser theme back to the default theme.">
-       Reset to default
-     </message>
+@@ -237,11 +237,9 @@
+   <message name="IDS_SETTINGS_RESET_TO_DEFAULT" desc="Name of the control which resets a browser setting back to the default value">
+     Reset to default
+   </message>
+-  <if expr="not is_linux">
+-    <message name="IDS_SETTINGS_RESET_TO_DEFAULT_THEME" desc="Accessibility label of the button which resets the browser theme back to the default value">
++  <message name="IDS_SETTINGS_RESET_TO_DEFAULT_THEME" desc="Accessibility label of the button which resets the browser theme back to the default value">
+       Reset to default theme
+-    </message>
+-  </if>
++  </message>
+   <message name="IDS_SETTINGS_CUSTOMIZE_TOOLBAR" desc="Text of the button which allows you to customize your toolbar.">
+     Customize your toolbar
+   </message>

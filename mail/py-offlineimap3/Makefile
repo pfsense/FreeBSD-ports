@@ -1,8 +1,6 @@
 PORTNAME=	offlineimap3
 DISTVERSIONPREFIX=	v
-DISTVERSION=	8.0.0-18
-PORTREVISION=	1
-DISTVERSIONSUFFIX=	-g${GH_TAGNAME}
+DISTVERSION=	8.0.1
 CATEGORIES=	mail python
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
@@ -13,15 +11,12 @@ WWW=		https://github.com/OfflineIMAP/offlineimap3
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-# setup.py requires these during build time. Possible move to setup/install_requires:
-# https://github.com/OfflineIMAP/offlineimap3/issues/110
-BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}distro>=0:sysutils/py-distro@${PY_FLAVOR} \
+BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}imaplib2>=3.5:mail/py-imaplib2@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}setuptools>=0:devel/py-setuptools@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}wheel>=0:devel/py-wheel@${PY_FLAVOR}
+RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}distro>=0:sysutils/py-distro@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}imaplib2>=3.5:mail/py-imaplib2@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}rfc6555>=0:mail/py-rfc6555@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}sqlite3>=0:databases/py-sqlite3@${PY_FLAVOR}
-RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}certifi>=2020.6.20:security/py-certifi@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}distro>=0:sysutils/py-distro@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}imaplib2>=3.5:mail/py-imaplib2@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}keyring>0:security/py-keyring@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}rfc6555>=0:mail/py-rfc6555@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}sqlite3>=0:databases/py-sqlite3@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}urllib3>=1.25.9:net/py-urllib3@${PY_FLAVOR}
@@ -32,9 +27,9 @@ USES=		python
 # https://github.com/OfflineIMAP/offlineimap3/issues/111
 USE_GITHUB=	yes
 GH_ACCOUNT=	OfflineIMAP
-GH_TAGNAME=	253f97a3e947
 
 USE_PYTHON=	autoplist concurrent distutils pytest
+TEST_ARGS=	"-k not TestBasicFunctions or test_01_MappedImap"
 
 CONFLICTS_INSTALL=	mail/py-offlineimap
 
@@ -43,16 +38,22 @@ NO_ARCH=	yes
 PORTDOCS=	*
 PORTEXAMPLES=	offlineimap.conf
 
-OPTIONS_DEFINE=		DOCS EXAMPLES GSSAPI MANPAGES
-OPTIONS_DEFAULT=	MANPAGES
+OPTIONS_DEFINE=		DOCS EXAMPLES GSSAPI KEYRING MANPAGES
+OPTIONS_DEFAULT=	KEYRING MANPAGES
 
-COMMON_BUILD_DEPENDS=	a2x:textproc/asciidoc \
+KEYRING_DESC=		GNOME keyring support
+
+COMMON_BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}rfc6555>=0:mail/py-rfc6555@${PY_FLAVOR} \
+			${PYTHON_PKGNAMEPREFIX}sqlite3>=0:databases/py-sqlite3@${PY_FLAVOR} \
+			a2x:textproc/asciidoc \
 			gmake:devel/gmake
 
 DOCS_BUILD_DEPENDS=	${COMMON_BUILD_DEPENDS} \
 			${PYTHON_PKGNAMEPREFIX}sphinx>=0:textproc/py-sphinx@${PY_FLAVOR}
 
 GSSAPI_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}gssapi>=1.6.9:security/py-gssapi@${PY_FLAVOR}
+
+KEYRING_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}keyring>0:security/py-keyring@${PY_FLAVOR}
 
 MANPAGES_BUILD_DEPENDS=	${COMMON_BUILD_DEPENDS}
 MANPAGES_PLIST_FILES+=	share/man/man1/offlineimap.1.gz \

@@ -1,5 +1,5 @@
 PORTNAME=	level-zero
-PORTVERSION=	1.16.11
+PORTVERSION=	1.28.0
 DISTVERSIONPREFIX=	v
 CATEGORIES=	devel
 
@@ -14,11 +14,15 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 LIB_DEPENDS=	libfmt.so:devel/libfmt \
 		libspdlog.so:devel/spdlog
 
-USES=		cmake compiler:c++14-lang localbase:ldflags pathfix
+USES=		cmake compiler:c++14-lang localbase:ldflags
 
-CXXFLAGS+=	-DSPDLOG_FMT_EXTERNAL
+CMAKE_OFF=	BUILD_INSTALLER \
+		BUILD_L0_LOADER_TESTS \
+		BUILD_STATIC \
+		USE_ASAN
+CMAKE_ON=	SYSTEM_SPDLOG
+CXXFLAGS+=	-Wno-extern-c-compat
 LDFLAGS+=	-lfmt
-PIE_UNSAFE=	yes
 USE_LDCONFIG=	yes
 
 PLIST_SUB=	PORTVERSION=${PORTVERSION}
@@ -28,5 +32,7 @@ GH_ACCOUNT=	oneapi-src
 
 post-patch:
 	@${ECHO_CMD} ${PORTVERSION:E} > ${WRKSRC}/VERSION_PATCH
+# Clean up bundled libraries
+	@${RM} -r ${WRKSRC}/third_party/spdlog_headers
 
 .include <bsd.port.mk>

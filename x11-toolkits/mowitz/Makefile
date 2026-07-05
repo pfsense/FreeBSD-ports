@@ -1,14 +1,14 @@
 PORTNAME=	Mowitz
 PORTVERSION=	0.2.1
-PORTREVISION=	5
+PORTREVISION=	6
 CATEGORIES=	x11-toolkits
 MASTER_SITES=	http://siag.nu/pub/mowitz/
 
-MAINTAINER=	mi@aldan.algebra.com
+MAINTAINER=	ports@virtual-estates.net
 COMMENT=	Mowitz ("More widgets") library
 WWW=		https://siag.nu/mowitz/
 
-LIB_DEPENDS=	libXaw3d.so:x11-toolkits/Xaw3d
+LIB_DEPENDS=	libXaw3d.so:x11-toolkits/libXaw3d
 
 USES=		libtool xorg
 USE_XORG=	ice sm x11 xaw xext xmu xpm xt

@@ -1,7 +1,6 @@
 PORTNAME=	uhd
 DISTVERSIONPREFIX=	v
-DISTVERSION=	4.6.0.0
-PORTREVISION=	1
+DISTVERSION=	4.9.0.1
 CATEGORIES=	comms hamradio
 DIST_SUBDIR=	${PORTNAME}
 
@@ -17,11 +16,15 @@ WWW=		https://www.ettus.com/sdr-software/uhd-usrp-hardware-driver/
 LICENSE=	GPLv3
 
 LIB_DEPENDS=	${PY_BOOST} \
-		libboost_system.so:devel/boost-libs
-BUILD_DEPENDS=	orcc:devel/orc \
+		libboost_thread.so:devel/boost-libs
+BUILD_DEPENDS=	\
+		orcc:devel/orc \
 		cheetah-analyze:devel/py-cheetah3@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}mako>0:textproc/py-mako@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}requests>0:www/py-requests@${PY_FLAVOR} \
 		rst2html:textproc/py-docutils@${PY_FLAVOR} \
+		${PYNUMPY} \
+		${PY_SETUPTOOLS} \
 		${PYTHON_PKGNAMEPREFIX}ruamel.yaml>=0:devel/py-ruamel.yaml@${PY_FLAVOR}
 
 USES=		compiler:c++14-lang cmake ncurses pkgconfig \
@@ -29,8 +32,6 @@ USES=		compiler:c++14-lang cmake ncurses pkgconfig \
 USE_LDCONFIG=	yes
 USE_GITHUB=	yes
 GH_ACCOUNT=	EttusResearch
-
-CONFLICTS=	usrp
 
 BROKEN_FreeBSD_13_aarch64=	fails to configure: Could not find standard set_new_handler function
 BROKEN_FreeBSD_13_armv6=	fails to configure: Could not find standard set_new_handler function
@@ -47,16 +48,18 @@ SHEBANG_GLOB=	*.py *.py.in *_bist usrp_update*
 
 CMAKE_ARGS+=	-DPKG_LIB_DIR:STRING="share/uhd" -DUHD_TXRX_DEBUG_PRINTS="yes"
 # for excruciating debug use this -db
-#CMAKE_ARGS+=	--debug-output --trace
+CMAKE_ARGS+=	-DCMAKE_INCLUDE_PATH="${WRKSRC}/host/include ${LOCALBASE}/include"
 
 OPTIONS_DEFINE=		DOCS DOXYGEN
 OPTIONS_DEFAULT=	DOCS
 
 OPTIONS_SUB=		yes
+
 DOXYGEN_BUILD_DEPENDS=	doxygen:devel/doxygen
 DOXYGEN_CMAKE_ON=	-DENABLE_DOXYGEN:STRING="ON"
 DOXYGEN_CMAKE_OFF=	-DENABLE_DOXYGEN:STRING="OFF" \
 			-DENABLE_MANUAL:STRING="OFF"
+DOXYGEN_PORTDOCS=	doxygen
 
 do-install:
 # install host component
@@ -64,9 +67,6 @@ do-install:
 	@${REINPLACE_CMD} -e 's|"${LOCALBASE}"|"${STAGEDIR}${PREFIX}"|g' \
 		${CONFIGURE_WRKSRC}/cmake_install.cmake
 	cd ${CONFIGURE_WRKSRC} && ${MAKE_CMD} install
-#.for subdir in images
-#	${CP} -Rp ${WRKDIR}/uhd-ef1576780bc927b8611640091b15f3d051cb97ad/share/uhd/${subdir} ${STAGEDIR}${DATADIR}
-#.endfor
 
 post-install:
 	${STRIP_CMD} ${STAGEDIR}${DATADIR}/utils/b2xx_fx3_utils

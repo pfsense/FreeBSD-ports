@@ -1,5 +1,6 @@
 PORTNAME=	osmosis
 PORTVERSION=	0.49.2
+PORTREVISION=	2
 CATEGORIES=	astro java
 MASTER_SITES=	https://github.com/openstreetmap/osmosis/releases/download/${PORTVERSION}/
 
@@ -10,9 +11,7 @@ WWW=		https://wiki.openstreetmap.org/wiki/Osmosis
 LICENSE=	PD
 LICENSE_FILE=	${WRKSRC}/copying.txt
 
-USES=		tar
-USE_JAVA=	yes
-JAVA_VERSION=	17+
+USES=		java tar
 NO_BUILD=	yes
 NO_ARCH=	yes
 

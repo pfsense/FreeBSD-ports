@@ -1,6 +1,6 @@
 PORTNAME=	Java
 PORTVERSION=	4.7
-PORTREVISION=	5
+PORTREVISION=	6
 CATEGORIES=	devel java perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
@@ -8,10 +8,9 @@ PKGNAMEPREFIX=	p5-
 MAINTAINER=	numisemis@yahoo.com
 COMMENT=	Perl extension for accessing a JVM remotely or locally
 
+USES=		java perl5
 USE_RC_SUBR=	javaserver
-USES=		perl5
 USE_PERL5=	configure
-USE_JAVA=	yes
 
 post-patch:
 	${RM} ${WRKSRC}/java_server_install.pl

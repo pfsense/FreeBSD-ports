@@ -1,11 +1,12 @@
 PORTNAME=	mothur
 DISTVERSIONPREFIX=	v
-DISTVERSION=	1.48.0
+DISTVERSION=	1.48.5
 CATEGORIES=	biology
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Software for bioinformatics of the microbial ecology community
-WWW=		https://www.mothur.org/
+WWW=		https://www.mothur.org/ \
+		https://github.com/mothur/mothur
 
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/LICENSE.md
@@ -26,7 +27,7 @@ PLIST_FILES=	bin/${PORTNAME}
 
 .include <bsd.port.options.mk>
 
-.if ${OPSYS} == FreeBSD && ( ${OSVERSION} >= 1400091 || ( ${OSVERSION} >= 1302505 && ${OSVERSION} < 1400000 ))
+.if ${OPSYS} == FreeBSD
 USES+=	llvm:max=15
 .endif
 

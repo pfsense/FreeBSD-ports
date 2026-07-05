@@ -1,5 +1,6 @@
 PORTNAME=	jalview
 DISTVERSION=	2.11.2.5
+PORTREVISION=	1
 CATEGORIES=	biology java
 MASTER_SITES=	https://www.jalview.org/source/
 DISTNAME=	${PORTNAME}_${DISTVERSION:S/./_/g}
@@ -15,7 +16,7 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 
 BUILD_DEPENDS=	gradle761:devel/gradle761
 
-USE_JAVA=	yes
+USES=		java
 JAVA_VERSION=	11
 
 WRKSRC=		${WRKDIR}/${PORTNAME}

@@ -1,5 +1,6 @@
 PORTNAME=	mate-system-monitor
 PORTVERSION=	1.28.1
+PORTREVISION=	1
 CATEGORIES=	sysutils mate
 MASTER_SITES=	MATE
 DIST_SUBDIR=	mate
@@ -17,7 +18,7 @@ LIB_DEPENDS=	libgtop-2.0.so:devel/libgtop \
 
 PORTSCOUT=	limitw:1,even
 
-USES=		alias compiler:c++11-lib gettext gmake gnome localbase mate \
+USES=		compiler:c++11-lib gettext gmake gnome localbase mate \
 		pathfix pkgconfig tar:xz
 USE_MATE=	icontheme
 USE_GNOME=	gtkmm30 intlhack librsvg2 libwnck3 libxml2

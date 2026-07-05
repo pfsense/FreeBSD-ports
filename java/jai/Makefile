@@ -1,6 +1,6 @@
 PORTNAME=	jai
 DISTVERSION=	1_1_3
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	java graphics
 MASTER_SITES=	http://download.java.net/media/${PORTNAME}/builds/release/${PORTVERSION:S/./_/g}/
 DISTNAME=	${PORTNAME}-${DISTVERSION}-lib
@@ -15,9 +15,9 @@ LICENSE_NAME=	jai
 LICENSE_TEXT=	Redistribution is not permitted
 LICENSE_PERMS=	auto-accept
 
-USES=		cpe zip
+USES=		cpe java zip
 CPE_VENDOR=	oracle
-USE_JAVA=	yes
+
 WRKSRC=		${WRKDIR}/${PORTNAME}-${DISTVERSION}
 NO_BUILD=	yes
 

@@ -1,5 +1,5 @@
 PORTNAME=	bluemoon
-DISTVERSION=	2.13
+DISTVERSION=	2.14
 CATEGORIES=	games
 MASTER_SITES=	http://www.catb.org/~esr/bluemoon/
 
@@ -10,7 +10,7 @@ WWW=		http://www.catb.org/~esr/bluemoon/
 LICENSE=	BSD2CLAUSE
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-USES=		ncurses
+USES=		ncurses:base
 
 PLIST_FILES=	bin/${PORTNAME} \
 		share/applications/${PORTNAME}.desktop \
@@ -22,7 +22,7 @@ OPTIONS_DEFINE=	DOCS
 
 do-build:
 	cd ${WRKSRC} && \
-		${CC} ${CFLAGS} -DRELEASE=\"${DISTVERSION}\" -I${NCURSESINC} -L${NCURSESLIB} -lncurses -o ${PORTNAME} ${PORTNAME}.c
+		${CC} ${CFLAGS} -DRELEASE=\"${DISTVERSION}\" -I${NCURSESBASE}/include -L${NCURSESLIB} -lncurses -o ${PORTNAME} ${PORTNAME}.c
 
 do-install:
 	${INSTALL_PROGRAM} ${WRKSRC}/${PORTNAME} ${STAGEDIR}${PREFIX}/bin/

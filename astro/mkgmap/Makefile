@@ -1,5 +1,6 @@
 PORTNAME=	mkgmap
-PORTVERSION=	r4919
+PORTVERSION=	r4923
+PORTREVISION=	1
 CATEGORIES=	astro converters java
 MASTER_SITES=	https://www.mkgmap.org.uk/download/
 
@@ -10,8 +11,7 @@ WWW=		https://www.mkgmap.org.uk/index.html
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/LICENCE
 
-USE_JAVA=	yes
-JAVA_VERSION=	8+
+USES=		java
 NO_BUILD=	yes
 NO_ARCH=	yes
 

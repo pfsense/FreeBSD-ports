@@ -1,6 +1,6 @@
---- src/entity/entity.pro.orig	2018-06-19 20:32:20 UTC
+--- src/entity/entity.pro.orig	2025-02-20 12:25:22 UTC
 +++ src/entity/entity.pro
-@@ -132,7 +132,7 @@ TARGET = $${NAME}
+@@ -142,7 +142,7 @@ RC_FILE = entity.rc
  OTHER_FILES += entity.dox
  DEFINES += QCADENTITY_LIBRARY
  RC_FILE = entity.rc

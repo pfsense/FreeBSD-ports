@@ -1,6 +1,6 @@
 PORTNAME=	javatar
 PORTVERSION=	2.5
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	archivers java
 MASTER_SITES=	http://www.gjt.org/download/time/java/tar/
 
@@ -11,7 +11,7 @@ WWW=		http://www.trustice.com/java/tar/
 LICENSE=	PD
 LICENSE_FILE=	${WRKSRC}/doc/LICENSE
 
-USE_JAVA=	yes
+USES=		java
 
 NO_BUILD=	yes
 

@@ -1,6 +1,6 @@
 PORTNAME=	Alien-LibGumbo
 PORTVERSION=	0.05
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	devel perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
@@ -23,9 +23,9 @@ RUN_DEPENDS=	p5-Alien-Build>0:devel/p5-Alien-Build
 USES=		perl5
 USE_PERL5=	modbuild
 
-NO_ARCH=	yes
+EXTRACT_AFTER_ARGS=	--exclude ${DISTNAME}/gumbo-0.10.1.tar.gz \
+			--no-same-owner --no-same-permissions
 
-post-extract:
-	${RM} ${WRKSRC}/gumbo-0.10.1.tar.gz
+NO_ARCH=	yes
 
 .include <bsd.port.mk>

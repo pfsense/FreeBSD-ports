@@ -1,4 +1,4 @@
---- remoting/host/remote_open_url/remote_open_url_client.cc.orig	2022-10-05 07:34:01 UTC
+--- remoting/host/remote_open_url/remote_open_url_client.cc.orig	2025-12-10 15:04:57 UTC
 +++ remoting/host/remote_open_url/remote_open_url_client.cc
 @@ -18,7 +18,7 @@
  #include "remoting/host/mojom/chromoting_host_services.mojom.h"

@@ -1,16 +1,18 @@
 PORTNAME=			${SAMBA4_BASENAME}416
 PORTVERSION=			${SAMBA4_VERSION}
-PORTREVISION=			4
+PORTREVISION=			10
 CATEGORIES?=			net
 MASTER_SITES=			SAMBA/samba/stable SAMBA/samba/rc
 DISTNAME=			${SAMBA4_DISTNAME}
 
-MAINTAINER=			timur@FreeBSD.org
+MAINTAINER=			samba@FreeBSD.org
 COMMENT=			Free SMB/CIFS and AD/DC server and client for Unix
 WWW=				https://gitlab.com/samba-freebsd/
 
 LICENSE=			GPLv3+
 LICENSE_FILE=			${WRKSRC}/COPYING
+
+DEPRECATED=	Discontinued upstream; transition to a supported versions of Samba (refer to https://wiki.samba.org/index.php/Samba_Release_Planning)
 
 USES=				cpe
 
@@ -45,6 +47,7 @@ EXTRA_PATCHES=			\
 				${PATCHDIR}/0026-vfs-add-a-compatibility-option-to-the-vfs_streams_xa.patch:-p1 \
 				${PATCHDIR}/0027-Add-VFS-module-vfs_freebsd-that-implements-FreeBSD-s.patch:-p1 \
 				${PATCHDIR}/0028-s3-lib-system-add-FreeBSD-proc_fd_pattern.patch:-p1 \
+				${PATCHDIR}/0029-Fix-rl_completion_func_t.patch:-p1 \
 				${PATCHDIR}/0099-s3-modules-zfsacl-fix-get-set-ACL-on-FreeBSD-13.patch:-p1 \
 				${PATCHDIR}/0099-s4-mitkdc-Add-support-for-MIT-Kerberos-1.20.patch:-p1
 
@@ -94,6 +97,7 @@ CONFIGURE_ARGS=			--mandir="${PREFIX}/share/man" \
 				--with-logfilebase="${SAMBA4_LOGDIR}"
 # XXX: Flags
 CONFIGURE_ENV=			PTHREAD_LDFLAGS="-lpthread"
+FORTIFY_UNSAFE=			yes
 MAKE_ENV=			PYTHONHASHSEED=1
 
 USES=				compiler:c++11-lang iconv localbase:ldflags \
@@ -106,6 +110,9 @@ CONFIGURE_LOG=			bin/config.log
 FLAVORS=			default externalldb
 FLAVOR?=			${FLAVORS:[1]}
 externalldb_PKGNAMESUFFIX=		-externalldb
+.if ${FLAVOR:U} == externalldb
+BROKEN=				fails to build; databases/ldb25 is not built with Python support by default
+.endif
 
 # Make sure that the right version of Python is used by the tools
 # https://bugzilla.samba.org/show_bug.cgi?id=7305
@@ -120,7 +127,7 @@ OPTIONS_SUB=			yes
 
 OPTIONS_DEFINE=			AD_DC ADS CLUSTER CUPS DOCS FAM GPGME \
 				LDAP MANDOC PROFILE PYTHON3 QUOTAS \
-				SPOTLIGHT SYSLOG UTMP
+				SYSLOG UTMP
 #OPTIONS_DEFINE+=		DEVELOPER MEMORY_DEBUG
 
 OPTIONS_GROUP=			VFS
@@ -145,7 +152,6 @@ FAM_DESC=			File Alteration Monitor
 GPGME_DESC=			GpgME support
 LDAP_DESC=			LDAP client
 LIBZFS_DESC=			LibZFS
-SPOTLIGHT_DESC=			Spotlight server-side search support
 MANDOC_DESC=			Build manpages from DOCBOOK templates
 MEMORY_DEBUG_DESC=		Debug memory allocator
 PICKY_DEVELOPER_DESC=		Treat compiler warnings as errors(implies DEVELOPER)
@@ -310,7 +316,8 @@ CONFIGURE_ARGS+=		\
 				--with-libarchive \
 				--with-acl-support \
 				--with-sendfile-support \
-				--disable-ctdb-tests
+				--disable-ctdb-tests \
+				--disable-spotlight
 #				${ICONV_CONFIGURE_BASE}
 ##############################################################################
 FRUIT_PREVENTS=			ZEROCONF_NONE
@@ -370,14 +377,14 @@ CLUSTER_VARS=			PLIST+=${PKGDIR}/pkg-plist.cluster
 CUPS_CONFIGURE_ENABLE=		cups iprint
 CUPS_LIB_DEPENDS=		libcups.so:print/cups
 # https://bugzilla.samba.org/show_bug.cgi?id=9545
-FAM_USES=			fam
+FAM_LIB_DEPENDS=		libfam.so.0:devel/gamin
 FAM_CONFIGURE_WITH=		fam
 
 GPGME_CONFIGURE_WITH=		gpgme
 GPGME_LIB_DEPENDS=		libgpgme.so:security/gpgme
-GPGME_RUN_DEPENDS=		${PYTHON_PKGNAMEPREFIX}gpgme>=1.14.0:security/py-gpgme@${PY_FLAVOR}
+GPGME_RUN_DEPENDS=		${PYTHON_PKGNAMEPREFIX}gpg>=2.0.0:security/py-gpg@${PY_FLAVOR}
 
-GSSAPI_BUILTIN_USES=		bison
+GSSAPI_BUILTIN_USES=		bison gssapi
 GSSAPI_BUILTIN_BUILD_DEPENDS=	p5-JSON>=4.0:converters/p5-JSON
 
 GSSAPI_MIT_CONFIGURE_ON=	--with-system-mitkrb5 ${GSSAPIBASEDIR} \
@@ -405,14 +412,6 @@ MANDOC_CONFIGURE_ENV_OFF=	XSLTPROC="true"
 PROFILE_CONFIGURE_WITH=		profiling-data
 
 QUOTAS_CONFIGURE_WITH=		quotas
-
-SPOTLIGHT_CONFIGURE_ENABLE=	spotlight
-SPOTLIGHT_BUILD_DEPENDS=	tracker>=1.4.1:sysutils/tracker
-SPOTLIGHT_RUN_DEPENDS=		tracker>=1.4.1:sysutils/tracker
-# ICU
-SPOTLIGHT_LIB_DEPENDS=		libicuuc.so:devel/icu
-SPOTLIGHT_USES=			bison gnome
-SPOTLIGHT_USE=			gnome=glib20
 
 SYSLOG_CONFIGURE_WITH=		syslog
 
@@ -462,11 +461,12 @@ SAMBA4_MODULES+=		auth_skel pdb_test gpext_security gpext_registry \
 				vfs_nfs4acl_xattr vfs_error_inject vfs_delay_inject
 .endif
 # Python bindings
+BUILD_DEPENDS+=			${PY_SETUPTOOLS}
 .if ! ${PORT_OPTIONS:MPYTHON3} || defined(NO_PYTHON)
-USES+=				python:build,test
+USES+=				python:build,test,3.11-3.12
 CONFIGURE_ARGS+=		--disable-python
 .else
-USES+=				python
+USES+=				python:3.11-3.12
 PLIST+=				${PKGDIR}/pkg-plist.python
 # Don't cache Python modules
 CONFIGURE_ARGS+=		--nopycache

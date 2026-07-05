@@ -1,7 +1,6 @@
 PORTNAME=	xclip
-DISTVERSION=	0.13-82
-DISTVERSIONSUFFIX=	-gb372f73
-PORTREVISION=	1
+DISTVERSION=	0.13-99
+DISTVERSIONSUFFIX=	-g2c3b811
 CATEGORIES=	x11
 
 MAINTAINER=	eduardo@FreeBSD.org
@@ -17,7 +16,6 @@ GH_ACCOUNT=	astrand
 USE_XORG=	x11 xmu
 
 GNU_CONFIGURE=	yes
-GNU_CONFIGURE_MANPREFIX=	${PREFIX}/share
 CONFIGURE_ENV+=	ac_cv_header_X11_Intrinsic_h=yes \
 		ac_cv_header_X11_Xmu_Atoms_h=yes \
 		ac_cv_lib_Xmu_XmuClientWindow=yes

@@ -27,6 +27,7 @@
 	</copyright>
 	<name>avahi</name>
 	<title>Services: Avahi</title>
+	<donotsave>true</donotsave>
 	<savetext>Change</savetext>
 	<include_file>/usr/local/pkg/avahi/avahi.inc</include_file>
 	<menu>

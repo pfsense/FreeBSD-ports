@@ -5,12 +5,13 @@ bin/poudriere
 @sample(0,0,0) etc/poudriered.conf.sample
 etc/rc.d/poudriered
 @comment libexec/poudriere/cachec
-libexec/poudriere/cached
 libexec/poudriere/clock
 libexec/poudriere/cpdup
 libexec/poudriere/dirempty
 libexec/poudriere/dirwatch
+libexec/poudriere/getpid
 libexec/poudriere/locked_mkdir
+libexec/poudriere/lockf
 libexec/poudriere/nc
 libexec/poudriere/poudriered
 libexec/poudriere/ptsort
@@ -22,6 +23,7 @@ libexec/poudriere/sh
 libexec/poudriere/timeout
 libexec/poudriere/timestamp
 %%BASH%%share/bash-completion/completions/poudriere
+share/man/man8/poudriere-audit.8.gz
 share/man/man8/poudriere-bulk.8.gz
 share/man/man8/poudriere-distclean.8.gz
 share/man/man8/poudriere-image.8.gz
@@ -31,6 +33,7 @@ share/man/man8/poudriere-options.8.gz
 share/man/man8/poudriere-pkgclean.8.gz
 share/man/man8/poudriere-ports.8.gz
 share/man/man8/poudriere-queue.8.gz
+share/man/man8/poudriere-repo.8.gz
 share/man/man8/poudriere-status.8.gz
 share/man/man8/poudriere-testport.8.gz
 share/man/man8/poudriere-version.8.gz
@@ -40,12 +43,16 @@ share/man/man8/poudriere.8.gz
 %%PORTEXAMPLES%%%%EXAMPLESDIR%%/nginx.conf.sample
 %%DATADIR%%/MANIFESTS
 %%DATADIR%%/api.sh
+%%DATADIR%%/audit.sh
 %%DATADIR%%/awk/dependency_loop.awk
+%%DATADIR%%/awk/file_cmp_reg.awk
+%%DATADIR%%/awk/git_dirty.awk
 %%DATADIR%%/awk/humanize.awk
 %%DATADIR%%/awk/json.awk
 %%DATADIR%%/awk/json_jail.awk
 %%DATADIR%%/awk/json_top.awk
 %%DATADIR%%/awk/parse_MOVED.awk
+%%DATADIR%%/awk/processonelog.awk
 %%DATADIR%%/awk/processonelog2.awk
 %%DATADIR%%/awk/siginfo_buildtime.awk
 %%DATADIR%%/awk/unique_pkgnames_from_flavored_origins.awk
@@ -87,6 +94,7 @@ share/man/man8/poudriere.8.gz
 %%DATADIR%%/image_usb.sh
 %%DATADIR%%/image_zfs.sh
 %%DATADIR%%/image_zsnapshot.sh
+%%DATADIR%%/include/asserts.sh
 %%DATADIR%%/include/cache.sh
 %%DATADIR%%/include/colors.pre.sh
 %%DATADIR%%/include/colors.sh
@@ -108,6 +116,7 @@ share/man/man8/poudriere.8.gz
 %%DATADIR%%/ports.sh
 %%DATADIR%%/processonelog.sh
 %%DATADIR%%/queue.sh
+%%DATADIR%%/repo.sh
 %%DATADIR%%/status.sh
 %%DATADIR%%/testport.sh
 %%ZSH%%share/zsh/site-functions/_poudriere

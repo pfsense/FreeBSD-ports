@@ -1,6 +1,6 @@
 PORTNAME=	valyriatear
 PORTVERSION=	1.1.0
-PORTREVISION=	4
+PORTREVISION=	9
 CATEGORIES=	games
 
 MAINTAINER=	amdmi3@FreeBSD.org
@@ -12,6 +12,8 @@ WWW=		https://valyriatear.blogspot.com/
 # GPLv2, GPLv3 (with font exception), OFL-1.1, CC0, CC-BY-3, and CC-BY-SA-3.
 LICENSE=	GPLv2
 
+BROKEN=		fails to build with boost-1.86+
+
 LIB_DEPENDS=	libboost_thread.so:devel/boost-libs \
 		libvorbis.so:audio/libvorbis \
 		libpng.so:graphics/png
@@ -22,7 +24,7 @@ GH_PROJECT=	ValyriaTear
 GH_TUPLE=	ValyriaTear:luabind:76d4061:luabind/src/luabind \
 		ValyriaTear:vt-utils:299411e:utils/src/utils
 
-USES=		alias cmake compiler:c++11-lang gettext-tools gl gnome iconv \
+USES=		cmake compiler:c++11-lang gettext-tools gl gnome iconv \
 		lua:51 openal sdl xorg
 CMAKE_ARGS=	-DUSE_PCH_COMPILATION=OFF
 USE_SDL=	sdl2 image2 ttf2

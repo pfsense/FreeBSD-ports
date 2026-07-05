@@ -1,4 +1,4 @@
---- ui/base/clipboard/clipboard_non_backed.cc.orig	2024-02-23 21:04:38 UTC
+--- ui/base/clipboard/clipboard_non_backed.cc.orig	2026-02-11 09:05:39 UTC
 +++ ui/base/clipboard/clipboard_non_backed.cc
 @@ -460,7 +460,7 @@ ClipboardNonBacked::ClipboardNonBacked() {
    // so create internal clipboards for platform supported clipboard buffers.

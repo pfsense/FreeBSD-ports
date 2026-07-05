@@ -1,6 +1,6 @@
 PORTNAME=	ShellEd
 PORTVERSION=	1.0.2a
-PORTREVISION=	4
+PORTREVISION=	6
 CATEGORIES=	java devel
 MASTER_SITES=	SF/${PORTNAME:tl}/${PORTNAME:tl}/1.0.2
 PKGNAMEPREFIX=	eclipse-
@@ -13,10 +13,9 @@ WWW=		https://sourceforge.net/projects/shelled/
 
 RUN_DEPENDS=	eclipse:java/eclipse
 
-USES=		zip
+USES=		java zip
 NO_BUILD=	yes
 NO_WRKSUBDIR=	yes
-USE_JAVA=	yes
 JAVA_OS=	native
 
 do-install:

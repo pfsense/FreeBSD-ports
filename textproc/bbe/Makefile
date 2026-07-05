@@ -4,7 +4,7 @@ PORTREVISION=	3
 CATEGORIES=	textproc
 MASTER_SITES=	SF/${PORTNAME}-/${PORTNAME}/${PORTVERSION}
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	danfe@FreeBSD.org
 COMMENT=	Sed-like editor for binary files
 WWW=		https://sourceforge.net/projects/bbe-/
 
@@ -12,7 +12,6 @@ LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
 GNU_CONFIGURE=	yes
-GNU_CONFIGURE_MANPREFIX=${PREFIX}/share
 
 INFO=		${PORTNAME}
 

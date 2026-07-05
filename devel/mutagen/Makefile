@@ -1,12 +1,13 @@
 PORTNAME=	mutagen
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.17.5
-PORTREVISION=	2
+DISTVERSION=	0.18.1
+PORTREVISION=	5
 CATEGORIES=	devel net
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Continuous multidirectional synchronization for remote development
-WWW=		https://mutagen.io/
+WWW=		https://mutagen.io/ \
+		https://github.com/mutagen-io/mutagen
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE

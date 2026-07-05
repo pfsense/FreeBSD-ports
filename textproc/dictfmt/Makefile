@@ -1,5 +1,5 @@
 PORTNAME=	dictfmt
-PORTVERSION=	1.13.1
+PORTVERSION=	1.13.3
 CATEGORIES=	textproc
 MASTER_SITES=	SF/dict/dictd/dictd-${PORTVERSION}
 DISTNAME=	dictd-${PORTVERSION}
@@ -18,7 +18,6 @@ USES=		gmake libtool:build localbase
 
 ALL_TARGET=	dictfmt
 GNU_CONFIGURE=	yes
-GNU_CONFIGURE_MANPREFIX=${PREFIX}/share
 INSTALL_TARGET=	install.dictfmt
 
 .include <bsd.port.mk>

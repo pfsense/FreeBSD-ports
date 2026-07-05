@@ -3,7 +3,7 @@
  * suricata_blocked.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2006-2024 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2006-2026 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2003-2004 Manuel Kasper
  * Copyright (c) 2005 Bill Marquette
  * Copyright (c) 2009 Robert Zelaya Sr. Developer
@@ -330,7 +330,7 @@ print($form);
 						try {
 							$event_tm = date_create_from_format("m/d/Y-H:i:s.u", $fields['time']);
 						} catch (Exception $e) {
-							syslog(LOG_WARNING, "[suricata] WARNING: found invalid timestamp entry in current blocks.log, the line will be ignored and skipped.");
+							logger(LOG_WARNING, localize_text("found invalid timestamp entry in current blocks.log, the line will be ignored and skipped."), LOG_PREFIX_PKG_SURICATA);
 							continue;
 						}
 

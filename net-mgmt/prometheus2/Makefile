@@ -1,7 +1,7 @@
 PORTNAME=	prometheus
 DISTVERSIONPREFIX=	v
-DISTVERSION=	2.49.1
-PORTREVISION=	1
+DISTVERSION=	2.55.1
+PORTREVISION=	11
 CATEGORIES=	net-mgmt
 MASTER_SITES=	https://raw.githubusercontent.com/${GH_ACCOUNT}/${GH_PROJECT}/${DISTVERSIONFULL}/:gomod \
 		https://github.com/${GH_ACCOUNT}/${GH_PROJECT}/releases/download/${DISTVERSIONFULL}/:ui
@@ -17,6 +17,8 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 PATCH_DEPENDS=	bash:shells/bash
 
 USES=		cpe gmake go:modules
+
+CONFLICTS_INSTALL=	prometheus[13]
 
 USE_GITHUB=	yes
 USE_RC_SUBR=	prometheus

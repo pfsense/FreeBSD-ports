@@ -1,66 +1,60 @@
 PORTNAME=	android-file-transfer
 DISTVERSIONPREFIX=	v
-DISTVERSION=	4.2
-PORTREVISION?=	0
+DISTVERSION=	4.5
+PORTREVISION=	4
 CATEGORIES=	sysutils
+PKGNAMESUFFIX=	-${FLAVOR}
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	tiga@FreeBSD.org
 COMMENT=	Android MTP client with minimalistic UI
 WWW=		https://github.com/whoozle/android-file-transfer-linux
 
-LICENSE=	GPLv3+
+LICENSE=	LGPL21
+LICENSE_FILE=	${WRKSRC}/LICENSE
 
+FLAVORS=        cli fuse qt6
+FLAVOR?=        ${FLAVORS:[1]}
+
+USES=		cmake compiler:c++11-lib pkgconfig
 USE_GITHUB=	yes
 GH_ACCOUNT=	whoozle
 GH_PROJECT=	${PORTNAME}-linux
 
-USES=		cmake compiler:c++11-lib pkgconfig
-CMAKE_ON=	USB_BACKEND_LIBUSB
-PLIST_FILES=	"@comment lib/libmtp-ng-static.a"
+.if ${FLAVOR} == cli
+CMAKE_OFF=	BUILD_FUSE \
+		BUILD_QT_UI
+.elif ${FLAVOR} == fuse
+USES+=		fuse:3
+CMAKE_ON=	BUILD_FUSE
+CMAKE_OFF=	BUILD_QT_UI
+.elif ${FLAVOR} == qt6
+USES+=		qt:6
+USE_QT=		base tools:build
+CMAKE_OFF=	BUILD_FUSE
+CMAKE_ON=	BUILD_QT_UI
+.endif
 
-OPTIONS_DEFINE=	CLI FUSE OPENSSL PYTHON QT5 TAGLIB
-OPTIONS_DEFAULT=CLI FUSE OPENSSL PYTHON QT5 TAGLIB
-OPTIONS_EXCLUDE?=	QT5 # enslaved until subpackaging
+CMAKE_ON+=	USB_BACKEND_LIBUSB BUILD_MTPZ
+CMAKE_OFF+=	BUILD_PYTHON
 
-CLI_DESC=	CLI (Command-Line Interface) support
-CLI_USES=	readline
-CLI_PLIST_FILES=bin/aft-mtp-cli
+FLAVORS_SUB=	yes
 
-FUSE_USES=	fuse
-FUSE_CMAKE_BOOL=BUILD_FUSE
-FUSE_PLIST_FILES=bin/aft-mtp-mount
+PORTSCOUT=	skipv:continuous
+
+OPTIONS_DEFINE=		OPENSSL TAGLIB
+OPTIONS_DEFAULT=	OPENSSL TAGLIB
+
+TAGLIB_DESC=		Reading audio metadata via taglib
+OPENSSL_DESC=		MTPZ support via OpenSSL
 
 OPENSSL_USES=		ssl
 OPENSSL_CMAKE_BOOL=	BUILD_MTPZ
 
-PYTHON_BUILD_DEPENDS=	pybind11>0:devel/pybind11
-PYTHON_USES=		python
-PYTHON_CMAKE_BOOL=	BUILD_PYTHON
-PYTHON_PLIST_FILES=	%%PYTHON_SITELIBDIR%%/aftl%%PYTHON_EXT_SUFFIX%%.so
-
-QT5_USES=	qt:5
-QT5_USE=	QT=qmake:build,buildtools:build,linguisttools:build,core,gui,network,widgets
-QT5_CMAKE_BOOL=	BUILD_QT_UI
-QT5_CMAKE_ON=	-DDESIRED_QT_VERSION:STRING=5
-QT5_PLIST_FILES=	bin/android-file-transfer \
-		share/applications/android-file-transfer.desktop \
-		share/icons/hicolor/512x512/apps/android-file-transfer.png \
-		share/metainfo/android-file-transfer.appdata.xml
-
-TAGLIB_DESC=		Reading audio metadata via taglib
 TAGLIB_LIB_DEPENDS=	libtag.so:audio/taglib
 TAGLIB_CMAKE_BOOL=	BUILD_TAGLIB
 
 post-patch:
 	@${REINPLACE_CMD} '/set.*AFT_VERSION/s/".*"/"${DISTVERSIONFULL}"/' \
 		${WRKSRC}/CMakeLists.txt
-
-post-patch-CLI-off:
-	@${REINPLACE_CMD} '/subdirectory(cli)/d' ${WRKSRC}/CMakeLists.txt
-
-post-install-PYTHON-on:
-	${MKDIR} ${STAGEDIR}${PYTHONPREFIX_SITELIBDIR}
-	${INSTALL_LIB} ${BUILD_WRKSRC}/python/aftl${PYTHON_EXT_SUFFIX}.so \
-		${STAGEDIR}${PYTHONPREFIX_SITELIBDIR}
 
 .include <bsd.port.mk>

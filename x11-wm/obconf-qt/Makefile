@@ -1,9 +1,9 @@
 PORTNAME=	obconf-qt
-PORTVERSION=	0.16.4
+PORTVERSION=	0.16.6
 CATEGORIES=	x11-wm
 MASTER_SITES=	LXQT/${PORTNAME}
 
-MAINTAINER=	jsm@FreeBSD.org
+MAINTAINER=	lxqt@FreeBSD.org
 COMMENT=	Qt port of preferences manager for Openbox
 WWW=		https://github.com/lxqt/obconf-qt
 
@@ -15,17 +15,15 @@ LIB_DEPENDS=	libobt.so:x11-wm/openbox \
 		libImlib2.so:graphics/imlib2 \
 		libharfbuzz.so:print/harfbuzz
 
-USES=		cmake compiler:c++11-lang gettext-runtime localbase qt:5 \
-		gnome lxqt perl5 pkgconfig tar:xz xorg
+USES=		cmake compiler:c++20-lang gettext-runtime localbase qt:6 \
+		gnome lxqt:2 perl5 pkgconfig tar:xz xorg
 
 USE_PERL5=	build
 
-USE_QT=		buildtools:build qmake:build core gui linguisttools \
-		widgets x11extras
+USE_QT=		base:run tools:build
+USE_LXQT=	buildtools2
 
-USE_LXQT=	buildtools
-
-USE_GNOME=	glib20 pango librsvg2 gdkpixbuf2 libxml2 cairo
+USE_GNOME=	glib20 pango librsvg2 gdkpixbuf libxml2 cairo
 
 USE_XORG=	ice sm x11 xft
 

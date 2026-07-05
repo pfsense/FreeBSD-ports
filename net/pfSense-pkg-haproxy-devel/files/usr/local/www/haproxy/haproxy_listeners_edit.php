@@ -3,7 +3,7 @@
  * haproxy_listeners_edit.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2009-2024 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2009-2026 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2013-2015 PiBa-NL
  * Copyright (c) 2008 Remco Hoef <remcoverhoef@pfsense.com>
  * Copyright (c) 2013 Marcello Coutinho <marcellocoutinho@gmail.com>
@@ -41,8 +41,7 @@ if (!function_exists("cert_get_purpose")) {
 
 haproxy_config_init();
 
-$a_backend = &getarraybyref($config,'installedpackages','haproxy','ha_backends','item');
-$a_pools = getarraybyref($config,'installedpackages','haproxy','ha_pools','item');
+$a_pools = config_get_path('installedpackages/haproxy/ha_pools/item', []);
 uasort($a_pools, 'haproxy_compareByName');
 
 global $simplefields;
@@ -294,18 +293,18 @@ $htmllist_crlCertificates = new HaproxyHtmlList("tbl_crlCerts", $fields_crlCerti
 $errorfileslist = new HaproxyHtmlList("table_errorfile", $fields_errorfile);
 $errorfileslist->keyfield = "errorcode";
 
-if (isset($id) && $a_backend[$id]) {
-	$pconfig['a_acl'] = getarraybyref($a_backend[$id],'ha_acls','item');
-	$pconfig['a_certificates'] = getarraybyref($a_backend[$id],'ha_certificates','item');
-	$pconfig['clientcert_ca'] = getarraybyref($a_backend[$id],'clientcert_ca','item');
-	$pconfig['clientcert_crl'] = getarraybyref($a_backend[$id],'clientcert_crl','item');
-	$pconfig['a_extaddr'] = getarraybyref($a_backend[$id],'a_extaddr','item');
-	$pconfig['a_actionitems'] = getarraybyref($a_backend[$id],'a_actionitems','item');
-	$pconfig['a_errorfiles'] = getarraybyref($a_backend[$id],'a_errorfiles','item');
+if (isset($id) && config_get_path("installedpackages/haproxy/ha_backends/item/{$id}")) {
+	$pconfig['a_acl'] = config_get_path("installedpackages/haproxy/ha_backends/item/{$id}/ha_acls/item");
+	$pconfig['a_certificates'] = config_get_path("installedpackages/haproxy/ha_backends/item/{$id}/ha_certificates/item");
+	$pconfig['clientcert_ca'] = config_get_path("installedpackages/haproxy/ha_backends/item/{$id}/clientcert_ca/item");
+	$pconfig['clientcert_crl'] = config_get_path("installedpackages/haproxy/ha_backends/item/{$id}/clientcert_crl/item");
+	$pconfig['a_extaddr'] = config_get_path("installedpackages/haproxy/ha_backends/item/{$id}/a_extaddr/item");
+	$pconfig['a_actionitems'] = config_get_path("installedpackages/haproxy/ha_backends/item/{$id}/a_actionitems/item");
+	$pconfig['a_errorfiles'] = config_get_path("installedpackages/haproxy/ha_backends/item/{$id}/a_errorfiles/item");
 
-	$pconfig['advanced'] = base64_decode($a_backend[$id]['advanced']);
+	$pconfig['advanced'] = base64_decode(config_get_path("installedpackages/haproxy/ha_backends/item/{$id}/advanced"));
 	foreach($simplefields as $stat) {
-		$pconfig[$stat] = $a_backend[$id][$stat];
+		$pconfig[$stat] = config_get_path("installedpackages/haproxy/ha_backends/item/{$id}/{$stat}");
 	}
 }
 
@@ -319,13 +318,6 @@ if (isset($_GET['dup'])) {
 
 $changedesc = "Services: HAProxy: Frontend";
 $changecount = 0;
-
-/* Deal with the renae is_portoralias -> is_port_or_alias() */
-if (!function_exists('is_port_or_alias')) {
-	function is_port_or_alias($port) {
-		return is_portoralias($port);
-	}
-}
 
 if ($_POST) {
 	$changecount++;
@@ -365,7 +357,7 @@ if ($_POST) {
 	}
 
 	/* Ensure that our pool names are unique */
-	$a_frontends = getarraybyref($config, 'installedpackages', 'haproxy', 'ha_backends', 'item');
+	$a_frontends = config_get_path('installedpackages/haproxy/ha_backends/item', []);
 	for ($i=0; isset($a_frontends[$i]); $i++) {
 		if (($_POST['name'] == $a_frontends[$i]['name']) && ($i != $id)) {
 			$input_errors[] = gettext("This frontend name has already been used. Frontend names must be unique.")." $i != $id";
@@ -426,45 +418,73 @@ if ($_POST) {
 		}
 	}
 	if (!$input_errors) {
-		$backend = array();
-		if(isset($id) && $a_backend[$id]) {
-			$backend = $a_backend[$id];
-		}
-
-		if($backend['name'] != "") {
+		$backends_config = config_get_path('installedpackages/haproxy/ha_backends', []);
+		if (isset($id)) {
+			array_init_path($backends_config, "item/{$id}");
+			$backend = &$backends_config['item'][$id];
 			$changedesc .= " modified '{$backend['name']}' pool:";
+		} else {
+			$backends_config['item'][] = [];
+			$backend = &$backends_config['item'][array_key_last($backends_config['item'])];
+			$backend['name'] = $_POST['name'];
 		}
 
 		// update references to this primary frontend
 		if ($backend['name'] != $_POST['name']) {
-			foreach($a_backend as &$frontend) {
-				if ($frontend['primary_frontend'] == $backend['name']) {
-					$frontend['primary_frontend'] = $_POST['name'];
+			foreach($backends_config['item'] as &$frontend_config) {
+				if (array_get_path($frontend_config, 'primary_frontend') != $backend['name']) {
+					continue;
 				}
+				$frontend_config['primary_frontend'] = $_POST['name'];
 			}
 		}
 
 		foreach($simplefields as $stat) {
 			update_if_changed($stat, $backend[$stat], $_POST[$stat]);
-			if (empty($backend[$stat])) {
+			if (isset($backend[$stat]) && ($backend[$stat] != 0) && empty($backend[$stat])) {
 				unset($backend[$stat]);
 			}
 		}
 
 		update_if_changed("advanced", $backend['advanced'], base64_encode($_POST['advanced']));
-		getarraybyref($backend,'ha_acls')['item'] = $a_acl;
-		getarraybyref($backend,'ha_certificates')['item'] = $a_certificates;
-		getarraybyref($backend,'clientcert_ca')['item'] = $a_clientcert_ca;
-		getarraybyref($backend,'clientcert_crl')['item'] = $a_clientcert_crl;
-		getarraybyref($backend,'a_extaddr')['item'] = $a_extaddr;
-		getarraybyref($backend,'a_actionitems')['item'] = $a_actionitems;
-		getarraybyref($backend,'a_errorfiles')['item'] = $a_errorfiles;
 
-		if (isset($id) && $a_backend[$id]) {
-			$a_backend[$id] = $backend;
+		if (!empty($a_acl)) {
+			array_set_path($backend,'ha_acls/item', $a_acl);
 		} else {
-			$a_backend[] = $backend;
+			array_del_path($backend,'ha_acls/item');
 		}
+		if (!empty($a_certificates)) {
+			array_set_path($backend,'ha_certificates/item', $a_certificates);
+		} else {
+			array_del_path($backend,'ha_certificates/item');
+		}
+		if (!empty($a_clientcert_ca)) {
+			array_set_path($backend,'clientcert_ca/item', $a_clientcert_ca);
+		} else {
+			array_del_path($backend,'clientcert_ca/item');
+		}
+		if (!empty($a_clientcert_crl)) {
+			array_set_path($backend,'clientcert_crl/item', $a_clientcert_crl);
+		} else {
+			array_del_path($backend,'clientcert_crl/item');
+		}
+		if (!empty($a_extaddr)) {
+			array_set_path($backend,'a_extaddr/item', $a_extaddr);
+		} else {
+			array_del_path($backend,'a_extaddr/item');
+		}
+		if (!empty($a_actionitems)) {
+			array_set_path($backend,'a_actionitems/item', $a_actionitems);
+		} else {
+			array_del_path($backend,'a_actionitems/item');
+		}
+		if (!empty($a_errorfiles)) {
+			array_set_path($backend,'a_errorfiles/item', $a_errorfiles);
+		} else {
+			array_del_path($backend,'a_errorfiles/item');
+		}
+
+		config_set_path('installedpackages/haproxy/ha_backends', $backends_config);
 
 		if ($changecount > 0) {
 			touch($d_haproxyconfdirty_path);
@@ -1149,8 +1169,8 @@ events.push(function() {
 </script>
 
 <!--
-<?php if (isset($id) && $a_backend[$id]): ?>
-<input name="id" type="hidden" value="<?=$a_backend[$id]['name'];?>" />
+<?php if (isset($id) && config_get_path("installedpackages/haproxy/ha_backends/item/{$id}")): ?>
+<input name="id" type="hidden" value="<?=config_get_path("installedpackages/haproxy/ha_backends/item/{$id}/name");?>" />
 <?php endif; ?>
 -->
 

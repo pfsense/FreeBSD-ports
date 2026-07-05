@@ -1,6 +1,6 @@
 PORTNAME=	gnome-shell-extension-trash
 PORTVERSION=	0.2.0
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	deskutils gnome
 DIST_SUBDIR=	gnome
 
@@ -10,6 +10,8 @@ WWW=		https://github.com/bertoldia/gnome-shell-trash-extension
 
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/LICENSE
+
+BROKEN=		Does not support recent gnome-shell
 
 BUILD_DEPENDS=	gnome-shell>=0:x11/gnome-shell \
 		gsettings-desktop-schemas>=3.12.0:devel/gsettings-desktop-schemas

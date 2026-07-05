@@ -1,20 +1,11 @@
---- components/live_caption/caption_util.cc.orig	2023-07-21 09:49:17 UTC
+--- components/live_caption/caption_util.cc.orig	2025-11-01 06:40:37 UTC
 +++ components/live_caption/caption_util.cc
-@@ -145,7 +145,7 @@ bool IsLiveCaptionFeatureSupported() {
-     return false;
- #endif
- 
--#if BUILDFLAG(IS_LINUX)
-+#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_BSD)
-   // Check if the CPU has the required instruction set to run the Speech
-   // On-Device API (SODA) library.
-   static bool has_sse41 = base::CPU().has_sse41();
-@@ -167,7 +167,7 @@ std::string GetCaptionSettingsUrl() {
+@@ -139,7 +139,7 @@ bool IsHeadlessCaptionFeatureSupported() {
+ std::string GetCaptionSettingsUrl() {
+ #if BUILDFLAG(IS_CHROMEOS)
    return "chrome://os-settings/audioAndCaptions";
- #endif  // BUILDFLAG(IS_CHROMEOS)
- 
--#if BUILDFLAG(IS_LINUX)
-+#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_BSD)
+-#elif BUILDFLAG(IS_LINUX)
++#elif BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_BSD)
    return "chrome://settings/captions";
- #endif  // BUILDFLAG(IS_LINUX)
- 
+ #elif BUILDFLAG(IS_WIN)
+   return base::win::GetVersion() >= base::win::Version::WIN10

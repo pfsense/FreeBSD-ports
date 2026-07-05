@@ -4,8 +4,10 @@ MAKE_CMD?=	bjam
 MAKEFILE=	#
 MAKE_FLAGS=	#
 ALL_TARGET=	stage
-#USES+=		compiler:c++17-lang
+USES+=		compiler:c++17-lang
 USE_CXXSTD=	gnu++17
+
+LDFLAGS+=	-Wl,--as-needed
 
 PLIST_SUB+=	BOOST_MAJOR_VER=${BOOST_MAJOR_VER} \
 		BOOST_MINOR_VER=${BOOST_MINOR_VER} \
@@ -21,7 +23,7 @@ MAKE_ARGS=	--layout=system \
 # Our compiler-flags will be added AFTER those set by bjam. We remove
 # the optimization level, because Boost sets it itself (to -O3 in case
 # of gcc/g++):
-MAKE_ARGS+=	cxxflags="${CXXFLAGS:N-O*}" cflags="${CFLAGS:N-O*}"
+MAKE_ARGS+=	cxxflags="${CXXFLAGS:N-O*}" cflags="${CFLAGS:N-O*}" linkflags="${LDFLAGS}"
 
 MAKE_ARGS+=	--toolset=${CHOSEN_COMPILER_TYPE} \
 		${_MAKE_JOBS}
@@ -45,12 +47,10 @@ MAKE_ARGS+=	pch=off
 
 .if ${OPSYS} == FreeBSD && \
 	((${OSVERSION} >= 1500000 && ${OSVERSION} < 1500017) || \
-	(${OSVERSION} >= 1400000 && ${OSVERSION} < 1400509) || \
-	(${OSVERSION} >= 1300000 && ${OSVERSION} < 1303502))
+	${PORT_OPTIONS:MLLVM_FROM_PORTS})
 USES+=	llvm:build
+USES:=	${USES:Ncompiler\:*} # XXX avoid warnings
 CHOSEN_COMPILER_TYPE=	clang
-.else
-USES+=	compiler:c++17-lang
 .endif
 
 post-patch:

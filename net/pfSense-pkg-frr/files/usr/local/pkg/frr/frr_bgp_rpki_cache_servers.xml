@@ -8,7 +8,7 @@
  * frr_bgp_rpki.xml
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2012-2024 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2012-2026 Rubicon Communications, LLC (Netgate)
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -29,6 +29,7 @@
 	<title>Services/FRR/BGP</title>
 	<include_file>/usr/local/pkg/frr.inc</include_file>
 	<aftersaveredirect>pkg.php?xml=frr/frr_bgp_rpki_cache_servers.xml</aftersaveredirect>
+	<addedit_string>FRR: changed RPKI Cache Servers</addedit_string>
 	<tabs>
 		<tab>
 			<text>BGP</text>
@@ -135,12 +136,6 @@
 			<fielddescr>Public Key Path</fielddescr>
 			<fieldname>pubkeypath</fieldname>
 			<description>Local path that includes the public key file of the router</description>
-			<type>input</type>
-		</field>
-		<field>
-			<fielddescr>Known Hosts Path</fielddescr>
-			<fieldname>knownhostspath</fieldname>
-			<description>Local path that includes the known hosts file</description>
 			<type>input</type>
 		</field>
 	</fields>

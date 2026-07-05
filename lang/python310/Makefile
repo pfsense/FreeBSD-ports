@@ -1,15 +1,19 @@
 PORTNAME=	python
 DISTVERSION=	${PYTHON_DISTVERSION}
-PORTREVISION=	2
 CATEGORIES=	lang python
 MASTER_SITES=	PYTHON/ftp/python/${DISTVERSION:C/[a-z].*//}
 PKGNAMESUFFIX=	${PYTHON_SUFFIX}
 DISTNAME=	Python-${DISTVERSION}
 DIST_SUBDIR=	python
 
+PATCH_SITES=	https://github.com/python/cpython/commit/
+
 MAINTAINER=	python@FreeBSD.org
 COMMENT=	Interpreted object-oriented programming language
 WWW=		https://www.python.org/
+
+DEPRECATED=	Python 3.10 is an old version in the last year of security support, see to it that your favorite ports get updated for newer Python releases in due time
+EXPIRATION_DATE=2026-09-30
 
 LICENSE=	PSFL
 
@@ -20,7 +24,6 @@ USES=		compiler:c11 cpe ncurses pathfix pkgconfig \
 PATHFIX_MAKEFILEIN=	Makefile.pre.in
 USE_LDCONFIG=	yes
 GNU_CONFIGURE=	yes
-GNU_CONFIGURE_MANPREFIX=${PREFIX}/share
 python_CMD=	${PREFIX}/bin/python${PYTHON_DISTVERSION:R}
 SHEBANG_FILES=	Lib/*.py Lib/*/*.py Lib/*/*/*.py Lib/*/*/*/*.py
 SHEBANG_FILES+=	Lib/test/ziptestdata/exe_with_z64 \
@@ -109,6 +112,10 @@ EXTRA_PATCHES+=	${PATCHDIR}/libressl
 .endif
 
 post-patch:
+# disable the detection of includes and library from libuuid,
+# which introduces hidden dependency and breaks build
+	@${REINPLACE_CMD} -e 's|uuid/uuid.h|ignore_&|' ${WRKSRC}/configure
+
 # disable detection of multiarch as it breaks with clang >= 13, which adds a
 # major.minor version number in -print-multiarch output, confusing Python
 	@${REINPLACE_CMD} -e 's|^\( *MULTIARCH=\).*--print-multiarch.*|\1|' ${WRKSRC}/configure

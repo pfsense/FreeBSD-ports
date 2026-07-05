@@ -1,11 +1,14 @@
 PORTNAME=	geogebra
-PORTVERSION=	5.0.752.0
+DISTVERSION=	5-2-909-9
+PORTREVISION=	1
 CATEGORIES=	math education java
-MASTER_SITES=	http://download.geogebra.org/installers/5.0/ \
+MASTER_SITES=	http://download.geogebra.org/installers/5.2/ \
 		https://static.geogebra.org/images/ \
 		http://freebsd.uzsolt.hu/src/
-DISTNAME=	GeoGebra-Linux-Portable-${PORTVERSION:S/./-/g}
-DISTFILES=	${DISTNAME}${EXTRACT_SUFX} geogebra.png geogebra-logo.svg
+DISTNAME=	GeoGebra-Linux-Portable-${DISTVERSION}
+DISTFILES=	${DISTNAME}${EXTRACT_SUFX} \
+		geogebra.png \
+		geogebra-logo.svg
 EXTRACT_ONLY=	${DISTNAME}${EXTRACT_SUFX}
 
 MAINTAINER=	uzsolt@FreeBSD.org
@@ -14,22 +17,23 @@ WWW=		https://www.geogebra.org/
 
 LICENSE=	GEOGEBRA
 LICENSE_NAME=	GeoGebra Non-Commercial License Agreement
-LICENSE_FILE=	${WRKSRC}/LICENSE.txt
+LICENSE_FILE=	${WRKSRC}/zulu11.62.17-ca-jre11.0.18-linux_x64/DISCLAIMER
 LICENSE_PERMS=	dist-mirror no-dist-sell pkg-mirror no-pkg-sell auto-accept
 
 ONLY_FOR_ARCHS=	amd64 i386
 
-USES=		tar:bzip2 desktop-file-utils gnome shebangfix shared-mime-info
-USE_JAVA=	yes
+USES=		desktop-file-utils gnome java shared-mime-info shebangfix \
+		tar:bzip2
+JAVA_VERSION=	17+
 
 CONFLICTS=	math/geogebra-i18n
 
-NO_BUILD=	yes
 NO_ARCH=	yes
-WRKSRC=		${WRKDIR}/${DISTNAME}
-
+NO_BUILD=	yes
 SUB_FILES=	geogebra.desktop geogebra.sh
 SUB_LIST=	JAVA=${JAVA}
+
+WRKSRC=		${WRKDIR}/${DISTNAME}
 
 do-install:
 	@${MKDIR} ${STAGEDIR}${DATADIR}/${PORTNAME}

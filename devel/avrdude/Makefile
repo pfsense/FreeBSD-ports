@@ -1,17 +1,16 @@
 PORTNAME=	avrdude
 PORTVERSION=	7.3
 DISTVERSIONPREFIX=	v
-#PORTREVISION=	0
 CATEGORIES=	devel
 
 MAINTAINER=	joerg@FreeBSD.org
 COMMENT=	Program for programming the on-chip memory of Atmel AVR CPUs
-WWW=		https://www.nongnu.org/avrdude/
+WWW=		https://github.com/avrdudes/avrdude/
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-USES=		libtool localbase readline cmake
+USES=		localbase readline cmake
 USE_GITHUB=	yes
 GH_ACCOUNT=	avrdudes
 GH_PROJECT=	avrdude

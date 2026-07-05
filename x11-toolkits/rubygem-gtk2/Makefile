@@ -17,12 +17,8 @@ RUN_DEPENDS=	rubygem-atk>=${PORTVERSION}:accessibility/rubygem-atk \
 		rubygem-pango>=${PORTVERSION}:x11-toolkits/rubygem-pango
 
 USES=		gem gnome
-USE_GNOME=	gtk20
+USE_GNOME=	gtk20 introspection
 
-.include <bsd.port.options.mk>
-
-.if ${OPSYS} == FreeBSD && ((${OSVERSION} >= 1302507 && ${OSVERSION} < 1400000) || ${OSVERSION} >= 1400091)
-CONFIGURE_ARGS+=--with-cflags="-Wno-error=incompatible-function-pointer-types"
-.endif
+CONFIGURE_ARGS=	--with-cflags=-Wno-incompatible-function-pointer-types
 
 .include <bsd.port.mk>

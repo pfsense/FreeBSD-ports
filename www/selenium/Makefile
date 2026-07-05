@@ -1,8 +1,9 @@
 PORTNAME=	selenium
-PORTVERSION=	4.8.3
+DISTVERSION=	4.35.0
+PORTREVISION=	1
 CATEGORIES=	www devel java
-MASTER_SITES=	https://github.com/SeleniumHQ/selenium/releases/download/selenium-4.8.0/
-DISTNAME=	selenium-server-${PORTVERSION}
+MASTER_SITES=	https://github.com/SeleniumHQ/${PORTNAME}/releases/download/${PORTNAME}-${DISTVERSION}/
+DISTNAME=	${PORTNAME}-server-${DISTVERSION}
 EXTRACT_SUFX=	.jar
 EXTRACT_ONLY=
 
@@ -12,26 +13,23 @@ WWW=		https://www.seleniumhq.org
 
 LICENSE=	APACHE20
 
-USES=		cpe
+USES=		cpe java
 CPE_VENDOR=	jenkins
+JAVA_VERSION=	17+
 
-USE_JAVA=	yes
-JAVA_VERSION=	8+
-JAVA_RUN=	yes
-
-USE_RC_SUBR=	selenium
+USE_RC_SUBR=	${PORTNAME}
 
 NO_ARCH=	yes
 NO_BUILD=	yes
-SUB_LIST+=	JAVA_HOME=${JAVA_HOME} \
-		SELENIUM_VERSION=${PORTVERSION}
+SUB_LIST=	JAVA_HOME=${JAVA_HOME} \
+		SELENIUM_VERSION=${DISTVERSION}
 
-SELENIUM_HOME=	${PREFIX}/selenium
+SELENIUM_HOME=	${PREFIX}/${PORTNAME}
 
-USERS=		selenium
-GROUPS=		selenium
+USERS=		${PORTNAME}
+GROUPS=		${PORTNAME}
 
-PLIST_FILES=	\@dir\(${USERS},${GROUPS},\)\ selenium \
+PLIST_FILES=	"@dir(${USERS:[1]},${GROUPS:[1]},) ${PORTNAME}" \
 		${DATADIR}/${DISTNAME}${EXTRACT_SUFX}
 
 do-install:

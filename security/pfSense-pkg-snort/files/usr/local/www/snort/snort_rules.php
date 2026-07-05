@@ -3,7 +3,7 @@
  * snort_rules.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2004-2024 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2004-2026 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2008-2009 Robert Zelaya
  * Copyright (c) 2022 Bill Meeks
  * All rights reserved.
@@ -174,6 +174,8 @@ elseif (isset($_GET['openruleset']))
 	$currentruleset = htmlspecialchars($_GET['openruleset']);
 else
 	$currentruleset = $categories[array_key_first($categories)];
+
+$currentruleset = basename($currentruleset);
 
 // One last sanity check -- if the rules directory is empty, default to loading custom rules
 $tmp = glob("{$snortdir}/rules/*.rules");

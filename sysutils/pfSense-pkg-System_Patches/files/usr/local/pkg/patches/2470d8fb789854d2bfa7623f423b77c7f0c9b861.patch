@@ -1,0 +1,108 @@
+commit 2470d8fb789854d2bfa7623f423b77c7f0c9b861
+Author: Marcos Mendoza <mmendoza@netgate.com>
+Date:   Mon Dec 16 13:32:15 2024 -0600
+
+    Sort filter rules after changes. Fix #15935
+    
+    When rules are added/removed, they should also be re-sorted.
+
+diff --git a/src/etc/inc/easyrule.inc b/src/etc/inc/easyrule.inc
+index 7836824ef8..e33f8b5edd 100644
+--- a/src/etc/inc/easyrule.inc
++++ b/src/etc/inc/easyrule.inc
+@@ -144,6 +144,7 @@ function easyrule_block_rule_create($int = 'wan', $ipproto = "inet") {
+ 	$ridx = get_interface_ruleindex($int);
+ 	array_splice($a_filter, $ridx['first'], 0, array($filterent));
+ 	config_set_path('filter/rule', $a_filter);
++	filter_rules_sort();
+ 
+ 	// shift the separators
+ 	$a_separators = config_get_path('filter/separator/' . strtolower($int), []);
+diff --git a/src/etc/inc/itemid.inc b/src/etc/inc/itemid.inc
+index c01ef4a383..5dd11a9832 100644
+--- a/src/etc/inc/itemid.inc
++++ b/src/etc/inc/itemid.inc
+@@ -52,6 +52,7 @@ function delete_id($id) {
+ 	config_set_path('filter/separator/' . strtolower($if), $a_separators);
+ 
+ 	config_set_path('filter/rule', $array);
++	filter_rules_sort();
+ 	return true;
+ }
+ 
+diff --git a/src/etc/inc/upgrade_config.inc b/src/etc/inc/upgrade_config.inc
+index 7419e0df5f..4adf6fc69d 100644
+--- a/src/etc/inc/upgrade_config.inc
++++ b/src/etc/inc/upgrade_config.inc
+@@ -145,6 +145,7 @@ function upgrade_010_to_011() {
+ 	}
+ 
+ 	config_set_path('filter/rule', $filter_rule_config);
++	filter_rules_sort();
+ 
+ 	/* convert shaper rules */
+ 	$shaper_rule_config = config_get_path('pfqueueing/rule', []);
+@@ -3803,6 +3804,7 @@ function upgrade_122_to_123() {
+ 			}
+ 		}
+ 		config_set_path('filter/rule', $filter_rules_config);
++		filter_rules_sort();
+ 	}
+ 
+ 	$binat_config = config_get_path('nat/onetoone', []);
+diff --git a/src/usr/local/pfSense/include/www/firewall_nat.inc b/src/usr/local/pfSense/include/www/firewall_nat.inc
+index f8ba815e89..8ac3a06326 100644
+--- a/src/usr/local/pfSense/include/www/firewall_nat.inc
++++ b/src/usr/local/pfSense/include/www/firewall_nat.inc
+@@ -574,6 +574,7 @@ function saveNATrule($post, $id, $json = false) {
+ 				$filter_rule_config[] = $filterent;
+ 			}
+ 			config_set_path('filter/rule', $filter_rule_config);
++			filter_rules_sort();
+ 
+ 			if (!$json) {
+ 				mark_subsystem_dirty('filter');
+diff --git a/src/usr/local/www/firewall_rules.php b/src/usr/local/www/firewall_rules.php
+index e56c2c3a66..63c84d8d72 100644
+--- a/src/usr/local/www/firewall_rules.php
++++ b/src/usr/local/www/firewall_rules.php
+@@ -238,6 +238,7 @@ if (isset($_POST['del_x'])) {
+ 			delete_nat_association($associations_to_remove);
+ 			config_set_path('filter/separator/' . strtolower($if), $a_separators);
+ 			config_set_path('filter/rule', $a_rules);
++			filter_rules_sort();
+ 			if (write_config(gettext("Firewall: Rules - deleted selected firewall rules."))) {
+ 				mark_subsystem_dirty('filter');
+ 			}
+@@ -316,6 +317,7 @@ if (isset($_POST['del_x'])) {
+ 
+ 		if (config_get_path('filter/rule') !== $a_filter_new) {
+ 			config_set_path('filter/rule', $a_filter_new);
++			filter_rules_sort();
+ 			$dirty = true;
+ 		}
+ 	}
+diff --git a/src/usr/local/www/wizards/traffic_shaper_wizard_dedicated.inc b/src/usr/local/www/wizards/traffic_shaper_wizard_dedicated.inc
+index 6afa9a79a8..41cd1a1fd4 100644
+--- a/src/usr/local/www/wizards/traffic_shaper_wizard_dedicated.inc
++++ b/src/usr/local/www/wizards/traffic_shaper_wizard_dedicated.inc
+@@ -1772,6 +1772,7 @@ function apply_all_chosen_items() {
+ 	}
+ 
+ 	config_set_path('filter/rule', $filter_rules);
++	filter_rules_sort();
+ 	write_config(gettext("Shaper configuration saved via traffic shaper wizard."));
+ }
+ 
+diff --git a/src/usr/local/www/wizards/traffic_shaper_wizard_multi_all.inc b/src/usr/local/www/wizards/traffic_shaper_wizard_multi_all.inc
+index 93abbae80f..33ade4b640 100644
+--- a/src/usr/local/www/wizards/traffic_shaper_wizard_multi_all.inc
++++ b/src/usr/local/www/wizards/traffic_shaper_wizard_multi_all.inc
+@@ -1840,6 +1840,7 @@ function apply_all_chosen_items() {
+ 	}
+ 
+ 	config_set_path('filter/rule', $filter_rules);
++	filter_rules_sort();
+ 	write_config(gettext("Shaper configuration saved via traffic shaper wizard."));
+ }
+ 

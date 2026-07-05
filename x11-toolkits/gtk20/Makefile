@@ -2,7 +2,7 @@ PORTNAME=	gtk
 PORTVERSION=	2.24.33		# sync with graphics/gtk-update-icon-cache
 PORTREVISION=	1
 CATEGORIES=	x11-toolkits
-MASTER_SITES=	GNOME/sources/gtk+/${PORTVERSION:C/^([0-9]+\.[0-9]+).*/\1/}
+MASTER_SITES=	GNOME
 PKGNAMESUFFIX=	2
 DISTNAME=	gtk+-${PORTVERSION}
 DIST_SUBDIR=	gnome2
@@ -26,7 +26,7 @@ USES+=		gettext gmake gnome libtool localbase:ldflags pathfix perl5 \
 		pkgconfig python:run shebangfix xorg
 SHEBANG_FILES=	gtk/gtk-builder-convert
 GNU_CONFIGURE=	yes
-USE_GNOME=	atk pango gdkpixbuf2 introspection:build \
+USE_GNOME=	atk pango gdkpixbuf introspection:build \
 		gtk-update-icon-cache
 USE_LDCONFIG=	yes
 USE_PERL5=	build

@@ -1,5 +1,5 @@
 PORTNAME=	bolt
-PORTVERSION=	3.28.0
+PORTVERSION=	4.0.0
 CATEGORIES=	sysutils rubygems
 MASTER_SITES=	RG
 
@@ -9,29 +9,34 @@ WWW=		https://github.com/puppetlabs/bolt
 
 LICENSE=	APACHE20
 
+DEPRECATED=	Discontinued, use sysutils/rubygem-openbolt
+EXPIRATION_DATE=2026-07-01
+
 RUN_DEPENDS=	r10k:sysutils/rubygem-r10k \
 		rubygem-addressable>=2.5:www/rubygem-addressable \
 		rubygem-aws-sdk-ec2>1:devel/rubygem-aws-sdk-ec2 \
 		rubygem-CFPropertyList>=2.2:devel/rubygem-CFPropertyList \
 		rubygem-concurrent-ruby11>=1.0:devel/rubygem-concurrent-ruby11 \
-		rubygem-ffi>=1.13:devel/rubygem-ffi \
+		rubygem-ffi>=1.13<2:devel/rubygem-ffi \
 		rubygem-hiera-eyaml>=3:sysutils/rubygem-hiera-eyaml \
 		rubygem-jwt>=2.2:www/rubygem-jwt \
 		rubygem-logging>=2.2:devel/rubygem-logging \
-		rubygem-net-scp1>=1.2<2:security/rubygem-net-scp1 \
-		rubygem-net-ssh>=4.0:security/rubygem-net-ssh \
+		rubygem-minitar>=0.6:archivers/rubygem-minitar \
+		rubygem-net-scp>=1.2<5:security/rubygem-net-scp \
+		rubygem-net-ssh6>=4.0<8:security/rubygem-net-ssh6 \
 		rubygem-net-ssh-krb>=0.5:security/rubygem-net-ssh-krb \
 		rubygem-orchestrator_client>=0.5:net/rubygem-orchestrator_client \
 		rubygem-puppet-resource_api>=1.8.1:devel/rubygem-puppet-resource_api \
-		rubygem-puppet-strings>=2.3:textproc/rubygem-puppet-strings \
+		rubygem-puppet-strings>=2.3.0:textproc/rubygem-puppet-strings \
 		rubygem-puppetfile-resolver>=0.6.2:sysutils/rubygem-puppetfile-resolver \
 		rubygem-ruby_smb>=1.0:net/rubygem-ruby_smb \
-		rubygem-terminal-table>=3.0<4:textproc/rubygem-terminal-table \
-		rubygem-winrm-fs>=1.3:sysutils/rubygem-winrm-fs \
+		rubygem-terminal-table3>=3.0<4:textproc/rubygem-terminal-table3 \
+		rubygem-winrm-fs>=1.3:filesystems/rubygem-winrm-fs \
 		rubygem-winrm>=2.0:sysutils/rubygem-winrm
 
 USES=		gem shebangfix
 
+CONFLICTS_INSTALL=rubygem-openbolt
 ruby_OLD_CMD+=	/opt/puppetlabs/puppet/bin/ruby
 SHEBANG_FILES=	libexec/*
 

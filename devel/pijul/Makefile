@@ -1,5 +1,6 @@
 PORTNAME=	pijul
 PORTVERSION=	1.0.0.b9
+PORTREVISION=	19
 CATEGORIES=	devel
 
 MAINTAINER=	cs@FreeBSD.org
@@ -447,9 +448,6 @@ post-patch:
 	${MV} ${WRKSRC}/cargo-crates/pijul-1.0.0-beta.9/* ${WRKSRC}/
 
 do-install:
-	${INSTALL_SCRIPT} ${CARGO_TARGET_DIR}/${CARGO_BUILD_TARGET}/*/pijul ${STAGEDIR}${PREFIX}/bin/pijul
-
-post-install:
-	${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/pijul
+	${INSTALL_SCRIPT} ${CARGO_TARGET_DIR}/*/pijul ${STAGEDIR}${PREFIX}/bin/pijul
 
 .include <bsd.port.mk>

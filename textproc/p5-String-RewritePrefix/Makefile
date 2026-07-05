@@ -1,11 +1,10 @@
 PORTNAME=	String-RewritePrefix
-DISTVERSION=	0.008
+DISTVERSION=	0.009
 CATEGORIES=	textproc perl5
 MASTER_SITES=	CPAN
-MASTER_SITE_SUBDIR=	CPAN:RJBS
 PKGNAMEPREFIX=	p5-
 
-MAINTAINER=	bill.brinzer@gmail.com
+MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Rewrite strings based on a set of known prefixes
 WWW=		https://metacpan.org/release/String-RewritePrefix
 

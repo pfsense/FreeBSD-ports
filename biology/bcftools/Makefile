@@ -1,5 +1,5 @@
 PORTNAME=	bcftools
-PORTVERSION=	1.17
+PORTVERSION=	1.22
 PORTREVISION=	1
 CATEGORIES=	biology
 
@@ -10,6 +10,7 @@ WWW=		https://www.htslib.org/
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
+BUILD_DEPENDS=	htslib>=1.22:biology/htslib
 LIB_DEPENDS=	libhts.so:biology/htslib
 TEST_DEPENDS=	bash:shells/bash
 RUN_DEPENDS=	bash:shells/bash
@@ -17,7 +18,6 @@ RUN_DEPENDS=	bash:shells/bash
 USES=		autoreconf gmake localbase perl5 python:env shebangfix
 
 USE_GITHUB=	yes
-USE_PERL5=	test
 
 GH_ACCOUNT=	samtools
 GNU_CONFIGURE=	yes

@@ -15,13 +15,17 @@ Call Stack (most recent call first):
 
 Regressed by: https://code.qt.io/cgit/qt/qttools.git/commit/?h=6.6.0&id=ff5c080c2eb9267c43da6fafe953bf50076443c4
 
---- configure.cmake.orig	2023-09-11 09:43:37 UTC
+--- configure.cmake.orig	2025-08-15 17:35:03 UTC
 +++ configure.cmake
-@@ -7,6 +7,7 @@
+@@ -4,6 +4,11 @@ include(${CMAKE_CURRENT_LIST_DIR}/src/qdoc/cmake/QDocC
+ # Include QDoc-specific configuration early (needed for feature definitions)
+ include(${CMAKE_CURRENT_LIST_DIR}/src/qdoc/cmake/QDocConfiguration.cmake)
  
- #### Libraries
- 
++#### Libraries
++
 +qt_find_package(WrapZSTD 1.3 PROVIDED_TARGETS WrapZSTD::WrapZSTD MODULE_NAME designer)
- 
- 
++
++
  #### Tests
+ 
+ qt_find_package(WrapLibClang 8 PROVIDED_TARGETS WrapLibClang::WrapLibClang)

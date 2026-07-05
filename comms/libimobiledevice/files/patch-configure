@@ -1,8 +1,8 @@
 Remove bash-ism from configure script
 
---- configure.orig	2021-01-21 13:07:51 UTC
+--- configure.orig	2025-10-07 03:17:25 UTC
 +++ configure
-@@ -18422,7 +18422,7 @@ rm -f core conftest.err conftest.$ac_objext conftest.$
+@@ -22303,7 +22303,7 @@ rm -f core conftest.err conftest.$ac_objext conftest.b
  
    if test "X$flag_ok" = Xyes ; then
  

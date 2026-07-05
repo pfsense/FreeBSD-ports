@@ -8,7 +8,7 @@
  * traffic_totals.xml
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2015-2024 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2015-2026 Rubicon Communications, LLC (Netgate)
  * All rights reserved.
  *
  * Originally based upon pfBlocker by
@@ -32,7 +32,9 @@
 	<description>Traffic Totals Page</description>
 	<name>Traffic Totals</name>
 	<title>Status: Traffic Totals</title>
+	<donotsave>true</donotsave>
 	<include_file>/usr/local/pkg/status_traffic_totals.inc</include_file>
+	<ramdisk_dir_names>vnstat</ramdisk_dir_names>
 	<menu>
 		<name>Traffic Totals</name>
 		<tooltiptext>Traffic totals per interface for different periods of time.</tooltiptext>

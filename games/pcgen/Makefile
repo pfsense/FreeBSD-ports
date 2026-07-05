@@ -1,6 +1,6 @@
 PORTNAME=	pcgen
 PORTVERSION=	6.06.01
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	games java
 MASTER_SITES=	https://github.com/PCGen/${PORTNAME}/releases/download/${PORTVERSION}/
 DISTNAME=	pcgen-${PORTVERSION}-full
@@ -10,9 +10,9 @@ COMMENT=	Java-based RPG character generator and maintenance program
 
 LICENSE=	LGPL21
 
-USES=		zip
+USES=		java zip
+
 WRKSRC=		${WRKDIR}/${PORTNAME}
-USE_JAVA=	yes
 NO_BUILD=	yes
 NO_ARCH=	yes
 

@@ -1,11 +1,11 @@
---- components/viz/test/mock_display_client.h.orig	2024-01-30 07:53:34 UTC
+--- components/viz/test/mock_display_client.h.orig	2026-03-13 06:02:14 UTC
 +++ components/viz/test/mock_display_client.h
-@@ -43,7 +43,7 @@ class MockDisplayClient : public mojom::DisplayClient 
-   MOCK_METHOD1(SetWideColorEnabled, void(bool enabled));
+@@ -45,7 +45,7 @@ class MockDisplayClient : public mojom::DisplayClient 
+ #if BUILDFLAG(IS_ANDROID) || BUILDFLAG(IS_CHROMEOS)
    MOCK_METHOD1(SetPreferredRefreshRate, void(float refresh_rate));
- #endif
--#if BUILDFLAG(IS_LINUX) && BUILDFLAG(IS_OZONE_X11)
-+#if (BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_BSD)) && BUILDFLAG(IS_OZONE_X11)
+ #endif  // BUILDFLAG(IS_ANDROID) || BUILDFLAG(IS_CHROMEOS)
+-#if BUILDFLAG(IS_LINUX) && BUILDFLAG(SUPPORTS_OZONE_X11)
++#if (BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_BSD)) && BUILDFLAG(SUPPORTS_OZONE_X11)
    MOCK_METHOD1(DidCompleteSwapWithNewSize, void(const gfx::Size&));
- #endif  // BUILDFLAG(IS_LINUX) && BUILDFLAG(IS_OZONE_X11)
+ #endif  // BUILDFLAG(IS_LINUX) && BUILDFLAG(SUPPORTS_OZONE_X11)
  

@@ -1,14 +1,12 @@
 PORTNAME=	squeak
 PORTVERSION=	4.10.2
-PORTREVISION=	14
+PORTREVISION=	15
 CATEGORIES=	lang
-MASTER_SITES=	http://www.squeakvm.org/unix/release/:vmsrc \
-		http://ftp.squeak.org/${IMAGE_VERSION}/:src \
-		ftp://squeak.org/${IMAGE_VERSION}/:sqsrc \
-		http://squeak.610t.org/patches/:mainsrc
+MASTER_SITES=	http://squeakvm.org/unix/release/:vmsrc \
+		http://ftp.squeak.org/${IMAGE_VERSION}/:src
 DISTFILES=	Squeak-${VM_VERSION}-src${EXTRACT_SUFX}:vmsrc \
 		Squeak${IMAGE_FULL_VERSION}.zip:src \
-		${SQUEAK_SRC}.zip:sqsrc
+		${SQUEAK_SRC}.zip:src
 DIST_SUBDIR=	${PORTNAME}
 EXTRACT_ONLY=	Squeak-${VM_VERSION}-src${EXTRACT_SUFX}
 
@@ -65,11 +63,9 @@ IMAGES=		Squeak${IMAGE_FULL_VERSION}.image \
 
 .include <bsd.port.options.mk>
 
-.if ${OPSYS} == FreeBSD && ( ${OSVERSION} >= 1400079 || ( ${OSVERSION} >= 1302505 && ${OSVERSION} < 1400000 ))
+.if ${OPSYS} == FreeBSD
 CFLAGS+=	-Wno-error=int-conversion
-.if ${OSVERSION} >= 1400091 || ( ${OSVERSION} >= 1302507 && ${OSVERSION} < 1400000 )
 CFLAGS+=	-Wno-error=incompatible-function-pointer-types
-.endif
 .endif
 
 post-patch:

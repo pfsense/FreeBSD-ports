@@ -1,5 +1,5 @@
 PORTNAME=	djangorestframework
-PORTVERSION=	3.14.0
+DISTVERSION=	3.16.1
 PORTEPOCH=	1
 CATEGORIES=	www python
 MASTER_SITES=	PYPI
@@ -12,11 +12,12 @@ WWW=		https://www.django-rest-framework.org/
 LICENSE=	BSD2CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE.md
 
-RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}django32>=3.0:www/py-django32@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}pytz>=0:devel/py-pytz@${PY_FLAVOR}
+BUILD_DEPENDS=	${PY_SETUPTOOLS} \
+		${PYTHON_PKGNAMEPREFIX}wheel>=0:devel/py-wheel@${PY_FLAVOR}
+RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}django42>=4.2:www/py-django42@${PY_FLAVOR}
 
 USES=		python
-USE_PYTHON=	distutils autoplist
+USE_PYTHON=	autoplist pep517
 
 CONFLICTS_INSTALL=	${PYTHON_PKGNAMEPREFIX}*${PORTNAME}
 

@@ -1,15 +1,18 @@
 PORTNAME=	zola
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.18.0
-PORTREVISION=	3
+DISTVERSION=	0.22.1
+PORTREVISION=	2
 CATEGORIES=	www
 
-MAINTAINER=	mikael@FreeBSD.org
+MAINTAINER=	bofh@FreeBSD.org
 COMMENT=	Fast static site generator
 WWW=		https://www.getzola.org/
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
+
+NOT_FOR_ARCHS=	i386
+NOT_FOR_ARCHS_REASON=	the ring crate requires SSE2 instruction on intel cpu
 
 LIB_DEPENDS=	libonig.so:devel/oniguruma \
 		libsass.so:textproc/libsass
@@ -29,7 +32,6 @@ PORTDOCS=	*
 OPTIONS_DEFINE=	DOCS
 
 post-install:
-	${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/zola
 	@${MKDIR} ${STAGEDIR}${PREFIX}/etc/bash_completion.d \
 		${STAGEDIR}${PREFIX}/share/fish/completions \
 		${STAGEDIR}${PREFIX}/share/zsh/site-functions

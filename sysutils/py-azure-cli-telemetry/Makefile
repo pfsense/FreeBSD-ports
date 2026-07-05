@@ -1,10 +1,11 @@
 PORTNAME=	azure-cli-telemetry
 PORTVERSION=	1.1.0
+PORTREVISION=	1
 CATEGORIES=	sysutils python
 MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
-MAINTAINER=	dbaio@FreeBSD.org
+MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Microsoft Azure CLI Telemetry Package
 WWW=		https://pypi.org/project/azure-cli-telemetry/
 

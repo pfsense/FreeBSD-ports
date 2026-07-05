@@ -1,62 +1,61 @@
-PORTNAME=		cantata
+PORTNAME=	cantata
 DISTVERSIONPREFIX=	v
-DISTVERSION=		2.5.0
-PORTREVISION=	4
-CATEGORIES=		audio kde
+DISTVERSION=	3.3.1
+PORTREVISION=	1
+CATEGORIES=	audio kde
 
-MAINTAINER=		kde@FreeBSD.org
-COMMENT=		Graphical client for MPD using Qt5
-WWW=		https://github.com/CDrummond/cantata
+PATCH_SITES=	https://github.com/nullobsi/cantata/commit/
+PATCHFILES+=	52bf771a115b102a00fa09b48c867b6954474a51.patch:-p1 # Fix build with Qt 6.10
+PATCHFILES+=	82ee16e720e6901e7191e64a4e0c0db94c6a10ae.patch:-p1 # Fix build with Qt 6.10
 
-LICENSE=		GPLv3
-LICENSE_FILE=		${WRKSRC}/LICENSE
+MAINTAINER=	kde@FreeBSD.org
+COMMENT=	Graphical client for MPD using Qt
+WWW=		https://github.com/nullobsi/cantata
 
-USES=			cmake compiler:c++11-lang cpe pkgconfig qt:5 shebangfix
-USE_GITHUB=		yes
-GH_ACCOUNT=		CDrummond
+LICENSE=	GPLv3
+LICENSE_FILE=	${WRKSRC}/LICENSE
 
-USE_QT=			buildtools:build concurrent core dbus gui network \
-			qmake:build sql sql-sqlite3:run svg widgets xml
+USES=		cmake compiler:c++17-lang cpe gl pkgconfig qt:6 shebangfix
+CPE_VENDOR=	craig_drummond
+USE_GITHUB=	yes
+GH_ACCOUNT=	nullobsi
+USE_GL=		opengl
+USE_QT=		base sqldriver-sqlite:run svg
 
-CMAKE_ON=		CMAKE_DISABLE_FIND_PACKAGE_UDev
-CMAKE_OFF=		ENABLE_CDIOPARANOIA
+SHEBANG_FILES=	playlists/cantata-dynamic.cmake cantata-remote.cmake
 
-SHEBANG_FILES=		playlists/cantata-dynamic cantata-remote.cmake
-CPE_VENDOR=		craig_drummond
-USE_LDCONFIG=		yes
+CMAKE_ON=	CMAKE_DISABLE_FIND_PACKAGE_UDev
+CMAKE_OFF=	ENABLE_CDDB
 
-OPTIONS_DEFINE=		AVAHI CDPARANOIA MTP NLS PROXY TAGLIB
-OPTIONS_GROUP=		CDINFO REPLAYGAIN
-OPTIONS_GROUP_CDINFO=	CDDB MUSICBRAINZ
+DATADIR=	${PREFIX}/share/Cantata
+
+OPTIONS_DEFINE=		AVAHI MTP NLS PROXY TAGLIB
+OPTIONS_DEFAULT=	AVAHI FFMPEG MPG123 MTP QTMULTIMEDIA TAGLIB
+OPTIONS_GROUP=		AUDIOCD REPLAYGAIN
+OPTIONS_GROUP_AUDIOCD=	CDPARANOIA MUSICBRAINZ
 OPTIONS_GROUP_REPLAYGAIN=	FFMPEG MPG123
 OPTIONS_RADIO=		HSP
-OPTIONS_RADIO_HSP=	QT5 VLC
-OPTIONS_DEFAULT=	AVAHI CDDB CDPARANOIA FFMPEG MPG123 MTP MUSICBRAINZ TAGLIB VLC
+OPTIONS_RADIO_HSP=	QTMULTIMEDIA VLC
 OPTIONS_SUB=		yes
 
+AUDIOCD_DESC=		AudioCD support
 AVAHI_DESC=		Automatic MPD Discovery
-CDDB_DESC=		CD info retrieval via CDDB
-CDINFO_DESC=		AudioCD support
 FFMPEG_DESC=		ReplayGain calculation support via FFmpeg
 HSP_DESC=		MPD HTTP stream playback
 MPG123_DESC=		ReplayGain calculation support via mpg123
 MUSICBRAINZ_DESC=	CD info retrieval via MusicBrainz
 PROXY_DESC=		Proxy configuration in settings dialog
-QT5_DESC=		HTTP streams support via QtMultimedia
+QTMULTIMEDIA_DESC=	HTTP streams support via QtMultimedia
 REPLAYGAIN_DESC=	Replaygain calculation support
 TAGLIB_DESC=		Reading and editing Meta-Data of audio files
 VLC_DESC=		HTTP streams support via libVLC
 
-AVAHI_CMAKE_BOOL=	ENABLE_AVAHI
 AVAHI_LIB_DEPENDS=	libavahi-common.so:net/avahi-app
-
-CDDB_IMPLIES=		CDPARANOIA
-CDDB_LIB_DEPENDS=	libcddb.so:audio/libcddb
-CDDB_CMAKE_BOOL=	ENABLE_CDDB
+AVAHI_CMAKE_BOOL=	ENABLE_AVAHI
 
 CDPARANOIA_IMPLIES=	TAGLIB
-CDPARANOIA_LIB_DEPENDS=	libcdda_interface.so:audio/cdparanoia
-CDPARANOIA_CMAKE_BOOL=	ENABLE_CDPARANOIA
+CDPARANOIA_LIB_DEPENDS=	libcdio_paranoia.so:sysutils/libcdio-paranoia
+CDPARANOIA_CMAKE_BOOL=	ENABLE_CDIOPARANOIA
 
 FFMPEG_IMPLIES=		TAGLIB
 FFMPEG_LIB_DEPENDS=	libavcodec.so:multimedia/ffmpeg
@@ -70,10 +69,10 @@ MTP_LIB_DEPENDS=	libmtp.so:multimedia/libmtp
 MTP_CMAKE_BOOL=		ENABLE_MTP
 
 MUSICBRAINZ_IMPLIES=	CDPARANOIA
-MUSICBRAINZ_LIB_DEPENDS=libmusicbrainz5.so:audio/libmusicbrainz5
+MUSICBRAINZ_LIB_DEPENDS=libmusicbrainz5cc.so:audio/libmusicbrainz5
 MUSICBRAINZ_CMAKE_BOOL=	ENABLE_MUSICBRAINZ
 
-NLS_USE=		QT=linguisttools:build
+NLS_USE=		QT=tools:build
 NLS_CMAKE_ON=		-DLCONVERT_EXECUTABLE:STRING=${QT_BINDIR}/lconvert \
 			-DLRELEASE_EXECUTABLE:STRING=${QT_BINDIR}/lrelease
 NLS_CMAKE_OFF=		-DLCONVERT_EXECUTABLE:BOOL=FALSE \
@@ -81,7 +80,7 @@ NLS_CMAKE_OFF=		-DLCONVERT_EXECUTABLE:BOOL=FALSE \
 
 PROXY_CMAKE_BOOL=	ENABLE_PROXY_CONFIG
 
-QT5_USE=		QT=multimedia
+QTMULTIMEDIA_USE=	QT=multimedia
 
 TAGLIB_LIB_DEPENDS=	libtag.so:audio/taglib
 TAGLIB_USES=		localbase
@@ -99,7 +98,7 @@ PLIST_SUB+=		REPLAYGAIN=""
 PLIST_SUB+=		REPLAYGAIN="@comment "
 .endif
 
-.if ${PORT_OPTIONS:MQT5} || ${PORT_OPTIONS:MVLC}
+.if ${PORT_OPTIONS:MQTMULTIMEDIA} || ${PORT_OPTIONS:MVLC}
 CMAKE_ARGS+=		-DENABLE_HTTP_STREAM_PLAYBACK:BOOL=TRUE
 .else
 CMAKE_ARGS+=		-DENABLE_HTTP_STREAM_PLAYBACK:BOOL=FALSE

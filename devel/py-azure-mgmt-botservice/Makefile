@@ -1,10 +1,11 @@
 PORTNAME=	azure-mgmt-botservice
 DISTVERSION=	2.0.0b3
+PORTREVISION=	1
 CATEGORIES=	devel python
 MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
-MAINTAINER=	dbaio@FreeBSD.org
+MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Microsoft Azure Bot Service Client Library for Python
 WWW=		https://pypi.org/project/azure-mgmt-botservice/
 

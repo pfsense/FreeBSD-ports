@@ -1,34 +1,38 @@
 PORTNAME=	roboto-fonts-ttf
-PORTVERSION=	2.134
-PORTREVISION=	1
-DISTVERSIONPREFIX=v
+DISTVERSIONPREFIX=	v
+DISTVERSION=	3.015
 PORTEPOCH=	1
 CATEGORIES=	x11-fonts
+MASTER_SITES=	https://github.com/googlefonts/roboto-3-classic/releases/download/${DISTVERSIONFULL}/
+EXTRACT_SUFX=	.zip
+DISTFILES=	Roboto_${DISTVERSIONFULL}.zip
 
 MAINTAINER=	wulf@cicgroup.ru
-COMMENT=	Roboto typeface family
-WWW=		https://developer.android.com/design/style/typography.html
+COMMENT=	TrueType Roboto family fonts
+WWW=		https://github.com/googlefonts/roboto-3-classic
 
-LICENSE=	APACHE20
-LICENSE_FILE=	${WRKSRC}/LICENSE
+LICENSE=	OFL11
 
+USES=		fonts
+FONTNAME=	Roboto
+
+EXTRACT_AFTER_ARGS=	--strip-components 2 \
+			--include hinted/static/*.ttf \
+			--no-same-owner --no-same-permissions
 NO_ARCH=	yes
 NO_BUILD=	yes
-USES=		fonts
 
-USE_GITHUB=	yes
-GH_ACCOUNT=	google
-GH_PROJECT=	roboto
+NO_WRKSUBDIR=	yes
 
-SUB_FILES=	pkg-message
+PLIST_SUB=	FCDIR=${FCDIR} \
+		FCDIR_LINKS=${FCDIR_LINKS}
 
-PLIST_SUB=	FCDIR=${FCDIR} FCDIR_LINKS=${FCDIR_LINKS}
 FCDIR?=		etc/fonts/conf.avail
 FCDIR_LINKS=	${FCDIR:S|conf.avail|conf.d|}
 
 do-install:
 	${MKDIR} ${STAGEDIR}${FONTSDIR}
-	${INSTALL_DATA} ${WRKSRC}/hinted/*.ttf ${STAGEDIR}${FONTSDIR}
+	${INSTALL_DATA} ${WRKSRC}/*.ttf ${STAGEDIR}${FONTSDIR}
 	${MKDIR} ${STAGEDIR}${PREFIX}/${FCDIR}/ ${STAGEDIR}${PREFIX}/${FCDIR_LINKS}/
 	${INSTALL_DATA} ${FILESDIR}/*.conf ${STAGEDIR}${PREFIX}/${FCDIR}/
 	cd ${STAGEDIR}${PREFIX}/${FCDIR_LINKS}/ && ${LN} -fs ../conf.avail/*.conf .

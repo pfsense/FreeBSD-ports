@@ -1,5 +1,6 @@
 PORTNAME=	weka
 DISTVERSION=	3-8-6
+PORTREVISION=	1
 CATEGORIES=	textproc java
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}-3-8/${PORTVERSION}
 
@@ -11,8 +12,8 @@ LICENSE=	GPLv2
 
 PORTSCOUT=	limitw:1,even	# Second component is even for stable versions.
 
-USES=		zip
-USE_JAVA=	yes
+USES=		java zip
+
 NO_BUILD=	yes
 
 DATADIR=	${JAVASHAREDIR}/${PORTNAME}

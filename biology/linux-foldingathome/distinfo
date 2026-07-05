@@ -1,3 +1,5 @@
-TIMESTAMP = 1624640434
-SHA256 (fahclient-7.6.21-1.x86_64.rpm) = a9f8b5073cd800cc63e32c623a8b4d7487c4e19a1e84760202e451b997d95073
-SIZE (fahclient-7.6.21-1.x86_64.rpm) = 3779272
+TIMESTAMP = 1755790886
+SHA256 (debian-stable-arm64/release/fah-client_8.4.9-64bit-release.tar.bz2) = 14ea352a42be0d34a1a0e2a4b46139e03d619a56bdd4908faaa56dc2665fcf3b
+SIZE (debian-stable-arm64/release/fah-client_8.4.9-64bit-release.tar.bz2) = 3667080
+SHA256 (debian-10-64bit/release/fah-client_8.4.9-64bit-release.tar.bz2) = 2acccbeda05649f6f913d29f91a22308e88ec3e117499f636a18dc56244d6cf1
+SIZE (debian-10-64bit/release/fah-client_8.4.9-64bit-release.tar.bz2) = 3649371

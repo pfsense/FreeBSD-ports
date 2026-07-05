@@ -1,5 +1,6 @@
 PORTNAME=	cartopy
-PORTVERSION=	0.22.0
+PORTVERSION=	0.23.0
+PORTREVISION=	3
 CATEGORIES=	graphics python
 MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -9,8 +10,8 @@ MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Cartographic library with Matplotlib support for visualisation
 WWW=		https://github.com/SciTools/cartopy
 
-LICENSE=	LGPL3+
-LICENSE_FILE=	${WRKSRC}/COPYING.LESSER
+LICENSE=	BSD3CLAUSE
+LICENSE_FILE=	${WRKSRC}/LICENSE
 
 BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}numpy>=0,1:math/py-numpy@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}setuptools>=40.6.0:devel/py-setuptools@${PY_FLAVOR} \
@@ -35,7 +36,7 @@ OWS_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}OWSLib>=0.20.0:graphics/py-OWSLib@${PY_F
 			${PYTHON_PKGNAMEPREFIX}pillow>=6.1.0:graphics/py-pillow@${PY_FLAVOR}
 PLOTTING_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}pillow>=6.1.0:graphics/py-pillow@${PY_FLAVOR} \
 			${PYTHON_PKGNAMEPREFIX}scipy>=1.3.1:science/py-scipy@${PY_FLAVOR}
-SPEEDUPS_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}Fiona>=0:graphics/py-fiona@${PY_FLAVOR} \
+SPEEDUPS_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}fiona>=0:graphics/py-fiona@${PY_FLAVOR} \
 			${PYTHON_PKGNAMEPREFIX}pykdtree>=0:devel/py-pykdtree@${PY_FLAVOR}
 
 post-install:

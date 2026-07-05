@@ -25,12 +25,24 @@ CARGO_CRATES?=
 # features by passing it to cargo build/install/test.
 CARGO_FEATURES?=
 
+# The subdirectory in the source tree where the cargo project
+# is located. By default the whole project is in Rust, but
+# the Rust part can be at any location.
+# Multiple Rust subprojects are not yet supported.
+CARGO_SRC_SUBDIR?=
+
+# Is the Rust project top-level?
+CARGO_RUST_TOPLEVEL=	${CARGO_SRC_SUBDIR:C/^.+$/no/:C/^$/yes/}
+
+# WRKSRC of the Rust project.
+CARGO_WRKSRC=	${WRKSRC}/${CARGO_SRC_SUBDIR}
+
 # Name of the local directory for vendoring crates.
-CARGO_VENDOR_DIR?=	${WRKSRC}/cargo-crates
+CARGO_VENDOR_DIR?=	${CARGO_WRKSRC}/cargo-crates
 
 # Default path for cargo manifest.
-CARGO_CARGOTOML?=	${WRKSRC}/Cargo.toml
-CARGO_CARGOLOCK?=	${WRKSRC}/Cargo.lock
+CARGO_CARGOTOML?=	${CARGO_WRKSRC}/Cargo.toml
+CARGO_CARGOLOCK?=	${CARGO_WRKSRC}/Cargo.lock
 
 # Save crates inside ${DISTDIR}/rust/crates by default.
 CARGO_DIST_SUBDIR?=	rust/crates
@@ -69,7 +81,7 @@ WRKSRC_crate_${_crate}=	${CARGO_VENDOR_DIR}/${_crate}
 _CARGO_AWK=	${AWK} -vCP="${CP}" -vFIND="${FIND}" -vGREP="${GREP}" \
 		-vCARGO_VENDOR_DIR="${CARGO_VENDOR_DIR}" \
 		-vGIT_SOURCES="${_CARGO_GIT_SOURCES}" \
-		-vWRKDIR="${WRKDIR}" -vWRKSRC="${WRKSRC}" \
+		-vWRKDIR="${WRKDIR}" -vWRKSRC="${CARGO_WRKSRC}" \
 		-f${SCRIPTSDIR}/split-url.awk \
 		-f${SCRIPTSDIR}/cargo-crates-git-common.awk -f
 
@@ -97,7 +109,7 @@ WRKSRC_crate_${_crate}=	${WRKDIR}/${_wrksrc}
 
 CARGO_BUILDDEP?=	yes
 .  if ${CARGO_BUILDDEP:tl} == "yes"
-BUILD_DEPENDS+=	${RUST_DEFAULT}>=1.77.0:lang/${RUST_DEFAULT}
+BUILD_DEPENDS+=	${RUST_DEFAULT}>=1.94.0:lang/${RUST_DEFAULT}
 .  elif ${CARGO_BUILDDEP:tl} == "any-version"
 BUILD_DEPENDS+=	${RUST_DEFAULT}>=0:lang/${RUST_DEFAULT}
 .  endif
@@ -109,9 +121,6 @@ RUSTDOC?=	${LOCALBASE}/bin/rustdoc
 
 # Location of the cargo output directory.
 CARGO_TARGET_DIR?=	${WRKDIR}/target
-
-# Default target platform (affects some RUSTFLAGS if passed)
-CARGO_BUILD_TARGET?=	${_CARGO_RUST_ARCH_${ARCH}:U${ARCH}}-unknown-${OPSYS:tl}
 
 _CARGO_RUST_ARCH_amd64=		x86_64
 _CARGO_RUST_ARCH_i386=		i686
@@ -128,21 +137,18 @@ _CARGO_RUST_ARCH_riscv64=	riscv64gc
 CARGO_ENV+= \
 	CARGO_HOME=${WRKDIR}/cargo-home \
 	CARGO_BUILD_JOBS=${MAKE_JOBS_NUMBER} \
-	CARGO_BUILD_TARGET=${CARGO_BUILD_TARGET} \
 	CARGO_TARGET_DIR=${CARGO_TARGET_DIR} \
-	CARGO_TARGET_${CARGO_BUILD_TARGET:S/-/_/g:tu}_LINKER="${CC}" \
 	RUSTC=${RUSTC} \
 	RUSTDOC=${RUSTDOC} \
-	RUSTFLAGS="${RUSTFLAGS} ${LDFLAGS:C/.+/-C link-arg=&/}"
+	RUSTFLAGS="${RUSTFLAGS} -C linker=${CC} ${LDFLAGS:C/.+/-C link-args=&/}"
 
-.  if ${ARCH} != powerpc
+.  if ${ARCH} != powerpc64le
 CARGO_ENV+=	RUST_BACKTRACE=1
 .  endif
 
-.  if !defined(_WITHOUT_LTO) && (!defined(WITHOUT_LTO_PORTS) || ${WITHOUT_LTO_PORTS:N${PKGORIGIN}})
+.  if !defined(WITHOUT_LTO)
 _CARGO_MSG=	"===>   Additional optimization to port applied"
-_WITH_LTO=	yes
-.undef _WITHOUT_LTO
+WITH_LTO=	yes
 .  endif
 
 # Adjust -C target-cpu if -march/-mcpu is set by bsd.cpu.mk
@@ -158,7 +164,7 @@ RUSTFLAGS+=	${CFLAGS:M-mcpu=*:S/-mcpu=/-C target-cpu=/}
 
 # Helper to shorten cargo calls.
 _CARGO_RUN=		${SETENVI} ${WRK_ENV} ${MAKE_ENV} ${CARGO_ENV} ${CARGO}
-CARGO_CARGO_RUN=	cd ${WRKSRC}; ${SETENVI} ${WRK_ENV} ${MAKE_ENV} ${CARGO_ENV} \
+CARGO_CARGO_RUN=	cd ${CARGO_WRKSRC} && ${SETENVI} ${WRK_ENV} ${MAKE_ENV} ${CARGO_ENV} \
 			CARGO_FREEBSD_PORTS_SKIP_GIT_UPDATE=1 ${CARGO}
 
 # User arguments for cargo targets.
@@ -169,10 +175,10 @@ CARGO_TEST_ARGS?=
 CARGO_UPDATE_ARGS?=
 
 # Use module targets ?
-CARGO_BUILD?=	yes
+CARGO_BUILD?=	${CARGO_RUST_TOPLEVEL}
 CARGO_CONFIGURE?=	yes
-CARGO_INSTALL?=	yes
-CARGO_TEST?=	yes
+CARGO_INSTALL?=	${CARGO_RUST_TOPLEVEL}
+CARGO_TEST?=	${CARGO_RUST_TOPLEVEL}
 
 # rustc stashes intermediary files in TMPDIR (default /tmp) which
 # might cause issues for users that for some reason space limit
@@ -298,6 +304,8 @@ cargo-extract:
 .  if ${CARGO_CONFIGURE:tl} == "yes"
 _USES_configure+=	250:cargo-configure
 
+CARGO_DOT_DIR=	${WRKSRC}/${CARGO_SRC_SUBDIR}/../.cargo
+
 # configure hook.  Place a config file for overriding crates-io index
 # by local source directory.
 cargo-configure:
@@ -308,22 +316,23 @@ cargo-configure:
 	@${ECHO_MSG} ${_CARGO_MSG}
 .    endif
 	@${ECHO_MSG} "===>   Cargo config:"
-	@${MKDIR} ${WRKDIR}/.cargo
-	@: > ${WRKDIR}/.cargo/config.toml
-	@${ECHO_CMD} "[source.cargo]" >> ${WRKDIR}/.cargo/config.toml
-	@${ECHO_CMD} "directory = '${CARGO_VENDOR_DIR}'" >> ${WRKDIR}/.cargo/config.toml
-	@${ECHO_CMD} "[source.crates-io]" >> ${WRKDIR}/.cargo/config.toml
-	@${ECHO_CMD} "replace-with = 'cargo'" >> ${WRKDIR}/.cargo/config.toml
+	@${MKDIR} ${CARGO_DOT_DIR}
+	@: > ${CARGO_DOT_DIR}/config.toml
+	@${ECHO_CMD} "[source.cargo]" >> ${CARGO_DOT_DIR}/config.toml
+	@${ECHO_CMD} "directory = '${CARGO_VENDOR_DIR}'" >> ${CARGO_DOT_DIR}/config.toml
+	@${ECHO_CMD} "[source.crates-io]" >> ${CARGO_DOT_DIR}/config.toml
+	@${ECHO_CMD} "replace-with = 'cargo'" >> ${CARGO_DOT_DIR}/config.toml
 .    if !empty(_CARGO_GIT_SOURCES)
 	@${_CARGO_AWK} ${SCRIPTSDIR}/cargo-crates-git-configure.awk \
-		/dev/null >> ${WRKDIR}/.cargo/config.toml
+		/dev/null >> ${CARGO_DOT_DIR}/config.toml
 .    endif
-	@${CAT} ${WRKDIR}/.cargo/config.toml
+	@${CAT} ${CARGO_DOT_DIR}/config.toml
 	@if ! ${GREP} -qF '[profile.release]' ${CARGO_CARGOTOML}; then \
 		${ECHO_CMD} "" >> ${CARGO_CARGOTOML}; \
 		${ECHO_CMD} "[profile.release]" >> ${CARGO_CARGOTOML}; \
 		${ECHO_CMD} "opt-level = 2" >> ${CARGO_CARGOTOML}; \
 		${ECHO_CMD} "debug = false" >> ${CARGO_CARGOTOML}; \
+		${ECHO_CMD} 'strip = "symbols"' >> ${CARGO_CARGOTOML}; \
 	fi
 	@${ECHO_MSG} "===>   Updating Cargo.lock"
 	@${CARGO_CARGO_RUN} update \
@@ -387,7 +396,7 @@ cargo-crates: cargo-crates-generate-lockfile
 cargo-crates-generate-lockfile: extract
 	@if [ ! -r "${CARGO_CARGOLOCK}" ]; then \
 		${ECHO_MSG} "===> ${CARGO_CARGOLOCK} not found.  Trying to generate it..."; \
-		cd ${WRKSRC}; ${_CARGO_RUN} generate-lockfile \
+		cd ${CARGO_CARGOLOCK:H}; ${_CARGO_RUN} generate-lockfile \
 			--manifest-path ${CARGO_CARGOTOML} \
 			--verbose; \
 	fi

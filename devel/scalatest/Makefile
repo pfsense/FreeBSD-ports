@@ -1,5 +1,6 @@
 PORTNAME=	scalatest
 PORTVERSION=	1.6.1
+PORTREVISION=	1
 CATEGORIES=	devel java
 MASTER_SITES=	http://www.artima.com/downloadScalaTest/ \
 		http://www.scalatest.org/releases/
@@ -13,8 +14,8 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 
 RUN_DEPENDS=	scala>=2.9.0:lang/scala
 
-USES=		zip
-USE_JAVA=	yes
+USES=		java zip
+
 NO_BUILD=	yes
 
 PORTDOCS=	LICENSE NOTICE README.txt doc

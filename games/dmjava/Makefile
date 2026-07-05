@@ -1,6 +1,6 @@
 PORTNAME=	dmjava
 PORTVERSION=	1.05
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	games
 MASTER_SITES=	LOCAL/oliver \
 		http://chaos.zpc.cz/files/
@@ -12,8 +12,8 @@ WWW=		http://homepage.mac.com/aberfield/dmj/
 
 EXTRACT_AFTER_ARGS=	-d ${WRKSRC}
 
-USES=		zip
-USE_JAVA=	yes
+USES=		java zip
+
 NO_BUILD=	yes
 
 do-install:

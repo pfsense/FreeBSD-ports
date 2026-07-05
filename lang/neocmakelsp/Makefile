@@ -1,6 +1,6 @@
 PORTNAME=	neocmakelsp
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.6.22
+DISTVERSION=	0.10.1
 CATEGORIES=	lang
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -10,157 +10,197 @@ WWW=		https://github.com/Decodetalkers/neocmakelsp
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
+BUILD_DEPENDS=	rust-nightly>0:lang/rust-nightly # feature `edition2024` is required
+
 USES=		cargo
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	Decodetalkers
 
-CARGO_CRATES=	addr2line-0.21.0 \
-		adler-1.0.2 \
-		aho-corasick-1.1.3 \
-		anstream-0.6.13 \
-		anstyle-1.0.6 \
-		anstyle-parse-0.2.3 \
-		anstyle-query-1.0.2 \
-		anstyle-wincon-3.0.2 \
-		anyhow-1.0.81 \
-		async-trait-0.1.79 \
-		auto_impl-1.2.0 \
-		autocfg-1.2.0 \
-		backtrace-0.3.71 \
-		bitflags-1.3.2 \
-		bytes-1.6.0 \
-		cc-1.0.90 \
-		cfg-if-1.0.0 \
-		clap-4.5.4 \
-		clap_builder-4.5.2 \
-		clap_lex-0.7.0 \
-		cli-table-0.4.7 \
-		cli-table-derive-0.4.5 \
-		colorchoice-1.0.0 \
+CARGO_BUILDDEP=	no
+CARGO_CRATES=	aho-corasick-1.1.4 \
+		anstream-0.6.21 \
+		anstyle-1.0.13 \
+		anstyle-parse-0.2.7 \
+		anstyle-query-1.1.5 \
+		anstyle-wincon-3.0.11 \
+		anyhow-1.0.101 \
+		assert_cmd-2.1.2 \
+		auto_impl-1.3.0 \
+		bitflags-2.11.0 \
+		borrow-or-share-0.2.4 \
+		bstr-1.12.1 \
+		bytes-1.11.1 \
+		cc-1.2.56 \
+		cfg-if-1.0.4 \
+		clap-4.5.59 \
+		clap_builder-4.5.59 \
+		clap_complete-4.5.66 \
+		clap_derive-4.5.55 \
+		clap_lex-1.0.0 \
+		cli-table-0.5.0 \
+		cli-table-derive-0.5.0 \
+		colorchoice-1.0.4 \
 		const-random-0.1.18 \
 		const-random-macro-0.1.16 \
-		crunchy-0.2.2 \
-		csv-1.3.0 \
-		csv-core-0.1.11 \
-		dashmap-5.5.3 \
+		crossbeam-deque-0.8.6 \
+		crossbeam-epoch-0.9.18 \
+		crossbeam-utils-0.8.21 \
+		crunchy-0.2.4 \
+		csv-1.4.0 \
+		csv-core-0.1.13 \
+		dashmap-6.1.0 \
+		difflib-0.4.0 \
 		dlv-list-0.5.2 \
-		form_urlencoded-1.2.1 \
-		futures-0.3.30 \
-		futures-channel-0.3.30 \
-		futures-core-0.3.30 \
-		futures-io-0.3.30 \
-		futures-macro-0.3.30 \
-		futures-sink-0.3.30 \
-		futures-task-0.3.30 \
-		futures-util-0.3.30 \
-		getrandom-0.2.12 \
-		gimli-0.28.1 \
-		glob-0.3.1 \
-		hashbrown-0.14.3 \
-		hermit-abi-0.3.9 \
-		httparse-1.8.0 \
-		idna-0.5.0 \
-		itoa-1.0.11 \
-		lazy_static-1.4.0 \
-		libc-0.2.153 \
-		lock_api-0.4.11 \
-		log-0.4.21 \
-		lsp-types-0.94.1 \
-		memchr-2.7.2 \
-		miniz_oxide-0.7.2 \
-		mio-0.8.11 \
-		nu-ansi-term-0.46.0 \
-		nu-ansi-term-0.50.0 \
-		num_cpus-1.16.0 \
-		object-0.32.2 \
-		once_cell-1.19.0 \
+		equivalent-1.0.2 \
+		errno-0.3.14 \
+		etcetera-0.11.0 \
+		fastrand-2.3.0 \
+		find-msvc-tools-0.1.9 \
+		fluent-uri-0.3.2 \
+		foldhash-0.1.5 \
+		futures-0.3.32 \
+		futures-channel-0.3.32 \
+		futures-core-0.3.32 \
+		futures-io-0.3.32 \
+		futures-macro-0.3.32 \
+		futures-sink-0.3.32 \
+		futures-task-0.3.32 \
+		futures-util-0.3.32 \
+		getrandom-0.2.17 \
+		getrandom-0.4.1 \
+		glob-0.3.3 \
+		globset-0.4.18 \
+		hashbrown-0.14.5 \
+		hashbrown-0.15.5 \
+		hashbrown-0.16.1 \
+		heck-0.5.0 \
+		httparse-1.10.1 \
+		id-arena-2.3.0 \
+		ignore-0.4.25 \
+		indexmap-2.13.0 \
+		indoc-2.0.7 \
+		is_executable-1.0.5 \
+		is_terminal_polyfill-1.70.2 \
+		itoa-1.0.17 \
+		lazy_static-1.5.0 \
+		leb128fmt-0.1.0 \
+		libc-0.2.182 \
+		linux-raw-sys-0.11.0 \
+		lock_api-0.4.14 \
+		log-0.4.29 \
+		lsp-types-f-0.99.0 \
+		memchr-2.8.0 \
+		mio-1.1.1 \
+		nu-ansi-term-0.50.3 \
+		once_cell-1.21.3 \
+		once_cell_polyfill-1.70.2 \
 		ordered-multimap-0.7.3 \
-		overload-0.1.1 \
-		parking_lot-0.12.1 \
-		parking_lot_core-0.9.9 \
-		percent-encoding-2.3.1 \
-		pin-project-1.1.5 \
-		pin-project-internal-1.1.5 \
-		pin-project-lite-0.2.14 \
-		pin-utils-0.1.0 \
-		proc-macro2-1.0.79 \
-		quote-1.0.35 \
-		redox_syscall-0.4.1 \
-		regex-1.10.4 \
-		regex-automata-0.4.6 \
-		regex-syntax-0.8.3 \
-		rust-ini-0.21.0 \
-		rustc-demangle-0.1.23 \
-		ryu-1.0.17 \
+		parking_lot-0.12.5 \
+		parking_lot_core-0.9.12 \
+		path-absolutize-3.1.1 \
+		path-dedot-3.1.1 \
+		pathdiff-0.2.3 \
+		percent-encoding-2.3.2 \
+		pin-project-lite-0.2.16 \
+		predicates-3.1.4 \
+		predicates-core-1.0.10 \
+		predicates-tree-1.0.13 \
+		prettyplease-0.2.37 \
+		proc-macro2-1.0.106 \
+		quote-1.0.44 \
+		r-efi-5.3.0 \
+		redox_syscall-0.5.18 \
+		ref-cast-1.0.25 \
+		ref-cast-impl-1.0.25 \
+		regex-1.12.3 \
+		regex-automata-0.4.14 \
+		regex-syntax-0.8.9 \
+		rust-ini-0.21.3 \
+		rustix-1.1.3 \
+		rustversion-1.0.22 \
+		ryu-1.0.23 \
+		same-file-1.0.6 \
 		scopeguard-1.2.0 \
-		serde-1.0.197 \
-		serde_derive-1.0.197 \
-		serde_json-1.0.115 \
-		serde_repr-0.1.18 \
+		semver-1.0.27 \
+		serde-1.0.228 \
+		serde_core-1.0.228 \
+		serde_derive-1.0.228 \
+		serde_json-1.0.149 \
+		serde_repr-0.1.20 \
+		serde_spanned-1.0.4 \
 		sharded-slab-0.1.7 \
-		signal-hook-registry-1.4.1 \
-		slab-0.4.9 \
-		smallvec-1.13.2 \
-		socket2-0.5.6 \
+		shlex-1.3.0 \
+		signal-hook-registry-1.4.8 \
+		slab-0.4.12 \
+		smallvec-1.15.1 \
+		socket2-0.6.2 \
+		streaming-iterator-0.1.9 \
 		strsim-0.11.1 \
-		syn-1.0.109 \
-		syn-2.0.58 \
+		syn-2.0.116 \
+		sync_wrapper-1.0.2 \
+		tempfile-3.25.0 \
 		termcolor-1.4.1 \
-		thread_local-1.1.8 \
+		termtree-0.5.1 \
+		thiserror-2.0.18 \
+		thiserror-impl-2.0.18 \
+		thread_local-1.1.9 \
 		tiny-keccak-2.0.2 \
-		tinyvec-1.6.0 \
-		tinyvec_macros-0.1.1 \
-		tokio-1.37.0 \
-		tokio-macros-2.2.0 \
-		tokio-util-0.7.10 \
-		tower-0.4.13 \
-		tower-layer-0.3.2 \
-		tower-lsp-0.20.0 \
-		tower-lsp-macros-0.9.0 \
-		tower-service-0.3.2 \
-		tracing-0.1.40 \
-		tracing-attributes-0.1.27 \
-		tracing-core-0.1.32 \
+		tokio-1.49.0 \
+		tokio-macros-2.6.0 \
+		tokio-util-0.7.18 \
+		toml-1.0.3+spec-1.1.0 \
+		toml_datetime-1.0.0+spec-1.1.0 \
+		toml_parser-1.0.9+spec-1.1.0 \
+		toml_writer-1.0.6+spec-1.1.0 \
+		tower-0.5.3 \
+		tower-layer-0.3.3 \
+		tower-lsp-f-0.24.0 \
+		tower-service-0.3.3 \
+		tracing-0.1.44 \
+		tracing-attributes-0.1.31 \
+		tracing-core-0.1.36 \
 		tracing-log-0.2.0 \
-		tracing-subscriber-0.3.18 \
-		tree-sitter-0.22.2 \
-		tree-sitter-cmake-0.4.3 \
-		trim-in-place-0.1.7 \
-		unicode-bidi-0.3.15 \
-		unicode-ident-1.0.12 \
-		unicode-normalization-0.1.23 \
-		unicode-width-0.1.11 \
-		url-2.5.0 \
-		utf8parse-0.2.1 \
-		valuable-0.1.0 \
-		wasi-0.11.0+wasi-snapshot-preview1 \
-		winapi-0.3.9 \
-		winapi-i686-pc-windows-gnu-0.4.0 \
-		winapi-util-0.1.6 \
-		winapi-x86_64-pc-windows-gnu-0.4.0 \
-		windows-sys-0.48.0 \
-		windows-sys-0.52.0 \
-		windows-targets-0.48.5 \
-		windows-targets-0.52.4 \
-		windows_aarch64_gnullvm-0.48.5 \
-		windows_aarch64_gnullvm-0.52.4 \
-		windows_aarch64_msvc-0.48.5 \
-		windows_aarch64_msvc-0.52.4 \
-		windows_i686_gnu-0.48.5 \
-		windows_i686_gnu-0.52.4 \
-		windows_i686_msvc-0.48.5 \
-		windows_i686_msvc-0.52.4 \
-		windows_x86_64_gnu-0.48.5 \
-		windows_x86_64_gnu-0.52.4 \
-		windows_x86_64_gnullvm-0.48.5 \
-		windows_x86_64_gnullvm-0.52.4 \
-		windows_x86_64_msvc-0.48.5 \
-		windows_x86_64_msvc-0.52.4
+		tracing-subscriber-0.3.22 \
+		tree-sitter-0.26.5 \
+		tree-sitter-cmake-0.7.1 \
+		tree-sitter-language-0.1.7 \
+		treesitter_kind_collector-0.2.0 \
+		unicode-ident-1.0.24 \
+		unicode-width-0.2.2 \
+		unicode-xid-0.2.6 \
+		utf8parse-0.2.2 \
+		valuable-0.1.1 \
+		wait-timeout-0.2.1 \
+		walkdir-2.5.0 \
+		wasi-0.11.1+wasi-snapshot-preview1 \
+		wasip2-1.0.2+wasi-0.2.9 \
+		wasip3-0.4.0+wasi-0.3.0-rc-2026-01-06 \
+		wasm-encoder-0.244.0 \
+		wasm-metadata-0.244.0 \
+		wasmparser-0.244.0 \
+		winapi-util-0.1.11 \
+		windows-link-0.2.1 \
+		windows-sys-0.60.2 \
+		windows-sys-0.61.2 \
+		windows-targets-0.53.5 \
+		windows_aarch64_gnullvm-0.53.1 \
+		windows_aarch64_msvc-0.53.1 \
+		windows_i686_gnu-0.53.1 \
+		windows_i686_gnullvm-0.53.1 \
+		windows_i686_msvc-0.53.1 \
+		windows_x86_64_gnu-0.53.1 \
+		windows_x86_64_gnullvm-0.53.1 \
+		windows_x86_64_msvc-0.53.1 \
+		winnow-0.7.14 \
+		wit-bindgen-0.51.0 \
+		wit-bindgen-core-0.51.0 \
+		wit-bindgen-rust-0.51.0 \
+		wit-bindgen-rust-macro-0.51.0 \
+		wit-component-0.244.0 \
+		wit-parser-0.244.0 \
+		zmij-1.0.21
 
 PLIST_FILES=	bin/${PORTNAME}
-
-post-install:
-	@${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/${PORTNAME}
 
 .include <bsd.port.mk>

@@ -1,5 +1,5 @@
 PORTNAME=	voluptuous
-PORTVERSION=	0.14.2
+PORTVERSION=	0.16.0
 CATEGORIES=	devel python
 MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -11,8 +11,11 @@ WWW=		https://github.com/alecthomas/voluptuous
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/COPYING
 
+BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}setuptools>=0:devel/py-setuptools@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}wheel>=0:devel/py-wheel@${PY_FLAVOR}
+
 USES=		python
-USE_PYTHON=	autoplist concurrent distutils nose
+USE_PYTHON=	autoplist concurrent pep517
 
 NO_ARCH=	yes
 

@@ -3,7 +3,7 @@
  * freeradius.inc
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2015-2024 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2015-2026 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2013 Alexander Wilke <nachtfalkeaw@web.de>
  * Copyright (c) 2013 Marcello Coutinho
  * All rights reserved.
@@ -48,6 +48,7 @@ define('FREERADIUS_SITESAVAIL', FREERADIUS_RADDB . '/sites-available');
 define('FREERADIUS_SITESENABLED', FREERADIUS_RADDB . '/sites-enabled');
 define('FREERADIUS_POLICYD', FREERADIUS_RADDB . '/policy.d');
 define('FREERADIUS_PKGSOURCE', FREERADIUS_BASE . '/pkg');
+define('LOG_PREFIX_PKG_FREERADIUS', 'FreeRADIUS');
 
 /*
  * List of functions that directly call restart_service("radiusd")
@@ -72,7 +73,7 @@ function freeradius_get_libdir() {
 		}
 	}
 	if ($frlib == "") {
-		log_error("freeRADIUS: No freeradius libs found on " . FREERADIUS_LIB);
+		logger(LOG_ERR, localize_text("No freeradius libs found on " . FREERADIUS_LIB), LOG_PREFIX_PKG_FREERADIUS);
 	}
 	return $frlib;
 }
@@ -89,7 +90,7 @@ function freeradius_deinstall_command() {
 	}
 
 	/* Remove package settings from config if 'Keep Settings' is disabled */
-	if (config_path_enabled('installedpackages/freeradiussettings/config/0/', 'keep_settings') &&
+	if (config_path_enabled('installedpackages/freeradiussettings/config/0', 'keep_settings') &&
 	    empty(config_get_path('installedpackages/freeradiussettings/config/0/keep_settings'))) {
 		$uninstall = array(
 			'installedpackages/freeradius',
@@ -103,7 +104,7 @@ function freeradius_deinstall_command() {
 			'installedpackages/freeradiussync'
 		);
 
-		log_error("[freeRADIUS] Removing all FreeRADIUS settings since 'Keep Settings/Data' is disabled...");
+		logger(LOG_INFO, localize_text("Removing all FreeRADIUS settings since 'Keep Settings/Data' is disabled..."), LOG_PREFIX_PKG_FREERADIUS);
 		foreach ($uninstall as $path) {
 			config_del_path($path);
 		}
@@ -115,7 +116,7 @@ function freeradius_deinstall_command() {
 
 function freeradius_chown_recursive($dir, $user = "root", $group = "wheel") {
 	if (empty($dir) || ($dir == '/') || ($dir == '/usr/local') || ($dir == '/usr/local/etc') || ($dir == '/usr/local/lib') || ($dir == '/var/log') || !is_dir($dir)) {
-		log_error(gettext("freeRADIUS: Attempted to recursively chown an invalid directory: '{$dir}'"));
+		logger(LOG_ERR, localize_text("Attempted to recursively chown an invalid directory: '%s'", $dir), LOG_PREFIX_PKG_FREERADIUS);
 		return;
 	}
 	chown($dir, $user);
@@ -132,7 +133,7 @@ function freeradius_chown_recursive($dir, $user = "root", $group = "wheel") {
 			}
 		}
 	} else {
-		log_error(gettext("freeRADIUS: freeradius_chown_recursive() call failed; permissions not set for directory: '{$dir}'"));
+		logger(LOG_ERR, localize_text("%s call failed; permissions not set for directory: '%s'", 'freeradius_chown_recursive()', $dir), LOG_PREFIX_PKG_FREERADIUS);
 	}
 }
 
@@ -153,7 +154,7 @@ function freeradius_upgrade_config() {
 	}
 
 	if ($isremoved) {
-		log_error(gettext("freeRADIUS: Removed deprecated built-in certificate manager configuration."));
+		logger(LOG_INFO, localize_text("Removed deprecated built-in certificate manager configuration."), LOG_PREFIX_PKG_FREERADIUS);
 	}
 }
 
@@ -795,7 +796,7 @@ EOD;
 	freeradius_sync_on_changes();
 	// Do not restart on boot
 	// Will get restarted later by freeradius_clients_resync() if called via XMLRPC sync
-	if ($via_rpc === false && !platform_booting()) {
+	if ($via_rpc === false && !is_platform_booting()) {
 		restart_service("radiusd");
 	}
 }
@@ -841,10 +842,10 @@ function freeradius_authorizedmacs_resync($restart_svc = true, $via_rpc = false)
 			$varmacsmaxbandwidthdown = ($macs['varmacsmaxbandwidthdown'] ? (int) $macs['varmacsmaxbandwidthdown'] * 1024 : '');
 
 			// Accounting-Interim-Interval
-			if (($users['varmacsacctinteriminterval'] >= '0') && ($users['varmacsacctinteriminterval'] < '60')) {
+			if (($macs['varmacsacctinteriminterval'] >= '0') && ($macs['varmacsacctinteriminterval'] < '60')) {
 				$varmacsacctinteriminterval = 60;
 			} else {
-				$varmacsacctinteriminterval = $users['varmacsacctinteriminterval'];
+				$varmacsacctinteriminterval = $macs['varmacsacctinteriminterval'];
 			}
 
 			// Clear variables for next mac foreach additional options TOP
@@ -1225,6 +1226,7 @@ EOD;
 
 	// For pfSense cert manager
 	$ca_cert = lookup_ca($eapconf["ssl_ca_cert"]);
+	$ca_cert = $ca_cert['item'];
 	if ($ca_cert == false) {
 		/* Generate CA with generic details */
 		$ca = array();
@@ -1238,9 +1240,7 @@ EOD;
 		} else {
 			$eapconf["ssl_ca_cert"] = $ca['refid'];
 			$ca_cert = $ca;
-			$a_ca = config_get_path('ca');
-			$a_ca[] = $ca;
-			config_set_path('ca', $a_ca);
+			config_set_path('ca/', $ca);
 			$cert = array();
 			$cert['refid'] = uniqid();
 			$cert['descr'] = "FreeRADIUS Server Certificate";
@@ -1252,7 +1252,7 @@ EOD;
 				file_notice("FreeRADIUS", gettext("Cannot create temporary FreeRADIUS certificate. Visit Services &gt; FreeRADIUS &gt; EAP tab and configure server certificates in the 'Certificates for TLS' section: " . openssl_error_string()));
 				$cert_error = true;
 			} else {
-				$a_cert = config_get_path('cert');
+				$a_cert = config_get_path('cert', []);
 				$a_cert[] = $cert;
 				config_set_path('cert', $a_cert);
 				$eapconf["ssl_server_cert"] = $cert['refid'];
@@ -1265,9 +1265,10 @@ EOD;
 		}
 
 		if (base64_decode($ca_cert['crt'])) {
-			$crl_cert = lookup_crl($eapconf["ssl_ca_crl"]);
+			$crl_cert_config = lookup_crl($eapconf["ssl_ca_crl"]);
+			$crl_cert = &$crl_cert_config['item'];
 			if ($crl_cert != false) {
-				crl_update($crl_cert);
+				crl_update($crl_cert_config);
 				$crl = base64_decode($crl_cert['text']);
 				$check_crl = "check_crl = yes";
 			} else {
@@ -1277,6 +1278,7 @@ EOD;
 		}
 
 		$svr_cert = lookup_cert($eapconf["ssl_server_cert"]);
+		$svr_cert = $svr_cert['item'];
 		if ($svr_cert != false) {
 			if (base64_decode($svr_cert['prv'])) {
 				file_put_contents(FREERADIUS_CERTS . "/server_key.pem", base64_decode($svr_cert['prv']));
@@ -1296,7 +1298,7 @@ EOD;
 	// generate new DH and RANDOM file if needed
 	// use openvpn_create_dhparams() from openvpn.inc to generate DH params
 	if (!file_exists(FREERADIUS_CERTS . "/dh")) {
-		log_error("freeRADIUS: Creating new DH file in " . FREERADIUS_CERTS);
+		logger(LOG_INFO, localize_text("Creating new DH file in %s", FREERADIUS_CERTS), LOG_PREFIX_PKG_FREERADIUS);
 		file_put_contents(FREERADIUS_ETC . "/dh", openvpn_create_dhparams('1024'), LOCK_EX);
 	}
 
@@ -1361,7 +1363,6 @@ eap {
 	#	auto_chain = yes
 	#	psk_identity = "test"
 	#	psk_hexphrase = "036363823"
-		dh_file = \${certdir}/dh
 		random_file = /dev/urandom
 		fragment_size = {$vareapconffragmentsize}
 		include_length = {$vareapconfincludelength}
@@ -1378,7 +1379,7 @@ eap {
 			lifetime = {$vareapconfcachelifetime}
 			max_entries = {$vareapconfcachemaxentries}
 			#name = "EAP module"
-			#persist_dir = "${logdir}/tlscache"
+			#persist_dir = "{\$logdir}/tlscache"
 		}
 		verify {
 	#		skip_if_ocsp_ok = no
@@ -2390,35 +2391,8 @@ function freeradius_sync_on_changes() {
 		case "manual":
 			$rs = config_get_path('installedpackages/freeradiussync/config/0/row');
 			if (!is_array($rs)) {
-				log_error("[FreeRADIUS]: XMLRPC sync is enabled but there are no hosts configured as replication targets.");
+				logger(LOG_WARNING, localize_text("XMLRPC sync is enabled but there are no hosts configured as replication targets."), LOG_PREFIX_PKG_FREERADIUS);
 				return;
-			}
-			break;
-		case "auto":
-			$system_carp = config_get_path('hasync');
-			if (!is_array($system_carp)) {
-				log_error("[FreeRADIUS]: XMLRPC CARP/HA sync is enabled but there are no system backup hosts configured as replication targets.");
-				return;
-			}
-
-			$rs[0]['varsyncipaddress'] = $system_carp['synchronizetoip'];
-			$rs[0]['varsyncusername'] = $system_carp['username'];
-			$rs[0]['varsyncpassword'] = $system_carp['password'];
-			$rs[0]['varsyncdestinenable'] = FALSE;
-
-			// XMLRPC sync is currently only supported over connections using the same protocol and port as this system
-			if (config_get_path('system/webgui/protocol') == "http") {
-				$rs[0]['varsyncprotocol'] = "http";
-				$rs[0]['varsyncport'] = config_get_path('system/webgui/port') ?: '80';
-			} else {
-				$rs[0]['varsyncprotocol'] = "https";
-				$rs[0]['varsyncport'] = config_get_path('system/webgui/port') ?: '443';
-			}
-			if ($system_carp['synchronizetoip'] == "") {
-				log_error("[FreeRADIUS]: XMLRPC CARP/HA sync is enabled but there are no system backup hosts configured as replication targets.");
-				return;
-			} else {
-				$rs[0]['varsyncdestinenable'] = TRUE;
 			}
 			break;
 		default:
@@ -2426,7 +2400,7 @@ function freeradius_sync_on_changes() {
 			break;
 	}
 	if (is_array($rs)) {
-		log_error("[FreeRADIUS]: XMLRPC sync is starting with timeout {$varsynctimeout} seconds.");
+		logger(LOG_INFO, localize_text("XMLRPC sync is starting with timeout %s seconds.", $varsynctimeout), LOG_PREFIX_PKG_FREERADIUS);
 		foreach ($rs as $sh) {
 			if ($sh['varsyncdestinenable']) {
 				$sync_to_ip = $sh['varsyncipaddress'];
@@ -2453,13 +2427,13 @@ function freeradius_sync_on_changes() {
 				if ($valid) {
 					freeradius_do_xmlrpc_sync($sync_to_ip, $username, $password, $varsyncport, $varsyncprotocol, $varsynctimeout);
 				} else {
-					log_error("[FreeRADIUS]: XMLRPC Sync with '{$sync_to_ip}' aborted due to the following error(s): {$error}");
+					logger(LOG_ERR, localize_text("XMLRPC Sync with '%s' aborted due to the following error(s): %s", $sync_to_ip, $error), LOG_PREFIX_PKG_FREERADIUS);
 				}
 			} else {
-				log_error("[FreeRADIUS]: XMLRPC Sync with {$sh['varsyncipaddress']} is disabled");
+				logger(LOG_INFO, localize_text("XMLRPC Sync with %s is disabled", $sh['varsyncipaddress']), LOG_PREFIX_PKG_FREERADIUS);
 			}
 		}
-		log_error("[FreeRADIUS]: XMLRPC sync is ending.");
+		logger(LOG_INFO, localize_text("XMLRPC sync is ending."), LOG_PREFIX_PKG_FREERADIUS);
 	}
 }
 
@@ -2469,15 +2443,79 @@ if (!function_exists('pf_version')) {
 	}
 }
 
+function freeradius_plugin_xmlrpc_send() {
+	if (config_get_path('installedpackages/freeradiussync/config/0/varsyncenablexmlrpc') != 'auto') {
+		return [];
+	}
+
+	return [
+		'installedpackages/freeradiussync/config/0/varsyncenablexmlrpc',
+		'installedpackages/freeradius',
+		'installedpackages/freeradiusauthorizedmacs',
+		'installedpackages/freeradiusclients',
+		'installedpackages/freeradiusinterfaces',
+		'installedpackages/freeradiussettings',
+		'installedpackages/freeradiuseapconf',
+		'installedpackages/freeradiussqlconf',
+		'installedpackages/freeradiusmodulesldap'
+	];
+}
+
+function freeradius_plugin_xmlrpc_recv($new_sections) {
+	if (array_get_path($new_sections, 'installedpackages/freeradiussync/config/0/varsyncenablexmlrpc') != 'auto') {
+		return [];
+	}
+
+	$section_paths = [
+		'installedpackages/freeradius',
+		'installedpackages/freeradiusauthorizedmacs',
+		'installedpackages/freeradiusclients',
+		'installedpackages/freeradiusinterfaces',
+		'installedpackages/freeradiussettings',
+		'installedpackages/freeradiuseapconf',
+		'installedpackages/freeradiussqlconf',
+		'installedpackages/freeradiusmodulesldap'
+	];
+
+	$ret = [
+		'xmlrpc_recv_result' => false
+	];
+	foreach ($section_paths as $path) {
+		$old_section = config_get_path($path, []);
+		$new_section = array_get_path($new_sections, $path, []);
+
+		// Don't save empty configuration sections.
+		if (empty($old_section) && empty($new_section)) {
+			continue;
+		}
+		// Ignore unchanged configuration sections.
+		if ($old_section === $new_section) {
+			continue;
+		}
+
+		$ret[$path] = array_merge($old_section, $new_section);
+		$ret['xmlrpc_recv_result'] = true;
+	}
+
+	return $ret;
+}
+
+function freeradius_plugin_xmlrpc_recv_done($xmlrpc_recv_result) {
+	if (array_get_path($xmlrpc_recv_result, 'freeradius/xmlrpc_recv_result') !== true) {
+		return;
+	}
+	freeradius_all_after_XMLRPC_resync();
+}
+
 /* Do the actual XMLRPC sync */
 function freeradius_do_xmlrpc_sync($sync_to_ip, $username, $password, $varsyncport, $varsyncprotocol, $varsynctimeout) {
 	/* Detect boot process, do nothing during boot. */
-	if (platform_booting()) {
+	if (is_platform_booting()) {
 		return;
 	}
 
 	if ($username == "" || $password == "" || $sync_to_ip == "" || $varsyncport == "" || $varsyncprotocol == "") {
-		log_error("[FreeRADIUS]: A required XMLRPC sync parameter (username, password, replication target, port or protocol) is empty ... aborting pkg sync");
+		logger(LOG_WARNING, localize_text("A required XMLRPC sync parameter (username, password, replication target, port or protocol) is empty ... aborting pkg sync"), LOG_PREFIX_PKG_FREERADIUS);
 		return;
 	}
 
@@ -2495,83 +2533,17 @@ function freeradius_do_xmlrpc_sync($sync_to_ip, $username, $password, $varsyncpo
 	$execcmd  = "require_once('/usr/local/pkg/freeradius.inc');\n";
 	$execcmd .= "freeradius_all_after_XMLRPC_resync();";
 
-	if (pf_version() >= "2.4") {
-		// xmlrpc cannot encode NULL objects/arrays
-		foreach($xml as $xmlkey => $xmlvalue) {
-			if (gettype($xmlvalue) == "NULL") {
-				$xml[$xmlkey] = array();
-			}
-		}
-		$synctimeout = intval($synctimeout);
-		$rpc_client = new pfsense_xmlrpc_client();
-		$rpc_client->setConnectionData($sync_to_ip, $varsyncport, $username, $password, $varsyncprotocol);
-		$resp = $rpc_client->xmlrpc_method('merge_installedpackages_section', $xml, $synctimeout);
-		$resp = $rpc_client->xmlrpc_exec_php($execcmd, $synctimeout);
-	} else {
-		// pfSense before 2.4
-		require_once('xmlrpc.inc');
-
-		/* Take care of IPv6 literal address */
-		if (is_ipaddrv6($sync_to_ip)) {
-			$sync_to_ip = "[{$sync_to_ip}]";
-		}
-
-		$url = "{$varsyncprotocol}://{$sync_to_ip}";
-		$port = $varsyncport;
-
-		/* Assemble XMLRPC payload. */
-		$params = array(XML_RPC_encode($password), XML_RPC_encode($xml));
-
-		/* Set a few variables needed for sync code */
-		log_error("[FreeRADIUS]: Beginning FreeRADIUS XMLRPC sync with {$url}:{$port}.");
-		$method = 'pfsense.merge_installedpackages_section_xmlrpc';
-		$msg = new XML_RPC_Message($method, $params);
-		$cli = new XML_RPC_Client('/xmlrpc.php', $url, $port);
-		$cli->setCredentials($username, $password);
-		if (g_has('debug')) {
-			$cli->setDebug(1);
-		}
-		/* Send our XMLRPC message and timeout after defined sync timeout value */
-		$resp = $cli->send($msg, $varsynctimeout);
-		if (!$resp) {
-			$error = "A communications error occurred while FreeRADIUS was attempting XMLRPC sync with {$url}:{$port}.";
-			log_error("[FreeRADIUS]: {$error}");
-			file_notice("sync_settings", $error, "FreeRADIUS Settings Sync", "");
-		} elseif ($resp->faultCode()) {
-			$cli->setDebug(1);
-			$resp = $cli->send($msg, $varsynctimeout);
-			$error = "An error code was received while FreeRADIUS XMLRPC was attempting to sync with {$url}:{$port} - Code " . $resp->faultCode() . ": " . $resp->faultString();
-			log_error("[FreeRADIUS]: {$error}");
-			file_notice("sync_settings", $error, "FreeRADIUS Settings Sync", "");
-		} else {
-			log_error("[FreeRADIUS]: XMLRPC has synced data successfully with {$url}:{$port}.");
-		}
-
-		/* Tell FreeRADIUS to reload our settings on the destionation sync host. */
-		$method = 'pfsense.exec_php';
-
-		/* Assemble XMLRPC payload. */
-		$params = array(XML_RPC_encode($password), XML_RPC_encode($execcmd));
-
-		log_error("[FreeRADIUS]: XMLRPC is reloading data on {$url}:{$port}.");
-		$msg = new XML_RPC_Message($method, $params);
-		$cli = new XML_RPC_Client('/xmlrpc.php', $url, $port);
-		$cli->setCredentials($username, $password);
-		$resp = $cli->send($msg, $varsynctimeout);
-		if (!$resp) {
-			$error = "A communications error occurred while FreeRADIUS was attempting XMLRPC sync with {$url}:{$port} (exec_php).";
-			log_error("[FreeRADIUS]: {$error}");
-			file_notice("sync_settings", $error, "FreeRADIUS Settings Sync", "");
-		} elseif ($resp->faultCode()) {
-			$cli->setDebug(1);
-			$resp = $cli->send($msg, $varsynctimeout);
-			$error = "An error code was received while FreeRADIUS XMLRPC was attempting to sync with {$url}:{$port} - Code " . $resp->faultCode() . ": " . $resp->faultString();
-			log_error("[FreeRADIUS]: {$error}");
-			file_notice("sync_settings", $error, "FreeRADIUS Settings Sync", "");
-		} else {
-			log_error("[FreeRADIUS]: XMLRPC has reloaded data successfully on {$url}:{$port} (exec_php).");
+	// xmlrpc cannot encode NULL objects/arrays
+	foreach($xml as $xmlkey => $xmlvalue) {
+		if (gettype($xmlvalue) == "NULL") {
+			$xml[$xmlkey] = array();
 		}
 	}
+	$synctimeout = intval($varsynctimeout);
+	$rpc_client = new pfsense_xmlrpc_client();
+	$rpc_client->setConnectionData($sync_to_ip, $varsyncport, $username, $password, $varsyncprotocol);
+	$resp = $rpc_client->xmlrpc_method('merge_installedpackages_section', $xml, $synctimeout);
+	$resp = $rpc_client->xmlrpc_exec_php($execcmd, $synctimeout);
 }
 
 // This function restarts all other needed functions after XMLRPC
@@ -2589,7 +2561,7 @@ function freeradius_all_after_XMLRPC_resync() {
 	// Restart now when XMLRPC sync is completely finished
 	freeradius_clients_resync();
 
-	log_error("[FreeRADIUS]: Finished XMLRPC process. It should be OK. For more information look at the host which started sync.");
+	logger(LOG_INFO, localize_text("Finished XMLRPC process. It should be OK. For more information look at the host which started sync."), LOG_PREFIX_PKG_FREERADIUS);
 }
 
 function freeradius_modulescounter_resync() {
@@ -2787,11 +2759,13 @@ function freeradius_modulesldap_resync($restart_svc = true) {
 	if ($arrmodulesldap['varmodulesldapenabletlssupport'] == 'on') {
 
 		$ca_cert = lookup_ca($arrmodulesldap["ssl_ca_cert1"]);
+		$ca_cert = $ca_cert['item'];
 		if ($ca_cert != false) {
 			if (base64_decode($ca_cert['crt'])) {
 				file_put_contents(FREERADIUS_CERTS . "/ca_ldap1_cert.pem", base64_decode($ca_cert['crt']));
 			}
 			$svr_cert = lookup_cert($arrmodulesldap["ssl_server_cert1"]);
+			$svr_cert = $svr_cert['item'];
 			if ($svr_cert != false) {
 				if (base64_decode($svr_cert['prv'])) {
 					file_put_contents(FREERADIUS_CERTS . "/radius_ldap1_cert.key", base64_decode($svr_cert['prv']));
@@ -2824,12 +2798,14 @@ EOD;
 	if ($arrmodulesldap['varmodulesldap2enabletlssupport'] == 'on') {
 
 		$ca_cert = lookup_ca($arrmodulesldap["ssl_ca_cert2"]);
+		$ca_cert = $ca_cert['item'];
 		if ($ca_cert != false) {
 			if (base64_decode($ca_cert['crt'])) {
 				file_put_contents(FREERADIUS_CERTS . "/ca_ldap2_cert.pem", base64_decode($ca_cert['crt']));
 			}
 
 			$svr_cert = lookup_cert($arrmodulesldap["ssl_server_cert2"]);
+			$svr_cert = $svr_cert['item'];
 			if ($svr_cert != false) {
 				if (base64_decode($svr_cert['prv'])) {
 					file_put_contents(FREERADIUS_CERTS . "/radius_ldap2_cert.key", base64_decode($svr_cert['prv']));
@@ -3266,7 +3242,7 @@ function freeradius_plainmacauth_resync() {
 	if ($varsettings['varsettingsenablemacauth'] == '') {
 		// This is a check - only restore files if they aren't already
 		if (file_exists(FREERADIUS_RADDB . "/plain_macauth_enabled")) {
-			log_error("FreeRADIUS: Plain-MAC-Auth disabled. Restoring the original file {$filemodulesfilesdefault}");
+			logger(LOG_INFO, localize_text("Plain-MAC-Auth disabled. Restoring the original file %s", $filemodulesfilesdefault), LOG_PREFIX_PKG_FREERADIUS);
 			unlink(FREERADIUS_RADDB . "/plain_macauth_enabled");
 		}
 		@unlink_if_exists($filemodulesfiles);
@@ -3275,7 +3251,7 @@ function freeradius_plainmacauth_resync() {
 		// If checked then plain mac auth is enabled
 		// This is a check - only modify files if they aren't already
 		if (!file_exists(FREERADIUS_RADDB . "/plain_macauth_enabled")) {
-			log_error("FreeRADIUS: Plain-MAC-Auth enabled. Modified {$filemodulesfiles}");
+			logger(LOG_INFO, localize_text("Plain-MAC-Auth enabled. Modified %s", $filemodulesfiles), LOG_PREFIX_PKG_FREERADIUS);
 			touch(FREERADIUS_RADDB . "/plain_macauth_enabled");
 		}
 		freeradius_modulesfiles_resync();
@@ -3666,7 +3642,7 @@ ATTRIBUTE 		MOTP-Init-Secret 		900 	string
 ATTRIBUTE 		MOTP-PIN 			901 	string
 ATTRIBUTE 		MOTP-Offset 			902 	string
 
-\$INCLUDE /usr/share/doc/radius/dictionary.pfsense
+\$INCLUDE /usr/local/share/pfSense/radius/dictionary.pfsense
 \$INCLUDE /usr/local/pkg/dictionary.mpd
 
 EOD;
@@ -3769,8 +3745,8 @@ function freeradius_validate_users($post, &$input_errors) {
 	if ($post['varusersframedipnetmask']) {
 		if ($post['varusersframedipaddress'] == '') {
 			$input_errors[] = "To specify a 'Subnet Mask', the 'IPv4 Address' field must not be empty.";
-		} elseif (is_ipaddrv4($framedip)) {
-			$ip = long2ip(ip2long($framedip) & ip2long($post['varusersframedipnetmask']));
+		} elseif (is_ipaddrv4($post['varusersframedipaddress'])) {
+			$ip = long2ip(ip2long($post['varusersframedipaddress']) & ip2long($post['varusersframedipnetmask']));
 			$mask = 32 - log((ip2long($post['varusersframedipnetmask']) ^ ip2long('255.255.255.255')) +1, 2);
 			if (!is_subnetv4("{$ip}/{$mask}")) {
 				$input_errors[] = "The 'Subnet Mask' field must contain a valid subnet mask.";
@@ -3935,7 +3911,7 @@ function freeradius_validate_macs($post, &$input_errors) {
 	}
 
 	// IPv4 Address
-	if ($post['varusersframedipaddress'] && !is_ipaddrv4($post['varusersframedipaddress'])) {
+	if ($post['varmacsframedipaddress'] && !is_ipaddrv4($post['varmacsframedipaddress'])) {
 		$input_errors[] = "The 'IPv4 Address' field must contain a valid IPv4 address.";
 	}
 
@@ -3943,8 +3919,8 @@ function freeradius_validate_macs($post, &$input_errors) {
 	if ($post['varmacsframedipnetmask']) {
 		if ($post['varmacsframedipaddress'] == '') {
 			$input_errors[] = "To specify a 'Subnet Mask', the 'IPv4 Address' field must not be empty.";
-		} elseif (is_ipaddrv4($framedip)) {
-			$ip = long2ip(ip2long($framedip) & ip2long($post['varmacsframedipnetmask']));
+		} elseif (is_ipaddrv4($post['varmacsframedipaddress'])) {
+			$ip = long2ip(ip2long($post['varmacsframedipaddress']) & ip2long($post['varmacsframedipnetmask']));
 			$mask = 32 - log((ip2long($post['varmacsframedipnetmask']) ^ ip2long('255.255.255.255')) +1, 2);
 			if (!is_subnetv4("{$ip}/{$mask}")) {
 				$input_errors[] = "The 'Subnet Mask' field must contain a valid subnet mask.";
@@ -4539,7 +4515,6 @@ function freeradius_validate_ldap($post, &$input_errors) {
 
 function freeradius_plugin_certificates($pluginparams) {
 	$result = array();
-	init_config_arr(array('installedpackages', 'freeradiuseapconf', 'config'));
 	$eapconf = config_get_path('installedpackages/freeradiuseapconf/config/0', []);
 
 	if (($pluginparams['type'] == 'certificates') && !empty($eapconf)) {

@@ -1,0 +1,37 @@
+diff --git a/src/etc/inc/interfaces.inc b/src/etc/inc/interfaces.inc
+index 67aa569c3f..eea801beab 100644
+--- a/src/etc/inc/interfaces.inc
++++ b/src/etc/inc/interfaces.inc
+@@ -1554,6 +1554,12 @@ function interface_ipsec_vti_configure($ph1ent) {
+ 				mwexec("/sbin/ifconfig {$ipsecif} mtu {$vtimtu}");
+ 			}
+ 		}
++		/* Add the VTI to the interface cache directly because calling 'get_interface_arr(true)' is expensive.
++		   See: https://redmine.pfsense.org/issues/15449 */
++		global $interface_arr_cache;
++		if (is_array($interface_arr_cache) && !in_array($ipsecif, $interface_arr_cache)) {
++			$interface_arr_cache[] = $ipsecif;
++		}
+ 		system_routing_configure(convert_real_interface_to_friendly_interface_name($ipsecif));
+ 	}
+ 	return true;
+diff --git a/src/etc/inc/util.inc b/src/etc/inc/util.inc
+index 4bb52eb12c..e9266d61c0 100644
+--- a/src/etc/inc/util.inc
++++ b/src/etc/inc/util.inc
+@@ -3212,8 +3212,13 @@ function route_add_or_change($target, $gw, $iface = '', $args = '',
+ 	}
+ 
+ 	if (empty($params)) {
+-		log_error("route_add_or_change: Invalid gateway {$gw} and/or " .
+-		    "network interface {$iface}");
++		if (!empty($gw) && !empty($iface)) {
++			log_error("route_add_or_change: Invalid gateway ({$gw}) and network interface was not found ({$iface})");
++		} elseif (!empty($gw)) {
++			log_error("route_add_or_change: Invalid gateway ({$gw})");
++		} else {
++			log_error("route_add_or_change: Network interface was not found ({$iface})");
++		}
+ 		return false;
+ 	}
+ 

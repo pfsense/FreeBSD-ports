@@ -1,7 +1,7 @@
 PORTNAME=	cmake
 DISTVERSION=	${_CMAKE_VERSION}
 CATEGORIES=	devel
-PKGNAMESUFFIX=	-gui-${FLAVOR}
+PKGNAMESUFFIX=	-gui
 
 MAINTAINER=	kde@FreeBSD.org
 COMMENT=	Qt-based GUI for CMake
@@ -17,19 +17,13 @@ LIB_DEPENDS=	libcurl.so:ftp/curl \
 		libuv.so:devel/libuv \
 		librhash.so:security/rhash
 
-FLAVORS=		qt6 qt5
-FLAVOR?=		qt6
-qt5_CONFLICTS_INSTALL=	cmake-gui-qt6
-qt6_CONFLICTS_INSTALL=	cmake-gui-qt5
+USES=		cmake:run compiler:c++17-lang desktop-file-utils libarchive \
+		python:build qt:6 shared-mime-info
+USE_QT=		base
 
-USES=		cmake:run,insource compiler:c++11-lang desktop-file-utils libarchive \
-		python:build shared-mime-info qt:${FLAVOR:S/qt//}
-_USE_QT_qt5=	core gui widgets buildtools:build qmake:build
-_USE_QT_qt6=	base
-USE_QT=		${_USE_QT_${FLAVOR}}
 CMAKE_ARGS=	-DCMAKE_DATA_DIR:STRING="/${DATADIR_REL}" \
 		-DCMAKE_DOC_DIR:STRING="/${DOCSDIR_REL}" \
-		-DCMake_QT_MAJOR_VERSION=${FLAVOR:S/qt//}
+		-DCMake_QT_MAJOR_VERSION:STRING="6"
 CMAKE_ON=	BUILD_QtDialog \
 		CMAKE_USE_SYSTEM_CURL \
 		CMAKE_USE_SYSTEM_EXPAT \
@@ -47,9 +41,9 @@ ALL_TARGET=	cmake-gui documentation
 
 CXXFLAGS+=	-D__BSD_VISIBLE
 
-INSTALL_WRKSRC=	${WRKSRC}/Source/QtDialog
+INSTALL_WRKSRC=	${BUILD_WRKSRC}/Source/QtDialog
 
-DISTINFO_FILE=	${.CURDIR}/../cmake-core/distinfo
+DISTINFO_FILE=	${.CURDIR:H}/cmake-core/distinfo
 
 post-patch:
 	@(${FIND} ${WRKSRC}/Modules -name "*.cmake" -print0; \
@@ -58,10 +52,10 @@ post-patch:
 			s,/usr/X11R6,${LOCALBASE},g'
 
 pre-install:
-	${LN} -sf ${CMAKE_BIN} ${WRKSRC}/bin
+	${LN} -sf ${CMAKE_BIN} ${BUILD_WRKSRC}/bin
 
 post-install:
-	${INSTALL_MAN} ${WRKSRC}/Utilities/Sphinx/man/cmake-gui.1 \
+	${INSTALL_MAN} ${BUILD_WRKSRC}/Utilities/Sphinx/man/cmake-gui.1 \
 		${STAGEDIR}${PREFIX}/share/man/man1
 
 .include <bsd.port.mk>

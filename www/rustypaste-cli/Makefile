@@ -1,15 +1,17 @@
 PORTNAME=	rustypaste-cli
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.8.0
-PORTREVISION=	5
+DISTVERSION=	0.9.4
+PORTREVISION=	8
 CATEGORIES=	www
 
-MAINTAINER=	DtxdF@disroot.org
+MAINTAINER=	dtxdf@FreeBSD.org
 COMMENT=	CLI tool for rustypaste
 WWW=		https://github.com/orhun/rustypaste-cli
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
+
+BROKEN_i386=	compilation fails: error[E0080]: evaluation of constant value failed
 
 USES=		cargo
 USE_GITHUB=	yes
@@ -29,6 +31,5 @@ NATIVE_CERTS_VARS=	CARGO_FEATURES+=use-native-certs
 post-install:
 	${MKDIR} ${STAGEDIR}${EXAMPLESDIR}
 	${INSTALL_DATA} ${WRKSRC}/config.toml ${STAGEDIR}${EXAMPLESDIR}
-	${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/rpaste
 
 .include <bsd.port.mk>

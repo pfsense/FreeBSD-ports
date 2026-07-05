@@ -1,4 +1,4 @@
---- ui/base/cursor/cursor_factory.cc.orig	2024-03-22 14:16:19 UTC
+--- ui/base/cursor/cursor_factory.cc.orig	2025-09-10 13:22:16 UTC
 +++ ui/base/cursor/cursor_factory.cc
 @@ -97,7 +97,7 @@ void CursorFactory::ObserveThemeChanges() {
    NOTIMPLEMENTED();

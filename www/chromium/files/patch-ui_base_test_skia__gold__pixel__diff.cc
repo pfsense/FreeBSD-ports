@@ -1,11 +1,11 @@
---- ui/base/test/skia_gold_pixel_diff.cc.orig	2023-09-13 12:11:42 UTC
+--- ui/base/test/skia_gold_pixel_diff.cc.orig	2025-10-02 04:28:32 UTC
 +++ ui/base/test/skia_gold_pixel_diff.cc
-@@ -115,7 +115,7 @@ const char* GetPlatformName() {
+@@ -116,7 +116,7 @@ const char* GetPlatformName() {
+   return "windows";
+ #elif BUILDFLAG(IS_APPLE)
    return "macOS";
- // TODO(crbug.com/1052397): Revisit the macro expression once build flag switch
- // of lacros-chrome is complete.
 -#elif BUILDFLAG(IS_LINUX)
 +#elif BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_BSD)
    return "linux";
- #elif BUILDFLAG(IS_CHROMEOS_LACROS)
-   return "lacros";
+ #elif BUILDFLAG(IS_CHROMEOS)
+   return "ash";

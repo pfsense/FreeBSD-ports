@@ -1,0 +1,128 @@
+diff --git a/src/etc/inc/filter.inc b/src/etc/inc/filter.inc
+index 9ebbfd5678..6fa0d7e177 100644
+--- a/src/etc/inc/filter.inc
++++ b/src/etc/inc/filter.inc
+@@ -174,6 +174,31 @@ if (config_get_path('ipsec/filtermode') == 'if_ipsec') {
+ 	$filter_interface_remove[] = 'ipsec';
+ }
+ 
++/**
++ * Floating states for IPsec rules are not needed when:
++ * - The global state policy is already set to floating
++ * - The IPsec Filter Mode is set to assigned interfaces
++ * - There are no enabled VTI IPsec tunnels
++ */
++global $use_floating_states_for_ipsec;
++$use_floating_states_for_ipsec = false;
++if (!config_path_enabled('system', 'disable_auto_floating_states') &&
++    (config_get_path('system/statepolicy', 'if-bound') == 'if-bound') &&
++    (config_get_path('ipsec/filtermode', 'enc') == 'enc')) {
++	// look for a VTI or transport mode p2
++	foreach (config_get_path('ipsec/phase2', []) as $ipsecp2) {
++		if (!isset($ipsecp2['disabled']) && ($ipsecp2['mode'] == 'transport') || ($ipsecp2['mode'] == 'vti')) {
++			// check if the matching p1 to this p2 is enabled
++			foreach (config_get_path('ipsec/phase1', []) as $ipsecp1) {
++				if (!isset($ipsecp1['disabled']) && ($ipsecp1['ikeid'] == $ipsecp2['ikeid'])) {
++					$use_floating_states_for_ipsec = true;
++					break 2;
++				}
++			}
++		}
++	}
++}
++
+ /*
+  * Fixed tracker values (used to group and track usage in GUI):
+  *
+@@ -3356,7 +3381,7 @@ function filter_generate_address(& $rule, $target = "source", $isnat = false) {
+ }
+ 
+ function filter_generate_user_rule($rule, & $extralabels = null) {
+-	global $g, $FilterIflist, $GatewaysList, $vpns_list;
++	global $g, $FilterIflist, $GatewaysList, $vpns_list, $use_floating_states_for_ipsec;
+ 	global $dummynet_name_list, $vlanprio_values, $time_based_rules;
+ 
+ 	if (config_path_enabled('system','developerspew')) {
+@@ -3692,10 +3717,14 @@ function filter_generate_user_rule($rule, & $extralabels = null) {
+ 			    (isset($rule['statepolicy']) and !empty($rule['statepolicy'])) or
+ 			    (isset($rule['sloppy'])) or
+ 			    ((config_path_enabled('pflow') and ($rule['pflow'] != 'disabled')) and (config_path_enabled('pflow', 'default') or ($rule['pflow'] == 'enabled'))) or
+-			    (isset($rule['nopfsync']))) {
++			    (isset($rule['nopfsync'])) or
++				($use_floating_states_for_ipsec && ($rule['interface'] == 'enc0'))) {
+ 				$aline['flags'] .= "( ";
+ 				if (!empty($rule['statepolicy'])) {
+ 					$aline['flags'] .= "{$rule['statepolicy']} ";
++				} elseif ($use_floating_states_for_ipsec && ($rule['interface'] == 'enc0')) {
++					// a floating state is needed for enc0 rules - see #15430
++					$aline['flags'] .= 'floating ';
+ 				}
+ 				if ((config_path_enabled('pflow') &&
+ 				    ($rule['pflow'] != 'disabled')) &&
+@@ -4094,7 +4123,7 @@ function filter_eth_rules_generate(bool $use_cache = true): string {
+ 
+ function filter_rules_generate() {
+ 	global $FilterIflist, $time_based_rules, $GatewaysList,
+-	       $tracker, $vlanprio_values, $vpn_and_ppp_ifs;
++	       $tracker, $vlanprio_values, $vpn_and_ppp_ifs, $use_floating_states_for_ipsec;
+ 
+ 	global $eth_rules_cache;
+ 
+@@ -4577,7 +4606,9 @@ EOD;
+ 		require_once("ipsec.inc");
+ 	}
+ 	if (ipsec_enabled()) {
+-		$ipfrules .= "pass out {$log['pass']} on \$IPsec all ridentifier {$increment_tracker()} ridentifier {$increment_tracker()} keep state label \"IPsec internal host to host\"\n";
++		// a floating state is needed for ipsec rules - see #15430
++		$state_policy = $use_floating_states_for_ipsec ? '(floating)' : '';
++		$ipfrules .= "pass out {$log['pass']} on \$IPsec all ridentifier {$increment_tracker()} ridentifier {$increment_tracker()} keep state {$state_policy} label \"IPsec internal host to host\"\n";
+ 	}
+ 
+ 	$saved_tracker += 10;
+diff --git a/src/usr/local/pfSense/include/www/system_advanced_firewall.inc b/src/usr/local/pfSense/include/www/system_advanced_firewall.inc
+index 5484323d4d..e5a0e83ccf 100644
+--- a/src/usr/local/pfSense/include/www/system_advanced_firewall.inc
++++ b/src/usr/local/pfSense/include/www/system_advanced_firewall.inc
+@@ -46,6 +46,7 @@ function getSystemAdvancedFirewall($json = false) {
+ 	$pconfig['bypassstaticroutes'] = isset($config['filter']['bypassstaticroutes']);
+ 	$pconfig['checkaliasesurlcert'] = isset($config['system']['checkaliasesurlcert']);
+ 	$pconfig['statepolicy'] = config_get_path('system/statepolicy');
++	$pconfig['disable_auto_floating_states'] = config_get_path('system/disable_auto_floating_states');
+ 	$pconfig['disablefilter'] = config_get_path('system/disablefilter');
+ 	$pconfig['enableethfilter'] = config_path_enabled('system', 'enableethfilter');
+ 	$pconfig['disablenatreflection'] = config_get_path('system/disablenatreflection');
+@@ -207,6 +208,11 @@ function saveSystemAdvancedFirewall($post, $json = false) {
+ 		}
+ 
+ 		config_set_path('system/statepolicy', $post['statepolicy']);
++		if (isset($post['disable_auto_floating_states'])) {
++			config_set_path('system/disable_auto_floating_states', true);
++		} else {
++			config_del_path('system/disable_auto_floating_states');
++		}
+ 
+ 		if ($post['enableethfilter'] === 'yes') {
+ 			config_set_path('system/enableethfilter', true);
+diff --git a/src/usr/local/www/system_advanced_firewall.php b/src/usr/local/www/system_advanced_firewall.php
+index ab9ea187ab..f92f68c34e 100644
+--- a/src/usr/local/www/system_advanced_firewall.php
++++ b/src/usr/local/www/system_advanced_firewall.php
+@@ -277,6 +277,18 @@ $section->addInput(new Form_Select(
+ 	'between either mode.',
+ 	'</span><ul class="help-block"><li>', '</li><li>', '</li></ul><span class="help-block">');
+ 
++$section->addInput(new Form_Checkbox(
++	'disable_auto_floating_states',
++	'Disable state-policy override for IPsec rules',
++	'Don\'t automatically use floating states for IPsec rules.',
++	isset($pconfig['disable_auto_floating_states'])
++))->setHelp('When %1$sFirewall State Policy%2$s is set to %1$sInterface '.
++	'Bound States%2$s, unchecking this option allows IPsec rules to '.
++	'automatically use floating states where needed. This option is '.
++	'ignored when %3$sIPsec Filter Mode%4$s is set to assigned '.
++	'interfaces.', '<b>', '</b>','<a href="firewall_nat_out.php">', '</a>'
++);
++
+ $section->addInput(new Form_Checkbox(
+ 	'enableethfilter',
+ 	'Ethernet Filtering',

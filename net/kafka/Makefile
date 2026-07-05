@@ -1,8 +1,9 @@
 PORTNAME=	kafka
-DISTVERSION=	3.6.1
+DISTVERSION=	3.9.1
+PORTREVISION=	1
 CATEGORIES=	net java
-MASTER_SITES=	APACHE/${PORTNAME}/${PORTVERSION}/
-DISTNAME=	${PORTNAME}_2.13-${PORTVERSION}
+MASTER_SITES=	APACHE/${PORTNAME}/${DISTVERSION}/
+DISTNAME=	${PORTNAME}_2.13-${DISTVERSION}
 
 MAINTAINER=	timp87@gmail.com
 COMMENT=	Distributed streaming platform
@@ -13,22 +14,19 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 
 RUN_DEPENDS=	bash:shells/bash
 
-USES=		cpe shebangfix tar:tgz
+USES=		cpe java shebangfix tar:tgz
 CPE_VENDOR=	apache
-
-USE_JAVA=	yes
-JAVA_VERSION=	11+
-JAVA_RUN=	jre
+JAVA_VERSION=	17+
 
 USE_RC_SUBR=	kafka kafka_connect
 
 SHEBANG_FILES=	bin/*.sh
 
-KAFKA_USER?=	kafka
-KAFKA_GROUP?=	kafka
-KAFKA_DBDIR?=	/var/db/${PORTNAME}
+KAFKA_USER?=		kafka
+KAFKA_GROUP?=		kafka
+KAFKA_DBDIR?=		/var/db/${PORTNAME}
 KAFKA_DBDIR_KRAFT?=	${KAFKA_DBDIR}-kraft
-KAFKA_LOGDIR?=	/var/log/${PORTNAME}
+KAFKA_LOGDIR?=		/var/log/${PORTNAME}
 
 DATADIR=	${JAVASHAREDIR}/${PORTNAME}
 
@@ -37,46 +35,54 @@ NO_BUILD=	yes
 
 SUB_FILES=	pkg-message
 SUB_LIST=	JAVA=${JAVA} \
-		KAFKA_USER=${KAFKA_USER} \
+		KAFKA_DBDIR=${KAFKA_DBDIR} \
+		KAFKA_DBDIR_KRAFT=${KAFKA_DBDIR_KRAFT} \
 		KAFKA_GROUP=${KAFKA_GROUP} \
 		KAFKA_LOGDIR=${KAFKA_LOGDIR} \
-		KAFKA_DBDIR=${KAFKA_DBDIR} \
-		KAFKA_DBDIR_KRAFT=${KAFKA_DBDIR_KRAFT}
+		KAFKA_USER=${KAFKA_USER}
 USERS=		${KAFKA_USER}
 GROUPS=		${KAFKA_GROUP}
 
-KAFKA_BINS=	connect-distributed.sh connect-mirror-maker.sh \
-		connect-plugin-path.sh connect-standalone.sh kafka-acls.sh \
-		kafka-broker-api-versions.sh kafka-cluster.sh kafka-configs.sh \
-		kafka-console-consumer.sh kafka-console-producer.sh \
-		kafka-consumer-groups.sh kafka-consumer-perf-test.sh \
-		kafka-delegation-tokens.sh kafka-delete-records.sh \
-		kafka-dump-log.sh kafka-e2e-latency.sh kafka-features.sh \
-		kafka-get-offsets.sh kafka-jmx.sh \
-		kafka-leader-election.sh kafka-log-dirs.sh \
-		kafka-metadata-quorum.sh kafka-metadata-shell.sh \
-		kafka-mirror-maker.sh kafka-producer-perf-test.sh \
-		kafka-reassign-partitions.sh kafka-replica-verification.sh \
-		kafka-run-class.sh kafka-server-start.sh kafka-server-stop.sh \
-		kafka-storage.sh kafka-streams-application-reset.sh \
-		kafka-topics.sh kafka-transactions.sh \
-		kafka-verifiable-consumer.sh kafka-verifiable-producer.sh \
-		trogdor.sh zookeeper-security-migration.sh zookeeper-shell.sh
-KAFKA_CONFIGS=	connect-console-sink.properties \
-		connect-console-source.properties \
-		connect-distributed.properties connect-file-sink.properties \
-		connect-file-source.properties connect-log4j.properties \
-		connect-mirror-maker.properties connect-standalone.properties \
-		consumer.properties log4j.properties producer.properties \
-		server.properties tools-log4j.properties trogdor.conf
-KAFKA_CONFIGS_KRAFT=	broker.properties controller.properties server.properties
+KAFKA_BINS=		connect-distributed.sh connect-mirror-maker.sh \
+			connect-plugin-path.sh connect-standalone.sh \
+			kafka-acls.sh kafka-broker-api-versions.sh \
+			kafka-client-metrics.sh kafka-cluster.sh \
+			kafka-configs.sh kafka-console-consumer.sh \
+			kafka-console-producer.sh kafka-consumer-groups.sh \
+			kafka-consumer-perf-test.sh kafka-delegation-tokens.sh \
+			kafka-delete-records.sh kafka-dump-log.sh \
+			kafka-e2e-latency.sh kafka-features.sh \
+			kafka-get-offsets.sh kafka-jmx.sh \
+			kafka-leader-election.sh kafka-log-dirs.sh \
+			kafka-metadata-quorum.sh kafka-metadata-shell.sh \
+			kafka-mirror-maker.sh kafka-producer-perf-test.sh \
+			kafka-reassign-partitions.sh \
+			kafka-replica-verification.sh kafka-run-class.sh \
+			kafka-server-start.sh kafka-server-stop.sh \
+			kafka-storage.sh kafka-streams-application-reset.sh \
+			kafka-topics.sh kafka-transactions.sh \
+			kafka-verifiable-consumer.sh \
+			kafka-verifiable-producer.sh trogdor.sh \
+			zookeeper-security-migration.sh \
+			zookeeper-shell.sh
+KAFKA_CONFIGS=		connect-console-sink.properties \
+			connect-console-source.properties \
+			connect-distributed.properties \
+			connect-file-sink.properties \
+			connect-file-source.properties connect-log4j.properties \
+			connect-mirror-maker.properties \
+			connect-standalone.properties consumer.properties \
+			log4j.properties producer.properties server.properties \
+			tools-log4j.properties trogdor.conf
+KAFKA_CONFIGS_KRAFT=	broker.properties controller.properties \
+			server.properties
 
-PLIST_SUB=	PORTVERSION=${PORTVERSION} \
-		KAFKA_USER=${KAFKA_USER} \
+PLIST_SUB=	KAFKA_DBDIR=${KAFKA_DBDIR} \
+		KAFKA_DBDIR_KRAFT=${KAFKA_DBDIR_KRAFT} \
 		KAFKA_GROUP=${KAFKA_GROUP} \
 		KAFKA_LOGDIR=${KAFKA_LOGDIR} \
-		KAFKA_DBDIR=${KAFKA_DBDIR} \
-		KAFKA_DBDIR_KRAFT=${KAFKA_DBDIR_KRAFT}
+		KAFKA_USER=${KAFKA_USER} \
+		PORTVERSION=${DISTVERSION}
 
 OPTIONS_DEFINE=	DOCS
 
@@ -114,6 +120,6 @@ do-install:
 
 do-install-DOCS-on:
 	${MKDIR} ${STAGEDIR}${DOCSDIR}
-	${EXTRACT_CMD} -xf ${WRKSRC}/site-docs/${PORTNAME}_2.13-${PORTVERSION}-site-docs.tgz -C ${STAGEDIR}${DOCSDIR}
+	${EXTRACT_CMD} -xf ${WRKSRC}/site-docs/${PORTNAME}_2.13-${DISTVERSION}-site-docs.tgz -C ${STAGEDIR}${DOCSDIR}
 
 .include <bsd.port.mk>

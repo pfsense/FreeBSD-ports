@@ -1,6 +1,6 @@
---- OrthancFramework/Resources/CMake/CivetwebConfiguration.cmake.orig	2021-08-30 20:14:33 UTC
+--- OrthancFramework/Resources/CMake/CivetwebConfiguration.cmake.orig	2024-12-17 16:33:40 UTC
 +++ OrthancFramework/Resources/CMake/CivetwebConfiguration.cmake
-@@ -109,32 +109,38 @@ else()
+@@ -111,32 +111,38 @@ else()
  
    cmake_reset_check_state()
    set(CMAKE_REQUIRED_LIBRARIES dl pthread)

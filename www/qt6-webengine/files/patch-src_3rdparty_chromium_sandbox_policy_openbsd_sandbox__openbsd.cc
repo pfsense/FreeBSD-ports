@@ -1,6 +1,6 @@
---- src/3rdparty/chromium/sandbox/policy/openbsd/sandbox_openbsd.cc.orig	2023-03-09 06:31:50 UTC
+--- src/3rdparty/chromium/sandbox/policy/openbsd/sandbox_openbsd.cc.orig	2025-09-01 08:52:31 UTC
 +++ src/3rdparty/chromium/sandbox/policy/openbsd/sandbox_openbsd.cc
-@@ -0,0 +1,399 @@
+@@ -0,0 +1,392 @@
 +// Copyright (c) 2012 The Chromium Authors. All rights reserved.
 +// Use of this source code is governed by a BSD-style license that can be
 +// found in the LICENSE file.
@@ -37,6 +37,8 @@
 +#include "base/threading/thread.h"
 +#include "base/time/time.h"
 +#include "build/build_config.h"
++#include "crypto/crypto_buildflags.h"
++#include "ppapi/buildflags/buildflags.h"
 +#include "sandbox/constants.h"
 +#include "sandbox/linux/services/credentials.h"
 +#include "sandbox/linux/services/namespace_sandbox.h"
@@ -55,21 +57,19 @@
 +#include <sanitizer/common_interface_defs.h>
 +#endif
 +
-+#if defined(USE_NSS_CERTS)
++#if BUILDFLAG(USE_NSS_CERTS)
 +#include "crypto/nss_util.h"
 +#endif
 +
 +#include "third_party/boringssl/src/include/openssl/crypto.h"
 +
-+#include "ui/gfx/font_util.h"
++#include <fontconfig/fontconfig.h>
++#include "ui/gfx/linux/fontconfig_util.h"
 +
 +#define MAXTOKENS	3
 +
 +#define _UNVEIL_MAIN		"/etc/chromium/unveil.main";
-+#define _UNVEIL_RENDERER	"/etc/chromium/unveil.renderer";
 +#define _UNVEIL_GPU		"/etc/chromium/unveil.gpu";
-+#define _UNVEIL_PLUGIN		"/etc/chromium/unveil.plugin";
-+#define _UNVEIL_UTILITY		"/etc/chromium/unveil.utility";
 +#define _UNVEIL_UTILITY_NETWORK	"/etc/chromium/unveil.utility_network";
 +#define _UNVEIL_UTILITY_AUDIO	"/etc/chromium/unveil.utility_audio";
 +#define _UNVEIL_UTILITY_VIDEO	"/etc/chromium/unveil.utility_video";
@@ -118,39 +118,43 @@
 +  base::SysInfo::NumberOfProcessors();
 +  base::SysInfo::CPUModelName();
 +
-+#if defined(USE_NSS_CERTS)
-+  // The main process has to initialize the ~/.pki dir which won't work
-+  // after unveil(2).
-+  if (process_type.empty())
-+    crypto::EnsureNSSInit();
++  switch (sandbox_type) {
++    case sandbox::mojom::Sandbox::kNoSandbox:
++    {
++#if BUILDFLAG(USE_NSS_CERTS)
++      // The main process has to initialize the ~/.pki dir which won't work
++      // after unveil(2).
++      crypto::EnsureNSSInit();
 +#endif
++      CRYPTO_pre_sandbox_init();
 +
-+  if (process_type.empty())
-+    CRYPTO_pre_sandbox_init();
++      base::FilePath cache_directory, local_directory;
 +
-+  if (process_type.empty()) {
-+    base::FilePath cache_directory, local_directory;
++      base::PathService::Get(base::DIR_CACHE, &cache_directory);
++      base::PathService::Get(base::DIR_HOME, &local_directory);   
 +
-+    base::PathService::Get(base::DIR_CACHE, &cache_directory);
-+    base::PathService::Get(base::DIR_HOME, &local_directory);   
++      cache_directory = cache_directory.AppendASCII("chromium");
++      local_directory = local_directory.AppendASCII(".local").AppendASCII("share").AppendASCII("applications");
 +
-+    cache_directory = cache_directory.AppendASCII("chromium");
-+    local_directory = local_directory.AppendASCII(".local").AppendASCII("share").AppendASCII("applications");
++      if (!base::CreateDirectory(cache_directory)) {
++        LOG(ERROR) << "Failed to create " << cache_directory.value() << " directory.";
++      }
 +
-+    if (!base::CreateDirectory(cache_directory)) {
-+      LOG(ERROR) << "Failed to create " << cache_directory.value() << " directory.";
++      if (!base::CreateDirectory(local_directory)) {
++        LOG(ERROR) << "Failed to create " << local_directory.value() << " directory.";
++      }
++
++      break;
 +    }
-+
-+    if (!base::CreateDirectory(local_directory)) {
-+      LOG(ERROR) << "Failed to create " << local_directory.value() << " directory.";
++    case sandbox::mojom::Sandbox::kRenderer:
++    {
++      FcConfig* config = gfx::GetGlobalFontConfig();
++      DCHECK(config);
++      break;
 +    }
++    default:
++      break;
 +  }
-+
-+  if (process_type == switches::kRendererProcess)
-+    gfx::InitializeFonts();
-+
-+  if (!command_line->HasSwitch(switches::kDisableUnveil))
-+    SetUnveil(process_type, sandbox_type);
 +
 +  pre_initialized_ = true;
 +}
@@ -164,6 +168,7 @@
 +  if (pstring != NULL) {
 +    if (pledge(pstring, NULL) == -1)
 +      goto err;
++    VLOG(5) << "pledge " << pstring;
 +  } else if (ppath != NULL) {
 +    fp = fopen(ppath, "r");
 +    if (fp != NULL) {
@@ -172,10 +177,11 @@
 +          s[strlen(s)-1] = '\0';
 +        if (pledge(s, NULL) == -1)
 +  	  goto err;
++        VLOG(5) << "pledge " << s;
 +      }
 +      fclose(fp);
 +    } else {
-+      LOG(ERROR) << "fopen() failed, errno: " << errno;
++      LOG(ERROR) << "fopen(" << ppath << ") failed, errno: " << errno;
 +      return false;
 +    }
 +  }
@@ -192,24 +198,26 @@
 +  const char *ufile;
 +  size_t len = 0, lineno = 0;
 +
-+  if (process_type.empty()) {
-+    ufile = _UNVEIL_MAIN;
-+  } else if (process_type == switches::kRendererProcess) {
-+    ufile = _UNVEIL_RENDERER;
-+  } else if (process_type == switches::kGpuProcess) {
-+    ufile = _UNVEIL_GPU;
-+  } else if (process_type == switches::kPpapiPluginProcess) {
-+    ufile = _UNVEIL_PLUGIN;
-+  } else if (process_type == switches::kUtilityProcess) {
-+    if (sandbox_type == sandbox::mojom::Sandbox::kNetwork) {
++  switch (sandbox_type) {
++    case sandbox::mojom::Sandbox::kNoSandbox:
++      ufile = _UNVEIL_MAIN;
++      break;
++    case sandbox::mojom::Sandbox::kGpu:
++    case sandbox::mojom::Sandbox::kOnDeviceModelExecution:
++      ufile = _UNVEIL_GPU;
++      break;
++    case sandbox::mojom::Sandbox::kNetwork:
 +      ufile = _UNVEIL_UTILITY_NETWORK;
-+    } else if (sandbox_type == sandbox::mojom::Sandbox::kAudio) {
++      break;
++    case sandbox::mojom::Sandbox::kAudio:
 +      ufile = _UNVEIL_UTILITY_AUDIO;
-+    } else if (sandbox_type == sandbox::mojom::Sandbox::kVideoCapture) {
++      break;
++    case sandbox::mojom::Sandbox::kVideoCapture:
 +      ufile = _UNVEIL_UTILITY_VIDEO;
-+    } else {
-+      ufile = _UNVEIL_UTILITY;
-+    }
++      break;
++    default:
++      unveil("/dev/null", "r");
++      goto done;
 +  }
 +
 +  fp = fopen(ufile, "r");
@@ -259,7 +267,7 @@
 +        LOG(ERROR) << "failed unveiling " << path << " with permissions " << tokens[1];
 +        _exit(1);
 +      } else {
-+        VLOG(1) << "unveiling " << path << " with permissions " << tokens[1];
++        VLOG(5) << "unveiling " << path << " with permissions " << tokens[1];
 +      }
 +    }
 +    fclose(fp);
@@ -268,6 +276,7 @@
 +        _exit(1);
 +  }
 +
++done:
 +  unveil_initialized_ = true;
 +
 +  return true;
@@ -291,7 +300,7 @@
 +    return true;
 +
 +  VLOG(1) << "SandboxLinux::InitializeSandbox: process_type="
-+      << process_type << " sandbox_type=" << GetSandboxTypeInEnglish(sandbox_type);
++      << process_type << " sandbox_type=" << sandbox_type;
 +
 +  // Only one thread is running, pre-initialize if not already done.
 +  if (!pre_initialized_)
@@ -307,31 +316,47 @@
 +    PCHECK(limited_as);
 +  }
 +
-+  if (process_type.empty()) {
-+    // XXX use a file for listing pledges of the main process for now
-+    // XXX not having the file is not a fatal error
-+    SetPledge(NULL, "/etc/chromium/pledge.main");
-+  } else if (process_type == switches::kRendererProcess) {
-+    // prot_exec needed by v8
-+    // flock needed by sqlite3 locking
-+    SetPledge("stdio rpath flock prot_exec recvfd sendfd ps", NULL);
-+  } else if (process_type == switches::kGpuProcess) {
-+    SetPledge("stdio rpath flock cpath wpath getpw drm prot_exec recvfd sendfd tmppath", NULL);
-+  } else if (process_type == switches::kPpapiPluginProcess) {
-+    // prot_exec needed by v8
-+    SetPledge("stdio rpath prot_exec recvfd sendfd", NULL);
-+  } else if (process_type == switches::kUtilityProcess) {
-+    if (sandbox_type == sandbox::mojom::Sandbox::kAudio)
++  if (hook)
++    CHECK(std::move(hook).Run(options));
++
++  if (!command_line->HasSwitch(switches::kDisableUnveil))
++    SetUnveil(process_type, sandbox_type);
++
++  switch(sandbox_type) {
++    case sandbox::mojom::Sandbox::kNoSandbox:
++      SetPledge(NULL, "/etc/chromium/pledge.main");
++      break;
++    case sandbox::mojom::Sandbox::kRenderer:
++      // prot_exec needed by v8
++      // flock needed by sqlite3 locking
++      SetPledge("stdio rpath flock prot_exec recvfd sendfd ps", NULL);
++      break;
++    case sandbox::mojom::Sandbox::kGpu:
++    case sandbox::mojom::Sandbox::kOnDeviceModelExecution:
++      SetPledge("stdio drm rpath flock cpath wpath prot_exec recvfd sendfd tmppath", NULL);
++      break;
++#if BUILDFLAG(ENABLE_PPAPI)
++    case sandbox::mojom::Sandbox::kPpapi:
++      // prot_exec needed by v8
++      SetPledge("stdio rpath prot_exec recvfd sendfd", NULL);
++      break;
++#endif
++    case sandbox::mojom::Sandbox::kAudio:
 +      SetPledge(NULL, "/etc/chromium/pledge.utility_audio");
-+    else if (sandbox_type == sandbox::mojom::Sandbox::kNetwork)
++      break;
++    case sandbox::mojom::Sandbox::kNetwork:
 +      SetPledge(NULL, "/etc/chromium/pledge.utility_network");
-+    else if (sandbox_type == sandbox::mojom::Sandbox::kVideoCapture)
++      break;
++    case sandbox::mojom::Sandbox::kVideoCapture:
 +      SetPledge(NULL, "/etc/chromium/pledge.utility_video");
-+    else
++      break;
++    case sandbox::mojom::Sandbox::kUtility:
++    case sandbox::mojom::Sandbox::kService:
 +      SetPledge("stdio rpath cpath wpath fattr flock sendfd recvfd prot_exec", NULL);
-+  } else {
-+    LOG(ERROR) << "non-pledge()'d process: " << process_type;
-+    return false;
++      break;
++    default:
++      LOG(ERROR) << "non-pledge()'d process: " << sandbox_type;
++      break;
 +  }
 +
 +  return true;
@@ -364,38 +389,6 @@
 +  return false;
 +#endif  // !defined(ADDRESS_SANITIZER) && !defined(MEMORY_SANITIZER) &&
 +        // !defined(THREAD_SANITIZER) && !defined(LEAK_SANITIZER)
-+}
-+
-+// static
-+std::string SandboxLinux::GetSandboxTypeInEnglish(sandbox::mojom::Sandbox sandbox_type) {
-+  switch (sandbox_type) {
-+    case sandbox::mojom::Sandbox::kNoSandbox:
-+      return "Unsandboxed";
-+    case sandbox::mojom::Sandbox::kRenderer:
-+      return "Renderer";
-+    case sandbox::mojom::Sandbox::kUtility:
-+      return "Utility";
-+    case sandbox::mojom::Sandbox::kGpu:
-+      return "GPU";
-+    case sandbox::mojom::Sandbox::kPpapi:
-+      return "PPAPI";
-+    case sandbox::mojom::Sandbox::kNetwork:
-+      return "Network";
-+    case sandbox::mojom::Sandbox::kCdm:
-+      return "CDM";
-+    case sandbox::mojom::Sandbox::kPrintCompositor:
-+      return "Print Compositor";
-+    case sandbox::mojom::Sandbox::kAudio:
-+      return "Audio";
-+    case sandbox::mojom::Sandbox::kSpeechRecognition:
-+      return "Speech Recognition";
-+    case sandbox::mojom::Sandbox::kService:
-+      return "Service";
-+    case sandbox::mojom::Sandbox::kVideoCapture:
-+      return "Video Capture";
-+    default:
-+      return "Unknown";
-+  }
 +}
 +
 +}  // namespace policy

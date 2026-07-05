@@ -1,6 +1,6 @@
---- third_party/webrtc/rtc_base/byte_order.h.orig	2023-03-13 07:33:08 UTC
+--- third_party/webrtc/rtc_base/byte_order.h.orig	2025-12-10 15:04:57 UTC
 +++ third_party/webrtc/rtc_base/byte_order.h
-@@ -90,6 +90,8 @@
+@@ -82,6 +82,8 @@
  #error WEBRTC_ARCH_BIG_ENDIAN or WEBRTC_ARCH_LITTLE_ENDIAN must be defined.
  #endif  // defined(WEBRTC_ARCH_LITTLE_ENDIAN)
  

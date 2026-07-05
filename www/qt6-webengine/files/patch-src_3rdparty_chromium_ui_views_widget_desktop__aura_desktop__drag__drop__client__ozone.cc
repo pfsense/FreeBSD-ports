@@ -1,7 +1,7 @@
---- src/3rdparty/chromium/ui/views/widget/desktop_aura/desktop_drag_drop_client_ozone.cc.orig	2023-01-11 09:17:16 UTC
+--- src/3rdparty/chromium/ui/views/widget/desktop_aura/desktop_drag_drop_client_ozone.cc.orig	2025-08-15 18:30:00 UTC
 +++ src/3rdparty/chromium/ui/views/widget/desktop_aura/desktop_drag_drop_client_ozone.cc
-@@ -194,7 +194,7 @@ DragOperation DesktopDragDropClientOzone::StartDragAnd
-   return drag_operation_;
+@@ -203,7 +203,7 @@ DragOperation DesktopDragDropClientOzone::StartDragAnd
+   return selected_operation_;
  }
  
 -#if BUILDFLAG(IS_LINUX)

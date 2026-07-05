@@ -1,10 +1,10 @@
 PORTNAME=	f3
 PORTVERSION=	8.0
-PORTREVISION=	1
 DISTVERSIONPREFIX=	v
+PORTREVISION=	2
 CATEGORIES=	sysutils
 
-MAINTAINER=	dbaio@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Fight Flash Fraud or Fight Fake Flash test tool
 WWW=		https://oss.digirati.com.br/f3
 

@@ -1,19 +1,19 @@
 PORTNAME=	octopus
-DISTVERSION=	13.0
+DISTVERSION=	16.0
 PORTREVISION=	2
 CATEGORIES=	science # chemistry
 MASTER_SITES=	https://octopus-code.org/download/${DISTVERSION}/
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Scientific program aimed at the ab initio virtual experimentation
-WWW=		https://octopus-code.org/new-site/main/
+WWW=		https://octopus-code.org/documentation/15/
 
 LICENSE=	GPLv2
 
-BROKEN_aarch64=	undefined reference to `__aarch64_cas8_acq_rel' #'`
+BROKEN_aarch64=	fails to build: Cannot find an intrinsic module named 'ieee_arithmetic'
 
 BUILD_DEPENDS=	bash:shells/bash
-LIB_DEPENDS=	libarpack.so:math/arpack-ng \
+LIB_DEPENDS=	libarpack.so:math/arpack-ng@mpich \
 		libblas.so:math/blas \
 		libfftw3.so:math/fftw3 \
 		libfontconfig.so:x11-fonts/fontconfig \
@@ -32,8 +32,7 @@ LIB_DEPENDS=	libarpack.so:math/arpack-ng \
 		libxc.so:science/libxc \
 		libyaml.so:textproc/libyaml
 
-USES=		compiler:c++14-lang fortran gmake jpeg libtool localbase:ldflags perl5 python shebangfix
-USE_CXXSTD=	c++14
+USES=		compiler:c++14-lang fortran gmake jpeg libtool localbase:ldflags perl5 pkgconfig python shebangfix
 USE_LDCONFIG=	yes
 
 SHEBANG_FILES=	src/fdep/fortran_dependencies.pl testsuite/performance/create_combinations.py
@@ -45,6 +44,7 @@ CONFIGURE_ARGS=	--enable-shared --disable-static
 
 LDFLAGS+=	-lsymspg
 FCFLAGS+=	-I${LOCALBASE}/include -ffree-line-length-none
+FCFLAGS+=	-fallow-argument-mismatch # fix build on i386: Error: Type mismatch in argument 'dims' at (1); passed INTEGER(8) to INTEGER(4)
 
 INSTALL_TARGET=	install-strip
 TEST_TARGET=	check-short # some tests fail, see https://gitlab.com/octopus-code/octopus/-/issues/805

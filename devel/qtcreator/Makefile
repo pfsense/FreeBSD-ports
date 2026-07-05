@@ -1,5 +1,5 @@
 PORTNAME=	qtcreator
-DISTVERSION=	12.0.2
+DISTVERSION=	18.0.1
 CATEGORIES=	devel
 MASTER_SITES=	QT/official_releases/qtcreator/${DISTVERSION:R}/${DISTVERSION}
 DISTNAME=	qt-creator-opensource-src-${DISTVERSION}
@@ -12,26 +12,22 @@ WWW=		https://qt-project.org/wiki/Category:Tools::QtCreator
 LICENSE=	QtGPL
 LICENSE_GROUPS_QtGPL=	GPL
 LICENSE_NAME=	GPLv3 with Qt Company GPL Exception 1.0
-LICENSE_FILE=	${WRKSRC}/LICENSE.GPL3-EXCEPT
+LICENSE_FILE=	${WRKSRC}/LICENSES/LICENSE.GPL3-EXCEPT
 LICENSE_PERMS=	dist-mirror dist-sell pkg-mirror pkg-sell auto-accept
 
 BUILD_DEPENDS=	vulkan-headers>0:graphics/vulkan-headers
+LIB_DEPENDS=	libxkbcommon.so:x11/libxkbcommon
 
-LIB_DEPENDS=	libvulkan.so:graphics/vulkan-loader \
-		libxkbcommon.so:x11/libxkbcommon \
-		libzstd.so:archivers/zstd
-
-USES=		cmake compiler:c++17-lang desktop-file-utils gl \
-		llvm:build,run,noexport,min=17 pkgconfig python \
-		qt:6 shebangfix tar:xz
-USE_GL=		gl
+USES=		cmake compiler:c++20-lang desktop-file-utils gl \
+		libarchive llvm:build,run,noexport,min=17 pkgconfig \
+		python qt:6 shebangfix tar:xz
+USE_GL=		opengl
 USE_LDCONFIG=	${LOCALBASE}/lib/${PORTNAME}
-USE_QT=		5compat base declarative positioning quick3d quicktimeline \
-		serialport shadertools sqldriver-sqlite svg tools translations webchannel
+USE_QT=		base declarative quick3d quicktimeline serialport \
+		shadertools sqldriver-sqlite svg tools translations websockets
 
 SHEBANG_GLOB=	*.pl *.py *.sh
-SHEBANG_FILES=	src/libs/qt-breakpad/qtbreakpadsymbols \
-		src/plugins/terminal/tests/* \
+SHEBANG_FILES=	src/plugins/terminal/tests/* \
 		src/plugins/terminal/tests/cursor/* \
 		tests/manual/distribution/elflint
 python_OLD_CMD+="/usr/bin/env python3.10"
@@ -42,9 +38,16 @@ CMAKE_ARGS+=	-DCMAKE_PREFIX_PATH:STRING="${LLVM_PREFIX};${PREFIX}"
 # - Prevent accidental use of devel/googletest headers, use bundled.
 CMAKE_ON=	CMAKE_DISABLE_FIND_PACKAGE_elfutils \
 		CMAKE_DISABLE_FIND_PACKAGE_Googletest
+# - Disable Go cmdbridge. Starting with 18.0.0, configure fails if Go is
+#   not installed and this is not explicitly disabled. Although this is
+#   an upstream regression, this could potentially be an option, but
+#   this functionality has not yet been explored.
+# - Disable the AppStatisticsPlugin for now, not implemented for FreeBSD.
 # - Disable precompiled headers for now, they are missing compile flags.
 # - Suppress installed yaml-cpp, use bundled.
-CMAKE_OFF=	BUILD_WITH_PCH \
+CMAKE_OFF=	BUILD_EXECUTABLE_CMDBRIDGE \
+		BUILD_PLUGIN_APPSTATISTICSMONITOR \
+		BUILD_WITH_PCH \
 		yaml-cpp_FOUND
 
 LDFLAGS+=	-lexecinfo
@@ -54,16 +57,22 @@ EXTRACT_AFTER_ARGS+=	--exclude '${DISTNAME}/src/shared/qbs'
 
 PLIST_SUB=		SHLIB_VER="${PORTVERSION}" \
 			SHLIB_SHVER="${PORTVERSION:C/\..*//}"
+.if defined(WITH_DEBUG)
+PLIST_SUB+=		DEBUG=""
+.else
+PLIST_SUB+=		DEBUG="@comment "
+.endif
 PORTDOCS=		*
 
-OPTIONS_DEFINE=		DOCS EXAMPLES QTWEBENGINE
-OPTIONS_DEFAULT=	DOCS EXAMPLES
+OPTIONS_DEFINE=		DOCS EXAMPLES LIBSECRET QTWEBENGINE
+OPTIONS_DEFAULT=	DOCS EXAMPLES LIBSECRET
 OPTIONS_DEFAULT_amd64=	QTWEBENGINE
 OPTIONS_DEFAULT_i386=	QTWEBENGINE
 OPTIONS_SUB=		yes
 
 DOCS_DESC=		Install the Qt6 api documentation
 EXAMPLES_DESC=		Install the Qt6 example projects
+LIBSECRET_DESC=		Libsecret keychain support in qtkeychain
 QTWEBENGINE_DESC=	Add dependency on qt6-webengine
 
 DOCS_USE=		QT=doc:run
@@ -71,18 +80,30 @@ DOCS_CMAKE_BOOL=	WITH_DOCS
 
 EXAMPLES_USE=		QT=examples:run
 
-QTWEBENGINE_USE=	qt=webengine
+LIBSECRET_LIB_DEPENDS=	libsecret-1.so:security/libsecret
+LIBSECRET_USES=		gettext-runtime gnome localbase:ldflags
+LIBSECRET_USE=		GNOME=glib20
+LIBSECRET_CMAKE_BOOL=	LIBSECRET_SUPPORT
+
+QTWEBENGINE_USE=	QT=positioning,webchannel,webengine
 QTWEBENGINE_CMAKE_BOOL=	BUILD_HELPVIEWERBACKEND_QTWEBENGINE
+QTWEBENGINE_CMAKE_BOOL_OFF=	CMAKE_DISABLE_FIND_PACKAGE_Qt6WebEngineWidgets
 
 # Documentation is excluded from the default build targets.
 do-build-DOCS-on:
-	${CMAKE_BIN} --build ${BUILD_WRKSRC} --target docs
+	${SETENVI} ${WRK_ENV} ${CONFIGURE_ENV} ${CMAKE_BIN} \
+		--build ${BUILD_WRKSRC} \
+		--target docs
 
 # This also means separate install steps for documentation.
 do-install-DOCS-on:
-	${CMAKE_BIN} --install ${BUILD_WRKSRC} --prefix ${STAGEDIR}${PREFIX} \
-	    --component qch_docs
-	${CMAKE_BIN} --install ${BUILD_WRKSRC} --prefix ${STAGEDIR}${PREFIX} \
-	    --component html_docs
+	${SETENVI} ${WRK_ENV} ${CONFIGURE_ENV} ${CMAKE_BIN} \
+		--install ${BUILD_WRKSRC} \
+		--prefix ${STAGEDIR}${PREFIX} \
+		--component qch_docs
+	${SETENVI} ${WRK_ENV} ${CONFIGURE_ENV} ${CMAKE_BIN} \
+		--install ${BUILD_WRKSRC} \
+		--prefix ${STAGEDIR}${PREFIX} \
+		--component html_docs
 
 .include <bsd.port.mk>

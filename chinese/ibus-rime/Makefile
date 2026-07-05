@@ -1,9 +1,8 @@
 PORTNAME=	ibus-rime
-DISTVERSION=	1.5.0
-PORTREVISION=	1
+DISTVERSION=	1.6.0
 CATEGORIES=	chinese
 
-MAINTAINER=	khng300@gmail.com
+MAINTAINER=	eric@camachat.org
 COMMENT=	IBus engine for Rime users
 WWW=		https://github.com/rime/ibus-rime/
 

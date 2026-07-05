@@ -18,7 +18,7 @@ LIB_DEPENDS=	libgtkglext-x11-1.0.so:x11-toolkits/gtkglext \
 USES=		gl gnome pkgconfig xorg
 USE_GITHUB=	yes
 USE_GL=		gl glu
-USE_GNOME=	cairo gdkpixbuf2 gtk20
+USE_GNOME=	cairo gdkpixbuf gtk20
 USE_XORG=	x11
 
 GH_ACCOUNT=	LSCAD
@@ -35,7 +35,7 @@ OPTIONS_DEFINE=	DOCS EXAMPLES
 
 .include <bsd.port.options.mk>
 
-.if ${OPSYS} == FreeBSD && ( ${OSVERSION} >= 1400091 || ( ${OSVERSION} >= 1302507 && ${OSVERSION} < 1400000 ))
+.if ${OPSYS} == FreeBSD
 CFLAGS+=	-Wno-error=incompatible-function-pointer-types
 .endif
 

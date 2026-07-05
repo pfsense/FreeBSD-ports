@@ -1,5 +1,5 @@
 PORTNAME=	libsbml
-PORTVERSION=	5.20.2
+PORTVERSION=	5.21.0
 DISTVERSIONPREFIX=	v
 CATEGORIES=	biology devel
 
@@ -12,9 +12,11 @@ WWW=		https://sbml.org/software/libsbml/ \
 LICENSE=	LGPL21
 LICENSE_FILE=	${WRKSRC}/COPYING.txt
 
-USES=		cmake:testing iconv:build pathfix
+USES=		cmake:testing iconv:build
 
 CMAKE_OFF=	EXIT_ON_ERROR \
+		LIBSBML_SKIP_SHARED_LIBRARY \
+		LIBSBML_SKIP_STATIC_LIBRARY \
 		LIBSBML_USE_STRICT_INCLUDES \
 		PYTHON_USE_API2_WARNINGS \
 		WITH_ALL_PACKAGES \
@@ -71,7 +73,6 @@ post-patch:
 	@${REINPLACE_CMD} -e 's|/usr/local|${LOCALBASE}|g' ${WRKSRC}/CMakeLists.txt
 
 post-install-EXAMPLES-on:
-	${MV} ${STAGEDIR}${DATADIR}/examples ${STAGEDIR}${EXAMPLESDIR}
-	${RMDIR} ${STAGEDIR}${DATADIR}
+	${MV} ${STAGEDIR}${DATADIR}examples ${STAGEDIR}${EXAMPLESDIR}
 
 .include <bsd.port.mk>

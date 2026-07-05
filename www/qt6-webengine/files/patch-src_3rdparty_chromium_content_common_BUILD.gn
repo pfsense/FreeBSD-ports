@@ -1,21 +1,35 @@
---- src/3rdparty/chromium/content/common/BUILD.gn.orig	2023-08-16 19:50:41 UTC
+--- src/3rdparty/chromium/content/common/BUILD.gn.orig	2025-10-02 00:36:39 UTC
 +++ src/3rdparty/chromium/content/common/BUILD.gn
-@@ -449,6 +449,9 @@ if (is_linux || is_chromeos) {
-     public = [ "set_process_title_linux.h" ]
-     sources = [ "set_process_title_linux.cc" ]
-     deps = [ "//base" ]
-+    if (is_bsd) {
-+      sources -= [ "set_process_title_linux.cc" ]
-+    }
+@@ -400,18 +400,27 @@ jumbo_source_set("common") {
    }
- }
  
-@@ -497,7 +500,7 @@ mojom("mojo_bindings") {
-   if (enable_ipc_logging) {
-     enabled_features += [ "ipc_logging" ]
-   }
--  if (is_linux || is_chromeos) {
-+  if (!is_bsd && (is_linux || is_chromeos)) {
-     enabled_features += [ "supports_thread_types" ]
-   }
-   if (use_clang_profiling_inside_sandbox) {
+   if (is_linux || is_chromeos) {
+-    sources += [
+-      "gpu_pre_sandbox_hook_linux.cc",
+-      "gpu_pre_sandbox_hook_linux.h",
+-    ]
++    if (is_bsd) {
++      sources += [
++        "gpu_pre_sandbox_hook_bsd.cc",
++        "gpu_pre_sandbox_hook_bsd.h",
++      ]
++    } else {
++      sources += [
++        "gpu_pre_sandbox_hook_linux.cc",
++        "gpu_pre_sandbox_hook_linux.h",
++      ]
++    }
+     public_deps += [ "//sandbox/policy" ]
+     deps += [
+       ":sandbox_support_linux",
+       "//media/gpu:buildflags",
+       "//sandbox/linux:sandbox_services",
+-      "//sandbox/linux:seccomp_bpf",
+       "//sandbox/policy:chromecast_sandbox_allowlist_buildflags",
+     ]
++    if (use_seccomp_bpf) {
++      deps += [ "//sandbox/linux:seccomp_bpf" ]
++    }
+     if (use_v4l2_codec) {
+       deps += [ "//media/gpu/v4l2" ]
+     }

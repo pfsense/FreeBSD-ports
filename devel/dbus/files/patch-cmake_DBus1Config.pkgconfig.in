@@ -1,6 +1,4 @@
-Fix location of pkgconfig directory on FreeBSD.
-
---- cmake/DBus1Config.pkgconfig.in.orig	2022-10-02 14:06:53 UTC
+--- cmake/DBus1Config.pkgconfig.in.orig	2025-02-27 16:29:06 UTC
 +++ cmake/DBus1Config.pkgconfig.in
 @@ -8,7 +8,7 @@
  # [1] This variable is not required if DBus1_LIBRARIES is added

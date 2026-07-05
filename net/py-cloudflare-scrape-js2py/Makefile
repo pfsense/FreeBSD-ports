@@ -1,10 +1,11 @@
 PORTNAME=	cloudflare-scrape-js2py
 DISTVERSIONPREFIX=	v
 DISTVERSION=	2.0.3
+PORTREVISION=	1
 CATEGORIES=	net python
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
-MAINTAINER=	tcberner@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Python module to bypass Cloudflare's anti-bot page using js2py #'
 WWW=		https://github.com/VeNoMouS/cloudflare-scrape-js2py
 

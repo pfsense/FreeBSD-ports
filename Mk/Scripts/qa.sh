@@ -80,6 +80,7 @@ shebangonefile() {
 	/usr/sbin/dtrace) ;;
 	/usr/bin/make) ;;
 	/usr/libexec/atf-sh) ;;
+	/usr/libexec/flua) ;;
 	*)
 		badinterp="${interp}"
 		;;
@@ -371,7 +372,6 @@ proxydeps_suggest_uses() {
 		${pkg} = "graphics/cairomm" -o \
 		${pkg} = "devel/dconf" -o \
 		${pkg} = "devel/gconf2" -o \
-		${pkg} = "devel/gconfmm26" -o \
 		${pkg} = "devel/glib20" -o \
 		${pkg} = "devel/glibmm" -o \
 		${pkg} = "audio/gsound" -o \
@@ -386,7 +386,6 @@ proxydeps_suggest_uses() {
 		${pkg} = "x11-toolkits/gtksourceviewmm3" -o \
 		${pkg} = "databases/libgda5" -o \
 		${pkg} = "databases/libgda5-ui" -o \
-		${pkg} = "databases/libgdamm5" -o \
 		${pkg} = "devel/libglade2" -o \
 		${pkg} = "graphics/libgnomecanvas" -o \
 		${pkg} = "x11/libgnomekbd" -o \
@@ -399,7 +398,6 @@ proxydeps_suggest_uses() {
 		${pkg} = "textproc/libxml++26" -o \
 		${pkg} = "textproc/libxml2" -o \
 		${pkg} = "textproc/libxslt" -o \
-		${pkg} = "x11-wm/metacity" -o \
 		${pkg} = "x11-toolkits/pango" -o \
 		${pkg} = "x11-toolkits/pangomm" -o \
 		${pkg} = "x11-toolkits/pangox-compat" -o \
@@ -410,12 +408,12 @@ proxydeps_suggest_uses() {
 	# grep LIB_DEPENDS= Mk/Uses/gnome.mk |sed -e 's|\(.*\)_LIB_DEPENDS.*:\(.*\)\/\(.*\)|[ "\1" = "\3" ] \|\| echo "elif [ \\${pkg} = \\\"\2/\3\\\" ]; then; warn \\\"you need USE_GNOME+=\1\\\""|'|sort|sh
 	elif [ ${pkg} = "databases/evolution-data-server" ]; then warn "you need USE_GNOME+=evolutiondataserver3"
 	elif [ ${pkg} = "graphics/gdk-pixbuf" ]; then warn "you need USE_GNOME+=gdkpixbuf"
-	elif [ ${pkg} = "graphics/gdk-pixbuf2" ]; then warn "you need USE_GNOME+=gdkpixbuf2"
+	elif [ ${pkg} = "graphics/gdk-pixbuf2" ]; then warn "you need USE_GNOME+=gdkpixbuf"
 	elif [ ${pkg} = "x11/gnome-desktop" ]; then warn "you need USE_GNOME+=gnomedesktop3"
 	elif [ ${pkg} = "devel/gobject-introspection" ]; then warn "you need USE_GNOME+=introspection"
 	elif [ ${pkg} = "graphics/libart_lgpl" ]; then warn "you need USE_GNOME+=libartlgpl2"
 	elif [ ${pkg} = "devel/libIDL" ]; then warn "you need USE_GNOME+=libidl"
-	elif [ ${pkg} = "x11-fm/nautilus" ]; then warn "you need USE_GNOME+=nautilus3"
+	elif [ ${pkg} = "x11-fm/nautilus" ]; then warn "you need USE_GNOME+=nautilus4"
 	elif [ ${pkg} = "graphics/librsvg2-rust" ]; then warn "you need USE_GNOME+=librsvg2"
 	# mate
 	# grep LIB_DEPENDS= Mk/Uses/mate.mk |sed -e 's|\(.*\)_LIB_DEPENDS.*:\(.*\)\/\(.*\)|elif [ ${pkg} = "\2/\3" ]; then warn "you need USE_MATE+=\1"|'
@@ -475,7 +473,6 @@ proxydeps_suggest_uses() {
 	elif [ ${pkg} = "games/libkdegames" ]; then warn "you need to use USE_KDE+=libkdegames"
 	elif [ ${pkg} = "misc/libkeduvocdocument" ]; then warn "you need to use USE_KDE+=libkeduvocdocument"
 	elif [ ${pkg} = "graphics/libkexiv2" ]; then warn "you need to use USE_KDE+=libkexiv2"
-	elif [ ${pkg} = "graphics/libkipi" ]; then warn "you need to use USE_KDE+=libkipi"
 	elif [ ${pkg} = "graphics/libksane" ]; then warn "you need to use USE_KDE+=libksane"
 	elif [ ${pkg} = "astro/marble" ]; then warn "you need to use USE_KDE+=marble"
 	elif [ ${pkg} = "graphics/okular" ]; then warn "you need to use USE_KDE+=okular"
@@ -561,6 +558,9 @@ proxydeps_suggest_uses() {
 	# Qt5
 	elif expr ${pkg} : '.*/qt5-.*' > /dev/null; then
 		warn "you need USES=qt:5 and USE_QT+=$(echo ${pkg} | sed -E 's|.*/qt5-||')"
+	# Qt6
+	elif expr ${pkg} : '.*/qt6-.*' > /dev/null; then
+		warn "you need USES=qt:6 and USE_QT+=$(echo ${pkg} | sed -E 's|.*/qt6-||')"
 	# MySQL
 	elif expr ${lib_file} : "${LOCALBASE}/lib/mysql/[^/]*$" > /dev/null; then
 		warn "you need USES+=mysql"
@@ -570,14 +570,11 @@ proxydeps_suggest_uses() {
 	# bdb
 	elif expr ${pkg} : "^databases/db[456]" > /dev/null; then
 		warn "you need USES+=bdb"
-	# fam/gamin
-	elif [ ${pkg} = "devel/fam" -o ${pkg} = "devel/gamin" ]; then
-		warn "you need USES+=fam"
 	# firebird
 	elif [ ${pkg} = "databases/firebird25-client" ]; then
 		warn "you need USES+=firebird"
 	# fuse
-	elif [ ${pkg} = "sysutils/fusefs-libs" ]; then
+	elif [ ${pkg} = "filesystems/fusefs-libs" ]; then
 		warn "you need USES+=fuse"
 	# gnustep
 	elif [ ${pkg} = "lang/gnustep-base" ]; then
@@ -623,7 +620,11 @@ proxydeps_suggest_uses() {
 	elif [ ${pkg} = "devel/readline" ]; then
 		warn "you need USES+=readline"
 	# ssl
+	# When updating this, please also update the versions list in
+	# bsd.default-versions.mk and ssl.mk!
 	elif [ ${pkg} = "security/openssl" -o ${pkg} = "security/openssl111" \
+	  -o ${pkg} = "security/openssl31" -o ${pkg} = "security/openssl32" \
+	  -o ${pkg} = "security/openssl33" \
 	  -o ${pkg} = "security/libressl" -o ${pkg} = "security/libressl-devel" \
 	  ]; then
 		warn "you need USES=ssl"
@@ -717,9 +718,9 @@ proxydeps() {
 		sed -e 's/^\.//')
 	EOT
 
-	# Check whether all files in LIB_DPEENDS are actually linked against
+	# Check whether all files in LIB_DEPENDS are actually linked against
 	for _library in ${WANTED_LIBRARIES} ; do
-		if ! listcontains ${_library} "${dep_lib_files}" ; then
+		if ! listcontains ${_library%%.so*}.so "${dep_lib_files}" ; then
 			warn "you might not need LIB_DEPENDS on ${_library}"
 		fi
 	done
@@ -1035,20 +1036,51 @@ reinplace()
 }
 
 prefixman() {
-	local manlist
-
-	manlist=$(find ${STAGEDIR}${PREFIX}/man -type f)
-	if [ -n "${manlist}" ]; then
+	if [ -d "${STAGEDIR}${PREFIX}/man" ]; then
 		warn "Installing man files in ${PREFIX}/man is no longer supported. Consider installing these files in ${PREFIX}/share/man instead."
-		ls -liTd ${manlist}
+		ls -liTd ${STAGEDIR}${PREFIX}/man
 	fi
 	return 0
+}
+
+pythonpackagedir() {
+	# Detects Python packages installing top-level directories like docs/, tests/,
+	# etc. into site-packages, which can cause conflicts between packages.
+
+	# Only check Python ports
+	[ -z "${USESPYTHON}" ] && return 0
+
+	# Only check if site-packages exists
+	[ -z "${PYTHONPREFIX_SITELIBDIR}" ] && return 0
+	[ ! -d "${STAGEDIR}${PYTHONPREFIX_SITELIBDIR}" ] && return 0
+
+	# List of directories that should not be installed in site-packages.
+	# This is a subset of setuptools.discovery.FlatLayoutPackageFinder.DEFAULT_EXCLUDE,
+	# focusing on directories commonly shipped by mistake that cause file conflicts.
+	local problematic_dirs="docs doc tests test examples benchmarks scripts tools util utils htmlcov tasks ci"
+	local rc=0
+
+	for dir in ${problematic_dirs}; do
+		if [ -d "${STAGEDIR}${PYTHONPREFIX_SITELIBDIR}/${dir}" ]; then
+			# Check if it's actually a top-level directory and not part of a package
+			# (e.g., mypackage/tests is OK, but tests/ at top level is not)
+			err "Python package installs top-level '${dir}/' directory in site-packages"
+			err "  Location: ${PYTHONPREFIX_SITELIBDIR#${PREFIX}/}/${dir}"
+			err "This causes file conflicts with other packages. Exclude it via pyproject.toml:"
+			err "  [tool.setuptools.packages.find]"
+			err "  exclude = [\"${dir}\", \"${dir}.*\"]"
+			err "See: https://setuptools.pypa.io/en/latest/userguide/package_discovery.html"
+			rc=1
+		fi
+	done
+
+	return ${rc}
 }
 
 checks="shebang symlinks paths stripped desktopfileutils sharedmimeinfo"
 checks="$checks suidfiles libtool libperl prefixvar baselibs terminfo"
 checks="$checks proxydeps sonames perlcore no_arch gemdeps gemfiledeps flavors"
-checks="$checks license depends_blacklist pkgmessage reinplace prefixman"
+checks="$checks license depends_blacklist pkgmessage reinplace prefixman pythonpackagedir"
 
 ret=0
 cd ${STAGEDIR} || exit 1

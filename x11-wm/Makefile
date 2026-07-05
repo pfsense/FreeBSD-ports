@@ -1,7 +1,7 @@
     COMMENT = X11 window managers
 
-    SUBDIR += afterstep
     SUBDIR += afterstep-stable
+    SUBDIR += afterstep1
     SUBDIR += amiwm
     SUBDIR += aphelia
     SUBDIR += awesome
@@ -56,7 +56,6 @@
     SUBDIR += jwm
     SUBDIR += kickshaw
     SUBDIR += korgwm
-    SUBDIR += kwinft
     SUBDIR += labwc
     SUBDIR += leftwm
     SUBDIR += libcompizconfig
@@ -66,14 +65,17 @@
     SUBDIR += lxqt
     SUBDIR += lxqt-panel
     SUBDIR += lxqt-session
+    SUBDIR += lxqt-wayland-session
     SUBDIR += lxsession
     SUBDIR += magpie
+    SUBDIR += mango
     SUBDIR += marco
     SUBDIR += mcwm
     SUBDIR += metacity
     SUBDIR += muffin
     SUBDIR += mutter
     SUBDIR += niri
+    SUBDIR += notion
     SUBDIR += nscde
     SUBDIR += obconf
     SUBDIR += obconf-qt
@@ -85,10 +87,9 @@
     SUBDIR += phoc
     SUBDIR += picom
     SUBDIR += piewm
-    SUBDIR += plasma5-kdecoration
-    SUBDIR += plasma5-kwin
     SUBDIR += plasma6-kdecoration
     SUBDIR += plasma6-kwin
+    SUBDIR += plasma6-kwin-x11
     SUBDIR += pwm
     SUBDIR += qtile
     SUBDIR += ratpoison
@@ -104,14 +105,15 @@
     SUBDIR += stumpwm
     SUBDIR += subtle
     SUBDIR += sway
-    SUBDIR += sway-devel
     SUBDIR += swayfx
+    SUBDIR += theseus-ship
     SUBDIR += tinywm
     SUBDIR += transset
     SUBDIR += twm
     SUBDIR += vtwm
     SUBDIR += wayfire
     SUBDIR += wayfire-plugins-extra
+    SUBDIR += wideriver
     SUBDIR += windowmaker
     SUBDIR += wlmaker
     SUBDIR += wm2

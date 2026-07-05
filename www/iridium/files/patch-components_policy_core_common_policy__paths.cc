@@ -1,16 +1,11 @@
---- components/policy/core/common/policy_paths.cc.orig	2023-10-21 11:51:27 UTC
+--- components/policy/core/common/policy_paths.cc.orig	2025-12-10 15:04:57 UTC
 +++ components/policy/core/common/policy_paths.cc
-@@ -15,9 +15,11 @@ namespace policy {
- #if BUILDFLAG(IS_POSIX) && !BUILDFLAG(IS_MAC)
- #if BUILDFLAG(GOOGLE_CHROME_BRANDING) || \
-     BUILDFLAG(GOOGLE_CHROME_FOR_TESTING_BRANDING)
--const char kPolicyPath[] = "/etc/iridium-browser/policies";
-+const char kPolicyPath[] = "/etc/iridium/policies";
+@@ -17,6 +17,8 @@ namespace policy {
+ const char kPolicyPath[] = "/etc/iridium-browser/policies";
+ #elif BUILDFLAG(GOOGLE_CHROME_FOR_TESTING_BRANDING)
+ const char kPolicyPath[] = "/etc/iridium-browser/policies";
 +#elif BUILDFLAG(IS_FREEBSD)
-+const char kPolicyPath[] = "/usr/local/etc/iridium/policies";
++const char kPolicyPath[] = "/usr/local/etc/iridium-browser/policies";
  #else
--const char kPolicyPath[] = "/etc/iridium-browser/policies";
-+const char kPolicyPath[] = "/etc/iridium/policies";
- #endif  // BUILDFLAG(GOOGLE_CHROME_BRANDING) || \
-         // BUILDFLAG(GOOGLE_CHROME_FOR_TESTING_BRANDING)
- #endif  // BUILDFLAG(IS_POSIX) && !BUILDFLAG(IS_MAC)
+ const char kPolicyPath[] = "/etc/iridium-browser/policies";
+ #endif  // BUILDFLAG(GOOGLE_CHROME_BRANDING)

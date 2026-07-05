@@ -1,10 +1,9 @@
 PORTNAME=	sops
 DISTVERSIONPREFIX=	v
-DISTVERSION=	3.7.3
-PORTREVISION=	16
+DISTVERSION=	3.12.2
 CATEGORIES=	security editors
 
-MAINTAINER=	dmgk@FreeBSD.org
+MAINTAINER=	bofh@FreeBSD.org
 COMMENT=	Editor of encrypted files that supports YAML, JSON and BINARY formats
 WWW=		https://github.com/mozilla/sops
 
@@ -16,7 +15,7 @@ GO_MODULE=	go.mozilla.org/sops/v3
 GO_TARGET=	./cmd/sops
 
 PLIST_FILES=	bin/sops
-PORTDOCS=	README.rst CHANGELOG.rst
+PORTDOCS=	CHANGELOG.rst README.rst
 
 OPTIONS_DEFINE=	DOCS
 

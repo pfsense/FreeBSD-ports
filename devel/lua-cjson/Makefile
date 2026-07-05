@@ -1,19 +1,21 @@
 PORTNAME=	cjson
 PORTVERSION=	2.1.0
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	devel
-MASTER_SITES=	http://www.kyne.com.au/~mark/software/download/
+MASTER_SITES=	http://www.kyne.au/~mark/software/download/
 PKGNAMEPREFIX=	${LUA_PKGNAMEPREFIX}
 DISTNAME=	lua-cjson-${PORTVERSION}
 
 MAINTAINER=	osa@FreeBSD.org
 COMMENT=	Fast JSON parsing and encoding support for Lua
-WWW=		https://www.kyne.com.au/~mark/software/lua-cjson.php
+WWW=		https://www.kyne.au/~mark/software/lua-cjson.php
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
 USES=		lua:module
+
+CONFLICTS_INSTALL=	lua[0-9][0-9]-cjson-openresty
 
 MAKE_ARGS=	LUA_VERSION=${LUA_VER}
 

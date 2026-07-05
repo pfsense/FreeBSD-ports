@@ -1,10 +1,11 @@
 PORTNAME=	i3bar-river
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.1.7
+DISTVERSION=	1.1.0
+PORTREVISION=	12
 CATEGORIES=	x11 wayland
 
-MAINTAINER=	jbeich@FreeBSD.org
-COMMENT=	Port of i3bar for river (and Hyprland)
+MAINTAINER=	ports@FreeBSD.org
+COMMENT=	Port of i3bar for wlroots-based compositors
 WWW=		https://github.com/MaxVerevkin/i3bar-river
 
 LICENSE=	GPLv3

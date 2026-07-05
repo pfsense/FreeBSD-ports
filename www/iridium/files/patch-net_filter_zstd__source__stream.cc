@@ -1,8 +1,8 @@
---- net/filter/zstd_source_stream.cc.orig	2023-10-21 11:51:27 UTC
+--- net/filter/zstd_source_stream.cc.orig	2025-12-10 15:04:57 UTC
 +++ net/filter/zstd_source_stream.cc
-@@ -6,6 +6,7 @@
- 
+@@ -7,6 +7,7 @@
  #include <algorithm>
+ #include <unordered_map>
  #include <utility>
 +#include <unordered_map>
  

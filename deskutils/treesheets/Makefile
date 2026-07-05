@@ -1,5 +1,5 @@
 PORTNAME=	treesheets
-DISTVERSION=	1.0.20240324
+DISTVERSION=	3033
 CATEGORIES=	deskutils
 
 MAINTAINER=	eduardo@FreeBSD.org
@@ -12,18 +12,20 @@ LICENSE_FILE=	${WRKSRC}/ZLIB_LICENSE.txt
 USES=		cmake desktop-file-utils shared-mime-info
 USE_GITHUB=	yes
 GH_ACCOUNT=	aardappel
-GH_TAGNAME=	8406978550
 USE_WX=		3.2
-
-PORTSCOUT=	ignore:1 # upstream uses CI run ids as releases
+GH_TUPLE=	aardappel:lobster:v2026.1:external/lobster-src
 
 PORTDATA=	images scripts
-PORTDOCS=	docs readme.html
+PORTDOCS=	docs readme-ko.html readme-zh_CN.html readme.html
 PORTEXAMPLES=	examples
 
 OPTIONS_DEFINE=	DOCS EXAMPLES NLS
 OPTIONS_SUB=	yes
 
 NLS_USES=	gettext-tools
+
+post-extract:
+	${MKDIR} ${WRKDIR}/.build/_deps
+	${LN} -s ${WRKSRC}/lobster-src ${WRKDIR}/.build/_deps/lobster-src
 
 .include <bsd.port.mk>

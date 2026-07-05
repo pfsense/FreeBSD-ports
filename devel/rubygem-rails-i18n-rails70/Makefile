@@ -1,5 +1,5 @@
 PORTNAME=	rails-i18n
-PORTVERSION=	7.0.9
+PORTVERSION=	7.0.10
 CATEGORIES=	devel rubygems
 MASTER_SITES=	RG
 PKGNAMESUFFIX=	-rails70
@@ -17,5 +17,7 @@ RUN_DEPENDS=	rubygem-i18n>=0.7,2<2,2:devel/rubygem-i18n \
 USES=		gem
 
 NO_ARCH=	yes
+
+PORTSCOUT=	limit:^7\.
 
 .include <bsd.port.mk>

@@ -1,37 +1,37 @@
 PORTNAME=	ccid
-PORTVERSION=	1.5.5
+PORTVERSION=	1.7.1
 CATEGORIES=	devel
 MASTER_SITES=	https://ccid.apdu.fr/files/
+PKGNAMEPREFIX=	lib
 
-MAINTAINER=	ports@FreeBSD.org
-COMMENT=	Generic driver for USB CCID and ICCD
-WWW=		https://ccid.apdu.fr/
+MAINTAINER=	sunpoet@FreeBSD.org
+COMMENT=	Generic USB CCID and ICCD driver
+WWW=		https://ccid.apdu.fr/ \
+		https://github.com/LudovicRousseau/CCID
 
 LICENSE=	LGPL21
 LICENSE_FILE=	${WRKSRC}/COPYING
 
 LIB_DEPENDS=	libpcsclite.so:devel/pcsc-lite
 
-USES=		perl5 pkgconfig tar:bzip2
-USE_LDCONFIG=	yes
+USES=		meson perl5 pkgconfig tar:xz
 USE_PERL5=	build
+LDFLAGS+=      -lpthread
 
-GNU_CONFIGURE=	yes
-CONFIGURE_ARGS=	--enable-usbdropdir=${PREFIX}/lib/pcsc/drivers \
-		--enable-ccidtwindir=${PREFIX}/lib/pcsc/drivers/serial
-
-INSTALL_TARGET=	install-strip
-
-PLIST_FILES=	bin/RSA_SecurID_getpasswd \
-		lib/pcsc/drivers/ifd-ccid.bundle/Contents/FreeBSD/libccid.so \
-		lib/pcsc/drivers/ifd-ccid.bundle/Contents/Info.plist \
-		share/man/man1/RSA_SecurID_getpasswd.1.gz
+MESON_FALSE=	class \
+		composite-as-multislot \
+		embedded \
+		os_log \
+		serial \
+		udev-rules \
+		zlp
+MESON_TRUE=	enable-extras \
+		pcsclite
 
 post-install:
-	${INSTALL_PROGRAM} ${WRKSRC}/contrib/RSA_SecurID/RSA_SecurID_getpasswd \
-		${STAGEDIR}${PREFIX}/bin
-	${INSTALL_MAN} ${WRKSRC}/contrib/RSA_SecurID/RSA_SecurID_getpasswd.1 \
-		${STAGEDIR}${PREFIX}/share/man/man1
-	${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/pcsc/drivers/ifd-ccid.bundle/Contents/FreeBSD/libccid.so
+	${INSTALL_PROGRAM} ${WRKSRC}/_build/Kobil_mIDentity_switch ${STAGEDIR}${PREFIX}/bin
+	${INSTALL_PROGRAM} ${WRKSRC}/_build/RSA_SecurID_getpasswd ${STAGEDIR}${PREFIX}/bin
+	${INSTALL_MAN} ${WRKSRC}/contrib/RSA_SecurID/RSA_SecurID_getpasswd.1 ${STAGEDIR}${PREFIX}/share/man/man1
+	${INSTALL_MAN} ${WRKSRC}/contrib/Kobil_mIDentity_switch/Kobil_mIDentity_switch.8 ${STAGEDIR}${PREFIX}/share/man/man8
 
 .include <bsd.port.mk>

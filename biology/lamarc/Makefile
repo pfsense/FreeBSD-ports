@@ -1,24 +1,24 @@
 PORTNAME=	lamarc
 PORTVERSION=	2.1.8
 DISTVERSIONSUFFIX=	-src
-PORTREVISION=	1
+PORTREVISION=	2
 PORTEPOCH=	1
 CATEGORIES=	biology
 MASTER_SITES=	http://evolution.genetics.washington.edu/lamarc/download/
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	hayzam@alchemilla.io
 COMMENT=	Package of programs for computing population parameters
 WWW=		https://evolution.genetics.washington.edu/lamarc/
 
 LICENSE=	APACHE20
-
-BROKEN_FreeBSD_14=	fails to compile: no matching function for call to 'make_pair'
 
 USE_CXXSTD=	c++98
 
 GNU_CONFIGURE=	yes
 
 WRKSRC=		${WRKDIR}/${DISTNAME:S,${DISTVERSIONSUFFIX},,}
+
+CXXFLAGS+=	-Wno-unused-parameter -Wno-mismatched-tags
 
 PLIST_FILES=	bin/${PORTNAME}
 PORTDOCS=	*

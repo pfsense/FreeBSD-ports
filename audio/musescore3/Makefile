@@ -1,7 +1,7 @@
 PORTNAME=	${GH_PROJECT:tl}3
 DISTVERSIONPREFIX=	v
 DISTVERSION=	3.6.2
-PORTREVISION=	1
+PORTREVISION=	3
 CATEGORIES=	audio
 
 MAINTAINER=	adridg@FreeBSD.org
@@ -86,4 +86,3 @@ CXXFLAGS+=	-Wno-inconsistent-missing-override
 .endif
 
 .include <bsd.port.post.mk>
-

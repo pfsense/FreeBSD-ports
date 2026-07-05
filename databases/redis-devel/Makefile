@@ -1,28 +1,33 @@
 PORTNAME=	redis
-DISTVERSION=	7.2.4.20240229
-PORTREVISION=	1
+DISTVERSION=	8.2.2.20251031
 CATEGORIES=	databases
 PKGNAMESUFFIX=	-devel
 
-MAINTAINER=	yasu@FreeBSD.org
+MAINTAINER=	bofh@freebsd.org
 COMMENT=	Persistent key-value database with built-in net interface
 WWW=		https://redis.io/
 
-LICENSE=	BSD3CLAUSE
-LICENSE_FILE=	${WRKSRC}/COPYING
+LICENSE=	AGPLv3 RSALv2 SSPLv1
+LICENSE_COMB=	dual
+LICENSE_NAME_RSALv2=	Redis Source Available License v2
+LICENSE_NAME_SSPLv1=	Server Side Public License v1
+LICENSE_FILE=	${WRKSRC}/LICENSE.txt
+LICENSE_PERMS_RSALv2=	dist-mirror dist-sell pkg-mirror pkg-sell auto-accept
+LICENSE_PERMS_SSPLv1=	dist-mirror dist-sell pkg-mirror pkg-sell auto-accept
 
-USES+=		compiler:c11 cpe gmake tcl:test
+USES=		compiler:c11 cpe gmake tcl:test pkgconfig
 CPE_VENDOR=	redislabs
 USE_GITHUB=	yes
-GH_TAGNAME=	f17381a38
+GH_TAGNAME=	b5f106110
 USE_RC_SUBR=	redis sentinel
 
 MAKE_ENV=	OPTIMIZATION= \
 		V=yo
 
-LDFLAGS+=	-lpthread -lm -lexecinfo
+CFLAGS+=	-Wno-deprecated-declarations
+LDFLAGS+=	-L/usr/lib -lexecinfo
 
-CONFLICTS_INSTALL=	redis redis6 redis62 redis70 # etc/rc.d/redis
+CONFLICTS_INSTALL=	redis redis62 redis72 redis74
 
 PORTSCOUT=	ignore:1
 SUB_FILES=	pkg-message
@@ -60,7 +65,7 @@ REDIS_RUNDIR?=	/var/run/redis
 REDIS_LOGDIR?=	/var/log/redis
 
 post-patch-JEMALLOC-on:
-	@${REINPLACE_CMD} '72s!Linux!FreeBSD!g' ${WRKSRC}/src/Makefile
+	@${REINPLACE_CMD} '78s!Linux!FreeBSD!g' ${WRKSRC}/src/Makefile
 
 post-build:
 	${SED} ${SUB_LIST:S/$/!g/:S/^/ -e s!%%/:S/=/%%!/} \

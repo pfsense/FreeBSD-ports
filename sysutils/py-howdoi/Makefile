@@ -1,11 +1,11 @@
 PORTNAME=	howdoi
 PORTVERSION=	2.0.20
-PORTREVISION=	1
+PORTREVISION=	6
 CATEGORIES=	sysutils python
 MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
-MAINTAINER=	DtxdF@disroot.org
+MAINTAINER=	dtxdf@FreeBSD.org
 COMMENT=	Instant coding answers via the command line
 WWW=		https://github.com/gleitz/howdoi
 

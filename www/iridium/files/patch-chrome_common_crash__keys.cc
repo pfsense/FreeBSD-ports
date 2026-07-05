@@ -1,23 +1,28 @@
---- chrome/common/crash_keys.cc.orig	2023-11-22 14:00:11 UTC
+--- chrome/common/crash_keys.cc.orig	2025-12-10 15:04:57 UTC
 +++ chrome/common/crash_keys.cc
-@@ -32,20 +32,10 @@ namespace crash_keys {
- namespace {
+@@ -51,7 +51,9 @@ class CrashKeyWithName {
+   ~CrashKeyWithName() = delete;
  
- // A convenient wrapper around a crash key and its name.
--//
--// The CrashKey contract requires that CrashKeyStrings are never
--// moved, copied, or deleted (see
--// third_party/crashpad/crashpad/client/annotation.h); since this class holds
--// a CrashKeyString, it likewise cannot be moved, copied, or deleted.
- class CrashKeyWithName {
-  public:
-   explicit CrashKeyWithName(std::string name)
-       : name_(std::move(name)), crash_key_(name_.c_str()) {}
--  CrashKeyWithName(const CrashKeyWithName&) = delete;
--  CrashKeyWithName& operator=(const CrashKeyWithName&) = delete;
--  CrashKeyWithName(CrashKeyWithName&&) = delete;
--  CrashKeyWithName& operator=(CrashKeyWithName&&) = delete;
--  ~CrashKeyWithName() = delete;
- 
+   std::string_view Name() const { return name_; }
++#if BUILDFLAG(USE_CRASHPAD_ANNOTATION)
+   std::string_view Value() const { return crash_key_.value(); }
++#endif
    void Clear() { crash_key_.Clear(); }
-   void Set(base::StringPiece value) { crash_key_.Set(value); }
+   void Set(std::string_view value) { crash_key_.Set(value); }
+ 
+@@ -195,6 +197,7 @@ void AllocateCrashKeyInBrowserAndChildren(std::string_
+   GetCommandLineStringAnnotations().emplace_back(std::string(key)).Set(value);
+ }
+ 
++#if BUILDFLAG(USE_CRASHPAD_ANNOTATION)
+ void AppendStringAnnotationsCommandLineSwitch(base::CommandLine* command_line) {
+   std::string string_annotations;
+   for (const auto& crash_key : GetCommandLineStringAnnotations()) {
+@@ -209,6 +212,7 @@ void AppendStringAnnotationsCommandLineSwitch(base::Co
+   }
+   command_line->AppendSwitchASCII(kStringAnnotationsSwitch, string_annotations);
+ }
++#endif
+ 
+ void SetCrashKeysFromCommandLine(const base::CommandLine& command_line) {
+   SetStringAnnotations(command_line);

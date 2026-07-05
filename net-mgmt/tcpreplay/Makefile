@@ -1,15 +1,15 @@
 PORTNAME=	tcpreplay
-DISTVERSION=	4.4.4
+DISTVERSION=	4.5.2
 CATEGORIES=	net-mgmt
 MASTER_SITES=	https://github.com/appneta/${PORTNAME}/releases/download/v${DISTVERSION}/
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	mew14930xvi@inbox.lv
 COMMENT=	Tool to replay saved packet capture files
 WWW=		https://github.com/appneta/tcpreplay
 
 LICENSE=	GPLv3
+LICENSE_FILE=	${WRKSRC}/docs/LICENSE
 
-BUILD_DEPENDS=	pcapnav-config:net/libpcapnav
 LIB_DEPENDS=	libdnet.so:net/libdnet \
 		libopts.so:devel/autogen
 
@@ -17,24 +17,21 @@ USES=		cpe gmake libtool pkgconfig tar:xz
 CPE_VENDOR=	broadcom
 
 GNU_CONFIGURE=	yes
-GNU_CONFIGURE_MANPREFIX=	${PREFIX}/share
 # libopts options are required when using autogen
 CONFIGURE_ARGS=	--disable-libopts-install \
-		--disable-local-libopts \
-		--program-transform-name='s|.*\(tcp.*\)|\1|' \
-		--with-pcapnav-config=${LOCALBASE}/bin/pcapnav-config
+		--disable-local-libopts
 
 TEST_TARGET=	test
 
-OPTIONS_DEFAULT=	LIBPCAP_BASE
-OPTIONS_SINGLE=		LIBPCAP
-OPTIONS_SINGLE_LIBPCAP=	LIBPCAP_BASE LIBPCAP_PORTS
+OPTIONS_DEFINE=		LIBPCAP_PORTS
+LIBPCAP_PORTS_DESC=	Build with net/libpcap instead of from the base OS
 
-LIBPCAP_BASE_DESC=	Build with libpcap from the base OS
-LIBPCAP_PORTS_DESC=	Build with net/libpcap
-
-LIBPCAP_BASE_CONFIGURE_ON=	--with-libpcap=/usr/lib
-# needs .so version (see: 262976)
+# needs .so version (libpcap.so:net/libpcap uses libpcap from the base system)
 LIBPCAP_PORTS_LIB_DEPENDS=	libpcap.so.1:net/libpcap
+LIBPCAP_PORTS_CONFIGURE_OFF=	--with-libpcap=/usr/lib
+
+post-patch:
+	@${REINPLACE_CMD} -e '/make test/s|make|${MAKE_CMD}|' \
+		${WRKSRC}/Makefile.in
 
 .include <bsd.port.mk>

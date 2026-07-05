@@ -1,5 +1,5 @@
 PORTNAME=	ipxe
-DISTVERSION=	g20230822
+DISTVERSION=	g20260310
 PORTEPOCH=	1
 CATEGORIES=	net
 
@@ -19,7 +19,7 @@ USES=		gmake perl5 shebangfix
 USE_BINUTILS=	yes
 USE_GCC=	yes:build
 USE_GITHUB=	yes
-GH_TAGNAME=	9e99a55b317f5da6
+GH_TAGNAME=	013a4a93dff336a180e2c9fd544537aa30380957
 USE_PERL5=	build
 MAKE_ARGS=	AR=${AR} \
 		ARCH=${ARCH:S/amd64/i386/} \
@@ -68,7 +68,7 @@ OPTIONS_DEFAULT=	EFI ISO
 EFI_DESC=	Create EFI images
 ISO_DESC=	Create bootable CD image
 
-EFI_BUILD_DEPENDS=	mformat:emulators/mtools
+EFI_BUILD_DEPENDS=	mformat:filesystems/mtools
 _EFI_ARCHS=		${ARCH:Mamd64:S/amd64/x86_64/} i386
 _EFI_TARGETS=		ipxe snp snponly
 .for _arch in ${_EFI_ARCHS}
@@ -78,7 +78,7 @@ EFI_PLIST_FILES+=	${DATADIR}/${_target}.efi-${_arch}
 EFI_PLIST_FILES+=	${DATADIR}/ipxe.efi-${_arch}.usb
 .endfor
 
-ISO_BUILD_DEPENDS=	mkisofs:sysutils/cdrtools
+ISO_BUILD_DEPENDS=	xorriso:sysutils/xorriso
 ISO_MAKE_ARGS=		ISOLINUX_BIN="${WRKSRC}/isolinux.bin" \
 			LDLINUX_C32="${LOCALBASE}/share/syslinux/bios/com32/elflink/ldlinux/ldlinux.c32"
 ISO_ALL_TARGET=		bin/ipxe.iso

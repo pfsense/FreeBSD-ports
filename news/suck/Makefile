@@ -1,5 +1,5 @@
 PORTNAME=	suck
-PORTVERSION=	4.3.4
+PORTVERSION=	4.3.5
 CATEGORIES=	news
 PKGNAMESUFFIX?=	${CNEWS_SUFFIX}${PKGNAMESUFFIX2}
 
@@ -14,6 +14,7 @@ CONFLICTS?=	suckblow-1.*
 USES=		autoreconf gmake shebangfix
 SHEBANG_FILES=	sample/post_filter.pl
 GNU_CONFIGURE=	yes
+CONFIGURE_ARGS=	--with-inn-lib=${PREFIX}/lib
 GNU_CONFIGURE_MANPREFIX=	${PREFIX}/share
 MAKE_ENV=	CHKHISTORY=chkhistory_db.o
 USE_GITHUB=	yes

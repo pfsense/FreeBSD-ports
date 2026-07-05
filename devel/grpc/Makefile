@@ -1,5 +1,6 @@
 PORTNAME=	grpc
-PORTVERSION=	1.62.1
+PORTVERSION=	1.78.0
+PORTREVISION=	1
 DISTVERSIONPREFIX=	v
 PORTEPOCH=	2
 CATEGORIES=	devel
@@ -12,7 +13,8 @@ WWW=		https://grpc.io/ \
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-BUILD_DEPENDS=	${LOCALBASE}/include/xxhash.h:devel/xxhash
+BUILD_DEPENDS=	abseil>=20240116.0:devel/abseil \
+		xxhash>=0:devel/xxhash
 LIB_DEPENDS=	libabsl_base.so:devel/abseil \
 		libbenchmark.so:devel/benchmark \
 		libcares.so:dns/c-ares \
@@ -21,19 +23,17 @@ LIB_DEPENDS=	libabsl_base.so:devel/abseil \
 
 USES=		cmake compiler:c++17-lang cpe localbase:ldflags pkgconfig ssl
 
-USE_GITHUB=	yes
-GH_TUPLE=	census-instrumentation:opencensus-proto:v0.4.1:census_instrumentation_opencensus_proto/third_party/opencensus-proto/src \
-		cncf:xds:91a88dc:cncf_xds/third_party/xds
-
 CMAKE_ARGS=	-DCMAKE_CXX_STANDARD=17 \
 		-DgRPC_ABSL_PROVIDER=package \
 		-DgRPC_BENCHMARK_PROVIDER=package \
 		-DgRPC_CARES_PROVIDER=package \
+		-DgRPC_OPENTELEMETRY_PROVIDER=package \
 		-DgRPC_PROTOBUF_PROVIDER=package \
 		-DgRPC_RE2_PROVIDER=package \
 		-DgRPC_SSL_PROVIDER=package \
 		-DgRPC_ZLIB_PROVIDER=package
-CMAKE_OFF=	gRPC_BUILD_TESTS \
+CMAKE_OFF=	CMAKE_CXX_EXTENSIONS \
+		gRPC_BUILD_TESTS \
 		gRPC_DOWNLOAD_ARCHIVES
 CMAKE_ON=	BUILD_SHARED_LIBS \
 		gRPC_BUILD_CODEGEN \
@@ -43,27 +43,56 @@ CMAKE_ON=	BUILD_SHARED_LIBS \
 		gRPC_BUILD_GRPC_OBJECTIVE_C_PLUGIN \
 		gRPC_BUILD_GRPC_PHP_PLUGIN \
 		gRPC_BUILD_GRPC_PYTHON_PLUGIN \
-		gRPC_BUILD_GRPC_RUBY_PLUGIN
+		gRPC_BUILD_GRPC_RUBY_PLUGIN \
+		gRPC_INSTALL
 USE_CSTD=	c11
 USE_CXXSTD=	c++17
 USE_LDCONFIG=	yes
 
-PLIST_SUB=	SHLIB_MAJOR=${PORTVERSION:R} \
-		SHLIB_MINOR=${PORTVERSION:E}
+PLIST_SUB=	PORTVERSION=${PORTVERSION} \
+		SHLIB_VER=${PORTVERSION:R}
 
 CONFLICTS_INSTALL=	grpc[0-9][0-9][0-9]
 
-post-patch:
+USE_GITHUB=	yes
+GH_TUPLE=	envoyproxy:data-plane-api:84e8436:envoyproxy_data_plane_api/third_party/envoy-api \
+		googleapis:googleapis:4ed62e4:googleapis_googleapis/third_party/googleapis \
+		census-instrumentation:opencensus-proto:1664cc9:census_instrumentation_opencensus_proto/third_party/opencensus-proto \
+		bufbuild:protoc-gen-validate:v1.3.0:bufbuild_protoc_gen_validate/third_party/protoc-gen-validate \
+		cncf:xds:dba9d58:cncf_xds/third_party/xds
+
+OPTIONS_DEFINE=	OPENTELEMETRY
+OPTIONS_SUB=	yes
+OPENTELEMETRY_DESC=	Build grpcpp_otel_plugin
+
+OPENTELEMETRY_CMAKE_BOOL=	gRPC_BUILD_GRPCPP_OTEL_PLUGIN
+OPENTELEMETRY_LIB_DEPENDS=	libopentelemetry_common.so:devel/opentelemetry-cpp
+
 # Clean up bundled libraries
+.if !defined(MAINTAINER_MODE)
+EXTRACT_AFTER_ARGS=	--exclude ${DISTNAME}/third_party/abseil-cpp/ \
+			--exclude ${DISTNAME}/third_party/benchmark/ \
+			--exclude ${DISTNAME}/third_party/boringssl-with-bazel/ \
+			--exclude ${DISTNAME}/third_party/cares/ \
+			--exclude ${DISTNAME}/third_party/protobuf/ \
+			--exclude ${DISTNAME}/third_party/re2/ \
+			--exclude ${DISTNAME}/third_party/upb/ \
+			--exclude ${DISTNAME}/third_party/utf8_range/ \
+			--exclude ${DISTNAME}/third_party/xxhash/ \
+			--exclude ${DISTNAME}/third_party/zlib/ \
+			--no-same-owner --no-same-permissions
+.else
+post-patch:
 	@${RM} -r ${WRKSRC}/third_party/abseil-cpp/
 	@${RM} -r ${WRKSRC}/third_party/benchmark/
 	@${RM} -r ${WRKSRC}/third_party/boringssl-with-bazel/
 	@${RM} -r ${WRKSRC}/third_party/cares/
 	@${RM} -r ${WRKSRC}/third_party/protobuf/
 	@${RM} -r ${WRKSRC}/third_party/re2/
-	#@${RM} -r ${WRKSRC}/third_party/upb/
-	#@${RM} -r ${WRKSRC}/third_party/utf8_range/
+	@${RM} -r ${WRKSRC}/third_party/upb/
+	@${RM} -r ${WRKSRC}/third_party/utf8_range/
 	@${RM} -r ${WRKSRC}/third_party/xxhash/
 	@${RM} -r ${WRKSRC}/third_party/zlib/
+.endif
 
 .include <bsd.port.mk>

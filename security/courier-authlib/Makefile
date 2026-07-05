@@ -1,12 +1,8 @@
 PORTNAME=	courier-authlib
-PORTVERSION=	0.72.1
+PORTVERSION=	0.72.7
 CATEGORIES?=	security mail
 .if defined(PKGNAMESUFFIX)
 MASTER_SITES=	SF/courier/authlib/${PORTVERSION}
-.else
-MASTER_SITES=	# empty
-DISTFILES=	# empty
-EXTRACT_ONLY=	# empty
 .endif
 
 MAINTAINER=	madpilot@FreeBSD.org
@@ -18,8 +14,7 @@ CONFLICTS=	courier-0.45*
 .if !defined(PKGNAMESUFFIX)
 RUN_DEPENDS=	courierauthconfig:security/courier-authlib-base
 
-NO_BUILD=	yes
-NO_INSTALL=	yes
+USES=		metaport
 PATCHDIR=	/dev/null
 
 OPTIONS_DEFINE+=	GDBM
@@ -27,6 +22,9 @@ OPTIONS_DEFINE+=	GDBM
 .include "${.CURDIR}/Makefile.opt"
 
 .else	# !defined(PKGNAMESUFFIX)
+
+LICENSE=	GPLv3
+LICENSE_FILE=	${WRKSRC}/COPYING.GPL
 
 LIB_DEPENDS+=	libidn2.so:dns/libidn2 \
 		libltdl.so:devel/libltdl \

@@ -1,6 +1,6 @@
 PORTNAME=	netradiant
 PORTVERSION=	20150621
-PORTREVISION=	7
+PORTREVISION=	8
 CATEGORIES=	games cad
 MASTER_SITES=	http://ingar.intranifty.net/gtkradiant/files/ LOCAL/danfe \
 		http://ingar.intranifty.net/gtkradiant/files/gamepacks/:gp
@@ -26,7 +26,7 @@ LIB_DEPENDS=	libpng.so:graphics/png \
 USES=		compiler:c++11-lang gl gmake gnome jpeg localbase:ldflags \
 		pkgconfig tar:xz xorg
 USE_GL=		gl glu
-USE_GNOME=	atk cairo gdkpixbuf2 glib20 gtk20 libxml2 pango pangox-compat
+USE_GNOME=	atk cairo gdkpixbuf glib20 gtk20 libxml2 pango pangox-compat
 USE_XORG=	ice sm x11 xmu xt
 MAKE_ENV=	BUILD=release DOWNLOAD_GAMEPACKS=no EXE=${ARCH} \
 		RADIANT_ABOUTMSG="For ${OPSYS} ${OSREL} (${ARCH})"

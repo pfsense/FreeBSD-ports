@@ -12,8 +12,11 @@ LIB_DEPENDS=	libxkbcommon.so:x11/libxkbcommon
 USES=		cmake compiler:c++17-lang gl pkgconfig python \
 		qt-dist:6
 USE_GL=		opengl
-USE_QT=		base languageserver shadertools:build
 USE_LDCONFIG=	${PREFIX}/${QT_LIBDIR_REL}
+USE_QT=		base svg \
+		languageserver:build shadertools:build
+
+CMAKE_ON=	CMAKE_DISABLE_FIND_PACKAGE_LTTngUST
 
 .include <bsd.port.options.mk>
 
@@ -23,14 +26,12 @@ PLIST_SUB+=	QML_JIT=""
 PLIST_SUB+=	QML_JIT="@comment "
 .endif
 
-# TODO: do this cleaner
 post-install:
-	${RM} -vr ${STAGEDIR}${PREFIX}/${QT_LIBDIR_REL}/cmake
-	# Install symlinks for user-facing tools
-	${REINPLACE_CMD} -e "s#^#${STAGEDIR}#" -e "s# # ${STAGEDIR}#" \
-		${WRKDIR}/.build/user_facing_tool_links.txt
-	while read t; do \
-		${RLN} $$t; \
-	done <${WRKDIR}/.build/user_facing_tool_links.txt
+# Install symlinks for user-facing tools
+	while read line; do \
+		source="$$(${ECHO_CMD} $${line} | ${AWK} '{print $$1}')"; \
+		target="${STAGEDIR}${PREFIX}/$$(${ECHO_CMD} $${line} | ${AWK} '{print $$2}')"; \
+		${RLN} $${source} $${target}; \
+	done <${BUILD_WRKSRC}/user_facing_tool_links.txt
 
 .include <bsd.port.mk>

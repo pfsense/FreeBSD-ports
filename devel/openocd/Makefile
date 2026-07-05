@@ -1,6 +1,6 @@
 PORTNAME=	openocd
 DISTVERSION=	0.12.0
-PORTREVISION=	2
+PORTREVISION=	5
 CATEGORIES=	devel
 MASTER_SITES=	SF
 
@@ -11,14 +11,12 @@ WWW=		https://openocd.sf.net
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-# Note: A local patch would be feasible but upstream has removed support for the offending feature
-#       implementation since their last release (0.12.0). As such, this will no longer be relevant
-#       from 0.13.0 onwards. Hence we're not addressing this "limitation" right now.
-BROKEN_aarch64=	fails to build: src/target/nds32_tlb.h:25:2: error: expected identifier PAGE_SIZE_4K = 0
-
 USES=		gmake libtool makeinfo pkgconfig tar:bzip2
 GNU_CONFIGURE=	yes
 GNU_CONFIGURE_MANPREFIX=	${PREFIX}/share
+
+# Required to make OpenOCD's internal libjaylink work
+CONFIGURE_ENV+=	libusb_CFLAGS=" " libusb_LIBS="-lusb"
 
 CFLAGS+=	-Wno-error=strict-prototypes \
 		-Wno-error=unused-but-set-parameter \
@@ -29,14 +27,15 @@ INFO=		openocd
 # Note: Some adapters are not supported or do not currently work on FreeBSD.
 #       These have been consciously left out of this port entirely.
 
-OPTIONS_DEFAULT=	JIMTCL_INTERNAL LIBUSB LIBHIDAPI LIBFTDI SERIAL
+OPTIONS_DEFAULT=	BITBANG_REMOTE JIMTCL_INTERNAL LIBUSB LIBHIDAPI LIBFTDI SERIAL
 OPTIONS_GROUP=		DEBUG ADAPTERS
-OPTIONS_GROUP_ADAPTERS=	LIBUSB LIBHIDAPI LIBFTDI SERIAL PARPORT
+OPTIONS_GROUP_ADAPTERS=	BITBANG_REMOTE LIBUSB LIBHIDAPI LIBFTDI SERIAL PARPORT
 OPTIONS_GROUP_DEBUG=	VERBOSE_JTAGIO VERBOSE_USBIO VERBOSE_USBCOMM
 OPTIONS_SINGLE=		JIMTCL
 OPTIONS_SINGLE_JIMTCL=	JIMTCL_INTERNAL JIMTCL_EXTERNAL
 
 ADAPTERS_DESC=		Hardware adapters/programmers/debuggers support
+BITBANG_REMOTE_DESC=	Remote bitbang driver
 JIMTCL_DESC=		Jim Tcl interpreter
 JIMTCL_EXTERNAL_DESC=	External
 JIMTCL_INTERNAL_DESC=	Internal
@@ -48,6 +47,9 @@ SERIAL_DESC=		Adapters using serial port
 VERBOSE_JTAGIO_DESC=	Enable verbose JTAG I/O messages
 VERBOSE_USBCOMM_DESC=	Enable verbose USB communication messages
 VERBOSE_USBIO_DESC=	Enable verbose USB I/O messages
+
+# Remote bitbang driver
+BITBANG_REMOTE_CONFIGURE_ENABLE=	remote-bitbang
 
 # Internal (built-in) or external Jim Tcl interpreter
 JIMTCL_EXTERNAL_LIB_DEPENDS=		libjim.so:lang/jimtcl

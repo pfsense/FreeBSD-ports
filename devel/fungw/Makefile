@@ -1,6 +1,5 @@
 PORTNAME=	fungw
-DISTVERSION=	1.2.1
-PORTREVISION=	2
+DISTVERSION=	1.2.2
 CATEGORIES=	devel
 MASTER_SITES=	http://www.repo.hu/projects/fungw/releases/
 
@@ -39,6 +38,7 @@ LUA_CONFIGURE_ON=	--cflags/libs/script/lua=-I${LUA_INCDIR} \
 			--ldflags/libs/script/lua=!'-L${LUA_LIBDIR} -llua-${LUA_VER}'
 PERL_USES=		perl5
 PYTHON3_USES=		python
+PYTHON3_BUILD_DEPENDS=	${PY_SETUPTOOLS}
 TCL_USES=		tcl
 
 post-install:

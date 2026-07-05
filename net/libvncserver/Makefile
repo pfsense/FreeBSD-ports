@@ -1,6 +1,5 @@
 PORTNAME=	libvncserver
-PORTVERSION=	0.9.14
-PORTREVISION=	1
+PORTVERSION=	0.9.15
 DISTVERSIONPREFIX=	LibVNCServer-
 CATEGORIES=	net devel
 
@@ -13,7 +12,7 @@ LICENSE=	GPLv2
 LIB_DEPENDS=	libpng.so:graphics/png \
 		liblzo2.so:archivers/lzo2
 
-USES=		cmake cpe jpeg libtool pathfix pkgconfig
+USES=		cmake cpe jpeg pathfix pkgconfig
 USE_LDCONFIG=	yes
 
 CPE_VENDOR=	libvncserver_project
@@ -48,8 +47,5 @@ GNUTLS_CMAKE_BOOL=	WITH_GNUTLS
 
 OPENSSL_CMAKE_BOOL=	WITH_OPENSSL
 OPENSSL_USES=		ssl
-
-post-install:
-	${INSTALL_DATA} ${WRKSRC}/rfb/default8x16.h ${STAGEDIR}${PREFIX}/include/rfb
 
 .include <bsd.port.mk>

@@ -1,10 +1,10 @@
---- external/skia/UnpackedTarball_skia.mk.orig	2023-12-08 15:11:48 UTC
+--- external/skia/UnpackedTarball_skia.mk.orig	2025-05-10 18:09:26 UTC
 +++ external/skia/UnpackedTarball_skia.mk
-@@ -41,6 +41,7 @@ skia_patches := \
-     ubsan-missing-typeinfo.patch.1 \
-     incomplete-type-SkImageGenerator.patch.1 \
-     0001-AvoidCombiningExtrememelyLargeMeshes.patch.1 \
-+    powerpc64le-skia.patch.0 \
+@@ -44,6 +44,7 @@ skia_patches := \
+ 	0004-loong64-Fix-the-remaining-implicit-vector-casts.patch \
+     msvc-unknown-attributes.patch.1 \
+ 	fix-semaphore-include.patch.1 \
++    freebsd-limits.h.patch.0 \
  
- $(eval $(call gb_UnpackedTarball_set_patchlevel,skia,1))
- 
+ ifneq ($(MSYSTEM),)
+ # use binary flag so patch from git-bash won't choke on mixed line-endings in patches

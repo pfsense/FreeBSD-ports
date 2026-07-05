@@ -1,6 +1,5 @@
 PORTNAME=	pinot
-PORTVERSION=	1.21
-PORTREVISION=	12
+PORTVERSION=	1.23
 CATEGORIES=	deskutils
 
 MAINTAINER=	thierry@FreeBSD.org
@@ -16,7 +15,7 @@ LIB_DEPENDS=	libxapian.so:databases/xapian-core		\
 		libfreetype.so:print/freetype2			\
 		libexttextcat-2.0.so:textproc/libexttextcat	\
 		libdbus-1.so:devel/dbus				\
-		libxml++-2.6.so:textproc/libxml++26		\
+		libxml++-3.0.so:textproc/libxml++30		\
 		libboost_thread.so:devel/boost-libs		\
 		libharfbuzz.so:print/harfbuzz			\
 		libnotify.so:devel/libnotify			\
@@ -38,21 +37,18 @@ USE_GITHUB=	yes
 GH_ACCOUNT=	FabriceColin
 
 USES=		compiler:c++11-lang autoreconf gettext gnome libarchive	\
-		libtool pkgconfig python shebangfix sqlite:3 ssl xorg
+		libtool localbase pkgconfig python shebangfix sqlite:3 ssl xorg
 USE_CXXSTD=	c++11
 USE_XORG=	pixman
-USE_GNOME=	atkmm cairo cairomm gdkpixbuf2 glibmm gtk30 gtkmm30	\
+USE_GNOME=	atkmm cairo cairomm gdkpixbuf glibmm gtk30 gtkmm30	\
 		libsigc++20 libxml2 pangomm
 USE_LDCONFIG=	${PREFIX}/lib/pinot/backends ${PREFIX}/lib/pinot/filters
 SHEBANG_FILES=	scripts/bash/*.sh
 
 GNU_CONFIGURE=	yes
-GNU_CONFIGURE_MANPREFIX=${PREFIX}/share
 CONFIGURE_ARGS=	--with-http=curl --with-ssl=${OPENSSLBASE} --enable-libarchive	\
 		--enable-mempool=no --enable-libnotify
 CONFIGURE_ENV=	MKDIR_P="${MKDIR}" TEXTCAT_LIBS="-lexttextcat-2.0"
-CPPFLAGS+=	-I${LOCALBASE}/include
-LIBS+=		-L${LOCALBASE}/lib -lboost_system
 
 OPTIONS_DEFINE=	DEBUG CHMLIB DOCS
 OPTIONS_SUB=	yes
@@ -65,6 +61,7 @@ CHMLIB_CONFIGURE_OFF=	--disable-chmlib
 CHMLIB_LIB_DEPENDS=	libchm.so:misc/chmlib
 
 INSTALL_TARGET=	install-strip
+
 DOCS=		AUTHORS ChangeLog ChangeLog-dijon INSTALL NEWS README TODO
 
 LM2FIX=		Core/pinot-index.cpp Core/pinot-index.1 Makefile.am	\
@@ -72,6 +69,10 @@ LM2FIX=		Core/pinot-index.cpp Core/pinot-index.1 Makefile.am	\
 		textcat_conf.txt textcat32_conf.txt
 SHR2FIX=	Core/pinot-search.1
 UL2FIX=		Utils/xdgmime/xdgmime.c
+
+post-patch:
+	@${REINPLACE_CMD} -e 's|CURLPROXY_|(curl_proxytype)CURLPROXY_|g' \
+		${WRKSRC}/Collect/CurlDownloader.cpp
 
 pre-configure:
 	${REINPLACE_CMD} -e \

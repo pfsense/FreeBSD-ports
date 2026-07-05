@@ -1,5 +1,6 @@
 PORTNAME=	NBlood
-DISTVERSION=	r14011
+DISTVERSION=	r14331
+PORTREVISION=	1
 CATEGORIES=	games
 
 MAINTAINER=	pkubaj@FreeBSD.org
@@ -13,7 +14,8 @@ LICENSE_FILE_BUILDLIC=	${WRKSRC}/source/build/buildlic.txt
 LICENSE_FILE_GPLv2=	${WRKSRC}/source/duke3d/gpl-2.0.txt
 LICENSE_PERMS_BUILDLIC=	dist-mirror pkg-mirror auto-accept
 
-BUILD_DEPENDS=	nasm:devel/nasm
+BUILD_DEPENDS=	nasm:devel/nasm \
+		${LOCALBASE}/include/lz4.h:archivers/liblz4
 LIB_DEPENDS=	libvpx.so:multimedia/libvpx \
 		libFLAC.so:audio/flac \
 		libvorbis.so:audio/libvorbis
@@ -25,7 +27,7 @@ USE_GL=		glu
 USE_SDL=	sdl2
 
 MAKEFILE=	GNUmakefile
-MAKE_ARGS=	CC=${CC} CXX=${CXX} CLANG=1
+MAKE_ARGS=	CC=${CC} CXX=${CXX} CLANG=1 PRETTY_OUTPUT=0 USE_MIMALLOC=0
 PLIST_FILES=	bin/pcexhumed \
 		bin/nblood \
 		bin/rednukem

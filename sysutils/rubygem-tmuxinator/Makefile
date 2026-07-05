@@ -1,5 +1,6 @@
 PORTNAME=	tmuxinator
-PORTVERSION=	3.1.2
+PORTVERSION=	3.3.7
+PORTREVISION=	2
 CATEGORIES=	sysutils ruby
 MASTER_SITES=	RG
 
@@ -9,9 +10,8 @@ WWW=		https://github.com/tmuxinator/tmuxinator
 
 LICENSE=	MIT
 
-RUN_DEPENDS=	rubygem-erubis>=2.6<3:www/rubygem-erubis \
-		rubygem-thor>=1.3.0<1.4:devel/rubygem-thor \
-		rubygem-xdg2>=2.2.5<3:devel/rubygem-xdg2
+RUN_DEPENDS=	rubygem-erubi>=1.13<2:www/rubygem-erubi \
+		rubygem-thor14>=1.4.0<1.5:devel/rubygem-thor14
 
 USES=		gem
 
@@ -24,9 +24,8 @@ PLIST_FILES=	bin/tmuxinator \
 OPTIONS_SINGLE=	TMUX
 OPTIONS_SINGLE_TMUX=	TMUX TMUX23
 OPTIONS_DEFAULT=TMUX
-
-TMUX_DESC=	Use tmux from sysutils/tmux
-TMUX23_DESC=	Use tmux from sysutils/tmux23
+TMUX_DESC=	Use tmux 3.x from sysutils/tmux
+TMUX23_DESC=	Use tmux 2.3 from sysutils/tmux23
 
 TMUX_RUN_DEPENDS=	tmux:sysutils/tmux
 TMUX23_RUN_DEPENDS=	tmux:sysutils/tmux23

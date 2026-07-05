@@ -1,5 +1,5 @@
 PORTNAME=	rust
-PORTVERSION?=	1.77.0
+PORTVERSION?=	1.94.0
 PORTREVISION?=	0
 CATEGORIES=	lang
 MASTER_SITES=	https://static.rust-lang.org/dist/:src \
@@ -26,10 +26,9 @@ ONLY_FOR_ARCHS?=	aarch64 amd64 armv7 i386 powerpc64 powerpc64le powerpc \
 			riscv64
 ONLY_FOR_ARCHS_REASON?=	requires prebuilt bootstrap compiler
 
-BUILD_DEPENDS=	cmake:devel/cmake-core
 LIB_DEPENDS=	libcurl.so:ftp/curl
 
-USES=		cpe ninja:build pkgconfig python:build ssl tar:xz
+USES=		cmake:indirect cpe ninja:build pkgconfig python:build ssl tar:xz
 
 CPE_VENDOR=	rust-lang
 
@@ -39,7 +38,7 @@ MAKE_ENV=	DESTDIR=${STAGEDIR} \
 TEST_ENV=	${MAKE_ENV} \
 		ALLOW_NONZERO_RLIMIT_CORE=1
 
-CONFLICTS_INSTALL?=	rust-nightly
+CONFLICTS_INSTALL?=	rust-nightly rust188
 
 # rustc stashes intermediary files in TMPDIR (default /tmp) which
 # might cause issues for users that for some reason space limit
@@ -48,28 +47,35 @@ CONFLICTS_INSTALL?=	rust-nightly
 TMPDIR?=	${WRKDIR}
 
 OPTIONS_DEFINE=		DOCS GDB LTO PORT_LLVM SOURCES WASM
-OPTIONS_DEFAULT=	SOURCES WASM
+OPTIONS_DEFAULT=	DOCS SOURCES WASM
+OPTIONS_DEFINE_i386=	SSE2
+OPTIONS_DEFAULT_i386=	SSE2
 
 GDB_DESC=	Install ports gdb (necessary for debugging rust programs)
 PORT_LLVM_DESC=	Build against devel/llvm instead of bundled copy (experimental)
+SSE2_DESC=	Enable SSE2 instructions
 SOURCES_DESC=	Install source files
 WASM_DESC=	Build the WebAssembly target (wasm32-unknown-unknown)
 
+SSE2_EXTRA_PATCHES_OFF+=	${FILESDIR}/extra-patch-compiler_rustc__target_src_spec_targets_i686__unknown__freebsd.rs
+
 DOCS_VARS=		_RUST_BUILD_DOCS=true \
-			_COMPONENTS+="rust-docs-${_PACKAGE_VERS}-${_RUST_TARGET} rust-docs-json-${_PACKAGE_VERS}-${_RUST_TARGET}" \
-			_RUST_TOOLS+=rustdoc
+			_COMPONENTS+="rust-docs-${_PACKAGE_VERS}-${_RUST_TARGET} rust-docs-json-${_PACKAGE_VERS}-${_RUST_TARGET}"
 DOCS_VARS_OFF=		_RUST_BUILD_DOCS=false
 GDB_RUN_DEPENDS=	${LOCALBASE}/bin/gdb:devel/gdb
-PORT_LLVM_USES=		llvm:min=16,lib,noexport
+PORT_LLVM_USES=		llvm:min=${_LLVM_VERSION},lib,noexport
 PORT_LLVM_MAKE_ENV=	RUSTFLAGS="-Lnative=${LOCALBASE}/lib"
 SOURCES_VARS=		_COMPONENTS+=rust-src-${_PACKAGE_VERS} \
 			_RUST_TOOLS+=src
 WASM_VARS=		_COMPONENTS+="rust-analysis-${_PACKAGE_VERS}-wasm32-unknown-unknown rust-std-${_PACKAGE_VERS}-wasm32-unknown-unknown" \
 			_RUST_TARGETS+=wasm32-unknown-unknown
 
-# See WRKSRC/src/stage0.json for the date and version values
-BOOTSTRAPS_DATE?=		2024-02-08
-RUST_BOOTSTRAP_VERSION?=	1.76.0
+# See WRKSRC/src/stage0 for the date and version values
+BOOTSTRAPS_DATE?=		2026-01-22
+LLVM_VERSION=			20
+RUST_BOOTSTRAP_VERSION?=	1.93.0
+
+_LLVM_VERSION=	20
 
 CARGO_VENDOR_DIR?=		${WRKSRC}/vendor
 
@@ -102,15 +108,10 @@ IGNORE=		is only for FreeBSD
 .if ${ARCH} == powerpc
 LIB_DEPENDS+=	libatomic.so:lang/gcc${GCC_DEFAULT}
 MAKE_ENV+=	RUSTFLAGS="-L/usr/local/lib/gcc${GCC_DEFAULT}"
-.else
-MAKE_ENV+=	RUST_BACKTRACE=1
 .endif
 
-# rls doesn't build on rust nightly
-# rls needs 64-bit atomics: it doesn't build on powerpc
-.if !defined(NIGHTLY_DATE) && ${ARCH} != powerpc
-_RUST_TOOLS+=	rls
-_COMPONENTS+=	rls-${_PACKAGE_VERS}-${_RUST_TARGET}
+.if ${ARCH} != powerpc64le
+MAKE_ENV+=	RUST_BACKTRACE=1
 .endif
 
 # per https://rust-lang.github.io/rustup/concepts/components.html
@@ -121,6 +122,10 @@ _COMPONENTS+=	rustc-dev-${_PACKAGE_VERS}-${_RUST_TARGET}
 
 .if ${PORT_OPTIONS:MWASM} && ${PORT_OPTIONS:MDOCS}
 _COMPONENTS+=	rust-docs-${_PACKAGE_VERS}-wasm32-unknown-unknown rust-docs-json-${_PACKAGE_VERS}-wasm32-unknown-unknown
+.endif
+
+.if exists(${PATCHDIR}/${ARCH}${BOOTSTRAPS_SUFFIX})
+EXTRA_PATCHES+=	${PATCHDIR}/${ARCH}${BOOTSTRAPS_SUFFIX}
 .endif
 
 .ifdef QEMU_EMULATING
@@ -135,7 +140,7 @@ DISTFILES:=	${DISTFILES:M*\:src} \
 post-patch:
 	@${REINPLACE_CMD} 's,gdb,${LOCALBASE}/bin/gdb,' ${WRKSRC}/src/etc/rust-gdb
 .if defined(NIGHTLY_DATE)
-	@${REINPLACE_CMD} 's/"rustfmt"/"nothx"/' ${WRKSRC}/src/stage0.json
+	@${REINPLACE_CMD} '/rustfmt/d' ${WRKSRC}/src/stage0
 .endif
 # Disable vendor checksums
 	@${REINPLACE_CMD} 's,"files":{[^}]*},"files":{},' \
@@ -154,7 +159,6 @@ do-configure:
 	@cd ${WRKDIR}/${_component}-*-${OPSYS:tl} && \
 		${SH} install.sh --prefix=${WRKDIR}/bootstrap --verbose
 .endfor
-	@${ECHO_CMD} 'changelog-seen=2' > ${WRKSRC}/config.toml
 	@${ECHO_CMD} '[build]' >> ${WRKSRC}/config.toml
 	@${ECHO_CMD} 'build-dir="${WRKDIR}/_build"' >> ${WRKSRC}/config.toml
 	@${ECHO_CMD} 'build-stage=2' >> ${WRKSRC}/config.toml
@@ -172,6 +176,11 @@ do-configure:
 	@${ECHO_CMD} 'cargo="${WRKDIR}/bootstrap/bin/cargo"' >> ${WRKSRC}/config.toml
 	@${ECHO_CMD} 'rustc="${WRKDIR}/bootstrap/bin/rustc"' >> ${WRKSRC}/config.toml
 	@${ECHO_CMD} 'tools=[${_RUST_TOOLS:@.tool.@"${.tool.}"@:ts,}]' >> ${WRKSRC}/config.toml
+.if defined(WITH_CCACHE_BUILD) && !defined(NO_CCACHE)
+	@${ECHO_CMD} 'ccache="${CCACHE_BIN}"' >> ${WRKSRC}/config.toml
+.else
+	@${ECHO_CMD} 'ccache=false' >> ${WRKSRC}/config.toml
+.endif
 	@${ECHO_CMD} '[install]' >> ${WRKSRC}/config.toml
 	@${ECHO_CMD} 'prefix="${PREFIX}"' >> ${WRKSRC}/config.toml
 	@${ECHO_CMD} 'sysconfdir="${PREFIX}/etc"' >> ${WRKSRC}/config.toml
@@ -180,6 +189,7 @@ do-configure:
 	@${ECHO_CMD} 'default-linker="${CC}"' >> ${WRKSRC}/config.toml
 	@${ECHO_CMD} 'deny-warnings=false' >> ${WRKSRC}/config.toml
 	@${ECHO_CMD} 'verbose-tests=true' >> ${WRKSRC}/config.toml
+	@${ECHO_CMD} 'download-rustc=false' >> ${WRKSRC}/config.toml
 .if ${PORT_OPTIONS:MWASM} && !${PORT_OPTIONS:MPORT_LLVM}
 	@${ECHO_CMD} 'lld=true' >> ${WRKSRC}/config.toml
 .else
@@ -188,26 +198,24 @@ do-configure:
 .if ${PORT_OPTIONS:MLTO}
 	@${ECHO_CMD} 'lto="thin"' >> ${WRKSRC}/config.toml
 .endif
+	@${ECHO_CMD} 'remap-debuginfo=true' >> ${WRKSRC}/config.toml
 	@${ECHO_CMD} '[llvm]' >> ${WRKSRC}/config.toml
+	@${ECHO_CMD} 'download-ci-llvm=false' >> ${WRKSRC}/config.toml
+.if ${PORT_OPTIONS:MWASM}
+	@${ECHO_CMD} 'clang=true' >> ${WRKSRC}/config.toml
+.endif
 .if ${PORT_OPTIONS:MLTO}
 	@${ECHO_CMD} 'thin-lto=true' >> ${WRKSRC}/config.toml
-.endif
-.if defined(WITH_CCACHE_BUILD) && !defined(NO_CCACHE)
-	@${ECHO_CMD} 'ccache="${CCACHE_BIN}"' >> ${WRKSRC}/config.toml
-.else
-	@${ECHO_CMD} 'ccache=false' >> ${WRKSRC}/config.toml
 .endif
 	@${ECHO_CMD} 'ninja=true' >> ${WRKSRC}/config.toml
 .if ${ARCH} == powerpc
 # Rust doesn't call the system compiler with the full version of the target.
 # This makes powerpc miscompile due to the secure-plt ABI change.
 # Additionally, force using ld.bfd to work around a linking problem in rustc_mir
-	@${PRINTF} '#!/bin/sh\nexec ${CC} "$$@" --target=powerpc-unknown-freebsd13.0' > ${WRKDIR}/cc-wrapper
+	@${PRINTF} '#!/bin/sh\nexec ${CC} "$$@" --target=powerpc-unknown-freebsd13.5' > ${WRKDIR}/cc-wrapper
 	@${CHMOD} +x ${WRKDIR}/cc-wrapper
-	@${PRINTF} '#!/bin/sh\nexec ${CXX} "$$@" --target=powerpc-unknown-freebsd13.0' > ${WRKDIR}/cxx-wrapper
+	@${PRINTF} '#!/bin/sh\nexec ${CXX} "$$@" --target=powerpc-unknown-freebsd13.5' > ${WRKDIR}/cxx-wrapper
 	@${CHMOD} +x ${WRKDIR}/cxx-wrapper
-	@${PRINTF} '#!/bin/sh\nexec ${CC} -fuse-ld=bfd "$$@" --target=powerpc-unknown-freebsd13.0' > ${WRKDIR}/ld-wrapper
-	@${CHMOD} +x ${WRKDIR}/ld-wrapper
 .endif
 .for _target in ${_RUST_TARGETS}
 	@${ECHO_CMD} '[target.${_target}]' >> ${WRKSRC}/config.toml
@@ -215,25 +223,32 @@ do-configure:
 .if ${ARCH} == powerpc
 	@${ECHO_CMD} 'cc="${WRKDIR}/cc-wrapper"' >> ${WRKSRC}/config.toml
 	@${ECHO_CMD} 'cxx="${WRKDIR}/cxx-wrapper"' >> ${WRKSRC}/config.toml
+	@${ECHO_CMD} 'linker="${CC}"' >> ${WRKSRC}/config.toml
+.else
+# use the builtin clang when not using PORT_LLVM
+.if ${_target} == "wasm32-unknown-unknown"
+.if ${PORT_OPTIONS:MPORT_LLVM}
+	@${ECHO_CMD} 'cc="${LOCALBASE}/bin/clang${LLVM_VERSION}"' >> ${WRKSRC}/config.toml
+	@${ECHO_CMD} 'cxx="${LOCALBASE}/bin/clang++${LLVM_VERSION}"' >> ${WRKSRC}/config.toml
+	@${ECHO_CMD} 'linker="${LOCALBASE}/bin/clang${LLVM_VERSION}"' >> ${WRKSRC}/config.toml
+.else
+	@${ECHO_CMD} 'cc="${WRKDIR}/_build/${_RUST_TARGET}/llvm/bin/clang"' >> ${WRKSRC}/config.toml
+	@${ECHO_CMD} 'cxx="${WRKDIR}/_build/${_RUST_TARGET}/llvm/bin/clang++"' >> ${WRKSRC}/config.toml
+	@${ECHO_CMD} 'linker="${WRKDIR}/_build/${_RUST_TARGET}/llvm/bin/clang"' >> ${WRKSRC}/config.toml
+.endif
 .else
 	@${ECHO_CMD} 'cc="${CC}"' >> ${WRKSRC}/config.toml
 	@${ECHO_CMD} 'cxx="${CXX}"' >> ${WRKSRC}/config.toml
-.endif
-.if ${ARCH} == powerpc
-	@${ECHO_CMD} 'linker="${WRKDIR}/ld-wrapper"' >> ${WRKSRC}/config.toml
-.else
 	@${ECHO_CMD} 'linker="${CC}"' >> ${WRKSRC}/config.toml
 .endif
+.endif # powerpc
 .if ${PORT_OPTIONS:MPORT_LLVM}
 	@${ECHO_CMD} 'llvm-config="${LOCALBASE}/bin/${LLVM_CONFIG}"' >> ${WRKSRC}/config.toml
 .endif
 .endfor
 	@${ECHO_CMD} '[dist]' >> ${WRKSRC}/config.toml
+	@${ECHO_CMD} 'compression-formats=["xz"]' >> ${WRKSRC}/config.toml
 	@${ECHO_CMD} 'src-tarball=false' >> ${WRKSRC}/config.toml
-.if defined(NIGHTLY_DATE)
-# Don't abort if optional tools fail to build
-	@${ECHO_CMD} 'missing-tools=true' >> ${WRKSRC}/config.toml
-.endif
 
 do-build:
 	@cd ${WRKSRC} && \

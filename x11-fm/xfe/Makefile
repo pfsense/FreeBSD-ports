@@ -1,5 +1,5 @@
 PORTNAME=	xfe
-DISTVERSION=	1.46.1
+DISTVERSION=	2.1.5
 CATEGORIES=	x11-fm
 MASTER_SITES=	SF
 
@@ -22,7 +22,6 @@ USE_GNOME=	intltool
 USE_XORG=	x11 xcb xft xrandr xrender
 
 GNU_CONFIGURE=	yes
-GNU_CONFIGURE_MANPREFIX=	${PREFIX}/share
 
 LDFLAGS+=	-pthread
 

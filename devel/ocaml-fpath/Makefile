@@ -1,5 +1,6 @@
 PORTNAME=	fpath
 PORTVERSION=	0.7.3
+PORTREVISION=	1
 CATEGORIES=	devel
 MASTER_SITES=	https://erratique.ch/software/fpath/releases/
 PKGNAMEPREFIX=	ocaml-
@@ -17,9 +18,7 @@ BUILD_DEPENDS=	${SA_DIR}/astring/META:devel/ocaml-astring \
 		opam-installer:devel/ocaml-opam
 RUN_DEPENDS=	${SA_DIR}/astring/META:devel/ocaml-astring
 
-USES=		tar:tbz
-USE_OCAML=	yes
-USE_OCAML_FINDLIB=	yes
+USES=		ocaml:findlib tar:tbz
 
 DOCSDIR=	${OCAML_DOCSDIR}/${PORTNAME}
 PORTDOCS=	CHANGES.md LICENSE.md README.md

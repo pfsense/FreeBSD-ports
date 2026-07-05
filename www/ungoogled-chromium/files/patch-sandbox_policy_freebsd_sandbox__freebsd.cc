@@ -1,6 +1,6 @@
---- sandbox/policy/freebsd/sandbox_freebsd.cc.orig	2023-05-05 12:12:41 UTC
+--- sandbox/policy/freebsd/sandbox_freebsd.cc.orig	2025-12-12 07:44:27 UTC
 +++ sandbox/policy/freebsd/sandbox_freebsd.cc
-@@ -0,0 +1,245 @@
+@@ -0,0 +1,210 @@
 +// Copyright (c) 2012 The Chromium Authors. All rights reserved.
 +// Use of this source code is governed by a BSD-style license that can be
 +// found in the LICENSE file.
@@ -37,7 +37,6 @@
 +#include "base/time/time.h"
 +#include "build/build_config.h"
 +#include "crypto/crypto_buildflags.h"
-+#include "ppapi/buildflags/buildflags.h"
 +#include "sandbox/constants.h"
 +#include "sandbox/linux/services/credentials.h"
 +#include "sandbox/linux/services/namespace_sandbox.h"
@@ -159,7 +158,7 @@
 +    return true;
 +
 +  VLOG(1) << "SandboxLinux::InitializeSandbox: process_type="
-+      << process_type << " sandbox_type=" << GetSandboxTypeInEnglish(sandbox_type);
++      << process_type << " sandbox_type=" << sandbox_type;
 +
 +  // Only one thread is running, pre-initialize if not already done.
 +  if (!pre_initialized_)
@@ -208,40 +207,6 @@
 +  return false;
 +#endif  // !defined(ADDRESS_SANITIZER) && !defined(MEMORY_SANITIZER) &&
 +        // !defined(THREAD_SANITIZER) && !defined(LEAK_SANITIZER)
-+}
-+
-+// static
-+std::string SandboxLinux::GetSandboxTypeInEnglish(sandbox::mojom::Sandbox sandbox_type) {
-+  switch (sandbox_type) {
-+    case sandbox::mojom::Sandbox::kNoSandbox:
-+      return "Unsandboxed";
-+    case sandbox::mojom::Sandbox::kRenderer:
-+      return "Renderer";
-+    case sandbox::mojom::Sandbox::kUtility:
-+      return "Utility";
-+    case sandbox::mojom::Sandbox::kGpu:
-+      return "GPU";
-+#if BUILDFLAG(ENABLE_PPAPI)
-+    case sandbox::mojom::Sandbox::kPpapi:
-+      return "PPAPI";
-+#endif
-+    case sandbox::mojom::Sandbox::kNetwork:
-+      return "Network";
-+    case sandbox::mojom::Sandbox::kCdm:
-+      return "CDM";
-+    case sandbox::mojom::Sandbox::kPrintCompositor:
-+      return "Print Compositor";
-+    case sandbox::mojom::Sandbox::kAudio:
-+      return "Audio";
-+    case sandbox::mojom::Sandbox::kSpeechRecognition:
-+      return "Speech Recognition";
-+    case sandbox::mojom::Sandbox::kService:
-+      return "Service";
-+    case sandbox::mojom::Sandbox::kVideoCapture:
-+      return "Video Capture";
-+    default:
-+      return "Unknown";
-+  }
 +}
 +
 +}  // namespace policy

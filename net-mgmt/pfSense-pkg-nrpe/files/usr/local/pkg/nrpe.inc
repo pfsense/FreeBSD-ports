@@ -3,7 +3,7 @@
  * nrpe.inc
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2011-2024 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2011-2026 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2009 Erik Kristensen
  * All rights reserved.
  *
@@ -31,26 +31,23 @@ define('NRPE_CONFIG_DIR', NRPE_BASE . '/etc');
 define('NRPE_RCFILE', '/usr/local/etc/rc.d/nrpe.sh');
 
 function nrpe_upgrade_config() {
-	global $config;
-	if (is_array($config['installedpackages']['nrpe2']['config'][0]) &&
-	    !is_array($config['installedpackages']['nrpe']['config'][0])) {
-		$config['installedpackages']['nrpe'] =
-		    $config['installedpackages']['nrpe2'];
-		unset($config['installedpackages']['nrpe2']);
+	if (is_array(config_get_path('installedpackages/nrpe2/config/0')) &&
+	    !is_array(config_get_path('installedpackages/nrpe/config/0'))) {
+		config_set_path('installedpackages/nrpe',
+		    config_get_path('installedpackages/nrpe2'));
+		config_del_path('installedpackages/nrpe2');
 	}
 }
 
 function nrpe_custom_php_install_command() {
-	global $config;
-
 	nrpe_upgrade_config();
 
 	/* Create default commands configuration */
 	if (is_array(
-	    $config['installedpackages']['nrpe']['config'][0]['row'])) {
+	    config_get_path('installedpackages/nrpe/config/0/row'))) {
 		return;
 	}
-	$config['installedpackages']['nrpe']['config'][0]['row'] = array(
+	config_set_path('installedpackages/nrpe/config/0/row', array(
 		0 => array(
 			'name' => 'check_users',
 			'command' => 'check_users',
@@ -96,7 +93,7 @@ function nrpe_custom_php_install_command() {
 			'warning' => '50%',
 			'critical' => '25%'
 		)
-	);
+	));
 
 }
 
@@ -162,10 +159,9 @@ function nrpe_resync_package() {
 }
 
 function nrpe_custom_php_write_config() {
-	global $config;
 	$nagios_check_path = NRPE_BASE . "/libexec/nagios";
 
-	$pconfig = $config['installedpackages']['nrpe']['config'][0];
+	$pconfig = config_get_path('installedpackages/nrpe/config/0');
 
 	$cmds = array();
 	foreach ($pconfig['row'] as $cmd) {
@@ -212,13 +208,10 @@ EOD;
 	}
 	fwrite($fd, $nrpe_cfg);
 	fclose($fd);
-	nrpe_sync_config();
 }
 
 function nrpe_custom_php_service() {
-	global $config;
-
-	if ($config['installedpackages']['nrpe']['config'][0]['enabled'] ==
+	if (config_get_path('installedpackages/nrpe/config/0/enabled') ==
 	    "on") {
 		nrpe_write_rc_file();
 		if (is_service_running("nrpe")) {
@@ -268,58 +261,45 @@ function nrpe_custom_php_validation_command($post, &$input_errors) {
 	}
 }
 
-function nrpe_sync_config() {
-	global $config;
-	init_config_arr(array('hasync'));
-	$system_carp = $config['hasync'];
-	if (!is_array($system_carp) ||
-	    !$system_carp['synchronizetoip'] ||
-	    !$system_carp['username'] ||
-	    !$system_carp['password']) {
-		return -1;
-	}
-	if ($config['system']['webgui']['protocol'] == "http") {
-		$varsyncprotocol = "http";
-		$varsyncport = $config['system']['webgui']['port'] ?: '80';
-	} else {
-		$varsyncprotocol = "https";
-		$varsyncport = $config['system']['webgui']['port'] ?: '443';
-	}
-	nrpe_do_xmlrpc_sync($system_carp['synchronizetoip'], $varsyncport,
-	    $varsyncprotocol, $system_carp['username'],
-	    $system_carp['password'], 10);
+function nrpe_plugin_xmlrpc_send() {
+	return [
+		'installedpackages/nrpe'
+	];
 }
 
-/* Do the actual XMLRPC sync */
-function nrpe_do_xmlrpc_sync($sync_to_ip, $port, $protocol, $username,
-    $password, $synctimeout) {
-	global $config;
+function nrpe_plugin_xmlrpc_recv($new_sections) {
+	$section_paths = [
+		'installedpackages/nrpe'
+	];
 
-	/*
-	 * Send over the <nrpe> portion of config.xml
-	 * $xml will hold the section to sync.
-	 */
-	$xml = array();
-	$xml['nrpe'] = $config['installedpackages']['nrpe'];
+	$ret = [
+		'xmlrpc_recv_result' => false
+	];
+	foreach ($section_paths as $path) {
+		$old_section = config_get_path($path, []);
+		$new_section = array_get_path($new_sections, $path, []);
 
-	/*
-	 * Build a series of commands as a PHP file for
-	 * the secondary host to execute to load the new
-	 * settings.
-	 */
-	$remote_nrpe_config_apply = <<<EOD
-require_once('/usr/local/pkg/nrpe.inc');
-nrpe_resync_package();
-EOD;
+		// Don't save empty configuration sections.
+		if (empty($old_section) && empty($new_section)) {
+			continue;
+		}
+		// Ignore unchanged configuration sections.
+		if ($old_section === $new_section) {
+			continue;
+		}
 
-	$synctimeout = intval($synctimeout);
-	$rpc_client = new pfsense_xmlrpc_client();
-	$rpc_client->setConnectionData($sync_to_ip, $port, $username, $password,
-	    $protocol);
-	$resp = $rpc_client->xmlrpc_method('merge_installedpackages_section',
-	    $xml, $synctimeout);
-	$resp = $rpc_client->xmlrpc_exec_php($remote_nrpe_config_apply,
-	    $synctimeout);
+		$ret[$path] = array_merge($old_section, $new_section);
+		$ret['xmlrpc_recv_result'] = true;
+	}
+
+	return $ret;
+}
+
+function nrpe_plugin_xmlrpc_recv_done($xmlrpc_recv_result) {
+	if (array_get_path($xmlrpc_recv_result, 'freeradius/xmlrpc_recv_result') !== true) {
+		return;
+	}
+	nrpe_resync_package();
 }
 
 ?>

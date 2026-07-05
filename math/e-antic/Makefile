@@ -1,12 +1,12 @@
 PORTNAME=	e-antic
-DISTVERSION=	1.2.1
-PORTREVISION=	3
+DISTVERSION=	2.1.0
+PORTREVISION=	2
 #MASTER_SITES=	https://www.labri.fr/perso/vdelecro/e-antic/
 CATEGORIES=	math
 
 MAINTAINER=	thierry@FreeBSD.org
 COMMENT=	Real Embedded Algebraic Number Theory In C
-WWW=		https://github.com/flatsurf/e-antic
+WWW=		https://flatsurf.github.io/e-antic/
 
 LICENSE=	GPLv3 LGPL3
 LICENSE_COMB=	dual
@@ -17,7 +17,6 @@ LIB_DEPENDS=	libarb.so:math/arb		\
 		libmpfr.so:math/mpfr		\
 		libantic.so:math/antic		\
 		libflint.so:math/flint2		\
-		libbenchmark.so:devel/benchmark	\
 		libboost_thread.so:devel/boost-libs
 
 USES=		autoreconf compiler:c++11-lang gmake libtool localbase	\
@@ -25,7 +24,7 @@ USES=		autoreconf compiler:c++11-lang gmake libtool localbase	\
 
 USE_GITHUB=	yes
 ANTIC_TAG=	f4e8a60
-CATCH_TAG=	ff349a5
+CATCH_TAG=	62fd660
 CEREAL_TAG=	ebef1e9
 FLINT_TAG=	ae7ec89
 GH_ACCOUNT=	flatsurf catchorg:c1 USCiLab:c2 wbhart:f
@@ -40,6 +39,7 @@ LIBS+=		"-lm"
 GNU_CONFIGURE=	yes
 # pytest requires cppyy, doc requires standardese
 CONFIGURE_ARGS=	--without-byexample	\
+		--without-benchmark	\
 		--without-pytest	\
 		--without-doc
 USE_LDCONFIG=	yes
@@ -47,6 +47,11 @@ INSTALL_TARGET=	install-strip
 TEST_TARGET=	check
 
 PLIST_SUB=	VER=${DISTVERSION}
+
+pre-extract:
+	${MKDIR} ${WRKDIR}/flint-${FLINT_TAG}
+	${LN} -sf ${WRKDIR}/flint-${FLINT_TAG} ${WRKDIR}/flint2-${FLINT_TAG}
+	${RMDIR} ${WRKDIR}/flint-${FLINT_TAG}
 
 post-install:
 	${REINPLACE_CMD} -e 's|${STAGEDIR}||'	\

@@ -17,16 +17,9 @@
 %%TOOLS%%bin/srcclean
 %%TOOLS%%bin/testkeys
 %%TOOLS%%bin/unidasm
-share/man/man1/MAME.1.gz
-%%TOOLS%%share/man/man1/castool.1.gz
-%%TOOLS%%share/man/man1/chdman.1.gz
-%%TOOLS%%share/man/man1/floptool.1.gz
-%%TOOLS%%share/man/man1/imgtool.1.gz
-%%TOOLS%%share/man/man1/jedutil.1.gz
-%%TOOLS%%share/man/man1/ldresample.1.gz
-%%TOOLS%%share/man/man1/ldverify.1.gz
-%%TOOLS%%share/man/man1/romcmp.1.gz
-%%MAME%%share/man/man6/mame.6.gz
+%%MAMEDATA%%@sample %%ETCDIR%%/mame.ini.sample
+%%MAMEDATA%%@sample %%ETCDIR%%/plugin.ini.sample
+%%MAMEDATA%%@sample %%ETCDIR%%/ui.ini.sample
 %%MAMEDATA%%%%DATADIR%%/artwork/LICENSE
 %%MAMEDATA%%%%DATADIR%%/artwork/README.md
 %%MAMEDATA%%%%DATADIR%%/artwork/aperture-grille.png
@@ -796,6 +789,7 @@ share/man/man1/MAME.1.gz
 %%MAMEDATA%%%%DATADIR%%/ctrlr/slikstik.cfg
 %%MAMEDATA%%%%DATADIR%%/ctrlr/xarcade.cfg
 %%MAMEDATA%%%%DATADIR%%/hash/32x.xml
+%%MAMEDATA%%%%DATADIR%%/hash/3do.xml
 %%MAMEDATA%%%%DATADIR%%/hash/3do_m2.xml
 %%MAMEDATA%%%%DATADIR%%/hash/README.md
 %%MAMEDATA%%%%DATADIR%%/hash/a2600.xml
@@ -831,10 +825,11 @@ share/man/man1/MAME.1.gz
 %%MAMEDATA%%%%DATADIR%%/hash/alphatro_cart.xml
 %%MAMEDATA%%%%DATADIR%%/hash/alphatro_flop.xml
 %%MAMEDATA%%%%DATADIR%%/hash/altos5.xml
+%%MAMEDATA%%%%DATADIR%%/hash/altos586.xml
 %%MAMEDATA%%%%DATADIR%%/hash/altos8600.xml
-%%MAMEDATA%%%%DATADIR%%/hash/amiga_a1000.xml
-%%MAMEDATA%%%%DATADIR%%/hash/amiga_a3000.xml
+%%MAMEDATA%%%%DATADIR%%/hash/amiga_amix.xml
 %%MAMEDATA%%%%DATADIR%%/hash/amiga_apps.xml
+%%MAMEDATA%%%%DATADIR%%/hash/amiga_cd.xml
 %%MAMEDATA%%%%DATADIR%%/hash/amiga_demos.xml
 %%MAMEDATA%%%%DATADIR%%/hash/amiga_flop.xml
 %%MAMEDATA%%%%DATADIR%%/hash/amiga_hardware.xml
@@ -888,6 +883,7 @@ share/man/man1/MAME.1.gz
 %%MAMEDATA%%%%DATADIR%%/hash/bbc_flop_z80.xml
 %%MAMEDATA%%%%DATADIR%%/hash/bbc_hdd.xml
 %%MAMEDATA%%%%DATADIR%%/hash/bbc_rom.xml
+%%MAMEDATA%%%%DATADIR%%/hash/bbc_vsm.xml
 %%MAMEDATA%%%%DATADIR%%/hash/bbcb_flop.xml
 %%MAMEDATA%%%%DATADIR%%/hash/bbcb_flop_orig.xml
 %%MAMEDATA%%%%DATADIR%%/hash/bbcb_flop_us.xml
@@ -900,6 +896,8 @@ share/man/man1/MAME.1.gz
 %%MAMEDATA%%%%DATADIR%%/hash/bingobear.xml
 %%MAMEDATA%%%%DATADIR%%/hash/bk0010.xml
 %%MAMEDATA%%%%DATADIR%%/hash/bkrankp_cart.xml
+%%MAMEDATA%%%%DATADIR%%/hash/bmjr_cass.xml
+%%MAMEDATA%%%%DATADIR%%/hash/bml3_cass.xml
 %%MAMEDATA%%%%DATADIR%%/hash/bml3_flop.xml
 %%MAMEDATA%%%%DATADIR%%/hash/brother_pn.xml
 %%MAMEDATA%%%%DATADIR%%/hash/bungo_flop.xml
@@ -919,8 +917,10 @@ share/man/man1/MAME.1.gz
 %%MAMEDATA%%%%DATADIR%%/hash/c65_flop.xml
 %%MAMEDATA%%%%DATADIR%%/hash/camplynx_cass.xml
 %%MAMEDATA%%%%DATADIR%%/hash/camplynx_flop.xml
+%%MAMEDATA%%%%DATADIR%%/hash/carbeena.xml
 %%MAMEDATA%%%%DATADIR%%/hash/casio_rompack.xml
 %%MAMEDATA%%%%DATADIR%%/hash/casloopy.xml
+%%MAMEDATA%%%%DATADIR%%/hash/cassvisn_cart.xml
 %%MAMEDATA%%%%DATADIR%%/hash/cbm2_cart.xml
 %%MAMEDATA%%%%DATADIR%%/hash/cbm2_flop.xml
 %%MAMEDATA%%%%DATADIR%%/hash/cbm8096_flop.xml
@@ -932,6 +932,7 @@ share/man/man1/MAME.1.gz
 %%MAMEDATA%%%%DATADIR%%/hash/cecflop.xml
 %%MAMEDATA%%%%DATADIR%%/hash/cgenie_cass.xml
 %%MAMEDATA%%%%DATADIR%%/hash/cgenie_flop_rom.xml
+%%MAMEDATA%%%%DATADIR%%/hash/challenge_gear_cart.xml
 %%MAMEDATA%%%%DATADIR%%/hash/channelf.xml
 %%MAMEDATA%%%%DATADIR%%/hash/chessking_cart.xml
 %%MAMEDATA%%%%DATADIR%%/hash/chessmstdm.xml
@@ -941,6 +942,7 @@ share/man/man1/MAME.1.gz
 %%MAMEDATA%%%%DATADIR%%/hash/coco_cart.xml
 %%MAMEDATA%%%%DATADIR%%/hash/coco_flop.xml
 %%MAMEDATA%%%%DATADIR%%/hash/coleco.xml
+%%MAMEDATA%%%%DATADIR%%/hash/coleco_homebrew.xml
 %%MAMEDATA%%%%DATADIR%%/hash/compclr2_flop.xml
 %%MAMEDATA%%%%DATADIR%%/hash/compis.xml
 %%MAMEDATA%%%%DATADIR%%/hash/comx35_flop.xml
@@ -950,6 +952,7 @@ share/man/man1/MAME.1.gz
 %%MAMEDATA%%%%DATADIR%%/hash/cpc_flop.xml
 %%MAMEDATA%%%%DATADIR%%/hash/crvision.xml
 %%MAMEDATA%%%%DATADIR%%/hash/ctvboy.xml
+%%MAMEDATA%%%%DATADIR%%/hash/cubieboard4.xml
 %%MAMEDATA%%%%DATADIR%%/hash/cx3000tc.xml
 %%MAMEDATA%%%%DATADIR%%/hash/cz1_cart.xml
 %%MAMEDATA%%%%DATADIR%%/hash/dai_cass.xml
@@ -967,27 +970,13 @@ share/man/man1/MAME.1.gz
 %%MAMEDATA%%%%DATADIR%%/hash/dragon_flex.xml
 %%MAMEDATA%%%%DATADIR%%/hash/dragon_flop.xml
 %%MAMEDATA%%%%DATADIR%%/hash/dragon_os9.xml
+%%MAMEDATA%%%%DATADIR%%/hash/duelmast_cart.xml
 %%MAMEDATA%%%%DATADIR%%/hash/e01_flop.xml
 %%MAMEDATA%%%%DATADIR%%/hash/easy_karaoke_cart.xml
 %%MAMEDATA%%%%DATADIR%%/hash/ec1841.xml
 %%MAMEDATA%%%%DATADIR%%/hash/einstein.xml
 %%MAMEDATA%%%%DATADIR%%/hash/einstein_rom.xml
-%%MAMEDATA%%%%DATADIR%%/hash/ekara_japan.xml
-%%MAMEDATA%%%%DATADIR%%/hash/ekara_japan_a.xml
-%%MAMEDATA%%%%DATADIR%%/hash/ekara_japan_bh.xml
-%%MAMEDATA%%%%DATADIR%%/hash/ekara_japan_d.xml
-%%MAMEDATA%%%%DATADIR%%/hash/ekara_japan_en.xml
-%%MAMEDATA%%%%DATADIR%%/hash/ekara_japan_g.xml
-%%MAMEDATA%%%%DATADIR%%/hash/ekara_japan_gk.xml
-%%MAMEDATA%%%%DATADIR%%/hash/ekara_japan_kd.xml
-%%MAMEDATA%%%%DATADIR%%/hash/ekara_japan_m.xml
-%%MAMEDATA%%%%DATADIR%%/hash/ekara_japan_p.xml
-%%MAMEDATA%%%%DATADIR%%/hash/ekara_japan_packin.xml
-%%MAMEDATA%%%%DATADIR%%/hash/ekara_japan_s.xml
-%%MAMEDATA%%%%DATADIR%%/hash/ekara_japan_sp.xml
-%%MAMEDATA%%%%DATADIR%%/hash/ekara_japan_web.xml
-%%MAMEDATA%%%%DATADIR%%/hash/ekara_pal.xml
-%%MAMEDATA%%%%DATADIR%%/hash/ekara_us.xml
+%%MAMEDATA%%%%DATADIR%%/hash/ekara_cart.xml
 %%MAMEDATA%%%%DATADIR%%/hash/electron_cart.xml
 %%MAMEDATA%%%%DATADIR%%/hash/electron_cass.xml
 %%MAMEDATA%%%%DATADIR%%/hash/electron_flop.xml
@@ -1016,6 +1005,8 @@ share/man/man1/MAME.1.gz
 %%MAMEDATA%%%%DATADIR%%/hash/fmtowns_flop_cracked.xml
 %%MAMEDATA%%%%DATADIR%%/hash/fmtowns_flop_misc.xml
 %%MAMEDATA%%%%DATADIR%%/hash/fmtowns_flop_orig.xml
+%%MAMEDATA%%%%DATADIR%%/hash/fp1100_cass.xml
+%%MAMEDATA%%%%DATADIR%%/hash/gaelco_ds5002fp_rom.xml
 %%MAMEDATA%%%%DATADIR%%/hash/galaxy.xml
 %%MAMEDATA%%%%DATADIR%%/hash/gamate.xml
 %%MAMEDATA%%%%DATADIR%%/hash/gameboy.xml
@@ -1028,6 +1019,8 @@ share/man/man1/MAME.1.gz
 %%MAMEDATA%%%%DATADIR%%/hash/gba_ereader.xml
 %%MAMEDATA%%%%DATADIR%%/hash/gbcolor.xml
 %%MAMEDATA%%%%DATADIR%%/hash/gcslottv.xml
+%%MAMEDATA%%%%DATADIR%%/hash/generic_cdrom.xml
+%%MAMEDATA%%%%DATADIR%%/hash/generic_flop_525.xml
 %%MAMEDATA%%%%DATADIR%%/hash/ggm.xml
 %%MAMEDATA%%%%DATADIR%%/hash/gimix.xml
 %%MAMEDATA%%%%DATADIR%%/hash/gj4000.xml
@@ -1055,6 +1048,7 @@ share/man/man1/MAME.1.gz
 %%MAMEDATA%%%%DATADIR%%/hash/hp9835a_rom.xml
 %%MAMEDATA%%%%DATADIR%%/hash/hp9845a_rom.xml
 %%MAMEDATA%%%%DATADIR%%/hash/hp9845b_rom.xml
+%%MAMEDATA%%%%DATADIR%%/hash/hp98x6_rom.xml
 %%MAMEDATA%%%%DATADIR%%/hash/hp9k3xx_cdrom.xml
 %%MAMEDATA%%%%DATADIR%%/hash/hp9k3xx_flop.xml
 %%MAMEDATA%%%%DATADIR%%/hash/hp9k3xx_hdd.xml
@@ -1073,8 +1067,10 @@ share/man/man1/MAME.1.gz
 %%MAMEDATA%%%%DATADIR%%/hash/ibm5170_cdrom.xml
 %%MAMEDATA%%%%DATADIR%%/hash/ibm5170_hdd.xml
 %%MAMEDATA%%%%DATADIR%%/hash/ibm6580.xml
+%%MAMEDATA%%%%DATADIR%%/hash/ibmpc110.xml
 %%MAMEDATA%%%%DATADIR%%/hash/ibmpcjr_cart.xml
 %%MAMEDATA%%%%DATADIR%%/hash/ibmpcjr_flop.xml
+%%MAMEDATA%%%%DATADIR%%/hash/ibmpcjx.xml
 %%MAMEDATA%%%%DATADIR%%/hash/icanguit.xml
 %%MAMEDATA%%%%DATADIR%%/hash/icanpian.xml
 %%MAMEDATA%%%%DATADIR%%/hash/intellect02.xml
@@ -1099,17 +1095,18 @@ share/man/man1/MAME.1.gz
 %%MAMEDATA%%%%DATADIR%%/hash/jaminator.xml
 %%MAMEDATA%%%%DATADIR%%/hash/jazz.xml
 %%MAMEDATA%%%%DATADIR%%/hash/jb3000_flop.xml
-%%MAMEDATA%%%%DATADIR%%/hash/jpopira_jp.xml
 %%MAMEDATA%%%%DATADIR%%/hash/juicebox.xml
 %%MAMEDATA%%%%DATADIR%%/hash/juku.xml
 %%MAMEDATA%%%%DATADIR%%/hash/jupace_cass.xml
 %%MAMEDATA%%%%DATADIR%%/hash/jupace_snap.xml
-%%MAMEDATA%%%%DATADIR%%/hash/k28m2.xml
+%%MAMEDATA%%%%DATADIR%%/hash/k28.xml
+%%MAMEDATA%%%%DATADIR%%/hash/k28o.xml
 %%MAMEDATA%%%%DATADIR%%/hash/kaypro.xml
 %%MAMEDATA%%%%DATADIR%%/hash/kc_cart.xml
 %%MAMEDATA%%%%DATADIR%%/hash/kc_cass.xml
 %%MAMEDATA%%%%DATADIR%%/hash/kc_flop.xml
 %%MAMEDATA%%%%DATADIR%%/hash/kim1_cass.xml
+%%MAMEDATA%%%%DATADIR%%/hash/kisssite_cd.xml
 %%MAMEDATA%%%%DATADIR%%/hash/korvet_flop.xml
 %%MAMEDATA%%%%DATADIR%%/hash/kpython2.xml
 %%MAMEDATA%%%%DATADIR%%/hash/lanteach.xml
@@ -1127,10 +1124,12 @@ share/man/man1/MAME.1.gz
 %%MAMEDATA%%%%DATADIR%%/hash/lisa.xml
 %%MAMEDATA%%%%DATADIR%%/hash/lisa2.xml
 %%MAMEDATA%%%%DATADIR%%/hash/lk3000.xml
+%%MAMEDATA%%%%DATADIR%%/hash/lnux4004.xml
 %%MAMEDATA%%%%DATADIR%%/hash/lviv.xml
 %%MAMEDATA%%%%DATADIR%%/hash/lynx.xml
 %%MAMEDATA%%%%DATADIR%%/hash/m20.xml
 %%MAMEDATA%%%%DATADIR%%/hash/m24.xml
+%%MAMEDATA%%%%DATADIR%%/hash/m3.xml
 %%MAMEDATA%%%%DATADIR%%/hash/m5_cart.xml
 %%MAMEDATA%%%%DATADIR%%/hash/m5_cass.xml
 %%MAMEDATA%%%%DATADIR%%/hash/m5_flop.xml
@@ -1151,7 +1150,6 @@ share/man/man1/MAME.1.gz
 %%MAMEDATA%%%%DATADIR%%/hash/mc1502_flop.xml
 %%MAMEDATA%%%%DATADIR%%/hash/md2_flop.xml
 %%MAMEDATA%%%%DATADIR%%/hash/megacd.xml
-%%MAMEDATA%%%%DATADIR%%/hash/megacdj.xml
 %%MAMEDATA%%%%DATADIR%%/hash/megadriv.xml
 %%MAMEDATA%%%%DATADIR%%/hash/megaduck.xml
 %%MAMEDATA%%%%DATADIR%%/hash/megapc.xml
@@ -1161,6 +1159,7 @@ share/man/man1/MAME.1.gz
 %%MAMEDATA%%%%DATADIR%%/hash/mephisto_mm4.xml
 %%MAMEDATA%%%%DATADIR%%/hash/mephisto_mm5.xml
 %%MAMEDATA%%%%DATADIR%%/hash/mephisto_smondial2.xml
+%%MAMEDATA%%%%DATADIR%%/hash/microbox2_flop.xml
 %%MAMEDATA%%%%DATADIR%%/hash/microvision.xml
 %%MAMEDATA%%%%DATADIR%%/hash/midi_flop.xml
 %%MAMEDATA%%%%DATADIR%%/hash/mikro80.xml
@@ -1170,6 +1169,7 @@ share/man/man1/MAME.1.gz
 %%MAMEDATA%%%%DATADIR%%/hash/misterx.xml
 %%MAMEDATA%%%%DATADIR%%/hash/mk14_quik.xml
 %%MAMEDATA%%%%DATADIR%%/hash/mm1_flop.xml
+%%MAMEDATA%%%%DATADIR%%/hash/mm2_flop.xml
 %%MAMEDATA%%%%DATADIR%%/hash/mo5_cart.xml
 %%MAMEDATA%%%%DATADIR%%/hash/mo5_cass.xml
 %%MAMEDATA%%%%DATADIR%%/hash/mo5_flop.xml
@@ -1178,6 +1178,7 @@ share/man/man1/MAME.1.gz
 %%MAMEDATA%%%%DATADIR%%/hash/mo6_flop.xml
 %%MAMEDATA%%%%DATADIR%%/hash/mobigo_cart.xml
 %%MAMEDATA%%%%DATADIR%%/hash/monon_color.xml
+%%MAMEDATA%%%%DATADIR%%/hash/mpc3000_flop.xml
 %%MAMEDATA%%%%DATADIR%%/hash/mpf1_rom.xml
 %%MAMEDATA%%%%DATADIR%%/hash/mpu1000.xml
 %%MAMEDATA%%%%DATADIR%%/hash/mpz80.xml
@@ -1195,6 +1196,7 @@ share/man/man1/MAME.1.gz
 %%MAMEDATA%%%%DATADIR%%/hash/msx2p_flop.xml
 %%MAMEDATA%%%%DATADIR%%/hash/msx_softcard.xml
 %%MAMEDATA%%%%DATADIR%%/hash/msx_yamaha_minicart.xml
+%%MAMEDATA%%%%DATADIR%%/hash/msxr_cart.xml
 %%MAMEDATA%%%%DATADIR%%/hash/msxr_flop.xml
 %%MAMEDATA%%%%DATADIR%%/hash/mt65_cass.xml
 %%MAMEDATA%%%%DATADIR%%/hash/mt65_rom.xml
@@ -1208,10 +1210,15 @@ share/man/man1/MAME.1.gz
 %%MAMEDATA%%%%DATADIR%%/hash/myvision.xml
 %%MAMEDATA%%%%DATADIR%%/hash/mz2000_cass.xml
 %%MAMEDATA%%%%DATADIR%%/hash/mz2000_flop.xml
-%%MAMEDATA%%%%DATADIR%%/hash/mz2200_cass.xml
-%%MAMEDATA%%%%DATADIR%%/hash/mz2500.xml
+%%MAMEDATA%%%%DATADIR%%/hash/mz2000_snap.xml
+%%MAMEDATA%%%%DATADIR%%/hash/mz2500_flop.xml
+%%MAMEDATA%%%%DATADIR%%/hash/mz5500_flop.xml
 %%MAMEDATA%%%%DATADIR%%/hash/mz700_cass.xml
 %%MAMEDATA%%%%DATADIR%%/hash/mz800_cass.xml
+%%MAMEDATA%%%%DATADIR%%/hash/mz800_rom.xml
+%%MAMEDATA%%%%DATADIR%%/hash/mz80b_cass.xml
+%%MAMEDATA%%%%DATADIR%%/hash/mz80b_flop.xml
+%%MAMEDATA%%%%DATADIR%%/hash/mz80k_cass.xml
 %%MAMEDATA%%%%DATADIR%%/hash/n64.xml
 %%MAMEDATA%%%%DATADIR%%/hash/n64_lodgenet.xml
 %%MAMEDATA%%%%DATADIR%%/hash/n64dd.xml
@@ -1239,6 +1246,7 @@ share/man/man1/MAME.1.gz
 %%MAMEDATA%%%%DATADIR%%/hash/ondra.xml
 %%MAMEDATA%%%%DATADIR%%/hash/orao.xml
 %%MAMEDATA%%%%DATADIR%%/hash/oric1_cass.xml
+%%MAMEDATA%%%%DATADIR%%/hash/orina_stylish_plus_cart.xml
 %%MAMEDATA%%%%DATADIR%%/hash/orion_cart.xml
 %%MAMEDATA%%%%DATADIR%%/hash/orion_cass.xml
 %%MAMEDATA%%%%DATADIR%%/hash/orion_flop.xml
@@ -1249,15 +1257,19 @@ share/man/man1/MAME.1.gz
 %%MAMEDATA%%%%DATADIR%%/hash/partner_cass.xml
 %%MAMEDATA%%%%DATADIR%%/hash/partner_flop.xml
 %%MAMEDATA%%%%DATADIR%%/hash/pasogo.xml
+%%MAMEDATA%%%%DATADIR%%/hash/pasopia7_cass.xml
 %%MAMEDATA%%%%DATADIR%%/hash/pasopia_cass.xml
 %%MAMEDATA%%%%DATADIR%%/hash/pb2000c.xml
 %%MAMEDATA%%%%DATADIR%%/hash/pc1000.xml
+%%MAMEDATA%%%%DATADIR%%/hash/pc100_flop.xml
 %%MAMEDATA%%%%DATADIR%%/hash/pc1512_flop.xml
 %%MAMEDATA%%%%DATADIR%%/hash/pc1512_hdd.xml
 %%MAMEDATA%%%%DATADIR%%/hash/pc1640_flop.xml
 %%MAMEDATA%%%%DATADIR%%/hash/pc1640_hdd.xml
 %%MAMEDATA%%%%DATADIR%%/hash/pc200.xml
 %%MAMEDATA%%%%DATADIR%%/hash/pc6001_cart.xml
+%%MAMEDATA%%%%DATADIR%%/hash/pc6001_cass.xml
+%%MAMEDATA%%%%DATADIR%%/hash/pc6001mk2_cass.xml
 %%MAMEDATA%%%%DATADIR%%/hash/pc8001_flop.xml
 %%MAMEDATA%%%%DATADIR%%/hash/pc8001mk2_flop.xml
 %%MAMEDATA%%%%DATADIR%%/hash/pc8001mk2sr_flop.xml
@@ -1268,6 +1280,8 @@ share/man/man1/MAME.1.gz
 %%MAMEDATA%%%%DATADIR%%/hash/pc88va.xml
 %%MAMEDATA%%%%DATADIR%%/hash/pc98.xml
 %%MAMEDATA%%%%DATADIR%%/hash/pc98_cd.xml
+%%MAMEDATA%%%%DATADIR%%/hash/pc98_flop_orig.xml
+%%MAMEDATA%%%%DATADIR%%/hash/pc98_hdd.xml
 %%MAMEDATA%%%%DATADIR%%/hash/pcd_flop.xml
 %%MAMEDATA%%%%DATADIR%%/hash/pce.xml
 %%MAMEDATA%%%%DATADIR%%/hash/pce_tourvision.xml
@@ -1281,6 +1295,7 @@ share/man/man1/MAME.1.gz
 %%MAMEDATA%%%%DATADIR%%/hash/pecom_cass.xml
 %%MAMEDATA%%%%DATADIR%%/hash/pegasus_cart.xml
 %%MAMEDATA%%%%DATADIR%%/hash/pencil2.xml
+%%MAMEDATA%%%%DATADIR%%/hash/pencil2_cass.xml
 %%MAMEDATA%%%%DATADIR%%/hash/pentagon_cass.xml
 %%MAMEDATA%%%%DATADIR%%/hash/pet_cass.xml
 %%MAMEDATA%%%%DATADIR%%/hash/pet_flop.xml
@@ -1288,6 +1303,7 @@ share/man/man1/MAME.1.gz
 %%MAMEDATA%%%%DATADIR%%/hash/pet_quik.xml
 %%MAMEDATA%%%%DATADIR%%/hash/pet_rom.xml
 %%MAMEDATA%%%%DATADIR%%/hash/phc25_cass.xml
+%%MAMEDATA%%%%DATADIR%%/hash/photo_cd.xml
 %%MAMEDATA%%%%DATADIR%%/hash/pi_storyreader_cart.xml
 %%MAMEDATA%%%%DATADIR%%/hash/pi_storyreader_v2_cart.xml
 %%MAMEDATA%%%%DATADIR%%/hash/picno.xml
@@ -1296,6 +1312,7 @@ share/man/man1/MAME.1.gz
 %%MAMEDATA%%%%DATADIR%%/hash/pippin_flop.xml
 %%MAMEDATA%%%%DATADIR%%/hash/pixter_cart.xml
 %%MAMEDATA%%%%DATADIR%%/hash/playmaker.xml
+%%MAMEDATA%%%%DATADIR%%/hash/pls1000_cart.xml
 %%MAMEDATA%%%%DATADIR%%/hash/plus4_cart.xml
 %%MAMEDATA%%%%DATADIR%%/hash/plus4_cass.xml
 %%MAMEDATA%%%%DATADIR%%/hash/plus4_flop.xml
@@ -1306,6 +1323,8 @@ share/man/man1/MAME.1.gz
 %%MAMEDATA%%%%DATADIR%%/hash/poisk1_flop.xml
 %%MAMEDATA%%%%DATADIR%%/hash/pokemini.xml
 %%MAMEDATA%%%%DATADIR%%/hash/poly_flop.xml
+%%MAMEDATA%%%%DATADIR%%/hash/polysix.xml
+%%MAMEDATA%%%%DATADIR%%/hash/precur2w_cart.xml
 %%MAMEDATA%%%%DATADIR%%/hash/princ.xml
 %%MAMEDATA%%%%DATADIR%%/hash/pro128_cart.xml
 %%MAMEDATA%%%%DATADIR%%/hash/pro128_cass.xml
@@ -1316,6 +1335,7 @@ share/man/man1/MAME.1.gz
 %%MAMEDATA%%%%DATADIR%%/hash/psi98.xml
 %%MAMEDATA%%%%DATADIR%%/hash/psion1.xml
 %%MAMEDATA%%%%DATADIR%%/hash/psion2.xml
+%%MAMEDATA%%%%DATADIR%%/hash/psion_flop.xml
 %%MAMEDATA%%%%DATADIR%%/hash/psion_ssd.xml
 %%MAMEDATA%%%%DATADIR%%/hash/psx.xml
 %%MAMEDATA%%%%DATADIR%%/hash/pt68k2.xml
@@ -1334,12 +1354,15 @@ share/man/man1/MAME.1.gz
 %%MAMEDATA%%%%DATADIR%%/hash/radio86_cart.xml
 %%MAMEDATA%%%%DATADIR%%/hash/radio86_cass.xml
 %%MAMEDATA%%%%DATADIR%%/hash/rainbow.xml
+%%MAMEDATA%%%%DATADIR%%/hash/ramstar.xml
 %%MAMEDATA%%%%DATADIR%%/hash/roland_tnsc1.xml
 %%MAMEDATA%%%%DATADIR%%/hash/roland_tnsc2.xml
 %%MAMEDATA%%%%DATADIR%%/hash/rwtrntcs.xml
 %%MAMEDATA%%%%DATADIR%%/hash/rx78_cart.xml
 %%MAMEDATA%%%%DATADIR%%/hash/rx78_cass.xml
 %%MAMEDATA%%%%DATADIR%%/hash/rz1_cass.xml
+%%MAMEDATA%%%%DATADIR%%/hash/s2000_flop.xml
+%%MAMEDATA%%%%DATADIR%%/hash/s3000_cdrom.xml
 %%MAMEDATA%%%%DATADIR%%/hash/sagafox.xml
 %%MAMEDATA%%%%DATADIR%%/hash/sage2.xml
 %%MAMEDATA%%%%DATADIR%%/hash/saitek_egr.xml
@@ -1355,10 +1378,11 @@ share/man/man1/MAME.1.gz
 %%MAMEDATA%%%%DATADIR%%/hash/sc3000_cart.xml
 %%MAMEDATA%%%%DATADIR%%/hash/sc3000_cass.xml
 %%MAMEDATA%%%%DATADIR%%/hash/scv.xml
+%%MAMEDATA%%%%DATADIR%%/hash/sd132_flop.xml
+%%MAMEDATA%%%%DATADIR%%/hash/sd1_flop.xml
 %%MAMEDATA%%%%DATADIR%%/hash/sdk85.xml
 %%MAMEDATA%%%%DATADIR%%/hash/sega_beena_cart.xml
 %%MAMEDATA%%%%DATADIR%%/hash/segaai.xml
-%%MAMEDATA%%%%DATADIR%%/hash/segacd.xml
 %%MAMEDATA%%%%DATADIR%%/hash/sf7000.xml
 %%MAMEDATA%%%%DATADIR%%/hash/sg1000.xml
 %%MAMEDATA%%%%DATADIR%%/hash/sgi_mips.xml
@@ -1366,6 +1390,7 @@ share/man/man1/MAME.1.gz
 %%MAMEDATA%%%%DATADIR%%/hash/sgx.xml
 %%MAMEDATA%%%%DATADIR%%/hash/singingstarkaraoke_cart.xml
 %%MAMEDATA%%%%DATADIR%%/hash/sitcom.xml
+%%MAMEDATA%%%%DATADIR%%/hash/smartcycle_cart.xml
 %%MAMEDATA%%%%DATADIR%%/hash/smarttv_cart.xml
 %%MAMEDATA%%%%DATADIR%%/hash/smc777.xml
 %%MAMEDATA%%%%DATADIR%%/hash/sms.xml
@@ -1380,6 +1405,7 @@ share/man/man1/MAME.1.gz
 %%MAMEDATA%%%%DATADIR%%/hash/softbox.xml
 %%MAMEDATA%%%%DATADIR%%/hash/softwarelist.dtd
 %%MAMEDATA%%%%DATADIR%%/hash/sol20_cass.xml
+%%MAMEDATA%%%%DATADIR%%/hash/sony_news.xml
 %%MAMEDATA%%%%DATADIR%%/hash/sorcerer_cart.xml
 %%MAMEDATA%%%%DATADIR%%/hash/sorcerer_cass.xml
 %%MAMEDATA%%%%DATADIR%%/hash/sorcerer_flop.xml
@@ -1387,6 +1413,7 @@ share/man/man1/MAME.1.gz
 %%MAMEDATA%%%%DATADIR%%/hash/spc1500_cass.xml
 %%MAMEDATA%%%%DATADIR%%/hash/special_cass.xml
 %%MAMEDATA%%%%DATADIR%%/hash/special_flop.xml
+%%MAMEDATA%%%%DATADIR%%/hash/specnext_sd.xml
 %%MAMEDATA%%%%DATADIR%%/hash/specpls3_flop.xml
 %%MAMEDATA%%%%DATADIR%%/hash/spectrum_betadisc_flop.xml
 %%MAMEDATA%%%%DATADIR%%/hash/spectrum_cart.xml
@@ -1400,9 +1427,11 @@ share/man/man1/MAME.1.gz
 %%MAMEDATA%%%%DATADIR%%/hash/ssem_quik.xml
 %%MAMEDATA%%%%DATADIR%%/hash/st_cart.xml
 %%MAMEDATA%%%%DATADIR%%/hash/st_flop.xml
+%%MAMEDATA%%%%DATADIR%%/hash/st_flop_demos.xml
 %%MAMEDATA%%%%DATADIR%%/hash/stepone_flop.xml
 %%MAMEDATA%%%%DATADIR%%/hash/studio2.xml
 %%MAMEDATA%%%%DATADIR%%/hash/stv.xml
+%%MAMEDATA%%%%DATADIR%%/hash/sun_sparc.xml
 %%MAMEDATA%%%%DATADIR%%/hash/super6.xml
 %%MAMEDATA%%%%DATADIR%%/hash/super80_cass.xml
 %%MAMEDATA%%%%DATADIR%%/hash/super80_flop.xml
@@ -1416,6 +1445,7 @@ share/man/man1/MAME.1.gz
 %%MAMEDATA%%%%DATADIR%%/hash/svision.xml
 %%MAMEDATA%%%%DATADIR%%/hash/svmu.xml
 %%MAMEDATA%%%%DATADIR%%/hash/t1000.xml
+%%MAMEDATA%%%%DATADIR%%/hash/takara_daigunder_dx_cart.xml
 %%MAMEDATA%%%%DATADIR%%/hash/tandy200.xml
 %%MAMEDATA%%%%DATADIR%%/hash/tandy2k.xml
 %%MAMEDATA%%%%DATADIR%%/hash/tandy6k.xml
@@ -1423,13 +1453,17 @@ share/man/man1/MAME.1.gz
 %%MAMEDATA%%%%DATADIR%%/hash/tdv2324.xml
 %%MAMEDATA%%%%DATADIR%%/hash/tek4052_cart.xml
 %%MAMEDATA%%%%DATADIR%%/hash/telestory_cart.xml
+%%MAMEDATA%%%%DATADIR%%/hash/teradrive_flop.xml
+%%MAMEDATA%%%%DATADIR%%/hash/teradrive_hdd.xml
 %%MAMEDATA%%%%DATADIR%%/hash/tg16.xml
+%%MAMEDATA%%%%DATADIR%%/hash/thinkpad8xx.xml
 %%MAMEDATA%%%%DATADIR%%/hash/ti74_cart.xml
 %%MAMEDATA%%%%DATADIR%%/hash/ti95_cart.xml
 %%MAMEDATA%%%%DATADIR%%/hash/ti99_cart.xml
 %%MAMEDATA%%%%DATADIR%%/hash/tiki100.xml
 %%MAMEDATA%%%%DATADIR%%/hash/timex_cass.xml
 %%MAMEDATA%%%%DATADIR%%/hash/timex_dock.xml
+%%MAMEDATA%%%%DATADIR%%/hash/tmc600_quik.xml
 %%MAMEDATA%%%%DATADIR%%/hash/tntell.xml
 %%MAMEDATA%%%%DATADIR%%/hash/to770_cart.xml
 %%MAMEDATA%%%%DATADIR%%/hash/to770a_cart.xml
@@ -1445,13 +1479,14 @@ share/man/man1/MAME.1.gz
 %%MAMEDATA%%%%DATADIR%%/hash/trs80_quik.xml
 %%MAMEDATA%%%%DATADIR%%/hash/trs80m2.xml
 %%MAMEDATA%%%%DATADIR%%/hash/trsm100.xml
-%%MAMEDATA%%%%DATADIR%%/hash/tsconf_betadisc_flop.xml
+%%MAMEDATA%%%%DATADIR%%/hash/tsconf.xml
 %%MAMEDATA%%%%DATADIR%%/hash/ttwist_brainquest_cart.xml
 %%MAMEDATA%%%%DATADIR%%/hash/turboextreme_cart.xml
 %%MAMEDATA%%%%DATADIR%%/hash/tutor.xml
 %%MAMEDATA%%%%DATADIR%%/hash/tvc_cart.xml
 %%MAMEDATA%%%%DATADIR%%/hash/tvc_cass.xml
 %%MAMEDATA%%%%DATADIR%%/hash/tvc_flop.xml
+%%MAMEDATA%%%%DATADIR%%/hash/tvdear.xml
 %%MAMEDATA%%%%DATADIR%%/hash/tvgogo.xml
 %%MAMEDATA%%%%DATADIR%%/hash/tvochken.xml
 %%MAMEDATA%%%%DATADIR%%/hash/tx0_ptp.xml
@@ -1467,6 +1502,7 @@ share/man/man1/MAME.1.gz
 %%MAMEDATA%%%%DATADIR%%/hash/vector06_cart.xml
 %%MAMEDATA%%%%DATADIR%%/hash/vector06_flop.xml
 %%MAMEDATA%%%%DATADIR%%/hash/vectrex.xml
+%%MAMEDATA%%%%DATADIR%%/hash/vfxsd_flop.xml
 %%MAMEDATA%%%%DATADIR%%/hash/vg5k.xml
 %%MAMEDATA%%%%DATADIR%%/hash/vgmplay.xml
 %%MAMEDATA%%%%DATADIR%%/hash/vic10.xml
@@ -1497,6 +1533,7 @@ share/man/man1/MAME.1.gz
 %%MAMEDATA%%%%DATADIR%%/hash/wicat.xml
 %%MAMEDATA%%%%DATADIR%%/hash/wizard_cart.xml
 %%MAMEDATA%%%%DATADIR%%/hash/wmbullet.xml
+%%MAMEDATA%%%%DATADIR%%/hash/wren_flop.xml
 %%MAMEDATA%%%%DATADIR%%/hash/wscolor.xml
 %%MAMEDATA%%%%DATADIR%%/hash/wswan.xml
 %%MAMEDATA%%%%DATADIR%%/hash/x07_card.xml
@@ -1650,6 +1687,10 @@ share/man/man1/MAME.1.gz
 %%MAMEDATA%%%%DATADIR%%/plugins/json/plugin.json
 %%MAMEDATA%%%%DATADIR%%/plugins/layout/init.lua
 %%MAMEDATA%%%%DATADIR%%/plugins/layout/plugin.json
+%%MAMEDATA%%%%DATADIR%%/plugins/offscreenreload/init.lua
+%%MAMEDATA%%%%DATADIR%%/plugins/offscreenreload/offscreenreload_menu.lua
+%%MAMEDATA%%%%DATADIR%%/plugins/offscreenreload/offscreenreload_persist.lua
+%%MAMEDATA%%%%DATADIR%%/plugins/offscreenreload/plugin.json
 %%MAMEDATA%%%%DATADIR%%/plugins/plugin.schema
 %%MAMEDATA%%%%DATADIR%%/plugins/portname/init.lua
 %%MAMEDATA%%%%DATADIR%%/plugins/portname/plugin.json
@@ -1658,12 +1699,12 @@ share/man/man1/MAME.1.gz
 %%MAMEDATA%%%%DATADIR%%/plugins/timer/init.lua
 %%MAMEDATA%%%%DATADIR%%/plugins/timer/plugin.json
 %%MAMEDATA%%%%DATADIR%%/plugins/timer/timer_persist.lua
+%%MAMEDATA%%%%DATADIR%%/plugins/vector/init.lua
+%%MAMEDATA%%%%DATADIR%%/plugins/vector/plugin.json
 %%MAMEDATA%%%%DATADIR%%/plugins/xml/LICENSE.txt
 %%MAMEDATA%%%%DATADIR%%/plugins/xml/init.lua
 %%MAMEDATA%%%%DATADIR%%/plugins/xml/plugin.json
 %%MAMEDATA%%%%DATADIR%%/samples/LICENSE
-%%MAMEDATA%%%%DATADIR%%/samples/MM1_keyboard/beep.wav
-%%MAMEDATA%%%%DATADIR%%/samples/MM1_keyboard/power_switch.wav
 %%MAMEDATA%%%%DATADIR%%/samples/README.md
 %%MAMEDATA%%%%DATADIR%%/samples/dir.txt
 %%MAMEDATA%%%%DATADIR%%/samples/floppy/35_seek_12ms.wav
@@ -1686,6 +1727,13 @@ share/man/man1/MAME.1.gz
 %%MAMEDATA%%%%DATADIR%%/samples/floppy/525_spin_start_empty.wav
 %%MAMEDATA%%%%DATADIR%%/samples/floppy/525_spin_start_loaded.wav
 %%MAMEDATA%%%%DATADIR%%/samples/floppy/525_step_1_1.wav
-%%MAMEDATA%%@sample %%ETCDIR%%/mame.ini.sample
-%%MAMEDATA%%@sample %%ETCDIR%%/plugin.ini.sample
-%%MAMEDATA%%@sample %%ETCDIR%%/ui.ini.sample
+share/man/man1/MAME.1.gz
+%%TOOLS%%share/man/man1/castool.1.gz
+%%TOOLS%%share/man/man1/chdman.1.gz
+%%TOOLS%%share/man/man1/floptool.1.gz
+%%TOOLS%%share/man/man1/imgtool.1.gz
+%%TOOLS%%share/man/man1/jedutil.1.gz
+%%TOOLS%%share/man/man1/ldresample.1.gz
+%%TOOLS%%share/man/man1/ldverify.1.gz
+%%TOOLS%%share/man/man1/romcmp.1.gz
+%%MAME%%share/man/man6/mame.6.gz

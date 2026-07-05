@@ -1,8 +1,9 @@
 PORTNAME=	trove-classifiers
-PORTVERSION=	2024.3.25
+PORTVERSION=	2026.1.14.14
 CATEGORIES=	devel python
 MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
+DISTNAME=	trove_classifiers-${PORTVERSION}
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Canonical source for classifiers on PyPI

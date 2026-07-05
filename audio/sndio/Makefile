@@ -1,5 +1,6 @@
 PORTNAME=	sndio
-PORTVERSION=	1.9.0
+DISTVERSION=	1.10.0
+PORTREVISION=	1
 CATEGORIES=	audio
 MASTER_SITES=	https://sndio.org/
 
@@ -14,7 +15,8 @@ USE_RC_SUBR=	sndiod
 
 HAS_CONFIGURE=	yes
 CONFIGURE_ARGS=	--default-dev="rsnd/default" \
-		--prefix=${PREFIX}
+		--prefix=${PREFIX} \
+		--pkgconfdir=${PREFIX}/libdata/pkgconfig
 
 # Parallel build leads to problems, but sndio is very quick to compile
 # as is so not worth fixing
@@ -29,8 +31,7 @@ post-patch:
 		${WRKSRC}/sndiod/sndiod.c
 
 post-install:
-	cd ${STAGEDIR}${PREFIX}/bin && ${STRIP_CMD} \
-		aucat midicat sndioctl sndiod
-	${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/libsndio.so.7.2
+	${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/*
+	${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/libsndio.so.7.3
 
 .include <bsd.port.mk>

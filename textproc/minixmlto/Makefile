@@ -5,9 +5,12 @@ MASTER_SITES=	https://codeberg.org/bapt/${PORTNAME}/archive/${DISTVERSIONFULL}${
 
 MAINTAINER=	bapt@FreeBSD.org
 COMMENT=	Minimalistic alternative to xmlto
-WWW=		https://github.com/bapt/minixmlto
+WWW=		https://codeberg.org/bapt/minixmlto
 
 LICENSE=	BSD2CLAUSE
+
+DEPRECATED=     Depends on vulnerable unmaintained libxslt
+EXPIRATION_DATE=2025-09-12
 
 RUN_DEPENDS=	docbook-xsl>0:textproc/docbook-xsl \
 		xsltproc:textproc/libxslt \

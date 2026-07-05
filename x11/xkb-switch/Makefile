@@ -1,9 +1,9 @@
 PORTNAME=	xkb-switch
 PORTVERSION=	1.8.5
-PORTREVIDSION=	1
+PORTREVISION=	1
 CATEGORIES=	x11
 
-MAINTAINER=	dmgk@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Switch your X keyboard layouts from the command line
 WWW=		https://github.com/ierton/xkb-switch
 

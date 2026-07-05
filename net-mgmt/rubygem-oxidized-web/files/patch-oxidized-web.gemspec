@@ -1,16 +1,17 @@
---- oxidized-web.gemspec.orig	2024-03-03 09:20:49 UTC
+--- oxidized-web.gemspec.orig	2025-12-10 20:00:58 UTC
 +++ oxidized-web.gemspec
-@@ -25,10 +25,10 @@ Gem::Specification.new do |s|
-   s.add_runtime_dependency(%q<haml>.freeze, ["~> 5.0".freeze])
-   s.add_runtime_dependency(%q<htmlentities>.freeze, ["~> 4.3".freeze])
-   s.add_runtime_dependency(%q<oxidized>.freeze, ["~> 0.26".freeze])
--  s.add_runtime_dependency(%q<puma>.freeze, ["~> 3.11.4".freeze])
-+  s.add_runtime_dependency(%q<puma>.freeze, ["~> 6".freeze])
-   s.add_runtime_dependency(%q<sass>.freeze, ["~> 3.3".freeze])
--  s.add_runtime_dependency(%q<sinatra>.freeze, ["~> 1.4".freeze, ">= 1.4.6".freeze])
--  s.add_runtime_dependency(%q<sinatra-contrib>.freeze, ["~> 1.4".freeze, ">= 1.4.6".freeze])
-+  s.add_runtime_dependency(%q<sinatra>.freeze, ["~> 3.0".freeze, ">= 3.0.6".freeze])
-+  s.add_runtime_dependency(%q<sinatra-contrib>.freeze, ["~> 3.0".freeze, ">= 3.0.6".freeze])
-   s.add_runtime_dependency(%q<json>.freeze, [">= 1.7.0".freeze])
-   s.add_runtime_dependency(%q<rack-test>.freeze, ["~> 0.7.0".freeze])
-   s.add_development_dependency(%q<bundler>.freeze, ["~> 2.0".freeze])
+@@ -23,10 +23,10 @@ Gem::Specification.new do |s|
+ 
+   s.add_runtime_dependency(%q<charlock_holmes>.freeze, [">= 0.7.5".freeze, "< 0.8.0".freeze])
+   s.add_runtime_dependency(%q<emk-sinatra-url-for>.freeze, ["~> 0.2".freeze])
+-  s.add_runtime_dependency(%q<haml>.freeze, [">= 6.0.0".freeze, "< 7.0.0".freeze])
+-  s.add_runtime_dependency(%q<htmlentities>.freeze, [">= 4.3.0".freeze, "< 4.5.0".freeze])
+-  s.add_runtime_dependency(%q<json>.freeze, [">= 2.3.0".freeze, "< 2.17.0".freeze])
+-  s.add_runtime_dependency(%q<oxidized>.freeze, [">= 0.34.1".freeze])
++  s.add_runtime_dependency(%q<haml>.freeze, [">= 7.0.1".freeze, "~> 7.0".freeze])
++  s.add_runtime_dependency(%q<htmlentities>.freeze, [">= 4.3.0".freeze, "< 5.0.0".freeze])
++  s.add_runtime_dependency(%q<json>.freeze, [">= 2.3.0".freeze, "< 3.0.0".freeze])
++  s.add_runtime_dependency(%q<oxidized>.freeze, ["~> 0.35.0".freeze])
+   s.add_runtime_dependency(%q<puma>.freeze, [">= 6.6".freeze, "< 7.2".freeze])
+   s.add_runtime_dependency(%q<sinatra>.freeze, [">= 4.1.1".freeze, "< 4.3.0".freeze])
+   s.add_runtime_dependency(%q<sinatra-contrib>.freeze, [">= 4.1.1".freeze, "< 4.3.0".freeze])

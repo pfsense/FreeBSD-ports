@@ -1,22 +1,24 @@
 PORTNAME=	musikcube
-DISTVERSION=	3.0.2
-PORTREVISION=	2
+DISTVERSION=	3.0.5
+PORTREVISION=	1
 CATEGORIES=	multimedia audio
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Terminal-based music player, audio engine, metadata indexer, server
-WWW=		https://musikcube.com/
+WWW=		https://musikcube.com/ \
+		https://github.com/clangen/musikcube
 
-LICENSE=	GPLv2
+LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE.txt
 
-BUILD_DEPENDS=	asio>0:net/asio
+BUILD_DEPENDS=	asio130>0:net/asio130 # pending https://github.com/clangen/musikcube/issues/733
 LIB_DEPENDS=	libasound.so:audio/alsa-lib \
 		libavcodec.so:multimedia/ffmpeg \
 		libbasu.so:devel/basu \
 		libcurl.so:ftp/curl \
 		libev.so:devel/libev \
 		libFLAC.so:audio/flac \
+		libgme.so:audio/libgme \
 		libmicrohttpd.so:www/libmicrohttpd \
 		libmp3lame.so:audio/lame \
 		libmpg123.so:audio/mpg123 \
@@ -29,12 +31,12 @@ LIB_DEPENDS=	libasound.so:audio/alsa-lib \
 		libtag.so:audio/taglib \
 		libvorbis.so:audio/libvorbis
 
-USES=		cmake:noninja compiler:c++17-lang ncurses pkgconfig ssl
+USES=		cmake compiler:c++17-lang ncurses pkgconfig ssl
 USES+=		localbase # workaround for https://github.com/clangen/musikcube/issues/600
 USE_LDCONFIG=	yes
+
 CMAKE_ON=	USE_BASU
 CMAKE_ARGS+=	-DNCURSES_DISABLE_LIB_SUFFIXES=false
-CMAKE_ON+=	FREEBSD_USE_BASE_NCURSES
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	clangen

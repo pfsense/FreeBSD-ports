@@ -8,6 +8,11 @@ share/icons/hicolor/22x22/apps/kolourpaint.png
 share/icons/hicolor/32x32/apps/kolourpaint.png
 share/icons/hicolor/48x48/apps/kolourpaint.png
 share/icons/hicolor/scalable/apps/kolourpaint.svgz
+%%DATADIR%%/colors/40.colors
+%%DATADIR%%/colors/Oxygen.colors
+%%DATADIR%%/colors/Rainbow.colors
+%%DATADIR%%/colors/Royal.colors
+%%DATADIR%%/colors/Web.colors
 %%DATADIR%%/icons/hicolor/16x16/actions/tool_brush.png
 %%DATADIR%%/icons/hicolor/16x16/actions/tool_color_eraser.png
 %%DATADIR%%/icons/hicolor/16x16/actions/tool_color_picker.png
@@ -98,7 +103,6 @@ share/icons/hicolor/scalable/apps/kolourpaint.svgz
 %%DATADIR%%/icons/hicolor/scalable/actions/tool_rounded_rectangle.svgz
 %%DATADIR%%/icons/hicolor/scalable/actions/tool_spraycan.svgz
 %%DATADIR%%/icons/hicolor/scalable/actions/tool_text.svgz
-share/kxmlgui5/kolourpaint/kolourpaintui.rc
 share/locale/ar/LC_MESSAGES/kolourpaint.mo
 share/locale/be/LC_MESSAGES/kolourpaint.mo
 share/locale/bg/LC_MESSAGES/kolourpaint.mo
@@ -154,6 +158,7 @@ share/locale/pt/LC_MESSAGES/kolourpaint.mo
 share/locale/pt_BR/LC_MESSAGES/kolourpaint.mo
 share/locale/ro/LC_MESSAGES/kolourpaint.mo
 share/locale/ru/LC_MESSAGES/kolourpaint.mo
+share/locale/sa/LC_MESSAGES/kolourpaint.mo
 share/locale/se/LC_MESSAGES/kolourpaint.mo
 share/locale/si/LC_MESSAGES/kolourpaint.mo
 share/locale/sk/LC_MESSAGES/kolourpaint.mo

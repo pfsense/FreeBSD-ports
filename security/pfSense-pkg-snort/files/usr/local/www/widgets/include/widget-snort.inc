@@ -3,7 +3,7 @@
  * widget-snort.inc
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2016-2024 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2016-2026 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2014 Bill Meeks
  * All rights reserved.
  *
@@ -21,6 +21,7 @@
  */
 
 require_once("config.inc");
+require("/usr/local/pkg/snort/snort_defs.inc");
 
 //set variables for custom title and link
 $snort_alerts_title = "Snort Alerts";

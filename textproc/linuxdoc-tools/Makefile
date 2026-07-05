@@ -3,7 +3,7 @@ DISTVERSION=	0.9.83
 PORTREVISION=	1
 CATEGORIES=	textproc
 
-MAINTAINER=	zirias@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Fork of SGML-tools specially tailored for linuxdoc SGMLs
 WWW=		https://gitlab.com/agmartin/linuxdoc-tools
 
@@ -24,7 +24,6 @@ USE_GITLAB=	yes
 GL_ACCOUNT=	agmartin
 
 GNU_CONFIGURE=	yes
-GNU_CONFIGURE_MANPREFIX=${PREFIX}/share
 USES=		gmake groff:both perl5 tar:bzip2
 CONFIGURE_ARGS=	--with-installed-sgmlsasp
 

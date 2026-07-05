@@ -2,26 +2,66 @@
 # `go` command.
 #
 # Feature:	go
-# Usage:	USES=go
-# Valid ARGS:	(none), N.NN, N.NN-devel, modules, no_targets, run
+# Usage:	USES=go or USES=go:<arg1>[,<arg2>,...]
+# Valid ARGS:	(none), N.NN+, N.NN, modules, no_targets, run
 #
-# (none)	Setup GOPATH and build in GOPATH mode using default Go version.
-# N.NN[-devel]	Specify Go version
-# modules	If the upstream uses Go modules, this can be set to build
-#		in modules-aware mode.
-# no_targets	Indicates that Go is needed at build time as a part of
-#		make/CMake build.  This will setup build environment like
-#		GO_ENV, GO_BUILDFLAGS but will not create post-extract and
-#		do-{build,install,test} targets.
-# run		Indicates that Go is needed at run time and adds it to
-#		RUN_DEPENDS.
+# (none)	Build in GOPATH mode using default Go version.
+# N.NN+		Specify minimum Go version
+# N.NN		Specify exact Go version (should be avoided)
+# modules	Build in native, modules-aware mode (most Go ports use this)
+# no_targets	Use this when an app has its own make/cmake files that call Go.
+#		Sets up the build environment (GO_ENV, GO_BUILDFLAGS, etc.) but
+#		does not create make(1) targets (post-extract, do-build,
+#		do-install, do-test, etc.).
+# run		Adds the Go compiler to RUN_DEPENDS. Rarely needed; Go-based
+#		applications are compiled and only need Go at build time.
 #
+# Note about Go version specifiers (i.e. USES=go:1.20+):
+#   Try to use a range (USES=go:1.20+) rather than a single-version pin
+#   (USES=go:1.20) when possible.
+#
+#   When you pin to a single version, you're saying that it only builds with
+#   that one version and nothing else. Go minors have a one-year lifecycle,
+#   so a single version pin creates a dependency that must be resolved next
+#   year. If your port really does need that, please let the Go team know so
+#   that we can work out how to support your port.
+#
+#   When go.mod says "go 1.20", it's usually fine to say USES=go:1.20+.
+#
+# === RESOURCES ===
+# Further documentation about porting Go-based applications:
+# - https://docs.freebsd.org/en/books/porters-handbook/special/#using-go
+# - https://docs.freebsd.org/en/books/porters-handbook/uses/#uses-go
+# An explanation of why we accept ports only for Go-based applications, not
+# libraries:
+# - https://docs.freebsd.org/en/books/porters-handbook/special/#go-libs
+#
+# === REACHING OUT ===
+# For questions or assistance, reach out on mailing lists. The Go team
+# monitors the FreeBSD-Go mailing list, but the FreeBSD-Ports list is far
+# more active.
+# - For help with porting, including Go apps (freebsd-ports@FreeBSD.org):
+#   https://lists.freebsd.org/subscription/freebsd-ports
+# - For questions about the Go framework itself (freebsd-go@FreeBSD.org):
+#   https://lists.freebsd.org/subscription/freebsd-go
+#
+# === DOCUMENTATION ON USES=go ===
 # You can set the following variables to control the process.
 #
 # GO_MODULE
 #	The name of the module as specified by "module" directive in go.mod.
 #	In most cases, this is the only required variable for ports that
 #	use Go modules.
+#
+# GO_MOD_DIST
+#	The location to download the go.mod file if GO_MODULE is used.
+#	The default is empty, so it is loaded from GO_PROXY.
+#	Set it to "gitlab" and make sure GL_PROJECT is defined to download
+#	the "go.mod" from gitlab.
+#	Set it to "github" and make sure GH_PROJECT is defined to download
+#	the "go.mod" from github.
+#	You can also set it completely manually a URI without go.mod in it,
+#	is attached automatically to the URI.
 #
 # GO_PKGNAME
 #	The name of the package when building in GOPATH mode.  This
@@ -60,19 +100,30 @@ _INCLUDE_USES_GO_MK=	yes
 
 # When adding a version, please keep the comment in
 # Mk/bsd.default-versions.mk in sync.
-GO_VALID_VERSIONS=	1.19 1.20 1.21 1.22 1.23-devel
+GO_VALID_VERSIONS=	1.24 1.25 1.26
 
 # Check arguments sanity
-.  if !empty(go_ARGS:N[1-9].[0-9][0-9]:N*-devel:Nmodules:Nno_targets:Nrun)
-IGNORE=	USES=go has invalid arguments: ${go_ARGS:N[1-9].[0-9][0-9]:N*-devel:Nmodules:Nno_targets:Nrun}
+.  if !empty(go_ARGS:N[1-9].[0-9][0-9]+:N[1-9].[0-9][0-9]:Nmodules:Nno_targets:Nrun)
+IGNORE=	USES=go has invalid arguments: ${go_ARGS:N[1-9].[0-9][0-9]+:N[1-9].[0-9][0-9]:Nmodules:Nno_targets:Nrun}
 .  endif
 
 # Parse Go version
-GO_VERSION=	${go_ARGS:Nmodules:Nno_targets:Nrun:C/^$/${GO_DEFAULT}/}
-.  if empty(GO_VALID_VERSIONS:M${GO_VERSION})
+.  if !empty(go_ARGS:M*+)
+GO_MIN_VERSION=	${go_ARGS:M*+:S/+//}
+.    for version in ${GO_VALID_VERSIONS:[-1..1]}
+.      if empty(GO_VERSION)
+.        if ${version} == ${GO_DEFAULT} || ${version} == ${GO_MIN_VERSION}
+GO_VERSION:=	${version}
+.        endif
+.      endif
+.    endfor
+.  else
+GO_VERSION:=	${go_ARGS:Nmodules:Nno_targets:Nrun:C/^$/${GO_DEFAULT}/}
+.    if empty(GO_VALID_VERSIONS:M${GO_VERSION})
 IGNORE?= USES=go has invalid version number: ${GO_VERSION}
+.    endif
 .  endif
-GO_SUFFIX=	${GO_VERSION:S/.//:C/.*-devel/-devel/}
+GO_SUFFIX=	${GO_VERSION:S/.//}
 GO_PORT=	lang/go${GO_SUFFIX}
 
 # Settable variables
@@ -99,11 +150,8 @@ GO_BUILDFLAGS+= -v -trimpath
 .  if !defined(WITH_DEBUG) && empty(GO_BUILDFLAGS:M-ldflags*)
 GO_BUILDFLAGS+=	-ldflags=-s
 .  endif
-GO_TESTFLAGS+=	-v
-.  if ${GO_VERSION} != 1.17
 GO_BUILDFLAGS+=	-buildvcs=false
-GO_TESTFLAGS+=	-buildvcs=false
-.  endif
+GO_TESTFLAGS+=	-v -buildvcs=false
 
 CGO_ENABLED?=	1
 CGO_CFLAGS+=	-I${LOCALBASE}/include
@@ -146,14 +194,40 @@ GO_MODNAME=	${GO_MODULE:C/^([^@]*)(@([^@]*)?)/\1/}
 GO_MODVERSION=	${GO_MODULE:C/^([^@]*)(@([^@]*)?)/\2/:M@*:S/^@//:S/^$/${DISTVERSIONFULL}/}
 GO_MODFILE=	${GO_MODVERSION}.mod
 GO_DISTFILE=	${GO_MODVERSION}.zip
+# If GO_MOD_DIST is gitlab, download the go.mod from gitlab by the defined GL_ACCOUNT and GL_PROJECT/PORTNAME
+.        if defined(GO_MOD_DIST) && "${GO_MOD_DIST}" == "gitlab"
+MASTER_SITES+=	https://gitlab.com/${GL_ACCOUNT}/${GL_PROJECT}/-/raw/${GO_MODVERSION}/${WRKSRC_SUBDIR:?${WRKSRC_SUBDIR}/:}
+DISTFILES+=	go.mod
+# If GO_MOD_DIST is github, download the go.mod from github by the defined GH_ACCOUNT and GH_PROJECT/PORTNAME
+.        elif defined(GO_MOD_DIST) && "${GO_MOD_DIST}" == "github"
+MASTER_SITES+=	https://raw.githubusercontent.com/${GH_ACCOUNT}/${GH_PROJECT}/${GO_MODVERSION}/${WRKSRC_SUBDIR:?${WRKSRC_SUBDIR}/:}
+DISTFILES+=	go.mod
+# Manually defined GO_MOD_DIST
+.        elifdef(GO_MOD_DIST)
+MASTER_SITES+=	${GO_MOD_DIST}
+DISTFILES+=	go.mod
+# Fallback to default GO_PROXY
+.        else
+
+# `GOPROXY` presents sources via the proxy service and in the downloaded
+# `WRKSRC` differently as of v2.x versions of projects. Support this different
+# directory/REST API scheme: https://go.dev/ref/mod#major-version-suffixes .
+# GO_MODVERSION_MAJOR=	${GO_MODVERSION:C/^v//g:C/\..+//g}
+# .if ${GO_MODVERSION_MAJOR} > 1
+# WRKSRC=		${WRKDIR}/${GO_MODNAME}/v${GO_MODVERSION_MAJOR}@${GO_MODVERSION}
+# MASTER_SITES+=	${GO_GOPROXY}/${GO_MODNAME:C/([A-Z])/!\1/g:tl}/v${GO_MODVERSION_MAJOR}/@v/
+# .else
+# WRKSRC=		${WRKDIR}/${GO_MODNAME}@${GO_MODVERSION}
 MASTER_SITES+=	${GO_GOPROXY}/${GO_MODNAME:C/([A-Z])/!\1/g:tl}/@v/
+# .endif
 DISTFILES+=	${GO_MODFILE} ${GO_DISTFILE}
 WRKSRC=		${WRKDIR}/${GO_MODNAME}@${GO_MODVERSION}
+.        endif
+
 .      endif
 EXTRACT_ONLY?=	${DISTFILES:N*.mod\:*:N*.mod:C/:.*//}
 DIST_SUBDIR=	go/${PKGORIGIN:S,/,_,g}/${DISTNAME}
-FETCH_DEPENDS+=	${GO_CMD}:${GO_PORT} \
-		ca_root_nss>0:security/ca_root_nss
+FETCH_DEPENDS+=	${GO_CMD}:${GO_PORT}
 USES+=		zip
 .    else
 GO_ENV+=	GO_NO_VENDOR_CHECKS=1

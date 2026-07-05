@@ -1,5 +1,6 @@
 PORTNAME=	libmatemixer
 PORTVERSION=	1.28.0
+PORTREVISION=	1
 CATEGORIES=	audio mate
 MASTER_SITES=	MATE
 DIST_SUBDIR=	mate
@@ -12,7 +13,7 @@ LICENSE=	LGPL21
 
 PORTSCOUT=	limitw:1,even
 
-USES=		gettext gmake gnome libtool pathfix pkgconfig tar:xz
+USES=		gettext gmake gnome libtool pkgconfig tar:xz
 USE_GNOME=	glib20 intlhack
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--disable-null \

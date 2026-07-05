@@ -1,4 +1,5 @@
 DISTVERSION=	2.10.0
+PORTREVISION=	3
 
 PKGNAMESUFFIX=  210
 
@@ -8,6 +9,6 @@ CONFLICTS=	opensearch13 opensearch
 
 DISTINFO_FILE=	${.CURDIR}/distinfo
 
-MASTERDIR=	${.CURDIR}/../../textproc/opensearch
+MASTERDIR=	${.CURDIR}/../../textproc/opensearch216
 
 .include "${MASTERDIR}/Makefile"

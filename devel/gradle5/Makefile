@@ -1,5 +1,6 @@
 PORTNAME=	gradle
 PORTVERSION=	5.0
+PORTREVISION=	1
 CATEGORIES=	devel java
 MASTER_SITES=	https://downloads.gradle.org/distributions/
 EXTRACT_SUFX=	-bin.zip
@@ -11,10 +12,9 @@ WWW=		https://www.gradle.org/
 
 LICENSE=	APACHE20
 
+USES=		cpe java zip
+JAVA_VERSION=	8 11 # Fails on runtime with jdk 12+.
 NO_ARCH=	yes
-USES=		cpe zip
-JAVA_VERSION=	8+
-USE_JAVA=	yes
 NO_BUILD=	yes
 DATADIR=	${PREFIX}/share/${PORTNAME}${PKGNAMESUFFIX}
 PORTSCOUT=	ignore:1

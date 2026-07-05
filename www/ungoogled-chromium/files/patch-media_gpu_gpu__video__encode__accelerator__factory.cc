@@ -1,11 +1,11 @@
---- media/gpu/gpu_video_encode_accelerator_factory.cc.orig	2023-09-17 07:59:53 UTC
+--- media/gpu/gpu_video_encode_accelerator_factory.cc.orig	2026-02-15 10:01:45 UTC
 +++ media/gpu/gpu_video_encode_accelerator_factory.cc
-@@ -119,7 +119,7 @@ std::vector<VEAFactoryFunction> GetVEAFactoryFunctions
-     return vea_factory_functions;
- 
- #if BUILDFLAG(USE_VAAPI)
+@@ -67,7 +67,7 @@ std::unique_ptr<VideoEncodeAccelerator> CreateV4L2VEA(
+ }
+ #elif BUILDFLAG(USE_VAAPI)
+ std::unique_ptr<VideoEncodeAccelerator> CreateVaapiVEA() {
 -#if BUILDFLAG(IS_LINUX)
 +#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_BSD)
-   if (base::FeatureList::IsEnabled(kVaapiVideoEncodeLinux))
-     vea_factory_functions.push_back(base::BindRepeating(&CreateVaapiVEA));
- #else
+   if (!base::FeatureList::IsEnabled(kAcceleratedVideoEncodeLinux)) {
+     return nullptr;
+   }

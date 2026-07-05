@@ -1,5 +1,6 @@
 PORTNAME=	jcifs
 PORTVERSION=	1.3.19
+PORTREVISION=	1
 PORTEPOCH=	1
 CATEGORIES=	net java
 MASTER_SITES=	http://jcifs.samba.org/src/
@@ -12,8 +13,8 @@ LICENSE=	LGPL21
 
 OPTIONS_DEFINE=	DOCS EXAMPLES
 
-USES=		tar:tgz
-USE_JAVA=	yes
+USES=		java tar:tgz
+
 WRKSRC=		${WRKDIR}/${PORTNAME}_${PORTVERSION}
 NO_ARCH=	yes
 NO_BUILD=	yes

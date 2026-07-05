@@ -1,10 +1,10 @@
 PORTNAME=	autorestic
 DISTVERSIONPREFIX=	v
-DISTVERSION=	1.7.10
-PORTREVISION=	2
+DISTVERSION=	1.8.3
+PORTREVISION=	15
 CATEGORIES=	sysutils
 
-MAINTAINER=	DtxdF@disroot.org
+MAINTAINER=	dtxdf@FreeBSD.org
 COMMENT=	Config driven, easy backup cli for restic
 WWW=		https://github.com/cupcakearmy/${PORTNAME}
 

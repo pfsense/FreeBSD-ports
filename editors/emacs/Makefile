@@ -1,12 +1,13 @@
 PORTNAME=	emacs
-DISTVERSION=	29.3
+DISTVERSION=	30.2
+PORTREVISION=	1
 PORTEPOCH=	3
 CATEGORIES=	editors
 MASTER_SITES=	GNU
 
 .if ${FLAVOR:U} == canna
-PATCH_SITES+=	https://www.gentei.org/~yuuji/software/emacs29canna/:canna
-PATCHFILES+=	emacs29.1-canna-20230730.diff.xz:-p1:canna
+PATCH_SITES+=	https://www.gentei.org/~yuuji/software/emacs30canna/:canna
+PATCHFILES+=	emacs30.1-canna-20250224.diff.gz:-p1:canna
 .endif
 
 MAINTAINER=	emacs@FreeBSD.org
@@ -14,26 +15,28 @@ COMMENT=	GNU editing macros ${COMMENT_${FLAVOR}}
 WWW=		https://www.gnu.org/software/emacs/
 COMMENT_nox=	(No X flavor)
 COMMENT_canna=	(Canna Japanese input flavor)
+COMMENT_wayland=	(Wayland flavor)
 
 LICENSE=	GPLv3+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
 LIB_DEPENDS=	libgmp.so:math/gmp
 
-FLAVORS=			full canna nox
+FLAVORS=			full canna nox wayland
 canna_PKGNAMESUFFIX=		-canna
 canna_LIB_DEPENDS=		libcanna.so:japanese/canna-lib
-canna_CONFLICTS_INSTALL=	emacs emacs-nox
+canna_CONFLICTS_INSTALL=	emacs emacs-nox emacs-wayland
 canna_DESCR=			${.CURDIR}/pkg-descr-canna
-full_CONFLICTS_INSTALL=		emacs-canna emacs-nox
+full_CONFLICTS_INSTALL=		emacs-canna emacs-nox emacs-wayland
 nox_PKGNAMESUFFIX=		-nox
-nox_CONFLICTS_INSTALL=		emacs emacs-canna
+nox_CONFLICTS_INSTALL=		emacs emacs-canna emacs-wayland
+wayland_PKGNAMESUFFIX=		-wayland
+wayland_CONFLICTS_INSTALL=	emacs emacs-canna emacs-nox
 
 USES=		cpe gmake localbase:ldflags ncurses pkgconfig tar:xz
 CPE_VENDOR=	gnu
 
 GNU_CONFIGURE=		yes
-GNU_CONFIGURE_MANPREFIX=${PREFIX}/share
 CONFIGURE_ARGS=		--disable-build-details \
 			--localstatedir=/var \
 			--without-gconf \
@@ -41,8 +44,7 @@ CONFIGURE_ARGS=		--disable-build-details \
 			--without-selinux
 .if ${FLAVOR:U} == canna
 CONFIGURE_ARGS+=	--with-canna
-.endif
-.if ${FLAVOR:U} == nox
+.elif ${FLAVOR:U} == nox
 CONFIGURE_ARGS+=	--with-sound=no \
 			--with-x-toolkit=no \
 			--without-cairo \
@@ -65,6 +67,8 @@ CONFIGURE_ARGS+=	--with-sound=no \
 			--without-xim \
 			--without-xpm \
 			--without-xwidgets
+.elif ${FLAVOR:U} == wayland
+CONFIGURE_ARGS+=	--without-x
 .else
 CONFIGURE_ARGS+=	--with-x
 .endif
@@ -74,8 +78,10 @@ CONFIGURE_ENV=		ac_cv_header_sys_sysinfo_h=no
 CONFLICTS_INSTALL=	emacs-devel emacs-devel-nox
 
 BINARY_ALIAS=	makeinfo=true
-SUB_FILES=	sources.el
-SUB_LIST=	EMACS_VER=${DISTVERSION}
+SUB_FILES=	pkg-message sources.el
+SUB_LIST=	EMACS_VER=${DISTVERSION} \
+		NATIVECOMP_COMMENT_END=${NATIVECOMP_COMMENT_END} \
+		NATIVECOMP_COMMENT_START=${NATIVECOMP_COMMENT_START}
 
 INFO=		auth autotype bovine calc ccmode cl dbus dired-x ebrowse ede \
 		ediff edt efaq eglot eieio eintr elisp emacs emacs-gnutls \
@@ -95,26 +101,36 @@ PLIST_FILES+=	${DATADIR}/${DISTVERSION}/lisp/canna.el.gz \
 PLIST_SUB=	EMACS_VER=${DISTVERSION} \
 		GNU_HOST=${CONFIGURE_TARGET}
 
-OPTIONS_DEFINE=			ACL DBUS GNUTLS GSETTINGS HARFBUZZ JSON LCMS2 \
-				M17N MAILUTILS MODULES NATIVECOMP OTF PGTK \
+OPTIONS_DEFINE=			ACL DBUS GNUTLS GSETTINGS HARFBUZZ LCMS2 M17N \
+				MAILUTILS MODULES NATIVECOMP OTF PGTK \
 				SCROLLBARS SOURCES SQLITE3 THREADS TREESITTER \
 				XFT XIM XML XWIDGETS
 OPTIONS_DEFAULT=		ACL CAIRO DBUS GIF GNUTLS GSETTINGS GTK3 \
-				HARFBUZZ JPEG JSON KQUEUE LCMS2 MAILUTILS \
-				MODULES OSS SCROLLBARS SOURCES SQLITE3 SVG \
-				THREADS TIFF TREESITTER WEBP XML
+				HARFBUZZ JPEG KQUEUE LCMS2 MAILUTILS MODULES \
+				OSS PNG SCROLLBARS SOURCES SQLITE3 SVG THREADS \
+				TIFF TREESITTER WEBP XIM XML XPM
+.if ${FLAVOR:U} != nox
+OPTIONS_DEFAULT+=		NATIVECOMP
+.endif
 OPTIONS_GROUP=			GRAPHICS
 OPTIONS_GROUP_GRAPHICS=		CAIRO GIF JPEG MAGICK PNG SVG TIFF WEBP XPM
 OPTIONS_RADIO=			FILENOTIFY SOUND X11TOOLKIT
 OPTIONS_RADIO_FILENOTIFY=	GFILE KQUEUE
 OPTIONS_RADIO_SOUND=		ALSA OSS
 OPTIONS_RADIO_X11TOOLKIT=	GTK2 GTK3 MOTIF XAW XAW3D
-.if ${FLAVOR:U} == nox
-OPTIONS_EXCLUDE=		ALSA CAIRO DBUS GFILE GIF GSETTINGS GTK2 GTK3 \
+.if ${FLAVOR:U} == wayland
+OPTIONS_EXCLUDE+=		GTK2 MOTIF XAW XAW3D XIM ${PGTK_PREVENTS} \
+				${PGTK_IMPLIES:@i@${${i}_PREVENTS}@}
+OPTIONS_SLAVE+=			PGTK ${PGTK_IMPLIES} \
+				${PGTK_IMPLIES:@i@${${i}_IMPLIES}@}
+.elif ${FLAVOR:U} == nox
+OPTIONS_EXCLUDE+=		ALSA CAIRO DBUS GFILE GIF GSETTINGS GTK2 GTK3 \
 				HARFBUZZ JPEG LCMS2 M17N MAGICK MOTIF OSS OTF \
 				PGTK PNG SCROLLBARS SVG TIFF WEBP XAW XAW3D XFT \
 				XIM XPM XWIDGETS
 .endif
+OPTIONS_EXCLUDE_armv7=		NATIVECOMP
+OPTIONS_EXCLUDE_powerpc64=	NATIVECOMP
 OPTIONS_SUB=			YES
 
 ACL_DESC=		Access control list support
@@ -173,8 +189,6 @@ HARFBUZZ_LIB_DEPENDS=		libharfbuzz.so:print/harfbuzz
 HARFBUZZ_CONFIGURE_WITH=	harfbuzz
 JPEG_USES=			jpeg
 JPEG_CONFIGURE_WITH=		jpeg
-JSON_LIB_DEPENDS=		libjansson.so:devel/jansson
-JSON_CONFIGURE_WITH=		json
 KQUEUE_CONFIGURE_ON=		--with-file-notification=kqueue
 LCMS2_LIB_DEPENDS=		liblcms2.so:graphics/lcms2
 LCMS2_CONFIGURE_WITH=		lcms2
@@ -184,14 +198,14 @@ M17N_LIB_DEPENDS=		libm17n.so:devel/m17n-lib
 M17N_CONFIGURE_WITH=		m17n-flt
 MAGICK_USES=			magick:7
 MAGICK_CONFIGURE_WITH=		imagemagick
-MAILUTILS_LIB_DEPENDS=		libmailutils.so:mail/mailutils
+MAILUTILS_RUN_DEPENDS=		mailutils:mail/mailutils
 MAILUTILS_CONFIGURE_WITH=	mailutils
 MAILUTILS_CONFIGURE_ENV_OFF=	ac_cv_lib_lockfile_maillock=no \
 				ac_cv_prog_liblockfile=no
 MODULES_CONFIGURE_WITH=		modules
 MOTIF_USES=			motif
 MOTIF_CONFIGURE_ON=		--with-x-toolkit=motif
-NATIVECOMP_USE=			GCC=yes
+NATIVECOMP_USE=			GCC=13
 NATIVECOMP_CONFIGURE_WITH=	native-compilation=aot
 OSS_CONFIGURE_ON=		--with-sound=oss
 OTF_LIB_DEPENDS=		libotf.so:print/libotf
@@ -200,7 +214,7 @@ PGTK_IMPLIES=			CAIRO GTK3 SCROLLBARS
 PGTK_PREVENTS=			M17N XFT XPM
 PGTK_CATEGORIES=		wayland
 PGTK_CONFIGURE_WITH=		pgtk
-PNG_LIB_DEPENDS=		libpng.so:graphics/png
+PNG_LIB_DEPENDS=		libpng16.so:graphics/png
 PNG_CONFIGURE_WITH=		png
 SCROLLBARS_CONFIGURE_WITH=	toolkit-scroll-bars
 .if ${FLAVOR:U} == canna
@@ -217,9 +231,9 @@ TIFF_CONFIGURE_WITH=		tiff
 TREESITTER_IMPLIES=		MODULES
 TREESITTER_LIB_DEPENDS=		libtree-sitter.so:devel/tree-sitter
 TREESITTER_CONFIGURE_WITH=	tree-sitter
-WEBP_LIB_DEPENDS=		libwebp.so:graphics/webp
+WEBP_LIB_DEPENDS=		libwebpdemux.so:graphics/webp
 WEBP_CONFIGURE_WITH=		webp
-XAW3D_LIB_DEPENDS=		libXaw3d.so:x11-toolkits/Xaw3d
+XAW3D_LIB_DEPENDS=		libXaw3d.so:x11-toolkits/libXaw3d
 XAW3D_CONFIGURE_ON=		--with-x-toolkit=athena
 XAW_USE=			XORG=xaw
 XAW_CONFIGURE_ON=		--with-x-toolkit=athena \
@@ -237,14 +251,18 @@ XPM_USE=			XORG=xpm
 XPM_CONFIGURE_WITH=		xpm
 XWIDGETS_IMPLIES=		GTK3
 XWIDGETS_LIB_DEPENDS=		libsoup-2.4.so:devel/libsoup \
-				libwebkit2gtk-4.0.so:www/webkit2-gtk3
+				libwebkit2gtk-4.0.so:www/webkit2-gtk@40
 XWIDGETS_USE=			XORG=xcomposite
 XWIDGETS_CONFIGURE_WITH=	xwidgets
 
 .include <bsd.port.options.mk>
 
-.if ${ARCH:Mpowerpc64*}
-USE_GCC=	yes
+.if ${PORT_OPTIONS:MNATIVECOMP}
+NATIVECOMP_COMMENT_END=
+NATIVECOMP_COMMENT_START=
+.else
+NATIVECOMP_COMMENT_END=		'*/'
+NATIVECOMP_COMMENT_START=	'/*'
 .endif
 
 .if ${FLAVOR:U} != nox

@@ -19,10 +19,9 @@ LIB_DEPENDS=	libEMF.so:graphics/libemf \
 RUN_DEPENDS=	fig2dev:print/fig2dev
 
 USES=		compiler:c++11-lang gettext gmake gnome pkgconfig tar:tgz xorg
-USE_GNOME=	cairo gdkpixbuf2 gtk20
+USE_GNOME=	cairo gdkpixbuf gtk20
 USE_XORG=	x11
 GNU_CONFIGURE=	yes
-GNU_CONFIGURE_MANPREFIX=	${PREFIX}/share
 CONFIGURE_ARGS=	--enable-emf=yes
 MAKE_ARGS+=	MAKE=${MAKE_CMD}
 CFLAGS+=	-fcommon

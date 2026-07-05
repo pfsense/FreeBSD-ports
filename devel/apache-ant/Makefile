@@ -1,5 +1,5 @@
 PORTNAME=	apache-ant
-DISTVERSION=	1.10.13
+DISTVERSION=	1.10.15
 PORTREVISION=	1
 CATEGORIES=	devel java
 MASTER_SITES=	APACHE/ant/binaries:bin \
@@ -14,10 +14,9 @@ WWW=		https://ant.apache.org/
 
 LICENSE=	APACHE20
 
-USES=		cpe tar:bzip2
+USES=		cpe java tar:bzip2
 CPE_VENDOR=	apache
 CPE_PRODUCT=	ant
-USE_JAVA=	yes
 
 ANT_DISTFILE=	${PORTNAME}-${DISTVERSION}-bin.tar.bz2
 MANPAGE_DISTFILE=	ant_${DISTVERSION}-${MANPAGE_VERSION}.debian.tar.xz

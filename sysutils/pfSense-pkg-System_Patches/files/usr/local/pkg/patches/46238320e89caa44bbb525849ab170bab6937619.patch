@@ -1,0 +1,21 @@
+commit 46238320e89caa44bbb525849ab170bab6937619
+Author: Marcos Mendoza <mmendoza@netgate.com>
+Date:   Fri Jan 3 16:29:55 2025 -0600
+
+    Don't translate the change description. Fix #15911
+    
+    Revert to the previous behavior of not translating change descriptions.
+
+diff --git a/src/etc/inc/config.lib.inc b/src/etc/inc/config.lib.inc
+index 62c32c6164..7f76f83507 100644
+--- a/src/etc/inc/config.lib.inc
++++ b/src/etc/inc/config.lib.inc
+@@ -609,7 +609,7 @@ function write_config($desc="Unknown", $backup = true, $write_config_only = fals
+ 	}
+ 
+ 	if (config_get_path('syslog/logconfigchanges') != "disabled") {
+-		log_error(gettext('Configuration Change: ' . config_get_path('revision/description')));
++		log_error(gettext('Configuration Change') . ': ' . config_get_path('revision/description'));
+ 	}
+ 
+ 	cleanup_backupcache(true);

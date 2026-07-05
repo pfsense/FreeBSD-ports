@@ -6,6 +6,7 @@ bin/morbo
 %%SITE_PERL%%/Mojo/Asset/File.pm
 %%SITE_PERL%%/Mojo/Asset/Memory.pm
 %%SITE_PERL%%/Mojo/Base.pm
+%%SITE_PERL%%/Mojo/BaseUtil.pm
 %%SITE_PERL%%/Mojo/ByteStream.pm
 %%SITE_PERL%%/Mojo/Cache.pm
 %%SITE_PERL%%/Mojo/Collection.pm
@@ -56,6 +57,7 @@ bin/morbo
 %%SITE_PERL%%/Mojo/Server/Morbo/Backend/Poll.pm
 %%SITE_PERL%%/Mojo/Server/PSGI.pm
 %%SITE_PERL%%/Mojo/Server/Prefork.pm
+%%SITE_PERL%%/Mojo/SSE.pm
 %%SITE_PERL%%/Mojo/Template.pm
 %%SITE_PERL%%/Mojo/Transaction.pm
 %%SITE_PERL%%/Mojo/Transaction/HTTP.pm
@@ -151,6 +153,7 @@ bin/morbo
 %%PERL5_MAN3%%/Mojo::Asset::File.3.gz
 %%PERL5_MAN3%%/Mojo::Asset::Memory.3.gz
 %%PERL5_MAN3%%/Mojo::Base.3.gz
+%%PERL5_MAN3%%/Mojo::BaseUtil.3.gz
 %%PERL5_MAN3%%/Mojo::ByteStream.3.gz
 %%PERL5_MAN3%%/Mojo::Cache.3.gz
 %%PERL5_MAN3%%/Mojo::Collection.3.gz
@@ -199,6 +202,7 @@ bin/morbo
 %%PERL5_MAN3%%/Mojo::Server::Morbo::Backend::Poll.3.gz
 %%PERL5_MAN3%%/Mojo::Server::PSGI.3.gz
 %%PERL5_MAN3%%/Mojo::Server::Prefork.3.gz
+%%PERL5_MAN3%%/Mojo::SSE.3.gz
 %%PERL5_MAN3%%/Mojo::Template.3.gz
 %%PERL5_MAN3%%/Mojo::Transaction.3.gz
 %%PERL5_MAN3%%/Mojo::Transaction::HTTP.3.gz

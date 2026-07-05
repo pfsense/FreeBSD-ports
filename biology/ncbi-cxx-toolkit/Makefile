@@ -1,20 +1,21 @@
 PORTNAME=	ncbi-cxx-toolkit
-DISTVERSIONPREFIX=	release-
-DISTVERSION=	28.0.3
+DISTVERSIONPREFIX=	release/
+DISTVERSION=	29.7.0
 CATEGORIES=	biology science devel
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	NCBI C++ Toolkit
-WWW=		https://ncbi.github.io/cxx-toolkit/
+WWW=		https://ncbi.github.io/cxx-toolkit/ \
+		https://github.com/ncbi/ncbi-cxx-toolkit-public
 
 LICENSE=	PD
 LICENSE_FILE=	${WRKSRC}/doc/public/LICENSE
 
-BROKEN_armv6=	platform not defined for FreeBSD arm, see https://github.com/ncbi/ncbi-cxx-toolkit-public/issues/2
-BROKEN_armv7=	link fails due to a missing function, see https://github.com/ncbi/ncbi-cxx-toolkit-public/issues/8
+# uses intrincs for CRC computation, probably easy to port if desired
+ONLY_FOR_ARCHS=	aarch64 amd64
+ONLY_FOR_ARCHS_REASON=	deflate.c:149:2: error: "Only 64-bit Intel and ARM architectures are supported"
 
-LIB_DEPENDS=	libbz2.so:archivers/bzip2 \
-		libcdd.so:math/cddlib \
+LIB_DEPENDS=	libcdd.so:math/cddlib \
 		liblmdb.so:databases/lmdb \
 		libpcre.so:devel/pcre \
 		libunwind.so:devel/libunwind \

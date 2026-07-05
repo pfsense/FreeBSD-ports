@@ -1,6 +1,5 @@
 PORTNAME=	rebar3
-PORTVERSION=	3.22.1
-PORTREVISION=	1
+PORTVERSION=	3.26.0
 PORTEPOCH=	1
 CATEGORIES=	devel
 MASTER_SITES+=	https://repo.hex.pm/tarballs/:hex
@@ -16,9 +15,6 @@ BUILD_DEPENDS=	${LOCALBASE}/bin/erl:lang/erlang \
 		${LOCALBASE}/bin/git:devel/git
 RUN_DEPENDS=	${LOCALBASE}/bin/erl:lang/erlang
 
-OPTIONS_DEFINE=	BASH ZSH EXAMPLES
-OPTIONS_DEFAULT=BASH ZSH
-
 USES=		cpe
 CPE_VENDOR=	erlang
 USE_GITHUB=	yes
@@ -28,6 +24,9 @@ NO_ARCH=	yes
 PLIST_FILES=	bin/${PORTNAME} \
 		share/man/man1/rebar3.1.gz
 PORTEXAMPLES=	rebar.config.sample
+
+OPTIONS_DEFINE=		BASH EXAMPLES ZSH
+OPTIONS_DEFAULT=	BASH ZSH
 
 BASH_PLIST_FILES=	share/bash-completion/completions/rebar3
 ZSH_PLIST_FILES=	share/zsh/site-functions/_rebar3

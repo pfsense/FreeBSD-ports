@@ -1,8 +1,9 @@
 PORTNAME=	python-engineio
-PORTVERSION=	4.9.0
+PORTVERSION=	4.13.1
 CATEGORIES=	devel net python
 MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
+DISTNAME=	python_engineio-${PORTVERSION}
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Python implementation of the Engine.IO realtime client and server
@@ -25,7 +26,7 @@ OPTIONS_DEFAULT=ASYNCIO_CLIENT CLIENT
 CLIENT_DESC=	Standard client support
 ASYNCIO_CLIENT_DESC=	Asynchronous client support
 
-ASYNCIO_CLIENT_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}aiohttp>=3.4:www/py-aiohttp@${PY_FLAVOR}
+ASYNCIO_CLIENT_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}aiohttp>=3.11:www/py-aiohttp@${PY_FLAVOR}
 CLIENT_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}requests>=2.21.0:www/py-requests@${PY_FLAVOR} \
 			${PYTHON_PKGNAMEPREFIX}websocket-client>=0.54.0:www/py-websocket-client@${PY_FLAVOR}
 

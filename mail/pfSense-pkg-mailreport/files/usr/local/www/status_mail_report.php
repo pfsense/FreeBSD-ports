@@ -3,7 +3,7 @@
  * status_mail_report.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2011-2024 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2011-2026 Rubicon Communications, LLC (Netgate)
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -30,15 +30,12 @@ require("guiconfig.inc");
 
 require_once('mailreport/mail_report.inc');
 
-init_config_arr(array('mailreports', 'schedule'));
-$a_mailreports = &$config['mailreports']['schedule'];
-
 if (isset($_POST['del'])) {
 	if (is_array($_POST['reports']) && count($_POST['reports'])) {
 		foreach ($_POST['reports'] as $reportsi) {
-			unset($a_mailreports[$reportsi]);
+			config_del_path("mailreports/schedule/{$reportsi}");
 		}
-		set_mail_report_cron_jobs($a_mailreports);
+		set_mail_report_cron_jobs(config_get_path('mailreports/schedule', []));
 		write_config("Removed Multiple Email Reports");
 		configure_cron();
 		header("Location: status_mail_report.php");
@@ -53,14 +50,14 @@ if (isset($_POST['del'])) {
 	}
 
 	if (isset($delbtn)) {
-		if ($a_mailreports[$delbtn]) {
-			$name = $a_mailreports[$delbtn]['descr'];
-			unset($a_mailreports[$delbtn]);
+		$mailreports_item_config_temp = config_get_path("mailreports/schedule/{$delbtn}");
+		if ($mailreports_item_config_temp) {
+			config_del_path("mailreports/schedule/{$delbtn}");
 
 			// Fix up cron job(s)
-			set_mail_report_cron_jobs($a_mailreports);
+			set_mail_report_cron_jobs(config_get_path('mailreports/schedule', []));
 
-			write_config("Removed Email Report '{$name}'");
+			write_config("Removed Email Report '{$mailreports_item_config_temp['descr']}'");
 			configure_cron();
 			header("Location: status_mail_report.php");
 			exit;
@@ -94,7 +91,7 @@ include("head.inc");
 
 <?php
 		$i = 0;
-		foreach ($a_mailreports as $mailreport):
+		foreach (config_get_path('mailreports/schedule', []) as $mailreport):
 			if (!is_array($mailreport)) {
 				$mailreport = array();
 			}

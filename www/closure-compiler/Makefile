@@ -1,6 +1,7 @@
 PORTNAME=	closure-compiler
 DISTVERSIONPREFIX=	v
 DISTVERSION=	20220601
+PORTREVISION=	1
 CATEGORIES=	www java
 MASTER_SITES=	https://repo1.maven.org/maven2/com/google/javascript/${PORTNAME}/v${DISTVERSION}/
 EXTRACT_SUFX=	.jar
@@ -12,7 +13,8 @@ WWW=		https://developers.google.com/closure/compiler/
 
 LICENSE=	APACHE20
 
-USE_JAVA=	11+
+USES=		java
+JAVA_VERSION=	11+
 
 NO_ARCH=	yes
 NO_BUILD=	yes

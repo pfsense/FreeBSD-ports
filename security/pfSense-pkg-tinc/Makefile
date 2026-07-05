@@ -1,8 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	pfSense-pkg-tinc
-PORTVERSION=	1.0.35
-PORTREVISION=	3
+PORTVERSION=	1.0.39
 CATEGORIES=	security
 MASTER_SITES=	# empty
 DISTFILES=	# empty

@@ -1,6 +1,6 @@
 PORTNAME=		kallisto
 DISTVERSIONPREFIX=	v
-DISTVERSION=		0.50.1
+DISTVERSION=		0.52.0
 PORTEPOCH=		1
 CATEGORIES=		biology
 
@@ -22,6 +22,8 @@ USES=		cmake:noninja compiler:c++11-lang gmake localbase:ldflags
 USE_GITHUB=	yes
 GH_ACCOUNT=	pachterlab
 
+EXTRACT_AFTER_ARGS=	--exclude ${GH_PROJECT_DEFAULT}-${GH_TAGNAME_EXTRACT}/ext/htslib --no-same-owner --no-same-permissions
+
 SUB_FILES=	kallisto-test
 
 PORTEXAMPLES=		*
@@ -34,13 +36,16 @@ EXAMPLES_PLIST_FILES=	bin/kallisto-test
 CMAKE_ARGS+=		-DUSE_HDF5:BOOL=ON -DUSE_BAM:BOOL=ON
 # WIP: Remove before committing
 CMAKE_ARGS+=		-DCMAKE_VERBOSE_MAKEFILE:BOOL=ON
+CMAKE_ARGS+=		-DLOCALBASE:STRING=${LOCALBASE}
 MAKE_JOBS_UNSAFE=	yes
-LDFLAGS+=		-lhts -lz
+CXXFLAGS+=		-Wno-unqualified-std-cast-call
+LDFLAGS+=		-lhdf5 -lhts -lz
 
 OPTIONS_DEFINE=	EXAMPLES
 
-post-extract:
-	${RM} -rf ${WRKSRC}/ext/htslib
+pre-configure:
+	${REINPLACE_CMD} -e "s|-Wno-return-type|& -I${LOCALBASE}/include|g" \
+		${WRKSRC}/CMakeLists.txt
 
 post-install-EXAMPLES-on:
 	${INSTALL_SCRIPT} ${WRKDIR}/kallisto-test ${STAGEDIR}${PREFIX}/bin

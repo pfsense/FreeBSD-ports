@@ -8,7 +8,7 @@
  * rrd-summary.xml
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2010-2024 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2010-2026 Rubicon Communications, LLC (Netgate)
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -28,6 +28,7 @@
 	<description>RRD Summary Page</description>
 	<name>RRD Summary</name>
 	<title>Status: RRD Summary</title>
+	<donotsave>true</donotsave>
 	<menu>
 		<name>RRD Summary</name>
 		<tooltiptext>Estimated month-over-month traffic passed In/Out during the specified period.</tooltiptext>

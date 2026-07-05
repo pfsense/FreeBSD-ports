@@ -1,10 +1,10 @@
 PORTNAME=	appjail
-DISTVERSION=	3.2.0.20240324
+DISTVERSION=	4.10.1.20260323
 PORTEPOCH=	1
 CATEGORIES=	sysutils
 PKGNAMESUFFIX=	-devel
 
-MAINTAINER=	acm@FreeBSD.org
+MAINTAINER=	dtxdf@FreeBSD.org
 COMMENT=	Simple and easy-to-use tool for creating portable jails (devel)
 WWW=		https://github.com/DtxdF/AppJail
 
@@ -16,31 +16,42 @@ CONFLICTS=	appjail
 USE_GITHUB=	yes
 GH_ACCOUNT=	DtxdF
 GH_PROJECT=	AppJail
-GH_TAGNAME=	950cfcb3c4ccb4965a07045b1849abef3a5ccb87
+GH_TAGNAME=	8322f842fa9bdec3645a38c714444fe2adf6efbb
 
 MAKE_ARGS=	APPJAIL_VERSION=${DISTVERSION}+${GH_TAGNAME}
 ALL_TARGET=	utils-strip
-
 
 SUB_FILES=	pkg-message
 
 PORTDOCS=	README.md
 
-OPTIONS_DEFINE=			DEBOOTSTRAP DOAS DOCS GIT
+OPTIONS_DEFINE=		DEBOOTSTRAP DOAS DOCS GIT OCI PKGBASE X11
+OPTIONS_DEFAULT=	OCI PKGBASE
 
-DEBOOTSTRAP_DESC=		Support for Debian and Ubuntu jails
-DOAS_DESC=			Add support for unprivileged users
+DEBOOTSTRAP_DESC=	Support for Debian and Ubuntu jails
+DOAS_DESC=		Add support for unprivileged users
+OCI_DESC=		Add support for OCI
+PKGBASE_DESC=		Add support for pkgbase
+X11_DESC=		Add support for x11
 
 DEBOOTSTRAP_RUN_DEPENDS=	debootstrap>0:sysutils/debootstrap
 DOAS_RUN_DEPENDS=		doas>0:security/doas
 GIT_RUN_DEPENDS=		git>0:devel/git
-
-do-install-DOCS-on:
-	@${MKDIR} ${STAGEDIR}/${DOCSDIR}
-	${INSTALL_DATA} ${WRKSRC}/README.md ${STAGEDIR}/${DOCSDIR}
+OCI_RUN_DEPENDS=		buildah>0:sysutils/buildah \
+				jq>0:textproc/jq
+PKGBASE_RUN_DEPENDS=		${LOCALBASE}/sbin/pkg:${PKG_ORIGIN}
+X11_RUN_DEPENDS=		su-exec:security/su-exec \
+				xauth:x11/xauth \
+				xdotool:x11/xdotool \
+				Xephyr:x11-servers/xorg-server@xephyr \
+				xseticon:x11/xseticon
 
 post-install:
 	${MKDIR} ${STAGEDIR}/${ETCDIR}
 	${INSTALL_DATA} ${WRKSRC}/share/examples/appjail/appjail.conf ${STAGEDIR}/${ETCDIR}/appjail.conf.sample
+
+post-install-DOCS-on:
+	@${MKDIR} ${STAGEDIR}/${DOCSDIR}
+	${INSTALL_DATA} ${WRKSRC}/README.md ${STAGEDIR}/${DOCSDIR}
 
 .include <bsd.port.mk>

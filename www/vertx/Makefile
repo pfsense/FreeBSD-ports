@@ -1,6 +1,6 @@
 PORTNAME=	vertx
 PORTVERSION=	2.1.1
-PORTREVISION=	0
+PORTREVISION=	1
 CATEGORIES=	www
 MASTER_SITES=	http://dl.bintray.com/vertx/downloads/
 DISTNAME=	vert.x-${PORTVERSION}
@@ -16,7 +16,6 @@ RUN_DEPENDS=	bash:shells/bash
 DATADIR=	${JAVASHAREDIR}/${PORTNAME}
 
 JAVA_OS=	native
-JAVA_RUN=	yes
 
 PLIST_SUB=	VERTXVER=${PORTVERSION}
 
@@ -25,8 +24,7 @@ REINPLACE_ARGS=	-i ''
 SED_APPEND_ARGS=	${nl}JAVA_HOME=${JAVA_HOME}
 SHEBANG_FILES=	bin/vertx
 
-USE_JAVA=	yes
-USES=	shebangfix
+USES=	java shebangfix
 
 VERTX_CMD=	${WRKSRC}/bin/vertx
 VERTX_DIST=	client conf lib

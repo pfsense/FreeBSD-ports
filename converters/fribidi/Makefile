@@ -1,6 +1,5 @@
 PORTNAME=	fribidi
-DISTVERSION=	1.0.13
-PORTREVISION=	1
+DISTVERSION=	1.0.16
 CATEGORIES=	converters
 MASTER_SITES=	https://github.com/${PORTNAME}/${PORTNAME}/releases/download/v${DISTVERSION}/
 
@@ -13,8 +12,9 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 
 USES=		cpe meson python:test shebangfix tar:xz
 CPE_VENDOR=	gnu
-SHEBANG_FILES=	test/test-runner.py
 USE_LDCONFIG=	yes
+
+SHEBANG_FILES=	test/test-runner.py
 
 TEST_TARGET=	test
 

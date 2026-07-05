@@ -7,6 +7,7 @@ bin/fromflex
 bin/mdcrtool
 bin/toflex
 etc/flexemu.conf
+etc/flexlabl.conf
 share/applications/flexemu-flexplorer.desktop
 share/applications/flexemu.desktop
 %%DATADIR%%/6809diag.pdf
@@ -64,6 +65,9 @@ share/applications/flexemu.desktop
 %%DATADIR%%/images/pat09_key_up_arrow.png
 %%DATADIR%%/images/pat09_keyboard.png
 %%DATADIR%%/images/pat09_numpad.png
+%%DATADIR%%/imhex/patterns/flex_binary.hexpat
+%%DATADIR%%/imhex/patterns/flex_dskflx.hexpat
+%%DATADIR%%/imhex/patterns/flex_random.hexpat
 %%DATADIR%%/just.dsk
 %%DATADIR%%/just.pdf
 %%DATADIR%%/laycad.dsk
@@ -74,8 +78,10 @@ share/applications/flexemu.desktop
 %%DATADIR%%/mon24.s19
 %%DATADIR%%/mon24z.s19
 %%DATADIR%%/mon53.s19
+%%DATADIR%%/mon53_54.htm
 %%DATADIR%%/mon54.s19
 %%DATADIR%%/monu54-6.s19
+%%DATADIR%%/monu54.htm
 %%DATADIR%%/neumon54.hex
 %%DATADIR%%/neumon54.htm
 %%DATADIR%%/pictures.dsk
@@ -101,12 +107,14 @@ share/icons/hicolor/256x256/apps/flexemu.png
 share/icons/hicolor/32x32/apps/flexemu-flexplorer.png
 share/icons/hicolor/32x32/apps/flexemu-fsetup.png
 share/icons/hicolor/32x32/apps/flexemu.png
+share/icons/hicolor/48x48/apps/application-x-flex-diskimage.png
 share/icons/hicolor/48x48/apps/flexemu-flexplorer.png
 share/icons/hicolor/48x48/apps/flexemu-fsetup.png
 share/icons/hicolor/48x48/apps/flexemu.png
 share/icons/hicolor/64x64/apps/flexemu-flexplorer.png
 share/icons/hicolor/64x64/apps/flexemu-fsetup.png
 share/icons/hicolor/64x64/apps/flexemu.png
+share/icons/hicolor/scalable/apps/application-x-flex-diskimage.svg
 share/icons/hicolor/scalable/apps/flexemu-flexplorer.svg
 share/icons/hicolor/scalable/apps/flexemu-fsetup.svg
 share/icons/hicolor/scalable/apps/flexemu.svg

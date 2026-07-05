@@ -1,8 +1,15 @@
---- chrome/browser/first_run/first_run_internal.h.orig	2022-11-30 08:12:58 UTC
+--- chrome/browser/first_run/first_run_internal.h.orig	2026-03-13 06:02:14 UTC
 +++ chrome/browser/first_run/first_run_internal.h
-@@ -54,7 +54,7 @@ FirstRunState DetermineFirstRunState(bool has_sentinel
+@@ -72,13 +72,13 @@ FirstRunState DetermineFirstRunState(bool has_sentinel
                                       bool force_first_run,
                                       bool no_first_run);
+ 
+-#if BUILDFLAG(IS_LINUX)
++#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_BSD)
+ // Shows the EULA dialog if required. Returns true if the EULA is accepted
+ // or not required. Returns false if the EULA has not been accepted.
+ bool ShowEulaDialog();
+ #endif
  
 -#if BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX)
 +#if BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_BSD)

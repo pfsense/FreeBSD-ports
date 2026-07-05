@@ -1,7 +1,6 @@
 PORTNAME=	xNetHack
 DISTVERSIONPREFIX=	xnh
-DISTVERSION=	8.0
-PORTREVISION=	1
+DISTVERSION=	9.1
 CATEGORIES=	games
 
 MAINTAINER=	fuz@FreeBSD.org
@@ -18,7 +17,9 @@ FLAVOR?=	${FLAVORS:[1]}
 nox11_PKGNAMESUFFIX=	-nox11
 qt_PKGNAMESUFFIX=	-qt
 
-USES=		alias compiler:c11 gmake ncurses tar:tgz lua:54
+BUILD_DEPENDS=	nroff:textproc/groff
+
+USES=		compiler:c11 gmake ncurses tar:tgz lua:54
 USE_GITHUB=	yes
 GH_ACCOUNT=	copperwater
 
@@ -42,7 +43,7 @@ GRAPHICS=	# none
 .elif ${FLAVOR} == "qt"
 USES+=		localbase pkgconfig qt:5
 USE_QT=		buildtools:build core gui multimedia network widgets
-MAKE_ENV+=	MOCPATH=${MOC} LINK=${CXX}
+MAKE_ENV+=	LINK=${CXX} QTDIR=${LOCALBASE}/${QT_ARCHDIR_REL}
 CFLAGS+=	-I${QT_INCDIR} -DSND_LIB_QTSOUND
 CXXFLAGS+=	-fpic -I${QT_INCDIR} -DQT_WIDGETS_LIB -DQT_MULTIMEDIA_LIB \
 		-DQT_NETWORK_LIB -DQT_GUI_LIB -DQT_CORE_LIB -DSND_LIB_QTSOUND
@@ -66,12 +67,8 @@ pre-configure:
 	@${REINPLACE_CMD} -e 's|%%HACKDIR%%|${PREFIX}/${HACKDIR}|g' \
 		${WRKSRC}/${f}
 .endfor
-.for f in nethack.6 recover.6
-	@${REINPLACE_CMD} -e 's|%%HACKDIR%%|${PREFIX}/${HACKDIR}|g' \
-		${WRKSRC}/doc/${f}
-.endfor
 .if defined(WITHOUT_SHELL)
-	@${REINPLACE_CMD} -e 's|#define SHELL|/* #define SHELL|' ${WRKSRC}/include/unixconf.h
+	@${REINPLACE_CMD} -e 's|#define SHELL|/* #define SHELL */|' ${WRKSRC}/include/unixconf.h
 .endif
 .if defined(WITH_MAIL)
 	@${REINPLACE_CMD} -e 's|/\* #define MAIL \*/|#define MAIL|' ${WRKSRC}/include/unixconf.h

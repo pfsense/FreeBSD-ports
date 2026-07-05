@@ -1,6 +1,6 @@
---- src/3rdparty/chromium/media/base/video_frame.cc.orig	2023-04-05 11:05:06 UTC
+--- src/3rdparty/chromium/media/base/video_frame.cc.orig	2025-08-15 18:30:00 UTC
 +++ src/3rdparty/chromium/media/base/video_frame.cc
-@@ -80,7 +80,7 @@ std::string VideoFrame::StorageTypeToString(
+@@ -92,7 +92,7 @@ std::string VideoFrame::StorageTypeToString(
        return "OWNED_MEMORY";
      case VideoFrame::STORAGE_SHMEM:
        return "SHMEM";
@@ -9,7 +9,7 @@
      case VideoFrame::STORAGE_DMABUFS:
        return "DMABUFS";
  #endif
-@@ -95,7 +95,7 @@ std::string VideoFrame::StorageTypeToString(
+@@ -106,7 +106,7 @@ bool VideoFrame::IsStorageTypeMappable(VideoFrame::Sto
  // static
  bool VideoFrame::IsStorageTypeMappable(VideoFrame::StorageType storage_type) {
    return
@@ -18,25 +18,16 @@
        // This is not strictly needed but makes explicit that, at VideoFrame
        // level, DmaBufs are not mappable from userspace.
        storage_type != VideoFrame::STORAGE_DMABUFS &&
-@@ -307,7 +307,7 @@ static absl::optional<VideoFrameLayout> GetDefaultLayo
-   return VideoFrameLayout::CreateWithPlanes(format, coded_size, planes);
- }
- 
--#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS)
-+#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_BSD)
- // This class allows us to embed a vector<ScopedFD> into a scoped_refptr, and
- // thus to have several VideoFrames share the same set of DMABUF FDs.
- class VideoFrame::DmabufHolder
-@@ -636,7 +636,7 @@ scoped_refptr<VideoFrame> VideoFrame::WrapExternalGpuM
-   for (size_t i = 0; i < num_planes; ++i)
-     planes[i].stride = gpu_memory_buffer->stride(i);
+@@ -420,7 +420,7 @@ VideoFrame::CreateFrameForGpuMemoryBufferOrMappableSII
+         plane_size.width() * VideoFrame::BytesPerElement(*format, plane);
+   }
    uint64_t modifier = gfx::NativePixmapHandle::kNoModifier;
 -#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS)
 +#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_BSD)
-   if (gpu_memory_buffer->GetType() == gfx::NATIVE_PIXMAP) {
-     const auto gmb_handle = gpu_memory_buffer->CloneHandle();
-     if (gmb_handle.is_null() ||
-@@ -682,7 +682,7 @@ scoped_refptr<VideoFrame> VideoFrame::WrapExternalGpuM
+   bool is_native_buffer =
+       gpu_memory_buffer
+           ? (gpu_memory_buffer->GetType() != gfx::SHARED_MEMORY_BUFFER)
+@@ -938,7 +938,7 @@ scoped_refptr<VideoFrame> VideoFrame::WrapExternalGpuM
    return frame;
  }
  
@@ -45,30 +36,12 @@
  // static
  scoped_refptr<VideoFrame> VideoFrame::WrapExternalDmabufs(
      const VideoFrameLayout& layout,
-@@ -902,7 +902,7 @@ scoped_refptr<VideoFrame> VideoFrame::WrapVideoFrame(
-     }
-   }
- 
--#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS)
-+#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_BSD)
-   DCHECK(frame->dmabuf_fds_);
-   // If there are any |dmabuf_fds_| plugged in, we should refer them too.
-   wrapping_frame->dmabuf_fds_ = frame->dmabuf_fds_;
-@@ -1302,7 +1302,7 @@ const gpu::MailboxHolder& VideoFrame::mailbox_holder(
-                         : mailbox_holders_[texture_index];
+@@ -1623,7 +1623,7 @@ scoped_refptr<gpu::ClientSharedImage> VideoFrame::shar
+   return wrapped_frame_ ? wrapped_frame_->shared_image() : shared_image_;
  }
  
 -#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS)
 +#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_BSD)
- const std::vector<base::ScopedFD>& VideoFrame::DmabufFds() const {
-   DCHECK_EQ(storage_type_, STORAGE_DMABUFS);
- 
-@@ -1415,7 +1415,7 @@ VideoFrame::VideoFrame(const VideoFrameLayout& layout,
-       storage_type_(storage_type),
-       visible_rect_(Intersection(visible_rect, gfx::Rect(layout.coded_size()))),
-       natural_size_(natural_size),
--#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS)
-+#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_BSD)
-       dmabuf_fds_(base::MakeRefCounted<DmabufHolder>()),
- #endif
-       timestamp_(timestamp),
+ size_t VideoFrame::NumDmabufFds() const {
+   if (wrapped_frame_) {
+     return wrapped_frame_->NumDmabufFds();

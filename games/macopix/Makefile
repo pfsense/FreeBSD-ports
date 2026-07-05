@@ -1,6 +1,6 @@
 PORTNAME=	macopix
 PORTVERSION=	1.7.4
-PORTREVISION=	16
+PORTREVISION=	17
 CATEGORIES=	games
 MASTER_SITES=	http://rosegray.sakura.ne.jp/macopix/
 DISTFILES=	${DISTNAME}${EXTRACT_SUFX} ${LICENSE_DISTFILES_DATA}
@@ -37,7 +37,7 @@ LIB_DEPENDS=	libfontconfig.so:x11-fonts/fontconfig \
 		libtiff.so:graphics/tiff
 
 USES=		gettext gmake gnome iconv jpeg libtool pkgconfig xorg
-USE_GNOME=	cairo gdkpixbuf2 gtk20
+USE_GNOME=	cairo gdkpixbuf gtk20
 USE_XORG=	x11
 GNU_CONFIGURE=	yes
 GNU_CONFIGURE_MANPREFIX=${PREFIX}/share

@@ -1,10 +1,11 @@
 PORTNAME=	msal-extensions
 DISTVERSION=	1.0.0
+PORTREVISION=	1
 CATEGORIES=	devel python
 MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
-MAINTAINER=	dbaio@FreeBSD.org
+MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Microsoft Authentication Extensions for Python
 WWW=		https://pypi.org/project/msal-extensions/
 

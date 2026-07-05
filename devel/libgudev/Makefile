@@ -12,7 +12,7 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 
 LIB_DEPENDS=	libudev.so:devel/libudev-devd
 
-USES=		gettext-runtime gnome libtool meson pathfix pkgconfig tar:xz
+USES=		gettext-runtime gnome meson pathfix pkgconfig tar:xz
 USE_GNOME=	glib20 introspection:build
 USE_LDCONFIG=	yes
 INSTALL_TARGET=	install-strip
@@ -29,8 +29,7 @@ DOCS_BUILD_DEPENDS=	gtk-doc>0:textproc/gtk-doc
 
 VALA_DESC=		Build and install Vala bindings
 VALA_MESON_ENABLED=	vapi
-VALA_BUILD_DEPENDS=	vapigen:lang/vala
-VALA_VARS=		USE+=vala:build
+VALA_USES=		vala:build
 
 post-patch:
 	@${REINPLACE_CMD} -e 's|-export-dynamic|-Wl,--export-dynamic|' ${WRKSRC}/gudev/meson.build

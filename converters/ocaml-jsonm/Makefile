@@ -1,6 +1,6 @@
 PORTNAME=	jsonm
 PORTVERSION=	1.0.2
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	converters
 MASTER_SITES=	https://erratique.ch/software/jsonm/releases/
 PKGNAMEPREFIX=	ocaml-
@@ -18,8 +18,7 @@ BUILD_DEPENDS=	ocamlbuild:devel/ocaml-ocamlbuild \
 		${SA_DIR}/uutf/META:devel/ocaml-uutf
 RUN_DEPENDS=	${SA_DIR}/uutf/META:devel/ocaml-uutf
 
-USES=		tar:tbz
-USE_OCAML=	yes
+USES=		ocaml tar:tbz
 SA_DIR=		${LOCALBASE}/${OCAML_SITELIBDIR}
 
 OPTIONS_DEFINE=	DOCS
@@ -32,5 +31,10 @@ do-install:
 		--prefix=${STAGEDIR}${PREFIX} \
 		--docdir=${OCAML_DOCSDIR:S,^${PREFIX}/,,} \
 		--libdir=${OCAML_SITELIBDIR} ${PORTNAME}.install
+
+post-install:
+	@${STRIP_CMD} \
+		${STAGEDIR}${PREFIX}/bin/jsontrip \
+		${STAGEDIR}${PREFIX}/${OCAML_SITELIBDIR}/jsonm/jsonm.cmxs
 
 .include <bsd.port.mk>

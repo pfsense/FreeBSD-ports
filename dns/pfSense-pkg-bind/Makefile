@@ -1,13 +1,14 @@
 # $FreeBSD$
 
 PORTNAME=	pfSense-pkg-bind
-PORTVERSION=	9.17
+PORTVERSION=	9.20
+PORTREVISION=	6
 CATEGORIES=	dns
 MASTER_SITES=	# empty
 DISTFILES=	# empty
 EXTRACT_ONLY=	# empty
 
-RUN_DEPENDS=	bind916>=9.16.12:dns/bind916
+RUN_DEPENDS=	bind920>=9.20.2:dns/bind920
 
 MAINTAINER=	tech@voleatech.de
 COMMENT=	BIND DNS suite with updated DNSSEC and DNS64

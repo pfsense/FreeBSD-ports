@@ -1,5 +1,6 @@
 PORTNAME=	gemdiff
-PORTVERSION=	5.0.0
+PORTVERSION=	6.0.2
+PORTREVISION=	1
 CATEGORIES=	devel rubygems
 MASTER_SITES=	RG
 
@@ -11,8 +12,8 @@ LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE.txt
 
 RUN_DEPENDS=	rubygem-faraday-retry>=2.2<3:www/rubygem-faraday-retry \
-		rubygem-launchy>=2.4<3:devel/rubygem-launchy \
-		rubygem-octokit>=8.0<9:net/rubygem-octokit \
+		rubygem-launchy>=3.0<4:devel/rubygem-launchy \
+		rubygem-octokit>=9.0<11:net/rubygem-octokit \
 		rubygem-thor>=1.0<2:devel/rubygem-thor
 
 USES=		gem

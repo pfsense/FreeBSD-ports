@@ -1,5 +1,6 @@
 PORTNAME=	picard
 DISTVERSION=	2.22.9
+PORTREVISION=	1
 CATEGORIES=	biology java
 MASTER_SITES=	http://github.com/broadinstitute/picard/releases/download/${PORTVERSION}/
 PKGNAMESUFFIX=	-tools
@@ -14,8 +15,7 @@ LICENSE=	MIT
 
 RUN_DEPENDS=	samtools:biology/samtools
 
-USE_JAVA=	8+
-JAVA_RUN=	yes
+USES=		java
 
 CONFLICTS_INSTALL=	picard # bin/picard
 

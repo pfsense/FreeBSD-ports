@@ -1,5 +1,5 @@
 PORTNAME=	ldc
-PORTVERSION=	1.35.0
+PORTVERSION=	1.41.0
 DISTVERSIONSUFFIX=	-src
 CATEGORIES=	lang
 MASTER_SITES=	https://github.com/ldc-developers/${PORTNAME}/releases/download/v${DISTVERSION}/
@@ -15,13 +15,10 @@ LICENSE=	BSD3CLAUSE
 ONLY_FOR_ARCHS=	amd64
 ONLY_FOR_ARCHS_REASON=	The bootstrap compiler is provided only for x86_64
 
+BUILD_DEPENDS=	${LOCALBASE}/llvm19/lib/libLLVM-19.so:devel/llvm19 # required for bootstrap
 LIB_DEPENDS=	libconfig.so:devel/libconfig
 
-USES=		llvm:lib,run ninja cmake:insource pkgconfig
-
-#USE_GITHUB=	yes
-#GH_ACCOUNT=	ldc-developers
-#GH_PROJECT=	ldc
+USES=		llvm:lib,run,min=15,max=20 ninja cmake:insource pkgconfig
 
 USE_LDCONFIG=	yes
 
@@ -34,7 +31,7 @@ CMAKE_ARGS+=	-DLDC_INSTALL_PREFIX="${PREFIX}" \
 		-DBUILD_LTO_LIBS=ON
 
 post-patch:
-	cd ${WRKDIR}/ldc2-${PORTVERSION}-freebsd-x86_64/import && ${PATCH} -p3 < ${PATCHDIR}/patch-runtime_druntime_src_core_sys_freebsd_config.d
+	cd ${WRKDIR}; patch < ${.CURDIR}/files/extra-patch-ldc2-1.41.0-freebsd-x86_64-import-core-sys-freebsd-config.d
 
 post-install:
 	${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/ldc-build-runtime

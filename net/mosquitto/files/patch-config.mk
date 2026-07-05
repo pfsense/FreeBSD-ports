@@ -1,7 +1,7 @@
---- config.mk.orig	2020-12-28 13:24:40 UTC
+--- config.mk.orig	2026-02-04 22:33:13 UTC
 +++ config.mk
-@@ -329,7 +329,7 @@ ifeq ($(WITH_WEBSOCKETS),static)
- endif
+@@ -180,7 +180,7 @@ INSTALL?=install
+ ARCH:=$(shell uname -p)
  
  INSTALL?=install
 -prefix?=/usr/local

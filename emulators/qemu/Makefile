@@ -1,6 +1,5 @@
 PORTNAME=	qemu
-PORTVERSION=	8.2.2
-PORTREVISION=	1
+DISTVERSION=	10.2.2
 CATEGORIES=	emulators
 MASTER_SITES=	https://download.qemu.org/
 DIST_SUBDIR=	qemu/${PORTVERSION}
@@ -12,14 +11,17 @@ WWW=		https://www.qemu.org/
 LICENSE=	GPLv2
 
 .if ${FLAVOR:U} != tools && ${FLAVOR:U} != guestagent
-ONLY_FOR_ARCHS=	aarch64 amd64 i386 powerpc64 powerpc64le
+ONLY_FOR_ARCHS=	aarch64 amd64 powerpc64 powerpc64le
 # We need to check if it build with other ARCHS
 .endif
 
 BUILD_DEPENDS=	bash:shells/bash
+.if ${FLAVOR:U} != guestagent
+LIB_DEPENDS+=	libzstd.so:archivers/zstd
+.endif
 .if ${FLAVOR:U} != tools && ${FLAVOR:U} != guestagent
 LIB_DEPENDS+=	libfdt.so:sysutils/dtc \
-		libzstd.so:archivers/zstd \
+		libinotify.so:devel/libinotify \
 		libslirp.so:net/libslirp
 .endif
 .if (${FLAVOR:U} != nox11 && ${FLAVOR:U} != tools && ${FLAVOR:U} != guestagent)
@@ -110,19 +112,24 @@ CONFIGURE_ARGS+=	--disable-attr \
 			--disable-tpm \
 			--disable-user \
 			--disable-vhost-net \
-			--disable-virtfs \
 			--disable-vnc
 .endif
 .if ${FLAVOR:U} == tools
-CONFIGURE_ARGS+=	--enable-tools
+CONFIGURE_ARGS+=	--enable-tools --enable-zstd
 .endif
 
 CFLAGS:=	${CFLAGS:C/-fno-tree-vrp//}
 WITHOUT_CPU_CFLAGS=	yes #to avoid problems with register allocation
 
+BINARY_ALIAS=	python3=${PYTHON_VERSION}
+.if exists(/usr/include/sys/inotify.h)
+EXTRA_PATCHES+=                ${PATCHDIR}/extra-patch-meson.build
+.endif
+
 PORTDOCS=	.buildinfo _static/* about/* dbus-dbusindex.html devel/* docs \
-		genindex.html index.html interop/* objects.inv search.html \
-		searchindex.js specs/* system/* tools/* user/*
+		genindex.html glossary.html index.html interop/* objects.inv \
+		qapi-qga-index.html qapi-qmp-index.html qapi-qsd-index.html \
+		search.html searchindex.js specs/* system/* tools/* user/*
 
 OPTIONS_DEFINE=			CAPSTONE CDROM_DMA CURL DEBUG DOCS GNUTLS GTK3 \
 				ISCSI JPEG OPENGL PNG SAMBA SASL STATIC_LINK \
@@ -156,7 +163,7 @@ STATIC_LINK_DESC=		Statically link the executables
 USBREDIR_DESC=			usb device network redirection (experimental!)
 VDE_DESC=			vde dependency (for vde networking)
 X86_TARGETS_DESC=		Build only x86 system targets
-CAPSTONE_LIB_DEPENDS=		libcapstone.so:devel/capstone4
+CAPSTONE_LIB_DEPENDS=		libcapstone.so:devel/capstone
 CAPSTONE_CONFIGURE_ON=		--enable-capstone \
 				--extra-cflags=-I${LOCALBASE}/include/capstone
 CAPSTONE_CONFIGURE_OFF=		--disable-capstone
@@ -170,7 +177,7 @@ GNUTLS_LIB_DEPENDS=		libgnutls.so:security/gnutls
 GNUTLS_CONFIGURE_OFF=		--disable-gnutls
 GTK3_LIB_DEPENDS=		libxkbcommon.so:x11/libxkbcommon
 GTK3_USES=			gettext gl
-GTK3_USE=			GNOME=gdkpixbuf2,gtk30,vte3 \
+GTK3_USE=			GNOME=gdkpixbuf,gtk30,vte3 \
 				XORG=x11,xext
 GTK3_CONFIGURE_OFF=		--disable-gtk \
 				--disable-vte
@@ -200,19 +207,28 @@ USBREDIR_CONFIGURE_OFF=		--disable-usb-redir
 VDE_LIB_DEPENDS=		libvdeplug.so:net/vde2
 VDE_CONFIGURE_OFF=		--disable-vde
 X11_USES=			sdl
-X11_USE=			GNOME=gdkpixbuf2 \
+X11_USE=			GNOME=gdkpixbuf \
 				SDL=sdl2 \
 				XORG=x11,xext
 X11_CONFIGURE_ENABLE=		sdl
 .if (empty(FLAVOR) || ${FLAVOR:U} == default || ${FLAVOR:U} == nox11) && \
 	(${FLAVOR:U} != tools || ${PKGNAMESUFFIX} != "-guest-agent")
-X86_TARGETS_LIB_DEPENDS_OFF=	libdw.so:devel/elfutils
+X86_TARGETS_LIB_DEPENDS_OFF=	libdw.so:devel/elfutils \
+	liblzo2.so:archivers/lzo2
 X86_TARGETS_USES_OFF=		xorg
 X86_TARGETS_USE_OFF=		XORG=pixman,x11
 X86_TARGETS_CONFIGURE_ON=	--target-list='i386-softmmu i386-bsd-user x86_64-softmmu x86_64-bsd-user'
 .endif
 
 .include <bsd.port.options.mk>
+
+.if ${FLAVOR:U} == tools || ${FLAVOR:U} == guestagent
+.if ${ARCH} == "i386" || ${ARCH} == "powerpc" || ${ARCH:Marmv?}
+PLIST_SUB+=	NO_I386="@comment "
+.else
+PLIST_SUB+=	NO_I386=""
+.endif
+.endif
 
 .if (empty(FLAVOR) || ${FLAVOR:U} == default || ${FLAVOR:U} == nox11) && \
 	(${FLAVOR:U} != tools || ${PKGNAMESUFFIX} != "-guest-agent")
@@ -237,8 +253,13 @@ PLIST_SUB+=	BSDUSER=""
 PLIST_SUB+=	LINUXBOOT_DMA=""
 .endif
 
+post-patch:
+.if ${FLAVOR:U} == tools
+	@${REINPLACE_CMD} -e '/keymaps/d' ${WRKSRC}/pc-bios/meson.build
+.endif
+
 post-patch-CDROM_DMA-off:
-	@${REINPLACE_CMD} -e '/USE_DMA_CDROM/d' ${WRKSRC}/include/hw/ide/internal.h
+	@${REINPLACE_CMD} -e '/USE_DMA_CDROM/d' ${WRKSRC}/hw/ide/ide-internal.h
 
 do-build:
 	cd ${WRKSRC} && ${SETENVI} ${WRK_ENV} ${GMAKE} -j${MAKE_JOBS_NUMBER}

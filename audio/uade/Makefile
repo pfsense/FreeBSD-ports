@@ -1,6 +1,5 @@
 PORTNAME=	uade
-PORTVERSION=	3.03
-PORTREVISION=	1
+DISTVERSION=	3.05
 CATEGORIES=	audio
 MASTER_SITES=	http://zakalwe.fi/uade/uade3/ \
 		LOCAL/ehaupt
@@ -17,7 +16,7 @@ LIB_DEPENDS=	libao.so:audio/libao \
 		libbencodetools.so:devel/bencodetools \
 		libzakalwe.so:devel/libzakalwe
 
-USES=		gmake localbase:ldflags pathfix pkgconfig python:build \
+USES=		gmake localbase:ldflags pkgconfig python:build \
 		shebangfix tar:bzip2
 
 SHEBANG_FILES=	configure write_audio/generate_amiga_oscilloscope_view
@@ -45,6 +44,9 @@ TEXTSCOPE_CONFIGURE_WITH=	text-scope
 
 post-extract:
 	@${RM} -r ${WRKSRC}/players/S
+
+post-patch:
+	@${REINPLACE_CMD} -e 's|-O2 -g||' ${WRKSRC}/write_audio/Makefile.in
 
 post-install:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}

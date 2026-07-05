@@ -1,3 +1,3 @@
-TIMESTAMP = 1642351334
-SHA256 (flufl.lock-6.0.tar.gz) = fc748ee609ec864b4838ef649dbd1170fa79deb0c213c2fd51151bee6a7fc242
-SIZE (flufl.lock-6.0.tar.gz) = 30762
+TIMESTAMP = 1773343904
+SHA256 (flufl_lock-9.0.0.tar.gz) = 270a46e754af3937735cdd4f8a8f43a2dc4e5c40a24fdf972f5dc6db0862e8bb
+SIZE (flufl_lock-9.0.0.tar.gz) = 34151

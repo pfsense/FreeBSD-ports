@@ -1,7 +1,7 @@
 PORTNAME=	num
 PORTVERSION=	1.4
 DISTVERSIONPREFIX=	v
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	math
 PKGNAMEPREFIX=	ocaml-
 
@@ -12,13 +12,18 @@ WWW=		https://github.com/ocaml/num
 LICENSE=	LGPL21
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-USES=		gmake
+USES=		gmake ocaml
 USE_GITHUB=	yes
 GH_ACCOUNT=	ocaml
-USE_OCAML=	yes
 
 MAKE_ENV=	OCAMLFIND_DESTDIR="${STAGEDIR}${OCAMLFIND_DESTDIR}"
 MAKE_JOBS_UNSAFE=	yes
 TEST_TARGET=	test
+
+.include <bsd.port.options.mk>
+
+.if ${ARCH} == powerpc
+LLD_UNSAFE=	yes
+.endif
 
 .include <bsd.port.mk>

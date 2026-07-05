@@ -1,15 +1,15 @@
 PORTNAME=	bcmatroska2
-PORTVERSION=	5.2.1
-PORTREVISION=	1
+DISTVERSION=	5.4.94
 CATEGORIES=	multimedia
 
 MAINTAINER=	bofh@FreeBSD.org
 COMMENT=	Belledonne Communications Matroska media container support
-WWW=		https://www.linphone.org/
+WWW=		https://gitlab.linphone.org/BC/public/bcmatroska2
 
 LICENSE=	BSD3CLAUSE
 
-LIB_DEPENDS=	libbctoolbox.so:net/bctoolbox
+LIB_DEPENDS=	libbctoolbox.so:net/bctoolbox \
+		libbcunit.so:devel/bcunit
 
 USES=		cmake compiler:c++17-lang
 USE_GITLAB=	yes
@@ -17,13 +17,6 @@ GL_SITE=	https://gitlab.linphone.org/BC
 GL_ACCOUNT=	public
 USE_LDCONFIG=	yes
 
-CMAKE_ARGS=	-DCMAKE_PREFIX_PATH=${LOCALBASE} \
-		-DENABLE_STATIC=NO
+CMAKE_ON=	BUILD_SHARED_LIBS
 
-.include <bsd.port.pre.mk>
-
-.if ${COMPILER_TYPE} == clang && ${COMPILER_VERSION} >= 160
-CFLAGS+=	-Wno-error=incompatible-function-pointer-types
-.endif
-
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

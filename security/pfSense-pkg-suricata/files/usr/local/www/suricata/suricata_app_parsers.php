@@ -3,11 +3,11 @@
  * suricata_app_parsers.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2006-2024 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2006-2026 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2003-2004 Manuel Kasper
  * Copyright (c) 2005 Bill Marquette
  * Copyright (c) 2009 Robert Zelaya Sr. Developer
- * Copyright (c) 2023 Bill Meeks
+ * Copyright (c) 2024 Bill Meeks
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -33,15 +33,13 @@ if (isset($_POST['id']) && is_numericint($_POST['id']))
 elseif (isset($_GET['id']) && is_numericint($_GET['id']))
 	$id = htmlspecialchars($_GET['id']);
 
-if (is_null($id))
+if (!is_numericint($id))
 	$id = 0;
 
 // Initialize Suricata interface and HTTP libhtp engine arrays if necessary
-init_config_arr( array( 'installedpackages' , 'suricata' , 'rule') );
-init_config_arr( array('installedpackages', 'suricata', 'rule', $id, 'libhtp_policy', 'item') );
+config_init_path("installedpackages/suricata/rule/{$id}/libhtp_policy/item");
 
 // Initialize required array variables as necessary
-init_config_arr( array('aliases', 'alias') );
 $a_aliases = config_get_path('aliases/alias', []);
 
 $a_nat = config_get_path("installedpackages/suricata/rule/{$id}", []);
@@ -571,15 +569,15 @@ if ($importalias) {
 	print('<input type="hidden" name="eng_id" id="eng_id" value="' . $eng_id . '"/>');
 
 	if ($selectalias) {
-		print('<input type="hidden" name="eng_name" value="' . $eng_name . '"/>');
-		print('<input type="hidden" name="eng_bind" value="' . $eng_bind . '"/>');
-		print('<input type="hidden" name="eng_personality" value="' . $eng_personality . '"/>');
-		print('<input type="hidden" name="eng_req_body_limit" value="' . $eng_req_body_limit . '"/>');
-		print('<input type="hidden" name="eng_resp_body_limit" value="' . $eng_resp_body_limit . '"/>');
-		print('<input type="hidden" name="eng_meta_field_limit" value="' . $eng_meta_field_limit . '"/>');
-		print('<input type="hidden" name="eng_enable_double_decode_path" value="' . $eng_enable_double_decode_path . '"/>');
-		print('<input type="hidden" name="eng_enable_double_decode_query" value="' . $eng_enable_double_decode_query . '"/>');
-		print('<input type="hidden" name="eng_enable_uri_include_all" value="' . $eng_enable_uri_include_all . '"/>');
+		print('<input type="hidden" name="eng_name" value="' . htmlspecialchars($eng_name) . '"/>');
+		print('<input type="hidden" name="eng_bind" value="' . htmlspecialchars($eng_bind) . '"/>');
+		print('<input type="hidden" name="eng_personality" value="' . htmlspecialchars($eng_personality) . '"/>');
+		print('<input type="hidden" name="eng_req_body_limit" value="' . htmlspecialchars($eng_req_body_limit) . '"/>');
+		print('<input type="hidden" name="eng_resp_body_limit" value="' . htmlspecialchars($eng_resp_body_limit) . '"/>');
+		print('<input type="hidden" name="eng_meta_field_limit" value="' . htmlspecialchars($eng_meta_field_limit) . '"/>');
+		print('<input type="hidden" name="eng_enable_double_decode_path" value="' . htmlspecialchars($eng_enable_double_decode_path) . '"/>');
+		print('<input type="hidden" name="eng_enable_double_decode_query" value="' . htmlspecialchars($eng_enable_double_decode_query) . '"/>');
+		print('<input type="hidden" name="eng_enable_uri_include_all" value="' . htmlspecialchars($eng_enable_uri_include_all) . '"/>');
 	}
 
 	include("/usr/local/www/suricata/suricata_import_aliases.php");
@@ -949,8 +947,8 @@ if ($importalias) {
 							<tbody>
 							<?php foreach ($pconfig['libhtp_policy']['item'] as $f => $v): ?>
 								<tr>
-									<td><?=gettext($v['name'])?></td>
-									<td class="text-center"><?=gettext($v['bind_to'])?></td>
+									<td><?=htmlspecialchars(gettext($v['name']))?></td>
+									<td class="text-center"><?=htmlspecialchars(gettext($v['bind_to']))?></td>
 									<td class="text-right">
 										<button type="submit" name="edit_libhtp_policy" value="Edit" class="btn btn-sm btn-primary" onclick="$('#eng_id').val('<?=$f?>')" title="<?=gettext("Edit this server configuration")?>">
 											<i class="fa-solid fa-pencil icon-embed-btn"></i>

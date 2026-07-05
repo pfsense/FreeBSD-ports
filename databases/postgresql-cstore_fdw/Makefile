@@ -1,6 +1,7 @@
 PORTNAME=	cstore_fdw
 PORTVERSION=	1.7.0
 DISTVERSIONPREFIX=	v
+PORTREVISION=	1
 CATEGORIES=	databases
 PKGNAMEPREFIX=	postgresql${PGSQL_VER:S/.//}-
 
@@ -25,6 +26,9 @@ USE_GITHUB=	yes
 GH_ACCOUNT=	citusdata
 
 WANT_PGSQL=	server
+
+DEPRECATED=	Columnar storage is now part of databases/pg_citus. Please migrate.
+EXPIRATION_DATE=2026-03-31
 
 post-install:
 	${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/postgresql/cstore_fdw.so

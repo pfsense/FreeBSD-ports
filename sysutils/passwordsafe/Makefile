@@ -1,5 +1,5 @@
 PORTNAME=	passwordsafe
-DISTVERSION=	1.12.0
+DISTVERSION=	1.20.0
 PORTREVISION=	2
 CATEGORIES=	sysutils
 
@@ -9,27 +9,24 @@ WWW=		https://pwsafe.org
 
 LICENSE=	ART20
 
-NOT_FOR_ARCHS=		aarch64 armv6 armv7
-NOT_FOR_ARCHS_REASON=	Cannot determine whether the target CPU is big or little endian - please fix PwsPlatform.h
-
 LIB_DEPENDS=	libcurl.so:ftp/curl \
-		libuuid.so:misc/e2fsprogs-libuuid \
+		libuuid.so:misc/libuuid \
 		libxerces-c.so:textproc/xerces-c3 \
 		libqrencode.so:graphics/libqrencode
 BUILD_DEPENDS=	zip:archivers/zip
 
 CONFLICTS=	pwsafe
 
-USES=		compiler:c++11-lang gmake pkgconfig xorg
+USES=		compiler:c++14-lang gmake pkgconfig xorg
 USE_GITHUB=	yes
 USE_WX=		3.0+
-USE_XORG=	x11 xtst
+USE_XORG=	x11 xt xtst
 
 OPTIONS_DEFINE=	NLS YUBIKEY
 YUBIKEY_DESC=	Yubikey support
 OPTIONS_SUB=	yes
 
-NLS_USES=		gettext
+NLS_USES=		gettext gettext-tools
 YUBIKEY_LIB_DEPENDS=	libykpers-1.so:security/ykpers
 YUBIKEY_MAKE_ENV_OFF=	NO_YUBI=yes
 
@@ -46,6 +43,14 @@ LDFLAGS=	-L${PREFIX}/lib -lqrencode
 ALL_TARGET=	unicoderelease
 
 PORTSCOUT=	limit=^1\.
+
+.include <bsd.port.options.mk>
+
+.if ${ARCH} == powerpc || ${ARCH} == powerpc64
+CXXFLAGS+=	-DPWS_BIG_ENDIAN
+.else
+CXXFLAGS+=	-DPWS_LITTLE_ENDIAN
+.endif
 
 post-patch:
 .	for f in Makefile.freebsd help/Makefile.freebsd src/os/unix/Makefile \

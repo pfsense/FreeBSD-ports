@@ -1,7 +1,6 @@
 PORTNAME=	rclone
 DISTVERSIONPREFIX=	v
-DISTVERSION=	1.66.0
-PORTREVISION=	1
+DISTVERSION=	1.73.2
 CATEGORIES=	net
 
 MAINTAINER=	tremere@cainites.net
@@ -11,20 +10,20 @@ WWW=		https://rclone.org/
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-LIB_DEPENDS=	libfuse.so:sysutils/fusefs-libs
+LIB_DEPENDS=	libfuse.so:filesystems/fusefs-libs
 RUN_DEPENDS=	ca_root_nss>=0:security/ca_root_nss
 
 USES=		cpe go:modules
 GO_MODULE=	github.com/rclone/rclone
 
-GO_BUILDFLAGS=	-ldflags -s
+GO_BUILDFLAGS=	-ldflags -s -tags cmount
 
 PLIST_FILES=	bin/rclone \
+		bin/rclonefs \
 		share/man/man1/rclone.1.gz
-
-GO_BUILDFLAGS+=	-tags cmount
 
 post-install:
 	${INSTALL_MAN} ${WRKSRC}/rclone.1 ${STAGEDIR}${PREFIX}/share/man/man1
+	${RLN} ${STAGEDIR}${PREFIX}/bin/rclone ${STAGEDIR}${PREFIX}/bin/rclonefs
 
 .include <bsd.port.mk>

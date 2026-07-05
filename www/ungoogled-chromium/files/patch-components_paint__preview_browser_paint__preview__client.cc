@@ -1,6 +1,6 @@
---- components/paint_preview/browser/paint_preview_client.cc.orig	2024-02-03 15:42:55 UTC
+--- components/paint_preview/browser/paint_preview_client.cc.orig	2026-02-15 10:01:45 UTC
 +++ components/paint_preview/browser/paint_preview_client.cc
-@@ -313,8 +313,8 @@ void PaintPreviewClient::CapturePaintPreview(
+@@ -463,8 +463,8 @@ void PaintPreviewClient::CapturePaintPreview(
    metadata->set_version(kPaintPreviewVersion);
    auto* chromeVersion = metadata->mutable_chrome_version();
    const auto& current_chrome_version = version_info::GetVersion();
@@ -10,4 +10,4 @@
 +  chromeVersion->set_gminor(current_chrome_version.components()[1]);
    chromeVersion->set_build(current_chrome_version.components()[2]);
    chromeVersion->set_patch(current_chrome_version.components()[3]);
-   document_data.callback = std::move(callback);
+   document_data.callback = base::BindOnce(

@@ -6,9 +6,10 @@ PKGNAMESUFFIX=	-fem
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Adaptive multi-level finite element toolbox
-WWW=		http://www.alberta-fem.de/
+WWW=		https://www.alberta-fem.de/
 
 LICENSE=	GPLv2+
+LICENSE_FILE=	${WRKSRC}/COPYING
 
 BUILD_DEPENDS=	gsed:textproc/gsed \
 		opendx>0:graphics/opendx
@@ -38,7 +39,7 @@ BINARY_ALIAS=	make=${GMAKE} sed=gsed
 
 .include <bsd.port.options.mk>
 
-.if ${OPSYS} == FreeBSD && ( ${OSVERSION} >= 1400091 || ( ${OSVERSION} >= 1302507 && ${OSVERSION} < 1400000 ))
+.if ${OPSYS} == FreeBSD
 CFLAGS+=	-Wno-error=incompatible-function-pointer-types
 .endif
 

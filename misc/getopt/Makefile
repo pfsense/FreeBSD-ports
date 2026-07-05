@@ -1,38 +1,32 @@
 PORTNAME=	getopt
-PORTVERSION=	1.1.6
-PORTREVISION=	1
+PORTVERSION=	2.41.3
 CATEGORIES=	misc
-MASTER_SITES=	http://frodo.looijaard.name/system/files/software/getopt/ \
-		LOCAL/sunpoet
+MASTER_SITES=	KERNEL_ORG/linux/utils/util-linux/v${PORTVERSION:R}/
+DISTNAME=	util-linux-${PORTVERSION}
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Replacement for getopt(1) that supports GNU-style long options
-WWW=		https://software.frodo.looijaard.name/getopt/
+WWW=		https://github.com/util-linux/util-linux
 
-LICENSE=	GPLv2 GPLv3
-LICENSE_COMB=	dual
+LICENSE=	GPLv2
+LICENSE_FILE=	${WRKSRC}/COPYING
 
-OPTIONS_DEFINE=	DOCS NLS
+USES=		pkgconfig shebangfix tar:xz
+
+CONFIGURE_ARGS=	--disable-asciidoc \
+		--disable-all-programs \
+		--disable-gtk-doc \
+		--disable-nls \
+		--disable-makeinstall-chown \
+		--disable-makeinstall-setuid \
+		--with-pkgconfigdir=${PREFIX}/libdata/pkgconfig \
+		${CONFIGURE_ARGS_${ARCH}}
+CONFIGURE_ARGS_i386=	--disable-year2038
+GNU_CONFIGURE=	yes
+
+SHEBANG_FILES=	misc-utils/getopt-example.bash
+
+OPTIONS_DEFINE=	EXAMPLES
 OPTIONS_SUB=	yes
-
-MAKE_ARGS=	CC=${CC} LIBCGETOPT=0
-USES=		gmake
-
-PORTDOCS=	Changelog README
-
-NLS_MAKE_ARGS=		WITHOUT_GETTEXT=0
-NLS_MAKE_ARGS_OFF=	WITHOUT_GETTEXT=1
-NLS_LDFLAGS=		-lintl
-NLS_USES=		gettext localbase:ldflags
-
-post-patch:
-	@${RM} ${WRKSRC}/gnu/*.o
-
-post-install:
-	${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/getopt
-
-post-install-DOCS-on:
-	${MKDIR} ${STAGEDIR}${DOCSDIR}/
-	cd ${WRKSRC}/ && ${INSTALL_DATA} ${PORTDOCS} ${STAGEDIR}${DOCSDIR}/
 
 .include <bsd.port.mk>

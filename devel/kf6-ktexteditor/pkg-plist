@@ -1,3 +1,4 @@
+bin/ktexteditor-script-tester6
 include/KF6/KTextEditor/KTextEditor/AbstractAnnotationItemDelegate
 include/KF6/KTextEditor/KTextEditor/AnnotationInterface
 include/KF6/KTextEditor/KTextEditor/Application
@@ -55,8 +56,8 @@ lib/cmake/KF6TextEditor/KF6TextEditorConfigVersion.cmake
 lib/cmake/KF6TextEditor/KF6TextEditorTargets-%%CMAKE_BUILD_TYPE%%.cmake
 lib/cmake/KF6TextEditor/KF6TextEditorTargets.cmake
 lib/libKF6TextEditor.so
-lib/libKF6TextEditor.so.%%KDE_FRAMEWORKS_VERSION%%
 lib/libKF6TextEditor.so.6
+lib/libKF6TextEditor.so.%%KDE_FRAMEWORKS_VERSION%%
 lib/libexec/kf6/kauth/kauth_ktexteditor_helper
 %%QT_PLUGINDIR%%/kf6/parts/katepart.so
 share/dbus-1/system-services/org.kde.ktexteditor6.katetextbuffer.service
@@ -125,6 +126,7 @@ share/locale/pt/LC_MESSAGES/ktexteditor6.mo
 share/locale/pt_BR/LC_MESSAGES/ktexteditor6.mo
 share/locale/ro/LC_MESSAGES/ktexteditor6.mo
 share/locale/ru/LC_MESSAGES/ktexteditor6.mo
+share/locale/sa/LC_MESSAGES/ktexteditor6.mo
 share/locale/se/LC_MESSAGES/ktexteditor6.mo
 share/locale/si/LC_MESSAGES/ktexteditor6.mo
 share/locale/sk/LC_MESSAGES/ktexteditor6.mo
@@ -148,5 +150,6 @@ share/locale/wa/LC_MESSAGES/ktexteditor6.mo
 share/locale/xh/LC_MESSAGES/ktexteditor6.mo
 share/locale/zh_CN/LC_MESSAGES/ktexteditor6.mo
 share/locale/zh_TW/LC_MESSAGES/ktexteditor6.mo
+share/polkit-1/actions/org.kde.ktexteditor6.katetextbuffer.policy
 share/qlogging-categories6/ktexteditor.categories
 share/qlogging-categories6/ktexteditor.renamecategories

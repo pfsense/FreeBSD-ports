@@ -1,5 +1,5 @@
 PORTNAME=	cgnslib
-PORTVERSION=	4.4.0
+PORTVERSION=	4.5.1
 DISTVERSIONPREFIX=	v
 PORTEPOCH=	1
 CATEGORIES=	science
@@ -13,16 +13,17 @@ LICENSE_NAME=	AS-IS
 LICENSE_FILE=	${WRKSRC}/license.txt
 LICENSE_PERMS=	dist-mirror dist-sell pkg-mirror pkg-sell auto-accept
 
-USES=		cmake
 USE_GITHUB=	yes
 GH_ACCOUNT=	CGNS
 GH_PROJECT=	CGNS
+
+USES=		cmake
 USE_LDCONFIG=	yes
 MAKE_JOBS_UNSAFE=	yes
 
 #CMAKE_ARGS=	-DOpenGL_GL_PREFERENCE:STRING="GLVND"
 CMAKE_ARGS=	-DOpenGL_GL_PREFERENCE:STRING="LEGACY"
-FFLAGS+=	-fPIC -std=legacy
+FFLAGS=		-fPIC
 TEST_TARGET=	test
 
 OPTIONS_DEFINE=		FORTRAN HDF5 TESTS TOOLS
@@ -54,9 +55,16 @@ TOOLS_CMAKE_ON=		-DTCL_INCLUDE_PATH:STRING="${TCL_INCLUDEDIR}" \
 
 .include <bsd.port.options.mk>
 
-.if ${OPSYS} == FreeBSD && ( ${OSVERSION} >= 1400091 || ( ${OSVERSION} >= 1302507 && ${OSVERSION} < 1400000 ))
+.if ${OPSYS} == FreeBSD
 CFLAGS+=	-Wno-error=incompatible-function-pointer-types
 .endif
+
+.if ${FORTRAN_DEFAULT} != flang
+FFLAGS+=	-std=legacy
+.endif
+
+pre-configure:
+	${REINPLACE_CMD} -e 's|tk-private/||' ${WRKSRC}/src/cgnstools/tkogl/tkogl.c
 
 post-install:
 	${RLN} ${STAGEDIR}${PREFIX}/lib/libcgns.so.${PORTVERSION:R} \

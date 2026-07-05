@@ -1,5 +1,6 @@
 PORTNAME=	recordclass
-PORTVERSION=	0.21.1
+PORTVERSION=	0.22
+PORTREVISION=	1
 CATEGORIES=	devel python
 MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -10,7 +11,7 @@ WWW=		https://github.com/intellimath/recordclass
 
 LICENSE=	MIT
 
-USES=		python:3.9+
+USES=		python
 USE_PYTHON=	distutils
 
 .if ! defined(WITH_DEBUG)

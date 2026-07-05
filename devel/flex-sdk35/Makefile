@@ -1,6 +1,6 @@
 PORTNAME=	flex-sdk
 PORTVERSION=	3.5.0.12683
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	devel java
 MASTER_SITES=	http://fpdownload.adobe.com/pub/flex/sdk/builds/flex3/
 DISTFILES=	flex_sdk_${PORTVERSION}_mpl.zip
@@ -11,8 +11,7 @@ COMMENT=	Adobe Flex SDK
 WWW=		http://opensource.adobe.com/wiki/display/flexsdk/Flex+3
 
 CONFLICTS=	flex-sdk
-USES=		zip
-USE_JAVA=	yes
+USES=		java zip
 SUB_FILES=	${SCRIPTS:C/\$/.sh/g}
 PLIST_SUB=	PORTNAME=${PORTNAME}
 SUB_LIST=	PORTNAME=${PORTNAME}

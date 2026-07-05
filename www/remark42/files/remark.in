@@ -20,7 +20,7 @@
 # remark_store_type (str):	type of storage, bolt or rpc
 #				Default: bolt
 # remark_store_bolt_path (str):	parent directory for the bolt files
-#				Default: %%REMARK42_DATADIR%%
+#				Default: %%REMARK_DATADIR%%
 # remark_backup_path (str):	backups location
 #				Default: %%REMARK_DATADIR%%/backup
 # remark_avatar_fs_path (str):	avatars location for fs store
@@ -61,11 +61,18 @@ load_rc_config ${name}
 : ${remark_admin_type:="shared"}
 : ${remark_admin_rpc_api:=""}
 : ${remark_admin_rpc_timeout:="5s"}
+: ${remark_admin_rpc_auth_user:=""}
+: ${remark_admin_rpc_auth_passwd:=""}
+: ${remark_admin_rpc_secret_per_site:=""}
 : ${remark_admin_shared_id:=""}
 : ${remark_admin_shared_email:=""}
 : ${remark_backup_path:="%%REMARK_DATADIR%%/backup"}
 : ${remark_backup_max:="10"}
 : ${remark_cache_type:="mem"}
+: ${remark_cache_redis_addr:=""}
+: ${remark_cache_max_items:=""}
+: ${remark_cache_max_value:=""}
+: ${remark_cache_max_size:=""}
 : ${remark_avatar_type:="fs"}
 : ${remark_avatar_fs_path:="%%REMARK_DATADIR%%/avatars"}
 : ${remark_avatar_bolt_file:="%%REMARK_DATADIR%%/avatars.db"}
@@ -84,6 +91,10 @@ load_rc_config ${name}
 : ${remark_image_resize_width:="2400"}
 : ${remark_image_resize_height:="900"}
 : ${remark_auth_same_site:="default"}
+: ${remark_auth_apple_cid:=""}
+: ${remark_auth_apple_tid:=""}
+: ${remark_auth_apple_kid:=""}
+: ${remark_auth_apple_private_key_filepath:=""}
 : ${remark_auth_google_cid:=""}
 : ${remark_auth_google_csec:=""}
 : ${remark_auth_facebook_cid:=""}
@@ -96,6 +107,8 @@ load_rc_config ${name}
 : ${remark_auth_twitter_csec:=""}
 : ${remark_auth_patreon_cid:=""}
 : ${remark_auth_patreon_csec:=""}
+: ${remark_auth_discord_cid:=""}
+: ${remark_auth_discord_csec:=""}
 : ${remark_auth_yandex_cid:=""}
 : ${remark_auth_yandex_csec:=""}
 : ${remark_auth_telegram:=""}
@@ -120,6 +133,7 @@ load_rc_config ${name}
 : ${remark_telegram_token:=""}
 : ${remark_telegram_timeout:=""}
 : ${remark_smtp_host:=""}
+: ${remark_smtp_insecure_skip_verify:=""}
 : ${remark_smtp_port:=""}
 : ${remark_smtp_username:=""}
 : ${remark_smtp_password:=""}
@@ -134,6 +148,7 @@ load_rc_config ${name}
 : ${remark_ssl_acme_location:=""}
 : ${remark_ssl_acme_email:=""}
 : ${remark_max_comment_size:=""}
+: ${remark_min_comment_size:=""}
 : ${remark_max_votes:=""}
 : ${remark_votes_ip:=""}
 : ${remark_anon_vote:=""}
@@ -157,6 +172,7 @@ load_rc_config ${name}
 : ${remark_remark_web_root:=""}
 : ${remark_update_limit:=""}
 : ${remark_subscribers_only:=""}
+: ${remark_disable_fancy_html_formatting:=""}
 : ${remark_disable_signature:=""}
 : ${remark_admin_passwd:=""}
 : ${remark_debug:=""}
@@ -208,9 +224,9 @@ remark_precmd()
                 err 1 "remark_admin_type has to be either 'shared' or 'rpc'"
                 ;;
         esac
-	export_variables ADMIN_SHARED_ID ADMIN_SHARED_EMAIL BACKUP_PATH
+	export_variables ADMIN_SHARED_ID ADMIN_SHARED_EMAIL ADMIN_RPC_SECRET_PER_SITE BACKUP_PATH
 	export MAX_BACKUP_FILES="${remark_backup_max}"
-	export_variables CACHE_TYPE AVATAR_TYPE
+	export_variables CACHE_TYPE CACHE_REDIS_ADDR CACHE_MAX_ITEMS CACHE_MAX_VALUE CACHE_MAX_SIZE AVATAR_TYPE
 	case "${AVATAR_TYPE}" in
 	fs)
 		export_variable AVATAR_FS_PATH
@@ -242,7 +258,9 @@ remark_precmd()
 		;;
 	esac
 	export_variables IMAGE_MAX_SIZE IMAGE_RESIZE_WIDTH IMAGE_RESIZE_HEIGHT AUTH_SAME_SITE AUTH_TELEGRAM
-	for _provider in google facebook microsoft github twitter patreon yandex; do
+	# Export Apple auth separately due to different parameters
+	export_variables AUTH_APPLE_CID AUTH_APPLE_TID AUTH_APPLE_KID AUTH_APPLE_PRIVATE_KEY_FILEPATH
+	for _provider in google facebook microsoft github twitter patreon discord yandex; do
 		_provider_upper="$(echo ${_provider} | tr a-z A-Z)"
 		export_variables "AUTH_${_provider_upper}_CID" "AUTH_${_provider_upper}_CSEC"
 	done
@@ -250,13 +268,13 @@ remark_precmd()
 	export_variables NOTIFY_USERS NOTIFY_ADMINS NOTIFY_QUEUE NOTIFY_TELEGRAM_CHAN NOTIFY_SLACK_TOKEN NOTIFY_SLACK_CHAN
 	export_variables NOTIFY_WEBHOOK_URL NOTIFY_WEBHOOK_TEMPLATE NOTIFY_WEBHOOK_HEADERS NOTIFY_WEBHOOK_TIMEOUT
 	export_variables NOTIFY_EMAIL_FROM NOTIFY_EMAIL_VERIFICATION_SUBJ TELEGRAM_TOKEN TELEGRAM_TIMEOUT
-	export_variables SMTP_HOST SMTP_PORT SMTP_USERNAME SMTP_PASSWORD SMTP_LOGIN_AUTH SMTP_TLS
+	export_variables SMTP_HOST SMTP_INSECURE_SKIP_VERIFY SMTP_PORT SMTP_USERNAME SMTP_PASSWORD SMTP_LOGIN_AUTH SMTP_TLS
 	export_variables SMTP_STARTTLS SMTP_TIMEOUT SSL_TYPE SSL_PORT SSL_CERT SSL_KEY SSL_ACME_LOCATION
-	export_variables SSL_ACME_EMAIL MAX_COMMENT_SIZE MAX_VOTES VOTES_IP ANON_VOTE VOTES_IP_TIME
+	export_variables SSL_ACME_EMAIL MAX_COMMENT_SIZE MIN_COMMENT_SIZE MAX_VOTES VOTES_IP ANON_VOTE VOTES_IP_TIME
 	export_variables LOW_SCORE CRITICAL_SCORE POSITIVE_SCORE RESTRICTED_WORDS RESTRICTED_NAMES
 	export_variables EDIT_TIME ADMIN_EDIT READONLY_AGE IMAGE_PROXY_HTTP2HTTPS IMAGE_PROXY_CACHE_EXTERNAL
 	export_variables EMOJI SIMPLE_VIEW PROXY_CORS ALLOWED_HOSTS REMARK_ADDRESS REMARK_PORT REMARK_WEB_ROOT
-	export_variables UPDATE_LIMIT SUBSCRIBERS_ONLY DISABLE_SIGNATURE ADMIN_PASSWD DEBUG
+	export_variables UPDATE_LIMIT SUBSCRIBERS_ONLY DISABLE_FANCY_HTML_FORMATTING DISABLE_SIGNATURE ADMIN_PASSWD DEBUG
 }
 
 pidfile="%%REMARK_PIDDIR%%${name}.pid"

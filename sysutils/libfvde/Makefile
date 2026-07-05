@@ -1,5 +1,5 @@
 PORTNAME=	libfvde
-PORTVERSION=	20231128
+PORTVERSION=	20240502
 DISTVERSIONPREFIX=	experimental-
 CATEGORIES=	sysutils
 MASTER_SITES=	https://github.com/libyal/libfvde/releases/download/${PORTVERSION}/ \
@@ -13,6 +13,7 @@ LICENSE=	LGPL3+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
 LIB_DEPENDS=	libcaes.so:security/libcaes
+BUILD_DEPENDS=	${PY_SETUPTOOLS}
 
 GNU_CONFIGURE=	yes
 GNU_CONFIGURE_MANPREFIX=${PREFIX}/share

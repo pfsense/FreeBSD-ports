@@ -1,6 +1,6 @@
 PORTNAME=	jitsi
-DISTVERSION=	1.1-8
-DISTVERSIONSUFFIX=	-ga64adcc
+DISTVERSION=	1.1-19
+DISTVERSIONSUFFIX=	-g66f32c3
 CATEGORIES=	net-im java
 PKGNAMESUFFIX=	-srtp-native
 
@@ -15,12 +15,11 @@ ONLY_FOR_ARCHS=	amd64 i386 powerpc64 powerpc64le
 
 BUILD_DEPENDS=	jitsi-videobridge>=2.1.681:net-im/jitsi-videobridge
 
-USES=		ssl
+USES=		java ssl
 USE_GITHUB=	yes
 USE_LDCONFIG=	yes
 GH_PROJECT=	${PORTNAME}-srtp
-USE_JAVA=	yes
-JAVA_VERSION=	11
+JAVA_VERSION=	17
 
 PLIST_FILES=	lib/libjitsisrtp_1.1.so
 

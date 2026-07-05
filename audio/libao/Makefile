@@ -10,11 +10,10 @@ WWW=		https://www.xiph.org/ao/
 
 LICENSE=	GPLv2
 
-USES=		cpe libtool pathfix pkgconfig
+USES=		cpe libtool pkgconfig
 CPE_VENDOR=	xiph
 USE_LDCONFIG=	yes
 GNU_CONFIGURE=	yes
-GNU_CONFIGURE_MANPREFIX=${PREFIX}/share
 CONFIGURE_ARGS=	--enable-static \
 		--disable-alsa \
 		--disable-arts \

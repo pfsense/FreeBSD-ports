@@ -15,7 +15,7 @@ bin/llvm-config%%LLVM_SUFFIX%%
 bin/llvm-cov%%LLVM_SUFFIX%%
 bin/llvm-cvtres%%LLVM_SUFFIX%%
 bin/llvm-cxxmap%%LLVM_SUFFIX%%
-%%CLANG%%bin/llvm-debuginfo-analyzer%%LLVM_SUFFIX%%
+bin/llvm-debuginfo-analyzer%%LLVM_SUFFIX%%
 bin/llvm-debuginfod%%LLVM_SUFFIX%%
 bin/llvm-debuginfod-find%%LLVM_SUFFIX%%
 bin/llvm-diff%%LLVM_SUFFIX%%
@@ -143,7 +143,7 @@ bin/sancov%%LLVM_SUFFIX%%
 %%PYCLANG%%llvm%%LLVM_SUFFIX%%/%%PYTHON_SITELIBDIR%%/clang/cindex.py
 %%PYCLANG%%llvm%%LLVM_SUFFIX%%/%%PYTHON_SITELIBDIR%%/clang/enumerations.py
 %%LLDB%%llvm%%LLVM_SUFFIX%%/%%PYTHON_SITELIBDIR%%/lldb/__init__.py
-%%LLDB%%llvm%%LLVM_SUFFIX%%/%%PYTHON_SITELIBDIR%%/lldb/_lldb%%PYTHON_EXT_SUFFIX%%%%PYTHON_ABIVER%%.so
+%%LLDB%%llvm%%LLVM_SUFFIX%%/%%PYTHON_SITELIBDIR%%/lldb/_lldb%%PYTHON_TAG%%%%PYTHON_ABIVER%%.so
 %%LLDB%%llvm%%LLVM_SUFFIX%%/%%PYTHON_SITELIBDIR%%/lldb/embedded_interpreter.py
 %%LLDB%%llvm%%LLVM_SUFFIX%%/%%PYTHON_SITELIBDIR%%/lldb/formatters/Logger.py
 %%LLDB%%llvm%%LLVM_SUFFIX%%/%%PYTHON_SITELIBDIR%%/lldb/formatters/__init__.py
@@ -229,7 +229,7 @@ llvm%%LLVM_SUFFIX%%/bin/llvm-cvtres
 llvm%%LLVM_SUFFIX%%/bin/llvm-cxxdump
 llvm%%LLVM_SUFFIX%%/bin/llvm-cxxfilt
 llvm%%LLVM_SUFFIX%%/bin/llvm-cxxmap
-%%CLANG%%llvm%%LLVM_SUFFIX%%/bin/llvm-debuginfo-analyzer
+llvm%%LLVM_SUFFIX%%/bin/llvm-debuginfo-analyzer
 llvm%%LLVM_SUFFIX%%/bin/llvm-debuginfod
 llvm%%LLVM_SUFFIX%%/bin/llvm-debuginfod-find
 llvm%%LLVM_SUFFIX%%/bin/llvm-diff
@@ -5698,6 +5698,7 @@ llvm%%LLVM_SUFFIX%%/include/llvm/XRay/YAMLXRayRecord.h
 %%CLANG%%llvm%%LLVM_SUFFIX%%/lib/clang/%%LLVM_MAJOR%%/include/iso646.h
 %%CLANG%%llvm%%LLVM_SUFFIX%%/lib/clang/%%LLVM_MAJOR%%/include/keylockerintrin.h
 %%CLANG%%llvm%%LLVM_SUFFIX%%/lib/clang/%%LLVM_MAJOR%%/include/larchintrin.h
+%%CLANG%%llvm%%LLVM_SUFFIX%%/lib/clang/%%LLVM_MAJOR%%/include/limits.h
 %%CLANG%%llvm%%LLVM_SUFFIX%%/lib/clang/%%LLVM_MAJOR%%/include/llvm_libc_wrappers/ctype.h
 %%CLANG%%llvm%%LLVM_SUFFIX%%/lib/clang/%%LLVM_MAJOR%%/include/llvm_libc_wrappers/inttypes.h
 %%CLANG%%llvm%%LLVM_SUFFIX%%/lib/clang/%%LLVM_MAJOR%%/include/llvm_libc_wrappers/stdio.h
@@ -5776,6 +5777,13 @@ llvm%%LLVM_SUFFIX%%/include/llvm/XRay/YAMLXRayRecord.h
 %%CLANG%%llvm%%LLVM_SUFFIX%%/lib/clang/%%LLVM_MAJOR%%/include/sm3intrin.h
 %%CLANG%%llvm%%LLVM_SUFFIX%%/lib/clang/%%LLVM_MAJOR%%/include/sm4intrin.h
 %%CLANG%%llvm%%LLVM_SUFFIX%%/lib/clang/%%LLVM_MAJOR%%/include/smmintrin.h
+%%CLANG%%llvm%%LLVM_SUFFIX%%/lib/clang/%%LLVM_MAJOR%%/include/stdalign.h
+%%CLANG%%llvm%%LLVM_SUFFIX%%/lib/clang/%%LLVM_MAJOR%%/include/stdarg.h
+%%CLANG%%llvm%%LLVM_SUFFIX%%/lib/clang/%%LLVM_MAJOR%%/include/stdatomic.h
+%%CLANG%%llvm%%LLVM_SUFFIX%%/lib/clang/%%LLVM_MAJOR%%/include/stdbool.h
+%%CLANG%%llvm%%LLVM_SUFFIX%%/lib/clang/%%LLVM_MAJOR%%/include/stddef.h
+%%CLANG%%llvm%%LLVM_SUFFIX%%/lib/clang/%%LLVM_MAJOR%%/include/stdint.h
+%%CLANG%%llvm%%LLVM_SUFFIX%%/lib/clang/%%LLVM_MAJOR%%/include/stdnoreturn.h
 %%CLANG%%llvm%%LLVM_SUFFIX%%/lib/clang/%%LLVM_MAJOR%%/include/tbmintrin.h
 %%CLANG%%llvm%%LLVM_SUFFIX%%/lib/clang/%%LLVM_MAJOR%%/include/tgmath.h
 %%CLANG%%llvm%%LLVM_SUFFIX%%/lib/clang/%%LLVM_MAJOR%%/include/tmmintrin.h
@@ -5784,6 +5792,7 @@ llvm%%LLVM_SUFFIX%%/include/llvm/XRay/YAMLXRayRecord.h
 %%CLANG%%llvm%%LLVM_SUFFIX%%/lib/clang/%%LLVM_MAJOR%%/include/unwind.h
 %%CLANG%%llvm%%LLVM_SUFFIX%%/lib/clang/%%LLVM_MAJOR%%/include/vadefs.h
 %%CLANG%%llvm%%LLVM_SUFFIX%%/lib/clang/%%LLVM_MAJOR%%/include/vaesintrin.h
+%%CLANG%%llvm%%LLVM_SUFFIX%%/lib/clang/%%LLVM_MAJOR%%/include/varargs.h
 %%CLANG%%llvm%%LLVM_SUFFIX%%/lib/clang/%%LLVM_MAJOR%%/include/vecintrin.h
 %%CLANG%%llvm%%LLVM_SUFFIX%%/lib/clang/%%LLVM_MAJOR%%/include/velintrin.h
 %%CLANG%%llvm%%LLVM_SUFFIX%%/lib/clang/%%LLVM_MAJOR%%/include/velintrin_approx.h

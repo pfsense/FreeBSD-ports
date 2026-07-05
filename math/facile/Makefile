@@ -1,6 +1,6 @@
 PORTNAME=	facile
 PORTVERSION=	1.1.3
-PORTREVISION=	3
+PORTREVISION=	4
 CATEGORIES=	math
 MASTER_SITES=	http://opti.recherche.enac.fr/facile/distrib/
 
@@ -11,10 +11,16 @@ WWW=		http://www.recherche.enac.fr/log/facile/
 LICENSE=	LGPL21
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-USES=		gmake
-USE_OCAML=	yes
+USES=		gmake ocaml
+
 HAS_CONFIGURE=	yes
 ALL_TARGET=	compile
+
+.include <bsd.port.options.mk>
+
+.if ${ARCH} == powerpc
+USE_BINUTILS=	yes
+.endif
 
 post-configure:
 	${REINPLACE_CMD} -e "s,make,${MAKE_CMD},; \

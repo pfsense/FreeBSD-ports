@@ -1,4 +1,5 @@
 PORTNAME=	mod_sql_odbc
+PORTREVISION=	2
 CATEGORIES=	databases ftp
 PKGNAMEPREFIX=	proftpd-
 

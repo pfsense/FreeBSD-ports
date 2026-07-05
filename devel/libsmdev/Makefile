@@ -1,6 +1,5 @@
 PORTNAME=	libsmdev
-DISTVERSION=	alpha-20231128
-PORTREVISION=	1
+DISTVERSION=	alpha-20240505
 CATEGORIES=	devel
 MASTER_SITES=	https://github.com/libyal/libsmdev/releases/download/${PORTVERSION:E}/ \
 		LOCAL/antoine
@@ -11,6 +10,8 @@ WWW=		https://github.com/libyal/libsmdev
 
 LICENSE=	LGPL3+
 LICENSE_FILE=	${WRKSRC}/COPYING
+
+BUILD_DEPENDS=	${PY_SETUPTOOLS}
 
 GNU_CONFIGURE=	yes
 GNU_CONFIGURE_MANPREFIX=${PREFIX}/share

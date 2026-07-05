@@ -1,5 +1,5 @@
 PORTNAME=	Convert-Binary-C
-PORTVERSION=	0.84
+PORTVERSION=	0.86
 CATEGORIES=	converters perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
@@ -15,5 +15,8 @@ USES=		perl5
 USE_PERL5=	configure
 
 MAKE_JOBS_UNSAFE=	yes
+
+post-install:
+	${STRIP_CMD} ${STAGEDIR}${PREFIX}/${SITE_ARCH_REL}/auto/Convert/Binary/C/C.so
 
 .include <bsd.port.mk>

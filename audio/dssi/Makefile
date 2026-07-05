@@ -20,7 +20,7 @@ LIB_DEPENDS=	libdssialsacompat.so:audio/libdssialsacompat \
 RUN_DEPENDS=	${LOCALBASE}/include/ladspa.h:audio/ladspa \
 		${LOCALBASE}/include/alsa/seq_event.h:audio/alsa-lib
 
-USES=		gmake pathfix pkgconfig localbase libtool xorg
+USES=		gmake pkgconfig localbase libtool xorg
 USE_XORG=	x11
 
 GNU_CONFIGURE=	yes
@@ -39,7 +39,7 @@ OPTIONS_SUB=	yes
 
 .include <bsd.port.options.mk>
 
-.if ${OPSYS} == FreeBSD && ( ${OSVERSION} >= 1400091 || ( ${OSVERSION} >= 1302507 && ${OSVERSION} < 1400000 ))
+.if ${OPSYS} == FreeBSD
 CFLAGS+=	-Wno-error=incompatible-function-pointer-types
 .endif
 

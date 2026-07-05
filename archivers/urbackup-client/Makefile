@@ -1,48 +1,50 @@
 PORTNAME=	urbackup-client
-DISTVERSION=	2.5.20.0
-PORTREVISION=	3
+DISTVERSION=	2.5.26.0
 CATEGORIES=	archivers
 MASTER_SITES=	https://hndl.urbackup.org/Client/${DISTVERSION:R}/
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	ek@purplehat.org
 COMMENT=	Client component of the UrBackup backup system
 WWW=		https://www.urbackup.org
 
 LICENSE=	AGPLv3+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-LIB_DEPENDS=	libcryptopp.so:security/cryptopp
+LIB_DEPENDS=	libcryptopp.so:security/cryptopp \
+		libzstd.so:archivers/zstd
 
-USES=		autoreconf compiler:c++11-lang dos2unix gettext libtool \
-		localbase pkgconfig sqlite:3
+USES=		autoreconf dos2unix libtool localbase pkgconfig sqlite:3 ssl
 USE_CXXSTD=	c++14
 USE_RC_SUBR=	urbackup_client
+
+GNU_CONFIGURE=	yes
+CONFIGURE_ARGS=	--disable-clientupdate \
+		--enable-headless \
+		--without-embedded-sqlite3
+
+EXTRA_PATCHES=	${.CURDIR}/../urbackup-server/files/patch-fileservplugin_FileMetadataPipe.cpp \
+		${.CURDIR}/../urbackup-server/files/patch-fsimageplugin_CompressedFile.cpp
+SUB_FILES=	pkg-message urbackupclient.conf.sample-daemon
 
 USERS=		urbackup
 GROUPS=		urbackup
 
-GNU_CONFIGURE=	yes
-CONFIGURE_ARGS=	--disable-clientupdate \
-		--without-embedded-sqlite3
-
-SUB_FILES=	pkg-message urbackupclient.conf.sample-daemon
-
-WRKSRC=		${WRKDIR}/${DISTNAME}
-
-OPTIONS_DEFINE=	GUI
-OPTIONS_SUB=	yes
-
-GUI_DESC=		GTK2 Tray Icon
-GUI_USE=		WX=3.0+
-GUI_CONFIGURE_ON=	--with-wx-config=${WX_CONFIG}
-GUI_CONFIGURE_OFF=	--enable-headless
-
 CONFFILES=	mariadbdump.conf mariadbxtrabackup.conf postgresbase.conf \
 		postgresqldump.conf
 
+.include <bsd.port.options.mk>
+
+# Fix segmentation fault, PR 266531
+# see also 5a19c08: security/cryptopp: Update to 8.7.0
+.if ${ARCH} == i386 || ${ARCH} == amd64
+CXXFLAGS+=	-DCRYPTOPP_DISABLE_ASM
+.endif
+
 post-patch:
-	@${SED} -i "" -e "s:%%PREFIX%%:${PREFIX}:g" \
+	${REINPLACE_CMD} -e "s:%%PREFIX%%:${PREFIX}:g" \
 		${WRKSRC}/urbackupclient/backup_scripts/postgresqldump
+	${FIND} ${WRKSRC} -type f \( -name '*.cpp' -o -name '*.h' \) \
+		-exec ${REINPLACE_CMD} -e 's|auto_ptr|unique_ptr|g' {} +
 
 post-stage:
 	${INSTALL_DATA} ${WRKDIR}/urbackupclient.conf.sample-daemon \

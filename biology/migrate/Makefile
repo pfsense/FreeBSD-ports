@@ -1,5 +1,6 @@
 PORTNAME=	migrate
 DISTVERSION=	5.0.6
+PORTREVISION=	2
 CATEGORIES=	biology
 MASTER_SITES=	https://peterbeerli.com/migrate-html5/download_version4/
 DISTNAME=	${PORTNAME}-${PORTVERSION}.src
@@ -18,12 +19,12 @@ LICENSE_FILE=	${WRKSRC}/../README
 #BROKEN_riscv64=	fails to build: make[2]: cannot open makefile
 
 GNU_CONFIGURE=	yes
+CONFIGURE_ARGS=	--with-zlib=system
 CONFIGURE_ENV=	ac_cv_prog_GMAKE="${MAKE}"
 MAKE_ARGS=	PRETTYCFLAGS="${CFLAGS} -DNOJPEG -DNOZLIB -DNOPNG -Iharu -DPRETTY -lstdc++"
 
 CONFLICTS_INSTALL=	py*-sqlalchemy-migrate # bin/migrate
 
-EXTRACT_AFTER_ARGS=	--no-same-owner --no-same-permissions --exclude zlib
 WRKSRC=		${WRKDIR}/${PORTNAME}-${PORTVERSION}/src
 
 PORTDOCS=	${PORTNAME}.html HISTORY README README_PARALLEL_GENERAL
@@ -33,9 +34,12 @@ OPTIONS_DEFINE=		DOCS EXAMPLES THREAD
 THREAD_DESC=		Build with THREAD support
 THREAD_ALL_TARGET=	thread
 
-# Upstream tarball contains objects and binaries that need to be clean
-post-extract:
-	cd ${WRKSRC} && ${RM} -f *.o haru/*.o migrate-n migrate-n-mpi
+.include <bsd.port.options.mk>
+
+.if ${ARCH} != amd64 && ${ARCH} != i386
+CONFIGURE_ARGS+=	--disable-sse2 \
+			--disable-avx
+.endif
 
 post-patch:
 	@${REINPLACE_CMD} -e 's|="-O "|="$$CFLAGS"|g' ${WRKSRC}/configure

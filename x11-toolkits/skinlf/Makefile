@@ -1,5 +1,6 @@
 PORTNAME=	skinlf
 PORTVERSION=	6.7
+PORTREVISION=	1
 DISTVERSIONSUFFIX=	-20060722
 CATEGORIES=	x11-toolkits java
 MASTER_SITES=	https://skinlf.dev.java.net/files/documents/66/37801/ \
@@ -14,8 +15,7 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 
 WRKSRC=		${WRKDIR}/${PORTNAME}-${PORTVERSION}
 
-USES=		zip
-USE_JAVA=	yes
+USES=		java zip
 
 JAR_NAME=	${PORTNAME}.jar
 

@@ -3,7 +3,7 @@
  * ftpproxy.inc
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2015-2024 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2015-2026 Rubicon Communications, LLC (Netgate)
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -19,9 +19,10 @@
  * limitations under the License.
  */
 
+define('LOG_PREFIX_PKG_FTPPROXY', 'FTP Proxy');
+
 function sync_package_ftpproxy() {
-	global $config;
-	$cf = $config['installedpackages']['ftpclientproxy']['config'][0];
+	$cf = config_get_path('installedpackages/ftpclientproxy/config/0');
 
 	/* Proxy is not enabled, kill the daemon and issue a filter reload. */
 	if ($cf["enable"] != "on") {
@@ -35,7 +36,7 @@ function sync_package_ftpproxy() {
 	$interface_list = explode(",", $cf['localints']);
 	/* Bail if there is nothing to do */
 	if (empty($interface_list)) {
-		log_error("FTP Proxy cannot sync: No interfaces selected.");
+		logger(LOG_ERR, localize_text("Cannot sync: No interfaces selected."), LOG_PREFIX_PKG_FTPPROXY);
 		return;
 	}
 
@@ -105,8 +106,7 @@ function validate_form_ftpproxy($post, &$input_errors) {
 }
 
 function ftpproxy_get_port() {
-	global $config;
-	$cf = $config['installedpackages']['ftpclientproxy']['config'][0];
+	$cf = config_get_path('installedpackages/ftpclientproxy/config/0');
 	if (!empty($cf["bindport"]) && is_port($cf["bindport"])) {
 		return $cf["bindport"];
 	} else {
@@ -115,8 +115,7 @@ function ftpproxy_get_port() {
 }
 
 function ftpproxy_generate_rules($type) {
-	global $config;
-	$cf = $config['installedpackages']['ftpclientproxy']['config'][0];
+	$cf = config_get_path('installedpackages/ftpclientproxy/config/0');
 	$interface_list = explode(",", $cf['localints']);
 	if ($cf['earlyrule']) {
 		$ruletype = "pfearly";
@@ -131,7 +130,7 @@ function ftpproxy_generate_rules($type) {
 
 	/* Bail if there is nothing to do */
 	if (empty($interface_list)) {
-		log_error("FTP Proxy cannot sync: No interfaces selected.");
+		logger(LOG_ERR, localize_text("Cannot sync: No interfaces selected."), LOG_PREFIX_PKG_FTPPROXY);
 		return;
 	}
 

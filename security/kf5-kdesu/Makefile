@@ -1,6 +1,5 @@
 PORTNAME=	kdesu
 DISTVERSION=	${KDE_FRAMEWORKS_VERSION}
-PORTREVISION=	1
 CATEGORIES=	security kde kde-frameworks
 
 MAINTAINER=	kde@FreeBSD.org
@@ -22,8 +21,8 @@ SUDO_DESC=	Use sudo instead of su
 DOAS_DESC=	Use doas instead of su and sudo
 
 SUDO_CMAKE_BOOL=	KDESU_USE_SUDO_DEFAULT
-SUDO_BUILD_DEPENDS=	sudo:security/sudo
-SUDO_RUN_DEPENDS=	sudo:security/sudo
+SUDO_BUILD_DEPENDS=	${SUDO_DEPENDS}
+SUDO_USES=		sudo
 
 DOAS_CMAKE_BOOL=	KDESU_USE_DOAS_DEFAULT
 DOAS_BUILD_DEPENDS=	doas:security/doas

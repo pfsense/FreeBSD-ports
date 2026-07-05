@@ -1,6 +1,5 @@
 PORTNAME=	libwnck
-PORTVERSION=	3.36.0
-PORTREVISION=	2
+PORTVERSION=	43.3
 CATEGORIES=	x11-toolkits gnome
 MASTER_SITES=	GNOME
 PKGNAMESUFFIX=	3
@@ -8,17 +7,15 @@ DIST_SUBDIR=	gnome
 
 MAINTAINER=	gnome@FreeBSD.org
 COMMENT=	Library used for writing pagers and taskslists
-WWW=		https://www.gnome.org/
+WWW=		https://gitlab.gnome.org/GNOME/libwnck
 
 LICENSE=	LGPL20
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-USES=		tar:xz
-
-USES+=		bison gettext gnome localbase meson pkgconfig \
+USES=		bison gettext-tools gnome localbase meson pkgconfig tar:xz \
 		xorg
-USE_GNOME=	cairo gdkpixbuf2 gtk30  introspection:build
-USE_XORG=	xext xrender xres x11
+USE_GNOME=	cairo gdkpixbuf gtk30 introspection:build
+USE_XORG=	x11 xi xrender xres
 USE_LDCONFIG=	yes
 MESON_ARGS=	-Dgtk_doc=false \
 		-Dinstall_tools=false

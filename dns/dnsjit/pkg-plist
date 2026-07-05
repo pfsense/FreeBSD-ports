@@ -64,6 +64,8 @@ include/dnsjit/input/mmpcap.h
 include/dnsjit/input/mmpcap.hh
 include/dnsjit/input/pcap.h
 include/dnsjit/input/pcap.hh
+include/dnsjit/input/zmmpcap.h
+include/dnsjit/input/zmmpcap.hh
 include/dnsjit/input/zpcap.h
 include/dnsjit/input/zpcap.hh
 include/dnsjit/lib/base64url.h
@@ -127,6 +129,7 @@ share/man/man3/dnsjit.input.fpcap.3.gz
 share/man/man3/dnsjit.input.mmpcap.3.gz
 share/man/man3/dnsjit.input.pcap.3.gz
 share/man/man3/dnsjit.input.zero.3.gz
+share/man/man3/dnsjit.input.zmmpcap.3.gz
 share/man/man3/dnsjit.input.zpcap.3.gz
 share/man/man3/dnsjit.lib.3.gz
 share/man/man3/dnsjit.lib.base64url.3.gz
@@ -146,11 +149,11 @@ share/man/man3/dnsjit.output.tcpcli.3.gz
 share/man/man3/dnsjit.output.tlscli.3.gz
 share/man/man3/dnsjit.output.udpcli.3.gz
 %%PORTEXAMPLES%%%%EXAMPLESDIR%%/capture.lua
-%%PORTEXAMPLES%%%%EXAMPLESDIR%%/count-pkts-per-ip.lua
 %%PORTEXAMPLES%%%%EXAMPLESDIR%%/dumpdns-qr.lua
 %%PORTEXAMPLES%%%%EXAMPLESDIR%%/dumpdns.lua
 %%PORTEXAMPLES%%%%EXAMPLESDIR%%/dumpdns2pcap.lua
 %%PORTEXAMPLES%%%%EXAMPLESDIR%%/filter_rcode.lua
+%%PORTEXAMPLES%%%%EXAMPLESDIR%%/pcap2tcpdns.lua
 %%PORTEXAMPLES%%%%EXAMPLESDIR%%/qr-multi-pcap-state.lua
 %%PORTEXAMPLES%%%%EXAMPLESDIR%%/readme.lua
 %%PORTEXAMPLES%%%%EXAMPLESDIR%%/replay.lua

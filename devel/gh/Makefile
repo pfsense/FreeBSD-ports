@@ -1,10 +1,10 @@
 PORTNAME=	gh
 DISTVERSIONPREFIX=	v
-DISTVERSION=	2.42.1
-PORTREVISION=	2
+DISTVERSION=	2.83.2
+PORTREVISION=	3
 CATEGORIES=	devel
 
-MAINTAINER=	lcook@FreeBSD.org
+MAINTAINER=	dutra@FreeBSD.org
 COMMENT=	GitHub's official command line tool
 WWW=		https://cli.github.com
 
@@ -13,7 +13,7 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 
 RUN_DEPENDS=	git:devel/git
 
-USES=		go:1.21,modules
+USES=		go:1.25+,modules
 
 _BUILD_VERSION=	${DISTVERSION}
 _BUILD_DATE=	$$(date +%Y-%m-%d)

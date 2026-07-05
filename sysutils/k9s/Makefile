@@ -1,6 +1,7 @@
 PORTNAME=	k9s
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.32.4
+DISTVERSION=	0.50.18
+PORTREVISION=	3
 CATEGORIES=	sysutils
 
 MAINTAINER=	gogolok@gmail.com
@@ -8,12 +9,16 @@ COMMENT=	Kubernetes command-line tool
 WWW=		https://github.com/derailed/k9s
 
 LICENSE=	APACHE20
+LICENSE_FILE=	${WRKSRC}/LICENSE
 
-USES=		go:1.21,modules
-GO_MODULE=      github.com/derailed/k9s
+ONLY_FOR_ARCHS=	aarch64 amd64
+ONLY_FOR_ARCHS_REASON=	module modernc.org/sqlite only supported on aarch64 and amd64
+
+USES=		go:1.25+,modules
+GO_MODULE=	github.com/derailed/k9s
 GO_BUILDFLAGS=	-ldflags="-X github.com/derailed/k9s/cmd.version=${DISTVERSIONFULL} \
 		-X github.com/derailed/k9s/cmd.date=$$(date +'%Y-%m-%dT%H:%M:%SZ') \
-		-X github.com/derailed/k9s/cmd.commit=d3027c8f2916b23606f647f47b434b08fc34bdf8"
+		-X github.com/derailed/k9s/cmd.commit=6dbf571c59fd48dc5b384aa46ee7f3e5decfae2b"
 
 PLIST_FILES=	bin/${PORTNAME}
 

@@ -17,7 +17,7 @@ RUN_DEPENDS=	contractor:sysutils/contractor \
 USES=		gettext gnome meson pkgconfig python:build tar:xz vala:build
 USE_GITHUB=	yes
 GH_ACCOUNT=	elementary
-USE_GNOME=	cairo glib20 gtk30 gdkpixbuf2 introspection:build
+USE_GNOME=	cairo glib20 gtk30 gdkpixbuf introspection:build
 USE_LDCONFIG=	yes
 
 BINARY_ALIAS=	python3=${PYTHON_CMD}
@@ -26,7 +26,7 @@ PLIST_SUB=	DISTVERSION=${DISTVERSION}
 
 .include <bsd.port.options.mk>
 
-.if ${OPSYS} == FreeBSD && ( ${OSVERSION} >= 1400091 || ( ${OSVERSION} >= 1302507 && ${OSVERSION} < 1400000 ))
+.if ${OPSYS} == FreeBSD
 CFLAGS+=	-Wno-error=incompatible-function-pointer-types
 .endif
 

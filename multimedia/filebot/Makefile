@@ -1,6 +1,6 @@
 PORTNAME=	filebot
 DISTVERSION=	4.9.6
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	multimedia java
 MASTER_SITES=	https://get.filebot.net/filebot/FileBot_${DISTVERSION}/
 DISTNAME=	FileBot_${DISTVERSION}-portable
@@ -22,8 +22,7 @@ RUN_DEPENDS=	ffprobe:multimedia/ffmpeg \
 				jna>0:devel/jna \
 				openjfx14>0:java/openjfx14
 
-USES=	tar:xz
-USE_JAVA=	yes
+USES=	java tar:xz
 JAVA_VERSION=	11
 
 NO_WRKSUBDIR=	yes

@@ -1,5 +1,5 @@
 PORTNAME=	bigdecimal
-PORTVERSION=	3.1.7
+PORTVERSION=	4.0.1
 CATEGORIES=	math rubygems
 MASTER_SITES=	RG
 
@@ -9,6 +9,7 @@ WWW=		https://github.com/ruby/bigdecimal
 
 LICENSE=	BSD2CLAUSE RUBY
 LICENSE_COMB=	dual
+LICENSE_FILE_RUBY=	${WRKSRC}/LICENSE
 
 USES=		gem
 

@@ -1,12 +1,15 @@
 PORTNAME=	xgraph
 PORTVERSION=	11.3.2.20000910
-PORTREVISION=	5
+PORTREVISION=	6
 CATEGORIES=	math print
 MASTER_SITES=	ftp://ftp.cs.utoronto.ca/pub/radford/
 DISTNAME=	xgraph-11
 
 MAINTAINER=	bofh@FreeBSD.org
 COMMENT=	Program that helps you plot graphs
+
+DEPRECATED=	Obsolete software, unmaintained upstream
+EXPIRATION_DATE=	2026-04-30
 
 LICENSE=	XGRAPH
 LICENSE_NAME=	xgraph license
@@ -22,7 +25,7 @@ OPTIONS_DEFINE=	EXAMPLES
 
 .include <bsd.port.options.mk>
 
-.if ${OPSYS} == FreeBSD && ( ${OSVERSION} >= 1400079 || ( ${OSVERSION} >= 1302505 && ${OSVERSION} < 1400000 ))
+.if ${OPSYS} == FreeBSD
 CFLAGS+=	-Wno-error=int-conversion
 .endif
 

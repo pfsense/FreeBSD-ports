@@ -1,11 +1,7 @@
 PORTNAME=	cage
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.1.5
-PORTREVISION=	2
+DISTVERSION=	0.2.1
 CATEGORIES=	x11-wm wayland
-
-PATCH_SITES=	https://github.com/${GH_ACCOUNT}/${GH_PROJECT}/commit/
-PATCHFILES+=	638d4fb71555.patch:-p1 # https://github.com/cage-kiosk/cage/pull/148
 
 MAINTAINER=	jbeich@FreeBSD.org
 COMMENT=	Wayland kiosk
@@ -17,7 +13,7 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 BUILD_DEPENDS=	evdev-proto>0:devel/evdev-proto \
 		wayland-protocols>=1.14:graphics/wayland-protocols
 LIB_DEPENDS=	libwayland-server.so:graphics/wayland \
-		libwlroots.so:x11-toolkits/wlroots \
+		libwlroots-0.19.so:x11-toolkits/wlroots019 \
 		libxkbcommon.so:x11/libxkbcommon
 
 USES=		compiler:c11 meson pkgconfig
@@ -27,14 +23,12 @@ PLIST_FILES=	bin/${PORTNAME}
 
 CONFLICTS_INSTALL=	${PORTNAME}-devel
 
-OPTIONS_DEFINE=	MANPAGES X11
-OPTIONS_DEFAULT=MANPAGES X11
+OPTIONS_DEFINE=	MANPAGES
+OPTIONS_DEFAULT=MANPAGES
 
 MANPAGES_BUILD_DEPENDS=	scdoc>=1.9.2:textproc/scdoc
 MANPAGES_MESON_ENABLED=	man-pages
 MANPAGES_PLIST_FILES=	share/man/man1/${PORTNAME}.1.gz
-
-X11_MESON_TRUE=	xwayland
 
 post-patch:
 # Extract (snapshot) version from the port instead of meson.build
@@ -42,5 +36,4 @@ post-patch:
 		-e '/project_version/s/@0@/${DISTVERSIONFULL}/' \
 		${WRKSRC}/meson.build
 
-.include "${.CURDIR:H:H}/x11-toolkits/wlroots016/override.mk"
 .include <bsd.port.mk>

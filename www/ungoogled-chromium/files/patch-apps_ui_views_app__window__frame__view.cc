@@ -1,11 +1,11 @@
---- apps/ui/views/app_window_frame_view.cc.orig	2024-02-03 15:42:55 UTC
+--- apps/ui/views/app_window_frame_view.cc.orig	2026-01-16 13:40:34 UTC
 +++ apps/ui/views/app_window_frame_view.cc
-@@ -148,7 +148,7 @@ gfx::Rect AppWindowFrameView::GetWindowBoundsForClient
+@@ -147,7 +147,7 @@ gfx::Rect AppWindowFrameView::GetBoundsForClientView()
+ gfx::Rect AppWindowFrameView::GetWindowBoundsForClientBounds(
+     const gfx::Rect& client_bounds) const {
    gfx::Rect window_bounds = client_bounds;
- // TODO(crbug.com/1052397): Revisit once build flag switch of lacros-chrome is
- // complete.
--#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS_LACROS)
-+#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS_LACROS) || BUILDFLAG(IS_BSD)
+-#if BUILDFLAG(IS_LINUX)
++#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_BSD)
    // Get the difference between the widget's client area bounds and window
    // bounds, and grow |window_bounds| by that amount.
    gfx::Insets native_frame_insets =

@@ -1,6 +1,6 @@
 PORTNAME=	vm
 DISTVERSION=	0.14.0
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	audio
 MASTER_SITES=	https://git.open-music-kontrollers.ch/lv2/vm.lv2/snapshot/
 PKGNAMESUFFIX=	-lv2
@@ -26,7 +26,7 @@ USE_XORG=	x11 xext
 
 .include <bsd.port.options.mk>
 
-.if ${OPSYS} == FreeBSD && ( ${OSVERSION} >= 1400079 || ( ${OSVERSION} >= 1302505 && ${OSVERSION} < 1400000 ))
+.if ${OPSYS} == FreeBSD
 CFLAGS+=	-Wno-error=int-conversion
 .endif
 

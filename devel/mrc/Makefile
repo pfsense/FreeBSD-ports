@@ -1,6 +1,7 @@
 PORTNAME=	mrc
 DISTVERSIONPREFIX=	v
-DISTVERSION=	1.3.12
+DISTVERSION=	1.3.16
+PORTREVISION=	1
 CATEGORIES=	devel
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -30,5 +31,7 @@ PORTEXAMPLES=	*
 
 post-install: # workaround for https://github.com/mhekkel/mrc/issues/9
 	@${INSTALL_PROGRAM} ${BUILD_WRKSRC}/mrc ${STAGEDIR}${PREFIX}/bin
+
+# tests as of 1.3.16: 100% tests passed, 0 tests failed out of 1
 
 .include <bsd.port.mk>

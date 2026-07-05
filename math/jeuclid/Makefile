@@ -1,5 +1,6 @@
 PORTNAME=	jeuclid
 PORTVERSION=	3.1.9
+PORTREVISION=	1
 CATEGORIES=	math java
 MASTER_SITES=	SF/${PORTNAME}/3.1.x/${PORTVERSION}/
 EXTRACT_SUFX=	-distribution.zip
@@ -8,9 +9,8 @@ MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Java based MathML rendering solution
 WWW=		https://jeuclid.sourceforge.net/
 
-USES=		zip
-USE_JAVA=	yes
-JAVA_RUN=	yes
+USES=		java zip
+
 NO_ARCH=	yes
 NO_BUILD=	yes
 

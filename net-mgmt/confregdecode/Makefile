@@ -1,6 +1,6 @@
 PORTNAME=	confregdecode
 PORTVERSION=	1.2.1
-PORTREVISION=	3
+PORTREVISION=	4
 CATEGORIES=	net-mgmt java
 MASTER_SITES=	SF/cosi-nms/${PORTNAME}/${PORTVERSION}
 DISTNAME=	confregdecode-src-${PORTVERSION}
@@ -9,7 +9,8 @@ MAINTAINER=	marcus@FreeBSD.org
 COMMENT=	Cisco Systems IOS(tm) configuration register decoder
 WWW=		https://cosi-nms.sourceforge.net/
 
-USE_JAVA=	yes
+USES=		java
+
 ALL_TARGET=	jar
 MAKE_ENV=	JAVAC="${JAVAC}" JAR="${JAR}"
 DATADIR=	${JAVASHAREDIR}/${PORTNAME}

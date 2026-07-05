@@ -1,8 +1,8 @@
---- src/3rdparty/chromium/v8/src/snapshot/embedded/platform-embedded-file-writer-generic.cc.orig	2023-04-05 11:05:06 UTC
+--- src/3rdparty/chromium/v8/src/snapshot/embedded/platform-embedded-file-writer-generic.cc.orig	2025-08-15 18:30:00 UTC
 +++ src/3rdparty/chromium/v8/src/snapshot/embedded/platform-embedded-file-writer-generic.cc
 @@ -9,6 +9,10 @@
  
- #include "src/objects/code.h"
+ #include "src/objects/instruction-stream.h"
  
 +#if V8_OS_OPENBSD
 +#include <sys/param.h>
@@ -11,7 +11,7 @@
  namespace v8 {
  namespace internal {
  
-@@ -35,6 +39,10 @@ const char* DirectiveAsString(DataDirective directive)
+@@ -35,6 +39,10 @@ void PlatformEmbeddedFileWriterGeneric::SectionText() 
  void PlatformEmbeddedFileWriterGeneric::SectionText() {
    if (target_os_ == EmbeddedTargetOs::kChromeOS) {
      fprintf(fp_, ".section .text.hot.embedded\n");

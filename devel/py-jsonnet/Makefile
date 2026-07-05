@@ -1,6 +1,6 @@
 PORTNAME=	jsonnet
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.20.0
+DISTVERSION=	0.21.0
 CATEGORIES=	devel python
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
@@ -14,19 +14,19 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 LIB_DEPENDS=	libjsonnet.so:devel/jsonnet
 
 TEST_DEPENDS=	${PYTHON_PKGNAMEPREFIX}pytest>0:devel/py-pytest@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}yaml>0:devel/py-yaml@${PY_FLAVOR}
+		${PYTHON_PKGNAMEPREFIX}pyyaml>=0:devel/py-pyyaml@${PY_FLAVOR}
 
-USES=		compiler:c++17-lang python localbase
+USES=		compiler:c++17-lang localbase python
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	google
 
-USE_PYTHON=	distutils autoplist
+USE_PYTHON=	autoplist distutils
 
 post-install:
-	${STRIP_CMD} ${STAGEDIR}${PYTHON_SITELIBDIR}/_jsonnet${PYTHON_EXT_SUFFIX}.so
+	${STRIP_CMD} ${STAGEDIR}${PYTHON_SITELIBDIR}/_jsonnet${PYTHON_TAG}.so
 
 do-test:
 	@cd ${WRKSRC} && ${PYTHON_CMD} -m pytest -v -rs
 
-.include	<bsd.port.mk>
+.include <bsd.port.mk>

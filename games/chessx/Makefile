@@ -1,5 +1,5 @@
 PORTNAME=	chessx
-DISTVERSION=	1.6.0
+DISTVERSION=	1.6.8
 CATEGORIES=	games
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/${DISTVERSION}
 
@@ -31,15 +31,10 @@ STOCKFISH_DESC=	Install Stockfish Chess Engine
 CRAFTY_RUN_DEPENDS=	crafty:games/crafty
 STOCKFISH_RUN_DEPENDS=	stockfish:games/stockfish
 
-.include <bsd.port.pre.mk>
-
-post-patch:
-.if ${COMPILER_TYPE} == clang && ${COMPILER_VERSION} >= 160
-	@${REINPLACE_CMD} -e 's|std::binary_function|std::__binary_function|' \
-		${WRKSRC}/src/database/polyglotdatabase.cpp
-.endif
+post-extract:
+	@${MV} ${WRKDIR}/chessx-master ${WRKSRC}
 
 post-configure:
 	( cd ${BUILD_WRKSRC} && ${LRELEASE} ${WRKSRC}/${PORTNAME}.pro )
 
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

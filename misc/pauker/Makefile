@@ -1,15 +1,17 @@
 PORTNAME=	pauker
 DISTVERSION=	1.8
+PORTREVISION=	1
 CATEGORIES=	misc education java
 MASTER_SITES=	SF
 EXTRACT_SUFX=	.jar
 EXTRACT_ONLY=
 
-MAINTAINER=	alex@stangl.us
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Java-based flashcard learning using the Leitner system
 WWW=		https://pauker.sourceforge.net
 
-USE_JAVA=	yes
+USES=		java
+
 NO_BUILD=	yes
 
 do-install:

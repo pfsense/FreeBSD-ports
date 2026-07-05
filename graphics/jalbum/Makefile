@@ -1,5 +1,6 @@
 PORTNAME=	jalbum
 PORTVERSION=	10.10.7
+PORTREVISION=	1
 CATEGORIES=	graphics java
 MASTER_SITES=	http://jalbum.net/download/
 DISTNAME=	jAlbum${PORTVERSION}
@@ -10,10 +11,10 @@ WWW=		http://jalbum.net/
 
 WRKSRC=		${WRKDIR}/jAlbum
 
-USES=		zip
+USES=		java zip
+
 NO_BUILD=	yes
 
-USE_JAVA=	yes
 DATADIR=	${JAVASHAREDIR}/${PORTNAME}
 
 SUB_FILES=	jalbum.sh

@@ -61,6 +61,7 @@ include/ruby-%%RUBY_VER%%/ruby/internal/attr/nodiscard.h
 include/ruby-%%RUBY_VER%%/ruby/internal/attr/noexcept.h
 include/ruby-%%RUBY_VER%%/ruby/internal/attr/noinline.h
 include/ruby-%%RUBY_VER%%/ruby/internal/attr/nonnull.h
+include/ruby-%%RUBY_VER%%/ruby/internal/attr/nonstring.h
 include/ruby-%%RUBY_VER%%/ruby/internal/attr/noreturn.h
 include/ruby-%%RUBY_VER%%/ruby/internal/attr/pure.h
 include/ruby-%%RUBY_VER%%/ruby/internal/attr/restrict.h
@@ -10161,6 +10162,7 @@ libdata/pkgconfig/ruby-%%RUBY_VER%%.pc
 %%RDOC%%%%RUBY_RIDIR%%/RDoc/Store/main%3d-i.ri
 %%RDOC%%%%RUBY_RIDIR%%/RDoc/Store/main-i.ri
 %%RDOC%%%%RUBY_RIDIR%%/RDoc/Store/make_variable_map-i.ri
+%%RDOC%%%%RUBY_RIDIR%%/RDoc/Store/marshal_load-i.ri
 %%RDOC%%%%RUBY_RIDIR%%/RDoc/Store/method_file-i.ri
 %%RDOC%%%%RUBY_RIDIR%%/RDoc/Store/module_names-i.ri
 %%RDOC%%%%RUBY_RIDIR%%/RDoc/Store/modules_hash-i.ri
@@ -13016,6 +13018,7 @@ libdata/pkgconfig/ruby-%%RUBY_VER%%.pc
 %%RDOC%%%%RUBY_RIDIR%%/URI/Generic/%3d%3d-i.ri
 %%RDOC%%%%RUBY_RIDIR%%/URI/Generic/absolute%3f-i.ri
 %%RDOC%%%%RUBY_RIDIR%%/URI/Generic/absolute-i.ri
+%%RDOC%%%%RUBY_RIDIR%%/URI/Generic/authority-i.ri
 %%RDOC%%%%RUBY_RIDIR%%/URI/Generic/build-c.ri
 %%RDOC%%%%RUBY_RIDIR%%/URI/Generic/build2-c.ri
 %%RDOC%%%%RUBY_RIDIR%%/URI/Generic/cdesc-Generic.ri
@@ -13072,6 +13075,7 @@ libdata/pkgconfig/ruby-%%RUBY_VER%%.pc
 %%RDOC%%%%RUBY_RIDIR%%/URI/Generic/scheme%3d-i.ri
 %%RDOC%%%%RUBY_RIDIR%%/URI/Generic/scheme-i.ri
 %%RDOC%%%%RUBY_RIDIR%%/URI/Generic/select-i.ri
+%%RDOC%%%%RUBY_RIDIR%%/URI/Generic/set_authority-i.ri
 %%RDOC%%%%RUBY_RIDIR%%/URI/Generic/set_host-i.ri
 %%RDOC%%%%RUBY_RIDIR%%/URI/Generic/set_opaque-i.ri
 %%RDOC%%%%RUBY_RIDIR%%/URI/Generic/set_password-i.ri

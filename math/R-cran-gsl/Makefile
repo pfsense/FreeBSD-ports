@@ -1,12 +1,12 @@
 PORTNAME=	gsl
-DISTVERSION=	2.1-8
+DISTVERSION=	2.1-9
 PORTREVISION=	1
 CATEGORIES=	math
 DISTNAME=	${PORTNAME}_${DISTVERSION}
 
-MAINTAINER=	ygy@FreeBSD.org
+MAINTAINER=	eduardo@FreeBSD.org
 COMMENT=	Wrapper for the Gnu Scientific Library
-WWW=		https://github.com/RobinHankin/gsl
+WWW=		https://cran.r-project.org/package=gsl
 
 LICENSE=	GPLv3
 

@@ -1,5 +1,6 @@
 PORTNAME=	httpclient
 DISTVERSION=	4.5.12
+PORTREVISION=	1
 CATEGORIES=	www java
 MASTER_SITES=	APACHE/httpcomponents/${PORTNAME}/binary
 DISTNAME=	httpcomponents-client-${DISTVERSION}-bin
@@ -17,11 +18,10 @@ RUN_DEPENDS=	${JAVALIBDIR}/httpcore.jar:www/httpcore \
 
 OPTIONS_DEFINE=	DOCS
 
-USES=		cpe
+USES=		cpe java
 CPE_PRODUCT=	commons-httpclient
 CPE_VENDOR=	apache
 
-USE_JAVA=	yes
 NO_BUILD=	yes
 NO_ARCH=	yes
 WRKSRC=		${WRKDIR}/httpcomponents-client-${DISTVERSION}

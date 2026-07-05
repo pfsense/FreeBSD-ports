@@ -1,5 +1,6 @@
 PORTNAME=	jruby-jars
 PORTVERSION=	9.2.21.0
+PORTREVISION=	1
 CATEGORIES=	devel rubygems java
 MASTER_SITES=	RG
 
@@ -13,8 +14,7 @@ LICENSE_COMB=	dual
 BUILD_DEPENDS=	jgem:lang/jruby
 RUN_DEPENDS=	jruby:lang/jruby
 
-USES=		gem
-USE_JAVA=	yes
+USES=		gem java
 
 RUBYGEMBIN=	${LOCALBASE}/bin/jgem
 

@@ -1,10 +1,10 @@
 PORTNAME=	icinga-php-thirdparty
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.12.1
+DISTVERSION=	0.14.0
 CATEGORIES=	net-mgmt www
 PKGNAMESUFFIX=	${PHP_PKGNAMESUFFIX}
 
-MAINTAINER=	joneum@FreeBSD.org
+MAINTAINER=	flo@FreeBSD.org
 COMMENT=	Icinga PHP thirdparty
 WWW=		https://github.com/Icinga/icinga-php-thirdparty
 

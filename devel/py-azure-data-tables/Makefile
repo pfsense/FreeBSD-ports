@@ -1,10 +1,11 @@
 PORTNAME=	azure-data-tables
 DISTVERSION=	12.4.2
+PORTREVISION=	1
 CATEGORIES=	devel python
 MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
-MAINTAINER=	dbaio@FreeBSD.org
+MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Microsoft Azure Data Tables Client Library for Python
 WWW=		https://pypi.org/project/azure-data-tables/
 

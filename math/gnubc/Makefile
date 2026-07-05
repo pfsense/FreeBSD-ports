@@ -1,23 +1,21 @@
 PORTNAME=	bc
-DISTVERSION=	1.07.1
-PORTREVISION=	3
+DISTVERSION=	1.08.2
 CATEGORIES=	math
 MASTER_SITES=	GNU
 PKGNAMEPREFIX=	gnu
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	wen@FreeBSD.org
 COMMENT=	GNU bc/dc calculator
 WWW=		https://www.gnu.org/software/bc/
 
-LICENSE=	GPLv3
+LICENSE=	GPLv3+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
 BROKEN_powerpc64=	fails to build: tests fail with error code 2
 
-USES=		cpe libedit makeinfo
+USES=		cpe libedit makeinfo tar:lz
 CPE_VENDOR=	gnu
 GNU_CONFIGURE=	yes
-GNU_CONFIGURE_MANPREFIX=${PREFIX}/share
 CONFIGURE_ARGS+=	--with-libedit
 INFO=		bc \
 		dc

@@ -1,11 +1,15 @@
 PORTNAME=	ioncube
-DISTVERSION=	13.0.2
+DISTVERSION=	15.5.0
 CATEGORIES=	devel
 MASTER_SITES=	http://downloads.ioncube.com/loader_downloads/ \
 		http://downloads2.ioncube.com/loader_downloads/ \
 		http://dl.ispsystem.info/ioncube/${DISTVERSION}/
 PKGNAMESUFFIX=	${PHP_PKGNAMESUFFIX}
+.ifmake !(makesum || makeplist || distclean)
 DISTNAME=	${PORTNAME}_loaders_fre_${VER}_${ARCH:S,i386,x86,:S,amd64,x86-64,}
+.else
+DISTFILES=	${ONLY_FOR_ARCHS:S,i386,x86,:S,amd64,x86-64,:C,(.*),${PORTNAME}_loaders_fre_${VER}_\1${EXTRACT_SUFX},}
+.endif
 DIST_SUBDIR=	${PORTNAME}/${DISTVERSION}
 
 MAINTAINER=	svyatoslav.lempert@gmail.com
@@ -20,7 +24,6 @@ LICENSE_PERMS=	dist-mirror dist-sell pkg-mirror pkg-sell auto-accept
 IGNORE_DragonFly=	is unsupported on DragonFly
 ONLY_FOR_ARCHS=	amd64 i386
 USES=		php:flavors
-IGNORE_WITH_PHP=	83
 
 NO_BUILD=	yes
 SUB_FILES=	pkg-message

@@ -1,6 +1,5 @@
 PORTNAME?=	guile
-PORTVERSION=	3.0.9
-PORTREVISION=	2
+DISTVERSION=	3.0.10
 CATEGORIES=	lang scheme
 MASTER_SITES=	GNU
 PKGNAMESUFFIX?=	3
@@ -11,6 +10,9 @@ WWW=		https://www.gnu.org/software/guile/
 
 LICENSE=	GPLv3 LGPL3
 LICENSE_COMB=	multi
+
+NOT_FOR_ARCHS?=	armv7 i386
+NOT_FOR_ARCHS_REASON=	Does not build on armv7 and i386
 
 USES=		tar:lz
 
@@ -32,10 +34,17 @@ USES+=		guile:${PORTVERSION:R},env \
 		pathfix pkgconfig readline localbase
 CPE_VENDOR=	gnu
 USE_LDCONFIG=	yes
+
 GNU_CONFIGURE=	yes
-GNU_CONFIGURE_MANPREFIX=${PREFIX}/share
 CONFIGURE_ARGS=	--program-suffix=-${GUILE_VER} \
 		--enable-lto=no
+# eliminate some pointless configure warnings/errors
+CONFIGURE_ENV+=	gl_cv_func_working_mktime=yes \
+		ac_cv_header_sys_timeb_h=0
+
+MAKE_JOBS_UNSAFE=	yes
+INSTALL_TARGET=	install-strip
+
 # LTO is unconditionally off here because it fails to build with llvm,
 # fails to build even with gcc on some arches (reported for armv7 in
 # particular), and making it conditional on gcc/arch is trickier than
@@ -43,14 +52,6 @@ CONFIGURE_ARGS=	--program-suffix=-${GUILE_VER} \
 # enable it for us if the user asks. Don't re-enable it unless you
 # tested build+run on more than just amd64/arm46.
 LTO_UNSAFE=	yes
-
-# eliminate some pointless configure warnings/errors
-CONFIGURE_ENV+= gl_cv_func_working_mktime=yes \
-		ac_cv_header_sys_timeb_h=0
-
-MAKE_JOBS_UNSAFE=	yes
-
-INSTALL_TARGET=	install-strip
 
 INFO=		guile r5rs
 
@@ -62,8 +63,8 @@ OPTIONS_SUB=	yes
 
 MINIGMP_DESC=	Use embedded mini-gmp rather than external libgmp
 
-MINIGMP_LIB_DEPENDS_OFF= libgmp.so:math/gmp
-MINIGMP_CONFIGURE_ENABLE= mini-gmp
+MINIGMP_LIB_DEPENDS_OFF=	libgmp.so:math/gmp
+MINIGMP_CONFIGURE_ENABLE=	mini-gmp
 
 NLS_USES=	gettext
 NLS_CONFIGURE_ENABLE=	nls
@@ -78,7 +79,7 @@ THREADS_CONFIGURE_WITH=	threads
 # has a broken (spawn*) function, which breaks guile-config, which
 # breaks builds of some dependent ports.
 
-EXTRA_PATCHES=	${PATCHDIR}/extra-patch-upstream-fixes.patch
+# EXTRA_PATCHES=	${PATCHDIR}/extra-patch-upstream-fixes.patch
 
 # The prebuilt bytecode files are reported not to work on powerpc.
 

@@ -18,7 +18,8 @@
 # MAX_FILES_qt5_webengine=4096 to /usr/local/etc/poudriere.conf
 
 PORTNAME=	webengine
-DISTVERSION=	${QT5_VERSION}${QT5_KDE_PATCH}
+PORTVERSION=	${QT5_VERSION}${QT5_KDE_PATCH}
+PORTREVISION=	6
 CATEGORIES=	www
 PKGNAMEPREFIX=	qt5-
 
@@ -74,7 +75,7 @@ SNDIO_VARS_OFF=		QMAKE_CONFIGURE_ARGS+=-no-sndio
 # We pass `norecursive' to USES=qmake because src/plugins/plugins.pro checks
 # whether webenginewidgets is available, which fails when qmake processes all
 # .pro files at once.
-USES=		gl gnome gperf jpeg minizip ninja:build nodejs:build,lts \
+USES=		gl gnome gperf jpeg minizip ninja:build \
 		perl5 pkgconfig python:build qmake:norecursive,outsource \
 		qt-dist:5,webengine shebangfix xorg
 USE_GL=		gl
@@ -85,6 +86,7 @@ USE_QT=		core declarative gui location network printsupport \
 		buildtools:build designer:build qmake:build
 USE_XORG=	x11 xcb xcomposite xcursor xdamage xext xfixes xi xkbfile \
 		xorgproto xrandr xrender xscrnsaver xtst
+USE_LDCONFIG=	${PREFIX}/${QT_LIBDIR_REL}
 
 QMAKE_CONFIGURE_ARGS=	-proprietary-codecs -system-ffmpeg
 
@@ -115,7 +117,13 @@ MAKE_ENV+=	CC="${CC}" CXX="${CXX}"			\
 
 QT_BINARIES=	yes
 
-.include <bsd.port.pre.mk>
+.include <bsd.port.options.mk>
+
+.if ${ARCH:Mi386}
+USES+=		nodejs:build,20
+.else
+USES+=		nodejs:build,lts
+.endif
 
 .if ${ARCH:Mmips*} || ${ARCH:Mpowerpc*}
 PLIST_SUB+=	BE="" LE="@comment "
@@ -169,4 +177,10 @@ post-build:
 		${BUILD_WRKSRC}/lib/cmake/Qt5${module}/Qt5${module}Config.cmake
 .endfor
 
-.include <bsd.port.post.mk>
+post-install:
+	for lib in ${STAGEDIR}${PREFIX}/${QT_LIBDIR_REL}/*.so.${_QT_VERSION:C/-.*//} ; \
+	do \
+		${BRANDELF} -t FreeBSD $$lib ; \
+	done
+
+.include <bsd.port.mk>

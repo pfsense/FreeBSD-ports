@@ -1,9 +1,9 @@
---- ui/base/dragdrop/os_exchange_data_provider_non_backed.cc.orig	2023-11-04 07:08:51 UTC
+--- ui/base/dragdrop/os_exchange_data_provider_non_backed.cc.orig	2026-02-15 10:01:45 UTC
 +++ ui/base/dragdrop/os_exchange_data_provider_non_backed.cc
-@@ -96,7 +96,7 @@ void OSExchangeDataProviderNonBacked::SetPickledData(
- }
+@@ -104,7 +104,7 @@ void OSExchangeDataProviderNonBacked::SetPickledData(
  
- bool OSExchangeDataProviderNonBacked::GetString(std::u16string* data) const {
+ std::optional<std::u16string> OSExchangeDataProviderNonBacked::GetString()
+     const {
 -#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS)
 +#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_BSD)
    if (HasFile()) {

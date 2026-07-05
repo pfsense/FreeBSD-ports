@@ -1,13 +1,12 @@
 PORTNAME=	qpOASES
-DISTVERSION=	3.2.1
-PORTREVISION=	8
+DISTVERSIONPREFIX=	releases/
+DISTVERSION=	3.2.2
 CATEGORIES=	math
-MASTER_SITES=	https://www.coin-or.org/download/source/${PORTNAME}/
 PKGNAMEPREFIX=	coin-or-
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Library for online active set strategy quadratic programming problems
-WWW=		https://projects.coin-or.org/qpOASES
+WWW=		https://github.com/coin-or/qpOASES
 
 LICENSE=	LGPL21
 LICENSE_FILE=	${WRKSRC}/LICENSE
@@ -16,6 +15,9 @@ LIB_DEPENDS=	libopenblas.so:math/openblas
 
 USES=		cmake fortran tar:tgz
 USE_LDCONFIG=	yes
+
+USE_GITHUB=	yes
+GH_ACCOUNT=	coin-or
 
 CMAKE_ON=	BUILD_SHARED_LIBS
 CMAKE_OFF=	QPOASES_BUILD_EXAMPLES

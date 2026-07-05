@@ -1,6 +1,6 @@
 PORTNAME=	denature
 PORTVERSION=	0.6.5
-PORTREVISION=	3
+PORTREVISION=	4
 CATEGORIES=	textproc java
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/${PORTNAME}-${PORTVERSION}
 
@@ -16,8 +16,7 @@ RUN_DEPENDS=	p5-HTML-Parser>=0:www/p5-HTML-Parser \
 		p5-CSS-Tiny>=0:textproc/p5-CSS-Tiny \
 		fop:textproc/fop
 
-USES=		perl5
-USE_JAVA=	yes
+USES=		java perl5
 POD2MAN?=	pod2man
 WRKSRC=		${WRKDIR}/${PORTNAME}
 

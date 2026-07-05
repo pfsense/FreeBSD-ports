@@ -1,13 +1,13 @@
 PORTNAME=	apptools
-DISTVERSION=	5.2.1
-PORTREVISION=	1
+DISTVERSION=	5.3.1
 CATEGORIES=	devel python
 MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
-MAINTAINER=	eduardo@FreeBSD.org
+MAINTAINER=	atanubiswas484@gmail.com
 COMMENT=	Enthought application tools
-WWW=		https://docs.enthought.com/apptools
+WWW=		https://docs.enthought.com/apptools/ \
+		https://github.com/enthought/apptools/
 
 LICENSE=	BSD3CLAUSE LGPL20
 LICENSE_COMB=	multi

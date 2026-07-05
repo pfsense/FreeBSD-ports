@@ -1,6 +1,6 @@
 PORTNAME=	gtksourceview
 PORTVERSION=	3.24.11
-PORTREVISION=	4
+PORTREVISION=	5
 CATEGORIES=	x11-toolkits gnome
 MASTER_SITES=	GNOME
 PKGNAMESUFFIX=	3
@@ -21,7 +21,7 @@ LIB_DEPENDS=	libfribidi.so:converters/fribidi
 
 USES+=		gettext gmake gnome libtool localbase pathfix pkgconfig
 USE_CSTD=	c11
-USE_GNOME=	cairo gdkpixbuf2 gnomeprefix gtk30 \
+USE_GNOME=	cairo gdkpixbuf gnomeprefix gtk30 \
 		introspection:build libxml2
 GNU_CONFIGURE=	yes
 USE_LDCONFIG=	yes

@@ -1,6 +1,5 @@
 PORTNAME=	genius
-DISTVERSION=	1.0.27
-PORTREVISION=	4
+DISTVERSION=	1.0.29
 CATEGORIES=	deskutils gnome
 MASTER_SITES=	GNOME \
 		http://ftp.5z.com/pub/genius/
@@ -12,16 +11,14 @@ WWW=		https://www.jirka.org/genius.html
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-LIB_DEPENDS=	libamtk-5.so:x11-toolkits/amtk \
-		libfontconfig.so:x11-fonts/fontconfig \
-		libfreetype.so:print/freetype2 \
-		libgmp.so:math/gmp \
+LIB_DEPENDS=	libgmp.so:math/gmp \
 		libharfbuzz.so:print/harfbuzz \
 		libmpfr.so:math/mpfr
 
-USES=		desktop-file-utils gmake gnome libtool pathfix pkgconfig \
-		readline shared-mime-info tar:xz xorg
-USE_GNOME=	cairo gnomeprefix gdkpixbuf2 gtksourceview4 intltool vte3
+USES=		desktop-file-utils gettext-tools gmake gnome libtool perl5 \
+		pkgconfig readline shared-mime-info tar:xz xorg
+USE_GNOME=	gtksourceview4 intltool vte3
+USE_PERL5=	test
 USE_XORG=	x11 xext
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--disable-extra-gcc-optimization \
@@ -29,13 +26,15 @@ CONFIGURE_ARGS=	--disable-extra-gcc-optimization \
 		--disable-update-mimedb
 INSTALL_TARGET=	install-strip
 
-CPPFLAGS+=	-I${LOCALBASE}/include
-LDFLAGS+=	-L${LOCALBASE}/lib
+PORTEXAMPLES=	*.gel
 
-OPTIONS_DEFINE=	NLS
-OPTIONS_SUB=	yes
+OPTIONS_DEFINE=	EXAMPLES
 
-NLS_USES=		gettext
-NLS_CONFIGURE_ENABLE=	nls
+do-install-EXAMPLES-on:
+	@${MKDIR} ${STAGEDIR}${EXAMPLESDIR}
+	(cd ${WRKSRC}/examples && ${COPYTREE_SHARE} "${PORTEXAMPLES}" ${STAGEDIR}${EXAMPLESDIR})
+
+do-test:
+	cd ${WRKSRC}/src; ${PERL} geniustest.pl
 
 .include <bsd.port.mk>

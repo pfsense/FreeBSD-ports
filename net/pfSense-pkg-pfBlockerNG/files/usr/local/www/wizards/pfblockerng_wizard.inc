@@ -3,8 +3,8 @@
  * pfblockerng_wizard.inc
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2004-2024 Rubicon Communications, LLC (Netgate)
- * Copyright (c) 2015-2023 BBcan177@gmail.com
+ * Copyright (c) 2004-2026 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2015-2024 BBcan177@gmail.com
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -24,6 +24,7 @@ require_once('config.inc');
 require_once('util.inc');
 require_once('services.inc');
 require_once('/usr/local/pkg/pfblockerng/pfblockerng.inc');
+pfb_global();
 
 global $pfb_wizard;
 
@@ -31,11 +32,9 @@ $pfb_wizard['interface_list']		= pfb_build_if_list(TRUE, FALSE);
 $pfb_wizard['interface_list_cnt']	= count($pfb_wizard['interface_list']) ?: '1';
 
 function step2_stepbeforeformdisplay() {
-	global $config, $pkg, $stepid, $pfb_wizard;
+	global $pkg, $stepid, $pfb_wizard;
 
-	if (isset($config['pfblockerng_wizard'])) {
-		unset($config['pfblockerng_wizard']);
-	}
+	config_del_path('pfblockerng_wizard');
 
 	$fields	= &$pkg['step'][2]['fields']['field'];
 
@@ -49,7 +48,7 @@ function step2_stepbeforeformdisplay() {
 }
 
 function step2_submitphpaction() {
-	global $config, $stepid, $input_errors, $pfb_wizard;
+	global $stepid, $input_errors, $pfb_wizard;
 
 	if ($_POST) {
 		if ($_POST['back'] == 'Back') {
@@ -80,28 +79,30 @@ function step2_submitphpaction() {
 		}
 	}
 
-	$config['pfblockerng_wizard']['step2']['inbound_interface']	= implode(',', (array)$_POST['inbound_interface']);
-	$config['pfblockerng_wizard']['step2']['outbound_interface']	= implode(',', (array)$_POST['outbound_interface']);
+	config_set_path('pfblockerng_wizard/step2/inbound_interface', implode(',', (array)$_POST['inbound_interface']));
+	config_set_path('pfblockerng_wizard/step2/outbound_interface', implode(',', (array)$_POST['outbound_interface']));
 }
 
 function step3_submitphpaction() {
-	global $config, $stepid, $input_errors;
+	global $stepid, $input_errors;
 
 	if ($_POST) {
 		if ($_POST['back'] == 'Back') {
 			$stepid = 0;
+			return;
 		}
 	}
 
 	// Validate DNSBL VIP address
-	if (!is_ipaddrv4($_POST['pfb_dnsvip'])) {
-		$input_errors[] = 'DNSBL Virtual IP: A valid IPv4 address must be specified.';
+	if ($_POST['pfb_dnsvip4'] == 'none') {
+		$_POST['pfb_dnsvip4'] = '';
 	}
-	else {
-		$ip_validate = where_is_ipaddr_configured($_POST['pfb_dnsvip'], '' , true, true, '');
-		if (count($ip_validate)) {
-			$input_errors[] = 'DNSBL Virtual IP: Address must be in an isolated Range that is not used in your Network.';
-		}
+	if ($_POST['pfb_dnsvip6'] == 'none') {
+		$_POST['pfb_dnsvip6'] = '';
+	}
+	list($vips_valid, $error) = pfb_validate_vips('lo0', $_POST['pfb_dnsvip4'], $_POST['pfb_dnsvip6']);
+	if (!$vips_valid) {
+		$input_errors[] = "DNSBL: {$error}";
 	}
 
 	// Validate DNSBL Port selections
@@ -115,7 +116,7 @@ function step3_submitphpaction() {
 }
 
 function step4_submitphpaction() {
-	global $config, $pfb, $input_errors;
+	global $pfb, $input_errors;
 
 	// Load all pfBlockerNG Feeds
 	$feed_info_raw = json_decode(@file_get_contents("{$pfb['feeds']}"), TRUE);
@@ -129,34 +130,27 @@ function step4_submitphpaction() {
 	pfb_clear_contents();
 
 	// Add default pfBlockerNG configuration
-	init_config_arr(array('installedpackages', 'pfblockerng', 'config', 0));
-	$new_config = &$config['installedpackages'];
+	$new_config = config_get_path('installedpackages');
 	$new_config['pfblockerng']['config'][0]['enable_cb']				= 'on';
 	$new_config['pfblockerng']['config'][0]['pfb_keep']				= 'on';
 
-	init_config_arr(array('installedpackages', 'pfblockerngipsettings', 'config', 0));
 	$new_config['pfblockerngipsettings']['config'][0]['enable_dup']			= 'on';
 	$new_config['pfblockerngipsettings']['config'][0]['suppression']		= 'on';
-	$new_config['pfblockerngipsettings']['config'][0]['inbound_interface']		= $config['pfblockerng_wizard']['step2']['inbound_interface'];
+	$new_config['pfblockerngipsettings']['config'][0]['inbound_interface']		= config_get_path('pfblockerng_wizard/step2/inbound_interface');
 	$new_config['pfblockerngipsettings']['config'][0]['inbound_deny_action']	= 'block';
-	$new_config['pfblockerngipsettings']['config'][0]['outbound_interface']		= $config['pfblockerng_wizard']['step2']['outbound_interface']; 
+	$new_config['pfblockerngipsettings']['config'][0]['outbound_interface']		= config_get_path('pfblockerng_wizard/step2/outbound_interface'); 
 	$new_config['pfblockerngipsettings']['config'][0]['outbound_deny_action']	= 'reject';	
 	$new_config['pfblockerngipsettings']['config'][0]['pass_order']			= 'order_0';
 
-	init_config_arr(array('installedpackages', 'pfblockerngdnsblsettings', 'config', 0));
-	$new_config['pfblockerngdnsblsettings']['config'][0]['pfb_dnsvip']		= $config['pfblockerng_wizard']['step3']['pfb_dnsvip'];
-	$new_config['pfblockerngdnsblsettings']['config'][0]['pfb_dnsport']		= $config['pfblockerng_wizard']['step3']['pfb_dnsport'];
-	$new_config['pfblockerngdnsblsettings']['config'][0]['pfb_dnsport_ssl']		= $config['pfblockerng_wizard']['step3']['pfb_dnsport_ssl'];
+	$new_config['pfblockerngdnsblsettings']['config'][0]['pfb_dnsvip4'] = config_get_path('pfblockerng_wizard/step3/pfb_dnsvip4');
+	$new_config['pfblockerngdnsblsettings']['config'][0]['pfb_dnsvip6'] = config_get_path('pfblockerng_wizard/step3/pfb_dnsvip6');
+	$new_config['pfblockerngdnsblsettings']['config'][0]['pfb_dnsport']		= config_get_path('pfblockerng_wizard/step3/pfb_dnsport');
+	$new_config['pfblockerngdnsblsettings']['config'][0]['pfb_dnsport_ssl']		= config_get_path('pfblockerng_wizard/step3/pfb_dnsport_ssl');
 
-	if ($config['pfblockerng_wizard']['step3']['pfb_dnsblv6'] == 'on') {
-		$new_config['pfblockerngdnsblsettings']['config'][0]['pfb_dnsblv6']	= 'on';
-	} else {
-		$new_config['pfblockerngdnsblsettings']['config'][0]['pfb_dnsblv6']	= '';
-	}
 	$new_config['pfblockerngdnsblsettings']['config'][0]['pfb_dnsbl']		= 'on';
 
 	// Default DNSBL Whitelist
-	if ($config['pfblockerng_wizard']['step3']['suppression'] == 'on') {
+	if (config_get_path('pfblockerng_wizard/step3/suppression') == 'on') {
 
 		$new_config['pfblockerngdnsblsettings']['config'][0]['suppression']	= 
 
@@ -238,9 +232,8 @@ ZXRnYXRlLmNvbQ0K
 		}
 	}
 
-	if (isset($config['pfblockerng_wizard'])) {
-		unset($config['pfblockerng_wizard']);
-	}
+	config_set_path('installedpackages', $new_config);
+	config_del_path('pfblockerng_wizard');
 
 	write_config('pfBlockerNG: Default Wizard configuration saved');
 	pfb_global();

@@ -1,12 +1,13 @@
 PORTNAME=	ini2toml
-PORTVERSION=	0.13
+PORTVERSION=	0.15
 CATEGORIES=	textproc python
 MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Automatically conversion of .ini/.cfg files to TOML equivalents
-WWW=		https://github.com/abravalheri/ini2toml
+WWW=		https://ini2toml.readthedocs.io/en/latest/ \
+		https://github.com/abravalheri/ini2toml
 
 LICENSE=	MPL20
 LICENSE_FILE=	${WRKSRC}/LICENSE.txt

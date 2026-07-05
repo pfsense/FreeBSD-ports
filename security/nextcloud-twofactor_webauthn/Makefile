@@ -1,5 +1,5 @@
 PORTNAME=	twofactor_webauthn
-PORTVERSION=	1.4.0
+PORTVERSION=	2.6.0
 DISTVERSIONPREFIX=	v
 CATEGORIES=	security
 
@@ -9,7 +9,7 @@ WWW=		https://apps.nextcloud.com/apps/twofactor_webauthn
 
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-NEXTCLOUD_RUN_DEPENDS=	25
+NEXTCLOUD_RUN_DEPENDS=	31
 
 USES=		nextcloud php:flavors
 

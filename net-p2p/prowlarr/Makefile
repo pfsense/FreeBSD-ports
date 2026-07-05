@@ -1,8 +1,8 @@
 PORTNAME=	prowlarr
-DISTVERSION=	1.15.0.4361
+DISTVERSION=	2.3.0.5236
 CATEGORIES=	net-p2p
-MASTER_SITES=	https://github.com/Prowlarr/Prowlarr/releases/download/v${PORTVERSION}/
-DISTNAME=	Prowlarr.master.${PORTVERSION}.freebsd-core-x64
+MASTER_SITES=	https://github.com/Prowlarr/Prowlarr/releases/download/v${DISTVERSION}/
+DISTNAME=	Prowlarr.master.${DISTVERSION}.freebsd-core-x64
 
 MAINTAINER=	michiel@vanbaak.eu
 COMMENT=	Indexer Manager for Usenet and BitTorrent users
@@ -19,7 +19,7 @@ RUN_DEPENDS=	ca_root_nss>0:security/ca_root_nss \
 		libinotify>0:devel/libinotify \
 		libunwind>0:devel/libunwind
 
-USES=	sqlite:3 ssl:run
+USES=		sqlite:3 ssl:run
 
 USE_RC_SUBR=	${PORTNAME}
 
@@ -48,5 +48,7 @@ do-install:
 
 post-install:
 	${INSTALL_DATA} ${WRKDIR}/package_info ${STAGEDIR}/${DATADIR}/
+	@${ECHO_CMD} "e_sqlite3.so libsqlite3.so" \
+		>${STAGEDIR}${PREFIX}/etc/libmap.d/Prowlarr.conf
 
 .include <bsd.port.mk>

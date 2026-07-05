@@ -1,20 +1,24 @@
---- components/named_mojo_ipc_server/connection_info.h.orig	2024-03-22 14:16:19 UTC
+--- components/named_mojo_ipc_server/connection_info.h.orig	2026-02-15 10:01:45 UTC
 +++ components/named_mojo_ipc_server/connection_info.h
-@@ -14,7 +14,7 @@
+@@ -12,7 +12,8 @@
  #include "base/win/scoped_handle.h"
  #elif BUILDFLAG(IS_MAC)
  #include <bsm/libbsm.h>
 -#elif BUILDFLAG(IS_LINUX)
 +#elif BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_BSD)
++#include <sys/ucred.h>
  #include <sys/socket.h>
  #endif
  
-@@ -33,7 +33,7 @@ struct ConnectionInfo {
-   std::optional<base::win::ScopedHandle> impersonation_token{};
- #elif BUILDFLAG(IS_MAC)
+@@ -29,8 +30,10 @@ struct ConnectionInfo {
+   base::ProcessId pid{};
+ #if BUILDFLAG(IS_MAC)
    audit_token_t audit_token{};
 -#elif BUILDFLAG(IS_LINUX)
-+#elif BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_BSD)
++#elif BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_OPENBSD)
    ucred credentials{};
++#elif BUILDFLAG(IS_FREEBSD)
++  xucred credentials{};
  #endif
  };
+ 

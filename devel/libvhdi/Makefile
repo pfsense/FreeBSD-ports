@@ -1,5 +1,5 @@
 PORTNAME=	libvhdi
-PORTVERSION=	20231127
+PORTVERSION=	20240509
 DISTVERSIONPREFIX=	alpha-
 CATEGORIES=	devel
 MASTER_SITES=	https://github.com/libyal/libvhdi/releases/download/${PORTVERSION}/ \
@@ -11,6 +11,8 @@ WWW=		https://github.com/libyal/libvhdi
 
 LICENSE=	LGPL3+
 LICENSE_FILE=	${WRKSRC}/COPYING
+
+BUILD_DEPENDS=	${PY_SETUPTOOLS}
 
 GNU_CONFIGURE=	yes
 GNU_CONFIGURE_MANPREFIX=${PREFIX}/share

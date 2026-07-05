@@ -1,11 +1,11 @@
---- jack/pcm_jack.c.orig	2023-11-03 22:31:39 UTC
+--- jack/pcm_jack.c.orig	2024-06-10 09:18:39 UTC
 +++ jack/pcm_jack.c
-@@ -603,7 +603,7 @@ static int snd_pcm_jack_open(snd_pcm_t **pcmp, const c
+@@ -602,7 +602,7 @@ static int snd_pcm_jack_open(snd_pcm_t **pcmp, const c
  	}
  
  	if (client_name == NULL) {
--		const char *pname = program_invocation_short_name;
-+		const char *pname = getprogname();
- 		if (!pname[0]) {
- 			pname = "alsa-jack";
- 		}
+-#if defined(_GNU_SOURCE)
++#if defined(_GNU_SOURCE) && defined(__linux__)
+ 		const char *pname = program_invocation_short_name;
+ #else
+ 		const char *pname = getprogname();

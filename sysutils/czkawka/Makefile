@@ -1,35 +1,37 @@
 PORTNAME=	czkawka
-DISTVERSION=	7.0.0
+DISTVERSION=	11.0.0
 PORTREVISION=	1
 CATEGORIES=	sysutils
 
-MAINTAINER=	jbeich@FreeBSD.org
-COMMENT=	Multi functional app to find duplicates, empty folders, similar images etc.
+MAINTAINER=	uzsolt@FreeBSD.org
+COMMENT=	Simple app to remove unnecessary files from your computer
 WWW=		https://github.com/qarmin/czkawka
 
 LICENSE=	CC-BY-4.0 MIT
 LICENSE_COMB=	multi
-LICENSE_FILE_MIT=	${WRKSRC}/${PORTNAME}_core/LICENSE
+LICENSE_FILE_CC-BY-4.0=	${WRKSRC}/LICENSE_CC_BY_4_ICONS
+LICENSE_FILE_MIT=	${WRKSRC}/${PORTNAME}_core/LICENSE_MIT
 
-USES=		cargo gnome
+BROKEN_i386=	the trait bound [u64; 4]: BitViewSized is not satisfied
+
+USES=		cargo desktop-file-utils gnome
 USE_GITHUB=	yes
-USE_GNOME=	gdkpixbuf2 gtk40
 GH_ACCOUNT=	qarmin
-PLIST_FILES=	bin/${PORTNAME}_cli \
-		bin/${PORTNAME}_gui \
-		share/applications/com.github.qarmin.czkawka.desktop \
-		share/icons/hicolor/scalable/apps/com.github.qarmin.czkawka-symbolic.svg \
-		share/icons/hicolor/scalable/apps/com.github.qarmin.czkawka.Devel.svg \
-		share/icons/hicolor/scalable/apps/com.github.qarmin.czkawka.svg \
-		share/metainfo/com.github.qarmin.czkawka.metainfo.xml \
-		${NULL}
+USE_GNOME=	gdkpixbuf gtk40
 
 # XXX https://github.com/rust-lang/cargo/issues/4101
 CARGO_INSTALL_PATH=	${PLIST_FILES:Mbin/*:T}
 
-post-patch:
-# XXX Skip the new GUI until runtime is tested
-	@${REINPLACE_CMD} '/krokiet/d' ${WRKSRC}/Cargo.toml
+PLIST_FILES=	bin/${PORTNAME}_cli \
+		bin/${PORTNAME}_gui \
+		share/applications/com.github.qarmin.czkawka.desktop \
+		share/applications/io.github.qarmin.krokiet.desktop \
+		share/icons/hicolor/scalable/apps/com.github.qarmin.czkawka-symbolic.svg \
+		share/icons/hicolor/scalable/apps/com.github.qarmin.czkawka.Devel.svg \
+		share/icons/hicolor/scalable/apps/com.github.qarmin.czkawka.svg \
+		share/icons/hicolor/scalable/apps/io.github.qarmin.czkawka.krokiet.svg \
+		share/metainfo/com.github.qarmin.czkawka.metainfo.xml \
+		share/metainfo/io.github.qarmin.krokiet.metainfo.xml
 
 post-install:
 	${INSTALL_DATA} ${WRKSRC}/data/*.desktop \

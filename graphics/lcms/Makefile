@@ -1,6 +1,6 @@
 PORTNAME=	lcms
 PORTVERSION=	1.19
-PORTREVISION=	8
+PORTREVISION=	9
 PORTEPOCH=	1
 CATEGORIES=	graphics
 MASTER_SITES=	SF \
@@ -13,10 +13,9 @@ WWW=		https://www.littlecms.com/
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-USES=		cpe libtool localbase:ldflags pathfix
+USES=		cpe libtool localbase:ldflags
 
 GNU_CONFIGURE=	yes
-GNU_CONFIGURE_MANPREFIX=${PREFIX}/share
 INSTALL_TARGET=	install-strip
 TEST_TARGET=	check
 USE_LDCONFIG=	yes

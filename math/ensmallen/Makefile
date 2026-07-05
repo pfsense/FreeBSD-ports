@@ -1,12 +1,12 @@
 PORTNAME=	ensmallen
-DISTVERSION=	2.19.1
-PORTREVISION=	1
+DISTVERSION=	2.22.1
 CATEGORIES=	math
 MASTER_SITES=	https://ensmallen.org/files/
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Flexible C++ library for efficient mathematical optimization
-WWW=		https://ensmallen.org/
+WWW=		https://ensmallen.org \
+		https://github.com/mlpack/ensmallen
 
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE.txt

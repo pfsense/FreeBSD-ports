@@ -1,12 +1,11 @@
 PORTNAME=	pacman
-DISTVERSION=	6.0.2
-PORTREVISION=	1
+DISTVERSION=	7.1.0
 CATEGORIES=	sysutils
-MASTER_SITES=	https://sources.archlinux.org/other/${PORTNAME}/
+MASTER_SITES=	https://gitlab.archlinux.org/${PORTNAME}/${PORTNAME}/-/releases/v${DISTVERSION}/downloads/
 
-MAINTAINER=	vishwin@vishwin.info
+MAINTAINER=	vishwin@FreeBSD.org
 COMMENT=	Package manager from Arch Linux
-WWW=		https://archlinux.org/pacman/
+WWW=		https://pacman.archlinux.page/
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
@@ -29,20 +28,27 @@ SHEBANG_FILES=	${WRKSRC}/scripts/makepkg-template.pl.in \
 		${WRKSRC}/scripts/libmakepkg/lint_config.sh.in
 BINARY_ALIAS=	python3=${PYTHON_CMD}
 MESON_ARGS=	-Droot-dir=${PACMAN_ROOT} \
-		-Dlocalstatedir=${PACMAN_ROOT}/var \
+		--localstatedir=${PACMAN_ROOT}/var \
 		-Dsysconfdir=${PREFIX}/etc \
 		-Dcrypto=openssl
 USE_LDCONFIG=	yes
 
 SUB_FILES=	pkg-message pkg-deinstall
 SUB_LIST=	PACMAN_ROOT="${PACMAN_ROOT}" PREFIX="${PREFIX}"
-PLIST_SUB=	PACMAN_ROOT="${PACMAN_ROOT:C/^${PREFIX}//}"
+PLIST_SUB=	PACMAN_ROOT="${PACMAN_ROOT:C,^${PREFIX}/,,}"
+PLIST_DIRS=	%%PACMAN_ROOT%%/var/cache/pacman/pkg \
+		%%PACMAN_ROOT%%/var/cache/pacman \
+		%%PACMAN_ROOT%%/var/cache \
+		%%PACMAN_ROOT%%/var/lib/pacman \
+		%%PACMAN_ROOT%%/var/lib \
+		%%PACMAN_ROOT%%/var \
+		%%PACMAN_ROOT%%
 
 PORTEXAMPLES=	*
 PKGMESSAGE=	${PKGDIR}/pkg-message-${FLAVOR:U}
 
-OPTIONS_DEFINE=	CURL DOCS GPGME EXAMPLES NLS
-OPTIONS_DEFAULT=CURL DOCS GPGME
+OPTIONS_DEFINE=	CURL EXAMPLES GPGME MANPAGES NLS
+OPTIONS_DEFAULT=CURL GPGME MANPAGES
 OPTIONS_EXCLUDE=NLS # XXX: meson cannot find ngettext(3) despite gettext-runtime
 OPTIONS_SUB=	yes
 
@@ -50,8 +56,8 @@ CURL_DESC=	Use libcurl fetcher instead of external curl/wget
 CURL_MESON_ENABLED=	curl
 CURL_LIB_DEPENDS=	libcurl.so:ftp/curl
 
-DOCS_MESON_ENABLED=	doc
-DOCS_BUILD_DEPENDS=	a2x:textproc/asciidoc
+MANPAGES_MESON_ENABLED=	doc
+MANPAGES_BUILD_DEPENDS=	a2x:textproc/asciidoc
 
 GPGME_DESC=	Use GPGME for PGP signature verification
 GPGME_MESON_ENABLED=	gpgme
@@ -60,18 +66,16 @@ GPGME_LIB_DEPENDS=	libgpgme.so:security/gpgme
 NLS_USES=		gettext-runtime gettext-tools
 NLS_MESON_TRUE=	i18n
 
-.if ${FLAVOR:U} == default
-PACMAN_ROOT=	${PREFIX}/pacman
-.elif ${FLAVOR:U} == archlinux
+.if ${FLAVOR:U} == archlinux
 ONLY_FOR_ARCHS=	amd64
 ONLY_FOR_ARCHS_REASON=	Arch Linux itself only supports amd64
 PACMAN_ROOT=	/compat/archlinux
-PLIST_DIRS+=	%%PACMAN_ROOT%%/var/cache \
-		%%PACMAN_ROOT%%/var \
-		/compat
+PLIST_DIRS+=	/compat
+.else
+PACMAN_ROOT=	${PREFIX}/pacman
 .endif
 
-.include <bsd.port.options.mk>
+.include <bsd.port.pre.mk>
 
 post-patch:
 .if ${ARCH} == "i386"
@@ -88,4 +92,4 @@ post-install-EXAMPLES-on:
 	@${MKDIR} ${STAGEDIR}${EXAMPLESDIR}
 	${INSTALL_DATA} ${WRKSRC}/doc/PKGBUILD-example.txt ${STAGEDIR}${EXAMPLESDIR}/
 
-.include <bsd.port.mk>
+.include <bsd.port.post.mk>

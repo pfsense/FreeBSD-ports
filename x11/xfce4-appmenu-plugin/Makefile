@@ -1,6 +1,6 @@
 PORTNAME=	xfce4-appmenu-plugin
 DISTVERSION=	0.7.6
-PORTREVISION=	3
+PORTREVISION=	4
 CATEGORIES=	x11
 
 PATCH_SITES=	${GL_SITE}/${GL_ACCOUNT}/${GL_PROJECT}/-/commit/
@@ -28,7 +28,7 @@ MESON_ARGS=	-Dvalapanel=disabled \
 		-Dappmenu-gtk-module=disabled
 
 USE_XFCE=	panel xfconf
-USE_GNOME=	gtk30 glib20 gtk20 gdkpixbuf2
+USE_GNOME=	gtk30 glib20 gtk20 gdkpixbuf
 
 USE_GITLAB=	yes
 GL_ACCOUNT=	vala-panel-project

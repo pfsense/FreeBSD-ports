@@ -1,6 +1,5 @@
 PORTNAME=	gdal-grass
-PORTVERSION=	1.0.2
-PORTREVISION=	4
+PORTVERSION=	2.0.0
 PORTEPOCH=	1
 CATEGORIES=	graphics
 
@@ -10,18 +9,16 @@ WWW=		https://github.com/OSGeo/gdal-grass
 
 LICENSE=	MIT
 
-BUILD_DEPENDS=	grass8>=8.3<8.4:databases/grass8
+BUILD_DEPENDS=	grass8>=8.4<8.5:databases/grass8
 LIB_DEPENDS=	libgdal.so:graphics/gdal \
 		libgrass_gis.so:databases/grass8
 
-USES=		gmake
+USES=		cmake:testing
 
-ALL_TARGET=	default
 CFLAGS+=	-fPIC
-CONFIGURE_ARGS=	--with-autoload=${PREFIX}/lib/gdalplugins \
-		--with-gdal=${LOCALBASE}/bin/gdal-config \
-		--with-grass=${LOCALBASE}/grass83
-GNU_CONFIGURE=	yes
+CMAKE_ARGS=	-DAUTOLOAD_DIR=${PREFIX}/lib/gdalplugins
+CMAKE_OFF=	AUTOTEST_DOWNLOAD_TEST_DATA \
+		AUTOTEST_SLOW_TEST
 
 PLIST_FILES=	lib/gdalplugins/gdal_GRASS.so \
 		lib/gdalplugins/ogr_GRASS.so

@@ -1,6 +1,6 @@
---- base/syslog_logging.cc.orig	2022-03-28 18:11:04 UTC
+--- base/syslog_logging.cc.orig	2025-12-10 15:04:57 UTC
 +++ base/syslog_logging.cc
-@@ -15,7 +15,7 @@
+@@ -17,7 +17,7 @@
  #include "base/strings/string_util.h"
  #include "base/win/scoped_handle.h"
  #include "base/win/win_util.h"
@@ -9,10 +9,10 @@
  // <syslog.h> defines LOG_INFO, LOG_WARNING macros that could conflict with
  // base::LOG_INFO, base::LOG_WARNING.
  #include <syslog.h>
-@@ -147,7 +147,7 @@ EventLogMessage::~EventLogMessage() {
- 
-   if (user_sid != nullptr)
+@@ -151,7 +151,7 @@ EventLogMessage::~EventLogMessage() {
+   if (user_sid != nullptr) {
      ::LocalFree(user_sid);
+   }
 -#elif BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS)
 +#elif BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_BSD)
    const char kEventSource[] = "chrome";

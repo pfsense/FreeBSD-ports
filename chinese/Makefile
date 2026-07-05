@@ -20,8 +20,8 @@
     SUBDIR += cless
     SUBDIR += cnprint
     SUBDIR += dictd-database
+    SUBDIR += elffont
     SUBDIR += enscript
-    SUBDIR += eterm
     SUBDIR += fandol
     SUBDIR += fcitx
     SUBDIR += fcitx-chewing
@@ -55,7 +55,6 @@
     SUBDIR += ibus-rime
     SUBDIR += ibus-table-chinese
     SUBDIR += jis2gb
-    SUBDIR += kcfonts
     SUBDIR += libcangjie
     SUBDIR += libchewing
     SUBDIR += libime
@@ -68,8 +67,6 @@
     SUBDIR += linux-wps-office-zh_CN
     SUBDIR += lunar
     SUBDIR += moettf
-    SUBDIR += muni
-    SUBDIR += oicq
     SUBDIR += opencc
     SUBDIR += opendesktop-fonts
     SUBDIR += oto
@@ -93,6 +90,7 @@
     SUBDIR += pcmanx
     SUBDIR += php-opencc
     SUBDIR += phpbb3-tw
+    SUBDIR += py-rjieba
     SUBDIR += pycangjie
     SUBDIR += pyzy
     SUBDIR += qe
@@ -127,7 +125,6 @@
     SUBDIR += sourcehanserif-sc-otf
     SUBDIR += sourcehanserif-tc-otf
     SUBDIR += taipeisanstc
-    SUBDIR += tin
     SUBDIR += tintin++
     SUBDIR += ttf2pt1
     SUBDIR += ttfm

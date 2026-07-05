@@ -18,8 +18,8 @@ CONFLICTS=	nut-[0-9]*
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	networkupstools
-GH_TAGNAME=	d871f721b 
-NUT_COMMIT_DATE=	2024.04.02
+GH_TAGNAME=	b0b38988e
+NUT_COMMIT_DATE=	2026.02.13
 
 MAKE_JOBS_UNSAFE=	yes
 GNU_CONFIGURE=	yes
@@ -74,6 +74,7 @@ CONFIGURE_ARGS=	--sysconfdir=${PREFIX}/etc/nut \
 		--program-transform-name="" \
 		--localstatedir=${STATEDIR} \
 		--datadir=${PREFIX}/etc/nut \
+		--mandir=${PREFIX}/share/man/nut \
 		--with-devd-dir=${PREFIX}/etc/devd \
 		--with-drvpath=${PREFIX}/libexec/nut \
 		--with-statepath=${STATEDIR} \
@@ -86,7 +87,9 @@ CONFIGURE_ARGS=	--sysconfdir=${PREFIX}/etc/nut \
 		--without-python2 \
 		--with-python3=${PYTHON_CMD} \
 		--without-nut_monitor \
-		--with-ltdl --with-nut-scanner
+		--with-ltdl --with-nut-scanner \
+		--without-augeas-lenses-dir \
+		--enable-extapi-enphase=no
 
 GNU_CONFIGURE_MANPREFIX=${PREFIX}/share
 
@@ -111,6 +114,7 @@ CGI_CONFIGURE_ON=	--with-cgipath=${CGIDIR} \
 SERIAL_CONFIGURE_WITH=	serial
 
 USB_CONFIGURE_WITH=	usb=auto
+USB_LIB_DEPENDS=	libgio-2.0.so:devel/glib20
 
 SNMP_LIB_DEPENDS=	libnetsnmp.so:net-mgmt/net-snmp
 SNMP_CONFIGURE_WITH=	snmp

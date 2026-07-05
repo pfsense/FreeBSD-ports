@@ -1,7 +1,6 @@
 PORTNAME=	libxtend
-DISTVERSION=	0.2.0-2
-PORTREVISION=	1
-DISTVERSIONSUFFIX=	-g5f45f63
+DISTVERSION=	0.2.1-10
+DISTVERSIONSUFFIX=	-gc76bb25
 CATEGORIES=	devel
 
 MAINTAINER=	jwb@FreeBSD.org
@@ -16,7 +15,6 @@ USE_LDCONFIG=	yes
 
 GH_ACCOUNT=	outpaddling
 
-MAKE_ARGS=	MANDIR=${PREFIX}/share/man
 INSTALL_TARGET=	install-strip
 
 .include <bsd.port.mk>

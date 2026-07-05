@@ -1,5 +1,6 @@
 PORTNAME=	gogglesmm
 PORTVERSION=	1.2.5
+PORTREVISION=	7
 CATEGORIES=	audio
 
 MAINTAINER=	jhale@FreeBSD.org
@@ -70,7 +71,7 @@ OGG_CMAKE_BOOL=		WITH_OGG
 
 OPENGL_LIB_DEPENDS=	libepoxy.so:graphics/libepoxy
 OPENGL_USES=		gl
-OPENGL_USE=		GL=gl,glu
+OPENGL_USE=		GL=opengl,glu
 OPENGL_CMAKE_BOOL=	WITH_OPENGL
 
 OPENSSL_USES=		ssl

@@ -5,7 +5,7 @@ MASTER_SITES=	https://www.w3.org/Library/Distribution/ \
 		https://www.w3.org/Library/Distribution/old/
 DISTNAME=	w3c-${PORTNAME}-${PORTVERSION}
 
-MAINTAINER=	dbaio@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	W3C Reference Library
 WWW=		https://www.w3.org/Library/
 
@@ -25,7 +25,7 @@ CPE_VENDOR=	w3c
 
 .include <bsd.port.options.mk>
 
-.if ${OPSYS} == FreeBSD && ( ${OSVERSION} >= 1400091 || ( ${OSVERSION} >= 1302507 && ${OSVERSION} < 1400000 ))
+.if ${OPSYS} == FreeBSD
 CFLAGS+=	-Wno-error=incompatible-function-pointer-types
 .endif
 

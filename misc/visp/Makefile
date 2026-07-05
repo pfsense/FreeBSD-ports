@@ -1,21 +1,22 @@
 PORTNAME=	visp
-DISTVERSION=	3.5.0
-PORTREVISION=	15
+DISTVERSION=	3.7.0
+PORTREVISION=	1
 CATEGORIES=	misc
 MASTER_SITES=	https://visp-doc.inria.fr/download/releases/
 
-PATCH_SITES=	https://github.com/lagadic/${PORTNAME}/commit/
-PATCHFILES=	ff554ca8be5f43a3470e1cb20150d8171a66b463.patch:-p1 # fix https://github.com/lagadic/visp/issues/1059
-
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Modular library for visual tracking and visual servoing
-WWW=		https://visp.inria.fr/
+WWW=		https://visp.inria.fr/ \
+		https://github.com/lagadic/visp
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/LICENSE.txt
 
+BUILD_DEPENDS=	doxygen:devel/doxygen \
+		latex:print/tex-formats \
+		nlohmann-json>0:devel/nlohmann-json
 LIB_DEPENDS=	libblas.so:math/blas \
-		libboost_system.so:devel/boost-libs \
+		libboost_thread.so:devel/boost-libs \
 		libdmtx.so:graphics/libdmtx \
 		libflann.so:math/flann \
 		libgsl.so:math/gsl \
@@ -23,22 +24,30 @@ LIB_DEPENDS=	libblas.so:math/blas \
 		libopenblas.so:math/openblas \
 		libopencv_core.so:graphics/opencv \
 		libopencv_videoio.so:graphics/opencv \
-		libqhull_r.so:math/qhull \
+		libpcap.so:net/libpcap \
 		libpng.so:graphics/png \
 		libv4l2.so:multimedia/libv4l \
-		liblz4.so:archivers/liblz4 \
-		libdc1394.so:multimedia/libdc1394
+		libdc1394.so:multimedia/libdc1394 \
+		libvtkCommonCore-${VTK_VER}.so:math/vtk${VTK_VER:R} # vtk9 is incurred by pcl-pointclouds
 
-USES=		cmake compiler:c++14-lang eigen:3 fortran gl gnome jpeg python:build xorg zip
+USES=		cmake compiler:c++14-lang dos2unix eigen:3 fortran gl gnome jpeg python:build qt:5 xorg zip
+USE_QT=		opengl widgets
 USE_GNOME=	libxml2
 USE_XORG=	ice sm x11 xext
 USE_GL=		gl glu opengl
 USE_LDCONFIG=	yes
 
+DOS2UNIX_FILES=	CMakeLists.txt
+
 CMAKE_OFF=	WITH_QBDEVICE BUILD_EXAMPLES BUILD_TUTORIALS BUILD_TESTS BUILD_DEMOS
+
+CXXFLAGS+=	-I${LOCALBASE}/include/vtk-${VTK_VER} # https://github.com/lagadic/visp/issues/1707
+
+PLIST_SUB=		LIBVERSION=${PORTVERSION} SHORTVERSION=${PORTVERSION:R}
 
 OPTIONS_DEFINE=		COIN OGRE PCL ZBAR
 OPTIONS_DEFAULT=	COIN OGRE PCL ZBAR
+OPTIONS_SUB=		yes
 
 COIN_DESC=		Use Coin3D for simulation or augmented reality capabilities
 COIN_CMAKE_BOOL=	USE_COIN3D
@@ -46,15 +55,16 @@ COIN_LIB_DEPENDS=	libCoin.so:graphics/Coin
 
 OGRE_DESC=		Include Ogre support for 3D Rendering
 OGRE_CMAKE_BOOL=	USE_OGRE
-OGRE_LIB_DEPENDS=	libOgreMain.so:graphics/ogre3d19
+OGRE_LIB_DEPENDS=	libOgreMain.so:graphics/ogre3d
 
 PCL_DESC=		Include Point Cloud Library support
 PCL_CMAKE_BOOL=		USE_PCL
 PCL_LIB_DEPENDS=	libpcl_common.so:graphics/pcl-pointclouds \
-			libvtkCommonCore-9.2.so:math/vtk9 # vtk9 is incurred by pcl-pointclouds
+			libvtkCommonCore-${VTK_VER}.so:math/vtk${VTK_VER:R} # vtk9 is incurred by pcl-pointclouds
 
 ZBAR_DESC=		Use ZBAR to read bar codes and QR codes
 ZBAR_CMAKE_BOOL=	USE_ZBAR
 ZBAR_LIB_DEPENDS=	libzbar.so:graphics/zbar
 
+.include <../../math/vtk9/Makefile.version>
 .include <bsd.port.mk>

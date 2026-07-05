@@ -1,25 +1,24 @@
 PORTNAME=	lime
-PORTVERSION=	5.2.94
+DISTVERSION=	5.4.100
+PORTREVISION=	1
 CATEGORIES=	security
 
 MAINTAINER=	bofh@FreeBSD.org
 COMMENT=	End-to-end encryption library for instant messaging
-WWW=		https://www.linphone.org/technical-corner/lime
+WWW=		https://gitlab.linphone.org/BC/public/lime
 
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/LICENSE.txt
 
 LIB_DEPENDS=	libbctoolbox.so:net/bctoolbox \
-	libbellesip.so:net/belle-sip \
-	libsoci_sqlite3.so:databases/soci
+		libsoci_sqlite3.so:databases/soci
 
 USES=	cmake
 USE_GITLAB=	yes
 GL_SITE=	https://gitlab.linphone.org/BC
 GL_ACCOUNT=	public
 
-CMAKE_ARGS=	-DCMAKE_PREFIX_PATH=${LOCALBASE} \
-		-DENABLE_STATIC=NO \
-		-DENABLE_STRICT=NO
+CMAKE_ON=	BUILD_SHARED_LIBS
+CMAKE_OFF=	ENABLE_UNIT_TESTS
 
 .include <bsd.port.mk>

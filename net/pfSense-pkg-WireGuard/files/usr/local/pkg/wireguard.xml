@@ -8,7 +8,7 @@
  * wireguard.xml
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2015-2024 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2015-2026 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2021 R. Christian McDonald
  * Copyright (2) 2020 Ascrod
  * All rights reserved.
@@ -30,6 +30,7 @@
 	<name>wireguard</name>
 	<version>%%PKGVERSION%%</version>
 	<title>VPN/WireGuard</title>
+	<donotsave>true</donotsave>
 	<include_file>/usr/local/pkg/wireguard/includes/wg.inc</include_file>
 	<menu>
 		<name>WireGuard</name>
@@ -37,7 +38,7 @@
 		<url>/wg/vpn_wg_tunnels.php</url>
 	</menu>
 	<menu>
-		<name>WireGuard </name>
+		<name>WireGuard</name>
 		<section>Status</section>
 		<url>/wg/status_wireguard.php</url>
 	</menu>

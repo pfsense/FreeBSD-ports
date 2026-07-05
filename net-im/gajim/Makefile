@@ -1,5 +1,5 @@
 PORTNAME=	gajim
-DISTVERSION=	1.3.3
+DISTVERSION=	2.4.4
 CATEGORIES=	net-im
 MASTER_SITES=	https://gajim.org/downloads/${DISTVERSION:R}/
 
@@ -10,42 +10,52 @@ WWW=		https://gajim.org/
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}css-parser>0:www/py-css-parser@${PY_FLAVOR} \
+BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}build>0:devel/py-build@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}setuptools>0:devel/py-setuptools@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}wheel>0:devel/py-wheel@${PY_FLAVOR}
+LIB_DEPENDS=	libgsound.so:audio/gsound \
+		libsoup-3.0.so:devel/libsoup3 \
+		libspelling-1.so:x11-toolkits/libspelling
+RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}pycairo>=1.16.0:graphics/py-pycairo@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}css-parser>0:www/py-css-parser@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}emoji>=2.6.0:misc/py-emoji@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}keyring>0:security/py-keyring@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}nbxmpp>=1.0.2:net-im/py-nbxmpp@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}nbxmpp>=7.0.0:net-im/py-nbxmpp@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}omemo-dr>=1.0.0:security/py-omemo-dr@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}packaging>0:devel/py-packaging@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}pillow>=9.1.0:graphics/py-pillow@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}precis_i18n>=1.0.0:textproc/py-precis_i18n@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}openssl>=0.12:security/py-openssl@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}cairo>0:graphics/py-cairo@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}sqlite3>=0:databases/py-sqlite3@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}pyasn1>=0:devel/py-pyasn1@${PY_FLAVOR}
-LIB_DEPENDS=	libsoup-2.4.so:devel/libsoup
+		${PYTHON_PKGNAMEPREFIX}qrcode>=7.3.1:textproc/py-qrcode@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}sqlalchemy20>=2.0.0:databases/py-sqlalchemy20@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}sqlite3>0:databases/py-sqlite3@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}httpx>=0.28.1:www/py-httpx@${PY_FLAVOR} \
+		pango>0:x11-toolkits/pango \
+		gnome-keyring>=0:security/gnome-keyring
 
-USES=		cpe gettext gnome python xorg
-USE_PYTHON=	autoplist distutils noflavors
-USE_GNOME=	pygobject3
+USES=		cpe gettext gnome python:3.11+ xorg
+USE_GNOME=	gtksourceview5 libadwaita pygobject3
+USE_PYTHON=	autoplist cryptography noflavors pep517 pytest
 USE_XORG=	x11 xext xscrnsaver
 
-WRKSRC=		${WRKDIR}/${PORTNAME}-${PORTNAME}-${DISTVERSION}
 NO_ARCH=	yes
 
-OPTIONS_DEFINE=	DBUS DOCS SPELL OMEMO OPENGPG
-OPTIONS_DEFAULT=DBUS SPELL OMEMO OPENGPG
+OPTIONS_DEFINE=		AVCALLS DBUS DOCS LIBSECRET OPENPGP SENTRY VOICEMESSAGES
+OPTIONS_DEFAULT=	DBUS OPENPGP
 
-SPELL_DESC=	Spell checking support
-OMEMO_DESC=	OMEMO end-to-end encryption support
-OPENGPG_DESC=	GPG encryption per XEP-0373
+AVCALLS_DESC=		Audio/Video calling support
+LIBSECRET_DESC=		GNOME Keyring or KDE secure password storage
+OPENPGP_DESC=		GPG encryption per XEP-0373
+SENTRY_DESC=		Sentry error reporting to dev.gajim.org.
+VOICEMESSAGES_DESC=	Voice messages support
 
-# GUPNP_DESC=	UPnP IGD protocol support
-
-# net/py-avahi and net/gupnp-idg is python 2.x only right now
-# AVAHI_RUN_DEPENDS=	avahi-discover:net/py-avahi@${PY_FLAVOR}
-# GUPNP_RUN_DEPENDS=	${PYTHON_SITELIBDIR}/gupnp/__init__.py:net/gupnp-igd@${PY_FLAVOR}
-
-OMEMO_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}python-axolotl>0:security/py-python-axolotl@${PY_FLAVOR} \
-			${PYTHON_PKGNAMEPREFIX}qrcode>0:textproc/py-qrcode@${PY_FLAVOR}
+AVCALLS_RUN_DEPENDS=	farstream>0:net-im/farstream
+AVCALLS_USES=		gstreamer
+AVCALLS_USE=		GSTREAMER=core libav rust ugly
 DBUS_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}dbus>=0.82.2:devel/py-dbus@${PY_FLAVOR}
-OPENGPG_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}gpgme>0:security/py-gpgme@${PY_FLAVOR}
-SPELL_LIB_DEPENDS=	libgspell-1.so:textproc/gspell
+LIBSECRET_RUN_DEPENDS=	libsecret>0:security/libsecret
+OPENPGP_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}gpg>=2.0.0:security/py-gpg@${PY_FLAVOR}
+SENTRY_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}sentry-sdk>0:devel/py-sentry-sdk@${PY_FLAVOR}
+VOICEMESSAGES_USES=	gstreamer
+VOICEMESSAGES_USE=	GSTREAMER=core good
 
 .include <bsd.port.mk>

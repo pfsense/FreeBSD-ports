@@ -1,41 +1,42 @@
 PORTNAME=	opensearch-dashboards
-DISTVERSION?=	2.11.1
-DISTVERSIONSUFFIX=	-linux-x64
+DISTVERSION=	3.5.0
+DISTVERSIONSUFFIX=	-linux-${OPENSEARCH_ARCH}
 CATEGORIES=	textproc www
 MASTER_SITES=	https://artifacts.opensearch.org/releases/bundle/${PORTNAME}/${DISTVERSION}/
 
 MAINTAINER=	opensearch@FreeBSD.org
-COMMENT?=	Visualization dashboards for OpenSearch
+COMMENT=	Visualization dashboards for OpenSearch
 WWW=		https://opensearch.org
 
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/LICENSE.txt
 
-CONFLICTS?=	opensearch-dashboards210
+ONLY_FOR_ARCHS=	aarch64 amd64
 
-BUILD_DEPENDS=	npm-node18>0:www/npm-node18
+BUILD_DEPENDS=	npm-node20>0:www/npm-node20
 
-USES=		nodejs:18,build,run python:build
+USES=		nodejs:20,build,run python:build
 USE_RC_SUBR=	${PORTNAME}
 
+CONFLICTS_INSTALL=	opensearch-dashboards219
+
+NO_ARCH=	yes
+NO_BUILD=	yes
 SUB_FILES=	pkg-deinstall
 SUB_LIST=	PORTNAME="${PORTNAME}" \
 		PKGNAMESUFFIX="${PKGNAMESUFFIX}" \
 		WWWDIR=${WWWDIR}
 
-WRKSRC=		${WRKDIR}/${PORTNAME}-${PORTVERSION}
-
-NODE_VER=	18.18.0
-NO_BUILD=	yes
+WRKSRC=		${WRKDIR}/${PORTNAME}-${DISTVERSION}
 
 _DEVDIR=	${WRKDIR}/.devdir
 
+.include <bsd.port.pre.mk>
+
+OPENSEARCH_ARCH=	${ARCH:S|aarch64|arm64|:S|amd64|x64|}
+
 post-patch:
-	@${REINPLACE_CMD} -e 's|14.20.1|${NODE_VER}|g' ${WRKSRC}/package.json
-	${RM} \
-		${WRKSRC}/bin/*.orig \
-		${WRKSRC}/bin/*.bak \
-		${WRKSRC}/package.json.bak
+	${RM} ${WRKSRC}/bin/*.orig ${WRKSRC}/bin/*.bak
 	${RM} -r ${WRKSRC}/plugins/reportsDashboards/.chromium
 
 do-install:
@@ -77,5 +78,4 @@ post-install:
 	${ECHO} "@dir ${WWWDIR}/plugins/securityAnalyticsDashboards/test/mocks/Rules/components/RulesTable" >> ${TMPPLIST}
 	${ECHO} "@dir ${WWWDIR}/plugins/securityDashboards/server/multitenancy/test" >> ${TMPPLIST}
 
-
-.include <bsd.port.mk>
+.include <bsd.port.post.mk>

@@ -1,9 +1,9 @@
 PORTNAME=	cyclocomp
-DISTVERSION=	1.1.1
+DISTVERSION=	1.1.2
 CATEGORIES=	devel
 DISTNAME=	${PORTNAME}_${DISTVERSION}
 
-MAINTAINER=	ygy@FreeBSD.org
+MAINTAINER=	uzsolt@FreeBSD.org
 COMMENT=	Cyclomatic Complexity of R Code
 WWW=		https://github.com/gaborcsardi/cyclocomp
 

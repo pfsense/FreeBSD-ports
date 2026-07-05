@@ -4,11 +4,15 @@ PORTREVISION=	12
 CATEGORIES=	net-mgmt
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}-3.x/${PORTNAME}-${PORTVERSION}
 
-MAINTAINER=	joneum@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Powerful network monitoring system
 WWW=		https://www.nagios.org/
 
 LICENSE=	GPLv2
+
+FLAVORS=	default monplugins
+FLAVOR?=	${FLAVORS:[1]}
+monplugins_PKGNAMESUFFIX=	-monplugins
 
 LIB_DEPENDS=	libltdl.so:devel/libltdl \
 		libgd.so:graphics/gd
@@ -70,7 +74,6 @@ GROUPS=		${NAGIOSGROUP}
 OPTIONS_DEFINE=	EMBEDDED_PERL NANOSLEEP EVENT_BROKER UNHANDLED_HACK
 OPTIONS_RADIO=		PLUGINS
 OPTIONS_RADIO_PLUGINS=	MONPLUGINS NAGPLUGINS
-OPTIONS_DEFAULT=	NAGPLUGINS
 EMBEDDED_PERL_DESC=	Enable embedded Perl [requires Perl 5.8.0+]
 NANOSLEEP_DESC=		Use nanosleep in event timing
 EVENT_BROKER_DESC=	Enable event broker functionality
@@ -86,6 +89,14 @@ EMBEDDED_PERL_CONFIGURE_ENABLE=	embedded-perl
 EMBEDDED_PERL_CONFIGURE_WITH=	perlcache
 NANOSLEEP_CONFIGURE_ENABLE=	nanosleep
 EVENT_BROKER_CONFIGURE_ENABLE=	event-broker
+
+.if ${FLAVOR:U} == monplugins
+OPTIONS_DEFAULT+=	MONPLUGINS
+.endif
+
+.if ${FLAVOR:U} == default
+OPTIONS_DEFAULT+=	NAGPLUGINS
+.endif
 
 post-extract:
 	@${MV} ${WRKDIR}/${PORTNAME} ${WRKSRC}

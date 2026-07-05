@@ -4,6 +4,7 @@ bin/ipe6upgrade
 bin/ipeextract
 bin/ipepresenter
 bin/iperender
+bin/iperender-par
 bin/ipescript
 bin/ipetoipe
 include/ipeattributes.h
@@ -24,7 +25,6 @@ include/ipelatex.h
 include/ipelet.h
 include/ipelib.h
 include/ipeobject.h
-include/ipeosx.h
 include/ipepage.h
 include/ipepainter.h
 include/ipepath.h
@@ -83,6 +83,7 @@ share/man/man1/ipetoipe.1.gz
 %%DATADIR%%/%%VERSION%%/scripts/add-style.lua
 %%DATADIR%%/%%VERSION%%/scripts/onepage.lua
 %%DATADIR%%/%%VERSION%%/scripts/page-labels.lua
+%%DATADIR%%/%%VERSION%%/scripts/scratchpad.lua
 %%DATADIR%%/%%VERSION%%/scripts/update-master.lua
 %%DATADIR%%/%%VERSION%%/scripts/update-styles.lua
 %%DATADIR%%/%%VERSION%%/styles/arabic.isy

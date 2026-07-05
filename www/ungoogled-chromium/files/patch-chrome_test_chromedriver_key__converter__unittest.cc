@@ -1,20 +1,20 @@
---- chrome/test/chromedriver/key_converter_unittest.cc.orig	2022-10-01 07:40:07 UTC
+--- chrome/test/chromedriver/key_converter_unittest.cc.orig	2026-03-15 18:32:51 UTC
 +++ chrome/test/chromedriver/key_converter_unittest.cc
-@@ -246,7 +246,7 @@ TEST(KeyConverter, ToggleModifiers) {
+@@ -248,7 +248,7 @@ TEST(KeyConverter, ToggleModifiers) {
    CheckEventsReleaseModifiers(keys, key_events);
  }
  
 -#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS)
 +#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_BSD)
- // Fails on bots: crbug.com/174962
+ // Fails on bots: crbug.com/40301345
  #define MAYBE_AllEnglishKeyboardSymbols DISABLED_AllEnglishKeyboardSymbols
  #else
-@@ -303,7 +303,7 @@ TEST(KeyConverter, AllEnglishKeyboardTextChars) {
+@@ -306,7 +306,7 @@ TEST(KeyConverter, AllEnglishKeyboardTextChars) {
  TEST(KeyConverter, AllSpecialWebDriverKeysOnEnglishKeyboard) {
    ui::ScopedKeyboardLayout keyboard_layout(ui::KEYBOARD_LAYOUT_ENGLISH_US);
-   const char kTextForKeys[] = {
+   const auto kTextForKeys = std::to_array<char>({
 -#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS)
 +#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_BSD)
-       0, 0, 0, 0, '\t', 0, '\r', '\r', 0, 0, 0, 0, 0,
+       0,   0,   0,   0,   '\t', 0,   '\r', '\r', 0,   0,   0,   0,   0,
  #else
-       0, 0, 0, 0, 0, 0, '\r', '\r', 0, 0, 0, 0, 0,
+       0,   0,   0,   0,   0,   0,   '\r', '\r', 0,   0,   0,   0,   0,

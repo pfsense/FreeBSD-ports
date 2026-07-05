@@ -1,5 +1,6 @@
 PORTNAME=	lucene
 PORTVERSION=	5.5.5
+PORTREVISION=	1
 CATEGORIES=	textproc java devel
 MASTER_SITES=	https://archive.apache.org/dist/${PORTNAME}/java/${PORTVERSION}
 PKGNAMESUFFIX=	5
@@ -13,8 +14,8 @@ LICENSE_FILE=	${WRKSRC}/LICENSE.txt
 
 CONFLICTS=	lucene-[0-9].*
 
-USES=		cpe tar:tgz
-USE_JAVA=	yes
+USES=		cpe java tar:tgz
+
 NO_BUILD=	yes
 NO_ARCH=	yes
 

@@ -1,10 +1,13 @@
 PORTNAME=	le
 PORTVERSION=	1.16.8
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	editors
 MASTER_SITES=	http://lav.yar.ru/download/${PORTNAME}/ \
 		ZI
 MASTER_SITE_SUBDIR=	. old
+
+PATCH_SITES+=	https://github.com/lavv17/le/commit/
+PATCHFILES+=	73976a23d5d7d4f5d6bfb3b8e797361be5613a6a.diff:-p1
 
 MAINTAINER=	zi@FreeBSD.org
 COMMENT=	Text editor with block and binary operations
@@ -19,6 +22,11 @@ GNU_CONFIGURE=	yes
 GNU_CONFIGURE_MANPREFIX=	${PREFIX}/share
 
 MAKE_JOBS_UNSAFE=	yes
+
+post-patch:
+	@${FIND} ${WRKSRC} -type f \( -name '*.[ch]' -o -name '*.cc' \) | \
+		${XARGS} ${GREP} -l '[[:<:]]hex[[:>:]]' | \
+		${XARGS} ${REINPLACE_CMD} -e 's/[[:<:]]hex[[:>:]]/is_hex/g'
 
 derp-do-install:
 	@${MKDIR} ${STAGEDIR}${DATADIR} ${STAGEDIR}${DOCSDIR}

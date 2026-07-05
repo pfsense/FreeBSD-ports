@@ -5,8 +5,12 @@ CATEGORIES=	lang
 MASTER_SITES=	http://www.complang.tuwien.ac.at/forth/gforth/ \
 		GNU
 
+PATCH_SITES=	https://cgit.git.savannah.gnu.org/cgit/gforth.git/patch/?id=e664cb01&dummy=/:c1 \
+		https://cgit.git.savannah.gnu.org/cgit/gforth.git/patch/?id=4284a265&dummy=/:c2
+PATCHFILES=	gforth-git-e664cb01.patch:-p1:c1 gforth-git-4284a265.patch:-p1:c2
+
 MAINTAINER=	danfe@FreeBSD.org
-COMMENT=	Fast and portable Forth system
+COMMENT=	Fast and portable ANS Forth 94 implementation
 WWW=		https://www.gnu.org/software/gforth/gforth.html
 
 LICENSE=	GPLv3+
@@ -20,11 +24,11 @@ USES=		gmake libtool:build localbase makeinfo
 USE_GCC=	yes
 USE_LDCONFIG=	${PREFIX}/lib/gforth/${PORTVERSION}/libcc-named
 GNU_CONFIGURE=	yes
-GNU_CONFIGURE_MANPREFIX=	${PREFIX}/share
 CONFIGURE_ENV=	GFORTHHIST=${WRKSRC}
 MAKE_ENV=	GFORTHHIST=${WRKSRC}
 ALL_TARGET=	kernel/version.fs more info
-MAKE_JOBS_UNSAFE=yes
+TEST_TARGET=	check
+MAKE_JOBS_UNSAFE=	/bin/sh: ./gforth: not found
 
 STRIP=		#none
 

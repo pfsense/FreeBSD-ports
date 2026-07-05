@@ -1,5 +1,5 @@
 PORTNAME=	vcr
-PORTVERSION=	6.2.0
+PORTVERSION=	6.4.0
 CATEGORIES=	www rubygems
 MASTER_SITES=	RG
 
@@ -12,7 +12,6 @@ LICENSE_COMB=	multi
 LICENSE_NAME_HIPPOCRATIC-2.1=	Hippocratic License 2.1
 LICENSE_FILE=	${FILESDIR}/LICENSE
 LICENSE_PERMS_HIPPOCRATIC-2.1=	auto-accept dist-mirror pkg-mirror
-# https://github.com/vcr/vcr/blob/master/LICENSE
 
 USES=		gem
 

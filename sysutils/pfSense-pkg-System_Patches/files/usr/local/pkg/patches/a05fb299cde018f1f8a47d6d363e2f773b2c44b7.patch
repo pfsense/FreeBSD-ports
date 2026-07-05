@@ -1,0 +1,24 @@
+commit a05fb299cde018f1f8a47d6d363e2f773b2c44b7
+Author: Steve Wheeler <stevew@netgate.com>
+Date:   Mon Jun 9 19:21:35 2025 +0000
+
+    Fix MSS values for IPv6 tunnel types
+
+diff --git a/src/etc/inc/filter.inc b/src/etc/inc/filter.inc
+index 31f3ae32de..6f37943015 100644
+--- a/src/etc/inc/filter.inc
++++ b/src/etc/inc/filter.inc
+@@ -786,7 +786,12 @@ function filter_generate_scrubbing() {
+ 		if ($mss) {
+ 			/* different size of IPv4/IPv6 header, https://redmine.pfsense.org/issues/11409 */
+ 			$mssclamp4 = "max-mss " . ($mss - 40);
+-			$mssclamp6 = "max-mss " . ($mss - 60);
++			/* additional 20B header on v6 tunnel types https://redmine.pfsense.org/issues/16243 */
++			if (($scrubcfg['type6'] == '6rd') || ($scrubcfg['type6'] == '6to4')) {
++				$mssclamp6 = "max-mss " . ($mss - 80);
++			} else {
++				$mssclamp6 = "max-mss " . ($mss - 60);
++			}
+ 		} else {
+ 			$mssclamp4 = "";
+ 			$mssclamp6 = "";

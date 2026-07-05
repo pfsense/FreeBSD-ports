@@ -1,8 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	pfSense-pkg-zeek
-PORTVERSION=	3.0.6
-PORTREVISION=	4
+PORTVERSION=	3.0.4
 CATEGORIES=	security
 MASTER_SITES=	# none
 DISTFILES=	# none

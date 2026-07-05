@@ -1,6 +1,7 @@
 PORTNAME=	vosk
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.3.45-20231214
+DISTVERSION=	0.3.50
+PORTREVISION=	1
 CATEGORIES=	audio # machine-learning
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
@@ -26,7 +27,6 @@ USE_PYTHON=	distutils concurrent # autoplist is broken
 USE_GITHUB=	yes
 GH_ACCOUNT=	alphacep
 GH_PROJECT=	vosk-api
-GH_TAGNAME=	aba8497
 
 WRKSRC_SUBDIR=	python
 

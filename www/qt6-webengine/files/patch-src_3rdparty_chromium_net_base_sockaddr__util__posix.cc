@@ -1,6 +1,6 @@
---- src/3rdparty/chromium/net/base/sockaddr_util_posix.cc.orig	2022-07-22 17:30:31 UTC
+--- src/3rdparty/chromium/net/base/sockaddr_util_posix.cc.orig	2025-08-15 18:30:00 UTC
 +++ src/3rdparty/chromium/net/base/sockaddr_util_posix.cc
-@@ -41,7 +41,8 @@ bool FillUnixAddress(const std::string& socket_path,
+@@ -45,7 +45,8 @@ bool FillUnixAddress(const std::string& socket_path,
      return true;
    }
  

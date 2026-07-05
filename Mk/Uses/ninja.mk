@@ -1,19 +1,20 @@
-# Provide support to use Ninja
+# Support for the Ninja and Samurai build systems
 #
-# Feature:		ninja
-# Usage:		USES=ninja
-# Valid ARGS:		build, make (default), run
+# Feature:	ninja
+# Usage:	USES=ninja[:arg]
+# Valid ARGS:	build, make, run, samurai
 #
-# build			add a build dependency on ninja
-# make			use ninja for the build instead of make, implies "build"
-# run			add a run dependency on ninja
+# build		add a build dependency on ninja
+# make		use ninja for the build instead of make; implies "build" (default)
+# run		add a run dependency on ninja
+# samurai	use samurai regardless of NINJA_DEFAULT; implies "make"
 #
 # MAINTAINER: ports@FreeBSD.org
 
 .if !defined(_INCLUDE_USES_NINJA_MK)
 _INCLUDE_USES_NINJA_MK=	yes
 
-_valid_ARGS=	build make run
+_valid_ARGS=	build make run samurai
 
 .  for _arg in ${ninja_ARGS}
 .    if empty(_valid_ARGS:M${_arg})
@@ -23,25 +24,27 @@ IGNORE=	'USES+= ninja:${ninja_ARGS}' usage: argument [${_arg}] is not recognized
 
 .  if empty(ninja_ARGS)
 ninja_ARGS+=	make
+.  elif !empty(ninja_ARGS:Msamurai)
+_SAMURAI_FROM_ARGS=     yes
+ninja_ARGS+=	make
 .  endif
 
 .  if ${ninja_ARGS:Mmake}
 ninja_ARGS+=	build
 .  endif
 
-.  if ${NINJA_DEFAULT} == ninja
+.  if ${NINJA_DEFAULT} == ninja && !defined(_SAMURAI_FROM_ARGS)
 NINJA_CMD=	ninja
 _NINJA_PORT=	devel/ninja
-.  elif ${NINJA_DEFAULT} == samurai
+.  elif ${NINJA_DEFAULT} == samurai || defined(_SAMURAI_FROM_ARGS)
 NINJA_CMD=	samu
 _NINJA_PORT=	devel/samurai
 MAKE_ENV+=	SAMUFLAGS="-v -j${MAKE_JOBS_NUMBER}"
 .    if ${ninja_ARGS:Mbuild} && !${BINARY_ALIAS:U:Mninja=*}
-# Cmake and Meson have native support for Samurai and detect and
-# use it when Ninja is not available in the build environment.  The
-# alias is needed for other ports which call Ninja directly and do
-# not fall back to Samurai. There should be no harm in providing it
-# generally.
+# CMake and Meson have native support for Samurai and use it in lieu of
+# Ninja if not found in the build environment. BINARY_ALIAS is needed
+# for other ports that call the ninja binary directly with no fallback
+# consideration for samu.
 BINARY_ALIAS+=	ninja=samu
 .    endif
 .  else
@@ -56,10 +59,10 @@ MAKE_ENV+=	NINJA_STATUS="[%p %s/%t] "
 .  endif
 
 .  if ${ninja_ARGS:Mmake}
-.    if ${NINJA_DEFAULT} == ninja
-# samu does not support GNU-style args, so we cannot just append
-# -v last.  samu gets this via SAMUFLAGS above but ninja does not
-# support an equivalent environment variable.
+.    if ${NINJA_DEFAULT} == ninja && !defined(_SAMURAI_FROM_ARGS)
+# samu does not support GNU-style args, so we cannot simply append `-v`
+# to MAKE_ARGS to enable verbosity. This is instead accomplished via
+# the SAMUFLAGS environment variable defined above in MAKE_ENV.
 MAKE_ARGS+=	-v
 .    endif
 CMAKE_ARGS+=	-GNinja

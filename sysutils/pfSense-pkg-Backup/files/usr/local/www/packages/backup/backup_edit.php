@@ -3,7 +3,7 @@
  * backup_edit.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2015-2024 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2015-2026 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2008 Mark J Crane
  * All rights reserved.
  *
@@ -22,16 +22,6 @@
 require_once("guiconfig.inc");
 require_once("/usr/local/pkg/backup.inc");
 
-if (!is_array($config['installedpackages']['backup'])) {
-	$config['installedpackages']['backup'] = array();
-}
-
-if (!is_array($config['installedpackages']['backup']['config'])) {
-	$config['installedpackages']['backup']['config'] = array();
-}
-
-$a_backup = &$config['installedpackages']['backup']['config'];
-
 $id = $_GET['id'];
 if (isset($_POST['id'])) {
 	$id = $_POST['id'];
@@ -39,8 +29,8 @@ if (isset($_POST['id'])) {
 
 if ($_GET['act'] == "del") {
 	if ($_GET['type'] == 'backup') {
-		if ($a_backup[$_GET['id']]) {
-			unset($a_backup[$_GET['id']]);
+		if (config_get_path("installedpackages/backup/config/{$_GET['id']}")) {
+			config_del_path("installedpackages/backup/config/{$_GET['id']}");
 			write_config("Backup: Item deleted");
 			backup_sync_package();
 			header("Location: backup.php");
@@ -49,12 +39,13 @@ if ($_GET['act'] == "del") {
 	}
 }
 
-if (isset($id) && $a_backup[$id]) {
+$this_backup_config = config_get_path("installedpackages/backup/config/{$id}");
+if (isset($id) && $this_backup_config) {
 
-	$pconfig['name'] = $a_backup[$id]['name'];
-	$pconfig['path'] = $a_backup[$id]['path'];
-	$pconfig['enabled'] = $a_backup[$id]['enabled'];
-	$pconfig['description'] = $a_backup[$id]['description'];
+	$pconfig['name'] = $this_backup_config['name'];
+	$pconfig['path'] = $this_backup_config['path'];
+	$pconfig['enabled'] = $this_backup_config['enabled'];
+	$pconfig['description'] = $this_backup_config['description'];
 
 }
 
@@ -63,7 +54,7 @@ if ($_POST) {
 	unset($input_errors);
 	$pconfig = $_POST;
 
-	if (!$input_errors) {
+	if (empty($input_errors)) {
 
 		$ent = array();
 		$ent['name'] = $_POST['name'];
@@ -71,12 +62,12 @@ if ($_POST) {
 		$ent['enabled'] = $_POST['enabled'];
 		$ent['description'] = $_POST['description'];
 
-		if (isset($id) && $a_backup[$id]) {
+		if (isset($id) && $this_backup_config) {
 			// update
-			$a_backup[$id] = $ent;
+			config_set_path("installedpackages/backup/config/{$id}", $ent);
 		} else {
 			// add
-			$a_backup[] = $ent;
+			config_set_path('installedpackages/backup/config/', $ent);
 		}
 
 		write_config("Backup: Settings saved");

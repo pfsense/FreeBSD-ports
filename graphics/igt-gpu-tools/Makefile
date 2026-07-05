@@ -1,6 +1,6 @@
 PORTNAME=	igt-gpu-tools
 DISTVERSION=	1.26.1266
-PORTREVISION=	1
+PORTREVISION=	3
 CATEGORIES=	graphics
 
 MAINTAINER=	jfree@FreeBSD.org
@@ -71,7 +71,7 @@ PLIST_SUB+=	AMD64="@comment "
 
 .include <bsd.port.pre.mk>
 
-.if ${OPSYS} == FreeBSD && ( ${OSVERSION} >= 1400079 || ( ${OSVERSION} >= 1302505 && ${OSVERSION} < 1400000 ))
+.if ${OPSYS} == FreeBSD
 CFLAGS+=	-Wno-error=int-conversion
 .endif
 

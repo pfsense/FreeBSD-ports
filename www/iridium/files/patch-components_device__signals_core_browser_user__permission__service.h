@@ -1,4 +1,4 @@
---- components/device_signals/core/browser/user_permission_service.h.orig	2023-07-24 14:27:53 UTC
+--- components/device_signals/core/browser/user_permission_service.h.orig	2025-12-10 15:04:57 UTC
 +++ components/device_signals/core/browser/user_permission_service.h
 @@ -57,7 +57,7 @@ class UserPermissionService : public KeyedService {
    // missing.

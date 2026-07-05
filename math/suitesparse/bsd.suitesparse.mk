@@ -4,7 +4,7 @@
 
 PKGNAMEPREFIX=	suitesparse-
 SSPNAME=	suitesparse
-SSPVERSION=	7.6.1
+SSPVERSION=	7.12.2
 DISTVERSIONPREFIX=	v
 
 MAINTAINER=	fortran@FreeBSD.org
@@ -25,6 +25,8 @@ CONFIGURE_WRKSRC=${WRKSRC}/SuiteSparse_config
 .endif
 BUILD_WRKSRC=	${CONFIGURE_WRKSRC}
 CMAKE_SOURCE_PATH=	${CONFIGURE_WRKSRC}
+CMAKE_ARGS+=	-DBLAS_LIBRARIES:STRING="${BLASLIB}"	\
+		-DLAPACK_LIBRARIES:STRING="${LAPACKLIB}"
 
 .if ${MPORTNAME} != config &&	\
 	${MPORTNAME} != CSparse &&	\
@@ -33,11 +35,12 @@ LIB_DEPENDS+=	libsuitesparseconfig.so:math/suitesparse-config
 .endif
 .if ${MPORTNAME} != config &&	\
 	${MPORTNAME} != BTF &&	\
+	${MPORTNAME} != Example &&	\
 	${MPORTNAME} != ssget
 OPTIONS_DEFINE+=DEMOS
 .endif
 
-USES+=		cmake:insource pathfix
+USES+=		cmake:insource fortran pathfix
 
 DOCSDIR=	${PREFIX}/share/doc/${SSPNAME}
 MAKE_ENV=	JOBS="${MAKE_JOBS_NUMBER}" \

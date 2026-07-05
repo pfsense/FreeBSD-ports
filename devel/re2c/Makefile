@@ -1,41 +1,32 @@
 PORTNAME=	re2c
-DISTVERSION=	3.0
+PORTVERSION=	4.4
 CATEGORIES=	devel
-MASTER_SITES=	https://github.com/skvadrik/${PORTNAME}/releases/download/${DISTVERSION}/
+MASTER_SITES=	https://github.com/skvadrik/re2c/releases/download/${DISTVERSION}/
 
-MAINTAINER=	chalpin@cs.wisc.edu
+MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Lexer generator for C, C++ and Go with a focus on generating fast code
-WWW=		https://re2c.org/
+WWW=		https://re2c.org/ \
+		https://github.com/skvadrik/re2c
 
 LICENSE=	PD
+LICENSE_FILE=	${WRKSRC}/LICENSE
 
 TEST_DEPENDS=	bash:shells/bash
 
-USES=		cmake cpe python:test shebangfix tar:xz
+USES=		cmake:testing compiler:c++11-lib cpe python:test shebangfix tar:xz
 
-TEST_TARGET=	check
-SHEBANG_FILES=	test/posix_captures/.run/__run.sh \
-		test/posix_captures/.gen/__gen.sh \
-		test/__run_unicode_tests.sh
+CMAKE_OFF=	RE2C_REBUILD_DOCS
+CMAKE_ON=	BUILD_SHARED_LIBS \
+		RE2C_BUILD_LIBS
+CMAKE_TESTING_ON=	RE2C_BUILD_TESTS
+CMAKE_TESTING_TARGET=	check
 
-OPTIONS_DEFINE=		DOCS EXAMPLES LIBRE2C RE2GO RE2RUST
-OPTIONS_DEFAULT=	RE2GO RE2RUST
-OPTIONS_SUB=		yes
+SHEBANG_FILES=	test/__run_unicode_tests.sh \
+		test/captures/posix/.gen/__gen.sh \
+		test/captures/posix/.run/__run.sh
 
-LIBRE2C_DESC=		Build libre2c (Experimental)
-RE2GO_DESC=		Build RE2GO (identical to re2c --lang go)
-RE2RUST_DESC=		Build RE2RUST (identical to re2c --lang rust)
-
-DOCS_BUILD_DEPENDS=	bison:devel/bison \
-			rst2man:textproc/py-docutils
-DOCS_CMAKE_BOOL=	RE2C_REBUILD_DOCS
-LIBRE2C_CMAKE_BOOL=	RE2C_BUILD_LIBS BUILD_SHARED_LIBS
-RE2GO_CMAKE_BOOL=	RE2C_BUILD_RE2GO
-RE2RUST_CMAKE_BOOL=	RE2C_BUILD_RE2RUST
-
-post-install-DOCS-on:
-	${MKDIR} ${STAGEDIR}${DOCSDIR}
-	(cd ${WRKSRC}/doc/ && ${COPYTREE_SHARE} . ${STAGEDIR}${DOCSDIR})
+OPTIONS_DEFINE=	EXAMPLES
+OPTIONS_SUB=	yes
 
 post-install-EXAMPLES-on:
 	${MKDIR} ${STAGEDIR}${EXAMPLESDIR}

@@ -1,5 +1,6 @@
 PORTNAME=	jtiger
 PORTVERSION=	2.1.0376
+PORTREVISION=	1
 CATEGORIES=	java devel
 MASTER_SITES=	http://kaiwitte.org/jtiger/
 
@@ -7,7 +8,8 @@ MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Unit Test Framework and Tools for the Java2 Platform
 WWW=		http://www.jtiger.org/
 
-USE_JAVA=	yes
+USES=		java
+
 NO_BUILD=	yes
 NO_WRKSUBDIR=	yes
 NO_ARCH=	yes

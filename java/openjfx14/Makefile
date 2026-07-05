@@ -1,6 +1,6 @@
 PORTNAME=	openjfx
 DISTVERSION=	14.0.2.1+1
-PORTREVISION=	15
+PORTREVISION=	19
 CATEGORIES=	java x11-toolkits devel
 MASTER_SITES=	https://repo.maven.apache.org/maven2/org/apache/lucene/lucene-core/7.7.1/:core \
 		https://repo.maven.apache.org/maven2/org/apache/lucene/lucene-grouping/7.7.1/:grouping \
@@ -33,21 +33,22 @@ LIB_DEPENDS=	libasound.so:audio/alsa-lib \
 		libfontconfig.so:x11-fonts/fontconfig \
 		libfreetype.so:print/freetype2
 
-USES=		gettext-runtime gl gnome jpeg localbase:ldflags ninja pkgconfig \
+USES=		gettext-runtime gl gnome java jpeg localbase:ldflags ninja pkgconfig \
 		sqlite xorg
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	openjdk
 GH_PROJECT=	jfx
 USE_GL=		gl
-USE_GNOME=	atk cairo gdkpixbuf2 glib20 gtk20 gtk30 pango
-USE_JAVA=	yes
+USE_GNOME=	atk cairo gdkpixbuf glib20 gtk20 gtk30 pango
 JAVA_VERSION=	11
 USE_LDCONFIG=	yes
 USE_XORG=	x11 xtst xxf86vm
 
 CFLAGS+=	-Wno-unused-command-line-argument \
 		-Wno-int-conversion
+# Suppress errors with lld >= 17 due to undefined symbols.
+LDFLAGS+=	-Wl,--undefined-version
 
 PLIST_SUB=	INSTALLDIR=${_INSTALLDIR}
 
@@ -72,9 +73,8 @@ TEST_VARS=	AWT_TEST=true FULL_TEST=true
 
 # Gradle calls CMake during the build
 WEBKIT_IMPLIES=	MEDIA
-WEBKIT_BUILD_DEPENDS=	cmake:devel/cmake-core
 WEBKIT_LIB_DEPENDS=	libicui18n.so:devel/icu
-WEBKIT_USES=	bison gmake gperf perl5 python:build ruby:build
+WEBKIT_USES=	bison cmake:indirect gmake gperf perl5 python:build ruby:build
 WEBKIT_USE=	GNOME=libxslt,libxml2 \
 		PERL5=build \
 		XORG=xcomposite,xdamage,xfixes,xrender,xt
@@ -89,14 +89,15 @@ _GRADLE_RUN=	${SETENV} ${_GRADLE_ENV} gradle62 --no-daemon
 
 _INSTALLDIR=	${PREFIX}/${PKGBASE}
 
-.include <bsd.port.options.mk>
+.include <bsd.port.pre.mk>
 
-.if ${OPSYS} == FreeBSD && ( ${OSVERSION} >= 1400091 || ( ${OSVERSION} >= 1302507 && ${OSVERSION} < 1400000 ))
+.if ${OPSYS} == FreeBSD
 CFLAGS+=	-Wno-error=incompatible-function-pointer-types
 .endif
 
-# Suppress errors with lld >= 17 due to undefined symbols.
-LDFLAGS+=	-Wl,--undefined-version
+.if defined(RUBY_VER) && ${RUBY_VER} >= 3.4
+BUILD_DEPENDS+=	rubygem-getoptlong>=0:devel/rubygem-getoptlong
+.endif
 
 post-extract:
 	${MKDIR} ${WRKDIR}/jars
@@ -174,4 +175,4 @@ do-install:
 do-test-TEST-on:
 	@cd ${WRKSRC} && ${_GRADLE_RUN} check test
 
-.include <bsd.port.mk>
+.include <bsd.port.post.mk>

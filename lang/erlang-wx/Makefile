@@ -1,6 +1,6 @@
 PORTNAME=	erlang
 DISTVERSIONPREFIX=	OTP-
-DISTVERSION=	25.3.2.10
+DISTVERSION=	26.2.5.16
 PORTEPOCH=	1
 CATEGORIES=	lang parallel
 PKGNAMESUFFIX=	-wx
@@ -12,8 +12,8 @@ WWW=		https://www.erlang.org/
 
 LICENSE=	APACHE20
 
-BUILD_DEPENDS=	erlang>=24.0:lang/erlang
-RUN_DEPENDS=	erlang>=24.0:lang/erlang
+BUILD_DEPENDS=	erlang>=25.0:lang/erlang
+RUN_DEPENDS=	erlang>=25.0:lang/erlang
 
 USES=		autoreconf:build gl gmake perl5 xorg
 USE_GITHUB=	yes
@@ -34,10 +34,10 @@ PLIST_SUB=	DEBUGGER_VERSION=${DEBUGGER_VERSION} \
 		OBSERVER_VERSION=${OBSERVER_VERSION} \
 		WX_VERSION=${WX_VERSION}
 
-DEBUGGER_VERSION=	5.3.1.2
-ET_VERSION=		1.6.5
-OBSERVER_VERSION=	2.14
-WX_VERSION=		2.2.2.1
+DEBUGGER_VERSION=	5.3.4
+ET_VERSION=		1.7
+OBSERVER_VERSION=	2.15.1
+WX_VERSION=		2.4.1
 WX_APPS=		wx debugger et observer
 
 pre-configure:

@@ -6,6 +6,7 @@
 %%QT_INCDIR%%/QtLocation/%%FULLVER%%/QtLocation/private/qdeclarativecirclemapitem_p_p.h
 %%QT_INCDIR%%/QtLocation/%%FULLVER%%/QtLocation/private/qdeclarativecontactdetails_p.h
 %%QT_INCDIR%%/QtLocation/%%FULLVER%%/QtLocation/private/qdeclarativegeocodemodel_p.h
+%%QT_INCDIR%%/QtLocation/%%FULLVER%%/QtLocation/private/qdeclarativegeojsondata_p.h
 %%QT_INCDIR%%/QtLocation/%%FULLVER%%/QtLocation/private/qdeclarativegeomap_p.h
 %%QT_INCDIR%%/QtLocation/%%FULLVER%%/QtLocation/private/qdeclarativegeomapcopyrightsnotice_p.h
 %%QT_INCDIR%%/QtLocation/%%FULLVER%%/QtLocation/private/qdeclarativegeomapitembase_p.h
@@ -90,7 +91,6 @@
 %%QT_INCDIR%%/QtLocation/%%FULLVER%%/QtLocation/private/qplacesearchresult_p.h
 %%QT_INCDIR%%/QtLocation/%%FULLVER%%/QtLocation/private/qplacesupplier_p.h
 %%QT_INCDIR%%/QtLocation/%%FULLVER%%/QtLocation/private/qplaceuser_p.h
-%%QT_INCDIR%%/QtLocation/%%FULLVER%%/QtLocation/private/qtlocationexports_p.h
 %%QT_INCDIR%%/QtLocation/%%FULLVER%%/QtLocation/private/unsupportedreplies_p.h
 %%QT_INCDIR%%/QtLocation/QGeoCodeReply
 %%QT_INCDIR%%/QtLocation/QGeoCodingManager
@@ -181,6 +181,7 @@ lib/cmake/Qt6Location/Qt6LocationDependencies.cmake
 lib/cmake/Qt6Location/Qt6LocationPlugins.cmake
 lib/cmake/Qt6Location/Qt6LocationTargets-%%CMAKE_BUILD_TYPE%%.cmake
 lib/cmake/Qt6Location/Qt6LocationTargets.cmake
+lib/cmake/Qt6Location/Qt6LocationVersionlessAliasTargets.cmake
 lib/cmake/Qt6Location/Qt6LocationVersionlessTargets.cmake
 lib/cmake/Qt6Location/Qt6QGeoServiceProviderFactoryItemsOverlayPluginAdditionalTargetInfo.cmake
 lib/cmake/Qt6Location/Qt6QGeoServiceProviderFactoryItemsOverlayPluginConfig.cmake
@@ -194,6 +195,14 @@ lib/cmake/Qt6Location/Qt6QGeoServiceProviderFactoryOsmPluginConfigVersion.cmake
 lib/cmake/Qt6Location/Qt6QGeoServiceProviderFactoryOsmPluginConfigVersionImpl.cmake
 lib/cmake/Qt6Location/Qt6QGeoServiceProviderFactoryOsmPluginTargets-%%CMAKE_BUILD_TYPE%%.cmake
 lib/cmake/Qt6Location/Qt6QGeoServiceProviderFactoryOsmPluginTargets.cmake
+lib/cmake/Qt6LocationPrivate/Qt6LocationPrivateAdditionalTargetInfo.cmake
+lib/cmake/Qt6LocationPrivate/Qt6LocationPrivateConfig.cmake
+lib/cmake/Qt6LocationPrivate/Qt6LocationPrivateConfigVersion.cmake
+lib/cmake/Qt6LocationPrivate/Qt6LocationPrivateConfigVersionImpl.cmake
+lib/cmake/Qt6LocationPrivate/Qt6LocationPrivateDependencies.cmake
+lib/cmake/Qt6LocationPrivate/Qt6LocationPrivateTargets.cmake
+lib/cmake/Qt6LocationPrivate/Qt6LocationPrivateVersionlessAliasTargets.cmake
+lib/cmake/Qt6LocationPrivate/Qt6LocationPrivateVersionlessTargets.cmake
 lib/cmake/Qt6Qml/QmlPlugins/Qt6declarative_locationAdditionalTargetInfo.cmake
 lib/cmake/Qt6Qml/QmlPlugins/Qt6declarative_locationConfig.cmake
 lib/cmake/Qt6Qml/QmlPlugins/Qt6declarative_locationConfigVersion.cmake
@@ -204,7 +213,7 @@ lib/cmake/Qt6Qml/QmlPlugins/Qt6declarative_locationTargets.cmake
 %%QT_LIBDIR%%/libQt6Location.so
 %%QT_LIBDIR%%/libQt6Location.so.6
 %%QT_LIBDIR%%/libQt6Location.so.%%FULLVER%%
-%%QT_LIBDIR%%/metatypes/qt6location_%%CMAKE_BUILD_TYPE%%_metatypes.json
+%%QT_LIBDIR%%/metatypes/qt6location_metatypes.json
 %%QT_MKSPECDIR%%/modules/qt_lib_location.pri
 %%QT_MKSPECDIR%%/modules/qt_lib_location_private.pri
 %%QT_PLUGINDIR%%/geoservices/libqtgeoservices_itemsoverlay.so
@@ -213,5 +222,6 @@ lib/cmake/Qt6Qml/QmlPlugins/Qt6declarative_locationTargets.cmake
 %%QT_QMLDIR%%/QtLocation/libdeclarative_locationplugin.so
 %%QT_QMLDIR%%/QtLocation/plugins.qmltypes
 %%QT_QMLDIR%%/QtLocation/qmldir
+%%QT_SBOMDIR%%/qtlocation-%%FULLVER%%.spdx
 libdata/pkgconfig/Qt6Location.pc
 %%QT_DATADIR%%/modules/Location.json

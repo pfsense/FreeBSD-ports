@@ -1,5 +1,5 @@
 PORTNAME=	soundtracker
-DISTVERSION=	1.0.5
+DISTVERSION=	1.0.5.1
 CATEGORIES=	audio
 MASTER_SITES=	SF/${PORTNAME}/
 
@@ -17,7 +17,7 @@ LIB_DEPENDS=	libfontconfig.so:x11-fonts/fontconfig \
 RUN_DEPENDS=	bash:shells/bash
 
 USES=		desktop-file-utils gettext gmake gnome pkgconfig shebangfix tar:xz xorg
-USE_GNOME=	cairo gdkpixbuf2 glib20 gtk20 libxml2 pango
+USE_GNOME=	cairo gdkpixbuf glib20 gtk20 libxml2 pango
 USE_XORG=	x11
 
 SHEBANG_FILES=	soundtracker_convert_config

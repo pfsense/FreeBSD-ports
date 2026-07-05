@@ -1,5 +1,5 @@
 PORTNAME=	frictionless
-PORTVERSION=	5.16.1
+PORTVERSION=	5.18.1
 CATEGORIES=	devel python
 MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -17,19 +17,18 @@ RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}attrs>=22.2.0:devel/py-attrs@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}humanize>=4.2:devel/py-humanize@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}isodate>=0.6:devel/py-isodate@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}Jinja2>=3.0:devel/py-Jinja2@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}jsonschema417>=0<4.18:devel/py-jsonschema417@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}jsonschema>=4.20:devel/py-jsonschema@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}marko>=1.0:textproc/py-marko@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}petl>=1.6:textproc/py-petl@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}pydantic2>=2.0:devel/py-pydantic2@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}dateutil>=2.8:devel/py-dateutil@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}python-dateutil>=2.8:devel/py-python-dateutil@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}python-slugify>=1.2:textproc/py-python-slugify@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}yaml>=5.3:devel/py-yaml@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}pyyaml>=5.3:devel/py-pyyaml@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}requests>=2.10:www/py-requests@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}rfc3986>=1.4:www/py-rfc3986@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}simpleeval>=0.9.11:devel/py-simpleeval@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}stringcase>=1.2:devel/py-stringcase@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}tabulate>=0.8.9:devel/py-tabulate@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}typer>=0.5:devel/py-typer@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}tabulate>=0.8.10:devel/py-tabulate@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}typer>=0.12:devel/py-typer@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}typing-extensions>=4.3:devel/py-typing-extensions@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}validators>=0.18:devel/py-validators@${PY_FLAVOR}
 

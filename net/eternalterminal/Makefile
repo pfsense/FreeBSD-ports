@@ -1,7 +1,7 @@
 PORTNAME=	eternalterminal
 DISTVERSIONPREFIX=	et-v
-DISTVERSION=	6.2.8
-PORTREVISION=	1
+DISTVERSION=	6.2.11
+PORTREVISION=	3
 CATEGORIES=	net
 
 MAINTAINER=	eduardo@FreeBSD.org
@@ -11,39 +11,32 @@ WWW=		https://eternalterminal.dev/
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-LIB_DEPENDS=	libprotobuf.so:devel/protobuf \
+BROKEN_FreeBSD_13=	OpenSSL versions prior to 3.0.0 are not supported
+
+LIB_DEPENDS=	libabsl_log_internal_check_op.so:devel/abseil \
+		libprotobuf.so:devel/protobuf \
 		libsodium.so:security/libsodium \
 		libunwind.so:devel/libunwind
 
-USES=		cmake ssl
+USES=		cmake:testing ssl
 USE_GITHUB=	yes
 GH_ACCOUNT=	MisterTea
 GH_PROJECT=	EternalTerminal
 
 CMAKE_ON=	DISABLE_VCPKG
 CMAKE_OFF=	BUILD_TESTING
+CMAKE_TESTING_ON=	BUILD_TESTING
 
 CONFLICTS_INSTALL=	linux-enemyterritory # bin/et
 
 post-patch:
 	@${REINPLACE_CMD} -e 's,/usr/local,${PREFIX},' ${WRKSRC}/rc.d/etserver
 
-# Install manually to avoid extra files: https://github.com/MisterTea/EternalTerminal/issues/601
-do-install:
-.for exec in et etserver etterminal htm htmd
-	${INSTALL_PROGRAM} ${BUILD_WRKSRC}/${exec} \
-			${STAGEDIR}${PREFIX}/bin
-.endfor
+post-install:
 	${MKDIR} ${STAGEDIR}${PREFIX}/etc/etserver
 	${INSTALL_DATA} ${WRKSRC}/etc/et.cfg \
 		${STAGEDIR}${PREFIX}/etc/etserver/et.cfg.sample
 	${INSTALL_SCRIPT} ${WRKSRC}/rc.d/etserver \
 		${STAGEDIR}${PREFIX}/etc/rc.d
-
-do-test:
-	@cd ${BUILD_WRKSRC} && \
-		${SETENV} ${CONFIGURE_ENV} ${CMAKE_BIN} ${CMAKE_ARGS} -DBUILD_TESTING:BOOL=ON ${CMAKE_SOURCE_PATH} && \
-		${SETENV} ${MAKE_ENV} ${MAKE_CMD} ${MAKE_ARGS} ${ALL_TARGET} && \
-		ctest -C ${CMAKE_BUILD_TYPE} ${_MAKE_JOBS}
 
 .include <bsd.port.mk>

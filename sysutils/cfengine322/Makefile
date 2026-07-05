@@ -1,5 +1,6 @@
 PORTNAME=	cfengine
 DISTVERSION=	3.22.0
+PORTREVISION=	1
 CATEGORIES=	sysutils
 MASTER_SITES=	https://s3.amazonaws.com/cfengine-package-repos/tarballs/
 DISTNAME=	${PORTNAME}-community-${DISTVERSION}
@@ -7,6 +8,9 @@ DISTNAME=	${PORTNAME}-community-${DISTVERSION}
 MAINTAINER=	cy@FreeBSD.org
 COMMENT=	Systems administration tool for networks
 WWW=		https://cfengine.com/
+
+DEPRECATED=	No longer supported by upstream
+EXPIRATION_DATE=2026-05-01
 
 WRKSRC=		${WRKDIR}/${PORTNAME}-${DISTVERSION}
 

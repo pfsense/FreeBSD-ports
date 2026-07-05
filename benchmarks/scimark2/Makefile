@@ -1,6 +1,6 @@
 PORTNAME=	scimark2
 PORTVERSION=	2.0
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	benchmarks java
 MASTER_SITES=	http://math.nist.gov/scimark2/
 PKGNAMESUFFIX=	-java
@@ -12,8 +12,7 @@ WWW=		https://math.nist.gov/scimark2/index.html
 
 LICENSE=	PD
 
-USES=		zip
-USE_JAVA=	yes
+USES=		java zip
 NEED_JAVAC=	yes
 JAVAC_OPTS?=	-O
 NO_ARCH=	yes

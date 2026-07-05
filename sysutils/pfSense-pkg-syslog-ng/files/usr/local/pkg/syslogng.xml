@@ -8,7 +8,7 @@
  * syslogng.xml
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2015-2024 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2015-2026 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2012 Lance Leger
  * All rights reserved.
  *
@@ -28,6 +28,7 @@
 	</copyright>
 	<name>Syslog-ng</name>
 	<title>Services: Syslog-ng</title>
+	<addedit_string>syslog-ng: changed General settings</addedit_string>
 	<include_file>/usr/local/pkg/syslog-ng.inc</include_file>
 	<menu>
 		<name>Syslog-ng</name>

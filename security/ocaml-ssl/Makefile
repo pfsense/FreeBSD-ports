@@ -1,6 +1,6 @@
 PORTNAME=	ssl
-PORTVERSION=	0.5.13
-PORTREVISION=	1
+PORTVERSION=	0.7.0
+DISTVERSIONPREFIX=	v
 CATEGORIES=	security devel
 PKGNAMEPREFIX=	ocaml-
 
@@ -11,28 +11,27 @@ WWW=		https://github.com/savonet/ocaml-ssl
 LICENSE=	LGPL21+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-BUILD_DEPENDS=	dune:devel/ocaml-dune
-
-USES=		ssl
+USES=		ocaml:dune,ldconfig ssl
 USE_GITHUB=	yes
 GH_ACCOUNT=	savonet
 GH_PROJECT=	ocaml-ssl
-USE_OCAML=	yes
 
 DOCSDIR=	${OCAML_DOCSDIR}/${PORTNAME}
 EXAMPLESDIR=	${OCAML_EXAMPLESDIR}/${PORTNAME}
 
 OPTIONS_DEFINE=	DOCS EXAMPLES
 
-do-build:
-	cd ${BUILD_WRKSRC} && dune build -p ${PORTNAME} -j ${MAKE_JOBS_NUMBER}
+.include <bsd.port.options.mk>
 
-do-install:
-	cd ${INSTALL_WRKSRC} && dune install --destdir=${STAGEDIR} \
-		--libdir=${PREFIX}/${OCAML_SITELIBDIR}
+.if ${ARCH} == powerpc
+USE_BINUTILS=	yes
+.endif
 
 do-install-EXAMPLES-on:
 	@${MKDIR} ${STAGEDIR}${EXAMPLESDIR}
 	${INSTALL_DATA} ${WRKSRC}/examples/* ${STAGEDIR}${EXAMPLESDIR}
+
+post-install:
+	@${STRIP_CMD} ${STAGEDIR}${PREFIX}/${OCAML_SITELIBDIR}/ssl/dllssl_stubs.so
 
 .include <bsd.port.mk>

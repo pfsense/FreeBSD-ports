@@ -1,5 +1,6 @@
 PORTNAME=	groovy
 DISTVERSION=	2.4.21
+PORTREVISION=	1
 CATEGORIES=	lang java
 MASTER_SITES=	http://dl.bintray.com/groovy/maven/
 DISTFILES=	apache-groovy-binary-${PORTVERSION}${EXTRACT_SUFX}
@@ -10,9 +11,8 @@ WWW=		https://www.groovy-lang.org/
 
 LICENSE=	APACHE20
 
-USES=		cpe zip
+USES=		cpe java zip
 CPE_VENDOR=	apache
-USE_JAVA=	yes
 
 NO_ARCH=	yes
 NO_BUILD=	yes

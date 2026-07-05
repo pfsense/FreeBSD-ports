@@ -14,7 +14,7 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 BUILD_DEPENDS=	tpm-emulator>=0.7.4_1:emulators/tpm-emulator
 RUN_DEPENDS:=	${BUILD_DEPENDS}
 
-USES=		cpe dos2unix alias autoreconf gmake iconv libtool pkgconfig ssl
+USES=		cpe dos2unix autoreconf gmake iconv libtool pkgconfig ssl
 CPE_VENDOR=	${PORTNAME}_project
 DOS2UNIX_GLOB=	*.h *.c
 NO_WRKSUBDIR=	yes
@@ -22,7 +22,6 @@ USE_LDCONFIG=	YES
 USE_RC_SUBR=	tcsd
 INSTALL_TARGET=	install-strip
 GNU_CONFIGURE=	YES
-GNU_CONFIGURE_MANPREFIX=	${PREFIX}/share
 CONFIGURE_ARGS=	--with-gui=none --enable-static \
 		--localstatedir=${PREFIX}/var \
 		--with-tssuser=${USERS} \

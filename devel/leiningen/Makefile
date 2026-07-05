@@ -1,5 +1,6 @@
 PORTNAME=	leiningen
 DISTVERSION=	2.11.1
+PORTREVISION=	1
 CATEGORIES=	devel lisp java
 MASTER_SITES=	https://codeberg.org/${PORTNAME}/${PORTNAME}/releases/download/${DISTVERSIONFULL}/:standalone \
 		https://codeberg.org/leiningen/leiningen/archive/:DEFAULT
@@ -15,7 +16,8 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 
 WRKSRC=		${WRKDIR}/${PORTNAME}
 
-USE_JAVA=	yes
+USES=		java
+
 NO_ARCH=	yes
 NO_BUILD=	yes
 

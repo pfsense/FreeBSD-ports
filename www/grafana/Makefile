@@ -1,12 +1,48 @@
 PORTNAME=	grafana
 DISTVERSIONPREFIX=	v
-DISTVERSION=	10.4.1
+DISTVERSION=	12.4.0
+PORTREVISION=	1
 CATEGORIES=	www
-MASTER_SITES=	https://dl.grafana.com/oss/release/:public \
+MASTER_SITES=	https://dl.grafana.com/oss/release/ \
 		https://raw.githubusercontent.com/${GH_ACCOUNT}/${GH_PROJECT}/${DISTVERSIONFULL}/:gomod
-DISTFILES=	grafana-${DISTVERSION}.linux-amd64${EXTRACT_SUFX}:public \
+DISTFILES=	grafana-${DISTVERSION}.linux-amd64${EXTRACT_SUFX} \
 		go.mod:gomod \
-		pkg/util/xorm/go.mod:gomod
+		go.work:gomod \
+		apps/advisor/go.mod:gomod \
+		apps/alerting/alertenrichment/go.mod:gomod \
+		apps/alerting/historian/go.mod:gomod \
+		apps/alerting/notifications/go.mod:gomod \
+		apps/alerting/rules/go.mod:gomod \
+		apps/annotation/go.mod:gomod \
+		apps/collections/go.mod:gomod \
+		apps/correlations/go.mod:gomod \
+		apps/dashboard/go.mod:gomod \
+		apps/dashvalidator/go.mod:gomod \
+		apps/example/go.mod:gomod \
+		apps/folder/go.mod:gomod \
+		apps/iam/go.mod:gomod \
+		apps/live/go.mod:gomod \
+		apps/logsdrilldown/go.mod:gomod \
+		apps/playlist/go.mod:gomod \
+		apps/plugins/go.mod:gomod \
+		apps/preferences/go.mod:gomod \
+		apps/provisioning/go.mod:gomod \
+		apps/quotas/go.mod:gomod \
+		apps/scope/go.mod:gomod \
+		apps/secret/go.mod:gomod \
+		apps/shorturl/go.mod:gomod \
+		pkg/aggregator/go.mod:gomod \
+		pkg/apimachinery/go.mod:gomod \
+		pkg/apiserver/go.mod:gomod \
+		pkg/build/go.mod:gomod \
+		pkg/build/wire/go.mod:gomod \
+		pkg/codegen/go.mod:gomod \
+		pkg/plugins/codegen/go.mod:gomod \
+		pkg/plugins/go.mod:gomod \
+		pkg/promlib/go.mod:gomod \
+		pkg/semconv/go.mod:gomod \
+		pkg/storage/unified/resource/kv/go.mod:gomod
+EXTRACT_ONLY=	${DISTFILES:N*.mod\:*:N*.mod:C/:.*//:Ngo.work}
 
 MAINTAINER=	drtr0jan@yandex.ru
 COMMENT=	Dashboard and graph editor for multiple data stores
@@ -16,23 +52,22 @@ WWW=		https://grafana.com/grafana/ \
 LICENSE=	AGPLv3
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-ONLY_FOR_ARCHS=	aarch64 amd64 i386 riscv64
+ONLY_FOR_ARCHS=	aarch64 amd64 armv6 armv7 riscv64
 
-BUILD_DEPENDS=	wire:devel/go-wire
-RUN_DEPENDS=	ca_root_nss>=0:security/ca_root_nss
-
-USES=		cpe go:1.21,modules
+USES=		cpe go:1.25+,modules
 
 USE_GITHUB=	yes
 
 USE_RC_SUBR=	grafana
-TAG=		d3ce857
+TAG=		d1729c5
 
+GO_MOD_DIST=	github
 GO_MODULE=	github.com/grafana/grafana
 GO_TARGET=	./pkg/cmd/grafana \
 		./pkg/cmd/grafana-server \
 		./pkg/cmd/grafana-cli
-GO_BUILDFLAGS=	-ldflags="-w -X main.version=${PORTVERSION} -X main.commit=${TAG}"
+GO_BUILDFLAGS=	-ldflags="-w -X main.version=${DISTVERSION} -X main.commit=${TAG} \
+		-X main.buildstamp=$$(${STAT} -f %Sm -t %s ${WRKSRC}/.gitignore)"
 
 CONFLICTS_INSTALL=	grafana*
 
@@ -43,12 +78,18 @@ SUB_LIST=	GRAFANA_USER=${GRAFANA_USER} \
 		GRAFANA_LOGDIR=${GRAFANA_LOGDIR} \
 		GRAFANA_PLUGINDIR=${GRAFANA_PLUGINDIR} \
 		GRAFANA_PROVISIONINGDIR=${GRAFANA_PROVISIONINGDIR}
+# Disable some master port targets
+TARGET_ORDER_OVERRIDE=	-1:go-post-extract
 
-GRAFANA_USER?=	grafana
-GRAFANA_GROUP?=	grafana
+GRAFANA_USER?=	${PORTNAME}
+GRAFANA_GROUP?=	${PORTNAME}
 
+.if ${GRAFANA_USER} == ${PORTNAME}
 USERS=		${GRAFANA_USER}
+.endif
+.if ${GRAFANA_GROUP} == ${PORTNAME}
 GROUPS=		${GRAFANA_GROUP}
+.endif
 
 PLIST_SUB=	${SUB_LIST}
 
@@ -57,6 +98,15 @@ GRAFANA_HOMEDIR?=		${DATADIR}
 GRAFANA_LOGDIR?=		/var/log/${PORTNAME}
 GRAFANA_PLUGINDIR?=		${GRAFANA_DATADIR}/plugins
 GRAFANA_PROVISIONINGDIR?=	${ETCDIR}/provisioning
+GRAFANA_PROVISIONING=		access-control alerting dashboards datasources plugins sample
+
+post-extract:
+	@${ECHO_MSG} "===> Tidying ${GO_MODNAME} dependencies";
+	@(cd ${GO_WRKSRC}; ${SETENVI} ${WRK_ENV} ${MAKE_ENV} ${GO_ENV} \
+		GOPROXY=${GO_MODCACHE} ${GO_CMD} mod tidy -e)
+	@${ECHO_MSG} "===> Vendoring ${GO_MODNAME} dependencies";
+	@(cd ${GO_WRKSRC}; ${SETENVI} ${WRK_ENV} ${MAKE_ENV} ${GO_ENV} \
+		GOPROXY=${GO_MODCACHE} ${GO_CMD} work vendor -e)
 
 post-patch:
 	@${REINPLACE_CMD} \
@@ -69,25 +119,24 @@ post-patch:
 pre-build:
 	@(cd ${GO_WRKSRC}; \
 	${ECHO_MSG} "===>  Generating wire_gen.go"; \
-	${SETENV} ${MAKE_ENV} ${GO_ENV} wire gen -tags "oss" ./pkg/server )
+	${SETENV} ${MAKE_ENV} ${GO_ENV} GOPROXY=off ${GO_CMD} run \
+		./pkg/build/wire/cmd/wire/main.go gen -tags "oss" ./pkg/server)
 
 post-install:
-	${MKDIR} ${STAGEDIR}${GRAFANA_HOMEDIR}
-	${MKDIR} ${STAGEDIR}${GRAFANA_HOMEDIR}/conf
-	${MKDIR} ${STAGEDIR}${GRAFANA_DATADIR}
-	${MKDIR} ${STAGEDIR}${GRAFANA_PLUGINDIR}
-.for dir in access-control alerting dashboards datasources notifiers plugins
-	${MKDIR} ${STAGEDIR}${GRAFANA_PROVISIONINGDIR}/${dir}
-.endfor
-	${MKDIR} ${STAGEDIR}${GRAFANA_LOGDIR}
-	( cd ${WRKDIR}/${PORTNAME}-${DISTVERSIONPREFIX}${DISTVERSION}${DISTVERSIONSUFFIX} && ${COPYTREE_SHARE} public ${STAGEDIR}${GRAFANA_HOMEDIR} )
-.for dir in input-datasource
-	${MKDIR} ${STAGEDIR}${GRAFANA_HOMEDIR}/plugins-bundled/internal/${dir}
-	( cd ${WRKDIR}/${PORTNAME}-${DISTVERSIONPREFIX}${DISTVERSION}${DISTVERSIONSUFFIX}/plugins-bundled/internal/${dir}/dist && ${COPYTREE_SHARE} . ${STAGEDIR}${GRAFANA_HOMEDIR}/plugins-bundled/internal/${dir} )
-.endfor
-	${INSTALL_DATA} ${WRKSRC}/conf/defaults.ini ${STAGEDIR}${GRAFANA_HOMEDIR}/conf/defaults.ini
-	${INSTALL_DATA} ${WRKSRC}/conf/sample.ini ${STAGEDIR}${ETCDIR}/grafana.ini.sample
-	${INSTALL_DATA} ${WRKSRC}/conf/ldap.toml ${STAGEDIR}${ETCDIR}/ldap.toml.sample
-	${FIND} ${STAGEDIR}${DATADIR}/public -type f | ${SED} "s,^${STAGEDIR}${DATADIR},${DATADIR}," >> ${TMPPLIST}
+	${MKDIR} ${STAGEDIR}${GRAFANA_HOMEDIR}/conf \
+		 ${STAGEDIR}${GRAFANA_DATADIR} \
+		 ${STAGEDIR}${GRAFANA_PLUGINDIR} \
+		 ${STAGEDIR}${GRAFANA_LOGDIR} \
+		 ${GRAFANA_PROVISIONING:M*:C|^|${STAGEDIR}${GRAFANA_PROVISIONINGDIR}/|}
+	(cd ${WRKDIR}/${PORTNAME}-${DISTVERSION}${DISTVERSIONSUFFIX} \
+		&& ${COPYTREE_SHARE} public ${STAGEDIR}${GRAFANA_HOMEDIR})
+	${INSTALL_DATA} ${WRKSRC}/conf/defaults.ini \
+		${STAGEDIR}${GRAFANA_HOMEDIR}/conf/defaults.ini
+	${INSTALL_DATA} ${WRKSRC}/conf/sample.ini \
+		${STAGEDIR}${ETCDIR}/grafana.ini.sample
+	${INSTALL_DATA} ${WRKSRC}/conf/ldap.toml \
+		${STAGEDIR}${ETCDIR}/ldap.toml.sample
+	${FIND} ${STAGEDIR}${DATADIR}/public -type f | \
+		${SED} "s,^${STAGEDIR}${DATADIR},${DATADIR}," >> ${TMPPLIST}
 
 .include <bsd.port.mk>

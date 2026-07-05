@@ -11,11 +11,10 @@ WWW=		https://github.com/ArtifexSoftware/jbig2dec
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-USES=		cpe libtool pathfix python:env,test shebangfix
+USES=		cpe libtool python:env,test shebangfix
 
 CONFIGURE_ENV=	ac_cv_func_getopt_long=yes
 GNU_CONFIGURE=	yes
-GNU_CONFIGURE_MANPREFIX=${PREFIX}/share
 INSTALL_TARGET=	install-strip
 LDFLAGS+=	-lmd
 TEST_TARGET=	check

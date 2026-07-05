@@ -1,7 +1,7 @@
 #!/bin/sh
 
 # PROVIDE: rspamd
-# REQUIRE: LOGIN redis
+# REQUIRE: LOGIN redis keydb valkey
 # BEFORE:  mail
 # KEYWORD: shutdown
 #
@@ -20,6 +20,8 @@
 
 name=rspamd
 rcvar=rspamd_enable
+
+: ${rspamd_svcj_options:="net_basic"}
 
 load_rc_config $name
 

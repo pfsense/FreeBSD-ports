@@ -1,7 +1,6 @@
 PORTNAME=	hugo
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.123.8
-PORTREVISION=	1
+DISTVERSION=	0.158.0
 PORTEPOCH=	1
 CATEGORIES=	www
 PKGNAMEPREFIX=	go
@@ -43,12 +42,12 @@ EXTENDED_VARS_OFF=	CGO_ENABLED=0
 PORTMANS=	hugo-completion-bash.1 hugo-completion-fish.1 hugo-completion-powershell.1 \
 		hugo-completion-zsh.1 hugo-completion.1 hugo-config-mounts.1 \
 		hugo-config.1 hugo-convert-toJSON.1 hugo-convert-toTOML.1 hugo-convert-toYAML.1 \
-		hugo-convert.1 hugo-deploy.1 hugo-env.1 hugo-gen-chromastyles.1 hugo-gen-doc.1 \
+		hugo-convert.1 hugo-env.1 hugo-gen-chromastyles.1 hugo-gen-doc.1 \
 		hugo-gen-man.1 hugo-gen.1 hugo-import-jekyll.1 hugo-import.1 hugo-list-all.1 \
 		hugo-list-drafts.1 hugo-list-expired.1 hugo-list-future.1 hugo-list.1 \
 		hugo-mod-clean.1 hugo-mod-get.1 hugo-mod-graph.1 hugo-mod-init.1 \
 		hugo-mod-npm-pack.1 hugo-mod-npm.1 hugo-mod-tidy.1 hugo-mod-vendor.1 \
-		hugo-mod-verify.1 hugo-mod.1 hugo-new-site.1 hugo-new-theme.1 hugo-new.1 \
+		hugo-mod-verify.1 hugo-mod.1 hugo-new-theme.1 hugo-new.1 \
 		hugo-server.1 hugo-version.1 hugo.1
 
 # needed to get DISTINFO_FILE in scope for the shell command evaluation by go.mk

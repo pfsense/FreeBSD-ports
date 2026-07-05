@@ -1,6 +1,6 @@
 PORTNAME=	folly
 DISTVERSIONPREFIX=	v
-DISTVERSION=	2024.04.01.00
+DISTVERSION=	2026.02.09.00
 CATEGORIES=	devel
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -10,11 +10,13 @@ WWW=		https://github.com/facebook/folly
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
+BROKEN_FreeBSD_13=	compilation fails: use of undeclared identifier 'clearenv'
 BROKEN_i386=	error: use of undeclared identifier 'DCHECK': https://github.com/facebook/folly/issues/1168
 BROKEN_powerpc=		compilation fails: Big endian requires a redesigned table (assert in folly/detail/base64_detail/Base64SWAR.cpp:107)
 BROKEN_powerpc64=	compilation fails: Big endian requires a redesigned table (assert in folly/detail/base64_detail/Base64SWAR.cpp:107)
 
 BUILD_DEPENDS=	elfutils>0:devel/elfutils # workaround for missing symbols like DW_UT_compile: https://github.com/facebook/folly/issues/1654
+BUILD_DEPENDS+=	fast_float>0:math/fast_float
 LIB_DEPENDS=	libboost_atomic.so:devel/boost-libs \
 		libbzip2.so:misc/vxl \
 		libdouble-conversion.so:devel/double-conversion \
@@ -46,7 +48,7 @@ CXXFLAGS+=	-fPIC
 CXXFLAGS+=	-DGLOG_USE_GLOG_EXPORT
 CXXFLAGS_powerpc64=	-DFOLLY_QUOTIENT_MULTI_SET_SUPPORTED=0
 
-do-test: # tests fail to compile, see https://github.com/facebook/folly/issues/2032
+do-test: # tests fail to compile, see https://github.com/facebook/folly/issues/2246
 	@cd ${BUILD_WRKSRC} && \
 		${SETENV} ${CONFIGURE_ENV} ${CMAKE_BIN} ${CMAKE_ARGS} -DBUILD_TESTS:BOOL=ON ${CMAKE_SOURCE_PATH} && \
 		${SETENV} ${MAKE_ENV} ${MAKE_CMD} ${MAKE_ARGS} ${ALL_TARGET} && \

@@ -1,20 +1,20 @@
---- components/commerce/core/commerce_feature_list.cc.orig	2024-03-22 08:19:40 UTC
+--- components/commerce/core/commerce_feature_list.cc.orig	2026-03-13 06:02:14 UTC
 +++ components/commerce/core/commerce_feature_list.cc
-@@ -168,7 +168,7 @@ BASE_FEATURE(kPriceInsights,
-              "PriceInsights",
-              base::FEATURE_DISABLED_BY_DEFAULT);
+@@ -176,7 +176,7 @@ BASE_FEATURE(kShoppingAlternateServer, base::FEATURE_D
+ const char kDiscountOnShoppyPageParam[] = "discount-on-shoppy-page";
+ 
+ #if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX) || \
+-    BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_ANDROID)
++    BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_ANDROID) || BUILDFLAG(IS_BSD) 
+ const base::FeatureParam<bool> kDiscountOnShoppyPage{
+     &kEnableDiscountInfoApi, kDiscountOnShoppyPageParam, true};
+ #else
+@@ -189,7 +189,7 @@ const char kMerchantWideBehaviorParam[] = "merchant-wi
+ const char kNonMerchantWideBehaviorParam[] = "non-merchant-wide-behavior";
+ 
  #if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX) || \
 -    BUILDFLAG(IS_CHROMEOS)
-+    BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_BSD)
- BASE_FEATURE(kPriceInsightsRegionLaunched,
-              "PriceInsightsRegionLaunched",
++    BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_BSD) 
+ BASE_FEATURE(kDiscountDialogAutoPopupBehaviorSetting,
               base::FEATURE_ENABLED_BY_DEFAULT);
-@@ -244,7 +244,7 @@ const base::FeatureParam<bool> kDeleteAllMerchantsOnCl
- 
- BASE_FEATURE(kShoppingList, "ShoppingList", base::FEATURE_DISABLED_BY_DEFAULT);
- #if BUILDFLAG(IS_ANDROID) || BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || \
--    BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_IOS)
-+    BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_IOS) || BUILDFLAG(IS_BSD)
- BASE_FEATURE(kShoppingListRegionLaunched,
-              "ShoppingListRegionLaunched",
-              base::FEATURE_ENABLED_BY_DEFAULT);
+ const base::FeatureParam<int> kHistoryClustersBehavior{

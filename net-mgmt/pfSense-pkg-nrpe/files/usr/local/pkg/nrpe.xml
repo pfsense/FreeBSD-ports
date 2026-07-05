@@ -8,7 +8,7 @@
  * nrpe.xml
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2011-2024 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2011-2026 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2009 Erik Kristensen
  * All rights reserved.
  *
@@ -29,6 +29,7 @@
 	<name>nrpe</name>
 	<version>3.0</version>
 	<title>Services: NRPE</title>
+	<addedit_string>NRPE: changed settings</addedit_string>
 	<aftersaveredirect>/pkg_edit.php?xml=nrpe.xml&amp;id=0</aftersaveredirect>
 	<include_file>/usr/local/pkg/nrpe.inc</include_file>
 	<menu>
@@ -143,6 +144,17 @@
 			</rowhelper>
 		</field>
 	</fields>
+	<plugins>
+		<item>
+			<type>plugin_xmlrpc_send</type>
+		</item>
+		<item>
+			<type>plugin_xmlrpc_recv</type>
+		</item>
+		<item>
+			<type>plugin_xmlrpc_recv_done</type>
+		</item>
+	</plugins>
 	<custom_php_install_command>
 		nrpe_custom_php_install_command();
 	</custom_php_install_command>

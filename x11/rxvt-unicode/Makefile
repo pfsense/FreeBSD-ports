@@ -1,6 +1,6 @@
 PORTNAME=	rxvt-unicode
 PORTVERSION=	9.31
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	x11
 MASTER_SITES=	http://dist.schmorp.de/rxvt-unicode/%SUBDIR%/
 MASTER_SITE_SUBDIR=	. Attic
@@ -106,7 +106,7 @@ SMART_RESIZE_CONFIGURE_ENABLE=	smart-resize
 
 # enable integration with gdk-pixbuf for background images
 GDK_PIXBUF_USES=	gnome
-GDK_PIXBUF_USE=		GNOME=gdkpixbuf2
+GDK_PIXBUF_USE=		GNOME=gdkpixbuf
 GDK_PIXBUF_CONFIGURE_ENABLE=	pixbuf
 
 # enable startup notification

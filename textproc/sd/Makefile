@@ -1,10 +1,10 @@
 PORTNAME=	sd
 DISTVERSIONPREFIX=	v
-DISTVERSION=	1.0.0
-PORTREVISION=	5
+DISTVERSION=	1.1.0
+PORTREVISION=	1
 CATEGORIES=	textproc
 
-MAINTAINER=	mikael@FreeBSD.org
+MAINTAINER=	bofh@FreeBSD.org
 COMMENT=	Intuitive find and replace tool
 WWW=		https://github.com/chmln/sd
 
@@ -12,6 +12,7 @@ LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
 USES=		cargo
+CARGO_INSTALL_PATH=	sd-cli
 USE_GITHUB=	yes
 GH_ACCOUNT=	chmln
 
@@ -25,7 +26,6 @@ PORTDOCS=	README.md
 OPTIONS_DEFINE=	DOCS
 
 post-install:
-	${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/sd
 	${INSTALL_MAN} ${WRKSRC}/gen/sd.1 \
 		${STAGEDIR}${PREFIX}/share/man/man1
 	@${MKDIR} ${STAGEDIR}${PREFIX}/etc/bash_completion.d

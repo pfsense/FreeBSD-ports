@@ -1,6 +1,6 @@
 PORTNAME=	ezc3d
 DISTVERSIONPREFIX=	Release_
-DISTVERSION=	1.5.9
+DISTVERSION=	1.6.3
 CATEGORIES=	misc python
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
@@ -11,7 +11,8 @@ WWW=		https://github.com/pyomeca/ezc3d
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-BUILD_DEPENDS=	${PYNUMPY} \
+BUILD_DEPENDS=	${PY_SETUPTOOLS} \
+		${PYNUMPY} \
 		${PYTHON_PKGNAMEPREFIX}scikit-build>0:devel/py-scikit-build@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}wheel>0:devel/py-wheel@${PY_FLAVOR} \
 		cmake:devel/cmake-core \
@@ -19,7 +20,7 @@ BUILD_DEPENDS=	${PYNUMPY} \
 RUN_DEPENDS=	${PYNUMPY}
 
 USES=		python
-USE_PYTHON=	distutils pytest # autoplist is broken due to https://github.com/pyomeca/ezc3d/issues/258 ; 3 tests fail, see https://github.com/pyomeca/ezc3d/issues/291
+USE_PYTHON=	pep517 autoplist pytest # autoplist is broken due to https://github.com/pyomeca/ezc3d/issues/258 ; 3 tests fail, see https://github.com/pyomeca/ezc3d/issues/291
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	pyomeca
@@ -29,8 +30,6 @@ TEST_ARGS=	${WRKSRC}/test/python3
 TEST_ENV=	${MAKE_ENV} PYTHONPATH=${STAGEDIR}${PYTHONPREFIX_SITELIBDIR}
 
 post-install:
-	# remove unnecessary C++ headers, see https://github.com/pyomeca/ezc3d/issues/258
-	@${RM} -r ${STAGEDIR}${PREFIX}/include/*
 	# strip binaries
 	@cd ${STAGEDIR}/${PYTHON_SITELIBDIR} && \
 		${STRIP_CMD} \
@@ -51,5 +50,7 @@ pre-test: # download test c3d files
 	# move *.c3d files into a flat folder
 	@${MKDIR} ${WRKSRC}/test/c3dTestFiles
 	@${CP} `${FIND} ${WRKSRC} -name "*.c3d"` ${WRKSRC}/test/c3dTestFiles
+
+# tests as of : 2 failed, 25 passed, 1 error in 4.17s, see https://github.com/pyomeca/ezc3d/issues/368
 
 .include <bsd.port.mk>

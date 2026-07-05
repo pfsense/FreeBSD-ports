@@ -1,11 +1,14 @@
 PORTNAME=	virtualbox-ose
-PORTVERSION=	5.2.44
-PORTREVISION?=	17
+DISTVERSION=	5.2.44
+PORTREVISION?=	35
 CATEGORIES=	emulators
-MASTER_SITES=	https://download.oracle.com/virtualbox/${PORTVERSION}/
+MASTER_SITES=	https://download.virtualbox.org/virtualbox/${DISTVERSION}/:src \
+		LOCAL/bofh/emulators/virtualbox-ose-legacy:docs
 PKGNAMESUFFIX?=	-legacy
-DISTFILES=	VirtualBox-${PORTVERSION}${EXTRACT_SUFX} ${GUESTADDITIONS}
-EXTRACT_ONLY=	VirtualBox-${PORTVERSION}${EXTRACT_SUFX}
+DISTFILES=	VirtualBox-${DISTVERSION}${EXTRACT_SUFX}:src \
+		VirtualBox-docs-${DISTVERSION}${EXTRACT_SUFX}:docs
+EXTRACT_ONLY=	VirtualBox-${DISTVERSION}${EXTRACT_SUFX} \
+		VirtualBox-docs-${DISTVERSION}${EXTRACT_SUFX}
 
 MAINTAINER=	vbox@FreeBSD.org
 COMMENT=	General-purpose full virtualizer for x86 hardware
@@ -27,23 +30,33 @@ LIB_DEPENDS=	libpng.so:graphics/png \
 RUN_DEPENDS=	${LOCALBASE}/etc/rc.d/vboxnet:emulators/virtualbox-ose-kmod-legacy
 
 USES=		compiler:c++14-lang cpe gnome iconv pkgconfig ssl tar:bzip2
-USE_GNOME=	libxml2
-
 CPE_VENDOR=	oracle
 CPE_PRODUCT=	vm_virtualbox
+USE_GNOME=	libxml2
+USE_RC_SUBR=	vboxheadless vboxwatchdog
 
-HAS_CONFIGURE=	yes
-CONFIGURE_ARGS=	--disable-java --passive-mesa
+HAS_CONFIGURE=		yes
+CONFIGURE_ARGS=		--disable-java --passive-mesa --disable-docs
 CONFIGURE_ARGS+=	--with-gcc="${CC}" --with-g++="${CXX}"
 
-CONFLICTS_INSTALL=	virtualbox-ose-additions-* \
-			virtualbox-ose-devel \
-			virtualbox-ose \
-			virtualbox-ose-lite
+CONFLICTS_INSTALL=	virtualbox-ose \
+			virtualbox-ose-nox11 \
+			virtualbox-ose-70 \
+			virtualbox-ose-nox11-70 \
+			virtualbox-ose-71 \
+			virtualbox-ose-nox11-71 \
+			virtualbox-ose-72 \
+			virtualbox-ose-nox11-72
 
-WRKSRC=		${WRKDIR}/VirtualBox-${PORTVERSION}
-
+EXTRACT_AFTER_ARGS=	--exclude kBuild/bin \
+			--no-same-owner --no-same-permissions
 PORTSCOUT=	limit:^5\.
+SUB_LIST=	VBOXDIR=${VBOX_DIR} \
+		VBOXGROUP=${VBOXGROUP} \
+		VBOXUSER=${VBOXUSER} \
+		VBOXWSUSER=${VBOXWSUSER}
+
+WRKSRC=		${WRKDIR}/VirtualBox-${DISTVERSION}
 
 VBOXUSER?=	vboxusers
 VBOXWSUSER?=	vboxusers
@@ -59,15 +72,24 @@ VBOX_PROGS=	VBoxAutostart VBoxBalloonCtrl VBoxBugReport VBoxHeadless \
 VBOX_UTILS=	VBoxExtPackHelperApp VBoxNetAdpCtl VBoxNetDHCP VBoxNetNAT \
 		VBoxSVC VBoxXPCOMIPCD
 
+PLIST_SUB=	GUEST_VER=${DISTVERSION} \
+		PYTHON_VERU=${PYTHON_VER:S/./_/}${PYTHON_ABIVER} \
+		VBOXGROUP=${VBOXGROUP}
+
+SLAVE_PORT?=	no
+
 OPTIONS_DEFINE=		ALSA DBUS DEBUG DOCS GUESTADDITIONS NLS PULSEAUDIO \
-			PYTHON QT5 R0LOGGING UDPTUNNEL VDE VNC WEBSERVICE VPX X11
+			PYTHON QT5 R0LOGGING UDPTUNNEL VDE VNC VPX WEBSERVICE X11
 OPTIONS_DEFAULT=	DBUS QT5 UDPTUNNEL VNC WEBSERVICE X11
+.if ${SLAVE_PORT} == no
+OPTIONS_DEFAULT+=	PYTHON
+.endif
 OPTIONS_SUB=		yes
 
 DEBUG_DESC=		Debug symbols, additional logs and assertions
 GUESTADDITIONS_DESC=	Build with Guest Additions
 NLS_DESC=		Native language support (requires QT5)
-QT5_DESC=		Build with QT5 frontend (requires X11)
+QT5_DESC=		Build with Qt5 frontend (requires X11)
 R0LOGGING_DESC=		Enable R0 logging (requires DEBUG)
 UDPTUNNEL_DESC=		Build with UDP tunnel support
 VDE_DESC=		Build with VDE support
@@ -75,39 +97,33 @@ VNC_DESC=		Build with VNC support
 VPX_DESC=		Use libvpx for video recording
 WEBSERVICE_DESC=	Build Webservice
 
-ALSA_CONFIGURE_OFF=	--disable-alsa
 ALSA_LIB_DEPENDS=	libasound.so:audio/alsa-lib
-DBUS_CONFIGURE_OFF=	--disable-dbus
+ALSA_CONFIGURE_OFF=	--disable-alsa
 DBUS_LIB_DEPENDS=	libdbus-1.so:devel/dbus
+DBUS_CONFIGURE_OFF=	--disable-dbus
 DEBUG_CONFIGURE_ON=	--build-debug
-DOCS_USES=		tex
-DOCS_USE=		TEX=dvipsk:build,formats:build
-DOCS_BUILD_DEPENDS=	${LOCALBASE}/share/xml/docbook/4.4/docbookx.dtd:textproc/docbook-xml
-DOCS_CONFIGURE_OFF=	--disable-docs
-DOCS_VARS=		dbkxmldir=${LOCALBASE}/share/xml/docbook/4.4 \
-			dbkxsldir=${LOCALBASE}/share/xsl/docbook
 NLS_IMPLIES=		QT5
-PULSEAUDIO_CONFIGURE_OFF=	--disable-pulse
 PULSEAUDIO_LIB_DEPENDS=	libpulse.so:audio/pulseaudio
-PYTHON_USES=		python
+PULSEAUDIO_CONFIGURE_OFF=	--disable-pulse
+PYTHON_USES=		python:3.10-3.11
 PYTHON_USES_OFF=	python:build
 PYTHON_USE=		PYTHON=distutils,noegginfo,noflavors
 PYTHON_CONFIGURE_OFF=	--disable-python
 PYTHON_VARS=		pydistutils_pkgname=vboxapi pydistutils_pkgversion=1.0
+QT5_IMPLIES=		X11
 QT5_USES=		gl qmake:no_env qt:5 xorg
 QT5_USE=		QT=buildtools:build,core,dbus,gui,linguisttools:build,opengl \
 			QT=printsupport,widgets,x11extras XORG=xcb GL=gl
 QT5_CONFIGURE_ON=	--enable-qt5
 QT5_CONFIGURE_OFF=	--disable-qt
-QT5_IMPLIES=		X11
 R0LOGGING_IMPLIES=	DEBUG
 UDPTUNNEL_CONFIGURE_OFF=	--disable-udptunnel
-VDE_CONFIGURE_ON=	--enable-vde
 VDE_RUN_DEPENDS=	vde_switch:net/vde2
-VNC_CONFIGURE_ON=	--enable-vnc
+VDE_CONFIGURE_ON=	--enable-vde
 VNC_LIB_DEPENDS=	libvncserver.so:net/libvncserver
-VPX_CONFIGURE_OFF=	--disable-libvpx
+VNC_CONFIGURE_ON=	--enable-vnc
 VPX_LIB_DEPENDS=	libvpx.so:multimedia/libvpx
+VPX_CONFIGURE_OFF=	--disable-libvpx
 WEBSERVICE_BUILD_DEPENDS=	soapcpp2:devel/gsoap
 X11_USES=		sdl xorg
 X11_USE=		SDL=sdl XORG=x11,xcursor,xext,xinerama,xmu,xorgproto,xt
@@ -116,22 +132,12 @@ X11_CONFIGURE_OFF=	--build-headless
 ENV=
 .export ENV
 
-PLIST_SUB=	GUEST_VER=${PORTVERSION} \
-		PYTHON_VERU=${PYTHON_VER:S/./_/}${PYTHON_ABIVER} \
-		VBOXGROUP=${VBOXGROUP}
-SUB_LIST=	VBOXDIR=${VBOX_DIR} \
-		VBOXGROUP=${VBOXGROUP} \
-		VBOXUSER=${VBOXUSER} \
-		VBOXWSUSER=${VBOXWSUSER}
-USE_RC_SUBR=	vboxheadless vboxwatchdog
-
 .include <bsd.port.options.mk>
 
 .if ${SLAVE_PORT} == no
-CONFLICTS_INSTALL+=	virtualbox-ose-nox11
-OPTIONS_DEFAULT+=	PYTHON
+CONFLICTS_INSTALL+=	virtualbox-ose-nox11-legacy
 .else
-CONFLICTS_INSTALL+=	virtualbox-ose
+CONFLICTS_INSTALL+=	virtualbox-ose-legacy
 .endif
 
 .if ${ARCH} == "amd64"
@@ -146,10 +152,11 @@ KMK_BUILDTYPE=	release
 .endif
 
 .if ${PORT_OPTIONS:MGUESTADDITIONS}
-GUESTADDITIONS=	VBoxGuestAdditions_${PORTVERSION}.iso
-LICENSE+=	Additions
-LICENSE_COMB=	multi
-LICENSE_NAME_Additions=	Guest Additions
+GUESTADDITIONS=			VBoxGuestAdditions_${DISTVERSION}.iso
+DISTFILES+=			${GUESTADDITIONS}:src
+LICENSE+=			Additions
+LICENSE_COMB=			multi
+LICENSE_NAME_Additions=		Guest Additions
 LICENSE_PERMS_Additions=	auto-accept
 LICENSE_DISTFILES_Additions=	${GUESTADDITIONS}
 .endif
@@ -164,7 +171,7 @@ PLIST_SUB+=	QT="@comment "
 .endif
 
 .if ${PORT_OPTIONS:MWEBSERVICE}
-USE_RC_SUBR+=	vboxwebsrv
+USE_RC_SUBR+=	vboxinit vboxwebsrv
 VBOX_LINKS+=	vboxwebsrv
 VBOX_UTILS+=	vboxwebsrv webtest
 .endif
@@ -194,19 +201,6 @@ KMK_CONFIG=	VBOX_LIBPATH_X11=${LOCALBASE} VBOX_FREEBSD_SRC=${SRC_BASE}/sys
 KMK_FLAGS+=	-j${MAKE_JOBS_NUMBER}
 
 .include <bsd.port.pre.mk>
-
-.if ${CHOSEN_COMPILER_TYPE} == clang && ${OPSYS} == FreeBSD && \
-    (${OSVERSION} < 1302505 || (${OSVERSION} >= 1400000 && ${OSVERSION} < 1400079) || \
-    ${OSVERSION} >= 1400091)
-# llvm 13, 14 and 16 included in FreeBSD fails to compile this legacy version of
-# virtualbox-ose, force llvm 15 on all versions of the FreeBSD except lastest 13
-# and several versions of 14 where the llvm 15 is included: PR#265539.
-# Keep possibility to define different llvm via VBOX_LLVM_VER in make.conf.
-BUILD_DEPENDS+=	clang${VBOX_LLVM_VER}:devel/llvm${VBOX_LLVM_VER}
-CC=		clang${VBOX_LLVM_VER}
-CXX=		clang++${VBOX_LLVM_VER}
-VBOX_LLVM_VER?=	15
-.endif
 
 .if ${PYTHON_MAJOR_VER} >= 3
 PLIST_SUB+=	PYTHON_PYCDIR=/__pycache__/ \
@@ -278,10 +272,15 @@ post-patch:
 	    ${WRKSRC}/LocalConfig.kmk
 	@${ECHO_CMD} 'VBOX_PATH_GSOAP_IMPORT = ${PREFIX}/share/gsoap/import' >> \
 	    ${WRKSRC}/LocalConfig.kmk
-	@${ECHO_CMD} 'VBOX_GCC_PEDANTIC_CXX = -Wshadow $$(VBOX_GCC_WARN) -Wno-long-long' >> \
+	@${ECHO_CMD} 'VBOX_GCC_PEDANTIC_CXX = -Wshadow $$(VBOX_GCC_WARN) -Wno-long-long \
+		-Wno-dynamic-exception-spec -D_LIBCPP_ENABLE_CXX17_REMOVED_UNARY_BINARY_FUNCTION' >> \
 	    ${WRKSRC}/LocalConfig.kmk
 	@${REINPLACE_CMD} -E -e '/soap_socket_errno\(/s/(soap_socket_errno)(\([^)]+\))/\1/' \
 		${WRKSRC}/src/VBox/Main/webservice/vboxweb.cpp
+.else
+	@${ECHO_CMD} 'VBOX_GCC_PEDANTIC_CXX = -Wno-dynamic-exception-spec \
+		-D_LIBCPP_ENABLE_CXX17_REMOVED_UNARY_BINARY_FUNCTION' >> \
+	    ${WRKSRC}/LocalConfig.kmk
 .endif
 	@${REINPLACE_CMD} -e 's| -finline-limit=8000||' \
 	    -e 's| -mpreferred-stack-boundary=2||' \
@@ -307,6 +306,9 @@ post-patch:
 	    ${WRKSRC}/src/VBox/Runtime/Makefile.kmk
 	@${ECHO_CMD} 'VBOX_ICONV_DEFS = LIBICONV_PLUG' >> ${WRKSRC}/LocalConfig.kmk
 .endif
+.if ${CHOSEN_COMPILER_TYPE} == clang && ${OPSYS} == FreeBSD && ${ARCH} == i386
+	@${ECHO_CMD} 'VBOX_FREEBSD = -fPIC' >> ${WRKSRC}/LocalConfig.kmk
+.endif
 	@${REINPLACE_CMD} -e 's|%%VBOX_DIR%%|${VBOX_DIR}|g' \
 	    -e 's|%%VBOX_ETC%%|${VBOX_ETC}|g' \
 	    -e 's|%%LOCALBASE%%|${LOCALBASE}|g' \
@@ -314,8 +316,12 @@ post-patch:
 	@${REINPLACE_CMD} \
 	    -e 's|^versions =.*|versions = ["${PYTHON_VER}${PYTHON_ABIVER}"]|' \
 	    ${WRKSRC}/src/libs/xpcom18a4/python/gen_python_deps.py
+	@${REINPLACE_CMD} -e 's|curl_proxytype|long|g' \
+	    ${WRKSRC}/src/VBox/Runtime/generic/http-curl.cpp
 
 do-build:
+	@${ECHO_CMD} 'export PATH_KBUILD="${WRKSRC}/kBuild"' >> ${WRKSRC}/env.sh
+	@${ECHO_CMD} 'export PATH_DEVTOOLS="${WRKSRC}/tools"' >> ${WRKSRC}/env.sh
 	cd ${WRKSRC} && ${SH} -c '. ${WRKSRC}/env.sh && \
 	    ${SETENV} ${MAKE_ENV} ${KMK_CONFIG} ${LOCALBASE}/bin/kmk ${KMK_FLAGS}'
 .if ${PORT_OPTIONS:MPYTHON}
@@ -332,11 +338,13 @@ do-install:
 
 	${MKDIR} ${STAGEDIR}${PREFIX}/include/virtualbox
 	cd ${KMK_BUILDDIR}/bin/sdk/bindings/xpcom/include && \
-	    ${COPYTREE_SHARE} "*" ${STAGEDIR}${PREFIX}/include/virtualbox
+	    ${COPYTREE_SHARE} . ${STAGEDIR}${PREFIX}/include/virtualbox
 
 	${MKDIR} ${STAGEDIR}${VBOX_DIR}
 	cd ${KMK_BUILDDIR}/bin && ${COPYTREE_SHARE} \
-	    "*.fd *.r0 *.rc *.so components" ${STAGEDIR}${VBOX_DIR}
+	    "*.fd *.r0 *.rc *.so components" ${STAGEDIR}${VBOX_DIR} && \
+	    ${COPYTREE_SHARE} UnattendedTemplates ${STAGEDIR}${DATADIR}
+
 .if ${PORT_OPTIONS:MPYTHON} || ${PORT_OPTIONS:MWEBSERVICE}
 	${RLN} ${STAGEDIR}${DATADIR}/sdk ${STAGEDIR}${VBOX_DIR}
 .endif
@@ -363,7 +371,7 @@ do-install:
 
 .if ${PORT_OPTIONS:MDOCS}
 	${MKDIR} ${STAGEDIR}${DOCSDIR}
-	${INSTALL_DATA} ${KMK_BUILDDIR}/bin/UserManual*.pdf \
+	${INSTALL_DATA} ${WRKDIR}/VirtualBox-docs-${DISTVERSION}/UserManual.pdf \
 	    ${STAGEDIR}${DOCSDIR}
 .endif
 
@@ -379,7 +387,7 @@ do-install:
 
 	@${MKDIR} ${STAGEDIR}${PYTHON_SITELIBDIR}/xpcom
 	cd ${KMK_BUILDDIR}/bin/sdk/bindings/xpcom/python/xpcom && \
-	    ${COPYTREE_SHARE} "*" ${STAGEDIR}${PYTHON_SITELIBDIR}/xpcom
+	    ${COPYTREE_SHARE} . ${STAGEDIR}${PYTHON_SITELIBDIR}/xpcom
 	@${MKDIR} ${STAGEDIR}${DATADIR}/sdk/bindings/xpcom/python
 	${RLN} ${STAGEDIR}${PYTHON_SITELIBDIR}/xpcom \
 	    ${STAGEDIR}${DATADIR}/sdk/bindings/xpcom/python
@@ -391,7 +399,7 @@ do-install:
 	    ${STAGEDIR}${PREFIX}/share/pixmaps/VBox.png
 	${INSTALL_DATA} \
 	    ${WRKSRC}/src/VBox/Installer/freebsd/virtualbox.desktop \
-	    ${STAGEDIR}${PREFIX}/share/applications/virtualbox.desktop
+	    ${STAGEDIR}${DESKTOPDIR}/virtualbox.desktop
 .endif
 
 .if ${PORT_OPTIONS:MVNC}

@@ -1,5 +1,5 @@
 PORTNAME=	goesimage
-DISTVERSION=	0.1.3
+DISTVERSION=	0.1.4
 PORTREVISION=	1
 CATEGORIES=	deskutils
 
@@ -16,6 +16,7 @@ RUN_DEPENDS=	bash:shells/bash \
 
 USES=		magick:6,run shebangfix
 SHEBANG_FILES=	goesimage
+
 USE_GITHUB=	yes
 GH_ACCOUNT=	pigmonkey
 

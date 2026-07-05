@@ -1,5 +1,6 @@
 PORTNAME=	pymtl
 DISTVERSION=	3.1.16
+PORTREVISION=	1
 CATEGORIES=	cad python
 MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -12,8 +13,7 @@ WWW=		https://github.com/pymtl/pymtl3
 
 LICENSE=	BSD3CLAUSE
 
-RUN_DEPENDS=	\
-		${PYTHON_PKGNAMEPREFIX}cffi>0:devel/py-cffi@${PY_FLAVOR} \
+RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}cffi>0:devel/py-cffi@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}greenlet>0:devel/py-greenlet@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}hypothesis>=4.18.1:devel/py-hypothesis@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}py>0:devel/py-py@${PY_FLAVOR} \

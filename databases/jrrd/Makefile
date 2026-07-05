@@ -1,5 +1,6 @@
 PORTNAME=	jrrd
 PORTVERSION=	1.1.4
+PORTREVISION=	3
 CATEGORIES=	databases java
 MASTER_SITES=	SF/opennms/JRRD/stable-1.0
 
@@ -7,16 +8,19 @@ MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Java native interface (JNI) to RRDtool
 WWW=		https://www.opennms.org/index.php/Jrrd
 
+DEPRECATED=	only builds with Java 8, unmaintained, no dependencies in the ports tree, an alternative is https://github.com/OpenNMS/jrrd2
+EXPIRATION_DATE=	2026-05-13
+
 LIB_DEPENDS=	librrd.so:databases/rrdtool
 
-USES=		libtool
-USE_JAVA=	yes
+USES=		java libtool
+JAVA_VERSION=	8
 JAVA_VENDOR=	openjdk
-JAVA_BUILD=	yes
-JAVA_RUN=	yes
+USE_LDCONFIG=	yes
+
 GNU_CONFIGURE=	yes
 CONFIGURE_ENV=	JAVA_HOME=${JAVA_HOME}
-USE_LDCONFIG=	yes
+
 INSTALL_TARGET=	install-strip
 
 PLIST_FILES=	%%JAVAJARDIR%%/jrrd.jar \

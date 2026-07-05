@@ -1,6 +1,5 @@
 PORTNAME=	v_sim
-DISTVERSION=	3.8.0
-PORTREVISION=	11
+DISTVERSION=	3.9.0
 CATEGORIES=	science
 
 MAINTAINER=	thierry@FreeBSD.org
@@ -16,7 +15,8 @@ BUILD_DEPENDS=	p5-XML-LibXML>0:textproc/p5-XML-LibXML	\
 		libarchive>0:archivers/libarchive	\
 		xcrysden:science/xcrysden	\
 		bash:shells/bash
-LIB_DEPENDS=	libfontconfig.so:x11-fonts/fontconfig	\
+LIB_DEPENDS=	libgdkglext-x11-1.0.so:x11-toolkits/gtkglext	\
+		libfontconfig.so:x11-fonts/fontconfig	\
 		libopenbabel.so:science/openbabel	\
 		libfreetype.so:print/freetype2	\
 		libharfbuzz.so:print/harfbuzz	\
@@ -28,7 +28,6 @@ LIB_DEPENDS=	libfontconfig.so:x11-fonts/fontconfig	\
 RUN_DEPENDS=	${PYNUMPY}	\
 		xcrysden:science/xcrysden	\
 		libarchive>0:archivers/libarchive	\
-		${PYTHON_PKGNAMEPREFIX}gobject3>0:devel/py-gobject3@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}matplotlib>0:math/py-matplotlib@${PY_FLAVOR}
 
 USES=		autoreconf blaslapack compiler:c11 fortran gl gmake gnome	\
@@ -36,7 +35,7 @@ USES=		autoreconf blaslapack compiler:c11 fortran gl gmake gnome	\
 		shebangfix tar:bzip2 xorg
 SHEBANG_GLOB=	*.py
 USE_XORG=	x11
-USE_GNOME=	cairo gtk30 gdkpixbuf2 intltool introspection
+USE_GNOME=	cairo gtk30 gdkpixbuf intltool introspection pygobject3:run
 USE_GL=		gl glu
 USE_GITLAB=	yes
 GL_ACCOUNT=	l_sim

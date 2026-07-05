@@ -1,7 +1,7 @@
 <?php
 /*
  * acme_sh.inc
- * 
+ *
  * part of pfSense (https://www.pfsense.org/)
  * Copyright (c) 2016 PiBa-NL
  * All rights reserved.
@@ -49,19 +49,20 @@ class acme_sh_domain {
 		$this->NSUPDATE_ZONE = $zone;
 	}
 }
-	
+
 class acme_sh {
 
+	private $acmeconf;
 	private $accountconfig;
 	private $path_account;
 	private $name;
 	private $debug = true;
 	public $dnssleep;
-	public $ocspstaple;
 	public $preferredchain;
-	
+	public $addressfamily;
+	public $certprofile;
+
 	private function execacmesh($command, $envvariables = null) {
-		global $config;
 		$command = "/usr/local/pkg/acme/acme.sh " . $command;
 		if ($this->debug) {
 			echo "\n{$command}\n";
@@ -70,15 +71,16 @@ class acme_sh {
 		$env = array();
 		$env['path'] = "/etc:/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin/";
 		$env['PATH'] = "/etc:/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin/";
+		$env['SSL_CERT_DIR'] = "/etc/ssl/certs/";
 
 		/* Setup Proxy Variables */
-		if (!empty($config['system']['proxyurl'])) {
-			$proxy_url = $config['system']['proxyurl'];
-			if (!empty($config['system']['proxyport'])) {
-				$proxy_url .= ":{$config['system']['proxyport']}";
+		if (!empty(config_get_path('system/proxyurl'))) {
+			$proxy_url = config_get_path('system/proxyurl');
+			if (!empty(config_get_path('system/proxyport'))) {
+				$proxy_url .= ':' . config_get_path('system/proxyport');
 			}
-			if (!empty($config['system']['proxyuser']) && !empty($config['system']['proxypass'])) {
-				$proxy_url = "{$config['system']['proxyuser']}:{$config['system']['proxypass']}@{$proxy_url}";
+			if (!empty(config_get_path('system/proxyuser')) && !empty(config_get_path('system/proxypass'))) {
+				$proxy_url = config_get_path('system/proxyuser') . ':' . config_get_path('system/proxypass') . "@{$proxy_url}";
 			}
 			$env['http_proxy'] = $proxy_url;
 			$env['https_proxy'] = $proxy_url;
@@ -91,9 +93,9 @@ class acme_sh {
 			print_r($env);
 		}
 		$descriptorspec = array(
-		   0 => array("pipe", "r"),  // stdin is a pipe that the child will read from
-		   1 => array("pipe", "w"),  // stdout is a pipe that the child will write to
-		   2 => array("pipe", "w")   // stderr
+			0 => array("pipe", "r"),  // stdin is a pipe that the child will read from
+			1 => array("pipe", "w"),  // stdout is a pipe that the child will write to
+			2 => array("pipe", "w")   // stderr
 		);
 		$process = proc_open($command, $descriptorspec, $pipes, null, $env);
 		if (is_resource($process)) {
@@ -109,23 +111,22 @@ class acme_sh {
 		}
 		return $return_value;
 	}
-	
+
 	function __construct($name, $ca, $email) {
 		$this->name = $name;
 		$this->init($ca, $name, $email);
 	}
-	
+
 	function init($ca, $name, $email) {
 		$conf = "ACME_DIRECTORY='{$ca}'\nACCOUNT_EMAIL='{$email}'\n";
 		$cadir = parse_url($ca, PHP_URL_HOST) . parse_url($ca, PHP_URL_PATH);
-		$acmeconf = "/tmp/acme/{$name}/";
-		$this->acmeconf = $acmeconf;
-		$this->path_account = "{$acmeconf}/ca/{$cadir}";
+		$this->acmeconf = "/tmp/acme/{$name}/";
+		$this->path_account = "{$this->acmeconf}/ca/{$cadir}";
 		safe_mkdir($this->path_account);
 		$this->accountconfig = "{$this->acmeconf}accountconf.conf";
 		file_put_contents("{$this->accountconfig}", $conf);
 	}
-	
+
 	function generateAccountKey() {
 		unlink_if_exists("{$this->path_account}/account.key");
 		$this->debug = false;
@@ -138,25 +139,30 @@ class acme_sh {
 		$privateKey = file_get_contents("{$this->path_account}/account.key");
 		return $privateKey;
 	}
-	
-	function registeraccount($key) {
+
+	function registeraccount($key, $eabkid = "", $eabhmac = "") {
 		file_put_contents("{$this->path_account}/account.key", $key);
-		$this->debug = false;
+		$this->debug = true;
+		$eabopts = "";
+		if (!empty($eabkid) && !empty($eabhmac)) {
+			$eabopts = " --eab-kid " . escapeshellarg($eabkid)
+				. " --eab-hmac-key " . escapeshellarg($eabhmac);
+		}
 		$result = $this->execacmesh(""
 				. " --home " . escapeshellarg($this->acmeconf)
-				. " --registeraccount"
+				. " --registeraccount" . $eabopts
 				. " --accountconf " . escapeshellarg($this->accountconfig)
 				. " --log-level 3"
 				. " --log " . escapeshellarg($this->acmeconf."acme_issuecert.log"));
 		return $result == 0;
 	}
-	
+
 	function generateDomainKey($domain, $keylength) {
 		global $a_keylength;
 		$pathadd = "";
 		$certpath = "{$this->acmeconf}{$domain}{$pathadd}";
 		safe_mkdir($certpath);
-		
+
 		unlink_if_exists("{$certpath}/{$domain}.key");
 		$this->execacmesh(""
 				. " --home " . escapeshellarg($this->acmeconf)
@@ -170,7 +176,7 @@ class acme_sh {
 		$privateKey = file_get_contents("{$certpath}/{$domain}.key");
 		return $privateKey;
 	}
-	
+
 	function signCertificate($action, $accountkey, $certificatepsk, $domainstosign, $envvariables = null) {
 		// $action = issue / renew
 		global $acme_domain_validation_method;
@@ -180,11 +186,18 @@ class acme_sh {
 		if (is_numericint($this->dnssleep)) {
 			$cmdparameters .= " --dnssleep " . escapeshellarg($this->dnssleep);
 		}
-		if ($this->ocspstaple == "yes") {
-			$cmdparameters .= " --ocsp-must-staple ";
-		}
 		if (!empty($this->preferredchain)) {
 			$cmdparameters .= " --preferred-chain " . escapeshellarg($this->preferredchain);
+		}
+		if (!empty($this->addressfamily)) {
+			if ($this->addressfamily == 'ipv4') {
+				$cmdparameters .= " --request-v4";
+			} elseif ($this->addressfamily == 'ipv6') {
+				$cmdparameters .= " --request-v6";
+			}
+		}
+		if (!empty($this->certprofile)) {
+			$cmdparameters .= " --cert-profile " . escapeshellarg($this->certprofile);
 		}
 
 		$Le_Domain = $domainstosign[0]->domainname;
@@ -218,13 +231,13 @@ EOF;
 		$hookfile_httpapi = "{$this->acmeconf}httpapi/pfSenseacme.sh";
 		file_put_contents($hookfile_httpapi, $hookcontent_httpapi);
 		chmod($hookfile_httpapi, 0755);
-		
+
 		$certpath = "{$this->acmeconf}{$domainstosign[0]->domainname}";
 		safe_mkdir($certpath);
 		file_put_contents("{$certpath}/{$domainstosign[0]->domainname}.key.next", $certificatepsk);
 		$domainstr = "";
 		foreach($domainstosign as $domain) {
-			$api = $domain->method; 
+			$api = $domain->method;
 			$domainstr .= " --domain " . escapeshellarg($domain->domainname);
 			if (!empty($domain->method)) {
 				$domainparameters = "";
@@ -269,7 +282,7 @@ EOF;
 				}
 
 				$acmechalengedom = (substr($nsupdatedomain, 0, 2) === "*.") ? substr($nsupdatedomain, 2) : $nsupdatedomain;
-				file_put_contents("{$nsupdatefileprefix}_acme-challenge.{$acmechalengedom}.server", $domain->NSUPDATE_SERVER);
+				file_put_contents("{$nsupdatefileprefix}" . ($domain->challengedomain != "yes" ? "_acme-challenge." : "") . "{$acmechalengedom}.server", $domain->NSUPDATE_SERVER);
 				$nsupdatekey = base64_decode($domain->NSUPDATE_KEY);
 
 				/* Set a default key algo of HMAC-MD5 if the key type is invalid. */
@@ -283,7 +296,7 @@ key "{$key_name}." {
 	secret "{$nsupdatekey}";
 };
 EOD;
-				file_put_contents("{$nsupdatefileprefix}_acme-challenge.{$acmechalengedom}.key", $keydata);
+				file_put_contents("{$nsupdatefileprefix}" . ($domain->challengedomain != "yes" ? "_acme-challenge." : "") . "{$acmechalengedom}.key", $keydata);
 			}
 		}
 

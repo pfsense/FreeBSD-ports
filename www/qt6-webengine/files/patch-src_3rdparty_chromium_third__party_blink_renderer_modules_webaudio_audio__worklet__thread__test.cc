@@ -1,6 +1,6 @@
---- src/3rdparty/chromium/third_party/blink/renderer/modules/webaudio/audio_worklet_thread_test.cc.orig	2023-01-11 09:17:16 UTC
+--- src/3rdparty/chromium/third_party/blink/renderer/modules/webaudio/audio_worklet_thread_test.cc.orig	2025-08-15 18:30:00 UTC
 +++ src/3rdparty/chromium/third_party/blink/renderer/modules/webaudio/audio_worklet_thread_test.cc
-@@ -380,7 +380,7 @@ class AudioWorkletThreadPriorityTest
+@@ -465,7 +465,7 @@ class AudioWorkletThreadPriorityTest
  
      // TODO(crbug.com/1022888): The worklet thread priority is always NORMAL
      // on OS_LINUX and OS_CHROMEOS regardless of the thread priority setting.

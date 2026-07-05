@@ -1,6 +1,6 @@
 PORTNAME=	fractal
 DISTVERSION=	4.4.2
-PORTREVISION=	9
+PORTREVISION=	28
 CATEGORIES=	net-im
 MASTER_SITES=	https://gitlab.gnome.org/GNOME/${PORTNAME}/-/archive/${DISTVERSION}/
 # XXX USES=cargo omits the default source archive by default
@@ -13,6 +13,8 @@ WWW=		https://gitlab.gnome.org/GNOME/fractal
 LICENSE=	GPLv3+
 LICENSE_FILE=	${WRKSRC}/LICENSE.txt
 
+BROKEN=		Fails to build, error: failed to select a version for the requirement `syn = "^2"`
+
 LIB_DEPENDS=	libdbus-1.so:devel/dbus \
 		libgmp.so:math/gmp \
 		libgspell-1.so:textproc/gspell \
@@ -21,7 +23,7 @@ LIB_DEPENDS=	libdbus-1.so:devel/dbus \
 USES=		cargo cpe desktop-file-utils gettext gnome gstreamer meson \
 		pkgconfig python:build shebangfix ssl
 CPE_VENDOR=	gnome
-USE_GNOME=	cairo gdkpixbuf2 gtk30 gtksourceview4
+USE_GNOME=	cairo gdkpixbuf gtk30 gtksourceview4
 USE_GSTREAMER=	bad editing-services
 
 SHEBANG_FILES=	scripts
@@ -34,9 +36,10 @@ CARGO_TEST=	no
 CARGO_TARGET_DIR=	${WRKSRC}/${MESON_BUILD_DIR}/target
 MAKE_ENV+=	${CARGO_ENV}
 
-post-install:
-.	ifndef WITH_DEBUG
-	${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/fractal
-.	endif
+.include <bsd.port.options.mk>
+
+.if ${ARCH} == powerpc
+LTO_UNSAFE=	yes
+.endif
 
 .include <bsd.port.mk>

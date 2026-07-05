@@ -1898,9 +1898,9 @@ share/icons/hicolor/64x64/apps/klettres.png
 %%DATADIR%%/uk/syllab/zmi.ogg
 %%DATADIR%%/uk/syllab/zyk.ogg
 share/knsrcfiles/klettres.knsrc
-share/kxmlgui5/klettres/klettresui.rc
 share/locale/af/LC_MESSAGES/klettres.mo
 share/locale/ar/LC_MESSAGES/klettres.mo
+share/locale/ast/LC_MESSAGES/klettres.mo
 share/locale/be/LC_MESSAGES/klettres.mo
 share/locale/bg/LC_MESSAGES/klettres.mo
 share/locale/bn/LC_MESSAGES/klettres.mo
@@ -1956,6 +1956,7 @@ share/locale/pt/LC_MESSAGES/klettres.mo
 share/locale/pt_BR/LC_MESSAGES/klettres.mo
 share/locale/ro/LC_MESSAGES/klettres.mo
 share/locale/ru/LC_MESSAGES/klettres.mo
+share/locale/sa/LC_MESSAGES/klettres.mo
 share/locale/se/LC_MESSAGES/klettres.mo
 share/locale/si/LC_MESSAGES/klettres.mo
 share/locale/sk/LC_MESSAGES/klettres.mo
@@ -1973,4 +1974,4 @@ share/locale/xh/LC_MESSAGES/klettres.mo
 share/locale/zh_CN/LC_MESSAGES/klettres.mo
 share/locale/zh_TW/LC_MESSAGES/klettres.mo
 share/metainfo/org.kde.klettres.appdata.xml
-share/qlogging-categories5/klettres.categories
+share/qlogging-categories6/klettres.categories

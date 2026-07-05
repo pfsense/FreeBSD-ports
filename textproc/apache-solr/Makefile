@@ -1,5 +1,6 @@
 PORTNAME=	apache-solr
-PORTVERSION=	9.5.0
+PORTVERSION=	9.9.0
+PORTREVISION=	1
 PORTEPOCH=	1
 CATEGORIES=	textproc java
 MASTER_SITES=	https://archive.apache.org/dist/solr/solr/${PORTVERSION}/
@@ -13,12 +14,10 @@ LICENSE=	APACHE20
 
 RUN_DEPENDS=	bash:shells/bash
 
-USES=		cpe tar:tgz
+USES=		cpe java tar:tgz
 CPE_VENDOR=	apache
 CPE_PRODUCT=	solr
-USE_JAVA=	yes
 JAVA_VERSION=	11+
-JAVA_RUN=	yes
 USE_RC_SUBR=	solr
 
 NO_ARCH=	yes

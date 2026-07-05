@@ -25,6 +25,7 @@ lib/babl-%%BABL_VER%%/cairo.so
 lib/babl-%%BABL_VER%%/double.so
 lib/babl-%%BABL_VER%%/fast-float.so
 lib/babl-%%BABL_VER%%/float.so
+lib/babl-%%BABL_VER%%/formats.so
 lib/babl-%%BABL_VER%%/gegl-fixups.so
 lib/babl-%%BABL_VER%%/gggl-lies.so
 lib/babl-%%BABL_VER%%/gggl-table-lies.so
@@ -68,6 +69,18 @@ lib/babl-%%BABL_VER%%/u32.so
 %%AMD64%%lib/babl-%%BABL_VER%%/x86-64-v3-u16.so
 %%AMD64%%lib/babl-%%BABL_VER%%/x86-64-v3-u32.so
 %%AMD64%%lib/babl-%%BABL_VER%%/x86-64-v3-ycbcr.so
+%%AMD64%%lib/babl-%%BABL_VER%%/x86-64-v4-CIE.so
+%%AMD64%%lib/babl-%%BABL_VER%%/x86-64-v4-cairo.so
+%%AMD64%%lib/babl-%%BABL_VER%%/x86-64-v4-double.so
+%%AMD64%%lib/babl-%%BABL_VER%%/x86-64-v4-float.so
+%%AMD64%%lib/babl-%%BABL_VER%%/x86-64-v4-gegl-fixups.so
+%%AMD64%%lib/babl-%%BABL_VER%%/x86-64-v4-gggl-lies.so
+%%AMD64%%lib/babl-%%BABL_VER%%/x86-64-v4-gggl.so
+%%AMD64%%lib/babl-%%BABL_VER%%/x86-64-v4-grey.so
+%%AMD64%%lib/babl-%%BABL_VER%%/x86-64-v4-simple.so
+%%AMD64%%lib/babl-%%BABL_VER%%/x86-64-v4-u16.so
+%%AMD64%%lib/babl-%%BABL_VER%%/x86-64-v4-u32.so
+%%AMD64%%lib/babl-%%BABL_VER%%/x86-64-v4-ycbcr.so
 lib/babl-%%BABL_VER%%/ycbcr.so
 lib/girepository-1.0/Babl-%%BABL_VER%%.typelib
 lib/libbabl-%%BABL_VER%%.so

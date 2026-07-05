@@ -1,10 +1,11 @@
 PORTNAME=	azure-synapse-managedprivateendpoints
 DISTVERSION=	0.4.0
+PORTREVISION=	1
 CATEGORIES=	devel python
 MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
-MAINTAINER=	dbaio@FreeBSD.org
+MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Microsoft Azure Synapse Managed Private Endpoints Client Library for Python
 WWW=		https://pypi.org/project/azure-synapse-managedprivateendpoints/
 

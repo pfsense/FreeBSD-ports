@@ -1,5 +1,6 @@
 PORTNAME=	jcmdline
 PORTVERSION=	2.0.0
+PORTREVISION=	1
 CATEGORIES=	devel java
 MASTER_SITES=	SF
 
@@ -10,7 +11,8 @@ WWW=		https://jcmdline.sourceforge.net/
 LICENSE=	MPL11
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-USE_JAVA=	yes
+USES=		java
+
 NO_BUILD=	yes
 NO_ARCH=	yes
 

@@ -1,10 +1,11 @@
 PORTNAME=	rply
-PORTVERSION=	0.7.7
+PORTVERSION=	0.7.8
+PORTREVISION=	1
 CATEGORIES=	devel python
 MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
-MAINTAINER=	dave@dal.ca
+MAINTAINER=	jadawin@FreeBSD.org
 COMMENT=	Pure python parser generator, that also works with RPython
 WWW=		https://github.com/alex/rply
 

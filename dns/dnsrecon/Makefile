@@ -1,6 +1,6 @@
 PORTNAME=	dnsrecon
 DISTVERSION=	0.10.1
-PORTREVISION=	1
+PORTREVISION=	3
 CATEGORIES=	dns
 
 MAINTAINER=	rihaz.jerrin@gmail.com

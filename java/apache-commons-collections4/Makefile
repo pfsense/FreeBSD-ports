@@ -1,21 +1,22 @@
 PORTNAME=	commons-collections4
-PORTVERSION=	4.4
+DISTVERSION=	4.5.0-M3
+PORTREVISION=	1
 CATEGORIES=	java devel
 MASTER_SITES=	APACHE_COMMONS_BINARIES
 MASTER_SITE_SUBDIR=	collections
 PKGNAMEPREFIX=	apache-
-DISTNAME=	${PORTNAME}-${PORTVERSION}-bin
+DISTNAME=	${PORTNAME}-${DISTVERSION}-bin
 
 MAINTAINER=	thierry@FreeBSD.org
 COMMENT=	Classes that extend/augment the Java Collections Framework
 WWW=		https://commons.apache.org/proper/commons-collections/
 
 LICENSE=	APACHE20
+LICENSE_FILE=	${WRKSRC}/LICENSE.txt
 
-USE_JAVA=	yes
-JAVA_VERSION=	8+
+USES=		java
 
-WRKSRC=		${WRKDIR}/${PORTNAME}-${PORTVERSION}
+WRKSRC=		${WRKDIR}/${PORTNAME}-${DISTVERSION}
 NO_BUILD=	yes
 NO_ARCH=	yes
 
@@ -26,7 +27,7 @@ OPTIONS_DEFINE=	DOCS
 
 do-install:
 	@${MKDIR} ${STAGEDIR}${JAVAJARDIR}
-	${INSTALL_DATA} ${WRKSRC}/${PORTNAME}-${PORTVERSION}.jar \
+	${INSTALL_DATA} ${WRKSRC}/${PORTNAME}-${DISTVERSION}.jar \
 		${STAGEDIR}${JAVAJARDIR}/${PORTNAME}.jar
 
 do-install-DOCS-on:

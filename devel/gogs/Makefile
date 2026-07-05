@@ -1,15 +1,17 @@
 PORTNAME=	gogs
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.12.11
-PORTREVISION=	7
+DISTVERSION=	0.14.2
 CATEGORIES=	devel www
 
-MAINTAINER=	dmgk@FreeBSD.org
+MAINTAINER=	siva@FreeBSD.org
 COMMENT=	Painless self-hosted Git service
 WWW=		https://gogs.io/
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
+
+ONLY_FOR_ARCHS=	aarch64 amd64
+ONLY_FOR_ARCHS_REASON=	module modernc.org/sqlite only supported on aarch64 and amd64
 
 BUILD_DEPENDS=	go-bindata:devel/go-bindata
 RUN_DEPENDS=	git:devel/git \
@@ -17,7 +19,7 @@ RUN_DEPENDS=	git:devel/git \
 
 USES=		cpe go:modules
 
-GO_MODULE=	gogs.io/gogs
+GO_MODULE=	github.com/gogs/gogs
 GO_TARGET=	:${PREFIX}/libexec/${PORTNAME}/${PORTNAME}
 GO_BUILDFLAGS=	-tags "sqlite pam cert"
 
@@ -56,10 +58,6 @@ post-patch:
 		-e 's|^ROOT_PATH =$$|ROOT_PATH = ${GOGS_LOGDIR}|' \
 		-e 's|^TYPE = postgres$$|DB_TYPE = sqlite3|' \
 		${WRKSRC}/conf/app.ini
-
-pre-build:
-	cd ${WRKSRC} && \
-		${SETENV} ${MAKE_ENV} ${GO_ENV} ${GO_CMD} generate internal/assets/templates/templates.go \
 
 post-install:
 	${INSTALL_SCRIPT} ${WRKDIR}/gogs ${STAGEDIR}${PREFIX}/bin/

@@ -1,22 +1,23 @@
 PORTNAME=	twine
-PORTVERSION=	5.0.0
+PORTVERSION=	6.2.0
 CATEGORIES=	devel python
 MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Collection of utilities for interacting with PyPI
-WWW=		https://github.com/pypa/twine
+WWW=		https://twine.readthedocs.io/en/stable/ \
+		https://github.com/pypa/twine
 
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}setuptools>=45:devel/py-setuptools@${PY_FLAVOR} \
+BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}setuptools>=61:devel/py-setuptools@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}setuptools-scm>=6.0:devel/py-setuptools-scm@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}wheel>=0:devel/py-wheel@${PY_FLAVOR}
-RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}importlib-metadata>=3.6:devel/py-importlib-metadata@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}keyring>=15.1,1:security/py-keyring@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}pkginfo>=1.8.1:sysutils/py-pkginfo@${PY_FLAVOR} \
+RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}id>=0:devel/py-id@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}keyring>=21.2.0,1:security/py-keyring@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}packaging>=24.0:devel/py-packaging@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}readme-renderer>=35.0:devel/py-readme-renderer@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}requests>=2.20:www/py-requests@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}requests-toolbelt>=0.8.0:www/py-requests-toolbelt@${PY_FLAVOR} \

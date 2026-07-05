@@ -12,6 +12,13 @@
 #
 # TCL_INCLUDEDIR	- Path where the Tcl C headers can be found
 #
+# TCL_PKG_LIB_PREFIX    - Library prefix, as per TIP595. This is tcl9 when
+#			  when building against Tcl 9.0, and empty otherwise
+#
+# TCL_PKG_STUB_POSTFIX  - Stub library postfix. This is empty when building
+#			  against Tcl 9.0, and DISTVERSION otherwise.
+#			  See https://core.tcl-lang.org/tclconfig/info/381985d331b96ba9
+#
 #
 # TK_VER		- Major.Minor version of Tk
 #
@@ -38,11 +45,11 @@
 #   			  is installed, bring in the default version. See
 #   			  ${_TCLTK_DEFAULT_VERSION} below.
 #
-# - 85, 86, 87		- Depend on a specific version series of PORT. Multiple
+# - 86, 90		- Depend on a specific version series of PORT. Multiple
 #   			  values are OK. The highest version available is
 #   			  picked.
 #
-# - 85+, 86+, 87+	- Depend on any installed version greater or equal to
+# - 86+ 		- Depend on any installed version greater or equal to
 #   			  the specified version.
 #
 # If wrapper is specified, an additional dependency on tcl-wrapper or
@@ -71,7 +78,7 @@ _INCLUDE_USES_TCL_MK=	yes
 #
 # When adding a version, please keep the comment in
 # Mk/bsd.default-versions.mk in sync.
-_TCLTK_VALID_VERSIONS=	85 86 87
+_TCLTK_VALID_VERSIONS=	86 90
 
 #
 # Bring in the default and check that the specified version is in the list of
@@ -94,16 +101,16 @@ _TCLTK_PORT?=	tcl
 .  if ${tcl_ARGS:M*+}
 _TCLTK_MIN_VERSION:=	${tcl_ARGS:M*+:S/+//}
 _TCLTK_WANTED_VERSIONS:=${_TCLTK_DEFAULT_VERSION}
-.    if ${_TCLTK_MIN_VERSION} == "85"
-IGNORE=	Minimum tcltk version 85+ is meaningless
-.    endif
 .  endif
 
 #
 # Parse one or more ver arguments.
 #
-.  if ${tcl_ARGS:M8[5-7]}
-_TCLTK_WANTED_VERSIONS:=${tcl_ARGS:M8[5-7]}
+.  if ${tcl_ARGS:M86}
+_TCLTK_WANTED_VERSIONS:=${tcl_ARGS:M86}
+.  endif
+.  if ${tcl_ARGS:M90}
+_TCLTK_WANTED_VERSIONS:=${tcl_ARGS:M90}
 .  endif
 
 #
@@ -156,22 +163,16 @@ _TCLTK_WANTED_VERSION:= ${_TCLTK_HIGHEST_VERSION}
 .  endif
 
 #
-# Deprecate by default all ports depending on 8.5
-.  if ${_TCLTK_WANTED_VERSION} == "85"
-DEPRECATED=	Tcl/Tk 8.5 is nearing EOL, please consider porting to Tcl/Tk 8.6
-.  endif
-
-#
 # Exported variables
 #
-TCL_VER:=	${_TCLTK_WANTED_VERSION:S/8/8./}
+TCL_VER:=	${_TCLTK_WANTED_VERSION:S/8/8./:S/9/9./}
 TCL_SHLIB_VER:=	${_TCLTK_WANTED_VERSION}
 TCLSH:=		${LOCALBASE}/bin/tclsh${TCL_VER}
 TCL_LIBDIR:=	${LOCALBASE}/lib/tcl${TCL_VER}
 TCL_INCLUDEDIR:=${LOCALBASE}/include/tcl${TCL_VER}
 
 .  if ${_TCLTK_PORT} == "tk"
-TK_VER:=	${_TCLTK_WANTED_VERSION:S/8/8./}
+TK_VER:=	${_TCLTK_WANTED_VERSION:S/8/8./:S/9/9./}
 TK_SHLIB_VER:=	${_TCLTK_WANTED_VERSION}
 WISH:=		${LOCALBASE}/bin/wish${TCL_VER}
 TK_LIBDIR:=	${LOCALBASE}/lib/tk${TK_VER}
@@ -222,7 +223,15 @@ LIB_DEPENDS+=	${_TCLTK_LIB_LINE}
 .  if ${tcl_ARGS:Mtea}
 GNU_CONFIGURE=	yes
 TCL_PKG?=	${PORTNAME:C/^tcl(-?)//:C/(-?)tcl\$//}${PORTVERSION}
-PLIST_SUB+=	TCL_PKG=${TCL_PKG}
+.    if ${TCL_VER} == "9.0"
+TCL_PKG_LIB_PREFIX=	tcl9
+TCL_PKG_STUB_POSTFIX=	
+.    else
+TCL_PKG_LIB_PREFIX=	
+TCL_PKG_STUB_POSTFIX=	${DISTVERSION}
+.    endif
+PLIST_SUB+=	TCL_PKG=${TCL_PKG} TCL_PKG_LIB_PREFIX=${TCL_PKG_LIB_PREFIX} \
+		TCL_PKG_STUB_POSTFIX=${TCL_PKG_STUB_POSTFIX}
 CONFIGURE_ARGS+=--exec-prefix=${PREFIX} \
 		--with-tcl=${TCL_LIBDIR} \
 		--with-tclinclude=${TCL_INCLUDEDIR}

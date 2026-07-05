@@ -1,11 +1,12 @@
 PORTNAME=	zfp
-DISTVERSION=	1.0.0
+DISTVERSION=	1.0.1
 CATEGORIES=	devel science
 MASTER_SITES=	https://github.com/LLNL/${PORTNAME}/releases/download/${DISTVERSION}/
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	High throughput library for compressed floating-point arrays
-WWW=		https://computing.llnl.gov/projects/zfp
+WWW=		https://computing.llnl.gov/projects/zfp \
+		https://github.com/LLNL/zfp
 
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE

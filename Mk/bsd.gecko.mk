@@ -60,22 +60,24 @@ MOZILLA?=	${PORTNAME}
 MOZILLA_VER?=	${PORTVERSION}
 MOZILLA_BIN?=	${PORTNAME}-bin
 MOZILLA_EXEC_NAME?=${MOZILLA}
-USES+=		compiler:c++17-lang cpe gl gmake gnome iconv llvm:noexport localbase \
+USES+=		compiler:c++17-lang cpe elfctl gl gmake gnome iconv \
+			llvm:min=17,noexport localbase nodejs:24,build,env \
 			pkgconfig python:build desktop-file-utils
 CPE_VENDOR?=mozilla
 USE_GL=		gl
-USE_GNOME=	cairo gdkpixbuf2 gtk30
+USE_GNOME=	cairo gdkpixbuf gtk30
 USE_XORG=	x11 xcb xcomposite xdamage xext xfixes xrandr xrender xt xtst
 HAS_CONFIGURE=	yes
 CONFIGURE_OUTSOURCE=	yes
-LDFLAGS+=		-Wl,--as-needed
+LDFLAGS+=		-Wl,--as-needed -Wl,--undefined-version
 BINARY_ALIAS+=	python3=${PYTHON_CMD}
+
+ELF_FEATURES+=	+wxneeded:dist/bin/${MOZILLA} +wxneeded:dist/bin/${MOZILLA}-bin
 
 BUNDLE_LIBS=	yes
 
-BUILD_DEPENDS+=	rust-cbindgen>=0.26.0:devel/rust-cbindgen \
-				${RUST_DEFAULT}>=1.77.0:lang/${RUST_DEFAULT} \
-				node:www/node
+BUILD_DEPENDS+=	rust-cbindgen>=0.29.1:devel/rust-cbindgen \
+				${RUST_DEFAULT}>=1.94.0:lang/${RUST_DEFAULT}
 LIB_DEPENDS+=	libdrm.so:graphics/libdrm
 RUN_DEPENDS+=	${LOCALBASE}/lib/libpci.so:devel/libpci
 LIB_DEPENDS+=	libepoll-shim.so:devel/libepoll-shim
@@ -113,7 +115,11 @@ RUSTFLAGS+=	${CFLAGS:M-mcpu=*:S/-mcpu=/-C target-cpu=/}
 .    endif
 
 # Standard depends
-_ALL_DEPENDS=	av1 event ffi graphite harfbuzz icu jpeg nspr nss png pixman sqlite vpx webp
+_ALL_DEPENDS=	av1 event ffi graphite harfbuzz jpeg nspr nss png pixman sqlite vpx webp
+# from 147 on, gecko needs ICU 78, but ports only has ICU 76 (2025-12-28)
+.    if ${MOZILLA_VER:R:R} < 147
+_ALL_DEPENDS+=	icu
+.    endif
 
 .    if exists(${FILESDIR}/patch-bug1559213)
 av1_LIB_DEPENDS=	libaom.so:multimedia/aom libdav1d.so:multimedia/dav1d

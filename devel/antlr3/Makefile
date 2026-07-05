@@ -1,6 +1,6 @@
 PORTNAME=	antlr3
 PORTVERSION=	3.5.2
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	devel java
 MASTER_SITES=	http://www.antlr3.org/download/
 DISTNAME=	antlr-${PORTVERSION}-complete
@@ -13,9 +13,10 @@ WWW=		https://www.antlr3.org/
 
 LICENSE=	BSD3CLAUSE
 
+USES=		java
+
 NO_BUILD=	yes
 NO_ARCH=	yes
-USE_JAVA=	yes
 INSTALL_JAR=	${DISTFILES}
 SUB_LIST=	INSTALL_JAR=${INSTALL_JAR}
 SUB_FILES=	antlr.sh

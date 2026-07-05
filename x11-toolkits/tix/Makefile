@@ -1,6 +1,6 @@
 PORTNAME=	tix
-PORTVERSION=	8.4.3
-PORTREVISION=	2
+DISTVERSION=	8.4.3
+PORTREVISION=	3
 CATEGORIES=	x11-toolkits tk
 MASTER_SITES=	SF
 DISTNAME=	Tix${DISTVERSION}-src${DISTVERSIONSUFFIX}
@@ -8,6 +8,11 @@ DISTNAME=	Tix${DISTVERSION}-src${DISTVERSIONSUFFIX}
 MAINTAINER=	doconnor@gsoft.com.au
 COMMENT=	Extension to the Tk toolkit
 WWW=		https://tix.sourceforge.net/
+
+LICENSE=	TclTk
+LICENSE_NAME=	Tcl/Tk License
+LICENSE_FILE=	${WRKSRC}/docs/license.tcltk
+LICENSE_PERMS=	dist-mirror dist-sell pkg-mirror pkg-sell auto-accept
 
 USES=		tk:tea
 USE_LDCONFIG=	yes
@@ -19,7 +24,7 @@ TIX_LIB_FILE=	${TIX_LIB}.0
 
 .include <bsd.port.pre.mk>
 
-.if ${OPSYS} == FreeBSD && ( ${OSVERSION} >= 1400091 || ( ${OSVERSION} >= 1302507 && ${OSVERSION} < 1400000 ))
+.if ${OPSYS} == FreeBSD
 CFLAGS+=	-Wno-error=incompatible-function-pointer-types
 .endif
 

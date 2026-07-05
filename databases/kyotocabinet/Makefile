@@ -1,5 +1,6 @@
 PORTNAME=	kyotocabinet
 PORTVERSION=	1.2.80
+PORTREVISION=	1
 CATEGORIES=	databases
 MASTER_SITES=	https://dbmx.net/kyotocabinet/pkg/ \
 		LOCAL/sunpoet
@@ -17,17 +18,12 @@ USES=		compiler:c++11-lang gmake
 
 CPPFLAGS+=	-fPIC
 GNU_CONFIGURE=	yes
-GNU_CONFIGURE_MANPREFIX=${PREFIX}/share
 INSTALL_TARGET=	install-strip
 MAKE_ARGS=	PCDIR=${PREFIX}/libdata/pkgconfig
-REINPLACE_ARGS=	-i ''
 TEST_TARGET=	check
 USE_LDCONFIG=	yes
 
 OPTIONS_DEFINE=	DOCS
-
-post-patch:
-	@${REINPLACE_CMD} -e 's|-lstdc++ ||g' ${WRKSRC}/configure ${WRKSRC}/doc/spex.html ${WRKSRC}/example/Makefile ${WRKSRC}/lab/kcdict/Makefile
 
 post-install:
 	${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/libkyotocabinet.so

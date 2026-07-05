@@ -1,22 +1,22 @@
 PORTNAME=	jode
 PORTVERSION=	1.1.1.1
-PORTREVISION=	4
+PORTREVISION=	6
 CATEGORIES=	java devel
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/1.1.2-pre1
 DISTNAME=	${PORTNAME}-${VENDOR_VERSION}
 
-MAINTAINER=	mi@aldan.algebra.com
+MAINTAINER=	ports@virtual-estates.net
 COMMENT=	Java package containing a decompiler and an optimizer for Java
 WWW=		https://jode.sourceforge.net/
 
 BUILD_DEPENDS=	${GETOPT_JAR}:java/java-getopt
 RUN_DEPENDS:=	${BUILD_DEPENDS}
 
+USES=		gmake java perl5 shebangfix
+
 VENDOR_VERSION=	1.1.2-pre1
-USE_JAVA=	yes
 NEED_JAVAC=	yes
 GNU_CONFIGURE=	yes
-USES=		gmake perl5 shebangfix
 SHEBANG_FILES=	${WRKSRC}/jcpp
 USE_PERL5=	test
 MAKE_JOBS_UNSAFE=	yes

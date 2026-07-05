@@ -1,7 +1,7 @@
 PORTNAME=	yarr
 DISTVERSIONPREFIX=v
-DISTVERSION=	2.4
-PORTREVISION=	4
+DISTVERSION=	2.6
+PORTREVISION=	5
 CATEGORIES=	www
 
 MAINTAINER=	decke@FreeBSD.org
@@ -17,12 +17,12 @@ USE_RC_SUBR=	${PORTNAME}
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	nkanaev
-GH_TUPLE=       \
-                golang:net:v0.8.0:golang_net/vendor/golang.org/x/net \
-                golang:sys:v0.6.0:golang_sys/vendor/golang.org/x/sys \
-                golang:text:v0.8.0:golang_text/vendor/golang.org/x/text \
-                mattn:go-sqlite3:v1.14.7:mattn_go_sqlite3/vendor/github.com/mattn/go-sqlite3
-GO_TARGET=	./src/main.go:yarr
+GH_TUPLE=	\
+		golang:net:v0.38.0:golang_net/vendor/golang.org/x/net \
+		golang:sys:v0.31.0:golang_sys/vendor/golang.org/x/sys \
+		golang:text:v0.23.0:golang_text/vendor/golang.org/x/text \
+		mattn:go-sqlite3:v1.14.24:mattn_go_sqlite3/vendor/github.com/mattn/go-sqlite3
+GO_TARGET=	./cmd/yarr/main.go:yarr
 GO_BUILDFLAGS=	-tags "sqlite_foreign_keys release" -ldflags "-X main.Version=${PORTVERSION}"
 
 PLIST_FILES=	bin/${PORTNAME}

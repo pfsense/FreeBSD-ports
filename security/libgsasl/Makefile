@@ -1,5 +1,5 @@
 PORTNAME=	gsasl
-PORTVERSION=	2.2.1
+PORTVERSION=	2.2.2
 CATEGORIES=	security
 MASTER_SITES=	GNU
 PKGNAMEPREFIX=	lib
@@ -15,17 +15,16 @@ LIB_DEPENDS=	libgcrypt.so:security/libgcrypt \
 		libidn.so:dns/libidn \
 		libntlm.so:security/libntlm
 
-USES=		charsetfix libtool pathfix pkgconfig ssl
+USES=		charsetfix libtool pkgconfig ssl
 
 GNU_CONFIGURE=	yes
-GNU_CONFIGURE_MANPREFIX=${PREFIX}/share
 INSTALL_TARGET=	install-strip
 USE_LDCONFIG=	yes
 
 OPTIONS_DEFINE=	DOCS NLS
-OPTIONS_DEFAULT=GSSAPI_BASE
 OPTIONS_SINGLE=	GSSAPI
 OPTIONS_SINGLE_GSSAPI=	GSSAPI_BASE GSSAPI_HEIMDAL GSSAPI_MIT GSSAPI_NONE
+OPTIONS_DEFAULT=GSSAPI_BASE
 OPTIONS_SUB=	yes
 
 GSSAPI_BASE_CONFIGURE_ON=	--with-gssapi-impl=heimdal ${GSSAPI_CONFIGURE_ARGS}

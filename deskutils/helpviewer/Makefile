@@ -1,6 +1,6 @@
 PORTNAME=	helpviewer
 PORTVERSION=	0.3
-PORTREVISION=	12
+PORTREVISION=	13
 CATEGORIES=	deskutils gnustep
 MASTER_SITES=	http://www.roard.com/helpviewer/download/
 DISTNAME=	HelpViewer-${PORTVERSION}
@@ -16,7 +16,7 @@ USE_GNUSTEP=	back build
 
 .include <bsd.port.options.mk>
 
-.if ${OPSYS} == FreeBSD && ( ${OSVERSION} >= 1400091 || ( ${OSVERSION} >= 1302507 && ${OSVERSION} < 1400000 ))
+.if ${OPSYS} == FreeBSD
 ADDITIONAL_CPPFLAGS+=	-Wno-error=int-conversion
 .endif
 

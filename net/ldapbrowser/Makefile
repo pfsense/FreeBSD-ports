@@ -1,15 +1,16 @@
 PORTNAME=	ldapbrowser
 PORTVERSION=	2.8.2
-PORTREVISION=	4
+PORTREVISION=	7
 CATEGORIES=	net java
-MASTER_SITES=	http://www.klop.ws/distfiles/ \
+MASTER_SITES=	LOCAL/ronald \
+		https://www.klop.ws/distfiles/ \
 		http://freebsd.nsu.ru/distfiles/ \
 		ftp://ftp.nstu.ru/pub/sources/nettools/ldap/ \
 		ftp://ftp.gtrgrenoble.fr/TpRes/Ldap/ \
 		ftp://ftp.uni-duisburg.de/Unix/networking/LDAP/frontends/
 DISTNAME=	Browser282b2
 
-MAINTAINER=	ronald@FreeBSD.org
+MAINTAINER=	danfe@FreeBSD.org
 COMMENT=	Java/Swing-based LDAP browser and editor
 WWW=		https://web.archive.org/web/20081218031210/http://www.mcs.anl.gov/~gawor/ldap/
 
@@ -19,7 +20,8 @@ LICENSE_NAME=	ldapbrowser
 LICENSE_TEXT=	No reply from author regarding redistribution licensing
 LICENSE_PERMS=	auto-accept
 
-USE_JAVA=	yes
+USES=		java
+
 NO_BUILD=	yes
 WRKSRC=		${WRKDIR}/${PORTNAME}
 REINPLACE_ARGS=	-i ''

@@ -1,12 +1,12 @@
---- third_party/webrtc/rtc_base/network.cc.orig	2023-07-24 14:27:53 UTC
+--- third_party/webrtc/rtc_base/network.cc.orig	2026-03-24 16:59:08 UTC
 +++ third_party/webrtc/rtc_base/network.cc
-@@ -292,7 +292,12 @@ AdapterType GetAdapterTypeFromName(absl::string_view n
+@@ -310,7 +310,12 @@ AdapterType GetAdapterTypeFromName(absl::string_view n
    }
  #endif
  
 +#if defined(WEBRTC_BSD)
 +  // Treat all other network interface names as ethernet on BSD
-+  return ADAPTER_TYPE_ETHERNET;
++  return webrtc::ADAPTER_TYPE_ETHERNET;
 +#else
    return ADAPTER_TYPE_UNKNOWN;
 +#endif

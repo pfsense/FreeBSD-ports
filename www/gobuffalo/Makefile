@@ -1,10 +1,10 @@
 PORTNAME=	gobuffalo
 PORTVERSION=	0.16.27
 DISTVERSIONPREFIX=	v
-PORTREVISION=	17
+PORTREVISION=	37
 CATEGORIES=	www
 
-MAINTAINER=	dmgk@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Go web development eco-system, designed to make the life easier
 WWW=		https://gobuffalo.io/
 

@@ -1,6 +1,6 @@
 PORTNAME=	bamf
 PORTVERSION=	0.5.6
-PORTREVISION=	2
+PORTREVISION=	4
 CATEGORIES=	sysutils
 MASTER_SITES=	https://launchpad.net/${PORTNAME}/${PORTVERSION:R}/${PORTVERSION}/+download/
 
@@ -18,7 +18,7 @@ LIB_DEPENDS=	libgtop-2.0.so:devel/libgtop \
 
 USES=		compiler:c11 gettext-runtime gmake gnome libtool pathfix \
 		pkgconfig python:build vala:build xorg
-USE_GNOME=	gtk30 glib20 introspection:build libwnck3 cairo gdkpixbuf2
+USE_GNOME=	gtk30 glib20 introspection:build libwnck3 cairo gdkpixbuf
 USE_XORG=	x11
 
 GNU_CONFIGURE=	yes

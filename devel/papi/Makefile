@@ -11,6 +11,10 @@ WWW=		https://code.google.com/p/papi-for-freebsd/
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKDIR}/${PORTNAME}-${PORTVERSION}/LICENSE.txt
 
+BROKEN=		freebsd.c:361:92: error: too few arguments to function call, expected 6, have 5
+DEPRECATED=	Marked BROKEN 6+ months ago and outdated  
+EXPIRATION_DATE=2025-02-28
+
 TEST_TARGET=	fulltest
 
 ONLY_FOR_ARCHS=	i386 amd64

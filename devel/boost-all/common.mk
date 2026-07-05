@@ -8,17 +8,23 @@ DISTINFO_FILE=	${.CURDIR}/../boost-all/distinfo
 CATEGORIES=	devel
 MAINTAINER=	office@FreeBSD.org
 
-MASTER_SITES=	https://boostorg.jfrog.io/artifactory/main/release/${PORTVERSION}/source/ \
-		https://boostorg.jfrog.io/artifactory/main/beta/${PORTVERSION:S/.b/.beta/g}/source/ \
-		SF/boost/boost/${PORTVERSION}
+MASTER_SITES=	https://archives.boost.io/release/${PORTVERSION}/source/ \
+		https://archives.boost.io/beta/${PORTVERSION:S/.b/.beta/g}/source/ \
+		SF/boost/boost/${PORTVERSION} \
+		SF/boost/boost/${PORTVERSION:S/.b/.beta/g}
 
 USES+=		tar:bzip2
 
 BOOST_MAJOR_VER=1
-BOOST_MINOR_VER=84
+BOOST_MINOR_VER=89
 BOOST_PATCH_VER=0
 BOOST_RC_VER=
 BOOST_SHARED_LIB_VER=${BOOST_MAJOR_VER}.${BOOST_MINOR_VER}.${BOOST_PATCH_VER}
 
 WRKSRC=		${WRKDIR}/${DISTVERSIONPREFIX}${BOOST_MAJOR_VER}_${BOOST_MINOR_VER}_${BOOST_PATCH_VER}
 
+EXTRACT_AFTER_ARGS+=--exclude '*.log'
+
+.if ${PORTNAME} != "boost-docs"
+EXTRACT_AFTER_ARGS+=	--exclude docs
+.endif

@@ -1,10 +1,11 @@
 PORTNAME=	azure-mgmt-managedservices
 PORTVERSION=	1.0.0
+PORTREVISION=	1
 CATEGORIES=	devel python
 MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
-MAINTAINER=	dbaio@FreeBSD.org
+MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Microsoft Azure Managed Services Client Library for Python
 WWW=		https://pypi.org/project/azure-mgmt-managedservices/
 

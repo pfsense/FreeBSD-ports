@@ -8,7 +8,7 @@
  * lightsquid.xml
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2015-2024 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2015-2026 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2006-2012 Sergey Dvoriancev <dv_serg@mail.ru>
  * All rights reserved.
  *
@@ -28,6 +28,7 @@
 	</copyright>
 	<name>lightsquid</name>
 	<title>Squid Proxy Reports: Settings</title>
+	<addedit_string>lightsquid: changed settings</addedit_string>
 	<category>Status</category>
 	<include_file>/usr/local/pkg/lightsquid.inc</include_file>
 	<menu>

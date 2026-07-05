@@ -1,6 +1,6 @@
 PORTNAME=	cyrus-imapd
 PORTVERSION=	2.5.17
-PORTREVISION=	4
+PORTREVISION=	7
 CATEGORIES=	mail
 MASTER_SITES=	https://github.com/cyrusimap/cyrus-imapd/releases/download/${PORTNAME}-${PORTVERSION}/
 PKGNAMESUFFIX=	25
@@ -25,7 +25,6 @@ USES=		cpe libtool perl5 ssl
 USE_RC_SUBR=	imapd
 CYRUS_PREFIX=	${PREFIX}/cyrus
 GNU_CONFIGURE=	yes
-GNU_CONFIGURE_MANPREFIX=	${PREFIX}/share
 CONFIGURE_ARGS=	--sysconfdir=${PREFIX}/etc \
 		--with-cyrus-prefix=${CYRUS_PREFIX} \
 		--with-cyrus-user=${CYRUS_USER} \
@@ -45,7 +44,7 @@ CPE_PRODUCT=	cyrus_imap_server
 OPTIONS_DEFINE=		AUTOCREATE BDB CLAMAV HTTP IDLED LDAP MURDER MYSQL \
 			NETSCAPEHACK NNTP PGSQL REPLICATION SNMP SQLITE DOCS \
 			EXAMPLES
-OPTIONS_DEFAULT=	BDB IDLED
+OPTIONS_DEFAULT=	IDLED
 OPTIONS_SUB=		yes
 AUTOCREATE_DESC=	Enable autocreate support
 AUTOCREATE_CONFIGURE_ENABLE=	autocreate
@@ -93,8 +92,12 @@ OPTIONS_RADIO_GSSAPI+=		GSSAPI_BASE
 OPTIONS_DEFAULT+=		GSSAPI_BASE
 .endif
 GSSAPI_BASE_USES=		gssapi
-GSSAPI_BASE_CONFIGURE_ON=	--enable-gssapi="${GSSAPIBASEDIR}" \
-				--with-gss_impl=heimdal
+GSSAPI_BASE_CONFIGURE_ON=	--enable-gssapi="${GSSAPIBASEDIR}"
+.if exists(/usr/libdata/pkgconfig/mit-krb5.pc)
+GSSAPI_BASE_CONFIGURE_ON+=	--with-gss_impl=mit
+.else
+GSSAPI_BASE_CONFIGURE_ON+=	--with-gss_impl=heimdal
+.endif
 GSSAPI_HEIMDAL_USES=		gssapi:heimdal,flags
 GSSAPI_HEIMDAL_CONFIGURE_ON=	--enable-gssapi="${GSSAPIBASEDIR}" \
 				--with-gss_impl=heimdal
@@ -159,7 +162,7 @@ CYRUS_MAN8+=	fetchnews nntpd
 
 .include <bsd.port.pre.mk>
 
-.if ${OPSYS} == FreeBSD && ( ${OSVERSION} >= 1400091 || ( ${OSVERSION} >= 1302507 && ${OSVERSION} < 1400000 ))
+.if ${OPSYS} == FreeBSD
 CFLAGS+=	-Wno-error=incompatible-function-pointer-types
 .endif
 

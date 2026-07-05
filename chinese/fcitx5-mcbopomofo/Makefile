@@ -1,6 +1,6 @@
 PORTNAME=	fcitx5-mcbopomofo
-DISTVERSION=	2.5.2
 PORTREVISION=	1
+DISTVERSION=	2.9.5
 CATEGORIES=	chinese textproc
 
 MAINTAINER=	lwhsu@FreeBSD.org
@@ -11,7 +11,9 @@ LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE.txt
 
 LIB_DEPENDS=	libFcitx5Core.so:textproc/fcitx5 \
-		libfmt.so:devel/libfmt
+		libfmt.so:devel/libfmt \
+		libicuuc.so:devel/icu \
+		libjson-c.so:devel/json-c
 
 USES=		cmake compiler:c++17-lang gettext-tools kde:5 pkgconfig
 

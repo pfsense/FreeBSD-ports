@@ -1,5 +1,6 @@
 PORTNAME=	jicmp
 PORTVERSION=	1.4.4
+PORTREVISION=	1
 CATEGORIES=	net java
 MASTER_SITES=	SF/opennms/JICMP/stable-1.4/
 
@@ -9,14 +10,14 @@ WWW=		https://www.opennms.org/index.php/Jicmp
 
 WRKSRC=		${WRKDIR}/jicmp-${PORTVERSION}
 
-USES=		libtool
-USE_JAVA=	yes
+USES=		java libtool
+JAVA_VERSION=	8
 JAVA_VENDOR=	openjdk
-JAVA_BUILD=	yes
-JAVA_RUN=	yes
+USE_LDCONFIG=	yes
+
 GNU_CONFIGURE=	yes
 CONFIGURE_ENV=	JAVA_HOME=${JAVA_HOME}
-USE_LDCONFIG=	yes
+
 INSTALL_TARGET=	install-strip
 
 pre-everything::

@@ -1,10 +1,11 @@
 PORTNAME=	portalocker
 PORTVERSION=	2.3.2
+PORTREVISION=	1
 CATEGORIES=	devel python
 MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
-MAINTAINER=	dbaio@FreeBSD.org
+MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Python library that provides an easy API to file locking
 WWW=		https://pypi.org/project/portalocker/
 

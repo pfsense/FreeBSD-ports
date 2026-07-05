@@ -1,11 +1,5 @@
-TIMESTAMP = 1707426223
-SHA256 (sentriz-cliphist-v0.5.0_GH0.tar.gz) = 02285cf3358a1851e34f95c0c369b27284d8d0996759d759fa2bbcb5b30fb13d
-SIZE (sentriz-cliphist-v0.5.0_GH0.tar.gz) = 23999
-SHA256 (etcd-io-bbolt-v1.3.7_GH0.tar.gz) = a99c0371bd041a3ca45bd314428976f3f13408ea53dbf2f8aa74b0288889acb2
-SIZE (etcd-io-bbolt-v1.3.7_GH0.tar.gz) = 116699
-SHA256 (golang-image-v0.11.0_GH0.tar.gz) = f3f2478f08274fabf49f4947ba98bdda9de35e811a0e28cc76144ae33c816680
-SIZE (golang-image-v0.11.0_GH0.tar.gz) = 5091140
-SHA256 (golang-sys-v0.11.0_GH0.tar.gz) = 907778fbdf5a900ee51fc45e0a3f2cc7bc693af8a9c972c00679b194b61ea24c
-SIZE (golang-sys-v0.11.0_GH0.tar.gz) = 1445078
-SHA256 (rogpeppe-go-internal-v1.10.0_GH0.tar.gz) = 9d464d9a1720ff3b805fe36e1a16be2d249c5d828b989f20b2e01a880341a802
-SIZE (rogpeppe-go-internal-v1.10.0_GH0.tar.gz) = 139226
+TIMESTAMP = 1760364652
+SHA256 (go/x11_cliphist/cliphist-v0.7.0/v0.7.0.mod) = 6b514392b12e2f0d46491eaf130aa91ab321d9a4030099293d04cd9e4951f989
+SIZE (go/x11_cliphist/cliphist-v0.7.0/v0.7.0.mod) = 297
+SHA256 (go/x11_cliphist/cliphist-v0.7.0/v0.7.0.zip) = 6380409113ca27c6b9a7444b5051ea773eca5e6904e0f04a228ef1b9909eefdd
+SIZE (go/x11_cliphist/cliphist-v0.7.0/v0.7.0.zip) = 37843

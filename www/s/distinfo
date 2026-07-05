@@ -1,5 +1,5 @@
-TIMESTAMP = 1699084478
-SHA256 (go/www_s/s-v0.6.9/v0.6.9.mod) = 668a07cff48882a0d76d2ca2a0c29ff16b81cf676055c9e7547ff8175e863b94
-SIZE (go/www_s/s-v0.6.9/v0.6.9.mod) = 1450
-SHA256 (go/www_s/s-v0.6.9/v0.6.9.zip) = 0ac6cd0ab8dce5788be34ca826554768ca7c12ea32783d7fbb385f821bc8ca7f
-SIZE (go/www_s/s-v0.6.9/v0.6.9.zip) = 113644
+TIMESTAMP = 1762710418
+SHA256 (go/www_s/s-v0.7.4/v0.7.4.mod) = a65489ca7ae28d801c5872fdad6eac7656480da5748b5d502c2dca6dfe4b81bc
+SIZE (go/www_s/s-v0.7.4/v0.7.4.mod) = 1450
+SHA256 (go/www_s/s-v0.7.4/v0.7.4.zip) = e052e988a8eaac7cf996e2e5e5214893c113b20bfc2a5d13c7dcce1d93b024d5
+SIZE (go/www_s/s-v0.7.4/v0.7.4.zip) = 118853

@@ -1,6 +1,6 @@
---- build/CMakeLists.txt.orig	2021-01-14 11:18:56 UTC
+--- build/CMakeLists.txt.orig	2025-09-29 13:03:58 UTC
 +++ build/CMakeLists.txt
-@@ -53,7 +53,7 @@ endif()
+@@ -59,7 +59,7 @@ endif()
  
  ####################################
  # source and headers files
@@ -9,20 +9,12 @@
  file (GLOB HH  ${SRCDIR}/*.hh  ${SRCDIR}/*/*.hh  ${SRCDIR}/generator/fir/*.hh)
  
  ####################################
-@@ -352,13 +352,15 @@ install (
- 
+@@ -457,7 +457,7 @@ install (
  ####################################
  # install examples
-+if (FREEBSD_INSTALL_EXAMPLES)
  install (
--    DIRECTORY     ${ROOT}/examples DESTINATION ${CMAKE_INSTALL_PREFIX}//share/faust
-+    DIRECTORY     ${ROOT}/examples DESTINATION share/examples/faust # TODO flatten "examples" from the hierarchy
+-    DIRECTORY     ${ROOT}/examples DESTINATION ${CMAKE_INSTALL_PREFIX}/share/faust
++    DIRECTORY     ${ROOT}/examples DESTINATION share/examples/faust
      FILE_PERMISSIONS OWNER_READ OWNER_WRITE GROUP_READ WORLD_READ
      DIRECTORY_PERMISSIONS OWNER_READ OWNER_WRITE OWNER_EXECUTE
-     	GROUP_READ GROUP_EXECUTE WORLD_READ WORLD_EXECUTE
-     PATTERN ".DS_Store" EXCLUDE
- )
-+endif()
- 
- # install faust libraries
- file (GLOB FAUSTDSPLIBS ${ROOT}/libraries/*.lib ${ROOT}/libraries/old/*.lib)
+         GROUP_READ GROUP_EXECUTE WORLD_READ WORLD_EXECUTE

@@ -1,5 +1,5 @@
 PORTNAME=	gretl
-PORTVERSION=	2023c
+PORTVERSION=	2024d
 PORTREVISION=	2
 CATEGORIES=	math finance
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/${DISTVERSIONFULL}/
@@ -11,6 +11,8 @@ WWW=		https://gretl.sourceforge.net/
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/COPYING
 
+BROKEN_FreeBSD_13=	configure fails: checking for gnuplot >= 5.2 with cairo support... no
+
 LIB_DEPENDS=	libcurl.so:ftp/curl \
 		libfftw3.so:math/fftw3 \
 		libgmp.so:math/gmp \
@@ -19,9 +21,11 @@ LIB_DEPENDS=	libcurl.so:ftp/curl \
 		libmpfr.so:math/mpfr
 
 USES=		compiler:c11 fortran gmake gnome localbase libtool ncurses \
-		pathfix pkgconfig readline tar:xz
+		pathfix pkgconfig readline shebangfix tar:xz
 USE_WX=		3.0
 USE_LDCONFIG=	yes
+
+SHEBANG_GLOB=	*.sh
 
 GNU_CONFIGURE=	yes
 
@@ -52,7 +56,7 @@ ATLAS_VARS_OFF=		BLAS=-lblas LAPACK=-llapack
 GUI_DESC=		Graphical user interface and plugins
 GUI_CONFIGURE_ON=	--enable-gui=yes
 GUI_CONFIGURE_OFF=	--enable-gui=no --enable-xdg=no
-GUI_USE=		GNOME=cairo,gtksourceview4,gdkpixbuf2
+GUI_USE=		GNOME=cairo,gtksourceview4,gdkpixbuf
 GUI_USE_OFF=		GNOME=glib20,libxml2
 GUI_VARS=		GTK_VER=3
 GUI_VARS_OFF=		GTK_VER=2

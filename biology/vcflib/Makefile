@@ -1,7 +1,6 @@
 PORTNAME=		vcflib
 DISTVERSIONPREFIX=	v
-DISTVERSION=		1.0.7
-PORTREVISION=		1
+DISTVERSION=		1.0.13
 CATEGORIES=		biology
 
 MAINTAINER=	jwb@FreeBSD.org
@@ -13,7 +12,8 @@ LICENSE=	MIT
 NOT_FOR_ARCHS=	armv6 armv7
 NOT_FOR_ARCHS_REASON=	requires OpenMP which is not supported
 
-BUILD_DEPENDS=	pybind11>0:devel/pybind11
+BUILD_DEPENDS=	pybind11>0:devel/pybind11 \
+		${PYTHON_PKGNAMEPREFIX}pypandoc>=1.4:textproc/py-pypandoc@${PY_FLAVOR}
 LIB_DEPENDS=	libhts.so:biology/htslib \
 		libcurl.so:ftp/curl \
 		libwfa2.so:biology/wfa2-lib
@@ -30,7 +30,7 @@ GH_TUPLE=	ekg:fastahack:bb33265:fastahack/contrib/fastahack \
 		ekg:multichoose:e1f94ae:multichoose/contrib/multichoose \
 		ekg:smithwaterman:2610e25:smithwaterman/contrib/smithwaterman \
 		simd-everywhere:simde-no-tests:9af03cd:simd/src/simde \
-		vcflib:tabixpp:v1.1.2:tabixpp/contrib/tabixpp
+		vcflib:tabixpp:ae5cdf8:tabixpp/contrib/tabixpp
 SHEBANG_FILES=	scripts/*
 
 # FIXME: Add Zig option + lang/zig dep
@@ -40,14 +40,16 @@ OPTIONS_SUB=		yes
 
 ZIG_DESC=		Include Zig language support
 
-ZIG_BUILD_DEPENDS=	zig010>0:lang/zig010
+ZIG_BUILD_DEPENDS=	zig014=0.14.0:lang/zig014
 
-CMAKE_ARGS+=	-DWFA_GITMODULE=OFF -DWFALIB=${LOCALBASE}/lib/libwfa2.so
+CMAKE_ARGS+=	-DWFA_GITMODULE=OFF -DWFALIB=${LOCALBASE}/lib/libwfa2.so.0 \
+		-DTABIXPP_LOCAL=${WRKSRC}/contrib/tabixpp
 ZIG_CMAKE_OFF=	-DZIG=OFF
 
 # Clang and GCC disable sse2 by default on i386, but it's required for vcflib
 CFLAGS_i386=	-msse2
 
+# filevercmp is deprecated.  Remove conflict when the port is removed.
 CONFLICTS_INSTALL=	filevercmp libdisorder # include/disorder.h include/filevercmp.h include/pdflib.hpp
 
 .include <bsd.port.options.mk>

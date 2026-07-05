@@ -1,9 +1,10 @@
 PORTNAME=	babl
-PORTVERSION=	0.1.106
+PORTVERSION=	0.1.124
 CATEGORIES=	x11
 MASTER_SITES=	GIMP
 
 MAINTAINER=	gnome@FreeBSD.org
+
 COMMENT=	Dynamic pixel format conversion library
 WWW=		https://www.gegl.org/babl/
 
@@ -12,30 +13,49 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 
 LIB_DEPENDS=	liblcms2.so:graphics/lcms2
 
-USES=		gnome libtool localbase meson pathfix pkgconfig tar:xz vala:build
+USES=		compiler:c11 gnome meson pathfix pkgconfig tar:xz vala:build
 
-USE_LDCONFIG=	yes
 USE_GNOME=	introspection:build
+USE_LDCONFIG=	yes
 
-OPTIONS_DEFINE=	SIMD
-OPTIONS_DEFAULT_amd64=SIMD
-OPTIONS_EXCLUDE_i386=SIMD
+# relocatable does not mean ELF relocation
+MESON_ARGS=	-Dgi-docgen=disabled -Dwith-docs=false -Drelocatable=disabled
 
-SIMD_MESON_OFF=	-Denable-mmx=false -Denable-sse=false \
-		-Denable-sse2=false -Denable-sse4_1=false \
-		-Denable-avx2=false -Denable-f16c=false
-
-BABL_SHLIB=	0.205.1
+BABL_SHLIB=	0.223.1
 BABL_VER=	0.1
 PLIST_SUB+=	BABL_SHLIB=${BABL_SHLIB} BABL_VER=${BABL_VER}
 
-.include <bsd.port.options.mk>
+OPTIONS_DEFINE_amd64=	AVX2 F16C MMX SSE2 SSE41 SSE
+OPTIONS_DEFINE_i386=	AVX2 F16C MMX SSE2 SSE41 SSE
+OPTIONS_DEFAULT_amd64=	MMX SSE2 SSE
 
-.if ${ARCH} == powerpc
-USES+=		compiler:gcc-c++11-lib
-.else
-USES+=		compiler:c11
-.endif
+AVX2_DESC=		Use AVX2 optimized routines
+F16C_DESC=		Use F16C optimized routines
+SSE2_DESC=		Use SSE2 optimized routines
+SSE41_DESC=		Use SSE4.1 optimized routines
+
+AVX2_IMPLIES=		SSE41
+AVX2_MESON_ON=		-Denable-avx2=true
+AVX2_MESON_OFF=		-Denable-avx2=false
+
+F16C_IMPLIES=		MMX
+F16C_MESON_ON=		-Denable-f16c=true
+F16C_MESON_OFF=		-Denable-f16c=false
+
+MMX_MESON_ON=		-Denable-mmx=true
+MMX_MESON_OFF=		-Denable-mmx=false
+
+SSE2_IMPLIES=		SSE
+SSE2_MESON_ON=		-Denable-sse2=true
+SSE2_MESON_OFF=		-Denable-sse2=false
+
+SSE41_IMPLIES=		SSE2
+SSE41_MESON_ON=		-Denable-sse4_1=true
+SSE41_MESON_OFF=	-Denable-sse4_1=false
+
+SSE_IMPLIES=		MMX
+SSE_MESON_ON=		-Denable-sse=true
+SSE_MESON_OFF=		-Denable-sse=false
 
 .include <bsd.port.pre.mk>
 

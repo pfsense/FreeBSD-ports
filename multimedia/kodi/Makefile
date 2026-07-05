@@ -1,8 +1,18 @@
 PORTNAME=	kodi
-DISTVERSION=	20.4
-PORTREVISION=	2
+DISTVERSION=	22.0a2
+PORTREVISION=	4
 CATEGORIES=	multimedia java
+MASTER_SITES=	https://mirrors.kodi.tv/build-deps/sources/
+DISTFILES=	apache-groovy-binary-${GROOVY_VERSION}.zip \
+		commons-lang3-${COMMONS_LANG_VERSION}-bin.tar.gz \
+		commons-text-${COMMONS_TEXT_VERSION}-bin.tar.gz \
+		json-${NLOHMANN_JSON_VERSION}.tar.xz
+DIST_SUBDIR=	${PORTNAME}
 # do not forget to fix devel/kodi-platform when updating kodi
+
+PATCH_SITES=	https://github.com/xbmc/xbmc/commit/
+PATCHFILES=	03b192aac8f49f613dade58c5359ec0d0e35d92a.patch:-p1 \
+		620e4011cbf5b2bfe531bc37d916a90787e3ca2d.patch:-p1
 
 MAINTAINER=	yzrh@noema.org
 COMMENT=	Award winning media center application
@@ -13,9 +23,9 @@ LICENSE=	GPLv2+
 ONLY_FOR_ARCHS=	aarch64 amd64 armv6 armv7 i386 powerpc64 powerpc64le
 
 BUILD_DEPENDS=	flatbuffers>0:devel/flatbuffers \
-		rapidjson>0:devel/rapidjson \
 		swig>0:devel/swig
-LIB_DEPENDS=	libass.so:multimedia/libass \
+LIB_DEPENDS=	libaacs.so:multimedia/libaacs \
+		libass.so:multimedia/libass \
 		libavcodec.so:multimedia/ffmpeg \
 		libavfilter.so:multimedia/ffmpeg \
 		libavformat.so:multimedia/ffmpeg \
@@ -23,6 +33,8 @@ LIB_DEPENDS=	libass.so:multimedia/libass \
 		libcdio.so:sysutils/libcdio \
 		libcrossguid.so:devel/libcrossguid \
 		libcurl.so:ftp/curl \
+		libbdplus.so:multimedia/libbdplus \
+		libexiv2.so:graphics/exiv2 \
 		libexpat.so:textproc/expat2 \
 		libfmt.so:devel/libfmt \
 		libfreetype.so:print/freetype2 \
@@ -31,24 +43,32 @@ LIB_DEPENDS=	libass.so:multimedia/libass \
 		libgif.so:graphics/giflib \
 		libharfbuzz.so:print/harfbuzz \
 		liblzo2.so:archivers/lzo2 \
-		libpcre.so:devel/pcre \
+		libpcre2-8.so:devel/pcre2 \
 		libpng.so:graphics/png \
-		libpostproc.so:multimedia/ffmpeg \
 		libspdlog.so:devel/spdlog \
 		libswresample.so:multimedia/ffmpeg \
 		libswscale.so:multimedia/ffmpeg \
 		libtag.so:audio/taglib \
 		libtinyxml.so:textproc/tinyxml \
-		libuuid.so:misc/e2fsprogs-libuuid
+		libtinyxml2.so:textproc/tinyxml2 \
+		libudfread.so:multimedia/libudfread \
+		libuuid.so:misc/libuuid
+RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}sqlite3>0:databases/py-sqlite3@${PY_FLAVOR}
 
 USES=		autoreconf:build cmake:noninja compiler:c++17-lang cpe \
-		desktop-file-utils gettext gmake gnome iconv jpeg libtool \
+		desktop-file-utils gettext gmake gnome iconv java:build jpeg libtool \
 		pkgconfig python sqlite ssl
+USE_RC_SUBR=	kodi
 
-KODI_CODENAME=		Nexus
+KODI_CODENAME=		Piers
 LIBDVDCSS_VERSION=	1.4.3-Next-Nexus-Alpha2-2
 LIBDVDNAV_VERSION=	6.1.1-Next-Nexus-Alpha2-2
 LIBDVDREAD_VERSION=	6.1.3-Next-Nexus-Alpha2-2
+GROOVY_VERSION=		4.0.26
+COMMONS_LANG_VERSION=	3.17.0
+COMMONS_TEXT_VERSION=	1.13.0
+# TODO: make it a new port
+NLOHMANN_JSON_VERSION=	3.12.0
 
 USE_GITHUB=	yes
 GH_TUPLE=	xbmc:xbmc:${DISTVERSION}-${KODI_CODENAME} \
@@ -67,24 +87,30 @@ KODI_ARCH_powerpc64le=	powerpc64le
 PLIST_SUB=	ARCH=${KODI_ARCH_${ARCH}}
 
 USE_LDCONFIG=	yes
-USE_JAVA=	yes
-JAVA_BUILD=	jre
 USE_GNOME=	libxml2
+JAVA_VERSION=	8 11
 CMAKE_ARGS=	-DGIT_VERSION="${DISTVERSION}-${KODI_CODENAME}" \
-		-DLIBDVDCSS_URL="${DISTDIR}/xbmc-libdvdcss-${LIBDVDCSS_VERSION}_GH0.tar.gz" \
-		-DLIBDVDNAV_URL="${DISTDIR}/xbmc-libdvdnav-${LIBDVDNAV_VERSION}_GH0.tar.gz" \
-		-DLIBDVDREAD_URL="${DISTDIR}/xbmc-libdvdread-${LIBDVDREAD_VERSION}_GH0.tar.gz" \
-		-DCROSSGUID_INCLUDE_DIR="${LOCALBASE}/include"
-CMAKE_OFF=	ENABLE_INTERNAL_CROSSGUID ENABLE_INTERNAL_RapidJSON
+		-DLIBDVDCSS_URL="${DISTDIR}/${PORTNAME}/xbmc-libdvdcss-${LIBDVDCSS_VERSION}_GH0.tar.gz" \
+		-DLIBDVDNAV_URL="${DISTDIR}/${PORTNAME}/xbmc-libdvdnav-${LIBDVDNAV_VERSION}_GH0.tar.gz" \
+		-DLIBDVDREAD_URL="${DISTDIR}/${PORTNAME}/xbmc-libdvdread-${LIBDVDREAD_VERSION}_GH0.tar.gz" \
+		-DNLOHMANN_JSON_URL="${DISTDIR}/${PORTNAME}/json-${NLOHMANN_JSON_VERSION}.tar.xz" \
+		-Dgroovy_SOURCE_DIR="${WRKSRC}/tools/depends/share/groovy" \
+		-Dapache-commons-lang_SOURCE_DIR="${WRKSRC}/tools/depends/share/java/lang" \
+		-Dapache-commons-text_SOURCE_DIR="${WRKSRC}/tools/depends/share/java/text" \
+		-DCROSSGUID_INCLUDE_DIR="${LOCALBASE}/include" \
+		-DCORE_PLATFORM_NAME:STRING="${KODI_PLATFORM}" \
+		-DCMAKE_VERBOSE_MAKEFILE=ON
+CMAKE_OFF=	ENABLE_INTERNAL_CROSSGUID
+CMAKE_ON=	ENABLE_INTERNAL_NLOHMANNJSON \
+		VERBOSE_FIND
 CONFIGURE_ENV=	_CPU_FEATURE="${CPU_FEATURE}"
 
 OPTIONS_SUB=		yes
-# Broken: BLUETOOTH
 OPTIONS_DEFINE=		AIRPLAY AVAHI LIBBLURAY CEC DAV1D DBUS \
 			DVDCSS LCMS2 LIRC WEBSERVER MYSQL NFS DVD SMB TEST \
 			UDEV UPNP VAAPI VDPAU XSLT DOCS
 OPTIONS_DEFAULT=	LIBBLURAY CEC LCMS2 WEBSERVER DAV1D \
-			DVD UPNP VAAPI VDPAU XSLT WAYLAND X11 GL
+			DVD UPNP VAAPI VDPAU XSLT GBM WAYLAND X11 GL
 OPTIONS_DEFAULT_amd64=	SSE SSE2 SSE3 SSSE3 SSE4_1 SSE4_2
 OPTIONS_DEFAULT_i386=	SSE SSE2 SSE3
 OPTIONS_SINGLE=		RENDER
@@ -96,14 +122,13 @@ OPTIONS_GROUP_PLATFORM=	GBM WAYLAND X11
 OPTIONS_EXCLUDE_aarch64=FEATURE
 OPTIONS_EXCLUDE_armv7=	FEATURE
 OPTIONS_EXCLUDE_armv6=	FEATURE
-OPTIONS_EXCLUDE_powerpc64=     FEATURE
-OPTIONS_EXCLUDE_powerpc64le=   FEATURE
+OPTIONS_EXCLUDE_powerpc64=	FEATURE
+OPTIONS_EXCLUDE_powerpc64le=	FEATURE
 
 PLATFORM_DESC=	Kodi platform
 FEATURE_DESC=	X86 CPU feature
 
 AIRPLAY_DESC=	AirPlay support
-BLUETOOTH_DESC=	Bluetooth support
 CEC_DESC=	CEC adapter support
 DAV1D_DESC=	Use dav1d as AV1 decoder
 DVD_DESC=	DVD support
@@ -132,13 +157,11 @@ AIRPLAY_CMAKE_BOOL=	ENABLE_PLIST \
 AVAHI_LIB_DEPENDS=	libavahi-client.so:net/avahi-app
 AVAHI_CMAKE_BOOL=	ENABLE_AVAHI
 
-BLUETOOTH_CMAKE_BOOL=	ENABLE_BLUETOOTH
-BLUETOOTH_CMAKE_ON=	-DBLUETOOTH_INCLUDE_DIR="${LOCALBASE}/include"
-
 LIBBLURAY_LIB_DEPENDS=	libbluray.so:multimedia/libbluray
 LIBBLURAY_CMAKE_BOOL=	ENABLE_BLURAY
 
-CEC_LIB_DEPENDS=	libcec.so:multimedia/libcec
+CEC_LIB_DEPENDS=	libcec.so:multimedia/libcec \
+			libp8-platform.so:devel/p8-platform
 CEC_CMAKE_BOOL=		ENABLE_CEC
 
 DAV1D_LIB_DEPENDS=	libdav1d.so:multimedia/dav1d
@@ -177,6 +200,7 @@ UPNP_CMAKE_BOOL=	ENABLE_UPNP
 VAAPI_LIB_DEPENDS=	libva.so:multimedia/libva
 VAAPI_CMAKE_BOOL=	ENABLE_VAAPI
 
+VDPAU_IMPLIES=		X11 GL
 VDPAU_LIB_DEPENDS=	libvdpau.so:multimedia/libvdpau
 VDPAU_CMAKE_BOOL=	ENABLE_VDPAU
 
@@ -216,17 +240,18 @@ AVX_VARS=		CPU_FEATURE+=AVX
 AVX2_VARS=		CPU_FEATURE+=AVX2
 
 GBM_IMPLIES=		UDEV
+GBM_VARS=		KODI_PLATFORM+=gbm
 GBM_USES=		gl
 GBM_USE=		GL=egl,gbm,glu
-GBM_CFLAGS=		-I${LOCALBASE}/include/libepoll-shim
-GBM_LDFLAGS=		-L${LOCALBASE}/lib -lepoll-shim
 GBM_BUILD_DEPENDS=	evdev-proto>0:devel/evdev-proto
 GBM_LIB_DEPENDS=	libepoll-shim.so:devel/libepoll-shim \
 			libdrm.so:graphics/libdrm \
 			libxkbcommon.so:x11/libxkbcommon \
-			libinput.so:x11/libinput
+			libinput.so:x11/libinput \
+			libdisplay-info.so:sysutils/libdisplay-info
 GBM_RUN_DEPENDS=	mesa-dri>0:graphics/mesa-dri
 
+WAYLAND_VARS=		KODI_PLATFORM+=wayland
 WAYLAND_CATEGORIES=	wayland
 WAYLAND_USES=		gl
 WAYLAND_USE=		GL=egl,glu
@@ -237,6 +262,7 @@ WAYLAND_LIB_DEPENDS=	libdrm.so:graphics/libdrm \
 			libinput.so:x11/libinput \
 			libwayland-client++.so:graphics/waylandpp
 
+X11_VARS=		KODI_PLATFORM+=x11
 X11_USES=		xorg gl
 X11_USE=		XORG=x11,xext,xrandr GL=egl,gbm,glu
 X11_LIB_DEPENDS=	libdrm.so:graphics/libdrm
@@ -245,22 +271,6 @@ X11_LIB_DEPENDS=	libdrm.so:graphics/libdrm
 
 .if (!empty(PORT_OPTIONS:MGBM) && !empty(PORT_OPTIONS:MWAYLAND) || !empty(PORT_OPTIONS:MGBM) && !empty(PORT_OPTIONS:MX11) || !empty(PORT_OPTIONS:MWAYLAND) && !empty(PORT_OPTIONS:MX11)) && !empty(PORT_OPTIONS:MGLES)
 BROKEN=	option GLES does not build with multiple PLATFORM
-.endif
-
-.if !empty(PORT_OPTIONS:MGBM) && !empty(PORT_OPTIONS:MWAYLAND) && !empty(PORT_OPTIONS:MX11)
-CMAKE_ARGS+=	-DCORE_PLATFORM_NAME:STRING="gbm wayland x11"
-.elif empty(PORT_OPTIONS:MGBM) && !empty(PORT_OPTIONS:MWAYLAND) && !empty(PORT_OPTIONS:MX11)
-CMAKE_ARGS+=	-DCORE_PLATFORM_NAME:STRING="wayland x11"
-.elif !empty(PORT_OPTIONS:MGBM) && empty(PORT_OPTIONS:MWAYLAND) && !empty(PORT_OPTIONS:MX11)
-CMAKE_ARGS+=	-DCORE_PLATFORM_NAME:STRING="gbm x11"
-.elif !empty(PORT_OPTIONS:MGBM) && !empty(PORT_OPTIONS:MWAYLAND) && empty(PORT_OPTIONS:MX11)
-CMAKE_ARGS+=	-DCORE_PLATFORM_NAME:STRING="gbm wayland"
-.elif empty(PORT_OPTIONS:MGBM) && empty(PORT_OPTIONS:MWAYLAND) && !empty(PORT_OPTIONS:MX11)
-CMAKE_ARGS+=	-DCORE_PLATFORM_NAME:STRING="x11"
-.elif empty(PORT_OPTIONS:MGBM) && !empty(PORT_OPTIONS:MWAYLAND) && empty(PORT_OPTIONS:MX11)
-CMAKE_ARGS+=	-DCORE_PLATFORM_NAME:STRING="wayland"
-.elif !empty(PORT_OPTIONS:MGBM) && empty(PORT_OPTIONS:MWAYLAND) && empty(PORT_OPTIONS:MX11)
-CMAKE_ARGS+=	-DCORE_PLATFORM_NAME:STRING="gbm"
 .endif
 
 .if !empty(PORT_OPTIONS:MGBM) && !empty(PORT_OPTIONS:MWAYLAND) || !empty(PORT_OPTIONS:MGBM) && !empty(PORT_OPTIONS:MX11) || !empty(PORT_OPTIONS:MWAYLAND) && !empty(PORT_OPTIONS:MX11)
@@ -290,6 +300,14 @@ PLIST_SUB+=	KODIX11="@comment "
 .endif
 .endif
 
+post-extract:
+	@${MKDIR} ${WRKSRC}/tools/depends/share
+	@${MV} ${WRKDIR}/groovy-${GROOVY_VERSION} ${WRKSRC}/tools/depends/share/groovy
+
+	@${MKDIR} ${WRKSRC}/tools/depends/share/java
+	@${MV} ${WRKDIR}/commons-lang3-${COMMONS_LANG_VERSION} ${WRKSRC}/tools/depends/share/java/lang
+	@${MV} ${WRKDIR}/commons-text-${COMMONS_TEXT_VERSION} ${WRKSRC}/tools/depends/share/java/text
+
 post-patch:
 	${REINPLACE_CMD} 's|/usr/share|${LOCALBASE}/share|' \
 		${WRKSRC}/xbmc/platform/linux/input/LibInputSettings.cpp
@@ -297,7 +315,7 @@ post-patch:
 post-install:
 	${INSTALL_MAN} ${WRKSRC}/docs/manpages/kodi.bin.1 ${STAGEDIR}${PREFIX}/share/man/man1
 	cd ${STAGEDIR}${PREFIX}/share/man/man1 && ${LN} -s kodi.bin.1.gz kodi.1.gz
-	cd ${STAGEDIR}${PREFIX}/bin && ${STRIP_CMD} JsonSchemaBuilder kodi-TexturePacker
+	cd ${STAGEDIR}${PREFIX}/bin && ${STRIP_CMD} kodi-TexturePacker
 	${FIND} ${STAGEDIR}${PREFIX}/lib/kodi -type f -name '*.so' -print0 | ${XARGS} -0 ${STRIP_CMD}
 	${RM} -r ${STAGEDIR}${PREFIX}/lib/firewalld
 

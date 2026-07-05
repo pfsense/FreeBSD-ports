@@ -1,6 +1,6 @@
 PORTNAME=	scloader
 PORTVERSION=	0.32
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	www java
 MASTER_SITES=	SF
 DISTNAME=	loader${PORTVERSION:C/\.//}
@@ -11,8 +11,7 @@ WWW=		https://scloader.sourceforge.net
 
 LICENSE=	GPLv2
 
-USES=		dos2unix zip
-USE_JAVA=	yes
+USES=		dos2unix java zip
 
 NO_WRKSUBDIR=	yes
 NO_BUILD=	yes

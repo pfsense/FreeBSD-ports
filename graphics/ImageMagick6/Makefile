@@ -1,6 +1,6 @@
 PORTNAME=	ImageMagick
-DISTVERSION=	6.9.12-77
-PORTREVISION=	8
+DISTVERSION=	6.9.13-36
+PORTREVISION=	1
 PORTEPOCH=	1
 CATEGORIES=	graphics perl5
 MASTER_SITES=	https://ftp.acc.umu.se/mirror/imagemagick.org/ftp/releases/ \
@@ -49,7 +49,7 @@ USE_GNOME=	libxml2
 SAMPLE_FILES=	coder.xml colors.xml delegates.xml log.xml magic.xml mime.xml \
 		policy.xml quantization-table.xml thresholds.xml type-apple.xml \
 		type-dejavu.xml type-ghostscript.xml type-urw-base35.xml \
-		type-windows.xml type.xml
+		type-urw-base35-type1.xml type-windows.xml type.xml
 
 PLIST_SUB=	PORTVERSION=${PORTVERSION:R}
 
@@ -163,7 +163,7 @@ RAW_IMPLIES=		LCMS2
 
 SVG_DESC=		SVG vector image format support (via librsvg, implies the x11 option)
 SVG_CONFIGURE_WITH=	rsvg
-SVG_USE=		gnome=cairo,gdkpixbuf2,librsvg2
+SVG_USE=		gnome=cairo,gdkpixbuf,librsvg2
 
 TESTS_TEST_DEPENDS=	gsfonts>=0:print/gsfonts
 
@@ -172,6 +172,9 @@ TIFF_LIB_DEPENDS=	libtiff.so:graphics/tiff
 
 WEBP_CONFIGURE_WITH=	webp
 WEBP_LIB_DEPENDS=	libwebp.so:graphics/webp
+
+WMF_CONFIGURE_WITH=	wmf
+WMF_LIB_DEPENDS=	libwmf.so:graphics/libwmf@${FLAVOR}
 
 .include <bsd.port.options.mk>
 
@@ -275,20 +278,6 @@ USES+=		ghostscript
 CONFIGURE_ARGS+=	--without-gslib
 .endif
 
-# WMF (Windows Meta File) images
-.if ${PORT_OPTIONS:MWMF}
-. if ${FLAVOR:U} == x11
-LIB_DEPENDS+=		libwmf.so:graphics/libwmf
-. else
-LIB_DEPENDS+=		libwmf.so:graphics/libwmf-nox11
-. endif
-CONFIGURE_ARGS+=	--with-wmf=yes
-PLIST_SUB+=		WMF=""
-.else
-CONFIGURE_ARGS+=	--without-wmf
-PLIST_SUB+=		WMF="@comment "
-.endif
-
 # PDF (Adobe Portable Document Format) support
 .if ${PORT_OPTIONS:MPDF}
 . if ${FLAVOR:U} == x11
@@ -334,6 +323,10 @@ post-patch:
 		${WRKSRC}/wand/Wand.pc.in \
 		${WRKSRC}/wand/MagickWand-config.in \
 		${WRKSRC}/wand/MagickWand.pc.in
+	@${REINPLACE_CMD} -e '/^export PKG_CONFIG_LIBDIR/d' \
+		${WRKSRC}/magick/MagickCore-config.in \
+		${WRKSRC}/wand/MagickWand-config.in \
+		${WRKSRC}/Magick++/bin/Magick++-config.in
 
 pre-configure:
 .if defined(_IMAGEMAGICK_THREADS_PERL_MSG)
@@ -347,6 +340,9 @@ post-install:
 	@${MV} ${STAGEDIR}${PREFIX}/etc/ImageMagick-6/${i} \
 		${STAGEDIR}${PREFIX}/etc/ImageMagick-6/${i}.sample
 .endfor
+
+post-install-PERL-on:
+	${STRIP_CMD} ${STAGEDIR}${SITE_ARCH}/auto/Image/Magick/*/*.so
 
 do-test:
 	-cd ${WRKSRC} && ${SETENV} ${MAKE_ENV} limits -m 20m ${MAKE} ${_MAKE_JOBS} check

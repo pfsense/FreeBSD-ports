@@ -1,5 +1,6 @@
 PORTNAME=	grails
 DISTVERSION=	1.3.6
+PORTREVISION=	1
 CATEGORIES=	www java
 MASTER_SITES=	http://dist.codehaus.org/grails/ \
 		http://dist.springframework.org.s3.amazonaws.com/release/GRAILS/
@@ -13,9 +14,9 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 
 WRKSRC=		${WRKDIR}/${PORTNAME}-${DISTVERSION:tu}
 
-USES=		cpe zip
+USES=		cpe java zip
 CPE_VENDOR=	gopivotal
-USE_JAVA=	yes
+
 NO_BUILD=	yes
 NO_ARCH=	yes
 DATADIR=	${JAVASHAREDIR}/${PORTNAME}

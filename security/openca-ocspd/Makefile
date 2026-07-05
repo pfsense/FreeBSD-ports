@@ -1,6 +1,7 @@
 PORTNAME=	openca-ocspd
 DISTVERSIONPREFIX=	v
 DISTVERSION=	3.1.3
+PORTREVISION=	2
 CATEGORIES=	security
 
 MAINTAINER=	bruno@ruomad.net

@@ -1,4 +1,4 @@
---- media/capture/video/linux/video_capture_device_factory_v4l2.h.orig	2023-04-22 17:45:15 UTC
+--- media/capture/video/linux/video_capture_device_factory_v4l2.h.orig	2025-12-10 15:04:57 UTC
 +++ media/capture/video/linux/video_capture_device_factory_v4l2.h
 @@ -51,7 +51,7 @@ class CAPTURE_EXPORT VideoCaptureDeviceFactoryV4L2
  

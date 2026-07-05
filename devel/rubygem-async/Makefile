@@ -1,20 +1,21 @@
 PORTNAME=	async
-PORTVERSION=	2.10.1
+PORTVERSION=	2.36.0
 CATEGORIES=	devel rubygems
 MASTER_SITES=	RG
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Modern asynchronous I/O framework for Ruby
-WWW=		https://github.com/socketry/async
+WWW=		https://socketry.github.io/async/ \
+		https://github.com/socketry/async
 
 LICENSE=	MIT
+LICENSE_FILE=	${WRKSRC}/license.md
 
-BROKEN_RUBY30=	yes
-
-RUN_DEPENDS=	rubygem-console>=1.10<2:devel/rubygem-console \
+RUN_DEPENDS=	rubygem-console>=1.29<2:devel/rubygem-console \
 		rubygem-fiber-annotation>=0:devel/rubygem-fiber-annotation \
-		rubygem-io-event>=1.5.1<2:devel/rubygem-io-event \
-		rubygem-timers>=4.1<5:devel/rubygem-timers
+		rubygem-io-event>=1.11<2:devel/rubygem-io-event \
+		rubygem-metrics>=0.12<1:devel/rubygem-metrics \
+		rubygem-traces>=0.18<1:devel/rubygem-traces
 
 USES=		gem
 

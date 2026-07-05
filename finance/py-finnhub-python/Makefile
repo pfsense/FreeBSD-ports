@@ -1,8 +1,9 @@
 PORTNAME=	finnhub-python
-DISTVERSION=	2.4.19
+DISTVERSION=	2.4.27
 CATEGORIES=	finance python
 MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
+DISTNAME=	${PORTNAME:S/-/_/}-${DISTVERSION}
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Python API to access Finnhub
@@ -10,9 +11,7 @@ WWW=		https://finnhub.io/docs/api
 
 LICENSE=	APACHE20
 
-PY_DEPENDS=	${PYTHON_PKGNAMEPREFIX}requests>=2.22.0:www/py-requests@${PY_FLAVOR}
-BUILD_DEPENDS=	${PY_DEPENDS}
-RUN_DEPENDS=	${PY_DEPENDS}
+RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}requests>=2.22.0:www/py-requests@${PY_FLAVOR}
 
 USES=		python
 USE_PYTHON=	distutils autoplist

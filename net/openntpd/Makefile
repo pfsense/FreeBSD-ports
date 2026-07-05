@@ -1,6 +1,6 @@
 PORTNAME=	openntpd
 PORTVERSION=	6.8p1
-PORTREVISION=	9
+PORTREVISION=	10
 PORTEPOCH=	2
 CATEGORIES=	net
 MASTER_SITES=	OPENBSD/OpenNTPD
@@ -11,8 +11,6 @@ WWW=		https://www.openntpd.org/
 
 LICENSE=	ISCL
 
-RUN_DEPENDS=	ca_root_nss>=0:security/ca_root_nss
-
 USES=		cpe localbase ssl
 
 CONFLICTS=	ntp ntp-devel ntpsec
@@ -22,7 +20,6 @@ USERS=		_ntp
 GROUPS=		_ntp
 
 GNU_CONFIGURE=	yes
-GNU_CONFIGURE_MANPREFIX=	${PREFIX}/share
 
 SUB_FILES=	480.status-openntpd pkg-message
 
@@ -37,6 +34,11 @@ post-install:
 		${STAGEDIR}${PREFIX}/etc/periodic/daily
 
 .include <bsd.port.pre.mk>
+
+# certificate bundle
+.if !(${OPSYS} == FreeBSD && ${OSVERSION} >= 1500063)
+RUN_DEPENDS+=	ca_root_nss>=0:security/ca_root_nss
+.endif
 
 # When using LibreSSL use its own libtls, but when using OpenSSL
 # use libtls from libretls.

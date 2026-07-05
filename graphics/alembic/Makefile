@@ -1,5 +1,6 @@
 PORTNAME=	alembic
-PORTVERSION=	1.8.6
+PORTVERSION=	1.8.7
+PORTREVISION=	1
 CATEGORIES=	graphics
 
 MAINTAINER=	danfe@FreeBSD.org
@@ -9,7 +10,6 @@ WWW=		http://alembic.io/
 LICENSE=	BSD3CLAUSE
 
 LIB_DEPENDS=	libImath.so:math/Imath
-LIB_DEPENDS+=	libsz.so:science/libaec
 
 USES=		cmake compiler:c++11-lang
 USE_CXXSTD=	c++11

@@ -24,12 +24,13 @@ BUILD_WRKSRC=	${WRKSRC}/lib/python
 INSTALL_WRKSRC=	${BUILD_WRKSRC}
 
 PLIST_FILES=	${PYTHONPREFIX_SITELIBDIR:S,^${PREFIX}/,,}/scamper.a \
-		${PYTHONPREFIX_SITELIBDIR:S,^${PREFIX}/,,}/scamper.so
+		${PYTHONPREFIX_SITELIBDIR:S,^${PREFIX}/,,}/scamper.so \
+		${PYTHONPREFIX_SITELIBDIR:S,^${PREFIX}/,,}/scamper.pyi
 
 post-patch:
 	@${REINPLACE_CMD} \
 		-e 's/$$(scamper_la_DEPENDENCIES)//' \
-		-e 's,../../scamper/libscamperfile.la,-lscamperfile,' \
+		-e 's,../libscamperfile/libscamperfile.la,-lscamperfile,' \
 		-e 's,../libscamperctrl/libscamperctrl.la,-lscamperctrl,' \
 		${BUILD_WRKSRC}/Makefile.in
 

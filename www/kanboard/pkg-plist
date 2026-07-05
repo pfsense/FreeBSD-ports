@@ -1,7 +1,8 @@
-@owner %%KANBOARD_USERNAME%%
-@group %%KANBOARD_GROUPNAME%%
 %%WWWDIR%%/.devcontainer/devcontainer.json
 %%WWWDIR%%/.htaccess
+%%WWWDIR%%/.php-cs-fixer.php
+%%WWWDIR%%/CONTRIBUTING.md
+%%WWWDIR%%/ChangeLog
 %%WWWDIR%%/LICENSE
 %%WWWDIR%%/app/.htaccess
 %%WWWDIR%%/app/Action/Base.php
@@ -24,10 +25,12 @@
 %%WWWDIR%%/app/Action/TaskAssignCreator.php
 %%WWWDIR%%/app/Action/TaskAssignCurrentUser.php
 %%WWWDIR%%/app/Action/TaskAssignCurrentUserColumn.php
+%%WWWDIR%%/app/Action/TaskAssignCurrentUserColumnIfNoUserAlreadySet.php
 %%WWWDIR%%/app/Action/TaskAssignDueDateOnCreation.php
 %%WWWDIR%%/app/Action/TaskAssignDueDateOnMoveColumn.php
 %%WWWDIR%%/app/Action/TaskAssignPrioritySwimlane.php
 %%WWWDIR%%/app/Action/TaskAssignSpecificUser.php
+%%WWWDIR%%/app/Action/TaskAssignToUserOnCreationInColumn.php
 %%WWWDIR%%/app/Action/TaskAssignUser.php
 %%WWWDIR%%/app/Action/TaskAssignUserSwimlaneChange.php
 %%WWWDIR%%/app/Action/TaskClose.php
@@ -226,7 +229,6 @@
 %%WWWDIR%%/app/Core/Base.php
 %%WWWDIR%%/app/Core/Cache/BaseCache.php
 %%WWWDIR%%/app/Core/Cache/CacheInterface.php
-%%WWWDIR%%/app/Core/Cache/FileCache.php
 %%WWWDIR%%/app/Core/Cache/MemoryCache.php
 %%WWWDIR%%/app/Core/Controller/AccessForbiddenException.php
 %%WWWDIR%%/app/Core/Controller/BaseException.php
@@ -525,6 +527,7 @@
 %%WWWDIR%%/app/Model/ActionParameterModel.php
 %%WWWDIR%%/app/Model/AvatarFileModel.php
 %%WWWDIR%%/app/Model/BoardModel.php
+%%WWWDIR%%/app/Model/CaptchaModel.php
 %%WWWDIR%%/app/Model/CategoryModel.php
 %%WWWDIR%%/app/Model/ColorModel.php
 %%WWWDIR%%/app/Model/ColumnModel.php
@@ -1005,6 +1008,7 @@
 %%WWWDIR%%/app/Validator/ColumnRestrictionValidator.php
 %%WWWDIR%%/app/Validator/ColumnValidator.php
 %%WWWDIR%%/app/Validator/CommentValidator.php
+%%WWWDIR%%/app/Validator/ConfigValidator.php
 %%WWWDIR%%/app/Validator/CurrencyValidator.php
 %%WWWDIR%%/app/Validator/CustomFilterValidator.php
 %%WWWDIR%%/app/Validator/ExternalLinkValidator.php
@@ -1067,9 +1071,15 @@
 %%WWWDIR%%/assets/js/vendor.min.js
 %%WWWDIR%%/cli
 %%WWWDIR%%/config.default.php
+%%WWWDIR%%/custom-hooks/install-custom-hooks.sh
+%%WWWDIR%%/custom-hooks/post-checkout
 %%WWWDIR%%/data/.htaccess
 %%WWWDIR%%/data/web.config
+%%WWWDIR%%/docker-compose.mysql.yml
+%%WWWDIR%%/docker-compose.postgres.yml
+%%WWWDIR%%/docker-compose.sqlite.yml
 %%WWWDIR%%/favicon.ico
+%%WWWDIR%%/healthcheck.php
 %%WWWDIR%%/index.php
 %%WWWDIR%%/jsonrpc.php
 %%WWWDIR%%/libs/Captcha/CaptchaBuilder.php
@@ -1099,6 +1109,7 @@
 %%WWWDIR%%/libs/SimpleValidator/Validators/Equals.php
 %%WWWDIR%%/libs/SimpleValidator/Validators/Exists.php
 %%WWWDIR%%/libs/SimpleValidator/Validators/GreaterThan.php
+%%WWWDIR%%/libs/SimpleValidator/Validators/GreaterThanOrEqual.php
 %%WWWDIR%%/libs/SimpleValidator/Validators/InArray.php
 %%WWWDIR%%/libs/SimpleValidator/Validators/Integer.php
 %%WWWDIR%%/libs/SimpleValidator/Validators/Ip.php
@@ -1111,7 +1122,24 @@
 %%WWWDIR%%/libs/SimpleValidator/Validators/Numeric.php
 %%WWWDIR%%/libs/SimpleValidator/Validators/Range.php
 %%WWWDIR%%/libs/SimpleValidator/Validators/Required.php
+%%WWWDIR%%/libs/SimpleValidator/Validators/Timezone.php
+%%WWWDIR%%/libs/SimpleValidator/Validators/URL.php
 %%WWWDIR%%/libs/SimpleValidator/Validators/Unique.php
+%%WWWDIR%%/libs/erusev/parsedown/LICENSE.txt
+%%WWWDIR%%/libs/erusev/parsedown/Parsedown.php
+%%WWWDIR%%/libs/event-dispatcher/Attribute/AsEventListener.php
+%%WWWDIR%%/libs/event-dispatcher/CHANGELOG.md
+%%WWWDIR%%/libs/event-dispatcher/Debug/TraceableEventDispatcher.php
+%%WWWDIR%%/libs/event-dispatcher/Debug/WrappedListener.php
+%%WWWDIR%%/libs/event-dispatcher/DependencyInjection/AddEventAliasesPass.php
+%%WWWDIR%%/libs/event-dispatcher/DependencyInjection/RegisterListenersPass.php
+%%WWWDIR%%/libs/event-dispatcher/EventDispatcher.php
+%%WWWDIR%%/libs/event-dispatcher/EventDispatcherInterface.php
+%%WWWDIR%%/libs/event-dispatcher/EventSubscriberInterface.php
+%%WWWDIR%%/libs/event-dispatcher/GenericEvent.php
+%%WWWDIR%%/libs/event-dispatcher/ImmutableEventDispatcher.php
+%%WWWDIR%%/libs/event-dispatcher/LICENSE
+%%WWWDIR%%/libs/event-dispatcher/LegacyEventDispatcherProxy.php
 %%WWWDIR%%/libs/ical/Component.php
 %%WWWDIR%%/libs/ical/Component/Alarm.php
 %%WWWDIR%%/libs/ical/Component/Calendar.php
@@ -1818,8 +1846,6 @@
 %%WWWDIR%%/vendor/composer/installed.json
 %%WWWDIR%%/vendor/composer/installed.php
 %%WWWDIR%%/vendor/composer/platform_check.php
-%%WWWDIR%%/vendor/erusev/parsedown/LICENSE.txt
-%%WWWDIR%%/vendor/erusev/parsedown/Parsedown.php
 %%WWWDIR%%/vendor/pimple/pimple/.php_cs.dist
 %%WWWDIR%%/vendor/pimple/pimple/CHANGELOG
 %%WWWDIR%%/vendor/pimple/pimple/LICENSE
@@ -1980,19 +2006,6 @@
 %%WWWDIR%%/vendor/symfony/event-dispatcher-contracts/Event.php
 %%WWWDIR%%/vendor/symfony/event-dispatcher-contracts/EventDispatcherInterface.php
 %%WWWDIR%%/vendor/symfony/event-dispatcher-contracts/LICENSE
-%%WWWDIR%%/vendor/symfony/event-dispatcher/Attribute/AsEventListener.php
-%%WWWDIR%%/vendor/symfony/event-dispatcher/CHANGELOG.md
-%%WWWDIR%%/vendor/symfony/event-dispatcher/Debug/TraceableEventDispatcher.php
-%%WWWDIR%%/vendor/symfony/event-dispatcher/Debug/WrappedListener.php
-%%WWWDIR%%/vendor/symfony/event-dispatcher/DependencyInjection/AddEventAliasesPass.php
-%%WWWDIR%%/vendor/symfony/event-dispatcher/DependencyInjection/RegisterListenersPass.php
-%%WWWDIR%%/vendor/symfony/event-dispatcher/EventDispatcher.php
-%%WWWDIR%%/vendor/symfony/event-dispatcher/EventDispatcherInterface.php
-%%WWWDIR%%/vendor/symfony/event-dispatcher/EventSubscriberInterface.php
-%%WWWDIR%%/vendor/symfony/event-dispatcher/GenericEvent.php
-%%WWWDIR%%/vendor/symfony/event-dispatcher/ImmutableEventDispatcher.php
-%%WWWDIR%%/vendor/symfony/event-dispatcher/LICENSE
-%%WWWDIR%%/vendor/symfony/event-dispatcher/LegacyEventDispatcherProxy.php
 %%WWWDIR%%/vendor/symfony/finder/CHANGELOG.md
 %%WWWDIR%%/vendor/symfony/finder/Comparator/Comparator.php
 %%WWWDIR%%/vendor/symfony/finder/Comparator/DateComparator.php
@@ -2066,6 +2079,7 @@
 %%WWWDIR%%/vendor/symfony/service-contracts/ServiceSubscriberInterface.php
 %%WWWDIR%%/vendor/symfony/service-contracts/ServiceSubscriberTrait.php
 %%WWWDIR%%/vendor/symfony/service-contracts/Test/ServiceLocatorTest.php
+%%WWWDIR%%/vendor/symfony/service-contracts/Test/ServiceLocatorTestCase.php
 %%WWWDIR%%/vendor/symfony/string/AbstractString.php
 %%WWWDIR%%/vendor/symfony/string/AbstractUnicodeString.php
 %%WWWDIR%%/vendor/symfony/string/ByteString.php
@@ -2086,6 +2100,5 @@
 %%WWWDIR%%/vendor/symfony/string/Slugger/SluggerInterface.php
 %%WWWDIR%%/vendor/symfony/string/UnicodeString.php
 %%WWWDIR%%/web.config
+@dir(%%KANBOARD_USERNAME%%,%%KANBOARD_GROUPNAME%%,) %%WWWDIR%%/data
 @dir %%WWWDIR%%/plugins
-@owner
-@group

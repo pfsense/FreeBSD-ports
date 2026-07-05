@@ -1,6 +1,6 @@
 PORTNAME=	mumps4
 PORTVERSION=	4.10.0	# Please do not upgrade to 5+: use math/mumps
-PORTREVISION=	5
+PORTREVISION=	6
 CATEGORIES=	math
 MASTER_SITES=	http://mumps.enseeiht.fr/		\
 		http://graal.ens-lyon.fr/MUMPS/		\
@@ -10,12 +10,12 @@ DISTNAME=	MUMPS_${PORTVERSION}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	MUltifrontal Massively Parallel sparse direct Solver
-WWW=		https://graal.ens-lyon.fr/MUMPS/
+WWW=		https://mumps-solver.org/
 
 LICENSE=	PD
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-USES=		fortran
+USES=		fortran:gfortran
 
 MAKE_JOBS_UNSAFE=yes
 

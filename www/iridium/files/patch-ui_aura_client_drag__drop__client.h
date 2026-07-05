@@ -1,4 +1,4 @@
---- ui/aura/client/drag_drop_client.h.orig	2023-01-17 19:19:00 UTC
+--- ui/aura/client/drag_drop_client.h.orig	2025-12-10 15:04:57 UTC
 +++ ui/aura/client/drag_drop_client.h
 @@ -44,7 +44,7 @@ class AURA_EXPORT DragDropClient {
        int allowed_operations,

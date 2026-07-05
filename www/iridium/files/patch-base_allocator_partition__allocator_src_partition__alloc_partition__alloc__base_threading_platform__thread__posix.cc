@@ -1,11 +1,11 @@
---- base/allocator/partition_allocator/src/partition_alloc/partition_alloc_base/threading/platform_thread_posix.cc.orig	2024-02-04 14:46:08 UTC
+--- base/allocator/partition_allocator/src/partition_alloc/partition_alloc_base/threading/platform_thread_posix.cc.orig	2026-02-16 10:45:29 UTC
 +++ base/allocator/partition_allocator/src/partition_alloc/partition_alloc_base/threading/platform_thread_posix.cc
-@@ -17,7 +17,7 @@
- #include "base/allocator/partition_allocator/src/partition_alloc/partition_alloc_base/threading/platform_thread_internal_posix.h"
- #include "build/build_config.h"
+@@ -18,7 +18,7 @@
+ #include "partition_alloc/partition_alloc_base/logging.h"
+ #include "partition_alloc/partition_alloc_base/threading/platform_thread_internal_posix.h"
  
--#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS)
-+#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_BSD)
+-#if PA_BUILDFLAG(IS_LINUX) || PA_BUILDFLAG(IS_CHROMEOS)
++#if PA_BUILDFLAG(IS_LINUX) || PA_BUILDFLAG(IS_CHROMEOS) || PA_BUILDFLAG(IS_BSD)
  #include <sys/syscall.h>
  #include <atomic>
  #endif

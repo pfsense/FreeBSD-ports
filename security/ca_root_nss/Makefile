@@ -19,21 +19,25 @@ WRKSRC_SUBDIR=	nss
 
 OPTIONS_DEFINE=		ETCSYMLINK
 OPTIONS_DEFAULT=	ETCSYMLINK
+OPTIONS_EXCLUDE_FreeBSD_15=	ETCSYMLINK
+OPTIONS_EXCLUDE_FreeBSD_16=	ETCSYMLINK
 
 OPTIONS_SUB=		yes
 
-ETCSYMLINK_DESC=	Add symlink to /etc/ssl/cert.pem
+ETCSYMLINK_DESC=	Add symlinks to default bundle locations
 ETCSYMLINK_CONFLICTS_INSTALL=	ca-roots-[0-9]*
 
 CERTDIR?=	share/certs
 PLIST_SUB+=	CERTDIR=${CERTDIR}
 
-VERSION_NSS=	3.93
+VERSION_NSS=	3.117
 CERTDATA_TXT_PATH=	lib/ckfw/builtins/certdata.txt
 BUNDLE_PROCESSOR=	MAca-bundle.pl
 
-SUB_FILES=	MAca-bundle.pl pkg-message
-SUB_LIST=	VERSION_NSS=${VERSION_NSS}
+CERTCTL_CMD?=	/usr/sbin/certctl
+
+SUB_FILES=	MAca-bundle.pl pkg-deinstall pkg-install pkg-message
+SUB_LIST=	CERTCTL_CMD=${CERTCTL_CMD} VERSION_NSS=${VERSION_NSS}
 
 do-build:
 	@${SETENV} PATH=${LOCALBASE}/bin:$${PATH} \
@@ -46,11 +50,11 @@ do-install:
 	${INSTALL_DATA} ${WRKDIR}/ca-root-nss.crt ${STAGEDIR}${PREFIX}/${CERTDIR}
 	${MKDIR} ${STAGEDIR}${PREFIX}/etc/ssl
 	${LN} -sf ../../${CERTDIR}/ca-root-nss.crt ${STAGEDIR}${PREFIX}/etc/ssl/cert.pem.sample
-	${MKDIR} ${STAGEDIR}${PREFIX}/openssl
-	${LN} -sf ../${CERTDIR}/ca-root-nss.crt ${STAGEDIR}${PREFIX}/openssl/cert.pem.sample
 
 do-install-ETCSYMLINK-on:
+	${MKDIR} ${STAGEDIR}${PREFIX}/openssl
+	${LN} -sf ../etc/ssl/cert.pem ${STAGEDIR}${PREFIX}/openssl/cert.pem
 	${MKDIR} ${STAGEDIR}/etc/ssl
-	${LN} -sf ../..${PREFIX}/${CERTDIR}/ca-root-nss.crt ${STAGEDIR}/etc/ssl/cert.pem
+	${LN} -sf ../..${PREFIX}/etc/ssl/cert.pem ${STAGEDIR}/etc/ssl/cert.pem
 
 .include <bsd.port.mk>

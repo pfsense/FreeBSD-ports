@@ -1,20 +1,34 @@
---- content/common/features.cc.orig	2024-02-04 14:46:08 UTC
+--- content/common/features.cc.orig	2026-03-24 16:59:08 UTC
 +++ content/common/features.cc
-@@ -154,7 +154,7 @@ BASE_FEATURE(kEnableBackForwardCacheForScreenReader,
-              base::FEATURE_ENABLED_BY_DEFAULT);
+@@ -184,7 +184,7 @@ BASE_FEATURE(kDocumentPolicyNegotiation, base::FEATURE
+ BASE_FEATURE(kEmbeddingRequiresOptIn, base::FEATURE_DISABLED_BY_DEFAULT);
  
  // Enables error reporting for JS errors inside DevTools frontend host
 -#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS)
 +#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_BSD)
  BASE_FEATURE(kEnableDevToolsJsErrorReporting,
-              "EnableDevToolsJsErrorReporting",
               base::FEATURE_DISABLED_BY_DEFAULT);
-@@ -246,7 +246,7 @@ BASE_FEATURE(kGroupNIKByJoiningOrigin,
- // process and having browser process handle adjusting thread properties (nice
- // value, c-group, latency sensitivity...) for children which have sandbox
- // restrictions.
--#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS)
-+#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_BSD)
- BASE_FEATURE(kHandleChildThreadTypeChangesInBrowser,
-              "HandleChildThreadTypeChangesInBrowser",
-              base::FEATURE_ENABLED_BY_DEFAULT);
+ #endif  // BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS)
+@@ -288,7 +288,7 @@ BASE_FEATURE_ENUM_PARAM(FontDataServiceTypefaceType,
+                         FontDataServiceTypefaceType::kDwrite,
+                         &font_data_service_typeface);
+ #endif  // BUILDFLAG(IS_WIN)
+-#if BUILDFLAG(IS_LINUX)
++#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_BSD)
+ BASE_FEATURE(kFontDataServiceLinux, base::FEATURE_DISABLED_BY_DEFAULT);
+ const base::FeatureParam<FontDataServiceTypefaceType>::Option
+     font_data_service_typeface[] = {
+@@ -302,11 +302,11 @@ BASE_FEATURE_ENUM_PARAM(FontDataServiceTypefaceType,
+                         &font_data_service_typeface);
+ #endif  // BUILDFLAG(IS_LINUX)
+ 
+-#if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_LINUX)
++#if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_BSD)
+ bool IsFontDataServiceEnabled() {
+ #if BUILDFLAG(IS_WIN)
+   return base::FeatureList::IsEnabled(features::kFontDataServiceAllWebContents);
+-#elif BUILDFLAG(IS_LINUX)
++#elif BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_BSD)
+   return base::FeatureList::IsEnabled(features::kFontDataServiceLinux);
+ #else
+   return false;

@@ -3,7 +3,7 @@
  * snort_defs.inc
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2006-2024 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2006-2026 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2009-2010 Robert Zelaya
  * Copyright (c) 2013-2022 Bill Meeks
  * All rights reserved.
@@ -22,6 +22,8 @@
  */
 
 global $g;
+
+define('LOG_PREFIX_PKG_SNORT', 'Snort');
 
 /* Define some useful constants for Snort */
 if (!defined("SNORT_BASEDIR")) {

@@ -1,0 +1,70 @@
+commit d3929b79ff7c3f0cdf1ba3179efea05037a18d00
+Author: jim-p <jimp@netgate.com>
+Date:   Wed Mar 6 15:30:05 2024 -0500
+
+    Ensure RO user cannot trigger VLAN operations. Fixes #15282
+    
+    While here, fix a problem that prevented a VLAN delete operation that
+    failed from displaying errors.
+
+diff --git a/src/usr/local/www/interfaces_vlan.php b/src/usr/local/www/interfaces_vlan.php
+index 86d254c2a7..3e26d622e9 100644
+--- a/src/usr/local/www/interfaces_vlan.php
++++ b/src/usr/local/www/interfaces_vlan.php
+@@ -41,6 +41,20 @@ init_config_arr(array('vlans', 'vlan'));
+ $a_vlans = &$config['vlans']['vlan'];
+ 
+ if ($_POST['act'] == "del") {
++	/*
++	 * Check user privileges to test if the user is allowed to make changes.
++	 * Otherwise users can end up in an inconsistent state where some changes are
++	 * performed and others denied. See https://redmine.pfsense.org/issues/15282
++	 */
++	phpsession_begin();
++	$guiuser = getUserEntry($_SESSION['Username']);
++	$read_only = (is_array($guiuser) && userHasPrivilege($guiuser, "user-config-readonly"));
++	phpsession_end();
++
++	if ($read_only) {
++		$input_errors = array(gettext("Insufficient privileges to make the requested change (read only)."));
++	}
++
+ 	if (!isset($_POST['id'])) {
+ 		$input_errors[] = gettext("Wrong parameters supplied");
+ 	} else if (empty($a_vlans[$_POST['id']])) {
+@@ -48,7 +62,9 @@ if ($_POST['act'] == "del") {
+ 	/* check if still in use */
+ 	} else if (vlan_inuse($a_vlans[$_POST['id']])) {
+ 		$input_errors[] = gettext("This VLAN cannot be deleted because it is still being used as an interface.");
+-	} else {
++	}
++
++	if (!$input_errors) {
+ 		if (does_interface_exist($a_vlans[$_POST['id']]['vlanif'])) {
+ 			pfSense_interface_destroy($a_vlans[$_POST['id']]['vlanif']);
+ 		}
+diff --git a/src/usr/local/www/interfaces_vlan_edit.php b/src/usr/local/www/interfaces_vlan_edit.php
+index d89cbe6db0..a2b61ab529 100644
+--- a/src/usr/local/www/interfaces_vlan_edit.php
++++ b/src/usr/local/www/interfaces_vlan_edit.php
+@@ -84,6 +84,20 @@ if ($_POST['save']) {
+ 	unset($input_errors);
+ 	$pconfig = $_POST;
+ 
++	/*
++	 * Check user privileges to test if the user is allowed to make changes.
++	 * Otherwise users can end up in an inconsistent state where some changes are
++	 * performed and others denied. See https://redmine.pfsense.org/issues/15282
++	 */
++	phpsession_begin();
++	$guiuser = getUserEntry($_SESSION['Username']);
++	$read_only = (is_array($guiuser) && userHasPrivilege($guiuser, "user-config-readonly"));
++	phpsession_end();
++
++	if ($read_only) {
++		$input_errors = array(gettext("Insufficient privileges to make the requested change (read only)."));
++	}
++
+ 	/* input validation */
+ 	$reqdfields = explode(" ", "if tag");
+ 	$reqdfieldsn = array(gettext("Parent interface"), gettext("VLAN tag"));

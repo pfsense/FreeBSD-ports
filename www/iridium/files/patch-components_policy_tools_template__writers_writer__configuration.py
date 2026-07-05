@@ -1,4 +1,4 @@
---- components/policy/tools/template_writers/writer_configuration.py.orig	2023-10-21 11:51:27 UTC
+--- components/policy/tools/template_writers/writer_configuration.py.orig	2025-12-10 15:04:57 UTC
 +++ components/policy/tools/template_writers/writer_configuration.py
 @@ -59,7 +59,7 @@ def GetConfigurationForBuild(defines):
              },

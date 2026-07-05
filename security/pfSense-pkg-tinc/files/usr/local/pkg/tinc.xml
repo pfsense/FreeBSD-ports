@@ -8,7 +8,7 @@
  * tinc.xml
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2016-2024 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2016-2026 Rubicon Communications, LLC (Netgate)
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -29,6 +29,7 @@
 	<name>tinc</name>
 	<version>%%PKGVERSION%%</version>
 	<title>VPN: Tinc: Settings</title>
+	<addedit_string>tinc: changed Settings</addedit_string>
 	<include_file>/usr/local/pkg/tinc.inc</include_file>
 	<menu>
 		<name>tinc</name>

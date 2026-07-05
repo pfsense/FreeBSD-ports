@@ -1,5 +1,5 @@
 PORTNAME=	devise
-PORTVERSION=	4.9.3
+PORTVERSION=	4.9.4
 CATEGORIES=	devel rubygems
 MASTER_SITES=	RG
 PKGNAMESUFFIX=	-rails52
@@ -22,5 +22,7 @@ USES=		cpe gem
 NO_ARCH=	yes
 
 CPE_VENDOR=	plataformatec
+
+PORTSCOUT=	limit:^4\.
 
 .include <bsd.port.mk>

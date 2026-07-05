@@ -1,6 +1,6 @@
 PORTNAME=	yubico-piv-tool
-PORTVERSION=	2.4.2
-PORTREVISION=	1
+PORTVERSION=	2.7.2
+PORTREVISION=	0
 CATEGORIES=	security
 MASTER_SITES=	https://developers.yubico.com/yubico-piv-tool/Releases/
 
@@ -16,7 +16,7 @@ BUILD_DEPENDS=	${LOCALBASE}/libdata/pkgconfig/check.pc:devel/check \
 		help2man:misc/help2man
 LIB_DEPENDS=	libpcsclite.so:devel/pcsc-lite
 
-USES=		compiler cmake:noninja gmake libtool pathfix pkgconfig ssl
+USES=		compiler cmake:noninja gmake pathfix pkgconfig ssl
 USE_LDCONFIG=	yes
 CMAKE_ARGS=	-D LIBCRYPTO_CFLAGS="-I${OPENSSLINC}" \
 		-D LIBCRYPTO_LDFLAGS="-L${OPENSSLLIB} -lcrypto -L${LOCALBASE}/lib -pthread" \

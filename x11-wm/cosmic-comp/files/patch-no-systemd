@@ -12,17 +12,19 @@ Avoid various systemd dependencies
  DesktopNames=pop:COSMIC
  X-GDM-SessionRegisters=false
 \ No newline at end of file
---- src/main.rs.orig	2024-01-29 00:48:40 UTC
-+++ src/main.rs
-@@ -35,6 +35,11 @@ fn main() -> Result<()> {
+--- src/lib.rs.orig	2025-11-12 03:20:54 UTC
++++ src/lib.rs
+@@ -132,6 +132,13 @@ pub fn run(hooks: crate::hooks::Hooks) -> Result<(), B
      logger::init_logger()?;
      info!("Cosmic starting up!");
  
-+    // Advise xdg-desktop-portal which *-portals.conf to load
-+    std::env::set_var("XDG_CURRENT_DESKTOP", "cosmic");
-+    // Mimic wlroots, used by https://github.com/qt/qtbase/commit/4b4870a12cd9
-+    std::env::set_var("XDG_SESSION_TYPE", "wayland");
++    unsafe {
++        // Advise xdg-desktop-portal which *-portals.conf to load
++        std::env::set_var("XDG_CURRENT_DESKTOP", "COSMIC");
++        // Mimic wlroots, used by https://github.com/qt/qtbase/commit/4b4870a12cd9
++        std::env::set_var("XDG_SESSION_TYPE", "wayland");
++    }
 +
-     // init event loop
-     let mut event_loop = EventLoop::try_new().with_context(|| "Failed to initialize event loop")?;
-     // init wayland
+     profiling::register_thread!("Main Thread");
+     #[cfg(feature = "profile-with-tracy")]
+     tracy_client::Client::start();

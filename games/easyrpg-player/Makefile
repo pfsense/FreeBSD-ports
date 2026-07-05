@@ -1,5 +1,5 @@
 PORTNAME=	easyrpg-player
-PORTVERSION=	0.8
+PORTVERSION=	0.8.1.1
 PORTREVISION=	2
 CATEGORIES=	games
 
@@ -26,11 +26,14 @@ LIB_DEPENDS=	liblcf.so:games/liblcf \
 		libxmp.so:audio/libxmp \
 		libfmt.so:devel/libfmt \
 		libasound.so:audio/alsa-lib \
-		libfluidsynth.so:audio/fluidsynth
+		libfluidsynth.so:audio/fluidsynth \
+		liblhasa.so:archivers/lhasa
 # these come from liblcf
 LIB_DEPENDS+=	libicui18n.so:devel/icu \
-		libexpat.so:textproc/expat2
-BUILD_DEPENDS=	${LOCALBASE}/include/boost/shared_ptr.hpp:devel/boost-libs
+		libexpat.so:textproc/expat2 \
+		libinih.so:devel/inih
+BUILD_DEPENDS=	${LOCALBASE}/include/boost/shared_ptr.hpp:devel/boost-libs \
+		${LOCALBASE}/include/nlohmann/json.hpp:devel/nlohmann-json
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	EasyRPG

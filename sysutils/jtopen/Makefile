@@ -1,5 +1,6 @@
 PORTNAME=	jtopen
 PORTVERSION=	6.2
+PORTREVISION=	1
 CATEGORIES=	sysutils java
 MASTER_SITES=	SF/jt400/JTOpen-full/${PORTVERSION}
 DISTNAME=	${PORTNAME}_${PORTVERSION:S/./_/}
@@ -13,9 +14,9 @@ LICENSE_NAME=	IBM Public License 1.0
 LICENSE_FILE=	${FILESDIR}/IBMPL10
 LICENSE_PERMS=	dist-mirror dist-sell pkg-mirror pkg-sell auto-accept
 
-USES=		zip
+USES=		java zip
+
 NO_WRKSUBDIR=	yes
-USE_JAVA=	yes
 
 NO_BUILD=	yes
 

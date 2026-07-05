@@ -1,6 +1,6 @@
 PORTNAME=	dirac
 DISTVERSION=	22.0
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	science # chemistry
 MASTER_SITES=	https://zenodo.org/record/6010450/files/
 PKGNAMESUFFIX=	-quantum-chemistry-software
@@ -14,6 +14,7 @@ LICENSE=	LGPL21
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
 BROKEN_armv7=		compilation fails: Error: Old-style type declaration REAL*16 not supported at (1)
+BROKEN_i386=		compilation fails: Error: Type mismatch in argument 'lu' at (1); passed INTEGER(8) to INTEGER(4) (and similar)
 BROKEN_powerpc64=	compilation fails: Error: Old-style type declaration REAL*16 not supported at (1)
 BROKEN_powerpc64le=	compilation fails: Error: Old-style type declaration REAL*16 not supported at (1)
 

@@ -1,5 +1,6 @@
 PORTNAME=	pytest-jupyter
-PORTVERSION=	0.10.1
+PORTVERSION=	0.11.0
+PORTREVISION=	1
 CATEGORIES=	devel python
 MASTER_SITES=	PYPI \
 		https://github.com/jupyter-server/pytest-jupyter/releases/download/v${PORTVERSION}/
@@ -24,7 +25,7 @@ USE_PYTHON=	autoplist concurrent pep517
 NO_ARCH=	yes
 
 OPTIONS_DEFINE=	CLIENT SERVER
-OPTIONS_DEFAULT=CLIENT
+OPTIONS_DEFAULT=CLIENT SERVER
 CLIENT_DESC=	Client-side support
 SERVER_DESC=	Server-side support
 SERVER_IMPLIES=	CLIENT

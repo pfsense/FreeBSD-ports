@@ -1,9 +1,9 @@
---- content/browser/renderer_host/render_view_host_impl.cc.orig	2024-02-04 14:46:08 UTC
+--- content/browser/renderer_host/render_view_host_impl.cc.orig	2026-01-16 14:21:21 UTC
 +++ content/browser/renderer_host/render_view_host_impl.cc
-@@ -271,7 +271,7 @@ void RenderViewHostImpl::GetPlatformSpecificPrefs(
-       display::win::ScreenWin::GetSystemMetricsInDIP(SM_CYVSCROLL);
+@@ -275,7 +275,7 @@ void RenderViewHostImpl::GetPlatformSpecificPrefs(
+       display::win::GetScreenWin()->GetSystemMetricsInDIP(SM_CYVSCROLL);
    prefs->arrow_bitmap_width_horizontal_scroll_bar_in_dips =
-       display::win::ScreenWin::GetSystemMetricsInDIP(SM_CXHSCROLL);
+       display::win::GetScreenWin()->GetSystemMetricsInDIP(SM_CXHSCROLL);
 -#elif BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS)
 +#elif BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_BSD)
    base::CommandLine* command_line = base::CommandLine::ForCurrentProcess();

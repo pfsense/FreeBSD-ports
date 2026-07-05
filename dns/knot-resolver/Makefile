@@ -1,7 +1,8 @@
 PORTNAME=	knot-resolver
-DISTVERSION=	5.7.1
+DISTVERSION=	5.7.6
+PORTREVISION=	3
 CATEGORIES=	dns
-MASTER_SITES=	https://secure.nic.cz/files/knot-resolver/ \
+MASTER_SITES=	https://knot-resolver.nic.cz/release/ \
 		https://dns.company/downloads/knot-resolver/
 
 MAINTAINER=	freebsd@dns.company
@@ -12,20 +13,19 @@ LICENSE=	GPLv3+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
 BUILD_DEPENDS=	bash:shells/bash \
-		cmake:devel/cmake-core \
 		flake8:devel/py-flake8@${PY_FLAVOR} \
 		lua51-cqueues>=20200726_1:devel/lua-cqueues@lua51 \
 		luacheck:devel/lua-luacheck
-LIB_DEPENDS=	libdnssec.so:dns/knot3-lib \
+LIB_DEPENDS=	libdnssec.so:dns/knot3 \
 		libgnutls.so:security/gnutls \
-		libknot.so:dns/knot3-lib \
+		libknot.so:dns/knot3 \
 		liblmdb.so:databases/lmdb \
 		libnghttp2.so:www/libnghttp2 \
 		libuv.so:devel/libuv \
-		libzscanner.so:dns/knot3-lib
+		libzscanner.so:dns/knot3
 RUN_DEPENDS=	lua51-cqueues>=20200726_1:devel/lua-cqueues@lua51
 
-USES=		compiler:c11 libedit libtool luajit meson ncurses ninja \
+USES=		cmake:indirect compiler:c11 libedit luajit meson ncurses ninja \
 		pkgconfig python:build shebangfix tar:xz
 USE_CXXSTD=	c++11
 USE_RC_SUBR=	krescachegc kresd
@@ -34,6 +34,7 @@ SHEBANG_FILES=	scripts/bench.sh \
 		scripts/build-in-obs.sh \
 		scripts/coverage_c_combine.sh \
 		scripts/coverage_env.sh \
+		scripts/enable-repo-cznic-labs.sh \
 		scripts/gen-cdefs.sh \
 		scripts/gen-pgp-keyblock.sh \
 		scripts/get-date.sh \
@@ -41,12 +42,12 @@ SHEBANG_FILES=	scripts/bench.sh \
 		scripts/make-archive.sh \
 		scripts/make-doc.sh \
 		scripts/make-obs.sh \
-		scripts/run-pylint.sh \
 		scripts/run-scanbuild-with-args.sh \
 		scripts/test-config.sh \
 		scripts/test-integration-prepare.sh \
 		scripts/update-authors.sh \
-		scripts/update-root-hints.sh
+		scripts/update-root-hints.sh \
+		scripts/upstream-version.sh
 
 MESON_ARGS=	--buildtype=release \
 		--default-library=static \
@@ -117,11 +118,13 @@ STRIP_TARGETS=	sbin/kres-cache-gc \
 		sbin/kresc \
 		sbin/kresd \
 		lib/knot-resolver/ahocorasick.so \
+		lib/knot-resolver/debug_opensslkeylog.so \
 		lib/knot-resolver/kres_modules/bogus_log.so \
 		lib/knot-resolver/kres_modules/dnstap.so \
 		lib/knot-resolver/kres_modules/edns_keepalive.so \
+		lib/knot-resolver/kres_modules/extended_error.so \
 		lib/knot-resolver/kres_modules/hints.so \
-		lib/knot-resolver/kres_modules/lib/knot-resolver/kres_modules/nsid.so \
+		lib/knot-resolver/kres_modules/nsid.so \
 		lib/knot-resolver/kres_modules/refuse_nord.so \
 		lib/knot-resolver/kres_modules/stats.so
 

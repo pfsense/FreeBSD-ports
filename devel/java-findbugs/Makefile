@@ -1,6 +1,6 @@
 PORTNAME=	findbugs
 PORTVERSION=	1.3.9
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	devel java
 MASTER_SITES=	SF
 PKGNAMEPREFIX=	java-
@@ -10,7 +10,8 @@ COMMENT=	Find Bugs in Java Programs
 WWW=		https://findbugs.sourceforge.net/
 
 LICENSE=	LGPL21
-USE_JAVA=	yes
+
+USES=		java
 NO_BUILD=	yes
 
 JAR_FILES=	annotations.jar \

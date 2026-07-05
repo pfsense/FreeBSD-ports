@@ -1,6 +1,33 @@
---- native/jsvc-unix.c.orig	2017-11-15 11:51:22 UTC
+--- native/jsvc-unix.c.orig	2025-12-11 12:00:00 UTC
 +++ native/jsvc-unix.c
-@@ -717,18 +717,13 @@ static void remove_tmp_file(arg_data *ar
+@@ -608,11 +608,12 @@ retry:
+                 return 122;
+             }
+         }
+-        lseek(fd, SEEK_SET, 0);
+-        pidf = fdopen(fd, "r+");
+-        fprintf(pidf, "%d\n", (int)getpid());
+-        fflush(pidf);
+-        fclose(pidf);
++        char buf[32];
++        int len = snprintf(buf, sizeof(buf), "%d\n", (int)getpid());
++        lseek(fd, 0, SEEK_SET);
++        ftruncate(fd, 0);
++        write(fd, buf, len);
++        fsync(fd);
+         if (lockf(fd, F_ULOCK, 0)) {
+             log_error("check_pid: Failed to unlock PID file [%s] with file descriptor [%d] after reading due to [%d]",
+                     args->pidf, fd, errno);
+@@ -673,7 +674,7 @@ static int get_pidf(arg_data *args, bool quiet)
+     int i;
+     char buff[80];
+ 
+-    fd = open(args->pidf, O_RDONLY, 0);
++    fd = open(args->pidf, O_RDWR, 0);
+     if (!quiet)
+         log_debug("get_pidf: %d in %s", fd, args->pidf);
+     if (fd < 0) {
+@@ -755,18 +756,13 @@ static int wait_child(arg_data *args, int pid)
   */
  static int wait_child(arg_data *args, int pid)
  {
@@ -21,7 +48,16 @@
      while (count > 0) {
          sleep(1);
          /* check if the controler is still running */
-@@ -767,7 +762,6 @@ static int wait_child(arg_data *args, in
+@@ -778,7 +774,7 @@ static int wait_child(arg_data *args, int pid)
+         }
+ 
+         /* check if the pid file process exists */
+-        fd = open(args->pidf, O_RDONLY);
++        fd = open(args->pidf, O_RDWR);
+         if (fd < 0 && havejvm) {
+             /* something has gone wrong the JVM has stopped */
+             return 1;
+@@ -812,7 +808,6 @@ static int wait_child(arg_data *args, int pid)
                  }
              }
          }
@@ -29,7 +65,7 @@
          count--;
      }
      /* It takes more than the wait time to start,
-@@ -901,11 +895,11 @@ static int child(arg_data *args, home_da
+@@ -946,11 +941,11 @@ static int child(arg_data *args, home_data *data, uid_
      create_tmp_file(args);
      while (!stopping) {
  #if defined(OSD_POSIX)
@@ -41,9 +77,9 @@
 -        sleep(60);
 +        sleep(1);
  #endif
-         if(doreopen) {
+         if (doreopen) {
              doreopen = false;
-@@ -924,7 +918,7 @@ static int child(arg_data *args, home_da
+@@ -969,7 +964,7 @@ static int child(arg_data *args, home_data *data, uid_
          return 6;
  
      if (doreload == true)
@@ -52,7 +88,7 @@
      else
          ret = 0;
  
-@@ -1341,10 +1335,10 @@ static int run_controller(arg_data *args
+@@ -1385,10 +1380,10 @@ static int run_controller(arg_data *args, home_data *d
              if (args->vers != true && args->chck != true && status != 122)
                  remove_pid_file(args, pid);
  
@@ -65,7 +101,7 @@
                      if (args->restarts == 0) {
                          log_debug("Service failure, restarts disabled");
                          return 1;
-@@ -1356,7 +1350,7 @@ static int run_controller(arg_data *args
+@@ -1400,7 +1395,7 @@ static int run_controller(arg_data *args, home_data *d
                      log_debug("Reloading service");
                      restarts++;
                      /* prevent looping */

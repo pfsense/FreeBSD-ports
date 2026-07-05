@@ -3,7 +3,7 @@
  * squidguard_log.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2015-2024 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2015-2026 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2006-2011 Serg Dvoriancev
  * All rights reserved.
  *
@@ -81,7 +81,7 @@ function squidguard_log_AJAX_response( $request ) {
 	return $res;
 }
 
-function squidguard_logrep( &$dump ) {
+function squidguard_logrep( $dump ) {
 	$res  = '';
 
 	if (!empty($dump)) {

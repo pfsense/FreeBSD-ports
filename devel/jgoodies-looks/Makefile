@@ -1,5 +1,6 @@
 PORTNAME=	jgoodies-looks
 DISTVERSION=	2.7.0
+PORTREVISION=	1
 CATEGORIES=	devel java
 MASTER_SITES=	https://repo1.maven.org/maven2/com/jgoodies/${PORTNAME}/${DISTVERSION}/
 DISTFILES=	${JARFILE} ${JAVADOCFILE} ${JAVASRCFILE}
@@ -11,7 +12,7 @@ WWW=		http://www.jgoodies.com
 
 LICENSE=	BSD3CLAUSE
 
-USE_JAVA=	yes
+USES=		java
 NO_ARCH=	yes
 NO_BUILD=	yes
 NO_WRKSUBDIR=	yes

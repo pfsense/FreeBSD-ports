@@ -1,6 +1,6 @@
 PORTNAME=	commons-httpclient
 DISTVERSION=	3.1
-PORTREVISION=	2
+PORTREVISION=	4
 CATEGORIES=	java www
 MASTER_SITES=	APACHE/httpcomponents/${PORTNAME}/source
 PKGNAMEPREFIX=	apache-
@@ -19,10 +19,9 @@ RUN_DEPENDS+=	${JAVALIBDIR}/commons-codec.jar:java/apache-commons-codec
 
 OPTIONS_DEFINE=	DOCS
 
-USES+=		cpe
+USES+=		cpe java:ant,run
 CPE_VENDOR=	apache
-USE_JAVA=	yes
-USE_ANT=	yes
+
 MAKE_ENV=	ANT_INCLUDE_SHARED_JARS=YES
 NO_ARCH=	yes
 
@@ -32,11 +31,6 @@ ALL_TARGET=	dist
 PLIST_FILES=	%%JAVAJARDIR%%/${PORTNAME}.jar
 
 PORTDOCS=	*
-
-post-patch:
-	@${REINPLACE_CMD} 's/Ortwin Gl.*ck/Ortwin Glueck/' \
-		${WRKSRC}/src/java/org/apache/commons/httpclient/*.java \
-		${WRKSRC}/src/java/org/apache/commons/httpclient/*/*.java
 
 do-install:
 	@${ECHO_MSG} -n ">> Installing JAR file as ${JAVAJARDIR}/${PORTNAME}.jar..."

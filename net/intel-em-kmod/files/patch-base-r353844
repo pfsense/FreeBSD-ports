@@ -1,98 +1,70 @@
-https://svnweb.freebsd.org/changeset/base/353844
-
---- if_em.c.orig	2020-04-08 15:13:17 UTC
+--- if_em.c.orig	2024-11-26 12:37:36 UTC
 +++ if_em.c
-@@ -2275,7 +2275,11 @@ em_disable_promisc(struct adapter *adapter)
- 	if (if_getflags(ifp) & IFF_ALLMULTI)
- 		mcnt = MAX_NUM_MULTICAST_ADDRESSES;
- 	else
-+#if __FreeBSD_version > 1300053
-+		mcnt = if_llmaddr_count(ifp);
+@@ -379,8 +379,12 @@ static driver_t em_driver = {
+ 	"em", em_methods, sizeof(struct adapter),
+ };
+ 
++#if __FreeBSD_version >= 1400058
++DRIVER_MODULE(em, pci, em_driver, 0, 0);
 +#else
- 		mcnt = if_multiaddr_count(ifp, MAX_NUM_MULTICAST_ADDRESSES);
+ devclass_t em_devclass;
+ DRIVER_MODULE(em, pci, em_driver, em_devclass, 0, 0);
 +#endif
- 	/* Don't disable if in MAX groups */
- 	if (mcnt < MAX_NUM_MULTICAST_ADDRESSES)
- 		reg_rctl &=  (~E1000_RCTL_MPE);
-@@ -2283,7 +2287,21 @@ em_disable_promisc(struct adapter *adapter)
- 	E1000_WRITE_REG(&adapter->hw, E1000_RCTL, reg_rctl);
- }
+ MODULE_DEPEND(em, pci, 1, 1, 1);
+ MODULE_DEPEND(em, ether, 1, 1, 1);
  
-+#if __FreeBSD_version > 1300053
-+static u_int
-+em_copy_maddr(void *arg, struct sockaddr_dl *sdl, u_int cnt)
-+{
-+	u8 *mta = arg;
+@@ -1584,11 +1588,8 @@ em_irq_fast(void *arg)
+ em_irq_fast(void *arg)
+ {
+ 	struct adapter	*adapter = arg;
+-	if_t ifp;
+ 	u32		reg_icr;
  
-+	if (cnt == MAX_NUM_MULTICAST_ADDRESSES)
-+		return (1);
-+
-+	bcopy(LLADDR(sdl), &mta[cnt * ETHER_ADDR_LEN], ETHER_ADDR_LEN);
-+
-+	return (1);
-+}
-+#endif
-+
- /*********************************************************************
-  *  Multicast Update
-  *
-@@ -2314,7 +2332,11 @@ em_set_multi(struct adapter *adapter)
- 		msec_delay(5);
- 	}
+-	ifp = adapter->ifp;
+-
+ 	reg_icr = E1000_READ_REG(&adapter->hw, E1000_ICR);
  
-+#if __FreeBSD_version > 1300053
-+	mcnt = if_foreach_llmaddr(ifp, em_copy_maddr, mta);
-+#else
- 	if_multiaddr_array(ifp, mta, &mcnt, MAX_NUM_MULTICAST_ADDRESSES);
-+#endif
+ 	/* Hot eject?  */
+@@ -4478,7 +4479,6 @@ em_setup_receive_ring(struct rx_ring *rxr)
+ 			goto fail;
+ 		}
+ 		rxbuf->m_head->m_len = adapter->rx_mbuf_sz;
+-		rxbuf->m_head->m_flags &= ~M_HASFCS; /* we strip it */
+ 		rxbuf->m_head->m_pkthdr.len = adapter->rx_mbuf_sz;
  
- 	if (mcnt >= MAX_NUM_MULTICAST_ADDRESSES) {
- 		reg_rctl = E1000_READ_REG(&adapter->hw, E1000_RCTL);
---- if_lem.c.orig	2020-04-08 15:13:17 UTC
+ 		/* Get the memory mapping */
+--- if_lem.c.orig	2024-11-26 12:37:36 UTC
 +++ if_lem.c
-@@ -2019,7 +2019,11 @@ lem_disable_promisc(struct adapter *adapter)
- 	if (if_getflags(ifp) & IFF_ALLMULTI)
- 		mcnt = MAX_NUM_MULTICAST_ADDRESSES;
- 	else
-+#if __FreeBSD_version > 1300053
-+		mcnt = if_llmaddr_count(ifp);
+@@ -289,8 +289,12 @@ static driver_t lem_driver = {
+ 	"em", lem_methods, sizeof(struct adapter),
+ };
+ 
++#if __FreeBSD_version >= 1400058
++DRIVER_MODULE(lem, pci, lem_driver, 0, 0);
 +#else
- 		mcnt = if_multiaddr_count(ifp, MAX_NUM_MULTICAST_ADDRESSES);
+ extern devclass_t em_devclass;
+ DRIVER_MODULE(lem, pci, lem_driver, em_devclass, 0, 0);
 +#endif
+ MODULE_DEPEND(lem, pci, 1, 1, 1);
+ MODULE_DEPEND(lem, ether, 1, 1, 1);
  
- 	/* Don't disable if in MAX groups */
- 	if (mcnt < MAX_NUM_MULTICAST_ADDRESSES)
-@@ -2028,7 +2032,21 @@ lem_disable_promisc(struct adapter *adapter)
- 	E1000_WRITE_REG(&adapter->hw, E1000_RCTL, reg_rctl);
- }
+@@ -960,7 +964,7 @@ lem_start_locked(if_t ifp)
+ 		}
  
-+#if __FreeBSD_version > 1300053
-+static u_int
-+em_copy_maddr(void *arg, struct sockaddr_dl *sdl, u_int cnt)
-+{
-+	u8 *mta = arg;
+ 		/* Send a copy of the frame to the BPF listener */
+-		if_etherbpfmtap(ifp, m_head);
++		ether_bpf_mtap_if(ifp, m_head);
  
-+	if (cnt == MAX_NUM_MULTICAST_ADDRESSES)
-+		return (1);
-+
-+	bcopy(LLADDR(sdl), &mta[cnt * ETHER_ADDR_LEN], ETHER_ADDR_LEN);
-+
-+	return (1);
-+}
-+#endif
-+
- /*********************************************************************
-  *  Multicast Update
-  *
-@@ -2059,7 +2077,11 @@ lem_set_multi(struct adapter *adapter)
- 		msec_delay(5);
- 	}
+ 		/* Set timeout in case hardware has problems transmitting. */
+ 		adapter->watchdog_check = TRUE;
+@@ -1479,10 +1483,7 @@ lem_irq_fast(void *arg)
+ lem_irq_fast(void *arg)
+ {
+ 	struct adapter	*adapter = arg;
+-	if_t ifp;
+ 	u32		reg_icr;
+-
+-	ifp = adapter->ifp;
  
-+#if __FreeBSD_version > 1300053
-+	mcnt = if_foreach_llmaddr(ifp, em_copy_maddr, mta);
-+#else
- 	if_multiaddr_array(ifp, mta, &mcnt, MAX_NUM_MULTICAST_ADDRESSES);
-+#endif
+ 	reg_icr = E1000_READ_REG(&adapter->hw, E1000_ICR);
  
- 	if (mcnt >= MAX_NUM_MULTICAST_ADDRESSES) {
- 		reg_rctl = E1000_READ_REG(&adapter->hw, E1000_RCTL);

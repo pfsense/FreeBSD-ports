@@ -1,6 +1,7 @@
 PORTNAME=	govmomi
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.36.2
+DISTVERSION=	0.46.3
+PORTREVISION=	6
 CATEGORIES=	sysutils
 
 MAINTAINER=	alex@i.org.ua
@@ -18,5 +19,8 @@ GO_TARGET=	./govc \
 
 PLIST_FILES=	bin/govc \
 		bin/vcsim
+
+TESTING_UNSAFE=	Failing because nested Docker requirements. See \
+		https://github.com/vmware/govmomi/issues/3604
 
 .include <bsd.port.mk>

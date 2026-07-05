@@ -1,6 +1,6 @@
---- src/3rdparty/chromium/services/tracing/public/cpp/stack_sampling/tracing_sampler_profiler.cc.orig	2023-08-16 19:50:41 UTC
+--- src/3rdparty/chromium/services/tracing/public/cpp/stack_sampling/tracing_sampler_profiler.cc.orig	2025-08-15 18:30:00 UTC
 +++ src/3rdparty/chromium/services/tracing/public/cpp/stack_sampling/tracing_sampler_profiler.cc
-@@ -39,7 +39,7 @@
+@@ -40,7 +40,7 @@
  #include "third_party/perfetto/protos/perfetto/trace/track_event/process_descriptor.pbzero.h"
  #include "third_party/perfetto/protos/perfetto/trace/track_event/thread_descriptor.pbzero.h"
  

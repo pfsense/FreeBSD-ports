@@ -8,7 +8,7 @@
  * bind_views.xml
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2015-2024 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2015-2026 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2013 Juliano Oliveira
  * Copyright (c) 2013 Adriano Brancher
  * All rights reserved.
@@ -30,6 +30,7 @@
 	<name>bind_views</name>
 	<version>%%PKGVERSION%%</version>
 	<title>Services/Bind</title>
+	<addedit_string>bind: changed Views</addedit_string>
 	<include_file>/usr/local/pkg/bind.inc</include_file>
 	<tabs>
 		<tab>
@@ -105,7 +106,7 @@
 				]]>
 			</description>
 			<type>select_source</type>
-			<source><![CDATA[$config['installedpackages']['bindacls']['config']]]></source>
+			<source><![CDATA[config_get_path('installedpackages/bindacls/config')]]></source>
 			<source_name>name</source_name>
 			<source_value>name</source_value>
 			<multiple/>
@@ -121,7 +122,7 @@
 				]]>
 			</description>
 			<type>select_source</type>
-			<source><![CDATA[$config['installedpackages']['bindacls']['config']]]></source>
+			<source><![CDATA[config_get_path('installedpackages/bindacls/config')]]></source>
 			<source_name>name</source_name>
 			<source_value>name</source_value>
 			<multiple/>

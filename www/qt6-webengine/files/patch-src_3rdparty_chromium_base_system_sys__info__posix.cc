@@ -1,21 +1,24 @@
---- src/3rdparty/chromium/base/system/sys_info_posix.cc.orig	2023-03-09 06:31:50 UTC
+--- src/3rdparty/chromium/base/system/sys_info_posix.cc.orig	2025-08-15 18:30:00 UTC
 +++ src/3rdparty/chromium/base/system/sys_info_posix.cc
-@@ -165,12 +165,12 @@ int NumberOfProcessors() {
+@@ -124,7 +124,7 @@ namespace base {
  
- }  // namespace internal
+ namespace base {
  
 -#if !BUILDFLAG(IS_OPENBSD)
 +#if !BUILDFLAG(IS_BSD)
+ // static
  int SysInfo::NumberOfProcessors() {
-   static int number_of_processors = internal::NumberOfProcessors();
-   return number_of_processors;
+ #if BUILDFLAG(IS_MAC)
+@@ -180,7 +180,7 @@ int SysInfo::NumberOfProcessors() {
+ 
+   return cached_num_cpus;
  }
 -#endif  // !BUILDFLAG(IS_OPENBSD)
 +#endif  // !BUILDFLAG(IS_BSD)
  
  // static
  uint64_t SysInfo::AmountOfVirtualMemory() {
-@@ -260,6 +260,8 @@ std::string SysInfo::OperatingSystemArchitecture() {
+@@ -268,6 +268,8 @@ std::string SysInfo::OperatingSystemArchitecture() {
      arch = "x86";
    } else if (arch == "amd64") {
      arch = "x86_64";

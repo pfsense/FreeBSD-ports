@@ -1,10 +1,10 @@
 PORTNAME=	director
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.8.0
+DISTVERSION=	0.17.0
 CATEGORIES=	sysutils python
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
-MAINTAINER=	DtxdF@disroot.org
+MAINTAINER=	dtxdf@FreeBSD.org
 COMMENT=	Define and run multi-jail environments with AppJail
 WWW=		https://github.com/DtxdF/${PORTNAME}
 
@@ -13,7 +13,8 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 
 RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}click>=0:devel/py-click@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}pyaml-env>=0:devel/py-pyaml-env@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}python-dotenv>=0:www/py-python-dotenv@${PY_FLAVOR}
+		${PYTHON_PKGNAMEPREFIX}python-dotenv>=0:www/py-python-dotenv@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}psutil>=0:sysutils/py-psutil@${PY_FLAVOR}
 
 USES=		python
 USE_GITHUB=	yes
@@ -24,10 +25,14 @@ NO_ARCH=	yes
 
 PORTDOCS=	README.md
 
-OPTIONS_DEFINE=		DOCS
+OPTIONS_DEFINE=	DOCS
 
 do-install-DOCS-on:
 	@${MKDIR} ${STAGEDIR}/${DOCSDIR}
 	${INSTALL_DATA} ${WRKSRC}/README.md ${STAGEDIR}/${DOCSDIR}
+
+post-install:
+	${INSTALL_MAN} ${WRKSRC}/director.1 ${STAGEDIR}${PREFIX}/share/man/man1/director.1
+	${INSTALL_MAN} ${WRKSRC}/director-spec.5 ${STAGEDIR}${PREFIX}/share/man/man5/director-spec.5
 
 .include <bsd.port.mk>

@@ -1,7 +1,5 @@
-TIMESTAMP = 1691995677
-SHA256 (xcaddy/caddyserver-xcaddy-v0.3.5_GH0.tar.gz) = 41188931a3346787f9f4bc9b0f57db1ba59ab228113dcf0c91382e40960ee783
-SIZE (xcaddy/caddyserver-xcaddy-v0.3.5_GH0.tar.gz) = 24124
-SHA256 (xcaddy/Masterminds-semver-v3.1.1_GH0.tar.gz) = d029a39800f201d5b95ec5dbf653e5b20aab757783a6876be1b3017d1c4a444f
-SIZE (xcaddy/Masterminds-semver-v3.1.1_GH0.tar.gz) = 24506
-SHA256 (xcaddy/google-shlex-e7afc7fbc510_GH0.tar.gz) = 87f77e98720add261add169e386cbdcc894e2635dca299bc4119dc417ea321ca
-SIZE (xcaddy/google-shlex-e7afc7fbc510_GH0.tar.gz) = 7342
+TIMESTAMP = 1753865060
+SHA256 (go/www_xcaddy/xcaddy-v0.4.5/v0.4.5.mod) = c81e7d27db214122fd6def2eaa90b00102d01e1c780573ef79cebd1909228cf1
+SIZE (go/www_xcaddy/xcaddy-v0.4.5/v0.4.5.mod) = 416
+SHA256 (go/www_xcaddy/xcaddy-v0.4.5/v0.4.5.zip) = 93e392727719a1716973aa05408ce38aa256dcb078af4de32d89ca84a85082c5
+SIZE (go/www_xcaddy/xcaddy-v0.4.5/v0.4.5.zip) = 82260

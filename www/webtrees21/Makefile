@@ -1,37 +1,39 @@
 PORTNAME=	webtrees
-PORTVERSION=	2.1.19
+DISTVERSION=	2.1.26
 CATEGORIES=	www
 MASTER_SITES=	https://github.com/fisharebest/${PORTNAME}/releases/download/${PORTVERSION}/
-PKGNAMESUFFIX=	21
+PKGNAMESUFFIX=	21${PHP_PKGNAMESUFFIX}
 
 MAINTAINER=	ports@bsdserwis.com
 COMMENT=	Online genealogy viewer (for PHP 7.4-8.2)
 WWW=		https://webtrees.net/
 
 LICENSE=	GPLv3+
+LICENSE_FILE=	${WRKSRC}/${PORTNAME}/LICENSE.md
 
-USES=		cpe php shebangfix zip
+USES=		cpe php:flavors shebangfix zip
 # php pcre extension is required but it's statically linked in default php
 USE_PHP=	calendar curl dom filter gd iconv pdo_mysql session xml
+IGNORE_WITH_PHP=	83 84 85
 
 SHEBANG_FILES=	webtrees/vendor/tecnickcom/tcpdf/tools/tcpdf_addfont.php
 
-WWWDIR=		${PREFIX}/www/webtrees${PKGNAMESUFFIX}
+CONFLICTS=	webtrees20-2.0*
+
 EXTRACT_AFTER_ARGS=	-d ${WRKSRC}
 NO_ARCH=	yes
 NO_BUILD=	yes
 
-SUB_FILES=	pkg-message pkg-deinstall
-SUB_LIST=	VERSION_SUFFIX=${PKGNAMESUFFIX}
+SUB_FILES=	pkg-deinstall pkg-message
 
-DOCSDIR=	${PREFIX}/share/doc/webtrees21
-PORTDOCS=	CONTRIBUTING.md LICENSE.md README.md SECURITY.md
+PORTDOCS=	CONTRIBUTING.md README.md SECURITY.md
 
 OPTIONS_DEFINE=	DOCS
 
 do-install:
 	-${MKDIR} ${STAGEDIR}${WWWDIR}
-	@cd ${WRKSRC}/${PORTNAME} && ${COPYTREE_BIN} . ${STAGEDIR}${WWWDIR} "! -name *\.md"
+	@cd ${WRKSRC}/${PORTNAME} && ${COPYTREE_BIN} . ${STAGEDIR}${WWWDIR} "! -name *\.md" \
+		"! -name .DS_Store"
 	@(cd ${WRKSRC}/${PORTNAME}; ${FIND} . -not -type d) | ${SORT} | \
 		${SED} -ne 's,^${PORTNAME}/,${WWWDIR_REL}/,p' >> ${TMPPLIST}
 	@${ECHO_CMD} \

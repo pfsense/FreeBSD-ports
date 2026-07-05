@@ -64,6 +64,7 @@
 %%AUTOGROUP%%libexec/openldap/autogroup.so
 %%AUTOGROUP%%libexec/openldap/autogroup.so.0
 %%AUTOGROUP%%libexec/openldap/autogroup.so.0.0.0
+%%AUTOGROUP%%share/man/man5/slapo-autogroup.5.gz
 %%CLOAK%%libexec/openldap/cloak.la
 %%CLOAK%%libexec/openldap/cloak.so
 %%CLOAK%%libexec/openldap/cloak.so.0
@@ -128,11 +129,21 @@
 %%MEMBEROF%%libexec/openldap/memberof.so.%%SHLIB_MAJOR%%.%%SHLIB_MINOR%%
 %%MEMBEROF%%libexec/openldap/memberof.la
 %%MEMBEROF%%libexec/openldap/memberof.so
+%%NESTGROUP%%libexec/openldap/nestgroup.la
+%%NESTGROUP%%libexec/openldap/nestgroup.so.%%SHLIB_MAJOR%%
+%%NESTGROUP%%libexec/openldap/nestgroup.so.%%SHLIB_MAJOR%%.%%SHLIB_MINOR%%
+%%NESTGROUP%%libexec/openldap/nestgroup.so
 %%NOPS%%libexec/openldap/nops.la
 %%NOPS%%libexec/openldap/nops.so
 %%NOPS%%libexec/openldap/nops.so.0
 %%NOPS%%libexec/openldap/nops.so.0.0.0
 %%NOPS%%share/man/man5/slapo-nops.5.gz
+%%NSSOV%%@sample %%ETCDIR%%/schema/ldapns.schema.sample
+%%NSSOV%%libexec/openldap/nssov.la
+%%NSSOV%%libexec/openldap/nssov.so
+%%NSSOV%%libexec/openldap/nssov.so.0
+%%NSSOV%%libexec/openldap/nssov.so.0.0.0
+%%NSSOV%%share/man/man5/slapo-nssov.5.gz
 %%OTP%%libexec/openldap/otp.so.%%SHLIB_MAJOR%%
 %%OTP%%libexec/openldap/otp.so.%%SHLIB_MAJOR%%.%%SHLIB_MINOR%%
 %%OTP%%libexec/openldap/otp.la

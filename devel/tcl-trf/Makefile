@@ -1,12 +1,12 @@
 PORTNAME=	Trf
 PORTVERSION=	2.1.4
-PORTREVISION=	5
+PORTREVISION=	6
 CATEGORIES=	devel tcl
 MASTER_SITES=	SF/tcltrf/tcltrf/${PORTVERSION}
 PKGNAMEPREFIX=	tcl-
 DISTNAME=	trf${PORTVERSION}
 
-MAINTAINER=	mi@aldan.algebra.com
+MAINTAINER=	ports@virtual-estates.net
 COMMENT=	Data conversion, digests, compression, error-correction for Tcl
 WWW=		https://wiki.tcl-lang.org/479
 
@@ -48,7 +48,7 @@ PLIST_SUB+=	TCL_DVER=${TCL_VER:C/\.//} VER=${PORTVERSION}
 
 .include <bsd.port.pre.mk>
 
-.if ${COMPILER_TYPE} == "clang" && ${COMPILER_VERSION} >= 150
+.if ${COMPILER_TYPE} == "clang"
 CFLAGS+=	-Wno-deprecated-non-prototype
 .endif
 

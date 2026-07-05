@@ -9,12 +9,11 @@
 #				and non existing users will cause the
 #				installed package to miss files.
 # MAILDROP_TRUSTED_USERS=<user> Specify users allowed to use the -d option
-# MAILDROP_LOG_COLUMNS	lenght of 'File:' line in log - 8; default: 72
+# MAILDROP_LOG_COLUMNS		lenght of 'File:' line in log - 8; default: 72
 # MAILDROP_MBOX_DIR=<dir>	Specify DEFAULT mailbox location
 
 PORTNAME=	maildrop
-PORTVERSION=	3.1.6
-PORTREVISION=	2
+PORTVERSION=	3.3.0
 CATEGORIES=	mail
 MASTER_SITES=	SF/courier/${PORTNAME}/${PORTVERSION}
 
@@ -24,8 +23,7 @@ WWW=		https://www.courier-mta.org/maildrop/
 
 LICENSE=	GPLv3
 
-LIB_DEPENDS=	libpcre.so:devel/pcre \
-		libcourier-unicode.so:devel/courier-unicode \
+LIB_DEPENDS=	libcourier-unicode.so:devel/courier-unicode \
 		libidn2.so:dns/libidn2 \
 		libpcre2-8.so:devel/pcre2
 
@@ -118,7 +116,7 @@ CONFIGURE_ARGS+=	--disable-authlib
 .endif
 
 post-patch-INOTIFY-on:
-	@${REINPLACE_CMD} -e 's|LIBS = @LIBS@|& ${LOCALBASE}/lib/libinotify.a /usr/lib/libpthread.a|' \
+	@${REINPLACE_CMD} -e 's|LIBS = @LIBS@|& ${LOCALBASE}/lib/libinotify.a -lpthread|' \
 		${WRKSRC}/libs/maildir/Makefile.in
 
 post-configure-INOTIFY-on:

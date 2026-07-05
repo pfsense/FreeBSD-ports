@@ -1,4 +1,4 @@
---- src/3rdparty/chromium/content/zygote/zygote_linux.cc.orig	2023-02-08 09:03:45 UTC
+--- src/3rdparty/chromium/content/zygote/zygote_linux.cc.orig	2025-08-15 18:30:00 UTC
 +++ src/3rdparty/chromium/content/zygote/zygote_linux.cc
 @@ -1,6 +1,7 @@
  // Copyright 2012 The Chromium Authors
@@ -6,9 +6,9 @@
  // found in the LICENSE file.
 +#if 0
  
- #include "content/zygote/zygote_linux.h"
- 
-@@ -706,3 +707,4 @@ void Zygote::HandleReinitializeLoggingRequest(base::Pi
+ #ifdef UNSAFE_BUFFERS_BUILD
+ // TODO(crbug.com/342213636): Remove this and spanify to fix the errors.
+@@ -709,3 +710,4 @@ void Zygote::HandleReinitializeLoggingRequest(base::Pi
  }
  
  }  // namespace content

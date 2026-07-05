@@ -1,12 +1,12 @@
 PORTNAME=	lumina-core
 DISTVERSIONPREFIX=	v
 DISTVERSION=	1.6.2
-PORTREVISION=	9
+PORTREVISION=	10
 CATEGORIES=	x11
 
 MAINTAINER=	jwb@FreeBSD.org
 COMMENT=	Lumina Desktop Environment
-WWW=		https://lumina-desktop.org/
+WWW=		https://github.com/lumina-desktop/lumina/tree/master/src-qt5/core
 
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/../../LICENSE

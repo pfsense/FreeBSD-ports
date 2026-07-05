@@ -1,11 +1,11 @@
 PORTNAME=	vkmark
-DISTVERSION=	2017.08-36
-PORTREVISION=	1
-DISTVERSIONSUFFIX=	-gab6e6f3
+DISTVERSION=	2025.01
+PORTREVISION=	2
 CATEGORIES=	benchmarks
 
 PATCH_SITES=	https://github.com/${GH_ACCOUNT}/${GH_PROJECT}/commit/
-PATCHFILES+=	27fa846e34ed.patch:-p1 # https://github.com/vkmark/vkmark/pull/29
+PATCHFILES+=	abc5fc849569.patch:-p1 # https://github.com/vkmark/vkmark/pull/80
+PATCHFILES+=	ab3f3d709e2f.patch:-p1 # https://github.com/vkmark/vkmark/pull/80
 
 MAINTAINER=	jbeich@FreeBSD.org
 COMMENT=	Vulkan benchmark
@@ -14,13 +14,12 @@ WWW=		https://github.com/vkmark/vkmark
 LICENSE=	LGPL21+
 LICENSE_FILE=	${WRKSRC}/COPYING-LGPL2.1
 
-BUILD_DEPENDS=	cmake:devel/cmake-core \
-		vulkan-headers>0:graphics/vulkan-headers \
+BUILD_DEPENDS=	vulkan-headers>0:graphics/vulkan-headers \
 		glm>0:math/glm
 LIB_DEPENDS=	libvulkan.so:graphics/vulkan-loader \
 		libassimp.so:multimedia/assimp
 
-USES=		compiler:c++14-lang localbase meson pkgconfig
+USES=		cmake:indirect compiler:c++14-lang localbase meson pkgconfig
 USE_GITHUB=	yes
 
 OPTIONS_DEFINE=	DRM WAYLAND X11

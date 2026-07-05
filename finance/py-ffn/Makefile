@@ -1,6 +1,6 @@
 PORTNAME=	ffn
 DISTVERSIONPREFIX=	v
-DISTVERSION=	1.0.1
+DISTVERSION=	1.1.3
 CATEGORIES=	finance python
 #MASTER_SITES=	PYPI # no tests
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -13,6 +13,7 @@ LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
 BUILD_DEPENDS=	${PY_SETUPTOOLS} \
+		${PYNUMPY} \
 		${PYTHON_PKGNAMEPREFIX}wheel>0:devel/py-wheel@${PY_FLAVOR}
 RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}decorator>=5.0.7:devel/py-decorator@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}future>=0.15:devel/py-future@${PY_FLAVOR} \
@@ -33,5 +34,7 @@ USE_GITHUB=	yes
 GH_ACCOUNT=	pmorissette
 
 NO_ARCH=	yes
+
+# tests as of 1.1.2: 54 passed, 6 warnings in 495.57s (0:08:15)
 
 .include <bsd.port.mk>

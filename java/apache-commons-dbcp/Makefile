@@ -1,5 +1,6 @@
 PORTNAME=	commons-dbcp
 PORTVERSION=	2.12.0
+PORTREVISION=	1
 CATEGORIES=	java databases
 MASTER_SITES=	https://archive.apache.org/dist/commons/dbcp/binaries/
 PKGNAMEPREFIX=	apache-
@@ -13,10 +14,11 @@ LICENSE=	APACHE20
 
 RUN_DEPENDS=	${JAVALIBDIR}/commons-pool.jar:java/apache-commons-pool
 
+USES=		java
+JAVA_VERSION=	8
+
 OPTIONS_DEFINE=	DOCS
 
-USE_JAVA=	yes
-JAVA_VERSION=	8
 NO_BUILD=	yes
 NO_ARCH=	yes
 

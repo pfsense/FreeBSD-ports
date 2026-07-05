@@ -1,6 +1,6 @@
 PORTNAME=	kdrill
 PORTVERSION=	6.5
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	japanese
 MASTER_SITES=	http://www.bolthole.com/kdrill/
 DISTNAME=	${PORTNAME}${PORTVERSION}
@@ -8,6 +8,11 @@ DISTNAME=	${PORTNAME}${PORTVERSION}
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Program to quiz you on the meanings of Kanji
 WWW=		http://www.bolthole.com/kdrill/
+
+LICENSE=	CUSTOM
+LICENSE_NAME=	kdrill license
+LICENSE_FILE=	${WRKSRC}/LICENSE
+LICENSE_PERMS=	dist-mirror dist-sell pkg-mirror pkg-sell auto-accept
 
 RUN_DEPENDS=	xjdic:japanese/edict
 
@@ -19,7 +24,7 @@ MAKE_ARGS=	MANDIR=${PREFIX}/share/man/man1
 
 .include <bsd.port.options.mk>
 
-.if ${OPSYS} == FreeBSD && ( ${OSVERSION} >= 1400091 || ( ${OSVERSION} >= 1302507 && ${OSVERSION} < 1400000 ))
+.if ${OPSYS} == FreeBSD
 CFLAGS+=	-Wno-error=incompatible-function-pointer-types
 .endif
 

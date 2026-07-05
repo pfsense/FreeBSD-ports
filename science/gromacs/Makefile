@@ -1,12 +1,15 @@
 PORTNAME=	gromacs
-DISTVERSION=	2024.1
+DISTVERSION=	2025.4
+PORTREVISION=	1
 CATEGORIES=	science
 MASTER_SITES=	https://ftp.gromacs.org/pub/gromacs/
 DISTFILES=	${DISTNAME}${EXTRACT_SUFX} # only for googletest
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Compute molecular dynamics
-WWW=		https://www.gromacs.org/
+WWW=		https://www.gromacs.org \
+		https://gitlab.com/gromacs/gromacs \
+		https://github.com/gromacs/gromacs
 
 LICENSE=	LGPL21
 LICENSE_FILE=	${WRKSRC}/COPYING
@@ -14,14 +17,15 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 BROKEN_i386=	undefined reference to `__atomic_load' and `__atomic_compare_exchange' #`
 
 BUILD_DEPENDS=	boost-libs>=1.44:devel/boost-libs
+LIB_DEPENDS=	liblmfit.so:math/lmfit \
+		libmuparser.so:math/muparser
+		# TODO tng
 
-USES=		cmake compiler:c++17-lang gnome pathfix perl5 pkgconfig \
+USES=		cmake compiler:c++17-lang pathfix perl5 pkgconfig \
 		python:build shebangfix
-USE_GNOME=	libxml2
 USE_LDCONFIG=	yes
 
 USE_GITHUB=	nodefault
-GH_TUPLE=	google:googletest:v1.13.0:googletest
 
 SHEBANG_FILES=	admin/*.sh scripts/*.pl scripts/*.sh src/gromacs/selection/*.sh
 bash_CMD=	${SH}
@@ -29,16 +33,26 @@ bash_CMD=	${SH}
 CMAKE_OFF=	GMX_USE_RDTSCP \
 		USE_PYTHON_SCRIPTS
 CMAKE_ARGS=	-DPython_EXECUTABLE=${PYTHON_CMD} \
-		-DPython3_EXECUTABLE=${PYTHON_CMD}
+		-DPython3_EXECUTABLE=${PYTHON_CMD} \
+		-DGMX_USE_MUPARSER=EXTERNAL \
+		-DGMX_USE_PLUMED=ON \
+		-DGMX_USE_LMFIT=EXTERNAL
 
 TEST_TARGET=	check
 
-OPTIONS_DEFINE=		ATLAS FLOAT HWLOC LEGACY OPENMP SIMD
+OPTIONS_DEFINE=		ATLAS FLOAT HWLOC LEGACY SIMD
 OPTIONS_SINGLE=		MP OPENCL
 OPTIONS_SINGLE_MP=	NOMP MPICH OPENMPI THREAD_MPI
 OPTIONS_SINGLE_OPENCL=	OPENCL_NONE OPENCL_ICD OPENCL_SYCL
-OPTIONS_DEFAULT=	HWLOC LEGACY OPENCL_NONE OPENMP THREAD_MPI # FLOAT should not be a default because science/votca needs double precision. This is likely the same for many other uses.
+OPTIONS_DEFAULT=	HWLOC LEGACY OPENCL_NONE THREAD_MPI # FLOAT should not be a default because science/votca needs double precision. This is likely the same for many other uses.
 OPTIONS_SUB=		yes
+
+.if exists(/usr/include/omp.h)
+OPTIONS_DEFINE+=	OPENMP
+OPTIONS_DEFAULT+=	OPENMP
+.else
+CMAKE_OFF+=		GMX_OPENMP
+.endif
 
 ATLAS_DESC=		Use ATLAS for BLAS and LAPACK
 ATLAS_USES=		blaslapack:atlas
@@ -80,8 +94,6 @@ OPENCL_SYCL_LIB_DEPENDS=	libhipSYCL-rt.so:lang/opensycl
 OPENCL_SYCL_IMPLIES=	FLOAT
 OPENCL_SYCL_BROKEN=	configure uses a wrong namespace to find CYCL, see https://gitlab.com/gromacs/gromacs/-/issues/4838
 
-OPENMP_CMAKE_BOOL=	GMX_OPENMP
-
 SIMD_CMAKE_OFF=		-DGMX_SIMD:STRING="None"
 SIMD_CMAKE_ON=		-DGMX_SIMD:STRING="AUTO"
 
@@ -95,6 +107,8 @@ MPICH_CMAKE_ON=		-DGMX_MPI:BOOL=ON \
 			-DMPI_C_COMPILER:FILEPATH="${LOCALBASE}/bin/mpicc"
 MPICH_PLIST_SUB=	SUFFIX_MPI="_mpi"
 
+OPENMP_CMAKE_BOOL=	GMX_OPENMP
+
 OPENMPI_BUILD_DEPENDS=	openmpi>0:net/openmpi
 OPENMPI_RUN_DEPENDS=	openmpi>0:net/openmpi
 OPENMPI_CMAKE_ON=	-DGMX_MPI:BOOL=ON \
@@ -105,10 +119,6 @@ THREAD_MPI_DESC=	Build a thread-MPI-based multithreaded version of GROMACS
 THREAD_MPI_CMAKE_BOOL=	GMX_THREAD_MPI
 THREAD_MPI_PLIST_SUB=	SUFFIX_MPI=""
 
-post-extract: # replace outdated bundled googletest with a newer version to fix tests build, see https://gitlab.com/gromacs/gromacs/-/issues/4825
-	@${RM} -r ${WRKSRC}/src/external/googletest
-	@${RLN} ${WRKSRC_googletest} ${WRKSRC}/src/external/googletest
-
 post-patch:
 	@${FIND} ${WRKSRC} -name "GMXRC.*" | ${XARGS} ${REINPLACE_CMD} -e \
 		's|LDLIB/pkgconfig|LDLIB/../libdata/pkgconfig| ; \
@@ -116,6 +126,7 @@ post-patch:
 	@${REINPLACE_CMD} -e '/CMAKE_REQUIRED_LIBRARIES/d' \
 		${WRKSRC}/cmake/gmxTestdlopen.cmake
 
-# tests fail to compile, see https://gitlab.com/gromacs/gromacs/-/issues/5046
+# tests as of 2025.3: 100% tests passed, 0 tests failed out of 92
+# 2025.4: tests fail to compile: https://gitlab.com/gromacs/gromacs/-/issues?show=eyJpaWQiOiI1NTAxIiwiZnVsbF9wYXRoIjoiZ3JvbWFjcy9ncm9tYWNzIiwiaWQiOjE3NzU1MDUzMn0%3D
 
 .include <bsd.port.mk>

@@ -1,5 +1,5 @@
-TIMESTAMP = 1698785112
-SHA256 (jbeich-libgav1-v0.19.0_GH0.tar.gz) = 156a831e236560508a591b386fee8b7b77c73278ea0609cbc7fb4256b244debf
-SIZE (jbeich-libgav1-v0.19.0_GH0.tar.gz) = 1194750
-SHA256 (google-googletest-release-1.11.0_GH0.tar.gz) = b4870bf121ff7795ba20d20bcdd8627b8e088f2d1dab299a031c1034eddc93d5
-SIZE (google-googletest-release-1.11.0_GH0.tar.gz) = 886330
+TIMESTAMP = 1766891890
+SHA256 (libgav1_0.20.0.orig.tar.xz) = 953f98a5147f556f358ef986601fda7804cfaaa634302aa9b842fea889aa7e6c
+SIZE (libgav1_0.20.0.orig.tar.xz) = 758912
+SHA256 (googletest-1.15.2.tar.gz) = 7b42b4d6ed48810c5362c265a17faebe90dc2373c885e5216439d37927f02926
+SIZE (googletest-1.15.2.tar.gz) = 872667

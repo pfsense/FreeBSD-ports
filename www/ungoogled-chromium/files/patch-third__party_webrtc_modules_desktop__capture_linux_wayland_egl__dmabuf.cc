@@ -1,18 +1,21 @@
---- third_party/webrtc/modules/desktop_capture/linux/wayland/egl_dmabuf.cc.orig	2023-08-23 11:41:11 UTC
+--- third_party/webrtc/modules/desktop_capture/linux/wayland/egl_dmabuf.cc.orig	2026-02-15 10:01:45 UTC
 +++ third_party/webrtc/modules/desktop_capture/linux/wayland/egl_dmabuf.cc
-@@ -10,11 +10,15 @@
- 
- #include "modules/desktop_capture/linux/wayland/egl_dmabuf.h"
- 
+@@ -15,14 +15,18 @@
+ #include <EGL/eglplatform.h>
+ #include <GL/gl.h>
+ #include <GL/glext.h>
 +#if !defined(WEBRTC_BSD)
  #include <asm/ioctl.h>
 +#endif
  #include <dlfcn.h>
  #include <fcntl.h>
+ #include <gbm.h>
  #include <libdrm/drm_fourcc.h>
+ #include <spa/param/video/raw.h>
+ #include <sys/stat.h>
 +#if !defined(WEBRTC_BSD)
- #include <linux/types.h>
+ #include <sys/sysmacros.h>
 +#endif
- #include <spa/param/video/format-utils.h>
+ #include <sys/types.h>
  #include <unistd.h>
  #include <xf86drm.h>

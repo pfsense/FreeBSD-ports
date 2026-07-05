@@ -1,6 +1,6 @@
---- ui/gfx/platform_font_skia.cc.orig	2022-10-05 07:34:01 UTC
+--- ui/gfx/platform_font_skia.cc.orig	2025-12-10 15:04:57 UTC
 +++ ui/gfx/platform_font_skia.cc
-@@ -28,7 +28,7 @@
+@@ -29,7 +29,7 @@
  #include "ui/gfx/system_fonts_win.h"
  #endif
  
@@ -9,7 +9,7 @@
  #include "ui/linux/linux_ui.h"
  #endif
  
-@@ -166,7 +166,7 @@ void PlatformFontSkia::EnsuresDefaultFontIsInitialized
+@@ -170,7 +170,7 @@ void PlatformFontSkia::EnsuresDefaultFontIsInitialized
    weight = system_font.GetWeight();
  #endif  // BUILDFLAG(IS_WIN)
  
@@ -17,4 +17,4 @@
 +#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_BSD)
    // On Linux, LinuxUi is used to query the native toolkit (e.g.
    // GTK) for the default UI font.
-   if (const auto* linux_ui = ui::LinuxUi::instance()) {
+   if (auto* linux_ui = ui::LinuxUi::instance()) {

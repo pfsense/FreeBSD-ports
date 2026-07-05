@@ -1,35 +1,40 @@
 PORTNAME=	nuspell
+PORTVERSION=	5.1.7
 DISTVERSIONPREFIX=	v
-DISTVERSION=	5.1.4
-PORTREVISION=	1
 CATEGORIES=	textproc
 
-MAINTAINER=	jbeich@FreeBSD.org
+MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Fast and safe spellchecking C++ library
-WWW=		https://nuspell.github.io/
+WWW=		https://nuspell.github.io/ \
+		https://github.com/nuspell/nuspell
 
 LICENSE=	LGPL3+
 LICENSE_FILE=	${WRKSRC}/COPYING.LESSER
 
 LIB_DEPENDS=	libicuuc.so:devel/icu
-TEST_DEPENDS=	catch2>0:devel/catch2
+TEST_DEPENDS=	catch2>=3.1.1:devel/catch2
 
 USES=		cmake:testing compiler:c++17-lang
-USE_GITHUB=	yes
+
+CMAKE_OFF=	BUILD_API_DOCS \
+		BUILD_TESTING
+CMAKE_ON=	BUILD_SHARED_LIBS \
+		BUILD_TOOLS
 USE_LDCONFIG=	yes
-CMAKE_OFF+=	${CMAKE_TESTING_ON}
+
+PLIST_SUB=	PORTVERSION=${PORTVERSION}
+
+USE_GITHUB=	yes
+
+OPTIONS_DEFINE=	MANPAGES
+OPTIONS_EXCLUDE_i386=	MANPAGES # https://github.com/haskell-foundation/foundation/issues/565
+OPTIONS_DEFAULT=MANPAGES
+OPTIONS_SUB=	yes
+
+MANPAGES_BUILD_DEPENDS=	pandoc:textproc/hs-pandoc
+MANPAGES_CMAKE_BOOL=	BUILD_MAN
 
 post-patch:
-# Skip README as it only contains install instructions
-	@${REINPLACE_CMD} -i .doc '/README/d' ${WRKSRC}/CMakeLists.txt
-# Respect PREFIX != /usr/local
-	@${REINPLACE_CMD} -e 's,/usr/local,${PREFIX},' \
-		${WRKSRC}/src/nuspell/finder.cxx
-
-makepatch-clean:
-	@${RM} ${WRKSRC}/tests/suggestiontest/Makefile.orig
+	@${REINPLACE_CMD} -e 's|%%PREFIX%%|${PREFIX}|' ${WRKSRC}/src/nuspell/finder.cxx
 
 .include <bsd.port.mk>
-
-# XXX Don't override definition in Mk/bsd.port.mk
-makepatch:	makepatch-clean

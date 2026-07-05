@@ -21,11 +21,12 @@ rcvar=pdns_enable
 load_rc_config ${name}
 
 pdns_enable=${pdns_enable:-"NO"}
+: ${pdns_svcj_options:="net_basic"}
 pdns_conf=${pdns_conf:-"%%PREFIX%%/etc/pdns/pdns.conf"}
 
 required_files=${pdns_conf}
 
-pidfile=/var/run/pdns/${name}.pid
+pidfile=/var/run/${name}/${name}.pid
 
 command=%%PREFIX%%/sbin/pdns_server
 command_args="${pdns_flags} --daemon --guardian"

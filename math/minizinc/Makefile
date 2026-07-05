@@ -1,11 +1,11 @@
 PORTNAME=	minizinc
-DISTVERSION=	2.8.3
-PORTREVISION=	1
+DISTVERSION=	2.8.7
 CATEGORIES=	math lang
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Constraint modeling language
-WWW=		https://www.minizinc.org/
+WWW=		https://www.minizinc.org/ \
+		https://github.com/MiniZinc
 
 LICENSE=	MPL20
 LICENSE_FILE=	${WRKSRC}/LICENSE.txt
@@ -16,7 +16,6 @@ LIB_DEPENDS=	libCbc.so:math/cbc \
 		libCgl.so:math/cgl \
 		libCoinUtils.so:math/coinutils \
 		libgecodekernel.so:math/gecode \
-		libhighs.so:math/highs \
 		libOsi.so:math/osi \
 		libOsiClp.so:math/clp
 

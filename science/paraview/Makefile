@@ -1,5 +1,6 @@
 PORTNAME=	paraview
-DISTVERSION=	${PARAVIEW_VER}.0
+DISTVERSION=	${PARAVIEW_VER}.1
+PORTREVISION=	2
 CATEGORIES=	science graphics
 MASTER_SITES=	http://www.paraview.org/files/v${PARAVIEW_VER}/
 DISTNAME=	ParaView-v${PORTVERSION}
@@ -11,13 +12,14 @@ WWW=		https://www.paraview.org/
 # See https://www.paraview.org/license/
 LICENSE=	BSD3CLAUSE
 
-BROKEN_i386=	no matching member function for call to 'getArrayType'
+#BROKEN_i386=	no matching member function for call to 'getArrayType'
 
 BUILD_DEPENDS=	${PYNUMPY}	\
 		cli11>0:devel/cli11	\
 		utf8cpp>0:devel/utf8cpp	\
 		fast_float>0:math/fast_float \
 		nlohmann-json>0:devel/nlohmann-json	\
+		vulkan-headers>0:graphics/vulkan-headers	\
 		${LOCALBASE}/include/exprtk.hpp:math/exprtk	\
 		${PYTHON_SITELIBDIR}/matplotlib/pyplot.py:math/py-matplotlib@${PY_FLAVOR}
 LIB_DEPENDS=	libhdf5.so:science/hdf5 \
@@ -60,21 +62,22 @@ RUN_DEPENDS=	${PYNUMPY}	\
 		vtk${VTK_VER:R}>0:math/vtk${VTK_VER:R} \
 		${PYTHON_SITELIBDIR}/matplotlib/pyplot.py:math/py-matplotlib@${PY_FLAVOR}
 
-USES=		alias cmake compiler:c11 desktop-file-utils eigen:3 fortran gl gnome	\
+USES=		cmake compiler:c++17-lang desktop-file-utils eigen:3 fortran gl gnome	\
 		jpeg localbase pkgconfig python qt:6 shebangfix sqlite tar:xz xorg
-USE_GL=		gl glew glu glut
+USE_GL=		glew opengl
 USE_GNOME=	libxml2
 USE_QT=		5compat base svg tools webengine
 #buildtools:build core gui help network opengl qmake:build sql svg	\
-#		webengine widgets x11extras xmlpatterns
+#		webengine widgets x11extras glew xmlpatterns
 USE_XORG=	ice sm x11 xau xcb xcursor xdamage xdmcp xext xfixes xorgproto xrender	\
 		xxf86vm
 USE_LDCONFIG=	yes
 
-CFLAGS+=	-I${WRKSRC}/Clients/ParaView/Documentation
+CFLAGS+=	-Wno-missing-template-arg-list-after-template-kw	\
+		-I${WRKSRC}/Clients/ParaView/Documentation
 CMAKE_ARGS+=	-DPARAVIEW_BUILD_SHARED_LIBS=ON \
 		-DPARAVIEW_BUILD_WITH_EXTERNAL=ON \
-		-DVTK_HAVE_GETSOCKNAME_WITH_SOCKLEN_T=1 \
+		-DCMAKE_CXX_STANDARD=17 \
 		-DPARAVIEW_USE_PYTHON:BOOL=ON \
 		-DPARAVIEW_ENABLE_FFMPEG:BOOL=ON \
 		-DPARAVIEW_ENABLE_LAS:BOOL=OFF \
@@ -82,19 +85,25 @@ CMAKE_ARGS+=	-DPARAVIEW_BUILD_SHARED_LIBS=ON \
 		-DPARAVIEW_ENABLE_GDAL:BOOL=ON \
 		-DPARAVIEW_ENABLE_PDAL:BOOL=ON \
 		-DPARAVIEW_ENABLE_OPENTURNS:BOOL=ON \
-		-DPARAVIEW_ENABLE_OPENTURNS:BOOL=ON \
 		-DPARAVIEW_ENABLE_MOTIONFX:BOOL=ON \
 		-DPARAVIEW_ENABLE_XDMF2:BOOL=ON \
 		-DPARAVIEW_ENABLE_XDMF3:BOOL=ON \
 		-DPARAVIEW_USE_QT:BOOL=ON \
 		-DPARAVIEW_BUILD_DEVELOPER_DOCUMENTATION:BOOL=OFF \
 		-DPARAVIEW_ENABLE_EMBEDDED_DOCUMENTATION:BOOL=OFF \
+		-DVTK_FORBID_DOWNLOADS:BOOL=OFF \
+		-DVTK_HAVE_GETSOCKNAME_WITH_SOCKLEN_T=1 \
 		-DVTK_MODULE_USE_EXTERNAL_VTK_fmt:BOOL=OFF \
 		-DVTK_MODULE_USE_EXTERNAL_VTK_ioss:BOOL=OFF \
 		-DVTK_MODULE_USE_EXTERNAL_VTK_pegtl:BOOL=OFF \
 		-DVTK_MODULE_USE_EXTERNAL_VTK_token:BOOL=OFF \
 		-DExternalData_OBJECT_STORES="${WRKDIR}/VTK/ExternalData/MD5" \
 		-DFREETYPE_INCLUDE_DIRS="${LOCALBASE}/include/freetype2"
+# TODO: port Viskores - https://viskores.org/
+CMAKE_ARGS+=	-DPARAVIEW_USE_VISKORES:BOOL=OFF
+# To enable external VTK, it should be configured with several modules
+#	-DVTK_MODULE_ENABLE_VTK_xxx=WANT
+CMAKE_ARGS+=	-DPARAVIEW_USE_EXTERNAL_VTK:BOOL=OFF
 .if !defined(MAINTAINER_MODE)
 CMAKE_ARGS+=	-DVTK_FORBID_DOWNLOADS:BOOL=ON
 .endif
@@ -106,16 +115,17 @@ SHEBANG_FILES=	VTK/Examples/SearchScript.sh	\
 		VTK/Utilities/Maintenance/*.sh	\
 		Clients/CommandLineExecutables/paraview-config.in
 
-OPTIONS_DEFINE=	DOCS EXAMPLES MPICH OSMESA
+OPTIONS_DEFINE=	DOCS EXAMPLES OMPI OSMESA TEST
 OPTIONS_SUB=	yes
+OMPI_DESC=	OpenMPI (Message Passing Interface) support
 OSMESA_DESC=	Use Mesa for off-screen rendering
 
 # mpi4py and other programs must be compiled against the same MPI provider
-MPICH_BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}mpi4py>0:net/py-mpi4py-mpich@${PY_FLAVOR}
-MPICH_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}mpi4py>0:net/py-mpi4py-mpich@${PY_FLAVOR}
-MPICH_USES=		mpi # mpich is set by default, use mpi:openmpi if needed
-MPICH_CMAKE_ON=		-DPARAVIEW_USE_MPI:BOOL=ON
-MPICH_CMAKE_OFF=		-DPARAVIEW_USE_MPI:BOOL=OFF
+OMPI_BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}mpi4py>=0:net/py-mpi4py@${PY_FLAVOR}
+OMPI_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}mpi4py>=0:net/py-mpi4py@${PY_FLAVOR}
+OMPI_USES=		mpi:openmpi
+OMPI_CMAKE_ON=		-DPARAVIEW_USE_MPI:BOOL=ON
+OMPI_CMAKE_OFF=		-DPARAVIEW_USE_MPI:BOOL=OFF
 
 OSMESA_LIB_DEPENDS=	libOSMesa.so:graphics/libosmesa
 OSMESA_USES_OFF=	desktop-file-utils
@@ -128,10 +138,11 @@ OSMESA_CMAKE_OFF=	-DVTK_USE_X:BOOL="ON"
 EXAMPLES_CMAKE_BOOL=	PARAVIEW_ENABLE_EXAMPLES
 PORTEXAMPLES=		*
 
-#TEST_CMAKE_ON=		-DPARAVIEW_BUILD_TESTING=WANT	\
-			-DPARAVIEW_BUILD_VTK_TESTING=WANT
+TEST_CMAKE_ON=		-DPARAVIEW_BUILD_TESTING=WANT
+# PARAVIEW_BUILD_VTK_TESTING requires SCN https://pypi.org/project/scn/
+#			-DPARAVIEW_BUILD_VTK_TESTING=WANT
 
-# Error with ADIOS2
+# ADIOS2 requires MPICH, not OpenMPI
 #LIB_DEPENDS+=	libadios2_c.so:misc/adios2
 #CMAKE_ARGS+=	-DPARAVIEW_ENABLE_ADIOS2:BOOL=ON
 # Missing GenericIO for CosmoTools

@@ -1,11 +1,6 @@
 PORTNAME=	aifad
-PORTVERSION=	2.0.8
-DISTVERSIONPREFIX=	v
-PORTREVISION=	1
+PORTVERSION=	2.3.1
 CATEGORIES=	devel
-
-PATCH_SITES=	https://github.com/${GH_ACCOUNT}/${GH_PROJECT}/commit/
-PATCHFILES=	6c94276f361614b4c447.diff:-p1 e08856647724737ca15e.diff:-p1
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Machine learning system
@@ -15,7 +10,6 @@ LICENSE=	LGPL21+
 
 BUILD_DEPENDS=	menhir:devel/menhir \
 		ocaml-cfg>0:devel/ocaml-cfg \
-		ocamlbuild:devel/ocaml-ocamlbuild \
 		ocaml-pcre>0:devel/ocaml-pcre \
 		ocaml-res>0:devel/ocaml-res
 LIB_DEPENDS=	libpcre.so:devel/pcre
@@ -23,17 +17,21 @@ LIB_DEPENDS=	libpcre.so:devel/pcre
 USE_GITHUB=	yes
 GH_ACCOUNT=	mmottl
 
-USE_OCAML=	yes
-NO_OCAML_RUNDEPENDS=yes
+USES=		ocaml:dune
 
-HAS_CONFIGURE=	yes
-CONFIGURE_ARGS=	--prefix ${STAGEDIR}${PREFIX}
-
-PORTDOCS=	AUTHORS.txt CHANGES.txt README.md TODO.md
+DOCSDIR=	${OCAML_DOCSDIR}/${PORTNAME}
+PORTDOCS=	CHANGES.md LICENSE.md README.md TODO.md
 PORTEXAMPLES=	*
-PLIST_FILES=	bin/aifad
-
+PLIST_FILES=	bin/aifad %%OCAML_SITELIBDIR%%/aifad/META \
+		%%OCAML_SITELIBDIR%%/aifad/dune-package \
+		%%OCAML_SITELIBDIR%%/aifad/opam
 OPTIONS_DEFINE=	DOCS EXAMPLES
+
+.include <bsd.port.options.mk>
+
+.if ${ARCH} == powerpc
+USE_BINUTILS=	yes
+.endif
 
 post-install:
 	@${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/aifad

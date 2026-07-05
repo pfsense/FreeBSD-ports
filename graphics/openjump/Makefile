@@ -1,5 +1,6 @@
 PORTNAME=	OpenJUMP
 PORTVERSION=	2.0
+PORTREVISION=	1
 CATEGORIES=	graphics java geography
 MASTER_SITES=	SF/jump-pilot/OpenJUMP/${PORTVERSION}
 DISTNAME=	${PORTNAME}-Portable-${PORTVERSION}-r${PLUS_REV}[a56ff6d]-PLUS
@@ -29,9 +30,7 @@ LICENSE_PERMS_JAIDL=	auto-accept
 LICENSE_PERMS_JDOM=	auto-accept
 LICENSE_PERMS_JYTHON=	auto-accept
 
-USES=		zip
-USE_JAVA=	yes
-JAVA_VERSION=	8+
+USES=		java zip
 
 NO_ARCH=	yes
 NO_BUILD=	yes

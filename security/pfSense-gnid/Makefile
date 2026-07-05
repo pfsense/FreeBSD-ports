@@ -1,5 +1,5 @@
 PORTNAME=	pfSense-gnid
-DISTVERSION=	0.19
+DISTVERSION=	0.21
 CATEGORIES=	security
 
 MAINTAINER=	coreteam@pfsense.org
@@ -11,7 +11,7 @@ USE_GITLAB=	yes
 GL_SITE=	https://gitlab.netgate.com
 GL_ACCOUNT=	pfSense
 GL_PROJECT=	gnid
-GL_TAGNAME=	52db51d82fe4f6fd2f1a53589509b90290af7fb7
+GL_TAGNAME=	4fc2d9b77d0aee91a2b570487ef52d6892612f40
 MASTER_SITE_BACKUP=
 NO_CHECKSUM=	yes
 PLIST_FILES=	/usr/sbin/gnid

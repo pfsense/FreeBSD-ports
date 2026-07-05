@@ -1,7 +1,7 @@
 PORTNAME=	wthrr
 DISTVERSIONPREFIX=	v
-DISTVERSION=	1.1.1
-PORTREVISION=	8
+DISTVERSION=	1.2.1
+PORTREVISION=	13
 CATEGORIES=	misc
 
 MAINTAINER=	pkubaj@FreeBSD.org
@@ -16,185 +16,194 @@ USE_GITHUB=	yes
 GH_ACCOUNT=	tobealive
 GH_PROJECT=	${PORTNAME}-the-weathercrab
 
-CARGO_CRATES=	aho-corasick-1.0.1 \
+CARGO_CRATES=	addr2line-0.24.1 \
+		adler2-2.0.0 \
+		aho-corasick-1.1.3 \
+		android-tzdata-0.1.1 \
 		android_system_properties-0.1.5 \
-		anstyle-1.0.0 \
-		anyhow-1.0.71 \
-		atty-0.2.14 \
-		autocfg-1.1.0 \
-		base64-0.13.1 \
-		base64-0.21.0 \
-		bitflags-1.3.2 \
-		bumpalo-3.12.1 \
-		bytes-1.4.0 \
-		cc-1.0.79 \
+		anstyle-1.0.8 \
+		anyhow-1.0.89 \
+		atomic-waker-1.1.2 \
+		autocfg-1.4.0 \
+		backtrace-0.3.74 \
+		base64-0.21.7 \
+		base64-0.22.1 \
+		bitflags-2.6.0 \
+		bumpalo-3.16.0 \
+		bytes-1.7.2 \
+		cc-1.1.23 \
 		cfg-if-1.0.0 \
-		chrono-0.4.24 \
-		clap-4.2.7 \
-		clap_builder-4.2.7 \
-		clap_derive-4.2.0 \
-		clap_lex-0.4.1 \
-		codespan-reporting-0.11.1 \
-		colored-2.0.0 \
-		console-0.15.5 \
-		core-foundation-0.9.3 \
-		core-foundation-sys-0.8.4 \
-		cxx-1.0.94 \
-		cxx-build-1.0.94 \
-		cxxbridge-flags-1.0.94 \
-		cxxbridge-macro-1.0.94 \
-		dialoguer-0.10.4 \
+		chrono-0.4.38 \
+		clap-4.5.19 \
+		clap_builder-4.5.19 \
+		clap_derive-4.5.18 \
+		clap_lex-0.7.2 \
+		console-0.15.8 \
+		core-foundation-0.9.4 \
+		core-foundation-sys-0.8.7 \
+		dialoguer-0.11.0 \
 		directories-5.0.1 \
 		dirs-sys-0.4.1 \
 		encode_unicode-0.3.6 \
-		encoding_rs-0.8.32 \
-		errno-0.3.1 \
-		errno-dragonfly-0.1.2 \
-		fastrand-1.9.0 \
+		encoding_rs-0.8.34 \
+		equivalent-1.0.1 \
+		errno-0.3.9 \
+		fastrand-2.1.1 \
 		fnv-1.0.7 \
 		foreign-types-0.3.2 \
 		foreign-types-shared-0.1.1 \
-		form_urlencoded-1.1.0 \
-		futures-0.3.28 \
-		futures-channel-0.3.28 \
-		futures-core-0.3.28 \
-		futures-executor-0.3.28 \
-		futures-io-0.3.28 \
-		futures-macro-0.3.28 \
-		futures-sink-0.3.28 \
-		futures-task-0.3.28 \
-		futures-util-0.3.28 \
-		getrandom-0.2.9 \
-		h2-0.3.18 \
-		hashbrown-0.12.3 \
-		heck-0.4.1 \
-		hermit-abi-0.1.19 \
-		hermit-abi-0.2.6 \
-		hermit-abi-0.3.1 \
-		http-0.2.9 \
-		http-body-0.4.5 \
-		httparse-1.8.0 \
-		httpdate-1.0.2 \
-		hyper-0.14.26 \
-		hyper-tls-0.5.0 \
-		iana-time-zone-0.1.56 \
-		iana-time-zone-haiku-0.1.1 \
-		idna-0.3.0 \
-		indexmap-1.9.3 \
-		instant-0.1.12 \
-		io-lifetimes-1.0.10 \
-		ipnet-2.7.2 \
-		itoa-1.0.6 \
-		js-sys-0.3.61 \
-		lazy_static-1.4.0 \
-		libc-0.2.143 \
-		link-cplusplus-1.0.8 \
-		linux-raw-sys-0.3.7 \
-		log-0.4.17 \
-		memchr-2.5.0 \
+		form_urlencoded-1.2.1 \
+		futures-0.3.30 \
+		futures-channel-0.3.30 \
+		futures-core-0.3.30 \
+		futures-executor-0.3.30 \
+		futures-io-0.3.30 \
+		futures-macro-0.3.30 \
+		futures-sink-0.3.30 \
+		futures-task-0.3.30 \
+		futures-util-0.3.30 \
+		getrandom-0.2.15 \
+		gimli-0.31.0 \
+		h2-0.4.6 \
+		hashbrown-0.14.5 \
+		heck-0.5.0 \
+		hermit-abi-0.3.9 \
+		http-1.1.0 \
+		http-body-1.0.1 \
+		http-body-util-0.1.2 \
+		httparse-1.9.5 \
+		hyper-1.4.1 \
+		hyper-rustls-0.27.3 \
+		hyper-tls-0.6.0 \
+		hyper-util-0.1.9 \
+		iana-time-zone-0.1.61 \
+		iana-time-zone-haiku-0.1.2 \
+		idna-0.5.0 \
+		indexmap-2.5.0 \
+		ipnet-2.10.0 \
+		itoa-1.0.11 \
+		js-sys-0.3.70 \
+		lazy_static-1.5.0 \
+		libc-0.2.159 \
+		libredox-0.1.3 \
+		linux-raw-sys-0.4.14 \
+		log-0.4.22 \
+		memchr-2.7.4 \
 		mime-0.3.17 \
-		mio-0.8.6 \
-		native-tls-0.2.11 \
-		num-integer-0.1.45 \
-		num-traits-0.2.15 \
-		num_cpus-1.15.0 \
-		once_cell-1.17.1 \
-		openssl-0.10.52 \
+		miniz_oxide-0.8.0 \
+		mio-1.0.2 \
+		native-tls-0.2.12 \
+		num-traits-0.2.19 \
+		object-0.36.4 \
+		once_cell-1.20.1 \
+		openssl-0.10.66 \
 		openssl-macros-0.1.1 \
 		openssl-probe-0.1.5 \
-		openssl-sys-0.9.87 \
+		openssl-sys-0.9.103 \
 		option-ext-0.2.0 \
-		optional_struct-0.3.1 \
-		optional_struct_internal-0.3.1 \
-		optional_struct_macro_impl-0.3.1 \
-		percent-encoding-2.2.0 \
-		pin-project-lite-0.2.9 \
+		optional_struct-0.5.2 \
+		optional_struct_macro-0.5.2 \
+		percent-encoding-2.3.1 \
+		pin-project-lite-0.2.14 \
 		pin-utils-0.1.0 \
-		pkg-config-0.3.27 \
-		proc-macro2-1.0.56 \
-		pure-rust-locales-0.5.6 \
-		quote-1.0.26 \
-		redox_syscall-0.2.16 \
-		redox_syscall-0.3.5 \
-		redox_users-0.4.3 \
-		regex-1.8.1 \
-		regex-syntax-0.7.1 \
-		reqwest-0.11.17 \
-		ron-0.8.0 \
-		rustix-0.37.19 \
-		rustversion-1.0.12 \
-		ryu-1.0.13 \
-		schannel-0.1.21 \
-		scopeguard-1.1.0 \
-		scratch-1.0.5 \
-		security-framework-2.8.2 \
-		security-framework-sys-2.8.0 \
-		serde-1.0.162 \
-		serde_derive-1.0.162 \
-		serde_json-1.0.96 \
+		pkg-config-0.3.31 \
+		portable-atomic-1.9.0 \
+		proc-macro2-1.0.86 \
+		pure-rust-locales-0.8.1 \
+		quote-1.0.37 \
+		redox_users-0.4.6 \
+		regex-1.11.0 \
+		regex-automata-0.4.8 \
+		regex-syntax-0.8.5 \
+		reqwest-0.12.8 \
+		ring-0.17.8 \
+		ron-0.8.1 \
+		rustc-demangle-0.1.24 \
+		rustix-0.38.37 \
+		rustls-0.23.13 \
+		rustls-pemfile-2.2.0 \
+		rustls-pki-types-1.9.0 \
+		rustls-webpki-0.102.8 \
+		rustversion-1.0.17 \
+		ryu-1.0.18 \
+		schannel-0.1.24 \
+		scopeguard-1.2.0 \
+		security-framework-2.11.1 \
+		security-framework-sys-2.12.0 \
+		serde-1.0.210 \
+		serde_derive-1.0.210 \
+		serde_json-1.0.128 \
 		serde_urlencoded-0.7.1 \
 		shell-words-1.1.0 \
-		slab-0.4.8 \
-		socket2-0.4.9 \
-		strsim-0.10.0 \
-		strum-0.24.1 \
-		strum_macros-0.24.3 \
-		syn-1.0.109 \
-		syn-2.0.15 \
-		tempfile-3.5.0 \
-		termcolor-1.2.0 \
-		thiserror-1.0.40 \
-		thiserror-impl-1.0.40 \
-		tinyvec-1.6.0 \
+		shlex-1.3.0 \
+		slab-0.4.9 \
+		smallvec-1.13.2 \
+		socket2-0.5.7 \
+		spin-0.9.8 \
+		strsim-0.11.1 \
+		strum-0.26.3 \
+		strum_macros-0.26.4 \
+		subtle-2.6.1 \
+		syn-2.0.79 \
+		sync_wrapper-1.0.1 \
+		system-configuration-0.6.1 \
+		system-configuration-sys-0.6.0 \
+		tempfile-3.13.0 \
+		thiserror-1.0.64 \
+		thiserror-impl-1.0.64 \
+		tinyvec-1.8.0 \
 		tinyvec_macros-0.1.1 \
-		tokio-1.28.0 \
-		tokio-macros-2.1.0 \
+		tokio-1.40.0 \
+		tokio-macros-2.4.0 \
 		tokio-native-tls-0.3.1 \
-		tokio-util-0.7.8 \
-		tower-service-0.3.2 \
-		tracing-0.1.37 \
-		tracing-core-0.1.30 \
-		try-lock-0.2.4 \
-		unicode-bidi-0.3.13 \
-		unicode-ident-1.0.8 \
-		unicode-normalization-0.1.22 \
-		unicode-width-0.1.10 \
-		url-2.3.1 \
+		tokio-rustls-0.26.0 \
+		tokio-util-0.7.12 \
+		tower-service-0.3.3 \
+		tracing-0.1.40 \
+		tracing-core-0.1.32 \
+		try-lock-0.2.5 \
+		unicode-bidi-0.3.15 \
+		unicode-ident-1.0.13 \
+		unicode-normalization-0.1.24 \
+		unicode-width-0.1.14 \
+		unicode-width-0.2.0 \
+		untrusted-0.9.0 \
+		url-2.5.2 \
 		vcpkg-0.2.15 \
-		want-0.3.0 \
+		want-0.3.1 \
 		wasi-0.11.0+wasi-snapshot-preview1 \
-		wasm-bindgen-0.2.84 \
-		wasm-bindgen-backend-0.2.84 \
-		wasm-bindgen-futures-0.4.34 \
-		wasm-bindgen-macro-0.2.84 \
-		wasm-bindgen-macro-support-0.2.84 \
-		wasm-bindgen-shared-0.2.84 \
-		web-sys-0.3.61 \
-		winapi-0.3.9 \
-		winapi-i686-pc-windows-gnu-0.4.0 \
-		winapi-util-0.1.5 \
-		winapi-x86_64-pc-windows-gnu-0.4.0 \
-		windows-0.48.0 \
-		windows-sys-0.42.0 \
-		windows-sys-0.45.0 \
+		wasm-bindgen-0.2.93 \
+		wasm-bindgen-backend-0.2.93 \
+		wasm-bindgen-futures-0.4.43 \
+		wasm-bindgen-macro-0.2.93 \
+		wasm-bindgen-macro-support-0.2.93 \
+		wasm-bindgen-shared-0.2.93 \
+		web-sys-0.3.70 \
+		windows-core-0.52.0 \
+		windows-registry-0.2.0 \
+		windows-result-0.2.0 \
+		windows-strings-0.1.0 \
 		windows-sys-0.48.0 \
-		windows-targets-0.42.2 \
-		windows-targets-0.48.0 \
-		windows_aarch64_gnullvm-0.42.2 \
-		windows_aarch64_gnullvm-0.48.0 \
-		windows_aarch64_msvc-0.42.2 \
-		windows_aarch64_msvc-0.48.0 \
-		windows_i686_gnu-0.42.2 \
-		windows_i686_gnu-0.48.0 \
-		windows_i686_msvc-0.42.2 \
-		windows_i686_msvc-0.48.0 \
-		windows_x86_64_gnu-0.42.2 \
-		windows_x86_64_gnu-0.48.0 \
-		windows_x86_64_gnullvm-0.42.2 \
-		windows_x86_64_gnullvm-0.48.0 \
-		windows_x86_64_msvc-0.42.2 \
-		windows_x86_64_msvc-0.48.0 \
-		winreg-0.10.1
+		windows-sys-0.52.0 \
+		windows-sys-0.59.0 \
+		windows-targets-0.48.5 \
+		windows-targets-0.52.6 \
+		windows_aarch64_gnullvm-0.48.5 \
+		windows_aarch64_gnullvm-0.52.6 \
+		windows_aarch64_msvc-0.48.5 \
+		windows_aarch64_msvc-0.52.6 \
+		windows_i686_gnu-0.48.5 \
+		windows_i686_gnu-0.52.6 \
+		windows_i686_gnullvm-0.52.6 \
+		windows_i686_msvc-0.48.5 \
+		windows_i686_msvc-0.52.6 \
+		windows_x86_64_gnu-0.48.5 \
+		windows_x86_64_gnu-0.52.6 \
+		windows_x86_64_gnullvm-0.48.5 \
+		windows_x86_64_gnullvm-0.52.6 \
+		windows_x86_64_msvc-0.48.5 \
+		windows_x86_64_msvc-0.52.6 \
+		zeroize-1.8.1
 
 MAKE_ENV=	OPENSSL_DIR=${OPENSSLDIR}
 

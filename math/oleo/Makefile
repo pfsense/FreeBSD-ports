@@ -1,6 +1,6 @@
 PORTNAME=	oleo
 PORTVERSION=	1.99.16
-PORTREVISION=	15
+PORTREVISION=	16
 CATEGORIES=	math
 MASTER_SITES=	GNU
 
@@ -50,7 +50,7 @@ NLS_LIBS=		-lintl
 
 .include <bsd.port.pre.mk>
 
-.if ${OPSYS} == FreeBSD && ( ${OSVERSION} >= 1400079 || ( ${OSVERSION} >= 1302505 && ${OSVERSION} < 1400000 ))
+.if ${OPSYS} == FreeBSD
 CPPFLAGS+=	-Wno-error=int-conversion
 .endif
 

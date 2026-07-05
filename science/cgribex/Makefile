@@ -1,15 +1,15 @@
 PORTNAME=	cgribex
-PORTVERSION=	1.9.4
-PORTREVISION=	3
+PORTVERSION=	2.0.0
+PORTREVISION=	1
 CATEGORIES=	science
-MASTER_SITES=	https://code.mpimet.mpg.de/attachments/download/21178/ \
+MASTER_SITES=	https://code.mpimet.mpg.de/attachments/download/26325/ \
 		LOCAL/sunpoet
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Lightweight GRIBEX in C with portable Fortran interface
 WWW=		https://code.mpimet.mpg.de/projects/cgribex
 
-LICENSE=	GPLv2
+LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/COPYING
 
 USES=		libtool
@@ -19,18 +19,13 @@ GNU_CONFIGURE=	yes
 INSTALL_TARGET=	install-strip
 USE_LDCONFIG=	yes
 
-OPTIONS_DEFINE=	GRIB_API JASPER SZIP
+OPTIONS_DEFINE=	JASPER SZIP
 OPTIONS_DEFAULT=JASPER SZIP
 
-GRIB_API_CONFIGURE_WITH=grib_api=${LOCALBASE}
-GRIB_API_LIB_DEPENDS=	libgrib_api.so:science/grib_api
 JASPER_CONFIGURE_WITH=	jasper=${LOCALBASE}
 JASPER_LIB_DEPENDS=	libjasper.so:graphics/jasper
 SZIP_CONFIGURE_WITH=	szlib=${LOCALBASE}
 SZIP_LIB_DEPENDS=	libsz.so:science/libaec
-
-post-configure:
-	@${REINPLACE_CMD} -e 's|-Ino/include||g; s|-Lno/lib||g' ${WRKSRC}/Makefile ${WRKSRC}/*/Makefile
 
 post-install:
 	${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/libcgribex.so

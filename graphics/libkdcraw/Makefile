@@ -1,12 +1,11 @@
 PORTNAME=	libkdcraw
 DISTVERSION=	${KDE_APPLICATIONS_VERSION}
-PORTREVISION=	1
 CATEGORIES=	graphics kde kde-applications
 PKGNAMESUFFIX?=	-${FLAVOR}
 
 MAINTAINER=	kde@FreeBSD.org
 COMMENT=	LibRaw interface for KDE
-WWW=		https://www.digikam.org/
+WWW=		https://invent.kde.org/graphics/libkdcraw
 
 LICENSE=	GPLv2+
 
@@ -15,8 +14,8 @@ LIB_DEPENDS=	libjasper.so:graphics/jasper \
 		libraw.so:graphics/libraw \
 		libxml2.so:textproc/libxml2
 
-FLAVORS=	qt5 qt6
-FLAVOR?=	qt5
+FLAVORS=	qt6 qt5
+FLAVOR?=	qt6
 
 USES=		cmake compiler:c++11-lang jpeg kde:${FLAVOR:S/qt//} pkgconfig \
 		qt:${FLAVOR:S/qt//} tar:xz

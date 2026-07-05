@@ -1,5 +1,5 @@
 PORTNAME=	dimod
-DISTVERSION=	0.12.14
+DISTVERSION=	0.12.21
 CATEGORIES=	science python
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -27,5 +27,7 @@ do-install:
 
 do-test:
 	@cd ${WRKSRC}/testscpp && ${SETENV} ${MAKE_ENV} ${MAKE}
+
+# tests as of 0.12.21: All tests passed (104295 assertions in 35 test cases)
 
 .include <bsd.port.mk>

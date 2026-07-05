@@ -1,13 +1,13 @@
---- chrome/browser/extensions/api/runtime/chrome_runtime_api_delegate.cc.orig	2024-02-04 14:46:08 UTC
+--- chrome/browser/extensions/api/runtime/chrome_runtime_api_delegate.cc.orig	2026-02-16 10:45:29 UTC
 +++ chrome/browser/extensions/api/runtime/chrome_runtime_api_delegate.cc
-@@ -279,7 +279,9 @@ bool ChromeRuntimeAPIDelegate::GetPlatformInfo(Platfor
-   } else if (strcmp(os, "linux") == 0) {
+@@ -363,7 +363,9 @@ bool ChromeRuntimeAPIDelegate::GetPlatformInfo(Platfor
+   } else if (os == "linux") {
      info->os = extensions::api::runtime::PlatformOs::kLinux;
-   } else if (strcmp(os, "openbsd") == 0) {
+   } else if (os == "openbsd") {
 -    info->os = extensions::api::runtime::PlatformOs::kOpenbsd;
 +    info->os = extensions::api::runtime::PlatformOs::kLinux;
-+  } else if (strcmp(os, "freebsd") == 0) {
++  } else if (os == "freebsd") {
 +    info->os = extensions::api::runtime::PlatformOs::kLinux;
-   } else if (strcmp(os, "fuchsia") == 0) {
-     info->os = extensions::api::runtime::PlatformOs::kFuchsia;
+   } else if (os == "android") {
+     info->os = extensions::api::runtime::PlatformOs::kAndroid;
    } else {

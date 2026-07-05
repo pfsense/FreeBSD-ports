@@ -1,6 +1,6 @@
 PORTNAME=	libayatana-indicator
 PORTVERSION=	0.9.4
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	devel
 
 MAINTAINER=	jgh@FreeBSD.org
@@ -16,9 +16,10 @@ BUILD_DEPENDS=	lcov>=0:devel/lcov
 
 USES=		cmake gnome localbase:ldflags pkgconfig vala:build
 
-USE_GNOME=	atk cairo gdkpixbuf2 glib20 gtk30 introspection pango
+USE_GNOME=	atk cairo gdkpixbuf glib20 gtk30 introspection pango
 
 USE_LDCONFIG=	yes
+LDFLAGS+=	-pthread
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	AyatanaIndicators

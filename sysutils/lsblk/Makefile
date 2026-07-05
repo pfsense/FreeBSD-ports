@@ -1,21 +1,29 @@
 PORTNAME=	lsblk
-PORTVERSION=	3.8
+DISTVERSION=	4.1
+PORTREVISION=	0
 CATEGORIES=	sysutils
-MASTER_SITES=	https://github.com/vermaden/lsblk/raw/master/release/
+MASTER_SITES=	https://github.com/vermaden/lsblk/raw/master/release/:source \
+		https://github.com/vermaden/lsblk/raw/master/:license
+DISTFILES=	${DISTNAME}${EXTRACT_SUFX}:source \
+		LICENSE:license
+DIST_SUBDIR=	${PORTNAME}
+EXTRACT_ONLY=	${DISTNAME}${EXTRACT_SUFX}
 
 MAINTAINER=	vermaden@interia.pl
 COMMENT=	Lists information about block devices in the system
 WWW=		https://github.com/vermaden/lsblk
 
 LICENSE=	BSD2CLAUSE
+LICENSE_FILE=	${DISTDIR}/${DIST_SUBDIR}/LICENSE
 
 NO_ARCH=	YES
 NO_BUILD=	YES
 
-PLIST_FILES=	sbin/${PORTNAME}
+PLIST_FILES=	sbin/${PORTNAME} \
+		share/man/man8/${PORTNAME}.8.gz
 
 do-install:
-	${INSTALL_SCRIPT} ${WRKSRC}/lsblk.sh \
-	${STAGEDIR}${PREFIX}/sbin/${PORTNAME}
+	${INSTALL_SCRIPT} ${WRKSRC}/lsblk ${STAGEDIR}${PREFIX}/sbin/${PORTNAME}
+	${INSTALL_MAN} ${WRKSRC}/lsblk.8 ${STAGEDIR}${PREFIX}/share/man/man8
 
 .include <bsd.port.mk>

@@ -1,5 +1,6 @@
 PORTNAME=	maven
 DISTVERSION=	3.6.3
+PORTREVISION=	1
 CATEGORIES=	devel java
 MASTER_SITES=	APACHE/maven/maven-3/${DISTVERSION}/binaries
 DISTNAME=	apache-maven-${DISTVERSION}-bin
@@ -13,8 +14,7 @@ LICENSE=	APACHE20
 
 RUN_DEPENDS=	mvn:devel/maven-wrapper
 
-USES=		cpe
-USE_JAVA=	yes
+USES=		cpe java
 
 CPE_PRODUCT=	maven
 CPE_VENDOR=	apache

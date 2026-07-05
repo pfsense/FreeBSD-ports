@@ -3,7 +3,7 @@
  * squid.inc
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2006-2024 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2006-2026 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2013-2016 Marcello Coutinho
  * Copyright (c) 2006 Fernando Lemos
  * Copyright (c) 2012 Martin Fuchs
@@ -51,6 +51,7 @@ define('SQUID_CONFFILE', SQUID_CONFBASE . '/squid.conf');
 define('SQUID_ACLDIR', '/var/squid/acl');
 define('SQUID_PASSWD', '/var/etc/squid.passwd');
 define('SQUID_SSL_DB', '/var/squid/lib/ssl_db');
+define('LOG_PREFIX_PKG_SQUID', 'squid');
 
 $valid_acls = array();
 
@@ -127,7 +128,7 @@ function squid_is_valid_acl($acl) {
 /* Recursively change ownership of directories */
 function squid_chown_recursive($dir, $user, $group) {
 	if (empty($dir) || ($dir == '/') || ($dir == '/usr/local') || !is_dir($dir)) {
-		log_error(gettext("[squid] Attempted to chown an invalid directory: '{$dir}'"));
+		logger(LOG_ERR, localize_text("Attempted to chown an invalid directory: '%s'", $dir), LOG_PREFIX_PKG_SQUID);
 		return;
 	}
 
@@ -148,7 +149,7 @@ function squid_chown_recursive($dir, $user, $group) {
 			}
 		}
 	} else {
-		log_error(gettext("[squid] squid_chown_recursive() call failed; permissions not set for directory: '{$dir}'"));
+		logger(LOG_ERR, localize_text("%s call failed; permissions not set for directory: '%s'", 'squid_chown_recursive()', $dir), LOG_PREFIX_PKG_SQUID);
 	}
 }
 
@@ -220,8 +221,8 @@ function squid_gen_extra_ca() {
 function squid_dash_z($cache_action = 'none') {
 	// We need cache configured after initial package install
 	if (!is_array(config_get_path('installedpackages/squidcache/config'))) {
-		log_error("[squid] 'Local Cache' not configured, disk cache will be disabled.");
-		log_error("[squid] Please, configure and save 'Local Cache' settings before enabling Squid proxy.");
+		logger(LOG_INFO, localize_text("'Local Cache' not configured, disk cache will be disabled."), LOG_PREFIX_PKG_SQUID);
+		logger(LOG_INFO, localize_text("Please, configure and save 'Local Cache' settings before enabling Squid proxy."), LOG_PREFIX_PKG_SQUID);
 		return;
 	}
 
@@ -243,7 +244,7 @@ function squid_dash_z($cache_action = 'none') {
 	if ($cachesettings['harddisk_cache_system'] == "null") {
 		if (is_dir($cachedir)) {
 			if (substr($cachedir, 0, 11) === "/var/squid/") {
-				log_error("[squid] Deleting cache dir '{$cachedir}' since 'Hard Disk Cache System' is set to null...");
+				logger(LOG_INFO, localize_text("Deleting cache dir '%s' since 'Hard Disk Cache System' is set to null...", $cachedir), LOG_PREFIX_PKG_SQUID);
 				// cannot nuke disk cache while Squid is running
 				squid_stop_monitor();
 				if (is_service_running('squid')) {
@@ -253,8 +254,8 @@ function squid_dash_z($cache_action = 'none') {
 				mwexec_bg("/bin/rm -rf {$cachedir}.old");
 				squid_restart_services();
 			} else {
-				log_error("[squid] 'Hard Disk Cache System' is set to null.");
-				log_error("[squid] Will NOT delete cache dir '{$cachedir}' since it is not located under /var/squid. Delete manually if required.");
+				logger(LOG_INFO, localize_text("'Hard Disk Cache System' is set to null."), LOG_PREFIX_PKG_SQUID);
+				logger(LOG_INFO, localize_text("Will NOT delete cache dir '%s' since it is not located under %s. Delete manually if required.", $cachedir, '/var/squid'), LOG_PREFIX_PKG_SQUID);
 			}
 		}
 		return;
@@ -273,7 +274,7 @@ function squid_dash_z($cache_action = 'none') {
 				@rename($cachedir, "{$cachedir}.old");
 				mwexec_bg("/bin/rm -rf {$cachedir}.old");
 			} else {
-				log_error("[squid] Will NOT delete cache dir '{$cachedir}' since it is not located under /var/squid. Delete manually if required.");
+				logger(LOG_INFO, localize_text("Will NOT delete cache dir '%s' since it is not located under %s. Delete manually if required.", $cachedir, '/var/squid'), LOG_PREFIX_PKG_SQUID);
 			}
 		}
 		squid_create_cachedir();
@@ -291,14 +292,14 @@ function squid_create_cachedir() {
 	$cachedir = ($cachesettings['harddisk_cache_location'] ? $cachesettings['harddisk_cache_location'] : '/var/squid/cache');
 
 	if (!is_dir($cachedir)) {
-		log_error("[squid] Creating cache dir '{$cachedir}' ...");
+		logger(LOG_INFO, localize_text("Creating cache dir '%s' ...", $cachedir), LOG_PREFIX_PKG_SQUID);
 		safe_mkdir($cachedir, 0755);
 		@chown($cachedir, SQUID_UID);
 		@chgrp($cachedir, SQUID_GID);
 	}
 
 	if (!is_dir($cachedir . '/00')) {
-		log_error("[squid] Creating Squid cache subdirs in {$cachedir} ...");
+		logger(LOG_INFO, localize_text("Creating Squid cache subdirs in %s ...", $cachedir), LOG_PREFIX_PKG_SQUID);
 		mwexec(SQUID_BASE. "/sbin/squid -z -f " . SQUID_CONFFILE);
 		// Double check permissions here, should be safe to recurse cache dir if it's small here.
 		squid_chown_recursive($cachedir, SQUID_UID, SQUID_GID);
@@ -318,7 +319,7 @@ function squid_create_cachedir() {
 
 /* Handle cronjob install/uninstall */
 function squid_install_cron($should_install) {
-	if (platform_booting()) {
+	if (is_platform_booting()) {
 		return;
 	}
 
@@ -332,11 +333,11 @@ function squid_install_cron($should_install) {
 	 */
 	$swapstate_cmd = "/usr/local/pkg/swapstate_check.php";
 	if (($should_install) && (squid_enabled())) {
-		log_error("[squid] Adding cronjobs ...");
+		logger(LOG_INFO, localize_text("Adding cronjobs ..."), LOG_PREFIX_PKG_SQUID);
 		install_cron_job("{$cron_cmd}", $should_install, "0", "0", "*", "*", "*", "root");
 		install_cron_job("{$swapstate_cmd}", $should_install, "15", "0", "*", "*", "*", "root");
 	} else {
-		log_error("[squid] Removing cronjobs ...");
+		logger(LOG_INFO, localize_text("Removing cronjobs ..."), LOG_PREFIX_PKG_SQUID);
 		install_cron_job("{$cron_cmd}", false);
 		install_cron_job("{$swapstate_cmd}", false);
 	}
@@ -386,12 +387,12 @@ EOD;
 function squid_start_monitor() {
 	if (squid_enabled()) {
 		if (!exec("/bin/ps auxw | /usr/bin/grep '[s]qpmon'")) {
-			log_error("[squid] Starting a proxy monitor script");
+			logger(LOG_INFO, localize_text("Starting a proxy monitor script"), LOG_PREFIX_PKG_SQUID);
 			mwexec_bg("/usr/local/etc/rc.d/sqp_monitor.sh start");
 		}
 		sleep(1);
 	} else {
-		log_error("[squid] Squid is disabled. Not starting a proxy monitor script");
+		logger(LOG_INFO, localize_text("Squid is disabled. Not starting a proxy monitor script"), LOG_PREFIX_PKG_SQUID);
 	}
 }
 
@@ -399,7 +400,7 @@ function squid_start_monitor() {
 function squid_stop_monitor() {
 	/* kill any running proxy alarm scripts */
 	if (exec("/bin/ps auxw | /usr/bin/grep '[s]qpmon'")) {
-		log_error("[squid] Stopping any running proxy monitors");
+		logger(LOG_INFO, localize_text("Stopping any running proxy monitors"), LOG_PREFIX_PKG_SQUID);
 		mwexec("/usr/local/etc/rc.d/sqp_monitor.sh stop");
 	}
 	sleep(1);
@@ -408,7 +409,7 @@ function squid_stop_monitor() {
 /* Start and/or stop services according to Squid configuration */
 function squid_restart_services() {
 	// do not (re)start squid services on boot
-	if (platform_booting()) {
+	if (is_platform_booting()) {
 		return;
 	}
 
@@ -431,10 +432,10 @@ function squid_restart_services() {
 				case "BACKUP":
 				case "INIT":
 					if (is_service_running('squid')) {
-						log_error("[squid] Stopping service... (CARP BACKUP/INIT)");
+						logger(LOG_INFO, localize_text("Stopping service... (CARP BACKUP/INIT)"), LOG_PREFIX_PKG_SQUID);
 						stop_service("squid");
 					} else {
-						log_error("[squid] Do not start service... (CARP BACKUP/INIT)");
+						logger(LOG_INFO, localize_text("Do not start service... (CARP BACKUP/INIT)"), LOG_PREFIX_PKG_SQUID);
 					}
 					return;
 					break;
@@ -448,10 +449,10 @@ function squid_restart_services() {
 			}
 		}
 		if (!is_service_running('squid')) {
-			log_error("[squid] Starting service...");
+			logger(LOG_INFO, localize_text("Starting service..."), LOG_PREFIX_PKG_SQUID);
 			mwexec(SQUID_BASE . "/sbin/squid -f " . SQUID_CONFFILE);
 		} else {
-			log_error("[squid] Reloading for configuration sync...");
+			logger(LOG_INFO, localize_text("Reloading for configuration sync..."), LOG_PREFIX_PKG_SQUID);
 			mwexec(SQUID_BASE . "/sbin/squid -k reconfigure -f " . SQUID_CONFFILE);
 		}
 		// sleep for a couple seconds to give squid a chance to fire up fully.
@@ -466,7 +467,7 @@ function squid_restart_services() {
 		/* Squid is disabled - kill any running proxy alarm scripts and stop Squid services */
 		squid_stop_monitor();
 		if (is_service_running('squid')) {
-			log_error("[squid] Stopping service...");
+			logger(LOG_INFO, localize_text("Stopping service..."), LOG_PREFIX_PKG_SQUID);
 			stop_service("squid");
 		}
 	}
@@ -497,7 +498,6 @@ function squid_fixup_user() {
 
 function squid_install_command() {
 	/* Set storage system for ramdisk */
-	config_init_path('installedpackages/squidcache');
 
 	// Fix user/group entry permissions
 	squid_fixup_user();
@@ -582,14 +582,14 @@ function squid_deinstall_command() {
 			if (substr($cachedir, 0, 11) === "/var/squid/") {
 				mwexec_bg("/bin/rm -rf {$cachedir}");
 			} else {
-				log_error("[squid] Will NOT delete Squid cache dir '{$cachedir}' since it is not located under /var/squid. Delete manually if required.");
+				logger(LOG_INFO, localize_text("Will NOT delete Squid cache dir '%s' since it is not located under %s. Delete manually if required.", $cachedir, '/var/squid'), LOG_PREFIX_PKG_SQUID);
 			}
 		}
 		if (is_dir("{$logdir}")) {
 			if (substr($logdir, 0, 11) === "/var/squid/") {
 				mwexec("/bin/rm -rf {$logdir}");
 			} else {
-				log_error("[squid] Will NOT delete Squid log dir '{$logdir}' since it is not located under /var/squid. Delete manually if required.");
+				logger(LOG_INFO, localize_text("Will NOT delete Squid log dir '%s' since it is not located under %s. Delete manually if required.", $logdir, '/var/squid'), LOG_PREFIX_PKG_SQUID);
 			}
 		}
 		$dirs = array("/var/run/squid", "/var/squid");
@@ -607,7 +607,7 @@ function squid_deinstall_command() {
 
 	/* Remove package settings from config if 'Keep Settings/Data' is disabled */
 	if (!$keep) {
-		log_error("[squid] Removing all Squid settings since 'Keep Settings/Data' is disabled...");
+		logger(LOG_INFO, localize_text("Removing all Squid settings since 'Keep Settings/Data' is disabled..."), LOG_PREFIX_PKG_SQUID);
 		$pkgs = [
 			'squid',
 			'squidantivirus',
@@ -656,9 +656,9 @@ function squid_upgrade_config() {
 	/* NT Domain authentication has been removed - Bug #7017 */
 	if (!empty($settingsauth['auth_method'])) {
 		if (preg_match("/msnt/i", $settingsauth['auth_method'])) {
-			$msnt_msg = "NT Domain authentication has been removed - see Bug #7017! Use LDAP for AD authentication.";
+			$msnt_msg = localize_text("NT Domain authentication has been removed - see Bug %s! Use LDAP for AD authentication.", '#7017');
 			file_notice("squid", $msnt_msg, "Packages", "");
-			log_error("[squid] {$msnt_msg}");
+			logger(LOG_WARNING, $msnt_msg, LOG_PREFIX_PKG_SQUID);
 		}
 	}
 
@@ -709,10 +709,12 @@ function squid_upgrade_config() {
 	/* XXX: broken Captive Portal patch (Bug #5594) */
 	if (config_get_path('installedpackages/squid/config/0/patch_cp')) {
 		if (config_get_path('installedpackages/squid/config/0/patch_cp') == "on") {
-			$cp_msg = "Patch Captive Portal feature was removed - see Bug #5594!";
-			$cp_msg .= "Double-check '/etc/inc/captiveportal.inc' contents for sanity! Get a sane copy of the file from pfSense GitHub repository if needed.";
+			$cp_msg = localize_text(
+				"Patch Captive Portal feature was removed - see Bug %s! Double-check '%s' contents for sanity! Get a sane copy of the file from pfSense GitHub repository if needed.",
+				'#5594', '/etc/inc/captiveportal.inc'
+			);
 			file_notice("squid", $cp_msg, "Packages", "");
-			log_error("[squid] {$cp_msg}");
+			logger(LOG_WARNING, $cp_msg, LOG_PREFIX_PKG_SQUID);
 			unset($cp_msg);
 		}
 		config_del_path('installedpackages/squid/config/0/patch_cp');
@@ -754,7 +756,7 @@ function squid_validate_general($post, &$input_errors) {
 				$input_errors[] = "If you intend to use Squid as reverse proxy ONLY, then visit Services: Squid Proxy Server: General, configure and save the reverse proxy settings first.";
 			}
 		} else {
-			log_error("[squid] Enabled as reverse proxy ONLY. If this is not what you intended, visit Services: Squid Proxy Server: General and configure proxy interfaces.");
+			logger(LOG_INFO, localize_text("Enabled as reverse proxy ONLY. If this is not what you intended, visit Services: Squid Proxy Server: General and configure proxy interfaces."), LOG_PREFIX_PKG_SQUID);
 		}
 	}
 
@@ -865,6 +867,7 @@ function squid_validate_general($post, &$input_errors) {
 			$input_errors[] = "SSL interception cannot be enabled without a CA.";
 		} else {
 			$dca = lookup_ca($post['dca']);
+			$dca = $dca['item'];
 			if (!$dca) {
 				$input_errors[] = "Invalid SSL interception CA.";
 			}
@@ -953,7 +956,7 @@ function squid_validate_upstream($post, &$input_errors) {
 function squid_validate_cache($post, &$input_errors) {
 	/* Manually clear hard disk cache */
 	if ($post['clear_cache'] == 'Clear Disk Cache NOW') {
-		log_error("[squid] Clear disk cache forced via GUI. Clearing cache now...");
+		logger(LOG_INFO, localize_text("Clear disk cache forced via GUI. Clearing cache now..."), LOG_PREFIX_PKG_SQUID);
 		squid_dash_z("clean");
 		return;
 	}
@@ -1047,14 +1050,6 @@ function squid_validate_nac($post, &$input_errors) {
 			}
 		}
 	}
-
-	foreach (explode(",", $post['timelist']) as $time) {
-		$time = trim($time);
-		if (!empty($time) && !squid_is_timerange($time)) {
-			$input_errors[] = "The time range '$time' is not a valid time range.";
-		}
-	}
-	unset($time);
 
 	if (!empty($post['ext_cachemanager'])) {
 		$extmgr = explode(";", ($post['ext_cachemanager']));
@@ -1203,9 +1198,11 @@ function squid_resync_general() {
 	$conf = "# This file is automatically generated by pfSense\n";
 	$conf .= "# Do not edit manually !\n\n";
 	// Check ssl interception
+	$ssl_interception = '';
 	if ($settings['ssl_proxy'] == 'on') {
 		squid_gen_extra_ca();
 		$srv_cert = lookup_ca($settings["dca"]);
+		$srv_cert = $srv_cert['item'];
 		if ($srv_cert != false) {
 			if (base64_decode($srv_cert['prv'])) {
 				if (file_exists(SQUID_LOCALBASE . "/libexec/squid/security_file_certgen")) {
@@ -1224,41 +1221,36 @@ function squid_resync_general() {
 				}
 				// force squid user permission on /var/squid/lib/ssl_db/
 				squid_chown_recursive(SQUID_SSL_DB, SQUID_UID, SQUID_GID);
-				// cert, key, version, cipher, options, clientca, cafile, capath, crlfile, tls-dh, sslflags, sslcontext
+				// cert, key, version, cipher, options, clientca, tls-cafile, capath, crlfile, tls-dh, sslflags, sslcontext
 				$crt_pk = SQUID_CONFBASE . "/serverkey.pem";
 				$crt_capath = SQUID_LOCALBASE . "/share/certs/";
 				$crt_cafile = SQUID_LOCALBASE . "/share/certs/ca-root-nss.crt";
-				$sslproxy_options = "NO_SSLv3";
+				$sslproxy_options = "NO_SSLv3,NO_TLSv1,NO_TLSv1_1";
 				/* XXX: Bug #4453, Bug #6592, Feature #6593, Bug #6563
 				 * http://wiki.squid-cache.org/ConfigExamples/Intercept/SslBumpExplicit#Modern_DH.2FEDH_ciphers_usage
 				 */
 				if (empty($settings['sslproxy_compatibility_mode']) || ($settings['sslproxy_compatibility_mode'] == 'modern')) {
 					// Modern cipher suites
-					$sslproxy_cipher = "EECDH+ECDSA+AESGCM:EECDH+aRSA+AESGCM:EECDH+ECDSA+SHA384:EECDH+ECDSA+SHA256:EECDH+aRSA+SHA384:EECDH+aRSA+SHA256:EECDH+aRSA+RC4:EECDH:EDH+aRSA:!RC4:!aNULL:!eNULL:!LOW:!3DES:!SHA1:!MD5:!EXP:!PSK:!SRP:!DSS";
-					$sslproxy_options .= ",NO_TLSv1";
+					$sslproxy_cipher = "EECDH+ECDSA+AESGCM:EECDH+aRSA+AESGCM:EECDH+ECDSA+SHA384:EECDH+ECDSA+SHA256:EECDH+aRSA+SHA384:EECDH+aRSA+SHA256:EECDH:EDH+aRSA:!RC4:!aNULL:!eNULL:!LOW:!3DES:!SHA1:!MD5:!EXP:!PSK:!SRP:!DSS";
 				} else {
-					$sslproxy_cipher = "EECDH+ECDSA+AESGCM:EECDH+aRSA+AESGCM:EECDH+ECDSA+SHA384:EECDH+ECDSA+SHA256:EECDH+aRSA+SHA384:EECDH+aRSA+SHA256:EECDH+aRSA+RC4:EECDH:EDH+aRSA:HIGH:!RC4:!aNULL:!eNULL:!LOW:!3DES:!MD5:!EXP:!PSK:!SRP:!DSS";
+					$sslproxy_cipher = "EECDH+ECDSA+AESGCM:EECDH+aRSA+AESGCM:EECDH+ECDSA+SHA384:EECDH+ECDSA+SHA256:EECDH+aRSA+SHA384:EECDH+aRSA+SHA256:EECDH:EDH+aRSA:HIGH:!RC4:!aNULL:!eNULL:!LOW:!3DES:!MD5:!EXP:!PSK:!SRP:!DSS";
 				}
 				if (!empty($settings["dhparams_size"])) {
 					if ($settings['dhparams_size'] == '4096') {
 						$sslproxy_dhparams = "tls-dh=prime256v1:/etc/dh-parameters.4096";
-					} elseif ($settings['dhparams_size'] == '2048') {
+					} else {
 						$sslproxy_dhparams = "tls-dh=prime256v1:/etc/dh-parameters.2048";
-					} elseif ($settings['dhparams_size'] == '1024') {
-						$sslproxy_dhparams = "tls-dh=prime256v1:/etc/dh-parameters.1024";
 					}
-					$sslproxy_options .= ",SINGLE_DH_USE,SINGLE_ECDH_USE";
 				} elseif (file_exists("/etc/dh-parameters.2048")) {
 					// Fallback options for defaults on install
 					$sslproxy_dhparams = "tls-dh=prime256v1:/etc/dh-parameters.2048";
-					$sslproxy_options .= ",SINGLE_DH_USE,SINGLE_ECDH_USE";
 				} else {
 					// Should never get here
 					$sslproxy_dhparams = "";
 				}
 				file_put_contents($crt_pk, unixnewlines(base64_decode($srv_cert['prv']) . "\n" . base64_decode($srv_cert['crt'])));
 				$sslcrtd_children = ($settings['sslcrtd_children'] ? $settings['sslcrtd_children'] : 5);
-				$ssl_interception .= "ssl-bump generate-host-certificates=on dynamic_cert_mem_cache_size=" . ($sslcrtd_children*2) . "MB cert={$crt_pk} cafile={$crt_cafile} capath={$crt_capath} cipher={$sslproxy_cipher} {$sslproxy_dhparams} options={$sslproxy_options}\n";
+				$ssl_interception .= "ssl-bump generate-host-certificates=on dynamic_cert_mem_cache_size=" . ($sslcrtd_children*2) . "MB cert={$crt_pk} tls-cafile={$crt_cafile} capath={$crt_capath} cipher={$sslproxy_cipher} {$sslproxy_dhparams} options={$sslproxy_options}\n";
 				if ($squid4) {
 					$interception_checks = "sslcrtd_program " . SQUID_LOCALBASE . "/libexec/squid/security_file_certgen -s " . SQUID_SSL_DB . " -M 4MB -b 2048\n";
 					$interception_checks .= "tls_outgoing_options cafile={$crt_cafile}\n";
@@ -1415,7 +1407,7 @@ function squid_resync_general() {
 
 	$logdir = ($settings['log_dir'] ? $settings['log_dir'] : '/var/squid/logs');
 	if (!is_dir($logdir)) {
-		log_error("[squid] Creating Squid log dir '{$logdir}' ...");
+		logger(LOG_INFO, localize_text("Creating Squid log dir '%s' ...", $logdir), LOG_PREFIX_PKG_SQUID);
 		safe_mkdir($logdir, 0755);
 	}
 	squid_chown_recursive($logdir, SQUID_UID, SQUID_GID);
@@ -1489,7 +1481,7 @@ EOD;
 					if (is_subnetv4("{$ip}/{$mask}")) {
 						$src .= " $ip/$mask";
 					} else {
-						log_error("[squid] 'Allow Users on Interface' ACL skipped for '{$ip}/{$mask}' since it is not a valid IPv4 subnet.");
+						logger(LOG_WARNING, localize_text("'Allow Users on Interface' ACL skipped for '%s/%s' since it is not a valid IPv4 subnet.", $ip, $mask), LOG_PREFIX_PKG_SQUID);
 					}
 				}
 			}
@@ -1556,8 +1548,8 @@ function squid_resync_cache() {
 	$conf = '';
 	if (!isset($settings['harddisk_cache_system'])) {
 		if (!is_array(config_get_path('installedpackages/squidcache/config'))) {
-			log_error("[squid] 'Local Cache' not configured, disk cache will be disabled.");
-			log_error("[squid] Please, configure and save 'Local Cache' settings before enabling Squid proxy.");
+			logger(LOG_INFO, localize_text("'Local Cache' not configured, disk cache will be disabled."), LOG_PREFIX_PKG_SQUID);
+			logger(LOG_INFO, localize_text("Please, configure and save 'Local Cache' settings before enabling Squid proxy."), LOG_PREFIX_PKG_SQUID);
 		} else {
 			$disk_cache_system = 'ufs';
 		}
@@ -1627,7 +1619,7 @@ EOD;
 /* Proxy Server: Remote Proxy Settings configuration handler */
 function squid_resync_upstream() {
 	$conf = "\n#Remote proxies\n";
-	foreach (config_get_path('installedpackages/squidremote/config') as $settings) {
+	foreach (config_get_path('installedpackages/squidremote/config', []) as $settings) {
 		if ($settings['enable'] == 'on') {
 			$conf .= "cache_peer {$settings['proxyaddr']} {$settings['hierarchy']} {$settings['proxyport']} ";
 			if ($settings['icpport'] == '7') {
@@ -1896,7 +1888,6 @@ function squid_resync_auth() {
 	global $valid_acls;
 	$write_config = 0;
 	if (!is_array(config_get_path('installedpackages/squidauth/config'))) {
-		init_config_arr(array('installedpackages', 'squidauth', 'config'));
 		config_set_path('installedpackages/squidauth/config', [['auth_method' => "none"]]);
 		$write_config++;
 	}
@@ -2178,14 +2169,14 @@ function squid_resync_users() {
 function squid_resync($via_rpc = "no") {
 	// detect boot process
 	if (is_array($_POST)) {
-		if (!platform_booting()) {
+		if (!is_platform_booting()) {
 			unset($boot_process);
 		} else {
 			$boot_process = "on";
 		}
 	}
 
-	log_error("[squid] - squid_resync function call pr:" . is_process_running('squid') . " bp:" . isset($boot_process) . " rpc:" . $via_rpc);
+	logger(LOG_INFO, localize_text("%s function call pr:%s bp:%s rpc:%s", 'squid_resync', is_process_running('squid'), isset($boot_process), $via_rpc), LOG_PREFIX_PKG_SQUID);
 
 	if (is_process_running('squid') && isset($boot_process) && $via_rpc == "no") {
 		return;
@@ -2240,16 +2231,16 @@ function squid_generate_rules($type) {
 
 	// Do not install any firewall rules if Squid is disabled or used as reverse proxy only
 	if (!squid_enabled()) {
-		log_error("[squid] Installed but disabled. Not installing '{$type}' rules.");
+		logger(LOG_INFO, localize_text("Installed but disabled. Not installing '%s' rules.", $type), LOG_PREFIX_PKG_SQUID);
 		return;
 	} elseif (empty($squid_conf['active_interface'])) {
-		log_error("[squid] Configured as reverse proxy only. Not installing '{$type}' rules.");
+		logger(LOG_INFO, localize_text("Configured as reverse proxy only. Not installing '%s' rules.", $type), LOG_PREFIX_PKG_SQUID);
 		return;
 	}
 
 	// Do not install any firewall rules if Squid is not running
 	if (!is_service_running('squid')) {
-		log_error("[squid] Installed but not started. Not installing '{$type}' rules.");
+		logger(LOG_INFO, localize_text("Installed but not started. Not installing '%s' rules.", $type), LOG_PREFIX_PKG_SQUID);
 		return;
 	}
 
@@ -2289,6 +2280,7 @@ function squid_generate_rules($type) {
 	 * When transparent proxy is enabled and we are doing NAT, use rdr pass to pass traffic
 	 * For PPPoE server, the $pppoe below is a pf macro, not a PHP variable, needs to be escaped.
 	 */
+	$rules = '';
 	switch($type) {
 		case 'nat':
 			// No NAT rules if transparent proxy is not enabled
@@ -2441,34 +2433,7 @@ function squid_sync_on_changes() {
 				if (is_array($squid_sync['row'])) {
 					$rs = $squid_sync['row'];
 				} else {
-					log_error("[squid] XMLRPC sync is enabled but there are no hosts configured as replication targets.");
-					return;
-				}
-				break;
-			case "auto":
-				if (is_array(config_get_path('hasync'))) {
-					$system_carp = config_get_path('hasync');
-					$rs[0]['ipaddress'] = $system_carp['synchronizetoip'];
-					$rs[0]['username'] = $system_carp['username'];
-					$rs[0]['password'] = $system_carp['password'];
-					$rs[0]['syncdestinenable'] = FALSE;
-
-					// XMLRPC sync is currently only supported over connections using the same protocol and port as this system
-					if (config_get_path('system/webgui/protocol') == "http") {
-						$rs[0]['syncprotocol'] = "http";
-						$rs[0]['syncport'] = config_get_path('system/webgui/port', '80');
-					} else {
-						$rs[0]['syncprotocol'] = "https";
-						$rs[0]['syncport'] = config_get_path('system/webgui/port', '443');
-					}
-					if ($system_carp['synchronizetoip'] == "") {
-						log_error("[squid] XMLRPC CARP/HA sync is enabled but there are no system backup hosts configured as replication targets.");
-						return;
-					} else {
-						$rs[0]['syncdestinenable'] = TRUE;
-					}
-				} else {
-					log_error("[squid] XMLRPC CARP/HA sync is enabled but there are no system backup hosts configured as replication targets.");
+					logger(LOG_WARNING, localize_text("XMLRPC sync is enabled but there are no hosts configured as replication targets."), LOG_PREFIX_PKG_SQUID);
 					return;
 				}
 				break;
@@ -2477,7 +2442,7 @@ function squid_sync_on_changes() {
 				break;
 		}
 		if (is_array($rs)) {
-			log_error("[squid] XMLRPC sync is starting.");
+			logger(LOG_INFO, localize_text("XMLRPC sync is starting."), LOG_PREFIX_PKG_SQUID);
 			foreach ($rs as $sh) {
 				// Only sync enabled replication targets
 				if ($sh['syncdestinenable']) {
@@ -2505,11 +2470,11 @@ function squid_sync_on_changes() {
 					if ($valid) {
 						squid_do_xmlrpc_sync($sync_to_ip, $port, $protocol, $username, $password, $synctimeout);
 					} else {
-						log_error("[squid] XMLRPC sync with '{$sync_to_ip}' aborted due to the following error(s): {$error}");
+						logger(LOG_ERR, localize_text("XMLRPC sync with '%s' aborted due to the following error(s): %s", $sync_to_ip, $error), LOG_PREFIX_PKG_SQUID);
 					}
 				}
 			}
-			log_error("[squid] XMLRPC sync completed.");
+			logger(LOG_INFO, localize_text("XMLRPC sync completed."), LOG_PREFIX_PKG_SQUID);
 		}
  	}
 }
@@ -2523,7 +2488,7 @@ if (!function_exists('pf_version')) {
 /* Perform the actual XMLRPC sync */
 function squid_do_xmlrpc_sync($sync_to_ip, $port, $protocol, $username, $password, $synctimeout) {
 	if ($username == "" || $password == "" || $sync_to_ip == "" || $port == "" || $protocol == "") {
-		log_error("[squid] A required XMLRPC sync parameter (username, password, replication target, port or protocol) is empty ... aborting pkg sync");
+		logger(LOG_WARNING, localize_text("A required XMLRPC sync parameter (username, password, replication target, port or protocol) is empty ... aborting pkg sync"), LOG_PREFIX_PKG_SQUID);
 		return;
 	}
 
@@ -2551,79 +2516,87 @@ function squid_do_xmlrpc_sync($sync_to_ip, $port, $protocol, $username, $passwor
 	$execcmd = "require_once('/usr/local/pkg/squid.inc');\n";
 	$execcmd .= "squid_resync('yes');";
 
-	if (pf_version() >= "2.4") {
-		// xmlrpc cannot encode NULL objects/arrays..
-		foreach($xml as $xmlkey => $xmlvalue) {
-			if (gettype($xmlvalue) == "NULL") {
-				$xml[$xmlkey] = array();
-			}
-		}
-		$synctimeout = intval($synctimeout);
-		$rpc_client = new pfsense_xmlrpc_client();
-		$rpc_client->setConnectionData($sync_to_ip, $port, $username, $password, $protocol);
-		$resp = $rpc_client->xmlrpc_method('merge_installedpackages_section', $xml, $synctimeout);
-		$resp = $rpc_client->xmlrpc_exec_php($execcmd, $synctimeout);
-	} else {
-		// pfSense before 2.4
-		require_once('xmlrpc.inc');
-
-		// Take care of IPv6 literal address
-		if (is_ipaddrv6($sync_to_ip)) {
-			$sync_to_ip = "[{$sync_to_ip}]";
-		}
-
-		$url = "{$protocol}://{$sync_to_ip}";
-
-		/* Assemble XMLRPC payload */
-		$params = array(XML_RPC_encode($password), XML_RPC_encode($xml));
-
-		/* Set a few variables needed for sync */
-		$method = 'pfsense.merge_installedpackages_section_xmlrpc';
-		$msg = new XML_RPC_Message($method, $params);
-		$cli = new XML_RPC_Client('/xmlrpc.php', $url, $port);
-		$cli->setCredentials($username, $password);
-		if (g_get('debug')) {
-			$cli->setDebug(1);
-		}
-		/* Send our XMLRPC message and timeout after defined sync timeout value*/
-		$resp = $cli->send($msg, $synctimeout);
-		if (!$resp) {
-			$error = "A communication error occurred while attempting XMLRPC sync with {$url}:{$port}.";
-			log_error("[squid] {$error}");
-			file_notice("sync_settings", $error, "Squid Settings Sync", "");
-		} elseif ($resp->faultCode()) {
-			$cli->setDebug(1);
-			$resp = $cli->send($msg, $synctimeout);
-			$error = "An error code was received while attempting XMLRPC sync with {$url}:{$port} - Code " . $resp->faultCode() . ": " . $resp->faultString();
-			log_error("[squid] {$error}");
-			file_notice("sync_settings", $error, "Squid Settings Sync", "");
-		} else {
-			log_error("[squid] XMLRPC sync successfully completed with {$url}:{$port}.");
-		}
-
-		/* Tell Squid to reload our settings on the destination sync host. */
-		$method = 'pfsense.exec_php';
-		/* Assemble XMLRPC payload */
-		$params = array(XML_RPC_encode($password), XML_RPC_encode($execcmd));
-
-		$msg = new XML_RPC_Message($method, $params);
-		$cli = new XML_RPC_Client('/xmlrpc.php', $url, $port);
-		$cli->setCredentials($username, $password);
-		$resp = $cli->send($msg, $synctimeout);
-		if (!$resp) {
-			$error = "A communication error occurred while attempting XMLRPC sync with {$url}:{$port} (pfsense.exec_php).";
-			log_error("[squid] {$error}");
-			file_notice("sync_settings", $error, "Squid Settings Sync", "");
-		} elseif ($resp->faultCode()) {
-			$cli->setDebug(1);
-			$resp = $cli->send($msg, $synctimeout);
-			$error = "An error code was received while attempting XMLRPC sync with {$url}:{$port} - Code " . $resp->faultCode() . ": " . $resp->faultString();
-			log_error("[squid] {$error}");
-			file_notice("sync_settings", $error, "Squid Settings Sync", "");
-		} else {
-			log_error("[squid] XMLRPC reload data success with {$url}:{$port} (pfsense.exec_php).");
+	// xmlrpc cannot encode NULL objects/arrays..
+	foreach($xml as $xmlkey => $xmlvalue) {
+		if (gettype($xmlvalue) == "NULL") {
+			$xml[$xmlkey] = array();
 		}
 	}
+	$synctimeout = intval($synctimeout);
+	$rpc_client = new pfsense_xmlrpc_client();
+	$rpc_client->setConnectionData($sync_to_ip, $port, $username, $password, $protocol);
+	$resp = $rpc_client->xmlrpc_method('merge_installedpackages_section', $xml, $synctimeout);//
+	$resp = $rpc_client->xmlrpc_exec_php($execcmd, $synctimeout);
+}
+
+function squid_plugin_xmlrpc_send() {
+	if (config_get_path('installedpackages/squidsync/config/0/synconchanges') != 'auto') {
+		return [];
+	}
+
+	return [
+		'installedpackages/squidsync/config/0/synconchanges',
+		'installedpackages/squid',
+		'installedpackages/squidremote',
+		'installedpackages/squidcache',
+		'installedpackages/squidantivirus',
+		'installedpackages/squidnac',
+		'installedpackages/squidtraffic',
+		'installedpackages/squidreversegeneral',
+		'installedpackages/squidreversepeer',
+		'installedpackages/squidreverseuri',
+		'installedpackages/squidauth',
+		'installedpackages/squidusers'
+	];
+}
+
+function squid_plugin_xmlrpc_recv($new_sections) {
+	if (array_get_path($new_sections, 'installedpackages/squidsync/config/0/synconchanges') != 'auto') {
+		return [];
+	}
+
+	$section_paths = [
+		'installedpackages/squid',
+		'installedpackages/squidremote',
+		'installedpackages/squidcache',
+		'installedpackages/squidantivirus',
+		'installedpackages/squidnac',
+		'installedpackages/squidtraffic',
+		'installedpackages/squidreversegeneral',
+		'installedpackages/squidreversepeer',
+		'installedpackages/squidreverseuri',
+		'installedpackages/squidauth',
+		'installedpackages/squidusers'
+	];
+
+	$ret = [
+		'xmlrpc_recv_result' => false
+	];
+	foreach ($section_paths as $path) {
+		$old_section = config_get_path($path, []);
+		$new_section = array_get_path($new_sections, $path, []);
+
+		// Don't save empty configuration sections.
+		if (empty($old_section) && empty($new_section)) {
+			continue;
+		}
+		// Ignore unchanged configuration sections.
+		if ($old_section === $new_section) {
+			continue;
+		}
+
+		$ret[$path] = array_merge($old_section, $new_section);
+		$ret['xmlrpc_recv_result'] = true;
+	}
+
+	return $ret;
+}
+
+function squid_plugin_xmlrpc_recv_done($xmlrpc_recv_result) {
+	if (array_get_path($xmlrpc_recv_result, 'squid/xmlrpc_recv_result') !== true) {
+		return;
+	}
+	squid_resync('yes');
 }
 
 /* Get a listing of CA entries which are valid for use with MITM/Splice.
@@ -2640,14 +2613,14 @@ function squid_get_ca_or_certs($type, $consumer = 'HTTPS', $noprv = false, $addn
 	}
 	if (is_array(config_get_path("{$type}"))) {
 		if (is_array($list_arr)) {
-			foreach (config_get_path("{$type}") as $c) {
+			foreach (config_get_path("{$type}", []) as $c) {
 				if (in_array($c['refid'],array_column($list_arr, 'refid')) && 
 				 (!empty($c['prv']) || $noprv)) {
 					$c_arr[] = $c;
 				}
 			}
 		} else {
-			foreach (config_get_path("{$type}") as $c) {
+			foreach (config_get_path("{$type}", []) as $c) {
 				if (!empty($c['prv']) || $noprv) {
 					$c_arr[] = $c;
 				}
@@ -2717,14 +2690,14 @@ function squid_plugin_carp($pluginparams) {
 	}
 	/* Start or stop the service as needed based on the CARP transition. */
 	if ($pluginparams['event'] == "rc.carpmaster") {
-		log_error("[squid] Starting service...");
+		logger(LOG_INFO, localize_text("Starting service..."), LOG_PREFIX_PKG_SQUID);
 		/* Stopping the service on other node may take some time 
 		(shutdown_lifetime 3 seconds) */
 		sleep(4);
 		start_service("squid");
 		filter_configure();
 	} elseif (($pluginparams['event'] == "rc.carpbackup") && is_service_running('squid')) {
-		log_error("[squid] Stopping service... (CARP BACKUP/INIT)");
+		logger(LOG_INFO, localize_text("Stopping service... (CARP BACKUP/INIT)"), LOG_PREFIX_PKG_SQUID);
 		squid_stop_monitor();
 		stop_service("squid");
 		filter_configure();
@@ -2733,9 +2706,7 @@ function squid_plugin_carp($pluginparams) {
 
 function squid_plugin_certificates($pluginparams) {
 	$result = array('pkgname' => 'Squid', 'certificatelist' => array());
-	init_config_arr(array('installedpackages', 'squid', 'config'));
 	$squidconf = config_get_path('installedpackages/squid/config/0');
-	init_config_arr(array('installedpackages', 'squidreversegeneral', 'config'));
 	$squidrevconf = config_get_path('installedpackages/squidreversegeneral/config/0');
 
 	if (($pluginparams['type'] == 'certificates') && !empty($squidconf) &&

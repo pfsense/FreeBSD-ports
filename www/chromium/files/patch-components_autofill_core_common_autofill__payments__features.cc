@@ -1,11 +1,83 @@
---- components/autofill/core/common/autofill_payments_features.cc.orig	2024-02-23 21:04:38 UTC
+--- components/autofill/core/common/autofill_payments_features.cc.orig	2026-03-13 06:02:14 UTC
 +++ components/autofill/core/common/autofill_payments_features.cc
-@@ -281,7 +281,7 @@ BASE_FEATURE(kAutofillEnableVirtualCards,
+@@ -32,7 +32,7 @@ BASE_FEATURE(kAutofillEnableAiBasedAmountExtraction,
+ // of the allowlisted merchant websites.
+ BASE_FEATURE(kAutofillEnableAmountExtraction,
+ #if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX) || \
+-    BUILDFLAG(IS_CHROMEOS)
++    BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_BSD)
+              base::FEATURE_ENABLED_BY_DEFAULT);
+ #else
+              base::FEATURE_DISABLED_BY_DEFAULT);
+@@ -55,7 +55,7 @@ BASE_FEATURE(kAutofillEnableBottomSheetScanCardAndFill
+ // When enabled, buy now pay later (BNPL) in Autofill will be offered.
+ BASE_FEATURE(kAutofillEnableBuyNowPayLater,
+ #if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX) || \
+-    BUILDFLAG(IS_CHROMEOS)
++    BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_BSD)
+              base::FEATURE_ENABLED_BY_DEFAULT);
+ #else
+              base::FEATURE_DISABLED_BY_DEFAULT);
+@@ -66,7 +66,7 @@ BASE_FEATURE(kAutofillEnableBuyNowPayLater,
+ // (BNPL) issuers that are externally linked.
+ BASE_FEATURE(kAutofillEnableBuyNowPayLaterForExternallyLinked,
+ #if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX) || \
+-    BUILDFLAG(IS_CHROMEOS)
++    BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_BSD)
+              base::FEATURE_ENABLED_BY_DEFAULT);
+ #else
+              base::FEATURE_DISABLED_BY_DEFAULT);
+@@ -76,7 +76,7 @@ BASE_FEATURE(kAutofillEnableBuyNowPayLaterForExternall
+ // offered.
+ BASE_FEATURE(kAutofillEnableBuyNowPayLaterForKlarna,
+ #if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX) || \
+-    BUILDFLAG(IS_CHROMEOS)
++    BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_BSD)
+              base::FEATURE_ENABLED_BY_DEFAULT);
+ #else
+              base::FEATURE_DISABLED_BY_DEFAULT);
+@@ -85,7 +85,7 @@ BASE_FEATURE(kAutofillEnableBuyNowPayLaterForKlarna,
+ // When enabled, buy now pay later (BNPL) data will be synced to Chrome clients.
+ BASE_FEATURE(kAutofillEnableBuyNowPayLaterSyncing,
+ #if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX) || \
+-    BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_ANDROID)
++    BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_ANDROID) || BUILDFLAG(IS_BSD)
+              base::FEATURE_ENABLED_BY_DEFAULT);
+ #else
+              base::FEATURE_DISABLED_BY_DEFAULT);
+@@ -95,7 +95,7 @@ BASE_FEATURE(kAutofillEnableBuyNowPayLaterSyncing,
+ // include the issuer names for better brand recognition.
+ BASE_FEATURE(kAutofillEnableBuyNowPayLaterUpdatedSuggestionSecondLineString,
+ #if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX) || \
+-    BUILDFLAG(IS_CHROMEOS)
++    BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_BSD)
+              base::FEATURE_ENABLED_BY_DEFAULT);
+ #else
+              base::FEATURE_DISABLED_BY_DEFAULT);
+@@ -115,7 +115,7 @@ BASE_FEATURE(kAutofillEnableCardBenefitsForAmericanExp
+ // UI.
+ BASE_FEATURE(kAutofillEnableCardBenefitsForBmo,
+ #if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX) || \
+-    BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_ANDROID)
++    BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_ANDROID) || BUILDFLAG(IS_BSD)
+              base::FEATURE_ENABLED_BY_DEFAULT);
+ #else
+              base::FEATURE_DISABLED_BY_DEFAULT);
+@@ -173,7 +173,7 @@ BASE_FEATURE(kAutofillEnableFlatRateCardBenefitsBlockl
+ // Payments Autofill UI.
+ BASE_FEATURE(kAutofillEnableFlatRateCardBenefitsFromCurinos,
+ #if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX) || \
+-    BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_ANDROID)
++    BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_ANDROID) || BUILDFLAG(IS_BSD)
+              base::FEATURE_ENABLED_BY_DEFAULT);
+ #else
+              base::FEATURE_DISABLED_BY_DEFAULT);
+@@ -325,7 +325,7 @@ const base::FeatureParam<int> kAutofillVcnEnrollStrike
+     /*default_value=*/180};
+ 
  bool ShouldShowImprovedUserConsentForCreditCardSave() {
- // TODO(crbug.com/1052397): Revisit the macro expression once build flag switch
- // of lacros-chrome is complete.
--#if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_APPLE) || \
-+#if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_APPLE) || BUILDFLAG(IS_BSD) || \
-     (BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS_LACROS))
+-#if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_APPLE) || BUILDFLAG(IS_LINUX)
++#if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_APPLE) || BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_BSD)
    // The new user consent UI is fully launched on MacOS, Windows and Linux.
    return true;
+ #else

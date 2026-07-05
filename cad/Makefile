@@ -1,5 +1,7 @@
     COMMENT = CAD tools
 
+    SUBDIR += Clipper2
+    SUBDIR += OrcaSlicer
     SUBDIR += PrusaSlicer
     SUBDIR += abc
     SUBDIR += admesh
@@ -16,6 +18,7 @@
     SUBDIR += calculix
     SUBDIR += calculix-ccx
     SUBDIR += camotics
+    SUBDIR += camv-rnd
     SUBDIR += caneda
     SUBDIR += cascade
     SUBDIR += cascade-compiler
@@ -23,7 +26,6 @@
     SUBDIR += csxcad
     SUBDIR += cura
     SUBDIR += cura-engine
-    SUBDIR += cvc
     SUBDIR += digital
     SUBDIR += dinotrace
     SUBDIR += ecpprog
@@ -34,6 +36,7 @@
     SUBDIR += feappv
     SUBDIR += fidocadj
     SUBDIR += freecad
+    SUBDIR += freecad-devel
     SUBDIR += freehdl
     SUBDIR += fritzing
     SUBDIR += gds3d
@@ -53,7 +56,6 @@
     SUBDIR += horizon-eda
     SUBDIR += hs-verismith
     SUBDIR += ifcopenshell
-    SUBDIR += impact
     SUBDIR += irsim
     SUBDIR += iverilog
     SUBDIR += k40-whisperer
@@ -74,6 +76,7 @@
     SUBDIR += ldview
     SUBDIR += leocad
     SUBDIR += lepton-eda
+    SUBDIR += lib3mf
     SUBDIR += libbgcode
     SUBDIR += libgdsii
     SUBDIR += libopencad
@@ -84,7 +87,6 @@
     SUBDIR += logisim
     SUBDIR += magic
     SUBDIR += meshdev
-    SUBDIR += meshlab
     SUBDIR += netgen
     SUBDIR += netgen-lvs
     SUBDIR += ngspice_rework
@@ -107,6 +109,7 @@
     SUBDIR += pdnmesh
     SUBDIR += py-amaranth
     SUBDIR += py-cocotb
+    SUBDIR += py-csxcad
     SUBDIR += py-edalize
     SUBDIR += py-ezdxf
     SUBDIR += py-gdspy
@@ -118,6 +121,7 @@
     SUBDIR += py-pygmsh
     SUBDIR += py-pymtl
     SUBDIR += py-pyvcd
+    SUBDIR += py-verilog-parser
     SUBDIR += py-vunit-hdl
     SUBDIR += python-gdsii
     SUBDIR += qcad
@@ -131,6 +135,7 @@
     SUBDIR += qucsator
     SUBDIR += repsnapper
     SUBDIR += rubygem-gdsii
+    SUBDIR += sch-rnd
     SUBDIR += scotch
     SUBDIR += silice
     SUBDIR += solvespace
@@ -140,11 +145,11 @@
     SUBDIR += stm32flash
     SUBDIR += sumo
     SUBDIR += surelog
+    SUBDIR += surfer
     SUBDIR += svlint
     SUBDIR += svls
     SUBDIR += sweethome3d
     SUBDIR += symbiyosys
-    SUBDIR += tkgate
     SUBDIR += tochnog
     SUBDIR += uhdm
     SUBDIR += uranium
@@ -153,6 +158,7 @@
     SUBDIR += veroroute
     SUBDIR += veryl
     SUBDIR += xcircuit
+    SUBDIR += xschem
     SUBDIR += xyce
     SUBDIR += yosys
     SUBDIR += yosys-ghdl-plugin

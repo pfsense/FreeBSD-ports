@@ -1,6 +1,6 @@
 PORTNAME=	rxtx
 PORTVERSION=	2.2p2
-PORTREVISION=	4
+PORTREVISION=	5
 CATEGORIES=	comms java
 MASTER_SITES=	http://rxtx.qbang.org/pub/rxtx/
 PKGNAMESUFFIX=	-${JAVA_PORT:S/java\///}
@@ -13,12 +13,11 @@ WWW=		http://rxtx.qbang.org
 LICENSE=	LGPL21
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-NOT_FOR_ARCHS=		mips mips64
-NOT_FOR_ARCHS_REASON=	Java not available for this architecture
+USES=		gmake java libtool zip
+# jdk11: javah: not found
+# jdk17+: error: invalid use of a restricted identifier 'yield'
+JAVA_VERSION=	8
 
-USES=		gmake libtool zip
-
-USE_JAVA=	yes
 JAVA_OS=	native
 GNU_CONFIGURE=	yes
 CONFIGURE_ENV=	JAVA_HOME=${JAVA_HOME}
@@ -28,6 +27,6 @@ USE_LDCONFIG=	yes
 MAKE_JOBS_UNSAFE=	yes
 
 PLIST_SUB=	JAVA_HOME=${JAVA_HOME:S,^${PREFIX}/,,}
-PLIST_SUB+=	ARCH=${ARCH:C/armv.*/arm/:S/powerpc64/ppc64/}
+PLIST_SUB+=	ARCH=${ARCH:C/armv.*/arm/:S/powerpc/ppc/}
 
 .include <bsd.port.mk>

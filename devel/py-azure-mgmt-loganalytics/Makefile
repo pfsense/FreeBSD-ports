@@ -1,10 +1,11 @@
 PORTNAME=	azure-mgmt-loganalytics
 DISTVERSION=	13.0.0b4
+PORTREVISION=	1
 CATEGORIES=	devel python
 MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
-MAINTAINER=	dbaio@FreeBSD.org
+MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Microsoft Azure Analytics Management Client Library for Python
 WWW=		https://pypi.org/project/azure-mgmt-loganalytics/
 

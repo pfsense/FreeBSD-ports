@@ -7,13 +7,13 @@ MASTER_SITES=	http://www.ne.jp/asahi/linux/timecop/software/ \
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Time/date applet for WindowMaker with fishes swimming around
-WWW=		http://www.ne.jp/asahi/linux/timecop/ #wmfishtime
+WWW=		http://www.ne.jp/asahi/linux/timecop/\#wmfishtime
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
 
 USES=		gnome pkgconfig xorg
-USE_GNOME=	cairo gdkpixbuf2 gtk20
+USE_GNOME=	cairo gdkpixbuf gtk20
 USE_XORG=	x11
 
 MAKE_ARGS=	CFLAGS="${CPPFLAGS} ${CFLAGS} -Wall" \

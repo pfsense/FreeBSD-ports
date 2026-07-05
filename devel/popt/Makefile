@@ -12,10 +12,9 @@ WWW=		https://github.com/rpm-software-management/popt
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-USES=		cpe iconv libtool pathfix
+USES=		cpe iconv libtool
 
 GNU_CONFIGURE=	yes
-GNU_CONFIGURE_MANPREFIX=${PREFIX}/share
 INSTALL_TARGET=	install-strip
 TEST_TARGET=	check
 USE_LDCONFIG=	yes

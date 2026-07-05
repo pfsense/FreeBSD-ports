@@ -1,5 +1,5 @@
 PORTNAME=	chez-scheme
-PORTVERSION=	10.0.0
+PORTVERSION=	10.3.0
 DISTVERSIONPREFIX=	v
 CATEGORIES=	lang
 MASTER_SITES=	https://github.com/cisco/ChezScheme/releases/download/${DISTVERSIONPREFIX}${DISTVERSION}/
@@ -13,8 +13,9 @@ LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
 ONLY_FOR_ARCHS=	amd64 i386 aarch64 armv7 powerpc
+BROKEN_armv7=	No suitable machine type found in "./boot".
 
-LIB_DEPENDS=	libuuid.so:misc/e2fsprogs-libuuid \
+LIB_DEPENDS=	libuuid.so:misc/libuuid \
 		libossp-uuid.so:misc/ossp-uuid
 
 USES=		gmake iconv:lib ncurses

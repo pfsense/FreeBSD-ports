@@ -1,20 +1,20 @@
---- ui/views/focus/focus_manager.cc.orig	2023-08-18 10:26:52 UTC
+--- ui/views/focus/focus_manager.cc.orig	2026-02-15 10:01:45 UTC
 +++ ui/views/focus/focus_manager.cc
-@@ -577,7 +577,7 @@ bool FocusManager::RedirectAcceleratorToBubbleAnchorWi
+@@ -609,7 +609,7 @@ bool FocusManager::RedirectAcceleratorToParentWidget(
+     return false;
+   }
  
- // TODO(crbug.com/1052397): Revisit the macro expression once build flag switch
- // of lacros-chrome is complete.
--#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS_LACROS)
-+#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS_LACROS) || BUILDFLAG(IS_BSD)
+-#if BUILDFLAG(IS_LINUX)
++#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_BSD)
    // Processing an accelerator can delete things. Because we
    // need these objects afterwards on Linux, save widget_ as weak pointer and
    // save the close_on_deactivate property value of widget_delegate in a
-@@ -594,7 +594,7 @@ bool FocusManager::RedirectAcceleratorToBubbleAnchorWi
+@@ -627,7 +627,7 @@ bool FocusManager::RedirectAcceleratorToParentWidget(
+   const bool accelerator_processed =
+       focus_manager->ProcessAccelerator(accelerator);
  
- // TODO(crbug.com/1052397): Revisit the macro expression once build flag switch
- // of lacros-chrome is complete.
--#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS_LACROS)
-+#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS_LACROS) || BUILDFLAG(IS_BSD)
+-#if BUILDFLAG(IS_LINUX)
++#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_BSD)
    // Need to manually close the bubble widget on Linux. On Linux when the
    // bubble is shown, the main widget remains active. Because of that when
    // focus is set to the main widget to process accelerator, the main widget

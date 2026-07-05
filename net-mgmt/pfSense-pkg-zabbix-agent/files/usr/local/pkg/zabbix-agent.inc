@@ -3,7 +3,7 @@
  * zabbix-agent.inc
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2015-2024 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2015-2026 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2013 Danilo G. Baio
  * Copyright (c) 2013 Marcello Coutinho
  * All rights reserved.
@@ -90,9 +90,23 @@ function validate_input_zabbix_agent($post, &$input_errors) {
 		}
 
 		if ($post['refreshactchecks'] != '') {
+			if (!in_array(ZABBIX_VERSION, [6])) {
+				$refreshactchecks_min = 1;
+				$refreshactchecks_max = 86400;
+			} else {
+				// Zabbix version < 7
+				$refreshactchecks_min = 60;
+				$refreshactchecks_max = 3600;
+			}
+			$filter_validate_int_options = [
+				'options' => [
+					'min_range' => $refreshactchecks_min,
+					'max_range' => $refreshactchecks_max
+				]
+			];
 			if (!is_numericint($post['refreshactchecks'])) {
 				$input_errors[] = "'Refresh Active Checks' value is not numeric.";
-			} elseif ($post['refreshactchecks'] < 60 || $post['refreshactchecks'] > 3600) {
+			} elseif (filter_var($post['refreshactchecks'], FILTER_VALIDATE_INT, $filter_validate_int_options) === false) {
 				$input_errors[] = "You must enter a valid value for 'Refresh Active Checks'.";
 			}
 		}
@@ -132,14 +146,12 @@ function validate_input_zabbix_agent($post, &$input_errors) {
 }
 
 function sync_package_zabbix_agent() {
-	global $config, $g;
+	global $g;
 
 
 	// Check Zabbix Agent settings
-	if (isset($config['installedpackages']['%%ZABBIXUNIQNAME%%']) &&
-	    is_array($config['installedpackages']['%%ZABBIXUNIQNAME%%'])) {
-		init_config_arr(array('installedpackages', '%%ZABBIXUNIQNAME%%', 'config', 0));
-		$zbagent_config = $config['installedpackages']['%%ZABBIXUNIQNAME%%']['config'][0];
+	if (is_array(config_get_path('installedpackages/%%ZABBIXUNIQNAME%%'))) {
+		$zbagent_config = config_get_path('installedpackages/%%ZABBIXUNIQNAME%%/config/0', []);
 		if ($zbagent_config['agentenabled'] == "on") {
 			$RefreshActChecks = (preg_match("/(\d+)/", $zbagent_config['refreshactchecks'], $matches)? $matches[1] : "120");
 			$BufferSend = (preg_match("/(\d+)/", $zbagent_config['buffersend'], $matches) ? $matches[1] : "5");
@@ -159,13 +171,15 @@ function sync_package_zabbix_agent() {
 			} else {
 				if ($zbagent_config['tlscafile'] != "none") {
 					$ca = lookup_ca($zbagent_config['tlscafile']);
+					$ca = $ca['item'];
 					zabbix_agent_add_keyfile($ca['crt'], "ca");
 					$TlsCAfile = "TLSCAFile=/usr/local/etc/zabbix%%ZABBIXVERSION%%/zabbix_agentd.ca";
 				}
 			}
 
 			if ($zbagent_config['tlscrlfile'] != "none") {
-				$crl = lookup_crl($zbagent_config['tlscrlfile']);
+				$crl_config = lookup_crl($zbagent_config['tlscrlfile']);
+				$crl = &$crl_config['item'];
 				crl_update($crl);
 				zabbix_agent_add_keyfile($crl['text'], "crl-verify");
 				$TlsCRLfile = "TLSCRLFile=/usr/local/etc/zabbix%%ZABBIXVERSION%%/zabbix_agentd.crl-verify";
@@ -173,6 +187,7 @@ function sync_package_zabbix_agent() {
 
 			if ($zbagent_config['tlscertfile'] != "none") {
 				$cert = lookup_cert($zbagent_config['tlscertfile']);
+				$cert = $cert['item'];
 
 				zabbix_agent_add_keyfile($cert['crt'], "cert");
 				$TlsCERTfile = "TLSCertFile=/usr/local/etc/zabbix%%ZABBIXVERSION%%/zabbix_agentd.cert";
@@ -325,30 +340,25 @@ function zabbix_agent_add_keyfile($data, $directive) {
 }
 
 function zabbix_agent_certca($type) {
-	global $config;
 	$c_arr = array();
 	$c_arr[] = array('refid' => 'none', 'descr' => 'none (auto)');
-	if (isset($config[$type]) && is_array($config[$type])) {
-		foreach ($config[$type] as $c) {
-			if (!empty($c['prv'])) {
-				$res_key = openssl_pkey_get_private(base64_decode($c['prv']));
-				$key_details = openssl_pkey_get_details($res_key);
-				if ($key_details['type'] == OPENSSL_KEYTYPE_RSA) {
-					$c_arr[] = $c;
-				}
-			} elseif ($type == 'ca') {
+	foreach (config_get_path($type, []) as $c) {
+		if (!empty($c['prv'])) {
+			$res_key = openssl_pkey_get_private(base64_decode($c['prv']));
+			$key_details = openssl_pkey_get_details($res_key);
+			if ($key_details['type'] == OPENSSL_KEYTYPE_RSA) {
 				$c_arr[] = $c;
 			}
+		} elseif ($type == 'ca') {
+			$c_arr[] = $c;
 		}
 	}
 	return $c_arr;
 }
 
 function zabbixagent_plugin_certificates($pluginparams) {
-	global $config;
 	$result = array();
-	init_config_arr(array('installedpackages', 'zabbixagentlts', 'config'));
-	$zabbixconf = $config['installedpackages']['zabbixagentlts']['config'][0];
+	$zabbixconf = config_get_path('installedpackages/zabbixagentlts/config/0');
 
 	if (($pluginparams['type'] == 'certificates') && !empty($zabbixconf) && ($zabbixconf['agentenabled'] == 'on')) {
 		if (($pluginparams['event'] == 'used_ca') && ($zabbixconf['tlscaso'] != 'on') &&

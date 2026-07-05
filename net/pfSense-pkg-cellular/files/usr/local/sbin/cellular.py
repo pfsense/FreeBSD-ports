@@ -32,10 +32,11 @@ import serial
 import configparser
 
 
-__version__ = "1.1.6"
+__version__ = "1.1.7"
 
 huawei = (lambda a: a.startswith("Huawei"))
 simcom = (lambda a: a.startswith("SIMCOM"))
+quectel = (lambda a: a.startswith("Quectel"))
 
 class CellularInterface:
     """
@@ -62,7 +63,7 @@ class CellularInterface:
         # init default Config if not present
         self.init_config(self.defconf)
 
-        self.config.readfp(open(self.defconf))
+        self.config.read_file(open(self.defconf))
         # read custom settings from webinterface
         self.config.read([self.conf])
 
@@ -102,7 +103,7 @@ class CellularInterface:
         tmp = configparser.ConfigParser()
 
         if (os.path.isfile(self.conf)):
-            tmp.readfp(open(self.conf))
+            tmp.read_file(open(self.conf))
 
         # empty or deleted field must not be wrote to config
         if not args.value and tmp.has_option(args.section, args.key):
@@ -126,7 +127,7 @@ class CellularInterface:
         tmp = configparser.ConfigParser()
 
         if (os.path.isfile(self.conf)):
-            tmp.readfp(open(self.conf))
+            tmp.read_file(open(self.conf))
             found = False
 
             # return module when in config
@@ -176,7 +177,7 @@ class CellularInterface:
         # check if config file is from an old version.
         if (os.path.isfile(config_file)):
             tmp = configparser.ConfigParser()
-            tmp.readfp(open(config_file))
+            tmp.read_file(open(config_file))
 
             config_version = tmp.get("Software", "version")
 
@@ -309,6 +310,18 @@ class CellularInterface:
         else:
             return str(ret -1)
 
+    def _at_cgmi(self, args):
+        """
+        receive manufacturer information
+        """
+        return self.at_cmd("+CGMI", args)
+
+    def _at_cgmm(self, args):
+        """
+        receive model information
+        """
+        return self.at_cmd("+CGMM", args)        
+        
     def _at_information(self, args):
         """
         receive module information
@@ -344,6 +357,8 @@ class CellularInterface:
         else:
             if simcom(self.module):
                 return infoex.split(",")[0].strip('"')
+            if quectel(self.manufacturer):
+                return infoex.split(",")[0].strip('"')     
 
             return infoex.split(",")[6].strip('"')
 
@@ -352,9 +367,8 @@ class CellularInterface:
         get model of module.
         """
         import re
-        info = self._at_information(args)
-        m = re.search("Model:(?:\W)*(.*)", info[1])
-
+        info = self._at_cgmm(args)
+        m = re.search("\n(?:\W)*(.*)", info[1])
         if m:
             if not silent:
                 print(m.group(1), file=sys.stdout)
@@ -369,12 +383,11 @@ class CellularInterface:
 
     def get_manufacturer(self, args, silent=False):
         """
-        get manufacturere of module.
+        get manufacturer of module.
         """
         import re
-        # TODO: +GMI 
-        info = self._at_information(args)
-        m = re.search("Manufacturer:(?:\W)*(.*)", info[1])
+        info = self._at_cgmi(args)
+        m = re.search("\n(?:\W)*(.*)", info[1])
 
         if m:
             if not silent:
@@ -427,6 +440,9 @@ class CellularInterface:
 
         if huawei(self.manufacturer):
             cmds += (("^SYSINFOEX", self._get_submode_name),)
+            
+        if quectel(self.manufacturer):
+            cmds += (("+QNWINFO", self._get_submode_name),)
 
         num, ret = self.at_cmd("; ".join([cmd[0] for cmd in cmds]), args)
         

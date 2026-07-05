@@ -1,6 +1,5 @@
 PORTNAME=	octave-forge-image
-PORTVERSION=	2.14.0
-PORTREVISION=	4
+PORTVERSION=	2.20.0
 CATEGORIES=	math
 MASTER_SITES=	SF/octave/Octave%20Forge%20Packages/Individual%20Package%20Releases
 DISTNAME=	${OCTAVE_PKGNAME}-${DISTVERSIONFULL}
@@ -14,9 +13,8 @@ LICENSE_NAME=	Many different licenses
 LICENSE_FILE=	${WRKDIR}/${OCTAVE_SRC}/COPYING
 LICENSE_PERMS=	dist-mirror dist-sell pkg-mirror pkg-sell auto-accept
 
-USES=		compiler:c++14-lang octave
+USES=		octave
 
 GNU_CONFIGURE=	yes
-CXXFLAGS+=	-fPIC
 
 .include <bsd.port.mk>

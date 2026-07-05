@@ -1,7 +1,8 @@
 PORTNAME=	pyderasn
 PORTVERSION=	9.3
+PORTREVISION=	2
 CATEGORIES=	devel python
-MASTER_SITES=	http://www.pyderasn.cypherpunks.ru/download/ \
+MASTER_SITES=	http://www.pyderasn.cypherpunks.su/download/ \
 		http://www.grosbein.net/freebsd/distfiles/ \
 		LOCAL/eugen
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -9,12 +10,12 @@ EXTRACT_SUFX=	.tar.zst
 
 MAINTAINER=	eugen@FreeBSD.org
 COMMENT=	Strict and fast ASN.1 DER/CER/BER library for Python
-WWW=		http://www.pyderasn.cypherpunks.ru/
+WWW=		http://www.pyderasn.cypherpunks.su/
 
 LICENSE=	LGPL3
 LICENSE_FILE=	${WRKSRC}/COPYING.LESSER
 
-RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}dateutil>=2.7:devel/py-dateutil@${PY_FLAVOR}
+RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}python-dateutil>=2.7:devel/py-python-dateutil@${PY_FLAVOR}
 
 USES=		tar:zst python
 USE_PYTHON=	autoplist concurrent distutils optsuffix

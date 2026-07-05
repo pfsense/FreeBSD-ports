@@ -1,16 +1,17 @@
 PORTNAME=	libvirt
-PORTVERSION=	10.1.0
+PORTVERSION=	12.1.0
 CATEGORIES=	devel
 MASTER_SITES=	http://libvirt.org/sources/python/ \
 		ftp://libvirt.org/libvirt/python/
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
-DISTNAME=	${PORTNAME}-python-${PORTVERSION}
+DISTNAME=	${PORTNAME}_python-${PORTVERSION}
 
 MAINTAINER=	novel@FreeBSD.org
 COMMENT=	Python bindings for Libvirt virtualization API
 WWW=		https://libvirt.org/python.html
 
-LICENSE=	GPLv2
+LICENSE=	LGPL21+
+LICENSE_FILE=	${WRKSRC}/COPYING
 
 LIB_DEPENDS=	libvirt.so:devel/libvirt
 

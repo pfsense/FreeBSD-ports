@@ -1,10 +1,11 @@
 PORTNAME=	igbinary
-PORTVERSION=	3.2.15
+PORTVERSION=	3.2.16
 CATEGORIES=	converters
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Replacement for the standard PHP serializer
-WWW=		https://pecl.php.net/package/igbinary
+WWW=		https://pecl.php.net/package/igbinary \
+		https://github.com/igbinary/igbinary
 
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/COPYING

@@ -1,10 +1,11 @@
 PORTNAME=	qmc2
 DISTVERSIONPREFIX=	v
 DISTVERSION=	0.243-14
+PORTREVISION=	1
 DISTVERSIONSUFFIX=	-g112724d69
 CATEGORIES=	emulators games
 
-MAINTAINER=	agh@riseup.net
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Qt5 graphical interface for MAME
 WWW=		https://github.com/qmc2/qmc2-mame-fe
 

@@ -1,5 +1,5 @@
 PORTNAME=	net-http
-PORTVERSION=	0.4.1
+PORTVERSION=	0.9.1
 CATEGORIES=	www rubygems
 MASTER_SITES=	RG
 
@@ -9,9 +9,10 @@ WWW=		https://github.com/ruby/net-http
 
 LICENSE=	BSD2CLAUSE RUBY
 LICENSE_COMB=	dual
-LICENSE_FILE_BSD2CLAUSE=${WRKSRC}/LICENSE.txt
+LICENSE_FILE_BSD2CLAUSE=${WRKSRC}/BSDL
+LICENSE_FILE_RUBY=	${WRKSRC}/COPYING
 
-RUN_DEPENDS=	rubygem-uri>=0:net/rubygem-uri
+RUN_DEPENDS=	rubygem-uri>=0.11.1:net/rubygem-uri
 
 USES=		gem
 

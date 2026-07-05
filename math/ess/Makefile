@@ -1,11 +1,14 @@
 PORTNAME=	ess
-DISTVERSION=	24.01.1
-PORTREVISION=	1
+DISTVERSION=	26.01.0
 CATEGORIES=	math
-MASTER_SITES=	http://ess.r-project.org/ \
-		http://stat.ethz.ch/ESS/downloads/ess/
-DISTNAME=	ESS-${DISTVERSION}
+MASTER_SITES=	https://ess.r-project.org/ \
+		https://stat.ethz.ch/ESS/downloads/ess/ \
+		https://raw.githubusercontent.com/JuliaEditorSupport/:JULIA
 PKGNAMESUFFIX=	${EMACS_PKGNAMESUFFIX}
+DISTFILES=	${PORTNAME}-${DISTVERSION}.tar.gz \
+		julia-emacs/refs/heads/master/julia-mode.el:JULIA \
+		julia-emacs/refs/heads/master/julia-mode-latexsubs.el:JULIA
+EXTRACT_ONLY=	${DISTNAME}.tar.gz
 
 MAINTAINER=	rhurlin@FreeBSD.org
 COMMENT=	R support for Emacsen
@@ -16,12 +19,10 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 
 RUN_DEPENDS=	R:math/R
 
-USES=		emacs gmake makeinfo perl5
+USES=		emacs gmake makeinfo perl5 tar:tgz
 USE_PERL5=	build
 
 NO_ARCH=	yes
-
-#WRKSRC=		${WRKDIR}/ESS-${DISTVERSION}
 
 INFO=		ess
 
@@ -37,20 +38,15 @@ USE_TEX=	latex:build dvipsk:build
 INSTALL_TARGET=	doc
 .endif
 
+post-extract:
+	@${CP} -p ${DISTDIR}/julia-emacs/refs/heads/master/julia-mode*.el \
+		${WRKSRC}/lisp/
+
 post-patch:
 	@${REINPLACE_CMD} -e \
 		's|sed -i|sed -i .orig|g' ${WRKSRC}/Makefile
-#	@${REINPLACE_CMD} -e \
-#		's|^DESTDIR|#DESTDIR| ; \
-#		 s|^PREFIX|#PREFIX| ; \
-#		 s|=$$(PREFIX)|=$$(DESTDIR)$$(PREFIX)|' ${WRKSRC}/Makeconf
 	@${REINPLACE_CMD} -e \
 			's|info text|info text html pdf|' ${WRKSRC}/doc/Makefile
-	# JULIAS disabled, because it downloads .el files for testing
-	@${REINPLACE_CMD} -e '/^.PHONY: julia/,+3d' ${WRKSRC}/Makefile
-	@${REINPLACE_CMD} -e '/^JULIAS/d' ${WRKSRC}/lisp/Makefile
-	@${REINPLACE_CMD} -e 's/ $$(JULIAS)//' ${WRKSRC}/lisp/Makefile
-	@${REINPLACE_CMD} -e '/^$$(JULIAS):/,+4d' ${WRKSRC}/lisp/Makefile
 
 do-install-DOCS-on:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}

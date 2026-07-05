@@ -1,5 +1,5 @@
 PORTNAME=	cudatext
-PORTVERSION=	1.211.0
+PORTVERSION=	1.233.1.0
 CATEGORIES=	editors
 PKGNAMESUFFIX=	${LAZARUS_PKGNAMESUFFIX}
 
@@ -9,22 +9,24 @@ WWW=		https://uvviewsoft.com/
 
 LICENSE=	MPL20
 
+ONLY_FOR_ARCHS=	aarch64 amd64 i386
+
 USES=		desktop-file-utils dos2unix fpc gnome lazarus:flavors python xorg
 USE_XORG=	x11
 USE_GITHUB=	yes
 GH_ACCOUNT=	Alexey-T
 GH_PROJECT=	CudaText
-GH_TUPLE=	bgrabitmap:bgrabitmap:2814b06:bgrabitmap/bgrabitmap \
-		Alexey-T:Python-for-Lazarus:e85e138:python4lazarus/python4lazarus \
-		Alexey-T:ATFlatControls:7dae87f:atflatcontrols/atflatcontrols  \
-		Alexey-T:ATSynEdit:c400ea6:atsynedit/atsynedit \
+GH_TUPLE=	bgrabitmap:bgrabitmap:6ada359:bgrabitmap/bgrabitmap \
+		Alexey-T:EncConv:8caaa6b:encconv/encconv \
+		Alexey-T:ATBinHex-Lazarus:ac03d54:atbinhex/atbinhex \
+		Alexey-T:ATFlatControls:4449aa1:atflatcontrols/atflatcontrols  \
+		Alexey-T:ATSynEdit:7bc8c8b:atsynedit/atsynedit \
+		Alexey-T:ATSynEdit_Cmp:c24f441:atsyneditcmp/atsyneditcmp \
+		Alexey-T:EControl:a50f653:econtrol/econtrol \
+		Alexey-T:ATSynEdit_Ex:a980d3b:atsyneditex/atsyneditex \
+		Alexey-T:Python-for-Lazarus:fda3fdb:python4lazarus/python4lazarus \
 		Alexey-T:Emmet-Pascal:df69312:emmet/emmet \
-		Alexey-T:EControl:bb1b55c:econtrol/econtrol \
-		Alexey-T:ATSynEdit_Ex:110a2e1:atsyneditex/atsyneditex \
-		Alexey-T:ATSynEdit_Cmp:18a3266:atsyneditcmp/atsyneditcmp \
-		Alexey-T:ATBinHex-Lazarus:e11195a:atbinhex/atbinhex \
-		Alexey-T:UniqueInstance:753f823:uniqueinstance/uniqueinstance \
-		Alexey-T:EncConv:ec878e9:encconv/encconv
+		Alexey-T:UniqueInstance:753f823:uniqueinstance/uniqueinstance
 
 DOS2UNIX_FILES=	app/settings_default/default.json setup/debfiles/cudatext.desktop
 
@@ -56,7 +58,8 @@ USE_GNOME+=	${USE_GNOME_${FLAVOR}}
 
 post-patch:
 	${REINPLACE_CMD} 's|-512||g' ${WRKSRC}/setup/debfiles/${PORTNAME}.desktop
-	${REINPLACE_CMD} 's|%%DATADIR%%|${DATADIR}|g' ${WRKSRC}/app/proc_globdata.pas
+	${REINPLACE_CMD} -e 's|%%DATADIR%%|${DATADIR}|g' -e 's|%%LOCALBASE%%|${LOCALBASE}|g' \
+		${WRKSRC}/app/proc_globdata.pas
 	${REINPLACE_CMD} 's|TEncoding.UTF8|True|g' ${WRKSRC}/app/formmain_py_pluginwork.inc
 	${REINPLACE_CMD} 's|ifdef LCLGTK2|if defined(LCLGTK2) and not defined(freebsd)|g' ${WRKSRC}/atsynedit/atsynedit/atsynedit.pas
 

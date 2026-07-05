@@ -1,5 +1,5 @@
-TIMESTAMP = 1690816707
-SHA256 (go/textproc_fzf/junegunn-fzf-0.42.0_GH0/go.mod) = 2261585fafcd4f08e955e096fd1d82312055830822a0bb3462a51779f379cde1
-SIZE (go/textproc_fzf/junegunn-fzf-0.42.0_GH0/go.mod) = 540
-SHA256 (go/textproc_fzf/junegunn-fzf-0.42.0_GH0/junegunn-fzf-0.42.0_GH0.tar.gz) = 743c1bfc7851b0796ab73c6da7db09d915c2b54c0dd3e8611308985af8ed3df2
-SIZE (go/textproc_fzf/junegunn-fzf-0.42.0_GH0/junegunn-fzf-0.42.0_GH0.tar.gz) = 239469
+TIMESTAMP = 1772543158
+SHA256 (go/textproc_fzf/junegunn-fzf-v0.70.0_GH0/go.mod) = 5d8e34ecd5e4a6934c2421090bbd11d7bd0c03c751d912a2bfb06f5860068aff
+SIZE (go/textproc_fzf/junegunn-fzf-v0.70.0_GH0/go.mod) = 529
+SHA256 (go/textproc_fzf/junegunn-fzf-v0.70.0_GH0/junegunn-fzf-v0.70.0_GH0.tar.gz) = a99e0df4dfb6228c8af63a2f99f39f7476b7da614833141be30a6b3a3f9d440f
+SIZE (go/textproc_fzf/junegunn-fzf-v0.70.0_GH0/junegunn-fzf-v0.70.0_GH0.tar.gz) = 394852

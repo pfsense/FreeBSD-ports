@@ -1,26 +1,28 @@
 PORTNAME=	zlib-ng
-DISTVERSION=	2.1.6
+DISTVERSION=	2.3.3
 CATEGORIES=	archivers
 
-MAINTAINER=	lbartoletti@FreeBSD.org
+MAINTAINER=	vvd@FreeBSD.org
 COMMENT=	Fork of the zlib data compression library
-WWW=		https://github.com/zlib-ng/zlib-ng
+WWW=		https://github.com/zlib-ng/zlib-ng/
 
 LICENSE=	ZLIB
+LICENSE_FILE=	${WRKSRC}/LICENSE.md
 
-USES=		cmake:${TESTING} compiler:c11
-USE_LDCONFIG=	yes
+TEST_DEPENDS=	googletest>=0:devel/googletest
+
+USES=		cmake:testing compiler:c++14-lang
 USE_GITHUB=	yes
+USE_LDCONFIG=	yes
 
-OPTIONS_DEFINE=	SIMD TEST
-
-SIMD_CMAKE_BOOL=	WITH_OPTIM
-TEST_BUILD_DEPENDS=	googletest>=0:devel/googletest
-TEST_VARS=		TESTING=testing
-TEST_CMAKE_BOOL=	ZLIB_ENABLE_TESTS ZLIBNG_ENABLE_TESTS
-# error: use of undeclared identifier 'isascii'
-TEST_CFLAGS=		-D__XSI_VISIBLE
+CMAKE_OFF=		WITH_GTEST ZLIB_ENABLE_TESTS ZLIBNG_ENABLE_TESTS
+CMAKE_TESTING_ON=	WITH_GTEST ZLIB_ENABLE_TESTS ZLIBNG_ENABLE_TESTS
 
 PLIST_SUB=	SHLIB_VER=${DISTVERSION}
+
+OPTIONS_DEFINE=		SIMD
+OPTIONS_DEFAULT=	SIMD
+
+SIMD_CMAKE_BOOL=	WITH_OPTIM
 
 .include <bsd.port.mk>

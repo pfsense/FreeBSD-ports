@@ -1,10 +1,10 @@
 PORTNAME=	blob
-DISTVERSION=	1.2.4
+DISTVERSION=	1.3.0
 CATEGORIES=	devel
 DISTNAME=	${PORTNAME}_${DISTVERSION}
 
-MAINTAINER=	ygy@FreeBSD.org
-COMMENT=	A Simple S3 Class for Representing Vectors of Binary Data ('BLOBS')
+MAINTAINER=	uzsolt@FreeBSD.org
+COMMENT=	Simple S3 Class for Representing Vectors of Binary Data ('BLOBS')
 WWW=		https://blob.tidyverse.org
 
 LICENSE=	MIT
@@ -15,7 +15,7 @@ RUN_DEPENDS=	R-cran-rlang>0:devel/R-cran-rlang \
 TEST_DEPENDS=	R-cran-covr>0:devel/R-cran-covr \
 		R-cran-crayon>0:devel/R-cran-crayon \
 		R-cran-pillar>=1.2.1:devel/R-cran-pillar \
-		R-cran-testthat>0:devel/R-cran-testthat
+		R-cran-testthat>=3.0.0:devel/R-cran-testthat
 
 USES=		cran:auto-plist
 

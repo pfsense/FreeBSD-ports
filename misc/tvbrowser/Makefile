@@ -1,5 +1,6 @@
 PORTNAME=	tvbrowser
 PORTVERSION=	4.2.7
+PORTREVISION=	1
 CATEGORIES=	misc java
 MASTER_SITES=	SF/${PORTNAME}/TV-Browser%20Releases%20%28Java%2011%20and%20higher%29/${PORTVERSION}/
 DISTNAME=	${PORTNAME}_${PORTVERSION}_bin
@@ -10,7 +11,7 @@ WWW=		https://www.tvbrowser.org
 
 LICENSE=	GPLv3
 
-USE_JAVA=	yes
+USES=		java
 JAVA_VERSION=	11+
 
 NO_BUILD=	yes

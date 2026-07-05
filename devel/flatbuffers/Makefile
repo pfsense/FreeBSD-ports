@@ -1,12 +1,13 @@
 PORTNAME=	flatbuffers
 DISTVERSIONPREFIX=	v
-DISTVERSION=	24.3.25
+DISTVERSION=	25.12.19-2026-02-06-03fffb2
 PORTEPOCH=	1
 CATEGORIES=	devel
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Memory efficient serialization library
-WWW=		https://flatbuffers.dev/
+WWW=		https://flatbuffers.dev/ \
+		https://github.com/google/flatbuffers
 
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/LICENSE
@@ -23,5 +24,7 @@ CMAKE_OFF=	FLATBUFFERS_BUILD_FLATLIB FLATBUFFERS_BUILD_TESTS
 CMAKE_TESTING_ON=	FLATBUFFERS_BUILD_TESTS # one test fails, see https://github.com/google/flatbuffers/issues/7009 and https://github.com/google/flatbuffers/issues/7556
 
 BINARY_ALIAS=	git=false python3=${PYTHON_CMD}
+
+# 100% tests passed, 0 tests failed out of 1
 
 .include <bsd.port.mk>

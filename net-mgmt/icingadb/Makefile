@@ -1,7 +1,7 @@
 PORTNAME=	icingadb
 DISTVERSIONPREFIX=	v
-DISTVERSION=	1.1.1
-PORTREVISION=	10
+DISTVERSION=	1.4.0
+PORTREVISION=	11
 CATEGORIES=	net-mgmt
 
 MAINTAINER=	dvl@FreeBSD.org
@@ -39,12 +39,12 @@ SUB_LIST+=	ICINGA2USER=${ICINGA2USER} \
 		PREFIX=${PREFIX}
 
 post-patch:
-	@${REINPLACE_CMD} -e 's|%%PREFIX|${PREFIX}|g' ${WRKSRC}/pkg/config/config.go
+	@${REINPLACE_CMD} -e 's|%%PREFIX|${PREFIX}|g' ${WRKSRC}/internal/config/config.go
 
 post-install:
 	${MKDIR} ${STAGEDIR}${EXAMPLESDIR}
 	${MKDIR} ${STAGEDIR}${ETCDIR}
-	(cd ${WRKSRC} && ${COPYTREE_SHARE} . ${STAGEDIR}${EXAMPLESDIR})
+	(cd ${WRKSRC} && ${COPYTREE_SHARE} "schema" ${STAGEDIR}${EXAMPLESDIR})
 	${INSTALL_DATA} ${WRKSRC}/config.example.yml ${STAGEDIR}${ETCDIR}/config.yml.sample
 
 .include <bsd.port.mk>

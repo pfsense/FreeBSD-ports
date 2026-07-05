@@ -1,6 +1,6 @@
 PORTNAME=	dub
-PORTVERSION=	1.29.0
-PORTREVISION=	3
+PORTVERSION=	1.40.0
+PORTREVISION=	1
 DISTVERSIONPREFIX=	v
 CATEGORIES=	devel
 
@@ -12,15 +12,11 @@ LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
 BUILD_DEPENDS=	ldmd2:lang/ldc
-LIB_DEPENDS=	libcurl.so:ftp/curl
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	dlang
 
 PLIST_FILES=	bin/${PORTNAME}
-
-post-patch:
-	@${REINPLACE_CMD} -e 's|%%PORTVERSION%%|${PORTVERSION}|g' ${WRKSRC}/source/dub/version_.d
 
 do-build:
 	@cd ${WRKSRC} && ${PREFIX}/bin/ldmd2 -run build.d

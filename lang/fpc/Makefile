@@ -1,13 +1,10 @@
 PORTNAME=	fpc
-PORTVERSION=	3.2.2
-PORTREVISION=	10
+PORTVERSION=	3.2.3
+PORTREVISION=	2
 CATEGORIES=	lang
-MASTER_SITES=	SF/freepascal/Source/${PORTVERSION}:source \
-		https://downloads.freepascal.org/${PORTNAME}/dist/${PORTVERSION}/source/:source \
-		http://leaf.dragonflybsd.org/~marino/dports-src/:DragonFlybootstrap \
+MASTER_SITES=	http://leaf.dragonflybsd.org/~marino/dports-src/:DragonFlybootstrap \
 		LOCAL/acm/freepascal/:bootstrap \
 		LOCAL/acm/freepascal/:man
-DISTFILES=	${DISTNAME:S/$/.source/}${EXTRACT_SUFX}:source
 DIST_SUBDIR=	freepascal
 
 MAINTAINER=	acm@FreeBSD.org
@@ -22,12 +19,17 @@ ONLY_FOR_ARCHS=	amd64 i386
 
 USES+=		gmake iconv
 USE_BINUTILS=	yes
-BOOTVER=	${PORTVERSION}
-MANVER=		${PORTVERSION}
+BOOTVER=	3.2.2
+MANVER=		3.2.2
 
-FPC_LDPATH?=	"${LOCALBASE}/bin/ld.bfd"
+USE_GITLAB=	yes
+GL_SITE=	https://gitlab.com/freepascal.org
+GL_ACCOUNT=	fpc
+GL_PROJECT=	source
+GL_TAGNAME=	4cdc5b1cdff8e81a6d1de622ec586f65c50091c7
 
-FPCSRCDIR=	${PORTNAME}-${PORTVERSION}
+FPC_COMMIT_DATE=20251007
+FPCSRCDIR=	source-${GL_TAGNAME}
 
 .include <bsd.port.pre.mk>
 
@@ -83,12 +85,15 @@ do-extract:
 	@${TAR} -xzf ${_DISTDIR}/fpc-${MANVER}.man.tar.gz --directory ${WRKDIR}
 # unpack source distribution
 	@(cd ${WRKDIR} && ${GZIP_CMD} -dc \
-		${_DISTDIR}/${DISTNAME:S/$/.source/}${EXTRACT_SUFX} | \
+		${_DISTDIR}/${PORTNAME}-source-${GL_TAGNAME}_GL0${EXTRACT_SUFX} | \
 		${TAR} -xf -)
 
 post-patch:
 .if ${OPSYS} == FreeBSD
 	@${REINPLACE_CMD} -i "" -e 's|900044|${OSVERSION}|g' \
+				-e 's|1201000|${OSVERSION}|g' \
+				-e 's|1200000|${OSVERSION}|g' \
+				-e 's|1400097|${OSVERSION}|g' \
 		${WRKSRC}/rtl/freebsd/${FPC_ARCH}/*.as \
 		${WRKSRC}/rtl/freebsd/${FPC_ARCH}/*.inc
 .else
@@ -152,20 +157,20 @@ post-patch:
 do-build:
 # build fpc compiler
 	@${ECHO_MSG} "##### STARTING COMPILER #####"
-	(cd ${WRKDIR}/${FPCSRCDIR}/compiler && ${SETENV} ${MAKE_ENV} \
-		${MAKE_CMD} cycle ${MAKE_ARGS} ${BOOTPPC})
+	(cd ${WRKDIR}/${FPCSRCDIR}/compiler && ${SETENVI} ${WRK_ENV}  \
+		${MAKE_ENV} ${MAKE_CMD} cycle ${MAKE_ARGS} ${BOOTPPC})
 	@${ECHO_MSG} "##### COMPLETE COMPILER #####"
 
 # build units
 	@${ECHO_MSG} "##### STARTING UNITS #####"
-	(cd ${WRKDIR}/${FPCSRCDIR} && ${SETENV} ${MAKE_ENV} \
-		${MAKE_CMD} build ${MAKE_ARGS} ${BOOTPPC})
+	(cd ${WRKDIR}/${FPCSRCDIR} && ${SETENVI} ${WRK_ENV} \
+		${MAKE_ENV} ${MAKE_CMD} build ${MAKE_ARGS} ${BOOTPPC})
 	@${ECHO_MSG} "##### COMPLETE UNITS #####"
 
 do-install:
 	# Installing fpc compiler
-	(cd ${WRKDIR}/${FPCSRCDIR} && ${SETENV} ${MAKE_ENV} \
-		${MAKE_CMD} install ${MAKE_ARGS} ${BOOTPPC})
+	(cd ${WRKDIR}/${FPCSRCDIR} && ${SETENVI} ${WRK_ENV} \
+		${MAKE_ENV} ${MAKE_CMD} install ${MAKE_ARGS} ${BOOTPPC})
 
 	# Installing manpages
 	${INSTALL_MAN} ${WRKDIR}/man/man1/* ${STAGEDIR}${PREFIX}/share/man/man1

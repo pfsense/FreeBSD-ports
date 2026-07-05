@@ -1,5 +1,6 @@
 PORTNAME=	SparseBitSet
 PORTVERSION=	1.3
+PORTREVISION=	1
 CATEGORIES=	devel java
 MASTER_SITES=	https://repo1.maven.org/maven2/com/zaxxer/${PORTNAME}/${PORTVERSION}/
 EXTRACT_SUFX=	.jar
@@ -11,8 +12,7 @@ WWW=		https://github.com/brettwooldridge/SparseBitSet
 
 LICENSE=	APACHE20
 
-USE_JAVA=	yes
-JAVA_VERSION=	8+
+USES=		java
 
 NO_BUILD=	yes
 NO_ARCH=	yes

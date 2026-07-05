@@ -1,6 +1,5 @@
 PORTNAME=	thonny
-PORTVERSION=	4.1.4
-PORTREVISION=	2
+PORTVERSION=	4.1.7
 CATEGORIES=	devel education python
 MASTER_SITES=	PYPI
 PKGNAMESUFFIX=	${PYTHON_PKGNAMESUFFIX}
@@ -26,6 +25,8 @@ RUN_DEPENDS=	pylint:devel/pylint@${PY_FLAVOR} \
 
 USES=		python desktop-file-utils
 USE_PYTHON=	distutils
+
+NO_ARCH=	yes
 
 ICON_SIZES=	16 22 32 48 64 128 192 256
 

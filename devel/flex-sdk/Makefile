@@ -1,5 +1,6 @@
 PORTNAME=	flex-sdk
 PORTVERSION=	4.6.0.23201
+PORTREVISION=	1
 CATEGORIES=	devel java
 MASTER_SITES=	http://fpdownload.adobe.com/pub/flex/sdk/builds/flex4.6/
 DISTNAME=	flex_sdk_${PORTVERSION}_mpl
@@ -9,8 +10,7 @@ COMMENT=	Adobe Flex SDK
 WWW=		http://opensource.adobe.com/wiki/display/flexsdk/Flex+4
 
 CONFLICTS=	flex-sdk3
-USES=		zip
-USE_JAVA=	yes
+USES=		java zip
 SUB_FILES=	${SCRIPTS:C/\$/.sh/g}
 NO_ARCH=	yes
 NO_BUILD=	yes

@@ -8,7 +8,7 @@
  * pimd_rpcandidate.xml
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2020-2024 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2020-2026 Rubicon Communications, LLC (Netgate)
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -27,6 +27,7 @@
 	</copyright>
 	<name>pimd_rpcandidate</name>
 	<title>Services/PIMD/RP Candidates</title>
+	<addedit_string>pimd: changed RP Candidates</addedit_string>
 	<include_file>/usr/local/pkg/pimd.inc</include_file>
 	<aftersaveredirect>pkg.php?xml=pimd/pimd_rpcandidate.xml</aftersaveredirect>
 	<shortcut_section>pimd</shortcut_section>

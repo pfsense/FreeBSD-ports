@@ -1,5 +1,6 @@
 PORTNAME=	c3p0
 PORTVERSION=	0.9.5.3
+PORTREVISION=	1
 CATEGORIES=	databases java
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}-bin/${PORTNAME}-${PORTVERSION}/
 DISTNAME=	${PORTNAME}-${PORTVERSION}.bin
@@ -11,9 +12,8 @@ WWW=		https://www.mchange.com/projects/c3p0/
 LICENSE=	LGPL21 EPL
 LICENSE_COMB=	dual
 
-USES=		cpe tar:tgz
+USES=		cpe java tar:tgz
 CPE_VENDOR=	mchange
-USE_JAVA=	yes
 NO_BUILD=	yes
 WRKSRC=		${WRKDIR}/${PORTNAME}-${PORTVERSION}
 NO_ARCH=	yes

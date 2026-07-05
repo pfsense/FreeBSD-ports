@@ -1,8 +1,9 @@
 PORTNAME=	WsgiDAV
-DISTVERSION=	4.3.0
+DISTVERSION=	4.3.3
 CATEGORIES=	www python
 MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
+DISTNAME=	${PORTNAME:tl}-${DISTVERSION}
 
 MAINTAINER=	ultima@FreeBSD.org
 COMMENT=	WSGI based WebDAV server for sharing resources
@@ -14,19 +15,25 @@ BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}defusedxml>=0.5:devel/py-defusedxml@${PY_F
 		${PYTHON_PKGNAMEPREFIX}json5>=0.8.5:devel/py-json5@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}six>=1.12:devel/py-six@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}Jinja2>=2.10:devel/py-Jinja2@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}yaml>=3.2:devel/py-yaml@${PY_FLAVOR}
+		${PYTHON_PKGNAMEPREFIX}pyyaml>=3.2:devel/py-pyyaml@${PY_FLAVOR}
 RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}defusedxml>=0.5:devel/py-defusedxml@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}json5>=0.8.5:devel/py-json5@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}six>=1.12:devel/py-six@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}Jinja2>=2.10:devel/py-Jinja2@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}yaml>=3.2:devel/py-yaml@${PY_FLAVOR}
-TEST_DEPENDS=	${PYTHON_PKGNAMEPREFIX}cheroot>=6.0:www/py-cheroot@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}pyyaml>=3.2:devel/py-pyyaml@${PY_FLAVOR}
+TEST_DEPENDS=	${PYTHON_PKGNAMEPREFIX}CouchDB>=1.1:databases/py-couchdb@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}cheroot>=6.0:www/py-cheroot@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}pymongo>=3.13:databases/py-pymongo@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}mysqlclient>=2.2:databases/py-mysqlclient@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}pytest>=2.7:devel/py-pytest@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}pytest-cov>=1.8:devel/py-pytest-cov@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}pytest-html>=1.8:devel/py-pytest-html@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}python-pam>=1.8:security/py-python-pam@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}redis>=6.2:databases/py-redis@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}requests>=0:www/py-requests@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}tox>=2.0:devel/py-tox@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}webtest>=2.0:www/py-webtest@${PY_FLAVOR}
+		${PYTHON_PKGNAMEPREFIX}webtest>=2.0:www/py-webtest@${PY_FLAVOR} \
+		mercurial>=0:devel/mercurial
 
 USES=		python
 USE_PYTHON=	distutils autoplist

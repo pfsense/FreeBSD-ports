@@ -1,8 +1,7 @@
 PORTNAME=	SparseM
-PORTVERSION=	1.81
-PORTREVISION=	1
+DISTVERSION=	1.84-2
 CATEGORIES=	math
-DISTNAME=	${PORTNAME}_${PORTVERSION}
+DISTNAME=	${PORTNAME}_${DISTVERSION}
 
 MAINTAINER=	tota@FreeBSD.org
 COMMENT=	Sparse Linear Algebra
@@ -10,6 +9,6 @@ WWW=		https://cran.r-project.org/web/packages/SparseM/
 
 LICENSE=	GPLv2+
 
-USES=	cran:auto-plist,compiles
+USES=		cran:auto-plist,compiles
 
 .include <bsd.port.mk>

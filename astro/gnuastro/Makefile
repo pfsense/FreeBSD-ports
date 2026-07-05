@@ -1,5 +1,6 @@
 PORTNAME=	gnuastro
-PORTVERSION=	0.22
+DISTVERSION=	0.24
+PORTREVISION=	1
 CATEGORIES=	astro
 MASTER_SITES=	GNU
 
@@ -16,9 +17,8 @@ LIB_DEPENDS=	libcfitsio.so:astro/cfitsio \
 		libpng.so:graphics/png \
 		libtiff.so:graphics/tiff
 
-USES=		gmake jpeg libtool:build localbase tar:lz
+USES=		ghostscript gmake jpeg libtool:build localbase pathfix tar:lz
 GNU_CONFIGURE=	yes
-GNU_CONFIGURE_MANPREFIX=	${PREFIX}/share
 USE_LDCONFIG=	yes
 INSTALL_TARGET=	install-strip
 TEST_TARGET=	check

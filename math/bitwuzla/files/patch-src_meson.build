@@ -1,0 +1,46 @@
+--- src/meson.build.orig	2026-03-16 21:34:48 UTC
++++ src/meson.build
+@@ -18,14 +18,14 @@ mpfr_dep = dependency('mpfr',
+ # Subproject dependencies
+ 
+ # CaDiCaL does not provide pkg-config to find dependency
+-cadical_dep = cpp_compiler.find_library('cadical',
+-                                        has_headers: ['cadical/cadical.hpp',
+-                                                      'cadical/tracer.hpp'],
+-                                        static: build_static,
+-                                        required: false)
+-if not cadical_dep.found()
+-  cadical_dep = dependency('cadical', required: get_option('cadical'))
+-endif
++#cadical_dep = cpp_compiler.find_library('cadical',
++#                                        has_headers: ['cadical/cadical.hpp',
++#                                                      'cadical/tracer.hpp'],
++#                                        static: build_static,
++#                                        required: false)
++#if not cadical_dep.found()
++#  cadical_dep = dependency('cadical', required: get_option('cadical'))
++#endif
+ 
+ cms_dep = dependency('cryptominisat5',
+                      version: '5.11.21',
+@@ -45,15 +45,15 @@ gimsatul_dep = dependency('gimsatul', required: get_op
+ 
+ # Using system include type suppresses compile warnings originating from the
+ # symfpu headers
+-symfpu_dep = dependency('symfpu', include_type: 'system', required: true)
++#symfpu_dep = dependency('symfpu', include_type: 'system', required: true)
+ 
+ dependencies = [
+-  gmp_dep, mpfr_dep, symfpu_dep, cadical_dep, cms_dep, kissat_dep, gimsatul_dep]
++  gmp_dep, mpfr_dep, cms_dep, kissat_dep, gimsatul_dep]
+ 
+ cpp_args = []
+-if cadical_dep.found()
+-  cpp_args += ['-DBZLA_USE_CADICAL']
+-endif
++#if cadical_dep.found()
++cpp_args += ['-DBZLA_USE_CADICAL']
++#endif
+ if cms_dep.found()
+   cpp_args += ['-DBZLA_USE_CMS']
+ endif

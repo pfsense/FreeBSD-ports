@@ -3,7 +3,7 @@
  * haproxy_pools.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2009-2024 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2009-2026 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2013 PiBa-NL
  * Copyright (c) 2008 Remco Hoef <remcoverhoef@pfsense.com>
  * All rights reserved.
@@ -29,8 +29,7 @@ require_once("haproxy/pkg_haproxy_tabs.inc");
 
 haproxy_config_init();
 
-$a_pools = &getarraybyref($config,'installedpackages','haproxy','ha_pools','item');
-$a_backends = &getarraybyref($config,'installedpackages','haproxy','ha_backends','item');
+$a_backends = config_get_path('installedpackages/haproxy/ha_backends/item', []);
 
 if ($_POST['apply']) {
 	$result = haproxy_check_and_run($savemsg, true);
@@ -42,7 +41,7 @@ if ($_POST['apply']) {
 	$deleted = false;
 	if (is_array($_POST['rule']) && count($_POST['rule'])) {
 		foreach ($_POST['rule'] as $rulei) {
-			unset($a_pools[$rulei]);
+			config_del_path("installedpackages/haproxy/ha_pools/item/{$rulei}");
 			$deleted = true;
 		}
 
@@ -63,10 +62,10 @@ if ($_POST['apply']) {
 
 		// if a rule is not in POST[rule], it has been deleted by the user
 		foreach ($_POST['rule'] as $id) {
-			$a_filter_new[] = $a_pools[$id];
+			$a_filter_new[] = config_get_path("installedpackages/haproxy/ha_pools/item/{$id}");
 		}
 
-		$a_pools = $a_filter_new;
+		config_set_path('installedpackages/haproxy/ha_pools/item', $a_filter_new);
 		if (write_config("haproxy-devel: Updated rule order")) {
 			mark_subsystem_dirty('filter');
 		}
@@ -75,8 +74,8 @@ if ($_POST['apply']) {
 		exit;
 	}
 } elseif ($_GET['act'] == "del") {
-	if (isset($a_pools[$_GET['id']])) {
-		unset($a_pools[$_GET['id']]);
+	if (config_get_path("installedpackages/haproxy/ha_pools/item/{$_GET['id']}") !== null) {
+		config_del_path("installedpackages/haproxy/ha_pools/item/{$_GET['id']}");
 		write_config("haproxy-devel: Pool deleted");
 		touch($d_haproxyconfdirty_path);
 	}
@@ -93,7 +92,12 @@ if ($savemsg) {
 	print_info_box($savemsg);
 }
 if (file_exists($d_haproxyconfdirty_path)) {
-	print_apply_box(sprintf(gettext("The haproxy configuration has been changed.%sYou must apply the changes in order for them to take effect."), "<br/>"));
+	print_apply_box(sprintf(
+		gettext(
+			"The HAProxy configuration has been changed.%sServer states are preserved between configuration changes - " .
+			"use %sSettings > Force Service Restart%s to apply changes immediately."
+		), "<br/>", '<a href="/haproxy/haproxy_global.php">', '</a>'
+	));
 }
 haproxy_display_top_tabs_active($haproxy_tab_array['haproxy'], "backend");
 
@@ -121,7 +125,7 @@ haproxy_display_top_tabs_active($haproxy_tab_array['haproxy'], "backend");
 
 <?php
 		$i = 0;
-		foreach ($a_pools as $backend){
+		foreach (config_get_path('installedpackages/haproxy/ha_pools/item', []) as $backend){
 			$fes = find_frontends_using_backend($backend['name']);
 			$fe_list = implode(", ", $fes);
 			$disabled = $fe_list == "";

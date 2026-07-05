@@ -1,33 +1,38 @@
 PORTNAME=	gstreamer1-plugins-rust
-DISTVERSION=	0.11.1
-DISTVERSIONSUFFIX=	+fixup
-PORTREVISION=	5
+DISTVERSION=	${gst-rust_VERSION}
+PORTREVISION=	1
 CATEGORIES=	multimedia
 
-MAINTAINER=	jbeich@FreeBSD.org
+MAINTAINER=	multimedia@FreeBSD.org
 COMMENT=	Various GStreamer plugins written in Rust
 WWW=		https://gitlab.freedesktop.org/gstreamer/gst-plugins-rs
 
-LICENSE=	LGPL21+ MIT
-LICENSE_COMB=	multi
+LICENSE=		APACHE20 MIT MPL20
+LICENSE_COMB=		multi
+LICENSE_FILE_APACHE20=	${WRKSRC}/LICENSE-APACHE
 LICENSE_FILE_MIT=	${WRKSRC}/LICENSE-MIT
-LICENSE_FILE_LGPL21+ =	${WRKSRC}/LICENSE-LGPLv2
+LICENSE_FILE_MPL20=	${WRKSRC}/LICENSE-MPL-2.0
 
-BUILD_DEPENDS=	cargo-cbuild:devel/cargo-c
+BUILD_DEPENDS=	cargo-cbuild:devel/cargo-c \
+		${PY_TOMLI}
 
 USES=		cargo gnome gstreamer meson pkgconfig python:build shebangfix ssl
 USE_GITLAB=	yes
-USE_GNOME=	glib20
-USE_GSTREAMER=	bad # webrtc
 GL_SITE=	https://gitlab.freedesktop.org
 GL_ACCOUNT=	gstreamer
 GL_PROJECT=	gst-plugins-rs
+USE_GNOME=	glib20
+USE_GSTREAMER=	webrtc
+
 SHEBANG_FILES=	dependencies.py
-MESON_ARGS=	-Ddoc=disabled
-MAKE_ENV=	${CARGO_ENV}
+
+MESON_ARGS=	-Ddoc=disabled -Dskia=disabled -Dwhisper=disabled
+
 CARGO_BUILD=	no
 CARGO_INSTALL=	no
 CARGO_TEST=	no
+
+MAKE_ENV=	${CARGO_ENV}
 
 .if ${MACHINE_ARCH} == i386 || "${MACHINE_ARCH:Marmv?}" != ""
 # https://github.com/rust-lang/rust/issues/85598
@@ -35,14 +40,16 @@ LTO_UNSAFE=	yes
 CARGO_ENV+=	CARGO_PROFILE_RELEASE_LTO=false
 .endif
 
-OPTIONS_DEFINE=	ASM CAIRO CSOUND DAV1D GTK4 PANGO SODIUM WEBP
-OPTIONS_DEFAULT=ASM CAIRO CSOUND DAV1D GTK4 PANGO SODIUM WEBP
+BINARY_ALIAS=	python3=${PYTHON_CMD}
+
+OPTIONS_DEFINE=		ASM CAIRO CSOUND DAV1D GTK4 PANGO SODIUM VALIDATE VVDEC WEBP
+OPTIONS_DEFAULT=	ASM CAIRO CSOUND DAV1D GTK4 PANGO SODIUM VVDEC WEBP
 OPTIONS_EXCLUDE_aarch64=	CSOUND # https://github.com/neithanmo/csound-rs/commit/8962b89d7bda
-OPTIONS_EXCLUDE_armv7=	CSOUND # https://github.com/neithanmo/csound-rs/commit/8962b89d7bda
-OPTIONS_EXCLUDE_powerpc64le=	CSOUND
-OPTIONS_EXCLUDE_powerpc64=	CSOUND
+OPTIONS_EXCLUDE_armv7=		CSOUND # https://github.com/neithanmo/csound-rs/commit/8962b89d7bda
 OPTIONS_EXCLUDE_powerpc=	CSOUND DAV1D
-OPTIONS_SUB=	yes
+OPTIONS_EXCLUDE_powerpc64=	CSOUND
+OPTIONS_EXCLUDE_powerpc64le=	CSOUND
+OPTIONS_SUB=		yes
 
 ASM_BUILD_DEPENDS=	nasm:devel/nasm
 
@@ -70,6 +77,14 @@ SODIUM_LIB_DEPENDS=	libsodium.so:security/libsodium
 SODIUM_MESON_ENABLED=	sodium
 SODIUM_MESON_ON=	-Dsodium-source=system
 
+VALIDATE_DESC=		Validation plugin
+VALIDATE_USE=		GSTREAMER=devtools
+VALIDATE_MESON_ENABLED=	validate
+
+VVDEC_DESC=		Versatile Video Decoder support
+VVDEC_LIB_DEPENDS=	libvvdec.so:multimedia/vvdec
+VVDEC_MESON_ENABLED=	vvdec
+
 WEBP_LIB_DEPENDS=	libwebpdemux.so:graphics/webp
 WEBP_MESON_ENABLED=	webp
 
@@ -78,13 +93,4 @@ post-patch:
 	@${REINPLACE_CMD} -Ee "/cargo.*'c?(build|test)'/s/]/, '--verbose', '--verbose'&/" \
 		${WRKSRC}/cargo_wrapper.py
 
-post-install:
-	@${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/gstreamer-1.0/*.so
-
-.include <bsd.port.pre.mk>
-
-.if ${PYTHON_REL} < 31100
-BUILD_DEPENDS+=	${PYTHON_PKGNAMEPREFIX}tomli>0:textproc/py-tomli@${PY_FLAVOR}
-.endif
-
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

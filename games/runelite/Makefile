@@ -1,5 +1,6 @@
 PORTNAME=	runelite
 PORTVERSION=	2.2.0
+PORTREVISION=	1
 CATEGORIES=	games java
 MASTER_SITES+=	https://github.com/runelite/launcher/releases/download/${PORTVERSION}/:game \
 		https://raw.githubusercontent.com/runelite/launcher/${PORTVERSION}/appimage/:icon \
@@ -17,8 +18,7 @@ WWW=		https://runelite.net
 LICENSE=	BSD2CLAUSE
 LICENSE_FILE=	${DISTDIR}/${DIST_SUBDIR}/LICENSE
 
-USES=		cpe
-USE_JAVA=	yes
+USES=		cpe java
 JAVA_VERSION=	11
 
 DESKTOP_ENTRIES="RuneLite" \

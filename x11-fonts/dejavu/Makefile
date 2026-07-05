@@ -1,7 +1,7 @@
 PORTNAME=	dejavu
 PORTVERSION=	2.37
 DISTVERSIONPREFIX=	fonts-ttf-
-PORTREVISION=	3
+PORTREVISION=	4
 CATEGORIES=	x11-fonts
 MASTER_SITES=	https://github.com/dejavu-fonts/dejavu-fonts/releases/download/version_${PORTVERSION:R}_${PORTVERSION:E}/
 
@@ -18,9 +18,9 @@ LICENSE_NAME_AMS=	AMSFonts Copyright version 2.2
 LICENSE_NAME_AREV=	Arev Fonts Copyright
 LICENSE_NAME_BITSTREAM=	Bitstream Vera Fonts Copyright
 LICENSE_FILE=	${WRKSRC}/LICENSE
-LICENSE_PERMS_AMS=	dist-mirror dist-sell pkg-mirror pkg-sell auto-accept
-LICENSE_PERMS_AREV=	dist-mirror dist-sell pkg-mirror pkg-sell auto-accept
-LICENSE_PERMS_BITSTREAM=dist-mirror dist-sell pkg-mirror pkg-sell auto-accept
+LICENSE_PERMS_AMS=	auto-accept dist-mirror dist-sell pkg-mirror pkg-sell
+LICENSE_PERMS_AREV=	auto-accept dist-mirror dist-sell pkg-mirror pkg-sell
+LICENSE_PERMS_BITSTREAM=auto-accept dist-mirror dist-sell pkg-mirror pkg-sell
 
 USES=		fonts tar:bzip2
 
@@ -29,7 +29,6 @@ NO_BUILD=	yes
 
 PLIST_SUB=	FCDIR=${FCDIR} FCDIR_LINKS=${FCDIR_LINKS}
 PORTDOCS=	README.md langcover.txt status.txt unicover.txt
-SUB_FILES=	pkg-message
 
 FCDIR?=		etc/fonts/conf.avail
 FCDIR_LINKS=	${FCDIR:S|conf.avail|conf.d|}

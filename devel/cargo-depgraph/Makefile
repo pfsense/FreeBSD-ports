@@ -1,11 +1,11 @@
 PORTNAME=	cargo-depgraph
 DISTVERSIONPREFIX=	v
 DISTVERSION=	1.6.0
-PORTREVISION=	4
+PORTREVISION=	21
 CATEGORIES=	devel
 
 MAINTAINER=	yuri@FreeBSD.org
-COMMENT=	Create dependency graphs for cargo projects using 'cargo metadata'
+COMMENT=	Rust: Create dependency graphs for cargo projects
 WWW=		https://github.com/jplatte/cargo-depgraph
 
 LICENSE=	GPLv3
@@ -61,8 +61,5 @@ CARGO_CRATES=	anstream-0.6.4 \
 		windows_x86_64_msvc-0.52.0
 
 PLIST_FILES=	bin/${PORTNAME}
-
-post-install:
-	@${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/${PORTNAME}
 
 .include <bsd.port.mk>

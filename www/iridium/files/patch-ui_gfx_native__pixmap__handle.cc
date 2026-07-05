@@ -1,7 +1,7 @@
---- ui/gfx/native_pixmap_handle.cc.orig	2022-12-06 08:09:13 UTC
+--- ui/gfx/native_pixmap_handle.cc.orig	2025-12-10 15:04:57 UTC
 +++ ui/gfx/native_pixmap_handle.cc
 @@ -11,7 +11,7 @@
- #include "ui/gfx/buffer_format_util.h"
+ #include "components/viz/common/resources/shared_image_format_utils.h"
  #include "ui/gfx/geometry/size.h"
  
 -#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS)

@@ -1,7 +1,7 @@
 PORTNAME=	scummvm
-PORTVERSION=	2.8.1
+DISTVERSION=	2026.1.0
 CATEGORIES=	games emulators
-MASTER_SITES=	https://downloads.scummvm.org/frs/${PORTNAME}/${PORTVERSION}/
+MASTER_SITES=	https://downloads.scummvm.org/frs/${PORTNAME}/${DISTVERSION}/
 
 MAINTAINER=	kai@FreeBSD.org
 COMMENT=	Interpreter for several adventure games
@@ -31,7 +31,9 @@ CONFIGURE_ARGS=	--disable-alsa \
 		--disable-debug \
 		--disable-fluidlite \
 		--disable-gtk \
+		--disable-mpcdec \
 		--disable-nasm \
+		--disable-seq-midi \
 		--disable-tremor \
 		--enable-verbose-build \
 		--with-zlib-prefix=/usr
@@ -39,7 +41,7 @@ CONFIGURE_ARGS=	--disable-alsa \
 LDFLAGS+=	-lpthread
 
 OPTIONS_DEFINE=		CURL DOCS FLAC GIF FLUIDSYNTH MIKMOD MT32EMU SNDIO SONIVOX TTS VPX XENGINES
-OPTIONS_DEFAULT=	GIF MIKMOD MT32EMU
+OPTIONS_DEFAULT=	FLUIDSYNTH GIF MIKMOD MT32EMU
 OPTIONS_SUB=		yes
 
 CURL_DESC=	Enable ScummVM cloud storage backend

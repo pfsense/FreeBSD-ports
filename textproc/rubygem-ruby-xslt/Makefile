@@ -1,6 +1,6 @@
 PORTNAME=	ruby-xslt
 PORTVERSION=	0.9.10
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	textproc rubygems
 MASTER_SITES=	RG
 
@@ -11,13 +11,9 @@ WWW=		https://github.com/glejeune/ruby-xslt
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-USE_GNOME=	libxslt
 USES=		gem gnome
+USE_GNOME=	libxslt
 
-.include <bsd.port.options.mk>
-
-.if ${OPSYS} == FreeBSD && ( ${OSVERSION} >= 1400091 || ( ${OSVERSION} >= 1302507 && ${OSVERSION} < 1400000 ))
-CONFIGURE_ARGS+=	--with-cflags="-Wno-error=incompatible-function-pointer-types"
-.endif
+CONFIGURE_ARGS=	--with-cflags=-Wno-incompatible-function-pointer-types
 
 .include <bsd.port.mk>

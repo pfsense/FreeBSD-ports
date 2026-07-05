@@ -1,12 +1,13 @@
 PORTNAME=	sundials
-DISTVERSION=	6.6.0
-PORTREVISION=	7
+DISTVERSION=	7.5.0
+PORTREVISION=	1
 CATEGORIES=	math
 MASTER_SITES=	https://github.com/LLNL/sundials/releases/download/v${DISTVERSION}/
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	SUite of Nonlinear and DIfferential/ALgebraic Equation Solvers
-WWW=		https://computing.llnl.gov/projects/sundials
+WWW=		https://computing.llnl.gov/projects/sundials \
+		https://github.com/LLNL/sundials
 
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE
@@ -25,6 +26,10 @@ FCFLAGS:=		${FFLAGS} # project checks that these flags are equal
 
 OPTIONS_DEFINE=		BLAS EXAMPLES KLU LAPACK MPI OPENMP
 OPTIONS_DEFAULT=	KLU LAPACK MPI OPENMP
+# no OpenMP on armv7
+.if !exists(/usr/include/omp.h)
+OPTIONS_EXCLUDE=	OPENMP
+.endif
 OPTIONS_GROUP=		VECTORS
 OPTIONS_GROUP_VECTORS=	HYPRE PETSC
 VECTORS_DESC=		Alternative vector libraries
@@ -77,5 +82,7 @@ PETSC_BROKEN=		ERROR: PETSc not functional due to index size mismatch: SUNDIALS_
 
 post-install:
 	@${RM} ${STAGEDIR}${PREFIX}/include/sundials/LICENSE
+
+# tests as of 7.5.0: 97% tests passed, 5 tests failed out of 190, see https://github.com/LLNL/sundials/issues/792
 
 .include <bsd.port.mk>

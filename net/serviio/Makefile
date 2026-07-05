@@ -1,6 +1,6 @@
 PORTNAME=	serviio
-PORTVERSION=	2.3
-PORTREVISION=	2
+PORTVERSION=	2.4
+PORTREVISION=	1
 CATEGORIES=	net multimedia java www
 MASTER_SITES=	https://download.serviio.org/releases/
 EXTRACT_SUFX=	-linux.tar.gz
@@ -17,11 +17,11 @@ LICENSE_PERMS=	auto-accept
 
 RUN_DEPENDS=	ffmpeg:multimedia/ffmpeg
 
-NO_BUILD=	yes
-USE_JAVA=	yes
-JAVA_VERSION=	21
-USES=		dos2unix
+USES=		dos2unix java
 DOS2UNIX_GLOB=	derby.properties
+JAVA_VERSION=	21
+
+NO_BUILD=	yes
 
 PKGMESSAGE=	${WRKSRC}/pkg-message
 SUB_FILES+=	pkg-message serviiod

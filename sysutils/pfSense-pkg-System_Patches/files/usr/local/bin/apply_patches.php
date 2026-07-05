@@ -4,7 +4,7 @@
  * apply_patches.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2013-2024 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2013-2026 Rubicon Communications, LLC (Netgate)
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -23,9 +23,10 @@
 require_once("config.inc");
 require_once("patches.inc");
 
-global $g, $config;
+global $g;
 
 echo "Applying patches...";
+refresh_excluded_recommended_patches();
 bootup_apply_patches();
 echo "Done.\n";
 ?>

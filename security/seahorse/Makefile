@@ -1,29 +1,33 @@
 PORTNAME=	seahorse
-PORTVERSION=	41.0
-PORTREVISION=	2
+PORTVERSION=	47.0.1
 CATEGORIES=	security gnome
-MASTER_SITES=	GNOME/sources/${PORTNAME}/${PORTVERSION:C/^([0-9]+)\..*/\1/}
+MASTER_SITES=	GNOME
 DIST_SUBDIR=	gnome
+
+PATCH_SITES=	https://gitlab.gnome.org/GNOME/seahorse/-/commit/
+PATCHFILES+=	aa68522cc696fa491ccfdff735b77bcf113168d0.patch:-p1 # Fix build with GpgME 2.0.0
 
 MAINTAINER=	gnome@FreeBSD.org
 COMMENT=	GNOME application for managing encryption keys (PGP, SSH)
-WWW=		https://wiki.gnome.org/Apps/Seahorse
+WWW=		https://wiki.gnome.org/Apps/Seahorse \
+		https://gitlab.gnome.org/GNOME/seahorse
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
 
 BUILD_DEPENDS=	gnupg>=2.1.4:security/gnupg \
 		itstool:textproc/itstool
-LIB_DEPENDS=	libgcr-base-3.so:security/gcr \
+LIB_DEPENDS=	libgcr-base-3.so:security/gcr3 \
 		libgpgme.so:security/gpgme \
 		libhandy-1.so:x11-toolkits/libhandy \
 		libpwquality.so:security/libpwquality \
 		libsecret-1.so:security/libsecret \
-		libsoup-2.4.so:devel/libsoup
+		libsoup-3.0.so:devel/libsoup3
 RUN_DEPENDS=	gnupg>=2.1.4:security/gnupg
 
 USES=		cpe gettext gnome localbase:ldflags meson pkgconfig \
 		python:build tar:xz vala:build xorg
+CPE_VENDOR=	gnome
 USE_CSTD=	c99
 USE_GNOME=	gtk30
 GLIB_SCHEMAS=	org.gnome.seahorse.gschema.xml \
@@ -31,7 +35,6 @@ GLIB_SCHEMAS=	org.gnome.seahorse.gschema.xml \
 		org.gnome.seahorse.window.gschema.xml
 USE_LDCONFIG=	yes
 USE_XORG=	sm
-CPE_VENDOR=	gnome
 
 MESON_ARGS=	-Dcheck-compatible-gpg=false \
 		-Dhkp-support=true \
@@ -56,7 +59,7 @@ LDAP_MESON_TRUE=	ldap-support
 
 .include <bsd.port.options.mk>
 
-.if ${OPSYS} == FreeBSD && ( ${OSVERSION} >= 1400091 || ( ${OSVERSION} >= 1302507 && ${OSVERSION} < 1400000 ))
+.if ${OPSYS} == FreeBSD
 CFLAGS+=	-Wno-error=incompatible-function-pointer-types
 .endif
 

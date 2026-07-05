@@ -27,10 +27,8 @@ require_once('wireguard/includes/wg.inc');
 require_once('wireguard/includes/wg_globals.inc');
 
 function wg_print_service_warning($only_with_tunnels = true) {
-	global $wgg;
-
 	if (!wg_is_service_running() 
-	    && (!$only_with_tunnels || count($wgg['tunnels']) > 0)) {
+	    && (!$only_with_tunnels || count(config_get_path('installedpackages/wireguard/tunnels/item', [])) > 0)) {
 		print_info_box(gettext('The WireGuard service is not running.'), 'danger', null);
 	}
 }
@@ -66,8 +64,6 @@ function wg_format_endpoint($header = true, $peer = null, $endpoint_key = 'endpo
 
 // Gets a list of available tunnels in a format suitable for input selection boxes
 function wg_get_tun_list() {
-	global $config, $wgg;
-
 	// Format tunnel description if one is configured
 	$tunDescr = fn($tunnel) => !empty($tunnel['descr']) ? " ({$tunnel['descr']})" : null;
 
@@ -76,10 +72,8 @@ function wg_get_tun_list() {
 	// Always include the unassigned option first
 	$a_ret['unassigned'] = 'Unassigned';
 
-	if (is_array($wgg['tunnels'])) {
-		foreach ($wgg['tunnels'] as $tunnel) {
-			$a_ret[$tunnel['name']] = "{$tunnel['name']}{$tunDescr($tunnel)}";	
-		}
+	foreach (config_get_path('installedpackages/wireguard/tunnels/item', []) as $tunnel) {
+		$a_ret[$tunnel['name']] = "{$tunnel['name']}{$tunDescr($tunnel)}";	
 	}
 
 	// Consumers of this function always expect an array type
@@ -202,14 +196,12 @@ function wg_human_time_diff($start, $end = null, $num_units = 2, $from_epoch = f
 
 // Returns the appropriate text input field type for secrets
 function wg_secret_input_type() {
-	global $wgg;
-
 	wg_globals();
 
 	$type = 'text';
 
-	if (isset($wgg['config']['hide_secrets'])
-	    && $wgg['config']['hide_secrets'] =='yes') {
+	if ((config_get_path('installedpackages/wireguard/config/0/hide_secrets') !== null)
+	    && config_get_path('installedpackages/wireguard/config/0/hide_secrets') == 'yes') {
 		$type = 'password';
 	}
 
@@ -218,11 +210,9 @@ function wg_secret_input_type() {
 
 // Returns bool indicating if peers should be hidden on status page on load
 function wg_status_peers_hidden() {
-	global $wgg;
-
 	wg_globals();
 
-	return ($wgg['config']['hide_peers'] === 'yes');
+	return (config_get_path('installedpackages/wireguard/config/0/hide_peers') === 'yes');
 }
 
 function wg_tunnel_status_class($tunnel = null) {

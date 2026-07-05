@@ -3,7 +3,7 @@
  * snort_interfaces_global.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2011-2024 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2011-2026 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2003-2006 Manuel Kasper <mk@neon1.net>.
  * Copyright (c) 2008-2009 Robert Zelaya
  * Copyright (c) 2022 Bill Meeks
@@ -133,7 +133,7 @@ if (!$input_errors) {
 
 		// If deprecated rules should be removed, then do it
 		if (config_get_path('installedpackages/snortglobal/hide_deprecated_rules') == "on") {
-			syslog(LOG_NOTICE, gettext("[Snort] Hide Deprecated Rules is enabled.  Removing obsoleted rules categories."));
+			logger(LOG_NOTICE, localize_text("Hide Deprecated Rules is enabled.  Removing obsoleted rules categories."), LOG_PREFIX_PKG_SNORT);
 			snort_remove_dead_rules();
 		}
 

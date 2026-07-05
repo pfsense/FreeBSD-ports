@@ -1,5 +1,5 @@
 PORTNAME=	spoa
-DISTVERSION=	4.1.0
+DISTVERSION=	4.1.5
 CATEGORIES=	biology
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -8,6 +8,8 @@ WWW=		https://github.com/rvaser/spoa
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
+
+BROKEN_i386=	compilation fails: error: _Float16 is not supported on this target
 
 BUILD_DEPENDS=	bioparser>0:biology/bioparser \
 		biosoup>0:biology/biosoup \
@@ -25,7 +27,6 @@ GH_ACCOUNT=	rvaser
 
 CMAKE_ON=	BUILD_SHARED_LIBS \
 		spoa_build_exe \
-		spoa_optimize_for_portability \
 		spoa_build_executable \
 		spoa_use_simde \
 		spoa_use_simde_nonvec \
@@ -49,5 +50,9 @@ do-test:
 		${SETENV} ${CONFIGURE_ENV} ${CMAKE_BIN} ${CMAKE_ARGS} -D${PORTNAME}_build_tests:BOOL=ON ${CMAKE_SOURCE_PATH} && \
 		${SETENV} ${MAKE_ENV} ${MAKE_CMD} ${MAKE_ARGS} ${ALL_TARGET} && \
 		${BUILD_WRKSRC}/bin/${PORTNAME}_test
+
+tests as of 4.1.5:
+# [==========] 23 tests from 2 test suites ran. (671 ms total)
+# [  PASSED  ] 23 tests.
 
 .include <bsd.port.mk>

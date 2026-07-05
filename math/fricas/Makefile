@@ -1,7 +1,7 @@
 PORTNAME=	fricas
-DISTVERSION=	1.3.9
+DISTVERSION=	1.3.10
+PORTREVISION=	2
 DISTVERSIONSUFFIX=	-full
-PORTREVISION=	1
 CATEGORIES=	math
 MASTER_SITES=	SF
 
@@ -12,16 +12,17 @@ WWW=		https://fricas.sourceforge.net/
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/license/LICENSE.AXIOM
 
-BROKEN_i386=	build fails, reported to ML
+BROKEN_i386=	fails to configure: mmap: Cannot allocate memory
 
 BUILD_DEPENDS=	sbcl:lang/sbcl
+LIB_DEPENDS=	libzstd.so:archivers/zstd
 RUN_DEPENDS=	rlwrap:devel/rlwrap
 
 USES=		autoreconf gmake tar:bz2 xorg
 USE_XORG=	ice sm x11 xpm
 
 GNU_CONFIGURE=	yes
-CONFIGURE_ARGS=	--with-lisp=sbcl
+CONFIGURE_ARGS=	--with-lisp="sbcl --dynamic-space-size 3072"
 
 WRKSRC=		${WRKDIR}/${PORTNAME}-${DISTVERSION}
 

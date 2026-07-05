@@ -1,9 +1,13 @@
 #!/usr/bin/env sh
-
-#
-#RAGE4_TOKEN="sdfsdfsdfljlbjkljlkjsdfoiwje"
-#
-#RAGE4_USERNAME="xxxx@sss.com"
+# shellcheck disable=SC2034
+dns_rage4_info='rage4.com
+Site: rage4.com
+Docs: github.com/acmesh-official/acme.sh/wiki/dnsapi#dns_rage4
+Options:
+ RAGE4_TOKEN API Key
+ RAGE4_USERNAME Username
+Issues: github.com/acmesh-official/acme.sh/issues/4306
+'
 
 RAGE4_Api="https://rage4.com/rapi/"
 
@@ -38,6 +42,14 @@ dns_rage4_add() {
   _debug _domain_id "$_domain_id"
 
   _rage4_rest "createrecord/?id=$_domain_id&name=$fulldomain&content=$unquotedtxtvalue&type=TXT&active=true&ttl=1"
+
+  # Response after adding a TXT record should be something like this:
+  # {"status":true,"id":28160443,"error":null}
+  if ! _contains "$response" '"error":null' >/dev/null; then
+    _err "Error while adding TXT record: '$response'"
+    return 1
+  fi
+
   return 0
 }
 
@@ -59,7 +71,12 @@ dns_rage4_rm() {
   _debug "Getting txt records"
   _rage4_rest "getrecords/?id=${_domain_id}"
 
-  _record_id=$(echo "$response" | sed -rn 's/.*"id":([[:digit:]]+)[^\}]*'"$txtvalue"'.*/\1/p')
+  _record_id=$(echo "$response" | tr '{' '\n' | grep '"TXT"' | grep "\"$txtvalue" | sed -rn 's/.*"id":([[:digit:]]+),.*/\1/p')
+  if [ -z "$_record_id" ]; then
+    _err "error retrieving the record_id of the new TXT record in order to delete it, got: '$_record_id'."
+    return 1
+  fi
+
   _rage4_rest "deleterecord/?id=${_record_id}"
   return 0
 }
@@ -101,8 +118,7 @@ _rage4_rest() {
   token_trimmed=$(echo "$RAGE4_TOKEN" | tr -d '"')
   auth=$(printf '%s:%s' "$username_trimmed" "$token_trimmed" | _base64)
 
-  export _H1="Content-Type: application/json"
-  export _H2="Authorization: Basic $auth"
+  export _H1="Authorization: Basic $auth"
 
   response="$(_get "$RAGE4_Api$ep")"
 

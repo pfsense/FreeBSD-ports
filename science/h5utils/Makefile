@@ -1,6 +1,6 @@
 PORTNAME=	h5utils
 DISTVERSION=	1.13.2
-PORTREVISION=	3
+PORTREVISION=	4
 CATEGORIES=	science
 MASTER_SITES=	https://github.com/NanoComp/${PORTNAME}/releases/download/${DISTVERSION}/
 
@@ -16,11 +16,10 @@ BUILD_DEPENDS=	gawk:lang/gawk
 LIB_DEPENDS=	libdf.so:science/hdf \
 		libhdf5.so:science/hdf5 \
 		libmatheval.so:devel/libmatheval \
-		libpng.so:graphics/png
+		libpng16.so:graphics/png
 
-USES=		autoreconf compiler:c++11-lang jpeg localbase
+USES=		compiler:c++11-lang jpeg localbase
 GNU_CONFIGURE=	yes
-GNU_CONFIGURE_MANPREFIX=	${PREFIX}/share
 
 CFLAGS+=	-pthread
 CXXFLAGS+=	-std=c++11

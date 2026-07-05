@@ -1,6 +1,7 @@
 PORTNAME=	cava
-DISTVERSION=	0.10.1
+DISTVERSION=	0.10.6
 CATEGORIES=	audio
+MASTER_SITES=	https://github.com/karlstav/${PORTNAME}/releases/download/${DISTVERSION}/
 
 MAINTAINER=	vendion@gmail.com
 COMMENT=	Cross-platform Audio Visualizer
@@ -12,9 +13,7 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 LIB_DEPENDS=	libfftw3.so:math/fftw3 \
 		libiniparser.so:devel/iniparser
 
-USES=		autoreconf compiler:c11 libtool localbase pkgconfig
-USE_GITHUB=	yes
-GH_ACCOUNT=	karlstav
+USES=		compiler:c11 localbase pkgconfig
 
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--disable-input-alsa \
@@ -23,6 +22,7 @@ CONFIGURE_ARGS=	--disable-input-alsa \
 PLIST_FILES=	bin/cava
 PORTDOCS=	README.md
 PORTEXAMPLES=	config
+SUB_FILES=	pkg-message
 
 OPTIONS_DEFINE=		DOCS EXAMPLES VT
 OPTIONS_DEFAULT=	GLSL JACK NCURSES OSS PORTAUDIO PULSEAUDIO SDL SNDIO VT
@@ -34,7 +34,7 @@ OPTIONS_GROUP_OUTPUT=	GLSL NCURSES SDL
 GLSL_DESC=		Build with GLSL support (implies ${GLSL_IMPLIES})
 GLSL_BUILD_DEPENDS=	${LOCALBASE}/share/aclocal/ax_check_gl.m4:devel/autoconf-archive
 GLSL_USES=		gl
-GLSL_USE=		gl=egl
+GLSL_USE=		GL=gl
 GLSL_CONFIGURE_ENABLE=	output-sdl-glsl
 GLSL_IMPLIES=		SDL
 
@@ -60,7 +60,7 @@ PULSEAUDIO_CONFIGURE_ENABLE=	input-pulse
 
 SDL_DESC=		Build with SDL support
 SDL_USES=		sdl
-SDL_USE=		sdl=sdl2
+SDL_USE=		SDL=sdl2
 SDL_CONFIGURE_ENABLE=	output-sdl
 
 SNDIO_DESC=		Build with sndio support
@@ -71,6 +71,8 @@ VT_DESC=		Build and install custom font for vt(4)
 VT_BUILD_DEPENDS=	psf2bdf:x11-fonts/psftools
 VT_CONFIGURE_ENABLE=	cava-font
 VT_PLIST_FILES=		${DATADIR}/cava.fnt
+
+CPPFLAGS+=	-I${PREFIX}/include/iniparser
 
 pre-configure:
 	${ECHO_CMD} ${DISTVERSION} > ${WRKSRC}/version

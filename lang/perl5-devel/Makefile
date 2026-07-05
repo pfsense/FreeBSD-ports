@@ -1,15 +1,7 @@
 PORTNAME=	perl
-# XXX Remove second line, uncomment first
-#DISTVERSION=	${PERL_VERSION}	# TODO: set EXPIRATION_DATE when .0 is released and remove .r from version.mk
-DISTVERSIONPREFIX=	v
-DISTVERSION=	${GH_TAGNAME:C/^v//:C/-g[0-9a-f]*$//}
-DISTVERSIONSUFFIX=	${GH_TAGNAME:C/.*-g/-g/}
-PORTREVISION=	3
+DISTVERSION=	${PERL_VERSION}
 CATEGORIES=	lang devel perl5
-# XXX Leave only CPAN.
-MASTER_SITES=	LOCAL/mat/perl \
-		GH
-#MASTER_SITES=	CPAN/../../src/5.0
+MASTER_SITES=	CPAN/../../src/5.0 CPAN/../by-authors/id/H/HY/HYDAHY
 DIST_SUBDIR=	perl
 
 MAINTAINER=	mat@FreeBSD.org
@@ -21,18 +13,11 @@ LICENSE_COMB=	dual
 LICENSE_FILE_ART10=	${WRKSRC}/Artistic
 LICENSE_FILE_GPLv1+ =	${WRKSRC}/Copying
 
-# Uncomment when the default Perl is switched to 5.3(X+2)
+# Uncomment when the default Perl is switched to 5.4(X+2)+
 #DEPRECATED=	Support end three years after .0 release, please upgrade to a more recent version of Perl
 #EXPIRATION_DATE=<Release date of .0 + 3 years>
 
-# XXX releases are .tar.xz, add: tar:xz
-USES=		cpe
-
-# XXX Remove github things.
-USE_GITHUB=	yes
-GH_ACCOUNT=	Perl
-GH_PROJECT=	perl5
-GH_TAGNAME=	v5.39.0-62-gdab8baec2c
+USES=		cpe tar:xz
 
 # Give a hint of where libperl.so can be found.
 USE_LDCONFIG=	${PREFIX}/${_ARCH_LIB}/CORE
@@ -42,8 +27,7 @@ TEST_ENV=	${MAKE_ENV} \
 		LD_LIBRARY_PATH=${WRKSRC} \
 		TEST_JOBS=${MAKE_JOBS_NUMBER}
 
-# XXX uncomment PORTSCOUT line
-#PORTSCOUT=	limit:^${PERL_VER}.
+PORTSCOUT=	limit:^${PERL_VER}.
 
 HAS_CONFIGURE=		yes
 CONFIGURE_SCRIPT=	Configure
@@ -65,6 +49,7 @@ CONFIGURE_ARGS=		-Darchlib=${PREFIX}/${_ARCH_LIB} \
 			-Dsiteman3dir=${SITE_MAN3} \
 			-Dusenm=n \
 			-Duseshrplib \
+			-Dusethreads=y \
 			-sde \
 			-Ui_iconv \
 			-Ui_malloc \
@@ -151,8 +136,8 @@ MANDIRS=		${PERLMANPREFIX}/man
 LIBPERL_VER=	${PORTVERSION:C/[^0-9.]//}
 
 OPTIONS_DEFINE=		DEBUG DOT_INC DTRACE GDBM MULTIPLICITY PERL_64BITINT \
-			PERL_MALLOC SITECUSTOMIZE THREADS
-OPTIONS_DEFAULT=	DTRACE MULTIPLICITY PERL_64BITINT THREADS
+			PERL_MALLOC SITECUSTOMIZE
+OPTIONS_DEFAULT=	DTRACE MULTIPLICITY PERL_64BITINT
 
 .if !exists(/usr/sbin/dtrace)
 OPTIONS_EXCLUDE=	DTRACE
@@ -170,7 +155,6 @@ MULTIPLICITY_DESC=	Use multiplicity
 PERL_64BITINT_DESC=	Use 64 bit integers (on i386)
 PERL_MALLOC_DESC=	Use Perl malloc
 SITECUSTOMIZE_DESC=	Run-time customization of @INC
-THREADS_DESC=		Build threaded perl
 
 DEBUG_CONFIGURE_ON=		-DDEBUGGING \
 				-Doptimize="-g"
@@ -187,8 +171,6 @@ PERL_64BITINT_CONFIGURE_ON=	-Duse64bitint
 PERL_MALLOC_CONFIGURE_ON=	-Dusemymalloc=y
 PERL_MALLOC_CONFIGURE_OFF=	-Dusemymalloc=n
 SITECUSTOMIZE_CONFIGURE_ON=	-Dusesitecustomize
-THREADS_CONFIGURE_ON=		-Dusethreads=y
-THREADS_CONFIGURE_OFF=		-Dusethreads=n
 
 # Why this is required is explained in:
 # https://bugs.freebsd.org/bugzilla/show_bug.cgi?id=227356#c5
@@ -289,6 +271,10 @@ post-patch:
 		/^if.*nopods.*versiononly || /s/.*/if (1) {/' \
 		${WRKSRC}/installperl
 .endif
+	cd ${PATCHDIR}; for patch in patch-*; do \
+		${AWK} -v patch="$$patch" 'seen == 1 && /,NULL/ {print ",\"FreeBSD:" patch "\""} {print} /local_patches\[\]/ { seen=1 }' ${WRKSRC}/patchlevel.h > ${WRKDIR}/patchlevel.h; \
+		mv -f ${WRKDIR}/patchlevel.h ${WRKSRC}/patchlevel.h ; \
+	done
 
 post-install:
 	@${REINPLACE_CMD} -e '/^lddlflags/s|-L${WRKSRC} ||' \

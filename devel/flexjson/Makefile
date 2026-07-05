@@ -1,5 +1,6 @@
 PORTNAME=	flexjson
 DISTVERSION=	2.1
+PORTREVISION=	1
 CATEGORIES=	devel java
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/flexjson%20${PORTVERSION}
 
@@ -10,7 +11,8 @@ WWW=		https://flexjson.sourceforge.net/
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/LICENSE-2.0.txt
 
-USE_JAVA=	yes
+USES=		java
+
 NO_BUILD=	yes
 NO_ARCH=	yes
 

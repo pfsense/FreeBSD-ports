@@ -1,6 +1,6 @@
---- chrome/browser/ui/views/chrome_views_delegate_linux.cc.orig	2022-08-31 12:19:35 UTC
+--- chrome/browser/ui/views/chrome_views_delegate_linux.cc.orig	2025-09-06 10:01:20 UTC
 +++ chrome/browser/ui/views/chrome_views_delegate_linux.cc
-@@ -23,7 +23,7 @@ bool IsDesktopEnvironmentUnity() {
+@@ -27,7 +27,7 @@ bool IsDesktopEnvironmentUnity() {
    return desktop_env == base::nix::DESKTOP_ENVIRONMENT_UNITY;
  }
  
@@ -9,7 +9,7 @@
  int GetWindowIconResourceId() {
  #if BUILDFLAG(GOOGLE_CHROME_BRANDING)
    switch (chrome::GetChannel()) {
-@@ -67,7 +67,7 @@ views::NativeWidget* ChromeViewsDelegate::CreateNative
+@@ -85,7 +85,7 @@ views::NativeWidget* ChromeViewsDelegate::CreateNative
                                delegate);
  }
  

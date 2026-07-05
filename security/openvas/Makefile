@@ -1,5 +1,5 @@
 PORTNAME=	openvas
-DISTVERSION=	22.7.9
+DISTVERSION=	23.41.5
 DISTVERSIONPREFIX=	v
 CATEGORIES=	security
 
@@ -19,7 +19,8 @@ LIB_DEPENDS=	libgvm_base.so:security/gvm-libs \
 		libssh.so:security/libssh \
 		libgnutls.so:security/gnutls \
 		libnetsnmp.so:net-mgmt/net-snmp \
-		libjson-glib-1.0.so:devel/json-glib
+		libjson-glib-1.0.so:devel/json-glib \
+		libcurl.so:ftp/curl
 RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}impacket>=0:net/py-impacket@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}greenbone-feed-sync>0:security/py-greenbone-feed-sync@${PY_FLAVOR} \
 		redis-server:databases/redis \
@@ -27,7 +28,7 @@ RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}impacket>=0:net/py-impacket@${PY_FLAVOR} \
 		rsync:net/rsync \
 		nmap:security/nmap
 
-USES=		bison cmake gnome pkgconfig python ssl
+USES=		bison cmake gnome gssapi:mit pkgconfig python ssl
 USE_GITHUB=	yes
 GH_ACCOUNT=	greenbone
 GH_PROJECT=	${PORTNAME}-scanner
@@ -40,8 +41,8 @@ GROUPS=		${USERS}
 
 .include <bsd.port.pre.mk>
 
-.if ${OPSYS} == FreeBSD && ( ${OSVERSION} >= 1400079 || ( ${OSVERSION} >= 1302505 && ${OSVERSION} < 1400000 ))
-CFLAGS+=	-Wno-error=strict-prototypes -Wno-error=unused-but-set-variable -Wno-error=invalid-utf8
+.if ${OPSYS} == FreeBSD
+CFLAGS+=	-Wno-error=strict-prototypes -Wno-error=unused-but-set-variable -Wno-error=invalid-utf8 -Wno-implicit-function-declaration
 .endif
 
 # The struct this error is about is only ever accessed using bcopy() and memset(),
@@ -52,7 +53,7 @@ CFLAGS_armv7=	-Wno-error=unaligned-access
 
 post-patch:
 	@${REINPLACE_CMD} -e 's|#include <bsd/unistd.h>||g' ${WRKSRC}/src/nasl_plugins.c
-	@${REINPLACE_CMD} -e 's|#include <bsd/unistd.h>|#include <unistd.h>|g' ${WRKSRC}//src/pluginload.c
+	@${REINPLACE_CMD} -e 's|#include <bsd/unistd.h>|#include <unistd.h>|g' ${WRKSRC}/src/pluginload.c
 	@${REINPLACE_CMD} -e 's|vendor_version_get ()|vendor_version_get (void)|g' ${WRKSRC}/misc/vendorversion.c
 
 post-install:

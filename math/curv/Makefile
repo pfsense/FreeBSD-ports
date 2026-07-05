@@ -1,11 +1,12 @@
 PORTNAME=	curv
 DISTVERSION=	0.5
-PORTREVISION=	21
+PORTREVISION=	29
 CATEGORIES=	math lang graphics
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Language for making art using mathematics
-WWW=		https://github.com/curv3d/curv/
+WWW=		https://curv3d.org/ \
+		https://codeberg.org/doug-moen/curv
 
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/LICENSE
@@ -15,7 +16,7 @@ BROKEN=		requires OpenMP support that is missing on this architecture
 .endif
 
 BUILD_DEPENDS=	glm>0:math/glm
-LIB_DEPENDS=	libboost_system.so:devel/boost-libs \
+LIB_DEPENDS=	libboost_filesystem.so:devel/boost-libs \
 		libdouble-conversion.so:devel/double-conversion \
 		libglfw.so:graphics/glfw \
 		libImath.so:math/Imath \
@@ -41,6 +42,11 @@ PLIST_FILES=	bin/curv \
 		lib/curv/lib/web_colour.curv \
 		lib/curv/std.curv \
 		share/gtksourceview-3.0/language-specs/curv.lang
+
+post-patch:
+	@${REINPLACE_CMD} -e '/find_package/s| system||' \
+			  -e 's| Boost::system||' \
+			${WRKSRC}/CMakeLists.txt
 
 post-install:
 	@${RM} ${STAGEDIR}${PREFIX}/lib/curv/lib/README

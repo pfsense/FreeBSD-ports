@@ -4,15 +4,13 @@ CATEGORIES=	graphics kde kde-applications
 
 MAINTAINER=	kde@FreeBSD.org
 COMMENT=	Mobipocket plugins for Strigi indexing and thumbnails
-WWW=		https://www.kde.org
+WWW=		https://invent.kde.org/graphics/kdegraphics-mobipocket
 
-USES=		cmake compiler:c++11-lang kde:5 qt:5 tar:xz
+USES=		cmake compiler:c++11-lang kde:6 qt:6 tar:xz
 USE_KDE=	completion config coreaddons jobwidgets kio service solid \
 		widgetsaddons windowsystem \
 		ecm:build
-USE_QT=		concurrent core dbus gui network widgets \
-		buildtools:build qmake:build
-
+USE_QT=		base
 USE_LDCONFIG=	yes
 
 .include <bsd.port.mk>

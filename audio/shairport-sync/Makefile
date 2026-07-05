@@ -1,6 +1,5 @@
 PORTNAME=	shairport-sync
-DISTVERSION=	4.3.2
-PORTREVISION=	1
+DISTVERSION=	5.0.1
 CATEGORIES=	audio
 
 MAINTAINER=	ehaupt@FreeBSD.org
@@ -15,13 +14,12 @@ LIB_DEPENDS=	libavahi-client.so:net/avahi-app \
 		libpopt.so:devel/popt \
 		libsoxr.so:audio/libsoxr
 
-USES=		autoreconf libtool pkgconfig ssl
+USES=		autoreconf libtool localbase pkgconfig ssl
 USE_GITHUB=	yes
 GH_ACCOUNT=	mikebrady
 USE_RC_SUBR=	${PORTNAME}
 
 GNU_CONFIGURE=	yes
-GNU_CONFIGURE_MANPREFIX=	${PREFIX}/share
 CONFIGURE_ARGS=	--sysconfdir=${LOCALBASE}/etc \
 		--with-avahi \
 		--with-libdaemon \
@@ -34,21 +32,21 @@ CONFIGURE_ARGS=	--sysconfdir=${LOCALBASE}/etc \
 CONFIGURE_ENV+=	SSL_CFLAGS=-I${OPENSSLINC} \
 		SSL_LIBS=-L${OPENSSLLIB}
 
-CFLAGS+=	-I${LOCALBASE}/include
 LDFLAGS+=	-lcrypto
 
 OPTIONS_DEFINE=		AIRPLAY2 ALAC ALSA MQTT PULSEAUDIO SNDIO
-OPTIONS_DEFAULT=	AIRPLAY2 SNDIO
+OPTIONS_DEFAULT=	AIRPLAY2
 AIRPLAY2_DESC=		Build with AirPlay 2 protocol support
 ALAC_DESC=		Build with libalac support (experimental)
 MQTT_DESC=		Build with MQTT protocol support
+SNDIO_DESC=		Sndio audio support (DEPRECATED upstream)
 
 AIRPLAY2_BUILD_DEPENDS=	vim:editors/vim
 AIRPLAY2_LIB_DEPENDS=	libavutil.so:multimedia/ffmpeg \
 			libgcrypt.so:security/libgcrypt \
 			libplist-2.0.so:devel/libplist \
 			libsodium.so:security/libsodium \
-			libuuid.so:misc/e2fsprogs-libuuid
+			libuuid.so:misc/libuuid
 AIRPLAY2_RUN_DEPENDS=	nqptp:net/nqptp
 AIRPLAY2_CONFIGURE_ON=	--with-airplay-2
 AIRPLAY2_SUB_FILES=	pkg-message

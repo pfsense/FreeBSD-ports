@@ -10,14 +10,13 @@ WWW=		https://marzer.github.io/tomlplusplus/
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-BUILD_DEPENDS=	cmake:devel/cmake-core
 TEST_DEPENDS=	catch>0:devel/catch
 
-USES=		compiler:c++17-lang meson pkgconfig
+USES=		cmake:indirect compiler:c++17-lang meson pkgconfig
 USE_GITHUB=	yes
 USE_LDCONFIG=	yes
 GH_ACCOUNT=	marzer
-MESON_ARGS=	-Duse_vendored_libs=false
+MESON_FALSE=	use_vendored_libs
 
 post-patch:
 # Convert codeset from GNU to IANA

@@ -1,5 +1,6 @@
 PORTNAME=	erminej
 DISTVERSION=	3.2
+PORTREVISION=	1
 CATEGORIES=	biology java
 MASTER_SITES=	http://home.pavlab.msl.ubc.ca/ermineJ/distributions/
 DISTNAME=	ermineJ-${DISTVERSION}-generic-bundle
@@ -11,8 +12,7 @@ WWW=		https://erminej.msl.ubc.ca/
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/LICENSE.txt
 
-USES=		zip
-USE_JAVA=	yes
+USES=		java zip
 
 WRKSRC=		${WRKDIR}/ermineJ-${DISTVERSION}
 NO_BUILD=	yes

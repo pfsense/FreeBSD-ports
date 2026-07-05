@@ -1,6 +1,5 @@
 PORTNAME=	ImageMagick
-DISTVERSION=	7.1.1-26
-PORTREVISION=	3
+DISTVERSION=	7.1.2-16
 CATEGORIES=	graphics perl5
 MASTER_SITES=	https://ftp.acc.umu.se/mirror/imagemagick.org/ftp/releases/ \
 		https://mirror.dogado.de/imagemagick/releases/ \
@@ -37,7 +36,6 @@ CPE_PRODUCT=	imagemagick
 CPE_VENDOR=	imagemagick
 SHEBANG_FILES=	www/source/examples.pl
 GNU_CONFIGURE=	yes
-GNU_CONFIGURE_MANPREFIX=${PREFIX}/share
 CONFIGURE_ENV=	MAKE=${MAKE_CMD}
 CONFIGURE_ARGS=	--without-dps \
 		--with-zstd
@@ -47,7 +45,7 @@ USE_GNOME=	libxml2
 SAMPLE_FILES=	colors.xml delegates.xml log.xml mime.xml policy.xml \
 		quantization-table.xml thresholds.xml type-apple.xml \
 		type-dejavu.xml type-ghostscript.xml type-urw-base35.xml \
-		type-windows.xml type.xml
+		type-urw-base35-type1.xml type-windows.xml type.xml
 
 PLIST_SUB=	PORTVERSION=${PORTVERSION:R}
 
@@ -70,6 +68,7 @@ CONFIGURE_ARGS+=	--with-x
 USES+=			xorg
 USE_XORG=		ice sm x11 xext xt
 .else
+OPTIONS_EXCLUDE=	PANGO RAQM SVG
 CONFIGURE_ARGS+=	--without-x
 .endif
 
@@ -168,13 +167,16 @@ RAW_IMPLIES=		LCMS2
 
 SVG_DESC=		SVG vector image format support (via librsvg, implies the x11 option)
 SVG_CONFIGURE_WITH=	rsvg
-SVG_USE=		gnome=cairo,gdkpixbuf2,librsvg2
+SVG_USE=		gnome=cairo,gdkpixbuf,librsvg2
 
 TIFF_CONFIGURE_WITH=	tiff
 TIFF_LIB_DEPENDS=	libtiff.so:graphics/tiff
 
 WEBP_CONFIGURE_WITH=	webp
 WEBP_LIB_DEPENDS=	libwebp.so:graphics/webp
+
+WMF_CONFIGURE_WITH=	wmf
+WMF_LIB_DEPENDS=	libwmf.so:graphics/libwmf@${FLAVOR}
 
 .include <bsd.port.options.mk>
 
@@ -272,20 +274,6 @@ USES+=		ghostscript
 CONFIGURE_ARGS+=	--without-gslib
 .endif
 
-# WMF (Windows Meta File) images
-.if ${PORT_OPTIONS:MWMF}
-. if ${FLAVOR:U} == x11
-LIB_DEPENDS+=		libwmf.so:graphics/libwmf
-. else
-LIB_DEPENDS+=		libwmf.so:graphics/libwmf-nox11
-. endif
-CONFIGURE_ARGS+=	--with-wmf=yes
-PLIST_SUB+=		WMF=""
-.else
-CONFIGURE_ARGS+=	--without-wmf
-PLIST_SUB+=		WMF="@comment "
-.endif
-
 # PDF (Adobe Portable Document Format) support
 .if ${PORT_OPTIONS:MPDF}
 . if ${FLAVOR:U} == x11
@@ -348,5 +336,8 @@ post-install:
 	@${MV} ${STAGEDIR}${PREFIX}/etc/ImageMagick-7/${i} \
 		${STAGEDIR}${PREFIX}/etc/ImageMagick-7/${i}.sample
 .endfor
+
+post-install-PERL-on:
+	${STRIP_CMD} ${STAGEDIR}${SITE_ARCH}/auto/Image/Magick/*/*.so
 
 .include <bsd.port.mk>

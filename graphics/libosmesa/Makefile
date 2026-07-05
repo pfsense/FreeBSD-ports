@@ -30,6 +30,7 @@ MESON_ARGS+=	-Dgallium-drivers="swrast" \
 		-Dgallium-nine=false \
 		-Dgles1=disabled \
 		-Dgles2=disabled \
+		-Dglvnd=disabled \
 		-Dlmsensors=disabled \
 		-Dmicrosoft-clc=disabled \
 		-Dopengl=true \
@@ -44,7 +45,9 @@ LDFLAGS_i386=		-Wl,-znotext
 
 MESON_ARGS+=	-Dosmesa=true
 
-.include "${MASTERDIR}/Makefile.targets"
+.if ${ARCH} != amd64
+MESON_ARGS+=	-Dintel-rt=disabled # https://gitlab.freedesktop.org/mesa/mesa/-/issues/10629
+.endif
 
 post-install:
 	@${MKDIR} ${STAGEDIR}${PREFIX}/include/GL

@@ -1,47 +1,53 @@
 PORTNAME=	toot
-DISTVERSION=	0.41.1
+DISTVERSION=	0.51.1
 CATEGORIES=	net-im python
+MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
-MAINTAINER=	ports@freebsd.org
+MAINTAINER=	nxjoseph@FreeBSD.org
 COMMENT=	Interact with the Mastodon social network from the command line
-WWW=		https://github.com/ihabunek/toot
+WWW=		https://github.com/ihabunek/toot \
+		https://pypi.org/project/toot
 
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-BROKEN=		does not run with current devel/py-urwid (PR 274411)
+RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}beautifulsoup>=4.5.0<5.0:www/py-beautifulsoup@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}click>=8.1<9:devel/py-click@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}python-dateutil>=2.8.1<3.0:devel/py-python-dateutil@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}requests>=2.13<3.0:www/py-requests@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}tomlkit>=0.10.0<1.0:textproc/py-tomlkit@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}urwid>=0:devel/py-urwid@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}wcwidth>=0.1.7:devel/py-wcwidth@${PY_FLAVOR}
 
-RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}beautifulsoup>=4.5.0:www/py-beautifulsoup@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}click>=8.1:devel/py-click@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}requests>=2.13:www/py-requests@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}tomlkit>=0.10.0:textproc/py-tomlkit@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}wcwidth>=0.1.7:devel/py-wcwidth@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}urwid>=2.0.0:devel/py-urwid@${PY_FLAVOR}
-TEST_DEPENDS=	${PYTHON_PKGNAMEPREFIX}beautifulsoup>=4.5.0:www/py-beautifulsoup@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}pytest-cov>=2.4.0:devel/py-pytest-cov@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}pytest>=3.0.0:devel/py-pytest@${PY_FLAVOR}
-
-USES=		python
-USE_GITHUB=	yes
-GH_ACCOUNT=	ihabunek
-USE_PYTHON=	autoplist distutils
-
-TEST_TARGET=	coverage test
+USES=		python:build,run
+USE_PYTHON=	flavors
 
 NO_ARCH=	yes
+NO_BUILD=	yes
 
-PORTDOCS=	CHANGELOG.md README.rst
+SUB_FILES=	${PORTNAME}
+SUB_LIST=	PYTHON_CMD=${PYTHON_CMD}
 
-OPTIONS_DEFINE=	DOCS
+OPTIONS_DEFAULT=	IMAGES RICHTEXT
+OPTIONS_GROUP=		SUPPORT
+OPTIONS_GROUP_SUPPORT=	IMAGES RICHTEXT
 
-post-install-DOCS-on:
-	@${MKDIR} ${STAGEDIR}${DOCSDIR}
-	${INSTALL_DATA} ${WRKSRC}/CHANGELOG.md ${STAGEDIR}${DOCSDIR}
-	${INSTALL_DATA} ${WRKSRC}/README.rst ${STAGEDIR}${DOCSDIR}
+IMAGES_DESC=	Required to display images in the TUI
+RICHTEXT_DESC=	Required to display rich text in the TUI
 
-pre-test:
-	@${REINPLACE_CMD} -e 's|py.test |py.test-${PYTHON_VER} |' ${WRKSRC}/Makefile
-	@${REINPLACE_CMD} -e 's|pytest |pytest-${PYTHON_VER} |' ${WRKSRC}/Makefile
+IMAGES_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}pillow>=9.5.0:graphics/py-pillow@${PY_FLAVOR} \
+			${PYTHON_PKGNAMEPREFIX}term-image>=0.7.2:graphics/py-term-image@${PY_FLAVOR}
+RICHTEXT_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}urwidgets>=0.2<0.3:devel/py-urwidgets@${PY_FLAVOR}
+
+post-patch:
+	@${REINPLACE_CMD} -e '12s,"0.0.0","${DISTVERSION}",g' \
+		${WRKSRC}/${PORTNAME}/__init__.py
+
+do-install:
+	${INSTALL_SCRIPT} ${WRKDIR}/${PORTNAME} ${STAGEDIR}${PREFIX}/bin
+	(cd ${WRKSRC}/${PORTNAME} && \
+		${COPYTREE_SHARE} . ${STAGEDIR}${PYTHON_SITELIBDIR}/${PORTNAME} \
+		"! -name *\.bak")
 
 .include <bsd.port.mk>

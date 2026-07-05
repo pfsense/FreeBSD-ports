@@ -1,6 +1,6 @@
 PORTNAME=	lasem
 PORTVERSION=	0.5.1
-PORTREVISION=	3
+PORTREVISION=	4
 CATEGORIES=	textproc gnome
 MASTER_SITES=	GNOME
 DIST_SUBDIR=	gnome
@@ -18,7 +18,7 @@ RUN_DEPENDS=	stixfonts>0:x11-fonts/stix-fonts
 GNU_CONFIGURE=	yes
 GNU_CONFIGURE_MANPREFIX=${PREFIX}/share
 USES=		gettext gmake gnome libtool localbase pathfix pkgconfig tar:xz
-USE_GNOME=	glib20 pango intltool gdkpixbuf2 libxml2 introspection:build
+USE_GNOME=	glib20 pango intltool gdkpixbuf libxml2 introspection:build
 
 CONFIGURE_ARGS=	--disable-gtk-doc-html \
 	--without-html-dir

@@ -1,5 +1,6 @@
 PORTNAME=	xalan-j
 PORTVERSION=	2.7.2
+PORTREVISION=	1
 CATEGORIES=	textproc java
 MASTER_SITES=	APACHE/xalan/xalan-j/binaries
 DISTNAME=	${PORTNAME}_${PORTVERSION:S/./_/g}-bin
@@ -14,10 +15,10 @@ RUN_DEPENDS=	${JAVALIBDIR}/xml-apis.jar:textproc/xerces-j
 
 OPTIONS_DEFINE=	DOCS EXAMPLES
 
-USES=		cpe
+USES=		cpe java
 CPE_PRODUCT=	xalan-java
 CPE_VENDOR=	apache
-USE_JAVA=	yes
+
 NO_BUILD=	yes
 
 WRKSRC=		${WRKDIR}/${PORTNAME}_${PORTVERSION:S/./_/g}

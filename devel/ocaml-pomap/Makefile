@@ -1,6 +1,6 @@
 PORTNAME=	pomap
 PORTVERSION=	4.1.1
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	devel
 PKGNAMEPREFIX=	ocaml-
 
@@ -13,7 +13,7 @@ LICENSE_FILE=	${WRKSRC}/LICENSE.md
 
 BUILD_DEPENDS=	dune:devel/ocaml-dune
 
-USE_OCAML=	yes
+USES=		ocaml
 USE_GITHUB=	yes
 GH_ACCOUNT=	mmottl
 
@@ -21,6 +21,12 @@ DOCSDIR=	${OCAML_DOCSDIR}/${PORTNAME}
 EXAMPLESDIR=	${OCAML_EXAMPLESDIR}/${PORTNAME}
 
 OPTIONS_DEFINE=	DOCS EXAMPLES
+
+.include <bsd.port.options.mk>
+
+.if ${ARCH} == powerpc
+USE_BINUTILS=	yes
+.endif
 
 do-build:
 	cd ${BUILD_WRKSRC} && dune build --verbose

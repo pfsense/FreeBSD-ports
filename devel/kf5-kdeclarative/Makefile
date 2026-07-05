@@ -1,6 +1,5 @@
 PORTNAME=	kdeclarative
 DISTVERSION=	${KDE_FRAMEWORKS_VERSION}
-POPRTREVISION=	1
 CATEGORIES=	devel kde kde-frameworks
 
 MAINTAINER=	kde@FreeBSD.org

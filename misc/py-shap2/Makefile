@@ -1,6 +1,6 @@
 PORTNAME=	shap2
 DISTVERSION=	0.42.0
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	misc # machine-learning
 MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -26,6 +26,6 @@ USES=		python
 USE_PYTHON=	distutils autoplist
 
 post-install:
-	@${STRIP_CMD} ${STAGEDIR}${PYTHON_SITELIBDIR}/shap2/_cext${PYTHON_EXT_SUFFIX}.so
+	@${STRIP_CMD} ${STAGEDIR}${PYTHON_SITELIBDIR}/shap2/_cext${PYTHON_TAG}.so
 
 .include <bsd.port.mk>

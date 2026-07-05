@@ -1,6 +1,6 @@
 PORTNAME=	jtans
 PORTVERSION=	1.0
-PORTREVISION=	4
+PORTREVISION=	5
 CATEGORIES=	games java
 MASTER_SITES=	SF
 DISTNAME=	${PORTNAME}_appli-${PORTVERSION}
@@ -12,11 +12,12 @@ WWW=		https://jtans.sourceforge.net/
 
 LICENSE=	GPLv2+ # got from website
 
+USES=		java
+
 NO_WRKSUBDIR=	yes
 EXTRACT_CMD=	${CP}
 EXTRACT_BEFORE_ARGS=	# empty
 EXTRACT_AFTER_ARGS=	.
-USE_JAVA=	yes
 NO_BUILD=	yes
 SUB_FILES=	jtans.sh
 DATADIR=	${JAVASHAREDIR}/${PORTNAME}

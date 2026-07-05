@@ -4,7 +4,7 @@
  *
  * part of pfSense (https://www.pfsense.org)
  * Copyright (c) 2008 Remco Hoef <remcoverhoef@pfsense.com>
- * Copyright (c) 2009-2024 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2009-2026 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2013-2016 PiBa-NL
  * All rights reserved.
  *
@@ -32,8 +32,6 @@ require_once("haproxy/pkg_haproxy_tabs.inc");
 $changedesc = "Services: HAProxy: Frontends";
 
 haproxy_config_init();
-
-$a_frontend = &getarraybyref($config, 'installedpackages', 'haproxy', 'ha_backends', 'item');
 
 function array_moveitemsbefore(&$items, $before, $selected) {
 	// generic function to move array items before the set item by their numeric indexes.
@@ -72,16 +70,15 @@ function array_moveitemsbefore(&$items, $before, $selected) {
 if($_GET['action'] == "toggle") {
 	$id = $_GET['id'];
 	echo "$id|";
-	if (isset($a_frontend[get_frontend_id($id)])) {
-		$frontent = &$a_frontend[get_frontend_id($id)];
-		if ($frontent['status'] != "disabled"){
-			$frontent['status'] = 'disabled';
+	if (config_get_path('installedpackages/haproxy/ha_backends/item/' . get_frontend_id($id)) !== null) {
+		if (config_get_path('installedpackages/haproxy/ha_backends/item/' . get_frontend_id($id) . '/status') != "disabled"){
+			config_set_path('installedpackages/haproxy/ha_backends/item/' . get_frontend_id($id) . '/status', 'disabled');
 			echo "0|";
 		}else{
-			$frontent['status'] = 'active';
+			config_set_path('installedpackages/haproxy/ha_backends/item/' . get_frontend_id($id) . '/status', 'active');
 			echo "1|";
 		}
-		$changedesc .= " set frontend '$id' status to: {$frontent['status']}";
+		$changedesc .= " set frontend '$id' status to: " . config_get_path('installedpackages/haproxy/ha_backends/item/' . get_frontend_id($id) . '/status');
 
 		touch($d_haproxyconfdirty_path);
 		write_config($changedesc);
@@ -107,7 +104,7 @@ if ($_POST) {
 				$selected[] = get_frontend_id($selection);
 			}
 			foreach ($selected as $itemnr) {
-				unset($a_frontend[$itemnr]);
+				config_del_path("installedpackages/haproxy/ha_backends/item/{$itemnr}");
 				$deleted = true;
 			}
 			if ($deleted) {
@@ -140,14 +137,16 @@ if ($_POST) {
 			foreach($_POST['rule'] as $selection) {
 				$selected[] = get_frontend_id($selection);
 			}
+			$a_frontend = config_get_path('installedpackages/haproxy/ha_backends/item', []);
 			array_moveitemsbefore($a_frontend, $moveto, $selected);
+			config_set_path('installedpackages/haproxy/ha_backends/item', $a_frontend);
 
 			touch($d_haproxyconfdirty_path);
 			write_config($changedesc);
 		}
 	}
 } else {
-	$result = haproxy_check_config($retval);
+	$result = haproxy_check_config();
 	if ($result) {
 		$savemsg = gettext($result);
 	}
@@ -156,9 +155,9 @@ if ($_POST) {
 if ($_GET['act'] == "del") {
 	$id = $_GET['id'];
 	$id = get_frontend_id($id);
-	if (isset($a_frontend[$id])) {
+	if (config_get_path("installedpackages/haproxy/ha_backends/item/{$id}") !== null) {
 		if (!$input_errors) {
-			unset($a_frontend[$id]);
+			config_del_path("installedpackages/haproxy/ha_backends/item/{$id}");
 			$changedesc .= " Frontend delete";
 			write_config($changedesc);
 			touch($d_haproxyconfdirty_path);
@@ -204,7 +203,12 @@ if ($savemsg) {
 
 $display_apply = file_exists($d_haproxyconfdirty_path) ? "" : "none";
 echo "<div id='showapplysettings' style='display: {$display_apply};'>";
-print_apply_box(sprintf(gettext("The haproxy configuration has been changed.%sYou must apply the changes in order for them to take effect."), "<br/>"));
+print_apply_box(sprintf(
+	gettext(
+		"The HAProxy configuration has been changed.%sServer states are preserved between configuration changes - " .
+		"use %sSettings > Force Service Restart%s to apply changes immediately."
+	), "<br/>", '<a href="/haproxy/haproxy_global.php">', '</a>'
+));
 echo "</div>";
 
 haproxy_display_top_tabs_active($haproxy_tab_array['haproxy'], "frontend");
@@ -255,7 +259,7 @@ function js_callback(req) {
 	}
 
 	$a_frontend_grouped = array();
-	foreach($a_frontend as &$frontend2) {
+	foreach(config_get_path('installedpackages/haproxy/ha_backends/item', []) as $fidx => $frontend2) {
 		getarraybyref($frontend2);// makes it a valid array in case the item was completely empty.
 		$mainfrontend = get_primaryfrontend($frontend2);
 		$mainname = $mainfrontend['name'];
@@ -340,11 +344,13 @@ function js_callback(req) {
 
 					if (get_frontend_uses_ssl($frontend)) {
 						$cert = lookup_cert($frontend['ssloffloadcert']);
+						$cert = $cert['item'];
 						$descr = htmlspecialchars($cert['descr']);
 						$certs = getarraybyref($frontend, 'ha_certificates', 'item');
 						if (count($certs) > 0){
 							foreach($certs as $certitem){
 								$cert = lookup_cert($certitem['ssl_certificate']);
+								$cert = $cert['item'];
 								$descr .= "\n".htmlspecialchars($cert['descr']);
 							}
 						}

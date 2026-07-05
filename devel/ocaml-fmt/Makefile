@@ -1,5 +1,6 @@
 PORTNAME=	fmt
 PORTVERSION=	0.9.0
+PORTREVISION=	1
 CATEGORIES=	devel
 MASTER_SITES=	https://erratique.ch/software/fmt/releases/
 PKGNAMEPREFIX=	ocaml-
@@ -17,8 +18,7 @@ BUILD_DEPENDS=	${SA_DIR}/cmdliner/META:devel/ocaml-cmdliner \
 		opam-installer:devel/ocaml-opam
 RUN_DEPENDS=	${SA_DIR}/cmdliner/META:devel/ocaml-cmdliner
 
-USES=		tar:tbz
-USE_OCAML=	yes
+USES=		ocaml tar:tbz
 
 DOCSDIR=	${OCAML_DOCSDIR}/${PORTNAME}
 PORTDOCS=	CHANGES.md LICENSE.md README.md

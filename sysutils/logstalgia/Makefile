@@ -1,12 +1,12 @@
 PORTNAME=	logstalgia
-DISTVERSION=	1.1.4
-PORTREVISION=	5
+DISTVERSION=	1.1.5
 CATEGORIES=	sysutils www
 MASTER_SITES=	https://github.com/acaudwell/${PORTNAME}/releases/download/${DISTNAME}/
 
 MAINTAINER=	ehaupt@FreeBSD.org
 COMMENT=	Website access log visualization tool
-WWW=		https://logstalgia.io/
+WWW=		https://logstalgia.io/ \
+		https://github.com/acaudwell/logstalgia
 
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/COPYING
@@ -25,10 +25,10 @@ USE_SDL=	image2 sdl2
 USE_XORG=	x11
 
 GNU_CONFIGURE=	yes
-GNU_CONFIGURE_MANPREFIX=	${PREFIX}/share
 
 post-patch:
 	@${REINPLACE_CMD} -e 's| -Wno-unused-but-set-variable||' \
 		${WRKSRC}/Makefile.am
+	@${REINPLACE_CMD} -e '/AX_BOOST_SYSTEM/d' ${WRKSRC}/configure.ac
 
 .include <bsd.port.mk>

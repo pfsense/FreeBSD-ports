@@ -1,5 +1,6 @@
 PORTNAME=	sonarqube-ant-task
 PORTVERSION=	2.7.0.1612
+PORTREVISION=	1
 CATEGORIES=	devel java
 MASTER_SITES=	https://binaries.sonarsource.com/Distribution/sonarqube-ant-task/
 EXTRACT_SUFX=	.jar
@@ -11,8 +12,7 @@ WWW=		https://docs.sonarqube.org/latest/analysis/scan/sonarscanner-for-ant/
 
 LICENSE=	LGPL3
 
-USES=		cpe
-USE_JAVA=	yes
+USES=		cpe java
 CPE_VENDOR=	sonarsource
 
 NO_ARCH=	yes

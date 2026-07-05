@@ -1,5 +1,6 @@
 PORTNAME=	zanata-cli
 PORTVERSION=	4.6.2
+PORTREVISION=	1
 DISTVERSIONSUFFIX=	-dist
 CATEGORIES=	devel java
 MASTER_SITES=	https://repo.maven.apache.org/maven2/org/zanata/${PORTNAME}/${PORTVERSION}/
@@ -11,7 +12,8 @@ WWW=		https://docs.zanata.org/en/release/client/
 LICENSE=	LGPL21+
 LICENSE_FILE=	${WRKSRC}/COPYING.LESSER
 
-USE_JAVA=	yes
+USES=		java
+
 NO_ARCH=	yes
 NO_BUILD=	yes
 

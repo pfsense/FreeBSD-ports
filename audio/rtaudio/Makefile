@@ -1,5 +1,6 @@
 PORTNAME=	rtaudio
 DISTVERSION=	6.0.1
+PORTREVISION=	1
 CATEGORIES=	audio
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -8,7 +9,7 @@ WWW=		https://github.com/thestk/rtaudio
 
 LICENSE=	MIT
 
-USES=		cmake:testing compiler:c++11-lang libtool pkgconfig
+USES=		cmake:testing compiler:c++11-lang pkgconfig
 USE_LDCONFIG=	yes
 
 USE_GITHUB=	yes

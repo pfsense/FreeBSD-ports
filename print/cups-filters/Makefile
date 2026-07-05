@@ -1,8 +1,7 @@
 PORTNAME=	cups-filters
 PORTVERSION=	1.28.17
-PORTREVISION=	3
+PORTREVISION=	13
 CATEGORIES=	print
-MASTER_SITES=	https://github.com/OpenPrinting/cups-filters/releases/download/${DISTVERSION}/
 
 MAINTAINER=	tijl@FreeBSD.org
 COMMENT=	Additional backends, filters and other software for CUPS
@@ -18,15 +17,16 @@ LIB_DEPENDS=	liblcms2.so:graphics/lcms2 \
 		libfreetype.so:print/freetype2 \
 		libfontconfig.so:x11-fonts/fontconfig
 
-USES=		compiler:c++11-lib cpe gmake gnome iconv libtool localbase \
-		pkgconfig shebangfix tar:xz
+USES=		autoreconf compiler:c++11-lib cpe gettext-tools gmake gnome \
+		iconv libtool localbase pkgconfig shebangfix tar:xz
+CPE_VENDOR=	linuxfoundation
+USE_GITHUB=	yes
+GH_ACCOUNT=	OpenPrinting
+GH_TAGNAME=	f87687970d9c
 USE_GNOME=	glib20
 USE_LDCONFIG=	yes
 USE_RC_SUBR=	cups_browsed
 
-CONFLICTS=	foomatic-filters # bin/foomatic-rip
-
-CPE_VENDOR=	linuxfoundation
 SHEBANG_FILES=	filter/braille/drivers/generic/brftoembosser.in \
 		filter/braille/drivers/index/imageubrltoindexv3.in \
 		filter/braille/drivers/index/imageubrltoindexv4.in \
@@ -43,8 +43,9 @@ GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--with-shell=/bin/sh \
 		--with-pdftops-path=${LOCALBASE}/bin/pdftops \
 		--with-test-font-path=${LOCALBASE}/share/fonts/dejavu/DejaVuSans.ttf
-GNU_CONFIGURE_MANPREFIX=	${PREFIX}/share
 INSTALL_TARGET=	install-strip
+
+CONFLICTS=	foomatic-filters # bin/foomatic-rip
 
 OPTIONS_DEFINE=			BRAILLE COLORD DOCS
 OPTIONS_GROUP=			FILTERS CUPS_BROWSED
@@ -100,8 +101,8 @@ POPPLER_LIB_DEPENDS=		libpoppler-cpp.so:graphics/poppler
 CUPS_BROWSED_DESC=		cups-browsed(8) options
 
 AVAHI_CONFIGURE_ENABLE=		avahi
-AVAHI_CONFIGURE_OFF=		--with-browseremoteprotocols=cups
-AVAHI_CONFIGURE_ON=		--with-browseremoteprotocols="dnssd cups"
+AVAHI_CONFIGURE_OFF=		--with-browseremoteprotocols=none
+AVAHI_CONFIGURE_ON=		--with-browseremoteprotocols=dnssd
 AVAHI_DESC=			Discover Zeroconf/Bonjour network printers
 AVAHI_LIB_DEPENDS=		libavahi-client.so:net/avahi-app
 AVAHI_SUB_LIST=			AVAHI_DAEMON=avahi_daemon
@@ -136,8 +137,8 @@ PSPOPPLER_DESC=			Poppler pdftops(1)
 
 .include <bsd.port.pre.mk>
 
-#.if ${OPSYS} == FreeBSD && ( ${OSVERSION} >= 1400091 || ( ${OSVERSION} >= 1302507 && ${OSVERSION} < 1400000 ))
-.if ${COMPILER_TYPE} == clang && ${COMPILER_VERSION} >= 160
+#.if ${OPSYS} == FreeBSD
+.if ${COMPILER_TYPE} == clang
 CFLAGS+=	-Wno-error=dynamic-exception-spec
 .endif
 

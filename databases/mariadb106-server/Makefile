@@ -1,10 +1,11 @@
 PORTNAME?=	mariadb
-PORTVERSION=	10.6.17
+PORTVERSION=	10.6.25
 PORTREVISION?=	0
 CATEGORIES=	databases
-MASTER_SITES=	https://mirror.nodesdirect.com/${SITESDIR}/ \
-		https://mirror.one.com/${SITESDIR}/ \
+MASTER_SITES=	\
 		https://ftp.nluug.nl/db/${SITESDIR}/ \
+		https://mirror.nodesdirect.com/${SITESDIR}/ \
+		https://mirror.one.com/${SITESDIR}/ \
 		https://ftp.icm.edu.pl/pub/unix/database/${SITESDIR}/ \
 		https://mirror.truenetwork.ru/${SITESDIR}/ \
 		https://mirrors.aliyun.com/${SITESDIR}/ \
@@ -22,7 +23,8 @@ WWW=		https://mariadb.org/
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-#EXPIRATION_DATE=	2026-07-01
+DEPRECATED=		End-of-Life approaching, please switch to 11.8 (or 11.4)
+EXPIRATION_DATE=	2026-06-30
 
 LIB_DEPENDS+=	libpcre2-8.so:devel/pcre2 \
 		libzstd.so:archivers/zstd
@@ -125,7 +127,8 @@ CONFLICTS_INSTALL=	mariadb10[0-57-9]-${PKGNAMESUFFIX:C/^[0-9]*-//}-* \
 			mariadb1011-${PKGNAMESUFFIX:C/^[0-9]*-//}-* \
 			mysql[0-9]*-${PKGNAMESUFFIX:C/^[0-9]*-//}-* \
 			mysqlwsrep* \
-			percona[0-9]*-${PKGNAMESUFFIX:C/^[0-9]*-//}-*
+			percona[0-9]*-${PKGNAMESUFFIX:C/^[0-9]*-//}-* \
+			mytop
 
 FASTMTX_CMAKE_BOOL=	WITH_FAST_MUTEXES
 GSSAPI_BASE_USES=	gssapi
@@ -166,7 +169,7 @@ ${ENGINE}_CMAKE_OFF=	-DPLUGIN_${ENGINE}=NO
 ${ENGINE}_CMAKE_ON=	-DPLUGIN_${ENGINE}=DYNAMIC
 .endfor
 INNOBASE_VARS_OFF=	disabled_plugins+=INNOBASE
-COLUMNSTORE_BROKEN=	error: __float128 is not supported on this target
+#COLUMNSTORE_BROKEN=	error: __float128 is not supported on this target
 CONNECT_EXTRA_LIB_DEPENDS=	libodbc.so:databases/unixODBC
 CONNECT_EXTRA_USE=		gnome=libxml2
 CONNECT_EXTRA_USES=		gnome
@@ -180,7 +183,7 @@ LZO_CMAKE_OFF=		-DWITH_INNODB_LZO=OFF
 LZO_LIB_DEPENDS=	liblzo2.so:archivers/lzo2
 MROONGA_IMPLIES=	LZ4
 MSGPACK_LIB_DEPENDS=	libmsgpackc.so:devel/msgpack-c
-OQGRAPH_LIB_DEPENDS=	libboost_system.so:devel/boost-libs \
+OQGRAPH_LIB_DEPENDS=	libboost_thread.so:devel/boost-libs \
 			libJudy.so:devel/judy
 ROCKSDB_USES=		python
 ROCKSDB_CMAKE_ON=	-DPYTHON_SHEBANG=${PYTHON_CMD} -DWITH_ROCKSDB_zstd=ON
@@ -194,7 +197,6 @@ WSREP_RUN_DEPENDS=	bash:shells/bash \
 			#stunnel:security/stunnel
 WSREP_SHEBANG_FILES=	bin/wsrep_sst_rsync
 ZMQ_LIB_DEPENDS=	libzmq.so:net/libzmq4
-ZSTD_LIB_DEPENDS=	libzstd.so:archivers/zstd
 
 .for PLUGIN in ${DISABLED_PLUGINS}
 CMAKE_ARGS+=		-DPLUGIN_${PLUGIN}=NO

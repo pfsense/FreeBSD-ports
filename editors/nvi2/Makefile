@@ -1,6 +1,5 @@
 PORTNAME=	nvi2
-PORTVERSION=	2.2.1
-PORTREVISION=	1
+PORTVERSION=	2.2.2
 DISTVERSIONPREFIX=	v
 CATEGORIES=	editors
 
@@ -10,7 +9,7 @@ WWW=		https://github.com/lichray/nvi2/
 
 LICENSE=	BSD3CLAUSE
 
-USES=		bdb cmake compiler:c11 ncurses
+USES=		bdb:18 cmake compiler:c11 ncurses
 USE_GITHUB=	yes
 
 GH_ACCOUNT=	lichray

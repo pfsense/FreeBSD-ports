@@ -3,7 +3,7 @@
  * stunnel.inc
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2015-2024 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2015-2026 Rubicon Communications, LLC (Netgate)
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -30,15 +30,12 @@ require_once("xmlrpc_client.inc");
 define('STUNNEL_LOCALBASE', '/usr/local');
 define('STUNNEL_ETCDIR', STUNNEL_LOCALBASE . "/etc/stunnel");
 define('STUNNEL_CHROOTDIR', '/var/tmp/stunnel');
+define('LOG_PREFIX_PKG_STUNNEL', 'stunnel');
 
 function stunnel_save() {
-	global $config;
-
-	init_config_arr(array('installedpackages', 'stunnel', 'config'));
-	$stunnelconfig = &$config['installedpackages']['stunnel']['config'];
 	$stunnel_conf = STUNNEL_ETCDIR . "/stunnel.conf";
 
-	if (is_array($stunnelconfig) && !empty($stunnelconfig)) {
+	if (!empty(config_get_path('installedpackages/stunnel/config'))) {
 		stunnel_make_directories();
 		stunnel_rcfile();
 	} else {
@@ -60,7 +57,7 @@ function stunnel_save() {
 	$in_use_certs = array();
 	$in_use_certs[] = 'stunnel.pem';
 
-	foreach ($stunnelconfig as $num => $pkgconfig) {
+	foreach (config_get_path('installedpackages/stunnel/config', []) as $num => $pkgconfig) {
 		$conf .= "\n[" . $pkgconfig['description'] . "]\n";
 		if ($pkgconfig['client']) {
 			$conf .= "client = yes" . "\n";
@@ -68,6 +65,7 @@ function stunnel_save() {
 		if ($pkgconfig['certificate'] &&
 		    $pkgconfig['certificate'] != 'default') {
 			$cert = lookup_cert($pkgconfig['certificate']);
+			$cert = $cert['item'];
 			$cert_details = openssl_x509_parse(base64_decode($cert['crt']));
 			$replace_cert = true;
 			if ($cert != false) {
@@ -88,7 +86,7 @@ function stunnel_save() {
 				}
 				$conf .= "cert = " . STUNNEL_ETCDIR .  "/{$pkgconfig['certificate']}.pem\n";
 				$in_use_certs[] = $pkgconfig['certificate'] . ".pem";
-				$stunnelconfig[$num]['certname'] = $cert['descr'];
+				config_set_path("installedpackages/stunnel/config/{$num}/certname", $cert['descr']);
 			}
 		} else {
 			stunnel_make_default_cert();
@@ -119,7 +117,6 @@ function stunnel_save() {
 	if ($conf != $oldconf) {
 		file_put_contents($stunnel_conf, $conf);
 		write_config('stunnel configuration changed');
-		stunnel_sync_config();
 	}
 
 	// Clean up certs that are no longer in use.
@@ -139,7 +136,7 @@ function stunnel_make_directories() {
 }
 
 function stunnel_make_default_cert() {
-	global $g, $config;
+	global $g;
 
 	/*
 	 * Generate a self-signed default certificate if one does not already
@@ -154,7 +151,7 @@ function stunnel_make_default_cert() {
 	$cert['refid'] = uniqid();
 	$cert['descr'] = sprintf(gettext("stunnel default (%s)"),
 	    $cert['refid']);
-	$cert_hostname = $config['system']['hostname'] . '-' .  $cert['refid'];
+	$cert_hostname = config_get_path('system/hostname') . '-' .  $cert['refid'];
 
 	$dn = array(
 	    'organizationName' => "{$g['product_name']} stunnel " .
@@ -179,9 +176,9 @@ function stunnel_make_default_cert() {
 		chmod(STUNNEL_ETCDIR . "/stunnel.pem", 0600);
 	} else {
 		while ($ssl_err = openssl_error_string()) {
-			log_error(sprintf(gettext("Error creating stunnel " .
-			    "certificate: openssl library returns: %s"),
-			    $ssl_err));
+			logger(LOG_ERR, localize_text("Error creating stunnel " .
+			    "certificate: openssl library returns: %s",
+			    $ssl_err), LOG_PREFIX_PKG_STUNNEL);
 		}
 	}
 	error_reporting($old_err_level);
@@ -204,59 +201,50 @@ function stunnel_deinstall() {
 	unlink_if_exists("/usr/local/etc/rc.d/stunnel.sh");
 }
 
-function stunnel_sync_config() {
-	global $config;
-	init_config_arr(array('hasync'));
-	$system_carp = $config['hasync'];
-	if (!is_array($system_carp) ||
-	    !$system_carp['synchronizetoip'] ||
-	    !$system_carp['username'] ||
-	    !$system_carp['password']) {
-		return -1;
-	}
-
-	if ($config['system']['webgui']['protocol'] == "http") {
-		$varsyncprotocol = "http";
-		$varsyncport = $config['system']['webgui']['port'] ?: '80';
-	} else {
-		$varsyncprotocol = "https";
-		$varsyncport = $config['system']['webgui']['port'] ?: '443';
-	}
-	stunnel_do_xmlrpc_sync($system_carp['synchronizetoip'], $varsyncport,
-	    $varsyncprotocol, $system_carp['username'],
-	    $system_carp['password'], 100);
+function stunnel_plugin_xmlrpc_send() {
+	return [
+		'installedpackages/stunnel'
+	];
 }
 
-/* Do the actual XMLRPC sync */
-function stunnel_do_xmlrpc_sync($sync_to_ip, $port, $protocol, $username,
-    $password, $synctimeout) {
-	global $config;
+function stunnel_plugin_xmlrpc_recv($new_sections) {
+	$section_paths = [
+		'installedpackages/stunnel'
+	];
 
-	$xml = array();
-	$xml['stunnel'] = $config['installedpackages']['stunnel'];
+	$ret = [
+		'xmlrpc_recv_result' => false
+	];
+	foreach ($section_paths as $path) {
+		$old_section = config_get_path($path, []);
+		$new_section = array_get_path($new_sections, $path, []);
 
-	$remote_stunnel_config_apply = <<<EOD
-if (file_exists('/usr/local/pkg/stunnel.inc')) {
-	require_once('/usr/local/pkg/stunnel.inc');
+		// Don't save empty configuration sections.
+		if (empty($old_section) && empty($new_section)) {
+			continue;
+		}
+		// Ignore unchanged configuration sections.
+		if ($old_section === $new_section) {
+			continue;
+		}
+
+		$ret[$path] = array_merge($old_section, $new_section);
+		$ret['xmlrpc_recv_result'] = true;
+	}
+
+	return $ret;
+}
+
+function stunnel_plugin_xmlrpc_recv_done($xmlrpc_recv_result) {
+	if (array_get_path($xmlrpc_recv_result, 'stunnel/xmlrpc_recv_result') !== true) {
+		return;
+	}
 	stunnel_save();
-}
-EOD;
-
-	$synctimeout = intval($synctimeout);
-	$rpc_client = new pfsense_xmlrpc_client();
-	$rpc_client->setConnectionData($sync_to_ip, $port, $username, $password,
-	    $protocol);
-	$resp = $rpc_client->xmlrpc_method('merge_installedpackages_section',
-	    $xml, $synctimeout);
-	$resp = $rpc_client->xmlrpc_exec_php($remote_stunnel_config_apply,
-	    $synctimeout);
 }
 
 function stunnel_plugin_certificates($pluginparams) {
-	global $config;
 	$result = array();
-	init_config_arr(array('installedpackages', 'stunnel', 'config'));
-	$stunnelconfig = $config['installedpackages']['stunnel']['config'];
+	$stunnelconfig = config_get_path('installedpackages/stunnel/config');
 
 	if (($pluginparams['type'] == 'certificates') && ($pluginparams['event'] == 'used_certificates') &&
 	    is_array($stunnelconfig)) {	

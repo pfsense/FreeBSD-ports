@@ -1,9 +1,9 @@
 PORTNAME=	spark
-PORTVERSION=	3.3.0
+PORTVERSION=	3.3.4
+PORTREVISION=	1
 CATEGORIES=	devel java
 MASTER_SITES=	https://archive.apache.org/dist/${PORTNAME}/${PORTNAME}-${PORTVERSION}/ \
-		LOCAL/se/distfiles/:deps \
-		https://people.freebsd.org/~se/distfiles/:deps
+		LOCAL/vvd:deps
 PKGNAMEPREFIX=	apache-
 DISTFILES=	${PORTNAME}-${PORTVERSION}.tgz \
 		${PORTNAME}-${PORTVERSION}-deps.tgz:deps
@@ -14,20 +14,22 @@ WWW=		http://spark.apache.org/
 
 LICENSE=	APACHE20
 
+BROKEN_armv6=	fails to build: maven-assembly-plugin: Failed to retrieve numeric file attributes
+BROKEN_armv7=	fails to build: maven-assembly-plugin: Failed to retrieve numeric file attributes
+BROKEN_i386=	not enough memory on this architecture to build the port
+BROKEN_powerpc=	not enough memory on this architecture to build the port
+
 BUILD_DEPENDS=	${LOCALBASE}/lib/libsnappyjava.so:archivers/snappy-java \
 		bash:shells/bash \
 		maven>0:devel/maven
 RUN_DEPENDS=	bash:shells/bash
 
-USES=		cpe python shebangfix
+USES=		cpe java python shebangfix
 CPE_VENDOR=	apache
-USE_JAVA=	yes
+JAVA_VERSION=	8 11 17
 
 USE_RC_SUBR=	spark_master spark_worker
 SHEBANG_FILES=	bin/sparkR
-
-MAKE_ENV+=	JAVA_HOME=${JAVA_HOME} \
-		MAVEN_OPTS="-Xmx2g -XX:ReservedCodeCacheSize=2g"
 
 NO_ARCH=	yes
 
@@ -41,6 +43,14 @@ PLIST_SUB=	VER=${PORTVERSION}
 
 .include <bsd.port.pre.mk>
 
+.if ${ARCH:Marmv?} || ${ARCH} == "i386"
+MAKE_ENV+=	MAVEN_OPTS="-Xmx1g -XX:ReservedCodeCacheSize=1g" \
+		JAVA_HOME=${JAVA_HOME}
+.else
+MAKE_ENV+=	MAVEN_OPTS="-Xmx2g -XX:ReservedCodeCacheSize=2g" \
+		JAVA_HOME=${JAVA_HOME}
+.endif
+
 .if ${ARCH} == "amd64"
 JAVA_ARCH=	x86_64
 .elif ${ARCH} == "i386"
@@ -51,6 +61,7 @@ JAVA_ARCH=	${ARCH}
 
 # Update spark-*-dist.tgz if the hadoop version is changed!
 HADOOP_VERSION=	3.3.4
+# Comment out next line for download m2 and update ${PORTNAME}-${PORTVERSION}-deps.tgz
 OFFLINE=	-o
 
 do-build:

@@ -1,5 +1,5 @@
 PORTNAME=	fastjet
-DISTVERSION=	3.4.2
+DISTVERSION=	3.5.1
 CATEGORIES=	science
 MASTER_SITES=	https://fastjet.fr/repo/
 
@@ -10,6 +10,7 @@ WWW=		https://fastjet.fr/
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/COPYING
 
+BUILD_DEPENDS=	bash:shells/bash
 RUN_DEPENDS=	bash:shells/bash
 
 USES=		fortran gmake libtool shebangfix
@@ -17,9 +18,9 @@ USE_LDCONFIG=	yes
 
 SHEBANG_FILES=	fastjet-config.in
 
-GNU_CONFIGURE=	yes
-
-CONFIGURE_ARGS=	--enable-allplugins
+GNU_CONFIGURE=		yes
+CONFIGURE_ARGS=		--enable-allplugins
+CONFIGURE_SHELL=	${PREFIX}/bin/bash
 
 LDFLAGS+=	-lexecinfo
 
@@ -45,7 +46,7 @@ post-install:
 	@${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/lib*.so*
 
 post-install-PYTHON-on:
-	@${STRIP_CMD} ${STAGEDIR}${PYTHONPREFIX_SITELIBDIR}/_fastjet.so.0.0.0
+	@${STRIP_CMD} ${STAGEDIR}${PYTHONPREFIX_SITELIBDIR}/_fastjet_swig.so.0.0.0
 
 do-test:
 	# python tests

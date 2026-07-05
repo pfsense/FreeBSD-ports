@@ -1,8 +1,8 @@
 PORTNAME=	oauth
-PORTVERSION=	2.0.7
+DISTVERSION=	2.0.10
 CATEGORIES=	net pear
 
-MAINTAINER=	dbaio@FreeBSD.org
+MAINTAINER=	pkaipila@gmail.com
 COMMENT=	Php interface to the OAuth Protocol
 WWW=		https://pecl.php.net/package/oauth
 
@@ -15,8 +15,6 @@ LIB_DEPENDS=	libcurl.so:ftp/curl \
 USES=		localbase:ldflags php:pecl
 
 CONFIGURE_ARGS+=	CFLAGS="${CFLAGS}" LDFLAGS="${LDFLAGS}"
-
-CONFLICTS=	pecl-oauth-1*
 
 PORTSCOUT=	limit:^2.*
 

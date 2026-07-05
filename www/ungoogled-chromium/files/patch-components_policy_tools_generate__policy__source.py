@@ -1,4 +1,4 @@
---- components/policy/tools/generate_policy_source.py.orig	2023-09-17 07:59:53 UTC
+--- components/policy/tools/generate_policy_source.py.orig	2026-01-16 13:40:34 UTC
 +++ components/policy/tools/generate_policy_source.py
 @@ -37,9 +37,9 @@ PLATFORM_STRINGS = {
      'ios': ['ios'],

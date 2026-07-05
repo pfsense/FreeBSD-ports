@@ -1,11 +1,11 @@
---- src/3rdparty/chromium/extensions/browser/api/api_browser_context_keyed_service_factories.cc.orig	2023-08-16 19:50:41 UTC
+--- src/3rdparty/chromium/extensions/browser/api/api_browser_context_keyed_service_factories.cc.orig	2025-08-15 18:30:00 UTC
 +++ src/3rdparty/chromium/extensions/browser/api/api_browser_context_keyed_service_factories.cc
-@@ -108,7 +108,7 @@ void EnsureApiBrowserContextKeyedServiceFactoriesBuilt
+@@ -132,7 +132,7 @@ void EnsureApiBrowserContextKeyedServiceFactoriesBuilt
+ #endif
    MessageService::GetFactoryInstance();
-   MessagingAPIMessageFilter::EnsureAssociatedFactoryBuilt();
  #if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_WIN) || \
 -    BUILDFLAG(IS_MAC)
 +    BUILDFLAG(IS_MAC) || BUILDFLAG(IS_BSD)
    NetworkingPrivateEventRouterFactory::GetInstance();
  #endif
-   OffscreenDocumentManager::GetFactory();
+   PrinterProviderAPIFactory::GetInstance();

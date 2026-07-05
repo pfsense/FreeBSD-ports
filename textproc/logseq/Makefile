@@ -1,5 +1,6 @@
 PORTNAME=	logseq
-PORTVERSION=	0.10.7
+PORTVERSION=	0.10.15
+PORTREVISION=	5
 CATEGORIES=	textproc
 MASTER_SITES=	https://github.com/logseq/logseq/releases/download/${PORTVERSION}/ \
 		LOCAL/arrowd/:node_modules
@@ -18,15 +19,17 @@ ONLY_FOR_ARCHS=	amd64
 
 RUN_DEPENDS=	git:devel/git
 
-USES=		desktop-file-utils electronfix:25 shared-mime-info zip
+USES=		desktop-file-utils electronfix:38 shared-mime-info zip
 
 ELECTRONFIX_MAIN_EXECUTABLE=	Logseq
 SUB_FILES=	Logseq
 NO_BUILD=	yes
 WRKSRC=		${WRKDIR}/Logseq-linux-x64
 
-RSAPI_HASH=	d731cc44acb903a41c5e0b8dc7e576cc2d35ceb4
-BETTER_SQLITE_VERSION=	9.1.1
+RSAPI_HASH=	0162b98aaec78aa991cdbca2e070816c6acd189a
+# Taken from https://github.com/search?q=repo%3Alogseq%2Flogseq%20better-sqlite&type=code
+BETTER_SQLITE_VERSION=	11.10.0
+ELECTRON_VERSION=	38.4.0
 
 post-patch:
 	${RM} ${WRKSRC}/resources/app/node_modules/@logseq/rsapi-linux-x64-gnu/package.json.orig
@@ -64,7 +67,7 @@ repackage-node-modules:
 
 	git clone https://github.com/WiseLibs/better-sqlite3.git ${WRKDIR}/better-sqlite
 	cd ${WRKDIR}/better-sqlite && git checkout v${BETTER_SQLITE_VERSION}
-	${SED} -i.bak -e 's|node-gyp rebuild|node-gyp rebuild --arch=x64 --dist-url=https://electronjs.org/headers --target=${ELECTRON_VER}|g' \
+	${SED} -i.bak -e 's|node-gyp rebuild|node-gyp rebuild --arch=x64 --dist-url=https://electronjs.org/headers --target=${ELECTRON_VERSION}|g' \
 		${WRKDIR}/better-sqlite/package.json
 	cd ${WRKDIR}/better-sqlite && ${SETENV} HOME=${WRKDIR}/home \
 		npm install --ignore-scripts

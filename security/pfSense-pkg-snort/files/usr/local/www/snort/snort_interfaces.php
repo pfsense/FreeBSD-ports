@@ -3,7 +3,7 @@
  * snort_interfaces.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2011-2024 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2011-2026 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2022 Bill Meeks
  * All rights reserved.
  *
@@ -107,15 +107,15 @@ if (isset($_POST['del_x'])) {
 			if ($if_real == "") {
 				rmdir_recursive("{$snortlogdir}/snort_*{$snort_uuid}");
 				rmdir_recursive("{$snortdir}/snort_{$snort_uuid}_*");
-				syslog(LOG_NOTICE, "Deleted the Snort instance on a previously removed pfSense interface per user request...");
+				logger(LOG_NOTICE, localize_text("Deleted the Snort instance on a previously removed pfSense interface per user request..."), LOG_PREFIX_PKG_SNORT);
 			}
 			else {
 				$if_friendly = convert_friendly_interface_to_friendly_descr($snortcfg['interface']);
-				syslog(LOG_NOTICE, "Stopping Snort on {$if_friendly}({$if_real}) due to Snort instance deletion...");
+				logger(LOG_NOTICE, localize_text("Stopping Snort on %s(%s) due to Snort instance deletion...", $if_friendly, $if_real), LOG_PREFIX_PKG_SNORT);
 				snort_stop($a_nat[$rulei], $if_real);
 				rmdir_recursive("{$snortlogdir}/snort_{$if_real}{$snort_uuid}");
 				rmdir_recursive("{$snortdir}/snort_{$snort_uuid}_{$if_real}");
-				syslog(LOG_NOTICE, "Deleted Snort instance on {$if_friendly}({$if_real}) per user request...");
+				logger(LOG_NOTICE, localize_text("Deleted Snort instance on %s(%s) per user request...", $if_friendly, $if_real), LOG_PREFIX_PKG_SNORT);
 			}
 
 			// Finally delete the interface's config entry entirely
@@ -157,15 +157,15 @@ else {
 		if ($if_real == "") {
 			rmdir_recursive("{$snortlogdir}/snort_*{$snort_uuid}");
 			rmdir_recursive("{$snortdir}/snort_{$snort_uuid}_*");
-			syslog(LOG_NOTICE, "Deleted the Snort instance on a previously removed pfSense interface per user request...");
+			logger(LOG_NOTICE, localize_text("Deleted the Snort instance on a previously removed pfSense interface per user request..."), LOG_PREFIX_PKG_SNORT);
 		}
 		else {
 			$if_friendly = convert_friendly_interface_to_friendly_descr($a_nat[$delbtn_list]['interface']);
-			syslog(LOG_NOTICE, "Stopping Snort on {$if_friendly}({$if_real}) due to interface deletion...");
+			logger(LOG_NOTICE, localize_text("Stopping Snort on %s(%s) due to interface deletion...", $if_friendly, $if_real), LOG_PREFIX_PKG_SNORT);
 			snort_stop($a_nat[$delbtn_list], $if_real);
 			rmdir_recursive("{$snortlogdir}/snort_{$if_real}{$snort_uuid}");
 			rmdir_recursive("{$snortdir}/snort_{$snort_uuid}_{$if_real}");
-			syslog(LOG_NOTICE, "Deleted Snort instance on {$if_friendly}({$if_real}) per user request...");
+			logger(LOG_NOTICE, localize_text("Deleted Snort instance on %s(%s) per user request...", $if_friendly, $if_real), LOG_PREFIX_PKG_SNORT);
 		}
 
 		// Finally delete the interface's config entry entirely
@@ -209,7 +209,7 @@ if ($_POST['toggle'] && is_numericint($_POST['id'])) {
 	<?php
 	require_once('/usr/local/pkg/snort/snort.inc');
 	require_once('service-utils.inc');
-	global \$g, \$rebuild_rules, \$config;
+	global \$g, \$rebuild_rules;
 	\$snortcfg = config_get_path('installedpackages/snortglobal/rule/{$id}', []);
 	\$rebuild_rules = true;
 	touch('{$start_lck_file}');
@@ -226,12 +226,12 @@ EOD;
 			unlink_if_exists($stop_lck_file);
 			file_put_contents("{$g['tmp_path']}/snort_{$if_real}_startcmd.php", $snort_start_cmd);
 			if (snort_is_running($snortcfg['uuid'])) {
-				syslog(LOG_NOTICE, "Restarting Snort on {$if_friendly}({$if_real}) per user request...");
+				logger(LOG_NOTICE, localize_text("Restarting Snort on %s(%s) per user request...", $if_friendly, $if_real), LOG_PREFIX_PKG_SNORT);
 				snort_stop($snortcfg, $if_real);
 				mwexec_bg("/usr/local/bin/php -f {$g['tmp_path']}/snort_{$if_real}_startcmd.php");
 			}
 			else {
-				syslog(LOG_NOTICE, "Starting Snort on {$if_friendly}({$if_real}) per user request...");
+				logger(LOG_NOTICE, localize_text("Starting Snort on %s(%s) per user request...", $if_friendly, $if_real), LOG_PREFIX_PKG_SNORT);
 				mwexec_bg("/usr/local/bin/php -f {$g['tmp_path']}/snort_{$if_real}_startcmd.php");
 			}
 			$snort_starting[$id] = TRUE;
@@ -239,7 +239,7 @@ EOD;
 		case 'stop':
 			if (snort_is_running($snortcfg['uuid'])) {
 				touch($stop_lck_file);
-				syslog(LOG_NOTICE, "Stopping Snort on {$if_friendly}({$if_real}) per user request...");
+				logger(LOG_NOTICE, localize_text("Stopping Snort on %s(%s) per user request...", $if_friendly, $if_real), LOG_PREFIX_PKG_SNORT);
 				snort_stop($snortcfg, $if_real);
 			}
 			unset($snort_starting[$id]);
@@ -357,23 +357,23 @@ if ($savemsg)
 					<td id="frd<?=$i?>" ondblclick="document.location='snort_interfaces_edit.php?id=<?=$i?>';">
 						<?php if ($natent['enable'] == 'on') : ?>
 							<?php if (snort_is_running($snort_uuid) && !file_exists($stop_lck_file)) : ?>
-								<i id="snort_<?=$if_real;?>" class="fa-solid fa-check-circle text-success icon-primary" title="<?=gettext('snort is running on this interface');?>"></i>
+								<i id="snort_<?=$if_real;?>" class="fa-solid fa-check-circle text-success" title="<?=gettext('snort is running on this interface');?>"></i>
 								&nbsp;
-								<i id="snort_<?=$if_real;?>_restart" class="fa-solid fa-arrow-rotate-right icon-pointer icon-primary text-info" onclick="javascript:snort_iface_toggle($(this), 'start', '<?=$i?>');" title="<?=gettext('Restart snort on this interface');?>"></i>
-								<i id="snort_<?=$if_real;?>_start" class="fa-solid fa-play-circle icon-pointer icon-primary text-info hidden" onclick="javascript:snort_iface_toggle($(this), 'start', '<?=$i?>');" title="<?=gettext('Start snort on this interface');?>"></i>
-								<i id="snort_<?=$if_real;?>_stop" class="fa-regular fa-circle-stop icon-pointer icon-primary text-info" onclick="javascript:snort_iface_toggle($(this), 'stop', '<?=$i?>');" title="<?=gettext('Stop snort on this interface');?>"></i>
+								<i id="snort_<?=$if_real;?>_restart" class="fa-solid fa-arrow-rotate-right icon-pointer text-info" onclick="javascript:snort_iface_toggle($(this), 'start', '<?=$i?>');" title="<?=gettext('Restart snort on this interface');?>"></i>
+								<i id="snort_<?=$if_real;?>_start" class="fa-solid fa-play-circle icon-pointer text-info hidden" onclick="javascript:snort_iface_toggle($(this), 'start', '<?=$i?>');" title="<?=gettext('Start snort on this interface');?>"></i>
+								<i id="snort_<?=$if_real;?>_stop" class="fa-regular fa-circle-stop icon-pointer text-info" onclick="javascript:snort_iface_toggle($(this), 'stop', '<?=$i?>');" title="<?=gettext('Stop snort on this interface');?>"></i>
 							<?php elseif ($snort_starting[$i] == TRUE || file_exists($start_lck_file) || file_exists("{$g['varrun_path']}/snort_pkg_starting.lck")) : ?>
-								<i id="snort_<?=$if_real;?>" class="fa-solid fa-cog fa-spin text-info icon-primary" title="<?=gettext('snort is starting on this interface');?>"></i>
+								<i id="snort_<?=$if_real;?>" class="fa-solid fa-cog fa-spin text-info" title="<?=gettext('snort is starting on this interface');?>"></i>
 								&nbsp;
-								<i id="snort_<?=$if_real;?>_restart" class="fa-solid fa-arrow-rotate-right icon-pointer icon-primary text-info hidden" onclick="javascript:snort_iface_toggle($(this), 'start', '<?=$i?>');" title="<?=gettext('Restart snort on this interface');?>"></i>
-								<i id="snort_<?=$if_real;?>_start" class="fa-solid fa-play-circle icon-pointer icon-primary text-info hidden" onclick="javascript:snort_iface_toggle($(this), 'start', '<?=$i?>');" title="<?=gettext('Start snort on this interface');?>"></i>
-								<i id="snort_<?=$if_real?>_stop" class="fa-regular fa-circle-stop icon-pointer icon-primary text-info" onclick="javascript:snort_iface_toggle($(this), 'stop', '<?=$i?>');" title="<?=gettext('Stop snort on this interface');?>"></i>
+								<i id="snort_<?=$if_real;?>_restart" class="fa-solid fa-arrow-rotate-right icon-pointer text-info hidden" onclick="javascript:snort_iface_toggle($(this), 'start', '<?=$i?>');" title="<?=gettext('Restart snort on this interface');?>"></i>
+								<i id="snort_<?=$if_real;?>_start" class="fa-solid fa-play-circle icon-pointer text-info hidden" onclick="javascript:snort_iface_toggle($(this), 'start', '<?=$i?>');" title="<?=gettext('Start snort on this interface');?>"></i>
+								<i id="snort_<?=$if_real?>_stop" class="fa-regular fa-circle-stop icon-pointer text-info" onclick="javascript:snort_iface_toggle($(this), 'stop', '<?=$i?>');" title="<?=gettext('Stop snort on this interface');?>"></i>
 							<?php else: ?>
-								<i id="snort_<?=$if_real;?>" class="fa-solid fa-times-circle text-danger icon-primary" title="<?=gettext('snort is stopped on this interface');?>"></i>
+								<i id="snort_<?=$if_real;?>" class="fa-solid fa-times-circle text-danger" title="<?=gettext('snort is stopped on this interface');?>"></i>
 								&nbsp;
-								<i id="snort_<?=$if_real;?>_restart" class="fa-solid fa-arrow-rotate-right icon-pointer icon-primary text-info hidden" onclick="javascript:snort_iface_toggle($(this), 'start', '<?=$i?>');" title="<?=gettext('Restart snort on this interface');?>"></i>
-								<i id="snort_<?=$if_real;?>_start" class="fa-solid fa-play-circle icon-pointer icon-primary text-info" onclick="javascript:snort_iface_toggle($(this), 'start', '<?=$i?>');" title="<?=gettext('Start snort on this interface');?>"></i>
-								<i id="snort_<?=$if_real;?>_stop" class="fa-regular fa-circle-stop icon-pointer icon-primary text-info hidden" onclick="javascript:snort_iface_toggle($(this), 'stop', '<?=$i?>');" title="<?=gettext('Stop snort on this interface');?>"></i>
+								<i id="snort_<?=$if_real;?>_restart" class="fa-solid fa-arrow-rotate-right icon-pointer text-info hidden" onclick="javascript:snort_iface_toggle($(this), 'start', '<?=$i?>');" title="<?=gettext('Restart snort on this interface');?>"></i>
+								<i id="snort_<?=$if_real;?>_start" class="fa-solid fa-play-circle icon-pointer text-info" onclick="javascript:snort_iface_toggle($(this), 'start', '<?=$i?>');" title="<?=gettext('Start snort on this interface');?>"></i>
+								<i id="snort_<?=$if_real;?>_stop" class="fa-regular fa-circle-stop icon-pointer text-info hidden" onclick="javascript:snort_iface_toggle($(this), 'stop', '<?=$i?>');" title="<?=gettext('Stop snort on this interface');?>"></i>
 							<?php endif; ?>
 						<?php else : ?>
 							<?=gettext('DISABLED');?>&nbsp;
@@ -399,11 +399,11 @@ if ($savemsg)
 						<?=htmlspecialchars($natent['descr'])?>
 					</td>
 					<td>
-						<a href="snort_interfaces_edit.php?id=<?=$i;?>" class="fa-solid fa-pencil icon-primary" title="<?=gettext('Edit this Snort interface mapping');?>"></a>
+						<a href="snort_interfaces_edit.php?id=<?=$i;?>" class="fa-solid fa-pencil" title="<?=gettext('Edit this Snort interface mapping');?>"></a>
 						<?php if ($id_gen < count($ifaces)): ?>
 							<a href="snort_interfaces_edit.php?id=<?=$i?>&action=dup" class="fa-regular fa-clone" title="<?=gettext('Clone this Snort instance to an available interface');?>"></a>
 						<?php endif; ?>
-						<a style="cursor:pointer;" class="fa-solid fa-trash-can no-confirm icon-primary" id="Xldel_<?=$i?>" title="<?=gettext('Delete this Snort interface mapping'); ?>"></a>
+						<a style="cursor:pointer;" class="fa-solid fa-trash-can no-confirm" id="Xldel_<?=$i?>" title="<?=gettext('Delete this Snort interface mapping'); ?>"></a>
 						<button style="display: none;" class="btn btn-xs btn-warning" type="submit" id="ldel_<?=$i?>" name="ldel_<?=$i?>" value="ldel_<?=$i?>" title="<?=gettext('Delete this Snort interface mapping'); ?>">Delete this Snort interface mapping</button>
 					</td>	
 				</tr>
@@ -507,7 +507,7 @@ if ($savemsg)
 			var service_name = key.substring(0, key.indexOf('_'));
 			if (data[key] != 'DISABLED') {
 				if (data[key] == 'STOPPED') {
-					$('#' + key.replace( /(:|\.|\[|\]|,|=|@)/g, "\\$1" )).removeClass('fa-check-circle fa-cog fa-solid fa-spin text-success text-info');
+					$('#' + key.replace( /(:|\.|\[|\]|,|=|@)/g, "\\$1" )).removeClass('fa-solid fa-check-circle fa-cog fa-spin text-success text-info');
 					$('#' + key.replace( /(:|\.|\[|\]|,|=|@)/g, "\\$1" )).addClass('fa-solid fa-times-circle text-danger');
 					$('#' + key.replace( /(:|\.|\[|\]|,|=|@)/g, "\\$1" )).prop('title', service_name + ' is stopped on this interface');
 					$('#' + key.replace( /(:|\.|\[|\]|,|=|@)/g, "\\$1" ) + '_restart').addClass('hidden');
@@ -515,7 +515,7 @@ if ($savemsg)
 					$('#' + key.replace( /(:|\.|\[|\]|,|=|@)/g, "\\$1" ) + '_start').removeClass('hidden');
 				}
 				if (data[key] == 'STOPPING') {
-					$('#' + key.replace( /(:|\.|\[|\]|,|=|@)/g, "\\$1" )).removeClass('fa-check-circle fa-solid fa-times-circle text-success text-danger');
+					$('#' + key.replace( /(:|\.|\[|\]|,|=|@)/g, "\\$1" )).removeClass('fa-solid fa-check-circle fa-times-circle text-success text-danger');
 					$('#' + key.replace( /(:|\.|\[|\]|,|=|@)/g, "\\$1" )).addClass('fa-cog fa-solid fa-spin text-info');
 					$('#' + key.replace( /(:|\.|\[|\]|,|=|@)/g, "\\$1" )).prop('title', service_name + ' is stopping on this interface');
 					$('#' + key.replace( /(:|\.|\[|\]|,|=|@)/g, "\\$1" ) + '_restart').addClass('hidden');
@@ -523,7 +523,7 @@ if ($savemsg)
 					$('#' + key.replace( /(:|\.|\[|\]|,|=|@)/g, "\\$1" ) + '_stop').removeClass('hidden');
 				}
 				if (data[key] == 'STARTING') {
-					$('#' + key.replace( /(:|\.|\[|\]|,|=|@)/g, "\\$1" )).removeClass('fa-check-circle fa-solid fa-times-circle text-success text-danger');
+					$('#' + key.replace( /(:|\.|\[|\]|,|=|@)/g, "\\$1" )).removeClass('fa-solid fa-check-circle fa-times-circle text-success text-danger');
 					$('#' + key.replace( /(:|\.|\[|\]|,|=|@)/g, "\\$1" )).addClass('fa-cog fa-solid fa-spin text-info');
 					$('#' + key.replace( /(:|\.|\[|\]|,|=|@)/g, "\\$1" )).prop('title', service_name + ' is starting on this interface');
 					$('#' + key.replace( /(:|\.|\[|\]|,|=|@)/g, "\\$1" ) + '_restart').addClass('hidden');
@@ -531,8 +531,8 @@ if ($savemsg)
 					$('#' + key.replace( /(:|\.|\[|\]|,|=|@)/g, "\\$1" ) + '_stop').removeClass('hidden');
 				}
 				if (data[key] == 'RUNNING') {
+					$('#' + key.replace( /(:|\.|\[|\]|,|=|@)/g, "\\$1" )).removeClass('fa-solid fa-times-circle fa-cog fa-spin text-danger text-info');
 					$('#' + key.replace( /(:|\.|\[|\]|,|=|@)/g, "\\$1" )).addClass('fa-solid fa-check-circle text-success');
-					$('#' + key.replace( /(:|\.|\[|\]|,|=|@)/g, "\\$1" )).removeClass('fa-times-circle fa-cog fa-solid fa-spin text-danger text-info');
 					$('#' + key.replace( /(:|\.|\[|\]|,|=|@)/g, "\\$1" )).prop('title', service_name + ' is running on this interface');
 					$('#' + key.replace( /(:|\.|\[|\]|,|=|@)/g, "\\$1" ) + '_restart').removeClass('hidden');
 					$('#' + key.replace( /(:|\.|\[|\]|,|=|@)/g, "\\$1" ) + '_stop').removeClass('hidden');

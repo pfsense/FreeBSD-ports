@@ -1,6 +1,5 @@
 PORTNAME=	goaccess
-PORTVERSION=	1.9.1
-PORTREVISION=	1
+PORTVERSION=	1.10.1
 CATEGORIES=	sysutils
 MASTER_SITES=	https://tar.goaccess.io/
 
@@ -11,7 +10,7 @@ WWW=		https://goaccess.io
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-USES=		alias compiler:c11 pkgconfig ncurses
+USES=		compiler:c11 pkgconfig ncurses
 USE_RC_SUBR=	goaccess
 
 INSTALL_TARGET=	install-strip
@@ -22,7 +21,7 @@ CONFIGURE_ARGS=	--enable-utf8
 CFLAGS+=	-I${NCURSESINC} -I${LOCALBASE}/include
 LDFLAGS+=	-L${NCURSESLIB} -L${LOCALBASE}/lib
 
-PORTDOCS=	AUTHORS ChangeLog NEWS README TODO
+PORTDOCS=	AUTHORS ChangeLog NEWS README.md TODO
 
 OPTIONS_DEFINE=	DOCS GEOIP2 NLS SSL
 OPTIONS_DEFAULT=GEOIP2 SSL

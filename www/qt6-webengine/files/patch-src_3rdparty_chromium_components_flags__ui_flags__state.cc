@@ -1,9 +1,9 @@
---- src/3rdparty/chromium/components/flags_ui/flags_state.cc.orig	2022-07-22 17:30:31 UTC
+--- src/3rdparty/chromium/components/flags_ui/flags_state.cc.orig	2025-08-15 18:30:00 UTC
 +++ src/3rdparty/chromium/components/flags_ui/flags_state.cc
-@@ -672,7 +672,7 @@ unsigned short FlagsState::GetCurrentPlatform() {
+@@ -761,7 +761,7 @@ unsigned short FlagsState::GetCurrentPlatform() {
+   return kOsWin;
+ #elif BUILDFLAG(IS_CHROMEOS)
    return kOsCrOS;
- #elif BUILDFLAG(IS_CHROMEOS_LACROS)
-   return kOsLacros;
 -#elif BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_OPENBSD)
 +#elif BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_BSD)
    return kOsLinux;

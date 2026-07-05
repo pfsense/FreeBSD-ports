@@ -1,5 +1,6 @@
 PORTNAME=	archiva
 PORTVERSION=	2.2.3
+PORTREVISION=	1
 CATEGORIES=	www java
 MASTER_SITES=	APACHE/${PORTNAME}/${PORTVERSION}/binaries
 DISTNAME=	apache-${PORTNAME}-${PORTVERSION}-bin
@@ -13,11 +14,8 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 
 RUN_DEPENDS=	javaservicewrapper:sysutils/javaservicewrapper
 
-USES=		cpe
+USES=		cpe java
 CPE_VENDOR=	apache
-
-USE_JAVA=	yes
-
 USE_RC_SUBR=	${PORTNAME}
 
 PLIST_SUB=	ARCHIVA_CONF=${PREFIX}/${PORTNAME} \

@@ -1,10 +1,11 @@
 PORTNAME=	abinit
-DISTVERSION=	9.10.5
+DISTVERSION=	10.6.5
 CATEGORIES=	science
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Full-featured atomic-scale first-principles simulation software
-WWW=		https://www.abinit.org
+WWW=		https://www.abinit.org \
+		https://github.com/abinit/abinit
 
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/COPYING
@@ -20,14 +21,15 @@ LIB_DEPENDS=	libelpa.so:math/elpa		\
 		libsz.so:science/libaec		\
 		libxc.so:science/libxc		\
 		libfftw3.so:math/fftw3		\
+		libfftw3f.so:math/fftw3-float   \
 		libhdf5.so:science/hdf5		\
-		libxml2.so:textproc/libxml2	\
 		libnetcdf.so:science/netcdf	\
 		libxmlf90.so:textproc/xmlf90	\
 		libwannier.so:science/wannier90	\
 		libnetcdff.so:science/netcdf-fortran
 RUN_DEPENDS=	atompaw:science/atompaw
-TEST_DEPENDS=	${PYNUMPY}	\
+TEST_DEPENDS=	bash:shells/bash \
+		${PYNUMPY} \
 		libyaml>0:textproc/libyaml
 
 USES=		autoreconf:build blaslapack:netlib fortran gmake gnome localbase:ldflags	\
@@ -35,7 +37,7 @@ USES=		autoreconf:build blaslapack:netlib fortran gmake gnome localbase:ldflags	
 USE_GITHUB=	yes
 USE_GNOME=	libxml2
 SHEBANG_FILES=	config/scripts/* doc/tutorial/paral_bandpw_assets/abinit.sub.*
-SHEBANG_GLOB=	*.py
+SHEBANG_GLOB=	*.py *.sh
 GNU_CONFIGURE=	yes
 CONFIGURE_ENV=	H5CC="${LOCALBASE}/bin/h5cc" \
 		HDF5_CFLAGS="-I${LOCALBASE}/include" \
@@ -43,7 +45,7 @@ CONFIGURE_ENV=	H5CC="${LOCALBASE}/bin/h5cc" \
 		LINALG_FCFLAGS="-I${LOCALBASE}/include/elpa-2019.05.002/modules"	\
 		LINALG_LIBS="${BLASLIB}  ${LAPACKLIB} -lelpa"	\
 		NETCDF_FORTRAN_FCFLAGS=-I${LOCALBASE}/include	\
-		XMLF90_FCFLAGS=-I${LOCALBASE}/include	\
+		XMLF90_FCFLAGS=-I${LOCALBASE}/include/xmlf90	\
 		WANNIER90_LIBS="${BLASLIB}  ${LAPACKLIB} -lwannier"
 CONFIGURE_ARGS=	--with-fft --with-libxc --with-libxml2 --with-netcdf	\
 		--with-netcdf-fortran --with-wannier90 --with-xmlf90
@@ -52,29 +54,46 @@ TEST_TARGET=	tests_abirules tests_buildsys # Many tests print RuntimeError, http
 TEST_WRKSRC=	${WRKSRC}/abichecks
 PORTDOCS=	*
 
-OPTIONS_DEFINE=			DOCS OPENMP OPENMPI
-OPTIONS_DEFAULT=		OPENMP OPENMPI
+BINARY_ALIAS=	git=false \
+		gfortran=gfortran${GCC_DEFAULT} # for tests
+
+OPTIONS_DEFINE=			DOCS OPENMP
+OPTIONS_DEFAULT=		MPICH
+OPTIONS_RADIO=			MPIX
+OPTIONS_RADIO_MPIX=		NOMPI MPICH OPENMPI
 
 OPENMP_CONFIGURE_ENABLE=	openmp
 OPENMP_LDFLAGS=			-lomp
 
-OPENMPI_CONFIGURE_WITH=		mpi=yes
-# BROKEN with MPICH4: see <https://github.com/abinit/abinit/issues/61>
-# To set back to mpich when this issue will be fixed.
+MIX_DESC=			MPI options
+
+NOMPI_DESC=			Do not use MPI
+NOMPI_CONFIGURE_ON=		CC_LDFLAGS="${LDFLAGS}" CXX_LDFLAGS="${LDFLAGS}"	\
+				FC_LDFLAGS="${LDFLAGS}" CFLAGS="${CFLAGS}"
+
 OPENMPI_USES=			mpi:openmpi
-# fftw3 not enabled because libfftw3_mpi is required but not packaged
-OPENMPI_VARS=			FCFLAGS+="`pkg-config --cflags ompi-fort`"
-OPENMPI_CONFIGURE_ENV=		CC_LDFLAGS="${MPI_LIBS} ${LDFLAGS}"	\
-				CXX_LDFLAGS="${MPI_LIBS} ${LDFLAGS}"	\
-				FC_LDFLAGS="${MPI_LIBS} ${LDFLAGS}"	\
-				CFLAGS="${MPI_CFLAGS} ${CFLAGS}  ${CFLAGS_F2018}"	\
-				MPI_CPPFLAGS="${MPI_CFLAGS}"	\
-				MPI_FCFLAGS="`pkg-config --cflags ompi-fort`"	\
-				MPI_LIBS="${MPI_LIBS}"	\
+OPENMPI_CONFIGURE_ON=		mpi=yes
+OPENMPI_VARS=			FCFLAGS+="`pkg-config --cflags ompi-fort`" \
+				CFLAGS+="${MPI_CFLAGS}" \
+				LDFLAGS+="${MPI_LDFLAGS}"
+OPENMPI_CONFIGURE_ENV=		${MPIX_CONFIGURE_ENV} \
+				MPI_FCFLAGS="`pkg-config --cflags ompi-fort`"
+
+MPICH_USES=			mpi:mpich
+MPICH_CONFIGURE_ON=		mpi=yes
+MPICH_VARS=			FFLAGS+=-I${LOCALBASE}/include FCFLAGS+=-I${LOCALBASE}/include	\
+				CONFIGURE_ENV+=MPI_LIBS="`pkg-config --libs mpich` -lmpifort"	\
+				CONFIGURE_ENV+MPI_LDFLAGS="`pkg-config --libs mpich` -lmpifort"
+MPICH_CONFIGURE_ENV=		${MPIX_CONFIGURE_ENV}
+
+MPIX_CONFIGURE_ENV=		CC_LDFLAGS="${MPI_LIBS} ${LDFLAGS}" \
+				CXX_LDFLAGS="${MPI_LIBS} ${LDFLAGS}" \
+				FC_LDFLAGS="${MPI_LIBS} ${LDFLAGS}" \
+				CFLAGS="${MPI_CFLAGS} ${CFLAGS} ${CFLAGS_F2018}" \
+				MPI_CPPFLAGS="${MPI_CFLAGS}" \
+				MPI_LIBS="${MPI_LIBS}" \
 				MPI_LDFLAGS="${MPI_LIBS}"
 # When OpenMPI is enabled, put its related variables 1st to avoid conflicts with MPICH
-OPENMPI_CONFIGURE_ENV_OFF=	CC_LDFLAGS="${LDFLAGS}" CXX_LDFLAGS="${LDFLAGS}"	\
-				FC_LDFLAGS="${LDFLAGS}" CFLAGS="${CFLAGS}"
 
 .if defined(WITH_LEVMAR)
 # --with-levmar seems deprecated
@@ -89,8 +108,11 @@ CONFIGURE_ARGS+=	--with-levmar
 FCFLAGS+=	-fallow-argument-mismatch # see https://github.com/abinit/abinit/issues/41
 .endif
 
-pre-configure:
-	(cd ${WRKSRC} && ./autogen.sh)
+pre-configure: # version lines below are workaround for https://github.com/abinit/abinit/issues/75
+	@cd ${WRKSRC} && \
+		${ECHO} ${PORTVERSION} > .version && \
+		${ECHO} ${PORTVERSION} > .tarball-version && \
+		./autogen.sh
 
 post-install-DOCS-on:
 	${REINPLACE_CMD} -e 's|/usr/bin/env  python|${PYTHON_CMD}|'	\
@@ -101,5 +123,14 @@ post-install-DOCS-on:
 
 pre-test:
 	${TOUCH} ${TEST_WRKSRC}/make.log
+
+test-long: # run all examples from tutorial/Input
+	@cd ${WRKSRC}/tests/tutorial/Input && \
+		for abi in `${LS} *.abi`; do \
+			${ECHO} "===> Running example $$abi" && \
+			${SETENV} PATH=${STAGEDIR}${PREFIX}/bin:${PATH} ABI_PSPDIR=${WRKSRC}/tests/Psps_for_tests abinit $$abi; \
+		done
+
+# fftw3 not enabled because libfftw3_mpi is required but not packaged
 
 .include <bsd.port.post.mk>

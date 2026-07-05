@@ -11,5 +11,6 @@ BUILD_DEPENDS=	${LOCALBASE}/include/linux/input.h:devel/evdev-proto
 USES=		compiler:c++11-lang perl5 qmake:norecursive qt-dist:5,gamepad
 USE_PERL5=	build
 USE_QT=		core declarative gui buildtools:build
+USE_LDCONFIG=	${PREFIX}/${QT_LIBDIR_REL}
 
 .include <bsd.port.mk>

@@ -1,6 +1,6 @@
 PORTNAME=	java-games-suite
 PORTVERSION=	1.0
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	games java
 MASTER_SITES=	SF/javagamessuite
 
@@ -8,7 +8,7 @@ MAINTAINER=	jgh@FreeBSD.org
 COMMENT=	Simple Java games collection
 WWW=		https://sourceforge.net/projects/javagamessuite/
 
-USE_JAVA=	yes
+USES=		java
 
 NO_ARCH=	yes
 

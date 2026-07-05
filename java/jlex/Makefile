@@ -1,6 +1,6 @@
 PORTNAME=	jlex
 PORTVERSION=	1.2.6
-PORTREVISION=	3
+PORTREVISION=	4
 CATEGORIES=	java devel
 MASTER_SITES=	http://www.cs.princeton.edu/~appel/modern/java/JLex/Archive/1.2.6/
 DISTNAME=	Main
@@ -11,8 +11,9 @@ MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Lexical analyzer generator, written for Java, in Java
 WWW=		https://www.cs.princeton.edu/~appel/modern/java/JLex/
 
+USES=		java
+
 PLIST_FILES=	%%JAVAJARDIR%%/jlex.jar bin/jlex
-USE_JAVA=	yes
 NO_WRKSUBDIR=	yes
 
 SUB_FILES=	jlex.sh pkg-message

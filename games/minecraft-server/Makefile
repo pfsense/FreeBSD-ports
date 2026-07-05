@@ -1,10 +1,11 @@
 PORTNAME=	minecraft-server
-PORTVERSION=	1.20.4
+DISTVERSION=	1.21.11
+PORTREVISION=	2
 CATEGORIES=	games java
-MASTER_SITES=	https://piston-data.mojang.com/v1/objects/8dd1a28015f51b1803213892b50b7b4fc76e594d/
+MASTER_SITES=	https://piston-data.mojang.com/v1/objects/64bb6d763bed0a9f1d632ec347938594144943ed/
 DISTNAME=	server
 EXTRACT_SUFX=	.jar
-DIST_SUBDIR=	${PORTNAME}-${PORTVERSION}
+DIST_SUBDIR=	${PORTNAME}-${DISTVERSION}
 EXTRACT_ONLY=
 
 MAINTAINER=	freebsd@jonathanprice.org
@@ -16,18 +17,18 @@ LICENSE_NAME=	Minecraft End User License Agreement
 LICENSE_TEXT=	The license can be viewed at: https://account.mojang.com/documents/minecraft_eula
 LICENSE_PERMS=	no-dist-mirror no-dist-sell no-pkg-mirror no-pkg-sell
 
-USE_JAVA=	yes
-JAVA_VERSION=	17
+USES=		java
+JAVA_VERSION=	21+
 
 NO_ARCH=	yes
 NO_BUILD=	yes
 SUB_FILES=	minecraft-server pkg-deinstall pkg-message
-SUB_LIST=	VERSION=${PORTVERSION}
+SUB_LIST=	JAVA_VERSION=${JAVA_PORT_VERSION} VERSION=${DISTVERSION}
 
 USERS=		mcserver
 GROUPS=		${USERS}
 
-PLIST_SUB=	VERSION=${PORTVERSION}
+PLIST_SUB=	VERSION=${DISTVERSION}
 
 CONFIG_FILES=	banned-ips.json banned-players.json eula.txt ops.json \
 		server.properties usercache.json whitelist.json
@@ -43,22 +44,22 @@ DAEMON_RUN_DEPENDS=	tmux:sysutils/tmux
 DAEMON_VARS=		USE_RC_SUBR=minecraft
 
 do-install:
-	${MKDIR} ${STAGEDIR}${PREFIX}/${PORTNAME}
+	${MKDIR} ${STAGEDIR}${PREFIX}/${PORTNAME} \
+		 ${STAGEDIR}${ETCDIR} \
+		 ${STAGEDIR}/var/db/minecraft-server \
+		 ${STAGEDIR}/var/log/minecraft-server/debug
 	${INSTALL_DATA} ${DISTDIR}/${DIST_SUBDIR}/${DISTFILES} \
 		${STAGEDIR}${PREFIX}/${PORTNAME}
-	${MKDIR} ${STAGEDIR}${ETCDIR}
-	${MKDIR} ${STAGEDIR}/var/db/minecraft-server
-	${MKDIR} ${STAGEDIR}/var/log/minecraft-server
 .for file in ${CONFIG_FILES}
 	${LN} -s ${ETCDIR}/${file} ${STAGEDIR}${PREFIX}/${PORTNAME}/${file}
 .endfor
+	${LN} -sf /var/db/minecraft-server ${STAGEDIR}${PREFIX}/${PORTNAME}/world
 	${LN} -sf /var/log/minecraft-server ${STAGEDIR}${PREFIX}/${PORTNAME}/logs
 	${LN} -sf /var/log/minecraft-server/debug ${STAGEDIR}${PREFIX}/${PORTNAME}/debug
-	${LN} -sf /var/db/minecraft-server ${STAGEDIR}${PREFIX}/${PORTNAME}/world
 
 post-install-STANDALONE-on:
 	${INSTALL_SCRIPT} ${WRKDIR}/minecraft-server \
 		${STAGEDIR}${PREFIX}/bin
-	${CP} ${FILESDIR}/java-args.txt ${STAGEDIR}${ETCDIR}
+	${INSTALL_DATA} ${FILESDIR}/java-args.txt ${STAGEDIR}${ETCDIR}
 
 .include <bsd.port.mk>

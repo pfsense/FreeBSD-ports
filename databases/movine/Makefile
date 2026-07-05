@@ -1,7 +1,7 @@
 PORTNAME=	movine
 DISTVERSIONPREFIX=	v
 DISTVERSION=	0.11.0
-PORTREVISION=	12
+PORTREVISION=	29
 CATEGORIES=	databases
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -177,14 +177,5 @@ OPENSSLINC=	/usr/include
 OPENSSLLIB=	/usr/lib
 
 PLIST_FILES=	bin/${PORTNAME}
-
-.include <bsd.port.options.mk>
-
-.if ( ${OPSYS} == FreeBSD && ${OSVERSION} >= 1400092 && ${SSL_DEFAULT} == base ) || ${SSL_DEFAULT:Mopenssl} || ${SSL_DEFAULT:Mopenssl3*}
-BROKEN=	Fails to detect OpenSSL 3 and later
-.endif
-
-post-install:
-	@${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/${PORTNAME}
 
 .include <bsd.port.mk>

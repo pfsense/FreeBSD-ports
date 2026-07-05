@@ -3,7 +3,7 @@
  * snort_rules_edit.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2006-2024 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2006-2026 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2003-2004 Manuel Kasper
  * Copyright (c) 2005 Bill Marquette
  * Copyright (c) 2009 Robert Zelaya Sr. Developer
@@ -48,7 +48,7 @@ $snort_uuid = $a_rule['uuid'];
 $snortlogdir = SNORTLOGDIR;
 $snortcfgdir = "{$snortdir}/snort_{$snort_uuid}_{$if_real}/";
 
-$file = htmlspecialchars($_GET['openruleset'], ENT_QUOTES | ENT_HTML401);
+$file = basename(htmlspecialchars($_GET['openruleset'], ENT_QUOTES | ENT_HTML401));
 $contents = '';
 $wrap_flag = "off";
 

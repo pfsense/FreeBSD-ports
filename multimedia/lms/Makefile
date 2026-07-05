@@ -1,6 +1,6 @@
 PORTNAME=	lms
 DISTVERSIONPREFIX=	v
-DISTVERSION=	3.51.1
+DISTVERSION=	3.75.0
 CATEGORIES=	multimedia
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -12,16 +12,20 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 
 BUILD_DEPENDS=	googletest>0:devel/googletest
 LIB_DEPENDS=	libavformat.so:multimedia/ffmpeg \
-		libboost_system.so:devel/boost-libs \
+		libboost_program_options.so:devel/boost-libs \
 		libconfig++.so:devel/libconfig \
+		libpugixml.so:textproc/pugixml \
 		libtag.so:audio/taglib \
-		libwthttp.so:www/wt
+		libwthttp.so:www/wt \
+		libxxhash.so:devel/xxhash
 RUN_DEPENDS=	ffmpeg:multimedia/ffmpeg
 
-USES=		cmake cpe libarchive pkgconfig
+USES=		cmake compiler:c++20-lang cpe libarchive pkgconfig
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	epoupon
+
+CMAKE_OFF=	ENABLE_TESTS
 
 USER=		nobody
 GROUP=		nobody
@@ -36,11 +40,11 @@ OPTIONS_DEFAULT=		STB # STB is prefered by the upstream
 
 STB_DESC=			Use STB as image library (uses less memory)
 STB_BUILD_DEPENDS=		${LOCALBASE}/include/stb/stb_image.h:devel/stb
-STB_CMAKE_BOOL=			FREEBSD_USE_STB
+STB_CMAKE_CMAKE_ON=		-DLMS_IMAGE_BACKEND:STRING=stb
 
 MAGICK_DESC=			Use GraphicsMagick++ as image library
 MAGICK_LIB_DEPENDS=		libGraphicsMagick.so:graphics/GraphicsMagick
-MAGICK_CMAKE_BOOL=		FREEBSD_USE_MAGICK
+MAGICK_CMAKE_ON=		-DLMS_IMAGE_BACKEND:STRING=graphicsmagick
 
 .include <bsd.port.options.mk>
 .if ${OPSYS} == FreeBSD && ${OSVERSION} < 1400000
@@ -50,12 +54,16 @@ USES+=		compiler:c++20-lang
 .endif
 
 post-patch:
-	@${REINPLACE_CMD} -e 's|"/etc/lms.conf"|"${PREFIX}/etc/lms.conf"|' \
-		${WRKSRC}/src/lms/main.cpp \
-		${WRKSRC}/src/tools/cover/LmsCover.cpp \
-		${WRKSRC}/src/tools/recommendation/LmsRecommendation.cpp
+	@${REINPLACE_CMD} -e 's|"/etc"|"${PREFIX}/etc"|' \
+		${WRKSRC}/src/libs/core/include/core/SystemPaths.hpp
 	@${REINPLACE_CMD} -e 's|"/usr/|"${PREFIX}/|; s|"/var/lms/"|"/var/db/lms/"|' \
 		${WRKSRC}/conf/lms.conf
+	@${REINPLACE_CMD} -e '/find_package/s| system||' \
+			  -e '/target_link_libraries/s| Boost::system||' \
+		${WRKSRC}/CMakeLists.txt
+	@${REINPLACE_CMD} -e '/Boost::system/d' \
+		${WRKSRC}/src/libs/core/CMakeLists.txt \
+		${WRKSRC}/src/libs/services/auth/CMakeLists.txt
 
 post-install:
 	# link sample

@@ -1,10 +1,13 @@
 PORTNAME=	emu64
 DISTVERSION=	5.1.0
+PORTREVISION=	1
 CATEGORIES=	emulators
 
-MAINTAINER=	zirias@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Commodore 64 emulator
 WWW=		https://github.com/ThKattanek/emu64
+
+BROKEN=		Does not build with ffmpeg > 6
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/LICENSE
@@ -25,5 +28,9 @@ USE_GITHUB=	yes
 GH_ACCOUNT=	ThKattanek
 
 OPTIONS_DEFINE=	DOCS
+
+.if !exists(/usr/include/omp.h)
+USE_GCC=	yes
+.endif
 
 .include <bsd.port.mk>

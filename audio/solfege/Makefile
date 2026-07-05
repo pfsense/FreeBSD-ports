@@ -1,6 +1,6 @@
 PORTNAME=	solfege
 DISTVERSION=	3.23.5pre2
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	audio
 MASTER_SITES=	https://git.savannah.gnu.org/cgit/${PORTNAME}.git/snapshot/
 PKGNAMESUFFIX=	-nosound
@@ -17,7 +17,7 @@ BUILD_DEPENDS=	docbook-xsl>0:textproc/docbook-xsl \
 		txt2man:textproc/txt2man
 RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}sqlite3>0:databases/py-sqlite3@${PY_FLAVOR}
 
-USES=		autoreconf gettext gmake gnome makeinfo pathfix pkgconfig \
+USES=		autoreconf gettext gmake gnome makeinfo pkgconfig \
 		python shebangfix
 USE_GNOME=	pygobject3
 

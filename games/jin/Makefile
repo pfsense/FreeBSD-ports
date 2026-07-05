@@ -1,11 +1,11 @@
 PORTNAME=	jin
 PORTVERSION=	2.14.1
-PORTREVISION=	4
+PORTREVISION=	8
 CATEGORIES=	games java
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/${PORTNAME}-${PORTVERSION}
 DISTNAME=	${PORTNAME}-${PORTVERSION}-source
 
-MAINTAINER=	mi@aldan.algebra.com
+MAINTAINER=	ports@virtual-estates.net
 COMMENT=	Graphical client for chess servers
 WWW=		https://www.jinchess.com/
 
@@ -15,10 +15,8 @@ LICENSE_FILE=	${WRKSRC}/src/free/jin/legal/copyright.txt
 BUILD_DEPENDS=	${RUN_DEPENDS}
 RUN_DEPENDS=	${JAVAJARDIR}/bsh.jar:lang/bsh
 
-USES=		dos2unix
+USES=		dos2unix java:ant,run
 DOS2UNIX_GLOB=	*.java *.txt
-USE_JAVA=	yes
-USE_ANT=	yes
 
 MAKE_ARGS+=	-lib ${JAVAJARDIR}/bsh.jar
 
@@ -29,6 +27,9 @@ DATADIR=	${JAVASHAREDIR}/${PORTNAME}
 
 EXTRACT_AFTER_ARGS=	--exclude 'bsh*.jar'	\
 			--exclude os-specific/unix/jin	\
+			--exclude os-specific/macosx	\
+			--exclude SunAudioPlayer.java	\
+			--exclude *Applet*.java	\
 			--exclude jgoodies-windows.jar
 
 JINJAR=	${PORTNAME}.jar

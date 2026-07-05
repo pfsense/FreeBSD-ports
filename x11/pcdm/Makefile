@@ -3,8 +3,8 @@ PORTVERSION=	201710031254
 PORTREVISION=	4
 CATEGORIES=	x11
 
-MAINTAINER=	jt@ixsystems.com
-COMMENT=	QT5 based display manager for FreeBSD
+MAINTAINER=	jt@obs-sec.com
+COMMENT=	Qt5 based display manager for FreeBSD
 WWW=		https://github.com/trueos/pcdm
 
 LICENSE=	BSD2CLAUSE

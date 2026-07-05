@@ -1,16 +1,14 @@
---- base/system/sys_info_freebsd.cc.orig	2022-10-05 07:34:01 UTC
+--- base/system/sys_info_freebsd.cc.orig	2026-02-16 10:45:29 UTC
 +++ base/system/sys_info_freebsd.cc
-@@ -9,30 +9,106 @@
- #include <sys/sysctl.h>
+@@ -10,21 +10,75 @@
  
  #include "base/notreached.h"
+ #include "base/numerics/safe_conversions.h"
 +#include "base/process/process_metrics.h"
 +#include "base/strings/string_util.h"
  
  namespace base {
  
--int64_t SysInfo::AmountOfPhysicalMemoryImpl() {
--  int pages, page_size;
 +int SysInfo::NumberOfProcessors() {
 +  int mib[] = {CTL_HW, HW_NCPU};
 +  int ncpu;
@@ -22,7 +20,8 @@
 +  return ncpu;
 +}
 +
-+uint64_t SysInfo::AmountOfPhysicalMemoryImpl() {
+ ByteSize SysInfo::AmountOfTotalPhysicalMemoryImpl() {
+-  int pages, page_size;
 +  int pages, page_size, r = 0;
    size_t size = sizeof(pages);
 -  sysctlbyname("vm.stats.vm.v_page_count", &pages, &size, NULL, 0);
@@ -36,14 +35,12 @@
 +
 +  if (r == -1) {
      NOTREACHED();
-     return 0;
    }
--  return static_cast<int64_t>(pages) * page_size;
 +
-+  return static_cast<uint64_t>(pages) * page_size;
+   return ByteSize(checked_cast<unsigned>(page_size)) * pages;
  }
  
-+uint64_t SysInfo::AmountOfAvailablePhysicalMemoryImpl() {
++ByteSize SysInfo::AmountOfAvailablePhysicalMemoryImpl() {
 +  int page_size, r = 0;
 +  unsigned int pgfree, pginact, pgcache;
 +  size_t size = sizeof(page_size);
@@ -60,21 +57,13 @@
 +
 +  if (r == -1) {
 +    NOTREACHED();
-+    return 0;
++    return ByteSize(0);
 +  }
 +
-+  return static_cast<uint64_t>((pgfree + pginact + pgcache) * page_size);
++  return ByteSize((pgfree + pginact + pgcache) * checked_cast<unsigned>(page_size));
 +}
 +
  // static
-+uint64_t SysInfo::AmountOfAvailablePhysicalMemory(const SystemMemoryInfoKB& info) {
-+  uint64_t res_kb = info.available != 0
-+                       ? info.available - info.active_file
-+                       : info.free + info.reclaimable + info.inactive_file;
-+  return res_kb * 1024;
-+}
-+
-+// static
 +std::string SysInfo::CPUModelName() {
 +  int mib[] = { CTL_HW, HW_MODEL };
 +  char name[256];
@@ -91,12 +80,9 @@
  uint64_t SysInfo::MaxSharedMemorySize() {
    size_t limit;
    size_t size = sizeof(limit);
-+
-   if (sysctlbyname("kern.ipc.shmmax", &limit, &size, NULL, 0) < 0) {
+@@ -32,6 +86,18 @@ uint64_t SysInfo::MaxSharedMemorySize() {
      NOTREACHED();
-     return 0;
    }
-+
    return static_cast<uint64_t>(limit);
 +}
 +

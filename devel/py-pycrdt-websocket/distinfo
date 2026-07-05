@@ -1,3 +1,3 @@
-TIMESTAMP = 1708449304
-SHA256 (pycrdt_websocket-0.12.7.tar.gz) = 5ce1d3ad8ba5d3407400f3dcf5d96c9b9d9836fb421928ac5698dd094ed18cfa
-SIZE (pycrdt_websocket-0.12.7.tar.gz) = 16835
+TIMESTAMP = 1757120724
+SHA256 (pycrdt_websocket-0.16.0.tar.gz) = 89d4d830f41028c55cc9877635f73f94f49131ca73ffac7353d0be421150d0fd
+SIZE (pycrdt_websocket-0.16.0.tar.gz) = 23152

@@ -1,7 +1,6 @@
 PORTNAME=	buku
-PORTVERSION=	4.8
+PORTVERSION=	5.1
 DISTVERSIONPREFIX=	v
-PORTREVISION=	1
 CATEGORIES=	www python
 
 MAINTAINER=	sunpoet@FreeBSD.org
@@ -17,14 +16,12 @@ RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}beautifulsoup>=4.4.1:www/py-beautifulsoup@${
 		${PYTHON_PKGNAMEPREFIX}certifi>=0:security/py-certifi@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}html5lib>=1.0.1:www/py-html5lib@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}sqlite3>=0:databases/py-sqlite3@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}urllib3>=1.23,1:net/py-urllib3@${PY_FLAVOR}
+		${PYTHON_PKGNAMEPREFIX}urllib3>=1.23,1<3,1:net/py-urllib3@${PY_FLAVOR}
 
 USES=		python
 USE_PYTHON=	autoplist cryptography noflavors pep517
 
 NO_ARCH=	yes
-
-PLIST_FILES=	share/man/man1/buku.1.gz
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	jarun
@@ -42,9 +39,6 @@ ZSH_PLIST_FILES=	share/zsh/site-functions/_buku
 
 post-extract:
 	@${RM} -r ${WRKSRC}/bukuserver
-
-post-install:
-	${INSTALL_MAN} ${WRKSRC}/buku.1 ${STAGEDIR}${PREFIX}/share/man/man1
 
 post-install-BASH-on:
 	${MKDIR} ${STAGEDIR}${PREFIX}/etc/bash_completion.d

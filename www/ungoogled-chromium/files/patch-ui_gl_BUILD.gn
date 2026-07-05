@@ -1,35 +1,11 @@
---- ui/gl/BUILD.gn.orig	2024-03-22 14:16:19 UTC
+--- ui/gl/BUILD.gn.orig	2026-01-16 13:40:34 UTC
 +++ ui/gl/BUILD.gn
-@@ -154,8 +154,6 @@ component("gl") {
-     defines += [ "GPU_ENABLE_SERVICE_LOGGING" ]
+@@ -389,7 +389,7 @@ component("gl") {
+     ]
    }
  
--  include_dirs = [ "//third_party/mesa_headers" ]
--
-   all_dependent_configs = [ ":gl_config" ]
- 
-   public_configs = [ "//third_party/khronos:khronos_headers" ]
-@@ -173,7 +171,6 @@ component("gl") {
-   ]
-   public_deps = [
-     "//base",
--    "//third_party/mesa_headers",
-     "//ui/events/platform",
-     "//ui/gfx",
-     "//ui/gfx/geometry",
-@@ -379,7 +376,6 @@ component("gl") {
-     data_deps += [
-       "//third_party/angle:libEGL",
-       "//third_party/angle:libGLESv2",
--      "//third_party/mesa_headers",
-     ]
-     if (enable_swiftshader) {
-       data_deps += [
-@@ -579,7 +575,6 @@ test("gl_unittests") {
- 
-   data_deps = [
-     "//testing/buildbot/filters:gl_unittests_filters",
--    "//third_party/mesa_headers",
-   ]
- 
-   if (is_win) {
+-  if (is_android || is_chromeos || is_linux) {
++  if ((is_android || is_chromeos || is_linux) && !is_bsd) {
+     # Windows doesn't support base::FileDescriptor.
+     # libsync isn't supported or needed on MacOSX.
+     # Fuchsia is excluded due to a libsync dependency and because it's

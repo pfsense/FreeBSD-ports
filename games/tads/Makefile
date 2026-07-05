@@ -1,10 +1,10 @@
 PORTNAME=	tads
-PORTVERSION=	2.5.9
+DISTVERSION=	2.5.9
 CATEGORIES=	games lang
 MASTER_SITES=	LOCAL/kris
 DISTNAME=	tads23-unix
 
-MAINTAINER=	bofh@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	TADS compiler/interpreter for interactive fiction
 WWW=		https://www.tads.org/
 
@@ -23,7 +23,7 @@ WRKSRC=		${WRKDIR}/tads-3.0.8/tads2
 
 .include <bsd.port.pre.mk>
 
-.if ${OPSYS} == FreeBSD && ( ${OSVERSION} >= 1400079 || ( ${OSVERSION} >= 1302505 && ${OSVERSION} < 1400000 ))
+.if ${OPSYS} == FreeBSD
 CFLAGS+=	-Wno-error=int-conversion
 .endif
 

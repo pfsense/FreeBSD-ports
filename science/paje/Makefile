@@ -1,6 +1,6 @@
 PORTNAME=	paje
 PORTVERSION=	1.97
-PORTREVISION=	12
+PORTREVISION=	13
 CATEGORIES=	science gnustep
 MASTER_SITES=	SF/${PORTNAME}/Releases
 DISTNAME=	Paje_${PORTVERSION}
@@ -19,7 +19,7 @@ WRKSRC=		${WRKDIR}/${DISTNAME}
 
 .include <bsd.port.options.mk>
 
-.if ${OPSYS} == FreeBSD && ( ${OSVERSION} >= 1400091 || ( ${OSVERSION} >= 1302507 && ${OSVERSION} < 1400000 ))
+.if ${OPSYS} == FreeBSD
 CPPFLAGS+=	-Wno-error=incompatible-function-pointer-types
 .endif
 

@@ -1,8 +1,8 @@
 PORTNAME=	tiramisu
-DISTVERSION=	2.0.20211107
+DISTVERSION=	2.0.20240610
 CATEGORIES=	sysutils
 
-MAINTAINER=	jbeich@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Desktop notifications, the UNIX way
 WWW=		https://github.com/Sweets/tiramisu
 

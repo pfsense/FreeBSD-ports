@@ -8,7 +8,7 @@
  * squid.xml
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2015-2024 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2015-2026 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2012-2014 Marcello Coutinho
  * All rights reserved.
  *
@@ -28,7 +28,9 @@
 	</copyright>
 	<name>squid</name>
 	<title>Proxy Server: General Settings</title>
+	<addedit_string>squid: changed ACLs</addedit_string>
 	<include_file>/usr/local/pkg/squid.inc</include_file>
+	<ramdisk_dir_names>clamav</ramdisk_dir_names>
 	<menu>
 		<name>Squid Proxy Server</name>
 		<tooltiptext>Modify the proxy server settings</tooltiptext>
@@ -70,6 +72,15 @@
 		</item>
 		<item>
 			<type>plugin_certificates</type>
+		</item>
+		<item>
+			<type>plugin_xmlrpc_send</type>
+		</item>
+		<item>
+			<type>plugin_xmlrpc_recv</type>
+		</item>
+		<item>
+			<type>plugin_xmlrpc_recv_done</type>
 		</item>
 	</plugins>
 	<tabs>
@@ -494,7 +505,6 @@
 			</description>
 			<type>select</type>
 			<options>
-				<option><name>1024 (not recommended)</name><value>1024</value></option>
 				<option><name>2048 (default)</name><value>2048</value></option>
 				<option><name>4096 (very secure)</name><value>4096</value></option>
 			</options>

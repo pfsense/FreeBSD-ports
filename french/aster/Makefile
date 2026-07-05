@@ -1,6 +1,6 @@
 PORTNAME=	aster
 DISTVERSION=	${ASTER_DISTVERSION}
-PORTREVISION=	11
+PORTREVISION=	12
 CATEGORIES=	french cad
 
 MAINTAINER=	thierry@FreeBSD.org
@@ -11,6 +11,8 @@ LICENSE=	GPLv2
 
 NOT_FOR_ARCHS=		armv6 armv7 i386 mips powerpc
 NOT_FOR_ARCHS_REASON=	ARG_MAX is too small for Code_Aster on 32 bits systems
+
+BROKEN=	fails to build the catalog of elements
 
 #-----------------------------------------------------------------------
 # You may define these options:
@@ -29,7 +31,7 @@ BUILD_DEPENDS+=	astk-serveur>0:cad/astk-serveur	\
 		${SHELL_INSTALL_ASTER}:shells/${SHIADEP}	\
 		gnproc:sysutils/coreutils			\
 		bash:shells/bash				\
-		getopt>0:misc/getopt				\
+		getopt>=0:misc/getopt				\
 		xterm:x11/xterm					\
 		${PYNUMPY}	\
 		${PYTHON_PKGNAMEPREFIX}sympy>0:math/py-sympy@${PY_FLAVOR}

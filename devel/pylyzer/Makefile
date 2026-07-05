@@ -1,12 +1,13 @@
 PORTNAME=	pylyzer
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.0.51
-PORTREVISION=	4
+DISTVERSION=	0.0.82
+PORTREVISION=	1
 CATEGORIES=	devel python
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Static code analyzer & language server for Python
-WWW=		https://mtshiba.github.io/pylyzer/
+WWW=		https://mtshiba.github.io/pylyzer/ \
+		https://github.com/mtshiba/pylyzer
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
@@ -25,110 +26,158 @@ USE_PYTHON=	pep517 noflavors autoplist
 USE_GITHUB=	yes
 GH_ACCOUNT=	mtshiba
 
-CARGO_CRATES=	Inflector-0.11.4 \
-		addr2line-0.21.0 \
-		adler-1.0.2 \
-		anyhow-1.0.75 \
-		autocfg-1.1.0 \
-		backtrace-0.3.69 \
+CARGO_CRATES=	addr2line-0.24.2 \
+		adler2-2.0.0 \
+		ahash-0.8.11 \
+		anyhow-1.0.96 \
+		autocfg-1.4.0 \
+		backtrace-0.3.74 \
 		backtrace-on-stack-overflow-0.3.0 \
-		base64-0.13.1 \
 		bitflags-1.3.2 \
-		cc-1.0.83 \
+		bitflags-2.8.0 \
+		bumpalo-3.17.0 \
+		byteorder-1.5.0 \
+		cc-1.2.15 \
 		cfg-if-1.0.0 \
-		convert_case-0.4.0 \
-		crunchy-0.2.2 \
-		derive_more-0.99.17 \
-		either-1.9.0 \
-		els-0.1.39 \
-		embed-doc-image-0.1.4 \
-		erg_common-0.6.27 \
-		erg_compiler-0.6.27 \
-		erg_parser-0.6.27 \
-		erg_proc_macros-0.6.27 \
+		crunchy-0.2.3 \
+		derive_more-1.0.0 \
+		derive_more-impl-1.0.0 \
+		displaydoc-0.2.5 \
+		either-1.13.0 \
+		els-0.1.65-nightly.5 \
+		equivalent-1.0.2 \
+		erg_common-0.6.53-nightly.5 \
+		erg_compiler-0.6.53-nightly.5 \
+		erg_parser-0.6.53-nightly.5 \
+		erg_proc_macros-0.6.53-nightly.5 \
 		form_urlencoded-1.2.1 \
-		gimli-0.28.1 \
-		idna-0.5.0 \
-		is-macro-0.2.2 \
-		itertools-0.10.5 \
+		getopts-0.2.21 \
+		getrandom-0.2.15 \
+		gimli-0.31.1 \
+		glob-0.3.2 \
+		hashbrown-0.14.5 \
+		hashbrown-0.15.2 \
+		heck-0.5.0 \
+		icu_collections-1.5.0 \
+		icu_locid-1.5.0 \
+		icu_locid_transform-1.5.0 \
+		icu_locid_transform_data-1.5.0 \
+		icu_normalizer-1.5.0 \
+		icu_normalizer_data-1.5.0 \
+		icu_properties-1.5.1 \
+		icu_properties_data-1.5.0 \
+		icu_provider-1.5.0 \
+		icu_provider_macros-1.5.0 \
+		idna-1.0.3 \
+		idna_adapter-1.2.0 \
+		indexmap-2.7.1 \
+		is-macro-0.3.7 \
 		itertools-0.11.0 \
-		itoa-1.0.10 \
-		lalrpop-util-0.20.0 \
-		libc-0.2.150 \
-		lock_api-0.4.11 \
-		log-0.4.20 \
+		itoa-1.0.14 \
+		lalrpop-util-0.20.2 \
+		libc-0.2.169 \
+		libm-0.2.11 \
+		litemap-0.7.4 \
+		lock_api-0.4.12 \
+		log-0.4.26 \
 		lsp-types-0.93.2 \
-		malachite-0.4.4 \
-		malachite-base-0.4.4 \
-		malachite-bigint-0.1.1 \
-		malachite-nz-0.4.4 \
-		malachite-q-0.4.4 \
-		memchr-2.6.4 \
+		malachite-0.4.22 \
+		malachite-base-0.4.22 \
+		malachite-bigint-0.2.3 \
+		malachite-nz-0.4.22 \
+		malachite-q-0.4.22 \
+		memchr-2.7.4 \
 		memoffset-0.6.5 \
-		miniz_oxide-0.7.1 \
-		molc-0.2.7 \
+		miniz_oxide-0.8.5 \
+		molc-0.3.0 \
 		nix-0.23.2 \
-		num-integer-0.1.45 \
-		num-traits-0.2.17 \
-		object-0.32.1 \
-		once_cell-1.19.0 \
-		parking_lot-0.12.1 \
-		parking_lot_core-0.9.9 \
-		paste-1.0.14 \
+		num-integer-0.1.46 \
+		num-traits-0.2.19 \
+		object-0.36.7 \
+		once_cell-1.20.3 \
+		parking_lot-0.12.3 \
+		parking_lot_core-0.9.10 \
+		paste-1.0.15 \
 		percent-encoding-2.3.1 \
-		phf-0.11.2 \
-		phf_codegen-0.11.2 \
-		phf_generator-0.11.2 \
-		phf_shared-0.11.2 \
-		pmutil-0.5.3 \
-		proc-macro2-1.0.70 \
-		quote-1.0.33 \
+		phf-0.11.3 \
+		phf_codegen-0.11.3 \
+		phf_generator-0.11.3 \
+		phf_shared-0.11.3 \
+		ppv-lite86-0.2.20 \
+		proc-macro2-1.0.93 \
+		quote-1.0.38 \
 		rand-0.8.5 \
+		rand_chacha-0.3.1 \
 		rand_core-0.6.4 \
-		redox_syscall-0.4.1 \
-		rustc-demangle-0.1.23 \
+		redox_syscall-0.5.9 \
+		rustc-demangle-0.1.24 \
 		rustc-hash-1.1.0 \
-		rustc_version-0.4.0 \
-		rustpython-ast-0.3.0 \
-		rustpython-parser-0.3.0 \
-		rustpython-parser-core-0.3.0 \
-		rustpython-parser-vendored-0.3.0 \
-		ryu-1.0.15 \
+		rustversion-1.0.19 \
+		ryu-1.0.19 \
 		scopeguard-1.2.0 \
-		semver-1.0.20 \
-		serde-1.0.193 \
-		serde_derive-1.0.193 \
-		serde_json-1.0.108 \
-		serde_repr-0.1.17 \
-		siphasher-0.3.11 \
-		smallvec-1.11.2 \
+		serde-1.0.218 \
+		serde_derive-1.0.218 \
+		serde_json-1.0.139 \
+		serde_repr-0.1.19 \
+		shlex-1.3.0 \
+		siphasher-1.0.1 \
+		smallvec-1.14.0 \
+		stable_deref_trait-1.2.0 \
 		static_assertions-1.1.0 \
 		syn-1.0.109 \
-		syn-2.0.39 \
-		thread_local-1.1.7 \
+		syn-2.0.98 \
+		synstructure-0.13.1 \
+		thread_local-1.1.8 \
 		tiny-keccak-2.0.2 \
-		tinyvec-1.6.0 \
-		tinyvec_macros-0.1.1 \
+		tinystr-0.7.6 \
 		unic-char-property-0.9.0 \
 		unic-char-range-0.9.0 \
 		unic-common-0.9.0 \
 		unic-emoji-char-0.9.0 \
 		unic-ucd-ident-0.9.0 \
 		unic-ucd-version-0.9.0 \
-		unicode-bidi-0.3.14 \
-		unicode-ident-1.0.12 \
-		unicode-normalization-0.1.22 \
-		unicode-xid-0.2.4 \
-		unicode_names2-0.6.0 \
-		url-2.5.0 \
-		windows-targets-0.48.5 \
-		windows_aarch64_gnullvm-0.48.5 \
-		windows_aarch64_msvc-0.48.5 \
-		windows_i686_gnu-0.48.5 \
-		windows_i686_msvc-0.48.5 \
-		windows_x86_64_gnu-0.48.5 \
-		windows_x86_64_gnullvm-0.48.5 \
-		windows_x86_64_msvc-0.48.5
+		unicode-ident-1.0.17 \
+		unicode-width-0.1.14 \
+		unicode-xid-0.2.6 \
+		unicode_names2-1.3.0 \
+		unicode_names2_generator-1.3.0 \
+		url-2.5.4 \
+		utf16_iter-1.0.5 \
+		utf8_iter-1.0.4 \
+		version_check-0.9.5 \
+		w-boson-0.1.0 \
+		wasi-0.11.0+wasi-snapshot-preview1 \
+		wasm-bindgen-0.2.100 \
+		wasm-bindgen-backend-0.2.100 \
+		wasm-bindgen-macro-0.2.100 \
+		wasm-bindgen-macro-support-0.2.100 \
+		wasm-bindgen-shared-0.2.100 \
+		windows-0.58.0 \
+		windows-core-0.58.0 \
+		windows-implement-0.58.0 \
+		windows-interface-0.58.0 \
+		windows-result-0.2.0 \
+		windows-strings-0.1.0 \
+		windows-targets-0.52.6 \
+		windows_aarch64_gnullvm-0.52.6 \
+		windows_aarch64_msvc-0.52.6 \
+		windows_i686_gnu-0.52.6 \
+		windows_i686_gnullvm-0.52.6 \
+		windows_i686_msvc-0.52.6 \
+		windows_x86_64_gnu-0.52.6 \
+		windows_x86_64_gnullvm-0.52.6 \
+		windows_x86_64_msvc-0.52.6 \
+		write16-1.0.0 \
+		writeable-0.5.5 \
+		yoke-0.7.5 \
+		yoke-derive-0.7.5 \
+		zerocopy-0.7.35 \
+		zerocopy-derive-0.7.35 \
+		zerofrom-0.1.5 \
+		zerofrom-derive-0.1.5 \
+		zerovec-0.10.4 \
+		zerovec-derive-0.10.3 \
+		rustpython-ast,rustpython-parser,rustpython-parser-core,rustpython-parser-vendored@git+https://github.com/RustPython/Parser\#d2f137b372ec08ce4a243564a80f8f9153c45a23
 
 CARGO_BUILD=	no
 CARGO_INSTALL=	no
@@ -136,8 +185,5 @@ CARGO_TEST=	no
 CARGO_TARGET_DIR=	${WRKSRC}/target
 
 MAKE_ENV=	${CARGO_ENV}
-
-post-install:
-	@${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/pylyzer
 
 .include <bsd.port.mk>

@@ -247,6 +247,8 @@ lib/mailutils/spamd.a
 lib/mailutils/spamd.so
 lib/mailutils/timestamp.a
 lib/mailutils/timestamp.so
+lib/mailutils/uidnew.a
+lib/mailutils/uidnew.so
 lib/mailutils/vacation.a
 lib/mailutils/vacation.so
 %%PYTHON%%%%PYTHON_SITELIBDIR%%/mailutils/__init__.py
@@ -349,6 +351,7 @@ share/aclocal/mailutils.m4
 %%NLS%%share/locale/fi/LC_MESSAGES/mailutils.mo
 %%NLS%%share/locale/fr/LC_MESSAGES/mailutils.mo
 %%NLS%%share/locale/id/LC_MESSAGES/mailutils.mo
+%%NLS%%share/locale/ka/LC_MESSAGES/mailutils.mo
 %%NLS%%share/locale/pl/LC_MESSAGES/mailutils.mo
 %%NLS%%share/locale/pt_BR/LC_MESSAGES/mailutils.mo
 %%NLS%%share/locale/ro/LC_MESSAGES/mailutils.mo

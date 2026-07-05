@@ -1,5 +1,5 @@
 PORTNAME=	queuelib
-PORTVERSION=	1.6.2
+PORTVERSION=	1.8.0
 CATEGORIES=	sysutils python
 MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -11,11 +11,12 @@ WWW=		https://github.com/scrapy/queuelib
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
+BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}hatchling>=1.27.0:devel/py-hatchling@${PY_FLAVOR}
 RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}sqlite3>0:databases/py-sqlite3@${PY_FLAVOR}
 TEST_DEPENDS:=	${RUN_DEPENDS}
 
 USES=		python
-USE_PYTHON=	autoplist distutils pytest
+USE_PYTHON=	autoplist pep517 pytest
 
 NO_ARCH=	yes
 

@@ -1,12 +1,13 @@
 PORTNAME=	nexus2
 PORTVERSION=	2.15.1
+PORTREVISION=	2
 DISTVERSIONSUFFIX=	02
 CATEGORIES=	devel www java
 MASTER_SITES=	https://download.sonatype.com/nexus/oss/
 PKGNAMESUFFIX=	-oss
 DISTNAME=	nexus-${PORTVERSION}-${DISTVERSIONSUFFIX}-bundle
 
-MAINTAINER=	michael.osipov@siemens.com
+MAINTAINER=	michael.osipov@innomotics.com
 COMMENT=	Maven (and others) artifacts repository manager
 WWW=		https://www.sonatype.com/products/repository-oss
 
@@ -15,18 +16,16 @@ LICENSE=	EPL
 PATCH_DEPENDS=	zip:archivers/zip
 RUN_DEPENDS=	javaservicewrapper:sysutils/javaservicewrapper
 
-USES=		cpe
-
+USES=		cpe java
 CPE_VENDOR=	sonatype
 CPE_PRODUCT=	nexus
+# Java 8 only, see https://issues.sonatype.org/browse/NEXUS-19183
+JAVA_VERSION=	8
 
 NO_ARCH=	yes
 NO_BUILD=	yes
 NO_TEST=	yes
 
-USE_JAVA=	yes
-# Java 8 only, see https://issues.sonatype.org/browse/NEXUS-19183
-JAVA_VERSION=	8
 
 USE_RC_SUBR=	${PORTNAME}
 

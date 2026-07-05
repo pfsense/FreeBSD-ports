@@ -8,9 +8,12 @@ bin/amidi
 bin/amixer
 bin/aplay
 bin/aplaymidi
+bin/aplaymidi2
 bin/arecord
 bin/arecordmidi
+bin/arecordmidi2
 bin/aseqdump
+bin/aseqsend
 bin/aseqnet
 bin/axfer
 bin/iecset
@@ -20,7 +23,6 @@ lib/alsa-topology/libalsatplg_module_nhlt.so
 lib/udev/90-alsa-restore.rules
 %%MANPAGES%%share/man/fr/man8/alsaconf.8.gz
 %%MANPAGES%%share/man/man1/aconnect.1.gz
-%%MANPAGES%%share/man/man1/alsa-info.sh.1.gz
 %%MANPAGES%%%%BAT%%share/man/man1/alsabat.1.gz
 %%MANPAGES%%share/man/man1/alsactl.1.gz
 %%MANPAGES%%share/man/man1/alsaloop.1.gz
@@ -31,9 +33,12 @@ lib/udev/90-alsa-restore.rules
 %%MANPAGES%%share/man/man1/amixer.1.gz
 %%MANPAGES%%share/man/man1/aplay.1.gz
 %%MANPAGES%%share/man/man1/aplaymidi.1.gz
+%%MANPAGES%%share/man/man1/aplaymidi2.1.gz
 %%MANPAGES%%share/man/man1/arecord.1.gz
 %%MANPAGES%%share/man/man1/arecordmidi.1.gz
+%%MANPAGES%%share/man/man1/arecordmidi2.1.gz
 %%MANPAGES%%share/man/man1/aseqdump.1.gz
+%%MANPAGES%%share/man/man1/aseqsend.1.gz
 %%MANPAGES%%share/man/man1/aseqnet.1.gz
 %%MANPAGES%%share/man/man1/axfer-list.1.gz
 %%MANPAGES%%share/man/man1/axfer-transfer.1.gz
@@ -42,6 +47,7 @@ lib/udev/90-alsa-restore.rules
 %%MANPAGES%%share/man/man1/nhlt-dmic-info.1.gz
 %%MANPAGES%%share/man/man1/speaker-test.1.gz
 %%MANPAGES%%share/man/man7/alsactl_init.7.gz
+%%MANPAGES%%share/man/man8/alsa-info.sh.8.gz
 %%MANPAGES%%share/man/man8/alsaconf.8.gz
 sbin/alsa-info.sh
 %%BAT%%sbin/alsabat-test.sh

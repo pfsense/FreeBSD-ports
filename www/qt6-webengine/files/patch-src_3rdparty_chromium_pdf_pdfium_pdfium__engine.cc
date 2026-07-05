@@ -1,7 +1,7 @@
---- src/3rdparty/chromium/pdf/pdfium/pdfium_engine.cc.orig	2023-03-09 06:31:50 UTC
+--- src/3rdparty/chromium/pdf/pdfium/pdfium_engine.cc.orig	2025-08-15 18:30:00 UTC
 +++ src/3rdparty/chromium/pdf/pdfium/pdfium_engine.cc
-@@ -84,7 +84,7 @@
- #include "gin/public/cppgc.h"
+@@ -108,7 +108,7 @@
+ #include "ui/accessibility/ax_features.mojom-features.h"
  #endif
  
 -#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS)
@@ -9,7 +9,7 @@
  #include "pdf/pdfium/pdfium_font_linux.h"
  #endif
  
-@@ -526,7 +526,7 @@ void InitializeSDK(bool enable_v8, FontMappingMode fon
+@@ -541,7 +541,7 @@ void InitializeSDK(bool enable_v8,
  
    FPDF_InitLibraryWithConfig(&config);
  

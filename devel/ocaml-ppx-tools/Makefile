@@ -1,6 +1,6 @@
 PORTNAME=	ppx-tools
 PORTVERSION=	6.6
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	devel
 PKGNAMEPREFIX=	ocaml-
 
@@ -13,17 +13,22 @@ LICENSE=	MIT
 BUILD_DEPENDS=	dune:devel/ocaml-dune \
 		cppo:devel/ocaml-cppo
 
-USES=		gmake
-ALL_TARGET=	release
-USE_OCAML=	yes
-USE_OCAML_FINDLIB=yes
+USES=		gmake ocaml:findlib
 USE_GITHUB=	yes
 GH_ACCOUNT=	ocaml-ppx
 GH_PROJECT=	${PORTNAME:C/-/_/}
+
+ALL_TARGET=	release
 DOCSDIR=	${OCAML_DOCSDIR}/${PORTNAME:C/-/_/}
 
 PORTDOCS=	CHANGES LICENSE README.md
 
 OPTIONS_DEFINE= DOCS
+
+.include <bsd.port.options.mk>
+
+.if ${ARCH} == powerpc
+USE_BINUTILS=	yes
+.endif
 
 .include <bsd.port.mk>

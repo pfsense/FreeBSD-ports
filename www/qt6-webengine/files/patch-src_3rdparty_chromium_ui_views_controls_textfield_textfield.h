@@ -1,7 +1,7 @@
---- src/3rdparty/chromium/ui/views/controls/textfield/textfield.h.orig	2023-03-09 06:31:50 UTC
+--- src/3rdparty/chromium/ui/views/controls/textfield/textfield.h.orig	2025-08-15 18:30:00 UTC
 +++ src/3rdparty/chromium/ui/views/controls/textfield/textfield.h
-@@ -42,7 +42,7 @@
- #include "ui/views/view.h"
+@@ -47,7 +47,7 @@
+ #include "ui/views/view_observer.h"
  #include "ui/views/word_lookup_client.h"
  
 -#if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS)
@@ -9,7 +9,7 @@
  #include <vector>
  #endif
  
-@@ -450,7 +450,7 @@ class VIEWS_EXPORT Textfield : public View,
+@@ -474,7 +474,7 @@ class VIEWS_EXPORT Textfield : public View,
    // Set whether the text should be used to improve typing suggestions.
    void SetShouldDoLearning(bool value) { should_do_learning_ = value; }
  

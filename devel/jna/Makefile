@@ -1,44 +1,38 @@
 PORTNAME=	jna
-PORTVERSION=	5.7.0
-PORTREVISION=	1
+PORTVERSION=	5.15.0
+PORTREVISION=	3
 CATEGORIES=	devel java
 
 MAINTAINER=	ports@markdixon.name
 COMMENT=	Java access to native shared libraries
-WWW=		https://github.com/twall/jna
+WWW=		https://github.com/java-native-access/jna
 
-LICENSE=	LGPL21+ APACHE20
+LICENSE=	APACHE20 LGPL21+
 LICENSE_COMB=	dual
-LICENSE_FILE=	${WRKSRC}/LICENSE
-LICENSE_FILE_LGPL21+ =	${WRKSRC}/LGPL2.1
 LICENSE_FILE_APACHE20=	${WRKSRC}/AL2.0
-
-BROKEN_armv6=		fails to compile: build.xml: compilation failed
-BROKEN_armv7=		fails to compile: build.xml: compilation failed
+LICENSE_FILE_LGPL21+ =	${WRKSRC}/LGPL2.1
+LICENSE_FILE=	${WRKSRC}/LICENSE
 
 BUILD_DEPENDS=	makeinfo:print/texinfo
 
-USES=		autoreconf:build gmake libtool xorg
-USE_ANT=	yes
-USE_JAVA=	yes
-JAVA_VERSION=	8+
-USE_XORG=	x11 xt
-MAKE_ARGS=	-DCC="${CC}" -DLD="${LD}"
-MAKE_ENV=	ANT_OPTS=-Drelease -DARCH=${ANT_ARCH}
-
+USES=		autoreconf:build gmake java:ant libtool xorg
 USE_GITHUB=	yes
 GH_ACCOUNT=	java-native-access
-
-PORTDOCS=	javadoc platform-${PORTVERSION}-javadoc.jar
-PLIST_FILES=	%%JAVAJARDIR%%/jna-platform.jar \
-		%%JAVAJARDIR%%/jna.jar
-
+GH_TAGNAME=	0a33062e1971962ca6b283c397ed1de5cc053d33
+USE_XORG=	x11 xt
+MAKE_ARGS=	-DCC="${CC}" \
+		-DLD="${LD}"
+MAKE_ENV=	ANT_OPTS="-Drelease -DARCH=${ANT_ARCH}"
 ALL_TARGET=	native jar
 TEST_TARGET=	test
 
+PLIST_FILES=	${JAVAJARDIR}/jna-platform.jar \
+		${JAVAJARDIR}/jna.jar
+PORTDOCS=	javadoc platform-${PORTVERSION}-javadoc.jar
+
 OPTIONS_DEFINE=	DOCS
 
-ANT_ARCH=	${ARCH:S/amd64/x86-64/:S/i386/x86/:S/powerpc64/ppc64/}
+ANT_ARCH=	${ARCH:S/amd64/x86-64/:S/armv6/arm/:S/armv7/arm/:S/i386/x86/:S/powerpc/ppc/}
 
 post-patch:
 	@${REINPLACE_CMD} -e 's|%%LOCALBASE%%|${LOCALBASE}|' \

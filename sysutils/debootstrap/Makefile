@@ -1,9 +1,9 @@
 PORTNAME=	debootstrap
 PORTVERSION=	${DEB_VERSION}n${DEB_NMU}
-PORTREVISION=	3
+PORTREVISION=	5
 CATEGORIES=	sysutils
 MASTER_SITES=	DEBIAN
-DISTNAME=	${PORTNAME}_${DEB_VERSION}+nmu${DEB_NMU}
+DISTNAME=	${PORTNAME}_${DEB_VERSION}+nmu${DEB_NMU}+${DEB_REVISION}
 
 MAINTAINER=	nc@FreeBSD.org
 COMMENT=	Install Debian or Ubuntu base system into a directory
@@ -12,12 +12,12 @@ WWW=		https://wiki.debian.org/Debootstrap
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/debian/copyright
 
-RUN_DEPENDS=	wget:ftp/wget \
+RUN_DEPENDS=	${LOCALBASE}/share/keyrings/ubuntu-archive-keyring.gpg:security/ubuntu-keyring \
 		bash:shells/bash \
-		${LOCALBASE}/bin/grep:textproc/gnugrep \
 		gpgv2:security/gnupg \
 		gtar:archivers/gtar \
-		${LOCALBASE}/share/keyrings/ubuntu-archive-keyring.gpg:security/ubuntu-keyring
+		pcre2grep:devel/pcre2 \
+		wget:ftp/wget
 
 USES=		gmake perl5
 USE_PERL5=	run
@@ -31,6 +31,7 @@ WRKSRC=		${WRKDIR}/${PORTNAME}
 # native package doesn't play well with our versioning
 DEB_VERSION=	1.0.128
 DEB_NMU=	2
+DEB_REVISION=	deb12u2
 
 post-patch:
 	@${REINPLACE_CMD} \
@@ -39,14 +40,6 @@ post-patch:
 		${WRKSRC}/debootstrap
 	@${FIND} ${WRKSRC}/scripts -type f | \
 		${XARGS} ${REINPLACE_CMD} -e 's,/usr/share/keyrings,${LOCALBASE}/share/keyrings,g'
-
-	# Workaround for bin/255525
-	@${REINPLACE_CMD} -e 's,grep,${LOCALBASE}/bin/grep,g' \
-		${WRKSRC}/functions
-
-	# ports/274298
-	@${REINPLACE_CMD} -e 's, tar , ${LOCALBASE}/bin/gtar ,g' \
-		${WRKSRC}/functions
 
 post-install:
 	${INSTALL_MAN} ${WRKSRC}/debootstrap.8 \

@@ -1,5 +1,6 @@
 PORTNAME=	ditaa
 DISTVERSION=	0.11.0
+PORTREVISION=	1
 CATEGORIES=	graphics java
 MASTER_SITES=	https://github.com/stathissideris/${PORTNAME}/releases/download/v${DISTVERSION}/
 DISTNAME=	${PORTNAME}-${DISTVERSION}-standalone.jar
@@ -11,8 +12,7 @@ WWW=		https://github.com/stathissideris/ditaa
 
 LICENSE=	LGPL3
 
-USES=		zip
-USE_JAVA=	yes
+USES=		java zip
 
 DATADIR=	${JAVASHAREDIR}/${PORTNAME}
 

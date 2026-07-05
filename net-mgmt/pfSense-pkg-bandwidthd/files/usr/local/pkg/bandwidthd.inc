@@ -22,6 +22,7 @@
  * limitations under the License.
  */
 define('PKG_BANDWIDTHD_BASE', '/usr/local/bandwidthd');
+define('LOG_PREFIX_PKG_BANDWIDTHD', 'bandwidthd');
 
 function bandwidthd_install_deinstall() {
 	mwexec("/bin/rm -rf " . PKG_BANDWIDTHD_BASE . "/htdocs");
@@ -31,7 +32,7 @@ function bandwidthd_install_deinstall() {
 }
 
 function bandwidthd_install_config() {
-	global $config, $g, $bandwidthd_config;
+	global $g, $bandwidthd_config;
 
 	/* bandwidthd doesn't have a way to pass a custom config path, unfortunately */
 	/* So, the .conf file must be ./etc/bandwidthd.conf relative to the current dir */
@@ -39,7 +40,7 @@ function bandwidthd_install_config() {
 	$bandwidthd_config_dir = PKG_BANDWIDTHD_BASE . "/etc";
 
 	/* General Options */
-	$bandwidthd_config = $config['installedpackages']['bandwidthd']['config'][0];
+	$bandwidthd_config = config_get_path('installedpackages/bandwidthd/config/0');
 	/* Configure bandwidthd web interface */
 	$dev = "";
 	$ifdescrs = array($bandwidthd_config['active_interface']);
@@ -155,7 +156,7 @@ EOF;
 
 	$fd = fopen("{$bandwidthd_config_dir}/bandwidthd.conf", "w");
 	if (!$fd) {
-		log_error("could not open {$bandwidthd_config_dir}/bandwidthd.conf for writing");
+		logger(LOG_ERR, localize_text("could not open %s for writing", "{$bandwidthd_config_dir}/bandwidthd.conf"), LOG_PREFIX_PKG_BANDWIDTHD);
 		exit;
 	}
 	fwrite($fd, $config_file);
@@ -217,15 +218,15 @@ EOD;
 }
 
 function bandwidthd_upgrade_config() {
-	global $config, $changes;
+	global $changes;
 	// The 'Advanced Filter' options and 'Database Password' are now base64-encoded
 	// in order to now break config.xml if they contain some special chars.
 	// If this is an old config, pick up the original unencoded values and upgrade
 	$changes = 0;
-	$bandwidthd_config = $config['installedpackages']['bandwidthd']['config'][0];
+	$bandwidthd_config = config_get_path('installedpackages/bandwidthd/config/0');
 	if (isset($bandwidthd_config['filter'])) {
-		$config['installedpackages']['bandwidthd']['config'][0]['advfilter'] = base64_encode($bandwidthd_config['filter']);
-		unset($config['installedpackages']['bandwidthd']['config'][0]['filter']);
+		config_set_path('installedpackages/bandwidthd/config/0/advfilter', base64_encode($bandwidthd_config['filter']));
+		config_del_path('installedpackages/bandwidthd/config/0/filter');
 		$changes++;
 	}
 	// Subnet(s) for Statistics Collection - convert old subnets_custom to interface_array here as well.
@@ -246,7 +247,7 @@ function bandwidthd_upgrade_config() {
 					$realif = get_real_interface($if);
 					if (!preg_match("/pppoe[0-9]+/i", $realif)) {
 						// and finally, set the new config value for config.xml
-						$config['installedpackages']['bandwidthd']['config'][0]['interface_array'][$i] = $if;
+						config_set_path("installedpackages/bandwidthd/config/0/interface_array/{$i}", $if);
 						$i++;
 						$changes++;
 					}
@@ -254,7 +255,7 @@ function bandwidthd_upgrade_config() {
 			}
 		}
 		// Remove the old settings value now that we are done with config upgrade
-		unset($config['installedpackages']['bandwidthd']['config'][0]['subnets_custom']);
+		config_del_path('installedpackages/bandwidthd/config/0/subnets_custom');
 	}
 	// Write the upgraded config.xml if something changed
 	if ($changes > 0 ) {
@@ -304,7 +305,7 @@ function bandwidthd_validate_input($post, &$input_errors) {
 	// Only support sane characters in Sensor ID
 	if ($post['sensorid']) {
 		if ((!is_hostname($post['sensorid'])) && !preg_match("/^[a-zA-Z0-9\-\=\(\):. ]*$/", $post['sensorid'])) {
-			$input_errors[] .= gettext('Sensor ID must be either a hostname or a string which may only contain characters matching ^[a-zA-Z0-9\-\(\):. ]*$ regexp.');
+			$input_errors[] = gettext('Sensor ID must be either a hostname or a string which may only contain characters matching ^[a-zA-Z0-9\-\(\):. ]*$ regexp.');
 		}
 	}
 	if (($post['meta_refresh']) && (!is_numericint($post['meta_refresh']))) {

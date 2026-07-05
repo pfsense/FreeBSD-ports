@@ -1,5 +1,6 @@
 PORTNAME=	findbugs
 DISTVERSION=	3.0.1.20150306-5afe4d1
+PORTREVISION=	2
 CATEGORIES=	java devel
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}%20eclipse%20plugin/3.0.1
 PKGNAMEPREFIX=	eclipse-
@@ -12,9 +13,8 @@ WWW=		https://findbugs.sourceforge.net/manual/eclipse.html
 
 RUN_DEPENDS=	eclipse:java/eclipse
 
-USES=		zip
+USES=		java zip
 NO_BUILD=	yes
-USE_JAVA=	yes
 JAVA_OS=	native
 
 PLIST_SUB=	\

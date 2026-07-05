@@ -4,9 +4,9 @@ PORTREVISION=	1
 CATEGORIES=	devel
 DISTNAME=	${PORTNAME}_${DISTVERSION}
 
-MAINTAINER=	ygy@FreeBSD.org
+MAINTAINER=	uzsolt@FreeBSD.org
 COMMENT=	Pretty Print R Code in the Terminal
-WWW=		https://github.com/r-lib/prettycode #readme
+WWW=		https://github.com/r-lib/prettycode\#readme
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE

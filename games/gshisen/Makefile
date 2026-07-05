@@ -1,6 +1,6 @@
 PORTNAME=	gshisen
 PORTVERSION=	1.3.0
-PORTREVISION=	9
+PORTREVISION=	10
 CATEGORIES=	games gnustep
 MASTER_SITES=	SAVANNAH/gap
 DISTNAME=	GShisen-${PORTVERSION}
@@ -16,7 +16,7 @@ USE_GNUSTEP=	back build
 
 .include <bsd.port.options.mk>
 
-.if ${OPSYS} == FreeBSD && ( ${OSVERSION} >= 1400091 || ( ${OSVERSION} >= 1302507 && ${OSVERSION} < 1400000 ))
+.if ${OPSYS} == FreeBSD
 CFLAGS+=	-Wno-error=incompatible-function-pointer-types
 .endif
 

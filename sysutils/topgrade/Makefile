@@ -1,7 +1,7 @@
 PORTNAME=	topgrade
 DISTVERSIONPREFIX=	v
-DISTVERSION=	14.0.1
-PORTREVISION=	2
+DISTVERSION=	16.9.0
+PORTREVISION=	1
 CATEGORIES=	sysutils
 
 MAINTAINER=	freebsd@scd-systems.net
@@ -11,9 +11,7 @@ WWW=		https://github.com/topgrade-rs/topgrade
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-RUN_DEPENDS=	sudo:security/sudo
-
-USES=		cargo
+USES=		cargo sudo
 USE_GITHUB=	yes
 GH_ACCOUNT=	topgrade-rs
 
@@ -24,7 +22,6 @@ PORTEXAMPLES=	config.example.toml
 OPTIONS_DEFINE=	EXAMPLES
 
 post-install:
-		${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/${PORTNAME}
 		${STAGEDIR}${PREFIX}/bin/${PORTNAME} --gen-manpage > ${WRKSRC}/${PORTNAME}.1
 		${INSTALL_MAN} ${WRKSRC}/topgrade.1 ${STAGEDIR}${PREFIX}/share/man/man1/
 

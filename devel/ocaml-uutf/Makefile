@@ -1,6 +1,6 @@
 PORTNAME=	uutf
 PORTVERSION=	1.0.3
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	devel
 MASTER_SITES=	https://erratique.ch/software/uutf/releases/
 PKGNAMEPREFIX=	ocaml-
@@ -18,9 +18,7 @@ BUILD_DEPENDS+=	opam-installer:devel/ocaml-opam \
 		${LOCALBASE}/${OCAML_SITELIBDIR}/topkg/META:devel/ocaml-topkg \
 		${LOCALBASE}/${OCAML_SITELIBDIR}/uchar/META:devel/ocaml-uchar
 
-USES=		tar:tbz
-USE_OCAML=	yes
-USE_OCAML_FINDLIB=	yes
+USES=		ocaml:findlib tar:tbz
 
 OPTIONS_DEFINE=	DOCS
 

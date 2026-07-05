@@ -1,6 +1,6 @@
 PORTNAME=	opentofu
 DISTVERSIONPREFIX=	v
-DISTVERSION=	1.6.2
+DISTVERSION=	1.11.5
 PORTREVISION=	1
 CATEGORIES=	sysutils
 
@@ -11,10 +11,10 @@ WWW=		https://opentofu.org/
 LICENSE=	MPL20
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-USES=		go:modules
-GO_BUILDFLAGS=	-o bin/
+USES=		go:1.25+,modules
 GO_MODULE=	github.com/opentofu/opentofu
 GO_TARGET=	./cmd/tofu
+GO_BUILDFLAGS=	-o bin/
 
 PLIST_FILES=	bin/tofu
 

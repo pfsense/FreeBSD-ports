@@ -1,4 +1,4 @@
---- base/posix/sysctl.cc.orig	2024-02-04 14:57:47 UTC
+--- base/posix/sysctl.cc.orig	2025-12-10 15:04:57 UTC
 +++ base/posix/sysctl.cc
 @@ -4,6 +4,7 @@
  

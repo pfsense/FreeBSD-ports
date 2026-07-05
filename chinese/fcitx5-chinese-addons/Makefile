@@ -1,6 +1,5 @@
 PORTNAME=	fcitx5-chinese-addons
-DISTVERSION=	5.0.17
-PORTREVISION=	6
+DISTVERSION=	5.1.11
 CATEGORIES=	chinese textproc
 MASTER_SITES=	https://download.fcitx-im.org/fcitx5/${PORTNAME}/ \
 		https://download.fcitx-im.org/data/:py_stroke,py_table
@@ -26,7 +25,7 @@ LIB_DEPENDS=	libboost_iostreams.so:devel/boost-libs \
 RUN_DEPENDS=	fcitx5-lua>0:textproc/fcitx5-lua
 
 USES=		cmake compiler:c++17-lang gettext kde:5 localbase pkgconfig \
-		tar:xz
+		tar:zst
 
 OPTIONS_DEFINE=		GUI
 OPTIONS_DEFAULT=	GUI
@@ -34,9 +33,9 @@ OPTIONS_DEFAULT=	GUI
 USE_LDCONFIG=	yes
 
 GUI_DESC=	Configuration GUI
-GUI_USES=	qt:5
-GUI_USE=	qt=concurrent,dbus,webengine,buildtools:build,qmake:build
-GUI_LIB_DEPENDS=	libFcitx5Qt5DBusAddons.so:textproc/fcitx5-qt
+GUI_USES=	qt:6
+GUI_USE=	qt=base,webengine
+GUI_LIB_DEPENDS=	libFcitx5Qt6DBusAddons.so:textproc/fcitx5-qt@qt6
 GUI_CMAKE_ON=	-DUSE_WEBKIT:BOOL=false
 
 USE_KDE=	ecm
@@ -48,7 +47,7 @@ MAKE_ENV=	FCITX5_DOWNLOAD_DISALLOWED=TRUE
 CONFLICTS_INSTALL=	zh-fcitx # share/icons/hicolor/16x16/apps/fcitx-fullwidth-active.png
 
 # These must follow modules/pinyinhelper/CMakeLists.txt
-PY_STROKE_VER=	20121124
+PY_STROKE_VER=	20250329
 PY_TABLE_VER=	20121124
 PY_STROKE_TAR=	py_stroke-${PY_STROKE_VER}.tar.gz
 PY_TABLE_TAR=	py_table-${PY_TABLE_VER}.tar.gz

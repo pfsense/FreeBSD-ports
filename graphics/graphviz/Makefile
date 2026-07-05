@@ -1,9 +1,8 @@
 PORTNAME=	graphviz
-PORTVERSION=	9.0.0
-PORTREVISION=	4
+PORTVERSION=	14.1.4
+PORTREVISION=	0
 CATEGORIES=	graphics tk
 MASTER_SITES=	https://gitlab.com/api/v4/projects/4207231/packages/generic/graphviz-releases/${PORTVERSION}/
-
 MAINTAINER=	dinoex@FreeBSD.org
 COMMENT=	Graph Visualization Software from AT&T and Bell Labs
 WWW=		https://www.graphviz.org/
@@ -39,7 +38,14 @@ MAKE_ENV=	EXPR_COMPAT=yes
 CONFLICTS_INSTALL=	ghmm
 
 INSTALL_TARGET=	install-strip
-PLIST_SUB=	PORTVERSION="${PORTVERSION}"
+PLIST_SUB=	SH_VERSION_SHORT="8" SH_VERSION_FULL="8.0.9" \
+		SH_LIBCDT_SHORT="6" SH_LIBCDT_FULL="6.0.3" \
+		SH_LIBCGRAPH_SHORT="8" SH_LIBCGRAPH_FULL="8.0.7" \
+		SH_LIBGVC_SHORT="7" SH_LIBGVC_FULL="7.0.8" \
+		SH_LIBGVPR_SHORT="2" SH_LIBGVPR_FULL="2.0.9" \
+		SH_LIBPATHPLAN_SHORT="4" SH_LIBPATHPLAN_FULL="4.0.6" \
+		SH_LIBXDOT_SHORT="4" SH_LIBXDOT_FULL="4.0.1"
+SHEBANG_FILES=	cmd/dot/dot_sandbox
 
 FIX_INCLUDE=	lib/cdt/dthdr.h lib/pathplan/tri.h \
 		lib/pathplan/pathutil.h lib/pathplan/solvers.h \
@@ -50,25 +56,26 @@ FIX_TCL_SCRIPT=	tclpkg/gdtclft/demo/entities.tcl \
 FIX_TK_SCRIPT=	tclpkg/tcldot/demo/doted.tcl \
 		tclpkg/tclpathplan/demo/pathplan.tcl
 
-OPTIONS_DEFINE=	XPM DIGCOLA IPSEPCOLA ICONV NLS PANGOCAIRO POPPLER \
-		ANN GTS GTK2 GDK GDK_PIXBUF SMYRNA DEVIL \
-		GHOSTSCRIPT PERL PHP PYTHON RUBY LUA TCL TK GUILE GO \
+OPTIONS_DEFINE=	XPM DIGCOLA IPSEPCOLA ICONV NLS ANN GTS \
+		PANGOCAIRO POPPLER GDK GHOSTSCRIPT DEVIL ASCII \
+		SMYRNA GVEDIT \
+		PERL PHP PYTHON RUBY LUA TCL TK GUILE GO \
 		NVTHREADS DOCS EXAMPLES
 OPTIONS_DEFAULT=XPM DIGCOLA IPSEPCOLA ICONV PANGOCAIRO NVTHREADS
 NO_OPTIONS_SORT=yes
 OPTIONS_SUB=	yes
 DIGCOLA_DESC=	neato layout engine with DIGCOLA features
 IPSEPCOLA_DESC=	neato layout engine with IPSEPCOLA features
-PANGOCAIRO_DESC=pangocairo support
-POPPLER_DESC=	PDF and PS file support via poppler (requires PANGOCAIRO)
 ANN_DESC=	ANN edge bundling support
 GTS_DESC=	GNU Triangulated Surface Library support
-GTK2_DESC=	gtk2 plugin (requires PANGOCAIRO)
-GDK_DESC=	gdk library support (requires GTK2)
-GDK_PIXBUF_DESC=gdk pixbuf support (requires GDK)
-SMYRNA_DESC=	SMYRNA graph viewer (requires GTK2)
-DEVIL_DESC=	devil plugin
+PANGOCAIRO_DESC=pangocairo support
+POPPLER_DESC=	PDF and PS file support via poppler (requires PANGOCAIRO)
+GDK_DESC=	gdk plugin support (requires PANGOCAIRO)
 GHOSTSCRIPT_DESC=ghostscript plugin (requires PANGOCAIRO)
+DEVIL_DESC=	devil plugin
+ASCII_DESC=	ascii plugin
+SMYRNA_DESC=	SMYRNA graph viewer (GTK2)
+GVEDIT_DESC=	GVEDIT graph viewer (QT6)
 PERL_DESC=	Perl bindings (swig)
 PHP_DESC=	PHP bindings (swig)
 PYTHON_DESC=	Python bindings (swig)
@@ -86,29 +93,34 @@ ICONV_USES=	iconv
 NLS_USES=	gettext
 PANGOCAIRO_USES=gnome xorg
 PANGOCAIRO_USE=	GNOME=pango,cairo XORG=xrender,x11,xau,xdmcp
-GTK2_USES=	gnome xorg
-GTK2_USE=	XORG=sm,ice,xext,xinerama,xi,xrandr,xcursor,xfixes GNOME=gtk20
-SMYRNA_USES=	gnome gl
-SMYRNA_USE=	GNOME=libglade2,pangox-compat,gdkpixbuf2 GL=glut,glu,gl
+GDK_USES=	gnome xorg
+GDK_USE=	GNOME=gtk30
+SMYRNA_USES=	gnome gl xorg
+SMYRNA_USE=	GNOME=libglade2,pangox-compat,gdkpixbuf,gtk20 \
+		GL=glut,glu,gl
+GVEDIT_USES=	qt:6
+GVEDIT_USE=	QT=tools:build,base
 PERL_USES=	perl5
-PHP_USES=	php:build gnome
+PHP_USES=	php:build gnome ssl
 PHP_USE=	GNOME=libxml2
-PHP_BROKEN=	needs swig 4.2.0
 PYTHON_USES=	python:build
 RUBY_USES=	ruby
 LUA_USES=	lua
+TCL_USES=	python:build
 TK_USES=	tk:build
+GUILE_USES=	guile:3.0
 GO_USES=	go:no_targets
 DOCS_USES=	groff
 
-POPPLER_LIB_DEPENDS=	libpoppler-glib.so:graphics/poppler-glib
 ANN_LIB_DEPENDS=	libann.so:math/ann
 GTS_LIB_DEPENDS=	libgts.so:graphics/gts
-SMYRNA_LIB_DEPENDS=	libgtkgl-2.0.so:x11-toolkits/gtkglarea2 \
-			libgtkglext-x11-1.0.so:x11-toolkits/gtkglext
+POPPLER_LIB_DEPENDS=	libpoppler-glib.so:graphics/poppler-glib
 DEVIL_LIB_DEPENDS=	libIL.so:graphics/devil
-GUILE_USES=		guile:3.0
-PHP_LIB_DEPENDS=	libpcre.so:devel/pcre \
+ASCII_LIB_DEPENDS=	libaa.so:graphics/aalib
+SMYRNA_LIB_DEPENDS=	libgtkgl-2.0.so:x11-toolkits/gtkglarea2 \
+			libgtkglext-x11-1.0.so:x11-toolkits/gtkglext \
+			libgts.so:graphics/gts
+PHP_LIB_DEPENDS=	libpcre2-8.so:devel/pcre2 \
 			libargon2.so:security/libargon2
 
 XPM_CONFIGURE_WITH=		x
@@ -117,23 +129,23 @@ DIGCOLA_CONFIGURE_WITH=		digcola
 IPSEPCOLA_CONFIGURE_WITH=	ipsepcola
 IPSEPCOLA_IMPLIES=		DIGCOLA
 NLS_CONFIGURE_ENABLE=		nls
-PANGOCAIRO_CONFIGURE_WITH=	pangocairo
-POPPLER_CONFIGURE_WITH=		poppler
-POPPLER_IMPLIES=		PANGOCAIRO
 ANN_CONFIGURE_WITH=		ann
 ANN_CONFIGURE_ENV=	ANN_CFLAGS=-I${LOCALBASE}/include ANN_LIBS=-lann
 GTS_CONFIGURE_WITH=		gts
-GTK2_CONFIGURE_WITH=		gtk
-GTK2_IMPLIES=			PANGOCAIRO
-GDK_CONFIGURE_WITH=		gdk
-GDK_PIXBUF_CONFIGURE_WITH=	gdk-pixbuf
-GDK_PIXBUF_IMPLIES=		GTK2 GDK
-SMYRNA_CONFIGURE_OFF=		--with-glut=no
-SMYRNA_CONFIGURE_WITH=		smyrna glade gtkgl gtkglext
-SMYRNA_IMPLIES=			GTK2 GTS
-DEVIL_CONFIGURE_WITH=		devil
+PANGOCAIRO_CONFIGURE_WITH=	pangocairo
+POPPLER_CONFIGURE_WITH=		poppler
+POPPLER_IMPLIES=		PANGOCAIRO
+GTK3_CONFIGURE_WITH=		gtk
+GDK_CONFIGURE_WITH=		gdk gdk-pixbuf 
+GDK_IMPLIES=			PANGOCAIRO
 GHOSTSCRIPT_CONFIGURE_OFF=	--with-ghostscript=no
 GHOSTSCRIPT_IMPLIES=		PANGOCAIRO
+DEVIL_CONFIGURE_WITH=		devil
+ASCII_CONFIGURE_WITH=		aalib
+GVEDIT_CONFIGURE_WITH=		qt
+SMYRNA_CONFIGURE_OFF=		--with-glut=no
+SMYRNA_CONFIGURE_WITH=		smyrna glade gtkgl gtkglext gtk
+SMYRNA_IMPLIES=			GTS
 PERL_CONFIGURE_ENABLE=		perl
 PERL_VARS=		SHEBANG_FILES+=tclpkg/gv/demo/modgraph.pl
 PHP_CONFIGURE_ENABLE=		php
@@ -145,8 +157,8 @@ PYTHON_VARS=		SHEBANG_FILES+=tclpkg/gv/demo/modgraph.py
 PYTHON_CONFIGURE_ENV=	PYTHON_INCLUDEDIR="${PYTHON_INCLUDEDIR}"
 RUBY_CONFIGURE_ENABLE=		ruby
 RUBY_CONFIGURE_ENV=	RUBY="${RUBY}" RUBY_VER="${RUBY_VER}" \
-			RUBY_CFLAGS="${RUBY_CFLAGS}" \
-			RUBY_LDFLAGS="${RUBY_LDFLAGS}" \
+			RUBY_CFLAGS="${GV_RUBY_CFLAGS}" \
+			RUBY_LDFLAGS="${GV_RUBY_LDFLAGS}" \
 			RUBY_INSTALL_DIR="${RUBY_SITEARCHLIBDIR}"
 RUBY_VARS=		SHEBANG_FILES+=tclpkg/gv/demo/modgraph.rb
 LUA_CONFIGURE_ENABLE=		lua
@@ -159,6 +171,7 @@ TCL_CONFIGURE_ENABLE=		tcl
 TCL_CPPFLAGS=		-I${TCL_INCLUDEDIR}
 TCL_CONFIGURE_ENV=	TCLCONFIG="${TCL_LIBDIR}/tclConfig.sh"
 TCL_VARS=		SHEBANG_FILES+=tclpkg/gv/demo/modgraph.tcl \
+			SHEBANG_FILES+=tclpkg/gv/demo/modgraph.py \
 			PLIST_SUB+=TCL_VER="${TCL_VER}"
 TK_CPPFLAGS=		-I${TK_INCLUDEDIR}
 TK_CONFIGURE_ON=	--with-wish=${WISH}
@@ -184,22 +197,23 @@ CONFIGURE_ARGS+=	--program-transform-name="s/x/x/" \
 		--with-fontconfiglibdir=${LOCALBASE}/lib \
 		--with-tclsh=${TCLSH} \
 		--without-rsvg \
-		--with-qt=no \
 		--disable-io --disable-ocaml --disable-java \
 		--disable-python2 \
 		--disable-sharp
 
-.if ${PORT_OPTIONS:MPYTHON}
+.if ${PORT_OPTIONS:MPYTHON} || ${PORT_OPTIONS:MTCL}
 BINARY_ALIAS+=	python3=${PYTHON_CMD}
+.else
+USES+=	python:env
 .endif
 
 .if ${PORT_OPTIONS:MRUBY}
-RUBY_CFLAGS+=	-I "${LOCALBASE}/include/ruby-${RUBY_VER}/" \
+GV_RUBY_CFLAGS+=-I "${LOCALBASE}/include/ruby-${RUBY_VER}/" \
 		-I "${LOCALBASE}/include/ruby-${RUBY_VER}/${RUBY_ARCH}"
 .if exists(${LOCALBASE}/bin/ruby${RUBY_SHLIBVER})
-RUBY_LIBS!=	${LOCALBASE}/bin/ruby${RUBY_SHLIBVER} \
+GV_RUBY_LIBS!=	${LOCALBASE}/bin/ruby${RUBY_SHLIBVER} \
 		-r rbconfig -e "print RbConfig::CONFIG[ 'LIBS' ]"
-RUBY_LDFLAGS+=	${RUBY_LIBS}
+GV_RUBY_LDFLAGS+=	${GV_RUBY_LIBS}
 .endif
 .endif
 
@@ -242,10 +256,6 @@ post-patch:
 		-e 's|LUA_INSTALL_DIR=.*|LUA_INSTALL_DIR="${LUA_MODLIBDIR}"|' \
 		-e 's| vendorarchdir| sitearchdir|' \
 		${WRKSRC}/configure.ac
-	${REINPLACE_CMD} -e 's|#include "gui.h"|#include "gui/gui.h"|' \
-		${WRKSRC}/cmd/smyrna/tvnodes.h
-	${REINPLACE_CMD} -e 's|SF_FLAGS|SFIO_FLAGS|g' \
-		${WRKSRC}/lib/sfio/*.[ch]
 	cd ${WRKSRC} && ${REINPLACE_CMD} \
 		-e 's|exec tclsh |exec tclsh${TCL_VER} |' ${FIX_TCL_SCRIPT}
 	cd ${WRKSRC} && ${REINPLACE_CMD} \

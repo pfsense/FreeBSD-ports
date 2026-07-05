@@ -1,6 +1,6 @@
 PORTNAME=	arduino
 PORTVERSION=	1.0.6
-PORTREVISION=	5
+PORTREVISION=	7
 PORTEPOCH=	1
 CATEGORIES=	devel java lang
 MASTER_SITES=	https://arduino.cc/download.php?f=/
@@ -21,18 +21,23 @@ RUN_DEPENDS=	${JAVA_HOME}/jre/lib/ext/RXTXcomm.jar:comms/rxtx \
 		${LOCALBASE}/avr/include/avr/io.h:devel/avr-libc
 
 WRKSRC=		${WRKDIR}/${PORTNAME}-${PORTVERSION}
-USES=		dos2unix tar:tgz kmod
+USES=		dos2unix java tar:tgz kmod
 DOS2UNIX_REGEX=	.*(\.(c|cpp|h|hex|txt)|Makefile|makefile)
-
-USE_JAVA=	yes
+JAVA_VERSION=	8
 JAVA_OS=	native
 JAVA_VENDOR=	openjdk
-JAVA_RUN=	yes
 
 CONFLICTS_INSTALL=	arduino18
 
 NO_BUILD=	yes
 USE_LDCONFIG=	${PREFIX}/arduino/lib
+
+# Remove broken jar, and Linux C6 based libraries.
+# This port relys on comms/RXTX working without Linux C6 compatibility.
+EXTRACT_AFTER_ARGS=	--exclude hardware/tools \
+			--exclude lib/RXTXcomm.jar \
+			--exclude lib/librxtxSerial.so \
+			--exclude lib/librxtxSerial64.so
 
 PLIST_SUB=	ARCH=${ARCH:S|i386||:S|amd64|64|}
 
@@ -43,7 +48,7 @@ REINPLACE_ARGS=	-i ""
 
 DESKTOP_ENTRIES=	"Arduino" "Arduino IDE" \
 			${PREFIX}/${PORTNAME}/logo.png \
-			"arduino" "Development;IDE;" false
+			"arduino" "Development;IDE;" ${FALSE}
 
 OPTIONS_DEFINE=		ATMEGA644P DOCS EXAMPLES UARDUNO
 OPTIONS_SUB=
@@ -81,18 +86,9 @@ INSLIST+=	examples
 FIND_EXPR=	"${FIND_EXCLUDES} -prune"
 
 post-patch:
-	${RM} -r ${WRKSRC}/hardware/tools/
 	${MKDIR} ${WRKSRC}/hardware/tools/avr/
 	${LN} -s ${PREFIX}/bin ${WRKSRC}/hardware/tools/avr/bin
 	${LN} -s ${PREFIX}/etc ${WRKSRC}/hardware/tools/avr/etc
-
-	# Remove broken jar, and Linux C6 based libraries.
-	${RM} ${WRKSRC}/lib/RXTXcomm.jar
-
-	# This port relys on comms/RXTX working without Linux C6 compatibility.
-	${RM} ${WRKSRC}/lib/librxtxSerial.so
-	${RM} ${WRKSRC}/lib/librxtxSerial64.so
-
 	# Map the RXTX port for our use
 	${LN} -s ${JAVA_HOME}/jre/lib/ext/RXTXcomm.jar ${WRKSRC}/lib/RXTXcomm.jar
 

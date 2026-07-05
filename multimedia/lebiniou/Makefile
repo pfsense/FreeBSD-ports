@@ -1,11 +1,13 @@
 PORTNAME=	lebiniou
 DISTVERSION=	3.66.0
-PORTREVISION=	6
+PORTREVISION=	8
 CATEGORIES=	multimedia graphics
 
 MAINTAINER=	lbartoletti@FreeBSD.org
 COMMENT=	User-friendly, powerful music visualization / VJing tool
 WWW=		https://biniou.net/
+
+BROKEN=		Does not build with ffmpeg > 6
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING

@@ -8,7 +8,7 @@
  * snort.xml
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2015-2024 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2015-2026 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2009-2010 Robert Zelaya
  * Copyright (c) 2013-2016 Bill Meeks
  * All rights reserved.
@@ -66,7 +66,9 @@
 	<name>Snort</name>
 	<version>%%PKGVERSION%%</version>
 	<title>Services: Snort IDS</title>
+	<donotsave>true</donotsave>
 	<include_file>/usr/local/pkg/snort/snort.inc</include_file>
+	<ramdisk_dir_names>snort</ramdisk_dir_names>
 	<menu>
 		<name>Snort</name>
 		<tooltiptext>Set up snort specific settings</tooltiptext>
@@ -83,6 +85,14 @@
 	</tabs>
 	<fields>
 	</fields>
+	<plugins>
+		<item>
+			<type>plugin_xmlrpc_send</type>
+		</item>
+		<item>
+			<type>plugin_xmlrpc_recv</type>
+		</item>
+	</plugins>
 	<custom_php_resync_config_command>
 		<![CDATA[
 		sync_snort_package_config();

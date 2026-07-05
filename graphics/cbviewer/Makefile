@@ -1,6 +1,6 @@
 PORTNAME=	cbviewer
 PORTVERSION=	0.8
-PORTREVISION=	3
+PORTREVISION=	4
 CATEGORIES=	graphics java
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/CBViewer%200.8/ \
 		SF/nemysisfreebsdp/graphics/:icons
@@ -18,9 +18,9 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 
 RUN_DEPENDS=	unrar:archivers/unrar
 
-USES=		dos2unix zip
+USES=		dos2unix java zip
 DOS2UNIX_GLOB=	CREDITS
-USE_JAVA=	yes
+
 NO_BUILD=	yes
 
 DATADIR=	${JAVASHAREDIR}/${PORTNAME}

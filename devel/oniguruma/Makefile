@@ -1,5 +1,5 @@
 PORTNAME=	oniguruma
-DISTVERSION=	6.9.9
+DISTVERSION=	6.9.10
 CATEGORIES=	devel textproc
 MASTER_SITES=	https://github.com/kkos/${PORTNAME}/releases/download/v${DISTVERSION}/
 DISTNAME=	onig-${DISTVERSION}
@@ -10,6 +10,9 @@ WWW=		https://github.com/kkos/oniguruma
 
 LICENSE=	BSD2CLAUSE
 LICENSE_FILE=	${WRKSRC}/COPYING
+
+DEPRECATED=		Project archived upstream # but there are 30+ dependencies and deprecation is unlikely to happen
+EXPIRATION_DATE=	2026-12-01
 
 USES=		cmake cpe pathfix
 CPE_VENDOR=	oniguruma_project

@@ -1,10 +1,12 @@
 PORTNAME=	librecad
-DISTVERSION=	2.2.0.2
+DISTVERSIONPREFIX=	v
+DISTVERSION=	2.2.1.3
 CATEGORIES=	cad
 
 MAINTAINER=	jhale@FreeBSD.org
 COMMENT=	2D CAD system
-WWW=		https://librecad.org/
+WWW=		https://librecad.org/ \
+		https://github.com/LibreCAD/LibreCAD
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/licenses/gpl-2.0.txt
@@ -13,7 +15,7 @@ BUILD_DEPENDS=	${LOCALBASE}/include/boost/version.hpp:devel/boost-libs
 LIB_DEPENDS=	libmuparser.so:math/muparser \
 		libfreetype.so:print/freetype2
 
-USES=		compiler:c++11-lib cpe desktop-file-utils pkgconfig gl qmake qt:5
+USES=		compiler:c++17-lang cpe desktop-file-utils pkgconfig gl qmake qt:5
 USE_GITHUB=	yes
 GH_ACCOUNT=	LibreCAD
 GH_PROJECT=	LibreCAD

@@ -1,5 +1,6 @@
 PORTNAME=	bazel
 DISTVERSION=	5.4.1 # please make sure that science/py-tensorflow builds before updating
+PORTREVISION=	1
 CATEGORIES=	devel java
 MASTER_SITES=	https://github.com/bazelbuild/${PORTNAME}/releases/download/${DISTVERSION}/
 DISTNAME=	bazel-${DISTVERSION}-dist
@@ -19,15 +20,10 @@ BROKEN_armv7=	fails to package: cp: bazel: No such file or directory
 BUILD_DEPENDS=	bash:shells/bash \
 		zip:archivers/zip
 
-USES=		cpe python shebangfix zip
-
+USES=		cpe java python shebangfix zip
 CPE_VENDOR=	google
-
-USE_JAVA=	yes
 JAVA_VERSION=	11
 JAVA_VENDOR=	openjdk
-JAVA_BUILD=	yes
-JAVA_RUN=	yes
 
 SHEBANG_REGEX=	.*(sh|txt|_stub|stub_.*|bazel|get_workspace_status|protobuf_support|_so)
 

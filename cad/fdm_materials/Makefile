@@ -1,6 +1,8 @@
 PORTNAME=	fdm_materials
+DISTVERSIONPREFIX=	v
+DISTVERSION=	10.9.0
+DISTVERSIONSUFFIX=	-0
 PORTEPOCH=	1
-DISTVERSION=	4.7.1
 CATEGORIES=	cad
 DIST_SUBDIR=	Ultimaker
 
@@ -8,15 +10,15 @@ MAINTAINER=	db@FreeBSD.org
 COMMENT=	FDM Material database for 3D printers
 WWW=		https://github.com/Ultimaker/fdm_materials
 
-LICENSE=	AGPLv3
+LICENSE=	CC0-1.0
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
 USES=		cmake
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	Ultimaker
-GH_TAGNAME=	c7331d5ea
-NO_ARCH=	yes
+
 STRIP=
+NO_ARCH=	yes
 
 .include <bsd.port.mk>

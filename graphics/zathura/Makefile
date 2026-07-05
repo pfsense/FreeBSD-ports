@@ -1,8 +1,7 @@
 PORTNAME=	zathura
-DISTVERSION=	0.5.2
-PORTREVISION=	3
+DISTVERSION=	2026.02.09
 CATEGORIES=	graphics print
-MASTER_SITES=	https://git.pwmt.org/pwmt/${PORTNAME}/-/archive/${DISTVERSION}/
+MASTER_SITES=	https://pwmt.org/projects/zathura/download/
 
 MAINTAINER=	quentin.stievenart@gmail.com
 COMMENT=	Customizable lightweight pdf viewer
@@ -11,26 +10,31 @@ WWW=		https://pwmt.org/projects/zathura/
 LICENSE=	ZLIB
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}sphinx>=1.2.2,1:textproc/py-sphinx@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}sphinx_rtd_theme>0:textproc/py-sphinx_rtd_theme@${PY_FLAVOR}
-LIB_DEPENDS=	libcairo.so:graphics/cairo \
-		libgirara-gtk3.so:x11-toolkits/girara \
-		libsynctex.so:devel/tex-synctex
+LIB_DEPENDS=	libgirara.so:x11-toolkits/girara \
+		libjson-glib-1.0.so:devel/json-glib
 
-USES=		compiler:c11 desktop-file-utils gettext-tools:build gnome meson \
-		ninja pkgconfig python
-USE_GNOME=	gdkpixbuf2 glib20 gtk30
-MESON_ARGS=	-Dseccomp=disabled -Dtests=disabled
+USES=		compiler:c17 gettext gnome meson pkgconfig sqlite tar:xz
+USE_GNOME=	glib20 gtk30
+MESON_ARGS=	-Dlandlock=disabled \
+		-Dseccomp=disabled \
+		-Dtests=disabled
 
-OPTIONS_DEFINE=		SQLITE SYNCTEX
-OPTIONS_DEFAULT=	SQLITE SYNCTEX
+OPTIONS_DEFINE=		MANPAGES SYNCTEX
+OPTIONS_DEFAULT=	MANPAGES SYNCTEX
+OPTIONS_SUB=		yes
 
-SQLITE_USES=		sqlite
-SQLITE_MESON_ENABLED=	sqlite
+SYNCTEX_DESC=	Direct and reverse synchronisation support with SyncTeX
 
-SYNCTEX_DESC=		Direct and reverse synchronisation support with SyncTeX
-SYNCTEX_BUILD_DEPENDS=	tex-synctex>=1.19.0:devel/tex-synctex
-SYNCTEX_RUN_DEPENDS=	${SYNCTEX_BUILD_DEPENDS}
+MANPAGES_BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}pytz>0:devel/py-pytz@${PY_FLAVOR} \
+			${PYTHON_PKGNAMEPREFIX}sphinx>0:textproc/py-sphinx@${PY_FLAVOR}
+MANPAGES_USES=		python:build
+MANPAGES_MESON_ENABLED=	manpages
+
+SYNCTEX_USES=		tex
+SYNCTEX_USE=		TEX=synctex
 SYNCTEX_MESON_ENABLED=	synctex
+
+post-patch-MANPAGES-on:
+	@${REINPLACE_CMD} -e 's|^/etc|${PREFIX}/etc|' ${WRKSRC}/doc/man/zathurarc.5.rst
 
 .include <bsd.port.mk>

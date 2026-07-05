@@ -1,6 +1,6 @@
 PORTNAME=	sheldon
-DISTVERSION=	0.7.4
-PORTREVISION=	4
+DISTVERSION=	0.8.5
+PORTREVISION=	6
 CATEGORIES=	shells
 
 MAINTAINER=	tagattie@FreeBSD.org
@@ -20,6 +20,8 @@ USES=		cargo localbase:ldflags ssl
 USE_GITHUB=	yes
 GH_ACCOUNT=	rossmacarthur
 
+CARGO_ENV=	OPENSSL_NO_VENDOR=1
+
 PLIST_FILES=	bin/${PORTNAME} \
 		etc/bash_completion.d/${PORTNAME} \
 		share/zsh/site-functions/_${PORTNAME}
@@ -29,7 +31,6 @@ PORTDOCS=	README.md RELEASES.md
 OPTIONS_DEFINE=	DOCS
 
 post-install:
-	@${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/${PORTNAME}
 	@${MKDIR} ${STAGEDIR}${PREFIX}/etc/bash_completion.d
 	${INSTALL_DATA} ${WRKSRC}/completions/${PORTNAME}.bash \
 		${STAGEDIR}${PREFIX}/etc/bash_completion.d/${PORTNAME}

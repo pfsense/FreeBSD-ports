@@ -3,8 +3,8 @@
  * pfblockerng_sync.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2016-2024 Rubicon Communications, LLC (Netgate)
- * Copyright (c) 2015-2023 BBcan177@gmail.com
+ * Copyright (c) 2016-2026 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2015-2024 BBcan177@gmail.com
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the \"License\");
@@ -24,11 +24,10 @@ require_once('guiconfig.inc');
 require_once('globals.inc');
 require_once('/usr/local/pkg/pfblockerng/pfblockerng.inc');
 
-global $config, $pfb;
+global $pfb;
 pfb_global();
 
-init_config_arr(array('installedpackages', 'pfblockerngsync', 'config', '0'));
-$pfb['sconfig'] = &$config['installedpackages']['pfblockerngsync']['config'][0];
+$pfb['sconfig'] = config_get_path('installedpackages/pfblockerngsync/config/0', []);
 
 $pconfig = array();
 $pconfig['varsynconchanges']	= $pfb['sconfig']['varsynconchanges']	?: '';
@@ -37,7 +36,6 @@ $pconfig['syncinterfaces']	= $pfb['sconfig']['syncinterfaces']	?: '';
 
 // Select field options
 $options_varsynconchanges	= [ 'disabled' => 'Do not sync this package configuration', 'auto' => 'Sync to configured system backup server', 'manual' => 'Sync to host(s) defined below' ];
-$options_varsynctimeout		= range(0, 5000, 50);
 
 // Validate input fields and save
 if ($_POST) {
@@ -47,9 +45,11 @@ if ($_POST) {
 			unset($input_errors);
 		}
 
+		// Validate varsynctimeout. Default 150 and max at 5000
+		$_POST['varsynctimeout'] = min(5000, pfb_filter($_POST['varsynctimeout'], PFB_FILTER_NUM, 'Sync', 150));
+
 		// Validate Select field options
-		$select_options = array(	'varsynconchanges'	=> '',
-						'varsynctimeout'	=> '',
+		$select_options = array(	'varsynconchanges'	=> ''
 						);
 
 		foreach ($select_options as $s_option => $s_default) {
@@ -93,6 +93,9 @@ if ($_POST) {
 						break;
 					case 'varsyncipaddress':
 						// Validate IP Address/Hostname
+						if (($_POST['varsynconchanges'] == 'auto') && (mb_strlen(strval($value)) < 1)) {
+							continue;
+						}
 						$value = pfb_filter($value, PFB_FILTER_HOSTNAME, 'Sync');
 						if (empty($value)) {
 							$input_errors[] = gettext('The Target IP Address is invalid.');
@@ -115,11 +118,13 @@ if ($_POST) {
 						break;
 				}
 				$pfb['sconfig']['row'][$k_field[1]][$k_field[0]] = $value;
+				config_set_path("installedpackages/pfblockerngsync/config/0/row/{$k_field[1]}/{$k_field[0]}", $pfb['sconfig']['row'][$k_field[1]][$k_field[0]]);
 
 				// Clear checkbox field when POST is empty
 				if ($pfb['sconfig']['row'][$k_field[1]]['varsyncdestinenable'] == 'on' &&
 				    !isset($_POST["varsyncdestinenable-{$k_field[1]}"])) {
 					$pfb['sconfig']['row'][$k_field[1]]['varsyncdestinenable'] = '';
+					config_set_path("installedpackages/pfblockerngsync/config/0/row/{$k_field[1]}/varsyncdestinenable", $pfb['sconfig']['row'][$k_field[1]]['varsyncdestinenable']);
 				}
 			}
 		}
@@ -128,6 +133,7 @@ if ($_POST) {
 		foreach ($pfb['sconfig']['row'] as $r_key => $row) {
 			if (!isset($rowhelper_exist[$r_key])) {
 				unset($pfb['sconfig']['row'][$r_key]);
+				config_del_path("installedpackages/pfblockerngsync/config/0/row/{$r_key}");
 			}
 		}
 
@@ -137,6 +143,7 @@ if ($_POST) {
 			$pfb['sconfig']['varsynctimeout']	= $_POST['varsynctimeout']						?: '';
 			$pfb['sconfig']['syncinterfaces']	= pfb_filter($_POST['syncinterfaces'], PFB_FILTER_ON_OFF, 'Sync')	?: '';
 
+			config_set_path('installedpackages/pfblockerngsync/config/0', $pfb['sconfig']);
 			write_config('[pfBlockerNG] save XMLRPC sync settings');
 			header('Location: /pfblockerng/pfblockerng_sync.php');
 			exit;

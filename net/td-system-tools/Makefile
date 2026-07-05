@@ -1,5 +1,5 @@
 PORTNAME=	td-system-tools
-DISTVERSION=	1.6.1
+DISTVERSION=	2.2.5
 CATEGORIES=	net
 MASTER_SITES=	https://www.nntb.no/~dreibh/system-tools/download/
 
@@ -11,10 +11,11 @@ LICENSE=	GPLv3+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
 RUN_DEPENDS=	bash:shells/bash \
-		mbuffer:misc/mbuffer \
-		figlet:misc/figlet
+		figlet:misc/figlet \
+		getopt>=0:misc/getopt \
+		mbuffer:misc/mbuffer
 
-USES=		cmake gettext tar:xz
+USES=		cmake gettext ssl:run tar:xz
 CMAKE_ARGS=	-DCMAKE_INSTALL_MANDIR=${PREFIX}/share/man
 
 .include <bsd.port.mk>

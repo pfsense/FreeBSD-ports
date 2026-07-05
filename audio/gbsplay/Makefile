@@ -1,5 +1,5 @@
 PORTNAME=	gbsplay
-DISTVERSION=	0.0.96
+DISTVERSION=	0.0.102
 PORTEPOCH=	1
 CATEGORIES=	audio
 
@@ -19,16 +19,14 @@ USE_CSTD=	gnu89
 USE_GITHUB=	yes
 GH_ACCOUNT=	mmitch
 
-HAS_CONFIGURE=			yes
-GNU_CONFIGURE_MANPREFIX=	${PREFIX}/share
+HAS_CONFIGURE=	yes
 
-CONFIGURE_ARGS+=	--mandir=${PREFIX}/share/man \
-			--prefix=${PREFIX} \
-			--sysconfdir=${PREFIX}/etc
+CONFIGURE_ARGS=	--disable-pipewire \
+		--mandir=${PREFIX}/share/man \
+		--prefix=${PREFIX} \
+		--sysconfdir=${PREFIX}/etc
 
 MAKE_ENV+=	EXAMPLESDIR="${STAGEDIR}${EXAMPLESDIR}"
-
-CONFLICTS_INSTALL=	mate-control-center # share/applications/mimeinfo.cache
 
 OPTIONS_DEFINE=		ALSA BASH_COMPLETIONS DOCS EXAMPLES NAS NLS PULSEAUDIO \
 			SDL

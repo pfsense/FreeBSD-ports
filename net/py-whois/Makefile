@@ -1,11 +1,11 @@
 PORTNAME=	whois
 DISTVERSION=	0.9.27
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	net python
 MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
-MAINTAINER=	dutra@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Python package for retrieving WHOIS information of domains
 WWW=		https://pypi.org/project/whois/
 

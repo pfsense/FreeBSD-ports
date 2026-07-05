@@ -1,10 +1,11 @@
 PORTNAME=	step-certificates
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.26.0
+DISTVERSION=	0.29.0
+PORTREVISION=	4
 CATEGORIES=	security
 
 MAINTAINER=	mw@wipp.bayern
-COMMENT=	Smallstep step-ca certificates server
+COMMENT=	Smallstep step_ca certificates server
 WWW=		https://smallstep.com/certificates/
 
 LICENSE=	APACHE20
@@ -16,7 +17,7 @@ RUN_DEPENDS=	step:security/step-cli
 
 USES=		go:modules
 
-USE_RC_SUBR=	step-ca
+USE_RC_SUBR=	step_ca
 
 GO_MODULE=	github.com/smallstep/certificates
 

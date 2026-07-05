@@ -60,13 +60,19 @@ DEFAULT_MYSQL_VER?=	${MYSQL_DEFAULT:S/.//}
 # When adding a version, please keep the comment in
 # Mk/bsd.default-versions.mk in sync.
 MYSQL80_LIBVER=		21
-MYSQL81_LIBVER=		22
-.  for v in 5 6 11
-MYSQL10${v}m_LIBVER=	3
+MYSQL84_LIBVER=		24
+MYSQL91_LIBVER=		24
+MYSQL94_LIBVER=		24
+MYSQL96_LIBVER=		24
+
+.  for v in 106 1011 114 118
+MYSQL${v}m_LIBVER=	3
 .  endfor
 
 # Setting/finding MySQL version we want.
-.  if exists(${LOCALBASE}/bin/mysql)
+.  if exists(${LOCALBASE}/bin/mariadb)
+_MARIADB!=      ${LOCALBASE}/bin/mariadb --version | ${GREP} MariaDB | wc -l
+.  elif exists(${LOCALBASE}/bin/mysql)
 _MYSQL!=	${LOCALBASE}/bin/mysql_config --version | ${SED} -e 's/\([0-9]\{1,2\}\)\.\([0-9]*\).*/\1\2/'
 _MARIADB!=	${LOCALBASE}/bin/mysql --version | ${GREP} MariaDB | wc -l
 

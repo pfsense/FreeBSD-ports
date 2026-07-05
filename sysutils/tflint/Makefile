@@ -1,7 +1,7 @@
 PORTNAME=	tflint
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.50.3
-PORTREVISION=	1
+DISTVERSION=	0.60.0
+PORTREVISION=	3
 CATEGORIES=	sysutils
 
 MAINTAINER=	dutra@FreeBSD.org
@@ -11,7 +11,7 @@ WWW=		https://github.com/terraform-linters/tflint
 LICENSE=	MPL20
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-USES=		go:1.21,modules
+USES=		go:1.25+,modules
 
 GO_MODULE=	github.com/terraform-linters/tflint
 

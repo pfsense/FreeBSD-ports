@@ -10,10 +10,9 @@ WWW=		https://github.com/troglobit/editline
 LICENSE=	BSD4CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-USES=		libtool ncurses pathfix
+USES=		libtool ncurses
 
 GNU_CONFIGURE=	yes
-GNU_CONFIGURE_MANPREFIX=${PREFIX}/share
 INSTALL_TARGET=	install-strip
 USE_LDCONFIG=	yes
 

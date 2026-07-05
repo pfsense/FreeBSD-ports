@@ -1,5 +1,5 @@
 PORTNAME=	FAudio
-DISTVERSION=	21.01
+DISTVERSION=	25.03
 CATEGORIES=	audio
 
 MAINTAINER=	multimedia@FreeBSD.org
@@ -9,28 +9,31 @@ WWW=		https://fna-xna.github.io/
 LICENSE=	ZLIB
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-USES=		cmake compiler:c11 sdl
+FLAVORS=	sdl3 sdl2
+FLAVOR?=	${FLAVORS:[1]}
+sdl2_CONFLICTS_INSTALL=	${PORTNAME}-sdl3
+sdl3_PKGNAMESUFFIX=	-sdl3
+sdl3_CONFLICTS_INSTALL=	${PORTNAME}
+
+USES=		cmake:testing compiler:c11 sdl
+USE_LDCONFIG=	yes
+USE_SDL=	${FLAVOR}
+
 USE_GITHUB=	yes
 GH_ACCOUNT=	FNA-XNA
-USE_LDCONFIG=	yes
-USE_SDL=	sdl2
+
+CMAKE_${"${FLAVOR:Msdl3}":?ON:OFF}=	BUILD_SDL3
+# Tests will fail to build with the sdl2 flavor. Upstream dropped sdl2
+# support in the utils needed for the tests starting with version 25.03.
+CMAKE_TESTING_ON=	BUILD_TESTS \
+			BUILD_UTILS
+CMAKE_TESTING_TARGET=	# No internal target for running tests. Run via post-test.
+
+TEST_ENV=	SDL_AUDIODRIVER=dummy
 
 PLIST_SUB=	SOVERSION=${DISTVERSION:S,., ,g:[1..2]:ts.}
 
-OPTIONS_DEFINE=		GSTREAMER
-OPTIONS_DEFAULT=	GSTREAMER
-
-GSTREAMER_DESC=	WMA/XMA support via GStreamer
-
-GSTREAMER_USES=		gettext-runtime gnome gstreamer pkgconfig
-GSTREAMER_USE=		GNOME=glib20
-GSTREAMER_CMAKE_BOOL=	GSTREAMER
-
-do-test:
-	@cd ${BUILD_WRKSRC} && \
-		${SETENV} ${CONFIGURE_ENV} ${CMAKE_BIN} ${CMAKE_ARGS} \
-		-DBUILD_TESTS=ON -DBUILD_UTILS=ON ${CMAKE_SOURCE_PATH} && \
-		${DO_MAKE_BUILD} ${ALL_TARGET}
-	@${SETENV} SDL_AUDIODRIVER=dummy ${BUILD_WRKSRC}/faudio_tests
+post-test:
+	@${SETENVI} ${WRK_ENV} ${TEST_ENV} ${BUILD_WRKSRC}/faudio_tests
 
 .include <bsd.port.mk>

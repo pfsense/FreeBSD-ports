@@ -18,8 +18,14 @@ GL_ACCOUNT=	worthwhileit/bsd
 GL_PROJECT=	fsnotifier
 GL_COMMIT=	b96f269f637058461df482f4cf55037a5968d7a8
 
+PIE_UNSAFE=	yes
+
 CMAKE_ARGS+=	-DVERSION=${PORTVERSION}
 
 PLIST_SUB+=	PORTVERSION=${PORTVERSION}
+
+.if exists(/usr/include/sys/inotify.h)
+EXTRA_PATCHES+=	${PATCHDIR}/extrapatch-cmake_target__definitions.cmake
+.endif
 
 .include <bsd.port.mk>

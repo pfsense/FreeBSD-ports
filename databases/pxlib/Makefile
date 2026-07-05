@@ -11,7 +11,7 @@ LICENSE=	GPLv2
 
 BUILD_DEPENDS=	p5-XML-Parser>=0:textproc/p5-XML-Parser
 
-USES=		gmake gnome iconv libtool localbase:ldflags pathfix perl5 pkgconfig
+USES=		gmake gnome iconv libtool localbase:ldflags perl5 pkgconfig
 USE_GNOME=	intltool
 USE_LDCONFIG=	yes
 
@@ -30,7 +30,7 @@ NLS_CONFIGURE_OFF=	--disable-nls
 
 .include <bsd.port.options.mk>
 
-.if ${OPSYS} == FreeBSD && ( ${OSVERSION} >= 1400091 || ( ${OSVERSION} >= 1302507 && ${OSVERSION} < 1400000 ))
+.if ${OPSYS} == FreeBSD
 CFLAGS+=	-Wno-error=incompatible-function-pointer-types
 .endif
 

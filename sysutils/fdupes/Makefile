@@ -1,5 +1,5 @@
 PORTNAME=	fdupes
-DISTVERSION=	2.3.0
+DISTVERSION=	2.4.0
 PORTEPOCH=	1
 CATEGORIES=	sysutils
 MASTER_SITES=	https://github.com/adrianlopezroche/${PORTNAME}/releases/download/v${DISTVERSION}/
@@ -12,7 +12,6 @@ LICENSE=	MIT
 
 USES=		localbase pkgconfig
 GNU_CONFIGURE=	yes
-GNU_CONFIGURE_MANPREFIX=	${PREFIX}/share
 
 PLIST_FILES=	bin/fdupes \
 		share/man/man1/fdupes.1.gz

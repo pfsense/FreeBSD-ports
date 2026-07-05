@@ -1,6 +1,7 @@
 PORTNAME=	umlgraph
 DISTVERSIONPREFIX=	R
 DISTVERSION=	5_7_2
+PORTREVISION=	1
 CATEGORIES=	devel java
 
 MAINTAINER=	ports@FreeBSD.org
@@ -9,8 +10,7 @@ WWW=		https://www.umlgraph.org/
 
 LICENSE=	BSD3CLAUSE
 
-USE_ANT=	yes
-USE_JAVA=	yes
+USES=		java:ant
 JAVA_VERSION=	8
 USE_GITHUB=	yes
 GH_ACCOUNT=	dspinellis

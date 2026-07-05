@@ -16,7 +16,11 @@ include/skalibs/cbuffer.h
 include/skalibs/cdb.h
 include/skalibs/cdbmake.h
 include/skalibs/config.h
+include/skalibs/cplz.h
+include/skalibs/crc32c.h
+include/skalibs/cspawn.h
 include/skalibs/datastruct.h
+include/skalibs/devino.h
 include/skalibs/direntry.h
 include/skalibs/disize.h
 include/skalibs/diuint.h
@@ -25,8 +29,10 @@ include/skalibs/djbtime.h
 include/skalibs/djbunix.h
 include/skalibs/env.h
 include/skalibs/envalloc.h
+include/skalibs/envexec.h
 include/skalibs/error.h
 include/skalibs/exec.h
+include/skalibs/fcntl.h
 include/skalibs/fmtscan.h
 include/skalibs/functypes.h
 include/skalibs/gccattributes.h
@@ -35,15 +41,19 @@ include/skalibs/genqdyn.h
 include/skalibs/genset.h
 include/skalibs/gensetdyn.h
 include/skalibs/genwrite.h
+include/skalibs/gol.h
 include/skalibs/iopause.h
 include/skalibs/ip46.h
+include/skalibs/keventbridge.h
 include/skalibs/kolbak.h
 include/skalibs/lolstdio.h
 include/skalibs/netstring.h
 include/skalibs/nonposix.h
 include/skalibs/nsig.h
+include/skalibs/playnice.h
 include/skalibs/posixishard.h
 include/skalibs/posixplz.h
+include/skalibs/prog.h
 include/skalibs/random.h
 include/skalibs/segfault.h
 include/skalibs/selfpipe.h
@@ -58,6 +68,7 @@ include/skalibs/skaclient.h
 include/skalibs/skalibs.h
 include/skalibs/skamisc.h
 include/skalibs/socket.h
+include/skalibs/stat.h
 include/skalibs/stdcrypto.h
 include/skalibs/stddjb.h
 include/skalibs/stralloc.h
@@ -77,10 +88,13 @@ include/skalibs/unix-transactional.h
 include/skalibs/unixconnection.h
 include/skalibs/unixmessage.h
 include/skalibs/unixonacid.h
+lib/libskarnet.a
+@mode 755
 lib/libskarnet.so
-lib/libskarnet.so.2.13
-lib/libskarnet.so.2.13.1.1
-lib/skalibs/libskarnet.a
+lib/libskarnet.so.2.14
+@mode
+lib/libskarnet.so.2.14.5.1
+lib/skalibs/sysdeps/pthread.lib
 lib/skalibs/sysdeps/socket.lib
 lib/skalibs/sysdeps/spawn.lib
 lib/skalibs/sysdeps/sysclock.lib
@@ -109,6 +123,7 @@ lib/skalibs/sysdeps/util.lib
 %%PORTDOCS%%%%DOCSDIR%%/libstddjb/bytestr.html
 %%PORTDOCS%%%%DOCSDIR%%/libstddjb/cdb.html
 %%PORTDOCS%%%%DOCSDIR%%/libstddjb/cdbmake.html
+%%PORTDOCS%%%%DOCSDIR%%/libstddjb/cspawn.html
 %%PORTDOCS%%%%DOCSDIR%%/libstddjb/direntry.html
 %%PORTDOCS%%%%DOCSDIR%%/libstddjb/djbtime.html
 %%PORTDOCS%%%%DOCSDIR%%/libstddjb/djbunix.html
@@ -119,7 +134,6 @@ lib/skalibs/sysdeps/util.lib
 %%PORTDOCS%%%%DOCSDIR%%/libstddjb/gccattributes.html
 %%PORTDOCS%%%%DOCSDIR%%/libstddjb/genalloc.html
 %%PORTDOCS%%%%DOCSDIR%%/libstddjb/genwrite.html
-%%PORTDOCS%%%%DOCSDIR%%/libstddjb/getpeereid.html
 %%PORTDOCS%%%%DOCSDIR%%/libstddjb/index.html
 %%PORTDOCS%%%%DOCSDIR%%/libstddjb/iopause.html
 %%PORTDOCS%%%%DOCSDIR%%/libstddjb/ip46.html

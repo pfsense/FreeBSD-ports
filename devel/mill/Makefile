@@ -1,5 +1,6 @@
 PORTNAME=	mill
-DISTVERSION=	0.11.6
+DISTVERSION=	0.11.10
+PORTREVISION=	1
 CATEGORIES=	devel java
 MASTER_SITES=	https://github.com/lihaoyi/${PORTNAME}/releases/download/${DISTVERSION}/
 DISTNAME=	${DISTVERSION}-assembly
@@ -13,8 +14,7 @@ WWW=		https://www.lihaoyi.com/mill/
 
 LICENSE=	MIT
 
-USE_JAVA=	yes
-JAVA_VERSION=	8+
+USES=		java
 
 NO_ARCH=	yes
 NO_BUILD=	yes

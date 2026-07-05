@@ -1,6 +1,6 @@
 PORTNAME=	trivy
-DISTVERSION=	0.50.1
 DISTVERSIONPREFIX=	v
+DISTVERSION=	0.69.3
 CATEGORIES=	security
 
 MAINTAINER=	mfechner@FreeBSD.org
@@ -10,14 +10,22 @@ WWW=		https://github.com/aquasecurity/trivy
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-USES=		go:modules,1.22
+ONLY_FOR_ARCHS=	aarch64 amd64
+ONLY_FOR_ARCHS_REASON=	module modernc.org/sqlite only supported on aarch64 and amd64
 
+USES=		go:modules
+
+USE_GITHUB=	yes
+GH_ACCOUNT=	aquasecurity
+GH_PROJECT=	trivy
+GO_MOD_DIST=	github
 GO_MODULE=	github.com/aquasecurity/trivy
 GO_TARGET=	./cmd/trivy
 GO_BUILDFLAGS= -ldflags=" \
 		-extldflags '-static' \
 		-X github.com/aquasecurity/trivy/pkg/version.ver=${DISTVERSION} \
 		-s -w"
+MAKE_ENV=	GOEXPERIMENT=jsonv2
 
 PLIST_FILES=	bin/${PORTNAME}
 
@@ -29,6 +37,5 @@ post-install:
 		${SED} -E -e '/sample$$/ s#^#@sample #; \
 		s#${DATADIR_REL}/bin#@(,,555) ${DATADIR_REL}/bin#; ' >> ${TMPPLIST}
 	cat ${TMPPLIST}
-	
 
 .include <bsd.port.mk>

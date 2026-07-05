@@ -1,6 +1,7 @@
 PORTNAME=	onetbb
-PORTVERSION=	2021.11.0
 DISTVERSIONPREFIX=	v
+DISTVERSION=	2022.3.0
+PORTREVISION=	3
 CATEGORIES=	devel
 
 MAINTAINER=	martymac@FreeBSD.org
@@ -9,34 +10,35 @@ WWW=		https://software.intel.com/oneapi/onetbb
 
 LICENSE=	APACHE20
 
-LIB_DEPENDS=	libhwloc.so.15:devel/hwloc2
+LIB_DEPENDS=	libhwloc.so:devel/hwloc2
 
-USES=		cmake compiler:c++11-lang tar:tgz
+USES=		cmake:testing compiler:c++11-lang localbase:ldflags pathfix pkgconfig
+USE_LDCONFIG=	yes
 
-CMAKE_ARGS+=	-DTBB_STRICT:BOOL=FALSE \
-		-DCMAKE_INSTALL_DOCDIR:PATH="${DOCSDIR}" \
-		-DCMAKE_HWLOC_2_LIBRARY_PATH:PATH="${LOCALBASE}/lib/libhwloc.so" \
-		-DCMAKE_HWLOC_2_INCLUDE_PATH:PATH="${LOCALBASE}/include"
+USE_GITHUB=	yes
+GH_ACCOUNT=	uxlfoundation
+GH_PROJECT=	oneTBB
+
+CONFLICTS=	tbb
 
 # Many symbols in the linker version scripts are undefined because link time
 # optimization (-flto=thin) removes them. Suppress errors with lld >= 17 due to
 # these undefined symbols.
 LDFLAGS+=	-Wl,--undefined-version
 
-CONFLICTS=	tbb
-
-USE_GITHUB=	yes
-GH_ACCOUNT=	oneapi-src
-GH_PROJECT=	oneTBB
-
-USE_LDCONFIG=	yes
+# Pkgconfig: tbb.pc (on 64bit arch) vs tbb32.pc
+PLIST_SUB=	DBGSUFX="${DBGSUFX}" \
+		PCSUFX="${PCSUFX}"
 
 PORTDOCS=	README.md
 
-OPTIONS_DEFINE=	DOCS
+CMAKE_TESTING_ON=	TBB_TEST
 
-# Pkgconfig: tbb.pc (on 64bit arch) vs tbb32.pc
-PLIST_SUB=	PCSUFX="${PCSUFX}" DBGSUFX="${DBGSUFX}"
+CMAKE_OFF=	TBB_STRICT \
+		TBB_TEST
+CMAKE_ARGS=	-DCMAKE_INSTALL_DOCDIR:PATH="${DOCSDIR}"
+
+OPTIONS_DEFINE=	DOCS
 
 .include <bsd.port.pre.mk>
 
@@ -45,6 +47,6 @@ DBGSUFX=	_debug
 .endif
 
 .if ${ARCH} == i386 || ${ARCH} == powerpc || ${ARCH:Marmv?}
-PCSUFX=	32
+PCSUFX=		32
 .endif
 .include <bsd.port.post.mk>

@@ -2,8 +2,7 @@ PORTNAME=	vsftpd
 PORTVERSION=	3.0.5
 PORTREVISION=	2
 CATEGORIES=	ftp
-MASTER_SITES=	https://security.appspot.com/downloads/ \
-		GENTOO
+MASTER_SITES=	https://security.appspot.com/downloads/
 PKGNAMESUFFIX?=	${SSL_SUFFIX}${PKGNAMESUFFIX2}
 
 MAINTAINER=	dinoex@FreeBSD.org
@@ -14,7 +13,7 @@ LICENSE=	GPLv2
 
 USERS=		ftp
 GROUPS=		ftp
-USES=		cpe alias
+USES=		cpe
 ALL_TARGET=	vsftpd
 USE_RC_SUBR=	vsftpd vsftpd6
 DOCFILES=	AUDIT BENCHMARKS BUGS Changelog FAQ INSTALL LICENSE \

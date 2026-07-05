@@ -1,7 +1,6 @@
 PORTNAME=	snapcast
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.27.0
-PORTREVISION=	3
+DISTVERSION=	0.35.0
 CATEGORIES=	multimedia audio
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -16,6 +15,7 @@ LIB_DEPENDS=	libasound.so:audio/alsa-lib \
 		libavahi-common.so:net/avahi-app \
 		libexpat.so:textproc/expat2 \
 		libFLAC.so:audio/flac \
+		libjack.so:audio/jack \
 		libogg.so:audio/libogg \
 		libopus.so:audio/opus \
 		libvorbis.so:audio/libvorbis \
@@ -26,8 +26,7 @@ USES=		cmake compiler:c++17-lang pkgconfig python shebangfix
 USE_GITHUB=	yes
 GH_ACCOUNT=	badaix
 
-SHEBANG_FILES=	server/etc/plug-ins/meta_mpd.py server/etc/plug-ins/meta_mopidy.py \
-		server/etc/plug-ins/meta_librespot-java.py
+SHEBANG_GLOB=	*.py
 
 OPTIONS_DEFINE=		CLIENT
 OPTIONS_DEFAULT=	#CLIENT

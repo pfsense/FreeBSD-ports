@@ -1,7 +1,7 @@
 PORTNAME=	certspotter
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.18.0
-PORTREVISION=	2
+DISTVERSION=	0.23.0
+PORTREVISION=	4
 CATEGORIES=	security www
 
 MAINTAINER=	flo@FreeBSD.org
@@ -11,7 +11,7 @@ WWW=		https://github.com/SSLMate/certspotter
 LICENSE=	MPL20
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-USES=		go:1.21,modules
+USES=		go:modules
 USE_RC_SUBR=	certspotter
 GO_MODULE=	software.sslmate.com/src/certspotter
 GO_TARGET=	./cmd/${PORTNAME}:${PREFIX}/sbin/${PORTNAME}
