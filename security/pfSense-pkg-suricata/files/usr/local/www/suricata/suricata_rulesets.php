@@ -59,6 +59,7 @@ $etpro = config_get_path('installedpackages/suricata/config/0/enable_etpro_rules
 $snortcommunitydownload = config_get_path('installedpackages/suricata/config/0/snortcommunityrules') == 'on' ? 'on' : 'off';
 $feodotrackerdownload = config_get_path('installedpackages/suricata/config/0/enable_feodo_botnet_c2_rules') == 'on' ? 'on' : 'off';
 $sslbldownload = config_get_path('installedpackages/suricata/config/0/enable_abuse_ssl_blacklist_rules') == 'on' ? 'on' : 'off';
+$julioliraup_antiphishingdownload = config_get_path('installedpackages/suricata/config/0/enable_julioliraup_antiphishing') == 'on' ? 'on' : 'off';
 $enable_extra_rules = config_get_path('installedpackages/suricata/config/0/enable_extra_rules') == "on" ? 'on' : 'off';
 $extra_rules = config_get_path('installedpackages/suricata/config/0/extra_rules/rule', []);
 
@@ -96,6 +97,9 @@ if (!file_exists("{$suricata_rules_dir}" . "feodotracker.rules"))
 
 if (!file_exists("{$suricata_rules_dir}" . "sslblacklist_tls_cert.rules"))
 	$no_sslbl_files = true;
+
+if (!file_exists("{$suricata_rules_dir}" . JULIOLIRAUP_ANTIPHISHING_RULES_FILENAME))
+	$no_julioliraup_antiphishing_files = true;
 
 // If a Snort rules policy is enabled and selected, remove all Snort
 // rules from the configured rule sets to allow automatic selection.
@@ -232,6 +236,10 @@ if (isset($_POST["save"])) {
 
 	if ($sslbldownload == 'on') {
 		$enabled_rulesets_array[] = "sslblacklist_tls_cert.rules";
+	}
+
+	if ($julioliraup_antiphishingdownload == 'on') {
+		$enabled_rulesets_array[] = JULIOLIRAUP_ANTIPHISHING_RULES_FILENAME;
 	}
 
 	/* Include the Snort rules only if enabled and no IPS policy is set */
@@ -646,6 +654,73 @@ else:
 	<?php endif;
 ?>
 <!-- End of ABUSE.ch SSL Blacklist rules -->
+
+<!-- Process julioliraup/Antiphishing Rules if enabled -->
+	<?php if ($no_julioliraup_antiphishing_files)
+			$msg_julioliraup_antiphishing = gettext("NOTE: julioliraup/Antiphishing Rules have not been downloaded.  Perform a Rules Update to enable them.");
+	      else
+			$msg_julioliraup_antiphishing = gettext("julioliraup/Antiphishing Rules");
+		  $julioliraup_antiphishing_rules_file = JULIOLIRAUP_ANTIPHISHING_RULES_FILENAME;
+	?>
+	<?php if ($julioliraup_antiphishingdownload == 'on'): ?>
+			<?php if (isset($cat_mods[$julioliraup_antiphishing_rules_file])): ?>
+				<?php if ($cat_mods[$julioliraup_antiphishing_rules_file] == 'enabled') : ?>
+					<tr>
+						<td>
+							<i class="fa-brands fa-adn text-success" title="<?=gettext('Auto-enabled by settings on SID Mgmt tab'); ?>"></i>
+						</td>
+						<td colspan="3">
+						<?php if ($no_julioliraup_antiphishing_files): ?>
+							<?php echo $msg_julioliraup_antiphishing; ?>
+						<?php else: ?>
+							<a href='suricata_rules.php?id=<?=$id;?>&openruleset=<?=$julioliraup_antiphishing_rules_file;?>'><?=$msg_julioliraup_antiphishing;?></a>
+						<?php endif; ?>
+						</td>
+					</tr>
+				<?php else: ?>
+					<tr>
+						<td>
+							<i class="fa-brands fa-adn text-danger" title="<?=gettext("Auto-disabled by settings on SID Mgmt tab");?>"><i>
+						</td>
+						<td colspan="3">
+						<?php if ($no_julioliraup_antiphishing_files): ?>
+							<?php echo $msg_julioliraup_antiphishing; ?>
+						<?php else: ?>
+							<a href='suricata_rules_edit.php?id=<?=$id;?>&openruleset=<?=$julioliraup_antiphishing_rules_file;?>' target='_blank' rel='noopener noreferrer'><?=$msg_julioliraup_antiphishing; ?></a>
+						<?php endif; ?>
+						</td>
+					</tr>
+				<?php endif; ?>
+			<?php elseif (in_array($julioliraup_antiphishing_rules_file, $enabled_rulesets_array)): ?>
+				<tr>
+					<td>
+						<input type="checkbox" name="toenable[]" value="<?=$julioliraup_antiphishing_rules_file;?>" checked="checked"/>
+					</td>
+					<td colspan="3">
+						<?php if ($no_julioliraup_antiphishing_files): ?>
+							<?php echo $msg_julioliraup_antiphishing; ?>
+						<?php else: ?>
+							<a href='suricata_rules.php?id=<?=$id;?>&openruleset=<?=$julioliraup_antiphishing_rules_file;?>'><?php echo $msg_julioliraup_antiphishing; ?></a>
+						<?php endif; ?>
+					</td>
+				</tr>
+			<?php else: ?>
+				<tr>
+					<td>
+						<input type="checkbox" name="toenable[]" value="<?=$julioliraup_antiphishing_rules_file; ?>" />
+					</td>
+					<td colspan="3">
+						<?php if ($no_julioliraup_antiphishing_files): ?>
+							<?php echo $msg_julioliraup_antiphishing; ?>
+						<?php else: ?>
+							<a href='suricata_rules_edit.php?id=<?=$id;?>&openruleset=<?=$julioliraup_antiphishing_rules_file;?>' target='_blank' rel='noopener noreferrer'><?=$msg_julioliraup_antiphishing; ?></a>
+						<?php endif; ?>
+					</td>
+				</tr>
+			<?php endif; ?>
+	<?php endif;
+?>
+<!-- End of julioliraup/Antiphishing rules -->
 
 <!-- End of processing for GPLv2, Feodo Tracker and SSL Blacklist rules, so close table tags -->
 			</tbody>

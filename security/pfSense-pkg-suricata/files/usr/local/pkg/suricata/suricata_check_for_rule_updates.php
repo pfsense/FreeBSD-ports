@@ -48,6 +48,7 @@ $vrt_enabled = config_get_path('installedpackages/suricata/config/0/enable_vrt_r
 $snortcommunityrules = config_get_path('installedpackages/suricata/config/0/snortcommunityrules') == 'on' ? 'on' : 'off';
 $feodotracker_rules = config_get_path('installedpackages/suricata/config/0/enable_feodo_botnet_c2_rules') == 'on' ? 'on' : 'off';
 $sslbl_rules = config_get_path('installedpackages/suricata/config/0/enable_abuse_ssl_blacklist_rules') == 'on' ? 'on' : 'off';
+$julioliraup_antiphishing = config_get_path('installedpackages/suricata/config/0/enable_julioliraup_antiphishing') == 'on' ? 'on' : 'off';
 $enable_extra_rules = config_get_path('installedpackages/suricata/config/0/enable_extra_rules') == "on" ? 'on' : 'off';
 $extra_rules = config_get_path('installedpackages/suricata/config/0/extra_rules/rule', []);
 
@@ -89,6 +90,13 @@ if (config_get_path('installedpackages/suricata/config/0/enable_abuse_ssl_blackl
 	$sslbl_rules_filename_md5 = ABUSE_SSLBL_DNLD_FILENAME . ".md5";
 	$sslbl_rules_url = ABUSE_SSLBL_DNLD_URL;
 
+}
+
+/* Set up julioliraup/Antiphishing rules filename and URL */
+if ($julioliraup_antiphishing == 'on') {
+	$julioliraup_antiphishing_filename = JULIOLIRAUP_ANTIPHISHING_DNLD_FILENAME;
+	$julioliraup_antiphishing_rules_filename = JULIOLIRAUP_ANTIPHISHING_RULES_FILENAME;
+	$julioliraup_antiphishing_url = JULIOLIRAUP_ANTIPHISHING_DNLD_URL;
 }
 
 /* Set up Emerging Threats rules filenames and URL */
@@ -611,6 +619,105 @@ if ($sslbl_rules == 'on') {
 	}
 }
 
+/*  Download any new julioliraup/Antiphishing Rules */
+if ($julioliraup_antiphishing == 'on') {
+	// Grab the MD5 hash of our last successful download if available
+	if (file_exists("{$suricatadir}{$julioliraup_antiphishing_rules_filename}.md5")) {
+		$old_file_md5 = trim(file_get_contents("{$suricatadir}{$julioliraup_antiphishing_rules_filename}.md5"));
+	}
+	else {
+		$old_file_md5 = "0";
+	}
+
+	suricata_update_status(gettext("Downloading julioliraup/Antiphishing rules file..."));
+	error_log(gettext("\tDownloading julioliraup/Antiphishing rules file...\n"), 3, SURICATA_RULES_UPD_LOGFILE);
+	safe_mkdir("{$tmpfname}/julioliraup");
+	$rc = suricata_download_file_url("{$julioliraup_antiphishing_url}", "{$tmpfname}/{$julioliraup_antiphishing_filename}");
+
+	// See if the download from the URL was successful
+	if ($rc === true) {
+		suricata_update_status(gettext(" done.") . "\n");
+		logger(LOG_NOTICE, localize_text("julioliraup/Antiphishing rules file downloaded successfully."), LOG_PREFIX_PKG_SURICATA);
+		error_log(gettext("\tDone downloading rules tarball.\n"), 3, SURICATA_RULES_UPD_LOGFILE);
+
+		// Extract the tarball to a temporary directory
+		exec("/usr/bin/tar xzf {$tmpfname}/{$julioliraup_antiphishing_filename} -C {$tmpfname}/julioliraup/");
+
+		// Locate the extracted .rules file
+		$extracted_rules = glob("{$tmpfname}/julioliraup/*.rules");
+		$extracted_md5_files = glob("{$tmpfname}/julioliraup/*.rules.md5");
+
+		if (empty($extracted_rules)) {
+			suricata_update_status(gettext("julioliraup/Antiphishing rules tarball extraction failed!") . "\n");
+			logger(LOG_ERR, localize_text("julioliraup/Antiphishing rules tarball did not contain a .rules file."), LOG_PREFIX_PKG_SURICATA);
+			error_log(gettext("\tERROR: julioliraup/Antiphishing rules tarball did not contain a .rules file.\n"), 3, SURICATA_RULES_UPD_LOGFILE);
+			$notify_message .= gettext("- julioliraup/Antiphishing rules will not be updated, tarball extraction failed!\n");
+			$update_errors = true;
+			$julioliraup_antiphishing = 'off';
+		}
+		else {
+			$extracted_rules_file = reset($extracted_rules);
+
+			// Verify integrity using the embedded MD5 file if present
+			if (!empty($extracted_md5_files)) {
+				$extracted_md5_file = reset($extracted_md5_files);
+				$expected_md5 = trim(file_get_contents($extracted_md5_file));
+				$actual_md5 = trim(md5_file($extracted_rules_file));
+				if ($expected_md5 !== $actual_md5) {
+					suricata_update_status(gettext("julioliraup/Antiphishing rules MD5 checksum failed!") . "\n");
+					logger(LOG_ERR, localize_text("julioliraup/Antiphishing rules file MD5 checksum mismatch."), LOG_PREFIX_PKG_SURICATA);
+					error_log(gettext("\tERROR: julioliraup/Antiphishing rules MD5 checksum failed. File may be corrupted.\n"), 3, SURICATA_RULES_UPD_LOGFILE);
+					$notify_message .= gettext("- julioliraup/Antiphishing rules will not be updated, bad MD5 checksum!\n");
+					$update_errors = true;
+					$julioliraup_antiphishing = 'off';
+				}
+				else {
+					$new_file_md5 = $actual_md5;
+				}
+			}
+			else {
+				// No embedded MD5 file — compute MD5 locally
+				$new_file_md5 = trim(md5_file($extracted_rules_file));
+			}
+
+			if ($julioliraup_antiphishing == 'on') {
+				// See if the rules file has changed from our previously installed version
+				if ($old_file_md5 == $new_file_md5) {
+					// File is unchanged from previous download, so no update required
+					suricata_update_status(gettext("julioliraup/Antiphishing rules are up to date.") . "\n");
+					logger(LOG_NOTICE, localize_text("julioliraup/Antiphishing rules are up to date..."), LOG_PREFIX_PKG_SURICATA);
+					error_log(gettext("\tjulioliraup/Antiphishing rules are up to date.\n"), 3, SURICATA_RULES_UPD_LOGFILE);
+					$notify_message .= gettext("- julioliraup/Antiphishing rules are up to date.\n");
+					$julioliraup_antiphishing = 'off';
+				}
+				else {
+					// Rules file has changed — install the new version
+					suricata_update_status(gettext("Installing julioliraup/Antiphishing rules..."));
+					error_log(gettext("\tInstalling julioliraup/Antiphishing rules...\n"), 3, SURICATA_RULES_UPD_LOGFILE);
+					@copy($extracted_rules_file, "{$suricata_rules_dir}{$julioliraup_antiphishing_rules_filename}");
+					file_put_contents("{$suricatadir}{$julioliraup_antiphishing_rules_filename}.md5", $new_file_md5);
+					suricata_update_status(gettext(" done.") . "\n");
+					suricata_update_status(gettext("julioliraup/Antiphishing rules were updated.") . "\n");
+					logger(LOG_NOTICE, localize_text("julioliraup/Antiphishing rules were updated..."), LOG_PREFIX_PKG_SURICATA);
+					error_log(gettext("\tjulioliraup/Antiphishing rules were updated.\n"), 3, SURICATA_RULES_UPD_LOGFILE);
+					$notify_message .= gettext("- julioliraup/Antiphishing rules were updated.\n");
+				}
+			}
+		}
+	}
+	else {
+		suricata_update_status(gettext("julioliraup/Antiphishing rules file download failed!") . "\n");
+		logger(LOG_ERR, localize_text("julioliraup/Antiphishing rules file download failed... server returned error '%s'.", $rc), LOG_PREFIX_PKG_SURICATA);
+		error_log(gettext("\tERROR: julioliraup/Antiphishing rules file download failed. Remote server returned error {$rc}.\n"), 3, SURICATA_RULES_UPD_LOGFILE);
+		error_log(gettext("\tThe error text was: {$last_curl_error}\n"), 3, SURICATA_RULES_UPD_LOGFILE);
+		error_log(gettext("\tjulioliraup/Antiphishing rules will not be updated.\n"), 3, SURICATA_RULES_UPD_LOGFILE);
+		$notify_message .= gettext("- julioliraup/Antiphishing rules will not be updated, file download failed!\n");
+		$update_errors = true;
+		$julioliraup_antiphishing = 'off';
+	}
+	rmdir_recursive("{$tmpfname}/julioliraup");
+}
+
 /*  Download any new Extra Rules */
 if (($enable_extra_rules == 'on') && !empty($extra_rules)) {
 	$extraupdated = 'off';
@@ -899,7 +1006,7 @@ function suricata_apply_customizations($suricatacfg, $if_real) {
 }
 
 /* If we updated any rules, then refresh all the Suricata interfaces */
-if ($snortdownload == 'on' || $emergingthreats == 'on' || $snortcommunityrules == 'on' || $feodotracker_rules == 'on' || $sslbl_rules == 'on' || $extraupdated == 'on') {
+if ($snortdownload == 'on' || $emergingthreats == 'on' || $snortcommunityrules == 'on' || $feodotracker_rules == 'on' || $sslbl_rules == 'on' || $julioliraup_antiphishing == 'on' || $extraupdated == 'on') {
 
 	/* If we updated Snort or ET rules, rebuild the config and map files as nescessary */
 	if ($snortdownload == 'on' || $emergingthreats == 'on' || $snortcommunityrules == 'on') {

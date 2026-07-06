@@ -121,6 +121,13 @@ if (!defined("ABUSE_SSLBL_DNLD_FILENAME"))
 if (!defined("ABUSE_SSLBL_DNLD_URL"))
 	define("ABUSE_SSLBL_DNLD_URL", "https://sslbl.abuse.ch/blacklist/");
 
+if (!defined("JULIOLIRAUP_ANTIPHISHING_DNLD_FILENAME"))
+	define("JULIOLIRAUP_ANTIPHISHING_DNLD_FILENAME", "antiphishing.tar.gz");
+if (!defined("JULIOLIRAUP_ANTIPHISHING_RULES_FILENAME"))
+	define("JULIOLIRAUP_ANTIPHISHING_RULES_FILENAME", "julioliraup-antiphishing.rules");
+if (!defined("JULIOLIRAUP_ANTIPHISHING_DNLD_URL"))
+	define("JULIOLIRAUP_ANTIPHISHING_DNLD_URL", "https://raw.githubusercontent.com/julioliraup/Antiphishing/main/antiphishing.tar.gz");
+
 # MaxMind GeoIP2 database update permalink URLs
 if (!defined("MAXMIND_GEOIP2_DNLD_URL"))
 	define("MAXMIND_GEOIP2_DNLD_URL", "https://download.maxmind.com/geoip/databases/GeoLite2-Country/download?suffix=tar.gz");

@@ -37,6 +37,7 @@ $etpro = config_get_path('installedpackages/suricata/config/0/enable_etpro_rules
 $snortcommunityrules = config_get_path('installedpackages/suricata/config/0/snortcommunityrules') == "on" ? 'on' : 'off';
 $feodotracker_rules = config_get_path('installedpackages/suricata/config/0/enable_feodo_botnet_c2_rules') == "on" ? 'on' : 'off';
 $sslbl_rules = config_get_path('installedpackages/suricata/config/0/enable_abuse_ssl_blacklist_rules') == "on" ? 'on' : 'off';
+$julioliraup_antiphishing = config_get_path('installedpackages/suricata/config/0/enable_julioliraup_antiphishing') == "on" ? 'on' : 'off';
 $enable_extra_rules = config_get_path('installedpackages/suricata/config/0/enable_extra_rules') == "on" ? 'on' : 'off';
 $extra_rules = config_get_path('installedpackages/suricata/config/0/extra_rules/rule', []);
 
@@ -153,6 +154,19 @@ if ($sslbl_rules == 'on' && file_exists("{$suricatadir}{$sslbl_rules_filename}.m
 	$sslbl_sig_sig_date = date(DATE_RFC850, filemtime("{$suricatadir}{$sslbl_rules_filename}.md5"));
 }
 
+if ($julioliraup_antiphishing == 'on') {
+	$julioliraup_antiphishing_sig_chk_local = 'Not Downloaded';
+	$julioliraup_antiphishing_sig_date = 'Not Downloaded';
+}
+else {
+	$julioliraup_antiphishing_sig_chk_local = 'Not Enabled';
+	$julioliraup_antiphishing_sig_date = 'Not Enabled';
+}
+if ($julioliraup_antiphishing == 'on' && file_exists("{$suricatadir}" . JULIOLIRAUP_ANTIPHISHING_RULES_FILENAME . ".md5")) {
+	$julioliraup_antiphishing_sig_chk_local = trim(file_get_contents("{$suricatadir}" . JULIOLIRAUP_ANTIPHISHING_RULES_FILENAME . ".md5"));
+	$julioliraup_antiphishing_sig_date = date(DATE_RFC850, filemtime("{$suricatadir}" . JULIOLIRAUP_ANTIPHISHING_RULES_FILENAME . ".md5"));
+}
+
 /* Check for postback to see if we should clear the update log file. */
 if ($_POST['clear']) {
 	if (file_exists(SURICATA_RULES_UPD_LOGFILE)) {
@@ -168,6 +182,7 @@ if ($_REQUEST['updatemode']) {
 		unlink_if_exists("{$suricatadir}{$snort_rules_file}.md5");
 		unlink_if_exists("{$suricatadir}{$feodotracker_rules_filename}.md5");
 		unlink_if_exists("{$suricatadir}{$sslbl_rules_filename}.md5");
+		unlink_if_exists("{$suricatadir}" . JULIOLIRAUP_ANTIPHISHING_RULES_FILENAME . ".md5");
 		unlink_if_exists("{$suricatadir}" . EXTRARULE_FILE_PREFIX . "*.md5");
 	}
 
@@ -294,6 +309,11 @@ include_once("head.inc");
 					<td><?=trim($sslbl_sig_chk_local);?></td>
 					<td><?=gettext($sslbl_sig_sig_date);?></td>
 				</tr>
+				<tr>
+					<td><?=gettext("julioliraup/Antiphishing Rules");?></td>
+					<td><?=$julioliraup_antiphishing_sig_chk_local;?></td>
+					<td><?=gettext($julioliraup_antiphishing_sig_date);?></td>
+				</tr>
 				</tbody>
 			</table>
 		</div>
@@ -352,7 +372,7 @@ foreach ($extra_rules as $exrule) {
 				<strong><?=gettext("Result:");?></strong> <?=$last_rule_upd_status?>
 			</p>
 			<p>
-				<?php if ($snortdownload != 'on' && $emergingthreats != 'on' && $etpro != 'on' && $snortcommunityrules != 'on' && $feodotracker_rules != 'on' && $sslbl_rules != 'on' && $enable_extra_rules != 'on'): ?>
+				<?php if ($snortdownload != 'on' && $emergingthreats != 'on' && $etpro != 'on' && $snortcommunityrules != 'on' && $feodotracker_rules != 'on' && $sslbl_rules != 'on' && $julioliraup_antiphishing != 'on' && $enable_extra_rules != 'on'): ?>
 					<br/><button class="btn btn-primary" disabled>
 						<i class="fa-solid fa-check icon-embed-btn"></i>
 						<?=gettext("Update"); ?>
