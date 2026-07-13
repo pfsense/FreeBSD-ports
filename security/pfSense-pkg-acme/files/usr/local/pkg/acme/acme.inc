@@ -3599,7 +3599,13 @@ function get_certificate($name) {
 						$newdomain->setchallengedomain($domain["anydns"."challengedomain"]);
 					}
 					$domainstosign[] = $newdomain;
-					$envvariables = array();
+					// Keep initialization inside the loop to isolate variables across multiple 
+					// DNS provider accounts, but wrap in isset() to safely accumulate tokens 
+					// across multi-domain certificates using mixed validation methods ( see https://redmine.pfsense.org/issues/16946 ).
+					// should also solve https://redmine.pfsense.org/issues/11614
+					if (!isset($envvariables)) {
+						$envvariables = array();
+					}
 					if ($method == "dns_namecheap") {
 						$defgw = route_get_default('inet');
 						$envvariables['NAMECHEAP_SOURCEIP'] = find_interface_ip(guess_interface_from_ip($defgw));
