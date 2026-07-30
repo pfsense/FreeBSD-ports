@@ -127,6 +127,7 @@
 				<option><value>broadcast</value><name>Broadcast</name></option>
 				<option><value>non-broadcast</value><name>Non-Broadcast</name></option>
 				<option><value>point-to-multipoint</value><name>Point-to-Multipoint</name></option>
+				<option><value>point-to-multipoint non-broadcast</value><name>Point-to-Multipoint Non-Broadcast</name></option>				
 				<option><value>point-to-point</value><name>Point-to-Point</name></option>
 			</options>
 		</field>
