@@ -394,7 +394,7 @@ function frr_ospf_interfaces_validate_input() {
 	if ((strlen($_POST['interfacearea']) == 0) && (strlen(config_get_path('installedpackages/frrospfd/config/0/defaultarea')) == 0)) {
 		$input_errors[] = "Area must either be set on the interface or a default area set for the OSPF instance.";
 	}
-	if (!empty($_POST['networktype']) && !in_array($_POST['networktype'], array('broadcast', 'non-broadcast', 'point-to-multipoint', 'point-to-point'))) {
+	if (!empty($_POST['networktype']) && !in_array($_POST['networktype'], array('broadcast', 'non-broadcast', 'point-to-multipoint', 'point-to-multipoint non-broadcast', 'point-to-point'))) {
 		$input_errors[] = "Invalid interface type.";
 	}
 	if (!empty($_POST['authtype']) && !in_array($_POST['authtype'], array('digest', 'simple', 'null'))) {
