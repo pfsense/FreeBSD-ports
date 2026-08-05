@@ -1011,8 +1011,8 @@ print $form;
 <script type="text/javascript">
 //<![CDATA[
 
-var port_array  = <?= json_encode(get_alias_list(array("port", "url_ports", "urltable_ports"))) ?>;
-var address_array = <?= json_encode(get_alias_list(array("host", "network", "openvpn", "urltable"))) ?>;
+var port_array  = <?= json_encode(get_alias_list("port,url_ports,urltable_ports")) ?>;
+var address_array = <?= json_encode(get_alias_list("host,network,openvpn,urltable")) ?>;
 
 events.push(function() {
 	$('form').submit(function(event){
@@ -1075,6 +1075,11 @@ events.push(function() {
 	});
 	$('#sslsnifilter').on('change input keyup cut paste', function () {
 		updatevisibility();
+	});
+
+	// IP/host/network aliases can be used as acl value, offer them as suggestions.
+	$('[id^=table_aclsvalue]').autocomplete({
+		source: address_array
 	});
 
 	d = document;
@@ -1140,6 +1145,12 @@ events.push(function() {
 			}
 		}
 	}
+
+			function table_acls_row_added(tableId, rowId){
+				$('#'+tableId+"value"+rowId).autocomplete({
+					source: address_array
+				});
+			}
 
 			function table_extaddr_row_added(tableId, rowId){
 

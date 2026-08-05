@@ -1167,6 +1167,8 @@ print $form;
 ?>
 	browser_InnerText_support = (document.getElementsByTagName("body")[0].innerText !== undefined) ? true : false;
 
+	var address_array = <?= json_encode(get_alias_list("host,network,openvpn,urltable")) ?>;
+
 	totalrows =  <?php echo $counter; ?>;
 
 
@@ -1261,10 +1263,21 @@ events.push(function() {
 	});
 
 	updatevisibility();
-	
+
+	// IP/host/network aliases can be used as acl value, offer them as suggestions.
+	$('[id^=table_aclsvalue]').autocomplete({
+		source: address_array
+	});
+
 	// make sure enabled/disabled visable/hidden states of items dependant on these boxes are correct when loading the page.
 	$('[id^=table_aclsexpression]').change();
 });
+
+function table_acls_row_added(tableId, rowId){
+	$('#'+tableId+"value"+rowId).autocomplete({
+		source: address_array
+	});
+}
 //]]>
 </script>
 

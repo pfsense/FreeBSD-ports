@@ -82,7 +82,12 @@ $a_acltypes["ssl_c_verify"] = array('name' => 'SSL Client certificate valid.',
 $a_acltypes["ssl_c_ca_commonname"] = array('name' => 'SSL Client issued by CA common-name:',
 				'mode' => 'http', 'syntax' => 'ssl_c_i_dn(CN) %1$s', 'require_client_cert' => '1');
 $a_acltypes["source_ip"] = array('name' => 'Source IP matches IP or Alias:',
-				'mode' => '', 'syntax' => 'src %1$s');
+				'mode' => '', 'syntax' => 'src %1$s', 'aliasfetch' => 'src');
+$a_acltypes["hdr_ip"] = array('name' => 'Header IP matches IP or Alias:',
+				'mode' => 'http', 'syntax' => 'req.hdr_ip({header}) %1$s', 'aliasfetch' => 'req.hdr_ip({header})',
+	'fields' => array(
+		array('name'=>"header",'columnheader'=>"Header name (e.g. X-Forwarded-For)",'type'=>"textbox",'size'=>"50")
+	));
 $a_acltypes["backendservercount"] = array('name' => 'Minimum count usable servers:',
 				'mode' => '', 'syntax' => 'nbsrv({backend}) ge %1$d', 'parameters' => 'value,backendname',
 	'fields' => array(
@@ -553,6 +558,70 @@ function haproxy_hostoralias_to_list($host_or_alias) {
 	$items = haproxy_expand_alias_array($host_or_alias);
 	$result = haproxy_filter_alias_array($items, true, true);
 	return $result;
+}
+
+function haproxy_copy_aliastable($aliasname, $destination) {
+	// Urltable aliases already have their expanded contents on disk, copying that
+	// file is much faster than expanding a large table in php.
+	foreach (config_get_path('aliases/alias', []) as $alias) {
+		if ($alias['name'] == $aliasname) {
+			if ($alias['type'] == 'urltable') {
+				$table = "/var/db/aliastables/{$aliasname}.txt";
+				if (file_exists($table)) {
+					return copy($table, $destination);
+				}
+			}
+			return false;
+		}
+	}
+	return false;
+}
+
+function haproxy_acl_expression($acltype, $aclitem, $expression, $configpath, $ipversion) {
+	// Builds the haproxy expression for one acl item.
+	// For ip-matching acls ('aliasfetch' set) an alias value is expanded into a list file,
+	// written at most once per file even when several acls use the same alias.
+	static $alias_files_written = array();
+	if (!empty($acltype['aliasfetch']) && is_alias($aclitem['value'])) {
+		$filename = "$configpath/ipalias_{$aclitem['value']}.lst";
+		if (!isset($alias_files_written[$filename])) {
+			if (haproxy_copy_aliastable($aclitem['value'], $filename)) {
+				// urltable contents are ip addresses/networks only.
+				$nodns = true;
+			} else {
+				$nodns = true;
+				$listitems = haproxy_hostoralias_to_list($aclitem['value']);
+				$fd_alias = fopen("$filename", "w");
+				foreach($listitems as $item) {
+					if (!is_ipaddr($item) && !is_subnet($item)) {
+						// hostname entries still need resolving when haproxy loads the list.
+						$nodns = false;
+					}
+					fwrite($fd_alias, $item."\r\n");
+				}
+				fclose($fd_alias);
+			}
+			$alias_files_written[$filename] = $nodns;
+		}
+		// The -n matching flag forbids DNS resolution while loading the list. Without it
+		// haproxy tries a (failing) hostname lookup for every ipv6 entry before parsing it
+		// as ipv6, which takes several seconds on large tables.
+		$nodnsflag = $alias_files_written[$filename] ? " -n" : "";
+		$expr = "{$acltype['aliasfetch']}{$nodnsflag} -f $filename";
+	} else {
+		$expr = sprintf($acltype['syntax'], $aclitem['value']);
+	}
+	if (is_array($acltype['fields'])) {
+		foreach ($acltype['fields'] as $field) {
+			$fieldname = $field['name'];
+			$parameter = $aclitem[$expression . $fieldname];
+			if ($fieldname == "backend") {
+				$parameter = $parameter . "_" . $ipversion;
+			}
+			$expr = str_replace("{{$fieldname}}", $parameter, $expr);
+		}
+	}
+	return $expr;
 }
 
 function haproxy_get_fileslist() {
@@ -1081,33 +1150,10 @@ function write_backend($configpath, $fd, $name, $pool, $backendsettings) {
 			$aclcrt_name = $aclname;
 		}
 
-		if (($expression == "source_ip") && is_alias($aclitem['value'])) {
-			$filename = "$configpath/ipalias_{$aclitem['value']}.lst";
-			$listitems = haproxy_hostoralias_to_list($aclitem['value']);
-			$fd_alias = fopen("$filename", "w");
-			foreach($listitems as $item) {
-				fwrite($fd_alias, $item."\r\n");
-			}
-			fclose($fd_alias);
-			$expr = "src -f $filename";
-		} else {
-			$expr = sprintf($acltype['syntax'], $aclitem['value']);
-			if (is_array($acltype['fields'])) {
-				foreach ($acltype['fields'] as $field) {
-					$fieldname = $field['name'];
-					$parameter = $aclitem[$expression . $fieldname];
-					if ($fieldname == "backend") {
-						//$backendname = $parameter . "_" . strtolower($bind['type'])."_".$ipversion;
-						$backendname = $parameter . "_" . $ipversion;
-						$parameter = $backendname;
-					}
-					$expr = str_replace("{{$fieldname}}", $parameter, $expr);
-				}
-			}
-		}
+		$expr = haproxy_acl_expression($acltype, $aclitem, $expression, $configpath, $ipversion);
 		$casesensitive = $aclitem['casesensitive'] == 'yes' ? "" : " -i";
 		$expr = str_replace("{casesensitive}", $casesensitive, $expr);
-		
+
 		$config_acls ["\tacl\t\t\t" . $aclname . "\t" .  $expr . "\n"] = 1;
 	}
 	// Write acl's first, so they may be used by advanced text options written by user.
@@ -1566,8 +1612,9 @@ function haproxy_writeconf($configpath) {
 		}
 
 		fwrite ($fd, "\tgid\t\t\t80\n");
-		$numthread = $a_global['nbthread'] ? $a_global['nbthread'] : "1";
-		if (haproxy_version() >= "1.8") {
+		// 0 (or empty) means haproxy autodetects the number of threads: no nbthread line is written.
+		$numthread = (int) ($a_global['nbthread'] ?? 0);
+		if ($numthread > 0 && haproxy_version() >= "1.8") {
 			fwrite ($fd, "\tnbthread\t\t\t{$numthread}\n");
 		}
 		$hard_stop_after = !empty($a_global['hard_stop_after']) ? $a_global['hard_stop_after'] : "15m";
@@ -1609,7 +1656,8 @@ function haproxy_writeconf($configpath) {
 			fwrite ($fd, "\tssl-default-server-options\tssl-min-ver TLSv1.0 no-tls-tickets\n");
 
 		}
-		if ($a_global['ssldefaultdhparam']) {
+		// Modern mode is TLS 1.3 only which does not use DHE key exchange: DH parameters are not needed at all.
+		if ($a_global['ssldefaultdhparam'] && $a_global['sslcompatibilitymode'] != 'modern') {
 			fwrite ($fd, "\ttune.ssl.default-dh-param\t{$a_global['ssldefaultdhparam']}\n");
 		}
 		if ($a_global['log-send-hostname']) {
@@ -2064,30 +2112,7 @@ function haproxy_writeconf($configpath) {
 							$aclcrt_name = $aclname;
 						}
 
-						if (($expression == "source_ip") && is_alias($aclitem['value'])) {
-							$filename = "$configpath/ipalias_{$aclitem['value']}.lst";
-							$listitems = haproxy_hostoralias_to_list($aclitem['value']);
-							$fd_alias = fopen("$filename", "w");
-							foreach($listitems as $item) {
-								fwrite($fd_alias, $item."\r\n");
-							}
-							fclose($fd_alias);
-							$expr = "src -f $filename";
-						} else {
-							$expr = sprintf($acltype['syntax'], $aclitem['value']);
-							if (is_array($acltype['fields'])) {
-								foreach ($acltype['fields'] as $field) {
-									$fieldname = $field['name'];
-									$parameter = $aclitem[$expression . $fieldname];
-									if ($fieldname == "backend") {
-										//$backendname = $parameter . "_" . strtolower($bind['type'])."_".$ipversion;
-										$backendname = $parameter . "_" . $ipversion;
-										$parameter = $backendname;
-									}
-									$expr = str_replace("{{$fieldname}}", $parameter, $expr);
-								}
-							}
-						}
+						$expr = haproxy_acl_expression($acltype, $aclitem, $expression, $configpath, $ipversion);
 						$casesensitive = $aclitem['casesensitive'] == 'yes' ? "" : " -i";
 						$expr = str_replace("{casesensitive}", $casesensitive, $expr);
 						$config_acls ["\tacl\t\t\t" . $aclname . "\t" .  $expr . "\n"] = 1;

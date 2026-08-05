@@ -110,6 +110,13 @@ if ($_POST) {
 		if ($_POST['localstats_sticktable_refreshtime'] && (!is_numeric($_POST['localstats_sticktable_refreshtime'])))
 			$input_errors[] = "The local stats sticktable refresh time should be numeric or empty.";
 
+		if ($_POST['nbthread'] == '') {
+			$_POST['nbthread'] = '0';
+		}
+		if (!is_numeric($_POST['nbthread'])) {
+			$input_errors[] = "The number of threads should be numeric.";
+		}
+
 		if (!$input_errors) {
 			$haproxycfg = config_get_path('installedpackages/haproxy', []);
 			array_set_path($haproxycfg, 'email_mailers/item', $a_mailers);
@@ -285,10 +292,11 @@ $section->add($group);
 $cpucores = trim(`/sbin/sysctl kern.smp.cpus | cut -d" " -f2`);
 
 if (haproxy_version() >= "1.8") {
-	$section->addInput(new Form_Input('nbthread', 'Number of threads to start per process', 'text', $pconfig['nbthread']
-	))->setPlaceholder("1")->setHelp(<<<EOD
-		Defaults to 1 if left blank ({$cpucores} CPU core(s) detected).<br/>
-		FOR NOW, THREADS SUPPORT IN HAPROXY 1.8 IS HIGHLY EXPERIMENTAL AND IT MUST BE ENABLED WITH CAUTION AND AT YOUR OWN RISK.
+	$section->addInput(new Form_Input('nbthread', 'Number of threads to start per process', 'number', $pconfig['nbthread'],
+		['min' => 0]
+	))->setPlaceholder("0")->setHelp(<<<EOD
+		Sets the number of threads used by haproxy.
+		Defaults to 0 if left blank, in which case haproxy will automatically detect the number of threads to use ({$cpucores} CPU core(s) detected).
 EOD
 	);
 }
@@ -421,12 +429,13 @@ $section->add(group_input_with_text(
 	$pconfig['ssldefaultdhparam'],
 	['min' => 256, 'max' => 102400],
 	"EXAMPLE: 2048"
-))->setHelp(<<<EOD
+))->addClass('ssldhparamrow')->setHelp(<<<EOD
 	Sets the maximum size of the Diffie-Hellman parameters used for generating
 	the ephemeral/temporary Diffie-Hellman key in case of DHE key exchange.
-	Minimum and default value is: 1024, bigger values might increase CPU usage.<br/>
-	For more information about the <b>"tune.ssl.default-dh-param"</b> option please see <b><a href='http://cbonte.github.io/haproxy-dconv/2.4/configuration.html#tune.ssl.default-dh-param' target='_blank'>HAProxy Documentation</a></b><br/>
-	NOTE: HAProxy will emit a warning when starting when this setting is used but not configured.
+	If left blank haproxy uses its built-in default, bigger values might increase CPU usage.<br/>
+	This setting is not used with the 'Modern' SSL/TLS Compatibility Mode: TLS 1.3 does not use DHE key
+	exchange, so it is ignored and left out of the generated configuration.<br/>
+	For more information about the <b>"tune.ssl.default-dh-param"</b> option please see <b><a href='http://cbonte.github.io/haproxy-dconv/2.4/configuration.html#tune.ssl.default-dh-param' target='_blank'>HAProxy Documentation</a></b>
 EOD
 );
 $form->add($section);
@@ -555,6 +564,13 @@ events.push(function() {
 	$('#btnadvopts').click(function(event) {
 		hideClass('haproxycfg', false);
 	});
+
+	// DH parameters are not used with TLS 1.3 only (Modern), hide the setting there.
+	function update_dhparam_visibility() {
+		hideClass('ssldhparamrow', $('#sslcompatibilitymode').val() == 'modern');
+	}
+	$('#sslcompatibilitymode').on('change', update_dhparam_visibility);
+	update_dhparam_visibility();
 });
 </script>
 <?php
