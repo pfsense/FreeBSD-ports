@@ -1,0 +1,10 @@
+/etc/inc/priv/chrony.priv.inc
+pkg/chrony.xml
+pkg/chrony.inc
+%%DATADIR%%/info.xml
+www/chrony.php
+www/chrony_edit.php
+www/status_chrony.php
+www/shortcuts/pkg_chrony.inc
+@dir /etc/inc/priv
+@dir /etc/inc

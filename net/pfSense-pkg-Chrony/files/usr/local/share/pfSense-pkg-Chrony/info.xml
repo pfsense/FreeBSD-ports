@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<pfsensepkgs>
+	<package>
+		<name>Chrony</name>
+		<website>https://chrony-project.org/</website>
+		<descr><![CDATA[Chrony is a modern implemention of the Network Time Protocol (NTP), which
+includes support for Network Time Sercurity (NTS).]]></descr>
+		<version>%%PKGVERSION%%</version>
+		<configurationfile>chrony.xml</configurationfile>
+	</package>
+</pfsensepkgs>
