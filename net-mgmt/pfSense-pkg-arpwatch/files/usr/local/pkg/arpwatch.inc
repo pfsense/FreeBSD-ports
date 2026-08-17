@@ -19,7 +19,7 @@
  */
 
 define('ARPWATCH_LOCAL_DIR', '/usr/local/arpwatch');
-define('ARPWATCH_ETHERCODES_URL', 'http://standards-oui.ieee.org/oui/oui.csv');
+define('ARPWATCH_ETHERCODES_URL', 'https://standards-oui.ieee.org/oui/oui.csv');
 define('ARPWATCH_SENDMAIL_PATH', '/usr/sbin/sendmail');
 define('ARPWATCH_SENDMAIL_PROXY', '/usr/local/arpwatch/sendmail_proxy.php');
 
@@ -128,9 +128,47 @@ function arpwatch_get_arp_file($ifname) {
 }
 
 function arpwatch_update_vendors($args) {
-	exec('/usr/bin/fetch -qo - '.ARPWATCH_ETHERCODES_URL.'|'
-	    .ARPWATCH_LOCAL_DIR.'/massagevendor '.$args.' >'
-	    .ARPWATCH_LOCAL_DIR.'/ethercodes.dat');
+	$oui_file = tempnam(ARPWATCH_LOCAL_DIR, 'oui.csv.');
+	$ethercodes_file = tempnam(ARPWATCH_LOCAL_DIR, 'ethercodes.dat.');
+
+	if (($oui_file === false) || ($ethercodes_file === false)) {
+		log_error(gettext('Arpwatch could not create temporary files for the vendor database update.'));
+		if ($oui_file !== false) {
+			@unlink($oui_file);
+		}
+		if ($ethercodes_file !== false) {
+			@unlink($ethercodes_file);
+		}
+		return false;
+	}
+
+	if (!download_file(ARPWATCH_ETHERCODES_URL, $oui_file, true, 15, 120)) {
+		@unlink($oui_file);
+		@unlink($ethercodes_file);
+		return false;
+	}
+
+	$command = escapeshellarg(ARPWATCH_LOCAL_DIR.'/massagevendor')
+	    .' '.escapeshellarg($args)
+	    .' < '.escapeshellarg($oui_file)
+	    .' > '.escapeshellarg($ethercodes_file);
+	exec($command, $output, $status);
+	@unlink($oui_file);
+
+	if (($status !== 0) || (filesize($ethercodes_file) <= 0)) {
+		log_error(gettext('Arpwatch could not process the downloaded vendor database.'));
+		@unlink($ethercodes_file);
+		return false;
+	}
+
+	chmod($ethercodes_file, 0644);
+	if (!rename($ethercodes_file, ARPWATCH_LOCAL_DIR.'/ethercodes.dat')) {
+		log_error(gettext('Arpwatch could not install the updated vendor database.'));
+		@unlink($ethercodes_file);
+		return false;
+	}
+
+	return true;
 }
 
 function arpwatch_clear_database() {
