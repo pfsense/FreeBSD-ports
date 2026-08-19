@@ -190,6 +190,7 @@ if ($currentruleset != 'custom.rules') {
 
 	// If it is the auto-flowbits file, set the full path.
 	if ($currentruleset == "Auto-Flowbit Rules") {
+		clearstatcache(true, "{$suricatacfgdir}/rules/" . FLOWBITS_FILENAME);
 		$rules_map = suricata_load_rules_map("{$suricatacfgdir}/rules/" . FLOWBITS_FILENAME);
 	}
 	// Test for the special case of an IPS Policy file
@@ -201,6 +202,7 @@ if ($currentruleset != 'custom.rules') {
 	// displays all currently active rules for the
 	// interface.
 	elseif ($currentruleset == "Active Rules") {
+		clearstatcache(true, "{$suricatacfgdir}/rules/");
 		$rules_map = suricata_load_rules_map("{$suricatacfgdir}/rules/");
 	}
 	// Test for the special cases of "User Forced" rules
@@ -248,6 +250,7 @@ if ($currentruleset != 'custom.rules') {
 	// Not a special case, and we have the matching
 	// rule file, so load it up for display.
 	else {
+		clearstatcache(true, $rulefile);
 		$rules_map = suricata_load_rules_map($rulefile);
 	}
 }
@@ -638,6 +641,7 @@ elseif (isset($_POST['resetcategory']) && !empty($rules_map)) {
 	// Test for the auto-flowbits file.
 	if ($currentruleset == "Auto-Flowbit Rules") {
 		$rulefile = "{$suricatacfgdir}/rules/" . FLOWBITS_FILENAME;
+		clearstatcache(true, $rulefile);
 		$rules_map = suricata_load_rules_map($rulefile);
 	}
 	// Test for the special case of an IPS Policy file
@@ -649,6 +653,7 @@ elseif (isset($_POST['resetcategory']) && !empty($rules_map)) {
 	// displays all currently active rules for the
 	// interface.
 	elseif ($currentruleset == "Active Rules") {
+		clearstatcache(true, "{$suricatacfgdir}/rules/");
 		$rules_map = suricata_load_rules_map("{$suricatacfgdir}/rules/");
 	}
 	// Test for the special cases of "User Forced" rules
@@ -696,6 +701,7 @@ elseif (isset($_POST['resetcategory']) && !empty($rules_map)) {
 	// Not a special case, and we have the matching
 	// rule file, so load it up for display.
 	else {
+		clearstatcache(true, $rulefile);
 		$rules_map = suricata_load_rules_map($rulefile);
 	}
 }
@@ -731,6 +737,7 @@ elseif (isset($_POST['resetall']) && !empty($rules_map)) {
 	// displays all currently active rules for the
 	// interface.
 	elseif ($currentruleset == "Active Rules") {
+		clearstatcache(true, "{$suricatacfgdir}/rules/");
 		$rules_map = suricata_load_rules_map("{$suricatacfgdir}/rules/");
 	}
 	// Test for the special cases of "User Forced" rules
@@ -778,6 +785,7 @@ elseif (isset($_POST['resetall']) && !empty($rules_map)) {
 	// Not a special case, and we have the matching
 	// rule file, so load it up for display.
 	else {
+		clearstatcache(true, $rulefile);
 		$rules_map = suricata_load_rules_map($rulefile);
 	}
 }
