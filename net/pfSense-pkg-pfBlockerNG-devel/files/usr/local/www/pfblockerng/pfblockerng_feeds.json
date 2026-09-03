@@ -556,7 +556,7 @@
 				{
 					"feed":		"Maltrail",
 					"website":	"https://github.com/stamparm/maltrail",
-					"url":		"https://raw.githubusercontent.com/stamparm/maltrail/master/trails/static/mass_scanner.txt",
+					"url":		"https://raw.githubusercontent.com/stamparm/maltrail/refs/heads/master/data/mass_scanner.txt",
 					"header":	"Maltrail_Scanners_All"
 				}
 			]
@@ -1330,7 +1330,7 @@
 				{
 					"feed":		"Maltrail",
 					"website":	"https://github.com/stamparm/maltrail",
-					"url":		"https://raw.githubusercontent.com/stamparm/aux/master/maltrail-malware-domains.txt",
+					"url":		"https://github.com/stamparm/trails/releases/latest/download/maltrail-malware-domains.txt",
 					"header":	"Maltrail_BD"
 				},
 				{
