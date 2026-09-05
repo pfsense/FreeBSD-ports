@@ -135,6 +135,19 @@
 			<source_value>value</source_value>
 		</field>
 		<field>
+			<fielddescr>Listen Range</fielddescr>
+			<fieldname>listenrange</fieldname>
+			<description>
+				<![CDATA[
+				When defining a Peer Group, optionally enter one or more subnets in CIDR notation, separated by commas.
+				<br />
+				Neighbors that connect from these subnets are added to the group dynamically.
+				]]>
+			</description>
+			<type>input</type>
+			<size>50</size>
+		</field>
+		<field>
 			<fielddescr>Password</fielddescr>
 			<fieldname>password</fieldname>
 			<description>Password for this BGP Neighbor</description>

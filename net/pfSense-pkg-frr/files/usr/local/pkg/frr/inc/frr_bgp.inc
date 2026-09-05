@@ -486,6 +486,28 @@ function frr_bgp_generate_neighbors() {
 			$nconf .= " neighbor {$neighbor['peer']} remote-as {$neighbor['asnum']}\n";
 		}
 
+		/* Dynamic neighbors are only accepted for a group that is active
+		 * in the address family of the listen range. */
+		if (($ntype == "group") && !empty($neighbor['listenrange'])) {
+			foreach (explode(',', $neighbor['listenrange']) as $range) {
+				$range = trim($range);
+				if (!is_subnet($range)) {
+					continue;
+				}
+				$nconf .= " bgp listen range {$range} peer-group {$neighbor['peer']}\n";
+				if (is_subnetv6($range)) {
+					$nei_af_flag["ipv6 unicast"] = true;
+				} else {
+					$nei_af_flag["ipv4 unicast"] = true;
+				}
+			}
+			foreach (PKG_FRR_BGP_ADDRESS_FAMILIES as $af) {
+				if ($nei_af_flag[$af]) {
+					$frr_bgp_config_address_family["{$af}-pre"] .= "  neighbor {$neighbor['peer']} activate\n";
+				}
+			}
+		}
+
 		if (!empty($neighbor['descr'])) {
 			$neighbor['descr'] = substr($neighbor['descr'], 0, 80);
 			$nconf .= " neighbor {$neighbor['peer']} description {$neighbor['descr']}\n";

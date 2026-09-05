@@ -646,6 +646,18 @@ function frr_bgp_advanced_validate_input() {
 
 function frr_bgp_neighbors_validate_input() {
 	global $input_errors;
+
+	if (!empty($_POST['listenrange'])) {
+		if (is_ipaddr($_POST['peer'])) {
+			$input_errors[] = "Listen Range can only be set on a Peer Group.";
+		}
+		foreach (explode(',', $_POST['listenrange']) as $range) {
+			if (!is_subnet(trim($range))) {
+				$input_errors[] = "Listen Range must be a comma-separated list of subnets in CIDR notation.";
+				break;
+			}
+		}
+	}
 }
 
 function frr_bgp_aspaths_validate_input() {
