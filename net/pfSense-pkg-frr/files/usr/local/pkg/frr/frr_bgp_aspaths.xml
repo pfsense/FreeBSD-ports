@@ -44,6 +44,10 @@
 			<url>pkg.php?xml=frr/frr_bgp_neighbors.xml</url>
 		</tab>
 		<tab>
+			<text>Listen Ranges</text>
+			<url>pkg.php?xml=frr/frr_bgp_listen_ranges.xml</url>
+		</tab>
+		<tab>
 			<text>AS Paths</text>
 			<url>pkg.php?xml=frr/frr_bgp_aspaths.xml</url>
 			<active/>

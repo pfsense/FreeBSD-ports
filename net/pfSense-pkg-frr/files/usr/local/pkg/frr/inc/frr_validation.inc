@@ -648,6 +648,19 @@ function frr_bgp_neighbors_validate_input() {
 	global $input_errors;
 }
 
+function frr_bgp_listen_ranges_validate_input() {
+	global $input_errors;
+
+	if (empty($_POST['prefix']) || !is_subnet($_POST['prefix'])) {
+		$input_errors[] = "Prefix must be a valid IPv4 or IPv6 subnet in CIDR notation.";
+	}
+
+	$peergroups = frr_get_list_values(frr_get_bgp_neighbor_list(true, false, false));
+	if (empty($_POST['peergroup']) || !in_array($_POST['peergroup'], $peergroups, true)) {
+		$input_errors[] = "Peer Group must be an existing non-IP BGP neighbor (peer-group).";
+	}
+}
+
 function frr_bgp_aspaths_validate_input() {
 	global $input_errors, $pkg;
 	frr_sort_rows_by_seq();

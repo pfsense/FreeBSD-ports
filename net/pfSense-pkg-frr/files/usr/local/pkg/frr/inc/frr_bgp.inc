@@ -458,6 +458,24 @@ function frr_bgp_generate_neighbors() {
 		if (!is_ipaddr($neighbor['peer']) && frr_validate_word($neighbor['peer'])) {
 			$ntype = "group";
 			$nconf .= " neighbor {$neighbor['peer']} peer-group\n";
+			/*
+			 * Peer-groups must be activated under an address-family or their
+			 * AF options (and dynamic neighbors from listen ranges) are ignored.
+			 * Address-family generation also skips empty *-pre sections.
+			 */
+			if (!empty($neighbor['bothaf'])) {
+				$frr_bgp_config_address_family["ipv4 unicast-pre"] .= "  neighbor {$neighbor['peer']} activate\n";
+				$nei_af_flag["ipv4 unicast"] = true;
+				$frr_bgp_config_address_family["ipv6 unicast-pre"] .= "  neighbor {$neighbor['peer']} activate\n";
+				$nei_af_flag["ipv6 unicast"] = true;
+			} elseif (!empty($neighbor['updatesource_type']) &&
+			    ($neighbor['updatesource_type'] == 'ipv6')) {
+				$frr_bgp_config_address_family["ipv6 unicast-pre"] .= "  neighbor {$neighbor['peer']} activate\n";
+				$nei_af_flag["ipv6 unicast"] = true;
+			} else {
+				$frr_bgp_config_address_family["ipv4 unicast-pre"] .= "  neighbor {$neighbor['peer']} activate\n";
+				$nei_af_flag["ipv4 unicast"] = true;
+			}
 		} elseif (is_ipaddr($neighbor['peer'])) {
 			if (!empty($neighbor['peergroup']) &&
 				($neighbor['peergroup'] != 'none') &&
@@ -627,8 +645,8 @@ function frr_bgp_generate_neighbors() {
 
 		/* Address family neighbor configuration items */
 		foreach(PKG_FRR_BGP_ADDRESS_FAMILIES as $af) {
-			/* Check if neighbor is enabled for the current address family */
-			if (!($nei_af_flag[$af]) && ($ntype == 'peer')) {
+			/* Check if neighbor/peer-group is enabled for the current address family */
+			if (!($nei_af_flag[$af])) {
 				continue;
 			}
 
@@ -794,6 +812,20 @@ function frr_bgp_generate_neighbors() {
 				$frr_bgp_config_address_family[$af] .= "  neighbor {$neighbor['peer']} route-server-client\n";
 			}
 		}
+	}
+
+	/* Dynamic neighbors: bgp listen range <CIDR> peer-group <NAME> */
+	foreach (config_get_path('installedpackages/frrbgplistenranges/config', []) as $lr) {
+		if (empty($lr['prefix']) || empty($lr['peergroup'])) {
+			continue;
+		}
+		if (!is_subnet($lr['prefix'])) {
+			continue;
+		}
+		if (!in_array($lr['peergroup'], frr_get_list_values(frr_get_bgp_neighbor_list(true, false, false)))) {
+			continue;
+		}
+		$nconf .= " bgp listen range {$lr['prefix']} peer-group {$lr['peergroup']}\n";
 	}
 
 	$nconf .= " !\n";
