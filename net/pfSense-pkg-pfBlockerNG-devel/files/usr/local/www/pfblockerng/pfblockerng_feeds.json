@@ -305,6 +305,14 @@
 			"cron":		"01hour",
 			"feeds": [
 				{
+					"feed":		"AbuseTrack",
+					"website":	"https://abusetrack.io",
+					"contact":	"https://abusetrack.io/legal/imprint",
+					"url":		"https://abusetrack.io/api/v1/blocklist.txt?comments=0",
+					"delist":	"https://abusetrack.io/delist",
+					"header":	"AbuseTrack"
+				},
+				{
 					"feed":		"AZORult Tracker",
 					"website":	"https://azorult-tracker.net/about",
 					"url":		"https://azorult-tracker.net/api/list/ip?format=plain",
