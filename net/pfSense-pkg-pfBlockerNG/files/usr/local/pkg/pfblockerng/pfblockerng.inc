@@ -8147,6 +8147,7 @@ function sync_package_pfblockerng($cron='') {
 				$pfb['aliasupdate']	= FALSE;		// Flag to signal changes to alias
 				$pfb['domain_clear']	= FALSE;		// Flag to signal no Aliases defined or all Aliases disabled.
 				$alias_cnt		= 0;
+				$srcint                 = $list['srcint'] ?: FALSE; // cURL Source Interface (sets CURLOPT_INTERFACE)
 
 				if ($list['action'] != 'Disabled' && isset($list['row'])) {
 					$alias				= "DNSBL_{$list['aliasname']}";
