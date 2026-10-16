@@ -489,14 +489,23 @@ function tailscale_map_and_write_rcconf($var_map, $output_file)
 
 	$var_string = implode(' ', array_values($formatted_vars));
 
+	/*
+	 * $var_string carries secrets (e.g. the auth key), so keep mwexec from logging the
+	 * command line on a non-zero exit, which sysrc -c returns whenever changes are pending
+	 */
+
 	# first perform sanity check
 	$cmd = implode(' ', [SYSRC_BIN, '-c', '-f', $output_file, $var_string]);
-	if (mwexec($cmd) === 0)
+	if (mwexec($cmd, true) === 0)
 		return false;
 
 	# looks good, changes needed so write them out
 	$cmd = implode(' ', [SYSRC_BIN, '-f', $output_file, $var_string]);
-	return (mwexec($cmd) === 0);
+	if (mwexec($cmd, true) === 0)
+		return true;
+
+	log_error(sprintf(gettext('Tailscale: unable to write %s'), $output_file));
+	return false;
 }
 
 /*

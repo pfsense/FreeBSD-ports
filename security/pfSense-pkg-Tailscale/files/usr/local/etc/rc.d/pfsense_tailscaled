@@ -36,11 +36,8 @@ load_rc_config $name
 # source the tailscaled rc configuration too
 load_rc_config tailscaled
 
-# handle the --auth-key parameter
-pfsense_tailscaled_up_flags="--auth-key=${pfsense_tailscaled_authkey}"
-
-# handle the --login-server parameter
-pfsense_tailscaled_up_flags="${pfsense_tailscaled_up_flags} --login-server=${pfsense_tailscaled_loginserver}"
+# handle the --login-server parameter (--auth-key is added in tailscale_up so it never reaches the logs)
+pfsense_tailscaled_up_flags="--login-server=${pfsense_tailscaled_loginserver}"
 
 # handle the --advertise-exit-node parameter
 if checkyesno pfsense_tailscaled_exitnode_enable; then
@@ -87,6 +84,7 @@ tailscale_tun_dev_group="Tailscale"
 tailscale_bin="/usr/local/bin/tailscale"
 tailscaled_rcfile="/usr/local/etc/rc.d/tailscaled"
 tailscale_tun_dev_wait=5
+tailscale_backend_state_wait=10
 
 # useful bits
 tailscaled_state_file="tailscaled.state"
@@ -135,10 +133,47 @@ pfsense_tailscaled_clean() {
 
 # bring up tailscale using the generated up flags from the configuration
 tailscale_up() {
-	logger -s -t tailscale "Bringing up ${tailscale_tun_dev} with ${pfsense_tailscaled_up_flags}"
-	${tailscale_bin} up ${pfsense_tailscaled_up_flags} || {
-		logger -s -t "Unable to bring up ${tailscale_tun_dev}. Check authentication."
+	local _auth_flags=""
+	local _auth_note=""
+
+	# Only hand over the auth key when the node actually needs to log in. Control rejects a
+	# register request carrying an expired auth key even if the node key is still valid,
+	# which logs the node out on restart (https://github.com/tailscale/tailscale/issues/16987).
+	# GUI auth key changes purge the state first, so they still land here as NeedsLogin.
+	if [ -n "${pfsense_tailscaled_authkey}" ]; then
+		case "$(tailscale_backend_state ${tailscale_backend_state_wait})" in
+		NeedsLogin|NoState|"")
+			_auth_flags="--auth-key=${pfsense_tailscaled_authkey}"
+			_auth_note=" (using configured auth key)"
+			;;
+		esac
+	fi
+
+	logger -s -t tailscale "Bringing up ${tailscale_tun_dev}${_auth_note} with ${pfsense_tailscaled_up_flags}"
+	${tailscale_bin} up ${_auth_flags} ${pfsense_tailscaled_up_flags} || {
+		logger -s -t tailscale "Unable to bring up ${tailscale_tun_dev}. Check authentication."
 	}
+}
+
+# print the tailscaled backend state, waiting for it to settle past NoState after a fresh start
+tailscale_backend_state() {
+	local _maxwaited="${1}"
+	local _state=""
+	local _waited=0
+
+	while :; do
+		_state=$(${tailscale_bin} status --json 2>/dev/null | \
+			/usr/bin/sed -n 's/^.*"BackendState": *"\([A-Za-z]*\)".*$/\1/p' | /usr/bin/head -n 1)
+		case "${_state}" in
+		NoState|"") ;;
+		*) break ;;
+		esac
+		[ ${_waited} -ge ${_maxwaited} ] && break
+		sleep 1
+		_waited=$((_waited+1))
+	done
+
+	echo "${_state}"
 }
 
 # utility function to check if a kernel module is loaded and load it if not loaded
