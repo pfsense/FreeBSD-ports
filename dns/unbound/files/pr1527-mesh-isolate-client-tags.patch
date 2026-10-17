@@ -1,0 +1,706 @@
+Add the mesh-isolate-client-tags server option.
+
+Backport of NLnetLabs/unbound#1527 (https://github.com/NLnetLabs/unbound/pull/1527,
+head d00bed1b441d426195ddbb3560ff8efa95d3ca16) to unbound 1.24.2. Off by default:
+with "mesh-isolate-client-tags: yes", clients whose access-control (or interface)
+elements carry different tags or views never share an in-flight query state, for
+every query type. Same-tag clients still share one.
+
+--- a/daemon/remote.c
++++ b/daemon/remote.c
+@@ -6005,6 +6005,7 @@
+ 	COPY_VAR_int(serve_expired_reply_ttl);
+ 	COPY_VAR_int(serve_expired_client_timeout);
+ 	COPY_VAR_int(ede_serve_expired);
++	COPY_VAR_int(mesh_isolate_client_tags);
+ 	COPY_VAR_int(dns_error_reporting);
+ 	COPY_VAR_int(serve_original_ttl);
+ 	COPY_VAR_ptr(val_nsec3_key_iterations);
+--- a/daemon/worker.c
++++ b/daemon/worker.c
+@@ -1883,11 +1883,16 @@
+ 
+ 	/* If we may apply IP-based actions to the answer, build the client
+ 	 * information.  As this can be expensive, skip it if there is
+-	 * absolutely no possibility of it. */
+-	if((worker->daemon->use_response_ip || worker->daemon->use_rpz) &&
++	 * absolutely no possibility of it.  With mesh-isolate-client-tags,
++	 * build it for every query type when the client has tags or a view,
++	 * so that clients with different tags or views do not share a
++	 * mesh state. */
++	if(((worker->daemon->use_response_ip || worker->daemon->use_rpz) &&
+ 		(qinfo.qtype == LDNS_RR_TYPE_A ||
+ 		qinfo.qtype == LDNS_RR_TYPE_AAAA ||
+-		qinfo.qtype == LDNS_RR_TYPE_ANY)) {
++		qinfo.qtype == LDNS_RR_TYPE_ANY)) ||
++		(worker->env.cfg->mesh_isolate_client_tags &&
++		(acladdr->taglist || acladdr->view))) {
+ 		cinfo_tmp.taglist = acladdr->taglist;
+ 		cinfo_tmp.taglen = acladdr->taglen;
+ 		cinfo_tmp.tag_actions = acladdr->tag_actions;
+--- a/doc/example.conf.in
++++ b/doc/example.conf.in
+@@ -419,6 +419,12 @@
+ 	# settings for targeted clients.
+ 	# interface-view: eth0@5003 viewname
+ 
++	# Share in-flight resolution of a query only between clients with the
++	# same tags, tag actions, tag data and view (access-control-*, or
++	# interface-* if no access-control element matches), for every
++	# query type.
++	# mesh-isolate-client-tags: no
++
+ 	# if given, a chroot(2) is done to the given directory.
+ 	# i.e. you can chroot to the working directory, for example,
+ 	# for extra security, but make sure all files are in that directory.
+--- a/doc/unbound.conf.5.in
++++ b/doc/unbound.conf.5.in
+@@ -1653,6 +1653,40 @@
+ .UNINDENT
+ .INDENT 0.0
+ .TP
++.B mesh\-isolate\-client\-tags: \fI<yes or no>\fP 
++If enabled, a client query shares its in\-flight resolution with the
++same query from another client, for every query type, only if both
++clients have the same tags, tag actions, tag data and view.
++Tag data counts as the same only within one access control element, so
++clients of different elements that have tag data never share.
++The tags, tag actions, tag data and view of a client come from its
++\fI\%access\-control\fP element
++(\fI\%access\-control\-tag\fP,
++\fI\%access\-control\-tag\-action\fP,
++\fI\%access\-control\-tag\-data\fP and
++\fI\%access\-control\-view\fP).
++Only if no access control element matches the client, they come from
++the \fBinterface\-*:\fP options of the interface, such as
++\fI\%interface\-tag\fP and
++\fI\%interface\-view\fP\&.
++For example, localhost clients always match the default 127.0.0.0/8
++access control element.
++Without this option, tags and views keep resolutions apart only for A,
++AAAA and ANY queries, and only when response\-ip or RPZ is used.
++.sp
++With this option, an RPZ zone restricted with
++\fI\%tags\fP also applies its nsdname, nsip and
++CNAME target triggers to tagged clients for queries of every type, not
++only for A, AAAA and ANY queries.
++This happens when the query is resolved; answers from the cache are not
++affected.
++.sp
++The message and RRset caches are not separated by tags or views.
++.sp
++Default: no
++.UNINDENT
++.INDENT 0.0
++.TP
+ .B chroot: \fI<directory>\fP 
+ If \fI\%chroot\fP is enabled, you should pass the
+ configfile (from the commandline) as a full path from the original root.
+--- a/doc/unbound.conf.rst
++++ b/doc/unbound.conf.rst
+@@ -1471,6 +1471,39 @@
+         attributes for targeted clients.
+ 
+ 
++@@UAHL@unbound.conf@mesh-isolate-client-tags@@: *<yes or no>*
++    If enabled, a client query shares its in-flight resolution with the
++    same query from another client, for every query type, only if both
++    clients have the same tags, tag actions, tag data and view.
++    Tag data counts as the same only within one access control element, so
++    clients of different elements that have tag data never share.
++    The tags, tag actions, tag data and view of a client come from its
++    :ref:`access-control<unbound.conf.access-control>` element
++    (:ref:`access-control-tag<unbound.conf.access-control-tag>`,
++    :ref:`access-control-tag-action<unbound.conf.access-control-tag-action>`,
++    :ref:`access-control-tag-data<unbound.conf.access-control-tag-data>` and
++    :ref:`access-control-view<unbound.conf.access-control-view>`).
++    Only if no access control element matches the client, they come from
++    the **interface-\*:** options of the interface, such as
++    :ref:`interface-tag<unbound.conf.interface-tag>` and
++    :ref:`interface-view<unbound.conf.interface-view>`.
++    For example, localhost clients always match the default 127.0.0.0/8
++    access control element.
++    Without this option, tags and views keep resolutions apart only for A,
++    AAAA and ANY queries, and only when response-ip or RPZ is used.
++
++    With this option, an RPZ zone restricted with
++    :ref:`tags<unbound.conf.rpz.tags>` also applies its nsdname, nsip and
++    CNAME target triggers to tagged clients for queries of every type, not
++    only for A, AAAA and ANY queries.
++    This happens when the query is resolved; answers from the cache are not
++    affected.
++
++    The message and RRset caches are not separated by tags or views.
++
++    Default: no
++
++
+ @@UAHL@unbound.conf@chroot@@: *<directory>*
+     If :ref:`chroot<unbound.conf.chroot>` is enabled, you should pass the
+     configfile (from the commandline) as a full path from the original root.
+--- a/testdata/mesh_isolate_client_tags.rpl
++++ b/testdata/mesh_isolate_client_tags.rpl
+@@ -0,0 +1,231 @@
++; config options
++server:
++	module-config: "respip iterator"
++	target-fetch-policy: "0 0 0 0 0"
++	qname-minimisation: no
++	mesh-isolate-client-tags: yes
++	access-control: 192.0.0.0/8 allow
++	access-control: 193.0.0.0/8 allow
++	access-control: 194.0.0.0/8 allow
++	define-tag: "blocked"
++	access-control-tag: 192.0.0.0/8 "blocked"
++	access-control-view: 194.0.0.0/8 "v"
++	; 193.0.0.0/8 has no tags and no view
++
++view:
++	name: "v"
++
++rpz:
++	name: "rpz.example.com."
++	tags: "blocked"
++	zonefile:
++TEMPFILE_NAME rpz.example.com
++TEMPFILE_CONTENTS rpz.example.com
++$ORIGIN example.com.
++rpz	3600	IN	SOA	ns1.rpz.example.com. hostmaster.rpz.example.com. (
++		1379078166 28800 7200 604800 7200 )
++	3600	IN	NS	ns1.rpz.example.com.
++	3600	IN	NS	ns2.rpz.example.com.
++$ORIGIN rpz.example.com.
++; server for a.
++32.40.30.20.10.rpz-nsip CNAME .
++TEMPFILE_END
++
++stub-zone:
++	name: "a."
++	stub-addr: 10.20.30.40
++stub-zone:
++	name: "b."
++	stub-addr: 10.20.30.50
++CONFIG_END
++
++SCENARIO_BEGIN Test mesh-isolate-client-tags: no mesh state sharing across tags or views
++
++; An untagged client asks a TXT query, it is in flight. A client tagged
++; "blocked" asks the same query. It must not attach to the untagged state:
++; the tagged RPZ nsip trigger answers it, and the untagged client gets
++; the upstream answer.
++STEP 10 QUERY ADDRESS 193.0.0.1
++ENTRY_BEGIN
++REPLY RD
++SECTION QUESTION
++www.a.	IN	TXT
++ENTRY_END
++
++STEP 20 QUERY ADDRESS 192.0.0.1
++ENTRY_BEGIN
++REPLY RD
++SECTION QUESTION
++www.a.	IN	TXT
++ENTRY_END
++
++; This also checks that the tag-restricted RPZ zone now applies to the
++; tagged client for a TXT query. Without the option, the client info is not
++; built for TXT, so the zone is skipped and the client attaches to the
++; untagged state.
++STEP 30 CHECK_ANSWER ADDRESS 192.0.0.1
++ENTRY_BEGIN
++MATCH all
++REPLY QR AA RD RA NXDOMAIN
++SECTION QUESTION
++www.a.	IN	TXT
++SECTION ANSWER
++ENTRY_END
++
++STEP 40 CHECK_OUT_QUERY
++ENTRY_BEGIN
++MATCH qname qtype opcode
++SECTION QUESTION
++www.a.	IN	TXT
++ENTRY_END
++
++STEP 50 REPLY
++ENTRY_BEGIN
++MATCH opcode qtype qname
++ADJUST copy_id
++REPLY QR AA NOERROR
++SECTION QUESTION
++www.a.	IN	TXT
++SECTION ANSWER
++www.a.	IN	TXT "upstream"
++ENTRY_END
++
++STEP 60 CHECK_ANSWER ADDRESS 193.0.0.1
++ENTRY_BEGIN
++MATCH all
++REPLY QR RD RA NOERROR
++SECTION QUESTION
++www.a.	IN	TXT
++SECTION ANSWER
++www.a.	IN	TXT "upstream"
++ENTRY_END
++
++; Two clients with the same tags still share one state: a single upstream
++; query answers both. A second state would leave a query pending.
++STEP 110 QUERY ADDRESS 192.0.0.1
++ENTRY_BEGIN
++REPLY RD
++SECTION QUESTION
++www.b.	IN	TXT
++ENTRY_END
++
++STEP 120 QUERY ADDRESS 192.0.0.2
++ENTRY_BEGIN
++REPLY RD
++SECTION QUESTION
++www.b.	IN	TXT
++ENTRY_END
++
++STEP 130 CHECK_OUT_QUERY
++ENTRY_BEGIN
++MATCH qname qtype opcode
++SECTION QUESTION
++www.b.	IN	TXT
++ENTRY_END
++
++STEP 140 REPLY
++ENTRY_BEGIN
++MATCH opcode qtype qname
++ADJUST copy_id
++REPLY QR AA NOERROR
++SECTION QUESTION
++www.b.	IN	TXT
++SECTION ANSWER
++www.b.	IN	TXT "same tags"
++ENTRY_END
++
++STEP 150 CHECK_ANSWER ADDRESS 192.0.0.1
++ENTRY_BEGIN
++MATCH all
++REPLY QR RD RA NOERROR
++SECTION QUESTION
++www.b.	IN	TXT
++SECTION ANSWER
++www.b.	IN	TXT "same tags"
++ENTRY_END
++
++STEP 160 CHECK_ANSWER ADDRESS 192.0.0.2
++ENTRY_BEGIN
++MATCH all
++REPLY QR RD RA NOERROR
++SECTION QUESTION
++www.b.	IN	TXT
++SECTION ANSWER
++www.b.	IN	TXT "same tags"
++ENTRY_END
++
++; A client with a view does not share a state with an untagged client:
++; the two states show here as two upstream queries, because testbound does
++; not merge identical outbound queries. Unbound itself sends one query for
++; both states.
++STEP 210 QUERY ADDRESS 193.0.0.1
++ENTRY_BEGIN
++REPLY RD
++SECTION QUESTION
++www2.b.	IN	TXT
++ENTRY_END
++
++STEP 220 QUERY ADDRESS 194.0.0.1
++ENTRY_BEGIN
++REPLY RD
++SECTION QUESTION
++www2.b.	IN	TXT
++ENTRY_END
++
++STEP 230 CHECK_OUT_QUERY
++ENTRY_BEGIN
++MATCH qname qtype opcode
++SECTION QUESTION
++www2.b.	IN	TXT
++ENTRY_END
++
++STEP 240 REPLY
++ENTRY_BEGIN
++MATCH opcode qtype qname
++ADJUST copy_id
++REPLY QR AA NOERROR
++SECTION QUESTION
++www2.b.	IN	TXT
++SECTION ANSWER
++www2.b.	IN	TXT "per state"
++ENTRY_END
++
++STEP 250 CHECK_OUT_QUERY
++ENTRY_BEGIN
++MATCH qname qtype opcode
++SECTION QUESTION
++www2.b.	IN	TXT
++ENTRY_END
++
++STEP 260 REPLY
++ENTRY_BEGIN
++MATCH opcode qtype qname
++ADJUST copy_id
++REPLY QR AA NOERROR
++SECTION QUESTION
++www2.b.	IN	TXT
++SECTION ANSWER
++www2.b.	IN	TXT "per state"
++ENTRY_END
++
++STEP 270 CHECK_ANSWER ADDRESS 193.0.0.1
++ENTRY_BEGIN
++MATCH all
++REPLY QR RD RA NOERROR
++SECTION QUESTION
++www2.b.	IN	TXT
++SECTION ANSWER
++www2.b.	IN	TXT "per state"
++ENTRY_END
++
++STEP 280 CHECK_ANSWER ADDRESS 194.0.0.1
++ENTRY_BEGIN
++MATCH all
++REPLY QR RD RA NOERROR
++SECTION QUESTION
++www2.b.	IN	TXT
++SECTION ANSWER
++www2.b.	IN	TXT "per state"
++ENTRY_END
++
++SCENARIO_END
+--- a/testdata/mesh_isolate_client_tags_norpz.rpl
++++ b/testdata/mesh_isolate_client_tags_norpz.rpl
+@@ -0,0 +1,247 @@
++; config options
++server:
++	module-config: "iterator"
++	target-fetch-policy: "0 0 0 0 0"
++	qname-minimisation: no
++	prefetch: yes
++	mesh-isolate-client-tags: yes
++	access-control: 192.0.0.0/8 allow
++	access-control: 193.0.0.0/8 allow
++	define-tag: "tagged"
++	access-control-tag: 192.0.0.0/8 "tagged"
++	; 193.0.0.0/8 has no tags and no view
++
++stub-zone:
++	name: "a."
++	stub-addr: 10.20.30.40
++CONFIG_END
++
++SCENARIO_BEGIN Test mesh-isolate-client-tags without RPZ or response-ip
++
++; A tagged and an untagged client ask the same TXT query while it is in
++; flight. They do not share a state, even though no RPZ or response-ip is
++; configured. The two states show here as two upstream queries, because
++; testbound does not merge identical outbound queries. Unbound itself sends
++; one query for both states.
++STEP 10 QUERY ADDRESS 193.0.0.1
++ENTRY_BEGIN
++REPLY RD
++SECTION QUESTION
++www.a.	IN	TXT
++ENTRY_END
++
++STEP 20 QUERY ADDRESS 192.0.0.1
++ENTRY_BEGIN
++REPLY RD
++SECTION QUESTION
++www.a.	IN	TXT
++ENTRY_END
++
++STEP 30 CHECK_OUT_QUERY
++ENTRY_BEGIN
++MATCH qname qtype opcode
++SECTION QUESTION
++www.a.	IN	TXT
++ENTRY_END
++
++STEP 40 REPLY
++ENTRY_BEGIN
++MATCH opcode qtype qname
++ADJUST copy_id
++REPLY QR AA NOERROR
++SECTION QUESTION
++www.a.	IN	TXT
++SECTION ANSWER
++www.a.	IN	TXT "upstream"
++ENTRY_END
++
++STEP 50 CHECK_OUT_QUERY
++ENTRY_BEGIN
++MATCH qname qtype opcode
++SECTION QUESTION
++www.a.	IN	TXT
++ENTRY_END
++
++STEP 60 REPLY
++ENTRY_BEGIN
++MATCH opcode qtype qname
++ADJUST copy_id
++REPLY QR AA NOERROR
++SECTION QUESTION
++www.a.	IN	TXT
++SECTION ANSWER
++www.a.	IN	TXT "upstream"
++ENTRY_END
++
++STEP 70 CHECK_ANSWER ADDRESS 193.0.0.1
++ENTRY_BEGIN
++MATCH all
++REPLY QR RD RA NOERROR
++SECTION QUESTION
++www.a.	IN	TXT
++SECTION ANSWER
++www.a.	IN	TXT "upstream"
++ENTRY_END
++
++STEP 80 CHECK_ANSWER ADDRESS 192.0.0.1
++ENTRY_BEGIN
++MATCH all
++REPLY QR RD RA NOERROR
++SECTION QUESTION
++www.a.	IN	TXT
++SECTION ANSWER
++www.a.	IN	TXT "upstream"
++ENTRY_END
++
++; Two untagged clients still share one state: a single upstream query
++; answers both. A second state would leave a query pending.
++STEP 110 QUERY ADDRESS 193.0.0.1
++ENTRY_BEGIN
++REPLY RD
++SECTION QUESTION
++www2.a.	IN	TXT
++ENTRY_END
++
++STEP 120 QUERY ADDRESS 193.0.0.2
++ENTRY_BEGIN
++REPLY RD
++SECTION QUESTION
++www2.a.	IN	TXT
++ENTRY_END
++
++STEP 130 CHECK_OUT_QUERY
++ENTRY_BEGIN
++MATCH qname qtype opcode
++SECTION QUESTION
++www2.a.	IN	TXT
++ENTRY_END
++
++STEP 140 REPLY
++ENTRY_BEGIN
++MATCH opcode qtype qname
++ADJUST copy_id
++REPLY QR AA NOERROR
++SECTION QUESTION
++www2.a.	IN	TXT
++SECTION ANSWER
++www2.a.	IN	TXT "shared"
++ENTRY_END
++
++STEP 150 CHECK_ANSWER ADDRESS 193.0.0.1
++ENTRY_BEGIN
++MATCH all
++REPLY QR RD RA NOERROR
++SECTION QUESTION
++www2.a.	IN	TXT
++SECTION ANSWER
++www2.a.	IN	TXT "shared"
++ENTRY_END
++
++STEP 160 CHECK_ANSWER ADDRESS 193.0.0.2
++ENTRY_BEGIN
++MATCH all
++REPLY QR RD RA NOERROR
++SECTION QUESTION
++www2.a.	IN	TXT
++SECTION ANSWER
++www2.a.	IN	TXT "shared"
++ENTRY_END
++
++; An untagged client keeps no client info, so it still shares the state of
++; an internal query that has none, here a prefetch. If the client had its
++; own state, the prefetch query would stay pending.
++STEP 210 QUERY ADDRESS 193.0.0.1
++ENTRY_BEGIN
++REPLY RD
++SECTION QUESTION
++www3.a.	IN	TXT
++ENTRY_END
++
++STEP 220 CHECK_OUT_QUERY
++ENTRY_BEGIN
++MATCH qname qtype opcode
++SECTION QUESTION
++www3.a.	IN	TXT
++ENTRY_END
++
++STEP 230 REPLY
++ENTRY_BEGIN
++MATCH opcode qtype qname
++ADJUST copy_id
++REPLY QR AA NOERROR
++SECTION QUESTION
++www3.a.	IN	TXT
++SECTION ANSWER
++www3.a.	100	IN	TXT	"first"
++ENTRY_END
++
++STEP 240 CHECK_ANSWER ADDRESS 193.0.0.1
++ENTRY_BEGIN
++MATCH all
++REPLY QR RD RA NOERROR
++SECTION QUESTION
++www3.a.	IN	TXT
++SECTION ANSWER
++www3.a.	IN	TXT	"first"
++ENTRY_END
++
++; Within the last 10% of the TTL, a cache answer starts a prefetch.
++STEP 250 TIME_PASSES ELAPSE 95
++
++STEP 260 QUERY ADDRESS 193.0.0.1
++ENTRY_BEGIN
++REPLY RD
++SECTION QUESTION
++www3.a.	IN	TXT
++ENTRY_END
++
++STEP 270 CHECK_ANSWER ADDRESS 193.0.0.1
++ENTRY_BEGIN
++MATCH all
++REPLY QR RD RA NOERROR
++SECTION QUESTION
++www3.a.	IN	TXT
++SECTION ANSWER
++www3.a.	IN	TXT	"first"
++ENTRY_END
++
++STEP 280 CHECK_OUT_QUERY
++ENTRY_BEGIN
++MATCH qname qtype opcode
++SECTION QUESTION
++www3.a.	IN	TXT
++ENTRY_END
++
++; The cached answer expires while the prefetch is in flight. Another
++; untagged client asks and attaches to the prefetch state.
++STEP 290 TIME_PASSES ELAPSE 10
++
++STEP 300 QUERY ADDRESS 193.0.0.2
++ENTRY_BEGIN
++REPLY RD
++SECTION QUESTION
++www3.a.	IN	TXT
++ENTRY_END
++
++STEP 310 REPLY
++ENTRY_BEGIN
++MATCH opcode qtype qname
++ADJUST copy_id
++REPLY QR AA NOERROR
++SECTION QUESTION
++www3.a.	IN	TXT
++SECTION ANSWER
++www3.a.	100	IN	TXT	"prefetched"
++ENTRY_END
++
++STEP 320 CHECK_ANSWER ADDRESS 193.0.0.2
++ENTRY_BEGIN
++MATCH all
++REPLY QR RD RA NOERROR
++SECTION QUESTION
++www3.a.	IN	TXT
++SECTION ANSWER
++www3.a.	IN	TXT	"prefetched"
++ENTRY_END
++
++SCENARIO_END
+--- a/util/config_file.c
++++ b/util/config_file.c
+@@ -418,6 +418,7 @@
+ #endif
+ 	cfg->ede = 0;
+ 	cfg->ede_serve_expired = 0;
++	cfg->mesh_isolate_client_tags = 0;
+ 	cfg->dns_error_reporting = 0;
+ 	cfg->iter_scrub_ns = 20;
+ 	cfg->iter_scrub_cname = 11;
+@@ -763,6 +764,7 @@
+ 	else S_NUMBER_OR_ZERO("serve-expired-client-timeout:", serve_expired_client_timeout)
+ 	else S_YNO("ede:", ede)
+ 	else S_YNO("ede-serve-expired:", ede_serve_expired)
++	else S_YNO("mesh-isolate-client-tags:", mesh_isolate_client_tags)
+ 	else S_YNO("dns-error-reporting:", dns_error_reporting)
+ 	else S_NUMBER_OR_ZERO("iter-scrub-ns:", iter_scrub_ns)
+ 	else S_NUMBER_OR_ZERO("iter-scrub-cname:", iter_scrub_cname)
+@@ -1240,6 +1242,7 @@
+ 	else O_DEC(opt, "serve-expired-client-timeout", serve_expired_client_timeout)
+ 	else O_YNO(opt, "ede", ede)
+ 	else O_YNO(opt, "ede-serve-expired", ede_serve_expired)
++	else O_YNO(opt, "mesh-isolate-client-tags", mesh_isolate_client_tags)
+ 	else O_YNO(opt, "dns-error-reporting", dns_error_reporting)
+ 	else O_DEC(opt, "iter-scrub-ns", iter_scrub_ns)
+ 	else O_DEC(opt, "iter-scrub-cname", iter_scrub_cname)
+--- a/util/config_file.h
++++ b/util/config_file.h
+@@ -784,6 +784,9 @@
+ 	int ede;
+ 	/** serve EDE code 3 - Stale Answer (RFC8914) for expired entries */
+ 	int ede_serve_expired;
++	/** do not share a mesh state between clients with different tags
++	 * or views, for every query type */
++	int mesh_isolate_client_tags;
+ 	/** send DNS Error Reports to upstream reporting agent (RFC9567) */
+ 	int dns_error_reporting;
+ 	/** limit on NS RRs in RRset for the iterator scrubber. */
+--- a/util/configlexer.lex
++++ b/util/configlexer.lex
+@@ -414,6 +414,7 @@
+ serve-expired-reply-ttl{COLON}	{ YDVAR(1, VAR_SERVE_EXPIRED_REPLY_TTL) }
+ serve-expired-client-timeout{COLON}	{ YDVAR(1, VAR_SERVE_EXPIRED_CLIENT_TIMEOUT) }
+ ede-serve-expired{COLON}	{ YDVAR(1, VAR_EDE_SERVE_EXPIRED) }
++mesh-isolate-client-tags{COLON}	{ YDVAR(1, VAR_MESH_ISOLATE_CLIENT_TAGS) }
+ serve-original-ttl{COLON}	{ YDVAR(1, VAR_SERVE_ORIGINAL_TTL) }
+ fake-dsa{COLON}			{ YDVAR(1, VAR_FAKE_DSA) }
+ fake-sha1{COLON}		{ YDVAR(1, VAR_FAKE_SHA1) }
+--- a/util/configparser.y
++++ b/util/configparser.y
+@@ -162,6 +162,7 @@
+ %token VAR_VIEW_FIRST VAR_SERVE_EXPIRED VAR_SERVE_EXPIRED_TTL
+ %token VAR_SERVE_EXPIRED_TTL_RESET VAR_SERVE_EXPIRED_REPLY_TTL
+ %token VAR_SERVE_EXPIRED_CLIENT_TIMEOUT VAR_EDE_SERVE_EXPIRED
++%token VAR_MESH_ISOLATE_CLIENT_TAGS
+ %token VAR_SERVE_ORIGINAL_TTL VAR_FAKE_DSA
+ %token VAR_FAKE_SHA1 VAR_LOG_IDENTITY VAR_HIDE_TRUSTANCHOR
+ %token VAR_HIDE_HTTP_USER_AGENT VAR_HTTP_USER_AGENT
+@@ -328,6 +329,7 @@
+ 	server_serve_expired_ttl | server_serve_expired_ttl_reset |
+ 	server_serve_expired_reply_ttl | server_serve_expired_client_timeout |
+ 	server_ede_serve_expired | server_serve_original_ttl | server_fake_dsa |
++	server_mesh_isolate_client_tags |
+ 	server_log_identity | server_use_systemd |
+ 	server_response_ip_tag | server_response_ip | server_response_ip_data |
+ 	server_shm_enable | server_shm_key | server_fake_sha1 |
+@@ -2220,6 +2222,15 @@
+ 		free($2);
+ 	}
+ 	;
++server_mesh_isolate_client_tags: VAR_MESH_ISOLATE_CLIENT_TAGS STRING_ARG
++	{
++		OUTYY(("P(server_mesh_isolate_client_tags:%s)\n", $2));
++		if(strcmp($2, "yes") != 0 && strcmp($2, "no") != 0)
++			yyerror("expected yes or no.");
++		else cfg_parser->cfg->mesh_isolate_client_tags = (strcmp($2, "yes")==0);
++		free($2);
++	}
++	;
+ server_ede_serve_expired: VAR_EDE_SERVE_EXPIRED STRING_ARG
+ 	{
+ 		OUTYY(("P(server_ede_serve_expired:%s)\n", $2));
