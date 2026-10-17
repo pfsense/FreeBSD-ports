@@ -162,18 +162,29 @@
 			</description>
 			<type>checkbox</type>
 		</field>
-<!-- This is currently only available on Linux (see https://github.com/tailscale/tailscale/issues/5573)
 		<field>
 			<fielddescr>SNAT Subnet Routes</fielddescr>
 			<fieldname>snatsubnetroutes</fieldname>
 			<description>
 				<![CDATA[
-				By disabling source NAT (SNAT), the end machine sees the LAN IP address of the originating machine as the source.
+				Source NAT traffic to the advertised routes (default).
 				]]>
 			</description>
+			<sethelp>
+				<![CDATA[
+				With 'SNAT Subnet Routes' enabled (default), tailscaled forwards traffic to the advertised routes
+				itself and the destination sees this firewall's address as the source.
+				When disabled, the kernel forwards that traffic instead: it passes through the packet filter on the
+				Tailscale interface group (add pass rules under Firewall / Rules / Tailscale) and the destination sees
+				the Tailscale address of the originating node. Traffic through an advertised exit node then also
+				leaves with the originating node's Tailscale address, so if 'Advertise Exit Node' is enabled, also pass
+				traffic to non-local destinations under Firewall / Rules / Tailscale and add an Outbound NAT rule for
+				100.64.0.0/10 on the WAN interface.
+				]]>
+			</sethelp>
 			<type>checkbox</type>
+			<default_value>on</default_value>
 		</field>
--->
 		<field>
 			<fielddescr>Notice</fielddescr>
 			<description>

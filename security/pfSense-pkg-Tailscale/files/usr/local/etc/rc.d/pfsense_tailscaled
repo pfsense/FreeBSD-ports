@@ -31,7 +31,7 @@ load_rc_config $name
 : ${pfsense_tailscaled_advertiseroutes:=""}
 : ${pfsense_tailscaled_exitnode_enable:="NO"}
 : ${pfsense_tailscaled_loginserver:="https://controlplane.tailscale.com"}
-: ${pfsense_tailscaled_snat_subnet_routes:="NO"}
+: ${pfsense_tailscaled_snat_subnet_routes:="YES"}
 
 # source the tailscaled rc configuration too
 load_rc_config tailscaled
@@ -65,14 +65,6 @@ fi
 
 # handle the --advertise-routes parameter
 pfsense_tailscaled_up_flags="${pfsense_tailscaled_up_flags} --advertise-routes=${pfsense_tailscaled_advertiseroutes}"
-
-# This is currently on available on Linux (see https://github.com/tailscale/tailscale/issues/5573)
-# handle the –-snat-subnet-routes parameter
-#if checkyesno pfsense_tailscaled_snat_subnet_routes; then
-#	pfsense_tailscaled_up_flags="${pfsense_tailscaled_up_flags} --snat-subnet-routes"
-#else
-#	pfsense_tailscaled_up_flags="${pfsense_tailscaled_up_flags} --snat-subnet-routes=false"
-#fi
 
 extra_commands="clean" 
 
@@ -135,9 +127,19 @@ pfsense_tailscaled_clean() {
 
 # bring up tailscale using the generated up flags from the configuration
 tailscale_up() {
+	# handle the --snat-subnet-routes parameter. Builds before Tailscale 1.104 reject it on
+	# FreeBSD; there TS_DEBUG_NETSTACK_SUBNETS=0 alone gives kernel routing without SNAT.
+	if ${tailscale_bin} up --help 2>&1 | grep -q snat-subnet-routes; then
+		if checkyesno pfsense_tailscaled_snat_subnet_routes; then
+			pfsense_tailscaled_up_flags="${pfsense_tailscaled_up_flags} --snat-subnet-routes"
+		else
+			pfsense_tailscaled_up_flags="${pfsense_tailscaled_up_flags} --snat-subnet-routes=false"
+		fi
+	fi
+
 	logger -s -t tailscale "Bringing up ${tailscale_tun_dev} with ${pfsense_tailscaled_up_flags}"
 	${tailscale_bin} up ${pfsense_tailscaled_up_flags} || {
-		logger -s -t "Unable to bring up ${tailscale_tun_dev}. Check authentication."
+		logger -s -t tailscale "Unable to bring up ${tailscale_tun_dev}. Check authentication."
 	}
 }
 

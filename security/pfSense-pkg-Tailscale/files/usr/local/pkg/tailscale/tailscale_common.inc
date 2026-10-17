@@ -228,6 +228,14 @@ function tailscale_is_enabled()
 }
 
 /*
+ * Just a test if SNAT of subnet routes is enabled (the default)
+ */
+function tailscale_snat_subnet_routes_enabled()
+{
+	return (tailscale_get_config('tailscale', 'snatsubnetroutes', 'on') === 'on');
+}
+
+/*
  * Just a test if tailscale is not enabled
  */
 function tailscale_is_not_enabled()
@@ -559,14 +567,13 @@ function tailscale_pfsense_tailscaled_rcconf_map()
 		return tailscale_format_sysrc_variable($key, $value);
 	};
 
-	# This is currently only available on Linux (see https://github.com/tailscale/tailscale/issues/5573)
 	# pfsense_tailscaled_snat_subnet_routes (bool)
-	/** $rcconf_map['pfsense_tailscaled_snat_subnet_routes'] = function($key) {
+	$rcconf_map['pfsense_tailscaled_snat_subnet_routes'] = function($key) {
 		$value = SYSRC_NO;
-		if (tailscale_get_config('tailscale', 'snatsubnetroutes', 'off') === 'on')
+		if (tailscale_snat_subnet_routes_enabled())
 			$value = SYSRC_YES;
 		return tailscale_format_sysrc_variable($key, $value);
-	}; */
+	};
 
 	return $rcconf_map;
 }
@@ -597,6 +604,18 @@ function tailscale_tailscaled_rcconf_map()
 	# tailscaled_port (int)
 	$rcconf_map['tailscaled_port'] = function($key) {
 		$value = tailscale_get_config('tailscale', 'listenport', 41641);
+		return tailscale_format_sysrc_variable($key, $value);
+	};
+
+	# tailscaled_env (str)
+	#
+	# With SNAT disabled the kernel forwards subnet traffic instead of tailscaled's
+	# netstack, which is what preserves the source address and makes the packets
+	# traverse pf on the Tailscale interface group.
+	$rcconf_map['tailscaled_env'] = function($key) {
+		$value = '';
+		if (!tailscale_snat_subnet_routes_enabled())
+			$value = 'TS_DEBUG_NETSTACK_SUBNETS=0';
 		return tailscale_format_sysrc_variable($key, $value);
 	};
 
