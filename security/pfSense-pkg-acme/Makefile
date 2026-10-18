@@ -1,8 +1,8 @@
 # $FreeBSD$
 
 PORTNAME=	pfSense-pkg-acme
-PORTVERSION=	1.1
-PORTREVISION=	2
+PORTVERSION=	1.3
+PORTREVISION=	3
 CATEGORIES=	security
 MASTER_SITES=	# empty
 DISTFILES=	# empty
@@ -14,6 +14,7 @@ COMMENT=	ACME package for pfSense
 LICENSE=	APACHE20
 
 RUN_DEPENDS=	${LOCALBASE}/bin/socat:net/socat \
+		${LOCALBASE}/bin/oathtool:security/oath-toolkit \
 		${PHP_PKGNAMEPREFIX}pecl-ssh2>=0:security/pecl-ssh2@${PHP_FLAVOR}
 
 IGNORE_WITH_PHP=	56 70 71 74 81

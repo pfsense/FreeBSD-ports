@@ -379,6 +379,12 @@ $acme_domain_validation_method['dns_1984hosting'] = [
 			'columnheader' => 'Password',
 			'type' => 'password',
 		],
+		'One984HOSTING_TOTP_Secret' => [
+			'name' => 'one984hosting_totp_secret',
+			'description' => '1984Hosting TOTP Secret',
+			'columnheader' => 'TOTP Secret',
+			'type' => 'password',
+		],
 	]
 ];
 $acme_domain_validation_method['dns_acmeproxy'] = [
