@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<pfsensepkgs>
+	<package>
+		<name>DNSCrypt Proxy</name>
+		<internal_name>dnscrypt-proxy</internal_name>
+		<descr><![CDATA[DNSCrypt Proxy - Encrypted DNS client supporting DNSCrypt v2 and DNS-over-HTTPS protocols]]></descr>
+		<pkginfolink>https://github.com/DNSCrypt/dnscrypt-proxy</pkginfolink>
+		<version>%%PKGVERSION%%</version>
+		<configurationfile>dnscrypt-proxy.xml</configurationfile>
+	</package>
+</pfsensepkgs>

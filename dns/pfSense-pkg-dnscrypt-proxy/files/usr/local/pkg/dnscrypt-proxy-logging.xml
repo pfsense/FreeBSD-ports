@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE packagegui SYSTEM "../schema/packages.dtd">
+<?xml-stylesheet type="text/xsl" href="./xsl/package.xsl"?>
+<packagegui>
+	<copyright>
+	<![CDATA[
+/*
+ * dnscrypt-proxy-logging.xml
+ *
+ * for pfSense
+ * Copyright (c) 2026 nopoz (https://github.com/nopoz)
+ * SPDX-License-Identifier: ISC
+ *
+ * Permission to use, copy, modify, and/or distribute this software for any
+ * purpose with or without fee is hereby granted, provided that the above
+ * copyright notice and this permission notice appear in all copies.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
+ * WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
+ * MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
+ * ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
+ * WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
+ * ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
+ * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
+ */
+	]]>
+	</copyright>
+	<name>dnscryptproxy</name>
+	<title>Services: DNSCrypt Proxy</title>
+	<shortcut_section>dnscrypt-proxy</shortcut_section>
+	<configpath>installedpackages->dnscryptproxy->config</configpath>
+	<addedit_string>[dnscrypt-proxy] Settings saved</addedit_string>
+	<aftersaveredirect>/pkg_edit.php?xml=dnscrypt-proxy-logging.xml</aftersaveredirect>
+	<include_file>/usr/local/pkg/dnscrypt-proxy.inc</include_file>
+	<tabs>
+		<tab>
+			<text>General Settings</text>
+			<url>/pkg_edit.php?xml=dnscrypt-proxy.xml</url>
+		</tab>
+		<tab>
+			<text>Server Selection</text>
+			<url>/pkg_edit.php?xml=dnscrypt-proxy-servers.xml</url>
+		</tab>
+		<tab>
+			<text>Cache &amp; Filtering</text>
+			<url>/pkg_edit.php?xml=dnscrypt-proxy-cache.xml</url>
+		</tab>
+		<tab>
+			<text>Logging</text>
+			<url>/pkg_edit.php?xml=dnscrypt-proxy-logging.xml</url>
+			<active/>
+		</tab>
+		<tab>
+			<text>Lists</text>
+			<url>/pkg_edit.php?xml=dnscrypt-proxy-lists.xml</url>
+		</tab>
+		<tab>
+			<text>Advanced</text>
+			<url>/pkg_edit.php?xml=dnscrypt-proxy-advanced.xml</url>
+		</tab>
+		<tab>
+			<text>Query Log</text>
+			<url>/dnscrypt-proxy-querylog.php</url>
+		</tab>
+		<tab>
+			<text>Config</text>
+			<url>/dnscrypt-proxy-config.php</url>
+		</tab>
+	</tabs>
+	<fields>
+		<field>
+			<name>Logging Settings</name>
+			<type>listtopic</type>
+		</field>
+		<field>
+			<fielddescr>Log Level</fielddescr>
+			<fieldname>log_level</fieldname>
+			<description>Logging verbosity. Info is useful for troubleshooting; Notice is recommended for normal operation.</description>
+			<type>select</type>
+			<default_value>2</default_value>
+			<options>
+				<option><name>1 - Info (verbose)</name><value>1</value></option>
+				<option><name>2 - Notice (default)</name><value>2</value></option>
+				<option><name>3 - Warning</name><value>3</value></option>
+				<option><name>4 - Error</name><value>4</value></option>
+				<option><name>5 - Critical (least verbose)</name><value>5</value></option>
+			</options>
+		</field>
+		<field>
+			<fielddescr>Log Destination</fielddescr>
+			<fieldname>log_destination</fieldname>
+			<description>Where to send log messages. Only one can be active at a time.</description>
+			<type>select</type>
+			<default_value>syslog</default_value>
+			<options>
+				<option><name>Syslog (Status &gt; System Logs)</name><value>syslog</value></option>
+				<option><name>Log File</name><value>file</value></option>
+			</options>
+		</field>
+		<field>
+			<fielddescr>Log File Path</fielddescr>
+			<fieldname>log_file</fieldname>
+			<description>Path to log file. Only used when Log Destination is set to "Log File".</description>
+			<type>input</type>
+			<size>50</size>
+		</field>
+		<field>
+			<name>Query Logging</name>
+			<type>listtopic</type>
+		</field>
+		<field>
+			<fielddescr>Enable Query Logging</fielddescr>
+			<fieldname>query_log</fieldname>
+			<description>Log all DNS queries to a file (can grow large quickly)</description>
+			<type>checkbox</type>
+		</field>
+		<field>
+			<fielddescr>Query Log File</fielddescr>
+			<fieldname>query_log_file</fieldname>
+			<description>Path to query log file. Default: /var/log/dnscrypt-proxy/query.log</description>
+			<type>input</type>
+			<size>50</size>
+			<default_value>/var/log/dnscrypt-proxy/query.log</default_value>
+		</field>
+	</fields>
+	<custom_php_after_form_command>
+		dnscrypt_proxy_logging_after_form();
+	</custom_php_after_form_command>
+	<custom_php_resync_config_command>
+		dnscrypt_proxy_sync();
+	</custom_php_resync_config_command>
+	<custom_php_validation_command>
+		dnscrypt_proxy_validate($_POST, $input_errors);
+	</custom_php_validation_command>
+	<custom_add_php_command_late>
+		dnscrypt_proxy_save_config_late();
+	</custom_add_php_command_late>
+</packagegui>

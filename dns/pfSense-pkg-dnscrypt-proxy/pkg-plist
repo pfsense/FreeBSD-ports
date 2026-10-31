@@ -1,0 +1,16 @@
+/etc/inc/priv/dnscrypt-proxy.priv.inc
+bin/dnscrypt-proxy
+pkg/dnscrypt-proxy.inc
+pkg/dnscrypt-proxy.xml
+pkg/dnscrypt-proxy-advanced.xml
+pkg/dnscrypt-proxy-cache.xml
+pkg/dnscrypt-proxy-lists.xml
+pkg/dnscrypt-proxy-logging.xml
+pkg/dnscrypt-proxy-querylog.xml
+pkg/dnscrypt-proxy-servers.xml
+%%DATADIR%%/info.xml
+www/dnscrypt-proxy-config.php
+www/dnscrypt-proxy-querylog.php
+www/shortcuts/pkg_dnscrypt-proxy.inc
+@dir /etc/inc/priv
+@dir /etc/inc
