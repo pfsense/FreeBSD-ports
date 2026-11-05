@@ -50,7 +50,7 @@ $pconfig['pfb_hour']			= $pfb['gconfig']['pfb_hour']				?: 0;
 $pconfig['pfb_dailystart']		= $pfb['gconfig']['pfb_dailystart']			?: 0;
 $pconfig['skipfeed']			= $pfb['gconfig']['skipfeed']				?: 0;
 
-$pconfig['pfb_resolve']			= $pfb['gconfig']['pfb_resolve']			?: 1;
+$pconfig['pfb_resolve']			= $pfb['gconfig']['pfb_resolve']			?? 'on';
 
 $pconfig['log_max_log']			= $pfb['gconfig']['log_max_log']			?: 20000;
 $pconfig['log_max_errlog']		= $pfb['gconfig']['log_max_errlog']			?: 20000;
@@ -134,7 +134,8 @@ if ($_POST) {
 			$pfb['gconfig']['pfb_dailystart']		= $_POST['pfb_dailystart']			?: 0;
 			$pfb['gconfig']['skipfeed']			= $_POST['skipfeed']				?: 0;
 
-			$pfb['gconfig']['pfb_resolve']			= pfb_filter($_POST['pfb_resolve'], PFB_FILTER_ON_OFF, 'general', '');
+			$pfb['gconfig']['pfb_resolve']			= pfb_filter($_POST['pfb_resolve'] ?? '', PFB_FILTER_ON_OFF, 'general', '');
+			$pfb['resolve_changed'] = $pconfig['pfb_resolve'] !== $pfb['gconfig']['pfb_resolve'];
 
 			// Remove old Line Limit setting
 			if (isset($pfb['gconfig']['log_maxlines'])) {

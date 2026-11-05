@@ -792,7 +792,7 @@ function pfb_global() {
 
 	$pfb['enable']		= $pfb['config']['enable_cb'];			// Enable/Disable of pfBlockerNG
 	$pfb['keep']		= $pfb['config']['pfb_keep'];			// Keep blocklists on pfBlockerNG Disable
-	$pfb['resolve']		= $pfb['config']['pfb_resolve'];		// Resolve IP Addresses
+	$pfb['resolve']		= $pfb['config']['pfb_resolve'] ?? 'on';	// Resolve IP Addresses
 	$pfb['interval']	= $pfb['config']['pfb_interval']	?: '1';	// Hour cycle for scheduler
 
 	// Validate Cron settings
@@ -10570,7 +10570,7 @@ function sync_package_pfblockerng($cron='') {
 		}
 	}
 	else {
-		// Stop/Start Firewall filter daemon
+		// Stop/Start Firewall filter daemon or restart for changed resolve settings
 		if ($pfb['enable'] == '' && is_service_running('pfb_filter')) {
 			$log = 'Stopping firewall filter daemon';
 			stop_service('pfb_filter');
@@ -10578,6 +10578,10 @@ function sync_package_pfblockerng($cron='') {
 		elseif ($pfb['enable'] == 'on' && !is_service_running('pfb_filter')) {
 			$log = 'Starting firewall filter daemon';
 			start_service('pfb_filter');
+		}
+		elseif ($pfb['enable'] == 'on' && !empty($pfb['resolve_changed'])) {
+			$log = 'Restarting firewall filter daemon';
+			restart_service('pfb_filter');
 		}
 	}
 
