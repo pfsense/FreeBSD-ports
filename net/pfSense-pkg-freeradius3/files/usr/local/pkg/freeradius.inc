@@ -2823,10 +2823,10 @@ EOD;
 
 	tls {
 		start_tls = {$varmodulesldap2starttls}
-		ca_file = {$raddb}/certs/ca_ldap1_cert.pem
+		ca_file = {$raddb}/certs/ca_ldap2_cert.pem
 		ca_path = {$raddb}/certs/
-		certificate_file = {$raddb}/certs/radius_ldap1_cert.crt
-		private_key_file = {$raddb}/certs/radius_ldap1_cert.key
+		certificate_file = {$raddb}/certs/radius_ldap2_cert.crt
+		private_key_file = {$raddb}/certs/radius_ldap2_cert.key
 		random_file = /dev/urandom
 		require_cert = "{$varmodulesldap2requirecert}"
 	}
