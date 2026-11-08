@@ -2211,7 +2211,7 @@ authorize {
 	}
 	{$varsqlconfauthcounters}
 	# Formerly checkval
-	if (&request:Calling-Station-Id == &control:Calling-Station-Id) {
+	if (&control:Calling-Station-Id && (&request:Calling-Station-Id == &control:Calling-Station-Id)) {
 		ok
 	}
 	expiration
