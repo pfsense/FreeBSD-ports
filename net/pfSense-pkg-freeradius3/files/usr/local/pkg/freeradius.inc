@@ -1372,7 +1372,7 @@ eap {
 		cipher_list = "DEFAULT"
 		cipher_server_preference = no
 #		disable_tlsv1_2 = no
-		ecdh_curve = "prime256v1"
+		ecdh_curve = "prime256v1:secp384r1:secp521r1"
 		tls_min_version = "{$vareapconftlsminversion}"
 		cache {
 			enable = {$vareapconfcacheenablecache}
