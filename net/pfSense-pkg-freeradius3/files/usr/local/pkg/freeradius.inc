@@ -1259,11 +1259,9 @@ EOD;
 			}
 		}
 	}
+	/* FreeRADIUS never reads the CA private key; remove copies written by older versions */
+	unlink_if_exists(FREERADIUS_CERTS . "/ca_key.pem");
 	if (($ca_cert != false) && !$cert_error) {
-		if (base64_decode($ca_cert['prv'])) {
-			file_put_contents(FREERADIUS_CERTS . "/ca_key.pem", base64_decode($ca_cert['prv']));
-		}
-
 		if (base64_decode($ca_cert['crt'])) {
 			$crl_cert_config = lookup_crl($eapconf["ssl_ca_crl"]);
 			$crl_cert = &$crl_cert_config['item'];
@@ -1282,6 +1280,7 @@ EOD;
 		if ($svr_cert != false) {
 			if (base64_decode($svr_cert['prv'])) {
 				file_put_contents(FREERADIUS_CERTS . "/server_key.pem", base64_decode($svr_cert['prv']));
+				chmod(FREERADIUS_CERTS . "/server_key.pem", 0600);
 			}
 			if (base64_decode($svr_cert['crt'])) {
 				file_put_contents(FREERADIUS_CERTS . "/server_cert.pem",
@@ -2769,6 +2768,7 @@ function freeradius_modulesldap_resync($restart_svc = true) {
 			if ($svr_cert != false) {
 				if (base64_decode($svr_cert['prv'])) {
 					file_put_contents(FREERADIUS_CERTS . "/radius_ldap1_cert.key", base64_decode($svr_cert['prv']));
+					chmod(FREERADIUS_CERTS . "/radius_ldap1_cert.key", 0600);
 				}
 			}
 			if (base64_decode($svr_cert['crt'])) {
@@ -2809,6 +2809,7 @@ EOD;
 			if ($svr_cert != false) {
 				if (base64_decode($svr_cert['prv'])) {
 					file_put_contents(FREERADIUS_CERTS . "/radius_ldap2_cert.key", base64_decode($svr_cert['prv']));
+					chmod(FREERADIUS_CERTS . "/radius_ldap2_cert.key", 0600);
 				}
 			}
 			if (base64_decode($svr_cert['crt'])) {
