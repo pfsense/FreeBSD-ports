@@ -4549,6 +4549,37 @@ function freeradius_plugin_certificates($pluginparams) {
 	return $result;
 }
 
+/*
+ * The daily periodic run auto-renews certificates just before it calls this.
+ * FreeRADIUS reads copies of the EAP certificates that only
+ * freeradius_eapconf_resync() writes, so rewrite them when the server
+ * certificate in the configuration no longer matches the copy on disk.
+ */
+function freeradius_plugin_periodic($pluginparams) {
+	if ($pluginparams['event'] != 'daily') {
+		return;
+	}
+
+	$eapconf = config_get_path('installedpackages/freeradiuseapconf/config/0', []);
+	if (empty($eapconf['ssl_server_cert'])) {
+		return;
+	}
+
+	$svr_cert = lookup_cert($eapconf['ssl_server_cert'])['item'];
+	$crt = base64_decode($svr_cert['crt'] ?? '');
+	if (empty($crt)) {
+		return;
+	}
+
+	$current = @file_get_contents(FREERADIUS_CERTS . "/server_cert.pem");
+	if (($current !== false) && str_starts_with($current, $crt)) {
+		return;
+	}
+
+	logger(LOG_NOTICE, localize_text("The EAP server certificate %s changed. Rewriting the certificate files and restarting FreeRADIUS.", $svr_cert['descr']), LOG_PREFIX_PKG_FREERADIUS);
+	freeradius_eapconf_resync();
+}
+
 enum Validation {
 	case Valid;
 	case BadType;

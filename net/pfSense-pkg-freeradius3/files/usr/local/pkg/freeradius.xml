@@ -674,6 +674,9 @@
 		<item>
 			<type>plugin_xmlrpc_recv_done</type>
 		</item>
+		<item>
+			<type>plugin_periodic</type>
+		</item>
 	</plugins>
 	<custom_delete_php_command>
 		freeradius_users_resync();
