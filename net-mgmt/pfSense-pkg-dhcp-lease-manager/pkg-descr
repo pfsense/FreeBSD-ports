@@ -1,0 +1,14 @@
+DHCP Lease Manager adds a Status page that makes DHCP leases easier to
+understand and manage than the stock lease list. It works with both the
+ISC DHCP and Kea backends by reading leases through pfSense itself.
+
+ - Sort by lease age, expiry, IP address, manufacturer or device type
+ - Manufacturer lookup from the MAC address, including private
+   (randomized) MACs and hypervisor/container guests
+ - Device type guesses (TV, streaming box, light switch, smart plug,
+   camera, phone, computer, virtual machine, ...) from hostname and
+   manufacturer, with per-device overrides saved in the configuration
+ - Right-click a lease to create or edit its static mapping
+ - Select leases to remove static mappings in bulk, applied through the
+   standard DHCP "Apply Changes" flow
+ - Breakdown chart by device type or manufacturer, filters, auto refresh

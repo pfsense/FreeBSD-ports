@@ -1,0 +1,55 @@
+/*
+ * lease_manager.css
+ *
+ * Copyright (c) 2026 Branson Matheson
+ * Licensed under the Apache License, Version 2.0
+ *
+ * Colors come from the active pfSense (Bootstrap) theme wherever possible so
+ * light and dark themes both work.
+ */
+
+.dlm-meta { margin-left: 0.75em; opacity: 0.75; }
+.dlm-toolbar > * { margin: 0 0.5em 0.5em 0; }
+.dlm-toolbar #dlm-search { min-width: 18em; }
+.dlm-hint { font-size: 0.9em; }
+
+.dlm-table th[data-key] { cursor: pointer; user-select: none; white-space: nowrap; }
+.dlm-table th[data-key]::after { content: " \2195"; opacity: 0.3; }
+.dlm-table th.dlm-asc::after { content: " \25B2"; opacity: 0.9; }
+.dlm-table th.dlm-desc::after { content: " \25BC"; opacity: 0.9; }
+.dlm-table th.dlm-narrow { width: 1.5em; }
+.dlm-table tbody tr { cursor: context-menu; }
+.dlm-table tr.dlm-expired td { opacity: 0.55; }
+.dlm-mono { font-family: Menlo, Consolas, monospace; font-size: 0.92em; }
+.dlm-private { font-style: italic; }
+
+.dlm-menu { position: fixed; display: none; z-index: 2000; }
+.dlm-menu > li.disabled > a { cursor: not-allowed; }
+
+.dlm-vendors { display: grid; grid-template-columns: repeat(auto-fill, minmax(22em, 1fr)); gap: 0.25em 1.5em; }
+.dlm-vbar {
+	display: grid; grid-template-columns: 11em 1fr 2.5em; align-items: center; gap: 0.5em;
+	background: none; border: 1px solid transparent; border-radius: 3px;
+	padding: 2px 4px; text-align: left; color: inherit; font: inherit;
+}
+.dlm-vbar:hover { border-color: rgba(128, 128, 128, 0.4); }
+.dlm-vbar.active { border-color: #337ab7; }
+.dlm-vname { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.dlm-vtrack { height: 0.7em; background: rgba(128, 128, 128, 0.18); border-radius: 2px; overflow: hidden; }
+.dlm-vfill { display: block; height: 100%; background: #337ab7; }
+.dlm-vcount { text-align: right; font-variant-numeric: tabular-nums; }
+.dlm-vrest, .dlm-vclear { grid-column: 1 / -1; margin-top: 0.4em; justify-self: start; }
+
+/* device types, selection, bulk actions */
+.dlm-menu { overflow-y: auto; }
+.dlm-type { white-space: nowrap; }
+.dlm-type.dlm-manual { font-weight: 600; }
+.dlm-type.dlm-manual::after { content: " \2022"; color: #337ab7; }
+.dlm-table tr.dlm-selected > td { background-color: rgba(51, 122, 183, 0.15) !important; }
+.dlm-bulk { display: flex; flex-wrap: wrap; align-items: center; gap: 0.5em 1em; margin-bottom: 0.75em; }
+.dlm-bulk .dlm-actions { display: inline-flex; flex-wrap: wrap; gap: 0.4em; align-items: center; }
+.dlm-bulk select.form-control { width: auto; display: inline-block; }
+.dlm-bulk .dlm-note { font-size: 0.9em; }
+.dlm-chart-tabs a { color: inherit; opacity: 0.55; text-decoration: none; }
+.dlm-chart-tabs a.active { opacity: 1; font-weight: 600; }
+.dlm-vname .fa-fw { opacity: 0.8; }

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<pfsensepkgs>
+<package>
+	<name>dhcp-lease-manager</name>
+	<internal_name>dhcp_lease_manager</internal_name>
+	<descr><![CDATA[Enhanced DHCP lease view: sort by lease age and manufacturer, right-click to create static mappings.]]></descr>
+	<website>https://github.com/sandinak/pfsense-pkg-dhcp-lease-manager</website>
+	<category>Services</category>
+	<version>%%PKGVERSION%%</version>
+	<configurationfile>dhcp_lease_manager.xml</configurationfile>
+	<maintainer>branson@sandsite.org</maintainer>
+	<include_file>/usr/local/pkg/dhcp_lease_manager.inc</include_file>
+</package>
+</pfsensepkgs>
