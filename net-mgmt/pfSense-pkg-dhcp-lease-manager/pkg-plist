@@ -1,0 +1,10 @@
+pkg/dhcp_lease_manager.inc
+pkg/dhcp_lease_manager.xml
+www/status_dhcp_lease_manager.php
+www/dhcp_lease_manager/lease_manager.js
+www/dhcp_lease_manager/lease_manager.css
+/etc/inc/priv/dhcp_lease_manager.priv.inc
+%%DATADIR%%/info.xml
+@dir /etc/inc/priv
+@dir /etc/inc
+@dir www/dhcp_lease_manager
