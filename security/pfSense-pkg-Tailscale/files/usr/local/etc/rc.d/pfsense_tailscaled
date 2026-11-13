@@ -86,7 +86,7 @@ tailscale_tun_dev="tailscale0"
 tailscale_tun_dev_group="Tailscale"
 tailscale_bin="/usr/local/bin/tailscale"
 tailscaled_rcfile="/usr/local/etc/rc.d/tailscaled"
-tailscale_tun_dev_wait=5
+tailscale_tun_dev_wait=90
 
 # useful bits
 tailscaled_state_file="tailscaled.state"
