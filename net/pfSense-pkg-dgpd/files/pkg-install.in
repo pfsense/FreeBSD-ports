@@ -1,0 +1,8 @@
+#!/bin/sh
+# Copyright 2026 gebra
+# SPDX-License-Identifier: Apache-2.0
+
+if [ "${2}" != "POST-INSTALL" ]; then
+	exit 0
+fi
+${PKG_ROOTDIR}%%PREFIX%%/bin/php -f ${PKG_ROOTDIR}/etc/rc.packages %%PORTNAME%% ${2}

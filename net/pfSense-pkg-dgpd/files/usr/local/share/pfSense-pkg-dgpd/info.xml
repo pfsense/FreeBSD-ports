@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<pfsensepkgs>
+	<package>
+		<name>dgpd</name>
+		<descr>Dynamic GUA-PD</descr>
+		<version>%%PKGVERSION%%</version>
+		<configurationfile>dgpd.xml</configurationfile>
+		<logging>
+			<logtab>Dynamic GUA-PD</logtab>
+			<facilityname>dgpd</facilityname>
+			<logfilename>dgpd.log</logfilename>
+			<logowner>root:wheel</logowner>
+			<logmode>600</logmode>
+			<rotatecount>7</rotatecount>
+			<logfilesize>512000</logfilesize>
+		</logging>
+	</package>
+</pfsensepkgs>

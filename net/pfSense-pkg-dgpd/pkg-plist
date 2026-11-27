@@ -1,0 +1,11 @@
+@comment Copyright 2026 gebra
+@comment SPDX-License-Identifier: Apache-2.0
+/cf/conf/kea6-scripts/kea-pd-allocator.php
+libexec/dgpd_worker.php
+pkg/dgpd.inc
+pkg/dgpd_kea.inc
+pkg/dgpd.xml
+%%DATADIR%%/info.xml
+@dir /cf/conf/kea6-scripts
+@dir /cf/conf
+@dir /cf
