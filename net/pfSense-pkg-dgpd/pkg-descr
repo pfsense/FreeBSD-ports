@@ -1,0 +1,9 @@
+DynGUA-PD manages downstream IPv6 prefix delegation pools through native
+pfSense configuration and Kea DHCPv6.
+
+It discovers Track6 upstream prefixes, avoids occupied networks, and maintains
+explicit ownership of delegated pools. Native pfSense routines apply settings
+and maintain lease routes. Conflicts and missing prerequisites block changes.
+
+The package includes a native GUI, an asynchronous verification worker, and an
+optional read-only adapter for the DHCPv6 page.
